@@ -7,19 +7,19 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts {
-    public class ActionContextFacade : ContextFacade {
-        public IActionFacade Action { get; init; }
+namespace NakedFramework.Facade.Contexts; 
 
-        public override string Id => Action.Id;
+public class ActionContextFacade : ContextFacade {
+    public IActionFacade Action { get; init; }
 
-        public override ITypeFacade Specification => Action.ReturnType;
+    public override string Id => Action.Id;
 
-        public override ITypeFacade ElementSpecification => Action.ElementType;
+    public override ITypeFacade Specification => Action.ReturnType;
 
-        public ParameterContextFacade[] VisibleParameters { get; init; }
-        public PropertyContextFacade[] VisibleProperties { get; init; }
-        public string MenuPath { get; init; }
-        public string MenuId { get; set; }
-    }
+    public override ITypeFacade ElementSpecification => Action.ElementType;
+
+    public ParameterContextFacade[] VisibleParameters { get; init; }
+    public PropertyContextFacade[] VisibleProperties { get; init; }
+    public string MenuPath { get; init; }
+    public string MenuId { get; set; }
 }

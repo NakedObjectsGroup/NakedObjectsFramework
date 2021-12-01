@@ -12,30 +12,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.ProductModelProductDescriptionCulture")]
-    public class ProductModelProductDescriptionCulture {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Production.ProductModelProductDescriptionCulture")]
+public class ProductModelProductDescriptionCulture {
       
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductModelID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int ProductModelID { get; set; }
 
      
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductDescriptionID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int ProductDescriptionID { get; set; }
 
       
-        [Column(Order = 2)]
-        [StringLength(6)]
-        public string CultureID { get; set; }
+    [Column(Order = 2)]
+    [StringLength(6)]
+    public string CultureID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Culture Culture { get; set; }
+    public virtual Culture Culture { get; set; }
 
-        public virtual ProductDescription ProductDescription { get; set; }
+    public virtual ProductDescription ProductDescription { get; set; }
 
-        public virtual ProductModel ProductModel { get; set; }
-    }
+    public virtual ProductModel ProductModel { get; set; }
 }

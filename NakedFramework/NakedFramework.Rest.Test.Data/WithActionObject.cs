@@ -11,31 +11,31 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 
-namespace RestfulObjects.Test.Data {
-    public class WithActionObject : WithAction {
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        [DefaultValue(0)]
-        public virtual int Id { get; set; }
+namespace RestfulObjects.Test.Data; 
 
-        public virtual MostSimple AnOverloadedAction0() => Container.Instances<MostSimple>().Single(x => x.Id == 1);
+public class WithActionObject : WithAction {
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    [DefaultValue(0)]
+    public virtual int Id { get; set; }
 
-        public virtual MostSimple AnOverloadedAction1(string parm) => Container.Instances<MostSimple>().Single(x => x.Id == 1);
+    public virtual MostSimple AnOverloadedAction0() => Container.Instances<MostSimple>().Single(x => x.Id == 1);
 
-        [Edit]
-        public WithActionObject AnActionWithEditAnnotation(int id) => new() {Id = id};
+    public virtual MostSimple AnOverloadedAction1(string parm) => Container.Instances<MostSimple>().Single(x => x.Id == 1);
 
-        [Edit]
-        public void AnActionVoidWithEditAnnotation(int id) => Id = id;
+    [Edit]
+    public WithActionObject AnActionWithEditAnnotation(int id) => new() {Id = id};
 
-        [DisplayAsProperty]
-        public MostSimple AnObjectActionWithDisplayAsPropertyAnnotation() => Container.Instances<MostSimple>().Single(x => x.Id == 1);
+    [Edit]
+    public void AnActionVoidWithEditAnnotation(int id) => Id = id;
 
-        [DisplayAsProperty]
-        public IList<MostSimple> AnObjectActionWithDisplayAsPropertyAnnotation1() => Container.Instances<MostSimple>().Take(1).ToList();
+    [DisplayAsProperty]
+    public MostSimple AnObjectActionWithDisplayAsPropertyAnnotation() => Container.Instances<MostSimple>().Single(x => x.Id == 1);
 
-        [DisplayAsProperty]
-        public int AnObjectActionWithDisplayAsPropertyAnnotation2() => Id;
-    }
+    [DisplayAsProperty]
+    public IList<MostSimple> AnObjectActionWithDisplayAsPropertyAnnotation1() => Container.Instances<MostSimple>().Take(1).ToList();
+
+    [DisplayAsProperty]
+    public int AnObjectActionWithDisplayAsPropertyAnnotation2() => Id;
 }

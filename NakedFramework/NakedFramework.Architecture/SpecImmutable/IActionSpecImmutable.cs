@@ -5,19 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.SpecImmutable {
-    public interface IActionSpecImmutable : IMemberSpecImmutable {
-        ITypeSpecImmutable OwnerSpec { get; }
-        IObjectSpecImmutable ElementSpec { get; }
-        IActionParameterSpecImmutable[] Parameters { get; }
-        bool IsContributedMethod { get; }
-        bool IsStaticFunction { get; }
-        bool IsFinderMethod { get; }
-        bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable);
-        bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable);
-        bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id);
-        bool IsFinderMethodFor(IObjectSpecImmutable spec);
-    }
+namespace NakedFramework.Architecture.SpecImmutable; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface IActionSpecImmutable : IMemberSpecImmutable {
+    ITypeSpecImmutable OwnerSpec { get; }
+    IObjectSpecImmutable ElementSpec { get; }
+    IActionParameterSpecImmutable[] Parameters { get; }
+    bool IsContributedMethod { get; }
+    bool IsStaticFunction { get; }
+    bool IsFinderMethod { get; }
+    bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable);
+    bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable);
+    bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id);
+    bool IsFinderMethodFor(IObjectSpecImmutable spec);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

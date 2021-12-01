@@ -18,41 +18,41 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class NamedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<NamedAnnotationFacetFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public NamedAnnotationFacetFactory(IFacetFactoryOrder<NamedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Everything) =>
-            logger = loggerFactory.CreateLogger<NamedAnnotationFacetFactory>();
+public sealed class NamedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<NamedAnnotationFacetFactory> logger;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<NamedAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-            return metamodel;
-        }
+    public NamedAnnotationFacetFactory(IFacetFactoryOrder<NamedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Everything) =>
+        logger = loggerFactory.CreateLogger<NamedAnnotationFacetFactory>();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = method.GetCustomAttribute<NamedAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = property.GetCustomAttribute<NamedAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttribute<NamedAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-            return metamodel;
-        }
-
-        private static INamedFacet Create(NamedAttribute attribute, ISpecification holder) => attribute is null ? null : CreateAnnotation(attribute.Value, holder);
-
-        private static INamedFacet CreateAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name, holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = type.GetCustomAttribute<NamedAttribute>();
+        FacetUtils.AddFacet(Create(attribute, specification));
+        return metamodel;
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = method.GetCustomAttribute<NamedAttribute>();
+        FacetUtils.AddFacet(Create(attribute, specification));
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = property.GetCustomAttribute<NamedAttribute>();
+        FacetUtils.AddFacet(Create(attribute, specification));
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+        var attribute = parameter.GetCustomAttribute<NamedAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
+        return metamodel;
+    }
+
+    private static INamedFacet Create(NamedAttribute attribute, ISpecification holder) => attribute is null ? null : CreateAnnotation(attribute.Value, holder);
+
+    private static INamedFacet CreateAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name, holder);
 }

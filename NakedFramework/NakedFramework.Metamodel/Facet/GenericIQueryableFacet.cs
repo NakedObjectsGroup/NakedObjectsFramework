@@ -13,49 +13,49 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class GenericIQueryableFacet : CollectionFacetAbstract {
-        public GenericIQueryableFacet(ISpecification holder)
-            : this(holder, false) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public GenericIQueryableFacet(ISpecification holder, bool isASet)
-            : base(holder, isASet) { }
+[Serializable]
+public sealed class GenericIQueryableFacet : CollectionFacetAbstract {
+    public GenericIQueryableFacet(ISpecification holder)
+        : this(holder, false) { }
 
-        public override bool IsQueryable => true;
+    public GenericIQueryableFacet(ISpecification holder, bool isASet)
+        : base(holder, isASet) { }
 
-        private static IQueryable<T> AsGenericIQueryable<T>(INakedObjectAdapter collection) {
-            var queryable = (IQueryable<T>) collection.Object;
-            return queryable.IsOrdered() ? queryable : queryable.OrderBy(x => "");
-        }
+    public override bool IsQueryable => true;
 
-        public static INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
-            // page = 0 causes empty collection to be returned
-            IEnumerable<T> newCollection = page == 0 ? AsGenericIQueryable<T>(collection).Take(0) : AsGenericIQueryable<T>(collection).Skip((page - 1) * size).Take(size);
-            if (forceEnumerable) {
-                newCollection = newCollection.ToList();
-            }
-
-            return manager.CreateAdapter(newCollection, null, null);
-        }
-
-        public static IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericIQueryable<T>(collection).AsEnumerable().Select(arg => manager.CreateAdapter(arg, null, null));
-
-        public static IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericIQueryable<T>(collection);
-
-        public static bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericIQueryable<T>(collection).Contains((T) element.Object);
-
-        public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => (INakedObjectAdapter) Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
-
-        public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => (IEnumerable<INakedObjectAdapter>) Call("AsEnumerableInternal", collection, collection, manager);
-
-        public override IQueryable AsQueryable(INakedObjectAdapter collection) => (IQueryable) Call("AsQueryableInternal", collection, collection);
-
-        public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
-            var newCollection = CollectionUtils.CloneCollectionAndPopulate(collection.Object, initData.Select(no => no.Object));
-            collection.ReplacePoco(newCollection.AsQueryable());
-        }
-
-        public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) => (bool) Call("ContainsInternal", collection, collection, element);
+    private static IQueryable<T> AsGenericIQueryable<T>(INakedObjectAdapter collection) {
+        var queryable = (IQueryable<T>) collection.Object;
+        return queryable.IsOrdered() ? queryable : queryable.OrderBy(x => "");
     }
+
+    public static INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
+        // page = 0 causes empty collection to be returned
+        IEnumerable<T> newCollection = page == 0 ? AsGenericIQueryable<T>(collection).Take(0) : AsGenericIQueryable<T>(collection).Skip((page - 1) * size).Take(size);
+        if (forceEnumerable) {
+            newCollection = newCollection.ToList();
+        }
+
+        return manager.CreateAdapter(newCollection, null, null);
+    }
+
+    public static IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericIQueryable<T>(collection).AsEnumerable().Select(arg => manager.CreateAdapter(arg, null, null));
+
+    public static IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericIQueryable<T>(collection);
+
+    public static bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericIQueryable<T>(collection).Contains((T) element.Object);
+
+    public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => (INakedObjectAdapter) Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
+
+    public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => (IEnumerable<INakedObjectAdapter>) Call("AsEnumerableInternal", collection, collection, manager);
+
+    public override IQueryable AsQueryable(INakedObjectAdapter collection) => (IQueryable) Call("AsQueryableInternal", collection, collection);
+
+    public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
+        var newCollection = CollectionUtils.CloneCollectionAndPopulate(collection.Object, initData.Select(no => no.Object));
+        collection.ReplacePoco(newCollection.AsQueryable());
+    }
+
+    public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) => (bool) Call("ContainsInternal", collection, collection, element);
 }

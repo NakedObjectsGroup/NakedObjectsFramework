@@ -28,52 +28,52 @@ using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
 
-namespace NakedFramework.DependencyInjection.Extensions {
-    public static class NakedFrameworkExtensions {
-        public static CoreConfiguration CoreConfig(NakedFrameworkOptions options) {
-            var config = new CoreConfiguration(options.MainMenus);
+namespace NakedFramework.DependencyInjection.Extensions; 
 
-            options.SupportedSystemTypes ??= t => t;
-            config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).Union(options.AdditionalSystemTypes).ToList();
+public static class NakedFrameworkExtensions {
+    public static CoreConfiguration CoreConfig(NakedFrameworkOptions options) {
+        var config = new CoreConfiguration(options.MainMenus);
+
+        options.SupportedSystemTypes ??= t => t;
+        config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).Union(options.AdditionalSystemTypes).ToList();
             
-            config.HashMapCapacity = options.HashMapCapacity;
-            return config;
+        config.HashMapCapacity = options.HashMapCapacity;
+        return config;
+    }
+
+    private static void AddNakedCoreFramework(this IServiceCollection services, NakedFrameworkOptions options) {
+        ParallelConfig.RegisterCoreSingletonTypes(services);
+        ParallelConfig.RegisterCoreScopedTypes(services);
+
+        if (options.ProfileConfiguration is not null) {
+            services.AddSingleton(options.ProfileConfiguration);
+            services.AddDefaultSingleton<IFacetDecorator, ProfileManager>();
         }
 
-        private static void AddNakedCoreFramework(this IServiceCollection services, NakedFrameworkOptions options) {
-            ParallelConfig.RegisterCoreSingletonTypes(services);
-            ParallelConfig.RegisterCoreScopedTypes(services);
-
-            if (options.ProfileConfiguration is not null) {
-                services.AddSingleton(options.ProfileConfiguration);
-                services.AddDefaultSingleton<IFacetDecorator, ProfileManager>();
-            }
-
-            if (options.UseI18N) {
-                services.AddDefaultSingleton<IFacetDecorator, I18NManager>();
-            }
-
-            services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));
-
-            services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(TypeFacetFactories.FacetFactories());
-            services.AddDefaultSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
-            services.AddDefaultSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
-            services.AddSingleton<IReflector, SystemTypeReflector>();
-
-            // frameworkFacade
-            services.AddDefaultTransient<ITypeCodeMapper, DefaultTypeCodeMapper>();
-            services.AddDefaultTransient<IKeyCodeMapper, DefaultKeyCodeMapper>();
-            services.AddDefaultTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
-            services.AddDefaultTransient<IOidStrategy, EntityOidStrategy>();
-            services.AddDefaultTransient<IStringHasher, InvariantStringHasher>();
-            services.AddDefaultTransient<IFrameworkFacade, FrameworkFacade>();
+        if (options.UseI18N) {
+            services.AddDefaultSingleton<IFacetDecorator, I18NManager>();
         }
 
-        public static void AddNakedFramework(this IServiceCollection services, Action<NakedFrameworkOptions> setupAction) {
-            var options = new NakedFrameworkOptions(services);
-            setupAction(options);
+        services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));
 
-            services.AddNakedCoreFramework(options);
-        }
+        services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(TypeFacetFactories.FacetFactories());
+        services.AddDefaultSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
+        services.AddDefaultSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
+        services.AddSingleton<IReflector, SystemTypeReflector>();
+
+        // frameworkFacade
+        services.AddDefaultTransient<ITypeCodeMapper, DefaultTypeCodeMapper>();
+        services.AddDefaultTransient<IKeyCodeMapper, DefaultKeyCodeMapper>();
+        services.AddDefaultTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
+        services.AddDefaultTransient<IOidStrategy, EntityOidStrategy>();
+        services.AddDefaultTransient<IStringHasher, InvariantStringHasher>();
+        services.AddDefaultTransient<IFrameworkFacade, FrameworkFacade>();
+    }
+
+    public static void AddNakedFramework(this IServiceCollection services, Action<NakedFrameworkOptions> setupAction) {
+        var options = new NakedFrameworkOptions(services);
+        setupAction(options);
+
+        services.AddNakedCoreFramework(options);
     }
 }

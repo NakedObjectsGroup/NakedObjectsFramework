@@ -9,37 +9,37 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Error;
 
-namespace NakedFramework.Rest.Snapshot.Utility {
-    public class TypeActionInvokeContext {
-        #region ActionType enum
+namespace NakedFramework.Rest.Snapshot.Utility; 
 
-        private enum ActionType {
-            IsSubtypeOf,
-            IsSupertypeOf
-        }
+public class TypeActionInvokeContext {
+    #region ActionType enum
 
-        #endregion
-
-        private readonly ActionType aType;
-
-        public TypeActionInvokeContext(string actionName, string typeName) {
-            TypeName = typeName;
-            aType = actionName switch {
-                WellKnownIds.IsSupertypeOf => ActionType.IsSupertypeOf,
-                WellKnownIds.IsSubtypeOf => ActionType.IsSubtypeOf,
-                _ => throw new TypeActionResourceNotFoundException(actionName, typeName)
-            };
-        }
-
-        private string TypeName { get; }
-
-        public string Id => aType == ActionType.IsSubtypeOf ? WellKnownIds.IsSubtypeOf : WellKnownIds.IsSupertypeOf;
-
-        public string ParameterId => aType == ActionType.IsSubtypeOf ? JsonPropertyNames.SuperType : JsonPropertyNames.SubType;
-
-        public bool Value => aType == ActionType.IsSubtypeOf ? ThisSpecification.IsOfType(OtherSpecification) : OtherSpecification.IsOfType(ThisSpecification);
-
-        public ITypeFacade ThisSpecification { get; set; }
-        public ITypeFacade OtherSpecification { get; set; }
+    private enum ActionType {
+        IsSubtypeOf,
+        IsSupertypeOf
     }
+
+    #endregion
+
+    private readonly ActionType aType;
+
+    public TypeActionInvokeContext(string actionName, string typeName) {
+        TypeName = typeName;
+        aType = actionName switch {
+            WellKnownIds.IsSupertypeOf => ActionType.IsSupertypeOf,
+            WellKnownIds.IsSubtypeOf => ActionType.IsSubtypeOf,
+            _ => throw new TypeActionResourceNotFoundException(actionName, typeName)
+        };
+    }
+
+    private string TypeName { get; }
+
+    public string Id => aType == ActionType.IsSubtypeOf ? WellKnownIds.IsSubtypeOf : WellKnownIds.IsSupertypeOf;
+
+    public string ParameterId => aType == ActionType.IsSubtypeOf ? JsonPropertyNames.SuperType : JsonPropertyNames.SubType;
+
+    public bool Value => aType == ActionType.IsSubtypeOf ? ThisSpecification.IsOfType(OtherSpecification) : OtherSpecification.IsOfType(ThisSpecification);
+
+    public ITypeFacade ThisSpecification { get; set; }
+    public ITypeFacade OtherSpecification { get; set; }
 }

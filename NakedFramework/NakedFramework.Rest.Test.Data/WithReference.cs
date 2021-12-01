@@ -15,62 +15,62 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class WithReference {
-        public IDomainObjectContainer Container { set; protected get; }
+namespace RestfulObjects.Test.Data; 
 
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        [DefaultValue(0)]
-        public virtual int Id { get; set; }
+public class WithReference {
+    public IDomainObjectContainer Container { set; protected get; }
 
-        public virtual MostSimple AReference { get; set; }
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    [DefaultValue(0)]
+    public virtual int Id { get; set; }
 
-        [Optionally]
-        public virtual MostSimple ANullReference { get; set; }
+    public virtual MostSimple AReference { get; set; }
 
-        [Disabled]
-        public virtual MostSimple ADisabledReference { get; set; }
+    [Optionally]
+    public virtual MostSimple ANullReference { get; set; }
 
-        [Hidden(WhenTo.Always)]
-        [Optionally]
-        public virtual MostSimple AHiddenReference { get; set; }
+    [Disabled]
+    public virtual MostSimple ADisabledReference { get; set; }
 
-        public virtual MostSimple AChoicesReference { get; set; }
+    [Hidden(WhenTo.Always)]
+    [Optionally]
+    public virtual MostSimple AHiddenReference { get; set; }
 
-        public virtual MostSimple AnAutoCompleteReference { get; set; }
-        public virtual MostSimple AConditionalChoicesReference { get; set; }
+    public virtual MostSimple AChoicesReference { get; set; }
 
-        [FindMenu]
-        [NotMapped]
-        public virtual MostSimple AFindMenuReference { get; set; }
+    public virtual MostSimple AnAutoCompleteReference { get; set; }
+    public virtual MostSimple AConditionalChoicesReference { get; set; }
 
-        [Eagerly(Do.Rendering)]
-        public virtual MostSimple AnEagerReference { get; set; }
+    [FindMenu]
+    [NotMapped]
+    public virtual MostSimple AFindMenuReference { get; set; }
 
-        public virtual MostSimple[] ChoicesAChoicesReference() {
-            return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
+    [Eagerly(Do.Rendering)]
+    public virtual MostSimple AnEagerReference { get; set; }
+
+    public virtual MostSimple[] ChoicesAChoicesReference() {
+        return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
+    }
+
+    public virtual IQueryable<MostSimple> AutoCompleteAnAutoCompleteReference([MinLength(2)] string name) {
+        return Container.Instances<MostSimple>().Where(ms => name.Contains(ms.Id.ToString()));
+    }
+
+    public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
+        if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
+            return "Cross validation failed";
         }
 
-        public virtual IQueryable<MostSimple> AutoCompleteAnAutoCompleteReference([MinLength(2)] string name) {
-            return Container.Instances<MostSimple>().Where(ms => name.Contains(ms.Id.ToString()));
+        return "";
+    }
+
+    public virtual MostSimple[] ChoicesAConditionalChoicesReference(MostSimple aReference) {
+        if (aReference != null) {
+            return Container.Instances<MostSimple>().Where(ms => ms.Id != aReference.Id).ToArray();
         }
 
-        public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
-            if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
-                return "Cross validation failed";
-            }
-
-            return "";
-        }
-
-        public virtual MostSimple[] ChoicesAConditionalChoicesReference(MostSimple aReference) {
-            if (aReference != null) {
-                return Container.Instances<MostSimple>().Where(ms => ms.Id != aReference.Id).ToArray();
-            }
-
-            return new MostSimple[] { };
-        }
+        return new MostSimple[] { };
     }
 }

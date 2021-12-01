@@ -11,23 +11,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.ProductDocument")]
-    public class ProductDocument {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Production.ProductDocument")]
+public class ProductDocument {
       
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int ProductID { get; set; }
 
        
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int DocumentID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int DocumentID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Document Document { get; set; }
+    public virtual Document Document { get; set; }
 
-        public virtual Product Product { get; set; }
-    }
+    public virtual Product Product { get; set; }
 }

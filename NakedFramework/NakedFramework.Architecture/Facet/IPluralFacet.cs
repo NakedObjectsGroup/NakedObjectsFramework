@@ -5,17 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Mechanism for obtaining the plural title of an instance of a class, used to label a collection of
-    ///     a certain class
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, typically corresponds to a method named <c>PluralName</c>.
-    ///     If no plural name is provided, then the framework will attempt to guess the plural name (by adding an
-    ///     <i>s</i> or <i>ies</i> suffix).
-    /// </para>
-    /// <seealso cref="IIconFacet" />
-    /// <seealso cref="ITitleFacet" />
-    public interface IPluralFacet : ISingleStringValueFacet { }
-}
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Mechanism for obtaining the plural title of an instance of a class, used to label a collection of
+///     a certain class
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, typically corresponds to a method named <c>PluralName</c>.
+///     If no plural name is provided, then the framework will attempt to guess the plural name (by adding an
+///     <i>s</i> or <i>ies</i> suffix).
+/// </para>
+/// <seealso cref="IIconFacet" />
+/// <seealso cref="ITitleFacet" />
+public interface IPluralFacet : ISingleStringValueFacet { }

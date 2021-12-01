@@ -21,51 +21,51 @@ using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
 using NakedFunctions.Services;
 
-namespace NakedFunctions.Reflector.Extensions {
-    public static class NakedFunctionsExtensions {
-        public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
-            new(options.DomainTypes, options.DomainFunctions, options.ConcurrencyCheck);
+namespace NakedFunctions.Reflector.Extensions; 
 
-        public static void AddNakedFunctions(this NakedFrameworkOptions frameworkOptions, Action<NakedFunctionsOptions> setupAction) {
-            var options = new NakedFunctionsOptions();
-            setupAction(options);
+public static class NakedFunctionsExtensions {
+    public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
+        new(options.DomainTypes, options.DomainFunctions, options.ConcurrencyCheck);
 
-            if (options.DomainTypes.Any()) {
-                // filter enums and add to SystemTypes 
-                var enums = options.DomainTypes.Where(t => t.IsEnum).ToArray();
-                var coreFunctionalTypes = new[] {typeof(FunctionalContext), typeof(IContext)};
-                options.DomainTypes = options.DomainTypes.Except(enums).ToArray();
-                frameworkOptions.SupportedSystemTypes ??= t => t;
-                frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(enums).ToArray();
-                frameworkOptions.AdditionalUnpersistedTypes = coreFunctionalTypes;
-                options.DomainTypes = options.DomainTypes.Union(coreFunctionalTypes).Distinct().ToArray();
-            }
+    public static void AddNakedFunctions(this NakedFrameworkOptions frameworkOptions, Action<NakedFunctionsOptions> setupAction) {
+        var options = new NakedFunctionsOptions();
+        setupAction(options);
 
-            RegisterWellKnownServices(frameworkOptions.Services);
-            frameworkOptions.Services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
-            frameworkOptions.Services.AddDefaultSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
-            frameworkOptions.Services.AddDefaultSingleton<FunctionClassStrategy, FunctionClassStrategy>();
-            frameworkOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(FunctionalReflectorOrder<>));
-            frameworkOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
-            frameworkOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
-            frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
-
-            frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
-
-            options.RegisterCustomTypes?.Invoke(frameworkOptions.Services);
-
-            if (frameworkOptions.AuthorizationConfiguration is not null) {
-                frameworkOptions.Services.AddSingleton(frameworkOptions.AuthorizationConfiguration);
-                frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuthorizationManager>();
-            }
+        if (options.DomainTypes.Any()) {
+            // filter enums and add to SystemTypes 
+            var enums = options.DomainTypes.Where(t => t.IsEnum).ToArray();
+            var coreFunctionalTypes = new[] {typeof(FunctionalContext), typeof(IContext)};
+            options.DomainTypes = options.DomainTypes.Except(enums).ToArray();
+            frameworkOptions.SupportedSystemTypes ??= t => t;
+            frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(enums).ToArray();
+            frameworkOptions.AdditionalUnpersistedTypes = coreFunctionalTypes;
+            options.DomainTypes = options.DomainTypes.Union(coreFunctionalTypes).Distinct().ToArray();
         }
 
-        public static void RegisterWellKnownServices(IServiceCollection services) {
-            services.AddDefaultScoped<IAlert, Alert>();
-            services.AddDefaultScoped<IClock, Clock>();
-            services.AddDefaultScoped<IGuidGenerator, GuidGenerator>();
-            services.AddDefaultScoped<IPrincipalProvider, PrincipalProvider>();
-            services.AddDefaultScoped<IRandomSeedGenerator, RandomSeedGenerator>();
+        RegisterWellKnownServices(frameworkOptions.Services);
+        frameworkOptions.Services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
+        frameworkOptions.Services.AddDefaultSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
+        frameworkOptions.Services.AddDefaultSingleton<FunctionClassStrategy, FunctionClassStrategy>();
+        frameworkOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(FunctionalReflectorOrder<>));
+        frameworkOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
+        frameworkOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
+        frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
+
+        frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
+
+        options.RegisterCustomTypes?.Invoke(frameworkOptions.Services);
+
+        if (frameworkOptions.AuthorizationConfiguration is not null) {
+            frameworkOptions.Services.AddSingleton(frameworkOptions.AuthorizationConfiguration);
+            frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuthorizationManager>();
         }
+    }
+
+    public static void RegisterWellKnownServices(IServiceCollection services) {
+        services.AddDefaultScoped<IAlert, Alert>();
+        services.AddDefaultScoped<IClock, Clock>();
+        services.AddDefaultScoped<IGuidGenerator, GuidGenerator>();
+        services.AddDefaultScoped<IPrincipalProvider, PrincipalProvider>();
+        services.AddDefaultScoped<IRandomSeedGenerator, RandomSeedGenerator>();
     }
 }

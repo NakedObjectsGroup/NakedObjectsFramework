@@ -11,63 +11,63 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter {
-    public sealed class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
-        private const string Wildcard = "*";
-        private readonly DateTime time;
-        private readonly object version;
+namespace NakedFramework.Core.Adapter; 
 
-        public ConcurrencyCheckVersion(string user, DateTime time, object version) {
-            User = user;
-            this.time = time;
-            this.version = version;
-        }
+public sealed class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
+    private const string Wildcard = "*";
+    private readonly DateTime time;
+    private readonly object version;
 
-        public ConcurrencyCheckVersion(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
-            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
-            User = helper.GetNextString();
-            time = new DateTime(helper.GetNextLong());
-            version = helper.GetNextObject();
-        }
-
-        public override bool Equals(object obj) => Equals(obj as ConcurrencyCheckVersion);
-
-        public override int GetHashCode() => version.GetHashCode();
-
-        public override string ToString() => $"Version: {version} (last read at : {Time} by : {User})";
-
-        #region IEncodedToStrings Members
-
-        public string[] ToEncodedStrings() {
-            var helper = new StringEncoderHelper();
-
-            helper.Add(User);
-            helper.Add(time.Ticks);
-            helper.Add(version);
-
-            return helper.ToArray();
-        }
-
-        public string[] ToShortEncodedStrings() => ToEncodedStrings();
-
-        #endregion
-
-        #region IVersion Members
-
-        public string User { get; }
-
-        public DateTime? Time => time;
-
-        public string Digest => version is not null ? IdentifierUtils.ComputeMD5HashAsString(version.ToString()) : null;
-
-        public bool IsDifferent(IVersion otherVersion) => !Equals(otherVersion);
-
-        public bool IsDifferent(string digest) => digest != Wildcard && Digest != digest;
-
-        public string AsSequence() => version.ToString();
-
-        public bool Equals(IVersion other) => other is ConcurrencyCheckVersion entityVersion && version.Equals(entityVersion.version);
-
-        #endregion
+    public ConcurrencyCheckVersion(string user, DateTime time, object version) {
+        User = user;
+        this.time = time;
+        this.version = version;
     }
+
+    public ConcurrencyCheckVersion(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
+        var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
+        User = helper.GetNextString();
+        time = new DateTime(helper.GetNextLong());
+        version = helper.GetNextObject();
+    }
+
+    public override bool Equals(object obj) => Equals(obj as ConcurrencyCheckVersion);
+
+    public override int GetHashCode() => version.GetHashCode();
+
+    public override string ToString() => $"Version: {version} (last read at : {Time} by : {User})";
+
+    #region IEncodedToStrings Members
+
+    public string[] ToEncodedStrings() {
+        var helper = new StringEncoderHelper();
+
+        helper.Add(User);
+        helper.Add(time.Ticks);
+        helper.Add(version);
+
+        return helper.ToArray();
+    }
+
+    public string[] ToShortEncodedStrings() => ToEncodedStrings();
+
+    #endregion
+
+    #region IVersion Members
+
+    public string User { get; }
+
+    public DateTime? Time => time;
+
+    public string Digest => version is not null ? IdentifierUtils.ComputeMD5HashAsString(version.ToString()) : null;
+
+    public bool IsDifferent(IVersion otherVersion) => !Equals(otherVersion);
+
+    public bool IsDifferent(string digest) => digest != Wildcard && Digest != digest;
+
+    public string AsSequence() => version.ToString();
+
+    public bool Equals(IVersion other) => other is ConcurrencyCheckVersion entityVersion && version.Equals(entityVersion.version);
+
+    #endregion
 }

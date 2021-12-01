@@ -11,38 +11,38 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using NakedFramework.Facade.Contexts;
 
-namespace NakedFramework.Facade.Interface {
-    public interface IFieldFacade {
-        ITypeFacade Specification { get; }
-        Choices IsChoicesEnabled { get; }
-        bool IsAutoCompleteEnabled { get; }
-        string PresentationHint { get; }
-        (Regex, string)? RegEx { get; }
-        (IConvertible min, IConvertible max, bool isDateRange)? Range { get; }
-        int NumberOfLines { get; }
-        int Width { get; }
-        string Name { get; }
-        string Description { get; }
-        bool IsMandatory { get; }
-        int? MaxLength { get; }
-        string Pattern { get; }
-        string Mask { get; }
-        bool IsNullable { get; }
-        bool IsPassword { get; }
-        bool IsDateOnly { get; }
-        string Grouping { get; }
+namespace NakedFramework.Facade.Interface; 
 
-        DataType? DataType { get; }
-        int AutoCompleteMinLength { get; }
+public interface IFieldFacade {
+    ITypeFacade Specification { get; }
+    Choices IsChoicesEnabled { get; }
+    bool IsAutoCompleteEnabled { get; }
+    string PresentationHint { get; }
+    (Regex, string)? RegEx { get; }
+    (IConvertible min, IConvertible max, bool isDateRange)? Range { get; }
+    int NumberOfLines { get; }
+    int Width { get; }
+    string Name { get; }
+    string Description { get; }
+    bool IsMandatory { get; }
+    int? MaxLength { get; }
+    string Pattern { get; }
+    string Mask { get; }
+    bool IsNullable { get; }
+    bool IsPassword { get; }
+    bool IsDateOnly { get; }
+    string Grouping { get; }
 
-        bool IsFindMenuEnabled { get; }
+    DataType? DataType { get; }
+    int AutoCompleteMinLength { get; }
 
-        IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
-        (IObjectFacade obj, string title)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
-        (string, ITypeFacade)[] GetChoicesParameters();
-        IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm);
+    bool IsFindMenuEnabled { get; }
 
-        string GetMaskedValue(IObjectFacade objectFacade);
-        bool DefaultTypeIsExplicit(IObjectFacade objectFacade);
-    }
+    IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
+    (IObjectFacade obj, string title)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
+    (string, ITypeFacade)[] GetChoicesParameters();
+    IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm);
+
+    string GetMaskedValue(IObjectFacade objectFacade);
+    bool DefaultTypeIsExplicit(IObjectFacade objectFacade);
 }

@@ -21,184 +21,184 @@ using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class EnumFacetFactoryTest : AbstractFacetFactoryTest {
-        private EnumFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IEnumFacet)};
+[TestClass]
+public class EnumFacetFactoryTest : AbstractFacetFactoryTest {
+    private EnumFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IEnumFacet)};
 
-        private static void CheckChoices(IFacet facet) {
-            var facetAsEnumFacet = facet as IEnumFacet;
-            Assert.IsNotNull(facetAsEnumFacet);
-            Assert.AreEqual(3, facetAsEnumFacet.GetChoices(null).Length);
-            Assert.AreEqual(Cities.London, facetAsEnumFacet.GetChoices(null)[0]);
-            Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null)[1]);
-            Assert.AreEqual(Cities.Paris, facetAsEnumFacet.GetChoices(null)[2]);
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-            Assert.AreEqual(1, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork}).Length);
-            Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork})[0]);
+    private static void CheckChoices(IFacet facet) {
+        var facetAsEnumFacet = facet as IEnumFacet;
+        Assert.IsNotNull(facetAsEnumFacet);
+        Assert.AreEqual(3, facetAsEnumFacet.GetChoices(null).Length);
+        Assert.AreEqual(Cities.London, facetAsEnumFacet.GetChoices(null)[0]);
+        Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null)[1]);
+        Assert.AreEqual(Cities.Paris, facetAsEnumFacet.GetChoices(null)[2]);
 
-            var mock = new Mock<INakedObjectAdapter>();
-            var nakedObjectAdapter = mock.Object;
-            mock.Setup(no => no.Object).Returns(Cities.NewYork);
+        Assert.AreEqual(1, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork}).Length);
+        Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork})[0]);
 
-            Assert.AreEqual("New York", facetAsEnumFacet.GetTitle(nakedObjectAdapter));
-        }
+        var mock = new Mock<INakedObjectAdapter>();
+        var nakedObjectAdapter = mock.Object;
+        mock.Setup(no => no.Object).Returns(Cities.NewYork);
 
-        #region Nested type: Cities
-
-        private enum Cities {
-            London,
-            Paris,
-            NewYork
-        }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [EnumDataType(typeof(Cities))]
-
-            public int City { get; set; }
-        }
-
-        #endregion
-
-        #region Nested type: Customer2
-
-        private class Customer2 {
-            // ReSharper disable UnusedParameter.Local
-            public void SomeAction([EnumDataType(typeof(Cities))] int city) { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new EnumFacetFactory(GetOrder<EnumFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer3 {
-            public Cities City { get; set; }
-        }
-
-        private class Customer4 {
-            public void SomeAction(Cities city) { }
-        }
-
-        private class Customer5 {
-            public Cities? City { get; set; }
-        }
-
-        private class Customer6 {
-            public void SomeAction(Cities? city) { }
-        }
-
-        [TestMethod]
-        public void TestEnumAnnotationPickedUpOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEnumFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EnumFacet);
-            CheckChoices(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEnumAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "City");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEnumFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EnumFacet);
-            CheckChoices(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEnumTypePickedUpOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(Cities)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEnumFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EnumFacet);
-            CheckChoices(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEnumTypePickedUpOnNullableActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(Cities?)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEnumFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EnumFacet);
-            CheckChoices(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEnumTypePickedUpOnNullableProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer5), "City");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEnumFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EnumFacet);
-            CheckChoices(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEnumTypePickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer3), "City");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEnumFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EnumFacet);
-            CheckChoices(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+        Assert.AreEqual("New York", facetAsEnumFacet.GetTitle(nakedObjectAdapter));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
-    // ReSharper restore UnusedParameter.Local
+    #region Nested type: Cities
+
+    private enum Cities {
+        London,
+        Paris,
+        NewYork
+    }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [EnumDataType(typeof(Cities))]
+
+        public int City { get; set; }
+    }
+
+    #endregion
+
+    #region Nested type: Customer2
+
+    private class Customer2 {
+        // ReSharper disable UnusedParameter.Local
+        public void SomeAction([EnumDataType(typeof(Cities))] int city) { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new EnumFacetFactory(GetOrder<EnumFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
+
+    private class Customer3 {
+        public Cities City { get; set; }
+    }
+
+    private class Customer4 {
+        public void SomeAction(Cities city) { }
+    }
+
+    private class Customer5 {
+        public Cities? City { get; set; }
+    }
+
+    private class Customer6 {
+        public void SomeAction(Cities? city) { }
+    }
+
+    [TestMethod]
+    public void TestEnumAnnotationPickedUpOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEnumFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EnumFacet);
+        CheckChoices(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEnumAnnotationPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "City");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEnumFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EnumFacet);
+        CheckChoices(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEnumTypePickedUpOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(Cities)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEnumFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EnumFacet);
+        CheckChoices(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEnumTypePickedUpOnNullableActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(Cities?)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEnumFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EnumFacet);
+        CheckChoices(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEnumTypePickedUpOnNullableProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer5), "City");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEnumFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EnumFacet);
+        CheckChoices(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEnumTypePickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer3), "City");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEnumFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EnumFacet);
+        CheckChoices(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.
+// ReSharper restore UnusedMember.Local
+// ReSharper restore UnusedParameter.Local

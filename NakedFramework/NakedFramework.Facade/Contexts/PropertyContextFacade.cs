@@ -7,17 +7,17 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts {
-    public class PropertyContextFacade : ContextFacade {
-        public IAssociationFacade Property { get; init; }
-        public bool Mutated { get; init; }
+namespace NakedFramework.Facade.Contexts; 
 
-        public override string Id => Property.Id;
+public class PropertyContextFacade : ContextFacade {
+    public IAssociationFacade Property { get; init; }
+    public bool Mutated { get; init; }
 
-        public override ITypeFacade Specification => Property.Specification;
+    public override string Id => Property.Id;
 
-        public override ITypeFacade ElementSpecification => Property.ElementSpecification;
+    public override ITypeFacade Specification => Property.Specification;
 
-        public ListContextFacade Completions { get; init; }
-    }
+    public override ITypeFacade ElementSpecification => Property.ElementSpecification;
+
+    public ListContextFacade Completions { get; init; }
 }

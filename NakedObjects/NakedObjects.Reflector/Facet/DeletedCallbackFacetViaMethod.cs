@@ -14,38 +14,38 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class DeletedCallbackFacetViaMethod : DeletedCallbackFacetAbstract, IImperativeFacet {
-        private readonly MethodInfo method;
+namespace NakedObjects.Reflector.Facet; 
 
-        [field: NonSerialized] private Action<object> deletedDelegate;
+[Serializable]
+public sealed class DeletedCallbackFacetViaMethod : DeletedCallbackFacetAbstract, IImperativeFacet {
+    private readonly MethodInfo method;
 
-        public DeletedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
-            : base(holder) {
-            this.method = method;
-            deletedDelegate = DelegateUtils.CreateCallbackDelegate(method);
-        }
+    [field: NonSerialized] private Action<object> deletedDelegate;
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => deletedDelegate(nakedObjectAdapter.GetDomainObject());
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => deletedDelegate = DelegateUtils.CreateCallbackDelegate(method);
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() =>
-            (tgt, p) => {
-                deletedDelegate(tgt);
-                return null;
-            };
-
-        #endregion
+    public DeletedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
+        : base(holder) {
+        this.method = method;
+        deletedDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => deletedDelegate(nakedObjectAdapter.GetDomainObject());
+
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => deletedDelegate = DelegateUtils.CreateCallbackDelegate(method);
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() =>
+        (tgt, p) => {
+            deletedDelegate(tgt);
+            return null;
+        };
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

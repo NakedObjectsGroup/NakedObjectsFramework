@@ -7,9 +7,9 @@
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedFramework.Architecture.Reflect {
-    public enum InitiatedBy {
-        User,
-        UserOrProgram
-    }
+namespace NakedFramework.Architecture.Reflect; 
+
+public enum InitiatedBy {
+    User,
+    UserOrProgram
 }

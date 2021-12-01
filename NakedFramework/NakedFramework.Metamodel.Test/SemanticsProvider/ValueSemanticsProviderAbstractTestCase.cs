@@ -17,71 +17,71 @@ using NakedFramework.Core.Adapter;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider {
-    public abstract class ValueSemanticsProviderAbstractTestCase<T> {
-        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
-        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
-        private IEncodeableFacet encodeableFacet;
-        protected ILifecycleManager LifecycleManager = new Mock<ILifecycleManager>().Object;
-        protected INakedObjectManager Manager = new Mock<INakedObjectManager>().Object;
-        protected IMetamodelManager Metamodel = new Mock<IMetamodelManager>().Object;
-        protected IObjectPersistor Persistor = new Mock<IObjectPersistor>().Object;
-        protected IReflector Reflector = new Mock<IReflector>().Object;
-        private IValueSemanticsProvider<T> value;
+namespace NakedObjects.Meta.Test.SemanticsProvider; 
 
-        protected INakedFramework Framework = new Mock<INakedFramework>().Object;
+public abstract class ValueSemanticsProviderAbstractTestCase<T> {
+    private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+    private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
+    private IEncodeableFacet encodeableFacet;
+    protected ILifecycleManager LifecycleManager = new Mock<ILifecycleManager>().Object;
+    protected INakedObjectManager Manager = new Mock<INakedObjectManager>().Object;
+    protected IMetamodelManager Metamodel = new Mock<IMetamodelManager>().Object;
+    protected IObjectPersistor Persistor = new Mock<IObjectPersistor>().Object;
+    protected IReflector Reflector = new Mock<IReflector>().Object;
+    private IValueSemanticsProvider<T> value;
 
-        protected void SetValue(IValueSemanticsProvider<T> newValue) {
-            value = newValue;
-            encodeableFacet = new EncodeableFacetUsingEncoderDecoder<T>(newValue, null);
+    protected INakedFramework Framework = new Mock<INakedFramework>().Object;
+
+    protected void SetValue(IValueSemanticsProvider<T> newValue) {
+        value = newValue;
+        encodeableFacet = new EncodeableFacetUsingEncoderDecoder<T>(newValue, null);
+    }
+
+    protected IValueSemanticsProvider<T> GetValue() => value;
+
+    public virtual void SetUp() { }
+
+    public virtual void TearDown() {
+        value = null;
+        encodeableFacet = null;
+    }
+
+    protected INakedObjectAdapter CreateAdapter(object obj) {
+        var session = new Mock<ISession>().Object;
+        return new NakedObjectAdapter(obj, null, Framework, loggerFactory, logger);
+    }
+
+    public virtual void TestParseNull() {
+        try {
+            value.ParseTextEntry(null);
+            Assert.Fail();
         }
+        catch (ArgumentException /*expected*/) { }
+    }
 
-        protected IValueSemanticsProvider<T> GetValue() => value;
+    public virtual void TestParseEmptyString() {
+        var newValue = value.ParseTextEntry("");
+        Assert.IsNull(newValue);
+    }
 
-        public virtual void SetUp() { }
+    public virtual void TestDecodeNull() {
+        object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, Manager);
+        Assert.IsNull(newValue);
+    }
 
-        public virtual void TearDown() {
-            value = null;
-            encodeableFacet = null;
-        }
+    public virtual void TestEmptyEncoding() {
+        Assert.AreEqual(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, encodeableFacet.ToEncodedString(null));
+    }
 
-        protected INakedObjectAdapter CreateAdapter(object obj) {
-            var session = new Mock<ISession>().Object;
-            return new NakedObjectAdapter(obj, null, Framework, loggerFactory, logger);
-        }
+    protected static INakedObjectAdapter MockAdapter(object obj) {
+        var mockParm = new Mock<INakedObjectAdapter>();
+        mockParm.Setup(p => p.Object).Returns(obj);
+        return mockParm.Object;
+    }
 
-        public virtual void TestParseNull() {
-            try {
-                value.ParseTextEntry(null);
-                Assert.Fail();
-            }
-            catch (ArgumentException /*expected*/) { }
-        }
-
-        public virtual void TestParseEmptyString() {
-            var newValue = value.ParseTextEntry("");
-            Assert.IsNull(newValue);
-        }
-
-        public virtual void TestDecodeNull() {
-            object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, Manager);
-            Assert.IsNull(newValue);
-        }
-
-        public virtual void TestEmptyEncoding() {
-            Assert.AreEqual(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, encodeableFacet.ToEncodedString(null));
-        }
-
-        protected static INakedObjectAdapter MockAdapter(object obj) {
-            var mockParm = new Mock<INakedObjectAdapter>();
-            mockParm.Setup(p => p.Object).Returns(obj);
-            return mockParm.Object;
-        }
-
-        protected static Mock<INakedObjectManager> MockNakedObjectManager() {
-            var mgr = new Mock<INakedObjectManager>();
-            mgr.Setup(mm => mm.CreateAdapter(It.IsAny<object>(), null, null)).Returns<object, IOid, IVersion>((obj, oid, ver) => MockAdapter(obj));
-            return mgr;
-        }
+    protected static Mock<INakedObjectManager> MockNakedObjectManager() {
+        var mgr = new Mock<INakedObjectManager>();
+        mgr.Setup(mm => mm.CreateAdapter(It.IsAny<object>(), null, null)).Returns<object, IOid, IVersion>((obj, oid, ver) => MockAdapter(obj));
+        return mgr;
     }
 }

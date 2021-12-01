@@ -13,39 +13,39 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Spec;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.SpecImmutable {
-    [Serializable]
-    public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
-        private readonly IIdentifier identifier;
+namespace NakedFramework.Metamodel.SpecImmutable; 
 
-        protected MemberSpecImmutable(IIdentifier identifier) => this.identifier = identifier;
+[Serializable]
+public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
+    private readonly IIdentifier identifier;
 
-        public abstract IObjectSpecImmutable ElementSpec { get; }
+    protected MemberSpecImmutable(IIdentifier identifier) => this.identifier = identifier;
 
-        #region IMemberSpecImmutable Members
+    public abstract IObjectSpecImmutable ElementSpec { get; }
 
-        public override IIdentifier Identifier => identifier;
+    #region IMemberSpecImmutable Members
 
-        public abstract IObjectSpecImmutable ReturnSpec { get; }
+    public override IIdentifier Identifier => identifier;
 
-        public string Name => GetFacet<INamedFacet>().NaturalName;
+    public abstract IObjectSpecImmutable ReturnSpec { get; }
 
-        public string Description => GetFacet<IDescribedAsFacet>().Value;
+    public string Name => GetFacet<INamedFacet>().NaturalName;
 
-        #endregion
+    public string Description => GetFacet<IDescribedAsFacet>().Value;
 
-        #region ISerializable
+    #endregion
 
-        // The special constructor is used to deserialize values. 
-        protected MemberSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => identifier = info.GetValue<IIdentifier>("identifier");
+    #region ISerializable
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue<IIdentifier>("identifier", identifier);
-            base.GetObjectData(info, context);
-        }
+    // The special constructor is used to deserialize values. 
+    protected MemberSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => identifier = info.GetValue<IIdentifier>("identifier");
 
-        #endregion
+    public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+        info.AddValue<IIdentifier>("identifier", identifier);
+        base.GetObjectData(info, context);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -8,10 +8,10 @@
 using System;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IIntegrationFacet : IFacet {
-        public void Execute(IMetamodelBuilder metamodelBuilder);
-        public void AddAction(Action<IMetamodelBuilder> action);
-        public void Remove();
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+public interface IIntegrationFacet : IFacet {
+    public void Execute(IMetamodelBuilder metamodelBuilder);
+    public void AddAction(Action<IMetamodelBuilder> action);
+    public void Remove();
 }

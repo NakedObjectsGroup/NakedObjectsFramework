@@ -5,18 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Indicates that this class has a default.
-    /// </summary>
-    /// <para>
-    ///     The mechanism for providing a default will vary by the applib.
-    /// </para>
-    /// <para>
-    ///     The rest of the framework does not used this directly, but instead we infer from
-    ///     method's return type / parameter types, and copy over.
-    /// </para>
-    public interface IDefaultedFacet : ISingleValueFacet {
-        object Default { get; }
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Indicates that this class has a default.
+/// </summary>
+/// <para>
+///     The mechanism for providing a default will vary by the applib.
+/// </para>
+/// <para>
+///     The rest of the framework does not used this directly, but instead we infer from
+///     method's return type / parameter types, and copy over.
+/// </para>
+public interface IDefaultedFacet : ISingleValueFacet {
+    object Default { get; }
 }

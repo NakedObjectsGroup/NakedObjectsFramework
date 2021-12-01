@@ -7,21 +7,21 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts {
-    public class ActionResultContextFacade : ContextFacade {
-        public ObjectContextFacade Result { get; init; }
-        public bool HasResult { get; init; }
+namespace NakedFramework.Facade.Contexts; 
 
-        public string TransientSecurityHash { get; init; }
+public class ActionResultContextFacade : ContextFacade {
+    public ObjectContextFacade Result { get; init; }
+    public bool HasResult { get; init; }
 
-        public ActionContextFacade ActionContext { get; init; }
+    public string TransientSecurityHash { get; init; }
 
-        public override IObjectFacade Target => ActionContext.Target;
+    public ActionContextFacade ActionContext { get; init; }
 
-        public override string Id => ActionContext.Action.Id;
+    public override IObjectFacade Target => ActionContext.Target;
 
-        public override ITypeFacade Specification => Result is null ? ActionContext.Specification : Result.Specification;
+    public override string Id => ActionContext.Action.Id;
 
-        public override ITypeFacade ElementSpecification => Result is null ? ActionContext.ElementSpecification : Result.ElementSpecification;
-    }
+    public override ITypeFacade Specification => Result is null ? ActionContext.Specification : Result.Specification;
+
+    public override ITypeFacade ElementSpecification => Result is null ? ActionContext.ElementSpecification : Result.ElementSpecification;
 }

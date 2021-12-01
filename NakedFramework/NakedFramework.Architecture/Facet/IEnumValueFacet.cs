@@ -7,10 +7,10 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IEnumValueFacet : IFacet {
-        string IntegralValue(INakedObjectAdapter nakedObjectAdapter);
-    }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface IEnumValueFacet : IFacet {
+    string IntegralValue(INakedObjectAdapter nakedObjectAdapter);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

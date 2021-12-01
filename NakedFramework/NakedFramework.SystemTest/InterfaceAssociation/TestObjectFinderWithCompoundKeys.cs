@@ -13,188 +13,188 @@ using NakedObjects.Services;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
-namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
-    [TestFixture]
-    public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
-        [SetUp]
-        public void SetUp() => Initialize();
+namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys; 
 
-        [TearDown]
-        public void TearDown() => CleanUp();
+[TestFixture]
+public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
+    [SetUp]
+    public void SetUp() => Initialize();
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            PaymentContext.Delete();
-            var context = Activator.CreateInstance<PaymentContext>();
+    [TearDown]
+    public void TearDown() => CleanUp();
 
-            context.Database.Create();
-            DatabaseInitializer.Seed(context);
-            InitializeNakedObjectsFramework(this);
-        }
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        PaymentContext.Delete();
+        var context = Activator.CreateInstance<PaymentContext>();
 
-        [OneTimeTearDown]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework(this);
-            PaymentContext.Delete();
-        }
+        context.Database.Create();
+        DatabaseInitializer.Seed(context);
+        InitializeNakedObjectsFramework(this);
+    }
 
-        protected override Type[] ObjectTypes =>
-            new[] {
-                typeof(IPayee),
-                typeof(Payment),
-                typeof(CustomerOne),
-                typeof(CustomerTwo),
-                typeof(CustomerThree),
-                typeof(CustomerFour),
-                typeof(Supplier),
-                typeof(Employee)
-            };
+    [OneTimeTearDown]
+    public void TearDownTest() {
+        CleanupNakedObjectsFramework(this);
+        PaymentContext.Delete();
+    }
 
-        protected override Type[] Services =>
-            new[] {
-                typeof(ObjectFinder),
-                typeof(SimpleRepository<Payment>),
-                typeof(SimpleRepository<CustomerOne>),
-                typeof(SimpleRepository<CustomerTwo>),
-                typeof(SimpleRepository<CustomerThree>),
-                typeof(SimpleRepository<CustomerFour>),
-                typeof(SimpleRepository<Supplier>),
-                typeof(SimpleRepository<Employee>)
-            };
+    protected override Type[] ObjectTypes =>
+        new[] {
+            typeof(IPayee),
+            typeof(Payment),
+            typeof(CustomerOne),
+            typeof(CustomerTwo),
+            typeof(CustomerThree),
+            typeof(CustomerFour),
+            typeof(Supplier),
+            typeof(Employee)
+        };
 
-        [Test]
-        public virtual void ChangeAssociatedObjectType() {
-            payee1.SetObject(customer2a);
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
-            payee1.SetObject(supplier1);
-            Assert.AreEqual(payee1.ContentAsObject, supplier1);
+    protected override Type[] Services =>
+        new[] {
+            typeof(ObjectFinder),
+            typeof(SimpleRepository<Payment>),
+            typeof(SimpleRepository<CustomerOne>),
+            typeof(SimpleRepository<CustomerTwo>),
+            typeof(SimpleRepository<CustomerThree>),
+            typeof(SimpleRepository<CustomerFour>),
+            typeof(SimpleRepository<Supplier>),
+            typeof(SimpleRepository<Employee>)
+        };
 
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.Supplier|1|2001");
-        }
+    [Test]
+    public virtual void ChangeAssociatedObjectType() {
+        payee1.SetObject(customer2a);
+        key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
+        payee1.SetObject(supplier1);
+        Assert.AreEqual(payee1.ContentAsObject, supplier1);
 
-        [Test]
-        public virtual void ClearAssociatedObject() {
-            payee1.SetObject(customer2a);
-            payee1.ClearObject();
-            key1.AssertIsEmpty();
-        }
+        key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.Supplier|1|2001");
+    }
 
-        [Test]
-        public virtual void FailsIfTooFewKeysSupplied() {
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001");
-            try {
-                payee1.AssertIsNotEmpty();
-                throw new AssertFailedException("Exception should have been thrown");
-            }
-            catch (Exception ex) {
-                Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree", ex.Message);
-            }
-        }
+    [Test]
+    public virtual void ClearAssociatedObject() {
+        payee1.SetObject(customer2a);
+        payee1.ClearObject();
+        key1.AssertIsEmpty();
+    }
 
-        [Test]
-        public virtual void FailsIfTooManyKeysSupplied() {
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001|2001");
-            try {
-                payee1.AssertIsNotEmpty();
-                throw new AssertFailedException("Exception should have been thrown");
-            }
-            catch (Exception ex) {
-                Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo", ex.Message);
-            }
-        }
-
-        [Test]
-        public virtual void FailsIfTypeNameIsEmpty() {
-            key1.SetValue("|1|1001|2001");
-            try {
-                payee1.AssertIsNotEmpty();
-                throw new AssertFailedException("Exception should have been thrown");
-            }
-            catch (Exception ex) {
-                Assert.AreEqual("Compound key: |1|1001|2001 does not contain an object type", ex.Message);
-            }
-        }
-
-        [Test]
-        public virtual void FailsIfTypeNameIsWrong() {
-            key1.SetValue("CustomerThree|1|1001|2001");
-            try {
-                payee1.AssertIsNotEmpty();
-                Assert.Fail("Exception should have been thrown");
-            }
-            catch (Exception ex) {
-                Assert.AreEqual("Type: CustomerThree cannot be found", ex.Message);
-            }
-        }
-
-        [Test]
-        public virtual void GetAssociatedObject() {
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
+    [Test]
+    public virtual void FailsIfTooFewKeysSupplied() {
+        key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001");
+        try {
             payee1.AssertIsNotEmpty();
-            payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("1");
+            throw new AssertFailedException("Exception should have been thrown");
+        }
+        catch (Exception ex) {
+            Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree", ex.Message);
+        }
+    }
 
-            payee1.ClearObject();
-
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|2|1002");
+    [Test]
+    public virtual void FailsIfTooManyKeysSupplied() {
+        key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001|2001");
+        try {
             payee1.AssertIsNotEmpty();
-            payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("2");
+            throw new AssertFailedException("Exception should have been thrown");
         }
-
-        [Test]
-        public virtual void NoAssociatedObject() {
-            key1.AssertIsEmpty();
+        catch (Exception ex) {
+            Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo", ex.Message);
         }
+    }
 
-        [Test]
-        public virtual void SetAssociatedObject() {
-            payee1.SetObject(customer2a);
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
-
-            payee1.SetObject(customer2b);
-            Assert.AreEqual(payee1.ContentAsObject, customer2b);
-
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|2|1002");
+    [Test]
+    public virtual void FailsIfTypeNameIsEmpty() {
+        key1.SetValue("|1|1001|2001");
+        try {
+            payee1.AssertIsNotEmpty();
+            throw new AssertFailedException("Exception should have been thrown");
         }
-
-        [Test]
-        public virtual void WorksWithADateTimeKey() {
-            var culture = Thread.CurrentThread.CurrentCulture;
-            try {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                payee1.SetObject(customer4);
-                key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|01/16/2015 00:00:00");
-                payee1.AssertObjectIsEqual(customer4);
-                payee1.ClearObject();
-
-                key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|01/17/2015 00:00:00");
-                payee1.AssertIsNotEmpty();
-                payee1.AssertObjectIsEqual(customer4a);
-            }
-            finally {
-                Thread.CurrentThread.CurrentCulture = culture;
-            }
+        catch (Exception ex) {
+            Assert.AreEqual("Compound key: |1|1001|2001 does not contain an object type", ex.Message);
         }
+    }
 
-        [Test]
-        public virtual void WorksWithASingleIntegerKey() {
-            payee1.SetObject(customer1);
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerOne|1");
+    [Test]
+    public virtual void FailsIfTypeNameIsWrong() {
+        key1.SetValue("CustomerThree|1|1001|2001");
+        try {
+            payee1.AssertIsNotEmpty();
+            Assert.Fail("Exception should have been thrown");
+        }
+        catch (Exception ex) {
+            Assert.AreEqual("Type: CustomerThree cannot be found", ex.Message);
+        }
+    }
+
+    [Test]
+    public virtual void GetAssociatedObject() {
+        key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
+        payee1.AssertIsNotEmpty();
+        payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("1");
+
+        payee1.ClearObject();
+
+        key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|2|1002");
+        payee1.AssertIsNotEmpty();
+        payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("2");
+    }
+
+    [Test]
+    public virtual void NoAssociatedObject() {
+        key1.AssertIsEmpty();
+    }
+
+    [Test]
+    public virtual void SetAssociatedObject() {
+        payee1.SetObject(customer2a);
+        key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
+
+        payee1.SetObject(customer2b);
+        Assert.AreEqual(payee1.ContentAsObject, customer2b);
+
+        key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|2|1002");
+    }
+
+    [Test]
+    public virtual void WorksWithADateTimeKey() {
+        var culture = Thread.CurrentThread.CurrentCulture;
+        try {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            payee1.SetObject(customer4);
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|01/16/2015 00:00:00");
+            payee1.AssertObjectIsEqual(customer4);
             payee1.ClearObject();
 
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerOne|1");
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|01/17/2015 00:00:00");
             payee1.AssertIsNotEmpty();
-            payee1.AssertObjectIsEqual(customer1);
+            payee1.AssertObjectIsEqual(customer4a);
         }
-
-        [Test]
-        public virtual void WorksWithTripleIntegerKey() {
-            payee1.SetObject(customer3);
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001|2001");
-            payee1.ClearObject();
-
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001|2001");
-            payee1.AssertIsNotEmpty();
-            payee1.AssertObjectIsEqual(customer3);
+        finally {
+            Thread.CurrentThread.CurrentCulture = culture;
         }
+    }
+
+    [Test]
+    public virtual void WorksWithASingleIntegerKey() {
+        payee1.SetObject(customer1);
+        key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerOne|1");
+        payee1.ClearObject();
+
+        key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerOne|1");
+        payee1.AssertIsNotEmpty();
+        payee1.AssertObjectIsEqual(customer1);
+    }
+
+    [Test]
+    public virtual void WorksWithTripleIntegerKey() {
+        payee1.SetObject(customer3);
+        key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001|2001");
+        payee1.ClearObject();
+
+        key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001|2001");
+        payee1.AssertIsNotEmpty();
+        payee1.AssertObjectIsEqual(customer3);
     }
 }

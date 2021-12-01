@@ -21,38 +21,38 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class DisplayAsPropertyAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<DisplayAsPropertyAnnotationFacetFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();
+public sealed class DisplayAsPropertyAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<DisplayAsPropertyAnnotationFacetFactory> logger;
 
-        private static bool IsContributedToObject(MethodInfo member) => member.IsDefined(typeof(ExtensionAttribute), false);
+    public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) =>
+        logger = loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();
 
-        private static Type GetContributeeType(MethodInfo member) => IsContributedToObject(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
+    private static bool IsContributedToObject(MethodInfo member) => member.IsDefined(typeof(ExtensionAttribute), false);
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            // all functions are contributed to first parameter or if menu, itself
+    private static Type GetContributeeType(MethodInfo member) => IsContributedToObject(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
 
-            if (method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null) {
-                var displayAsPropertyFacet = new DisplayAsPropertyFacet(specification);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        // all functions are contributed to first parameter or if menu, itself
 
-                ITypeSpecImmutable type;
-                (type, metamodel) = reflector.LoadSpecification(GetContributeeType(method), metamodel);
+        if (method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null) {
+            var displayAsPropertyFacet = new DisplayAsPropertyFacet(specification);
 
-                displayAsPropertyFacet.AddContributee(type);
+            ITypeSpecImmutable type;
+            (type, metamodel) = reflector.LoadSpecification(GetContributeeType(method), metamodel);
 
-                FacetUtils.AddFacets(new IFacet[] {
-                    displayAsPropertyFacet,
-                    new PropertyAccessorFacetViaFunction(method, specification),
-                    new MandatoryFacetDefault(specification),
-                    new DisabledFacetAlways(specification)
-                });
-            }
+            displayAsPropertyFacet.AddContributee(type);
 
-            return metamodel;
+            FacetUtils.AddFacets(new IFacet[] {
+                displayAsPropertyFacet,
+                new PropertyAccessorFacetViaFunction(method, specification),
+                new MandatoryFacetDefault(specification),
+                new DisabledFacetAlways(specification)
+            });
         }
+
+        return metamodel;
     }
 }

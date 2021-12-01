@@ -13,32 +13,32 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFunctions.Reflector.Facet {
-    [Serializable]
-    public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFunctionFacet {
-        private readonly List<IObjectSpecImmutable> collectionContributees = new();
-        private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
-        private readonly List<ITypeSpecImmutable> objectContributees = new();
+namespace NakedFunctions.Reflector.Facet; 
 
-        public ContributedFunctionFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IContributedFunctionFacet), holder) =>
-            IsContributedToObject = isContributedToObject;
+[Serializable]
+public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFunctionFacet {
+    private readonly List<IObjectSpecImmutable> collectionContributees = new();
+    private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
+    private readonly List<ITypeSpecImmutable> objectContributees = new();
 
-        public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec) => collectionContributees.Any(objectSpec.IsOfType);
+    public ContributedFunctionFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IContributedFunctionFacet), holder) =>
+        IsContributedToObject = isContributedToObject;
 
-        public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
+    public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec) => collectionContributees.Any(objectSpec.IsOfType);
 
-        public void AddCollectionContributee(IObjectSpecBuilder type) {
-            collectionContributees.Add(type);
-        }
+    public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
 
-        public void AddLocalCollectionContributee(IObjectSpecBuilder type, string pName) => localCollectionContributees.Add((type, pName.ToLower()));
-
-        #region IContributedFunctionFacet Members
-
-        public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
-        public bool IsContributedToObject { get; }
-        public bool IsContributedToCollection => collectionContributees.Any();
-
-        #endregion
+    public void AddCollectionContributee(IObjectSpecBuilder type) {
+        collectionContributees.Add(type);
     }
+
+    public void AddLocalCollectionContributee(IObjectSpecBuilder type, string pName) => localCollectionContributees.Add((type, pName.ToLower()));
+
+    #region IContributedFunctionFacet Members
+
+    public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
+    public bool IsContributedToObject { get; }
+    public bool IsContributedToCollection => collectionContributees.Any();
+
+    #endregion
 }

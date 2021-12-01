@@ -17,71 +17,71 @@ using NakedFramework.Metamodel.Spec;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    internal class MemberPeerStub : Specification, IMemberSpecImmutable {
-        public MemberPeerStub(string name)
-            : this(name, null) { }
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        public MemberPeerStub(string name, string description) {
-            Name = name;
-            Description = description;
-        }
+internal class MemberPeerStub : Specification, IMemberSpecImmutable {
+    public MemberPeerStub(string name)
+        : this(name, null) { }
 
-        public MemberPeerStub Spec => this;
-
-        public IList<MemberPeerStub> Set => null;
-
-        public string GroupFullName => "";
-
-        public string GetHelp() => null;
-
-        public IConsent IsUsableDeclaratively() => Allow.Default;
-
-        public IConsent IsUsableForSession(ISession session) => Allow.Default;
-
-        public IConsent IsUsable(INakedObjectAdapter target) => null;
-
-        public bool IsVisibleDeclaratively() => false;
-
-        public bool IsVisibleForSession(ISession session) => false;
-
-        public bool IsVisible(INakedObjectAdapter target) => false;
-
-        public override string ToString() => Name;
-
-        #region Nested type: IdentifierNull
-
-        #region Nested Type: IdentifierNull
-
-        private class IdentifierNull : IdentifierImpl {
-            private readonly MemberPeerStub owner;
-
-            public IdentifierNull(MemberPeerStub owner)
-                : base("", "") =>
-                this.owner = owner;
-
-            public override string ToString() => owner.Name;
-        }
-
-        #endregion
-
-        #endregion
-
-        #region IMemberSpecImmutable Members
-
-        public override IIdentifier Identifier => new IdentifierNull(this);
-
-        public string Name { get; }
-
-        public string Description { get; }
-
-        #endregion
-
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
-        public IObjectSpecImmutable ReturnSpec { get; private set; }
-        public IObjectSpecImmutable ElementSpec { get; private set; }
-
-        public IObjectSpecImmutable OwnerSpec { get; private set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+    public MemberPeerStub(string name, string description) {
+        Name = name;
+        Description = description;
     }
+
+    public MemberPeerStub Spec => this;
+
+    public IList<MemberPeerStub> Set => null;
+
+    public string GroupFullName => "";
+
+    public string GetHelp() => null;
+
+    public IConsent IsUsableDeclaratively() => Allow.Default;
+
+    public IConsent IsUsableForSession(ISession session) => Allow.Default;
+
+    public IConsent IsUsable(INakedObjectAdapter target) => null;
+
+    public bool IsVisibleDeclaratively() => false;
+
+    public bool IsVisibleForSession(ISession session) => false;
+
+    public bool IsVisible(INakedObjectAdapter target) => false;
+
+    public override string ToString() => Name;
+
+    #region Nested type: IdentifierNull
+
+    #region Nested Type: IdentifierNull
+
+    private class IdentifierNull : IdentifierImpl {
+        private readonly MemberPeerStub owner;
+
+        public IdentifierNull(MemberPeerStub owner)
+            : base("", "") =>
+            this.owner = owner;
+
+        public override string ToString() => owner.Name;
+    }
+
+    #endregion
+
+    #endregion
+
+    #region IMemberSpecImmutable Members
+
+    public override IIdentifier Identifier => new IdentifierNull(this);
+
+    public string Name { get; }
+
+    public string Description { get; }
+
+    #endregion
+
+    // ReSharper disable UnusedAutoPropertyAccessor.Local
+    public IObjectSpecImmutable ReturnSpec { get; private set; }
+    public IObjectSpecImmutable ElementSpec { get; private set; }
+
+    public IObjectSpecImmutable OwnerSpec { get; private set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Local
 }

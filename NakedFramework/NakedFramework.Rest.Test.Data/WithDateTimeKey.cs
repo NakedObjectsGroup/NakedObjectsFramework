@@ -9,12 +9,12 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace RestfulObjects.Test.Data {
-    public class WithDateTimeKey {
-        [Key]
-        [Title]
-        [Mask("d")]
-        [ConcurrencyCheck]
-        public virtual DateTime Id { get; set; }
-    }
+namespace RestfulObjects.Test.Data; 
+
+public class WithDateTimeKey {
+    [Key]
+    [Title]
+    [Mask("d")]
+    [ConcurrencyCheck]
+    public virtual DateTime Id { get; set; }
 }

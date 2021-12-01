@@ -9,19 +9,19 @@ using System;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class NamedFacetInferred : NamedFacetAbstract {
-        public NamedFacetInferred(string value, ISpecification holder)
-            : base(value, holder) {
-            ShortName = TypeNameUtils.GetShortName(value);
-            CapitalizedName = NameUtils.CapitalizeName(ShortName);
-            SimpleName = NameUtils.SimpleName(ShortName);
-            NaturalName = NameUtils.NaturalName(ShortName);
-        }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool CanAlwaysReplace => false;
+[Serializable]
+public sealed class NamedFacetInferred : NamedFacetAbstract {
+    public NamedFacetInferred(string value, ISpecification holder)
+        : base(value, holder) {
+        ShortName = TypeNameUtils.GetShortName(value);
+        CapitalizedName = NameUtils.CapitalizeName(ShortName);
+        SimpleName = NameUtils.SimpleName(ShortName);
+        NaturalName = NameUtils.NaturalName(ShortName);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override bool CanAlwaysReplace => false;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

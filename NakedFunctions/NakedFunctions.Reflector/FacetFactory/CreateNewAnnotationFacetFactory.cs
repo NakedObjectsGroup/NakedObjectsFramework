@@ -20,35 +20,35 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class CreateNewAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<CreateNewAnnotationFacetFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<CreateNewAnnotationFacetFactory>();
+public sealed class CreateNewAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<CreateNewAnnotationFacetFactory> logger;
 
-        private static bool IsCollectionOrNull(Type type) =>
-            type is null ||
-            CollectionUtils.IsGenericEnumerable(type) ||
-            type.IsArray ||
-            CollectionUtils.IsCollectionButNotArray(type);
+    public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) =>
+        logger = loggerFactory.CreateLogger<CreateNewAnnotationFacetFactory>();
 
-        private static Type ToCreateType(MethodInfo method) {
-            var returnType = FacetUtils.IsTuple(method.ReturnType) ? method.ReturnType.GetGenericArguments().First() : null;
-            return IsCollectionOrNull(returnType) ? null : returnType;
-        }
+    private static bool IsCollectionOrNull(Type type) =>
+        type is null ||
+        CollectionUtils.IsGenericEnumerable(type) ||
+        type.IsArray ||
+        CollectionUtils.IsCollectionButNotArray(type);
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (method.IsDefined(typeof(CreateNewAttribute), false)) {
-                var toCreateType = ToCreateType(method);
+    private static Type ToCreateType(MethodInfo method) {
+        var returnType = FacetUtils.IsTuple(method.ReturnType) ? method.ReturnType.GetGenericArguments().First() : null;
+        return IsCollectionOrNull(returnType) ? null : returnType;
+    }
 
-                if (toCreateType is not null && FactoryUtils.MatchParmsAndProperties(method, toCreateType, logger).Any()) {
-                    FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
-                }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (method.IsDefined(typeof(CreateNewAttribute), false)) {
+            var toCreateType = ToCreateType(method);
+
+            if (toCreateType is not null && FactoryUtils.MatchParmsAndProperties(method, toCreateType, logger).Any()) {
+                FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
             }
-
-            return metamodel;
         }
+
+        return metamodel;
     }
 }

@@ -25,146 +25,146 @@ using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.Facet {
-    [Serializable]
-    public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-        private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
-        private readonly Func<object, object[], object> methodDelegate;
+namespace NakedFunctions.Reflector.Facet; 
 
-        private readonly int paramCount;
+[Serializable]
+public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
+    private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
+    private readonly Func<object, object[], object> methodDelegate;
 
-        public ActionInvocationFacetViaStaticMethod(MethodInfo method,
-                                                    ITypeSpecImmutable onType,
-                                                    IObjectSpecImmutable returnType,
-                                                    IObjectSpecImmutable elementType,
-                                                    ISpecification holder,
-                                                    bool isQueryOnly,
-                                                    ILogger<ActionInvocationFacetViaStaticMethod> logger)
-            : base(holder) {
-            ActionMethod = method;
-            this.logger = logger;
-            paramCount = method.GetParameters().Length;
-            OnType = onType;
-            ReturnType = returnType;
-            ElementType = elementType;
-            IsQueryOnly = isQueryOnly;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+    private readonly int paramCount;
 
-        [field: NonSerialized] public override MethodInfo ActionMethod { get; }
-
-        public override IObjectSpecImmutable ReturnType { get; }
-
-        public override ITypeSpecImmutable OnType { get; }
-
-        public override IObjectSpecImmutable ElementType { get; }
-
-        public override bool IsQueryOnly { get; }
-
-        private static INakedObjectAdapter AdaptResult(INakedObjectManager nakedObjectManager, object result) =>
-            result is null ? null : nakedObjectManager.CreateAdapter(result, null, null);
-
-        private static Func<IDictionary<object, object>, bool> GetPostSaveFunction(FunctionalContext functionalContext, INakedFramework framework) {
-            var postSaveFunction = functionalContext.PostSaveFunction;
-
-            if (postSaveFunction is not null) {
-                return map => {
-                    var newContext = new FunctionalContext {Persistor = functionalContext.Persistor, Provider = functionalContext.Provider, ProxyMap = map};
-                    var innerContext = (FunctionalContext) postSaveFunction(newContext);
-                    var updated = PersistResult(framework.LifecycleManager, innerContext.New, innerContext.Deleted, innerContext.Updated, GetPostSaveFunction(innerContext, framework));
-                    return updated.Any();
-                };
-            }
-
-            return _ => false;
-        }
-
-        private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, object[] deletedObjects, (object proxy, object updated)[] updatedObjects, Func<IDictionary<object, object>, bool> postSaveFunction) =>
-            lifecycleManager.Persist(new DetachedObjects(newObjects, deletedObjects, updatedObjects, postSaveFunction)).ToArray();
-
-        private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext) tuple[1]);
-
-        private static (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedFramework framework) =>
-            PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Deleted, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
-
-        private static object HandleTupleResult((object, FunctionalContext) tuple, INakedFramework framework) {
-            var (toReturn, context) = tuple;
-            var allPersisted = HandleContext(context, framework);
-
-            foreach (var (original, updated) in allPersisted) {
-                if (ReferenceEquals(original, toReturn)) {
-                    return updated;
-                }
-            }
-
-            return toReturn;
-        }
-
-        private static object HandleContextResult(FunctionalContext functionalContext, INakedFramework framework) {
-            HandleContext(functionalContext, framework);
-            return null;
-        }
-
-        private INakedObjectAdapter HandleInvokeResult(INakedFramework framework, object result) {
-            // if any changes made by invocation fail 
-
-            if (framework.Persistor.HasChanges()) {
-                throw new PersistFailedException($"method {ActionMethod} on {ActionMethod.DeclaringType} made database changes and so is not pure");
-            }
-
-            var toReturn = result switch {
-                ITuple tuple => HandleTupleResult(CastTuple(ValidateTuple(tuple)), framework),
-                FunctionalContext context => HandleContextResult(context, framework),
-                _ => result
-            };
-
-            return AdaptResult(framework.NakedObjectManager, toReturn);
-        }
-
-        private ITuple ValidateTuple(ITuple tuple) {
-            var size = tuple.Length;
-
-            if (size is not 2) {
-                throw new InvokeException($"Invalid return type {size} item tuple on {ActionMethod.Name}");
-            }
-
-            return tuple;
-        }
-
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
-                                                   INakedObjectAdapter[] parameters,
-                                                   INakedFramework framework) {
-            if (parameters.Length != paramCount) {
-                logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
-            }
-
-            var rawParms = parameters.Select(p => p?.Object).ToArray();
-
-            return HandleInvokeResult(framework, methodDelegate.Invoke<object>(ActionMethod, rawParms));
-        }
-
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
-                                                   INakedObjectAdapter[] parameters,
-                                                   int resultPage,
-                                                   INakedFramework framework) =>
-            Invoke(nakedObjectAdapter, parameters, framework);
-
-        protected override string ToStringValues() => $"method={ActionMethod}";
-
-        [OnDeserialized]
-        private static void OnDeserialized(StreamingContext context) { }
-
-        #region IImperativeFacet Members
-
-        /// <summary>
-        ///     See <see cref="IImperativeFacet" />
-        /// </summary>
-        public MethodInfo GetMethod() => ActionMethod;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public ActionInvocationFacetViaStaticMethod(MethodInfo method,
+                                                ITypeSpecImmutable onType,
+                                                IObjectSpecImmutable returnType,
+                                                IObjectSpecImmutable elementType,
+                                                ISpecification holder,
+                                                bool isQueryOnly,
+                                                ILogger<ActionInvocationFacetViaStaticMethod> logger)
+        : base(holder) {
+        ActionMethod = method;
+        this.logger = logger;
+        paramCount = method.GetParameters().Length;
+        OnType = onType;
+        ReturnType = returnType;
+        ElementType = elementType;
+        IsQueryOnly = isQueryOnly;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [field: NonSerialized] public override MethodInfo ActionMethod { get; }
+
+    public override IObjectSpecImmutable ReturnType { get; }
+
+    public override ITypeSpecImmutable OnType { get; }
+
+    public override IObjectSpecImmutable ElementType { get; }
+
+    public override bool IsQueryOnly { get; }
+
+    private static INakedObjectAdapter AdaptResult(INakedObjectManager nakedObjectManager, object result) =>
+        result is null ? null : nakedObjectManager.CreateAdapter(result, null, null);
+
+    private static Func<IDictionary<object, object>, bool> GetPostSaveFunction(FunctionalContext functionalContext, INakedFramework framework) {
+        var postSaveFunction = functionalContext.PostSaveFunction;
+
+        if (postSaveFunction is not null) {
+            return map => {
+                var newContext = new FunctionalContext {Persistor = functionalContext.Persistor, Provider = functionalContext.Provider, ProxyMap = map};
+                var innerContext = (FunctionalContext) postSaveFunction(newContext);
+                var updated = PersistResult(framework.LifecycleManager, innerContext.New, innerContext.Deleted, innerContext.Updated, GetPostSaveFunction(innerContext, framework));
+                return updated.Any();
+            };
+        }
+
+        return _ => false;
+    }
+
+    private static (object original, object updated)[] PersistResult(ILifecycleManager lifecycleManager, object[] newObjects, object[] deletedObjects, (object proxy, object updated)[] updatedObjects, Func<IDictionary<object, object>, bool> postSaveFunction) =>
+        lifecycleManager.Persist(new DetachedObjects(newObjects, deletedObjects, updatedObjects, postSaveFunction)).ToArray();
+
+    private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext) tuple[1]);
+
+    private static (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedFramework framework) =>
+        PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Deleted, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
+
+    private static object HandleTupleResult((object, FunctionalContext) tuple, INakedFramework framework) {
+        var (toReturn, context) = tuple;
+        var allPersisted = HandleContext(context, framework);
+
+        foreach (var (original, updated) in allPersisted) {
+            if (ReferenceEquals(original, toReturn)) {
+                return updated;
+            }
+        }
+
+        return toReturn;
+    }
+
+    private static object HandleContextResult(FunctionalContext functionalContext, INakedFramework framework) {
+        HandleContext(functionalContext, framework);
+        return null;
+    }
+
+    private INakedObjectAdapter HandleInvokeResult(INakedFramework framework, object result) {
+        // if any changes made by invocation fail 
+
+        if (framework.Persistor.HasChanges()) {
+            throw new PersistFailedException($"method {ActionMethod} on {ActionMethod.DeclaringType} made database changes and so is not pure");
+        }
+
+        var toReturn = result switch {
+            ITuple tuple => HandleTupleResult(CastTuple(ValidateTuple(tuple)), framework),
+            FunctionalContext context => HandleContextResult(context, framework),
+            _ => result
+        };
+
+        return AdaptResult(framework.NakedObjectManager, toReturn);
+    }
+
+    private ITuple ValidateTuple(ITuple tuple) {
+        var size = tuple.Length;
+
+        if (size is not 2) {
+            throw new InvokeException($"Invalid return type {size} item tuple on {ActionMethod.Name}");
+        }
+
+        return tuple;
+    }
+
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
+                                               INakedObjectAdapter[] parameters,
+                                               INakedFramework framework) {
+        if (parameters.Length != paramCount) {
+            logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
+        }
+
+        var rawParms = parameters.Select(p => p?.Object).ToArray();
+
+        return HandleInvokeResult(framework, methodDelegate.Invoke<object>(ActionMethod, rawParms));
+    }
+
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
+                                               INakedObjectAdapter[] parameters,
+                                               int resultPage,
+                                               INakedFramework framework) =>
+        Invoke(nakedObjectAdapter, parameters, framework);
+
+    protected override string ToStringValues() => $"method={ActionMethod}";
+
+    [OnDeserialized]
+    private static void OnDeserialized(StreamingContext context) { }
+
+    #region IImperativeFacet Members
+
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => ActionMethod;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

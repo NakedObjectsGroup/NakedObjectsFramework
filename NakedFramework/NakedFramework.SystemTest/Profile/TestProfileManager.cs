@@ -19,381 +19,381 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Profile {
-    [TestFixture]
-    public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
-        [SetUp]
-        public void SetUp() {
-            StartTest();
-            SetUser("sven");
-        }
+namespace NakedObjects.SystemTest.Profile; 
 
-        [TearDown]
-        public void TearDown() {
-            base.EndTest();
-            MyProfiler.BeginCallback = (p, e, t, s) => { };
-            MyProfiler.EndCallback = (p, e, t, s) => { };
-        }
+[TestFixture]
+public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
+    [SetUp]
+    public void SetUp() {
+        StartTest();
+        SetUser("sven");
+    }
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            ProfileDbContext.Delete();
-            var context = Activator.CreateInstance<ProfileDbContext>();
+    [TearDown]
+    public void TearDown() {
+        base.EndTest();
+        MyProfiler.BeginCallback = (p, e, t, s) => { };
+        MyProfiler.EndCallback = (p, e, t, s) => { };
+    }
 
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        ProfileDbContext.Delete();
+        var context = Activator.CreateInstance<ProfileDbContext>();
 
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            ProfileDbContext.Delete();
-        }
+        context.Database.Create();
+        InitializeNakedObjectsFramework(this);
+    }
 
-        protected override Type[] ObjectTypes => new[] {
-            typeof(Foo),
-            typeof(QueryableList<Foo>)
+    [OneTimeTearDown]
+    public void FixtureTearDown() {
+        CleanupNakedObjectsFramework(this);
+        ProfileDbContext.Delete();
+    }
+
+    protected override Type[] ObjectTypes => new[] {
+        typeof(Foo),
+        typeof(QueryableList<Foo>)
+    };
+
+    protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
+
+    protected override IProfileConfiguration ProfileConfiguration =>
+        new ProfileConfiguration<MyProfiler> {
+            EventsToProfile = new HashSet<ProfileEvent> {
+                ProfileEvent.ActionInvocation,
+                ProfileEvent.PropertySet,
+                ProfileEvent.Created,
+                ProfileEvent.Deleted,
+                ProfileEvent.Deleting,
+                ProfileEvent.Loaded,
+                ProfileEvent.Loading,
+                ProfileEvent.Persisted,
+                ProfileEvent.Persisting,
+                ProfileEvent.Updated,
+                ProfileEvent.Updating
+            }
         };
 
-        protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
+    [Test]
+    public void TestActionInvocation() {
+        var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 
-        protected override IProfileConfiguration ProfileConfiguration =>
-            new ProfileConfiguration<MyProfiler> {
-                EventsToProfile = new HashSet<ProfileEvent> {
-                    ProfileEvent.ActionInvocation,
-                    ProfileEvent.PropertySet,
-                    ProfileEvent.Created,
-                    ProfileEvent.Deleted,
-                    ProfileEvent.Deleting,
-                    ProfileEvent.Loaded,
-                    ProfileEvent.Loading,
-                    ProfileEvent.Persisted,
-                    ProfileEvent.Persisting,
-                    ProfileEvent.Updated,
-                    ProfileEvent.Updating
-                }
-            };
+        var beginCalled = false;
+        var endCalled = false;
 
-        [Test]
-        public void TestActionInvocation() {
-            var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
-
-            var beginCalled = false;
-            var endCalled = false;
-
-            void TestCallback(IPrincipal p, ProfileEvent e, Type t, string s) {
-                Assert.AreEqual("sven", p.Identity.Name);
-                Assert.AreEqual(ProfileEvent.ActionInvocation, e);
-                Assert.AreEqual(typeof(Foo), t);
-                Assert.AreEqual("TestAction", s);
-            }
-
-            MyProfiler.BeginCallback = (p, e, t, s) => {
-                beginCalled = true;
-                TestCallback(p, e, t, s);
-            };
-
-            MyProfiler.EndCallback = (p, e, t, s) => {
-                endCalled = true;
-                TestCallback(p, e, t, s);
-            };
-
-            foo.Actions.First().Invoke();
-
-            Assert.IsTrue(beginCalled);
-            Assert.IsTrue(endCalled);
+        void TestCallback(IPrincipal p, ProfileEvent e, Type t, string s) {
+            Assert.AreEqual("sven", p.Identity.Name);
+            Assert.AreEqual(ProfileEvent.ActionInvocation, e);
+            Assert.AreEqual(typeof(Foo), t);
+            Assert.AreEqual("TestAction", s);
         }
 
-        [Test]
-        public void TestCallbacks() {
-            var beginCalledCount = 0;
-            var endCalledCount = 0;
+        MyProfiler.BeginCallback = (p, e, t, s) => {
+            beginCalled = true;
+            TestCallback(p, e, t, s);
+        };
 
-            var callbackData = new List<CallbackData>();
+        MyProfiler.EndCallback = (p, e, t, s) => {
+            endCalled = true;
+            TestCallback(p, e, t, s);
+        };
 
-            var events = new[] {
-                ProfileEvent.Loading,
-                ProfileEvent.Loading,
-                ProfileEvent.Loaded,
-                ProfileEvent.Loaded,
-                ProfileEvent.ActionInvocation,
-                ProfileEvent.Loading,
-                ProfileEvent.Loading,
-                ProfileEvent.Loaded,
-                ProfileEvent.Loaded,
-                ProfileEvent.Created,
-                ProfileEvent.Created,
-                ProfileEvent.ActionInvocation,
-                ProfileEvent.Loading,
-                ProfileEvent.Loading,
-                ProfileEvent.Loaded,
-                ProfileEvent.Loaded,
-                ProfileEvent.PropertySet,
-                ProfileEvent.PropertySet,
-                ProfileEvent.Loading,
-                ProfileEvent.Loading,
-                ProfileEvent.Loaded,
-                ProfileEvent.Loaded,
-                ProfileEvent.PropertySet,
-                ProfileEvent.PropertySet,
-                ProfileEvent.Persisting,
-                ProfileEvent.Persisting,
-                ProfileEvent.Persisted,
-                ProfileEvent.Persisted,
-                ProfileEvent.Loaded,
-                ProfileEvent.Loaded,
-                ProfileEvent.Loading,
-                ProfileEvent.Loading,
-                ProfileEvent.Loaded,
-                ProfileEvent.Loaded,
-                ProfileEvent.PropertySet,
-                ProfileEvent.PropertySet,
-                ProfileEvent.Updating,
-                ProfileEvent.Updating,
-                ProfileEvent.Updated,
-                ProfileEvent.Updated
+        foo.Actions.First().Invoke();
+
+        Assert.IsTrue(beginCalled);
+        Assert.IsTrue(endCalled);
+    }
+
+    [Test]
+    public void TestCallbacks() {
+        var beginCalledCount = 0;
+        var endCalledCount = 0;
+
+        var callbackData = new List<CallbackData>();
+
+        var events = new[] {
+            ProfileEvent.Loading,
+            ProfileEvent.Loading,
+            ProfileEvent.Loaded,
+            ProfileEvent.Loaded,
+            ProfileEvent.ActionInvocation,
+            ProfileEvent.Loading,
+            ProfileEvent.Loading,
+            ProfileEvent.Loaded,
+            ProfileEvent.Loaded,
+            ProfileEvent.Created,
+            ProfileEvent.Created,
+            ProfileEvent.ActionInvocation,
+            ProfileEvent.Loading,
+            ProfileEvent.Loading,
+            ProfileEvent.Loaded,
+            ProfileEvent.Loaded,
+            ProfileEvent.PropertySet,
+            ProfileEvent.PropertySet,
+            ProfileEvent.Loading,
+            ProfileEvent.Loading,
+            ProfileEvent.Loaded,
+            ProfileEvent.Loaded,
+            ProfileEvent.PropertySet,
+            ProfileEvent.PropertySet,
+            ProfileEvent.Persisting,
+            ProfileEvent.Persisting,
+            ProfileEvent.Persisted,
+            ProfileEvent.Persisted,
+            ProfileEvent.Loaded,
+            ProfileEvent.Loaded,
+            ProfileEvent.Loading,
+            ProfileEvent.Loading,
+            ProfileEvent.Loaded,
+            ProfileEvent.Loaded,
+            ProfileEvent.PropertySet,
+            ProfileEvent.PropertySet,
+            ProfileEvent.Updating,
+            ProfileEvent.Updating,
+            ProfileEvent.Updated,
+            ProfileEvent.Updated
+        };
+
+        var types = new[] {
+            typeof(SimpleRepository<Foo>),
+            typeof(SimpleRepository<Foo>),
+            typeof(SimpleRepository<Foo>),
+            typeof(SimpleRepository<Foo>),
+            typeof(SimpleRepository<Foo>),
+            typeof(int),
+            typeof(int),
+            typeof(int),
+            typeof(int),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(SimpleRepository<Foo>),
+            typeof(int),
+            typeof(int),
+            typeof(int),
+            typeof(int),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(string),
+            typeof(string),
+            typeof(string),
+            typeof(string),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(string),
+            typeof(string),
+            typeof(string),
+            typeof(string),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo),
+            typeof(Foo)
+        };
+
+        var members = new[] {
+            "", // 0
+            "",
+            "",
+            "",
+            "NewInstance",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "", // 10
+            "NewInstance",
+            "",
+            "",
+            "",
+            "",
+            "Id",
+            "Id",
+            "",
+            "",
+            "", // 20
+            "",
+            "TestProperty",
+            "TestProperty",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "", // 30
+            "",
+            "",
+            "",
+            "TestProperty",
+            "TestProperty",
+            "",
+            "",
+            "",
+            ""
+        };
+
+        Action<CallbackData> CreateTestFunc(int i) {
+            return cbd => {
+                Assert.AreEqual("sven", cbd.Principal.Identity.Name, i.ToString());
+                Assert.AreEqual(events[i], cbd.ProfileEvent, i.ToString());
+                Assert.AreEqual(types[i], cbd.Type, i.ToString());
+                Assert.AreEqual(members[i], cbd.Member, i.ToString());
             };
-
-            var types = new[] {
-                typeof(SimpleRepository<Foo>),
-                typeof(SimpleRepository<Foo>),
-                typeof(SimpleRepository<Foo>),
-                typeof(SimpleRepository<Foo>),
-                typeof(SimpleRepository<Foo>),
-                typeof(int),
-                typeof(int),
-                typeof(int),
-                typeof(int),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(SimpleRepository<Foo>),
-                typeof(int),
-                typeof(int),
-                typeof(int),
-                typeof(int),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(string),
-                typeof(string),
-                typeof(string),
-                typeof(string),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(string),
-                typeof(string),
-                typeof(string),
-                typeof(string),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo),
-                typeof(Foo)
-            };
-
-            var members = new[] {
-                "", // 0
-                "",
-                "",
-                "",
-                "NewInstance",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "", // 10
-                "NewInstance",
-                "",
-                "",
-                "",
-                "",
-                "Id",
-                "Id",
-                "",
-                "",
-                "", // 20
-                "",
-                "TestProperty",
-                "TestProperty",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "", // 30
-                "",
-                "",
-                "",
-                "TestProperty",
-                "TestProperty",
-                "",
-                "",
-                "",
-                ""
-            };
-
-            Action<CallbackData> CreateTestFunc(int i) {
-                return cbd => {
-                    Assert.AreEqual("sven", cbd.Principal.Identity.Name, i.ToString());
-                    Assert.AreEqual(events[i], cbd.ProfileEvent, i.ToString());
-                    Assert.AreEqual(types[i], cbd.Type, i.ToString());
-                    Assert.AreEqual(members[i], cbd.Member, i.ToString());
-                };
-            }
-
-            MyProfiler.BeginCallback = (p, e, t, s) => {
-                beginCalledCount++;
-                callbackData.Add(new CallbackData(p, e, t, s));
-            };
-
-            MyProfiler.EndCallback = (p, e, t, s) => {
-                endCalledCount++;
-                callbackData.Add(new CallbackData(p, e, t, s));
-            };
-
-            NakedFramework.TransactionManager.StartTransaction();
-
-            var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
-            foo.Properties.First().SetValue("101");
-            foo.Properties.Last().SetValue("avalue");
-            foo.Save();
-
-            NakedFramework.TransactionManager.EndTransaction();
-
-            NakedFramework.TransactionManager.StartTransaction();
-
-            foo.Properties.Last().SetValue("anothervalue");
-
-            NakedFramework.TransactionManager.EndTransaction();
-
-            Assert.AreEqual(20, beginCalledCount);
-            Assert.AreEqual(20, endCalledCount);
-
-            for (var i = 0; i < 40; i++) {
-                CreateTestFunc(i)(callbackData[i]);
-            }
         }
 
-        [Test]
-        public void TestPropertySet() {
-            var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
+        MyProfiler.BeginCallback = (p, e, t, s) => {
+            beginCalledCount++;
+            callbackData.Add(new CallbackData(p, e, t, s));
+        };
 
-            var beginCalledCount = 0;
-            var endCalledCount = 0;
+        MyProfiler.EndCallback = (p, e, t, s) => {
+            endCalledCount++;
+            callbackData.Add(new CallbackData(p, e, t, s));
+        };
 
-            var callbackData = new List<CallbackData>();
+        NakedFramework.TransactionManager.StartTransaction();
 
-            void TestCallback0(CallbackData cbd) {
-                Assert.AreEqual("sven", cbd.Principal.Identity.Name);
-                Assert.AreEqual(ProfileEvent.Loading, cbd.ProfileEvent);
-                Assert.AreEqual(typeof(string), cbd.Type);
-                Assert.AreEqual("", cbd.Member);
-            }
+        var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
+        foo.Properties.First().SetValue("101");
+        foo.Properties.Last().SetValue("avalue");
+        foo.Save();
 
-            void TestCallback1(CallbackData cbd) {
-                Assert.AreEqual("sven", cbd.Principal.Identity.Name);
-                Assert.AreEqual(ProfileEvent.Loaded, cbd.ProfileEvent);
-                Assert.AreEqual(typeof(string), cbd.Type);
-                Assert.AreEqual("", cbd.Member);
-            }
+        NakedFramework.TransactionManager.EndTransaction();
 
-            void TestCallback2(CallbackData cbd) {
-                Assert.AreEqual("sven", cbd.Principal.Identity.Name);
-                Assert.AreEqual(ProfileEvent.PropertySet, cbd.ProfileEvent);
-                Assert.AreEqual(typeof(Foo), cbd.Type);
-                Assert.AreEqual("TestProperty", cbd.Member);
-            }
+        NakedFramework.TransactionManager.StartTransaction();
 
-            MyProfiler.BeginCallback = (p, e, t, s) => {
-                beginCalledCount++;
-                callbackData.Add(new CallbackData(p, e, t, s));
-            };
+        foo.Properties.Last().SetValue("anothervalue");
 
-            MyProfiler.EndCallback = (p, e, t, s) => {
-                endCalledCount++;
-                callbackData.Add(new CallbackData(p, e, t, s));
-            };
+        NakedFramework.TransactionManager.EndTransaction();
 
-            foo.Properties.Last().SetValue("avalue");
+        Assert.AreEqual(20, beginCalledCount);
+        Assert.AreEqual(20, endCalledCount);
 
-            Assert.AreEqual(3, beginCalledCount);
-            Assert.AreEqual(3, endCalledCount);
-
-            TestCallback0(callbackData[0]);
-            TestCallback0(callbackData[1]);
-            TestCallback1(callbackData[2]);
-            TestCallback1(callbackData[3]);
-            TestCallback2(callbackData[4]);
-            TestCallback2(callbackData[5]);
-        }
-
-        private class CallbackData {
-            public CallbackData(IPrincipal principal, ProfileEvent profileEvent, Type type, string member) {
-                Principal = principal;
-                ProfileEvent = profileEvent;
-                Type = type;
-                Member = member;
-            }
-
-            public IPrincipal Principal { get; }
-            public ProfileEvent ProfileEvent { get; }
-            public Type Type { get; }
-            public string Member { get; }
+        for (var i = 0; i < 40; i++) {
+            CreateTestFunc(i)(callbackData[i]);
         }
     }
 
-    #region Classes used by tests
+    [Test]
+    public void TestPropertySet() {
+        var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 
-    public class ProfileDbContext : DbContext {
-        public const string DatabaseName = "TestProfile";
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-        public ProfileDbContext() : base(Cs) { }
-        public DbSet<Foo> Foos { get; set; }
+        var beginCalledCount = 0;
+        var endCalledCount = 0;
 
-        public static void Delete() => Database.Delete(Cs);
+        var callbackData = new List<CallbackData>();
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-            Database.SetInitializer(new DatabaseInitializer());
+        void TestCallback0(CallbackData cbd) {
+            Assert.AreEqual("sven", cbd.Principal.Identity.Name);
+            Assert.AreEqual(ProfileEvent.Loading, cbd.ProfileEvent);
+            Assert.AreEqual(typeof(string), cbd.Type);
+            Assert.AreEqual("", cbd.Member);
         }
+
+        void TestCallback1(CallbackData cbd) {
+            Assert.AreEqual("sven", cbd.Principal.Identity.Name);
+            Assert.AreEqual(ProfileEvent.Loaded, cbd.ProfileEvent);
+            Assert.AreEqual(typeof(string), cbd.Type);
+            Assert.AreEqual("", cbd.Member);
+        }
+
+        void TestCallback2(CallbackData cbd) {
+            Assert.AreEqual("sven", cbd.Principal.Identity.Name);
+            Assert.AreEqual(ProfileEvent.PropertySet, cbd.ProfileEvent);
+            Assert.AreEqual(typeof(Foo), cbd.Type);
+            Assert.AreEqual("TestProperty", cbd.Member);
+        }
+
+        MyProfiler.BeginCallback = (p, e, t, s) => {
+            beginCalledCount++;
+            callbackData.Add(new CallbackData(p, e, t, s));
+        };
+
+        MyProfiler.EndCallback = (p, e, t, s) => {
+            endCalledCount++;
+            callbackData.Add(new CallbackData(p, e, t, s));
+        };
+
+        foo.Properties.Last().SetValue("avalue");
+
+        Assert.AreEqual(3, beginCalledCount);
+        Assert.AreEqual(3, endCalledCount);
+
+        TestCallback0(callbackData[0]);
+        TestCallback0(callbackData[1]);
+        TestCallback1(callbackData[2]);
+        TestCallback1(callbackData[3]);
+        TestCallback2(callbackData[4]);
+        TestCallback2(callbackData[5]);
     }
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<ProfileDbContext> {
-        protected override void Seed(ProfileDbContext context) {
-            context.Foos.Add(new Foo {Id = 1});
-            context.SaveChanges();
+    private class CallbackData {
+        public CallbackData(IPrincipal principal, ProfileEvent profileEvent, Type type, string member) {
+            Principal = principal;
+            ProfileEvent = profileEvent;
+            Type = type;
+            Member = member;
         }
+
+        public IPrincipal Principal { get; }
+        public ProfileEvent ProfileEvent { get; }
+        public Type Type { get; }
+        public string Member { get; }
+    }
+}
+
+#region Classes used by tests
+
+public class ProfileDbContext : DbContext {
+    public const string DatabaseName = "TestProfile";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    public ProfileDbContext() : base(Cs) { }
+    public DbSet<Foo> Foos { get; set; }
+
+    public static void Delete() => Database.Delete(Cs);
+
+    protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+        Database.SetInitializer(new DatabaseInitializer());
+    }
+}
+
+public class DatabaseInitializer : DropCreateDatabaseAlways<ProfileDbContext> {
+    protected override void Seed(ProfileDbContext context) {
+        context.Foos.Add(new Foo {Id = 1});
+        context.SaveChanges();
+    }
+}
+
+public class MyProfiler : IProfiler {
+    public static Action<IPrincipal, ProfileEvent, Type, string> BeginCallback = (p, e, t, s) => { };
+    public static Action<IPrincipal, ProfileEvent, Type, string> EndCallback = (p, e, t, s) => { };
+
+    #region IProfiler Members
+
+    public void Begin(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName) {
+        BeginCallback(principal, profileEvent, onType, memberName);
     }
 
-    public class MyProfiler : IProfiler {
-        public static Action<IPrincipal, ProfileEvent, Type, string> BeginCallback = (p, e, t, s) => { };
-        public static Action<IPrincipal, ProfileEvent, Type, string> EndCallback = (p, e, t, s) => { };
-
-        #region IProfiler Members
-
-        public void Begin(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName) {
-            BeginCallback(principal, profileEvent, onType, memberName);
-        }
-
-        public void End(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName) {
-            EndCallback(principal, profileEvent, onType, memberName);
-        }
-
-        #endregion
-    }
-
-    public class Foo {
-        public virtual int Id { get; set; }
-        public string TestProperty { get; set; }
-        public void TestAction() { }
+    public void End(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName) {
+        EndCallback(principal, profileEvent, onType, memberName);
     }
 
     #endregion
 }
+
+public class Foo {
+    public virtual int Id { get; set; }
+    public string TestProperty { get; set; }
+    public void TestAction() { }
+}
+
+#endregion

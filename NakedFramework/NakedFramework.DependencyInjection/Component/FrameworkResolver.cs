@@ -10,18 +10,18 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.DependencyInjection.Component {
-    public class FrameworkResolver : IFrameworkResolver {
-        private readonly IServiceScope scopeServiceProvider;
+namespace NakedFramework.DependencyInjection.Component; 
 
-        public FrameworkResolver(IServiceProvider serviceProvider) => scopeServiceProvider = serviceProvider.CreateScope();
+public class FrameworkResolver : IFrameworkResolver {
+    private readonly IServiceScope scopeServiceProvider;
 
-        #region IFrameworkResolver Members
+    public FrameworkResolver(IServiceProvider serviceProvider) => scopeServiceProvider = serviceProvider.CreateScope();
 
-        public void Dispose() => scopeServiceProvider.Dispose();
+    #region IFrameworkResolver Members
 
-        public INakedFramework GetFramework() => scopeServiceProvider.ServiceProvider.GetService<INakedFramework>();
+    public void Dispose() => scopeServiceProvider.Dispose();
 
-        #endregion
-    }
+    public INakedFramework GetFramework() => scopeServiceProvider.ServiceProvider.GetService<INakedFramework>();
+
+    #endregion
 }

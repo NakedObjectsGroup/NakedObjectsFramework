@@ -13,21 +13,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Person.AddressType")]
-    public class AddressType {
-        public int AddressTypeID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Person.AddressType")]
+public class AddressType {
+    public int AddressTypeID { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new HashSet<CustomerAddress>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<VendorAddress> VendorAddresses { get; set; } = new HashSet<VendorAddress>();
-    }
+    public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new HashSet<CustomerAddress>();
+
+    public virtual ICollection<VendorAddress> VendorAddresses { get; set; } = new HashSet<VendorAddress>();
 }

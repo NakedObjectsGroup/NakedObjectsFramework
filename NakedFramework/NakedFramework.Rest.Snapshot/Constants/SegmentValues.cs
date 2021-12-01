@@ -5,25 +5,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Rest.Snapshot.Constants {
-    public class SegmentValues {
-        public const string HomePage = "";
-        public const string User = "user";
-        public const string Services = "services";
-        public const string Version = "version";
-        public const string DomainTypes = "domain-types";
-        public const string Objects = "objects";
-        public const string Images = "images";
-        public const string Actions = "actions";
-        public const string Collections = "collections";
-        public const string Properties = "properties";
-        public const string TypeActions = "type-actions";
-        public const string Invoke = "invoke";
-        public const string Params = "params";
-        public const string Prompt = "prompt";
-        public const string CollectionValue = "value";
+namespace NakedFramework.Rest.Snapshot.Constants; 
 
-        // custom extension
-        public const string Menus = "menus";
-    }
+public class SegmentValues {
+    public const string HomePage = "";
+    public const string User = "user";
+    public const string Services = "services";
+    public const string Version = "version";
+    public const string DomainTypes = "domain-types";
+    public const string Objects = "objects";
+    public const string Images = "images";
+    public const string Actions = "actions";
+    public const string Collections = "collections";
+    public const string Properties = "properties";
+    public const string TypeActions = "type-actions";
+    public const string Invoke = "invoke";
+    public const string Params = "params";
+    public const string Prompt = "prompt";
+    public const string CollectionValue = "value";
+
+    // custom extension
+    public const string Menus = "menus";
 }

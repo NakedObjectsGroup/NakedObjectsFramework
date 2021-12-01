@@ -8,22 +8,22 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Core.Error {
-    public class ConcurrencyException : ObjectPersistenceException {
-        public ConcurrencyException(INakedObjectAdapter nakedObjectAdapter)
-            : this(NakedObjects.Resources.NakedObjects.ConcurrencyMessage, nakedObjectAdapter.Oid) =>
-            SourceNakedObjectAdapter = nakedObjectAdapter;
+namespace NakedFramework.Core.Error; 
 
-        public ConcurrencyException(string message, IOid source)
-            : base(message) =>
-            SourceOid = source;
+public class ConcurrencyException : ObjectPersistenceException {
+    public ConcurrencyException(INakedObjectAdapter nakedObjectAdapter)
+        : this(NakedObjects.Resources.NakedObjects.ConcurrencyMessage, nakedObjectAdapter.Oid) =>
+        SourceNakedObjectAdapter = nakedObjectAdapter;
 
-        public ConcurrencyException(string message, Exception cause)
-            : base(message, cause) { }
+    public ConcurrencyException(string message, IOid source)
+        : base(message) =>
+        SourceOid = source;
 
-        public IOid SourceOid { get; }
-        public INakedObjectAdapter SourceNakedObjectAdapter { get; init; }
-    }
+    public ConcurrencyException(string message, Exception cause)
+        : base(message, cause) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public IOid SourceOid { get; }
+    public INakedObjectAdapter SourceNakedObjectAdapter { get; init; }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

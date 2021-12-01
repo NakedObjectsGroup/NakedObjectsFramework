@@ -9,27 +9,27 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Provides a set of choices for a property.
-    /// </summary>
-    /// <para>
-    ///     Viewers would typically represent this as a drop-down list box for the property.
-    /// </para>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     the <c>ChoicesXxx</c> supporting method for the property <c>Xxx</c>.
-    /// </para>
-    /// <para>
-    ///     An alternative mechanism may be to use the <see cref="BoundedAttribute" /> annotation
-    ///     against the referenced class.
-    /// </para>
-    public interface IPropertyChoicesFacet : IFacet {
-        (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+namespace NakedFramework.Architecture.Facet; 
 
-        /// <summary>
-        ///     Gets the available choices for this property
-        /// </summary>
-        object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
-    }
+/// <summary>
+///     Provides a set of choices for a property.
+/// </summary>
+/// <para>
+///     Viewers would typically represent this as a drop-down list box for the property.
+/// </para>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     the <c>ChoicesXxx</c> supporting method for the property <c>Xxx</c>.
+/// </para>
+/// <para>
+///     An alternative mechanism may be to use the <see cref="BoundedAttribute" /> annotation
+///     against the referenced class.
+/// </para>
+public interface IPropertyChoicesFacet : IFacet {
+    (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+
+    /// <summary>
+    ///     Gets the available choices for this property
+    /// </summary>
+    object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
 }

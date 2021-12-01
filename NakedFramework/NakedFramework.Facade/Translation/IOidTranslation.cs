@@ -7,12 +7,12 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Translation {
-    public interface IOidTranslation {
-        string DomainType { get; set; }
-        string InstanceId { get; set; }
-        IOidFacade GetOid(IOidStrategy oidStrategy);
-        IOidFacade GetSid(IOidStrategy oidStrategy);
-        string Encode();
-    }
+namespace NakedFramework.Facade.Translation; 
+
+public interface IOidTranslation {
+    string DomainType { get; set; }
+    string InstanceId { get; set; }
+    IOidFacade GetOid(IOidStrategy oidStrategy);
+    IOidFacade GetSid(IOidStrategy oidStrategy);
+    string Encode();
 }

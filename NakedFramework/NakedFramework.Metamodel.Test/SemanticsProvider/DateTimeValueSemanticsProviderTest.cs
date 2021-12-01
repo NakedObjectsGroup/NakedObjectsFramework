@@ -16,135 +16,135 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestClass]
-    public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<DateTime> {
-        private DateTimeValueSemanticsProvider adapter;
-        private ISpecification holder;
+namespace NakedObjects.Meta.Test.SemanticsProvider; 
 
-        private void AssertEntry(string entry, int year, int month, int day, int hour, int minute, int second) {
-            var obj = adapter.ParseTextEntry(entry);
-            Assert.AreEqual(new DateTime(year, month, day, hour, minute, second), obj);
-        }
+[TestClass]
+public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<DateTime> {
+    private DateTimeValueSemanticsProvider adapter;
+    private ISpecification holder;
 
-        [TestMethod]
-        public void TestDecode() {
-            var decoded = adapter.FromEncodedString("2003-08-17T21:30:25");
-            Assert.AreEqual(new DateTime(TestClock.GetTicks()), decoded);
-        }
-
-        [TestMethod]
-        public void TestEmptyClears() {
-            Assert.IsNull(adapter.ParseTextEntry(""));
-        }
-
-        [TestMethod]
-        public void TestEncode() {
-            var encoded = adapter.ToEncodedString(new DateTime(TestClock.GetTicks()));
-            Assert.AreEqual("2003-08-17T21:30:25", encoded);
-        }
-
-        [TestMethod]
-        public void TestEntryWithLongISOFormat() {
-            var dt = new DateTime(2007, 5, 21, 10, 30, 0);
-            dt = dt.ToUniversalTime();
-            var entry = dt.ToString("u");
-            AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
-        }
-
-        [TestMethod]
-        public void TestEntryWithMediumFormat() {
-            var dt = new DateTime(2007, 5, 21, 10, 30, 0);
-            var entry = dt.ToString("f");
-            // "21-May-2007 10:30"
-            AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
-        }
-
-        [TestMethod]
-        public void TestEntryWithShortFormat() {
-            var dt = new DateTime(2007, 5, 21, 10, 30, 0);
-            var entry = dt.ToString("g");
-            const int year = 2007;
-            const int month = 5;
-            const int day = 21;
-            const int hour = 10;
-            const int minute = 30;
-            AssertEntry(entry, year, month, day, hour, minute, 0);
-        }
-
-        [TestMethod]
-        public void TestParseInvariant() {
-            var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
-            var s1 = d1.ToString(CultureInfo.InvariantCulture);
-            var d2 = adapter.ParseInvariant(s1);
-            Assert.AreEqual(d1, d2);
-        }
-
-        [TestMethod]
-        public override void TestParseNull() {
-            base.TestParseNull();
-        }
-
-        [TestMethod]
-        public override void TestParseEmptyString() {
-            base.TestParseEmptyString();
-        }
-
-        [TestMethod]
-        public override void TestDecodeNull() {
-            base.TestDecodeNull();
-        }
-
-        [TestMethod]
-        public override void TestEmptyEncoding() {
-            base.TestEmptyEncoding();
-        }
-
-        [TestMethod]
-        public void TestValue() {
-            var facet = (IDateValueFacet) GetValue();
-            var testValue = DateTime.Now;
-            var mockNo = new Mock<INakedObjectAdapter>();
-            mockNo.Setup(no => no.Object).Returns(testValue);
-            Assert.AreEqual(testValue, facet.DateValue(mockNo.Object));
-        }
-
-        [TestMethod]
-        public void TestAsParserInvariant() {
-            var mgr = MockNakedObjectManager();
-            var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
-            var s1 = d1.ToString(CultureInfo.InvariantCulture);
-            IParseableFacet parser = new ParseableFacetUsingParser<DateTime>(GetValue(), null);
-            var parsed = parser.ParseInvariant(s1, mgr.Object).Object;
-            Assert.AreEqual(d1, parsed);
-        }
-
-        [TestMethod]
-        public void TestAsParserTitle() {
-            IParseableFacet parser = new ParseableFacetUsingParser<DateTime>(GetValue(), null);
-            var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
-            var s1 = d1.ToString(CultureInfo.CurrentCulture);
-            var mockAdapter = MockAdapter(d1);
-            Assert.AreEqual(s1, parser.ParseableTitle(mockAdapter));
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(adapter = new DateTimeValueSemanticsProvider(spec, holder));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
+    private void AssertEntry(string entry, int year, int month, int day, int hour, int minute, int second) {
+        var obj = adapter.ParseTextEntry(entry);
+        Assert.AreEqual(new DateTime(year, month, day, hour, minute, second), obj);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestDecode() {
+        var decoded = adapter.FromEncodedString("2003-08-17T21:30:25");
+        Assert.AreEqual(new DateTime(TestClock.GetTicks()), decoded);
+    }
+
+    [TestMethod]
+    public void TestEmptyClears() {
+        Assert.IsNull(adapter.ParseTextEntry(""));
+    }
+
+    [TestMethod]
+    public void TestEncode() {
+        var encoded = adapter.ToEncodedString(new DateTime(TestClock.GetTicks()));
+        Assert.AreEqual("2003-08-17T21:30:25", encoded);
+    }
+
+    [TestMethod]
+    public void TestEntryWithLongISOFormat() {
+        var dt = new DateTime(2007, 5, 21, 10, 30, 0);
+        dt = dt.ToUniversalTime();
+        var entry = dt.ToString("u");
+        AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
+    }
+
+    [TestMethod]
+    public void TestEntryWithMediumFormat() {
+        var dt = new DateTime(2007, 5, 21, 10, 30, 0);
+        var entry = dt.ToString("f");
+        // "21-May-2007 10:30"
+        AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
+    }
+
+    [TestMethod]
+    public void TestEntryWithShortFormat() {
+        var dt = new DateTime(2007, 5, 21, 10, 30, 0);
+        var entry = dt.ToString("g");
+        const int year = 2007;
+        const int month = 5;
+        const int day = 21;
+        const int hour = 10;
+        const int minute = 30;
+        AssertEntry(entry, year, month, day, hour, minute, 0);
+    }
+
+    [TestMethod]
+    public void TestParseInvariant() {
+        var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
+        var s1 = d1.ToString(CultureInfo.InvariantCulture);
+        var d2 = adapter.ParseInvariant(s1);
+        Assert.AreEqual(d1, d2);
+    }
+
+    [TestMethod]
+    public override void TestParseNull() {
+        base.TestParseNull();
+    }
+
+    [TestMethod]
+    public override void TestParseEmptyString() {
+        base.TestParseEmptyString();
+    }
+
+    [TestMethod]
+    public override void TestDecodeNull() {
+        base.TestDecodeNull();
+    }
+
+    [TestMethod]
+    public override void TestEmptyEncoding() {
+        base.TestEmptyEncoding();
+    }
+
+    [TestMethod]
+    public void TestValue() {
+        var facet = (IDateValueFacet) GetValue();
+        var testValue = DateTime.Now;
+        var mockNo = new Mock<INakedObjectAdapter>();
+        mockNo.Setup(no => no.Object).Returns(testValue);
+        Assert.AreEqual(testValue, facet.DateValue(mockNo.Object));
+    }
+
+    [TestMethod]
+    public void TestAsParserInvariant() {
+        var mgr = MockNakedObjectManager();
+        var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
+        var s1 = d1.ToString(CultureInfo.InvariantCulture);
+        IParseableFacet parser = new ParseableFacetUsingParser<DateTime>(GetValue(), null);
+        var parsed = parser.ParseInvariant(s1, mgr.Object).Object;
+        Assert.AreEqual(d1, parsed);
+    }
+
+    [TestMethod]
+    public void TestAsParserTitle() {
+        IParseableFacet parser = new ParseableFacetUsingParser<DateTime>(GetValue(), null);
+        var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
+        var s1 = d1.ToString(CultureInfo.CurrentCulture);
+        var mockAdapter = MockAdapter(d1);
+        Assert.AreEqual(s1, parser.ParseableTitle(mockAdapter));
+    }
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        holder = new Mock<ISpecification>().Object;
+        var spec = new Mock<IObjectSpecImmutable>().Object;
+        SetValue(adapter = new DateTimeValueSemanticsProvider(spec, holder));
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

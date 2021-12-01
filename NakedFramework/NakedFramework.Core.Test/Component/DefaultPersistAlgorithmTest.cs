@@ -17,154 +17,154 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Component {
-    /// <summary>
-    ///     Summary description for DefaultPersistAlgorithmTest
-    /// </summary>
-    [TestFixture]
-    public class DefaultPersistAlgorithmTest {
-        private RecursivePersistAlgorithm algorithm;
-        private INakedObjectManager manager;
-        private Mock<INakedObjectManager> mockManager;
-        private Mock<IObjectPersistor> mockPersistor;
-        private IObjectPersistor persistor;
+namespace NakedFramework.Core.Test.Component; 
 
-        #region Setup/Teardown
+/// <summary>
+///     Summary description for DefaultPersistAlgorithmTest
+/// </summary>
+[TestFixture]
+public class DefaultPersistAlgorithmTest {
+    private RecursivePersistAlgorithm algorithm;
+    private INakedObjectManager manager;
+    private Mock<INakedObjectManager> mockManager;
+    private Mock<IObjectPersistor> mockPersistor;
+    private IObjectPersistor persistor;
 
-        [SetUp]
-        public void SetUp() {
-            mockPersistor = new Mock<IObjectPersistor>();
-            persistor = mockPersistor.Object;
+    #region Setup/Teardown
 
-            mockManager = new Mock<INakedObjectManager>();
-            manager = mockManager.Object;
-            var mockLogger = new Mock<ILogger<RecursivePersistAlgorithm>>();
+    [SetUp]
+    public void SetUp() {
+        mockPersistor = new Mock<IObjectPersistor>();
+        persistor = mockPersistor.Object;
 
-            algorithm = new RecursivePersistAlgorithm(persistor, manager, mockLogger.Object);
-        }
+        mockManager = new Mock<INakedObjectManager>();
+        manager = mockManager.Object;
+        var mockLogger = new Mock<ILogger<RecursivePersistAlgorithm>>();
 
-        #endregion
+        algorithm = new RecursivePersistAlgorithm(persistor, manager, mockLogger.Object);
+    }
 
-        [Test]
-        public void TestMakePersistent() {
-            var mockAdapter = new Mock<INakedObjectAdapter>();
-            var testAdapter = mockAdapter.Object;
+    #endregion
 
-            var mockSpec = new Mock<IObjectSpec>();
-            var mockState = new Mock<IResolveStateMachine>();
+    [Test]
+    public void TestMakePersistent() {
+        var mockAdapter = new Mock<INakedObjectAdapter>();
+        var testAdapter = mockAdapter.Object;
 
-            var mockASpec = new Mock<IAssociationSpec>();
-            var mockCallBack = new Mock<IPersistingCallbackFacet>();
+        var mockSpec = new Mock<IObjectSpec>();
+        var mockState = new Mock<IResolveStateMachine>();
 
-            mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.TransientState());
+        var mockASpec = new Mock<IAssociationSpec>();
+        var mockCallBack = new Mock<IPersistingCallbackFacet>();
 
-            mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
-            mockSpec.Setup(s => s.GetFacet<IPersistingCallbackFacet>()).Returns(mockCallBack.Object);
+        mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.TransientState());
 
-            mockASpec.Setup(s => s.IsPersisted).Returns(true);
+        mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
+        mockSpec.Setup(s => s.GetFacet<IPersistingCallbackFacet>()).Returns(mockCallBack.Object);
 
-            mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
-            mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
+        mockASpec.Setup(s => s.IsPersisted).Returns(true);
 
+        mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
+        mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
+
+        algorithm.MakePersistent(testAdapter);
+
+        mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
+        mockASpec.Verify(s => s.GetNakedObject(testAdapter));
+    }
+
+    [Test]
+    public void TestMakePersistentFailsIfObjectAlreadyPersistent() {
+        var mockAdapter = new Mock<INakedObjectAdapter>();
+        var testAdapter = mockAdapter.Object;
+
+        var mockSpec = new Mock<IObjectSpec>();
+        var mockState = new Mock<IResolveStateMachine>();
+
+        mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.ResolvedState());
+
+        mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
+        mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
+
+        try {
             algorithm.MakePersistent(testAdapter);
-
-            mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
-            mockASpec.Verify(s => s.GetNakedObject(testAdapter));
+            Assert.Fail("Expect exception");
         }
+        catch (NotPersistableException /*expected*/) { }
+    }
 
-        [Test]
-        public void TestMakePersistentFailsIfObjectAlreadyPersistent() {
-            var mockAdapter = new Mock<INakedObjectAdapter>();
-            var testAdapter = mockAdapter.Object;
+    [Test]
+    public void TestMakePersistentFailsIfObjectMustBeTransient() {
+        var mockAdapter = new Mock<INakedObjectAdapter>();
+        var testAdapter = mockAdapter.Object;
 
-            var mockSpec = new Mock<IObjectSpec>();
-            var mockState = new Mock<IResolveStateMachine>();
+        var mockSpec = new Mock<IObjectSpec>();
+        var mockState = new Mock<IResolveStateMachine>();
 
-            mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.ResolvedState());
+        mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.TransientState());
+        mockSpec.Setup(s => s.Persistable).Returns(PersistableType.Transient);
 
-            mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
-            mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
+        mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
+        mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-            try {
-                algorithm.MakePersistent(testAdapter);
-                Assert.Fail("Expect exception");
-            }
-            catch (NotPersistableException /*expected*/) { }
-        }
-
-        [Test]
-        public void TestMakePersistentFailsIfObjectMustBeTransient() {
-            var mockAdapter = new Mock<INakedObjectAdapter>();
-            var testAdapter = mockAdapter.Object;
-
-            var mockSpec = new Mock<IObjectSpec>();
-            var mockState = new Mock<IResolveStateMachine>();
-
-            mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.TransientState());
-            mockSpec.Setup(s => s.Persistable).Returns(PersistableType.Transient);
-
-            mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
-            mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
-
-            try {
-                algorithm.MakePersistent(testAdapter);
-                Assert.Fail("Expect exception");
-            }
-            catch (NotPersistableException /*expected*/) { }
-        }
-
-        [Test]
-        public void TestMakePersistentSkipsAggregatedObjects() {
-            var mockAdapter = new Mock<INakedObjectAdapter>();
-            var testAdapter = mockAdapter.Object;
-
-            var mockSpec = new Mock<IObjectSpec>();
-            var mockState = new Mock<IResolveStateMachine>();
-
-            var mockASpec = new Mock<IAssociationSpec>();
-            var mockCallBack = new Mock<IPersistingCallbackFacet>();
-
-            mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.AggregatedState());
-
-            mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
-            mockSpec.Setup(s => s.GetFacet<IPersistingCallbackFacet>()).Returns(mockCallBack.Object);
-
-            mockASpec.Setup(s => s.IsPersisted).Returns(true);
-
-            mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
-            mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
-
+        try {
             algorithm.MakePersistent(testAdapter);
-
-            mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
-            mockASpec.Verify(s => s.GetNakedObject(testAdapter));
+            Assert.Fail("Expect exception");
         }
+        catch (NotPersistableException /*expected*/) { }
+    }
 
-        [Test]
-        public void TestMakePersistentSkipsAlreadyPersistedObjects() {
-            var mockAdapter = new Mock<INakedObjectAdapter>();
-            var testAdapter = mockAdapter.Object;
+    [Test]
+    public void TestMakePersistentSkipsAggregatedObjects() {
+        var mockAdapter = new Mock<INakedObjectAdapter>();
+        var testAdapter = mockAdapter.Object;
 
-            var mockSpec = new Mock<IObjectSpec>();
-            var mockState = new Mock<IResolveStateMachine>();
+        var mockSpec = new Mock<IObjectSpec>();
+        var mockState = new Mock<IResolveStateMachine>();
 
-            var mockASpec = new Mock<IAssociationSpec>();
-            var mockCallBack = new Mock<IPersistingCallbackFacet>();
+        var mockASpec = new Mock<IAssociationSpec>();
+        var mockCallBack = new Mock<IPersistingCallbackFacet>();
 
-            mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.AggregatedState());
+        mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.AggregatedState());
 
-            mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
-            mockSpec.Setup(s => s.GetFacet<IPersistingCallbackFacet>()).Returns(mockCallBack.Object);
+        mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
+        mockSpec.Setup(s => s.GetFacet<IPersistingCallbackFacet>()).Returns(mockCallBack.Object);
 
-            mockASpec.Setup(s => s.IsPersisted).Returns(false);
+        mockASpec.Setup(s => s.IsPersisted).Returns(true);
 
-            mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
-            mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
+        mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
+        mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-            algorithm.MakePersistent(testAdapter);
+        algorithm.MakePersistent(testAdapter);
 
-            mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
-            mockASpec.Verify(s => s.GetNakedObject(testAdapter), Times.Never);
-        }
+        mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
+        mockASpec.Verify(s => s.GetNakedObject(testAdapter));
+    }
+
+    [Test]
+    public void TestMakePersistentSkipsAlreadyPersistedObjects() {
+        var mockAdapter = new Mock<INakedObjectAdapter>();
+        var testAdapter = mockAdapter.Object;
+
+        var mockSpec = new Mock<IObjectSpec>();
+        var mockState = new Mock<IResolveStateMachine>();
+
+        var mockASpec = new Mock<IAssociationSpec>();
+        var mockCallBack = new Mock<IPersistingCallbackFacet>();
+
+        mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.AggregatedState());
+
+        mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
+        mockSpec.Setup(s => s.GetFacet<IPersistingCallbackFacet>()).Returns(mockCallBack.Object);
+
+        mockASpec.Setup(s => s.IsPersisted).Returns(false);
+
+        mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
+        mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
+
+        algorithm.MakePersistent(testAdapter);
+
+        mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
+        mockASpec.Verify(s => s.GetNakedObject(testAdapter), Times.Never);
     }
 }

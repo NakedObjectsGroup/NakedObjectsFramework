@@ -21,53 +21,53 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class TableViewAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<TableViewAnnotationFacetFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public TableViewAnnotationFacetFactory(IFacetFactoryOrder<TableViewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) =>
-            logger = loggerFactory.CreateLogger<TableViewAnnotationFacetFactory>();
+public sealed class TableViewAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<TableViewAnnotationFacetFactory> logger;
 
-        private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
-            if (FacetUtils.IsTuple(methodReturnType)) {
-                methodReturnType = methodReturnType.GetGenericArguments().First();
-            }
+    public TableViewAnnotationFacetFactory(IFacetFactoryOrder<TableViewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) =>
+        logger = loggerFactory.CreateLogger<TableViewAnnotationFacetFactory>();
 
-            if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
-                var attribute = member.GetCustomAttribute<TableViewAttribute>();
-                FacetUtils.AddFacet(Create(attribute, specification));
-            }
+    private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
+        if (FacetUtils.IsTuple(methodReturnType)) {
+            methodReturnType = methodReturnType.GetGenericArguments().First();
         }
 
-        private ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) {
-            var columns = attribute.Columns ?? Array.Empty<string>();
-            var distinctColumns = columns.Distinct().ToArray();
+        if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
+            var attribute = member.GetCustomAttribute<TableViewAttribute>();
+            FacetUtils.AddFacet(Create(attribute, specification));
+        }
+    }
 
-            if (columns.Length != distinctColumns.Length) {
-                // we had duplicates - log
-                var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? $"{s}, {t}" : t);
-                var name = holder.Identifier is null ? "Unknown" : holder.Identifier.ToString();
-                logger.LogWarning($"Table View on {name} had duplicate columns {duplicates}");
-                columns = distinctColumns;
-            }
+    private ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) {
+        var columns = attribute.Columns ?? Array.Empty<string>();
+        var distinctColumns = columns.Distinct().ToArray();
 
-            return new TableViewFacet(attribute.Title, columns, holder);
+        if (columns.Length != distinctColumns.Length) {
+            // we had duplicates - log
+            var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? $"{s}, {t}" : t);
+            var name = holder.Identifier is null ? "Unknown" : holder.Identifier.ToString();
+            logger.LogWarning($"Table View on {name} had duplicate columns {duplicates}");
+            columns = distinctColumns;
         }
 
-        private ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTableViewFacet(attribute, holder);
+        return new TableViewFacet(attribute.Title, columns, holder);
+    }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, method.ReturnType, specification);
-            return metamodel;
+    private ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTableViewFacet(attribute, holder);
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, method.ReturnType, specification);
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (property.HasPublicGetter()) {
+            Process(property, property.PropertyType, specification);
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (property.HasPublicGetter()) {
-                Process(property, property.PropertyType, specification);
-            }
-
-            return metamodel;
-        }
+        return metamodel;
     }
 }

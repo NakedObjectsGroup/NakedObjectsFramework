@@ -18,51 +18,51 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
-        private readonly ILogger<HideForContextFacet> logger;
-        private readonly MethodInfo method;
+namespace NakedObjects.Reflector.Facet; 
 
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+[Serializable]
+public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
+    private readonly ILogger<HideForContextFacet> logger;
+    private readonly MethodInfo method;
 
-        public HideForContextFacet(MethodInfo method, ISpecification holder, ILogger<HideForContextFacet> logger)
-            : base(typeof(IHideForContextFacet), holder) {
-            this.method = method;
-            this.logger = logger;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-
-        #region IHideForContextFacet Members
-
-        public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
-
-        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
-
-        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            if (nakedObjectAdapter == null) {
-                return null;
-            }
-
-            var isHidden = (bool) methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
-            return isHidden ? Resources.NakedObjects.Hidden : null;
-        }
-
-        #endregion
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public HideForContextFacet(MethodInfo method, ISpecification holder, ILogger<HideForContextFacet> logger)
+        : base(typeof(IHideForContextFacet), holder) {
+        this.method = method;
+        this.logger = logger;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+
+    #region IHideForContextFacet Members
+
+    public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
+
+    public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
+
+    public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        if (nakedObjectAdapter == null) {
+            return null;
+        }
+
+        var isHidden = (bool) methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        return isHidden ? Resources.NakedObjects.Hidden : null;
+    }
+
+    #endregion
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

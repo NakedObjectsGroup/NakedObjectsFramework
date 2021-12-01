@@ -13,56 +13,56 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Component {
-    [Serializable]
-    public sealed class MetamodelHolder : IMetamodelBuilder {
-        private readonly ISpecificationCache cache;
-        private readonly ILogger<MetamodelHolder> logger;
+namespace NakedFramework.Metamodel.Component; 
 
-        public MetamodelHolder(ISpecificationCache cache, ILogger<MetamodelHolder> logger) {
-            this.cache = cache;
-            this.logger = logger;
-        }
+[Serializable]
+public sealed class MetamodelHolder : IMetamodelBuilder {
+    private readonly ISpecificationCache cache;
+    private readonly ILogger<MetamodelHolder> logger;
 
-        private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
-            var key = TypeKeyUtils.GetKeyForType(type);
-            TypeUtils.GetType(type.FullName); // This should ensure type is cached 
-            return cache.GetSpecification(key);
-        }
-
-        #region IMetamodelBuilder Members
-
-        public ITypeSpecImmutable[] AllSpecifications => cache.AllSpecifications();
-
-        public ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false) {
-            try {
-                var spec = GetSpecificationFromCache(TypeKeyUtils.FilterNullableAndProxies(type));
-                if (spec == null && !allowNull) {
-                    throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: unexpected null"));
-                }
-
-                return spec;
-            }
-            catch (NakedObjectSystemException e) {
-                logger.LogError($"Failed to Load Specification for: {(type == null ? "null" : type.FullName)} error: {e}");
-                throw;
-            }
-            catch (Exception e) {
-                throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: {e}"));
-            }
-        }
-
-        public ITypeSpecImmutable GetSpecification(string name) {
-            var type = TypeUtils.GetType(name);
-            return GetSpecification(type);
-        }
-
-        public void Add(Type type, ITypeSpecBuilder spec) => cache.Cache(TypeKeyUtils.GetKeyForType(type), spec);
-
-        public void AddMainMenu(IMenuImmutable menu) => cache.Cache(menu);
-
-        public IMenuImmutable[] MainMenus => cache.MainMenus();
-
-        #endregion
+    public MetamodelHolder(ISpecificationCache cache, ILogger<MetamodelHolder> logger) {
+        this.cache = cache;
+        this.logger = logger;
     }
+
+    private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
+        var key = TypeKeyUtils.GetKeyForType(type);
+        TypeUtils.GetType(type.FullName); // This should ensure type is cached 
+        return cache.GetSpecification(key);
+    }
+
+    #region IMetamodelBuilder Members
+
+    public ITypeSpecImmutable[] AllSpecifications => cache.AllSpecifications();
+
+    public ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false) {
+        try {
+            var spec = GetSpecificationFromCache(TypeKeyUtils.FilterNullableAndProxies(type));
+            if (spec == null && !allowNull) {
+                throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: unexpected null"));
+            }
+
+            return spec;
+        }
+        catch (NakedObjectSystemException e) {
+            logger.LogError($"Failed to Load Specification for: {(type == null ? "null" : type.FullName)} error: {e}");
+            throw;
+        }
+        catch (Exception e) {
+            throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: {e}"));
+        }
+    }
+
+    public ITypeSpecImmutable GetSpecification(string name) {
+        var type = TypeUtils.GetType(name);
+        return GetSpecification(type);
+    }
+
+    public void Add(Type type, ITypeSpecBuilder spec) => cache.Cache(TypeKeyUtils.GetKeyForType(type), spec);
+
+    public void AddMainMenu(IMenuImmutable menu) => cache.Cache(menu);
+
+    public IMenuImmutable[] MainMenus => cache.MainMenus();
+
+    #endregion
 }

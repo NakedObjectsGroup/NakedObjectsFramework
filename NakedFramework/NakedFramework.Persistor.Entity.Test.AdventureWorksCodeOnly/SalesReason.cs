@@ -13,21 +13,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.SalesReason")]
-    public class SalesReason {
-        public int SalesReasonID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Sales.SalesReason")]
+public class SalesReason {
+    public int SalesReasonID { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string ReasonType { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string ReasonType { get; set; }
 
-        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReasons { get; set; } = new HashSet<SalesOrderHeaderSalesReason>();
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReasons { get; set; } = new HashSet<SalesOrderHeaderSalesReason>();
 }

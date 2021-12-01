@@ -8,8 +8,8 @@
 using System;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Component {
-    public interface IFrameworkResolver : IDisposable {
-        INakedFramework GetFramework();
-    }
+namespace NakedFramework.Architecture.Component; 
+
+public interface IFrameworkResolver : IDisposable {
+    INakedFramework GetFramework();
 }

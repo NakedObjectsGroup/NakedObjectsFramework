@@ -12,19 +12,19 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    [DataContract]
-    public class PropertyMemberRepresentationStrategy : AbstractPropertyRepresentationStrategy {
-        public PropertyMemberRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(frameworkFacade, req, propertyContext, flags) { }
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        public override bool ShowChoices() => false;
+[DataContract]
+public class PropertyMemberRepresentationStrategy : AbstractPropertyRepresentationStrategy {
+    public PropertyMemberRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+        base(frameworkFacade, req, propertyContext, flags) { }
 
-        public override LinkRepresentation[] GetLinks() => GetLinks(true);
+    public override bool ShowChoices() => false;
 
-        protected override bool AddChoices() =>
-            PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-            (PropertyContext.Property.Specification.IsEnum ||
-             PropertyContext.Property.Specification.IsParseable);
-    }
+    public override LinkRepresentation[] GetLinks() => GetLinks(true);
+
+    protected override bool AddChoices() =>
+        PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+        (PropertyContext.Property.Specification.IsEnum ||
+         PropertyContext.Property.Specification.IsParseable);
 }

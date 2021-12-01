@@ -12,13 +12,13 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
-        private readonly List<ITypeSpecImmutable> objectContributees = new();
+namespace NakedFramework.Metamodel.Facet; 
 
-        public DisplayAsPropertyFacet(ISpecification holder) : base(typeof(IDisplayAsPropertyFacet), holder) { }
-        public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
-        public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
-    }
+[Serializable]
+public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
+    private readonly List<ITypeSpecImmutable> objectContributees = new();
+
+    public DisplayAsPropertyFacet(ISpecification holder) : base(typeof(IDisplayAsPropertyFacet), holder) { }
+    public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
+    public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
 }

@@ -8,10 +8,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace NakedFramework.Metamodel.Authorization {
-    public interface IAuthorizationConfiguration {
-        Type DefaultAuthorizer { get; }
-        IDictionary<string, Type> NamespaceAuthorizers { get; }
-        IDictionary<string, Type> TypeAuthorizers { get; }
-    }
+namespace NakedFramework.Metamodel.Authorization; 
+
+public interface IAuthorizationConfiguration {
+    Type DefaultAuthorizer { get; }
+    IDictionary<string, Type> NamespaceAuthorizers { get; }
+    IDictionary<string, Type> TypeAuthorizers { get; }
 }

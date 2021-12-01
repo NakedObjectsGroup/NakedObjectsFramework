@@ -13,31 +13,31 @@ using NakedObjects.Services;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace SimpleDatabase {
-    [ComplexType]
-    [Owned]
-    public class NameType : AbstractTestCode {
-        [Root]
-        [NotMapped]
-        public Person Parent { get; set; }
+namespace SimpleDatabase; 
 
-        [NotMapped]
-        public IDomainObjectContainer Container { protected get; set; }
+[ComplexType]
+[Owned]
+public class NameType : AbstractTestCode {
+    [Root]
+    [NotMapped]
+    public Person Parent { get; set; }
 
-        [NotMapped]
-        public SimpleRepository<Person> Service { protected get; set; }
+    [NotMapped]
+    public IDomainObjectContainer Container { protected get; set; }
 
-        [NakedObjectsIgnore]
-        public object ExposeContainerForTest() => Container;
+    [NotMapped]
+    public SimpleRepository<Person> Service { protected get; set; }
 
-        [NakedObjectsIgnore]
-        public object ExposeServiceForTest() => Service;
+    [NakedObjectsIgnore]
+    public object ExposeContainerForTest() => Container;
 
-        #region Primitive Properties
+    [NakedObjectsIgnore]
+    public object ExposeServiceForTest() => Service;
 
-        public string Firstname { get; set; }
-        public string Surname { get; set; }
+    #region Primitive Properties
 
-        #endregion
-    }
+    public string Firstname { get; set; }
+    public string Surname { get; set; }
+
+    #endregion
 }

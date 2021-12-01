@@ -13,34 +13,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.Customer")]
-    public class Customer {
-        public int CustomerID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public int? TerritoryID { get; set; }
+[Table("Sales.Customer")]
+public class Customer {
+    public int CustomerID { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [Required]
-        [StringLength(10)]
-        public string AccountNumber { get; set; }
+    public int? TerritoryID { get; set; }
 
-        [Required]
-        [StringLength(1)]
-        public string CustomerType { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [Required]
+    [StringLength(10)]
+    public string AccountNumber { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Required]
+    [StringLength(1)]
+    public string CustomerType { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual SalesTerritory SalesTerritory { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new HashSet<CustomerAddress>();
+    public virtual SalesTerritory SalesTerritory { get; set; }
 
-        public virtual Individual Individual { get; set; }
+    public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new HashSet<CustomerAddress>();
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
+    public virtual Individual Individual { get; set; }
 
-        public virtual Store Store { get; set; }
-    }
+    public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
+
+    public virtual Store Store { get; set; }
 }

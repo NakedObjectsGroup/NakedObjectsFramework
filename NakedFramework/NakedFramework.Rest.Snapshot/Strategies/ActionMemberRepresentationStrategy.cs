@@ -12,20 +12,20 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    public class ActionMemberRepresentationStrategy : AbstractActionRepresentationStrategy {
-        public ActionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) : base(oidStrategy, req, actionContext, flags) { }
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        public override LinkRepresentation[] GetLinks() {
-            var links = new List<LinkRepresentation> {CreateDetailsLink()};
+public class ActionMemberRepresentationStrategy : AbstractActionRepresentationStrategy {
+    public ActionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) : base(oidStrategy, req, actionContext, flags) { }
 
-            if (!HasParams()) {
-                links.Add(CreateActionLink());
-            }
+    public override LinkRepresentation[] GetLinks() {
+        var links = new List<LinkRepresentation> {CreateDetailsLink()};
 
-            return links.ToArray();
+        if (!HasParams()) {
+            links.Add(CreateActionLink());
         }
 
-        public override bool ShowParameters() => false;
+        return links.ToArray();
     }
+
+    public override bool ShowParameters() => false;
 }

@@ -10,44 +10,44 @@ using System.Collections.Immutable;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Component {
-    public enum ReflectorType {
-        System,
-        Object,
-        Functional,
-        Hybrid
-    }
+namespace NakedFramework.Architecture.Component; 
+
+public enum ReflectorType {
+    System,
+    Object,
+    Functional,
+    Hybrid
+}
+
+/// <summary>
+///     The Reflector is responsible for parsing the code of the domain model and creating the
+///     MetamodelManager (consisting of Specifications) from this. The Reflector is only run when the
+///     application is first started-up, and is not used once the application is running.  If the
+///     application has been provided with a previously-generated-and-persisted MetamodelManager, then
+///     the Reflector is not called at all.
+/// </summary>
+public interface IReflector {
+    string Name { get; }
+
+    ReflectorType ReflectorType { get; }
+
+    int Order { get; }
+
+    bool IgnoreCase { get; }
+    bool ConcurrencyChecking { get; }
+    IClassStrategy ClassStrategy { get; }
+    IFacetFactorySet FacetFactorySet { get; }
+
+    IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
+
+    (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
     /// <summary>
-    ///     The Reflector is responsible for parsing the code of the domain model and creating the
-    ///     MetamodelManager (consisting of Specifications) from this. The Reflector is only run when the
-    ///     application is first started-up, and is not used once the application is running.  If the
-    ///     application has been provided with a previously-generated-and-persisted MetamodelManager, then
-    ///     the Reflector is not called at all.
+    ///     For when you know the expected subclass of the Spec
     /// </summary>
-    public interface IReflector {
-        string Name { get; }
+    (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable;
 
-        ReflectorType ReflectorType { get; }
-
-        int Order { get; }
-
-        bool IgnoreCase { get; }
-        bool ConcurrencyChecking { get; }
-        IClassStrategy ClassStrategy { get; }
-        IFacetFactorySet FacetFactorySet { get; }
-
-        IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
-
-        (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
-        /// <summary>
-        ///     For when you know the expected subclass of the Spec
-        /// </summary>
-        (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable;
-
-        bool FindSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    bool FindSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

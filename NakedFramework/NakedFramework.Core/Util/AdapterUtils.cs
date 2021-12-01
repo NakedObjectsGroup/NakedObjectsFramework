@@ -13,88 +13,88 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Core.Util {
-    public static class AdapterUtils {
-        /// <summary>
-        ///     Safe (returns null if INakedObjectAdapter is null) getter
-        /// </summary>
-        public static object GetDomainObject(this INakedObjectAdapter inObjectAdapter) => inObjectAdapter?.Object;
+namespace NakedFramework.Core.Util; 
 
-        /// <summary>
-        ///     Return spec as object spec if is otherwise null
-        /// </summary>
-        /// <param name="nakedObjectAdapter"></param>
-        /// <returns></returns>
-        public static IObjectSpec GetObjectSpec(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Spec as IObjectSpec;
+public static class AdapterUtils {
+    /// <summary>
+    ///     Safe (returns null if INakedObjectAdapter is null) getter
+    /// </summary>
+    public static object GetDomainObject(this INakedObjectAdapter inObjectAdapter) => inObjectAdapter?.Object;
 
-        /// <summary>
-        ///     Return spec as service spec if is otherwise null
-        /// </summary>
-        /// <param name="nakedObjectAdapter"></param>
-        /// <returns></returns>
-        public static IServiceSpec GetServiceSpec(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Spec as IServiceSpec;
+    /// <summary>
+    ///     Return spec as object spec if is otherwise null
+    /// </summary>
+    /// <param name="nakedObjectAdapter"></param>
+    /// <returns></returns>
+    public static IObjectSpec GetObjectSpec(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Spec as IObjectSpec;
 
-        /// <summary>
-        ///     Safe (returns null if INakedObjectAdapter is null) generic getter
-        /// </summary>
-        public static T GetDomainObject<T>(this INakedObjectAdapter inObjectAdapter) => inObjectAdapter == null ? default : (T) inObjectAdapter.Object;
+    /// <summary>
+    ///     Return spec as service spec if is otherwise null
+    /// </summary>
+    /// <param name="nakedObjectAdapter"></param>
+    /// <returns></returns>
+    public static IServiceSpec GetServiceSpec(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Spec as IServiceSpec;
 
-        public static bool Exists(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter?.Object != null;
+    /// <summary>
+    ///     Safe (returns null if INakedObjectAdapter is null) generic getter
+    /// </summary>
+    public static T GetDomainObject<T>(this INakedObjectAdapter inObjectAdapter) => inObjectAdapter == null ? default : (T) inObjectAdapter.Object;
 
-        public static ICollectionFacet GetCollectionFacetFromSpec(this INakedObjectAdapter objectAdapterRepresentingCollection) {
-            var collectionSpec = objectAdapterRepresentingCollection.Spec;
-            return collectionSpec.GetFacet<ICollectionFacet>();
-        }
+    public static bool Exists(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter?.Object != null;
 
-        public static IEnumerable<INakedObjectAdapter> GetAsEnumerable(this INakedObjectAdapter objectAdapterRepresentingCollection, INakedObjectManager manager) => objectAdapterRepresentingCollection.GetCollectionFacetFromSpec().AsEnumerable(objectAdapterRepresentingCollection, manager);
+    public static ICollectionFacet GetCollectionFacetFromSpec(this INakedObjectAdapter objectAdapterRepresentingCollection) {
+        var collectionSpec = objectAdapterRepresentingCollection.Spec;
+        return collectionSpec.GetFacet<ICollectionFacet>();
+    }
 
-        public static IQueryable GetAsQueryable(this INakedObjectAdapter objectAdapterRepresentingCollection) => objectAdapterRepresentingCollection.GetCollectionFacetFromSpec().AsQueryable(objectAdapterRepresentingCollection);
+    public static IEnumerable<INakedObjectAdapter> GetAsEnumerable(this INakedObjectAdapter objectAdapterRepresentingCollection, INakedObjectManager manager) => objectAdapterRepresentingCollection.GetCollectionFacetFromSpec().AsEnumerable(objectAdapterRepresentingCollection, manager);
 
-        public static ITypeOfFacet GetTypeOfFacetFromSpec(this INakedObjectAdapter objectAdapterRepresentingCollection) {
-            var collectionSpec = objectAdapterRepresentingCollection.Spec;
-            return collectionSpec.GetFacet<ITypeOfFacet>();
-        }
+    public static IQueryable GetAsQueryable(this INakedObjectAdapter objectAdapterRepresentingCollection) => objectAdapterRepresentingCollection.GetCollectionFacetFromSpec().AsQueryable(objectAdapterRepresentingCollection);
 
-        public static IActionSpec[] GetActionLeafNodes(this IActionSpec actionSpec) {
-            return new[] {actionSpec};
-        }
+    public static ITypeOfFacet GetTypeOfFacetFromSpec(this INakedObjectAdapter objectAdapterRepresentingCollection) {
+        var collectionSpec = objectAdapterRepresentingCollection.Spec;
+        return collectionSpec.GetFacet<ITypeOfFacet>();
+    }
 
-        public static IActionSpec[] GetActionLeafNodes(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Spec.GetActionLeafNodes();
+    public static IActionSpec[] GetActionLeafNodes(this IActionSpec actionSpec) {
+        return new[] {actionSpec};
+    }
 
-        public static IActionSpec[] GetActionLeafNodes(this ITypeSpec spec) => Enumerable.ToArray(spec.GetActions().SelectMany(GetActionLeafNodes));
+    public static IActionSpec[] GetActionLeafNodes(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Spec.GetActionLeafNodes();
 
-        public static IActionSpec GetActionLeafNode(this INakedObjectAdapter nakedObjectAdapter, string actionName) {
-            return nakedObjectAdapter.GetActionLeafNodes().Single(x => x.Id == actionName);
-        }
+    public static IActionSpec[] GetActionLeafNodes(this ITypeSpec spec) => Enumerable.ToArray(spec.GetActions().SelectMany(GetActionLeafNodes));
 
-        public static IAssociationSpec GetVersionProperty(this INakedObjectAdapter nakedObjectAdapter) {
-            var spec = nakedObjectAdapter.Spec as IObjectSpec;
+    public static IActionSpec GetActionLeafNode(this INakedObjectAdapter nakedObjectAdapter, string actionName) {
+        return nakedObjectAdapter.GetActionLeafNodes().Single(x => x.Id == actionName);
+    }
 
-            return spec?.Properties.SingleOrDefault(x => x.ContainsFacet<IConcurrencyCheckFacet>());
-        }
+    public static IAssociationSpec GetVersionProperty(this INakedObjectAdapter nakedObjectAdapter) {
+        var spec = nakedObjectAdapter.Spec as IObjectSpec;
 
-        private static DateTime StripMillis(this DateTime fullDateTime) =>
-            new(fullDateTime.Year,
-                fullDateTime.Month,
-                fullDateTime.Day,
-                fullDateTime.Hour,
-                fullDateTime.Minute,
-                fullDateTime.Second);
+        return spec?.Properties.SingleOrDefault(x => x.ContainsFacet<IConcurrencyCheckFacet>());
+    }
 
-        public static object GetVersion(this INakedObjectAdapter nakedObjectAdapter) {
-            var versionProperty = nakedObjectAdapter.GetVersionProperty();
+    private static DateTime StripMillis(this DateTime fullDateTime) =>
+        new(fullDateTime.Year,
+            fullDateTime.Month,
+            fullDateTime.Day,
+            fullDateTime.Hour,
+            fullDateTime.Minute,
+            fullDateTime.Second);
 
-            if (versionProperty is not null) {
-                var version = versionProperty.GetNakedObject(nakedObjectAdapter).GetDomainObject();
+    public static object GetVersion(this INakedObjectAdapter nakedObjectAdapter) {
+        var versionProperty = nakedObjectAdapter.GetVersionProperty();
 
-                if (version is DateTime dtv) {
-                    return dtv.StripMillis();
-                }
+        if (versionProperty is not null) {
+            var version = versionProperty.GetNakedObject(nakedObjectAdapter).GetDomainObject();
 
-                return version;
+            if (version is DateTime dtv) {
+                return dtv.StripMillis();
             }
 
-            return null;
+            return version;
         }
+
+        return null;
     }
 }

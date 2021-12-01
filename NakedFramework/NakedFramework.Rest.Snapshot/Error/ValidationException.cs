@@ -7,9 +7,9 @@
 
 using System;
 
-namespace NakedFramework.Rest.Snapshot.Error {
-    public class ValidationException : Exception {
-        public ValidationException(int statusCode, string message) : base(message) => StatusCode = statusCode;
-        public int StatusCode { get; }
-    }
+namespace NakedFramework.Rest.Snapshot.Error; 
+
+public class ValidationException : Exception {
+    public ValidationException(int statusCode, string message) : base(message) => StatusCode = statusCode;
+    public int StatusCode { get; }
 }

@@ -14,76 +14,76 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedObjects.Core.Container;
 
-namespace NakedObjects.Core.Component {
-    public sealed class DomainObjectContainerInjector : IDomainObjectInjector {
-        private readonly ILoggerFactory loggerFactory;
-        private readonly List<Type> serviceTypes;
-        private IDomainObjectContainer container;
-        private bool initialized;
-        private List<object> services;
+namespace NakedObjects.Core.Component; 
 
-        public DomainObjectContainerInjector(IAllServiceList services,
-                                             ILoggerFactory loggerFactory,
-                                             ILogger<DomainObjectContainerInjector> logger) {
-            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
-            serviceTypes = services.Services.ToList();
-        }
+public sealed class DomainObjectContainerInjector : IDomainObjectInjector {
+    private readonly ILoggerFactory loggerFactory;
+    private readonly List<Type> serviceTypes;
+    private IDomainObjectContainer container;
+    private bool initialized;
+    private List<object> services;
 
-        private List<object> Services => services ?? SetServices();
-
-        private List<object> SetServices() {
-            services = serviceTypes.Select(Activator.CreateInstance).ToList();
-            services.Add(Framework);
-            services.ForEach(InjectInto);
-            return services;
-        }
-
-        private void Initialize() {
-            if (!initialized) {
-                if (Framework == null) {
-                    throw new NakedObjectSystemException("no Framework");
-                }
-
-                container = new DomainObjectContainer(Framework, loggerFactory.CreateLogger<DomainObjectContainer>());
-                initialized = true;
-            }
-        }
-
-        #region IDomainObjectInjector Members
-
-        public INakedFramework Framework { private get; set; }
-
-        public void InjectInto(object obj) {
-            Initialize();
-            if (container == null) {
-                throw new NakedObjectSystemException("no container");
-            }
-
-            if (Services == null) {
-                throw new NakedObjectSystemException("no services");
-            }
-
-            Methods.InjectContainer(obj, container);
-            Methods.InjectServices(obj, Services.ToArray());
-            Methods.InjectLogger(obj, loggerFactory);
-        }
-
-        public void InjectIntoInline(object root, object inlineObject) {
-            Initialize();
-            if (root == null) {
-                throw new NakedObjectSystemException("no root object");
-            }
-
-            Methods.InjectRoot(root, inlineObject);
-        }
-
-        public void InjectParentIntoChild(object parent, object child) =>
-            child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
-                                                                 p.PropertyType.IsInstanceOfType(parent) &&
-                                                                 p.IsDefined(typeof(RootAttribute), false))?.SetValue(child, parent, null);
-
-        #endregion
+    public DomainObjectContainerInjector(IAllServiceList services,
+                                         ILoggerFactory loggerFactory,
+                                         ILogger<DomainObjectContainerInjector> logger) {
+        this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+        serviceTypes = services.Services.ToList();
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    private List<object> Services => services ?? SetServices();
+
+    private List<object> SetServices() {
+        services = serviceTypes.Select(Activator.CreateInstance).ToList();
+        services.Add(Framework);
+        services.ForEach(InjectInto);
+        return services;
+    }
+
+    private void Initialize() {
+        if (!initialized) {
+            if (Framework == null) {
+                throw new NakedObjectSystemException("no Framework");
+            }
+
+            container = new DomainObjectContainer(Framework, loggerFactory.CreateLogger<DomainObjectContainer>());
+            initialized = true;
+        }
+    }
+
+    #region IDomainObjectInjector Members
+
+    public INakedFramework Framework { private get; set; }
+
+    public void InjectInto(object obj) {
+        Initialize();
+        if (container == null) {
+            throw new NakedObjectSystemException("no container");
+        }
+
+        if (Services == null) {
+            throw new NakedObjectSystemException("no services");
+        }
+
+        Methods.InjectContainer(obj, container);
+        Methods.InjectServices(obj, Services.ToArray());
+        Methods.InjectLogger(obj, loggerFactory);
+    }
+
+    public void InjectIntoInline(object root, object inlineObject) {
+        Initialize();
+        if (root == null) {
+            throw new NakedObjectSystemException("no root object");
+        }
+
+        Methods.InjectRoot(root, inlineObject);
+    }
+
+    public void InjectParentIntoChild(object parent, object child) =>
+        child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
+                                                             p.PropertyType.IsInstanceOfType(parent) &&
+                                                             p.IsDefined(typeof(RootAttribute), false))?.SetValue(child, parent, null);
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

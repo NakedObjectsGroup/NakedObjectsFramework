@@ -10,25 +10,25 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.UnitMeasure")]
-    public class UnitMeasure {
-        [Key]
-        [StringLength(3)]
-        public string UnitMeasureCode { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Production.UnitMeasure")]
+public class UnitMeasure {
+    [Key]
+    [StringLength(3)]
+    public string UnitMeasureCode { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public virtual ICollection<BillOfMaterial> BillOfMaterials { get; set; } = new HashSet<BillOfMaterial>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
+    public virtual ICollection<BillOfMaterial> BillOfMaterials { get; set; } = new HashSet<BillOfMaterial>();
 
-        public virtual ICollection<Product> Products1 { get; set; } = new HashSet<Product>();
+    public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
 
-        public virtual ICollection<ProductVendor> ProductVendors { get; set; } = new HashSet<ProductVendor>();
-    }
+    public virtual ICollection<Product> Products1 { get; set; } = new HashSet<Product>();
+
+    public virtual ICollection<ProductVendor> ProductVendors { get; set; } = new HashSet<ProductVendor>();
 }

@@ -7,13 +7,13 @@
 
 using System;
 
-namespace NakedFramework.Test.Interface {
-    public interface ITestObject : ITestHasActions, ITestHasProperties {
-        ITestObject AssertIsDescribedAs(string expectedDescription);
-        ITestObject AssertIsType(Type expectedType);
-        ITestObject AssertTitleEquals(string expectedTitle);
-        object GetDomainObject();
-    }
+namespace NakedFramework.Test.Interface; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface ITestObject : ITestHasActions, ITestHasProperties {
+    ITestObject AssertIsDescribedAs(string expectedDescription);
+    ITestObject AssertIsType(Type expectedType);
+    ITestObject AssertTitleEquals(string expectedTitle);
+    object GetDomainObject();
 }
+
+// Copyright (c) Naked Objects Group Ltd.

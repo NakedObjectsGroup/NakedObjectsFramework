@@ -9,24 +9,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Spec;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class ActionDefaultsFacetViaFunctionTest {
-        private const string TestValue = "defaultvalue";
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        [TestMethod]
-        public void TestGetDefault() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.GetDefault));
-            var testFacet = new ActionDefaultsFacetViaFunction(method, null, null);
+[TestClass]
+public class ActionDefaultsFacetViaFunctionTest {
+    private const string TestValue = "defaultvalue";
 
-            var (result, defaultType) = testFacet.GetDefault(null, null);
+    [TestMethod]
+    public void TestGetDefault() {
+        var method = typeof(TestClass).GetMethod(nameof(TestClass.GetDefault));
+        var testFacet = new ActionDefaultsFacetViaFunction(method, null, null);
 
-            Assert.AreEqual(TestValue, result);
-            Assert.AreEqual(TypeOfDefaultValue.Explicit, defaultType);
-        }
+        var (result, defaultType) = testFacet.GetDefault(null, null);
 
-        public static class TestClass {
-            public static string GetDefault() => TestValue;
-        }
+        Assert.AreEqual(TestValue, result);
+        Assert.AreEqual(TypeOfDefaultValue.Explicit, defaultType);
+    }
+
+    public static class TestClass {
+        public static string GetDefault() => TestValue;
     }
 }

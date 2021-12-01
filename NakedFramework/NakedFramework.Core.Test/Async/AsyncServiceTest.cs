@@ -13,38 +13,38 @@ using NakedFramework.Architecture.Framework;
 using NakedObjects.Core.Async;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Async {
-    [TestFixture]
-    public class AsyncServiceTest {
-        [Test]
-        public void TestAction() => AsyncTest().Wait(1000);
+namespace NakedFramework.Core.Test.Async; 
 
-        private static async Task AsyncTest() {
-            var mockFramework = new Mock<INakedFramework>();
-            var mockResolver = new Mock<IFrameworkResolver>();
-            var mockTransactionManager = new Mock<ITransactionManager>();
-            var mockLoggerFactory = new Mock<ILoggerFactory>();
-            var mockLogger = new Mock<ILogger<AsyncService>>();
+[TestFixture]
+public class AsyncServiceTest {
+    [Test]
+    public void TestAction() => AsyncTest().Wait(1000);
 
-            mockFramework.Setup(f => f.FrameworkResolver).Returns(mockResolver.Object);
-            mockResolver.Setup(r => r.GetFramework()).Returns(mockFramework.Object);
-            mockFramework.Setup(f => f.TransactionManager).Returns(mockTransactionManager.Object);
+    private static async Task AsyncTest() {
+        var mockFramework = new Mock<INakedFramework>();
+        var mockResolver = new Mock<IFrameworkResolver>();
+        var mockTransactionManager = new Mock<ITransactionManager>();
+        var mockLoggerFactory = new Mock<ILoggerFactory>();
+        var mockLogger = new Mock<ILogger<AsyncService>>();
 
-            var testService = new AsyncService {
-                Framework = mockFramework.Object,
-                LoggerFactory = mockLoggerFactory.Object,
-                Logger = mockLogger.Object
-            };
+        mockFramework.Setup(f => f.FrameworkResolver).Returns(mockResolver.Object);
+        mockResolver.Setup(r => r.GetFramework()).Returns(mockFramework.Object);
+        mockFramework.Setup(f => f.TransactionManager).Returns(mockTransactionManager.Object);
 
-            var run = 0;
+        var testService = new AsyncService {
+            Framework = mockFramework.Object,
+            LoggerFactory = mockLoggerFactory.Object,
+            Logger = mockLogger.Object
+        };
 
-            var task = testService.RunAsync(c => run++);
+        var run = 0;
 
-            await task;
+        var task = testService.RunAsync(c => run++);
 
-            Assert.IsNull(task.Exception);
+        await task;
 
-            Assert.AreEqual(1, run);
-        }
+        Assert.IsNull(task.Exception);
+
+        Assert.AreEqual(1, run);
     }
 }

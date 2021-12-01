@@ -13,41 +13,41 @@ using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Reflector.Extensions;
 
-namespace NakedObjects.DependencyInjection.Test.Extensions {
-    [TestClass]
-    public class ExtensionsTest {
-        [TestMethod]
-        public void TestFramework() {
-            IServiceCollection services = new ServiceCollection();
-            services.AddNakedFramework(options => { });
-        }
+namespace NakedObjects.DependencyInjection.Test.Extensions; 
 
-        [TestMethod]
-        public void TestNakedObjects() {
-            IServiceCollection services = new ServiceCollection();
-            services.AddNakedFramework(options => { options.AddNakedObjects(options => { options.DomainModelTypes = Array.Empty<Type>(); }); });
-        }
+[TestClass]
+public class ExtensionsTest {
+    [TestMethod]
+    public void TestFramework() {
+        IServiceCollection services = new ServiceCollection();
+        services.AddNakedFramework(options => { });
+    }
 
-        [TestMethod]
-        public void TestNakedFunctions() {
-            IServiceCollection services = new ServiceCollection();
-            services.AddNakedFramework(options => { options.AddNakedFunctions(options => { options.DomainFunctions = Array.Empty<Type>(); }); });
-        }
+    [TestMethod]
+    public void TestNakedObjects() {
+        IServiceCollection services = new ServiceCollection();
+        services.AddNakedFramework(options => { options.AddNakedObjects(options => { options.DomainModelTypes = Array.Empty<Type>(); }); });
+    }
 
-        [TestMethod]
-        public void TestRestfulObjects() {
-            IServiceCollection services = new ServiceCollection();
-            services.AddNakedFramework(options => { options.AddRestfulObjects(options => { options.AcceptHeaderStrict = true; }); });
-        }
+    [TestMethod]
+    public void TestNakedFunctions() {
+        IServiceCollection services = new ServiceCollection();
+        services.AddNakedFramework(options => { options.AddNakedFunctions(options => { options.DomainFunctions = Array.Empty<Type>(); }); });
+    }
 
-        [TestMethod]
-        public void TestAll() {
-            IServiceCollection services = new ServiceCollection();
-            services.AddNakedFramework(options => {
-                options.AddNakedObjects(options => { options.DomainModelTypes = Array.Empty<Type>(); });
-                options.AddNakedFunctions(options => { options.DomainFunctions = Array.Empty<Type>(); });
-                options.AddRestfulObjects(options => { options.AcceptHeaderStrict = true; });
-            });
-        }
+    [TestMethod]
+    public void TestRestfulObjects() {
+        IServiceCollection services = new ServiceCollection();
+        services.AddNakedFramework(options => { options.AddRestfulObjects(options => { options.AcceptHeaderStrict = true; }); });
+    }
+
+    [TestMethod]
+    public void TestAll() {
+        IServiceCollection services = new ServiceCollection();
+        services.AddNakedFramework(options => {
+            options.AddNakedObjects(options => { options.DomainModelTypes = Array.Empty<Type>(); });
+            options.AddNakedFunctions(options => { options.DomainFunctions = Array.Empty<Type>(); });
+            options.AddRestfulObjects(options => { options.AcceptHeaderStrict = true; });
+        });
     }
 }

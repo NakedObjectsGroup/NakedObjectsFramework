@@ -16,60 +16,60 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class BoundedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private BoundedAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IBoundedFacet)};
+[TestClass]
+public class BoundedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private BoundedAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IBoundedFacet)};
 
-        [TestMethod]
-        public void TestBoundedAnnotationPickedUpOnClass() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IBoundedFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is BoundedFacet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
+    [TestMethod]
+    public void TestBoundedAnnotationPickedUpOnClass() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        #region Nested type: Customer
-
-        [Bounded]
-        private class Customer { }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new BoundedAnnotationFacetFactory(GetOrder<BoundedAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+        metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IBoundedFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is BoundedFacet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    #region Nested type: Customer
+
+    [Bounded]
+    private class Customer { }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new BoundedAnnotationFacetFactory(GetOrder<BoundedAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

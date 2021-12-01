@@ -11,31 +11,31 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.SalesTerritoryHistory")]
-    public class SalesTerritoryHistory {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Sales.SalesTerritoryHistory")]
+public class SalesTerritoryHistory {
        
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int SalesPersonID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int SalesPersonID { get; set; }
 
        
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int TerritoryID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int TerritoryID { get; set; }
 
       
-        [Column(Order = 2)]
-        public DateTime StartDate { get; set; }
+    [Column(Order = 2)]
+    public DateTime StartDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
-        public Guid rowguid { get; set; }
+    public Guid rowguid { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual SalesPerson SalesPerson { get; set; }
+    public virtual SalesPerson SalesPerson { get; set; }
 
-        public virtual SalesTerritory SalesTerritory { get; set; }
-    }
+    public virtual SalesTerritory SalesTerritory { get; set; }
 }

@@ -17,33 +17,33 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class DisabledAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public DisabledAnnotationFacetFactory(IFacetFactoryOrder<DisabledAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.EverythingButObjectsAndInterfaces) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<DisabledAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-        }
+public sealed class DisabledAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public DisabledAnnotationFacetFactory(IFacetFactoryOrder<DisabledAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.EverythingButObjectsAndInterfaces) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, specification);
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(property, specification);
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttribute<DisabledAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-            return metamodel;
-        }
-
-        private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute is null ? null : new DisabledFacetAnnotation(attribute.Value, holder);
+    private static void Process(MemberInfo member, ISpecification holder) {
+        var attribute = member.GetCustomAttribute<DisabledAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(property, specification);
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+        var attribute = parameter.GetCustomAttribute<DisabledAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
+        return metamodel;
+    }
+
+    private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute is null ? null : new DisabledFacetAnnotation(attribute.Value, holder);
 }

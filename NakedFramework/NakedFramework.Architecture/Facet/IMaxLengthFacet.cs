@@ -8,14 +8,14 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Whether the (string) property or a parameter's length must not exceed a certain length
+/// </summary>
+public interface IMaxLengthFacet : ISingleIntValueFacet, IValidatingInteractionAdvisor {
     /// <summary>
-    ///     Whether the (string) property or a parameter's length must not exceed a certain length
+    ///     Whether the provided string exceeds the maximum length
     /// </summary>
-    public interface IMaxLengthFacet : ISingleIntValueFacet, IValidatingInteractionAdvisor {
-        /// <summary>
-        ///     Whether the provided string exceeds the maximum length
-        /// </summary>
-        bool Exceeds(INakedObjectAdapter nakedObjectAdapter);
-    }
+    bool Exceeds(INakedObjectAdapter nakedObjectAdapter);
 }

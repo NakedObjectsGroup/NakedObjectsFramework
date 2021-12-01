@@ -14,37 +14,37 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Model {
-    public class ListValue : IValue {
-        private readonly IValue[] internalValue;
+namespace NakedFramework.Rest.Model; 
 
-        public ListValue(IValue[] value) => internalValue = value;
+public class ListValue : IValue {
+    private readonly IValue[] internalValue;
 
-        #region IValue Members
+    public ListValue(IValue[] value) => internalValue = value;
 
-        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
-            var items = internalValue.Select(iv => iv.GetValue(facade, helper, oidStrategy)).ToArray();
+    #region IValue Members
 
-            if (!items.Any()) {
-                return null;
-            }
+    public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
+        var items = internalValue.Select(iv => iv.GetValue(facade, helper, oidStrategy)).ToArray();
 
-            var types = items.Select(i => GetProxiedType(i.GetType())).ToArray();
-            var type = GetCommonBaseType(types, types.First());
-
-            var collType = typeof(List<>).MakeGenericType(type);
-            var coll = (IList) Activator.CreateInstance(collType);
-
-            Array.ForEach(items, i => coll.Add(i));
-            return coll;
+        if (!items.Any()) {
+            return null;
         }
 
-        #endregion
+        var types = items.Select(i => GetProxiedType(i.GetType())).ToArray();
+        var type = GetCommonBaseType(types, types.First());
 
-        private static Type GetProxiedType(Type type) => FasterTypeUtils.IsAnyProxy(type) ? type.BaseType : type;
+        var collType = typeof(List<>).MakeGenericType(type);
+        var coll = (IList) Activator.CreateInstance(collType);
 
-        // end clone 
-
-        private static Type GetCommonBaseType(Type[] types, Type baseType) => types.Any(type => !type.IsAssignableFrom(baseType)) ? GetCommonBaseType(types, baseType.BaseType) : baseType;
+        Array.ForEach(items, i => coll.Add(i));
+        return coll;
     }
+
+    #endregion
+
+    private static Type GetProxiedType(Type type) => FasterTypeUtils.IsAnyProxy(type) ? type.BaseType : type;
+
+    // end clone 
+
+    private static Type GetCommonBaseType(Type[] types, Type baseType) => types.Any(type => !type.IsAssignableFrom(baseType)) ? GetCommonBaseType(types, baseType.BaseType) : baseType;
 }

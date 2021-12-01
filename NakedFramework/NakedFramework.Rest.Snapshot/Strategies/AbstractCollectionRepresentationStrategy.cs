@@ -16,82 +16,82 @@ using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    public abstract class AbstractCollectionRepresentationStrategy : MemberRepresentationStrategy {
-        private readonly IFrameworkFacade frameworkFacade;
-        private IObjectFacade collection;
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        protected AbstractCollectionRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(frameworkFacade, req, propertyContext, flags) =>
-            this.frameworkFacade = frameworkFacade;
+public abstract class AbstractCollectionRepresentationStrategy : MemberRepresentationStrategy {
+    private readonly IFrameworkFacade frameworkFacade;
+    private IObjectFacade collection;
 
-        protected IObjectFacade Collection => collection ??= PropertyContext.Property.GetValue(PropertyContext.Target);
+    protected AbstractCollectionRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
+        : base(frameworkFacade, req, propertyContext, flags) =>
+        this.frameworkFacade = frameworkFacade;
 
-        protected override MapRepresentation GetExtensionsForSimple() =>
-            RestUtils.GetExtensions(
-                PropertyContext.Property.Name,
-                PropertyContext.Property.Description,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                PropertyContext.Property.MemberOrder,
-                PropertyContext.Property.DataType,
-                PropertyContext.Property.PresentationHint,
-                GetCustomPropertyExtensions(),
-                PropertyContext.Specification,
-                PropertyContext.ElementSpecification,
-                OidStrategy,
-                false);
+    protected IObjectFacade Collection => collection ??= PropertyContext.Property.GetValue(PropertyContext.Target);
 
-        private IDictionary<string, object> GetCustomPropertyExtensions() {
-            var exts = GetTableViewCustomExtensions(PropertyContext.Property.TableViewData);
+    protected override MapRepresentation GetExtensionsForSimple() =>
+        RestUtils.GetExtensions(
+            PropertyContext.Property.Name,
+            PropertyContext.Property.Description,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            PropertyContext.Property.MemberOrder,
+            PropertyContext.Property.DataType,
+            PropertyContext.Property.PresentationHint,
+            GetCustomPropertyExtensions(),
+            PropertyContext.Specification,
+            PropertyContext.ElementSpecification,
+            OidStrategy,
+            false);
 
-            if (PropertyContext.Property.RenderEagerly) {
-                exts ??= new Dictionary<string, object>();
-                exts[JsonPropertyNames.CustomRenderEagerly] = true;
+    private IDictionary<string, object> GetCustomPropertyExtensions() {
+        var exts = GetTableViewCustomExtensions(PropertyContext.Property.TableViewData);
+
+        if (PropertyContext.Property.RenderEagerly) {
+            exts ??= new Dictionary<string, object>();
+            exts[JsonPropertyNames.CustomRenderEagerly] = true;
+        }
+
+        return exts;
+    }
+
+    public abstract LinkRepresentation[] GetValue();
+
+    protected LinkRepresentation CreateValueLink(IObjectFacade no) =>
+        LinkRepresentation.Create(OidStrategy, new ValueRelType(PropertyContext.Property, new UriMtHelper(OidStrategy, Req, no)), Flags,
+                                  new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
+
+    protected LinkRepresentation CreateTableRowValueLink(IObjectFacade no) => RestUtils.CreateTableRowValueLink(no, PropertyContext, frameworkFacade, Req, Flags);
+
+    public abstract int? GetSize();
+
+    private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) => flags.InlineDetailsInCollectionMemberRepresentations || propertyContext.Property.RenderEagerly;
+
+    private static bool DoNotCountAndNotEager(PropertyContextFacade propertyContext) => propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
+
+    public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn, bool inline, IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+        if (asTableColumn) {
+            if (propertyContext.Property.DoNotCount) {
+                return new CollectionMemberNotCountedRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
             }
 
-            return exts;
+            return new CollectionMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
         }
 
-        public abstract LinkRepresentation[] GetValue();
+        return inline switch {
+            true when DoNotCountAndNotEager(propertyContext) => new CollectionMemberNotCountedRepresentationStrategy(frameworkFacade, req, propertyContext, flags),
+            true when !InlineDetails(propertyContext, flags) => new CollectionMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags),
+            _ => new CollectionWithDetailsRepresentationStrategy(frameworkFacade, req, propertyContext, flags)
+        };
+    }
 
-        protected LinkRepresentation CreateValueLink(IObjectFacade no) =>
-            LinkRepresentation.Create(OidStrategy, new ValueRelType(PropertyContext.Property, new UriMtHelper(OidStrategy, Req, no)), Flags,
-                                      new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
-
-        protected LinkRepresentation CreateTableRowValueLink(IObjectFacade no) => RestUtils.CreateTableRowValueLink(no, PropertyContext, frameworkFacade, Req, Flags);
-
-        public abstract int? GetSize();
-
-        private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) => flags.InlineDetailsInCollectionMemberRepresentations || propertyContext.Property.RenderEagerly;
-
-        private static bool DoNotCountAndNotEager(PropertyContextFacade propertyContext) => propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
-
-        public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn, bool inline, IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
-            if (asTableColumn) {
-                if (propertyContext.Property.DoNotCount) {
-                    return new CollectionMemberNotCountedRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
-                }
-
-                return new CollectionMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags);
-            }
-
-            return inline switch {
-                true when DoNotCountAndNotEager(propertyContext) => new CollectionMemberNotCountedRepresentationStrategy(frameworkFacade, req, propertyContext, flags),
-                true when !InlineDetails(propertyContext, flags) => new CollectionMemberRepresentationStrategy(frameworkFacade, req, propertyContext, flags),
-                _ => new CollectionWithDetailsRepresentationStrategy(frameworkFacade, req, propertyContext, flags)
-            };
-        }
-
-        public virtual InlineActionRepresentation[] GetActions() {
-            return !PropertyContext.Target.IsTransient
-                ? frameworkFacade.GetLocallyContributedActions(PropertyContext).Select(a => InlineActionRepresentation.Create(OidStrategy, Req, a, Flags)).ToArray()
-                : Array.Empty<InlineActionRepresentation>();
-        }
+    public virtual InlineActionRepresentation[] GetActions() {
+        return !PropertyContext.Target.IsTransient
+            ? frameworkFacade.GetLocallyContributedActions(PropertyContext).Select(a => InlineActionRepresentation.Create(OidStrategy, Req, a, Flags)).ToArray()
+            : Array.Empty<InlineActionRepresentation>();
     }
 }

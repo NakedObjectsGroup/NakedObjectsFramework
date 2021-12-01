@@ -7,44 +7,44 @@
 
 using System;
 
-namespace NakedFramework.Facade.Interface {
-    public interface ITypeFacade : IFacadeHolder, IEquatable<ITypeFacade> {
-        IAssociationFacade[] Properties { get; }
-        IMenuFacade Menu { get; }
-        string PresentationHint { get; }
-        bool IsAlwaysImmutable { get; }
-        bool IsImmutableOncePersisted { get; }
-        bool IsComplexType { get; }
-        bool IsParseable { get; }
-        bool IsStream { get; }
-        bool IsQueryable { get; }
-        bool IsService { get; }
-        bool IsVoid { get; }
-        bool IsStatic { get; }
-        bool IsDateTime { get; }
-        bool IsDate { get; }
-        bool IsTime { get; }
-        bool IsCollection { get; }
-        bool IsObject { get; }
-        string FullName { get; }
-        string ShortName { get; }
-        string SingularName { get; }
-        string PluralName { get; }
-        string Description { get; }
-        bool IsASet { get; }
-        bool IsAggregated { get; }
-        bool IsImage { get; }
-        bool IsFileAttachment { get; }
-        bool IsFile { get; }
-        bool IsBoolean { get; }
-        bool IsEnum { get; }
-        bool IsNumber { get; }
-        ITypeFacade GetElementType(IObjectFacade objectFacade);
-        bool IsImmutable(IObjectFacade objectFacade);
-        IActionFacade[] GetActionLeafNodes();
-        bool IsOfType(ITypeFacade otherSpec);
-        Type GetUnderlyingType();
-        IActionFacade[] GetCollectionContributedActions();
-        IActionFacade[] GetLocallyContributedActions(ITypeFacade typeFacade, string id);
-    }
+namespace NakedFramework.Facade.Interface; 
+
+public interface ITypeFacade : IFacadeHolder, IEquatable<ITypeFacade> {
+    IAssociationFacade[] Properties { get; }
+    IMenuFacade Menu { get; }
+    string PresentationHint { get; }
+    bool IsAlwaysImmutable { get; }
+    bool IsImmutableOncePersisted { get; }
+    bool IsComplexType { get; }
+    bool IsParseable { get; }
+    bool IsStream { get; }
+    bool IsQueryable { get; }
+    bool IsService { get; }
+    bool IsVoid { get; }
+    bool IsStatic { get; }
+    bool IsDateTime { get; }
+    bool IsDate { get; }
+    bool IsTime { get; }
+    bool IsCollection { get; }
+    bool IsObject { get; }
+    string FullName { get; }
+    string ShortName { get; }
+    string SingularName { get; }
+    string PluralName { get; }
+    string Description { get; }
+    bool IsASet { get; }
+    bool IsAggregated { get; }
+    bool IsImage { get; }
+    bool IsFileAttachment { get; }
+    bool IsFile { get; }
+    bool IsBoolean { get; }
+    bool IsEnum { get; }
+    bool IsNumber { get; }
+    ITypeFacade GetElementType(IObjectFacade objectFacade);
+    bool IsImmutable(IObjectFacade objectFacade);
+    IActionFacade[] GetActionLeafNodes();
+    bool IsOfType(ITypeFacade otherSpec);
+    Type GetUnderlyingType();
+    IActionFacade[] GetCollectionContributedActions();
+    IActionFacade[] GetLocallyContributedActions(ITypeFacade typeFacade, string id);
 }

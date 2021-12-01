@@ -16,39 +16,39 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
-        private readonly MethodInfo propertyMethod;
+namespace NakedObjects.Reflector.Facet; 
+
+[Serializable]
+public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
+    private readonly MethodInfo propertyMethod;
         
-        public PropertyAccessorFacetViaContributedAction(MethodInfo propertyMethod, ISpecification holder, ILogger<PropertyAccessorFacetViaContributedAction> logger)
-            : base(typeof(IPropertyAccessorFacet), holder) {
-            this.propertyMethod = propertyMethod;
+    public PropertyAccessorFacetViaContributedAction(MethodInfo propertyMethod, ISpecification holder, ILogger<PropertyAccessorFacetViaContributedAction> logger)
+        : base(typeof(IPropertyAccessorFacet), holder) {
+        this.propertyMethod = propertyMethod;
            
-            PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
-        }
-
-        private Func<object, object[], object> PropertyDelegate { get; set; }
-        public MethodInfo GetMethod() => propertyMethod;
-
-        public Func<object, object[], object> GetMethodDelegate() => PropertyDelegate;
-
-        #region IPropertyAccessorFacet Members
-
-        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
-            try {
-                var spec = nakedFramework.MetamodelManager.GetSpecification(propertyMethod.DeclaringType);
-                var service = nakedFramework.ServicesManager.GetService(spec as IServiceSpec);
-                return PropertyDelegate.Invoke<object>(propertyMethod, service.GetDomainObject(),  new[] { nakedObjectAdapter.GetDomainObject()});
-            }
-            catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);
-                return null;
-            }
-        }
-
-        #endregion
-
-        protected override string ToStringValues() => $"method={propertyMethod}";
+        PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
     }
+
+    private Func<object, object[], object> PropertyDelegate { get; set; }
+    public MethodInfo GetMethod() => propertyMethod;
+
+    public Func<object, object[], object> GetMethodDelegate() => PropertyDelegate;
+
+    #region IPropertyAccessorFacet Members
+
+    public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
+        try {
+            var spec = nakedFramework.MetamodelManager.GetSpecification(propertyMethod.DeclaringType);
+            var service = nakedFramework.ServicesManager.GetService(spec as IServiceSpec);
+            return PropertyDelegate.Invoke<object>(propertyMethod, service.GetDomainObject(),  new[] { nakedObjectAdapter.GetDomainObject()});
+        }
+        catch (TargetInvocationException e) {
+            InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);
+            return null;
+        }
+    }
+
+    #endregion
+
+    protected override string ToStringValues() => $"method={propertyMethod}";
 }

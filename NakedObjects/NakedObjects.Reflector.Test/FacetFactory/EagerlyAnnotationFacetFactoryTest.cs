@@ -19,168 +19,168 @@ using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private EagerlyAnnotationFacetFactory annotationFacetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IEagerlyFacet)};
+[TestClass]
+public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private EagerlyAnnotationFacetFactory annotationFacetFactory;
 
-        protected override IFacetFactory FacetFactory => annotationFacetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IEagerlyFacet)};
 
-        [TestMethod]
-        public void TestEagerlyAnnotationPickedUpOnClass() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    protected override IFacetFactory FacetFactory => annotationFacetFactory;
 
-            metamodel = annotationFacetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EagerlyFacet);
-            var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
-            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
-            Assert.IsNotNull(metamodel);
-        }
+    [TestMethod]
+    public void TestEagerlyAnnotationPickedUpOnClass() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        [TestMethod]
-        public void TestEagerlyAnnotationPickedUpOnCollection() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "Coll");
-            metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EagerlyFacet);
-            var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
-            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEagerlyAnnotationPickedUpOnMethod() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer1), "Act");
-            metamodel = annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EagerlyFacet);
-            var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
-            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEagerlyAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "Prop");
-            metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EagerlyFacet);
-            var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
-            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEagerlyNotPickedUpOnClass() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            metamodel = annotationFacetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
-            Assert.IsNull(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEagerlyNotPickedUpOnCollection() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer2), "Coll");
-            metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
-            Assert.IsNull(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEagerlyNotPickedUpOnMethod() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer2), "Act");
-            metamodel = annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
-            Assert.IsNull(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestEagerlyNotPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer2), "Prop");
-            metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
-            Assert.IsNull(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = annotationFacetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [Eagerly(Do.Rendering)]
-
-            public int Prop { get; set; }
-
-            [Eagerly(Do.Rendering)]
-            public IList<Customer1> Coll { get; set; }
-
-            [Eagerly(Do.Rendering)]
-            public IList<Customer1> Act() => new List<Customer1>();
-        }
-
-        #endregion
-
-        #region Nested type: Customer2
-
-        [Eagerly(Do.Rendering)]
-        private class Customer2 {
-            public int Prop { get; set; }
-            public IList<Customer1> Coll { get; set; }
-
-            public IList<Customer1> Act() => new List<Customer1>();
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            annotationFacetFactory = new EagerlyAnnotationFacetFactory(GetOrder<EagerlyAnnotationFacetFactory>(), null);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            annotationFacetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+        metamodel = annotationFacetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEagerlyFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EagerlyFacet);
+        var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
+        Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
+        Assert.IsNotNull(metamodel);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
+    [TestMethod]
+    public void TestEagerlyAnnotationPickedUpOnCollection() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "Coll");
+        metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEagerlyFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EagerlyFacet);
+        var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
+        Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEagerlyAnnotationPickedUpOnMethod() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer1), "Act");
+        metamodel = annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEagerlyFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EagerlyFacet);
+        var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
+        Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEagerlyAnnotationPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "Prop");
+        metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEagerlyFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is EagerlyFacet);
+        var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
+        Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEagerlyNotPickedUpOnClass() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        metamodel = annotationFacetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEagerlyFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEagerlyNotPickedUpOnCollection() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer2), "Coll");
+        metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEagerlyFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEagerlyNotPickedUpOnMethod() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer2), "Act");
+        metamodel = annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEagerlyFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestEagerlyNotPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer2), "Prop");
+        metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IEagerlyFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = annotationFacetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [Eagerly(Do.Rendering)]
+
+        public int Prop { get; set; }
+
+        [Eagerly(Do.Rendering)]
+        public IList<Customer1> Coll { get; set; }
+
+        [Eagerly(Do.Rendering)]
+        public IList<Customer1> Act() => new List<Customer1>();
+    }
+
+    #endregion
+
+    #region Nested type: Customer2
+
+    [Eagerly(Do.Rendering)]
+    private class Customer2 {
+        public int Prop { get; set; }
+        public IList<Customer1> Coll { get; set; }
+
+        public IList<Customer1> Act() => new List<Customer1>();
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        annotationFacetFactory = new EagerlyAnnotationFacetFactory(GetOrder<EagerlyAnnotationFacetFactory>(), null);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        annotationFacetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.
+// ReSharper restore UnusedMember.Local

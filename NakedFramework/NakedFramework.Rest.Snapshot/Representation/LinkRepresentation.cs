@@ -12,32 +12,32 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class LinkRepresentation : RefValueRepresentation {
-        protected LinkRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags)
-            : base(oidStrategy, relType, flags) {
-            SetScalars(relType);
-        }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        [DataMember(Name = JsonPropertyNames.Rel)]
-        public string Rel { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Method)]
-        public string Method { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Type)]
-        public string Type { get; set; }
-
-        private void SetScalars(RelType relType) {
-            Rel = relType.Name;
-            Method = relType.Method.ToString().ToUpper();
-            Type = relType.GetMediaType(Flags).ToString();
-        }
-
-        public static LinkRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags, params OptionalProperty[] properties) =>
-            properties.Any()
-                ? CreateWithOptionals<LinkRepresentation>(new object[] {oidStrategy, relType, flags}, properties)
-                : new LinkRepresentation(oidStrategy, relType, flags);
+[DataContract]
+public class LinkRepresentation : RefValueRepresentation {
+    protected LinkRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags)
+        : base(oidStrategy, relType, flags) {
+        SetScalars(relType);
     }
+
+    [DataMember(Name = JsonPropertyNames.Rel)]
+    public string Rel { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Method)]
+    public string Method { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Type)]
+    public string Type { get; set; }
+
+    private void SetScalars(RelType relType) {
+        Rel = relType.Name;
+        Method = relType.Method.ToString().ToUpper();
+        Type = relType.GetMediaType(Flags).ToString();
+    }
+
+    public static LinkRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags, params OptionalProperty[] properties) =>
+        properties.Any()
+            ? CreateWithOptionals<LinkRepresentation>(new object[] {oidStrategy, relType, flags}, properties)
+            : new LinkRepresentation(oidStrategy, relType, flags);
 }

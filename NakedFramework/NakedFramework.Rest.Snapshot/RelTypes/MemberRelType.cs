@@ -10,19 +10,19 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class MemberRelType : RelType {
-        public MemberRelType(UriMtHelper helper) : base(RelValues.Details, helper) { }
-        public MemberRelType(string name, UriMtHelper helper) : base(name, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
+public class MemberRelType : RelType {
+    public MemberRelType(UriMtHelper helper) : base(RelValues.Details, helper) { }
+    public MemberRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override Uri GetUri() => Helper.GetDetailsUri();
+    public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            var mediaType = UriMtHelper.GetJsonMediaType(Helper.GetMemberMediaType());
-            Helper.AddObjectCollectionRepresentationParameter(mediaType, flags);
-            return mediaType;
-        }
+    public override Uri GetUri() => Helper.GetDetailsUri();
+
+    public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
+        var mediaType = UriMtHelper.GetJsonMediaType(Helper.GetMemberMediaType());
+        Helper.AddObjectCollectionRepresentationParameter(mediaType, flags);
+        return mediaType;
     }
 }

@@ -9,32 +9,32 @@ using System.Collections.Generic;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.Reflect {
+namespace NakedFramework.Architecture.Reflect; 
+
+/// <summary>
+///     Mechanism for applying actions to All/Any of the FacetFactories. The implementation
+///     must be set up to know about all the FacetFactories.
+/// </summary>
+public interface IFacetFactorySet {
+    IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
+    IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
+    IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy);
+
     /// <summary>
-    ///     Mechanism for applying actions to All/Any of the FacetFactories. The implementation
-    ///     must be set up to know about all the FacetFactories.
+    ///     Whether this <see cref="MethodInfo" /> is recognized by any of the <see cref="IFacetFactory" />s.
     /// </summary>
-    public interface IFacetFactorySet {
-        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
-        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
-        IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy);
+    /// <para>
+    ///     Typically this is when the method has a specific prefix, such as <c>Validate</c> or <c>Hide</c>.
+    /// </para>
+    bool Recognizes(MethodInfo method);
 
-        /// <summary>
-        ///     Whether this <see cref="MethodInfo" /> is recognized by any of the <see cref="IFacetFactory" />s.
-        /// </summary>
-        /// <para>
-        ///     Typically this is when the method has a specific prefix, such as <c>Validate</c> or <c>Hide</c>.
-        /// </para>
-        bool Recognizes(MethodInfo method);
+    /// <summary>
+    ///     Whether this <see cref="MethodInfo" /> is filtered by any of the <see cref="IFacetFactory" />s.
+    /// </summary>
+    bool Filters(MethodInfo method, IClassStrategy classStrategy);
 
-        /// <summary>
-        ///     Whether this <see cref="MethodInfo" /> is filtered by any of the <see cref="IFacetFactory" />s.
-        /// </summary>
-        bool Filters(MethodInfo method, IClassStrategy classStrategy);
-
-        /// <summary>
-        ///     Whether this <see cref="PropertyInfo" /> is filtered by any of the <see cref="IFacetFactory" />s.
-        /// </summary>
-        bool Filters(PropertyInfo property, IClassStrategy classStrategy);
-    }
+    /// <summary>
+    ///     Whether this <see cref="PropertyInfo" /> is filtered by any of the <see cref="IFacetFactory" />s.
+    /// </summary>
+    bool Filters(PropertyInfo property, IClassStrategy classStrategy);
 }

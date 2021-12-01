@@ -15,121 +15,121 @@ using System.Web;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter {
-    /// <summary>
-    ///     Provide consistent string encoding strategy for <see cref="IEncodedToStrings" />
-    /// </summary>
-    /// <seealso cref="StringDecoderHelper" />
-    public class StringEncoderHelper {
-        private readonly List<string> strings = new();
-        public bool Encode { get; init; }
+namespace NakedFramework.Core.Adapter; 
 
-        /// <summary>
-        ///     Use where type is known at compile time
-        /// </summary>
-        public void Add<T>(T item) where T : struct {
+/// <summary>
+///     Provide consistent string encoding strategy for <see cref="IEncodedToStrings" />
+/// </summary>
+/// <seealso cref="StringDecoderHelper" />
+public class StringEncoderHelper {
+    private readonly List<string> strings = new();
+    public bool Encode { get; init; }
+
+    /// <summary>
+    ///     Use where type is known at compile time
+    /// </summary>
+    public void Add<T>(T item) where T : struct {
+        strings.Add(item.ToString());
+    }
+
+    public void Add(string item) {
+        strings.Add(item);
+    }
+
+    private void AddNullItem() {
+        strings.Add("");
+        strings.Add("0");
+    }
+
+    /// <summary>
+    ///     Use where type is not known at compile time - the underlying type should still be a value
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         item should support <c>Parse</c> if <see cref="StringDecoderHelper" /> is used to extract value
+    ///     </para>
+    /// </remarks>
+    public void Add(object item) {
+        if (item == null) {
+            AddNullItem();
+        }
+        else {
+            strings.Add(item.GetType().FullName);
             strings.Add(item.ToString());
         }
-
-        public void Add(string item) {
-            strings.Add(item);
-        }
-
-        private void AddNullItem() {
-            strings.Add("");
-            strings.Add("0");
-        }
-
-        /// <summary>
-        ///     Use where type is not known at compile time - the underlying type should still be a value
-        /// </summary>
-        /// <remarks>
-        ///     <para>
-        ///         item should support <c>Parse</c> if <see cref="StringDecoderHelper" /> is used to extract value
-        ///     </para>
-        /// </remarks>
-        public void Add(object item) {
-            if (item == null) {
-                AddNullItem();
-            }
-            else {
-                strings.Add(item.GetType().FullName);
-                strings.Add(item.ToString());
-            }
-        }
-
-        public void Add(IEnumerable items, Type instanceType) {
-            if (items == null) {
-                Add(0);
-                Add(instanceType.FullName);
-            }
-            else {
-                var itemsAsArray = items.Cast<object>().ToArray();
-                Add(itemsAsArray.Length);
-                Add(instanceType.FullName);
-                itemsAsArray.ForEach(Add);
-            }
-        }
-
-        public void Add(IEnumerable<IEncodedToStrings> items, Type instanceType) {
-            if (items == null) {
-                Add(0);
-                Add(instanceType.FullName);
-            }
-            else {
-                var itemsAsArray = items.ToArray();
-                Add(itemsAsArray.Length);
-                Add(instanceType.FullName);
-                itemsAsArray.ForEach(Add);
-            }
-        }
-
-        public void Add(object[] items) {
-            if (items == null) {
-                Add(0);
-            }
-            else {
-                Add(items.Length);
-                items.ForEach(Add);
-            }
-        }
-
-        public void Add(string[] items) {
-            if (items == null) {
-                Add(0);
-            }
-            else {
-                Add(items.Length);
-                items.ForEach(Add);
-            }
-        }
-
-        public void Add(IEncodedToStrings item) {
-            if (item == null) {
-                AddNullItem();
-            }
-            else {
-                strings.Add(item.GetType().FullName);
-                Add(item.ToEncodedStrings());
-            }
-        }
-
-        public void AddSerializable(object serializable) {
-            if (serializable == null) {
-                AddNullItem();
-            }
-            else {
-                strings.Add(serializable.GetType().FullName);
-                var stream = new MemoryStream();
-                var serializer = new DataContractSerializer(serializable.GetType());
-                serializer.WriteObject(stream, serializable);
-                stream.Position = 0;
-                strings.Add(new StreamReader(stream).ReadToEnd());
-            }
-        }
-
-        public string[] ToArray() => Encode
-            ? strings.Select(HttpUtility.UrlEncode).ToArray()
-            : strings.ToArray();
     }
+
+    public void Add(IEnumerable items, Type instanceType) {
+        if (items == null) {
+            Add(0);
+            Add(instanceType.FullName);
+        }
+        else {
+            var itemsAsArray = items.Cast<object>().ToArray();
+            Add(itemsAsArray.Length);
+            Add(instanceType.FullName);
+            itemsAsArray.ForEach(Add);
+        }
+    }
+
+    public void Add(IEnumerable<IEncodedToStrings> items, Type instanceType) {
+        if (items == null) {
+            Add(0);
+            Add(instanceType.FullName);
+        }
+        else {
+            var itemsAsArray = items.ToArray();
+            Add(itemsAsArray.Length);
+            Add(instanceType.FullName);
+            itemsAsArray.ForEach(Add);
+        }
+    }
+
+    public void Add(object[] items) {
+        if (items == null) {
+            Add(0);
+        }
+        else {
+            Add(items.Length);
+            items.ForEach(Add);
+        }
+    }
+
+    public void Add(string[] items) {
+        if (items == null) {
+            Add(0);
+        }
+        else {
+            Add(items.Length);
+            items.ForEach(Add);
+        }
+    }
+
+    public void Add(IEncodedToStrings item) {
+        if (item == null) {
+            AddNullItem();
+        }
+        else {
+            strings.Add(item.GetType().FullName);
+            Add(item.ToEncodedStrings());
+        }
+    }
+
+    public void AddSerializable(object serializable) {
+        if (serializable == null) {
+            AddNullItem();
+        }
+        else {
+            strings.Add(serializable.GetType().FullName);
+            var stream = new MemoryStream();
+            var serializer = new DataContractSerializer(serializable.GetType());
+            serializer.WriteObject(stream, serializable);
+            stream.Position = 0;
+            strings.Add(new StreamReader(stream).ReadToEnd());
+        }
+    }
+
+    public string[] ToArray() => Encode
+        ? strings.Select(HttpUtility.UrlEncode).ToArray()
+        : strings.ToArray();
 }

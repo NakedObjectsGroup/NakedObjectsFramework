@@ -11,20 +11,20 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
-        public PropertyValidateFacetDefault(ISpecification holder)
-            : base(typeof(IPropertyValidateFacet), holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        #region IPropertyValidateFacet Members
+[Serializable]
+public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
+    public PropertyValidateFacetDefault(ISpecification holder)
+        : base(typeof(IPropertyValidateFacet), holder) { }
 
-        public Exception CreateExceptionFor(IInteractionContext ic) => null;
+    #region IPropertyValidateFacet Members
 
-        public string Invalidates(IInteractionContext ic) => null;
+    public Exception CreateExceptionFor(IInteractionContext ic) => null;
 
-        public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) => null;
+    public string Invalidates(IInteractionContext ic) => null;
 
-        #endregion
-    }
+    public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) => null;
+
+    #endregion
 }

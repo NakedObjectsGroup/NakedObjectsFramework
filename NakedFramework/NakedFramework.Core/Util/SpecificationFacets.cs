@@ -9,33 +9,33 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Util {
-    public static class SpecificationFacets {
-        public static bool IsNeverPersisted(this ITypeSpec spec) => spec.IsViewModel;
+namespace NakedFramework.Core.Util; 
 
-        public static bool IsAlwaysImmutable(this ITypeSpec spec) {
-            var immutableFacet = spec.GetFacet<IImmutableFacet>();
-            return immutableFacet is {Value: WhenTo.Always};
-        }
+public static class SpecificationFacets {
+    public static bool IsNeverPersisted(this ITypeSpec spec) => spec.IsViewModel;
 
-        public static bool IsImmutableOncePersisted(this ITypeSpec spec) {
-            var immutableFacet = spec.GetFacet<IImmutableFacet>();
-            return immutableFacet is {Value: WhenTo.OncePersisted};
-        }
-
-        public static bool IsBoundedSet(this ITypeSpec spec) => spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
-
-        public static bool IsCollectionOfBoundedSet(this ITypeSpec spec, IObjectSpec elementSpec) => spec.IsCollection && elementSpec.IsBoundedSet();
-
-        public static bool IsCollectionOfEnum(this ITypeSpec spec, IObjectSpec elementSpec) => spec.IsCollection && elementSpec.ContainsFacet<IEnumFacet>();
-
-        public static bool IsBoundedSet(this IObjectSpecImmutable specification) => specification.ContainsFacet<IBoundedFacet>() || specification.ContainsFacet<IEnumValueFacet>();
-
-        public static IFacet GetOpFacet<T>(this ISpecification s) where T : class, IFacet {
-            var facet = s.GetFacet<T>();
-            return facet is {IsNoOp: false} ? facet : null;
-        }
+    public static bool IsAlwaysImmutable(this ITypeSpec spec) {
+        var immutableFacet = spec.GetFacet<IImmutableFacet>();
+        return immutableFacet is {Value: WhenTo.Always};
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public static bool IsImmutableOncePersisted(this ITypeSpec spec) {
+        var immutableFacet = spec.GetFacet<IImmutableFacet>();
+        return immutableFacet is {Value: WhenTo.OncePersisted};
+    }
+
+    public static bool IsBoundedSet(this ITypeSpec spec) => spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
+
+    public static bool IsCollectionOfBoundedSet(this ITypeSpec spec, IObjectSpec elementSpec) => spec.IsCollection && elementSpec.IsBoundedSet();
+
+    public static bool IsCollectionOfEnum(this ITypeSpec spec, IObjectSpec elementSpec) => spec.IsCollection && elementSpec.ContainsFacet<IEnumFacet>();
+
+    public static bool IsBoundedSet(this IObjectSpecImmutable specification) => specification.ContainsFacet<IBoundedFacet>() || specification.ContainsFacet<IEnumValueFacet>();
+
+    public static IFacet GetOpFacet<T>(this ISpecification s) where T : class, IFacet {
+        var facet = s.GetFacet<T>();
+        return facet is {IsNoOp: false} ? facet : null;
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

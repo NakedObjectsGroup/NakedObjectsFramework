@@ -8,23 +8,23 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     The mechanism by which the proposed value of a property can be validated,
+///     called immediately before <see cref="IPropertySetterFacet" /> setting the value.
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     invoking the <c>ValidateXxx</c> method for a property<c>Xxx</c>.
+/// </para>
+/// <seealso cref="IPropertySetterFacet" />
+public interface IPropertyValidateFacet : IFacet, IValidatingInteractionAdvisor {
     /// <summary>
-    ///     The mechanism by which the proposed value of a property can be validated,
-    ///     called immediately before <see cref="IPropertySetterFacet" /> setting the value.
+    ///     The reason why the proposed value is invalid.
     /// </summary>
     /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     invoking the <c>ValidateXxx</c> method for a property<c>Xxx</c>.
+    ///     Should return <c>null</c> if the value is in fact valid.
     /// </para>
-    /// <seealso cref="IPropertySetterFacet" />
-    public interface IPropertyValidateFacet : IFacet, IValidatingInteractionAdvisor {
-        /// <summary>
-        ///     The reason why the proposed value is invalid.
-        /// </summary>
-        /// <para>
-        ///     Should return <c>null</c> if the value is in fact valid.
-        /// </para>
-        string InvalidReason(INakedObjectAdapter targetObjectAdapter, INakedObjectAdapter proposedValue);
-    }
+    string InvalidReason(INakedObjectAdapter targetObjectAdapter, INakedObjectAdapter proposedValue);
 }

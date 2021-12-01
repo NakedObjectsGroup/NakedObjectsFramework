@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class PresentationHintFacet : SingleStringValueFacetAbstract, IPresentationHintFacet {
-        public PresentationHintFacet(string value, ISpecification holder)
-            : base(typeof(IPresentationHintFacet), holder, value) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class PresentationHintFacet : SingleStringValueFacetAbstract, IPresentationHintFacet {
+    public PresentationHintFacet(string value, ISpecification holder)
+        : base(typeof(IPresentationHintFacet), holder, value) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

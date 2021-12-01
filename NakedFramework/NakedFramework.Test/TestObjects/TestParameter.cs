@@ -12,50 +12,50 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects {
-    internal class TestParameter : ITestParameter {
-        private readonly ITestObjectFactory factory;
-        private readonly ITestHasActions owningObject;
-        private readonly IActionParameterSpec parameterSpec;
+namespace NakedFramework.Test.TestObjects; 
 
-        public TestParameter(IActionParameterSpec parameterSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
-            this.parameterSpec = parameterSpec;
-            this.owningObject = owningObject;
-            this.factory = factory;
-        }
+internal class TestParameter : ITestParameter {
+    private readonly ITestObjectFactory factory;
+    private readonly ITestHasActions owningObject;
+    private readonly IActionParameterSpec parameterSpec;
 
-        #region ITestParameter Members
-
-        public string Name => parameterSpec.Name;
-
-        public INakedObjectAdapter NakedObject => owningObject.NakedObject;
-
-        public string Title => "";
-
-        public ITestNaked[] GetChoices() {
-            return parameterSpec.GetChoices(NakedObject, null).Select(x => factory.CreateTestNaked(x)).ToArray();
-        }
-
-        public ITestNaked[] GetCompletions(string autoCompleteParm) {
-            return parameterSpec.GetCompletions(NakedObject, autoCompleteParm).Select(x => factory.CreateTestNaked(x)).ToArray();
-        }
-
-        public ITestNaked GetDefault() {
-            var defaultValue = parameterSpec.GetDefault(NakedObject);
-            var defaultType = parameterSpec.GetDefaultType(NakedObject);
-
-            if (defaultValue != null && defaultType == TypeOfDefaultValue.Implicit && defaultValue.Object is Enum) {
-                defaultValue = null;
-            }
-
-            return factory.CreateTestNaked(defaultValue);
-        }
-
-        public ITestParameter AssertIsDescribedAs(string description) {
-            Assert.IsTrue(parameterSpec.Description == description, $"Parameter: {Name} description: {parameterSpec.Description} expected: {description}");
-            return this;
-        }
-
-        #endregion
+    public TestParameter(IActionParameterSpec parameterSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
+        this.parameterSpec = parameterSpec;
+        this.owningObject = owningObject;
+        this.factory = factory;
     }
+
+    #region ITestParameter Members
+
+    public string Name => parameterSpec.Name;
+
+    public INakedObjectAdapter NakedObject => owningObject.NakedObject;
+
+    public string Title => "";
+
+    public ITestNaked[] GetChoices() {
+        return parameterSpec.GetChoices(NakedObject, null).Select(x => factory.CreateTestNaked(x)).ToArray();
+    }
+
+    public ITestNaked[] GetCompletions(string autoCompleteParm) {
+        return parameterSpec.GetCompletions(NakedObject, autoCompleteParm).Select(x => factory.CreateTestNaked(x)).ToArray();
+    }
+
+    public ITestNaked GetDefault() {
+        var defaultValue = parameterSpec.GetDefault(NakedObject);
+        var defaultType = parameterSpec.GetDefaultType(NakedObject);
+
+        if (defaultValue != null && defaultType == TypeOfDefaultValue.Implicit && defaultValue.Object is Enum) {
+            defaultValue = null;
+        }
+
+        return factory.CreateTestNaked(defaultValue);
+    }
+
+    public ITestParameter AssertIsDescribedAs(string description) {
+        Assert.IsTrue(parameterSpec.Description == description, $"Parameter: {Name} description: {parameterSpec.Description} expected: {description}");
+        return this;
+    }
+
+    #endregion
 }

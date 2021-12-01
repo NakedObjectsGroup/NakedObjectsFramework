@@ -15,48 +15,48 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class WithError {
-        private IList<MostSimple> aCollection = new List<MostSimple>();
+namespace RestfulObjects.Test.Data; 
 
-        private MostSimple anErrorReference;
-        public IDomainObjectContainer Container { set; protected get; }
+public class WithError {
+    private IList<MostSimple> aCollection = new List<MostSimple>();
 
-        public static bool ThrowErrors { get; set; }
+    private MostSimple anErrorReference;
+    public IDomainObjectContainer Container { set; protected get; }
 
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        [DefaultValue(0)]
-        public virtual int Id { get; set; }
+    public static bool ThrowErrors { get; set; }
 
-        public virtual int AnErrorValue {
-            get => 0;
-            set {
-                if (Container != null && ThrowErrors) {
-                    // initialized 
-                    throw new DomainException("An error exception");
-                }
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    [DefaultValue(0)]
+    public virtual int Id { get; set; }
+
+    public virtual int AnErrorValue {
+        get => 0;
+        set {
+            if (Container != null && ThrowErrors) {
+                // initialized 
+                throw new DomainException("An error exception");
             }
         }
-
-        public virtual MostSimple AnErrorReference {
-            get => anErrorReference;
-            set {
-                if (Container != null && ThrowErrors) {
-                    // initialized 
-                    throw new DomainException("An error exception");
-                }
-
-                anErrorReference = value;
-            }
-        }
-
-        public virtual ICollection<MostSimple> ACollection {
-            get => aCollection;
-            set => aCollection = value.ToList();
-        }
-
-        public virtual int AnError() => throw new DomainException("An error exception");
     }
+
+    public virtual MostSimple AnErrorReference {
+        get => anErrorReference;
+        set {
+            if (Container != null && ThrowErrors) {
+                // initialized 
+                throw new DomainException("An error exception");
+            }
+
+            anErrorReference = value;
+        }
+    }
+
+    public virtual ICollection<MostSimple> ACollection {
+        get => aCollection;
+        set => aCollection = value.ToList();
+    }
+
+    public virtual int AnError() => throw new DomainException("An error exception");
 }

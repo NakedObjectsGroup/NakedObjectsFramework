@@ -9,34 +9,34 @@ using System;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedFramework.Architecture.Reflect {
-    /// <summary>
-    ///     Enumerates the features that a particular annotation can be applied to.
-    /// </summary>
-    [Flags]
-    public enum FeatureType {
-        None = 0,
-        Objects = 1,
-        Properties = 2,
-        Collections = 4,
-        Actions = 8,
-        ActionParameters = 16,
-        Interfaces = 32,
-        ActionsAndActionParameters = Actions | ActionParameters,
-        CollectionsAndActions = Collections | Actions,
-        ObjectsAndProperties = Objects | Properties,
-        ObjectsPropertiesAndCollections = Objects | Properties | Collections,
-        ObjectsPropertiesAndActionParameters = Objects | Properties | ActionParameters,
-        ObjectsInterfacesAndProperties = Objects | Properties | Interfaces,
-        ObjectsInterfacesPropertiesAndCollections = Objects | Properties | Collections | Interfaces,
-        ObjectsInterfacesPropertiesAndActionParameters = Objects | Properties | ActionParameters | Interfaces,
-        PropertiesAndCollections = Properties | Collections,
-        PropertiesAndActionParameters = Properties | ActionParameters,
-        PropertiesCollectionsAndActions = Properties | Collections | Actions,
-        Everything = Objects | Properties | Collections | Actions | ActionParameters | Interfaces,
-        EverythingButActionParameters = Objects | Properties | Collections | Actions | Interfaces,
-        EverythingButCollections = Objects | Properties | Actions | ActionParameters | Interfaces,
-        EverythingButObjectsAndInterfaces = Properties | Collections | Actions | ActionParameters,
-        ObjectsAndInterfaces = Objects | Interfaces
-    }
+namespace NakedFramework.Architecture.Reflect; 
+
+/// <summary>
+///     Enumerates the features that a particular annotation can be applied to.
+/// </summary>
+[Flags]
+public enum FeatureType {
+    None = 0,
+    Objects = 1,
+    Properties = 2,
+    Collections = 4,
+    Actions = 8,
+    ActionParameters = 16,
+    Interfaces = 32,
+    ActionsAndActionParameters = Actions | ActionParameters,
+    CollectionsAndActions = Collections | Actions,
+    ObjectsAndProperties = Objects | Properties,
+    ObjectsPropertiesAndCollections = Objects | Properties | Collections,
+    ObjectsPropertiesAndActionParameters = Objects | Properties | ActionParameters,
+    ObjectsInterfacesAndProperties = Objects | Properties | Interfaces,
+    ObjectsInterfacesPropertiesAndCollections = Objects | Properties | Collections | Interfaces,
+    ObjectsInterfacesPropertiesAndActionParameters = Objects | Properties | ActionParameters | Interfaces,
+    PropertiesAndCollections = Properties | Collections,
+    PropertiesAndActionParameters = Properties | ActionParameters,
+    PropertiesCollectionsAndActions = Properties | Collections | Actions,
+    Everything = Objects | Properties | Collections | Actions | ActionParameters | Interfaces,
+    EverythingButActionParameters = Objects | Properties | Collections | Actions | Interfaces,
+    EverythingButCollections = Objects | Properties | Actions | ActionParameters | Interfaces,
+    EverythingButObjectsAndInterfaces = Properties | Collections | Actions | ActionParameters,
+    ObjectsAndInterfaces = Objects | Interfaces
 }

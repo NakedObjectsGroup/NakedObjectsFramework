@@ -14,53 +14,53 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<uint>, IUnsignedIntegerValueFacet {
-        private const uint DefaultValueConst = 0;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 10;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public UIntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<uint>, IUnsignedIntegerValueFacet {
+    private const uint DefaultValueConst = 0;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 10;
 
-        public static Type Type => typeof(IUnsignedIntegerValueFacet);
+    public UIntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(uint);
+    public static Type Type => typeof(IUnsignedIntegerValueFacet);
 
-        #region IUnsignedIntegerValueFacet Members
+    public static Type AdaptedType => typeof(uint);
 
-        public uint UnsignedIntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<uint>();
+    #region IUnsignedIntegerValueFacet Members
 
-        #endregion
+    public uint UnsignedIntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<uint>();
 
-        public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
+    #endregion
 
-        public static bool IsAdaptedType(Type type) => type == typeof(uint);
+    public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
-        protected override uint DoParse(string entry) {
-            try {
-                return uint.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, uint.MinValue, uint.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(uint);
+
+    protected override uint DoParse(string entry) {
+        try {
+            return uint.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
         }
-
-        protected override uint DoParseInvariant(string entry) => uint.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(uint obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, uint value) => value.ToString(mask);
-
-        protected override string DoEncode(uint obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override uint DoRestore(string data) => uint.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "UIntAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, uint.MinValue, uint.MaxValue));
+        }
     }
+
+    protected override uint DoParseInvariant(string entry) => uint.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(uint obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, uint value) => value.ToString(mask);
+
+    protected override string DoEncode(uint obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override uint DoRestore(string data) => uint.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "UIntAdapter: ";
 }

@@ -11,31 +11,31 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    public abstract class AbstractStrategy {
-        protected AbstractStrategy(IOidStrategy oidStrategy, RestControlFlags flags) {
-            OidStrategy = oidStrategy;
-            Flags = flags;
-        }
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        protected IOidStrategy OidStrategy { get; }
-        protected RestControlFlags Flags { get; }
-
-        public MapRepresentation GetExtensions() => GetExtensionsForSimple();
-
-        protected static IDictionary<string, object> GetTableViewCustomExtensions((bool, string[])? tableViewData) {
-            if (tableViewData == null) {
-                return null;
-            }
-
-            var (title, columns) = tableViewData.Value;
-
-            return new Dictionary<string, object> {
-                [JsonPropertyNames.CustomTableViewTitle] = title,
-                [JsonPropertyNames.CustomTableViewColumns] = columns
-            };
-        }
-
-        protected abstract MapRepresentation GetExtensionsForSimple();
+public abstract class AbstractStrategy {
+    protected AbstractStrategy(IOidStrategy oidStrategy, RestControlFlags flags) {
+        OidStrategy = oidStrategy;
+        Flags = flags;
     }
+
+    protected IOidStrategy OidStrategy { get; }
+    protected RestControlFlags Flags { get; }
+
+    public MapRepresentation GetExtensions() => GetExtensionsForSimple();
+
+    protected static IDictionary<string, object> GetTableViewCustomExtensions((bool, string[])? tableViewData) {
+        if (tableViewData == null) {
+            return null;
+        }
+
+        var (title, columns) = tableViewData.Value;
+
+        return new Dictionary<string, object> {
+            [JsonPropertyNames.CustomTableViewTitle] = title,
+            [JsonPropertyNames.CustomTableViewColumns] = columns
+        };
+    }
+
+    protected abstract MapRepresentation GetExtensionsForSimple();
 }

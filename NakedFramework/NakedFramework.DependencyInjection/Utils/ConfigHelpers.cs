@@ -11,84 +11,84 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.FacetFactory;
 
-namespace NakedFramework.DependencyInjection.Utils {
-    public static class ConfigHelpers {
-        private static bool ServiceImplementationExists(this IServiceCollection services, Type tService) => services.Any(descriptor => descriptor.ServiceType == tService);
+namespace NakedFramework.DependencyInjection.Utils; 
 
-        private static bool ServiceImplementationExists<TService>(this IServiceCollection services) => services.ServiceImplementationExists(typeof(TService));
+public static class ConfigHelpers {
+    private static bool ServiceImplementationExists(this IServiceCollection services, Type tService) => services.Any(descriptor => descriptor.ServiceType == tService);
 
-        public static void AddDefaultSingleton(this IServiceCollection services, Type tService, Type tImplementation) {
-            if (!services.ServiceImplementationExists(tService)) {
-                services.AddSingleton(tService, tImplementation);
-            }
+    private static bool ServiceImplementationExists<TService>(this IServiceCollection services) => services.ServiceImplementationExists(typeof(TService));
+
+    public static void AddDefaultSingleton(this IServiceCollection services, Type tService, Type tImplementation) {
+        if (!services.ServiceImplementationExists(tService)) {
+            services.AddSingleton(tService, tImplementation);
         }
+    }
 
-        public static void AddDefaultSingleton<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
-            if (!services.ServiceImplementationExists<TService>()) {
-                services.AddSingleton<TService, TImplementation>();
-            }
+    public static void AddDefaultSingleton<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
+        if (!services.ServiceImplementationExists<TService>()) {
+            services.AddSingleton<TService, TImplementation>();
         }
+    }
 
-        public static void AddDefaultScoped<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
-            if (!services.ServiceImplementationExists<TService>()) {
-                services.AddScoped<TService, TImplementation>();
-            }
+    public static void AddDefaultScoped<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
+        if (!services.ServiceImplementationExists<TService>()) {
+            services.AddScoped<TService, TImplementation>();
         }
+    }
 
-        public static void AddDefaultScoped<TService>(this IServiceCollection services, Func<IServiceProvider, TService> implementationFactory) where TService : class {
-            if (!services.ServiceImplementationExists<TService>()) {
-                services.AddScoped(implementationFactory);
-            }
+    public static void AddDefaultScoped<TService>(this IServiceCollection services, Func<IServiceProvider, TService> implementationFactory) where TService : class {
+        if (!services.ServiceImplementationExists<TService>()) {
+            services.AddScoped(implementationFactory);
         }
+    }
 
-        public static void AddDefaultTransient<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
-            if (!services.ServiceImplementationExists<TService>()) {
-                services.AddTransient<TService, TImplementation>();
-            }
+    public static void AddDefaultTransient<TService, TImplementation>(this IServiceCollection services) where TService : class where TImplementation : class, TService {
+        if (!services.ServiceImplementationExists<TService>()) {
+            services.AddTransient<TService, TImplementation>();
         }
+    }
 
-        public static void RegisterFacetFactory<T>(this IServiceCollection services, Type factory) where T : IFacetFactory {
-            FacetFactoryTypesProvider.AddType(factory);
-            services.AddSingleton(typeof(T), factory);
+    public static void RegisterFacetFactory<T>(this IServiceCollection services, Type factory) where T : IFacetFactory {
+        FacetFactoryTypesProvider.AddType(factory);
+        services.AddSingleton(typeof(T), factory);
+    }
+
+    private static bool SafeMatch(this ServiceDescriptor descriptor, Type toMatch) => descriptor.ImplementationType == toMatch;
+
+    private static void RemoveFactory<TInterface, TOriginal>(this IServiceCollection services) {
+        var serviceDescriptor = services.Where(descriptor => descriptor.ServiceType == typeof(TInterface)).FirstOrDefault(descriptor => descriptor.SafeMatch(typeof(TOriginal)));
+        if (serviceDescriptor != null) {
+            services.Remove(serviceDescriptor);
         }
+    }
 
-        private static bool SafeMatch(this ServiceDescriptor descriptor, Type toMatch) => descriptor.ImplementationType == toMatch;
+    public static void RegisterReplacementFacetFactory<TInterface, TReplacement, TOriginal>(IServiceCollection services)
+        where TReplacement : IFacetFactory
+        where TOriginal : IFacetFactory {
+        // remove the original and register replacement.
+        services.RemoveFactory<TInterface, TOriginal>();
+        services.AddSingleton(typeof(TInterface), typeof(TReplacement));
+    }
 
-        private static void RemoveFactory<TInterface, TOriginal>(this IServiceCollection services) {
-            var serviceDescriptor = services.Where(descriptor => descriptor.ServiceType == typeof(TInterface)).FirstOrDefault(descriptor => descriptor.SafeMatch(typeof(TOriginal)));
-            if (serviceDescriptor != null) {
-                services.Remove(serviceDescriptor);
-            }
-        }
+    // Helper method to, substitute a new implementation of a specific facet factory, but where the constructor
+    // of the new one takes: a numeric order, and the standard NOF implementation of that facet factory. 
+    public static void RegisterReplacementFacetFactoryDelegatingToOriginal<TInterface, TReplacement, TOriginal>(IServiceCollection services)
+        where TReplacement : IFacetFactory
+        where TOriginal : IFacetFactory {
+        // remove original as an IFacetFactory
+        services.RemoveFactory<TInterface, TOriginal>();
 
-        public static void RegisterReplacementFacetFactory<TInterface, TReplacement, TOriginal>(IServiceCollection services)
-            where TReplacement : IFacetFactory
-            where TOriginal : IFacetFactory {
-            // remove the original and register replacement.
-            services.RemoveFactory<TInterface, TOriginal>();
-            services.AddSingleton(typeof(TInterface), typeof(TReplacement));
-        }
+        // Register the original (standard NOF implementation). Note that although already registered by StandardConfig.RegisterStandardFacetFactories
+        // that will be as a named impl of IFacetFactory.  This will be the only one registered as the concrete type
+        // PropertyMethodsFacetFactory so doesn't need to be named.
 
-        // Helper method to, substitute a new implementation of a specific facet factory, but where the constructor
-        // of the new one takes: a numeric order, and the standard NOF implementation of that facet factory. 
-        public static void RegisterReplacementFacetFactoryDelegatingToOriginal<TInterface, TReplacement, TOriginal>(IServiceCollection services)
-            where TReplacement : IFacetFactory
-            where TOriginal : IFacetFactory {
-            // remove original as an IFacetFactory
-            services.RemoveFactory<TInterface, TOriginal>();
+        // We don't care about the order, because this isn't called as a FacetFactory AS SUCH.
+        // but we still need one for the constructor
+        services.AddSingleton(typeof(TOriginal), typeof(TOriginal));
 
-            // Register the original (standard NOF implementation). Note that although already registered by StandardConfig.RegisterStandardFacetFactories
-            // that will be as a named impl of IFacetFactory.  This will be the only one registered as the concrete type
-            // PropertyMethodsFacetFactory so doesn't need to be named.
+        // Now add replacement using the standard pattern but using the same Name and orderNumber as the one being superseded. 
+        // The original one will be auto-injected into it because of the implementation registered above
 
-            // We don't care about the order, because this isn't called as a FacetFactory AS SUCH.
-            // but we still need one for the constructor
-            services.AddSingleton(typeof(TOriginal), typeof(TOriginal));
-
-            // Now add replacement using the standard pattern but using the same Name and orderNumber as the one being superseded. 
-            // The original one will be auto-injected into it because of the implementation registered above
-
-            services.AddSingleton(typeof(TInterface), typeof(TReplacement));
-        }
+        services.AddSingleton(typeof(TInterface), typeof(TReplacement));
     }
 }

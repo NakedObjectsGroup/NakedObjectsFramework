@@ -5,11 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Rest.Snapshot.Constants {
-    public static class ResultTypes {
-        public const string List = "list";
-        public const string Object = "object";
-        public const string Scalar = "scalar";
-        public const string Void = "void";
-    }
+namespace NakedFramework.Rest.Snapshot.Constants; 
+
+public static class ResultTypes {
+    public const string List = "list";
+    public const string Object = "object";
+    public const string Scalar = "scalar";
+    public const string Void = "void";
 }

@@ -18,67 +18,67 @@ using NakedFramework.ParallelReflector.TypeFacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class IteratorFilteringFacetFactoryTest : AbstractFacetFactoryTest {
-        private IteratorFilteringFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => Array.Empty<Type>();
+[TestClass]
+public class IteratorFilteringFacetFactoryTest : AbstractFacetFactoryTest {
+    private IteratorFilteringFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => Array.Empty<Type>();
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestRequestsRemoverToRemoveIteratorMethods() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
 
-            var enumeratorMethod = FindMethod(typeof(Customer), "GetEnumerator");
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            AssertMethodRemoved(enumeratorMethod);
-            Assert.IsNotNull(metamodel);
-        }
+    [TestMethod]
+    public void TestRequestsRemoverToRemoveIteratorMethods() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        #region Setup/Teardown
+        var enumeratorMethod = FindMethod(typeof(Customer), "GetEnumerator");
+        metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+        AssertMethodRemoved(enumeratorMethod);
+        Assert.IsNotNull(metamodel);
+    }
 
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new IteratorFilteringFacetFactory(GetOrder<IteratorFilteringFacetFactory>(), LoggerFactory);
-        }
+    #region Setup/Teardown
 
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new IteratorFilteringFacetFactory(GetOrder<IteratorFilteringFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
+
+    // ReSharper disable InconsistentNaming
+    // ReSharper disable AssignNullToNotNullAttribute
+    private class Customer : IEnumerable {
+        #region IEnumerable Members
+
+        public IEnumerator GetEnumerator() => null;
 
         #endregion
 
-        // ReSharper disable InconsistentNaming
-        // ReSharper disable AssignNullToNotNullAttribute
-        private class Customer : IEnumerable {
-            #region IEnumerable Members
-
-            public IEnumerator GetEnumerator() => null;
-
-            #endregion
-
-            public void someAction() { }
-        }
-
-        // ReSharper restore AssignNullToNotNullAttribute
-        // ReSharper restore InconsistentNaming
-        // ReSharper restore UnusedMember.Local
+        public void someAction() { }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore AssignNullToNotNullAttribute
+    // ReSharper restore InconsistentNaming
+    // ReSharper restore UnusedMember.Local
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -13,92 +13,92 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.SalesOrderHeader")]
-    public class SalesOrderHeader {
-        [Key]
-        public int SalesOrderID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public byte RevisionNumber { get; set; }
+[Table("Sales.SalesOrderHeader")]
+public class SalesOrderHeader {
+    [Key]
+    public int SalesOrderID { get; set; }
 
-        public DateTime OrderDate { get; set; }
+    public byte RevisionNumber { get; set; }
 
-        public DateTime DueDate { get; set; }
+    public DateTime OrderDate { get; set; }
 
-        public DateTime? ShipDate { get; set; }
+    public DateTime DueDate { get; set; }
 
-        public byte Status { get; set; }
+    public DateTime? ShipDate { get; set; }
 
-        public bool OnlineOrderFlag { get; set; }
+    public byte Status { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [Required]
-        [StringLength(25)]
-        public string SalesOrderNumber { get; set; }
+    public bool OnlineOrderFlag { get; set; }
 
-        [StringLength(25)]
-        public string PurchaseOrderNumber { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [Required]
+    [StringLength(25)]
+    public string SalesOrderNumber { get; set; }
 
-        [StringLength(15)]
-        public string AccountNumber { get; set; }
+    [StringLength(25)]
+    public string PurchaseOrderNumber { get; set; }
 
-        public int CustomerID { get; set; }
+    [StringLength(15)]
+    public string AccountNumber { get; set; }
 
-        public int ContactID { get; set; }
+    public int CustomerID { get; set; }
 
-        public int? SalesPersonID { get; set; }
+    public int ContactID { get; set; }
 
-        public int BillToAddressID { get; set; }
+    public int? SalesPersonID { get; set; }
 
-        public int ShipToAddressID { get; set; }
+    public int BillToAddressID { get; set; }
 
-        public int ShipMethodID { get; set; }
+    public int ShipToAddressID { get; set; }
 
-        public int? CreditCardID { get; set; }
+    public int ShipMethodID { get; set; }
 
-        [StringLength(15)]
-        public string CreditCardApprovalCode { get; set; }
+    public int? CreditCardID { get; set; }
 
-        public int? CurrencyRateID { get; set; }
+    [StringLength(15)]
+    public string CreditCardApprovalCode { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal SubTotal { get; set; }
+    public int? CurrencyRateID { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal TaxAmt { get; set; }
+    [Column(TypeName = "money")]
+    public decimal SubTotal { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal Freight { get; set; }
+    [Column(TypeName = "money")]
+    public decimal TaxAmt { get; set; }
 
-        [Column(TypeName = "money")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public decimal TotalDue { get; set; }
+    [Column(TypeName = "money")]
+    public decimal Freight { get; set; }
 
-        [StringLength(128)]
-        public string Comment { get; set; }
+    [Column(TypeName = "money")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public decimal TotalDue { get; set; }
 
-        public Guid rowguid { get; set; }
+    [StringLength(128)]
+    public string Comment { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual Address Address { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Address Address1 { get; set; }
+    public virtual Address Address { get; set; }
 
-        public virtual Contact Contact { get; set; }
+    public virtual Address Address1 { get; set; }
 
-        public virtual ShipMethod ShipMethod { get; set; }
+    public virtual Contact Contact { get; set; }
 
-        public virtual CreditCard CreditCard { get; set; }
+    public virtual ShipMethod ShipMethod { get; set; }
 
-        public virtual CurrencyRate CurrencyRate { get; set; }
+    public virtual CreditCard CreditCard { get; set; }
 
-        public virtual Customer Customer { get; set; }
+    public virtual CurrencyRate CurrencyRate { get; set; }
 
-        public virtual ICollection<SalesOrderDetail> SalesOrderDetails { get; set; } = new HashSet<SalesOrderDetail>();
+    public virtual Customer Customer { get; set; }
 
-        public virtual SalesPerson SalesPerson { get; set; }
+    public virtual ICollection<SalesOrderDetail> SalesOrderDetails { get; set; } = new HashSet<SalesOrderDetail>();
 
-        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReasons { get; set; } = new HashSet<SalesOrderHeaderSalesReason>();
-    }
+    public virtual SalesPerson SalesPerson { get; set; }
+
+    public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReasons { get; set; } = new HashSet<SalesOrderHeaderSalesReason>();
 }

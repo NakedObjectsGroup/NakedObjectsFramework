@@ -7,13 +7,13 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IBooleanValueFacet : IFacet {
-        bool IsSet(INakedObjectAdapter nakedObjectAdapter);
-        void Set(INakedObjectAdapter nakedObjectAdapter);
-        void Reset(INakedObjectAdapter nakedObjectAdapter);
-        void Toggle(INakedObjectAdapter nakedObjectAdapter);
-    }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface IBooleanValueFacet : IFacet {
+    bool IsSet(INakedObjectAdapter nakedObjectAdapter);
+    void Set(INakedObjectAdapter nakedObjectAdapter);
+    void Reset(INakedObjectAdapter nakedObjectAdapter);
+    void Toggle(INakedObjectAdapter nakedObjectAdapter);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

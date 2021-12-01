@@ -7,10 +7,10 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Test.Interface {
-    public interface ITestCollection : ITestNaked, IEnumerable<ITestObject> {
-        ITestCollection AssertCountIs(int count);
-    }
+namespace NakedFramework.Test.Interface; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface ITestCollection : ITestNaked, IEnumerable<ITestObject> {
+    ITestCollection AssertCountIs(int count);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

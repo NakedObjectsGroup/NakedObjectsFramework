@@ -7,17 +7,17 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     Indicates a problem initializing the naked objects system
-    /// </summary>
-    public class InitialisationException : NakedObjectApplicationException {
-        public InitialisationException(string s)
-            : base(s) { }
+namespace NakedFramework.Core.Error; 
 
-        public InitialisationException(string msg, Exception cause)
-            : base(msg, cause) { }
-    }
+/// <summary>
+///     Indicates a problem initializing the naked objects system
+/// </summary>
+public class InitialisationException : NakedObjectApplicationException {
+    public InitialisationException(string s)
+        : base(s) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public InitialisationException(string msg, Exception cause)
+        : base(msg, cause) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

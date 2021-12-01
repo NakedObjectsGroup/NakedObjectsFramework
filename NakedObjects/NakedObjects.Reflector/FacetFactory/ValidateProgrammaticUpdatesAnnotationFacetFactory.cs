@@ -18,17 +18,17 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class ValidateProgrammaticUpdatesAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public ValidateProgrammaticUpdatesAnnotationFacetFactory(IFacetFactoryOrder<ValidateProgrammaticUpdatesAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<ValidateProgrammaticUpdatesAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-            return metamodel;
-        }
+public sealed class ValidateProgrammaticUpdatesAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public ValidateProgrammaticUpdatesAnnotationFacetFactory(IFacetFactoryOrder<ValidateProgrammaticUpdatesAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        private static IValidateProgrammaticUpdatesFacet Create(ValidateProgrammaticUpdatesAttribute attribute, ISpecification holder) => attribute is null ? null : new ValidateProgrammaticUpdatesFacetAnnotation(holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = type.GetCustomAttribute<ValidateProgrammaticUpdatesAttribute>();
+        FacetUtils.AddFacet(Create(attribute, specification));
+        return metamodel;
     }
+
+    private static IValidateProgrammaticUpdatesFacet Create(ValidateProgrammaticUpdatesAttribute attribute, ISpecification holder) => attribute is null ? null : new ValidateProgrammaticUpdatesFacetAnnotation(holder);
 }

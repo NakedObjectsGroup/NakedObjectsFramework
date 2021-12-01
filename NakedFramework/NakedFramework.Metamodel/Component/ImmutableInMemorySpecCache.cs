@@ -20,86 +20,86 @@ using NakedFramework.Metamodel.Utils;
 #pragma warning disable 618
 #pragma warning disable SYSLIB0011
 
-namespace NakedFramework.Metamodel.Component {
-    [Serializable]
-    public sealed class ImmutableInMemorySpecCache : ISpecificationCache, ISerializable, IDeserializationCallback {
-        private readonly SerializedData tempData;
-        private ImmutableList<IMenuImmutable> mainMenus = ImmutableList<IMenuImmutable>.Empty;
+namespace NakedFramework.Metamodel.Component; 
 
-        private ImmutableDictionary<string, ITypeSpecImmutable> specs = ImmutableDictionary<string, ITypeSpecImmutable>.Empty;
+[Serializable]
+public sealed class ImmutableInMemorySpecCache : ISpecificationCache, ISerializable, IDeserializationCallback {
+    private readonly SerializedData tempData;
+    private ImmutableList<IMenuImmutable> mainMenus = ImmutableList<IMenuImmutable>.Empty;
 
-        // constructor to use when reflecting
-        public ImmutableInMemorySpecCache() { }
+    private ImmutableDictionary<string, ITypeSpecImmutable> specs = ImmutableDictionary<string, ITypeSpecImmutable>.Empty;
 
-        // constructor to use when loading metadata from file
-        public ImmutableInMemorySpecCache(string file) {
-            using var fs = File.Open(file, FileMode.Open);
-            IFormatter formatter = new BinaryFormatter();
-            var data = (SerializedData) formatter.Deserialize(fs);
+    // constructor to use when reflecting
+    public ImmutableInMemorySpecCache() { }
 
-            specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+    // constructor to use when loading metadata from file
+    public ImmutableInMemorySpecCache(string file) {
+        using var fs = File.Open(file, FileMode.Open);
+        IFormatter formatter = new BinaryFormatter();
+        var data = (SerializedData) formatter.Deserialize(fs);
 
-            mainMenus = data.MenuValues.ToImmutableList();
-        }
+        specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
 
-        public ImmutableInMemorySpecCache(string file, IFormatter formatter) {
-            using var fs = File.Open(file, FileMode.Open);
-            var data = (SerializedData) formatter.Deserialize(fs);
-            specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
-
-            mainMenus = data.MenuValues.ToImmutableList();
-        }
-
-        // The special constructor is used to deserialize values. 
-        public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) => tempData = info.GetValue<SerializedData>("data");
-
-        #region IDeserializationCallback Members
-
-        public void OnDeserialization(object sender) {
-            specs = tempData.SpecKeys.Zip(tempData.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
-            mainMenus = tempData.MenuValues.ToImmutableList();
-        }
-
-        #endregion
-
-        #region ISerializable Members
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context) {
-            var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
-            info.AddValue<SerializedData>("data", data);
-        }
-
-        #endregion
-
-        #region ISpecificationCache Members
-
-        public void Serialize(string file) {
-            using var fs = File.Open(file, FileMode.OpenOrCreate);
-            IFormatter formatter = new BinaryFormatter();
-            var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
-            formatter.Serialize(fs, data);
-        }
-
-        public void Serialize(string file, IFormatter formatter) {
-            using var fs = File.Open(file, FileMode.OpenOrCreate);
-            var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
-            formatter.Serialize(fs, data);
-        }
-
-        public ITypeSpecImmutable GetSpecification(string key) => specs.ContainsKey(key) ? specs[key] : null;
-
-        public void Cache(string key, ITypeSpecImmutable spec) => specs = specs.Add(key, spec);
-
-        public void Clear() => specs = specs.Clear();
-
-        public ITypeSpecImmutable[] AllSpecifications() => specs.Values.ToArray();
-
-        public void Cache(IMenuImmutable mainMenu) => mainMenus = mainMenus.Add(mainMenu);
-
-        public IMenuImmutable[] MainMenus() => mainMenus.ToArray();
-
-        #endregion
+        mainMenus = data.MenuValues.ToImmutableList();
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public ImmutableInMemorySpecCache(string file, IFormatter formatter) {
+        using var fs = File.Open(file, FileMode.Open);
+        var data = (SerializedData) formatter.Deserialize(fs);
+        specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+
+        mainMenus = data.MenuValues.ToImmutableList();
+    }
+
+    // The special constructor is used to deserialize values. 
+    public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) => tempData = info.GetValue<SerializedData>("data");
+
+    #region IDeserializationCallback Members
+
+    public void OnDeserialization(object sender) {
+        specs = tempData.SpecKeys.Zip(tempData.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+        mainMenus = tempData.MenuValues.ToImmutableList();
+    }
+
+    #endregion
+
+    #region ISerializable Members
+
+    public void GetObjectData(SerializationInfo info, StreamingContext context) {
+        var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+        info.AddValue<SerializedData>("data", data);
+    }
+
+    #endregion
+
+    #region ISpecificationCache Members
+
+    public void Serialize(string file) {
+        using var fs = File.Open(file, FileMode.OpenOrCreate);
+        IFormatter formatter = new BinaryFormatter();
+        var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+        formatter.Serialize(fs, data);
+    }
+
+    public void Serialize(string file, IFormatter formatter) {
+        using var fs = File.Open(file, FileMode.OpenOrCreate);
+        var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+        formatter.Serialize(fs, data);
+    }
+
+    public ITypeSpecImmutable GetSpecification(string key) => specs.ContainsKey(key) ? specs[key] : null;
+
+    public void Cache(string key, ITypeSpecImmutable spec) => specs = specs.Add(key, spec);
+
+    public void Clear() => specs = specs.Clear();
+
+    public ITypeSpecImmutable[] AllSpecifications() => specs.Values.ToArray();
+
+    public void Cache(IMenuImmutable mainMenu) => mainMenus = mainMenus.Add(mainMenu);
+
+    public IMenuImmutable[] MainMenus() => mainMenus.ToArray();
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

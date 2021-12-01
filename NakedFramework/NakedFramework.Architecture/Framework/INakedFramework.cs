@@ -9,26 +9,26 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.Framework {
-    /// <summary>
-    ///     Defines a service that provides easy access to the principal components of the framework.
-    ///     An implementation of this service interface will be injected into any domain
-    ///     object that needs it.
-    /// </summary>
-    public interface INakedFramework {
-        IMessageBroker MessageBroker { get; }
-        ISession Session { get; }
-        ILifecycleManager LifecycleManager { get; }
-        INakedObjectManager NakedObjectManager { get; }
-        IServicesManager ServicesManager { get; }
-        IObjectPersistor Persistor { get; }
-        IEnumerable<IReflector> Reflectors { get; }
-        IMetamodelManager MetamodelManager { get; }
-        IDomainObjectInjector DomainObjectInjector { get; }
-        ITransactionManager TransactionManager { get; }
-        IFrameworkResolver FrameworkResolver { get; }
-        IServiceProvider ServiceProvider { get; }
-        string[] ServerTypes { get; }
-        ReflectorType ReflectorType { get; }
-    }
+namespace NakedFramework.Architecture.Framework; 
+
+/// <summary>
+///     Defines a service that provides easy access to the principal components of the framework.
+///     An implementation of this service interface will be injected into any domain
+///     object that needs it.
+/// </summary>
+public interface INakedFramework {
+    IMessageBroker MessageBroker { get; }
+    ISession Session { get; }
+    ILifecycleManager LifecycleManager { get; }
+    INakedObjectManager NakedObjectManager { get; }
+    IServicesManager ServicesManager { get; }
+    IObjectPersistor Persistor { get; }
+    IEnumerable<IReflector> Reflectors { get; }
+    IMetamodelManager MetamodelManager { get; }
+    IDomainObjectInjector DomainObjectInjector { get; }
+    ITransactionManager TransactionManager { get; }
+    IFrameworkResolver FrameworkResolver { get; }
+    IServiceProvider ServiceProvider { get; }
+    string[] ServerTypes { get; }
+    ReflectorType ReflectorType { get; }
 }

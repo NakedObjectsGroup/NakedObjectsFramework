@@ -10,16 +10,16 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class DisableForSessionFacetNone : DisableForSessionFacetAbstract {
-        public DisableForSessionFacetNone(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsNoOp => true;
+[Serializable]
+public sealed class DisableForSessionFacetNone : DisableForSessionFacetAbstract {
+    public DisableForSessionFacetNone(ISpecification holder)
+        : base(holder) { }
 
-        public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => null;
-    }
+    public override bool IsNoOp => true;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => null;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

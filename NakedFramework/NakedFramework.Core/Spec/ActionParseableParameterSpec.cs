@@ -10,33 +10,33 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Spec {
-    public sealed class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
-        // cached values 
-        private int? maximumLength;
-        private int? noLines;
+namespace NakedFramework.Core.Spec; 
 
-        public ActionParseableParameterSpec(int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedFramework framework)
-            : base(index, actionSpec, actionParameterSpecImmutable, framework) { }
+public sealed class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
+    // cached values 
+    private int? maximumLength;
+    private int? noLines;
 
-        #region IActionParseableParameterSpec Members
+    public ActionParseableParameterSpec(int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedFramework framework)
+        : base(index, actionSpec, actionParameterSpecImmutable, framework) { }
 
-        public int NoLines {
-            get {
-                noLines ??= GetFacet<IMultiLineFacet>().NumberOfLines;
-                return noLines.Value;
-            }
+    #region IActionParseableParameterSpec Members
+
+    public int NoLines {
+        get {
+            noLines ??= GetFacet<IMultiLineFacet>().NumberOfLines;
+            return noLines.Value;
         }
-
-        public int MaximumLength {
-            get {
-                maximumLength ??= GetFacet<IMaxLengthFacet>().Value;
-                return maximumLength.Value;
-            }
-        }
-
-        public bool IsFindMenuEnabled => false;
-
-        #endregion
     }
+
+    public int MaximumLength {
+        get {
+            maximumLength ??= GetFacet<IMaxLengthFacet>().Value;
+            return maximumLength.Value;
+        }
+    }
+
+    public bool IsFindMenuEnabled => false;
+
+    #endregion
 }

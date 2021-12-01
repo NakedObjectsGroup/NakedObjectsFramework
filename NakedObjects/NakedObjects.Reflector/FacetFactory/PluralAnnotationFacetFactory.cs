@@ -18,17 +18,17 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class PluralAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public PluralAnnotationFacetFactory(IFacetFactoryOrder<PluralAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<PluralAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-            return metamodel;
-        }
+public sealed class PluralAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public PluralAnnotationFacetFactory(IFacetFactoryOrder<PluralAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) => attribute is null ? null : new PluralFacetAnnotation(attribute.Value, holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = type.GetCustomAttribute<PluralAttribute>();
+        FacetUtils.AddFacet(Create(attribute, specification));
+        return metamodel;
     }
+
+    private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) => attribute is null ? null : new PluralFacetAnnotation(attribute.Value, holder);
 }

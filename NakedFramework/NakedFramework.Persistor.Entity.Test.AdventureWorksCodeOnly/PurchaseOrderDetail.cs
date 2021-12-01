@@ -11,42 +11,42 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Purchasing.PurchaseOrderDetail")]
-    public class PurchaseOrderDetail {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Purchasing.PurchaseOrderDetail")]
+public class PurchaseOrderDetail {
      
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int PurchaseOrderID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int PurchaseOrderID { get; set; }
 
      
-        [Column(Order = 1)]
-        public int PurchaseOrderDetailID { get; set; }
+    [Column(Order = 1)]
+    public int PurchaseOrderDetailID { get; set; }
 
-        public DateTime DueDate { get; set; }
+    public DateTime DueDate { get; set; }
 
-        public short OrderQty { get; set; }
+    public short OrderQty { get; set; }
 
-        public int ProductID { get; set; }
+    public int ProductID { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal UnitPrice { get; set; }
+    [Column(TypeName = "money")]
+    public decimal UnitPrice { get; set; }
 
-        [Column(TypeName = "money")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public decimal LineTotal { get; set; }
+    [Column(TypeName = "money")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public decimal LineTotal { get; set; }
 
-        public decimal ReceivedQty { get; set; }
+    public decimal ReceivedQty { get; set; }
 
-        public decimal RejectedQty { get; set; }
+    public decimal RejectedQty { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public decimal StockedQty { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public decimal StockedQty { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Product Product { get; set; }
+    public virtual Product Product { get; set; }
 
-        public virtual PurchaseOrderHeader PurchaseOrderHeader { get; set; }
-    }
+    public virtual PurchaseOrderHeader PurchaseOrderHeader { get; set; }
 }

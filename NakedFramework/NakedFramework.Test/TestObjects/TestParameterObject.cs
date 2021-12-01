@@ -9,24 +9,24 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects {
-    internal class TestParameterObject : ITestValue {
-        private readonly object domainObject;
-        private readonly INakedObjectManager manager;
+namespace NakedFramework.Test.TestObjects; 
 
-        public TestParameterObject(INakedObjectManager manager, object domainObject) {
-            this.manager = manager;
-            this.domainObject = domainObject;
-        }
+internal class TestParameterObject : ITestValue {
+    private readonly object domainObject;
+    private readonly INakedObjectManager manager;
 
-        #region ITestValue Members
-
-        public string Title => NakedObject.TitleString();
-
-        public INakedObjectAdapter NakedObject => manager.CreateAdapter(domainObject, null, null);
-
-        #endregion
+    public TestParameterObject(INakedObjectManager manager, object domainObject) {
+        this.manager = manager;
+        this.domainObject = domainObject;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region ITestValue Members
+
+    public string Title => NakedObject.TitleString();
+
+    public INakedObjectAdapter NakedObject => manager.CreateAdapter(domainObject, null, null);
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

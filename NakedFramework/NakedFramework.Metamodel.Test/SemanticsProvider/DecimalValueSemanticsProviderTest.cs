@@ -17,128 +17,128 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestClass]
-    public class DecimalValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<decimal> {
-        private decimal dec;
-        private ISpecification holder;
-        private DecimalValueSemanticsProvider value;
+namespace NakedObjects.Meta.Test.SemanticsProvider; 
 
-        [TestMethod]
-        public void TestDecode() {
-            var decoded = GetValue().FromEncodedString("304211223");
-            Assert.AreEqual(304211223, decoded);
-        }
+[TestClass]
+public class DecimalValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<decimal> {
+    private decimal dec;
+    private ISpecification holder;
+    private DecimalValueSemanticsProvider value;
 
-        [TestMethod]
-        public void TestEncode() {
-            var encoded = GetValue().ToEncodedString(213434790);
-            Assert.AreEqual("213434790", encoded);
-        }
-
-        [TestMethod]
-        public void TestInvalidParse() {
-            try {
-                value.ParseTextEntry("one");
-                Assert.Fail();
-            }
-            catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
-            }
-        }
-
-        [TestMethod]
-        public void TestParse() {
-            var newValue = value.ParseTextEntry("120");
-            Assert.AreEqual(120M, newValue);
-        }
-
-        [TestMethod]
-        public override void TestParseEmptyString() {
-            try {
-                var newValue = value.ParseTextEntry("");
-                Assert.IsNull(newValue);
-            }
-            catch (Exception) {
-                Assert.Fail();
-            }
-        }
-
-        [TestMethod]
-        public void TestParseInvariant() {
-            const decimal c1 = 123;
-            var s1 = c1.ToString(CultureInfo.InvariantCulture);
-            var c2 = GetValue().ParseInvariant(s1);
-            Assert.AreEqual(c1, c2);
-        }
-
-        [TestMethod]
-        public void TestParseOddlyFormedEntry() {
-            var newValue = value.ParseTextEntry("1,20.0");
-            Assert.AreEqual(120.0M, newValue);
-        }
-
-        [TestMethod]
-        public void TestTitleString() {
-            Assert.AreEqual("32", value.DisplayTitleOf(dec));
-        }
-
-        [TestMethod]
-        public override void TestParseNull() {
-            base.TestParseNull();
-        }
-
-        [TestMethod]
-        public override void TestDecodeNull() {
-            base.TestDecodeNull();
-        }
-
-        [TestMethod]
-        public override void TestEmptyEncoding() {
-            base.TestEmptyEncoding();
-        }
-
-        [TestMethod]
-        public void TestValue() {
-            var facet = (IDecimalValueFacet) GetValue();
-            const decimal testValue = 121M;
-            var mockNo = new Mock<INakedObjectAdapter>();
-            mockNo.Setup(no => no.Object).Returns(testValue);
-            Assert.AreEqual(testValue, facet.DecimalValue(mockNo.Object));
-        }
-
-        [TestMethod]
-        public void TestAsParserInvariant() {
-            var mgr = MockNakedObjectManager();
-            IParseableFacet parser = new ParseableFacetUsingParser<decimal>(value, null);
-            Assert.AreEqual(91M, parser.ParseInvariant("91", mgr.Object).Object);
-        }
-
-        [TestMethod]
-        public void TestAsParserTitle() {
-            IParseableFacet parser = new ParseableFacetUsingParser<decimal>(value, null);
-            var mockAdapter = MockAdapter(101M);
-            Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            dec = 32;
-            holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new DecimalValueSemanticsProvider(spec, holder));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public void TestDecode() {
+        var decoded = GetValue().FromEncodedString("304211223");
+        Assert.AreEqual(304211223, decoded);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestEncode() {
+        var encoded = GetValue().ToEncodedString(213434790);
+        Assert.AreEqual("213434790", encoded);
+    }
+
+    [TestMethod]
+    public void TestInvalidParse() {
+        try {
+            value.ParseTextEntry("one");
+            Assert.Fail();
+        }
+        catch (Exception e) {
+            Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+        }
+    }
+
+    [TestMethod]
+    public void TestParse() {
+        var newValue = value.ParseTextEntry("120");
+        Assert.AreEqual(120M, newValue);
+    }
+
+    [TestMethod]
+    public override void TestParseEmptyString() {
+        try {
+            var newValue = value.ParseTextEntry("");
+            Assert.IsNull(newValue);
+        }
+        catch (Exception) {
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
+    public void TestParseInvariant() {
+        const decimal c1 = 123;
+        var s1 = c1.ToString(CultureInfo.InvariantCulture);
+        var c2 = GetValue().ParseInvariant(s1);
+        Assert.AreEqual(c1, c2);
+    }
+
+    [TestMethod]
+    public void TestParseOddlyFormedEntry() {
+        var newValue = value.ParseTextEntry("1,20.0");
+        Assert.AreEqual(120.0M, newValue);
+    }
+
+    [TestMethod]
+    public void TestTitleString() {
+        Assert.AreEqual("32", value.DisplayTitleOf(dec));
+    }
+
+    [TestMethod]
+    public override void TestParseNull() {
+        base.TestParseNull();
+    }
+
+    [TestMethod]
+    public override void TestDecodeNull() {
+        base.TestDecodeNull();
+    }
+
+    [TestMethod]
+    public override void TestEmptyEncoding() {
+        base.TestEmptyEncoding();
+    }
+
+    [TestMethod]
+    public void TestValue() {
+        var facet = (IDecimalValueFacet) GetValue();
+        const decimal testValue = 121M;
+        var mockNo = new Mock<INakedObjectAdapter>();
+        mockNo.Setup(no => no.Object).Returns(testValue);
+        Assert.AreEqual(testValue, facet.DecimalValue(mockNo.Object));
+    }
+
+    [TestMethod]
+    public void TestAsParserInvariant() {
+        var mgr = MockNakedObjectManager();
+        IParseableFacet parser = new ParseableFacetUsingParser<decimal>(value, null);
+        Assert.AreEqual(91M, parser.ParseInvariant("91", mgr.Object).Object);
+    }
+
+    [TestMethod]
+    public void TestAsParserTitle() {
+        IParseableFacet parser = new ParseableFacetUsingParser<decimal>(value, null);
+        var mockAdapter = MockAdapter(101M);
+        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
+    }
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        dec = 32;
+        holder = new Mock<ISpecification>().Object;
+        var spec = new Mock<IObjectSpecImmutable>().Object;
+        SetValue(value = new DecimalValueSemanticsProvider(spec, holder));
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -7,12 +7,12 @@
 
 using System;
 
-namespace NakedFramework.Facade.Error {
-    public class GeneralErrorNOSException : NakedObjectsFacadeException {
-        public GeneralErrorNOSException(Exception e) : base(e.Message, e) { }
+namespace NakedFramework.Facade.Error; 
 
-        public override string Message => GetInnermostException(this).Message;
+public class GeneralErrorNOSException : NakedObjectsFacadeException {
+    public GeneralErrorNOSException(Exception e) : base(e.Message, e) { }
 
-        private static Exception GetInnermostException(Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
-    }
+    public override string Message => GetInnermostException(this).Message;
+
+    private static Exception GetInnermostException(Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
 }

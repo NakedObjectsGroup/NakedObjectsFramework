@@ -15,80 +15,80 @@ using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Error;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Adapter {
-    [TestFixture]
-    public class NakedObjectAdapterTest {
-        private readonly ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
-        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
-        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
-        private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
-        private readonly INakedObjectManager nakedObjectManager = new Mock<INakedObjectManager>().Object;
-        private readonly IOid oid = new Mock<IOid>().Object;
-        private readonly IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
-        private readonly object poco = new();
-        private readonly ISession session = new Mock<ISession>().Object;
-        private readonly ILogger<NullVersion> vLogger = new Mock<ILogger<NullVersion>>().Object;
+namespace NakedFramework.Core.Test.Adapter; 
 
-        private readonly INakedFramework framework = new Mock<INakedFramework>().Object;
+[TestFixture]
+public class NakedObjectAdapterTest {
+    private readonly ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
+    private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+    private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
+    private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
+    private readonly INakedObjectManager nakedObjectManager = new Mock<INakedObjectManager>().Object;
+    private readonly IOid oid = new Mock<IOid>().Object;
+    private readonly IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
+    private readonly object poco = new();
+    private readonly ISession session = new Mock<ISession>().Object;
+    private readonly ILogger<NullVersion> vLogger = new Mock<ILogger<NullVersion>>().Object;
 
-        [Test]
-        public void TestCheckLockDefaultOk() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
-            var testNullVersion = new NullVersion(vLogger);
-            testAdapter.CheckLock(testNullVersion);
+    private readonly INakedFramework framework = new Mock<INakedFramework>().Object;
+
+    [Test]
+    public void TestCheckLockDefaultOk() {
+        INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
+        var testNullVersion = new NullVersion(vLogger);
+        testAdapter.CheckLock(testNullVersion);
+    }
+
+    [Test]
+    public void TestCheckLockDefaultFail() {
+        INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
+        var testCcVersionVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
+
+        try {
+            testAdapter.CheckLock(testCcVersionVersion);
+            Assert.Fail("exception expected");
         }
-
-        [Test]
-        public void TestCheckLockDefaultFail() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
-            var testCcVersionVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
-
-            try {
-                testAdapter.CheckLock(testCcVersionVersion);
-                Assert.Fail("exception expected");
-            }
-            catch (ConcurrencyException) {
-                // expected 
-            }
+        catch (ConcurrencyException) {
+            // expected 
         }
+    }
 
-        [Test]
-        public void TestCheckLockNewVersionOk() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
-            var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
+    [Test]
+    public void TestCheckLockNewVersionOk() {
+        INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
+        var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
 
-            testAdapter.OptimisticLock = testCcVersion;
+        testAdapter.OptimisticLock = testCcVersion;
 
-            testAdapter.CheckLock(testCcVersion);
+        testAdapter.CheckLock(testCcVersion);
+    }
+
+    [Test]
+    public void TestCheckLockNewVersionFail() {
+        INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
+        var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
+
+        testAdapter.OptimisticLock = testCcVersion;
+
+        try {
+            testAdapter.CheckLock(new NullVersion(vLogger));
+            Assert.Fail("exception expected");
         }
-
-        [Test]
-        public void TestCheckLockNewVersionFail() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(poco, oid, framework, loggerFactory, logger);
-            var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
-
-            testAdapter.OptimisticLock = testCcVersion;
-
-            try {
-                testAdapter.CheckLock(new NullVersion(vLogger));
-                Assert.Fail("exception expected");
-            }
-            catch (ConcurrencyException) {
-                // expected 
-            }
+        catch (ConcurrencyException) {
+            // expected 
         }
+    }
 
-        [Test]
-        public void TestRoundTrip() {
-            var mockMetamodelManager = new Mock<IMetamodelManager>();
-            var mockLoggerFactory = new Mock<ILoggerFactory>();
+    [Test]
+    public void TestRoundTrip() {
+        var mockMetamodelManager = new Mock<IMetamodelManager>();
+        var mockLoggerFactory = new Mock<ILoggerFactory>();
 
-            var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, "avalue");
+        var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, "avalue");
 
-            var encoded = testCcVersion.ToEncodedStrings();
-            var newVersion = new ConcurrencyCheckVersion(mockMetamodelManager.Object, mockLoggerFactory.Object, encoded);
+        var encoded = testCcVersion.ToEncodedStrings();
+        var newVersion = new ConcurrencyCheckVersion(mockMetamodelManager.Object, mockLoggerFactory.Object, encoded);
 
-            Assert.AreEqual(testCcVersion, newVersion);
-        }
+        Assert.AreEqual(testCcVersion, newVersion);
     }
 }

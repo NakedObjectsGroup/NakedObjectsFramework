@@ -13,23 +13,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.ProductPhoto")]
-    public class ProductPhoto {
-        public int ProductPhotoID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public byte[] ThumbNailPhoto { get; set; }
+[Table("Production.ProductPhoto")]
+public class ProductPhoto {
+    public int ProductPhotoID { get; set; }
 
-        [StringLength(50)]
-        public string ThumbnailPhotoFileName { get; set; }
+    public byte[] ThumbNailPhoto { get; set; }
 
-        public byte[] LargePhoto { get; set; }
+    [StringLength(50)]
+    public string ThumbnailPhotoFileName { get; set; }
 
-        [StringLength(50)]
-        public string LargePhotoFileName { get; set; }
+    public byte[] LargePhoto { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [StringLength(50)]
+    public string LargePhotoFileName { get; set; }
 
-        public virtual ICollection<ProductProductPhoto> ProductProductPhotoes { get; set; } = new HashSet<ProductProductPhoto>();
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<ProductProductPhoto> ProductProductPhotoes { get; set; } = new HashSet<ProductProductPhoto>();
 }

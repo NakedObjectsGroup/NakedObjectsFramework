@@ -16,23 +16,23 @@ using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Utility {
-    public static class FacadeUtils {
-        public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) => ((ObjectFacade) objectFacade)?.WrappedNakedObject;
+namespace NakedFramework.Facade.Impl.Utility; 
 
-        public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => ((ActionParameterFacade) actionParameterFacade)?.WrappedSpec;
+public static class FacadeUtils {
+    public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) => ((ObjectFacade) objectFacade)?.WrappedNakedObject;
 
-        public static NakedObjectsFacadeException Map(Exception e) =>
-            e switch {
-                FindObjectException => new ObjectResourceNotFoundNOSException(e.Message, e),
-                InvalidEntryException => new BadRequestNOSException(NakedObjects.Resources.NakedObjects.InvalidArguments, e),
-                ArgumentException => new BadRequestNOSException(NakedObjects.Resources.NakedObjects.InvalidArguments, e),
-                TargetParameterCountException => new BadRequestNOSException("Missing arguments", e), // todo i18n
-                InvokeException when e.InnerException != null => Map(e.InnerException), // recurse on inner exception
-                _ => new GeneralErrorNOSException(e)
-            };
+    public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => ((ActionParameterFacade) actionParameterFacade)?.WrappedSpec;
 
-        public static IActionSpec[] GetActionsFromSpec(ITypeSpec spec) =>
-            spec.GetActionLeafNodes().ToArray();
-    }
+    public static NakedObjectsFacadeException Map(Exception e) =>
+        e switch {
+            FindObjectException => new ObjectResourceNotFoundNOSException(e.Message, e),
+            InvalidEntryException => new BadRequestNOSException(NakedObjects.Resources.NakedObjects.InvalidArguments, e),
+            ArgumentException => new BadRequestNOSException(NakedObjects.Resources.NakedObjects.InvalidArguments, e),
+            TargetParameterCountException => new BadRequestNOSException("Missing arguments", e), // todo i18n
+            InvokeException when e.InnerException != null => Map(e.InnerException), // recurse on inner exception
+            _ => new GeneralErrorNOSException(e)
+        };
+
+    public static IActionSpec[] GetActionsFromSpec(ITypeSpec spec) =>
+        spec.GetActionLeafNodes().ToArray();
 }

@@ -21,115 +21,115 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class NotNavigableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private NotNavigableAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(INotNavigableFacet)};
+[TestClass]
+public class NotNavigableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private NotNavigableAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(INotNavigableFacet)};
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestNotNavigableAnnotationPickedUpOnCollection() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "Orders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(INotNavigableFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotNavigableFacet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestNotNavigableAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(INotNavigableFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotNavigableFacet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestNotNavigableAnnotationPickedUpOnType() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer2), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            Assert.IsNotNull(metamodel);
-            var facet = Specification.GetFacet(typeof(INotNavigableFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotNavigableFacet);
-            AssertNoMethodsRemoved();
-        }
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [NotNavigable]
-// ReSharper disable once UnusedMember.Local
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [NotNavigable]
-// ReSharper disable once UnusedMember.Local
-            public IList Orders => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer2
-
-        private class Customer2 {
-            public NotNavigable FirstName => null;
-        }
-
-        #endregion
-
-        #region Nested type: NotNavigable
-
-        [NotNavigable]
-        private class NotNavigable { }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new NotNavigableAnnotationFacetFactory(GetOrder<NotNavigableAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestNotNavigableAnnotationPickedUpOnCollection() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "Orders");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(INotNavigableFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is NotNavigableFacet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestNotNavigableAnnotationPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer), "FirstName");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(INotNavigableFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is NotNavigableFacet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestNotNavigableAnnotationPickedUpOnType() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer2), "FirstName");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        Assert.IsNotNull(metamodel);
+        var facet = Specification.GetFacet(typeof(INotNavigableFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is NotNavigableFacet);
+        AssertNoMethodsRemoved();
+    }
+
+    #region Nested type: Customer
+
+    private class Customer {
+        [NotNavigable]
+// ReSharper disable once UnusedMember.Local
+        public string FirstName => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [NotNavigable]
+// ReSharper disable once UnusedMember.Local
+        public IList Orders => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer2
+
+    private class Customer2 {
+        public NotNavigable FirstName => null;
+    }
+
+    #endregion
+
+    #region Nested type: NotNavigable
+
+    [NotNavigable]
+    private class NotNavigable { }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new NotNavigableAnnotationFacetFactory(GetOrder<NotNavigableAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

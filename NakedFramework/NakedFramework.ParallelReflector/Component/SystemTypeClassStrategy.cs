@@ -11,32 +11,32 @@ using System.Reflection;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.ParallelReflector.Component {
-    /// <summary>
-    ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
-    /// </summary>
-    [Serializable]
-    public class SystemTypeClassStrategy : AbstractClassStrategy {
-        private readonly Type[] supportedSystemTypes;
+namespace NakedFramework.ParallelReflector.Component; 
 
-        public SystemTypeClassStrategy(ICoreConfiguration coreConfiguration) => supportedSystemTypes = coreConfiguration.SupportedSystemTypes.ToArray();
+/// <summary>
+///     Standard way of determining which fields are to be exposed in a Naked Objects system.
+/// </summary>
+[Serializable]
+public class SystemTypeClassStrategy : AbstractClassStrategy {
+    private readonly Type[] supportedSystemTypes;
 
-        protected bool IsUnSupportedSystemType(Type type) => FasterTypeUtils.IsSystem(type) && !IsTypeSupportedSystemType(type);
+    public SystemTypeClassStrategy(ICoreConfiguration coreConfiguration) => supportedSystemTypes = coreConfiguration.SupportedSystemTypes.ToArray();
 
-        protected override bool IsTypeIgnored(Type type) => IsUnSupportedSystemType(type);
+    protected bool IsUnSupportedSystemType(Type type) => FasterTypeUtils.IsSystem(type) && !IsTypeSupportedSystemType(type);
 
-        protected override bool IsTypeExplicitlyRequested(Type type) => IsTypeSupportedSystemType(type);
+    protected override bool IsTypeIgnored(Type type) => IsUnSupportedSystemType(type);
 
-        protected bool IsTypeSupportedSystemType(Type type) => supportedSystemTypes.Any(t => t == ToMatch(type));
+    protected override bool IsTypeExplicitlyRequested(Type type) => IsTypeSupportedSystemType(type);
 
-        #region IClassStrategy Members
+    protected bool IsTypeSupportedSystemType(Type type) => supportedSystemTypes.Any(t => t == ToMatch(type));
 
-        public override bool IsIgnored(MemberInfo member) => false;
-        public override bool IsService(Type type) => false;
-        public override bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
+    #region IClassStrategy Members
 
-        #endregion
-    }
+    public override bool IsIgnored(MemberInfo member) => false;
+    public override bool IsService(Type type) => false;
+    public override bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -9,37 +9,37 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class AutoCompleteViaFunctionFacetTest {
-        private static readonly string[] TestValue = {"one", "two"};
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        [TestMethod]
-        public void TestGetCompletions() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Completions));
-            var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null, null);
+[TestClass]
+public class AutoCompleteViaFunctionFacetTest {
+    private static readonly string[] TestValue = {"one", "two"};
 
-            var result = testFacet.GetCompletions(null, null, null);
+    [TestMethod]
+    public void TestGetCompletions() {
+        var method = typeof(TestClass).GetMethod(nameof(TestClass.Completions));
+        var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null, null);
 
-            Assert.AreEqual(TestValue.Length, result.Length);
-            Assert.AreEqual(TestValue[0], result[0]);
-            Assert.AreEqual(TestValue[1], result[1]);
-        }
+        var result = testFacet.GetCompletions(null, null, null);
 
-        [TestMethod]
-        public void TestGetSingleCompletions() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Completion));
-            var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null, null);
+        Assert.AreEqual(TestValue.Length, result.Length);
+        Assert.AreEqual(TestValue[0], result[0]);
+        Assert.AreEqual(TestValue[1], result[1]);
+    }
 
-            var result = testFacet.GetCompletions(null, null, null);
+    [TestMethod]
+    public void TestGetSingleCompletions() {
+        var method = typeof(TestClass).GetMethod(nameof(TestClass.Completion));
+        var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null, null);
 
-            Assert.AreEqual(1, result.Length);
-            Assert.AreEqual(TestValue[0], result[0]);
-        }
+        var result = testFacet.GetCompletions(null, null, null);
 
-        public static class TestClass {
-            public static string[] Completions() => TestValue;
-            public static string Completion() => TestValue.First();
-        }
+        Assert.AreEqual(1, result.Length);
+        Assert.AreEqual(TestValue[0], result[0]);
+    }
+
+    public static class TestClass {
+        public static string[] Completions() => TestValue;
+        public static string Completion() => TestValue.First();
     }
 }

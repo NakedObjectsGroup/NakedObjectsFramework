@@ -9,21 +9,21 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Disable a property, collection or action based on the state of the target <see cref="INakedObjectAdapter" />
-    ///     object.
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     invoking the <c>DisableXxx</c> support method for the member.
-    /// </para>
-    public interface IDisableForContextFacet : IFacet, IDisablingInteractionAdvisor {
-        /// <summary>
-        ///     The reason this object is disabled, or <c>null</c> otherwise
-        /// </summary>
-        string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-    }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Disable a property, collection or action based on the state of the target <see cref="INakedObjectAdapter" />
+///     object.
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     invoking the <c>DisableXxx</c> support method for the member.
+/// </para>
+public interface IDisableForContextFacet : IFacet, IDisablingInteractionAdvisor {
+    /// <summary>
+    ///     The reason this object is disabled, or <c>null</c> otherwise
+    /// </summary>
+    string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -7,16 +7,16 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Clear all objects from a collection
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     either invoking the <c>ClearXxx</c> support method, or just
-    ///     invoking <c>Clear</c> on the collection returned by the accessor method
-    /// </para>
-    public interface ICollectionResetFacet : IFacet {
-        void Reset(INakedObjectAdapter inObjectAdapter);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Clear all objects from a collection
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     either invoking the <c>ClearXxx</c> support method, or just
+///     invoking <c>Clear</c> on the collection returned by the accessor method
+/// </para>
+public interface ICollectionResetFacet : IFacet {
+    void Reset(INakedObjectAdapter inObjectAdapter);
 }

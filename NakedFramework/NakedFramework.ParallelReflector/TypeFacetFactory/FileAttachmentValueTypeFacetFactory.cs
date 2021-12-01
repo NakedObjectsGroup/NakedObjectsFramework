@@ -14,18 +14,18 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    public sealed class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public FileAttachmentValueTypeFacetFactory(IFacetFactoryOrder<FileAttachmentValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!FileAttachmentValueSemanticsProvider.IsAdaptedType(type)) {
-                return metamodel;
-            }
+public sealed class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public FileAttachmentValueTypeFacetFactory(IFacetFactoryOrder<FileAttachmentValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(FileAttachmentValueSemanticsProvider.AdaptedType, metamodel);
-            AddValueFacets(new FileAttachmentValueSemanticsProvider(oSpec, specification), specification);
-            return mm;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!FileAttachmentValueSemanticsProvider.IsAdaptedType(type)) {
+            return metamodel;
         }
+
+        var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(FileAttachmentValueSemanticsProvider.AdaptedType, metamodel);
+        AddValueFacets(new FileAttachmentValueSemanticsProvider(oSpec, specification), specification);
+        return mm;
     }
 }

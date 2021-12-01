@@ -5,15 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Represents the mechanism to inform the object that it has been persisted to the object store for the first time
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, this is represented by a <c>Persisted</c> method
-    /// </para>
-    /// <seealso cref="IPersistingCallbackFacet" />
-    public interface IPersistedCallbackFacet : ICallbackFacet { }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
-}
+/// <summary>
+///     Represents the mechanism to inform the object that it has been persisted to the object store for the first time
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, this is represented by a <c>Persisted</c> method
+/// </para>
+/// <seealso cref="IPersistingCallbackFacet" />
+public interface IPersistedCallbackFacet : ICallbackFacet { }
+
+// Copyright (c) Naked Objects Group Ltd.

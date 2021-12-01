@@ -16,77 +16,77 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class ValidateProgrammaticUpdatesAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private ValidateProgrammaticUpdatesAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IValidateProgrammaticUpdatesFacet)};
+[TestClass]
+public class ValidateProgrammaticUpdatesAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private ValidateProgrammaticUpdatesAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IValidateProgrammaticUpdatesFacet)};
 
-        [TestMethod]
-        public void TestApplyValidationNotPickup() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
+    [TestMethod]
+    public void TestApplyValidationNotPickup() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        [TestMethod]
-        public void TestApplyValidationPickup() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ValidateProgrammaticUpdatesFacetAnnotation);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        #region Nested type: Customer
-
-        [ValidateProgrammaticUpdates]
-        private class Customer { }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 { }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(GetOrder<ValidateProgrammaticUpdatesAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+        metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
+        Assert.IsNull(facet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestApplyValidationPickup() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is ValidateProgrammaticUpdatesFacetAnnotation);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    #region Nested type: Customer
+
+    [ValidateProgrammaticUpdates]
+    private class Customer { }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 { }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(GetOrder<ValidateProgrammaticUpdatesAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

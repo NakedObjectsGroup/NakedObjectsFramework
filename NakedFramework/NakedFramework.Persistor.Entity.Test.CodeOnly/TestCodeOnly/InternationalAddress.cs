@@ -8,8 +8,8 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace TestCodeOnly {
-    public class InternationalAddress : Address {
-        public virtual string Country { get; set; }
-    }
+namespace TestCodeOnly; 
+
+public class InternationalAddress : Address {
+    public virtual string Country { get; set; }
 }

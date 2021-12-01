@@ -12,20 +12,20 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
-        public ActionChoicesFacetNone(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsNoOp => true;
+[Serializable]
+public sealed class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
+    public ActionChoicesFacetNone(ISpecification holder)
+        : base(holder) { }
 
-        public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();
+    public override bool IsNoOp => true;
 
-        public override bool IsMultiple => false;
+    public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();
 
-        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) => Array.Empty<object>();
-    }
+    public override bool IsMultiple => false;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) => Array.Empty<object>();
 }
+
+// Copyright (c) Naked Objects Group Ltd.

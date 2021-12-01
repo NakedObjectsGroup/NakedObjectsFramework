@@ -16,24 +16,24 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    /// <summary>
-    ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
-    /// </summary>
-    public sealed class InjectedParameterFacetFactory : FunctionalFacetFactoryProcessor {
-        private readonly ILogger<InjectedParameterFacetFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public InjectedParameterFacetFactory(IFacetFactoryOrder<InjectedParameterFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionParameters) =>
-            logger = loggerFactory.CreateLogger<InjectedParameterFacetFactory>();
+/// <summary>
+///     Sets up all the <see cref="IFacet" />s for an action in a single shot
+/// </summary>
+public sealed class InjectedParameterFacetFactory : FunctionalFacetFactoryProcessor {
+    private readonly ILogger<InjectedParameterFacetFactory> logger;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {
-                var facet = new InjectedIContextParameterFacet(holder);
-                FacetUtils.AddFacet(facet);
-            }
+    public InjectedParameterFacetFactory(IFacetFactoryOrder<InjectedParameterFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ActionParameters) =>
+        logger = loggerFactory.CreateLogger<InjectedParameterFacetFactory>();
 
-            return metamodel;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {
+            var facet = new InjectedIContextParameterFacet(holder);
+            FacetUtils.AddFacet(facet);
         }
+
+        return metamodel;
     }
 }

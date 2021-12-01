@@ -10,14 +10,14 @@
 
 using System.Data.Entity;
 
-namespace TestData {
-    public class TestDataContext : DbContext {
-        public TestDataContext(string cs) : base(cs) { }
+namespace TestData; 
 
-        public DbSet<Person> People { get; set; }
-        public DbSet<Pet> Pets { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderFail> OrderFails { get; set; }
-    }
+public class TestDataContext : DbContext {
+    public TestDataContext(string cs) : base(cs) { }
+
+    public DbSet<Person> People { get; set; }
+    public DbSet<Pet> Pets { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderFail> OrderFails { get; set; }
 }

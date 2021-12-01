@@ -5,12 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Indicates a collection should not be counted in the summary view.
-    ///     There is currently no attribute or programming convention in the
-    ///     standard ProgrammingModel that makes use of this, but developers
-    ///     may add their own, and this is known to be in use in one site at least.
-    /// </summary>
-    public interface INotCountedFacet : IMarkerFacet { }
-}
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Indicates a collection should not be counted in the summary view.
+///     There is currently no attribute or programming convention in the
+///     standard ProgrammingModel that makes use of this, but developers
+///     may add their own, and this is known to be in use in one site at least.
+/// </summary>
+public interface INotCountedFacet : IMarkerFacet { }

@@ -9,34 +9,34 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.SpecImmutable {
-    public enum ReflectionStatus {
-        PlaceHolder,
-        PendingIntrospection,
-        Introspected
-    }
+namespace NakedFramework.Architecture.SpecImmutable; 
 
-    public interface ITypeSpecBuilder : ITypeSpecImmutable {
-        bool IsPlaceHolder { get; }
-        bool IsPendingIntrospection { get; }
+public enum ReflectionStatus {
+    PlaceHolder,
+    PendingIntrospection,
+    Introspected
+}
 
-        /// <summary>
-        ///     Discovers what attributes and behaviour the type specified by this specification. As specification are
-        ///     cyclic (specifically a class will reference its subclasses, which in turn reference their superclass)
-        ///     they need be created first, and then later work out its internals. This allows for cyclic references to
-        ///     the be accommodated as there should always a specification available even though it might not be
-        ///     complete.
-        /// </summary>
-        IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+public interface ITypeSpecBuilder : ITypeSpecImmutable {
+    bool IsPlaceHolder { get; }
+    bool IsPendingIntrospection { get; }
 
-        void AddSubclass(ITypeSpecImmutable subclass);
-        void AddContributedFunctions(IList<IActionSpecImmutable> result);
-        void AddContributedFields(IList<IAssociationSpecImmutable> addedFields);
-        void RemoveAction(IActionSpecImmutable action);
+    /// <summary>
+    ///     Discovers what attributes and behaviour the type specified by this specification. As specification are
+    ///     cyclic (specifically a class will reference its subclasses, which in turn reference their superclass)
+    ///     they need be created first, and then later work out its internals. This allows for cyclic references to
+    ///     the be accommodated as there should always a specification available even though it might not be
+    ///     complete.
+    /// </summary>
+    IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
-        void CompleteIntegration();
+    void AddSubclass(ITypeSpecImmutable subclass);
+    void AddContributedFunctions(IList<IActionSpecImmutable> result);
+    void AddContributedFields(IList<IAssociationSpecImmutable> addedFields);
+    void RemoveAction(IActionSpecImmutable action);
 
-        IList<IAssociationSpecImmutable> UnorderedFields { get; }
-        IList<IActionSpecImmutable> UnorderedObjectActions { get; }
-    }
+    void CompleteIntegration();
+
+    IList<IAssociationSpecImmutable> UnorderedFields { get; }
+    IList<IActionSpecImmutable> UnorderedObjectActions { get; }
 }

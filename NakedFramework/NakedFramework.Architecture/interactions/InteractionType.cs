@@ -7,17 +7,17 @@
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedFramework.Architecture.Interactions {
-    public enum InteractionType {
-        ActionInvoke,
-        CandidateArgument,
-        CollectionAddTo,
-        CollectionRemoveFrom,
-        MemberAccess,
-        ObjectPersist,
-        ObjectView,
-        PropertyParamModify
-    }
+namespace NakedFramework.Architecture.Interactions; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public enum InteractionType {
+    ActionInvoke,
+    CandidateArgument,
+    CollectionAddTo,
+    CollectionRemoveFrom,
+    MemberAccess,
+    ObjectPersist,
+    ObjectView,
+    PropertyParamModify
 }
+
+// Copyright (c) Naked Objects Group Ltd.

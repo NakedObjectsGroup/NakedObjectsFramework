@@ -18,79 +18,79 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Audit;
 
-namespace NakedObjects.Reflector.Audit {
-    [Serializable]
-    public sealed class AuditManager : AbstractAuditManager, IFacetDecorator, IAuditManager {
-        public AuditManager(IAuditConfiguration config, ILogger<AuditManager> logger) : base(config, logger) { }
+namespace NakedObjects.Reflector.Audit; 
 
-        protected override void ValidateType(Type toValidate) {
-            if (!typeof(IAuditor).IsAssignableFrom(toValidate)) {
-                throw new InitialisationException(Logger.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
-            }
+[Serializable]
+public sealed class AuditManager : AbstractAuditManager, IFacetDecorator, IAuditManager {
+    public AuditManager(IAuditConfiguration config, ILogger<AuditManager> logger) : base(config, logger) { }
+
+    protected override void ValidateType(Type toValidate) {
+        if (!typeof(IAuditor).IsAssignableFrom(toValidate)) {
+            throw new InitialisationException(Logger.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
         }
-
-        private IAuditor GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
-
-        private IAuditor GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
-            var fullyQualifiedOfTarget = target.Spec.FullName;
-            // order here as ImmutableDictionary not ordered
-            var auditor = NamespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
-
-            return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
-        }
-
-        private static IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
-
-        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(DefaultAuditor, lifecycleManager);
-
-        #region IAuditManager Members
-
-        public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedFramework framework) {
-            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
-
-            var byPrincipal = framework.Session.Principal;
-            var memberName = identifier.MemberName;
-            if (nakedObjectAdapter.Spec is IServiceSpec) {
-                var serviceName = nakedObjectAdapter.Spec.GetTitle(nakedObjectAdapter);
-                auditor.ActionInvoked(byPrincipal, memberName, serviceName, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
-            }
-            else {
-                auditor.ActionInvoked(byPrincipal, memberName, nakedObjectAdapter.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
-            }
-        }
-
-        public void Updated(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
-            auditor.ObjectUpdated(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
-        }
-
-        public void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
-            auditor.ObjectPersisted(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
-        }
-
-        #endregion
-
-        #region IFacetDecorator Members
-
-        public IFacet Decorate(IFacet facet, ISpecification holder) {
-            if (facet.FacetType == typeof(IActionInvocationFacet)) {
-                return new AuditActionInvocationFacet((IActionInvocationFacet)facet, this);
-            }
-
-            if (facet.FacetType == typeof(IUpdatedCallbackFacet)) {
-                return new AuditUpdatedFacet((IUpdatedCallbackFacet)facet, this);
-            }
-
-            if (facet.FacetType == typeof(IPersistedCallbackFacet)) {
-                return new AuditPersistedFacet((IPersistedCallbackFacet)facet, this);
-            }
-
-            return facet;
-        }
-
-        public Type[] ForFacetTypes { get; } = { typeof(IActionInvocationFacet), typeof(IUpdatedCallbackFacet), typeof(IPersistedCallbackFacet) };
-
-        #endregion
     }
+
+    private IAuditor GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
+
+    private IAuditor GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
+        var fullyQualifiedOfTarget = target.Spec.FullName;
+        // order here as ImmutableDictionary not ordered
+        var auditor = NamespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
+
+        return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
+    }
+
+    private static IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
+
+    private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(DefaultAuditor, lifecycleManager);
+
+    #region IAuditManager Members
+
+    public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedFramework framework) {
+        var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
+
+        var byPrincipal = framework.Session.Principal;
+        var memberName = identifier.MemberName;
+        if (nakedObjectAdapter.Spec is IServiceSpec) {
+            var serviceName = nakedObjectAdapter.Spec.GetTitle(nakedObjectAdapter);
+            auditor.ActionInvoked(byPrincipal, memberName, serviceName, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
+        }
+        else {
+            auditor.ActionInvoked(byPrincipal, memberName, nakedObjectAdapter.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
+        }
+    }
+
+    public void Updated(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
+        auditor.ObjectUpdated(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
+    }
+
+    public void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
+        auditor.ObjectPersisted(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
+    }
+
+    #endregion
+
+    #region IFacetDecorator Members
+
+    public IFacet Decorate(IFacet facet, ISpecification holder) {
+        if (facet.FacetType == typeof(IActionInvocationFacet)) {
+            return new AuditActionInvocationFacet((IActionInvocationFacet)facet, this);
+        }
+
+        if (facet.FacetType == typeof(IUpdatedCallbackFacet)) {
+            return new AuditUpdatedFacet((IUpdatedCallbackFacet)facet, this);
+        }
+
+        if (facet.FacetType == typeof(IPersistedCallbackFacet)) {
+            return new AuditPersistedFacet((IPersistedCallbackFacet)facet, this);
+        }
+
+        return facet;
+    }
+
+    public Type[] ForFacetTypes { get; } = { typeof(IActionInvocationFacet), typeof(IUpdatedCallbackFacet), typeof(IPersistedCallbackFacet) };
+
+    #endregion
 }

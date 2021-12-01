@@ -13,29 +13,29 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedLegacy.Reflector.Facet {
-    [Serializable]
-    public sealed class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbstract {
-        private readonly PropertyInfo property;
+namespace NakedLegacy.Reflector.Facet; 
 
-        public PropertySetterFacetViaSetterMethod(PropertyInfo property, ISpecification holder)
-            : base(holder) =>
-            this.property = property;
+[Serializable]
+public sealed class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbstract {
+    private readonly PropertyInfo property;
 
-        public override string PropertyName {
-            get => property.Name;
-            protected set { }
-        }
+    public PropertySetterFacetViaSetterMethod(PropertyInfo property, ISpecification holder)
+        : base(holder) =>
+        this.property = property;
 
-        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, INakedFramework framework) {
-            try {
-                property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
-            }
-            catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException($"Exception executing {property}", e);
-            }
-        }
-
-        protected override string ToStringValues() => $"property={property}";
+    public override string PropertyName {
+        get => property.Name;
+        protected set { }
     }
+
+    public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, INakedFramework framework) {
+        try {
+            property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
+        }
+        catch (TargetInvocationException e) {
+            InvokeUtils.InvocationException($"Exception executing {property}", e);
+        }
+    }
+
+    protected override string ToStringValues() => $"property={property}";
 }

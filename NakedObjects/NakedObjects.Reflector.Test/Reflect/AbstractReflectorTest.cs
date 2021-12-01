@@ -46,150 +46,150 @@ using UIntValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.UIntVa
 using ULongValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.ULongValueTypeFacetFactory;
 using UShortValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.UShortValueTypeFacetFactory;
 
-namespace NakedObjects.Reflector.Test.Reflect {
-    public abstract class AbstractReflectorTest {
-        private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
-        protected IClassStrategy ClassStrategy;
-        protected IImmutableDictionary<string, ITypeSpecBuilder> Metamodel;
-        protected IObjectSpecImmutable Specification;
+namespace NakedObjects.Reflector.Test.Reflect; 
 
-        protected IFacetFactory[] FacetFactories =>
-            new[] {
-                NewFacetFactory<FallbackFacetFactory>(),
-                NewFacetFactory<IteratorFilteringFacetFactory>(),
-                NewFacetFactory<SystemClassMethodFilteringFactory>(),
-                NewFacetFactory<RemoveSuperclassMethodsFacetFactory>(),
-                NewFacetFactory<RemoveDynamicProxyMethodsFacetFactory>(),
-                NewFacetFactory<RemoveEventHandlerMethodsFacetFactory>(),
-                NewFacetFactory<TypeMarkerFacetFactory>(),
-                NewFacetFactory<MandatoryDefaultFacetFactory>(),
-                NewFacetFactory<PropertyValidateDefaultFacetFactory>(),
-                NewFacetFactory<ComplementaryMethodsFilteringFacetFactory>(),
-                NewFacetFactory<ActionMethodsFacetFactory>(),
-                NewFacetFactory<CollectionFieldMethodsFacetFactory>(),
-                NewFacetFactory<PropertyMethodsFacetFactory>(),
-                NewFacetFactory<CallbackMethodsFacetFactory>(),
-                NewFacetFactory<TitleMethodFacetFactory>(),
-                NewFacetFactory<ValidateObjectFacetFactory>(),
-                NewFacetFactory<ComplexTypeAnnotationFacetFactory>(),
-                NewFacetFactory<ViewModelFacetFactory>(),
-                NewFacetFactory<BoundedAnnotationFacetFactory>(),
-                NewFacetFactory<EnumFacetFactory>(),
-                NewFacetFactory<ActionDefaultAnnotationFacetFactory>(),
-                NewFacetFactory<PropertyDefaultAnnotationFacetFactory>(),
-                NewFacetFactory<DescribedAsAnnotationFacetFactory>(),
-                NewFacetFactory<DisabledAnnotationFacetFactory>(),
-                NewFacetFactory<PasswordAnnotationFacetFactory>(),
-                NewFacetFactory<PotencyAnnotationFacetFactory>(),
-                NewFacetFactory<PageSizeAnnotationFacetFactory>(),
-                NewFacetFactory<HiddenAnnotationFacetFactory>(),
-                NewFacetFactory<HiddenDefaultMethodFacetFactory>(),
-                NewFacetFactory<DisableDefaultMethodFacetFactory>(),
-                NewFacetFactory<AuthorizeAnnotationFacetFactory>(),
-                NewFacetFactory<ValidateProgrammaticUpdatesAnnotationFacetFactory>(),
-                NewFacetFactory<ImmutableAnnotationFacetFactory>(),
-                NewFacetFactory<MaxLengthAnnotationFacetFactory>(),
-                NewFacetFactory<RangeAnnotationFacetFactory>(),
-                NewFacetFactory<MemberOrderAnnotationFacetFactory>(),
-                NewFacetFactory<MultiLineAnnotationFacetFactory>(),
-                NewFacetFactory<NamedAnnotationFacetFactory>(),
-                NewFacetFactory<NotPersistedAnnotationFacetFactory>(),
-                NewFacetFactory<OptionalAnnotationFacetFactory>(),
-                NewFacetFactory<RequiredAnnotationFacetFactory>(),
-                NewFacetFactory<PluralAnnotationFacetFactory>(),
-                NewFacetFactory<DefaultNamingFacetFactory>(),
-                NewFacetFactory<ConcurrencyCheckAnnotationFacetFactory>(),
-                NewFacetFactory<ContributedActionAnnotationFacetFactory>(),
-                NewFacetFactory<FinderActionFacetFactory>(),
-                NewFacetFactory<MaskAnnotationFacetFactory>(),
-                NewFacetFactory<RegExAnnotationFacetFactory>(),
-                NewFacetFactory<TypeOfAnnotationFacetFactory>(),
-                NewFacetFactory<TableViewAnnotationFacetFactory>(),
-                NewFacetFactory<EagerlyAnnotationFacetFactory>(),
-                NewFacetFactory<PresentationHintAnnotationFacetFactory>(),
-                NewFacetFactory<BooleanValueTypeFacetFactory>(),
-                NewFacetFactory<ByteValueTypeFacetFactory>(),
-                NewFacetFactory<SbyteValueTypeFacetFactory>(),
-                NewFacetFactory<ShortValueTypeFacetFactory>(),
-                NewFacetFactory<IntValueTypeFacetFactory>(),
-                NewFacetFactory<LongValueTypeFacetFactory>(),
-                NewFacetFactory<UShortValueTypeFacetFactory>(),
-                NewFacetFactory<UIntValueTypeFacetFactory>(),
-                NewFacetFactory<ULongValueTypeFacetFactory>(),
-                NewFacetFactory<FloatValueTypeFacetFactory>(),
-                NewFacetFactory<DoubleValueTypeFacetFactory>(),
-                NewFacetFactory<DecimalValueTypeFacetFactory>(),
-                NewFacetFactory<CharValueTypeFacetFactory>(),
-                NewFacetFactory<DateTimeValueTypeFacetFactory>(),
-                NewFacetFactory<TimeValueTypeFacetFactory>(),
-                NewFacetFactory<StringValueTypeFacetFactory>(),
-                NewFacetFactory<GuidValueTypeFacetFactory>(),
-                NewFacetFactory<EnumValueTypeFacetFactory>(),
-                NewFacetFactory<FileAttachmentValueTypeFacetFactory>(),
-                NewFacetFactory<ImageValueTypeFacetFactory>(),
-                NewFacetFactory<TypeFacetFactory.ArrayValueTypeFacetFactory<byte>>(),
-                NewFacetFactory<CollectionFacetFactory>()
-            };
+public abstract class AbstractReflectorTest {
+    private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
+    protected IClassStrategy ClassStrategy;
+    protected IImmutableDictionary<string, ITypeSpecBuilder> Metamodel;
+    protected IObjectSpecImmutable Specification;
 
-        private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T) Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);
+    protected IFacetFactory[] FacetFactories =>
+        new[] {
+            NewFacetFactory<FallbackFacetFactory>(),
+            NewFacetFactory<IteratorFilteringFacetFactory>(),
+            NewFacetFactory<SystemClassMethodFilteringFactory>(),
+            NewFacetFactory<RemoveSuperclassMethodsFacetFactory>(),
+            NewFacetFactory<RemoveDynamicProxyMethodsFacetFactory>(),
+            NewFacetFactory<RemoveEventHandlerMethodsFacetFactory>(),
+            NewFacetFactory<TypeMarkerFacetFactory>(),
+            NewFacetFactory<MandatoryDefaultFacetFactory>(),
+            NewFacetFactory<PropertyValidateDefaultFacetFactory>(),
+            NewFacetFactory<ComplementaryMethodsFilteringFacetFactory>(),
+            NewFacetFactory<ActionMethodsFacetFactory>(),
+            NewFacetFactory<CollectionFieldMethodsFacetFactory>(),
+            NewFacetFactory<PropertyMethodsFacetFactory>(),
+            NewFacetFactory<CallbackMethodsFacetFactory>(),
+            NewFacetFactory<TitleMethodFacetFactory>(),
+            NewFacetFactory<ValidateObjectFacetFactory>(),
+            NewFacetFactory<ComplexTypeAnnotationFacetFactory>(),
+            NewFacetFactory<ViewModelFacetFactory>(),
+            NewFacetFactory<BoundedAnnotationFacetFactory>(),
+            NewFacetFactory<EnumFacetFactory>(),
+            NewFacetFactory<ActionDefaultAnnotationFacetFactory>(),
+            NewFacetFactory<PropertyDefaultAnnotationFacetFactory>(),
+            NewFacetFactory<DescribedAsAnnotationFacetFactory>(),
+            NewFacetFactory<DisabledAnnotationFacetFactory>(),
+            NewFacetFactory<PasswordAnnotationFacetFactory>(),
+            NewFacetFactory<PotencyAnnotationFacetFactory>(),
+            NewFacetFactory<PageSizeAnnotationFacetFactory>(),
+            NewFacetFactory<HiddenAnnotationFacetFactory>(),
+            NewFacetFactory<HiddenDefaultMethodFacetFactory>(),
+            NewFacetFactory<DisableDefaultMethodFacetFactory>(),
+            NewFacetFactory<AuthorizeAnnotationFacetFactory>(),
+            NewFacetFactory<ValidateProgrammaticUpdatesAnnotationFacetFactory>(),
+            NewFacetFactory<ImmutableAnnotationFacetFactory>(),
+            NewFacetFactory<MaxLengthAnnotationFacetFactory>(),
+            NewFacetFactory<RangeAnnotationFacetFactory>(),
+            NewFacetFactory<MemberOrderAnnotationFacetFactory>(),
+            NewFacetFactory<MultiLineAnnotationFacetFactory>(),
+            NewFacetFactory<NamedAnnotationFacetFactory>(),
+            NewFacetFactory<NotPersistedAnnotationFacetFactory>(),
+            NewFacetFactory<OptionalAnnotationFacetFactory>(),
+            NewFacetFactory<RequiredAnnotationFacetFactory>(),
+            NewFacetFactory<PluralAnnotationFacetFactory>(),
+            NewFacetFactory<DefaultNamingFacetFactory>(),
+            NewFacetFactory<ConcurrencyCheckAnnotationFacetFactory>(),
+            NewFacetFactory<ContributedActionAnnotationFacetFactory>(),
+            NewFacetFactory<FinderActionFacetFactory>(),
+            NewFacetFactory<MaskAnnotationFacetFactory>(),
+            NewFacetFactory<RegExAnnotationFacetFactory>(),
+            NewFacetFactory<TypeOfAnnotationFacetFactory>(),
+            NewFacetFactory<TableViewAnnotationFacetFactory>(),
+            NewFacetFactory<EagerlyAnnotationFacetFactory>(),
+            NewFacetFactory<PresentationHintAnnotationFacetFactory>(),
+            NewFacetFactory<BooleanValueTypeFacetFactory>(),
+            NewFacetFactory<ByteValueTypeFacetFactory>(),
+            NewFacetFactory<SbyteValueTypeFacetFactory>(),
+            NewFacetFactory<ShortValueTypeFacetFactory>(),
+            NewFacetFactory<IntValueTypeFacetFactory>(),
+            NewFacetFactory<LongValueTypeFacetFactory>(),
+            NewFacetFactory<UShortValueTypeFacetFactory>(),
+            NewFacetFactory<UIntValueTypeFacetFactory>(),
+            NewFacetFactory<ULongValueTypeFacetFactory>(),
+            NewFacetFactory<FloatValueTypeFacetFactory>(),
+            NewFacetFactory<DoubleValueTypeFacetFactory>(),
+            NewFacetFactory<DecimalValueTypeFacetFactory>(),
+            NewFacetFactory<CharValueTypeFacetFactory>(),
+            NewFacetFactory<DateTimeValueTypeFacetFactory>(),
+            NewFacetFactory<TimeValueTypeFacetFactory>(),
+            NewFacetFactory<StringValueTypeFacetFactory>(),
+            NewFacetFactory<GuidValueTypeFacetFactory>(),
+            NewFacetFactory<EnumValueTypeFacetFactory>(),
+            NewFacetFactory<FileAttachmentValueTypeFacetFactory>(),
+            NewFacetFactory<ImageValueTypeFacetFactory>(),
+            NewFacetFactory<TypeFacetFactory.ArrayValueTypeFacetFactory<byte>>(),
+            NewFacetFactory<CollectionFacetFactory>()
+        };
 
-        protected static void AssertIsInstanceOfType<T>(object o) {
-            Assert.IsInstanceOfType(o, typeof(T));
-        }
+    private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T) Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);
 
-        protected virtual IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
-            var config = new ObjectReflectorConfiguration(new[] {typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList)}, Array.Empty<Type>());
-            var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
-
-            ClassStrategy = new ObjectClassStrategy(config);
-            var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
-            var order = new ObjectReflectorOrder<ObjectReflector>();
-            return new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy) ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
-        }
-
-        [TestInitialize]
-        public virtual void SetUp() {
-            var cache = new ImmutableInMemorySpecCache();
-            ObjectReflectorConfiguration.NoValidate = true;
-
-            var metamodel = new MetamodelHolder(cache, LoggerFactory.CreateLogger<MetamodelHolder>());
-
-            var reflector = Reflector(metamodel, LoggerFactory);
-
-            ITypeSpecBuilder spec;
-            (spec, Metamodel) = LoadSpecification(reflector);
-            Specification = spec as IObjectSpecImmutable;
-        }
-
-        protected abstract (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector);
-
-        public static void AssertSpec(Type type, ITypeSpecBuilder spec) {
-            Assert.IsNotNull(spec, type.FullName);
-            Assert.AreEqual(new IdentifierImpl(type.FullName), spec.Identifier);
-            Assert.AreEqual(type.FullName, spec.FullName);
-            Assert.AreEqual(TypeNameUtils.GetShortName(type.Name), spec.ShortName);
-            Assert.AreEqual(type, spec.Type);
-        }
-
-        public static void AssertSpecsContain(Type type, ITypeSpecBuilder[] specs) {
-            foreach (var spec in specs) {
-                if (type.FullName == spec.FullName) {
-                    AssertSpec(type, spec);
-                    return;
-                }
-            }
-
-            Assert.Fail("Spec missing: " + type.FullName);
-        }
-
-        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
-            return specs.SingleOrDefault(s => s.FullName == type.FullName);
-        }
-
-        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs) {
-            AssertSpec(type, GetSpec(type, specs));
-        }
+    protected static void AssertIsInstanceOfType<T>(object o) {
+        Assert.IsInstanceOfType(o, typeof(T));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected virtual IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
+        var config = new ObjectReflectorConfiguration(new[] {typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList)}, Array.Empty<Type>());
+        var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
+
+        ClassStrategy = new ObjectClassStrategy(config);
+        var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
+        var order = new ObjectReflectorOrder<ObjectReflector>();
+        return new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy) ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
+    }
+
+    [TestInitialize]
+    public virtual void SetUp() {
+        var cache = new ImmutableInMemorySpecCache();
+        ObjectReflectorConfiguration.NoValidate = true;
+
+        var metamodel = new MetamodelHolder(cache, LoggerFactory.CreateLogger<MetamodelHolder>());
+
+        var reflector = Reflector(metamodel, LoggerFactory);
+
+        ITypeSpecBuilder spec;
+        (spec, Metamodel) = LoadSpecification(reflector);
+        Specification = spec as IObjectSpecImmutable;
+    }
+
+    protected abstract (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector);
+
+    public static void AssertSpec(Type type, ITypeSpecBuilder spec) {
+        Assert.IsNotNull(spec, type.FullName);
+        Assert.AreEqual(new IdentifierImpl(type.FullName), spec.Identifier);
+        Assert.AreEqual(type.FullName, spec.FullName);
+        Assert.AreEqual(TypeNameUtils.GetShortName(type.Name), spec.ShortName);
+        Assert.AreEqual(type, spec.Type);
+    }
+
+    public static void AssertSpecsContain(Type type, ITypeSpecBuilder[] specs) {
+        foreach (var spec in specs) {
+            if (type.FullName == spec.FullName) {
+                AssertSpec(type, spec);
+                return;
+            }
+        }
+
+        Assert.Fail("Spec missing: " + type.FullName);
+    }
+
+    private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
+        return specs.SingleOrDefault(s => s.FullName == type.FullName);
+    }
+
+    public static void AssertSpec(Type type, ITypeSpecBuilder[] specs) {
+        AssertSpec(type, GetSpec(type, specs));
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

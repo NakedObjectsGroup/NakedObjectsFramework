@@ -8,100 +8,100 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace NakedFunctions.Rest.Test.Data {
-    public static class EFCoreConstants {
-        public static string AppveyorServer => @"(local)\SQL2017";
-        public static string LocalServer => @"(localdb)\MSSQLLocalDB;";
+namespace NakedFunctions.Rest.Test.Data; 
+
+public static class EFCoreConstants {
+    public static string AppveyorServer => @"(local)\SQL2017";
+    public static string LocalServer => @"(localdb)\MSSQLLocalDB;";
 
 #if APPVEYOR
         public static string Server => AppveyorServer;
 #else
-        public static string Server => LocalServer;
+    public static string Server => LocalServer;
 #endif
 
-        public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;";
-        public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;";
+    public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;";
+    public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;";
+}
+
+public abstract class EFCoreTestDbContext : DbContext {
+    private readonly string cs;
+
+    protected EFCoreTestDbContext(string cs) => this.cs = cs;
+
+    public DbSet<SimpleRecord> SimpleRecords { get; set; }
+    public DbSet<DateRecord> DateRecords { get; set; }
+    public DbSet<EnumRecord> EnumRecords { get; set; }
+    public DbSet<GuidRecord> GuidRecords { get; set; }
+    public DbSet<ReferenceRecord> ReferenceRecords { get; set; }
+    public DbSet<DisplayAsPropertyRecord> DisplayAsPropertyRecords { get; set; }
+    public DbSet<UpdatedRecord> UpdatedRecords { get; set; }
+    public DbSet<CollectionRecord> CollectionRecords { get; set; }
+    public DbSet<OrderedRecord> OrderedRecords { get; set; }
+    public DbSet<EditRecord> EditRecords { get; set; }
+    public DbSet<DeleteRecord> DeleteRecords { get; set; }
+    public DbSet<BoundedRecord> BoundedRecords { get; set; }
+    public DbSet<ByteArrayRecord> ByteArrayRecords { get; set; }
+    public DbSet<MaskRecord> MaskRecords { get; set; }
+    public DbSet<HiddenRecord> HiddenRecords { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        optionsBuilder.UseSqlServer(cs);
+        optionsBuilder.UseLazyLoadingProxies();
     }
 
-    public abstract class EFCoreTestDbContext : DbContext {
-        private readonly string cs;
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        var fred = new SimpleRecord {Id = 1, Name = "Fred"};
 
-        protected EFCoreTestDbContext(string cs) => this.cs = cs;
+        modelBuilder.Entity<SimpleRecord>().HasData(fred);
+        modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 2, Name = "Bill"});
+        modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 3, Name = "Jack"});
+        modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 4, Name = "hide it"});
 
-        public DbSet<SimpleRecord> SimpleRecords { get; set; }
-        public DbSet<DateRecord> DateRecords { get; set; }
-        public DbSet<EnumRecord> EnumRecords { get; set; }
-        public DbSet<GuidRecord> GuidRecords { get; set; }
-        public DbSet<ReferenceRecord> ReferenceRecords { get; set; }
-        public DbSet<DisplayAsPropertyRecord> DisplayAsPropertyRecords { get; set; }
-        public DbSet<UpdatedRecord> UpdatedRecords { get; set; }
-        public DbSet<CollectionRecord> CollectionRecords { get; set; }
-        public DbSet<OrderedRecord> OrderedRecords { get; set; }
-        public DbSet<EditRecord> EditRecords { get; set; }
-        public DbSet<DeleteRecord> DeleteRecords { get; set; }
-        public DbSet<BoundedRecord> BoundedRecords { get; set; }
-        public DbSet<ByteArrayRecord> ByteArrayRecords { get; set; }
-        public DbSet<MaskRecord> MaskRecords { get; set; }
-        public DbSet<HiddenRecord> HiddenRecords { get; set; }
+        var ur = new UpdatedRecord {Id = 1, Name = ""};
+        modelBuilder.Entity<UpdatedRecord>().HasData(ur);
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseSqlServer(cs);
-            optionsBuilder.UseLazyLoadingProxies();
-        }
+        var dr = new DateRecord {Id = 1, StartDate = DateTime.Now, EndDate = null};
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            var fred = new SimpleRecord {Id = 1, Name = "Fred"};
+        modelBuilder.Entity<DateRecord>().HasData(dr);
+        modelBuilder.Entity<EnumRecord>().HasData(new EnumRecord {Id = 1});
 
-            modelBuilder.Entity<SimpleRecord>().HasData(fred);
-            modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 2, Name = "Bill"});
-            modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 3, Name = "Jack"});
-            modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 4, Name = "hide it"});
+        modelBuilder.Entity<ReferenceRecord>().HasData(new {Id = 1, UpdatedRecordId = 1, DateRecordId = 1});
 
-            var ur = new UpdatedRecord {Id = 1, Name = ""};
-            modelBuilder.Entity<UpdatedRecord>().HasData(ur);
+        modelBuilder.Entity<CollectionRecord>().HasData(new CollectionRecord {Id = 1});
 
-            var dr = new DateRecord {Id = 1, StartDate = DateTime.Now, EndDate = null};
+        modelBuilder.Entity<GuidRecord>().HasData(new GuidRecord {Id = 1});
 
-            modelBuilder.Entity<DateRecord>().HasData(dr);
-            modelBuilder.Entity<EnumRecord>().HasData(new EnumRecord {Id = 1});
+        modelBuilder.Entity<DisplayAsPropertyRecord>().HasData(new DisplayAsPropertyRecord {Id = 1});
 
-            modelBuilder.Entity<ReferenceRecord>().HasData(new {Id = 1, UpdatedRecordId = 1, DateRecordId = 1});
+        modelBuilder.Entity<OrderedRecord>().HasData(new OrderedRecord {Id = 1});
 
-            modelBuilder.Entity<CollectionRecord>().HasData(new CollectionRecord {Id = 1});
+        modelBuilder.Entity<EditRecord>().HasData(new {Id = 1, Name = "Jane", SimpleRecordId = 1, NotMatched = "no"});
 
-            modelBuilder.Entity<GuidRecord>().HasData(new GuidRecord {Id = 1});
+        modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 1});
+        modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 2});
 
-            modelBuilder.Entity<DisplayAsPropertyRecord>().HasData(new DisplayAsPropertyRecord {Id = 1});
+        modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 1, Name = "One"});
+        modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 2, Name = "Two"});
 
-            modelBuilder.Entity<OrderedRecord>().HasData(new OrderedRecord {Id = 1});
+        modelBuilder.Entity<ByteArrayRecord>().HasData(new ByteArrayRecord {Id = 1});
 
-            modelBuilder.Entity<EditRecord>().HasData(new {Id = 1, Name = "Jane", SimpleRecordId = 1, NotMatched = "no"});
-
-            modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 1});
-            modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 2});
-
-            modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 1, Name = "One"});
-            modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 2, Name = "Two"});
-
-            modelBuilder.Entity<ByteArrayRecord>().HasData(new ByteArrayRecord {Id = 1});
-
-            modelBuilder.Entity<MaskRecord>().Ignore(m => m.MaskRecordProperty);
-            modelBuilder.Entity<MaskRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
-            modelBuilder.Entity<HiddenRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
-        }
+        modelBuilder.Entity<MaskRecord>().Ignore(m => m.MaskRecordProperty);
+        modelBuilder.Entity<MaskRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
+        modelBuilder.Entity<HiddenRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
     }
+}
 
-    public class EFCoreMenuDbContext : EFCoreTestDbContext {
-        public EFCoreMenuDbContext() : base(Constants.CsMenu) { }
-        public void Delete() => Database.EnsureDeleted();
+public class EFCoreMenuDbContext : EFCoreTestDbContext {
+    public EFCoreMenuDbContext() : base(Constants.CsMenu) { }
+    public void Delete() => Database.EnsureDeleted();
 
-        public void Create() => Database.EnsureCreated();
-    }
+    public void Create() => Database.EnsureCreated();
+}
 
-    public class EFCoreObjectDbContext : EFCoreTestDbContext {
-        public EFCoreObjectDbContext() : base(Constants.CsObject) { }
-        public void Delete() => Database.EnsureDeleted();
+public class EFCoreObjectDbContext : EFCoreTestDbContext {
+    public EFCoreObjectDbContext() : base(Constants.CsObject) { }
+    public void Delete() => Database.EnsureDeleted();
 
-        public void Create() => Database.EnsureCreated();
-    }
+    public void Create() => Database.EnsureCreated();
 }

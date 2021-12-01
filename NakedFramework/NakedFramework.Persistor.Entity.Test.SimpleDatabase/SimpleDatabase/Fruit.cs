@@ -8,12 +8,12 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace SimpleDatabase {
-    public class Fruit : Food {
-        #region Primitive Properties
+namespace SimpleDatabase; 
 
-        public virtual bool Organic { get; set; }
+public class Fruit : Food {
+    #region Primitive Properties
 
-        #endregion
-    }
+    public virtual bool Organic { get; set; }
+
+    #endregion
 }

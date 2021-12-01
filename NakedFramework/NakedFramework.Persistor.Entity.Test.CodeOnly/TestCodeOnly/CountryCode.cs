@@ -7,12 +7,12 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace TestCodeOnly {
-    public class CountryCode {
-        [Key]
-        public virtual string Code { get; set; }
+namespace TestCodeOnly; 
 
-        [Required]
-        public virtual string Name { get; set; }
-    }
+public class CountryCode {
+    [Key]
+    public virtual string Code { get; set; }
+
+    [Required]
+    public virtual string Name { get; set; }
 }

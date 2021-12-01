@@ -12,23 +12,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.CountryRegionCurrency")]
-    public class CountryRegionCurrency {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Sales.CountryRegionCurrency")]
+public class CountryRegionCurrency {
       
-        [Column(Order = 0)]
-        [StringLength(3)]
-        public string CountryRegionCode { get; set; }
+    [Column(Order = 0)]
+    [StringLength(3)]
+    public string CountryRegionCode { get; set; }
 
        
-        [Column(Order = 1)]
-        [StringLength(3)]
-        public string CurrencyCode { get; set; }
+    [Column(Order = 1)]
+    [StringLength(3)]
+    public string CurrencyCode { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual CountryRegion CountryRegion { get; set; }
+    public virtual CountryRegion CountryRegion { get; set; }
 
-        public virtual Currency Currency { get; set; }
-    }
+    public virtual Currency Currency { get; set; }
 }

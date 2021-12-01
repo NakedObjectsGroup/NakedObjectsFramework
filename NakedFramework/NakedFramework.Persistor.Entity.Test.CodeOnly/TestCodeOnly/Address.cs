@@ -5,9 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace TestCodeOnly {
-    public class Address {
-        public virtual int ID { get; set; }
-        public virtual string Lines { get; set; }
-    }
+namespace TestCodeOnly; 
+
+public class Address {
+    public virtual int ID { get; set; }
+    public virtual string Lines { get; set; }
 }

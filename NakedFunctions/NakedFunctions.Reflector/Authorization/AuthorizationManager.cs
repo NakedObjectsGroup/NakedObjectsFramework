@@ -22,72 +22,72 @@ using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Utils;
 using NakedFunctions.Security;
 
-namespace NakedFunctions.Reflector.Authorization {
-    [Serializable]
-    public sealed class AuthorizationManager : AbstractAuthorizationManager {
-        private readonly ImmutableDictionary<Type, Func<object, object, string, IContext, bool>> isVisibleDelegates;
+namespace NakedFunctions.Reflector.Authorization; 
 
-        public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger<AuthorizationManager> logger) : base(authorizationConfiguration, logger) {
-            var isVisibleDict = new Dictionary<Type, Func<object, object, string, IContext, bool>> {
-                { defaultAuthorizer, FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsVisible")) }
-            };
+[Serializable]
+public sealed class AuthorizationManager : AbstractAuthorizationManager {
+    private readonly ImmutableDictionary<Type, Func<object, object, string, IContext, bool>> isVisibleDelegates;
 
-            if (typeAuthorizers.Any()) {
-                if (typeAuthorizers.Values.Any(t => typeof(ITypeAuthorizer<object>).IsAssignableFrom(t))) {
-                    throw new InitialisationException(logger.LogAndReturn("Only Default Authorizer can be ITypeAuthorizer<object>"));
-                }
+    public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger<AuthorizationManager> logger) : base(authorizationConfiguration, logger) {
+        var isVisibleDict = new Dictionary<Type, Func<object, object, string, IContext, bool>> {
+            { defaultAuthorizer, FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsVisible")) }
+        };
 
-                isVisibleDelegates = isVisibleDict.Union(typeAuthorizers.Values.ToDictionary(type => type, type => FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(type.GetMethod("IsVisible")))).ToImmutableDictionary();
+        if (typeAuthorizers.Any()) {
+            if (typeAuthorizers.Values.Any(t => typeof(ITypeAuthorizer<object>).IsAssignableFrom(t))) {
+                throw new InitialisationException(logger.LogAndReturn("Only Default Authorizer can be ITypeAuthorizer<object>"));
             }
-            else {
-                // default authorizer must be the only TypeAuthorizer
-                isVisibleDelegates = isVisibleDict.ToImmutableDictionary();
-            }
+
+            isVisibleDelegates = isVisibleDict.Union(typeAuthorizers.Values.ToDictionary(type => type, type => FactoryUtils.CreateFunctionalTypeAuthorizerDelegate(type.GetMethod("IsVisible")))).ToImmutableDictionary();
         }
-
-        public override IFacet Decorate(IFacet facet, ISpecification holder) {
-            var facetType = facet.FacetType;
-            var specification = facet.Specification;
-            var identifier = holder.Identifier;
-
-            if (facetType == typeof(IHideForSessionFacet)) {
-                return new AuthorizationHideForSessionFacet(identifier, this, specification);
-            }
-
-            return facet;
+        else {
+            // default authorizer must be the only TypeAuthorizer
+            isVisibleDelegates = isVisibleDict.ToImmutableDictionary();
         }
-
-        protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedObject(type);
-        private static FunctionalContext FunctionalContext(INakedFramework framework) => new() { Persistor = framework.Persistor, Provider = framework.ServiceProvider };
-
-        private bool IsMenuVisible(INakedFramework framework, IIdentifier identifier) {
-            var authorizerType = typeAuthorizers.Where(ta => ta.Key == typeof(string).FullName).Select(ta => ta.Value).FirstOrDefault();
-            if (authorizerType is not null) {
-                if (CreateAuthorizer(authorizerType, framework.LifecycleManager) is IMainMenuAuthorizer menuAuth) {
-                    return menuAuth.IsVisible(identifier.ClassName, identifier.MemberName, FunctionalContext(framework));
-                }
-            }
-
-            return true;
-        }
-
-        private bool IsObjectVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
-            var authorizer = GetAuthorizer(target, framework.LifecycleManager);
-
-            if (authorizer is INamespaceAuthorizer nameAuth) {
-                return nameAuth.IsVisible(target.Object, identifier.MemberName, FunctionalContext(framework));
-            }
-
-            //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)
-            return isVisibleDelegates[authorizer.GetType()](authorizer, target.GetDomainObject(), identifier.MemberName, FunctionalContext(framework));
-        }
-
-        public override bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) =>
-            target switch {
-                null => IsMenuVisible(framework, identifier),
-                _ => IsObjectVisible(framework, target, identifier)
-            };
-
-        public override bool IsEditable(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) => false;
     }
+
+    public override IFacet Decorate(IFacet facet, ISpecification holder) {
+        var facetType = facet.FacetType;
+        var specification = facet.Specification;
+        var identifier = holder.Identifier;
+
+        if (facetType == typeof(IHideForSessionFacet)) {
+            return new AuthorizationHideForSessionFacet(identifier, this, specification);
+        }
+
+        return facet;
+    }
+
+    protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedObject(type);
+    private static FunctionalContext FunctionalContext(INakedFramework framework) => new() { Persistor = framework.Persistor, Provider = framework.ServiceProvider };
+
+    private bool IsMenuVisible(INakedFramework framework, IIdentifier identifier) {
+        var authorizerType = typeAuthorizers.Where(ta => ta.Key == typeof(string).FullName).Select(ta => ta.Value).FirstOrDefault();
+        if (authorizerType is not null) {
+            if (CreateAuthorizer(authorizerType, framework.LifecycleManager) is IMainMenuAuthorizer menuAuth) {
+                return menuAuth.IsVisible(identifier.ClassName, identifier.MemberName, FunctionalContext(framework));
+            }
+        }
+
+        return true;
+    }
+
+    private bool IsObjectVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
+        var authorizer = GetAuthorizer(target, framework.LifecycleManager);
+
+        if (authorizer is INamespaceAuthorizer nameAuth) {
+            return nameAuth.IsVisible(target.Object, identifier.MemberName, FunctionalContext(framework));
+        }
+
+        //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)
+        return isVisibleDelegates[authorizer.GetType()](authorizer, target.GetDomainObject(), identifier.MemberName, FunctionalContext(framework));
+    }
+
+    public override bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) =>
+        target switch {
+            null => IsMenuVisible(framework, identifier),
+            _ => IsObjectVisible(framework, target, identifier)
+        };
+
+    public override bool IsEditable(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) => false;
 }

@@ -18,18 +18,18 @@ using NakedFramework.Metamodel.Profile;
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.EFCore")]
 [assembly: InternalsVisibleTo("NakedLegacy.Reflector")]
 
-namespace NakedFramework.DependencyInjection.Extensions {
-    public class NakedFrameworkOptions {
-        public NakedFrameworkOptions(IServiceCollection services) => Services = services;
-        public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }
-        public IAuditConfiguration AuditConfiguration { get; set; }
-        public IProfileConfiguration ProfileConfiguration { get; set; }
-        public bool UseI18N { get; set; } = false;
-        public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
-        public Func<Type[], Type[]> SupportedSystemTypes { get; set; } = t => t;
-        public IServiceCollection Services { get; }
-        public int HashMapCapacity { get; set; } = 10;
-        internal Type[] AdditionalSystemTypes { get; set; } = Array.Empty<Type>();
-        internal Type[] AdditionalUnpersistedTypes { get; set; } = Array.Empty<Type>();
-    }
+namespace NakedFramework.DependencyInjection.Extensions; 
+
+public class NakedFrameworkOptions {
+    public NakedFrameworkOptions(IServiceCollection services) => Services = services;
+    public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }
+    public IAuditConfiguration AuditConfiguration { get; set; }
+    public IProfileConfiguration ProfileConfiguration { get; set; }
+    public bool UseI18N { get; set; } = false;
+    public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
+    public Func<Type[], Type[]> SupportedSystemTypes { get; set; } = t => t;
+    public IServiceCollection Services { get; }
+    public int HashMapCapacity { get; set; } = 10;
+    internal Type[] AdditionalSystemTypes { get; set; } = Array.Empty<Type>();
+    internal Type[] AdditionalUnpersistedTypes { get; set; } = Array.Empty<Type>();
 }

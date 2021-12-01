@@ -19,80 +19,80 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class MenuFacetFactoryTest : AbstractFacetFactoryTest {
-        private MenuFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IMenuFacet)};
+[TestClass]
+public class MenuFacetFactoryTest : AbstractFacetFactoryTest {
+    private MenuFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IMenuFacet)};
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestDefaultMenuPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            metamodel = facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IMenuFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MenuFacetDefault);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestMethodMenuPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var class2Type = typeof(Class2);
-            metamodel = facetFactory.Process(Reflector, class2Type, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IMenuFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MenuFacetViaMethod);
-            var m1 = class2Type.GetMethod("Menu");
-            AssertMethodRemoved(m1);
-            Assert.IsNotNull(metamodel);
-        }
-
-        #region Nested type: Class1
-
-        private class Class1 { }
-
-        #endregion
-
-        #region Nested type: Class2
-
-        private class Class2 {
-// ReSharper disable once UnusedMember.Local
-            public static void Menu() { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            facetFactory = new MenuFacetFactory(GetOrder<MenuFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public new void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
+
+    [TestMethod]
+    public void TestDefaultMenuPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        metamodel = facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMenuFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is MenuFacetDefault);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestMethodMenuPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var class2Type = typeof(Class2);
+        metamodel = facetFactory.Process(Reflector, class2Type, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMenuFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is MenuFacetViaMethod);
+        var m1 = class2Type.GetMethod("Menu");
+        AssertMethodRemoved(m1);
+        Assert.IsNotNull(metamodel);
+    }
+
+    #region Nested type: Class1
+
+    private class Class1 { }
+
+    #endregion
+
+    #region Nested type: Class2
+
+    private class Class2 {
+// ReSharper disable once UnusedMember.Local
+        public static void Menu() { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+
+        facetFactory = new MenuFacetFactory(GetOrder<MenuFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public new void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }

@@ -7,16 +7,16 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Facade.Utility {
-    public class UserCredentials {
-        public UserCredentials(string user, string password, List<string> roles) {
-            User = user;
-            Password = password;
-            Roles = roles.AsReadOnly();
-        }
+namespace NakedFramework.Facade.Utility; 
 
-        public string User { get; }
-        public string Password { get; }
-        public IList<string> Roles { get; }
+public class UserCredentials {
+    public UserCredentials(string user, string password, List<string> roles) {
+        User = user;
+        Password = password;
+        Roles = roles.AsReadOnly();
     }
+
+    public string User { get; }
+    public string Password { get; }
+    public IList<string> Roles { get; }
 }

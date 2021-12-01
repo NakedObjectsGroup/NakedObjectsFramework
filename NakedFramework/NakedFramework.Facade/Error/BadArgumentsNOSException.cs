@@ -8,14 +8,14 @@
 using System.Collections.Generic;
 using NakedFramework.Facade.Contexts;
 
-namespace NakedFramework.Facade.Error {
-    public class BadArgumentsNOSException : WithContextNOSException {
-        public BadArgumentsNOSException(string message, IList<ContextFacade> contexts) : base(message, contexts) { }
+namespace NakedFramework.Facade.Error; 
 
-        public BadArgumentsNOSException(string message, ContextFacade context)
-            : base(message, context) { }
+public class BadArgumentsNOSException : WithContextNOSException {
+    public BadArgumentsNOSException(string message, IList<ContextFacade> contexts) : base(message, contexts) { }
 
-        public BadArgumentsNOSException(string message, ContextFacade context, IList<ContextFacade> contexts)
-            : base(message, context, contexts) { }
-    }
+    public BadArgumentsNOSException(string message, ContextFacade context)
+        : base(message, context) { }
+
+    public BadArgumentsNOSException(string message, ContextFacade context, IList<ContextFacade> contexts)
+        : base(message, context, contexts) { }
 }

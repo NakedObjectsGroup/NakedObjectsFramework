@@ -10,52 +10,52 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.SpecImmutable {
-    public static class ImmutableSpecFactory {
-        private static readonly Dictionary<Type, ITypeSpecBuilder> SpecCache = new();
+namespace NakedFramework.Metamodel.SpecImmutable; 
 
-        public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) => new ActionParameterSpecImmutable(spec, identifier);
+public static class ImmutableSpecFactory {
+    private static readonly Dictionary<Type, ITypeSpecBuilder> SpecCache = new();
 
-        public static IActionSpecImmutable CreateActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec, IActionParameterSpecImmutable[] parameters) => new ActionSpecImmutable(identifier, ownerSpec, parameters);
+    public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) => new ActionParameterSpecImmutable(spec, identifier);
 
-        public static IOneToManyAssociationSpecImmutable CreateOneToManyAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec) => new OneToManyAssociationSpecImmutable(identifier, ownerSpec, returnSpec, defaultElementSpec);
+    public static IActionSpecImmutable CreateActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec, IActionParameterSpecImmutable[] parameters) => new ActionSpecImmutable(identifier, ownerSpec, parameters);
 
-        public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) => new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
+    public static IOneToManyAssociationSpecImmutable CreateOneToManyAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec) => new OneToManyAssociationSpecImmutable(identifier, ownerSpec, returnSpec, defaultElementSpec);
 
-        private static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, bool isRecognized) {
-            lock (SpecCache) {
-                if (!SpecCache.ContainsKey(type)) {
-                    SpecCache.Add(type, new ObjectSpecImmutable(type, isRecognized));
-                }
+    public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) => new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
 
-                return SpecCache[type] as IObjectSpecBuilder;
+    private static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, bool isRecognized) {
+        lock (SpecCache) {
+            if (!SpecCache.ContainsKey(type)) {
+                SpecCache.Add(type, new ObjectSpecImmutable(type, isRecognized));
             }
+
+            return SpecCache[type] as IObjectSpecBuilder;
         }
+    }
 
-        private static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, bool isRecognized) {
-            lock (SpecCache) {
-                if (!SpecCache.ContainsKey(type)) {
-                    SpecCache.Add(type, new ServiceSpecImmutable(type, isRecognized));
-                }
-
-                return SpecCache[type] as IServiceSpecBuilder;
+    private static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, bool isRecognized) {
+        lock (SpecCache) {
+            if (!SpecCache.ContainsKey(type)) {
+                SpecCache.Add(type, new ServiceSpecImmutable(type, isRecognized));
             }
+
+            return SpecCache[type] as IServiceSpecBuilder;
         }
+    }
 
-        public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, bool isRecognized) =>
-            isService
-                ? CreateServiceSpecImmutable(type, isRecognized)
-                : CreateObjectSpecImmutable(type, isRecognized);
+    public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, bool isRecognized) =>
+        isService
+            ? CreateServiceSpecImmutable(type, isRecognized)
+            : CreateObjectSpecImmutable(type, isRecognized);
 
-        public static IAssociationSpecImmutable CreateSpecAdapter(IActionSpecImmutable actionSpecImmutable) =>
-            actionSpecImmutable.ReturnSpec.IsCollection
-                ? new ActionToCollectionSpecAdapter(actionSpecImmutable)
-                : new ActionToAssociationSpecAdapter(actionSpecImmutable);
+    public static IAssociationSpecImmutable CreateSpecAdapter(IActionSpecImmutable actionSpecImmutable) =>
+        actionSpecImmutable.ReturnSpec.IsCollection
+            ? new ActionToCollectionSpecAdapter(actionSpecImmutable)
+            : new ActionToAssociationSpecAdapter(actionSpecImmutable);
 
-        public static void ClearCache() {
-            lock (SpecCache) {
-                SpecCache.Clear();
-            }
+    public static void ClearCache() {
+        lock (SpecCache) {
+            SpecCache.Clear();
         }
     }
 }

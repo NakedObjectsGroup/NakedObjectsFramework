@@ -7,16 +7,16 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Component {
-    /// <summary>
-    ///     Oid factory
-    /// </summary>
-    public interface IOidGenerator {
-        void ConvertTransientToPersistentOid(IOid oid);
-        IOid CreateTransientOid(object obj);
-        IOid RestoreOid(string[] encodedData);
-        IOid CreateOid(string typeName, object[] keys);
-    }
+namespace NakedFramework.Architecture.Component; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Oid factory
+/// </summary>
+public interface IOidGenerator {
+    void ConvertTransientToPersistentOid(IOid oid);
+    IOid CreateTransientOid(object obj);
+    IOid RestoreOid(string[] encodedData);
+    IOid CreateOid(string typeName, object[] keys);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

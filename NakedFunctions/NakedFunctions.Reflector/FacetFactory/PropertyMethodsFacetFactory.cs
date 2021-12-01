@@ -24,51 +24,51 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class PropertyMethodsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
-        private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ModifyPrefix
-        };
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        private readonly ILogger<PropertyMethodsFacetFactory> logger;
+public sealed class PropertyMethodsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
+    private static readonly string[] FixedPrefixes = {
+        RecognisedMethodsAndPrefixes.ModifyPrefix
+    };
 
-        public PropertyMethodsFacetFactory(IFacetFactoryOrder<PropertyMethodsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties) =>
-            logger = loggerFactory.CreateLogger<PropertyMethodsFacetFactory>();
+    private readonly ILogger<PropertyMethodsFacetFactory> logger;
 
-        public string[] Prefixes => FixedPrefixes;
+    public PropertyMethodsFacetFactory(IFacetFactoryOrder<PropertyMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Properties) =>
+        logger = loggerFactory.CreateLogger<PropertyMethodsFacetFactory>();
 
-        public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            candidates = candidates.Where(property => !CollectionUtils.IsQueryable(property.PropertyType)).ToArray();
-            return PropertiesToBeIntrospected(candidates, classStrategy);
+    public string[] Prefixes => FixedPrefixes;
+
+    public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+        candidates = candidates.Where(property => !CollectionUtils.IsQueryable(property.PropertyType)).ToArray();
+        return PropertiesToBeIntrospected(candidates, classStrategy);
+    }
+
+    private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
+        candidates.Where(property => property.HasPublicGetter() &&
+                                     !classStrategy.IsIgnored(property.PropertyType) &&
+                                     !classStrategy.IsIgnored(property)).ToList();
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var facets = new List<IFacet> {new PropertyAccessorFacet(property, specification)};
+
+        if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+            facets.Add(new NullableFacetAlways(specification));
         }
 
-        private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
-            candidates.Where(property => property.HasPublicGetter() &&
-                                         !classStrategy.IsIgnored(property.PropertyType) &&
-                                         !classStrategy.IsIgnored(property)).ToList();
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var facets = new List<IFacet> {new PropertyAccessorFacet(property, specification)};
-
-            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-                facets.Add(new NullableFacetAlways(specification));
-            }
-
-            if (property.GetSetMethod() is not null) {
-                facets.Add(new DisabledFacetAlways(specification));
-                facets.Add(new PropertyInitializationFacet(property, specification));
-            }
-            else {
-                facets.Add(new NotPersistedFacet(specification));
-                facets.Add(new DisabledFacetAlways(specification));
-            }
-
-            MethodHelpers.AddHideForSessionFacetNone(facets, specification);
-            MethodHelpers.AddDisableForSessionFacetNone(facets, specification);
-
-            FacetUtils.AddFacets(facets);
-            return metamodel;
+        if (property.GetSetMethod() is not null) {
+            facets.Add(new DisabledFacetAlways(specification));
+            facets.Add(new PropertyInitializationFacet(property, specification));
         }
+        else {
+            facets.Add(new NotPersistedFacet(specification));
+            facets.Add(new DisabledFacetAlways(specification));
+        }
+
+        MethodHelpers.AddHideForSessionFacetNone(facets, specification);
+        MethodHelpers.AddDisableForSessionFacetNone(facets, specification);
+
+        FacetUtils.AddFacets(facets);
+        return metamodel;
     }
 }

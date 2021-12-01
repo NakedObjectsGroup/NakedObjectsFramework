@@ -13,72 +13,72 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Interactions;
 using NakedFramework.Core.Reflect;
 
-namespace NakedFramework.Core.Util {
-    public static class InteractionUtils {
-        public static bool IsVisible(ISpecification specification, IInteractionContext ic) {
-            var buf = new InteractionBuffer();
-            var facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
-            foreach (var advisor in facets) {
-                buf.Append(advisor.Hides(ic));
-            }
+namespace NakedFramework.Core.Util; 
 
-            return IsVisible(buf);
+public static class InteractionUtils {
+    public static bool IsVisible(ISpecification specification, IInteractionContext ic) {
+        var buf = new InteractionBuffer();
+        var facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
+        foreach (var advisor in facets) {
+            buf.Append(advisor.Hides(ic));
         }
 
-        public static bool IsVisibleWhenPersistent(ISpecification specification, IInteractionContext ic) {
-            var buf = new InteractionBuffer();
-            var facets = specification.GetFacets()
-                                      .Where(f => f is IHidingInteractionAdvisor)
-                                      .Cast<IHidingInteractionAdvisor>();
-            foreach (var advisor in facets) {
-                if (advisor is IHiddenFacet facet) {
-                    buf.Append(facet.HidesForState(true));
-                }
-                else {
-                    buf.Append(advisor.Hides(ic));
-                }
-            }
-
-            return IsVisible(buf);
-        }
-
-        private static bool IsVisible(IInteractionBuffer buf) => buf.IsEmpty;
-
-        public static IConsent IsUsable(ISpecification specification, IInteractionContext ic) {
-            var buf = IsUsable(specification, ic, new InteractionBuffer());
-            return IsUsable(buf);
-        }
-
-        private static IInteractionBuffer IsUsable(ISpecification specification, IInteractionContext ic, IInteractionBuffer buf) {
-            var facets = specification.GetFacets().Where(f => f is IDisablingInteractionAdvisor).Cast<IDisablingInteractionAdvisor>();
-            foreach (var advisor in facets) {
-                buf.Append(advisor.Disables(ic));
-            }
-
-            return buf;
-        }
-
-        private static IConsent IsUsable(IInteractionBuffer buf) => GetConsent(buf.ToString());
-
-        public static IInteractionBuffer IsValid(ISpecification specification, IInteractionContext ic, IInteractionBuffer buf) {
-            var facets = specification.GetFacets().Where(f => f is IValidatingInteractionAdvisor).Cast<IValidatingInteractionAdvisor>();
-            foreach (var advisor in facets) {
-                buf.Append(advisor.Invalidates(ic));
-            }
-
-            return buf;
-        }
-
-        public static IConsent IsValid(IInteractionBuffer buf) => GetConsent(buf.ToString());
-
-        private static IConsent GetConsent(string message) {
-            if (string.IsNullOrEmpty(message)) {
-                return Allow.Default;
-            }
-
-            return new Veto(message);
-        }
+        return IsVisible(buf);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public static bool IsVisibleWhenPersistent(ISpecification specification, IInteractionContext ic) {
+        var buf = new InteractionBuffer();
+        var facets = specification.GetFacets()
+                                  .Where(f => f is IHidingInteractionAdvisor)
+                                  .Cast<IHidingInteractionAdvisor>();
+        foreach (var advisor in facets) {
+            if (advisor is IHiddenFacet facet) {
+                buf.Append(facet.HidesForState(true));
+            }
+            else {
+                buf.Append(advisor.Hides(ic));
+            }
+        }
+
+        return IsVisible(buf);
+    }
+
+    private static bool IsVisible(IInteractionBuffer buf) => buf.IsEmpty;
+
+    public static IConsent IsUsable(ISpecification specification, IInteractionContext ic) {
+        var buf = IsUsable(specification, ic, new InteractionBuffer());
+        return IsUsable(buf);
+    }
+
+    private static IInteractionBuffer IsUsable(ISpecification specification, IInteractionContext ic, IInteractionBuffer buf) {
+        var facets = specification.GetFacets().Where(f => f is IDisablingInteractionAdvisor).Cast<IDisablingInteractionAdvisor>();
+        foreach (var advisor in facets) {
+            buf.Append(advisor.Disables(ic));
+        }
+
+        return buf;
+    }
+
+    private static IConsent IsUsable(IInteractionBuffer buf) => GetConsent(buf.ToString());
+
+    public static IInteractionBuffer IsValid(ISpecification specification, IInteractionContext ic, IInteractionBuffer buf) {
+        var facets = specification.GetFacets().Where(f => f is IValidatingInteractionAdvisor).Cast<IValidatingInteractionAdvisor>();
+        foreach (var advisor in facets) {
+            buf.Append(advisor.Invalidates(ic));
+        }
+
+        return buf;
+    }
+
+    public static IConsent IsValid(IInteractionBuffer buf) => GetConsent(buf.ToString());
+
+    private static IConsent GetConsent(string message) {
+        if (string.IsNullOrEmpty(message)) {
+            return Allow.Default;
+        }
+
+        return new Veto(message);
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

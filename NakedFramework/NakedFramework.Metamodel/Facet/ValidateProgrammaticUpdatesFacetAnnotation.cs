@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ValidateProgrammaticUpdatesFacetAnnotation : FacetAbstract, IValidateProgrammaticUpdatesFacet {
-        public ValidateProgrammaticUpdatesFacetAnnotation(ISpecification holder)
-            : base(typeof(IValidateProgrammaticUpdatesFacet), holder) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class ValidateProgrammaticUpdatesFacetAnnotation : FacetAbstract, IValidateProgrammaticUpdatesFacet {
+    public ValidateProgrammaticUpdatesFacetAnnotation(ISpecification holder)
+        : base(typeof(IValidateProgrammaticUpdatesFacet), holder) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

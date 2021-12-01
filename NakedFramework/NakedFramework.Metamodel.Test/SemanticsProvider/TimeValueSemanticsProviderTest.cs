@@ -16,108 +16,108 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestClass]
-    public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
-        private TimeValueSemanticsProvider adapter;
-        private ISpecification holder;
-        private TimeSpan time;
+namespace NakedObjects.Meta.Test.SemanticsProvider; 
 
-        [TestMethod]
-        public void TestParseInvariant() {
-            var d1 = new TimeSpan(1, 5, 1, 25);
-            var s1 = d1.ToString(null, CultureInfo.InvariantCulture);
-            var d2 = adapter.ParseInvariant(s1);
-            Assert.AreEqual(d1, d2);
-        }
+[TestClass]
+public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
+    private TimeValueSemanticsProvider adapter;
+    private ISpecification holder;
+    private TimeSpan time;
 
-        [TestMethod]
-        public void TestRestoreOfInvalidDatal() {
-            try {
-                adapter.FromEncodedString("two ten");
-                Assert.Fail();
-            }
-            catch (FormatException /*expected*/) { }
-        }
-
-        [TestMethod]
-        public void TestRestoreTime() {
-            object parsed = adapter.FromEncodedString("21:30:00");
-            Assert.AreEqual(new TimeSpan(21, 30, 0), parsed);
-        }
-
-        [TestMethod]
-        public void TestTimeAsEncodedString() {
-            Assert.AreEqual("08:13:00", adapter.ToEncodedString(time));
-        }
-
-        [TestMethod]
-        public override void TestParseNull() {
-            base.TestParseNull();
-        }
-
-        [TestMethod]
-        public override void TestParseEmptyString() {
-            base.TestParseEmptyString();
-        }
-
-        [TestMethod]
-        public override void TestDecodeNull() {
-            base.TestDecodeNull();
-        }
-
-        [TestMethod]
-        public override void TestEmptyEncoding() {
-            base.TestEmptyEncoding();
-        }
-
-        [TestMethod]
-        public void TestValue() {
-            var facet = (ITimeValueFacet) GetValue();
-            var testValue = TimeSpan.FromHours(22);
-            var mockNo = new Mock<INakedObjectAdapter>();
-            mockNo.Setup(no => no.Object).Returns(testValue);
-            Assert.AreEqual(testValue, facet.TimeValue(mockNo.Object));
-        }
-
-        [TestMethod]
-        public void TestAsParserInvariant() {
-            var mgr = MockNakedObjectManager();
-            IParseableFacet parser = new ParseableFacetUsingParser<TimeSpan>(GetValue(), null);
-            var parsed = parser.ParseInvariant("08:13:00", mgr.Object).Object;
-            Assert.AreEqual(time, parsed);
-        }
-
-        [TestMethod]
-        public void TestAsParserTitle() {
-            IParseableFacet parser = new ParseableFacetUsingParser<TimeSpan>(GetValue(), null);
-            var mockAdapter = MockAdapter(time);
-            var str = DateTime.Today.Add(time).ToShortTimeString();
-            Assert.AreEqual(str, parser.ParseableTitle(mockAdapter));
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            time = new TimeSpan(8, 13, 0);
-            holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public void TestParseInvariant() {
+        var d1 = new TimeSpan(1, 5, 1, 25);
+        var s1 = d1.ToString(null, CultureInfo.InvariantCulture);
+        var d2 = adapter.ParseInvariant(s1);
+        Assert.AreEqual(d1, d2);
     }
 
-    public class TestClock {
-        public static long GetTicks() => new DateTime(2003, 8, 17, 21, 30, 25).Ticks;
+    [TestMethod]
+    public void TestRestoreOfInvalidDatal() {
+        try {
+            adapter.FromEncodedString("two ten");
+            Assert.Fail();
+        }
+        catch (FormatException /*expected*/) { }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestRestoreTime() {
+        object parsed = adapter.FromEncodedString("21:30:00");
+        Assert.AreEqual(new TimeSpan(21, 30, 0), parsed);
+    }
+
+    [TestMethod]
+    public void TestTimeAsEncodedString() {
+        Assert.AreEqual("08:13:00", adapter.ToEncodedString(time));
+    }
+
+    [TestMethod]
+    public override void TestParseNull() {
+        base.TestParseNull();
+    }
+
+    [TestMethod]
+    public override void TestParseEmptyString() {
+        base.TestParseEmptyString();
+    }
+
+    [TestMethod]
+    public override void TestDecodeNull() {
+        base.TestDecodeNull();
+    }
+
+    [TestMethod]
+    public override void TestEmptyEncoding() {
+        base.TestEmptyEncoding();
+    }
+
+    [TestMethod]
+    public void TestValue() {
+        var facet = (ITimeValueFacet) GetValue();
+        var testValue = TimeSpan.FromHours(22);
+        var mockNo = new Mock<INakedObjectAdapter>();
+        mockNo.Setup(no => no.Object).Returns(testValue);
+        Assert.AreEqual(testValue, facet.TimeValue(mockNo.Object));
+    }
+
+    [TestMethod]
+    public void TestAsParserInvariant() {
+        var mgr = MockNakedObjectManager();
+        IParseableFacet parser = new ParseableFacetUsingParser<TimeSpan>(GetValue(), null);
+        var parsed = parser.ParseInvariant("08:13:00", mgr.Object).Object;
+        Assert.AreEqual(time, parsed);
+    }
+
+    [TestMethod]
+    public void TestAsParserTitle() {
+        IParseableFacet parser = new ParseableFacetUsingParser<TimeSpan>(GetValue(), null);
+        var mockAdapter = MockAdapter(time);
+        var str = DateTime.Today.Add(time).ToShortTimeString();
+        Assert.AreEqual(str, parser.ParseableTitle(mockAdapter));
+    }
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        time = new TimeSpan(8, 13, 0);
+        holder = new Mock<ISpecification>().Object;
+        var spec = new Mock<IObjectSpecImmutable>().Object;
+        SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+public class TestClock {
+    public static long GetTicks() => new DateTime(2003, 8, 17, 21, 30, 25).Ticks;
+}
+
+// Copyright (c) Naked Objects Group Ltd.

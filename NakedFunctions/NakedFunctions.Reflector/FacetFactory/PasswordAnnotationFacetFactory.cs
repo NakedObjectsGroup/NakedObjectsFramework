@@ -17,18 +17,18 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class PasswordAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public PasswordAnnotationFacetFactory(IFacetFactoryOrder<PasswordAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttribute<PasswordAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-            return metamodel;
-        }
+public sealed class PasswordAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public PasswordAnnotationFacetFactory(IFacetFactoryOrder<PasswordAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
 
-        private static IPasswordFacet Create(PasswordAttribute attribute, ISpecification holder) => attribute is not null ? new PasswordFacet(holder) : null;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+        var attribute = parameter.GetCustomAttribute<PasswordAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
+        return metamodel;
     }
+
+    private static IPasswordFacet Create(PasswordAttribute attribute, ISpecification holder) => attribute is not null ? new PasswordFacet(holder) : null;
 }

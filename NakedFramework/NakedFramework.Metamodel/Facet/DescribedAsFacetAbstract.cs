@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class DescribedAsFacetAbstract : SingleStringValueFacetAbstract, IDescribedAsFacet {
-        protected DescribedAsFacetAbstract(string valueString, ISpecification holder)
-            : base(Type, holder, valueString) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IDescribedAsFacet);
-    }
+[Serializable]
+public abstract class DescribedAsFacetAbstract : SingleStringValueFacetAbstract, IDescribedAsFacet {
+    protected DescribedAsFacetAbstract(string valueString, ISpecification holder)
+        : base(Type, holder, valueString) { }
+
+    public static Type Type => typeof(IDescribedAsFacet);
 }

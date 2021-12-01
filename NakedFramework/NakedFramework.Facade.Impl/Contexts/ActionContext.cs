@@ -13,41 +13,41 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts {
-    public class ActionContext : Context {
-        private ParameterContext[] parameters;
+namespace NakedFramework.Facade.Impl.Contexts; 
 
-        private PropertyContext[] properties;
+public class ActionContext : Context {
+    private ParameterContext[] parameters;
 
-        public IActionSpec Action { get; init; }
+    private PropertyContext[] properties;
 
-        public override string Id => Action.Id;
+    public IActionSpec Action { get; init; }
 
-        public override ITypeSpec Specification => Action.ReturnSpec;
+    public override string Id => Action.Id;
 
-        public ParameterContext[] VisibleParameters {
-            get => parameters ?? Array.Empty<ParameterContext>();
-            set => parameters = value;
-        }
+    public override ITypeSpec Specification => Action.ReturnSpec;
 
-        public PropertyContext[] VisibleProperties {
-            get => properties ?? Array.Empty<PropertyContext>();
-            set => properties = value;
-        }
+    public ParameterContext[] VisibleParameters {
+        get => parameters ?? Array.Empty<ParameterContext>();
+        set => parameters = value;
+    }
 
-        public string MenuPath { get; init; }
+    public PropertyContext[] VisibleProperties {
+        get => properties ?? Array.Empty<PropertyContext>();
+        set => properties = value;
+    }
 
-        public string MenuId { get; init; }
+    public string MenuPath { get; init; }
 
-        public ActionContextFacade ToActionContextFacade(IFrameworkFacade facade, INakedFramework framework) {
-            var ac = new ActionContextFacade {
-                MenuPath = MenuPath,
-                MenuId = MenuId,
-                Action = new ActionFacade(Action, facade, framework),
-                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade, framework, MenuId)).ToArray(),
-                VisibleProperties = VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray()
-            };
-            return ToContextFacade(ac, facade, framework);
-        }
+    public string MenuId { get; init; }
+
+    public ActionContextFacade ToActionContextFacade(IFrameworkFacade facade, INakedFramework framework) {
+        var ac = new ActionContextFacade {
+            MenuPath = MenuPath,
+            MenuId = MenuId,
+            Action = new ActionFacade(Action, facade, framework),
+            VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade, framework, MenuId)).ToArray(),
+            VisibleProperties = VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray()
+        };
+        return ToContextFacade(ac, facade, framework);
     }
 }

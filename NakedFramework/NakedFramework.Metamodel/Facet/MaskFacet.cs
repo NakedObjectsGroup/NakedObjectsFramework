@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
-        public MaskFacet(string value, ISpecification holder)
-            : base(typeof(IMaskFacet), holder, value) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
+    public MaskFacet(string value, ISpecification holder)
+        : base(typeof(IMaskFacet), holder, value) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

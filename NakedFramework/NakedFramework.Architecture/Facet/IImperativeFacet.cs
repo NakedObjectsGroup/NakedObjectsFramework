@@ -9,25 +9,25 @@ using System;
 using System.Reflection;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     A <see cref="IFacet" /> implementation that ultimately wraps a
-    ///     <see cref="MethodInfo" />, for a implementation of a <see cref="IMemberSpec" />
-    /// </summary>
-    /// <para>
-    ///     <see cref="IFacet" />s relating to the class itself (ie for <see cref="IObjectSpec" />
-    ///     should not implement this interface.
-    /// </para>
-    public interface IImperativeFacet {
-        /// <summary>
-        ///     The <see cref="MethodInfo" /> invoked by this Facet. Use for testing but any invokes should use delegate below
-        /// </summary>
-        MethodInfo GetMethod();
+namespace NakedFramework.Architecture.Facet; 
 
-        /// <summary>
-        ///     Delegate around method. Much faster than invoking method via reflective Invoke call
-        /// </summary>
-        /// <returns></returns>
-        Func<object, object[], object> GetMethodDelegate();
-    }
+/// <summary>
+///     A <see cref="IFacet" /> implementation that ultimately wraps a
+///     <see cref="MethodInfo" />, for a implementation of a <see cref="IMemberSpec" />
+/// </summary>
+/// <para>
+///     <see cref="IFacet" />s relating to the class itself (ie for <see cref="IObjectSpec" />
+///     should not implement this interface.
+/// </para>
+public interface IImperativeFacet {
+    /// <summary>
+    ///     The <see cref="MethodInfo" /> invoked by this Facet. Use for testing but any invokes should use delegate below
+    /// </summary>
+    MethodInfo GetMethod();
+
+    /// <summary>
+    ///     Delegate around method. Much faster than invoking method via reflective Invoke call
+    /// </summary>
+    /// <returns></returns>
+    Func<object, object[], object> GetMethodDelegate();
 }

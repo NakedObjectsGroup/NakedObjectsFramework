@@ -11,14 +11,14 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class RefValueRepresentation : Representation {
-        protected RefValueRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) : base(oidStrategy, flags) => Href = relType.GetUri().AbsoluteUri;
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        [DataMember(Name = JsonPropertyNames.Href)]
-        public string Href { get; set; }
+[DataContract]
+public class RefValueRepresentation : Representation {
+    protected RefValueRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) : base(oidStrategy, flags) => Href = relType.GetUri().AbsoluteUri;
 
-        public static RefValueRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) => new(oidStrategy, relType, flags);
-    }
+    [DataMember(Name = JsonPropertyNames.Href)]
+    public string Href { get; set; }
+
+    public static RefValueRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) => new(oidStrategy, relType, flags);
 }

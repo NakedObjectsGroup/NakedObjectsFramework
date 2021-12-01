@@ -7,12 +7,12 @@
 
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.FacetFactory {
-    /// <summary>
-    ///     Marker interface to indicate that the <see cref="IFacetFactory" /> works by checking for certain annotations
-    /// </summary>
-    /// <seealso cref="IInterfaceBasedFacetFactory" />
-    public interface IAnnotationBasedFacetFactory { }
+namespace NakedFramework.Architecture.FacetFactory; 
 
-    // Copyright (c) Naked Objects Group Ltd.
-}
+/// <summary>
+///     Marker interface to indicate that the <see cref="IFacetFactory" /> works by checking for certain annotations
+/// </summary>
+/// <seealso cref="IInterfaceBasedFacetFactory" />
+public interface IAnnotationBasedFacetFactory { }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -8,10 +8,10 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IGuidValueFacet : IFacet {
-        Guid GuidValue(INakedObjectAdapter nakedObjectAdapter);
-    }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface IGuidValueFacet : IFacet {
+    Guid GuidValue(INakedObjectAdapter nakedObjectAdapter);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

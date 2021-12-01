@@ -14,43 +14,43 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class HomePageRepresentation : Representation {
-        protected HomePageRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags)
-            : base(frameworkFacade.OidStrategy, flags) {
-            SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(frameworkFacade.OidStrategy, req));
-            SetLinks(frameworkFacade, req);
-            SetExtensions();
-            SetHeader();
-        }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        [DataMember(Name = JsonPropertyNames.Links)]
-        public LinkRepresentation[] Links { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Extensions)]
-        public MapRepresentation Extensions { get; set; }
-
-        private void SetHeader() => Caching = CacheType.NonExpiring;
-
-        private void SetExtensions() => Extensions = new MapRepresentation();
-
-        private void SetLinks(IFrameworkFacade frameworkFacade, HttpRequest req) {
-            var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(OidStrategy, SelfRelType, Flags),
-                LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy, req)), Flags)
-            };
-
-            if (frameworkFacade.GetServices().List.Any()) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(OidStrategy, req)), Flags));
-            }
-
-            tempLinks.Add(LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Menus, SegmentValues.Menus, new UriMtHelper(OidStrategy, req)), Flags));
-            tempLinks.Add(LinkRepresentation.Create(OidStrategy, new VersionRelType(new UriMtHelper(OidStrategy, req)), Flags));
-
-            Links = tempLinks.ToArray();
-        }
-
-        public static HomePageRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags) => new(frameworkFacade, req, flags);
+[DataContract]
+public class HomePageRepresentation : Representation {
+    protected HomePageRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags)
+        : base(frameworkFacade.OidStrategy, flags) {
+        SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(frameworkFacade.OidStrategy, req));
+        SetLinks(frameworkFacade, req);
+        SetExtensions();
+        SetHeader();
     }
+
+    [DataMember(Name = JsonPropertyNames.Links)]
+    public LinkRepresentation[] Links { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Extensions)]
+    public MapRepresentation Extensions { get; set; }
+
+    private void SetHeader() => Caching = CacheType.NonExpiring;
+
+    private void SetExtensions() => Extensions = new MapRepresentation();
+
+    private void SetLinks(IFrameworkFacade frameworkFacade, HttpRequest req) {
+        var tempLinks = new List<LinkRepresentation> {
+            LinkRepresentation.Create(OidStrategy, SelfRelType, Flags),
+            LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy, req)), Flags)
+        };
+
+        if (frameworkFacade.GetServices().List.Any()) {
+            tempLinks.Add(LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(OidStrategy, req)), Flags));
+        }
+
+        tempLinks.Add(LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Menus, SegmentValues.Menus, new UriMtHelper(OidStrategy, req)), Flags));
+        tempLinks.Add(LinkRepresentation.Create(OidStrategy, new VersionRelType(new UriMtHelper(OidStrategy, req)), Flags));
+
+        Links = tempLinks.ToArray();
+    }
+
+    public static HomePageRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags) => new(frameworkFacade, req, flags);
 }

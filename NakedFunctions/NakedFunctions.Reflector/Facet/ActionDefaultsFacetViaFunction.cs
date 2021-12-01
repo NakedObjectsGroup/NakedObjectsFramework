@@ -17,38 +17,38 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.Facet {
-    [Serializable]
-    public sealed class ActionDefaultsFacetViaFunction : ActionDefaultsFacetAbstract, IImperativeFacet {
-        private readonly MethodInfo method;
-        private readonly Func<object, object[], object> methodDelegate;
+namespace NakedFunctions.Reflector.Facet; 
 
-        public ActionDefaultsFacetViaFunction(MethodInfo method, ISpecification holder, ILogger<ActionDefaultsFacetViaFunction> logger)
-            : base(holder) {
-            this.method = method;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+[Serializable]
+public sealed class ActionDefaultsFacetViaFunction : ActionDefaultsFacetAbstract, IImperativeFacet {
+    private readonly MethodInfo method;
+    private readonly Func<object, object[], object> methodDelegate;
 
-        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            // type safety is given by the reflector only identifying methods that match the 
-            // parameter type
-            var defaultValue = methodDelegate.Invoke<object>(method, method.GetParameterValues(nakedObjectAdapter, framework));
-            return (defaultValue, TypeOfDefaultValue.Explicit);
-        }
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private static void OnDeserialized(StreamingContext context) { }
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public ActionDefaultsFacetViaFunction(MethodInfo method, ISpecification holder, ILogger<ActionDefaultsFacetViaFunction> logger)
+        : base(holder) {
+        this.method = method;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        // type safety is given by the reflector only identifying methods that match the 
+        // parameter type
+        var defaultValue = methodDelegate.Invoke<object>(method, method.GetParameterValues(nakedObjectAdapter, framework));
+        return (defaultValue, TypeOfDefaultValue.Explicit);
+    }
+
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private static void OnDeserialized(StreamingContext context) { }
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

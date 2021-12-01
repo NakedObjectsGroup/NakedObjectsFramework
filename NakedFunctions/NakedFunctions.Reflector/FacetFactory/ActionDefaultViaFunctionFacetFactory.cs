@@ -21,56 +21,56 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class ActionDefaultViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory, IMethodPrefixBasedFacetFactory {
-        private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ParameterDefaultPrefix
-        };
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        private readonly ILogger<ActionDefaultViaFunctionFacetFactory> logger;
+public sealed class ActionDefaultViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory, IMethodPrefixBasedFacetFactory {
+    private static readonly string[] FixedPrefixes = {
+        RecognisedMethodsAndPrefixes.ParameterDefaultPrefix
+    };
 
-        public ActionDefaultViaFunctionFacetFactory(IFacetFactoryOrder<ActionDefaultViaFunctionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<ActionDefaultViaFunctionFacetFactory>();
+    private readonly ILogger<ActionDefaultViaFunctionFacetFactory> logger;
 
-        public string[] Prefixes => FixedPrefixes;
+    public ActionDefaultViaFunctionFacetFactory(IFacetFactoryOrder<ActionDefaultViaFunctionFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) =>
+        logger = loggerFactory.CreateLogger<ActionDefaultViaFunctionFacetFactory>();
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindDefaultMethod(Type declaringType, Type targetType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            for (var i = 0; i < paramTypes.Length; i++) {
-                var name = $"{RecognisedMethodsAndPrefixes.ParameterDefaultPrefix}{i}{capitalizedName}";
-                var paramType = paramTypes[i];
+    public string[] Prefixes => FixedPrefixes;
 
-                bool Matcher(MethodInfo mi) => mi.Matches(name, declaringType, paramType, targetType);
+    private IImmutableDictionary<string, ITypeSpecBuilder> FindDefaultMethod(Type declaringType, Type targetType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        for (var i = 0; i < paramTypes.Length; i++) {
+            var name = $"{RecognisedMethodsAndPrefixes.ParameterDefaultPrefix}{i}{capitalizedName}";
+            var paramType = paramTypes[i];
 
-                var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
+            bool Matcher(MethodInfo mi) => mi.Matches(name, declaringType, paramType, targetType);
 
-                if (methodToUse is not null) {
-                    // add facets directly to parameters, not to actions
-                    FacetUtils.AddFacet(new ActionDefaultsFacetViaFunction(methodToUse, parameters[i], LoggerFactory.CreateLogger<ActionDefaultsFacetViaFunction>()));
-                }
+            var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
+
+            if (methodToUse is not null) {
+                // add facets directly to parameters, not to actions
+                FacetUtils.AddFacet(new ActionDefaultsFacetViaFunction(methodToUse, parameters[i], LoggerFactory.CreateLogger<ActionDefaultsFacetViaFunction>()));
             }
-
-            return metamodel;
         }
 
-        #region IMethodFilteringFacetFactory Members
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
-            var declaringType = actionMethod.DeclaringType;
-            var targetType = actionMethod.ContributedToType();
-            var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
-
-            if (action is IActionSpecImmutable actionSpecImmutable) {
-                var actionParameters = actionSpecImmutable.Parameters;
-                metamodel = FindDefaultMethod(declaringType, targetType, capitalizedName, paramTypes, actionParameters, metamodel);
-            }
-
-            return metamodel;
-        }
-
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.ParameterDefaultPrefix);
-
-        #endregion
+        return metamodel;
     }
+
+    #region IMethodFilteringFacetFactory Members
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
+        var declaringType = actionMethod.DeclaringType;
+        var targetType = actionMethod.ContributedToType();
+        var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
+
+        if (action is IActionSpecImmutable actionSpecImmutable) {
+            var actionParameters = actionSpecImmutable.Parameters;
+            metamodel = FindDefaultMethod(declaringType, targetType, capitalizedName, paramTypes, actionParameters, metamodel);
+        }
+
+        return metamodel;
+    }
+
+    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.ParameterDefaultPrefix);
+
+    #endregion
 }

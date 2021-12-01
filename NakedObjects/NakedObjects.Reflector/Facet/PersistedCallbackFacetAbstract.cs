@@ -10,14 +10,14 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public abstract class PersistedCallbackFacetAbstract : CallbackFacetAbstract, IPersistedCallbackFacet {
-        protected PersistedCallbackFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedObjects.Reflector.Facet; 
 
-        public static Type Type => typeof(IPersistedCallbackFacet);
-    }
+[Serializable]
+public abstract class PersistedCallbackFacetAbstract : CallbackFacetAbstract, IPersistedCallbackFacet {
+    protected PersistedCallbackFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public static Type Type => typeof(IPersistedCallbackFacet);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

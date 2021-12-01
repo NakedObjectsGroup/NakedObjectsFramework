@@ -7,11 +7,11 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace NakedFramework.Core.Util {
-    public static class LogUtils {
-        public static string LogAndReturn(this ILogger log, string msg) {
-            log.LogError(msg);
-            return msg;
-        }
+namespace NakedFramework.Core.Util; 
+
+public static class LogUtils {
+    public static string LogAndReturn(this ILogger log, string msg) {
+        log.LogError(msg);
+        return msg;
     }
 }

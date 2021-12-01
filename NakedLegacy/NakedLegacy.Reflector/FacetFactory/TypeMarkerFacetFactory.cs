@@ -18,32 +18,32 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedLegacy.Reflector.FacetFactory {
-    public sealed class TypeMarkerFacetFactory : LegacyFacetFactoryProcessor {
-        public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedLegacy.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var facets = new List<IFacet> {
-                new TypeIsAbstractFacet(specification, IsAbstract(type)),
-                new TypeIsInterfaceFacet(specification, IsInterface(type)),
-                new TypeIsSealedFacet(specification, IsSealed(type)),
-                new TypeIsVoidFacet(specification, IsVoid(type)),
-                new TypeIsStaticFacet(specification, IsStatic(type))
-            };
+public sealed class TypeMarkerFacetFactory : LegacyFacetFactoryProcessor {
+    public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-            FacetUtils.AddFacets(facets);
-            return metamodel;
-        }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var facets = new List<IFacet> {
+            new TypeIsAbstractFacet(specification, IsAbstract(type)),
+            new TypeIsInterfaceFacet(specification, IsInterface(type)),
+            new TypeIsSealedFacet(specification, IsSealed(type)),
+            new TypeIsVoidFacet(specification, IsVoid(type)),
+            new TypeIsStaticFacet(specification, IsStatic(type))
+        };
 
-        private static bool IsVoid(Type type) => type == typeof(void);
-
-        private static bool IsSealed(Type type) => type.IsSealed;
-
-        private static bool IsInterface(Type type) => type.IsInterface;
-
-        private static bool IsAbstract(Type type) => type.IsAbstract;
-
-        private static bool IsStatic(Type type) => IsAbstract(type) && IsSealed(type);
+        FacetUtils.AddFacets(facets);
+        return metamodel;
     }
+
+    private static bool IsVoid(Type type) => type == typeof(void);
+
+    private static bool IsSealed(Type type) => type.IsSealed;
+
+    private static bool IsInterface(Type type) => type.IsInterface;
+
+    private static bool IsAbstract(Type type) => type.IsAbstract;
+
+    private static bool IsStatic(Type type) => IsAbstract(type) && IsSealed(type);
 }

@@ -5,31 +5,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Core.Reflect {
+namespace NakedFramework.Core.Reflect; 
+
+/// <summary>
+///     An instance of this type is used to allow something
+/// </summary>
+public sealed class Allow : ConsentAbstract {
     /// <summary>
-    ///     An instance of this type is used to allow something
+    ///     An Allow object with no reason
     /// </summary>
-    public sealed class Allow : ConsentAbstract {
-        /// <summary>
-        ///     An Allow object with no reason
-        /// </summary>
-        public static readonly Allow Default = new();
+    public static readonly Allow Default = new();
 
-        public Allow() { }
+    public Allow() { }
 
-        public Allow(string reason)
-            : base(reason) { }
+    public Allow(string reason)
+        : base(reason) { }
 
-        /// <summary>
-        ///     Returns <c>true</c>
-        /// </summary>
-        public override bool IsAllowed => true;
+    /// <summary>
+    ///     Returns <c>true</c>
+    /// </summary>
+    public override bool IsAllowed => true;
 
-        /// <summary>
-        ///     Returns <c>false</c>
-        /// </summary>
-        public override bool IsVetoed => false;
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Returns <c>false</c>
+    /// </summary>
+    public override bool IsVetoed => false;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

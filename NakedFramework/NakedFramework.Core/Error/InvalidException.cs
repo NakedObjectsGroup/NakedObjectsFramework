@@ -7,12 +7,12 @@
 
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     Superclass of exceptions which indicate an attempt to interact with an object or member in a way that is invalid.
-    /// </summary>
-    public class InvalidException : InteractionException {
-        public InvalidException(IInteractionContext ic, string message)
-            : base(ic, message) { }
-    }
+namespace NakedFramework.Core.Error; 
+
+/// <summary>
+///     Superclass of exceptions which indicate an attempt to interact with an object or member in a way that is invalid.
+/// </summary>
+public class InvalidException : InteractionException {
+    public InvalidException(IInteractionContext ic, string message)
+        : base(ic, message) { }
 }

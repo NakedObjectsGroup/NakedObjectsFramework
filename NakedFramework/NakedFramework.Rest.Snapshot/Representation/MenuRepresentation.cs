@@ -15,91 +15,91 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class MenuRepresentation : Representation {
-        protected MenuRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, IMenuFacade menu, RestControlFlags flags)
-            : base(frameworkFacade.OidStrategy, flags) {
-            var helper = new UriMtHelper(frameworkFacade.OidStrategy, req, menu);
-            SetScalars(menu);
-            SelfRelType = new MenuRelType(RelValues.Self, helper);
-            SetLinksAndMembers(req, frameworkFacade, menu);
-            SetExtensions(menu);
-            SetHeader(menu);
-        }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        [DataMember(Name = JsonPropertyNames.Title)]
-        public string Title { get; set; }
+[DataContract]
+public class MenuRepresentation : Representation {
+    protected MenuRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, IMenuFacade menu, RestControlFlags flags)
+        : base(frameworkFacade.OidStrategy, flags) {
+        var helper = new UriMtHelper(frameworkFacade.OidStrategy, req, menu);
+        SetScalars(menu);
+        SelfRelType = new MenuRelType(RelValues.Self, helper);
+        SetLinksAndMembers(req, frameworkFacade, menu);
+        SetExtensions(menu);
+        SetHeader(menu);
+    }
 
-        [DataMember(Name = JsonPropertyNames.MenuId)]
-        public string MenuId { get; set; }
+    [DataMember(Name = JsonPropertyNames.Title)]
+    public string Title { get; set; }
 
-        [DataMember(Name = JsonPropertyNames.Links)]
-        public LinkRepresentation[] Links { get; set; }
+    [DataMember(Name = JsonPropertyNames.MenuId)]
+    public string MenuId { get; set; }
 
-        [DataMember(Name = JsonPropertyNames.Extensions)]
-        public MapRepresentation Extensions { get; set; }
+    [DataMember(Name = JsonPropertyNames.Links)]
+    public LinkRepresentation[] Links { get; set; }
 
-        [DataMember(Name = JsonPropertyNames.Members)]
-        public MapRepresentation Members { get; set; }
+    [DataMember(Name = JsonPropertyNames.Extensions)]
+    public MapRepresentation Extensions { get; set; }
 
-        private void SetScalars(IMenuFacade menu) {
-            Title = menu.Name;
-            MenuId = menu.Id;
-        }
+    [DataMember(Name = JsonPropertyNames.Members)]
+    public MapRepresentation Members { get; set; }
 
-        private void SetHeader(IMenuFacade menu) => Caching = CacheType.NonExpiring;
+    private void SetScalars(IMenuFacade menu) {
+        Title = menu.Name;
+        MenuId = menu.Id;
+    }
 
-        private void SetLinksAndMembers(HttpRequest req, IFrameworkFacade frameworkFacade, IMenuFacade menu) {
-            var tempLinks = new List<LinkRepresentation> {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)};
+    private void SetHeader(IMenuFacade menu) => Caching = CacheType.NonExpiring;
 
-            SetMembers(frameworkFacade, menu, req);
-            Links = tempLinks.ToArray();
-        }
+    private void SetLinksAndMembers(HttpRequest req, IFrameworkFacade frameworkFacade, IMenuFacade menu) {
+        var tempLinks = new List<LinkRepresentation> {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)};
 
-        private static (string name, ActionContextFacade action)[] GetMenuItem(IFrameworkFacade frameworkFacade, IMenuItemFacade item, string parent = "") => frameworkFacade.GetMenuItem(item, parent);
+        SetMembers(frameworkFacade, menu, req);
+        Links = tempLinks.ToArray();
+    }
 
-        private static bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) =>
-            actionContextFacade.Action.IsVisible(actionContextFacade.Target) &&
-            actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
+    private static (string name, ActionContextFacade action)[] GetMenuItem(IFrameworkFacade frameworkFacade, IMenuItemFacade item, string parent = "") => frameworkFacade.GetMenuItem(item, parent);
 
-        private void SetMembers(IFrameworkFacade frameworkFacade, IMenuFacade menu, HttpRequest req) {
-            ActionContextFacade SetMenuId(ActionContextFacade action) {
-                action.MenuId = menu.Id;
+    private static bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) =>
+        actionContextFacade.Action.IsVisible(actionContextFacade.Target) &&
+        actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
 
-                foreach (var p in action.VisibleParameters) {
-                    p.MenuId = menu.Id;
-                }
+    private void SetMembers(IFrameworkFacade frameworkFacade, IMenuFacade menu, HttpRequest req) {
+        ActionContextFacade SetMenuId(ActionContextFacade action) {
+            action.MenuId = menu.Id;
 
-                return action;
+            foreach (var p in action.VisibleParameters) {
+                p.MenuId = menu.Id;
             }
 
-            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(frameworkFacade, i, i.Grouping)).Where(af => IsVisibleAndUsable(af.action)).ToArray();
-
-            var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, SetMenuId(a.action), Flags)).ToArray();
-
-            var actionComparer = new ActionComparer();
-            actions = actions.Distinct(actionComparer).ToArray();
-
-            Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
+            return action;
         }
 
-        private void SetExtensions(IMenuFacade menu) => Extensions = MapRepresentation.Create();
+        var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(frameworkFacade, i, i.Grouping)).Where(af => IsVisibleAndUsable(af.action)).ToArray();
 
-        public static MenuRepresentation Create(IFrameworkFacade frameworkFacade, IMenuFacade menu, HttpRequest req, RestControlFlags flags) => new(frameworkFacade, req, menu, flags);
+        var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, SetMenuId(a.action), Flags)).ToArray();
 
-        #region Nested type: ActionComparer
+        var actionComparer = new ActionComparer();
+        actions = actions.Distinct(actionComparer).ToArray();
 
-        private class ActionComparer : IEqualityComparer<InlineActionRepresentation> {
-            #region IEqualityComparer<InlineActionRepresentation> Members
+        Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
+    }
 
-            public bool Equals(InlineActionRepresentation x, InlineActionRepresentation y) => x.Id == y.Id;
+    private void SetExtensions(IMenuFacade menu) => Extensions = MapRepresentation.Create();
 
-            public int GetHashCode(InlineActionRepresentation obj) => obj.Id.GetHashCode();
+    public static MenuRepresentation Create(IFrameworkFacade frameworkFacade, IMenuFacade menu, HttpRequest req, RestControlFlags flags) => new(frameworkFacade, req, menu, flags);
 
-            #endregion
-        }
+    #region Nested type: ActionComparer
+
+    private class ActionComparer : IEqualityComparer<InlineActionRepresentation> {
+        #region IEqualityComparer<InlineActionRepresentation> Members
+
+        public bool Equals(InlineActionRepresentation x, InlineActionRepresentation y) => x.Id == y.Id;
+
+        public int GetHashCode(InlineActionRepresentation obj) => obj.Id.GetHashCode();
 
         #endregion
     }
+
+    #endregion
 }

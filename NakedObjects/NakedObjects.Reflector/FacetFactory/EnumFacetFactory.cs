@@ -22,43 +22,43 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class EnumFacetFactory : ObjectFacetFactoryProcessor {
-        public EnumFacetFactory(IFacetFactoryOrder<EnumFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = property.GetCustomAttribute<EnumDataTypeAttribute>();
+public sealed class EnumFacetFactory : ObjectFacetFactoryProcessor {
+    public EnumFacetFactory(IFacetFactoryOrder<EnumFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
-            AddEnumFacet(attribute, specification, property.PropertyType);
-            return metamodel;
-        }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = property.GetCustomAttribute<EnumDataTypeAttribute>();
 
-        private static void AddEnumFacet(EnumDataTypeAttribute attribute, ISpecification holder, Type typeOfEnum) {
-            if (attribute != null) {
-                FacetUtils.AddFacet(Create(attribute, holder));
-                return;
-            }
-
-            var typeOrNulledType = TypeUtils.GetNulledType(typeOfEnum);
-            if (TypeUtils.IsEnum(typeOrNulledType)) {
-                FacetUtils.AddFacet(new EnumFacet(holder, typeOrNulledType));
-                return;
-            }
-
-            if (CollectionUtils.IsGenericOfEnum(typeOfEnum)) {
-                var enumInstanceType = typeOfEnum.GetGenericArguments().First();
-                FacetUtils.AddFacet(new EnumFacet(holder, enumInstanceType));
-            }
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttribute<EnumDataTypeAttribute>();
-            AddEnumFacet(attribute, holder, parameter.ParameterType);
-            return metamodel;
-        }
-
-        private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) => attribute is null ? null : new EnumFacet(holder, attribute.EnumType);
+        AddEnumFacet(attribute, specification, property.PropertyType);
+        return metamodel;
     }
+
+    private static void AddEnumFacet(EnumDataTypeAttribute attribute, ISpecification holder, Type typeOfEnum) {
+        if (attribute != null) {
+            FacetUtils.AddFacet(Create(attribute, holder));
+            return;
+        }
+
+        var typeOrNulledType = TypeUtils.GetNulledType(typeOfEnum);
+        if (TypeUtils.IsEnum(typeOrNulledType)) {
+            FacetUtils.AddFacet(new EnumFacet(holder, typeOrNulledType));
+            return;
+        }
+
+        if (CollectionUtils.IsGenericOfEnum(typeOfEnum)) {
+            var enumInstanceType = typeOfEnum.GetGenericArguments().First();
+            FacetUtils.AddFacet(new EnumFacet(holder, enumInstanceType));
+        }
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+        var attribute = parameter.GetCustomAttribute<EnumDataTypeAttribute>();
+        AddEnumFacet(attribute, holder, parameter.ParameterType);
+        return metamodel;
+    }
+
+    private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) => attribute is null ? null : new EnumFacet(holder, attribute.EnumType);
 }

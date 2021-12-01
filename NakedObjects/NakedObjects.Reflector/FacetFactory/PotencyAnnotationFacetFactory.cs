@@ -17,28 +17,28 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    /// <summary>
-    ///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
-    ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
-    /// </summary>
-    public sealed class PotencyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public PotencyAnnotationFacetFactory(IFacetFactoryOrder<PotencyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            // give priority to Idempotent as more restrictive
-            if (member.GetCustomAttribute<IdempotentAttribute>() is not null) {
-                FacetUtils.AddFacet(new IdempotentFacet(holder));
-            }
-            else if (member.GetCustomAttribute<QueryOnlyAttribute>() is not null) {
-                FacetUtils.AddFacet(new QueryOnlyFacet(holder));
-            }
-        }
+/// <summary>
+///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
+///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
+/// </summary>
+public sealed class PotencyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public PotencyAnnotationFacetFactory(IFacetFactoryOrder<PotencyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, specification);
-            return metamodel;
+    private static void Process(MemberInfo member, ISpecification holder) {
+        // give priority to Idempotent as more restrictive
+        if (member.GetCustomAttribute<IdempotentAttribute>() is not null) {
+            FacetUtils.AddFacet(new IdempotentFacet(holder));
         }
+        else if (member.GetCustomAttribute<QueryOnlyAttribute>() is not null) {
+            FacetUtils.AddFacet(new QueryOnlyFacet(holder));
+        }
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
     }
 }

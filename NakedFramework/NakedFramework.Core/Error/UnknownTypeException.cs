@@ -5,14 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Core.Error {
-    public class UnknownTypeException : NakedObjectSystemException {
-        public UnknownTypeException(string message)
-            : base(message) { }
+namespace NakedFramework.Core.Error; 
 
-        public UnknownTypeException(object obj)
-            : this(obj == null ? "null" : obj.ToString()) { }
-    }
+public class UnknownTypeException : NakedObjectSystemException {
+    public UnknownTypeException(string message)
+        : base(message) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public UnknownTypeException(object obj)
+        : this(obj == null ? "null" : obj.ToString()) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -12,56 +12,56 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 
-namespace NakedFramework.Rest.Snapshot.Utility {
-    public class FieldFacadeAdapter {
-        private readonly IAssociationFacade association;
-        private readonly IActionParameterFacade parameter;
+namespace NakedFramework.Rest.Snapshot.Utility; 
 
-        public FieldFacadeAdapter(IActionParameterFacade parameter) => this.parameter = parameter;
+public class FieldFacadeAdapter {
+    private readonly IAssociationFacade association;
+    private readonly IActionParameterFacade parameter;
 
-        public FieldFacadeAdapter(IAssociationFacade association) => this.association = association;
+    public FieldFacadeAdapter(IActionParameterFacade parameter) => this.parameter = parameter;
 
-        public IFieldFacade AsField => (IFieldFacade) parameter ?? association;
+    public FieldFacadeAdapter(IAssociationFacade association) => this.association = association;
 
-        public string Id => parameter?.Id ?? association?.Id;
+    public IFieldFacade AsField => (IFieldFacade) parameter ?? association;
 
-        public string MenuId { get; init; }
+    public string Id => parameter?.Id ?? association?.Id;
 
-        public Choices IsChoicesEnabled => (parameter?.IsChoicesEnabled ?? association?.IsChoicesEnabled).GetValueOrDefault();
-        public ITypeFacade Specification => parameter?.Specification ?? association?.Specification;
-        public ITypeFacade ElementType => parameter?.ElementType ?? association?.ElementSpecification;
-        public bool IsAutoCompleteEnabled => (parameter?.IsAutoCompleteEnabled ?? association?.IsAutoCompleteEnabled).GetValueOrDefault();
-        public string Mask => parameter?.Mask ?? association?.Mask;
-        public int NumberOfLines => (parameter?.NumberOfLines ?? association?.NumberOfLines).GetValueOrDefault();
-        public string Name => parameter?.Name ?? association?.Name;
-        public string Description => parameter?.Description ?? association?.Description;
-        public bool IsMandatory => (parameter?.IsMandatory ?? association?.IsMandatory).GetValueOrDefault();
-        public int? MaxLength => parameter?.MaxLength ?? association?.MaxLength;
-        public string Pattern => parameter?.Pattern ?? association?.Pattern;
-        public int AutoCompleteMinLength => (parameter?.AutoCompleteMinLength ?? association?.AutoCompleteMinLength).GetValueOrDefault();
-        public DataType? DataType => parameter?.DataType ?? association?.DataType;
-        public string PresentationHint => parameter?.PresentationHint ?? association?.PresentationHint;
+    public string MenuId { get; init; }
 
-        public bool? IsFindMenuEnabled => parameter?.IsFindMenuEnabled ?? association?.IsFindMenuEnabled;
+    public Choices IsChoicesEnabled => (parameter?.IsChoicesEnabled ?? association?.IsChoicesEnabled).GetValueOrDefault();
+    public ITypeFacade Specification => parameter?.Specification ?? association?.Specification;
+    public ITypeFacade ElementType => parameter?.ElementType ?? association?.ElementSpecification;
+    public bool IsAutoCompleteEnabled => (parameter?.IsAutoCompleteEnabled ?? association?.IsAutoCompleteEnabled).GetValueOrDefault();
+    public string Mask => parameter?.Mask ?? association?.Mask;
+    public int NumberOfLines => (parameter?.NumberOfLines ?? association?.NumberOfLines).GetValueOrDefault();
+    public string Name => parameter?.Name ?? association?.Name;
+    public string Description => parameter?.Description ?? association?.Description;
+    public bool IsMandatory => (parameter?.IsMandatory ?? association?.IsMandatory).GetValueOrDefault();
+    public int? MaxLength => parameter?.MaxLength ?? association?.MaxLength;
+    public string Pattern => parameter?.Pattern ?? association?.Pattern;
+    public int AutoCompleteMinLength => (parameter?.AutoCompleteMinLength ?? association?.AutoCompleteMinLength).GetValueOrDefault();
+    public DataType? DataType => parameter?.DataType ?? association?.DataType;
+    public string PresentationHint => parameter?.PresentationHint ?? association?.PresentationHint;
 
-        public (string, ITypeFacade)[] GetChoicesParameters() => parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
+    public bool? IsFindMenuEnabled => parameter?.IsFindMenuEnabled ?? association?.IsFindMenuEnabled;
 
-        public (IObjectFacade obj, string title)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) => parameter?.GetChoicesAndTitles(objectFacade, parameterNameValues) ?? association?.GetChoicesAndTitles(objectFacade, parameterNameValues);
+    public (string, ITypeFacade)[] GetChoicesParameters() => parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
 
-        public object GetChoiceValue(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade item, RestControlFlags flags) => association != null ? RestUtils.GetChoiceValue(oidStrategy, req, item, association, flags) : RestUtils.GetChoiceValue(oidStrategy, req, item, parameter, flags);
+    public (IObjectFacade obj, string title)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) => parameter?.GetChoicesAndTitles(objectFacade, parameterNameValues) ?? association?.GetChoicesAndTitles(objectFacade, parameterNameValues);
 
-        public UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade) {
-            if (parameter != null) {
-                var parameterContext = new ParameterContextFacade {
-                    Action = parameter.Action,
-                    Target = objectFacade,
-                    Parameter = parameter,
-                    MenuId = MenuId
-                };
-                return new UriMtHelper(oidStrategy, req, parameterContext);
-            }
+    public object GetChoiceValue(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade item, RestControlFlags flags) => association != null ? RestUtils.GetChoiceValue(oidStrategy, req, item, association, flags) : RestUtils.GetChoiceValue(oidStrategy, req, item, parameter, flags);
 
-            return new UriMtHelper(oidStrategy, req, association, objectFacade);
+    public UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade) {
+        if (parameter != null) {
+            var parameterContext = new ParameterContextFacade {
+                Action = parameter.Action,
+                Target = objectFacade,
+                Parameter = parameter,
+                MenuId = MenuId
+            };
+            return new UriMtHelper(oidStrategy, req, parameterContext);
         }
+
+        return new UriMtHelper(oidStrategy, req, association, objectFacade);
     }
 }

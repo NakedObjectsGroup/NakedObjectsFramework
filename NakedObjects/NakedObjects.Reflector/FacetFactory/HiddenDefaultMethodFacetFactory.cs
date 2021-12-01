@@ -17,39 +17,39 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    /// <summary>
-    ///     Note - this factory simply removes the class level attribute from the list of methods.  The action and properties
-    ///     look up this attribute directly
-    /// </summary>
-    public sealed class HiddenDefaultMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
-        private static readonly string[] FixedPrefixes;
-        private readonly ILogger<HiddenDefaultMethodFacetFactory> logger;
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        static HiddenDefaultMethodFacetFactory() =>
-            FixedPrefixes = new[] {
-                $"{RecognisedMethodsAndPrefixes.HidePrefix}Action{RecognisedMethodsAndPrefixes.DefaultPrefix}",
-                $"{RecognisedMethodsAndPrefixes.HidePrefix}Property{RecognisedMethodsAndPrefixes.DefaultPrefix}"
-            };
+/// <summary>
+///     Note - this factory simply removes the class level attribute from the list of methods.  The action and properties
+///     look up this attribute directly
+/// </summary>
+public sealed class HiddenDefaultMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+    private static readonly string[] FixedPrefixes;
+    private readonly ILogger<HiddenDefaultMethodFacetFactory> logger;
 
-        public HiddenDefaultMethodFacetFactory(IFacetFactoryOrder<HiddenDefaultMethodFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
-            logger = loggerFactory.CreateLogger<HiddenDefaultMethodFacetFactory>();
+    static HiddenDefaultMethodFacetFactory() =>
+        FixedPrefixes = new[] {
+            $"{RecognisedMethodsAndPrefixes.HidePrefix}Action{RecognisedMethodsAndPrefixes.DefaultPrefix}",
+            $"{RecognisedMethodsAndPrefixes.HidePrefix}Property{RecognisedMethodsAndPrefixes.DefaultPrefix}"
+        };
 
-        public string[] Prefixes => FixedPrefixes;
+    public HiddenDefaultMethodFacetFactory(IFacetFactoryOrder<HiddenDefaultMethodFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+        logger = loggerFactory.CreateLogger<HiddenDefaultMethodFacetFactory>();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            try {
-                foreach (var methodName in FixedPrefixes) {
-                    var methodInfo = MethodHelpers.FindMethod(reflector, type, MethodType.Object, methodName, typeof(bool), Type.EmptyTypes);
-                    methodRemover.SafeRemoveMethod(methodInfo);
-                }
+    public string[] Prefixes => FixedPrefixes;
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        try {
+            foreach (var methodName in FixedPrefixes) {
+                var methodInfo = MethodHelpers.FindMethod(reflector, type, MethodType.Object, methodName, typeof(bool), Type.EmptyTypes);
+                methodRemover.SafeRemoveMethod(methodInfo);
             }
-            catch (Exception e) {
-                logger.LogError(e, "Unexpected exception");
-            }
-
-            return metamodel;
         }
+        catch (Exception e) {
+            logger.LogError(e, "Unexpected exception");
+        }
+
+        return metamodel;
     }
 }

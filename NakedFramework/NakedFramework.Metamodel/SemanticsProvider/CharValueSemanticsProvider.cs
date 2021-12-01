@@ -15,55 +15,55 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<char>, ICharValueFacet {
-        private const char DefaultValueConst = ' ';
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 2;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public CharValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<char>, ICharValueFacet {
+    private const char DefaultValueConst = ' ';
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 2;
 
-        public static Type Type => typeof(ICharValueFacet);
+    public CharValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(char);
+    public static Type Type => typeof(ICharValueFacet);
 
-        #region ICharValueFacet Members
+    public static Type AdaptedType => typeof(char);
 
-        public char CharValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<char>();
+    #region ICharValueFacet Members
 
-        #endregion
+    public char CharValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<char>();
 
-        public static bool IsAdaptedType(Type type) => type == AdaptedType;
+    #endregion
 
-        public override object ParseTextEntry(string entry) =>
-            entry switch {
-                null => throw new ArgumentException(),
-                "" => null,
-                _ => DoParse(entry)
-            };
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-        protected override char DoParse(string entry) {
-            try {
-                return char.Parse(entry);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
+    public override object ParseTextEntry(string entry) =>
+        entry switch {
+            null => throw new ArgumentException(),
+            "" => null,
+            _ => DoParse(entry)
+        };
+
+    protected override char DoParse(string entry) {
+        try {
+            return char.Parse(entry);
         }
-
-        protected override char DoParseInvariant(string entry) => char.Parse(entry);
-
-        protected override string GetInvariantString(char obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, char value) => value.ToString(Thread.CurrentThread.CurrentCulture);
-
-        protected override string DoEncode(char obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override char DoRestore(string data) => char.Parse(data);
-
-        public override string ToString() => "CharAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
     }
+
+    protected override char DoParseInvariant(string entry) => char.Parse(entry);
+
+    protected override string GetInvariantString(char obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, char value) => value.ToString(Thread.CurrentThread.CurrentCulture);
+
+    protected override string DoEncode(char obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override char DoRestore(string data) => char.Parse(data);
+
+    public override string ToString() => "CharAdapter: ";
 }

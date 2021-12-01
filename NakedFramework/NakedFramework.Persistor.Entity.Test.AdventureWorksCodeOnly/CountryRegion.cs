@@ -13,21 +13,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Person.CountryRegion")]
-    public class CountryRegion {
-        [Key]
-        [StringLength(3)]
-        public string CountryRegionCode { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Person.CountryRegion")]
+public class CountryRegion {
+    [Key]
+    [StringLength(3)]
+    public string CountryRegionCode { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public virtual ICollection<CountryRegionCurrency> CountryRegionCurrencies { get; set; } = new HashSet<CountryRegionCurrency>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<StateProvince> StateProvinces { get; set; } = new HashSet<StateProvince>();
-    }
+    public virtual ICollection<CountryRegionCurrency> CountryRegionCurrencies { get; set; } = new HashSet<CountryRegionCurrency>();
+
+    public virtual ICollection<StateProvince> StateProvinces { get; set; } = new HashSet<StateProvince>();
 }

@@ -8,21 +8,21 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     The mechanism by which the value of the property can be set
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to invoking the mutator method for a property.
-    /// </para>
-    /// <seealso cref="IPropertyAccessorFacet" />
-    /// <seealso cref="IPropertyInitializationFacet" />
-    public interface IPropertySetterFacet : IFacet {
-        string PropertyName { get; }
+namespace NakedFramework.Architecture.Facet; 
 
-        /// <summary>
-        ///     Sets the value of this property
-        /// </summary>
-        void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework);
-    }
+/// <summary>
+///     The mechanism by which the value of the property can be set
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to invoking the mutator method for a property.
+/// </para>
+/// <seealso cref="IPropertyAccessorFacet" />
+/// <seealso cref="IPropertyInitializationFacet" />
+public interface IPropertySetterFacet : IFacet {
+    string PropertyName { get; }
+
+    /// <summary>
+    ///     Sets the value of this property
+    /// </summary>
+    void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework);
 }

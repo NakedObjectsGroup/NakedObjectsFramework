@@ -9,15 +9,15 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    /// <summary>
-    ///     This is only used at by the custom 'SdmNotCountedAttribute'
-    /// </summary>
-    [Serializable]
-    public sealed class NotCountedFacet : MarkerFacetAbstract, INotCountedFacet {
-        public NotCountedFacet(ISpecification holder)
-            : base(typeof(INotCountedFacet), holder) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     This is only used at by the custom 'SdmNotCountedAttribute'
+/// </summary>
+[Serializable]
+public sealed class NotCountedFacet : MarkerFacetAbstract, INotCountedFacet {
+    public NotCountedFacet(ISpecification holder)
+        : base(typeof(INotCountedFacet), holder) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

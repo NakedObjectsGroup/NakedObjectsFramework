@@ -17,24 +17,24 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    /// <summary>
-    ///     Does not add any facets, but removes members that should be ignored - before they are introspected upon
-    ///     by other factories.  This factory thus needs to be registered earlier than most other factories.
-    /// </summary>
-    public class RemoveIgnoredMethodsFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public RemoveIgnoredMethodsFacetFactory(IFacetFactoryOrder<RemoveIgnoredMethodsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            RemoveExplicitlyIgnoredMembers(type, methodRemover);
-            return metamodel;
-        }
+/// <summary>
+///     Does not add any facets, but removes members that should be ignored - before they are introspected upon
+///     by other factories.  This factory thus needs to be registered earlier than most other factories.
+/// </summary>
+public class RemoveIgnoredMethodsFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public RemoveIgnoredMethodsFacetFactory(IFacetFactoryOrder<RemoveIgnoredMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        private static void RemoveExplicitlyIgnoredMembers(Type type, IMethodRemover methodRemover) {
-            foreach (var method in type.GetMethods().Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null)) {
-                methodRemover.SafeRemoveMethod(method);
-            }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        RemoveExplicitlyIgnoredMembers(type, methodRemover);
+        return metamodel;
+    }
+
+    private static void RemoveExplicitlyIgnoredMembers(Type type, IMethodRemover methodRemover) {
+        foreach (var method in type.GetMethods().Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null)) {
+            methodRemover.SafeRemoveMethod(method);
         }
     }
 }

@@ -13,27 +13,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.CreditCard")]
-    public class CreditCard {
-        public int CreditCardID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string CardType { get; set; }
+[Table("Sales.CreditCard")]
+public class CreditCard {
+    public int CreditCardID { get; set; }
 
-        [Required]
-        [StringLength(25)]
-        public string CardNumber { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string CardType { get; set; }
 
-        public byte ExpMonth { get; set; }
+    [Required]
+    [StringLength(25)]
+    public string CardNumber { get; set; }
 
-        public short ExpYear { get; set; }
+    public byte ExpMonth { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public short ExpYear { get; set; }
 
-        public virtual ICollection<ContactCreditCard> ContactCreditCards { get; set; } = new HashSet<ContactCreditCard>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
-    }
+    public virtual ICollection<ContactCreditCard> ContactCreditCards { get; set; } = new HashSet<ContactCreditCard>();
+
+    public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 }

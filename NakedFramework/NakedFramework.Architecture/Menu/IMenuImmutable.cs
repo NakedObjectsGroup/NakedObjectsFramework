@@ -7,11 +7,11 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Architecture.Menu {
-    /// <summary>
-    ///     The run-time metamodel representing a menu constructed at reflection time.
-    /// </summary>
-    public interface IMenuImmutable : IMenuItemImmutable {
-        IList<IMenuItemImmutable> MenuItems { get; }
-    }
+namespace NakedFramework.Architecture.Menu; 
+
+/// <summary>
+///     The run-time metamodel representing a menu constructed at reflection time.
+/// </summary>
+public interface IMenuImmutable : IMenuItemImmutable {
+    IList<IMenuItemImmutable> MenuItems { get; }
 }

@@ -7,23 +7,23 @@
 
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Component {
+namespace NakedFramework.Architecture.Component; 
+
+/// <summary>
+///     Service that will inject an implementation of IDomainObjectContainer and/or INakedFramework into
+///     domain objects and services when they are instantiated.
+/// </summary>
+public interface IDomainObjectInjector {
+    INakedFramework Framework { set; }
+
     /// <summary>
-    ///     Service that will inject an implementation of IDomainObjectContainer and/or INakedFramework into
-    ///     domain objects and services when they are instantiated.
+    ///     Among other things, will inject all services into the object
     /// </summary>
-    public interface IDomainObjectInjector {
-        INakedFramework Framework { set; }
+    void InjectInto(object obj);
 
-        /// <summary>
-        ///     Among other things, will inject all services into the object
-        /// </summary>
-        void InjectInto(object obj);
+    void InjectIntoInline(object root, object inlineObject);
 
-        void InjectIntoInline(object root, object inlineObject);
-
-        void InjectParentIntoChild(object parent, object child);
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    void InjectParentIntoChild(object parent, object child);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

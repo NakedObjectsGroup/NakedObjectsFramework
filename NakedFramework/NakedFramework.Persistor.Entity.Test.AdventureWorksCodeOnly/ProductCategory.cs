@@ -13,18 +13,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.ProductCategory")]
-    public class ProductCategory {
-        public virtual int ProductCategoryID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public virtual string Name { get; set; }
+[Table("Production.ProductCategory")]
+public class ProductCategory {
+    public virtual int ProductCategoryID { get; set; }
 
-        public virtual Guid rowguid { get; set; }
-        public virtual DateTime ModifiedDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    public virtual string Name { get; set; }
 
-        public virtual ICollection<ProductSubcategory> ProductSubcategories { get; set; } = new List<ProductSubcategory>();
-    }
+    public virtual Guid rowguid { get; set; }
+    public virtual DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<ProductSubcategory> ProductSubcategories { get; set; } = new List<ProductSubcategory>();
 }

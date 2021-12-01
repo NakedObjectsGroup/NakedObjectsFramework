@@ -10,26 +10,26 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Whether the value of a property or parameter is outside a specified range
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     the <see cref="RangeAttribute" /> annotation
+/// </para>
+public interface IRangeFacet : IValidatingInteractionAdvisor, IFacet {
+    IConvertible Min { get; }
+    IConvertible Max { get; }
+
     /// <summary>
-    ///     Whether the value of a property or parameter is outside a specified range
+    ///     Returns true if the facet is a range applied to a Date
     /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     the <see cref="RangeAttribute" /> annotation
-    /// </para>
-    public interface IRangeFacet : IValidatingInteractionAdvisor, IFacet {
-        IConvertible Min { get; }
-        IConvertible Max { get; }
+    bool IsDateRange { get; }
 
-        /// <summary>
-        ///     Returns true if the facet is a range applied to a Date
-        /// </summary>
-        bool IsDateRange { get; }
-
-        /// <summary>
-        ///     Whether the provided value is out of range
-        /// </summary>
-        int OutOfRange(INakedObjectAdapter nakedObjectAdapter);
-    }
+    /// <summary>
+    ///     Whether the provided value is out of range
+    /// </summary>
+    int OutOfRange(INakedObjectAdapter nakedObjectAdapter);
 }

@@ -5,11 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace Snapshot.Xml.Test.One {
-    public class TransformFull {
-        public virtual int FieldOne { get; set; }
-        public virtual string FieldTwo { get; set; }
-        public virtual int FieldThree { get; set; }
-        public virtual string FieldFour { get; set; }
-    }
+namespace Snapshot.Xml.Test.One; 
+
+public class TransformFull {
+    public virtual int FieldOne { get; set; }
+    public virtual string FieldTwo { get; set; }
+    public virtual int FieldThree { get; set; }
+    public virtual string FieldFour { get; set; }
 }

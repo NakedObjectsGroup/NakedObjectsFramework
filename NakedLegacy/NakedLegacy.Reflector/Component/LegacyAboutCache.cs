@@ -4,31 +4,31 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.Component {
-    public class LegacyAboutCache {
-        private readonly IDictionary<object, IDictionary<MethodInfo, ActionAbout>> cacheDictionary = new Dictionary<object, IDictionary<MethodInfo, ActionAbout>>();
+namespace NakedLegacy.Reflector.Component; 
 
-        private ActionAbout InvokeOrReturnCachedAbout(INakedFramework framework, MethodInfo aboutMethod, object target) {
-            //ActionAbout InvokeAbout() {
-            //    var about = new ActionAboutImpl();
-            //    aboutMethod.Invoke(target, new object[] { about });
-            //    return about;
-            //}
+public class LegacyAboutCache {
+    private readonly IDictionary<object, IDictionary<MethodInfo, ActionAbout>> cacheDictionary = new Dictionary<object, IDictionary<MethodInfo, ActionAbout>>();
 
-            //if (!cacheDictionary.ContainsKey(target)) {
-            //    cacheDictionary[target] = new Dictionary<MethodInfo, ActionAbout> { { aboutMethod, InvokeAbout() } };
-            //}
-            //else if (!cacheDictionary[target].ContainsKey(aboutMethod)) {
-            //    cacheDictionary[target][aboutMethod] = InvokeAbout();
-            //}
+    private ActionAbout InvokeOrReturnCachedAbout(INakedFramework framework, MethodInfo aboutMethod, object target) {
+        //ActionAbout InvokeAbout() {
+        //    var about = new ActionAboutImpl();
+        //    aboutMethod.Invoke(target, new object[] { about });
+        //    return about;
+        //}
 
-            return cacheDictionary[target][aboutMethod];
-        }
+        //if (!cacheDictionary.ContainsKey(target)) {
+        //    cacheDictionary[target] = new Dictionary<MethodInfo, ActionAbout> { { aboutMethod, InvokeAbout() } };
+        //}
+        //else if (!cacheDictionary[target].ContainsKey(aboutMethod)) {
+        //    cacheDictionary[target][aboutMethod] = InvokeAbout();
+        //}
 
-        public static ActionAbout GetActionAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
-            framework.ServiceProvider.GetService<LegacyAboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
-
-        public static ActionAbout GetFieldAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
-            framework.ServiceProvider.GetService<LegacyAboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
+        return cacheDictionary[target][aboutMethod];
     }
+
+    public static ActionAbout GetActionAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
+        framework.ServiceProvider.GetService<LegacyAboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
+
+    public static ActionAbout GetFieldAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
+        framework.ServiceProvider.GetService<LegacyAboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
 }

@@ -7,12 +7,12 @@
 
 using NakedFramework.Facade.Utility;
 
-namespace NakedFramework.Facade.Impl.Utility {
-    public class ConstantStringHasher : IStringHasher {
-        #region IStringHasher Members
+namespace NakedFramework.Facade.Impl.Utility; 
 
-        public string GetHash(string toHash) => "";
+public class ConstantStringHasher : IStringHasher {
+    #region IStringHasher Members
 
-        #endregion
-    }
+    public string GetHash(string toHash) => "";
+
+    #endregion
 }

@@ -12,16 +12,16 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    public class CollectionWithDetailsRepresentationStrategy : AbstractCollectionRepresentationStrategy {
-        public CollectionWithDetailsRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(frameworkFacade, req, propertyContext, flags) { }
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        public override LinkRepresentation[] GetValue() {
-            LinkRepresentation CreateLink(IObjectFacade no) => Flags.InlineCollectionItems ? CreateTableRowValueLink(no) : CreateValueLink(no);
-            return Collection.ToEnumerable().Select(CreateLink).ToArray();
-        }
+public class CollectionWithDetailsRepresentationStrategy : AbstractCollectionRepresentationStrategy {
+    public CollectionWithDetailsRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
+        : base(frameworkFacade, req, propertyContext, flags) { }
 
-        public override int? GetSize() => PropertyContext.Property.Count(PropertyContext.Target);
+    public override LinkRepresentation[] GetValue() {
+        LinkRepresentation CreateLink(IObjectFacade no) => Flags.InlineCollectionItems ? CreateTableRowValueLink(no) : CreateValueLink(no);
+        return Collection.ToEnumerable().Select(CreateLink).ToArray();
     }
+
+    public override int? GetSize() => PropertyContext.Property.Count(PropertyContext.Target);
 }

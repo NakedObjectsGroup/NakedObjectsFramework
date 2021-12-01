@@ -7,14 +7,14 @@
 
 using NakedFramework.Architecture.Component;
 
-namespace NakedFunctions.Services {
-    public sealed class Alert : IAlert {
-        private readonly IMessageBroker messageBroker;
+namespace NakedFunctions.Services; 
 
-        public Alert(IMessageBroker messageBroker) => this.messageBroker = messageBroker;
+public sealed class Alert : IAlert {
+    private readonly IMessageBroker messageBroker;
 
-        public void WarnUser(string message) => messageBroker.AddWarning(message);
+    public Alert(IMessageBroker messageBroker) => this.messageBroker = messageBroker;
 
-        public void InformUser(string message) => messageBroker.AddMessage(message);
-    }
+    public void WarnUser(string message) => messageBroker.AddWarning(message);
+
+    public void InformUser(string message) => messageBroker.AddMessage(message);
 }

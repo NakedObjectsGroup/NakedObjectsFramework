@@ -12,22 +12,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.Individual")]
-    public class Individual {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int CustomerID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public int ContactID { get; set; }
+[Table("Sales.Individual")]
+public class Individual {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int CustomerID { get; set; }
 
-        [Column(TypeName = "xml")]
-        public string Demographics { get; set; }
+    public int ContactID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Column(TypeName = "xml")]
+    public string Demographics { get; set; }
 
-        public virtual Contact Contact { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Customer Customer { get; set; }
-    }
+    public virtual Contact Contact { get; set; }
+
+    public virtual Customer Customer { get; set; }
 }

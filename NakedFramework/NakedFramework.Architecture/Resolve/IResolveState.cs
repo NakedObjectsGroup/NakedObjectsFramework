@@ -8,10 +8,10 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.Resolve {
-    public interface IResolveState {
-        string Name { get; }
-        string Code { get; }
-        IResolveState Handle(IResolveEvent rEvent, INakedObjectAdapter owner, IResolveStateMachine rsm, ISession s);
-    }
+namespace NakedFramework.Architecture.Resolve; 
+
+public interface IResolveState {
+    string Name { get; }
+    string Code { get; }
+    IResolveState Handle(IResolveEvent rEvent, INakedObjectAdapter owner, IResolveStateMachine rsm, ISession s);
 }

@@ -9,16 +9,16 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class ChoiceRelType : ObjectRelType {
-        private readonly IMemberFacade member;
-        private readonly IActionParameterFacade parameter;
-        private ChoiceRelType(UriMtHelper helper) : base(RelValues.Choice, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public ChoiceRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) => member = property;
+public class ChoiceRelType : ObjectRelType {
+    private readonly IMemberFacade member;
+    private readonly IActionParameterFacade parameter;
+    private ChoiceRelType(UriMtHelper helper) : base(RelValues.Choice, helper) { }
 
-        public ChoiceRelType(IActionParameterFacade parameter, UriMtHelper helper) : this(helper) => this.parameter = parameter;
+    public ChoiceRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) => member = property;
 
-        public override string Name => $"{base.Name}{(parameter == null ? Helper.GetRelParametersFor(member) : Helper.GetRelParametersFor(parameter))}";
-    }
+    public ChoiceRelType(IActionParameterFacade parameter, UriMtHelper helper) : this(helper) => this.parameter = parameter;
+
+    public override string Name => $"{base.Name}{(parameter == null ? Helper.GetRelParametersFor(member) : Helper.GetRelParametersFor(parameter))}";
 }

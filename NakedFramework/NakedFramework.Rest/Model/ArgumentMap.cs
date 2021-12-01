@@ -9,11 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NakedFramework.Rest.Model {
-    [ModelBinder(BinderType = typeof(ArgumentMapBinder))]
-    public class ArgumentMap : Arguments {
-        public IDictionary<string, IValue> Map { get; set; }
+namespace NakedFramework.Rest.Model; 
 
-        public bool HasValue => Map.Any();
-    }
+[ModelBinder(BinderType = typeof(ArgumentMapBinder))]
+public class ArgumentMap : Arguments {
+    public IDictionary<string, IValue> Map { get; set; }
+
+    public bool HasValue => Map.Any();
 }

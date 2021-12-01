@@ -9,16 +9,16 @@ using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.SpecImmutable {
-    [Serializable]
-    public sealed class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {
-        public ObjectSpecImmutable(Type type, bool isRecognized) : base(type, isRecognized) { }
+namespace NakedFramework.Metamodel.SpecImmutable; 
 
-        #region ISerializable
+[Serializable]
+public sealed class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {
+    public ObjectSpecImmutable(Type type, bool isRecognized) : base(type, isRecognized) { }
 
-        // The special constructor is used to deserialize values. 
-        public ObjectSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    #region ISerializable
 
-        #endregion
-    }
+    // The special constructor is used to deserialize values. 
+    public ObjectSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
+    #endregion
 }

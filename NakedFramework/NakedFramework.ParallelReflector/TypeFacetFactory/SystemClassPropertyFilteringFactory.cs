@@ -12,21 +12,21 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    /// <summary>
-    ///     This factory filters out properties on system types. So for example 'Length' will not show up when displaying a
-    ///     string.
-    /// </summary>
-    public sealed class SystemClassPropertyFilteringFactory : SystemTypeFacetFactoryProcessor, IPropertyFilteringFacetFactory {
-        public SystemClassPropertyFilteringFactory(IFacetFactoryOrder<SystemClassPropertyFilteringFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties) { }
+namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
 
-        #region IPropertyFilteringFacetFactory Members
+/// <summary>
+///     This factory filters out properties on system types. So for example 'Length' will not show up when displaying a
+///     string.
+/// </summary>
+public sealed class SystemClassPropertyFilteringFactory : SystemTypeFacetFactoryProcessor, IPropertyFilteringFacetFactory {
+    public SystemClassPropertyFilteringFactory(IFacetFactoryOrder<SystemClassPropertyFilteringFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
-        public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(property.DeclaringType);
+    #region IPropertyFilteringFacetFactory Members
 
-        #endregion
-    }
+    public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(property.DeclaringType);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

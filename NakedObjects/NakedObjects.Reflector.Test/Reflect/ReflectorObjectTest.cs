@@ -15,77 +15,77 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 
-namespace NakedObjects.Reflector.Test.Reflect {
-    public class TestDomainObject {
-        public void Action(DateTime? test) { }
-    }
+namespace NakedObjects.Reflector.Test.Reflect; 
 
-    [TestClass]
-    public class ReflectorObjectTest : AbstractReflectorTest {
-        protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
-            var objectReflector = reflector as ObjectReflector;
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            (_, metamodel) = reflector.LoadSpecification(typeof(TestDomainObject), metamodel);
-            return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(TestDomainObject), metamodel);
-        }
-
-        [TestMethod]
-        public void TestCollectionFacet() {
-            var facet = Specification.GetFacet(typeof(ICollectionFacet));
-            Assert.IsNull(facet);
-        }
-
-        [TestMethod]
-        public void TestDescriptionFaced() {
-            var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
-            Assert.IsNotNull(facet);
-        }
-
-        [TestMethod]
-        public void TestFacets() {
-            Assert.AreEqual(22, Specification.FacetTypes.Length);
-        }
-
-        [TestMethod]
-        public void TestName() {
-            Assert.AreEqual(typeof(TestDomainObject).FullName, Specification.FullName);
-        }
-
-        [TestMethod]
-        public void TestNamedFaced() {
-            var facet = Specification.GetFacet(typeof(INamedFacet));
-            Assert.IsNotNull(facet);
-        }
-
-        [TestMethod]
-        public void TestNoCollectionFacet() {
-            var facet = Specification.GetFacet(typeof(ICollectionFacet));
-            Assert.IsNull(facet);
-        }
-
-        [TestMethod]
-        public void TestNoTypeOfFacet() {
-            var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
-            Assert.IsNull(facet);
-        }
-
-        [TestMethod]
-        public void TestPluralFaced() {
-            var facet = Specification.GetFacet(typeof(IPluralFacet));
-            Assert.IsNotNull(facet);
-        }
-
-        [TestMethod]
-        public void TestType() {
-            Assert.IsTrue(Specification.IsObject);
-        }
-
-        [TestMethod]
-        public void TestTypeOfFacet() {
-            var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
-            Assert.IsNull(facet);
-        }
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+public class TestDomainObject {
+    public void Action(DateTime? test) { }
 }
+
+[TestClass]
+public class ReflectorObjectTest : AbstractReflectorTest {
+    protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
+        var objectReflector = reflector as ObjectReflector;
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        (_, metamodel) = reflector.LoadSpecification(typeof(TestDomainObject), metamodel);
+        return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(TestDomainObject), metamodel);
+    }
+
+    [TestMethod]
+    public void TestCollectionFacet() {
+        var facet = Specification.GetFacet(typeof(ICollectionFacet));
+        Assert.IsNull(facet);
+    }
+
+    [TestMethod]
+    public void TestDescriptionFaced() {
+        var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
+        Assert.IsNotNull(facet);
+    }
+
+    [TestMethod]
+    public void TestFacets() {
+        Assert.AreEqual(22, Specification.FacetTypes.Length);
+    }
+
+    [TestMethod]
+    public void TestName() {
+        Assert.AreEqual(typeof(TestDomainObject).FullName, Specification.FullName);
+    }
+
+    [TestMethod]
+    public void TestNamedFaced() {
+        var facet = Specification.GetFacet(typeof(INamedFacet));
+        Assert.IsNotNull(facet);
+    }
+
+    [TestMethod]
+    public void TestNoCollectionFacet() {
+        var facet = Specification.GetFacet(typeof(ICollectionFacet));
+        Assert.IsNull(facet);
+    }
+
+    [TestMethod]
+    public void TestNoTypeOfFacet() {
+        var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
+        Assert.IsNull(facet);
+    }
+
+    [TestMethod]
+    public void TestPluralFaced() {
+        var facet = Specification.GetFacet(typeof(IPluralFacet));
+        Assert.IsNotNull(facet);
+    }
+
+    [TestMethod]
+    public void TestType() {
+        Assert.IsTrue(Specification.IsObject);
+    }
+
+    [TestMethod]
+    public void TestTypeOfFacet() {
+        var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
+        Assert.IsNull(facet);
+    }
+}
+
+// Copyright (c) Naked Objects Group Ltd.

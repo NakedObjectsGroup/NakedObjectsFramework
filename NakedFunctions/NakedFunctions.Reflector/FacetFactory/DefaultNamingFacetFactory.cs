@@ -19,31 +19,31 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class DefaultNamingFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<DefaultNamingFacetFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public DefaultNamingFacetFactory(IFacetFactoryOrder<DefaultNamingFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
-            logger = loggerFactory.CreateLogger<DefaultNamingFacetFactory>();
+public sealed class DefaultNamingFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<DefaultNamingFacetFactory> logger;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var facets = new List<IFacet>();
-            var namedFacet = specification.GetFacet<INamedFacet>();
-            if (namedFacet is null) {
-                namedFacet = new NamedFacetInferred(type.Name, specification);
-                facets.Add(namedFacet);
-            }
+    public DefaultNamingFacetFactory(IFacetFactoryOrder<DefaultNamingFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+        logger = loggerFactory.CreateLogger<DefaultNamingFacetFactory>();
 
-            var pluralFacet = specification.GetFacet<IPluralFacet>();
-            if (pluralFacet is null) {
-                var pluralName = NameUtils.PluralName(namedFacet.NaturalName);
-                pluralFacet = new PluralFacetInferred(pluralName, specification);
-                facets.Add(pluralFacet);
-            }
-
-            FacetUtils.AddFacets(facets);
-            return metamodel;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var facets = new List<IFacet>();
+        var namedFacet = specification.GetFacet<INamedFacet>();
+        if (namedFacet is null) {
+            namedFacet = new NamedFacetInferred(type.Name, specification);
+            facets.Add(namedFacet);
         }
+
+        var pluralFacet = specification.GetFacet<IPluralFacet>();
+        if (pluralFacet is null) {
+            var pluralName = NameUtils.PluralName(namedFacet.NaturalName);
+            pluralFacet = new PluralFacetInferred(pluralName, specification);
+            facets.Add(pluralFacet);
+        }
+
+        FacetUtils.AddFacets(facets);
+        return metamodel;
     }
 }

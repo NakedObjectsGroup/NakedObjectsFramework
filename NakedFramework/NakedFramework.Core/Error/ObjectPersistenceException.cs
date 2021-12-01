@@ -7,14 +7,14 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    public abstract class ObjectPersistenceException : NakedObjectApplicationException {
-        protected ObjectPersistenceException(string message)
-            : base(message) { }
+namespace NakedFramework.Core.Error; 
 
-        protected ObjectPersistenceException(string message, Exception cause)
-            : base(message, cause) { }
-    }
+public abstract class ObjectPersistenceException : NakedObjectApplicationException {
+    protected ObjectPersistenceException(string message)
+        : base(message) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected ObjectPersistenceException(string message, Exception cause)
+        : base(message, cause) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

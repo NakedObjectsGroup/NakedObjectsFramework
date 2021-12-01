@@ -19,96 +19,96 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Utils {
-    public static class FacetUtils {
-        public static string[] SplitOnComma(string toSplit) {
-            if (string.IsNullOrEmpty(toSplit)) {
-                return Array.Empty<string>();
-            }
+namespace NakedFramework.Metamodel.Utils; 
 
-            return toSplit.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+public static class FacetUtils {
+    public static string[] SplitOnComma(string toSplit) {
+        if (string.IsNullOrEmpty(toSplit)) {
+            return Array.Empty<string>();
         }
 
-        public static bool IsAllowed(ISession session, string[] roles, string[] users) =>
-            roles.Any(role => session.Principal.IsInRole(role)) ||
-            users.Any(user => session.Principal.Identity?.Name == user);
+        return toSplit.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+    }
 
-        /// <summary>
-        ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
-        /// </summary>
-        public static void AddFacet(IFacet facet) => ((ISpecificationBuilder) facet?.Specification)?.AddFacet(facet);
+    public static bool IsAllowed(ISession session, string[] roles, string[] users) =>
+        roles.Any(role => session.Principal.IsInRole(role)) ||
+        users.Any(user => session.Principal.Identity?.Name == user);
 
-        /// <summary>
-        ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
-        /// </summary>
-        public static void AddFacets(IEnumerable<IFacet> facetList) => facetList.ForEach(AddFacet);
+    /// <summary>
+    ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
+    /// </summary>
+    public static void AddFacet(IFacet facet) => ((ISpecificationBuilder) facet?.Specification)?.AddFacet(facet);
 
-        public static INakedObjectAdapter[] MatchParameters(string[] parameterNames, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
-            INakedObjectAdapter GetValue(string name) =>
-                parameterNameValues?.ContainsKey(name) == true
-                    ? parameterNameValues[name]
-                    : null;
+    /// <summary>
+    ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
+    /// </summary>
+    public static void AddFacets(IEnumerable<IFacet> facetList) => facetList.ForEach(AddFacet);
 
-            return parameterNames.Select(GetValue).ToArray();
-        }
+    public static INakedObjectAdapter[] MatchParameters(string[] parameterNames, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
+        INakedObjectAdapter GetValue(string name) =>
+            parameterNameValues?.ContainsKey(name) == true
+                ? parameterNameValues[name]
+                : null;
 
-        public static bool IsNotANoopFacet(IFacet facet) => facet is {IsNoOp: false};
+        return parameterNames.Select(GetValue).ToArray();
+    }
 
-        public static bool IsTuple(Type type) => type.GetInterfaces().Any(i => i == typeof(ITuple));
+    public static bool IsNotANoopFacet(IFacet facet) => facet is {IsNoOp: false};
 
-        public static void ErrorOnDuplicates(this IEnumerable<ActionHolder> actions) {
-            var names = actions.Select(s => s.Name).ToArray();
-            var distinctNames = names.Distinct().ToArray();
+    public static bool IsTuple(Type type) => type.GetInterfaces().Any(i => i == typeof(ITuple));
 
-            if (names.Length != distinctNames.Length) {
-                var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
-                var errors = new List<string>();
+    public static void ErrorOnDuplicates(this IEnumerable<ActionHolder> actions) {
+        var names = actions.Select(s => s.Name).ToArray();
+        var distinctNames = names.Distinct().ToArray();
 
-                foreach (var name in duplicates) {
-                    var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
-                    var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
-                    error += ": actions on and/or contributed to a menu or object must have unique names.";
-                    errors.Add(error);
-                }
+        if (names.Length != distinctNames.Length) {
+            var duplicates = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key);
+            var errors = new List<string>();
 
-                throw new ReflectionException(string.Join(", ", errors));
+            foreach (var name in duplicates) {
+                var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
+                var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
+                error += ": actions on and/or contributed to a menu or object must have unique names.";
+                errors.Add(error);
             }
+
+            throw new ReflectionException(string.Join(", ", errors));
         }
+    }
 
-        public record ActionHolder {
-            private readonly object wrapped;
+    public record ActionHolder {
+        private readonly object wrapped;
 
-            public ActionHolder(IActionSpecImmutable actionSpecImmutable) => wrapped = actionSpecImmutable;
+        public ActionHolder(IActionSpecImmutable actionSpecImmutable) => wrapped = actionSpecImmutable;
 
-            public ActionHolder(IAssociationSpecImmutable associationSpecImmutable) => wrapped = associationSpecImmutable;
+        public ActionHolder(IAssociationSpecImmutable associationSpecImmutable) => wrapped = associationSpecImmutable;
 
-            public ActionHolder(IMenuActionImmutable menuActionImmutable) => wrapped = menuActionImmutable;
+        public ActionHolder(IMenuActionImmutable menuActionImmutable) => wrapped = menuActionImmutable;
 
-            public string Name => wrapped switch {
-                IActionSpecImmutable action => action.Identifier.MemberName,
-                IAssociationSpecImmutable association => association.Identifier.MemberName,
-                IMenuActionImmutable menu => menu.Action.Identifier.MemberName,
-                _ => ""
-            };
+        public string Name => wrapped switch {
+            IActionSpecImmutable action => action.Identifier.MemberName,
+            IAssociationSpecImmutable association => association.Identifier.MemberName,
+            IMenuActionImmutable menu => menu.Action.Identifier.MemberName,
+            _ => ""
+        };
 
-            public ITypeSpecImmutable OwnerSpec => wrapped switch {
-                IActionSpecImmutable action => action.OwnerSpec,
-                IAssociationSpecImmutable association => association.OwnerSpec,
-                IMenuActionImmutable menu => menu.Action.OwnerSpec,
-                _ => null
-            };
+        public ITypeSpecImmutable OwnerSpec => wrapped switch {
+            IActionSpecImmutable action => action.OwnerSpec,
+            IAssociationSpecImmutable association => association.OwnerSpec,
+            IMenuActionImmutable menu => menu.Action.OwnerSpec,
+            _ => null
+        };
+    }
+
+    public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action) {
+        var integrationFacet = specification.GetFacet<IIntegrationFacet>();
+
+        if (integrationFacet is null) {
+            integrationFacet = new IntegrationFacet(specification, action);
+            AddFacet(integrationFacet);
         }
-
-        public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action) {
-            var integrationFacet = specification.GetFacet<IIntegrationFacet>();
-
-            if (integrationFacet is null) {
-                integrationFacet = new IntegrationFacet(specification, action);
-                AddFacet(integrationFacet);
-            }
-            else {
-                integrationFacet.AddAction(action);
-            }
+        else {
+            integrationFacet.AddAction(action);
         }
     }
 }

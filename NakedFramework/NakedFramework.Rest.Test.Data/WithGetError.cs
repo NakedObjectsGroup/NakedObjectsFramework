@@ -14,53 +14,53 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class WithGetError {
-        private readonly IList<MostSimple> anErrorCollection = new List<MostSimple>();
-        public IDomainObjectContainer Container { set; protected get; }
+namespace RestfulObjects.Test.Data; 
 
-        public static bool ThrowErrors { get; set; }
+public class WithGetError {
+    private readonly IList<MostSimple> anErrorCollection = new List<MostSimple>();
+    public IDomainObjectContainer Container { set; protected get; }
 
-        [Key]
-        [Title]
-        public virtual int Id { get; set; }
+    public static bool ThrowErrors { get; set; }
 
-        public virtual int AnErrorValue {
-            get {
-                if (Container != null && ThrowErrors) {
-                    // so no errors on startup 
-                    throw new DomainException("An error exception");
-                }
+    [Key]
+    [Title]
+    public virtual int Id { get; set; }
 
-                return 0;
+    public virtual int AnErrorValue {
+        get {
+            if (Container != null && ThrowErrors) {
+                // so no errors on startup 
+                throw new DomainException("An error exception");
             }
-            set { }
+
+            return 0;
         }
-
-        public virtual MostSimple AnErrorReference {
-            get {
-                if (Container != null && ThrowErrors) {
-                    // so no errors on startup 
-                    throw new DomainException("An error exception");
-                }
-
-                return Container == null ? null : Container.Instances<MostSimple>().FirstOrDefault();
-            }
-            set { }
-        }
-
-        public virtual ICollection<MostSimple> AnErrorCollection {
-            get {
-                if (Container != null && ThrowErrors) {
-                    // so no errors on startup 
-                    throw new DomainException("An error exception");
-                }
-
-                return anErrorCollection;
-            }
-            set { }
-        }
-
-        public virtual int AnError() => throw new DomainException("An error exception");
+        set { }
     }
+
+    public virtual MostSimple AnErrorReference {
+        get {
+            if (Container != null && ThrowErrors) {
+                // so no errors on startup 
+                throw new DomainException("An error exception");
+            }
+
+            return Container == null ? null : Container.Instances<MostSimple>().FirstOrDefault();
+        }
+        set { }
+    }
+
+    public virtual ICollection<MostSimple> AnErrorCollection {
+        get {
+            if (Container != null && ThrowErrors) {
+                // so no errors on startup 
+                throw new DomainException("An error exception");
+            }
+
+            return anErrorCollection;
+        }
+        set { }
+    }
+
+    public virtual int AnError() => throw new DomainException("An error exception");
 }

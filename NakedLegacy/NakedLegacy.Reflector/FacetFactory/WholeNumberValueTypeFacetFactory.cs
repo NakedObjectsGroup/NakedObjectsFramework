@@ -15,18 +15,18 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedLegacy.Reflector.SemanticsProvider;
 
-namespace NakedLegacy.Reflector.FacetFactory {
-    public sealed class WholeNumberValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public WholeNumberValueTypeFacetFactory(IFacetFactoryOrder<IntValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+namespace NakedLegacy.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!WholeNumberValueSemanticsProvider.IsAdaptedType(type)) {
-                return metamodel;
-            }
+public sealed class WholeNumberValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public WholeNumberValueTypeFacetFactory(IFacetFactoryOrder<IntValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(WholeNumberValueSemanticsProvider.AdaptedType, metamodel);
-            AddValueFacets(new WholeNumberValueSemanticsProvider(oSpec, specification), specification);
-            return mm;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!WholeNumberValueSemanticsProvider.IsAdaptedType(type)) {
+            return metamodel;
         }
+
+        var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(WholeNumberValueSemanticsProvider.AdaptedType, metamodel);
+        AddValueFacets(new WholeNumberValueSemanticsProvider(oSpec, specification), specification);
+        return mm;
     }
 }

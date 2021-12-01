@@ -12,21 +12,21 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    /// <summary>
-    ///     This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a
-    ///     string.
-    /// </summary>
-    public sealed class SystemClassMethodFilteringFactory : SystemTypeFacetFactoryProcessor, IMethodFilteringFacetFactory {
-        public SystemClassMethodFilteringFactory(IFacetFactoryOrder<SystemClassMethodFilteringFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) { }
+namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
 
-        #region IMethodFilteringFacetFactory Members
+/// <summary>
+///     This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a
+///     string.
+/// </summary>
+public sealed class SystemClassMethodFilteringFactory : SystemTypeFacetFactoryProcessor, IMethodFilteringFacetFactory {
+    public SystemClassMethodFilteringFactory(IFacetFactoryOrder<SystemClassMethodFilteringFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(method.DeclaringType);
+    #region IMethodFilteringFacetFactory Members
 
-        #endregion
-    }
+    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(method.DeclaringType);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

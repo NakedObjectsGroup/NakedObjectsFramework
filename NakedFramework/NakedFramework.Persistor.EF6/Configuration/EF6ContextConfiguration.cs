@@ -9,16 +9,16 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 
-namespace NakedFramework.Persistor.EF6.Configuration {
-    public class EF6ContextConfiguration {
-        internal bool Validated { get; set; }
-        public MergeOption DefaultMergeOption { get; set; }
-        public Action<ObjectContext> CustomConfig { get; set; }
+namespace NakedFramework.Persistor.EF6.Configuration; 
 
-        public Func<DbContext> DbContext { get; set; }
+public class EF6ContextConfiguration {
+    internal bool Validated { get; set; }
+    public MergeOption DefaultMergeOption { get; set; }
+    public Action<ObjectContext> CustomConfig { get; set; }
 
-        public Func<Type[]> PreCachedTypes { get; set; } = Array.Empty<Type>;
+    public Func<DbContext> DbContext { get; set; }
 
-        public Func<Type[]> NotPersistedTypes { get; set; } = Array.Empty<Type>;
-    }
+    public Func<Type[]> PreCachedTypes { get; set; } = Array.Empty<Type>;
+
+    public Func<Type[]> NotPersistedTypes { get; set; } = Array.Empty<Type>;
 }

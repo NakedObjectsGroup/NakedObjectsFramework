@@ -10,46 +10,46 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects {
-    internal class TestMenu : ITestMenu {
-        private readonly ITestObjectFactory factory;
-        private readonly IMenuImmutable menu;
-        private readonly ITestHasActions owningObject; //May be null if it is a MainMenu
+namespace NakedFramework.Test.TestObjects; 
 
-        public TestMenu(IMenuImmutable menu, ITestObjectFactory factory, ITestHasActions owningObject) {
-            this.menu = menu;
-            this.factory = factory;
-            this.owningObject = owningObject;
-        }
+internal class TestMenu : ITestMenu {
+    private readonly ITestObjectFactory factory;
+    private readonly IMenuImmutable menu;
+    private readonly ITestHasActions owningObject; //May be null if it is a MainMenu
 
-        #region ITestMenu Members
-
-        public ITestMenu AssertNameEquals(string name) {
-            Assert.AreEqual(name, menu.Name);
-            return this;
-        }
-
-        public ITestMenu AssertItemCountIs(int count) {
-            Assert.AreEqual(count, menu.MenuItems.Count);
-            return this;
-        }
-
-        public ITestAction GetAction(string name) => GetItem(name).AsAction();
-
-        public ITestMenu GetSubMenu(string name) => GetItem(name).AsSubMenu();
-
-        public ITestMenuItem GetItem(string name) {
-            var item = menu.MenuItems.FirstOrDefault(i => i.Name == name);
-            Assert.IsNotNull(item, "No menu item with name: " + name);
-            return factory.CreateTestMenuItem(item, owningObject);
-        }
-
-        public ITestMenuItem[] AllItems() {
-            return menu.MenuItems.Select(mi => factory.CreateTestMenuItem(mi, owningObject)).ToArray();
-        }
-
-        #endregion
+    public TestMenu(IMenuImmutable menu, ITestObjectFactory factory, ITestHasActions owningObject) {
+        this.menu = menu;
+        this.factory = factory;
+        this.owningObject = owningObject;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region ITestMenu Members
+
+    public ITestMenu AssertNameEquals(string name) {
+        Assert.AreEqual(name, menu.Name);
+        return this;
+    }
+
+    public ITestMenu AssertItemCountIs(int count) {
+        Assert.AreEqual(count, menu.MenuItems.Count);
+        return this;
+    }
+
+    public ITestAction GetAction(string name) => GetItem(name).AsAction();
+
+    public ITestMenu GetSubMenu(string name) => GetItem(name).AsSubMenu();
+
+    public ITestMenuItem GetItem(string name) {
+        var item = menu.MenuItems.FirstOrDefault(i => i.Name == name);
+        Assert.IsNotNull(item, "No menu item with name: " + name);
+        return factory.CreateTestMenuItem(item, owningObject);
+    }
+
+    public ITestMenuItem[] AllItems() {
+        return menu.MenuItems.Select(mi => factory.CreateTestMenuItem(mi, owningObject)).ToArray();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

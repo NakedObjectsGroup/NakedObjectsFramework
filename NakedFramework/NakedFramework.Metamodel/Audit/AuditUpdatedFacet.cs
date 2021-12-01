@@ -11,24 +11,24 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Audit {
-    [Serializable]
-    public sealed class AuditUpdatedFacet : CallbackFacetAbstract, IUpdatedCallbackFacet
-    {
-        private readonly IAuditManager manager;
-        private readonly IUpdatedCallbackFacet underlyingFacet;
+namespace NakedFramework.Metamodel.Audit; 
 
-        public static Type Type => typeof(IUpdatedCallbackFacet);
+[Serializable]
+public sealed class AuditUpdatedFacet : CallbackFacetAbstract, IUpdatedCallbackFacet
+{
+    private readonly IAuditManager manager;
+    private readonly IUpdatedCallbackFacet underlyingFacet;
 
-        public AuditUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IAuditManager auditManager)
-            : base(Type, underlyingFacet.Specification) {
-            this.underlyingFacet = underlyingFacet;
-            manager = auditManager;
-        }
+    public static Type Type => typeof(IUpdatedCallbackFacet);
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            manager.Updated(nakedObjectAdapter, framework);
-            underlyingFacet.Invoke(nakedObjectAdapter, framework);
-        }
+    public AuditUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IAuditManager auditManager)
+        : base(Type, underlyingFacet.Specification) {
+        this.underlyingFacet = underlyingFacet;
+        manager = auditManager;
+    }
+
+    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        manager.Updated(nakedObjectAdapter, framework);
+        underlyingFacet.Invoke(nakedObjectAdapter, framework);
     }
 }

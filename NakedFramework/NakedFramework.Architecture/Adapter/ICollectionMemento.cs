@@ -7,15 +7,15 @@
 
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Adapter {
-    public interface ICollectionMemento : IOid {
-        INakedObjectAdapter Target { get; }
-        IActionSpec Action { get; }
-        INakedObjectAdapter[] Parameters { get; }
-        bool IsPaged { get; set; }
-        bool IsNotQueryable { get; set; }
-        object[] SelectedObjects { get; }
-        INakedObjectAdapter RecoverCollection();
-        ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged);
-    }
+namespace NakedFramework.Architecture.Adapter; 
+
+public interface ICollectionMemento : IOid {
+    INakedObjectAdapter Target { get; }
+    IActionSpec Action { get; }
+    INakedObjectAdapter[] Parameters { get; }
+    bool IsPaged { get; set; }
+    bool IsNotQueryable { get; set; }
+    object[] SelectedObjects { get; }
+    INakedObjectAdapter RecoverCollection();
+    ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged);
 }

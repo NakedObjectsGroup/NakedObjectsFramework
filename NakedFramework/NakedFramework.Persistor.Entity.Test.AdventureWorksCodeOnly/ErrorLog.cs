@@ -12,30 +12,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("ErrorLog")]
-    public class ErrorLog {
-        public int ErrorLogID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public DateTime ErrorTime { get; set; }
+[Table("ErrorLog")]
+public class ErrorLog {
+    public int ErrorLogID { get; set; }
 
-        [Required]
-        [StringLength(128)]
-        public string UserName { get; set; }
+    public DateTime ErrorTime { get; set; }
 
-        public int ErrorNumber { get; set; }
+    [Required]
+    [StringLength(128)]
+    public string UserName { get; set; }
 
-        public int? ErrorSeverity { get; set; }
+    public int ErrorNumber { get; set; }
 
-        public int? ErrorState { get; set; }
+    public int? ErrorSeverity { get; set; }
 
-        [StringLength(126)]
-        public string ErrorProcedure { get; set; }
+    public int? ErrorState { get; set; }
 
-        public int? ErrorLine { get; set; }
+    [StringLength(126)]
+    public string ErrorProcedure { get; set; }
 
-        [Required]
-        [StringLength(4000)]
-        public string ErrorMessage { get; set; }
-    }
+    public int? ErrorLine { get; set; }
+
+    [Required]
+    [StringLength(4000)]
+    public string ErrorMessage { get; set; }
 }

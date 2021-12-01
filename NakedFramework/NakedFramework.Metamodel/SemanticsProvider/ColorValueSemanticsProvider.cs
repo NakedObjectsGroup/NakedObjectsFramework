@@ -14,65 +14,65 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 4;
-        private static readonly Color DefaultValueConst = Color.Black;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public ColorValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 4;
+    private static readonly Color DefaultValueConst = Color.Black;
 
-        public static Type Type => typeof(IColorValueFacet);
+    public ColorValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(Color);
+    public static Type Type => typeof(IColorValueFacet);
 
-        #region IColorValueFacet Members
+    public static Type AdaptedType => typeof(Color);
 
-        public int ColorValue(INakedObjectAdapter nakedObjectAdapter) =>
-            nakedObjectAdapter switch {
-                null => 0,
-                _ => ((Color) nakedObjectAdapter.Object).ToArgb()
-            };
+    #region IColorValueFacet Members
 
-        #endregion
+    public int ColorValue(INakedObjectAdapter nakedObjectAdapter) =>
+        nakedObjectAdapter switch {
+            null => 0,
+            _ => ((Color) nakedObjectAdapter.Object).ToArgb()
+        };
 
-        public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
+    #endregion
 
-        public static bool IsAdaptedType(Type type) => type == typeof(Color);
+    public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
-        protected override Color DoParse(string entry) {
-            try {
-                int argb;
-                if (entry.StartsWith("0x")) {
-                    argb = int.Parse(entry[2..], NumberStyles.AllowHexSpecifier);
-                }
-                else {
-                    argb = entry.StartsWith("#") ? int.Parse(entry[1..], NumberStyles.AllowHexSpecifier) : int.Parse(entry);
-                }
+    public static bool IsAdaptedType(Type type) => type == typeof(Color);
 
-                return Color.FromArgb(argb);
+    protected override Color DoParse(string entry) {
+        try {
+            int argb;
+            if (entry.StartsWith("0x")) {
+                argb = int.Parse(entry[2..], NumberStyles.AllowHexSpecifier);
             }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
+            else {
+                argb = entry.StartsWith("#") ? int.Parse(entry[1..], NumberStyles.AllowHexSpecifier) : int.Parse(entry);
             }
-            catch (OverflowException) {
-                throw new InvalidEntryException(string.Format(NakedObjects.Resources.NakedObjects.OutOfRange, entry, int.MinValue, int.MaxValue));
-            }
+
+            return Color.FromArgb(argb);
         }
-
-        protected override Color DoParseInvariant(string entry) => Color.FromArgb(int.Parse(entry, CultureInfo.InvariantCulture));
-
-        protected override string GetInvariantString(Color obj) => obj.ToArgb().ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, Color value) => value.ToString();
-
-        protected override string DoEncode(Color obj) => obj.ToArgb().ToString(CultureInfo.InvariantCulture);
-
-        protected override Color DoRestore(string data) => Color.FromArgb(int.Parse(data, CultureInfo.InvariantCulture));
-
-        public override string ToString() => "ColorAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(string.Format(NakedObjects.Resources.NakedObjects.OutOfRange, entry, int.MinValue, int.MaxValue));
+        }
     }
+
+    protected override Color DoParseInvariant(string entry) => Color.FromArgb(int.Parse(entry, CultureInfo.InvariantCulture));
+
+    protected override string GetInvariantString(Color obj) => obj.ToArgb().ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, Color value) => value.ToString();
+
+    protected override string DoEncode(Color obj) => obj.ToArgb().ToString(CultureInfo.InvariantCulture);
+
+    protected override Color DoRestore(string data) => Color.FromArgb(int.Parse(data, CultureInfo.InvariantCulture));
+
+    public override string ToString() => "ColorAdapter: ";
 }

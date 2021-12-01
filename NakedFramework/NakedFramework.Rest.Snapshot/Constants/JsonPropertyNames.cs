@@ -7,91 +7,91 @@
 
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Constants {
-    public class JsonPropertyNames {
-        public const string Arguments = "arguments";
-        public const string Choices = "choices";
-        public const string Default = "default";
-        public const string Description = "description";
-        public const string DisabledReason = "disabledReason";
-        public const string DomainType = "domainType";
-        public const string ElementType = "elementType";
-        public const string Extensions = "extensions";
-        public const string Format = "format";
-        public const string FriendlyName = "friendlyName";
-        public const string HasChoices = "hasChoices";
-        public const string HasParams = "hasParams";
-        public const string Href = "href";
-        public const string Id = "id";
-        public const string ImplVersion = "implVersion";
-        public const string InstanceId = "instanceId";
-        public const string InvalidReason = "invalidReason";
-        public const string IsService = "isService";
-        public const string Links = "links";
-        public const string MaxLength = "maxLength";
-        public const string MinLength = "minLength";
-        public const string MemberOrder = "memberOrder";
-        public const string MemberType = "memberType";
-        public const string Members = "members";
-        public const string Message = "message";
-        public const string Method = "method";
-        public const string Name = "name";
-        public const string Number = "number";
-        public const string Optional = "optional";
-        public const string OptionalCapabilities = "optionalCapabilities";
-        public const string Parameters = "parameters";
-        public const string Pattern = "pattern";
-        public const string PluralName = "pluralName";
-        public const string Prompt = "prompt";
-        public const string Rel = "rel";
-        public const string Result = "result";
-        public const string ResultType = "resultType";
-        public const string ReturnType = "returnType";
-        public const string Roles = "roles";
-        public const string ServiceId = "serviceId";
-        public const string Size = "size";
-        public const string SpecVersion = "specVersion";
-        public const string StackTrace = "stackTrace";
-        public const string SubType = "subtype";
-        public const string SuperType = "supertype";
-        public const string Title = "title";
-        public const string Type = "type";
-        public const string UserName = "userName";
-        public const string Value = "value";
-        public const string XRoInvalidReason = "x-ro-invalidReason";
-        public const string XRoSearchTerm = RestControlFlags.SearchTermReserved;
+namespace NakedFramework.Rest.Snapshot.Constants; 
 
-        // custom 
-        public const string CustomMask = "x-ro-nof-mask";
-        public const string CustomChoices = "x-ro-nof-choices";
-        public const string PresentationHint = "x-ro-nof-presentationHint";
-        public const string InteractionMode = "x-ro-nof-interactionMode";
-        public const string PromptMembers = "x-ro-nof-members";
+public class JsonPropertyNames {
+    public const string Arguments = "arguments";
+    public const string Choices = "choices";
+    public const string Default = "default";
+    public const string Description = "description";
+    public const string DisabledReason = "disabledReason";
+    public const string DomainType = "domainType";
+    public const string ElementType = "elementType";
+    public const string Extensions = "extensions";
+    public const string Format = "format";
+    public const string FriendlyName = "friendlyName";
+    public const string HasChoices = "hasChoices";
+    public const string HasParams = "hasParams";
+    public const string Href = "href";
+    public const string Id = "id";
+    public const string ImplVersion = "implVersion";
+    public const string InstanceId = "instanceId";
+    public const string InvalidReason = "invalidReason";
+    public const string IsService = "isService";
+    public const string Links = "links";
+    public const string MaxLength = "maxLength";
+    public const string MinLength = "minLength";
+    public const string MemberOrder = "memberOrder";
+    public const string MemberType = "memberType";
+    public const string Members = "members";
+    public const string Message = "message";
+    public const string Method = "method";
+    public const string Name = "name";
+    public const string Number = "number";
+    public const string Optional = "optional";
+    public const string OptionalCapabilities = "optionalCapabilities";
+    public const string Parameters = "parameters";
+    public const string Pattern = "pattern";
+    public const string PluralName = "pluralName";
+    public const string Prompt = "prompt";
+    public const string Rel = "rel";
+    public const string Result = "result";
+    public const string ResultType = "resultType";
+    public const string ReturnType = "returnType";
+    public const string Roles = "roles";
+    public const string ServiceId = "serviceId";
+    public const string Size = "size";
+    public const string SpecVersion = "specVersion";
+    public const string StackTrace = "stackTrace";
+    public const string SubType = "subtype";
+    public const string SuperType = "supertype";
+    public const string Title = "title";
+    public const string Type = "type";
+    public const string UserName = "userName";
+    public const string Value = "value";
+    public const string XRoInvalidReason = "x-ro-invalidReason";
+    public const string XRoSearchTerm = RestControlFlags.SearchTermReserved;
 
-        public const string CustomTableViewTitle = "x-ro-nof-tableViewTitle";
-        public const string CustomTableViewColumns = "x-ro-nof-tableViewColumns";
-        public const string CustomMultipleLines = "x-ro-nof-multipleLines";
-        public const string CustomDataType = "x-ro-nof-dataType";
-        public const string CustomRange = "x-ro-nof-range";
-        public const string CustomNotNavigable = "x-ro-nof-notNavigable";
-        public const string CustomRenderEagerly = "x-ro-nof-renderEagerly";
-        public const string CustomMenuPath = "x-ro-nof-menuPath";
-        public const string CustomFindMenu = "x-ro-nof-findMenu";
-        public const string CustomCreateNew = "x-ro-nof-createNew";
-        public const string CustomPropertyGrouping = "x-ro-nof-propertyGrouping";
-        public const string CustomEditProperties = "x-ro-nof-editProperties";
-        public const string CustomFinderAction = "x-ro-nof-finderAction";
+    // custom 
+    public const string CustomMask = "x-ro-nof-mask";
+    public const string CustomChoices = "x-ro-nof-choices";
+    public const string PresentationHint = "x-ro-nof-presentationHint";
+    public const string InteractionMode = "x-ro-nof-interactionMode";
+    public const string PromptMembers = "x-ro-nof-members";
 
-        public const string CustomWarnings = "x-ro-nof-warnings";
-        public const string CustomMessages = "x-ro-nof-messages";
+    public const string CustomTableViewTitle = "x-ro-nof-tableViewTitle";
+    public const string CustomTableViewColumns = "x-ro-nof-tableViewColumns";
+    public const string CustomMultipleLines = "x-ro-nof-multipleLines";
+    public const string CustomDataType = "x-ro-nof-dataType";
+    public const string CustomRange = "x-ro-nof-range";
+    public const string CustomNotNavigable = "x-ro-nof-notNavigable";
+    public const string CustomRenderEagerly = "x-ro-nof-renderEagerly";
+    public const string CustomMenuPath = "x-ro-nof-menuPath";
+    public const string CustomFindMenu = "x-ro-nof-findMenu";
+    public const string CustomCreateNew = "x-ro-nof-createNew";
+    public const string CustomPropertyGrouping = "x-ro-nof-propertyGrouping";
+    public const string CustomEditProperties = "x-ro-nof-editProperties";
+    public const string CustomFinderAction = "x-ro-nof-finderAction";
 
-        // extensions
-        public const string MenuId = "menuId";
-        public const string Pagination = "pagination";
+    public const string CustomWarnings = "x-ro-nof-warnings";
+    public const string CustomMessages = "x-ro-nof-messages";
 
-        public const string Page = "page";
-        public const string PageSize = "pageSize";
-        public const string NumPages = "numPages";
-        public const string TotalCount = "totalCount";
-    }
+    // extensions
+    public const string MenuId = "menuId";
+    public const string Pagination = "pagination";
+
+    public const string Page = "page";
+    public const string PageSize = "pageSize";
+    public const string NumPages = "numPages";
+    public const string TotalCount = "totalCount";
 }

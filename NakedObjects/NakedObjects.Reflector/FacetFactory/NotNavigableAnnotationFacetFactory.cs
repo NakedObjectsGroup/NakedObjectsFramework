@@ -18,17 +18,17 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class NotNavigableAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public NotNavigableAnnotationFacetFactory(IFacetFactoryOrder<NotNavigableAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = property.GetCustomAttribute<NotNavigableAttribute>() ?? property.PropertyType.GetCustomAttribute<NotNavigableAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-            return metamodel;
-        }
+public sealed class NotNavigableAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public NotNavigableAnnotationFacetFactory(IFacetFactoryOrder<NotNavigableAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }
 
-        private static INotNavigableFacet Create(NotNavigableAttribute attribute, ISpecification holder) => attribute is null ? null : new NotNavigableFacet(holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = property.GetCustomAttribute<NotNavigableAttribute>() ?? property.PropertyType.GetCustomAttribute<NotNavigableAttribute>();
+        FacetUtils.AddFacet(Create(attribute, specification));
+        return metamodel;
     }
+
+    private static INotNavigableFacet Create(NotNavigableAttribute attribute, ISpecification holder) => attribute is null ? null : new NotNavigableFacet(holder);
 }

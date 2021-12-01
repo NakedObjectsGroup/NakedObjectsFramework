@@ -5,15 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Spec {
-    /// <summary>
-    ///     Base interface for <see cref="IOneToManyAssociationSpec" />.
-    /// </summary>
-    /// <para>
-    ///     Introduced for symmetry with <see cref="IOneToOneFeatureSpec" />
-    /// </para>
-    /// <para>
-    ///     Is also the route up to the <see cref="IFeatureSpec" /> superinterface.
-    /// </para>
-    public interface IOneToManyFeatureSpec : IFeatureSpec { }
-}
+namespace NakedFramework.Architecture.Spec; 
+
+/// <summary>
+///     Base interface for <see cref="IOneToManyAssociationSpec" />.
+/// </summary>
+/// <para>
+///     Introduced for symmetry with <see cref="IOneToOneFeatureSpec" />
+/// </para>
+/// <para>
+///     Is also the route up to the <see cref="IFeatureSpec" /> superinterface.
+/// </para>
+public interface IOneToManyFeatureSpec : IFeatureSpec { }

@@ -11,23 +11,23 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Spec {
-    public sealed class ServiceSpec : TypeSpec, IServiceSpec {
-        private IActionSpec[] contributedActions;
+namespace NakedFramework.Core.Spec; 
 
-        public ServiceSpec(SpecFactory memberFactory, IServiceSpecImmutable innerSpec, INakedFramework framework) :
-            base(memberFactory, innerSpec, framework) { }
+public sealed class ServiceSpec : TypeSpec, IServiceSpec {
+    private IActionSpec[] contributedActions;
 
-        private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedContributedActions);
+    public ServiceSpec(SpecFactory memberFactory, IServiceSpecImmutable innerSpec, INakedFramework framework) :
+        base(memberFactory, innerSpec, framework) { }
 
-        #region IServiceSpec Members
+    private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedContributedActions);
 
-        public override IActionSpec[] GetActions() => ObjectActions.Union(ContributedActions).ToArray();
+    #region IServiceSpec Members
 
-        #endregion
+    public override IActionSpec[] GetActions() => ObjectActions.Union(ContributedActions).ToArray();
 
-        protected override PersistableType GetPersistable() => PersistableType.ProgramPersistable;
-    }
+    #endregion
+
+    protected override PersistableType GetPersistable() => PersistableType.ProgramPersistable;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

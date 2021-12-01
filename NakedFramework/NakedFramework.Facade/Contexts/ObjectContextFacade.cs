@@ -7,19 +7,19 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts {
-    public class ObjectContextFacade : ContextFacade {
-        public bool Mutated { get; init; }
+namespace NakedFramework.Facade.Contexts; 
 
-        public (string serverName, string oid)? Redirected { get; init; }
+public class ObjectContextFacade : ContextFacade {
+    public bool Mutated { get; init; }
 
-        public override string Id => Target.Oid.ToString();
+    public (string serverName, string oid)? Redirected { get; init; }
 
-        public override ITypeFacade Specification => Target.Specification;
+    public override string Id => Target.Oid.ToString();
 
-        public override ITypeFacade ElementSpecification => Target.ElementSpecification;
+    public override ITypeFacade Specification => Target.Specification;
 
-        public PropertyContextFacade[] VisibleProperties { get; init; }
-        public ActionContextFacade[] VisibleActions { get; init; }
-    }
+    public override ITypeFacade ElementSpecification => Target.ElementSpecification;
+
+    public PropertyContextFacade[] VisibleProperties { get; init; }
+    public ActionContextFacade[] VisibleActions { get; init; }
 }

@@ -12,26 +12,26 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class TypeOfFacetDefaultToType : FacetAbstract, ITypeOfFacet {
-        private readonly IObjectSpecImmutable spec;
-        private readonly Type type;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public TypeOfFacetDefaultToType(ISpecification holder, Type type, IObjectSpecImmutable spec)
-            : base(Type, holder) {
-            this.type = type;
-            this.spec = spec;
-        }
+[Serializable]
+public sealed class TypeOfFacetDefaultToType : FacetAbstract, ITypeOfFacet {
+    private readonly IObjectSpecImmutable spec;
+    private readonly Type type;
 
-        public static Type Type => typeof(ITypeOfFacet);
-
-        #region ITypeOfFacet Members
-
-        public Type GetValue(INakedObjectAdapter collection) => type;
-
-        public IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => spec;
-
-        #endregion
+    public TypeOfFacetDefaultToType(ISpecification holder, Type type, IObjectSpecImmutable spec)
+        : base(Type, holder) {
+        this.type = type;
+        this.spec = spec;
     }
+
+    public static Type Type => typeof(ITypeOfFacet);
+
+    #region ITypeOfFacet Members
+
+    public Type GetValue(INakedObjectAdapter collection) => type;
+
+    public IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => spec;
+
+    #endregion
 }

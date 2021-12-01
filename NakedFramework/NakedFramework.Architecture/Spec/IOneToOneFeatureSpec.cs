@@ -8,36 +8,36 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec; 
+
+/// <summary>
+///     See <see cref="IOneToOneAssociationSpec" />/>
+/// </summary>
+public interface IOneToOneFeatureSpec : IFeatureSpec {
     /// <summary>
-    ///     See <see cref="IOneToOneAssociationSpec" />/>
+    ///     Whether there are any choices provided (eg <c>ChoicesXxx</c> supporting method) for the association
     /// </summary>
-    public interface IOneToOneFeatureSpec : IFeatureSpec {
-        /// <summary>
-        ///     Whether there are any choices provided (eg <c>ChoicesXxx</c> supporting method) for the association
-        /// </summary>
-        bool IsChoicesEnabled { get; }
+    bool IsChoicesEnabled { get; }
 
-        /// <summary>
-        ///     Whether there are any autocompletions provided (eg <c>AutoCompleteXxx</c> supporting method) for the association
-        /// </summary>
-        bool IsAutoCompleteEnabled { get; }
+    /// <summary>
+    ///     Whether there are any autocompletions provided (eg <c>AutoCompleteXxx</c> supporting method) for the association
+    /// </summary>
+    bool IsAutoCompleteEnabled { get; }
 
-        bool IsFindMenuEnabled { get; }
+    bool IsFindMenuEnabled { get; }
 
-        /// <summary>
-        ///     Returns a list of possible references/values for this field, which the user can choose from
-        /// </summary>
-        INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
+    /// <summary>
+    ///     Returns a list of possible references/values for this field, which the user can choose from
+    /// </summary>
+    INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
 
-        /// <summary>
-        ///     Returns a list of possible autocompletions for this field, which the user can choose from
-        /// </summary>
-        INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
+    /// <summary>
+    ///     Returns a list of possible autocompletions for this field, which the user can choose from
+    /// </summary>
+    INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
 
-        /// <summary>
-        ///     Returns a parameter names and types if the field supports conditional choices
-        /// </summary>
-        (string, IObjectSpec)[] GetChoicesParameters();
-    }
+    /// <summary>
+    ///     Returns a parameter names and types if the field supports conditional choices
+    /// </summary>
+    (string, IObjectSpec)[] GetChoicesParameters();
 }

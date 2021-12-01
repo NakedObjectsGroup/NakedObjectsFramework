@@ -8,27 +8,27 @@
 using System;
 using NakedLegacy.Reflector.FacetFactory;
 
-namespace NakedLegacy.Reflector.Reflect {
-    public static class LegacyObjectFacetFactories {
-        public static Type[] StandardFacetFactories() =>
-            new[] {
-                typeof(FallbackFacetFactory),
-                typeof(TypeMarkerFacetFactory),
-                typeof(OptionalDefaultFacetFactory),
-                typeof(LegacyCollectionFieldMethodsFacetFactory),
-                typeof(InternalCollectionFacetFactory),
-                typeof(DateOnlyFacetFactory),
-                typeof(LegacyFacetFactory),
-                typeof(TitleMethodFacetFactory),
-                typeof(LegacyMenuFacetFactory)
-            };
+namespace NakedLegacy.Reflector.Reflect; 
 
-        public static Type[] TypeFacetFactories() =>
-            new[] {
-                typeof(TextStringValueTypeFacetFactory),
-                typeof(DateValueTypeFacetFactory),
-                typeof(TimeStampValueTypeFacetFactory),
-                typeof(WholeNumberValueTypeFacetFactory)
-            };
-    }
+public static class LegacyObjectFacetFactories {
+    public static Type[] StandardFacetFactories() =>
+        new[] {
+            typeof(FallbackFacetFactory),
+            typeof(TypeMarkerFacetFactory),
+            typeof(OptionalDefaultFacetFactory),
+            typeof(LegacyCollectionFieldMethodsFacetFactory),
+            typeof(InternalCollectionFacetFactory),
+            typeof(DateOnlyFacetFactory),
+            typeof(LegacyFacetFactory),
+            typeof(TitleMethodFacetFactory),
+            typeof(LegacyMenuFacetFactory)
+        };
+
+    public static Type[] TypeFacetFactories() =>
+        new[] {
+            typeof(TextStringValueTypeFacetFactory),
+            typeof(DateValueTypeFacetFactory),
+            typeof(TimeStampValueTypeFacetFactory),
+            typeof(WholeNumberValueTypeFacetFactory)
+        };
 }

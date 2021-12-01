@@ -10,16 +10,16 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ActionDefaultsFacetNone : ActionDefaultsFacetAbstract {
-        public ActionDefaultsFacetNone(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsNoOp => true;
+[Serializable]
+public sealed class ActionDefaultsFacetNone : ActionDefaultsFacetAbstract {
+    public ActionDefaultsFacetNone(ISpecification holder)
+        : base(holder) { }
 
-        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (null, TypeOfDefaultValue.Implicit);
-    }
+    public override bool IsNoOp => true;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (null, TypeOfDefaultValue.Implicit);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

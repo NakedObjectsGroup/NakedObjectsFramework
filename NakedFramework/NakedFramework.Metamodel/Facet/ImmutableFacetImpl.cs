@@ -10,21 +10,21 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class ImmutableFacetImpl : ImmutableFacetAbstract {
-        protected ImmutableFacetImpl(WhenTo when, ISpecification holder)
-            : base(when, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override string DisabledReason(INakedObjectAdapter target) =>
-            Value switch {
-                WhenTo.Always => string.Format(NakedObjects.Resources.NakedObjects.ImmutableMessage, target.Spec.SingularName),
-                WhenTo.Never => null,
-                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => string.Format(NakedObjects.Resources.NakedObjects.ImmutableUntilPersistedMessage, target.Spec.SingularName),
-                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => string.Format(NakedObjects.Resources.NakedObjects.ImmutableOncePersistedMessage, target.Spec.SingularName),
-                _ => null
-            };
-    }
+[Serializable]
+public abstract class ImmutableFacetImpl : ImmutableFacetAbstract {
+    protected ImmutableFacetImpl(WhenTo when, ISpecification holder)
+        : base(when, holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string DisabledReason(INakedObjectAdapter target) =>
+        Value switch {
+            WhenTo.Always => string.Format(NakedObjects.Resources.NakedObjects.ImmutableMessage, target.Spec.SingularName),
+            WhenTo.Never => null,
+            WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => string.Format(NakedObjects.Resources.NakedObjects.ImmutableUntilPersistedMessage, target.Spec.SingularName),
+            WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => string.Format(NakedObjects.Resources.NakedObjects.ImmutableOncePersistedMessage, target.Spec.SingularName),
+            _ => null
+        };
 }
+
+// Copyright (c) Naked Objects Group Ltd.

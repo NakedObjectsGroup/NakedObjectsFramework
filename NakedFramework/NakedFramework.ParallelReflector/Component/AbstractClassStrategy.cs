@@ -11,52 +11,52 @@ using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.ParallelReflector.Component {
-    /// <summary>
-    ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
-    /// </summary>
-    [Serializable]
-    public abstract class AbstractClassStrategy : IClassStrategy {
-        protected abstract bool IsTypeIgnored(Type type);
+namespace NakedFramework.ParallelReflector.Component; 
 
-        private bool IsTypeWhiteListed(Type type) => IsTypeExplicitlyRequested(type);
+/// <summary>
+///     Standard way of determining which fields are to be exposed in a Naked Objects system.
+/// </summary>
+[Serializable]
+public abstract class AbstractClassStrategy : IClassStrategy {
+    protected abstract bool IsTypeIgnored(Type type);
 
-        protected abstract bool IsTypeExplicitlyRequested(Type type);
+    private bool IsTypeWhiteListed(Type type) => IsTypeExplicitlyRequested(type);
 
-        protected virtual Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+    protected abstract bool IsTypeExplicitlyRequested(Type type);
 
-        private static bool IsTypeUnsupportedByReflector(Type type) =>
-            type.IsPointer ||
-            type.IsByRef ||
-            CollectionUtils.IsDictionary(type) ||
-            type.IsGenericParameter ||
-            type.ContainsGenericParameters;
+    protected virtual Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 
-        #region IClassStrategy Members
+    private static bool IsTypeUnsupportedByReflector(Type type) =>
+        type.IsPointer ||
+        type.IsByRef ||
+        CollectionUtils.IsDictionary(type) ||
+        type.IsGenericParameter ||
+        type.ContainsGenericParameters;
 
-        public virtual bool IsIgnored(Type type) {
-            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return IsTypeIgnored(returnType) ||
-                   IsTypeUnsupportedByReflector(returnType) ||
-                   FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().Any(IsIgnored);
-        }
+    #region IClassStrategy Members
 
-        public bool IsTypeRecognized(Type type) {
-            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return !IsTypeIgnored(returnType) &&
-                   !IsTypeUnsupportedByReflector(returnType) &&
-                   IsTypeWhiteListed(returnType) &&
-                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeRecognized));
-        }
-
-        public abstract bool IsIgnored(MemberInfo member);
-        public abstract bool IsService(Type type);
-        public abstract bool LoadReturnType(MethodInfo method);
-
-        #endregion
-
-        // because Sets don't implement IEnumerable<>
+    public virtual bool IsIgnored(Type type) {
+        var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
+        return IsTypeIgnored(returnType) ||
+               IsTypeUnsupportedByReflector(returnType) ||
+               FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().Any(IsIgnored);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public bool IsTypeRecognized(Type type) {
+        var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
+        return !IsTypeIgnored(returnType) &&
+               !IsTypeUnsupportedByReflector(returnType) &&
+               IsTypeWhiteListed(returnType) &&
+               (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeRecognized));
+    }
+
+    public abstract bool IsIgnored(MemberInfo member);
+    public abstract bool IsService(Type type);
+    public abstract bool LoadReturnType(MethodInfo method);
+
+    #endregion
+
+    // because Sets don't implement IEnumerable<>
 }
+
+// Copyright (c) Naked Objects Group Ltd.

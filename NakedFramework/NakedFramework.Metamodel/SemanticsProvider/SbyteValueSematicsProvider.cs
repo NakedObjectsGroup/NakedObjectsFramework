@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract<sbyte>, ISbyteValueFacet {
-        private const sbyte DefaultValueConst = 0;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 3; // include sign 
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public SbyteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract<sbyte>, ISbyteValueFacet {
+    private const sbyte DefaultValueConst = 0;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 3; // include sign 
 
-        public static Type Type => typeof(ISbyteValueFacet);
+    public SbyteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(sbyte);
+    public static Type Type => typeof(ISbyteValueFacet);
 
-        #region ISbyteValueFacet Members
+    public static Type AdaptedType => typeof(sbyte);
 
-        public sbyte SByteValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<sbyte>();
+    #region ISbyteValueFacet Members
 
-        #endregion
+    public sbyte SByteValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<sbyte>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(sbyte);
+    #endregion
 
-        protected override sbyte DoParse(string entry) {
-            try {
-                return sbyte.Parse(entry);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, sbyte.MinValue, sbyte.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(sbyte);
+
+    protected override sbyte DoParse(string entry) {
+        try {
+            return sbyte.Parse(entry);
         }
-
-        protected override sbyte DoParseInvariant(string entry) => sbyte.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(sbyte obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, sbyte value) => value.ToString(mask);
-
-        protected override string DoEncode(sbyte obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-        protected override sbyte DoRestore(string data) => sbyte.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "SByteAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, sbyte.MinValue, sbyte.MaxValue));
+        }
     }
+
+    protected override sbyte DoParseInvariant(string entry) => sbyte.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(sbyte obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, sbyte value) => value.ToString(mask);
+
+    protected override string DoEncode(sbyte obj) => obj.ToString("G", CultureInfo.InvariantCulture);
+
+    protected override sbyte DoRestore(string data) => sbyte.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "SByteAdapter: ";
 }

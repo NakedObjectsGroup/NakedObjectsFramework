@@ -11,20 +11,20 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {
-        private readonly string[] roles;
-        private readonly string[] users;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public AuthorizationDisableForSessionFacet(string roles,
-                                                   string users,
-                                                   ISpecification holder)
-            : base(holder) {
-            this.roles = FacetUtils.SplitOnComma(roles);
-            this.users = FacetUtils.SplitOnComma(users);
-        }
+[Serializable]
+public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {
+    private readonly string[] roles;
+    private readonly string[] users;
 
-        public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => FacetUtils.IsAllowed(framework.Session, roles, users) ? null : "Not authorized to edit";
+    public AuthorizationDisableForSessionFacet(string roles,
+                                               string users,
+                                               ISpecification holder)
+        : base(holder) {
+        this.roles = FacetUtils.SplitOnComma(roles);
+        this.users = FacetUtils.SplitOnComma(users);
     }
+
+    public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => FacetUtils.IsAllowed(framework.Session, roles, users) ? null : "Not authorized to edit";
 }

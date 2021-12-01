@@ -9,14 +9,14 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class CreatedCallbackFacetAbstract : CallbackFacetAbstract, ICreatedCallbackFacet {
-        protected CreatedCallbackFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(ICreatedCallbackFacet);
-    }
+[Serializable]
+public abstract class CreatedCallbackFacetAbstract : CallbackFacetAbstract, ICreatedCallbackFacet {
+    protected CreatedCallbackFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public static Type Type => typeof(ICreatedCallbackFacet);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

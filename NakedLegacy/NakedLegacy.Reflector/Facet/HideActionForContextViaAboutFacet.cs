@@ -18,52 +18,52 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.Facet {
-    [Serializable]
-    public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
+namespace NakedLegacy.Reflector.Facet; 
+
+[Serializable]
+public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         
-        private readonly AboutHelpers.AboutType aboutType;
+    private readonly AboutHelpers.AboutType aboutType;
 
-        private readonly ILogger<HideActionForContextViaAboutFacet> logger;
-        private readonly MethodInfo method;
+    private readonly ILogger<HideActionForContextViaAboutFacet> logger;
+    private readonly MethodInfo method;
 
-        public HideActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<HideActionForContextViaAboutFacet> logger)
-            : base(typeof(IHideForContextFacet), holder) {
-            this.method = method;
-            this.aboutType = aboutType;
-            this.logger = logger;
-        }
-
-        protected override string ToStringValues() => $"method={method}";
-
-        #region IHideForContextFacet Members
-
-        public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
-
-        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
-
-        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            if (nakedObjectAdapter == null) {
-                return null;
-            }
-
-            var about = aboutType.AboutFactory(AboutTypeCodes.Visible);
-
-            method.Invoke(nakedObjectAdapter.GetDomainObject(), method.GetParameters(about));
-
-            return about.Visible ? null : NakedObjects.Resources.NakedObjects.Hidden;
-        }
-
-        #endregion
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => null;
-
-        #endregion
+    public HideActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<HideActionForContextViaAboutFacet> logger)
+        : base(typeof(IHideForContextFacet), holder) {
+        this.method = method;
+        this.aboutType = aboutType;
+        this.logger = logger;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override string ToStringValues() => $"method={method}";
+
+    #region IHideForContextFacet Members
+
+    public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
+
+    public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
+
+    public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        if (nakedObjectAdapter == null) {
+            return null;
+        }
+
+        var about = aboutType.AboutFactory(AboutTypeCodes.Visible);
+
+        method.Invoke(nakedObjectAdapter.GetDomainObject(), method.GetParameters(about));
+
+        return about.Visible ? null : NakedObjects.Resources.NakedObjects.Hidden;
+    }
+
+    #endregion
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => null;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

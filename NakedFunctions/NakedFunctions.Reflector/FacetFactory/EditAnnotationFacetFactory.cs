@@ -21,54 +21,54 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class EditAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<EditAnnotationFacetFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public EditAnnotationFacetFactory(IFacetFactoryOrder<EditAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) =>
-            logger = loggerFactory.CreateLogger<EditAnnotationFacetFactory>();
+public sealed class EditAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<EditAnnotationFacetFactory> logger;
 
-        private static bool IsContext(Type t) => t.IsAssignableTo(typeof(IContext));
+    public EditAnnotationFacetFactory(IFacetFactoryOrder<EditAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) =>
+        logger = loggerFactory.CreateLogger<EditAnnotationFacetFactory>();
 
-        private static bool ReturnsContext(MethodInfo method) => IsContext(method.ReturnType) || FacetUtils.IsTuple(method.ReturnType);
+    private static bool IsContext(Type t) => t.IsAssignableTo(typeof(IContext));
+
+    private static bool ReturnsContext(MethodInfo method) => IsContext(method.ReturnType) || FacetUtils.IsTuple(method.ReturnType);
 
        
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> Process(MethodInfo method, Action<IDictionary<ParameterInfo, PropertyInfo>> addFacet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (IsEditMethod(method)) {
-                var matches = FactoryUtils.MatchParmsAndProperties(method, logger);
+    private IImmutableDictionary<string, ITypeSpecBuilder> Process(MethodInfo method, Action<IDictionary<ParameterInfo, PropertyInfo>> addFacet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (IsEditMethod(method)) {
+            var matches = FactoryUtils.MatchParmsAndProperties(method, logger);
 
-                if (matches.Any()) {
-                    addFacet(matches);
-                }
+            if (matches.Any()) {
+                addFacet(matches);
             }
-
-            return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            void AddFacet(IDictionary<ParameterInfo, PropertyInfo> matches) => FacetUtils.AddFacet(new EditPropertiesFacet(specification, matches.Values.Select(p => p.Name).ToArray()));
+        return metamodel;
+    }
 
-            return Process(method, AddFacet, metamodel);
-        }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        void AddFacet(IDictionary<ParameterInfo, PropertyInfo> matches) => FacetUtils.AddFacet(new EditPropertiesFacet(specification, matches.Values.Select(p => p.Name).ToArray()));
 
-        private static bool IsEditMethod(MethodInfo method) => method.IsDefined(typeof(EditAttribute), false) && ReturnsContext(method);
+        return Process(method, AddFacet, metamodel);
+    }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            void AddFacet(IDictionary<ParameterInfo, PropertyInfo> matches) {
-                var thisParameter = method.GetParameters()[paramNum];
+    private static bool IsEditMethod(MethodInfo method) => method.IsDefined(typeof(EditAttribute), false) && ReturnsContext(method);
 
-                if (matches.ContainsKey(thisParameter)) {
-                    var property = matches[thisParameter];
-                    // leave any existing default facet
-                    var defaultFacet = specification.GetFacet<IActionDefaultsFacet>();
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        void AddFacet(IDictionary<ParameterInfo, PropertyInfo> matches) {
+            var thisParameter = method.GetParameters()[paramNum];
 
-                    FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification, defaultFacet, LoggerFactory.CreateLogger<ActionDefaultsFacetViaProperty>()));
-                }
+            if (matches.ContainsKey(thisParameter)) {
+                var property = matches[thisParameter];
+                // leave any existing default facet
+                var defaultFacet = specification.GetFacet<IActionDefaultsFacet>();
+
+                FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification, defaultFacet, LoggerFactory.CreateLogger<ActionDefaultsFacetViaProperty>()));
             }
-
-            return Process(method, AddFacet, metamodel);
         }
+
+        return Process(method, AddFacet, metamodel);
     }
 }

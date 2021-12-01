@@ -11,40 +11,40 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 
-namespace NakedFramework.Core.Component {
-    public sealed class NakedObjectAdapterHashMap : INakedObjectAdapterMap {
-        private readonly int capacity;
-        private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
+namespace NakedFramework.Core.Component; 
 
-        private NakedObjectAdapterHashMap() => domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
+public sealed class NakedObjectAdapterHashMap : INakedObjectAdapterMap {
+    private readonly int capacity;
+    private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
 
-        // used by DI
-        // ReSharper disable once UnusedMember.Global
-        public NakedObjectAdapterHashMap(ICoreConfiguration config) : this() {
-            capacity = config.HashMapCapacity;
-            domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
-        }
+    private NakedObjectAdapterHashMap() => domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
 
-        #region INakedObjectAdapterMap Members
-
-        public void Add(object obj, INakedObjectAdapter adapter) => domainObjects[obj] = adapter;
-
-        public bool ContainsObject(object obj) => domainObjects.ContainsKey(obj);
-
-        public IEnumerator<INakedObjectAdapter> GetEnumerator() => domainObjects.Values.GetEnumerator();
-
-        public INakedObjectAdapter GetObject(object obj) => ContainsObject(obj) ? domainObjects[obj] : null;
-
-        public void Reset() => domainObjects.Clear();
-
-        public void Shutdown() => domainObjects.Clear();
-
-        public void Remove(INakedObjectAdapter nakedObjectAdapter) => domainObjects.Remove(nakedObjectAdapter.Object);
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        #endregion
+    // used by DI
+    // ReSharper disable once UnusedMember.Global
+    public NakedObjectAdapterHashMap(ICoreConfiguration config) : this() {
+        capacity = config.HashMapCapacity;
+        domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region INakedObjectAdapterMap Members
+
+    public void Add(object obj, INakedObjectAdapter adapter) => domainObjects[obj] = adapter;
+
+    public bool ContainsObject(object obj) => domainObjects.ContainsKey(obj);
+
+    public IEnumerator<INakedObjectAdapter> GetEnumerator() => domainObjects.Values.GetEnumerator();
+
+    public INakedObjectAdapter GetObject(object obj) => ContainsObject(obj) ? domainObjects[obj] : null;
+
+    public void Reset() => domainObjects.Clear();
+
+    public void Shutdown() => domainObjects.Clear();
+
+    public void Remove(INakedObjectAdapter nakedObjectAdapter) => domainObjects.Remove(nakedObjectAdapter.Object);
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

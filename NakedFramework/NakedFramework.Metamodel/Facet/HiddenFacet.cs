@@ -13,40 +13,40 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
-        public HiddenFacet(WhenTo when, ISpecification holder)
-            : base(typeof(IHiddenFacet), holder, when) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        #region IHiddenFacet Members
+[Serializable]
+public sealed class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
+    public HiddenFacet(WhenTo when, ISpecification holder)
+        : base(typeof(IHiddenFacet), holder, when) { }
 
-        public string HiddenReason(INakedObjectAdapter target) =>
-            Value switch {
-                WhenTo.Always => NakedObjects.Resources.NakedObjects.AlwaysHidden,
-                WhenTo.Never => null,
-                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => NakedObjects.Resources.NakedObjects.HiddenUntilPersisted,
-                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => NakedObjects.Resources.NakedObjects.HiddenOncePersisted,
-                _ => null
-            };
+    #region IHiddenFacet Members
 
-        private string HiddenReason(bool persisted) =>
-            Value switch {
-                WhenTo.Always => NakedObjects.Resources.NakedObjects.AlwaysHidden,
-                WhenTo.Never => null,
-                WhenTo.UntilPersisted when !persisted => NakedObjects.Resources.NakedObjects.HiddenUntilPersisted,
-                WhenTo.OncePersisted when persisted => NakedObjects.Resources.NakedObjects.HiddenOncePersisted,
-                _ => null
-            };
+    public string HiddenReason(INakedObjectAdapter target) =>
+        Value switch {
+            WhenTo.Always => NakedObjects.Resources.NakedObjects.AlwaysHidden,
+            WhenTo.Never => null,
+            WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => NakedObjects.Resources.NakedObjects.HiddenUntilPersisted,
+            WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => NakedObjects.Resources.NakedObjects.HiddenOncePersisted,
+            _ => null
+        };
 
-        public string Hides(IInteractionContext ic) => HiddenReason(ic.Target);
+    private string HiddenReason(bool persisted) =>
+        Value switch {
+            WhenTo.Always => NakedObjects.Resources.NakedObjects.AlwaysHidden,
+            WhenTo.Never => null,
+            WhenTo.UntilPersisted when !persisted => NakedObjects.Resources.NakedObjects.HiddenUntilPersisted,
+            WhenTo.OncePersisted when persisted => NakedObjects.Resources.NakedObjects.HiddenOncePersisted,
+            _ => null
+        };
 
-        public string HidesForState(bool persisted) => HiddenReason(persisted);
+    public string Hides(IInteractionContext ic) => HiddenReason(ic.Target);
 
-        public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
+    public string HidesForState(bool persisted) => HiddenReason(persisted);
 
-        #endregion
-    }
+    public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

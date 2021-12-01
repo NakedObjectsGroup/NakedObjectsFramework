@@ -11,27 +11,27 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Core.Component {
-    public sealed class NakedObjectFactory {
-        private INakedFramework framework;
-        private bool isInitialized;
-        private ILoggerFactory loggerFactory;
+namespace NakedFramework.Core.Component; 
 
-        // ReSharper disable ParameterHidesMember
-        public void Initialize(INakedFramework framework, ILoggerFactory loggerFactory) {
-            this.framework = framework;
-            // ReSharper restore ParameterHidesMember
+public sealed class NakedObjectFactory {
+    private INakedFramework framework;
+    private bool isInitialized;
+    private ILoggerFactory loggerFactory;
 
-            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
-            isInitialized = true;
+    // ReSharper disable ParameterHidesMember
+    public void Initialize(INakedFramework framework, ILoggerFactory loggerFactory) {
+        this.framework = framework;
+        // ReSharper restore ParameterHidesMember
+
+        this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+        isInitialized = true;
+    }
+
+    public INakedObjectAdapter CreateAdapter(object obj, IOid oid) {
+        if (!isInitialized) {
+            throw new InitialisationException("NakedObjectFactory not initialized");
         }
 
-        public INakedObjectAdapter CreateAdapter(object obj, IOid oid) {
-            if (!isInitialized) {
-                throw new InitialisationException("NakedObjectFactory not initialized");
-            }
-
-            return new NakedObjectAdapter(obj, oid, framework, loggerFactory, loggerFactory.CreateLogger<NakedObjectAdapter>());
-        }
+        return new NakedObjectAdapter(obj, oid, framework, loggerFactory, loggerFactory.CreateLogger<NakedObjectAdapter>());
     }
 }

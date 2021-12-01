@@ -7,15 +7,15 @@
 
 using System.Collections.Generic;
 
-namespace TestCodeOnly {
-    public class Category {
-        private ICollection<Product> products;
-        public virtual int ID { get; set; }
-        public virtual string Name { get; set; }
+namespace TestCodeOnly; 
 
-        public virtual ICollection<Product> Products {
-            get => products ??= new List<Product>();
-            set => products = value;
-        }
+public class Category {
+    private ICollection<Product> products;
+    public virtual int ID { get; set; }
+    public virtual string Name { get; set; }
+
+    public virtual ICollection<Product> Products {
+        get => products ??= new List<Product>();
+        set => products = value;
     }
 }

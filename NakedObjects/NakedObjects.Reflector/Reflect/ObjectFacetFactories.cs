@@ -8,70 +8,70 @@
 using System;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Reflect {
-    public static class ObjectFacetFactories {
-        public static Type[] StandardFacetFactories() =>
-            new[] {
-                typeof(RemoveDynamicProxyMethodsFacetFactory),
-                typeof(RemoveEventHandlerMethodsFacetFactory),
-                typeof(RemoveIgnoredMethodsFacetFactory),
-                // must be before any other FacetFactories that install MandatoryFacet.class facets
-                typeof(MandatoryDefaultFacetFactory),
-                typeof(PropertyValidateDefaultFacetFactory),
-                typeof(ComplementaryMethodsFilteringFacetFactory),
-                typeof(ActionMethodsFacetFactory),
-                typeof(CollectionFieldMethodsFacetFactory),
-                typeof(PropertyMethodsFacetFactory),
-                typeof(CallbackMethodsFacetFactory),
-                typeof(TitleMethodFacetFactory),
-                typeof(ValidateObjectFacetFactory),
-                typeof(ComplexTypeAnnotationFacetFactory),
-                typeof(ViewModelFacetFactory),
-                typeof(RedirectedObjectFacetFactory),
-                typeof(BoundedAnnotationFacetFactory),
-                typeof(EnumFacetFactory),
-                typeof(ActionDefaultAnnotationFacetFactory),
-                typeof(PropertyDefaultAnnotationFacetFactory),
-                typeof(DescribedAsAnnotationFacetFactory),
-                typeof(DisabledAnnotationFacetFactory),
-                typeof(PasswordAnnotationFacetFactory),
-                typeof(DateOnlyFacetFactory),
-                typeof(DataTypeAnnotationFacetFactory),
-                typeof(PotencyAnnotationFacetFactory),
-                typeof(PageSizeAnnotationFacetFactory),
-                typeof(HiddenAnnotationFacetFactory),
-                typeof(HiddenDefaultMethodFacetFactory),
-                typeof(DisableDefaultMethodFacetFactory),
-                typeof(AuthorizeAnnotationFacetFactory),
-                typeof(ValidateProgrammaticUpdatesAnnotationFacetFactory),
-                typeof(ImmutableAnnotationFacetFactory),
-                typeof(MaxLengthAnnotationFacetFactory),
-                typeof(RangeAnnotationFacetFactory),
-                typeof(MemberOrderAnnotationFacetFactory),
-                typeof(MultiLineAnnotationFacetFactory),
-                typeof(NamedAnnotationFacetFactory),
-                typeof(NotPersistedAnnotationFacetFactory),
-                typeof(OptionalAnnotationFacetFactory),
-                typeof(RequiredAnnotationFacetFactory),
-                typeof(PluralAnnotationFacetFactory),
-                typeof(RegExAnnotationFacetFactory),
-                typeof(DefaultNamingFacetFactory), // must come after Named and Plural factories
-                typeof(ConcurrencyCheckAnnotationFacetFactory),
-                typeof(ContributedActionAnnotationFacetFactory),
-                typeof(FinderActionFacetFactory),
-                typeof(FindMenuFacetFactory),
-                typeof(CreateNewAnnotationFacetFactory),
-                typeof(EditAnnotationFacetFactory),
-                typeof(DisplayAsPropertyAnnotationFacetFactory),
-                // must come after any facets that install titles
-                typeof(MaskAnnotationFacetFactory),
-                // must come after any facets that install titles, and after mask
-                // if takes precedence over mask.
-                typeof(TypeOfAnnotationFacetFactory),
-                typeof(TableViewAnnotationFacetFactory),
-                typeof(EagerlyAnnotationFacetFactory),
-                typeof(PresentationHintAnnotationFacetFactory),
-                typeof(MenuFacetFactory)
-            };
-    }
+namespace NakedObjects.Reflector.Reflect; 
+
+public static class ObjectFacetFactories {
+    public static Type[] StandardFacetFactories() =>
+        new[] {
+            typeof(RemoveDynamicProxyMethodsFacetFactory),
+            typeof(RemoveEventHandlerMethodsFacetFactory),
+            typeof(RemoveIgnoredMethodsFacetFactory),
+            // must be before any other FacetFactories that install MandatoryFacet.class facets
+            typeof(MandatoryDefaultFacetFactory),
+            typeof(PropertyValidateDefaultFacetFactory),
+            typeof(ComplementaryMethodsFilteringFacetFactory),
+            typeof(ActionMethodsFacetFactory),
+            typeof(CollectionFieldMethodsFacetFactory),
+            typeof(PropertyMethodsFacetFactory),
+            typeof(CallbackMethodsFacetFactory),
+            typeof(TitleMethodFacetFactory),
+            typeof(ValidateObjectFacetFactory),
+            typeof(ComplexTypeAnnotationFacetFactory),
+            typeof(ViewModelFacetFactory),
+            typeof(RedirectedObjectFacetFactory),
+            typeof(BoundedAnnotationFacetFactory),
+            typeof(EnumFacetFactory),
+            typeof(ActionDefaultAnnotationFacetFactory),
+            typeof(PropertyDefaultAnnotationFacetFactory),
+            typeof(DescribedAsAnnotationFacetFactory),
+            typeof(DisabledAnnotationFacetFactory),
+            typeof(PasswordAnnotationFacetFactory),
+            typeof(DateOnlyFacetFactory),
+            typeof(DataTypeAnnotationFacetFactory),
+            typeof(PotencyAnnotationFacetFactory),
+            typeof(PageSizeAnnotationFacetFactory),
+            typeof(HiddenAnnotationFacetFactory),
+            typeof(HiddenDefaultMethodFacetFactory),
+            typeof(DisableDefaultMethodFacetFactory),
+            typeof(AuthorizeAnnotationFacetFactory),
+            typeof(ValidateProgrammaticUpdatesAnnotationFacetFactory),
+            typeof(ImmutableAnnotationFacetFactory),
+            typeof(MaxLengthAnnotationFacetFactory),
+            typeof(RangeAnnotationFacetFactory),
+            typeof(MemberOrderAnnotationFacetFactory),
+            typeof(MultiLineAnnotationFacetFactory),
+            typeof(NamedAnnotationFacetFactory),
+            typeof(NotPersistedAnnotationFacetFactory),
+            typeof(OptionalAnnotationFacetFactory),
+            typeof(RequiredAnnotationFacetFactory),
+            typeof(PluralAnnotationFacetFactory),
+            typeof(RegExAnnotationFacetFactory),
+            typeof(DefaultNamingFacetFactory), // must come after Named and Plural factories
+            typeof(ConcurrencyCheckAnnotationFacetFactory),
+            typeof(ContributedActionAnnotationFacetFactory),
+            typeof(FinderActionFacetFactory),
+            typeof(FindMenuFacetFactory),
+            typeof(CreateNewAnnotationFacetFactory),
+            typeof(EditAnnotationFacetFactory),
+            typeof(DisplayAsPropertyAnnotationFacetFactory),
+            // must come after any facets that install titles
+            typeof(MaskAnnotationFacetFactory),
+            // must come after any facets that install titles, and after mask
+            // if takes precedence over mask.
+            typeof(TypeOfAnnotationFacetFactory),
+            typeof(TableViewAnnotationFacetFactory),
+            typeof(EagerlyAnnotationFacetFactory),
+            typeof(PresentationHintAnnotationFacetFactory),
+            typeof(MenuFacetFactory)
+        };
 }

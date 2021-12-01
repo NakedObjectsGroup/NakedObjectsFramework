@@ -14,48 +14,48 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
 
-namespace NakedFramework.Metamodel.Profile {
-    [Serializable]
-    public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {
-        private readonly IIdentifier identifier;
-        private readonly IProfileManager profileManager;
-        private readonly IActionInvocationFacet underlyingFacet;
+namespace NakedFramework.Metamodel.Profile; 
 
-        public ProfileActionInvocationFacet(IActionInvocationFacet underlyingFacet, IProfileManager profileManager)
-            : base(underlyingFacet.Specification) {
-            this.underlyingFacet = underlyingFacet;
-            this.profileManager = profileManager;
-            identifier = underlyingFacet.Specification.Identifier;
+[Serializable]
+public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {
+    private readonly IIdentifier identifier;
+    private readonly IProfileManager profileManager;
+    private readonly IActionInvocationFacet underlyingFacet;
+
+    public ProfileActionInvocationFacet(IActionInvocationFacet underlyingFacet, IProfileManager profileManager)
+        : base(underlyingFacet.Specification) {
+        this.underlyingFacet = underlyingFacet;
+        this.profileManager = profileManager;
+        identifier = underlyingFacet.Specification.Identifier;
+    }
+
+    public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;
+
+    public override MethodInfo ActionMethod => underlyingFacet.ActionMethod;
+
+    public override IObjectSpecImmutable ReturnType => underlyingFacet.ReturnType;
+
+    public override IObjectSpecImmutable ElementType => underlyingFacet.ElementType;
+
+    public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
+
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
+        profileManager.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
+        try {
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
         }
-
-        public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;
-
-        public override MethodInfo ActionMethod => underlyingFacet.ActionMethod;
-
-        public override IObjectSpecImmutable ReturnType => underlyingFacet.ReturnType;
-
-        public override IObjectSpecImmutable ElementType => underlyingFacet.ElementType;
-
-        public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
-
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
-            profileManager.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
-            try {
-                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
-            }
-            finally {
-                profileManager.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
-            }
+        finally {
+            profileManager.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
         }
+    }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) {
-            profileManager.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
-            try {
-                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
-            }
-            finally {
-                profileManager.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
-            }
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) {
+        profileManager.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
+        try {
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
+        }
+        finally {
+            profileManager.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
         }
     }
 }

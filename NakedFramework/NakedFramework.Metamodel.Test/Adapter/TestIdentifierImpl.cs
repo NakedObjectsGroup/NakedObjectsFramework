@@ -13,107 +13,107 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Metamodel.Adapter;
 
-namespace NakedObjects.Meta.Test.Adapter {
-    [TestClass]
-    public class TestIdentifierImpl {
-        #region Setup/Teardown
+namespace NakedObjects.Meta.Test.Adapter; 
 
-        [TestInitialize]
-        public void SetUp() { }
+[TestClass]
+public class TestIdentifierImpl {
+    #region Setup/Teardown
 
-        #endregion
+    [TestInitialize]
+    public void SetUp() { }
 
-        [TestMethod]
-        public void TestCreateOk() {
-            var identifier = new IdentifierImpl("testclass");
-            Assert.IsNotNull(identifier);
-        }
+    #endregion
 
-        [TestMethod]
-        public void TestToClassString() {
-            var identifier = new IdentifierImpl("testclass");
-            var s = identifier.ToIdentityString(IdentifierDepth.Class);
-            Assert.AreEqual("testclass", s);
-        }
+    [TestMethod]
+    public void TestCreateOk() {
+        var identifier = new IdentifierImpl("testclass");
+        Assert.IsNotNull(identifier);
+    }
 
-        [TestMethod]
-        public void TestToClassNameString() {
-            var identifier = new IdentifierImpl("testclass", "testfield");
-            var s = identifier.ToIdentityString(IdentifierDepth.ClassName);
-            Assert.AreEqual("testclass#testfield", s);
-        }
+    [TestMethod]
+    public void TestToClassString() {
+        var identifier = new IdentifierImpl("testclass");
+        var s = identifier.ToIdentityString(IdentifierDepth.Class);
+        Assert.AreEqual("testclass", s);
+    }
 
-        [TestMethod]
-        public void TestToClassNameParamsString() {
-            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var s = identifier.ToIdentityString(IdentifierDepth.ClassNameParams);
-            Assert.AreEqual("testclass#testmethod(testparam1,testparam2)", s);
-        }
+    [TestMethod]
+    public void TestToClassNameString() {
+        var identifier = new IdentifierImpl("testclass", "testfield");
+        var s = identifier.ToIdentityString(IdentifierDepth.ClassName);
+        Assert.AreEqual("testclass#testfield", s);
+    }
 
-        [TestMethod]
-        public void TestEquals() {
-            var identifier1 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var identifier2 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            Assert.AreEqual(identifier1, identifier2);
-        }
+    [TestMethod]
+    public void TestToClassNameParamsString() {
+        var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+        var s = identifier.ToIdentityString(IdentifierDepth.ClassNameParams);
+        Assert.AreEqual("testclass#testmethod(testparam1,testparam2)", s);
+    }
 
-        [TestMethod]
-        public void TestHash() {
-            var identifier1 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var identifier2 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var testDict = new Dictionary<IdentifierImpl, string> {{identifier1, "1"}};
-            Assert.IsTrue(testDict.ContainsKey(identifier2));
-        }
+    [TestMethod]
+    public void TestEquals() {
+        var identifier1 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+        var identifier2 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+        Assert.AreEqual(identifier1, identifier2);
+    }
 
-        [TestMethod]
-        public void TestToClassNameParamsStringWithActionCheck() {
-            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.Action);
-            Assert.AreEqual("testclass#testmethod(testparam1,testparam2):Action", s);
-        }
+    [TestMethod]
+    public void TestHash() {
+        var identifier1 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+        var identifier2 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+        var testDict = new Dictionary<IdentifierImpl, string> {{identifier1, "1"}};
+        Assert.IsTrue(testDict.ContainsKey(identifier2));
+    }
 
-        [TestMethod]
-        public void TestToClassNameParamsStringWithViewCheck() {
-            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.ViewField);
-            Assert.AreEqual("testclass#testmethod(testparam1,testparam2):ViewField", s);
-        }
+    [TestMethod]
+    public void TestToClassNameParamsStringWithActionCheck() {
+        var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+        var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.Action);
+        Assert.AreEqual("testclass#testmethod(testparam1,testparam2):Action", s);
+    }
 
-        [TestMethod]
-        public void TestToClassNameParamsStringWithEditCheck() {
-            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.EditField);
-            Assert.AreEqual("testclass#testmethod(testparam1,testparam2):EditField", s);
-        }
+    [TestMethod]
+    public void TestToClassNameParamsStringWithViewCheck() {
+        var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+        var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.ViewField);
+        Assert.AreEqual("testclass#testmethod(testparam1,testparam2):ViewField", s);
+    }
 
-        [TestMethod]
-        public void TestFromIdString() {
-            var mockMetaModel = new Mock<IMetamodel>();
+    [TestMethod]
+    public void TestToClassNameParamsStringWithEditCheck() {
+        var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+        var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.EditField);
+        Assert.AreEqual("testclass#testmethod(testparam1,testparam2):EditField", s);
+    }
 
-            IIdentifier id = IdentifierImpl.FromIdentityString(mockMetaModel.Object, "testclass#testmethod(testparam1,testparam2)");
+    [TestMethod]
+    public void TestFromIdString() {
+        var mockMetaModel = new Mock<IMetamodel>();
 
-            Assert.AreEqual("testclass", id.ClassName);
-            Assert.AreEqual("testmethod", id.MemberName);
-            Assert.AreEqual(2, id.MemberParameterTypeNames.Length);
-            Assert.AreEqual("testparam1", id.MemberParameterTypeNames.First());
-            Assert.AreEqual("testparam2", id.MemberParameterTypeNames.Last());
-            Assert.AreEqual(2, id.MemberParameterNames.Length);
-            Assert.AreEqual("", id.MemberParameterNames.First());
-            Assert.AreEqual("", id.MemberParameterNames.Last());
-        }
+        IIdentifier id = IdentifierImpl.FromIdentityString(mockMetaModel.Object, "testclass#testmethod(testparam1,testparam2)");
 
-        [TestMethod]
-        public void TestToNameString() {
-            var identifier = new IdentifierImpl("testclass", "testfield");
-            var s = identifier.ToIdentityString(IdentifierDepth.Name);
-            Assert.AreEqual("testfield", s);
-        }
+        Assert.AreEqual("testclass", id.ClassName);
+        Assert.AreEqual("testmethod", id.MemberName);
+        Assert.AreEqual(2, id.MemberParameterTypeNames.Length);
+        Assert.AreEqual("testparam1", id.MemberParameterTypeNames.First());
+        Assert.AreEqual("testparam2", id.MemberParameterTypeNames.Last());
+        Assert.AreEqual(2, id.MemberParameterNames.Length);
+        Assert.AreEqual("", id.MemberParameterNames.First());
+        Assert.AreEqual("", id.MemberParameterNames.Last());
+    }
 
-        [TestMethod]
-        public void TestToParmsString() {
-            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var s = identifier.ToIdentityString(IdentifierDepth.Parms);
-            Assert.AreEqual("(testparam1,testparam2)", s);
-        }
+    [TestMethod]
+    public void TestToNameString() {
+        var identifier = new IdentifierImpl("testclass", "testfield");
+        var s = identifier.ToIdentityString(IdentifierDepth.Name);
+        Assert.AreEqual("testfield", s);
+    }
+
+    [TestMethod]
+    public void TestToParmsString() {
+        var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+        var s = identifier.ToIdentityString(IdentifierDepth.Parms);
+        Assert.AreEqual("(testparam1,testparam2)", s);
     }
 }

@@ -17,18 +17,18 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedObjects.Redirect;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class RedirectedObjectFacetFactory : ObjectFacetFactoryProcessor {
-        public RedirectedObjectFacetFactory(IFacetFactoryOrder<RedirectedObjectFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory, FeatureType.Objects) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (typeof(IRedirectedObject).IsAssignableFrom(type)) {
-                var serverName = type.GetProperty(nameof(IRedirectedObject.ServerName));
-                var oid = type.GetProperty(nameof(IRedirectedObject.Oid));
-                FacetUtils.AddFacet(new RedirectedFacet(specification, serverName, oid));
-            }
+public sealed class RedirectedObjectFacetFactory : ObjectFacetFactoryProcessor {
+    public RedirectedObjectFacetFactory(IFacetFactoryOrder<RedirectedObjectFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory, FeatureType.Objects) { }
 
-            return metamodel;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (typeof(IRedirectedObject).IsAssignableFrom(type)) {
+            var serverName = type.GetProperty(nameof(IRedirectedObject.ServerName));
+            var oid = type.GetProperty(nameof(IRedirectedObject.Oid));
+            FacetUtils.AddFacet(new RedirectedFacet(specification, serverName, oid));
         }
+
+        return metamodel;
     }
 }

@@ -17,35 +17,35 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    /// <summary>
-    ///     Removes any methods on a type that handle events.
-    /// </summary>
-    public sealed class RemoveEventHandlerMethodsFacetFactory : ObjectFacetFactoryProcessor {
-        public RemoveEventHandlerMethodsFacetFactory(IFacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            FindAndRemoveEventHandlerMethods(type, methodRemover);
-            return metamodel;
-        }
+/// <summary>
+///     Removes any methods on a type that handle events.
+/// </summary>
+public sealed class RemoveEventHandlerMethodsFacetFactory : ObjectFacetFactoryProcessor {
+    public RemoveEventHandlerMethodsFacetFactory(IFacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        private static void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
-            if (mi is not null) {
-                methodRemover.SafeRemoveMethod(mi);
-            }
-        }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        FindAndRemoveEventHandlerMethods(type, methodRemover);
+        return metamodel;
+    }
 
-        private static void FindAndRemoveEventHandlerMethods(Type type, IMethodRemover methodRemover) {
-            foreach (var eInfo in type.GetEvents()) {
-                RemoveIfNotNull(methodRemover, eInfo.GetAddMethod());
-                RemoveIfNotNull(methodRemover, eInfo.GetRaiseMethod());
-                RemoveIfNotNull(methodRemover, eInfo.GetRemoveMethod());
-
-                eInfo.GetOtherMethods().ForEach(mi => RemoveIfNotNull(methodRemover, mi));
-            }
+    private static void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
+        if (mi is not null) {
+            methodRemover.SafeRemoveMethod(mi);
         }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    private static void FindAndRemoveEventHandlerMethods(Type type, IMethodRemover methodRemover) {
+        foreach (var eInfo in type.GetEvents()) {
+            RemoveIfNotNull(methodRemover, eInfo.GetAddMethod());
+            RemoveIfNotNull(methodRemover, eInfo.GetRaiseMethod());
+            RemoveIfNotNull(methodRemover, eInfo.GetRemoveMethod());
+
+            eInfo.GetOtherMethods().ForEach(mi => RemoveIfNotNull(methodRemover, mi));
+        }
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

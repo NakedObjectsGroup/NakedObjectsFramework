@@ -8,20 +8,20 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Hide a property, collection or action
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     annotating the member with <see cref="DisabledAttribute" />
-    /// </para>
-    public interface IHiddenFacet : ISingleWhenValueFacet, IHidingInteractionAdvisor {
-        /// <summary>
-        ///     The reason why the (feature of the) target object is currently hidden, or <c>null</c> if visible
-        /// </summary>
-        string HiddenReason(INakedObjectAdapter target);
+namespace NakedFramework.Architecture.Facet; 
 
-        string HidesForState(bool persisted);
-    }
+/// <summary>
+///     Hide a property, collection or action
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     annotating the member with <see cref="DisabledAttribute" />
+/// </para>
+public interface IHiddenFacet : ISingleWhenValueFacet, IHidingInteractionAdvisor {
+    /// <summary>
+    ///     The reason why the (feature of the) target object is currently hidden, or <c>null</c> if visible
+    /// </summary>
+    string HiddenReason(INakedObjectAdapter target);
+
+    string HidesForState(bool persisted);
 }

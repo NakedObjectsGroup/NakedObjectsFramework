@@ -15,128 +15,128 @@ using TestObjectMenu;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Menus.Service {
-    [TestFixture]
-    public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
-        [SetUp]
-        public void SetUp() => StartTest();
+namespace NakedObjects.SystemTest.Menus.Service; 
 
-        [TearDown]
-        public void CleanUp() => EndTest();
+[TestFixture]
+public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
+    [SetUp]
+    public void SetUp() => StartTest();
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            MenusDbContext.Delete();
-            var context = Activator.CreateInstance<MenusDbContext>();
+    [TearDown]
+    public void CleanUp() => EndTest();
 
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        MenusDbContext.Delete();
+        var context = Activator.CreateInstance<MenusDbContext>();
 
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            MenusDbContext.Delete();
-        }
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(FooService),
-                typeof(ServiceWithSubMenus),
-                typeof(BarService),
-                typeof(QuxService)
-            };
-
-        protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
-
-        [Test]
-        public virtual void TestMainMenus() {
-            var menus = AllMainMenus();
-
-            menus[0].AssertNameEquals("Foo Service");
-            menus[1].AssertNameEquals("Bars"); //Picks up Named attribute on service
-            menus[2].AssertNameEquals("Subs"); //Named attribute overridden in menu construction
-
-            var foo = menus[0];
-            foo.AssertItemCountIs(3);
-            Assert.AreEqual(3, foo.AllItems().Count(i => i != null));
-
-            foo.AllItems()[0].AssertNameEquals("Foo Action0");
-            foo.AllItems()[1].AssertNameEquals("Foo Action1");
-            foo.AllItems()[2].AssertNameEquals("Foo Action2");
-        }
+        context.Database.Create();
+        InitializeNakedObjectsFramework(this);
     }
 
-    #region Classes used in test
-
-    public class LocalMainMenus {
-        public static IMenu[] MainMenus(IMenuFactory factory) {
-            var menuDefs = new Dictionary<Type, Action<IMenu>> {
-                {typeof(FooService), FooService.Menu},
-                {typeof(BarService), BarService.Menu},
-                {typeof(ServiceWithSubMenus), ServiceWithSubMenus.Menu}
-            };
-
-            var menus = new List<IMenu>();
-            foreach (var menuDef in menuDefs) {
-                var menu = factory.NewMenu(menuDef.Key);
-                menuDef.Value(menu);
-                menus.Add(menu);
-            }
-
-            return menus.ToArray();
-        }
+    [OneTimeTearDown]
+    public void FixtureTearDown() {
+        CleanupNakedObjectsFramework(this);
+        MenusDbContext.Delete();
     }
 
-    public class FooService {
-        public static void Menu(IMenu menu) {
-            menu.AddRemainingActions(typeof(FooService));
-        }
+    protected override Type[] Services =>
+        new[] {
+            typeof(FooService),
+            typeof(ServiceWithSubMenus),
+            typeof(BarService),
+            typeof(QuxService)
+        };
 
-        public void FooAction0() { }
+    protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
 
-        public void FooAction1() { }
+    [Test]
+    public virtual void TestMainMenus() {
+        var menus = AllMainMenus();
 
-        public void FooAction2(string p1, int p2) { }
+        menus[0].AssertNameEquals("Foo Service");
+        menus[1].AssertNameEquals("Bars"); //Picks up Named attribute on service
+        menus[2].AssertNameEquals("Subs"); //Named attribute overridden in menu construction
+
+        var foo = menus[0];
+        foo.AssertItemCountIs(3);
+        Assert.AreEqual(3, foo.AllItems().Count(i => i != null));
+
+        foo.AllItems()[0].AssertNameEquals("Foo Action0");
+        foo.AllItems()[1].AssertNameEquals("Foo Action1");
+        foo.AllItems()[2].AssertNameEquals("Foo Action2");
     }
-
-    [Named("Subs")]
-    public class ServiceWithSubMenus {
-        public static void Menu(IMenu menu) {
-            var type = typeof(ServiceWithSubMenus);
-            var sub1 = menu.CreateSubMenu("Sub1");
-            sub1.AddAction(type, "Action1");
-            sub1.AddAction(type, "Action3");
-            var sub2 = menu.CreateSubMenu("Sub2");
-            sub2.AddAction(type, "Action2");
-            sub2.AddAction(type, "Action0");
-        }
-
-        public void Action0() { }
-
-        public void Action1() { }
-
-        public void Action2() { }
-
-        public void Action3() { }
-    }
-
-    [Named("Bars")]
-    public class BarService {
-        public static void Menu(IMenu menu) {
-            menu.AddRemainingActions(typeof(BarService));
-        }
-
-        [MemberOrder(10)]
-        public void BarAction0() { }
-
-        [MemberOrder(1)]
-        public void BarAction1() { }
-
-        public void BarAction2() { }
-
-        public void BarAction3() { }
-    }
-
-    #endregion
 }
+
+#region Classes used in test
+
+public class LocalMainMenus {
+    public static IMenu[] MainMenus(IMenuFactory factory) {
+        var menuDefs = new Dictionary<Type, Action<IMenu>> {
+            {typeof(FooService), FooService.Menu},
+            {typeof(BarService), BarService.Menu},
+            {typeof(ServiceWithSubMenus), ServiceWithSubMenus.Menu}
+        };
+
+        var menus = new List<IMenu>();
+        foreach (var menuDef in menuDefs) {
+            var menu = factory.NewMenu(menuDef.Key);
+            menuDef.Value(menu);
+            menus.Add(menu);
+        }
+
+        return menus.ToArray();
+    }
+}
+
+public class FooService {
+    public static void Menu(IMenu menu) {
+        menu.AddRemainingActions(typeof(FooService));
+    }
+
+    public void FooAction0() { }
+
+    public void FooAction1() { }
+
+    public void FooAction2(string p1, int p2) { }
+}
+
+[Named("Subs")]
+public class ServiceWithSubMenus {
+    public static void Menu(IMenu menu) {
+        var type = typeof(ServiceWithSubMenus);
+        var sub1 = menu.CreateSubMenu("Sub1");
+        sub1.AddAction(type, "Action1");
+        sub1.AddAction(type, "Action3");
+        var sub2 = menu.CreateSubMenu("Sub2");
+        sub2.AddAction(type, "Action2");
+        sub2.AddAction(type, "Action0");
+    }
+
+    public void Action0() { }
+
+    public void Action1() { }
+
+    public void Action2() { }
+
+    public void Action3() { }
+}
+
+[Named("Bars")]
+public class BarService {
+    public static void Menu(IMenu menu) {
+        menu.AddRemainingActions(typeof(BarService));
+    }
+
+    [MemberOrder(10)]
+    public void BarAction0() { }
+
+    [MemberOrder(1)]
+    public void BarAction1() { }
+
+    public void BarAction2() { }
+
+    public void BarAction3() { }
+}
+
+#endregion

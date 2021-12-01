@@ -8,23 +8,23 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
-namespace NakedFramework.Persistor.EFCore.Component {
-    public class EFCoreDestroyObjectCommand : IDestroyObjectCommand {
-        private readonly EFCoreLocalContext context;
-        private readonly INakedObjectAdapter nakedObjectAdapter;
+namespace NakedFramework.Persistor.EFCore.Component; 
 
-        public EFCoreDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context) {
-            this.context = context;
-            this.nakedObjectAdapter = nakedObjectAdapter;
-        }
+public class EFCoreDestroyObjectCommand : IDestroyObjectCommand {
+    private readonly EFCoreLocalContext context;
+    private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public void Execute() {
-            context.WrappedDbContext.Remove(nakedObjectAdapter.Object);
-            context.DeletedNakedObjects.Add(nakedObjectAdapter);
-        }
-
-        public INakedObjectAdapter OnObject() => nakedObjectAdapter;
-
-        public override string ToString() => $"EFCoreDestroyObjectCommand [object={nakedObjectAdapter}]";
+    public EFCoreDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context) {
+        this.context = context;
+        this.nakedObjectAdapter = nakedObjectAdapter;
     }
+
+    public void Execute() {
+        context.WrappedDbContext.Remove(nakedObjectAdapter.Object);
+        context.DeletedNakedObjects.Add(nakedObjectAdapter);
+    }
+
+    public INakedObjectAdapter OnObject() => nakedObjectAdapter;
+
+    public override string ToString() => $"EFCoreDestroyObjectCommand [object={nakedObjectAdapter}]";
 }

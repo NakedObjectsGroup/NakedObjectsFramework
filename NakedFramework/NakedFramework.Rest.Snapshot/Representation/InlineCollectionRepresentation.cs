@@ -15,43 +15,43 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class InlineCollectionRepresentation : InlineMemberAbstractRepresentation {
-        protected InlineCollectionRepresentation(IFrameworkFacade frameworkFacade, AbstractCollectionRepresentationStrategy strategy)
-            : base(frameworkFacade.OidStrategy, strategy.GetFlags()) {
-            MemberType = MemberTypes.Collection;
-            Id = strategy.GetId();
-            Links = strategy.GetLinks(true);
-            Extensions = strategy.GetExtensions();
-            SetHeader(strategy.GetTarget());
+namespace NakedFramework.Rest.Snapshot.Representation; 
+
+[DataContract]
+public class InlineCollectionRepresentation : InlineMemberAbstractRepresentation {
+    protected InlineCollectionRepresentation(IFrameworkFacade frameworkFacade, AbstractCollectionRepresentationStrategy strategy)
+        : base(frameworkFacade.OidStrategy, strategy.GetFlags()) {
+        MemberType = MemberTypes.Collection;
+        Id = strategy.GetId();
+        Links = strategy.GetLinks(true);
+        Extensions = strategy.GetExtensions();
+        SetHeader(strategy.GetTarget());
+    }
+
+    public static InlineCollectionRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags, bool asTableColumn) {
+        var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(asTableColumn, true, frameworkFacade, req, propertyContext, flags);
+
+        var size = collectionRepresentationStrategy.GetSize();
+
+        if (size != null) {
+            optionals.Add(new OptionalProperty(JsonPropertyNames.Size, size));
         }
 
-        public static InlineCollectionRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags, bool asTableColumn) {
-            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(asTableColumn, true, frameworkFacade, req, propertyContext, flags);
+        var value = collectionRepresentationStrategy.GetValue();
 
-            var size = collectionRepresentationStrategy.GetSize();
-
-            if (size != null) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Size, size));
-            }
-
-            var value = collectionRepresentationStrategy.GetValue();
-
-            if (value != null) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, value));
-            }
-
-            var actions = collectionRepresentationStrategy.GetActions();
-
-            if (actions.Any()) {
-                var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
-            }
-
-            return optionals.Any()
-                ? CreateWithOptionals<InlineCollectionRepresentation>(new object[] {frameworkFacade, collectionRepresentationStrategy}, optionals)
-                : new InlineCollectionRepresentation(frameworkFacade, collectionRepresentationStrategy);
+        if (value != null) {
+            optionals.Add(new OptionalProperty(JsonPropertyNames.Value, value));
         }
+
+        var actions = collectionRepresentationStrategy.GetActions();
+
+        if (actions.Any()) {
+            var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
+            optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
+        }
+
+        return optionals.Any()
+            ? CreateWithOptionals<InlineCollectionRepresentation>(new object[] {frameworkFacade, collectionRepresentationStrategy}, optionals)
+            : new InlineCollectionRepresentation(frameworkFacade, collectionRepresentationStrategy);
     }
 }

@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyCheckFacet {
-        public ConcurrencyCheckFacet(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IConcurrencyCheckFacet);
-    }
+[Serializable]
+public sealed class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyCheckFacet {
+    public ConcurrencyCheckFacet(ISpecification holder)
+        : base(Type, holder) { }
+
+    public static Type Type => typeof(IConcurrencyCheckFacet);
 }

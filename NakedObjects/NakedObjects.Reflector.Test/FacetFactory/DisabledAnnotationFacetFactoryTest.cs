@@ -21,212 +21,212 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private DisabledAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IDisabledFacet)};
+[TestClass]
+public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private DisabledAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IDisabledFacet)};
 
-        [TestMethod]
-        public void TestDisabledAnnotationPickedUpOnAction() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-            var actionMethod = FindMethod(typeof(Customer2), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IDisabledFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisabledFacetAbstract);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
+    [TestMethod]
+    public void TestDisabledAnnotationPickedUpOnAction() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        [TestMethod]
-        public void TestDisabledAnnotationPickedUpOnCollection() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "Orders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IDisabledFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisabledFacetAbstract);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestDisabledAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IDisabledFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisabledFacetAbstract);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestDisabledAnnotationPickedUpOnParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer7), nameof(Customer7.SomeAction), new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IDisabledFacet));
-            var disabledFacetAbstract = (DisabledFacetAbstract) facet;
-            Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestDisabledWhenAlwaysAnnotationPickedUpOn() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IDisabledFacet));
-            var disabledFacetAbstract = (DisabledFacetAbstract) facet;
-            Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestDisabledWhenNeverAnnotationPickedUpOn() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer4), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IDisabledFacet));
-            var disabledFacetAbstract = (DisabledFacetAbstract) facet;
-            Assert.AreEqual(WhenTo.Never, disabledFacetAbstract.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestDisabledWhenOncePersistedAnnotationPickedUpOn() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer5), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IDisabledFacet));
-            var disabledFacetAbstract = (DisabledFacetAbstract) facet;
-            Assert.AreEqual(WhenTo.OncePersisted, disabledFacetAbstract.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestDisabledWhenUntilPersistedAnnotationPickedUpOn() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer6), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IDisabledFacet));
-            var disabledFacetAbstract = (DisabledFacetAbstract) facet;
-            Assert.AreEqual(WhenTo.UntilPersisted, disabledFacetAbstract.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [Disabled]
-            public int NumberOfOrders => 0;
-        }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [Disabled]
-            public IList Orders => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer2
-
-        private class Customer2 {
-            [Disabled]
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer3
-
-        private class Customer3 {
-            [Disabled(WhenTo.Always)]
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer4
-
-        private class Customer4 {
-            [Disabled(WhenTo.Never)]
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer5
-
-        private class Customer5 {
-            [Disabled(WhenTo.OncePersisted)]
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer6
-
-        private class Customer6 {
-            [Disabled(WhenTo.UntilPersisted)]
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer7
-
-        private class Customer7 {
-            public void SomeAction([Disabled] string disabledParameter) { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new DisabledAnnotationFacetFactory(GetOrder<DisabledAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+        var actionMethod = FindMethod(typeof(Customer2), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IDisabledFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is DisabledFacetAbstract);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
+    [TestMethod]
+    public void TestDisabledAnnotationPickedUpOnCollection() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "Orders");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IDisabledFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is DisabledFacetAbstract);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestDisabledAnnotationPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer), "NumberOfOrders");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IDisabledFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is DisabledFacetAbstract);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestDisabledAnnotationPickedUpOnParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer7), nameof(Customer7.SomeAction), new[] {typeof(string)});
+        metamodel = facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IDisabledFacet));
+        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestDisabledWhenAlwaysAnnotationPickedUpOn() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IDisabledFacet));
+        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestDisabledWhenNeverAnnotationPickedUpOn() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer4), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IDisabledFacet));
+        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        Assert.AreEqual(WhenTo.Never, disabledFacetAbstract.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestDisabledWhenOncePersistedAnnotationPickedUpOn() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer5), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IDisabledFacet));
+        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        Assert.AreEqual(WhenTo.OncePersisted, disabledFacetAbstract.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestDisabledWhenUntilPersistedAnnotationPickedUpOn() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer6), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IDisabledFacet));
+        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        Assert.AreEqual(WhenTo.UntilPersisted, disabledFacetAbstract.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    #region Nested type: Customer
+
+    private class Customer {
+        [Disabled]
+        public int NumberOfOrders => 0;
+    }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [Disabled]
+        public IList Orders => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer2
+
+    private class Customer2 {
+        [Disabled]
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer3
+
+    private class Customer3 {
+        [Disabled(WhenTo.Always)]
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer4
+
+    private class Customer4 {
+        [Disabled(WhenTo.Never)]
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer5
+
+    private class Customer5 {
+        [Disabled(WhenTo.OncePersisted)]
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer6
+
+    private class Customer6 {
+        [Disabled(WhenTo.UntilPersisted)]
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer7
+
+    private class Customer7 {
+        public void SomeAction([Disabled] string disabledParameter) { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new DisabledAnnotationFacetFactory(GetOrder<DisabledAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.
+// ReSharper restore UnusedMember.Local

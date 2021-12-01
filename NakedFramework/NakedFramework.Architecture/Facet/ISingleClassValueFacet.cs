@@ -9,14 +9,14 @@ using System;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface ISingleClassValueFacet : IFacet {
-        Type Value { get; }
+namespace NakedFramework.Architecture.Facet; 
 
-        /// <summary>
-        ///     Convenience to return the <see cref="IObjectSpec" /> corresponding to this facet's
-        ///     <see cref="Value" />
-        /// </summary>
-        IObjectSpecImmutable ValueSpec { get; }
-    }
+public interface ISingleClassValueFacet : IFacet {
+    Type Value { get; }
+
+    /// <summary>
+    ///     Convenience to return the <see cref="IObjectSpec" /> corresponding to this facet's
+    ///     <see cref="Value" />
+    /// </summary>
+    IObjectSpecImmutable ValueSpec { get; }
 }

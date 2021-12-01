@@ -9,21 +9,21 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract, INamedFacet {
-        protected NamedFacetAbstract(string valueString, ISpecification holder)
-            : base(Type, holder, valueString) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(INamedFacet);
+[Serializable]
+public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract, INamedFacet {
+    protected NamedFacetAbstract(string valueString, ISpecification holder)
+        : base(Type, holder, valueString) { }
 
-        #region INamedFacet Members
+    public static Type Type => typeof(INamedFacet);
 
-        public string CapitalizedName { get; protected set; }
-        public string ShortName { get; protected set; }
-        public string SimpleName { get; protected set; }
-        public string NaturalName { get; protected set; }
+    #region INamedFacet Members
 
-        #endregion
-    }
+    public string CapitalizedName { get; protected set; }
+    public string ShortName { get; protected set; }
+    public string SimpleName { get; protected set; }
+    public string NaturalName { get; protected set; }
+
+    #endregion
 }

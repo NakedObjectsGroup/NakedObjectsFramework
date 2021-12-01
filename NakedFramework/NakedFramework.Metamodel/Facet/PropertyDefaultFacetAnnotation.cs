@@ -9,21 +9,21 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class PropertyDefaultFacetAnnotation : PropertyDefaultFacetAbstract {
-        private readonly object value;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public PropertyDefaultFacetAnnotation(object value, ISpecification holder)
-            : base(holder) =>
-            this.value = value;
+[Serializable]
+public sealed class PropertyDefaultFacetAnnotation : PropertyDefaultFacetAbstract {
+    private readonly object value;
 
-        public override bool CanAlwaysReplace => false;
+    public PropertyDefaultFacetAnnotation(object value, ISpecification holder)
+        : base(holder) =>
+        this.value = value;
 
-        public override object GetDefault(INakedObjectAdapter inObjectAdapter) => value;
+    public override bool CanAlwaysReplace => false;
 
-        protected override string ToStringValues() => $"Value={value}";
-    }
+    public override object GetDefault(INakedObjectAdapter inObjectAdapter) => value;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override string ToStringValues() => $"Value={value}";
 }
+
+// Copyright (c) Naked Objects Group Ltd.

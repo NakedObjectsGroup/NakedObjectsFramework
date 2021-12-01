@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<int>, IIntegerValueFacet {
-        private const int DefaultValueConst = 0;
-        private const bool EqualBycontent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 11;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public IntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<int>, IIntegerValueFacet {
+    private const int DefaultValueConst = 0;
+    private const bool EqualBycontent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 11;
 
-        public static Type Type => typeof(IIntegerValueFacet);
+    public IntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(int);
+    public static Type Type => typeof(IIntegerValueFacet);
 
-        #region IIntegerValueFacet Members
+    public static Type AdaptedType => typeof(int);
 
-        public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<int>();
+    #region IIntegerValueFacet Members
 
-        #endregion
+    public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<int>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(int);
+    #endregion
 
-        protected override int DoParse(string entry) {
-            try {
-                return int.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, int.MinValue, int.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(int);
+
+    protected override int DoParse(string entry) {
+        try {
+            return int.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
         }
-
-        protected override int DoParseInvariant(string entry) => int.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(int obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, int value) => value.ToString(mask);
-
-        protected override string DoEncode(int obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-        protected override int DoRestore(string data) => int.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "IntAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, int.MinValue, int.MaxValue));
+        }
     }
+
+    protected override int DoParseInvariant(string entry) => int.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(int obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, int value) => value.ToString(mask);
+
+    protected override string DoEncode(int obj) => obj.ToString("G", CultureInfo.InvariantCulture);
+
+    protected override int DoRestore(string data) => int.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "IntAdapter: ";
 }

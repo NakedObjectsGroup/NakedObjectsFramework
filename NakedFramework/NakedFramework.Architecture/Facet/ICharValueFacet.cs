@@ -7,10 +7,10 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface ICharValueFacet : IFacet {
-        char CharValue(INakedObjectAdapter nakedObjectAdapter);
-    }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface ICharValueFacet : IFacet {
+    char CharValue(INakedObjectAdapter nakedObjectAdapter);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -10,10 +10,10 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedLegacy.Reflector.Facet {
-    [Serializable]
-    public sealed class StaticMethodFacet : MarkerFacetAbstract, IStaticFunctionFacet {
-        public StaticMethodFacet(ISpecification holder)
-            : base(typeof(IStaticFunctionFacet), holder) { }
-    }
+namespace NakedLegacy.Reflector.Facet; 
+
+[Serializable]
+public sealed class StaticMethodFacet : MarkerFacetAbstract, IStaticFunctionFacet {
+    public StaticMethodFacet(ISpecification holder)
+        : base(typeof(IStaticFunctionFacet), holder) { }
 }

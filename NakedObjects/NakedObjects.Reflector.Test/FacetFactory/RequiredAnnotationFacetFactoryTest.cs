@@ -20,129 +20,129 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class RequiredAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private RequiredAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IMandatoryFacet)};
+[TestClass]
+public class RequiredAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private RequiredAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IMandatoryFacet)};
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestRequiredAnnotationOnPrimitiveOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MandatoryFacet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestRequiredAnnotationOnPrimitiveOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer3), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MandatoryFacet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestRequiredAnnotationPickedUpOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MandatoryFacet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestRequiredAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MandatoryFacet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [Required]
-// ReSharper disable once UnusedMember.Local
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer2
-
-        private class Customer2 {
-// ReSharper disable once UnusedMember.Local
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Required] string foo) { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer3
-
-        private class Customer3 {
-            [Required]
-// ReSharper disable once UnusedMember.Local
-            public int NumberOfOrders => 0;
-        }
-
-        #endregion
-
-        #region Nested type: Customer4
-
-        private class Customer4 {
-// ReSharper disable once UnusedMember.Local
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Required] int foo) { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new RequiredAnnotationFacetFactory(GetOrder<RequiredAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestRequiredAnnotationOnPrimitiveOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is MandatoryFacet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestRequiredAnnotationOnPrimitiveOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer3), "NumberOfOrders");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is MandatoryFacet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestRequiredAnnotationPickedUpOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is MandatoryFacet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestRequiredAnnotationPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "FirstName");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is MandatoryFacet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [Required]
+// ReSharper disable once UnusedMember.Local
+        public string FirstName => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer2
+
+    private class Customer2 {
+// ReSharper disable once UnusedMember.Local
+// ReSharper disable once UnusedParameter.Local
+        public void SomeAction([Required] string foo) { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer3
+
+    private class Customer3 {
+        [Required]
+// ReSharper disable once UnusedMember.Local
+        public int NumberOfOrders => 0;
+    }
+
+    #endregion
+
+    #region Nested type: Customer4
+
+    private class Customer4 {
+// ReSharper disable once UnusedMember.Local
+// ReSharper disable once UnusedParameter.Local
+        public void SomeAction([Required] int foo) { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new RequiredAnnotationFacetFactory(GetOrder<RequiredAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

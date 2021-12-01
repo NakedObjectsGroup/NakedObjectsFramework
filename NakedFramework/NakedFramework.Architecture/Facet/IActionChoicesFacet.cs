@@ -10,18 +10,18 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Obtain choices for each of the parameters of the action
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     invoking the <c>ChoicesXxx</c> support method for an
-    ///     action
-    /// </para>
-    public interface IActionChoicesFacet : IFacet {
-        (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
-        bool IsMultiple { get; }
-        object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Obtain choices for each of the parameters of the action
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     invoking the <c>ChoicesXxx</c> support method for an
+///     action
+/// </para>
+public interface IActionChoicesFacet : IFacet {
+    (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+    bool IsMultiple { get; }
+    object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework);
 }

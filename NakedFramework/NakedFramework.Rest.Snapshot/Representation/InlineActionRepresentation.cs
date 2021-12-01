@@ -15,35 +15,35 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class InlineActionRepresentation : InlineMemberAbstractRepresentation {
-        protected InlineActionRepresentation(IOidStrategy oidStrategy, AbstractActionRepresentationStrategy strategy)
-            : base(oidStrategy, strategy.GetFlags()) {
-            MemberType = MemberTypes.Action;
-            Id = strategy.GetId();
-            Links = strategy.GetLinks();
-            Extensions = strategy.GetExtensions();
-            SetHeader(strategy.GetTarget());
+namespace NakedFramework.Rest.Snapshot.Representation; 
+
+[DataContract]
+public class InlineActionRepresentation : InlineMemberAbstractRepresentation {
+    protected InlineActionRepresentation(IOidStrategy oidStrategy, AbstractActionRepresentationStrategy strategy)
+        : base(oidStrategy, strategy.GetFlags()) {
+        MemberType = MemberTypes.Action;
+        Id = strategy.GetId();
+        Links = strategy.GetLinks();
+        Extensions = strategy.GetExtensions();
+        SetHeader(strategy.GetTarget());
+    }
+
+    public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
+        var consent = actionContext.Action.IsUsable(actionContext.Target);
+
+        var strategy = AbstractActionRepresentationStrategy.GetStrategy(true, oidStrategy, req, actionContext, flags);
+        var optionals = new List<OptionalProperty>();
+
+        if (consent.IsVetoed) {
+            optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));
         }
 
-        public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
-            var consent = actionContext.Action.IsUsable(actionContext.Target);
-
-            var strategy = AbstractActionRepresentationStrategy.GetStrategy(true, oidStrategy, req, actionContext, flags);
-            var optionals = new List<OptionalProperty>();
-
-            if (consent.IsVetoed) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));
-            }
-
-            if (strategy.ShowParameters()) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Parameters, strategy.GetParameters()));
-            }
-
-            return optionals.Any()
-                ? CreateWithOptionals<InlineActionRepresentation>(new object[] {oidStrategy, strategy}, optionals)
-                : new InlineActionRepresentation(oidStrategy, strategy);
+        if (strategy.ShowParameters()) {
+            optionals.Add(new OptionalProperty(JsonPropertyNames.Parameters, strategy.GetParameters()));
         }
+
+        return optionals.Any()
+            ? CreateWithOptionals<InlineActionRepresentation>(new object[] {oidStrategy, strategy}, optionals)
+            : new InlineActionRepresentation(oidStrategy, strategy);
     }
 }

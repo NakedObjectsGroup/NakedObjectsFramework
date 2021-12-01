@@ -10,9 +10,9 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class NoKey {
-        [Title]
-        public virtual string Name { get; set; }
-    }
+namespace RestfulObjects.Test.Data; 
+
+public class NoKey {
+    [Title]
+    public virtual string Name { get; set; }
 }

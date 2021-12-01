@@ -12,41 +12,41 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.SalesPerson")]
-    public class SalesPerson {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int SalesPersonID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public int? TerritoryID { get; set; }
+[Table("Sales.SalesPerson")]
+public class SalesPerson {
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int SalesPersonID { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal? SalesQuota { get; set; }
+    public int? TerritoryID { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal Bonus { get; set; }
+    [Column(TypeName = "money")]
+    public decimal? SalesQuota { get; set; }
 
-        [Column(TypeName = "smallmoney")]
-        public decimal CommissionPct { get; set; }
+    [Column(TypeName = "money")]
+    public decimal Bonus { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal SalesYTD { get; set; }
+    [Column(TypeName = "smallmoney")]
+    public decimal CommissionPct { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal SalesLastYear { get; set; }
+    [Column(TypeName = "money")]
+    public decimal SalesYTD { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Column(TypeName = "money")]
+    public decimal SalesLastYear { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual Employee Employee { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
+    public virtual Employee Employee { get; set; }
 
-        public virtual ICollection<SalesPersonQuotaHistory> SalesPersonQuotaHistories { get; set; } = new HashSet<SalesPersonQuotaHistory>();
+    public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 
-        public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; } = new HashSet<SalesTerritoryHistory>();
+    public virtual ICollection<SalesPersonQuotaHistory> SalesPersonQuotaHistories { get; set; } = new HashSet<SalesPersonQuotaHistory>();
 
-        public virtual ICollection<Store> Stores { get; set; } = new HashSet<Store>();
-    }
+    public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; } = new HashSet<SalesTerritoryHistory>();
+
+    public virtual ICollection<Store> Stores { get; set; } = new HashSet<Store>();
 }

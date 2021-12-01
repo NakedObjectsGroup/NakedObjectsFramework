@@ -8,61 +8,61 @@
 using System;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Core.Reflect {
-    public abstract class ConsentAbstract : IConsent {
-        private readonly string reason;
+namespace NakedFramework.Core.Reflect; 
 
-        protected internal ConsentAbstract() {
-            Exception = null;
-            reason = null;
-        }
+public abstract class ConsentAbstract : IConsent {
+    private readonly string reason;
 
-        protected internal ConsentAbstract(string reason) {
-            Exception = null;
-            this.reason = reason;
-        }
-
-        protected internal ConsentAbstract(Exception exception) {
-            Exception = exception;
-            reason = exception?.Message;
-        }
-
-        /// <summary>
-        ///     Returns an Allow (Allow.Default) object if true; Veto (Veto.Default) if false
-        /// </summary>
-        public static IConsent GetAllow(bool allow) => allow ? Allow.Default : Veto.Default;
-
-        /// <summary>
-        ///     Returns a new Allow object if <c>allow</c> is <c>true</c>; a new Veto if <c>false</c>. The respective reason
-        ///     is passed to the newly created object.
-        /// </summary>
-        public static IConsent Create(bool allow, string reasonAllowed, string reasonVeteod) => allow ? new Allow(reasonAllowed) : new Veto(reasonVeteod);
-
-        public static IConsent Create(string vetoReason) => vetoReason == null ? Allow.Default : new Veto(vetoReason);
-
-        public override string ToString() => "Permission [type=" + (IsVetoed ? "VETOED" : "ALLOWED") + ", reason=" + reason + "]";
-
-        #region IConsent Members
-
-        /// <summary>
-        ///     Returns the permission's reason
-        /// </summary>
-        public virtual string Reason => reason ?? "";
-
-        public virtual Exception Exception { get; }
-
-        /// <summary>
-        ///     Returns true if this object is giving permission
-        /// </summary>
-        public abstract bool IsAllowed { get; }
-
-        /// <summary>
-        ///     Returns <c>true</c> if this object is NOT giving permission
-        /// </summary>
-        public abstract bool IsVetoed { get; }
-
-        #endregion
+    protected internal ConsentAbstract() {
+        Exception = null;
+        reason = null;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected internal ConsentAbstract(string reason) {
+        Exception = null;
+        this.reason = reason;
+    }
+
+    protected internal ConsentAbstract(Exception exception) {
+        Exception = exception;
+        reason = exception?.Message;
+    }
+
+    /// <summary>
+    ///     Returns an Allow (Allow.Default) object if true; Veto (Veto.Default) if false
+    /// </summary>
+    public static IConsent GetAllow(bool allow) => allow ? Allow.Default : Veto.Default;
+
+    /// <summary>
+    ///     Returns a new Allow object if <c>allow</c> is <c>true</c>; a new Veto if <c>false</c>. The respective reason
+    ///     is passed to the newly created object.
+    /// </summary>
+    public static IConsent Create(bool allow, string reasonAllowed, string reasonVeteod) => allow ? new Allow(reasonAllowed) : new Veto(reasonVeteod);
+
+    public static IConsent Create(string vetoReason) => vetoReason == null ? Allow.Default : new Veto(vetoReason);
+
+    public override string ToString() => "Permission [type=" + (IsVetoed ? "VETOED" : "ALLOWED") + ", reason=" + reason + "]";
+
+    #region IConsent Members
+
+    /// <summary>
+    ///     Returns the permission's reason
+    /// </summary>
+    public virtual string Reason => reason ?? "";
+
+    public virtual Exception Exception { get; }
+
+    /// <summary>
+    ///     Returns true if this object is giving permission
+    /// </summary>
+    public abstract bool IsAllowed { get; }
+
+    /// <summary>
+    ///     Returns <c>true</c> if this object is NOT giving permission
+    /// </summary>
+    public abstract bool IsVetoed { get; }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -8,23 +8,23 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Mechanism for obtaining the action menu for a type.
-    /// </summary>
-    /// <para>
-    /// </para>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, by default the action menu will
-    ///     be generated from the object's actions, taking account of action ordering.
-    ///     However, this may be overridden by writing a method named <c>Menu</c>.
-    /// </para>
-    public interface IMenuFacet : IFacet {
-        /// <summary>
-        ///     The Menu for this type.
-        /// </summary>
-        IMenuImmutable GetMenu();
+namespace NakedFramework.Architecture.Facet; 
 
-        void CreateMenu(IMetamodelBuilder metamodel);
-    }
+/// <summary>
+///     Mechanism for obtaining the action menu for a type.
+/// </summary>
+/// <para>
+/// </para>
+/// <para>
+///     In the standard Naked Objects Programming Model, by default the action menu will
+///     be generated from the object's actions, taking account of action ordering.
+///     However, this may be overridden by writing a method named <c>Menu</c>.
+/// </para>
+public interface IMenuFacet : IFacet {
+    /// <summary>
+    ///     The Menu for this type.
+    /// </summary>
+    IMenuImmutable GetMenu();
+
+    void CreateMenu(IMetamodelBuilder metamodel);
 }

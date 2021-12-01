@@ -8,25 +8,24 @@
 using NakedFramework.Architecture.SpecImmutable;
 using System;
 
-namespace NakedFramework.Core.Util
-{
-    public static class ToStringHelpers {
-        public static string NameAndHashCode(object forObject) => $"{CreateName(forObject)}";
+namespace NakedFramework.Core.Util; 
 
-        private static string CreateName(object forObject) => $"{Name(forObject)}@{HashCode(forObject)}";
+public static class ToStringHelpers {
+    public static string NameAndHashCode(object forObject) => $"{CreateName(forObject)}";
 
-        public static string Name(object forObject)
-        {
-            var name = forObject.GetType().FullName;
-            return name[(name.LastIndexOf('.') + 1)..];
-        }
+    private static string CreateName(object forObject) => $"{Name(forObject)}@{HashCode(forObject)}";
 
-        public static string AsHex(int number) => Convert.ToString(number, 16);
-
-        public static string HashCode(object forObject) => AsHex(forObject.GetHashCode());
-
-        public static string SuperClass(ITypeSpecImmutable spec) => spec.Superclass is null ? "object" : spec.Superclass.FullName;
+    public static string Name(object forObject)
+    {
+        var name = forObject.GetType().FullName;
+        return name[(name.LastIndexOf('.') + 1)..];
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public static string AsHex(int number) => Convert.ToString(number, 16);
+
+    public static string HashCode(object forObject) => AsHex(forObject.GetHashCode());
+
+    public static string SuperClass(ITypeSpecImmutable spec) => spec.Superclass is null ? "object" : spec.Superclass.FullName;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

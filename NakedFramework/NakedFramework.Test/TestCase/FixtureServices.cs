@@ -8,38 +8,38 @@
 using System;
 using System.Threading;
 
-namespace NakedFramework.Test.TestCase {
-    public class FixtureServices {
-        public FixtureServices() => Clock = FixtureClock.Initialize();
+namespace NakedFramework.Test.TestCase; 
 
-        protected FixtureClock Clock { get; }
+public class FixtureServices {
+    public FixtureServices() => Clock = FixtureClock.Initialize();
 
-        public void ResetClock() {
-            Clock.Reset();
-        }
+    protected FixtureClock Clock { get; }
 
-        #region Nested type: FixtureClock
-
-        protected class FixtureClock {
-            private DateTime time;
-
-            /// <summary>
-            ///     Create a return new FixtureClock
-            /// </summary>
-            public static FixtureClock Initialize() => new();
-
-            /// <summary>
-            ///     SetupContexts time to now
-            /// </summary>
-            public void Reset() {
-                time = DateTime.Now;
-            }
-
-            public override string ToString() => time.ToString(Thread.CurrentThread.CurrentCulture);
-        }
-
-        #endregion
+    public void ResetClock() {
+        Clock.Reset();
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region Nested type: FixtureClock
+
+    protected class FixtureClock {
+        private DateTime time;
+
+        /// <summary>
+        ///     Create a return new FixtureClock
+        /// </summary>
+        public static FixtureClock Initialize() => new();
+
+        /// <summary>
+        ///     SetupContexts time to now
+        /// </summary>
+        public void Reset() {
+            time = DateTime.Now;
+        }
+
+        public override string ToString() => time.ToString(Thread.CurrentThread.CurrentCulture);
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

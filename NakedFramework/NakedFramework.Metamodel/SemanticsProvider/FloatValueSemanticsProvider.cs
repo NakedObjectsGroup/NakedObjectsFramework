@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract<float>, IFloatingPointValueFacet {
-        private const float DefaultValueConst = 0;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 12;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public FloatValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract<float>, IFloatingPointValueFacet {
+    private const float DefaultValueConst = 0;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 12;
 
-        public static Type Type => typeof(IFloatingPointValueFacet);
+    public FloatValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(float);
+    public static Type Type => typeof(IFloatingPointValueFacet);
 
-        #region IFloatingPointValueFacet Members
+    public static Type AdaptedType => typeof(float);
 
-        public float FloatValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<float>();
+    #region IFloatingPointValueFacet Members
 
-        #endregion
+    public float FloatValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<float>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(float);
+    #endregion
 
-        protected override float DoParse(string entry) {
-            try {
-                return float.Parse(entry);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, float.MinValue, float.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(float);
+
+    protected override float DoParse(string entry) {
+        try {
+            return float.Parse(entry);
         }
-
-        protected override float DoParseInvariant(string entry) => float.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(float obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, float value) => value.ToString(mask);
-
-        protected override string DoEncode(float obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-        protected override float DoRestore(string data) => float.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "FloatAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, float.MinValue, float.MaxValue));
+        }
     }
+
+    protected override float DoParseInvariant(string entry) => float.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(float obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, float value) => value.ToString(mask);
+
+    protected override string DoEncode(float obj) => obj.ToString("G", CultureInfo.InvariantCulture);
+
+    protected override float DoRestore(string data) => float.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "FloatAdapter: ";
 }

@@ -14,18 +14,18 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    public sealed class SbyteValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public SbyteValueTypeFacetFactory(IFacetFactoryOrder<SbyteValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!SbyteValueSemanticsProvider.IsAdaptedType(type)) {
-                return metamodel;
-            }
+public sealed class SbyteValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public SbyteValueTypeFacetFactory(IFacetFactoryOrder<SbyteValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(SbyteValueSemanticsProvider.AdaptedType, metamodel);
-            AddValueFacets(new SbyteValueSemanticsProvider(oSpec, specification), specification);
-            return mm;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!SbyteValueSemanticsProvider.IsAdaptedType(type)) {
+            return metamodel;
         }
+
+        var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(SbyteValueSemanticsProvider.AdaptedType, metamodel);
+        AddValueFacets(new SbyteValueSemanticsProvider(oSpec, specification), specification);
+        return mm;
     }
 }

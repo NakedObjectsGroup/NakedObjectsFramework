@@ -8,18 +8,18 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Component {
-    /// <summary>
-    ///     Service for mapping between POCO domain objects and their (INakedObjectAdapter) adapters
-    /// </summary>
-    public interface INakedObjectAdapterMap : IEnumerable<INakedObjectAdapter> {
-        void Add(object obj, INakedObjectAdapter adapter);
-        bool ContainsObject(object obj);
-        INakedObjectAdapter GetObject(object obj);
-        void Reset();
-        void Shutdown();
-        void Remove(INakedObjectAdapter nakedObjectAdapter);
-    }
+namespace NakedFramework.Architecture.Component; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Service for mapping between POCO domain objects and their (INakedObjectAdapter) adapters
+/// </summary>
+public interface INakedObjectAdapterMap : IEnumerable<INakedObjectAdapter> {
+    void Add(object obj, INakedObjectAdapter adapter);
+    bool ContainsObject(object obj);
+    INakedObjectAdapter GetObject(object obj);
+    void Reset();
+    void Shutdown();
+    void Remove(INakedObjectAdapter nakedObjectAdapter);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

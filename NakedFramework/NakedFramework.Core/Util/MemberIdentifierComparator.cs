@@ -9,15 +9,15 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Util {
-    /// <summary>
-    ///     Compares <see cref="IMemberSpecImmutable" /> by <see cref="ISpecification.Identifier" />
-    /// </summary>
-    internal class MemberIdentifierComparator<T> : IComparer<T> where T : ISpecification {
-        #region IComparer<T> Members
+namespace NakedFramework.Core.Util; 
 
-        public int Compare(T o1, T o2) => o1.Identifier.CompareTo(o2.Identifier);
+/// <summary>
+///     Compares <see cref="IMemberSpecImmutable" /> by <see cref="ISpecification.Identifier" />
+/// </summary>
+internal class MemberIdentifierComparator<T> : IComparer<T> where T : ISpecification {
+    #region IComparer<T> Members
 
-        #endregion
-    }
+    public int Compare(T o1, T o2) => o1.Identifier.CompareTo(o2.Identifier);
+
+    #endregion
 }

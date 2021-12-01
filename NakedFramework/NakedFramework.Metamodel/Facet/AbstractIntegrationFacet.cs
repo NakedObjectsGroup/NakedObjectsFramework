@@ -10,19 +10,19 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
-        protected AbstractIntegrationFacet(ISpecification holder) : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        private static Type Type => typeof(IIntegrationFacet);
+public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
+    protected AbstractIntegrationFacet(ISpecification holder) : base(Type, holder) { }
 
-        public abstract void Execute(IMetamodelBuilder metamodelBuilder);
-        public abstract void AddAction(Action<IMetamodelBuilder> action);
+    private static Type Type => typeof(IIntegrationFacet);
 
-        public void Remove() {
-            if (Specification is ISpecificationBuilder builder) {
-                builder.RemoveFacet(this);
-            }
+    public abstract void Execute(IMetamodelBuilder metamodelBuilder);
+    public abstract void AddAction(Action<IMetamodelBuilder> action);
+
+    public void Remove() {
+        if (Specification is ISpecificationBuilder builder) {
+            builder.RemoveFacet(this);
         }
     }
 }

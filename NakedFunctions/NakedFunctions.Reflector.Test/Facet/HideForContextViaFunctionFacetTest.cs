@@ -10,23 +10,23 @@ using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class HideForContextViaFunctionFacetTest {
-        private static readonly string TestValue = NakedObjects.Resources.NakedObjects.Hidden;
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        [TestMethod]
-        public void TestHidden() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Hides));
-            var testFacet = new HideForContextViaFunctionFacet(method, null, null);
+[TestClass]
+public class HideForContextViaFunctionFacetTest {
+    private static readonly string TestValue = NakedObjects.Resources.NakedObjects.Hidden;
 
-            var result = testFacet.HiddenReason(new Mock<INakedObjectAdapter>().Object, null);
+    [TestMethod]
+    public void TestHidden() {
+        var method = typeof(TestClass).GetMethod(nameof(TestClass.Hides));
+        var testFacet = new HideForContextViaFunctionFacet(method, null, null);
 
-            Assert.AreEqual(TestValue, result);
-        }
+        var result = testFacet.HiddenReason(new Mock<INakedObjectAdapter>().Object, null);
 
-        public static class TestClass {
-            public static bool Hides() => true;
-        }
+        Assert.AreEqual(TestValue, result);
+    }
+
+    public static class TestClass {
+        public static bool Hides() => true;
     }
 }

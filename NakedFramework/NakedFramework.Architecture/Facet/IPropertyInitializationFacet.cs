@@ -7,24 +7,24 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     The mechanism by which the value of the property can be initialized.
+/// </summary>
+/// <para>
+///     This differs from the <see cref="IPropertySetterFacet" /> in that it is only called when
+///     object is set up (after persistence) and not every time a property changes; hence
+///     it will not be made part of a transaction.
+/// </para>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to invoking the mutator method for a property.
+/// </para>
+/// <seealso cref="IPropertyAccessorFacet" />
+/// <seealso cref="IPropertySetterFacet" />
+public interface IPropertyInitializationFacet : IFacet {
     /// <summary>
-    ///     The mechanism by which the value of the property can be initialized.
+    ///     Sets the value of this property
     /// </summary>
-    /// <para>
-    ///     This differs from the <see cref="IPropertySetterFacet" /> in that it is only called when
-    ///     object is set up (after persistence) and not every time a property changes; hence
-    ///     it will not be made part of a transaction.
-    /// </para>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to invoking the mutator method for a property.
-    /// </para>
-    /// <seealso cref="IPropertyAccessorFacet" />
-    /// <seealso cref="IPropertySetterFacet" />
-    public interface IPropertyInitializationFacet : IFacet {
-        /// <summary>
-        ///     Sets the value of this property
-        /// </summary>
-        void InitProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue);
-    }
+    void InitProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue);
 }

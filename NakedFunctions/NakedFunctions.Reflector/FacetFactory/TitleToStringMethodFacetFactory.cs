@@ -20,39 +20,39 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class TitleToStringMethodFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
-        private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ToStringMethod
-        };
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        private readonly ILogger<TitleToStringMethodFacetFactory> logger;
+public sealed class TitleToStringMethodFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+    private static readonly string[] FixedPrefixes = {
+        RecognisedMethodsAndPrefixes.ToStringMethod
+    };
 
-        public TitleToStringMethodFacetFactory(IFacetFactoryOrder<TitleToStringMethodFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
-            logger = loggerFactory.CreateLogger<TitleToStringMethodFacetFactory>();
+    private readonly ILogger<TitleToStringMethodFacetFactory> logger;
 
-        public string[] Prefixes => FixedPrefixes;
+    public TitleToStringMethodFacetFactory(IFacetFactoryOrder<TitleToStringMethodFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+        logger = loggerFactory.CreateLogger<TitleToStringMethodFacetFactory>();
 
-        /// <summary>
-        ///     use ToString for title
-        /// </summary>
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            try {
-                var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
-                var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] { typeof(string) });
+    public string[] Prefixes => FixedPrefixes;
 
-                if (toStringMethod is not null) {
-                    // mask method can be null, facet defaults to ToString() which is always there and so no need to pass in 
-                    IFacet titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification, Logger<TitleFacetViaToStringMethod>());
-                    FacetUtils.AddFacet(titleFacet);
-                }
+    /// <summary>
+    ///     use ToString for title
+    /// </summary>
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        try {
+            var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
+            var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] { typeof(string) });
+
+            if (toStringMethod is not null) {
+                // mask method can be null, facet defaults to ToString() which is always there and so no need to pass in 
+                IFacet titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification, Logger<TitleFacetViaToStringMethod>());
+                FacetUtils.AddFacet(titleFacet);
             }
-            catch (Exception e) {
-                logger.LogError(e, "Unexpected Exception");
-            }
-
-            return metamodel;
         }
+        catch (Exception e) {
+            logger.LogError(e, "Unexpected Exception");
+        }
+
+        return metamodel;
     }
 }

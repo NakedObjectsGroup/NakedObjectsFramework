@@ -16,68 +16,68 @@ using NakedObjects.Security;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    [PresentationHint("class1 class2")]
-    public class WithValuePersist {
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        [DefaultValue(0)]
-        public virtual int Id { get; set; }
+namespace RestfulObjects.Test.Data; 
 
-        [PresentationHint("class3 class4")]
-        public virtual int AValue { get; set; }
+[PresentationHint("class1 class2")]
+public class WithValuePersist {
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    [DefaultValue(0)]
+    public virtual int Id { get; set; }
 
-        [Disabled]
-        public virtual int ADisabledValue { get; set; }
+    [PresentationHint("class3 class4")]
+    public virtual int AValue { get; set; }
 
-        [Hidden(WhenTo.Always)]
-        public virtual int AHiddenValue { get; set; }
+    [Disabled]
+    public virtual int ADisabledValue { get; set; }
 
-        public virtual int AChoicesValue { get; set; }
+    [Hidden(WhenTo.Always)]
+    public virtual int AHiddenValue { get; set; }
 
-        [MaxLength(101)]
-        [RegEx(Validation = @"[A-Z]")]
-        [Optionally]
-        [DescribedAs("A string value for testing")]
-        [MemberOrder(Sequence = "3")]
-        public virtual string AStringValue { get; set; }
+    public virtual int AChoicesValue { get; set; }
 
-        [Optionally]
-        [DescribedAs("A datetime value for testing")]
-        [Mask("d")]
-        [MemberOrder(Sequence = "4")]
-        public virtual DateTime ADateTimeValue { get; set; } = new(2012, 2, 10);
+    [MaxLength(101)]
+    [RegEx(Validation = @"[A-Z]")]
+    [Optionally]
+    [DescribedAs("A string value for testing")]
+    [MemberOrder(Sequence = "3")]
+    public virtual string AStringValue { get; set; }
 
-        [Optionally]
-        [DescribedAs("A timespan value for testing")]
-        [Mask("d")]
-        [NotMapped]
-        [MemberOrder(Sequence = "5")]
-        public virtual TimeSpan ATimeSpanValue { get; set; } = new(1, 2, 3, 4, 5);
+    [Optionally]
+    [DescribedAs("A datetime value for testing")]
+    [Mask("d")]
+    [MemberOrder(Sequence = "4")]
+    public virtual DateTime ADateTimeValue { get; set; } = new(2012, 2, 10);
 
-        [AuthorizeProperty(ViewUsers = "viewUser")]
-        public virtual int AUserHiddenValue { get; set; }
+    [Optionally]
+    [DescribedAs("A timespan value for testing")]
+    [Mask("d")]
+    [NotMapped]
+    [MemberOrder(Sequence = "5")]
+    public virtual TimeSpan ATimeSpanValue { get; set; } = new(1, 2, 3, 4, 5);
 
-        [AuthorizeProperty(EditUsers = "editUser")]
-        public virtual int AUserDisabledValue { get; set; }
+    [AuthorizeProperty(ViewUsers = "viewUser")]
+    public virtual int AUserHiddenValue { get; set; }
 
-        public virtual int AConditionalChoicesValue { get; set; }
+    [AuthorizeProperty(EditUsers = "editUser")]
+    public virtual int AUserDisabledValue { get; set; }
 
-        public virtual int[] ChoicesAChoicesValue() {
-            return new[] {1, 2, 3};
+    public virtual int AConditionalChoicesValue { get; set; }
+
+    public virtual int[] ChoicesAChoicesValue() {
+        return new[] {1, 2, 3};
+    }
+
+    public virtual string Validate(int aValue, int aChoicesValue) {
+        if (aValue == 101 && aChoicesValue == 3) {
+            return "Cross validation failed";
         }
 
-        public virtual string Validate(int aValue, int aChoicesValue) {
-            if (aValue == 101 && aChoicesValue == 3) {
-                return "Cross validation failed";
-            }
+        return "";
+    }
 
-            return "";
-        }
-
-        public virtual int[] ChoicesAConditionalChoicesValue(int aValue, string aStringValue) {
-            return new[] {aValue, aStringValue == null ? 0 : int.Parse(aStringValue)};
-        }
+    public virtual int[] ChoicesAConditionalChoicesValue(int aValue, string aStringValue) {
+        return new[] {aValue, aStringValue == null ? 0 : int.Parse(aStringValue)};
     }
 }

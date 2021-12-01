@@ -10,35 +10,35 @@ using System.Collections.Generic;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
 
-namespace NakedObjects.Reflector.Authorization {
-    public class AuthorizationConfiguration<TDefault>
-        : IAuthorizationConfiguration
-        where TDefault : ITypeAuthorizer<object> {
-        public AuthorizationConfiguration() {
-            DefaultAuthorizer = typeof(TDefault);
-            NamespaceAuthorizers = new Dictionary<string, Type>();
-            TypeAuthorizers = new Dictionary<string, Type>();
-        }
+namespace NakedObjects.Reflector.Authorization; 
 
-        //The specified type authorizer will apply to the whole namespace specified
-        public void AddNamespaceAuthorizer<TAuth>(string namespaceCovered)
-            where TAuth : INamespaceAuthorizer =>
-            NamespaceAuthorizers.Add(namespaceCovered, typeof(TAuth));
-
-        //The specified type authorizer will apply only to the domain object type specified (not even sub-classes)
-        public void AddTypeAuthorizer<TDomain, TAuth>()
-            where TDomain : new()
-            where TAuth : ITypeAuthorizer<TDomain> {
-            var fullyQualifiedName = typeof(TDomain).FullName;
-            TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
-        }
-
-        #region IAuthorizationConfiguration Members
-
-        public Type DefaultAuthorizer { get; }
-        public IDictionary<string, Type> NamespaceAuthorizers { get; }
-        public IDictionary<string, Type> TypeAuthorizers { get; }
-
-        #endregion
+public class AuthorizationConfiguration<TDefault>
+    : IAuthorizationConfiguration
+    where TDefault : ITypeAuthorizer<object> {
+    public AuthorizationConfiguration() {
+        DefaultAuthorizer = typeof(TDefault);
+        NamespaceAuthorizers = new Dictionary<string, Type>();
+        TypeAuthorizers = new Dictionary<string, Type>();
     }
+
+    //The specified type authorizer will apply to the whole namespace specified
+    public void AddNamespaceAuthorizer<TAuth>(string namespaceCovered)
+        where TAuth : INamespaceAuthorizer =>
+        NamespaceAuthorizers.Add(namespaceCovered, typeof(TAuth));
+
+    //The specified type authorizer will apply only to the domain object type specified (not even sub-classes)
+    public void AddTypeAuthorizer<TDomain, TAuth>()
+        where TDomain : new()
+        where TAuth : ITypeAuthorizer<TDomain> {
+        var fullyQualifiedName = typeof(TDomain).FullName;
+        TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
+    }
+
+    #region IAuthorizationConfiguration Members
+
+    public Type DefaultAuthorizer { get; }
+    public IDictionary<string, Type> NamespaceAuthorizers { get; }
+    public IDictionary<string, Type> TypeAuthorizers { get; }
+
+    #endregion
 }

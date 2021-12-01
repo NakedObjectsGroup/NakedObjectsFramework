@@ -7,15 +7,15 @@
 
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Indicates that the instances of this class are immutable and so may not be modified
-    ///     either through the viewer or indeed programmatically
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, typically corresponds to applying the
-    ///     <see cref="ImmutableAttribute" /> annotation at the class level
-    /// </para>
-    /// <seealso cref="IEqualByContentFacet" />
-    public interface IImmutableFacet : ISingleWhenValueFacet, IDisablingInteractionAdvisor { }
-}
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Indicates that the instances of this class are immutable and so may not be modified
+///     either through the viewer or indeed programmatically
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, typically corresponds to applying the
+///     <see cref="ImmutableAttribute" /> annotation at the class level
+/// </para>
+/// <seealso cref="IEqualByContentFacet" />
+public interface IImmutableFacet : ISingleWhenValueFacet, IDisablingInteractionAdvisor { }

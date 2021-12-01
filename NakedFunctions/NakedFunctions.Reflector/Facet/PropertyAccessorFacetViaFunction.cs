@@ -15,29 +15,29 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.Facet {
-    [Serializable]
-    public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyAccessorFacet {
-        private readonly MethodInfo method;
+namespace NakedFunctions.Reflector.Facet; 
 
-        public PropertyAccessorFacetViaFunction(MethodInfo method, ISpecification holder)
-            : base(typeof(IPropertyAccessorFacet), holder) =>
-            this.method = method;
+[Serializable]
+public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyAccessorFacet {
+    private readonly MethodInfo method;
 
-        #region IPropertyAccessorFacet Members
+    public PropertyAccessorFacetViaFunction(MethodInfo method, ISpecification holder)
+        : base(typeof(IPropertyAccessorFacet), holder) =>
+        this.method = method;
 
-        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
-            try {
-                return method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, nakedFramework));
-            }
-            catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException($"Exception executing {method}", e);
-                return null;
-            }
+    #region IPropertyAccessorFacet Members
+
+    public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
+        try {
+            return method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, nakedFramework));
         }
-
-        #endregion
-
-        protected override string ToStringValues() => $"method={method}";
+        catch (TargetInvocationException e) {
+            InvokeUtils.InvocationException($"Exception executing {method}", e);
+            return null;
+        }
     }
+
+    #endregion
+
+    protected override string ToStringValues() => $"method={method}";
 }

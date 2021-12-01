@@ -9,22 +9,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NakedObjects;
 
-namespace SimpleDatabase {
-    [ComplexType]
-    [Owned]
-    public class ComplexType1 {
-        [Root]
-        [NotMapped]
-        public object Parent { get; set; }
+namespace SimpleDatabase; 
 
-        #region Primitive Properties
+[ComplexType]
+[Owned]
+public class ComplexType1 {
+    [Root]
+    [NotMapped]
+    public object Parent { get; set; }
 
-        // ReSharper disable InconsistentNaming
-        public string s1 { get; set; }
+    #region Primitive Properties
 
-        public string s2 { get; set; }
-        // ReSharper restore InconsistentNaming
+    // ReSharper disable InconsistentNaming
+    public string s1 { get; set; }
 
-        #endregion
-    }
+    public string s2 { get; set; }
+    // ReSharper restore InconsistentNaming
+
+    #endregion
 }

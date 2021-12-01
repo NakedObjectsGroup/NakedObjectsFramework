@@ -11,34 +11,34 @@ using System.Reflection;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.ParallelReflector.Component;
 
-namespace NakedFunctions.Reflector.Component {
-    /// <summary>
-    ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
-    /// </summary>
-    [Serializable]
-    public class FunctionClassStrategy : AbstractClassStrategy {
-        private readonly IFunctionalReflectorConfiguration config;
+namespace NakedFunctions.Reflector.Component; 
 
-        public FunctionClassStrategy(IFunctionalReflectorConfiguration config) => this.config = config;
+/// <summary>
+///     Standard way of determining which fields are to be exposed in a Naked Objects system.
+/// </summary>
+[Serializable]
+public class FunctionClassStrategy : AbstractClassStrategy {
+    private readonly IFunctionalReflectorConfiguration config;
 
-        protected override bool IsTypeIgnored(Type type) => false;
+    public FunctionClassStrategy(IFunctionalReflectorConfiguration config) => this.config = config;
 
-        protected override bool IsTypeExplicitlyRequested(Type type) {
-            var types = config.Types.Union(config.Functions).ToArray();
-            return types.Any(t => t == type) ||
-                   type.IsGenericType && types.Any(t => t == type.GetGenericTypeDefinition());
-        }
+    protected override bool IsTypeIgnored(Type type) => false;
 
-        #region IClassStrategy Members
-
-        public override bool IsIgnored(MemberInfo member) => false;
-        public override bool IsService(Type type) => false;
-        public override bool LoadReturnType(MethodInfo method) => false;
-
-        #endregion
-
-        // because Sets don't implement IEnumerable<>
+    protected override bool IsTypeExplicitlyRequested(Type type) {
+        var types = config.Types.Union(config.Functions).ToArray();
+        return types.Any(t => t == type) ||
+               type.IsGenericType && types.Any(t => t == type.GetGenericTypeDefinition());
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region IClassStrategy Members
+
+    public override bool IsIgnored(MemberInfo member) => false;
+    public override bool IsService(Type type) => false;
+    public override bool LoadReturnType(MethodInfo method) => false;
+
+    #endregion
+
+    // because Sets don't implement IEnumerable<>
 }
+
+// Copyright (c) Naked Objects Group Ltd.

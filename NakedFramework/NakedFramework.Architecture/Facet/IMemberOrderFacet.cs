@@ -5,23 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     The preferred mechanism for determining the order in which the members of the object should
-    ///     be rendered
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to annotating each of the
-    ///     member methods with the <see cref="MemberOrderAttribute" />.
-    /// </para>
-    /// <seealso cref="IMemberOrderFacet" />
-    public interface IMemberOrderFacet : IFacet {
-        /// <summary>
-        ///     The sequence, in dewey-decimal notation
-        /// </summary>
-        string Sequence { get; }
+namespace NakedFramework.Architecture.Facet; 
 
-        string Name { get; }
-        string Grouping { get; }
-    }
+/// <summary>
+///     The preferred mechanism for determining the order in which the members of the object should
+///     be rendered
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to annotating each of the
+///     member methods with the <see cref="MemberOrderAttribute" />.
+/// </para>
+/// <seealso cref="IMemberOrderFacet" />
+public interface IMemberOrderFacet : IFacet {
+    /// <summary>
+    ///     The sequence, in dewey-decimal notation
+    /// </summary>
+    string Sequence { get; }
+
+    string Name { get; }
+    string Grouping { get; }
 }

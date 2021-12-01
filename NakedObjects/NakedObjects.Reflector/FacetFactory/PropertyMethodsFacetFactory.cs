@@ -27,186 +27,186 @@ using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Facet;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
-        private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ModifyPrefix
-        };
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        private readonly ILogger<PropertyMethodsFacetFactory> logger;
+public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
+    private static readonly string[] FixedPrefixes = {
+        RecognisedMethodsAndPrefixes.ModifyPrefix
+    };
 
-        public PropertyMethodsFacetFactory(IFacetFactoryOrder<PropertyMethodsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties) =>
-            logger = loggerFactory.CreateLogger<PropertyMethodsFacetFactory>();
+    private readonly ILogger<PropertyMethodsFacetFactory> logger;
 
-        public string[] Prefixes => FixedPrefixes;
+    public PropertyMethodsFacetFactory(IFacetFactoryOrder<PropertyMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Properties) =>
+        logger = loggerFactory.CreateLogger<PropertyMethodsFacetFactory>();
 
-        public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            candidates = candidates.Where(property => !CollectionUtils.IsQueryable(property.PropertyType)).ToArray();
-            return PropertiesToBeIntrospected(candidates, classStrategy);
+    public string[] Prefixes => FixedPrefixes;
+
+    public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+        candidates = candidates.Where(property => !CollectionUtils.IsQueryable(property.PropertyType)).ToArray();
+        return PropertiesToBeIntrospected(candidates, classStrategy);
+    }
+
+    private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
+        candidates.Where(property => property.HasPublicGetter() &&
+                                     !classStrategy.IsIgnored(property.PropertyType) &&
+                                     !classStrategy.IsIgnored(property)).ToList();
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var capitalizedName = property.Name;
+        var paramTypes = new[] {property.PropertyType};
+
+        var facets = new List<IFacet> {new PropertyAccessorFacet(property, specification)};
+
+        if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+            facets.Add(new NullableFacetAlways(specification));
         }
 
-        private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
-            candidates.Where(property => property.HasPublicGetter() &&
-                                         !classStrategy.IsIgnored(property.PropertyType) &&
-                                         !classStrategy.IsIgnored(property)).ToList();
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var capitalizedName = property.Name;
-            var paramTypes = new[] {property.PropertyType};
-
-            var facets = new List<IFacet> {new PropertyAccessorFacet(property, specification)};
-
-            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-                facets.Add(new NullableFacetAlways(specification));
-            }
-
-            if (property.GetSetMethod() != null) {
-                if (property.PropertyType == typeof(byte[])) {
-                    facets.Add(new DisabledFacetAlways(specification));
-                }
-                else {
-                    facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
-                }
-
-                facets.Add(new PropertyInitializationFacet(property, specification));
-            }
-            else {
-                facets.Add(new NotPersistedFacet(specification));
+        if (property.GetSetMethod() != null) {
+            if (property.PropertyType == typeof(byte[])) {
                 facets.Add(new DisabledFacetAlways(specification));
             }
-
-            FindAndRemoveModifyMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, paramTypes, specification);
-
-            FindAndRemoveAutoCompleteMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
-            metamodel = FindAndRemoveChoicesMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification, metamodel);
-            FindAndRemoveDefaultMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
-            FindAndRemoveValidateMethod(reflector, facets, methodRemover, property.DeclaringType, paramTypes, capitalizedName, specification);
-
-            MethodHelpers.AddHideForSessionFacetNone(facets, specification);
-            MethodHelpers.AddDisableForSessionFacetNone(facets, specification);
-            ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
-            ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
-            ObjectMethodHelpers.FindDefaultDisableMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
-            ObjectMethodHelpers.FindAndRemoveDisableMethod(reflector, facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
-
-            FacetUtils.AddFacets(facets);
-            return metamodel;
-        }
-
-        private void FindAndRemoveModifyMethod(IReflector reflector,
-                                               ICollection<IFacet> propertyFacets,
-                                               IMethodRemover methodRemover,
-                                               Type type,
-                                               string capitalizedName,
-                                               Type[] parms,
-                                               ISpecification property) {
-            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
-            methodRemover.SafeRemoveMethod(method);
-            if (method is not null) {
-                propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property, Logger<PropertySetterFacetViaModifyMethod>()));
-            }
-        }
-
-        private void FindAndRemoveValidateMethod(IReflector reflector, ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, ISpecification property) {
-            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
-            methodRemover.SafeRemoveMethod(method);
-            if (method is not null) {
-                propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
-            }
-        }
-
-        private void FindAndRemoveDefaultMethod(IReflector reflector,
-                                                ICollection<IFacet> propertyFacets,
-                                                IMethodRemover methodRemover,
-                                                Type type,
-                                                string capitalizedName,
-                                                Type returnType,
-                                                ISpecification property) {
-            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
-            methodRemover.SafeRemoveMethod(method);
-            if (method is not null) {
-                propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
-            }
-        }
-
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveChoicesMethod(IReflector reflector,
-                                                                                          ICollection<IFacet> propertyFacets,
-                                                                                          IMethodRemover methodRemover,
-                                                                                          Type type,
-                                                                                          string capitalizedName,
-                                                                                          Type returnType,
-                                                                                          ISpecification property,
-                                                                                          IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var methods = ObjectMethodHelpers.FindMethods(reflector,
-                                                          type,
-                                                          MethodType.Object,
-                                                          RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName,
-                                                          typeof(IEnumerable<>).MakeGenericType(returnType));
-
-            if (methods.Length > 1) {
-                var name = $"{RecognisedMethodsAndPrefixes.ChoicesPrefix}{capitalizedName}";
-                methods.Skip(1).ForEach(m => logger.LogWarning($"Found multiple choices methods: {name} in type: {type} ignoring method(s) with params: {m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)}"));
+            else {
+                facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
             }
 
-            var method = methods.FirstOrDefault();
-            methodRemover.SafeRemoveMethod(method);
-            if (method is not null) {
-                var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
-
-                foreach (var p in method.GetParameters()) {
-                    IObjectSpecBuilder oSpec;
-                    (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
-                    parameterNamesAndTypes.Add((p.Name.ToLower(), oSpec));
-                }
-
-                propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property, Logger<PropertyChoicesFacet>()));
-            }
-
-            return metamodel;
+            facets.Add(new PropertyInitializationFacet(property, specification));
+        }
+        else {
+            facets.Add(new NotPersistedFacet(specification));
+            facets.Add(new DisabledFacetAlways(specification));
         }
 
-        private void FindAndRemoveAutoCompleteMethod(IReflector reflector,
-                                                     ICollection<IFacet> propertyFacets,
-                                                     IMethodRemover methodRemover,
-                                                     Type type,
-                                                     string capitalizedName,
-                                                     Type returnType,
-                                                     ISpecification property) {
-            // only support if property is string or domain type
-            if (returnType.IsClass || returnType.IsInterface) {
-                var method = FindAutoCompleteMethod(reflector, type, capitalizedName,
-                                                    typeof(IQueryable<>).MakeGenericType(returnType));
+        FindAndRemoveModifyMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, paramTypes, specification);
 
-                //.. or returning a single object
-                if (method is null) {
-                    method = FindAutoCompleteMethod(reflector, type, capitalizedName, returnType);
-                }
+        FindAndRemoveAutoCompleteMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
+        metamodel = FindAndRemoveChoicesMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification, metamodel);
+        FindAndRemoveDefaultMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
+        FindAndRemoveValidateMethod(reflector, facets, methodRemover, property.DeclaringType, paramTypes, capitalizedName, specification);
 
-                //... or returning an enumerable of string
-                if (method is null && TypeUtils.IsString(returnType)) {
-                    method = FindAutoCompleteMethod(reflector, type, capitalizedName, typeof(IEnumerable<string>));
-                }
+        MethodHelpers.AddHideForSessionFacetNone(facets, specification);
+        MethodHelpers.AddDisableForSessionFacetNone(facets, specification);
+        ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
+        ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
+        ObjectMethodHelpers.FindDefaultDisableMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
+        ObjectMethodHelpers.FindAndRemoveDisableMethod(reflector, facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
 
-                if (method is not null) {
-                    var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
-                    var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
-
-                    var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
-                    var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
-
-                    methodRemover.SafeRemoveMethod(method);
-                    propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
-                }
-            }
-        }
-
-        private static MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, Type returnType) =>
-            MethodHelpers.FindMethod(reflector,
-                                     type,
-                                     MethodType.Object,
-                                     $"{RecognisedMethodsAndPrefixes.AutoCompletePrefix}{capitalizedName}",
-                                     returnType,
-                                     new[] {typeof(string)});
+        FacetUtils.AddFacets(facets);
+        return metamodel;
     }
+
+    private void FindAndRemoveModifyMethod(IReflector reflector,
+                                           ICollection<IFacet> propertyFacets,
+                                           IMethodRemover methodRemover,
+                                           Type type,
+                                           string capitalizedName,
+                                           Type[] parms,
+                                           ISpecification property) {
+        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
+        methodRemover.SafeRemoveMethod(method);
+        if (method is not null) {
+            propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property, Logger<PropertySetterFacetViaModifyMethod>()));
+        }
+    }
+
+    private void FindAndRemoveValidateMethod(IReflector reflector, ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, ISpecification property) {
+        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
+        methodRemover.SafeRemoveMethod(method);
+        if (method is not null) {
+            propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
+        }
+    }
+
+    private void FindAndRemoveDefaultMethod(IReflector reflector,
+                                            ICollection<IFacet> propertyFacets,
+                                            IMethodRemover methodRemover,
+                                            Type type,
+                                            string capitalizedName,
+                                            Type returnType,
+                                            ISpecification property) {
+        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
+        methodRemover.SafeRemoveMethod(method);
+        if (method is not null) {
+            propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
+        }
+    }
+
+    private IImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveChoicesMethod(IReflector reflector,
+                                                                                      ICollection<IFacet> propertyFacets,
+                                                                                      IMethodRemover methodRemover,
+                                                                                      Type type,
+                                                                                      string capitalizedName,
+                                                                                      Type returnType,
+                                                                                      ISpecification property,
+                                                                                      IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var methods = ObjectMethodHelpers.FindMethods(reflector,
+                                                      type,
+                                                      MethodType.Object,
+                                                      RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName,
+                                                      typeof(IEnumerable<>).MakeGenericType(returnType));
+
+        if (methods.Length > 1) {
+            var name = $"{RecognisedMethodsAndPrefixes.ChoicesPrefix}{capitalizedName}";
+            methods.Skip(1).ForEach(m => logger.LogWarning($"Found multiple choices methods: {name} in type: {type} ignoring method(s) with params: {m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)}"));
+        }
+
+        var method = methods.FirstOrDefault();
+        methodRemover.SafeRemoveMethod(method);
+        if (method is not null) {
+            var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
+
+            foreach (var p in method.GetParameters()) {
+                IObjectSpecBuilder oSpec;
+                (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
+                parameterNamesAndTypes.Add((p.Name.ToLower(), oSpec));
+            }
+
+            propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property, Logger<PropertyChoicesFacet>()));
+        }
+
+        return metamodel;
+    }
+
+    private void FindAndRemoveAutoCompleteMethod(IReflector reflector,
+                                                 ICollection<IFacet> propertyFacets,
+                                                 IMethodRemover methodRemover,
+                                                 Type type,
+                                                 string capitalizedName,
+                                                 Type returnType,
+                                                 ISpecification property) {
+        // only support if property is string or domain type
+        if (returnType.IsClass || returnType.IsInterface) {
+            var method = FindAutoCompleteMethod(reflector, type, capitalizedName,
+                                                typeof(IQueryable<>).MakeGenericType(returnType));
+
+            //.. or returning a single object
+            if (method is null) {
+                method = FindAutoCompleteMethod(reflector, type, capitalizedName, returnType);
+            }
+
+            //... or returning an enumerable of string
+            if (method is null && TypeUtils.IsString(returnType)) {
+                method = FindAutoCompleteMethod(reflector, type, capitalizedName, typeof(IEnumerable<string>));
+            }
+
+            if (method is not null) {
+                var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
+                var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
+
+                var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
+                var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
+
+                methodRemover.SafeRemoveMethod(method);
+                propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
+            }
+        }
+    }
+
+    private static MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, Type returnType) =>
+        MethodHelpers.FindMethod(reflector,
+                                 type,
+                                 MethodType.Object,
+                                 $"{RecognisedMethodsAndPrefixes.AutoCompletePrefix}{capitalizedName}",
+                                 returnType,
+                                 new[] {typeof(string)});
 }

@@ -7,10 +7,10 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts {
-    public class ListContextFacade {
-        public ITypeFacade ElementType { get; init; }
-        public IObjectFacade[] List { get; init; }
-        public bool IsListOfServices { get; init; }
-    }
+namespace NakedFramework.Facade.Contexts; 
+
+public class ListContextFacade {
+    public ITypeFacade ElementType { get; init; }
+    public IObjectFacade[] List { get; init; }
+    public bool IsListOfServices { get; init; }
 }

@@ -12,109 +12,109 @@ using NakedFramework.Metamodel.Facet;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class MemberOrderComparatorTest {
-        private MemberOrderComparator<MemberPeerStub> comparator;
-        private MemberPeerStub m1;
-        private MemberPeerStub m2;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        public MemberOrderComparatorTest() => Reset();
+[TestClass]
+public class MemberOrderComparatorTest {
+    private MemberOrderComparator<MemberPeerStub> comparator;
+    private MemberPeerStub m1;
+    private MemberPeerStub m2;
 
-        #region Setup/Teardown
+    public MemberOrderComparatorTest() => Reset();
 
-        [TestInitialize]
-        public virtual void SetUp() {
-            comparator = new MemberOrderComparator<MemberPeerStub>();
-        }
+    #region Setup/Teardown
 
-        #endregion
-
-        private void Reset() {
-            m1 = new MemberPeerStub("abc");
-            m2 = new MemberPeerStub("abc");
-        }
-
-        [TestMethod]
-        public virtual void TestDefaultGroupOneComponent() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "1", m1));
-            m2.AddFacet(new MemberOrderFacet("", "2", m2));
-            Assert.AreEqual(-1, comparator.Compare(m1, m2));
-        }
-
-        [TestMethod]
-        public void TestDefaultGroupOneComponentOtherWay() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "2", m1));
-            m2.AddFacet(new MemberOrderFacet("", "1", m2));
-            Assert.AreEqual(+1, comparator.Compare(m1, m2));
-        }
-
-        [TestMethod]
-        public void TestDefaultGroupOneComponentSame() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "1", m1));
-            m2.AddFacet(new MemberOrderFacet("", "1", m2));
-            Assert.AreEqual(0, comparator.Compare(m1, m2));
-        }
-
-        [TestMethod]
-        public void TestDefaultGroupOneSideRunsLotsOfComponents() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m1));
-            m2.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.4", m2));
-            Assert.AreEqual(-1, comparator.Compare(m1, m2));
-        }
-
-        [TestMethod]
-        public void TestDefaultGroupOneSideRunsLotsOfComponentsOtherWay() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.4", m1));
-            m2.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m2));
-            Assert.AreEqual(+1, comparator.Compare(m1, m2));
-        }
-
-        [TestMethod]
-        public void TestDefaultGroupOneSideRunsLotsOfComponentsSame() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m1));
-            m2.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m2));
-            Assert.AreEqual(0, comparator.Compare(m1, m2));
-        }
-
-        [TestMethod]
-        public void TestDefaultGroupOneSideRunsOutOfComponentsFirst() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "1", m1));
-            m2.AddFacet(new MemberOrderFacet("", "1.1", m2));
-            Assert.AreEqual(-1, comparator.Compare(m1, m2));
-        }
-
-        [TestMethod]
-        public void TestDefaultGroupOneSideRunsOutOfComponentsFirstOtherWay() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "1.1", m1));
-            m2.AddFacet(new MemberOrderFacet("", "1", m2));
-            Assert.AreEqual(+1, comparator.Compare(m1, m2));
-        }
-
-        [TestMethod]
-        public void TestDefaultGroupOneSideRunsTwoComponents() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "1.1", m1));
-            m2.AddFacet(new MemberOrderFacet("", "1.2", m2));
-            Assert.AreEqual(-1, comparator.Compare(m1, m2));
-        }
-
-        [TestMethod]
-        public void TestDefaultGroupOneSideRunsTwoComponentsOtherWay() {
-            Reset();
-            m1.AddFacet(new MemberOrderFacet("", "1.2", m1));
-            m2.AddFacet(new MemberOrderFacet("", "1.1", m2));
-            Assert.AreEqual(+1, comparator.Compare(m1, m2));
-        }
+    [TestInitialize]
+    public virtual void SetUp() {
+        comparator = new MemberOrderComparator<MemberPeerStub>();
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
+
+    private void Reset() {
+        m1 = new MemberPeerStub("abc");
+        m2 = new MemberPeerStub("abc");
+    }
+
+    [TestMethod]
+    public virtual void TestDefaultGroupOneComponent() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "1", m1));
+        m2.AddFacet(new MemberOrderFacet("", "2", m2));
+        Assert.AreEqual(-1, comparator.Compare(m1, m2));
+    }
+
+    [TestMethod]
+    public void TestDefaultGroupOneComponentOtherWay() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "2", m1));
+        m2.AddFacet(new MemberOrderFacet("", "1", m2));
+        Assert.AreEqual(+1, comparator.Compare(m1, m2));
+    }
+
+    [TestMethod]
+    public void TestDefaultGroupOneComponentSame() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "1", m1));
+        m2.AddFacet(new MemberOrderFacet("", "1", m2));
+        Assert.AreEqual(0, comparator.Compare(m1, m2));
+    }
+
+    [TestMethod]
+    public void TestDefaultGroupOneSideRunsLotsOfComponents() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m1));
+        m2.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.4", m2));
+        Assert.AreEqual(-1, comparator.Compare(m1, m2));
+    }
+
+    [TestMethod]
+    public void TestDefaultGroupOneSideRunsLotsOfComponentsOtherWay() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.4", m1));
+        m2.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m2));
+        Assert.AreEqual(+1, comparator.Compare(m1, m2));
+    }
+
+    [TestMethod]
+    public void TestDefaultGroupOneSideRunsLotsOfComponentsSame() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m1));
+        m2.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m2));
+        Assert.AreEqual(0, comparator.Compare(m1, m2));
+    }
+
+    [TestMethod]
+    public void TestDefaultGroupOneSideRunsOutOfComponentsFirst() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "1", m1));
+        m2.AddFacet(new MemberOrderFacet("", "1.1", m2));
+        Assert.AreEqual(-1, comparator.Compare(m1, m2));
+    }
+
+    [TestMethod]
+    public void TestDefaultGroupOneSideRunsOutOfComponentsFirstOtherWay() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "1.1", m1));
+        m2.AddFacet(new MemberOrderFacet("", "1", m2));
+        Assert.AreEqual(+1, comparator.Compare(m1, m2));
+    }
+
+    [TestMethod]
+    public void TestDefaultGroupOneSideRunsTwoComponents() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "1.1", m1));
+        m2.AddFacet(new MemberOrderFacet("", "1.2", m2));
+        Assert.AreEqual(-1, comparator.Compare(m1, m2));
+    }
+
+    [TestMethod]
+    public void TestDefaultGroupOneSideRunsTwoComponentsOtherWay() {
+        Reset();
+        m1.AddFacet(new MemberOrderFacet("", "1.2", m1));
+        m2.AddFacet(new MemberOrderFacet("", "1.1", m2));
+        Assert.AreEqual(+1, comparator.Compare(m1, m2));
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

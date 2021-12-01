@@ -5,12 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Adapter {
-    public enum IdentifierDepth {
-        Class,
-        ClassName,
-        ClassNameParams,
-        Name,
-        Parms
-    }
+namespace NakedFramework.Architecture.Adapter; 
+
+public enum IdentifierDepth {
+    Class,
+    ClassName,
+    ClassNameParams,
+    Name,
+    Parms
 }

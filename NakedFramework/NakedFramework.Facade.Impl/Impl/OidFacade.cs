@@ -9,30 +9,30 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl {
-    public class OidFacade : IOidFacade {
-        private readonly IOid oid;
+namespace NakedFramework.Facade.Impl.Impl; 
 
-        public OidFacade(IOid oid) => this.oid = oid ?? throw new NullReferenceException($"{nameof(oid)} is null");
+public class OidFacade : IOidFacade {
+    private readonly IOid oid;
 
-        #region IOidFacade Members
+    public OidFacade(IOid oid) => this.oid = oid ?? throw new NullReferenceException($"{nameof(oid)} is null");
 
-        public object Value => oid;
+    #region IOidFacade Members
 
-        #endregion
+    public object Value => oid;
 
-        public override bool Equals(object obj) => obj is OidFacade of && Equals(of);
+    #endregion
 
-        public bool Equals(OidFacade other) {
-            if (ReferenceEquals(null, other)) {
-                return false;
-            }
+    public override bool Equals(object obj) => obj is OidFacade of && Equals(of);
 
-            return ReferenceEquals(this, other) || Equals(other.oid, oid);
+    public bool Equals(OidFacade other) {
+        if (ReferenceEquals(null, other)) {
+            return false;
         }
 
-        public override int GetHashCode() => oid != null ? oid.GetHashCode() : 0;
-
-        public override string ToString() => oid.ToString();
+        return ReferenceEquals(this, other) || Equals(other.oid, oid);
     }
+
+    public override int GetHashCode() => oid != null ? oid.GetHashCode() : 0;
+
+    public override string ToString() => oid.ToString();
 }

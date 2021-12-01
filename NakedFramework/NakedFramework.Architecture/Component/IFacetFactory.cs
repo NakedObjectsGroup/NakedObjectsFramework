@@ -9,20 +9,20 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.Component {
-    public interface IFacetFactory : IComparable<IFacetFactory> {
-        /// <summary>
-        ///     To order the factory
-        /// </summary>
-        int NumericOrder { get; }
+namespace NakedFramework.Architecture.Component; 
 
-        /// <summary>
-        ///     The <see cref="FeatureType" />s that this facet factory can create <see cref="IFacet" />s for.
-        /// </summary>
-        /// <para>
-        ///     Used by the <see cref="IFacetFactorySet" /> to reduce the number of <see cref="IFacetFactory" />s that are
-        ///     queried when building up the meta-model.
-        /// </para>
-        FeatureType FeatureTypes { get; }
-    }
+public interface IFacetFactory : IComparable<IFacetFactory> {
+    /// <summary>
+    ///     To order the factory
+    /// </summary>
+    int NumericOrder { get; }
+
+    /// <summary>
+    ///     The <see cref="FeatureType" />s that this facet factory can create <see cref="IFacet" />s for.
+    /// </summary>
+    /// <para>
+    ///     Used by the <see cref="IFacetFactorySet" /> to reduce the number of <see cref="IFacetFactory" />s that are
+    ///     queried when building up the meta-model.
+    /// </para>
+    FeatureType FeatureTypes { get; }
 }

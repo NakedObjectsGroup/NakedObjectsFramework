@@ -22,77 +22,77 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
 using NakedObjects.Reflector.Component;
 
-namespace NakedObjects.Reflector.Test.Reflect {
-    [TestClass]
-    public class ReflectorValueTest : AbstractReflectorTest {
-        protected override IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
-            var config = new CoreConfiguration();
-            ClassStrategy = new SystemTypeClassStrategy(config);
-            var systemTypeFacetFactorySet = new SystemTypeFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>());
-            var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
-            var order = new ObjectReflectorOrder<SystemTypeReflector>();
-            return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
-        }
+namespace NakedObjects.Reflector.Test.Reflect; 
 
-        protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), metamodel);
-            (_, metamodel) = reflector.LoadSpecification(typeof(string), metamodel);
-
-            (_, metamodel) = ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(IEnumerable<char>), metamodel);
-            return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(string), metamodel);
-        }
-
-        [TestMethod]
-        public void TestCollectionFacet() {
-            var facet = Specification.GetFacet(typeof(ICollectionFacet));
-            Assert.IsNotNull(facet);
-        }
-
-        [TestMethod]
-        public void TestDescriptionFaced() {
-            var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
-            Assert.IsNotNull(facet);
-        }
-
-        [TestMethod]
-        public void TestFacets() {
-            Assert.AreEqual(27, Specification.FacetTypes.Length);
-        }
-
-        [TestMethod]
-        public void TestIsParseable() {
-            Assert.IsTrue(Specification.IsParseable);
-        }
-
-        [TestMethod]
-        public void TestName() {
-            Assert.AreEqual(typeof(string).FullName, Specification.FullName);
-        }
-
-        [TestMethod]
-        public void TestNamedFaced() {
-            var facet = Specification.GetFacet(typeof(INamedFacet));
-            Assert.IsNotNull(facet);
-        }
-
-        [TestMethod]
-        public void TestPluralFaced() {
-            var facet = Specification.GetFacet(typeof(IPluralFacet));
-            Assert.IsNotNull(facet);
-        }
-
-        [TestMethod]
-        public void TestType() {
-            Assert.IsTrue(Specification.IsCollection);
-        }
-
-        [TestMethod]
-        public void TestTypeOfFacet() {
-            var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
-            Assert.IsNotNull(facet);
-        }
+[TestClass]
+public class ReflectorValueTest : AbstractReflectorTest {
+    protected override IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
+        var config = new CoreConfiguration();
+        ClassStrategy = new SystemTypeClassStrategy(config);
+        var systemTypeFacetFactorySet = new SystemTypeFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>());
+        var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
+        var order = new ObjectReflectorOrder<SystemTypeReflector>();
+        return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), metamodel);
+        (_, metamodel) = reflector.LoadSpecification(typeof(string), metamodel);
+
+        (_, metamodel) = ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(IEnumerable<char>), metamodel);
+        return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(string), metamodel);
+    }
+
+    [TestMethod]
+    public void TestCollectionFacet() {
+        var facet = Specification.GetFacet(typeof(ICollectionFacet));
+        Assert.IsNotNull(facet);
+    }
+
+    [TestMethod]
+    public void TestDescriptionFaced() {
+        var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
+        Assert.IsNotNull(facet);
+    }
+
+    [TestMethod]
+    public void TestFacets() {
+        Assert.AreEqual(27, Specification.FacetTypes.Length);
+    }
+
+    [TestMethod]
+    public void TestIsParseable() {
+        Assert.IsTrue(Specification.IsParseable);
+    }
+
+    [TestMethod]
+    public void TestName() {
+        Assert.AreEqual(typeof(string).FullName, Specification.FullName);
+    }
+
+    [TestMethod]
+    public void TestNamedFaced() {
+        var facet = Specification.GetFacet(typeof(INamedFacet));
+        Assert.IsNotNull(facet);
+    }
+
+    [TestMethod]
+    public void TestPluralFaced() {
+        var facet = Specification.GetFacet(typeof(IPluralFacet));
+        Assert.IsNotNull(facet);
+    }
+
+    [TestMethod]
+    public void TestType() {
+        Assert.IsTrue(Specification.IsCollection);
+    }
+
+    [TestMethod]
+    public void TestTypeOfFacet() {
+        var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
+        Assert.IsNotNull(facet);
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

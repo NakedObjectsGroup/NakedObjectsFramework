@@ -14,32 +14,32 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    [DataContract]
-    public class PropertyWithDetailsRepresentationStrategy : AbstractPropertyRepresentationStrategy {
-        private readonly bool inline;
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        public PropertyWithDetailsRepresentationStrategy(bool inline, IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(frameworkFacade, req, propertyContext, flags) =>
-            this.inline = inline;
+[DataContract]
+public class PropertyWithDetailsRepresentationStrategy : AbstractPropertyRepresentationStrategy {
+    private readonly bool inline;
 
-        public override bool ShowChoices() => true;
+    public PropertyWithDetailsRepresentationStrategy(bool inline, IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+        base(frameworkFacade, req, propertyContext, flags) =>
+        this.inline = inline;
 
-        public override LinkRepresentation[] GetLinks() {
-            var links = new List<LinkRepresentation>(GetLinks(inline));
+    public override bool ShowChoices() => true;
 
-            if (!PropertyContext.Target.IsTransient) {
-                AddMutatorLinks(links);
-            }
+    public override LinkRepresentation[] GetLinks() {
+        var links = new List<LinkRepresentation>(GetLinks(inline));
 
-            AddPrompt(links, PropertyContext.Target.IsTransient ? CreatePersistPromptLink : CreatePromptLink);
-
-            return links.ToArray();
+        if (!PropertyContext.Target.IsTransient) {
+            AddMutatorLinks(links);
         }
 
-        protected override bool AddChoices() =>
-            PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-            (PropertyContext.Property.Specification.IsParseable || PropertyContext.Property.Specification.IsCollection && PropertyContext.Property.ElementSpecification.IsParseable) &&
-            !PropertyContext.Property.GetChoicesParameters().Any();
+        AddPrompt(links, PropertyContext.Target.IsTransient ? CreatePersistPromptLink : CreatePromptLink);
+
+        return links.ToArray();
     }
+
+    protected override bool AddChoices() =>
+        PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+        (PropertyContext.Property.Specification.IsParseable || PropertyContext.Property.Specification.IsCollection && PropertyContext.Property.ElementSpecification.IsParseable) &&
+        !PropertyContext.Property.GetChoicesParameters().Any();
 }

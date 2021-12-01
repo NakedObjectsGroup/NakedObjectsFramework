@@ -20,87 +20,87 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class NotPersistedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private NotPersistedAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(INotPersistedFacet)};
+[TestClass]
+public class NotPersistedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private NotPersistedAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(INotPersistedFacet)};
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestNotPersistedAnnotationPickedUpOnCollection() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "Orders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(INotPersistedFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotPersistedFacet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestNotPersistedAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(INotPersistedFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotPersistedFacet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [NotPersisted]
-// ReSharper disable once UnusedMember.Local
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [NotPersisted]
-// ReSharper disable once UnusedMember.Local
-            public IList Orders => null;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new NotPersistedAnnotationFacetFactory(GetOrder<NotPersistedAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestNotPersistedAnnotationPickedUpOnCollection() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "Orders");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(INotPersistedFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is NotPersistedFacet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestNotPersistedAnnotationPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer), "FirstName");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(INotPersistedFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is NotPersistedFacet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    #region Nested type: Customer
+
+    private class Customer {
+        [NotPersisted]
+// ReSharper disable once UnusedMember.Local
+        public string FirstName => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [NotPersisted]
+// ReSharper disable once UnusedMember.Local
+        public IList Orders => null;
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new NotPersistedAnnotationFacetFactory(GetOrder<NotPersistedAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -10,14 +10,14 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class CreatedCallbackFacetNull : CreatedCallbackFacetAbstract {
-        public CreatedCallbackFacetNull(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
-    }
+[Serializable]
+public sealed class CreatedCallbackFacetNull : CreatedCallbackFacetAbstract {
+    public CreatedCallbackFacetNull(ISpecification holder)
+        : base(holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

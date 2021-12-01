@@ -7,48 +7,48 @@
 
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.Util {
-    [TestFixture]
-    public class ReasonBuilderTest {
-        [SetUp]
-        public void SetUp() {
-            builder = new ReasonBuilder();
-        }
+namespace NakedObjects.SystemTest.Util; 
 
-        private ReasonBuilder builder;
+[TestFixture]
+public class ReasonBuilderTest {
+    [SetUp]
+    public void SetUp() {
+        builder = new ReasonBuilder();
+    }
 
-        private void AssertMessageIs(string expected) {
-            Assert.AreEqual(expected, builder.Reason);
-        }
+    private ReasonBuilder builder;
 
-        [Test]
-        public void Append() {
-            builder.Append("Reason 1");
-            AssertMessageIs("Reason 1");
-            builder.Append("Reason 2");
-            AssertMessageIs("Reason 1; Reason 2");
-            builder.Append("Reason 3");
-            AssertMessageIs("Reason 1; Reason 2; Reason 3");
-        }
+    private void AssertMessageIs(string expected) {
+        Assert.AreEqual(expected, builder.Reason);
+    }
 
-        [Test]
-        public void AppendOnCondition() {
-            builder.AppendOnCondition(false, "Reason 1");
-            Assert.IsNull(builder.Reason);
-            builder.AppendOnCondition(true, "Reason 2");
-            AssertMessageIs("Reason 2");
-            builder.AppendOnCondition(false, "Reason 3");
-            AssertMessageIs("Reason 2");
-            builder.AppendOnCondition(true, "Reason 4");
-            AssertMessageIs("Reason 2; Reason 4");
-        }
+    [Test]
+    public void Append() {
+        builder.Append("Reason 1");
+        AssertMessageIs("Reason 1");
+        builder.Append("Reason 2");
+        AssertMessageIs("Reason 1; Reason 2");
+        builder.Append("Reason 3");
+        AssertMessageIs("Reason 1; Reason 2; Reason 3");
+    }
 
-        [Test]
-        public void WithNothingAppendedReasonReturnsNull() {
-            Assert.IsNull(builder.Reason);
-            builder.Append("Reason 1");
-            Assert.IsNotNull(builder.Reason);
-            AssertMessageIs("Reason 1");
-        }
+    [Test]
+    public void AppendOnCondition() {
+        builder.AppendOnCondition(false, "Reason 1");
+        Assert.IsNull(builder.Reason);
+        builder.AppendOnCondition(true, "Reason 2");
+        AssertMessageIs("Reason 2");
+        builder.AppendOnCondition(false, "Reason 3");
+        AssertMessageIs("Reason 2");
+        builder.AppendOnCondition(true, "Reason 4");
+        AssertMessageIs("Reason 2; Reason 4");
+    }
+
+    [Test]
+    public void WithNothingAppendedReasonReturnsNull() {
+        Assert.IsNull(builder.Reason);
+        builder.Append("Reason 1");
+        Assert.IsNotNull(builder.Reason);
+        AssertMessageIs("Reason 1");
     }
 }

@@ -10,18 +10,18 @@ using Moq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Authentication;
 
-namespace NakedFunctions.Services.Test {
-    [TestClass]
-    public class TestPrincipalProvider {
-        [TestMethod]
-        public void Test1() {
-            var testPrincipal = new EmptyPrincipal();
+namespace NakedFunctions.Services.Test; 
 
-            var mockSession = new Mock<ISession>();
-            mockSession.Setup(s => s.Principal).Returns(testPrincipal);
-            IPrincipalProvider principalProvider = new PrincipalProvider(mockSession.Object);
+[TestClass]
+public class TestPrincipalProvider {
+    [TestMethod]
+    public void Test1() {
+        var testPrincipal = new EmptyPrincipal();
 
-            Assert.AreEqual(testPrincipal, principalProvider.CurrentUser);
-        }
+        var mockSession = new Mock<ISession>();
+        mockSession.Setup(s => s.Principal).Returns(testPrincipal);
+        IPrincipalProvider principalProvider = new PrincipalProvider(mockSession.Object);
+
+        Assert.AreEqual(testPrincipal, principalProvider.CurrentUser);
     }
 }

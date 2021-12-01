@@ -11,23 +11,23 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
-        private readonly Type toCreate;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public CreateNewFacet(Type toCreate, ISpecification holder) : base(Type, holder) => this.toCreate = toCreate;
+[Serializable]
+public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
+    private readonly Type toCreate;
 
-        public static Type Type => typeof(ICreateNewFacet);
+    public CreateNewFacet(Type toCreate, ISpecification holder) : base(Type, holder) => this.toCreate = toCreate;
 
-        public string[] OrderedProperties(INakedFramework framework) {
-            if (framework.MetamodelManager.GetSpecification(toCreate) is IObjectSpec spec) {
-                return spec.Properties.Where(IsNotHidden).Select(f => f.Name).ToArray();
-            }
+    public static Type Type => typeof(ICreateNewFacet);
 
-            return Array.Empty<string>();
+    public string[] OrderedProperties(INakedFramework framework) {
+        if (framework.MetamodelManager.GetSpecification(toCreate) is IObjectSpec spec) {
+            return spec.Properties.Where(IsNotHidden).Select(f => f.Name).ToArray();
         }
 
-        private static bool IsNotHidden(IAssociationSpec spec) => string.IsNullOrWhiteSpace(spec.GetFacet<IHiddenFacet>()?.HidesForState(false));
+        return Array.Empty<string>();
     }
+
+    private static bool IsNotHidden(IAssociationSpec spec) => string.IsNullOrWhiteSpace(spec.GetFacet<IHiddenFacet>()?.HidesForState(false));
 }

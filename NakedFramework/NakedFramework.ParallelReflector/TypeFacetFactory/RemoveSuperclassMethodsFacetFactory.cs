@@ -18,44 +18,44 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    /// <summary>
-    ///     Removes all methods inherited from <see cref="object" />
-    /// </summary>
-    /// <para>
-    ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
-    /// </para>
-    public sealed class RemoveSuperclassMethodsFacetFactory : SystemTypeFacetFactoryProcessor {
-        public RemoveSuperclassMethodsFacetFactory(IFacetFactoryOrder<RemoveSuperclassMethodsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Objects) { }
+namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
 
-        private static void InitForType(Type type, IDictionary<Type, MethodInfo[]> typeToMethods) {
-            if (!typeToMethods.ContainsKey(type)) {
-                typeToMethods.Add(type, type.GetMethods());
-            }
-        }
+/// <summary>
+///     Removes all methods inherited from <see cref="object" />
+/// </summary>
+/// <para>
+///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
+/// </para>
+public sealed class RemoveSuperclassMethodsFacetFactory : SystemTypeFacetFactoryProcessor {
+    public RemoveSuperclassMethodsFacetFactory(IFacetFactoryOrder<RemoveSuperclassMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Objects) { }
 
-        public static void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
-            var typeToMethods = new Dictionary<Type, MethodInfo[]>();
-            InitForType(type, typeToMethods);
-            foreach (var method in typeToMethods[type]) {
-                methodRemover.SafeRemoveMethod(method);
-            }
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var currentType = type;
-            while (currentType is not null) {
-                if (FasterTypeUtils.IsSystem(currentType)) {
-                    ProcessSystemType(currentType, methodRemover, specification);
-                }
-
-                currentType = currentType.BaseType;
-            }
-
-            return metamodel;
+    private static void InitForType(Type type, IDictionary<Type, MethodInfo[]> typeToMethods) {
+        if (!typeToMethods.ContainsKey(type)) {
+            typeToMethods.Add(type, type.GetMethods());
         }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public static void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
+        var typeToMethods = new Dictionary<Type, MethodInfo[]>();
+        InitForType(type, typeToMethods);
+        foreach (var method in typeToMethods[type]) {
+            methodRemover.SafeRemoveMethod(method);
+        }
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var currentType = type;
+        while (currentType is not null) {
+            if (FasterTypeUtils.IsSystem(currentType)) {
+                ProcessSystemType(currentType, methodRemover, specification);
+            }
+
+            currentType = currentType.BaseType;
+        }
+
+        return metamodel;
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -16,83 +16,83 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class FinderActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private FinderActionFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IFinderActionFacet)};
+[TestClass]
+public class FinderActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private FinderActionFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IFinderActionFacet)};
 
-        [TestMethod]
-        public void TestFinderActionFacetNullByDefault() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-            var actionMethod = FindMethod(typeof(Customer), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
+    [TestMethod]
+    public void TestFinderActionFacetNullByDefault() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        [TestMethod]
-        public void TestFinderActionAnnotationPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IFinderActionFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is FinderActionFacet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        #region Nested type: Customer
-
-        private class Customer {
-            // ReSharper disable once UnusedMember.Local
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [FinderAction]
-            // ReSharper disable once UnusedMember.Local
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new FinderActionFacetFactory(GetOrder<FinderActionFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+        var actionMethod = FindMethod(typeof(Customer), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestFinderActionAnnotationPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IFinderActionFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is FinderActionFacet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    #region Nested type: Customer
+
+    private class Customer {
+        // ReSharper disable once UnusedMember.Local
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [FinderAction]
+        // ReSharper disable once UnusedMember.Local
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new FinderActionFacetFactory(GetOrder<FinderActionFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

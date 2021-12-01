@@ -12,23 +12,23 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
-        private readonly IValueSemanticsProvider<T> parser;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public TitleFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
-            : base(typeof(ITitleFacet), holder) =>
-            this.parser = parser;
+[Serializable]
+public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
+    private readonly IValueSemanticsProvider<T> parser;
 
-        protected override string ToStringValues() => parser.ToString();
+    public TitleFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
+        : base(typeof(ITitleFacet), holder) =>
+        this.parser = parser;
 
-        #region ITitleFacet Members
+    protected override string ToStringValues() => parser.ToString();
 
-        public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T) nakedObjectAdapter.Object);
+    #region ITitleFacet Members
 
-        public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T) nakedObjectAdapter.Object);
+    public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T) nakedObjectAdapter.Object);
 
-        #endregion
-    }
+    public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T) nakedObjectAdapter.Object);
+
+    #endregion
 }

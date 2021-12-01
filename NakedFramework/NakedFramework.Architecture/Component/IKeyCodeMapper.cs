@@ -7,16 +7,16 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Component {
-    /// <summary>
-    ///     Defines a service that can convert between a key and a string code
-    ///     Possible uses include:
-    ///     - key encryption
-    ///     - custom key separators
-    /// </summary>
-    public interface IKeyCodeMapper {
-        string[] KeyFromCode(string code, Type type);
+namespace NakedFramework.Architecture.Component; 
 
-        string CodeFromKey(string[] key, Type type);
-    }
+/// <summary>
+///     Defines a service that can convert between a key and a string code
+///     Possible uses include:
+///     - key encryption
+///     - custom key separators
+/// </summary>
+public interface IKeyCodeMapper {
+    string[] KeyFromCode(string code, Type type);
+
+    string CodeFromKey(string[] key, Type type);
 }

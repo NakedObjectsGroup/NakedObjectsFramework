@@ -10,25 +10,25 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Represents the mechanism by which the action should be invoked.
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     invoking the actual action method itself (a <c>public</c> method that
-    ///     does not represent a property, a collection or any of the supporting
-    ///     methods).
-    /// </para>
-    public interface IActionInvocationFacet : IFacet {
-        MethodInfo ActionMethod { get; }
-        IObjectSpecImmutable ReturnType { get; }
-        ITypeSpecImmutable OnType { get; }
-        IObjectSpecImmutable ElementType { get; }
-        bool IsQueryOnly { get; }
-        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, INakedFramework framework);
-        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework);
-    }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Represents the mechanism by which the action should be invoked.
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     invoking the actual action method itself (a <c>public</c> method that
+///     does not represent a property, a collection or any of the supporting
+///     methods).
+/// </para>
+public interface IActionInvocationFacet : IFacet {
+    MethodInfo ActionMethod { get; }
+    IObjectSpecImmutable ReturnType { get; }
+    ITypeSpecImmutable OnType { get; }
+    IObjectSpecImmutable ElementType { get; }
+    bool IsQueryOnly { get; }
+    INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, INakedFramework framework);
+    INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

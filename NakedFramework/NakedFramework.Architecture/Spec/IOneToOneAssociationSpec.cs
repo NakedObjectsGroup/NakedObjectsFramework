@@ -8,31 +8,31 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec; 
+
+/// <summary>
+///     Provides reflective access to a field on a domain object that is used to reference another domain object
+/// </summary>
+public interface IOneToOneAssociationSpec : IAssociationSpec, IOneToOneFeatureSpec {
     /// <summary>
-    ///     Provides reflective access to a field on a domain object that is used to reference another domain object
+    ///     Initialise this field in the specified object with the specified reference - this call should only
+    ///     affect the specified object, and not any related objects. It should also not be distributed. This is
+    ///     strictly for re-initializing the object and not specifying an association, which is only done once.
     /// </summary>
-    public interface IOneToOneAssociationSpec : IAssociationSpec, IOneToOneFeatureSpec {
-        /// <summary>
-        ///     Initialise this field in the specified object with the specified reference - this call should only
-        ///     affect the specified object, and not any related objects. It should also not be distributed. This is
-        ///     strictly for re-initializing the object and not specifying an association, which is only done once.
-        /// </summary>
-        void InitAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
+    void InitAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
 
-        /// <summary>
-        ///     Determines if the specified reference is valid for setting this field in the specified object
-        /// </summary>
-        IConsent IsAssociationValid(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
+    /// <summary>
+    ///     Determines if the specified reference is valid for setting this field in the specified object
+    /// </summary>
+    IConsent IsAssociationValid(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
 
-        /// <summary>
-        ///     Set up the association represented by this field in the specified object with the specified reference -
-        ///     this call sets up the logical state of the object and might affect other objects that share this
-        ///     association (such as back-links or bidirectional association). To initialise a recreated object to this
-        ///     logical state the <see cref="InitAssociation" /> method should be used on each of the objects.
-        /// </summary>
-        void SetAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Set up the association represented by this field in the specified object with the specified reference -
+    ///     this call sets up the logical state of the object and might affect other objects that share this
+    ///     association (such as back-links or bidirectional association). To initialise a recreated object to this
+    ///     logical state the <see cref="InitAssociation" /> method should be used on each of the objects.
+    /// </summary>
+    void SetAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

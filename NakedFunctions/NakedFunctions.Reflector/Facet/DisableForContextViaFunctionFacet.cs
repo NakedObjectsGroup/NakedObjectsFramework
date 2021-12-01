@@ -19,41 +19,41 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.Facet {
-    [Serializable]
-    public sealed class DisableForContextViaFunctionFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
-        private readonly MethodInfo method;
-        private readonly Func<object, object[], object> methodDelegate;
+namespace NakedFunctions.Reflector.Facet; 
 
-        public DisableForContextViaFunctionFacet(MethodInfo method, ISpecification holder, ILogger<DisableForContextViaFunctionFacet> logger) : base(typeof(IDisableForContextFacet), holder) {
-            this.method = method;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+[Serializable]
+public sealed class DisableForContextViaFunctionFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
+    private readonly MethodInfo method;
+    private readonly Func<object, object[], object> methodDelegate;
 
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private static void OnDeserialized(StreamingContext context) { }
-
-        #region IDisableForContextFacet Members
-
-        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
-
-        public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
-
-        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>
-            methodDelegate.Invoke<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
-
-        #endregion
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public DisableForContextViaFunctionFacet(MethodInfo method, ISpecification holder, ILogger<DisableForContextViaFunctionFacet> logger) : base(typeof(IDisableForContextFacet), holder) {
+        this.method = method;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private static void OnDeserialized(StreamingContext context) { }
+
+    #region IDisableForContextFacet Members
+
+    public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
+
+    public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
+
+    public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>
+        methodDelegate.Invoke<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
+
+    #endregion
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

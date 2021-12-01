@@ -8,17 +8,17 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class NamedFacetAnnotation : NamedFacetAbstract {
-        public NamedFacetAnnotation(string value, ISpecification holder)
-            : base(value, holder) {
-            ShortName = value;
-            CapitalizedName = value;
-            SimpleName = value;
-            NaturalName = value;
-        }
-    }
+namespace NakedFramework.Metamodel.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class NamedFacetAnnotation : NamedFacetAbstract {
+    public NamedFacetAnnotation(string value, ISpecification holder)
+        : base(value, holder) {
+        ShortName = value;
+        CapitalizedName = value;
+        SimpleName = value;
+        NaturalName = value;
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

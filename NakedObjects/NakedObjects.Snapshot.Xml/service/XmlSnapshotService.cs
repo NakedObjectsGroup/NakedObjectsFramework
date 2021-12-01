@@ -9,16 +9,16 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Framework;
 using NakedObjects.Snapshot.Xml.utility;
 
-namespace NakedObjects.Snapshot.Xml.service {
-    [Named("XML Snapshot")]
-    public class XmlSnapshotService : IXmlSnapshotService {
-        public INakedFramework Framework { set; protected get; }
-        public ILoggerFactory LoggerFactory { set; protected get; }
+namespace NakedObjects.Snapshot.Xml.service; 
 
-        #region IXmlSnapshotService Members
+[Named("XML Snapshot")]
+public class XmlSnapshotService : IXmlSnapshotService {
+    public INakedFramework Framework { set; protected get; }
+    public ILoggerFactory LoggerFactory { set; protected get; }
 
-        public IXmlSnapshot GenerateSnapshot(object domainObject) => new XmlSnapshot(domainObject, Framework.NakedObjectManager, Framework.MetamodelManager, LoggerFactory);
+    #region IXmlSnapshotService Members
 
-        #endregion
-    }
+    public IXmlSnapshot GenerateSnapshot(object domainObject) => new XmlSnapshot(domainObject, Framework.NakedObjectManager, Framework.MetamodelManager, LoggerFactory);
+
+    #endregion
 }

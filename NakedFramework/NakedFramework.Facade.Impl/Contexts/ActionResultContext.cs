@@ -10,45 +10,45 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts {
-    public class ActionResultContext : Context {
-        private bool hasResult;
-        private ObjectContext result;
+namespace NakedFramework.Facade.Impl.Contexts; 
 
-        public ObjectContext Result {
-            get => result;
-            set {
-                result = value;
-                hasResult = true;
-            }
+public class ActionResultContext : Context {
+    private bool hasResult;
+    private ObjectContext result;
+
+    public ObjectContext Result {
+        get => result;
+        set {
+            result = value;
+            hasResult = true;
+        }
+    }
+
+    public bool HasResult => !IsVoid() && hasResult;
+
+    public ActionContext ActionContext { get; init; }
+
+    public override string Id => ActionContext.Action.Id;
+
+    public override ITypeSpec Specification => ActionContext.Action.ReturnSpec;
+
+    public string TransientSecurityHash { get; set; }
+
+    private bool IsVoid() => hasResult && Specification.FullName == "System.Void";
+
+    public ActionResultContextFacade ToActionResultContextFacade(IFrameworkFacade facade, INakedFramework framework) {
+        var ac = new ActionResultContextFacade {
+            Result = Result?.ToObjectContextFacade(facade, framework),
+            ActionContext = ActionContext.ToActionContextFacade(facade, framework),
+            HasResult = HasResult,
+            TransientSecurityHash = TransientSecurityHash
+        };
+
+        if (Reason is null) {
+            Reason = ActionContext.Reason;
+            ErrorCause = ActionContext.ErrorCause;
         }
 
-        public bool HasResult => !IsVoid() && hasResult;
-
-        public ActionContext ActionContext { get; init; }
-
-        public override string Id => ActionContext.Action.Id;
-
-        public override ITypeSpec Specification => ActionContext.Action.ReturnSpec;
-
-        public string TransientSecurityHash { get; set; }
-
-        private bool IsVoid() => hasResult && Specification.FullName == "System.Void";
-
-        public ActionResultContextFacade ToActionResultContextFacade(IFrameworkFacade facade, INakedFramework framework) {
-            var ac = new ActionResultContextFacade {
-                Result = Result?.ToObjectContextFacade(facade, framework),
-                ActionContext = ActionContext.ToActionContextFacade(facade, framework),
-                HasResult = HasResult,
-                TransientSecurityHash = TransientSecurityHash
-            };
-
-            if (Reason is null) {
-                Reason = ActionContext.Reason;
-                ErrorCause = ActionContext.ErrorCause;
-            }
-
-            return ToContextFacade(ac, facade, framework);
-        }
+        return ToContextFacade(ac, facade, framework);
     }
 }

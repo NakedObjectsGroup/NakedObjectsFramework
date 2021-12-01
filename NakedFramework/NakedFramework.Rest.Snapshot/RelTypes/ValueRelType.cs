@@ -9,13 +9,13 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class ValueRelType : ObjectRelType {
-        private readonly IMemberFacade member;
-        private ValueRelType(UriMtHelper helper) : base(RelValues.Value, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public ValueRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) => member = property;
+public class ValueRelType : ObjectRelType {
+    private readonly IMemberFacade member;
+    private ValueRelType(UriMtHelper helper) : base(RelValues.Value, helper) { }
 
-        public override string Name => $"{base.Name}{Helper.GetRelParametersFor(member)}";
-    }
+    public ValueRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) => member = property;
+
+    public override string Name => $"{base.Name}{Helper.GetRelParametersFor(member)}";
 }

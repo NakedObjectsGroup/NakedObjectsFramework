@@ -20,39 +20,39 @@ using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.FacetFactory {
-    public sealed class TitleMethodFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
-        private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.TitleMethod
-        };
+namespace NakedLegacy.Reflector.FacetFactory; 
 
-        private readonly ILogger<TitleMethodFacetFactory> logger;
+public sealed class TitleMethodFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
+    private static readonly string[] FixedPrefixes = {
+        RecognisedMethodsAndPrefixes.TitleMethod
+    };
 
-        public TitleMethodFacetFactory(IFacetFactoryOrder<TitleMethodFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
-            logger = loggerFactory.CreateLogger<TitleMethodFacetFactory>();
+    private readonly ILogger<TitleMethodFacetFactory> logger;
 
-        public string[] Prefixes => FixedPrefixes;
+    public TitleMethodFacetFactory(IFacetFactoryOrder<TitleMethodFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+        logger = loggerFactory.CreateLogger<TitleMethodFacetFactory>();
 
-        /// <summary>
-        ///     If no title or ToString can be used then will use Facets provided by
-        ///     <see cref="FallbackFacetFactory" /> instead.
-        /// </summary>
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            try {
-                var titleMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(Title), Type.EmptyTypes);
+    public string[] Prefixes => FixedPrefixes;
 
-                methodRemover.SafeRemoveMethod(titleMethod);
-                if (titleMethod is not null) {
-                    var titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification, Logger<TitleFacetViaTitleMethod>());
-                    FacetUtils.AddFacet(titleFacet);
-                }
+    /// <summary>
+    ///     If no title or ToString can be used then will use Facets provided by
+    ///     <see cref="FallbackFacetFactory" /> instead.
+    /// </summary>
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        try {
+            var titleMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(Title), Type.EmptyTypes);
+
+            methodRemover.SafeRemoveMethod(titleMethod);
+            if (titleMethod is not null) {
+                var titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification, Logger<TitleFacetViaTitleMethod>());
+                FacetUtils.AddFacet(titleFacet);
             }
-            catch (Exception e) {
-                logger.LogError(e, "Unexpected Exception");
-            }
-
-            return metamodel;
         }
+        catch (Exception e) {
+            logger.LogError(e, "Unexpected Exception");
+        }
+
+        return metamodel;
     }
 }

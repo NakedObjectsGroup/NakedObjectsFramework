@@ -11,35 +11,35 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.SpecImmutable {
-    [Serializable]
-    public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
-        private readonly IObjectSpecImmutable returnSpec;
+namespace NakedFramework.Metamodel.SpecImmutable; 
 
-        protected AssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)
-            : base(identifier) =>
-            this.returnSpec = returnSpec;
+[Serializable]
+public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
+    private readonly IObjectSpecImmutable returnSpec;
 
-        #region IAssociationSpecImmutable Members
+    protected AssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)
+        : base(identifier) =>
+        this.returnSpec = returnSpec;
 
-        public abstract IObjectSpecImmutable OwnerSpec { get; }
+    #region IAssociationSpecImmutable Members
 
-        public override IObjectSpecImmutable ReturnSpec => returnSpec;
+    public abstract IObjectSpecImmutable OwnerSpec { get; }
 
-        #endregion
+    public override IObjectSpecImmutable ReturnSpec => returnSpec;
 
-        #region ISerializable
+    #endregion
 
-        // The special constructor is used to deserialize values. 
-        protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => returnSpec = info.GetValue<IObjectSpecImmutable>("returnSpec");
+    #region ISerializable
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue<IObjectSpecImmutable>("returnSpec", returnSpec);
-            base.GetObjectData(info, context);
-        }
+    // The special constructor is used to deserialize values. 
+    protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => returnSpec = info.GetValue<IObjectSpecImmutable>("returnSpec");
 
-        #endregion
+    public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+        info.AddValue<IObjectSpecImmutable>("returnSpec", returnSpec);
+        base.GetObjectData(info, context);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

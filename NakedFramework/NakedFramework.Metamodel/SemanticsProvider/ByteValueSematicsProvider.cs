@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<byte>, IByteValueFacet {
-        private const byte DefaultValueConst = 0;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 3;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public ByteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<byte>, IByteValueFacet {
+    private const byte DefaultValueConst = 0;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 3;
 
-        public static Type Type => typeof(IByteValueFacet);
+    public ByteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(byte);
+    public static Type Type => typeof(IByteValueFacet);
 
-        #region IByteValueFacet Members
+    public static Type AdaptedType => typeof(byte);
 
-        public byte ByteValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<byte>();
+    #region IByteValueFacet Members
 
-        #endregion
+    public byte ByteValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<byte>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(byte);
+    #endregion
 
-        protected override byte DoParse(string entry) {
-            try {
-                return byte.Parse(entry);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, byte.MinValue, byte.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(byte);
+
+    protected override byte DoParse(string entry) {
+        try {
+            return byte.Parse(entry);
         }
-
-        protected override byte DoParseInvariant(string entry) => byte.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(byte obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, byte value) => value.ToString(mask);
-
-        protected override string DoEncode(byte obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override byte DoRestore(string data) => byte.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "ByteAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, byte.MinValue, byte.MaxValue));
+        }
     }
+
+    protected override byte DoParseInvariant(string entry) => byte.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(byte obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, byte value) => value.ToString(mask);
+
+    protected override string DoEncode(byte obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override byte DoRestore(string data) => byte.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "ByteAdapter: ";
 }

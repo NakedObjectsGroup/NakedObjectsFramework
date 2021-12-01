@@ -9,17 +9,17 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class MarkerFlagFacetAbstract : FacetAbstract, IMarkerFlagFacet {
-        protected MarkerFlagFacetAbstract(Type facetType, ISpecification holder, bool flag)
-            : base(facetType, holder) =>
-            Flag = flag;
+namespace NakedFramework.Metamodel.Facet; 
 
-        #region IMarkerFlagFacet Members
+[Serializable]
+public abstract class MarkerFlagFacetAbstract : FacetAbstract, IMarkerFlagFacet {
+    protected MarkerFlagFacetAbstract(Type facetType, ISpecification holder, bool flag)
+        : base(facetType, holder) =>
+        Flag = flag;
 
-        public bool Flag { get; private set; }
+    #region IMarkerFlagFacet Members
 
-        #endregion
-    }
+    public bool Flag { get; private set; }
+
+    #endregion
 }

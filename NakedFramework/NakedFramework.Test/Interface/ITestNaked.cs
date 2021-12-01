@@ -7,11 +7,11 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Test.Interface {
-    public interface ITestNaked {
-        INakedObjectAdapter NakedObject { get; }
-        string Title { get; }
-    }
+namespace NakedFramework.Test.Interface; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface ITestNaked {
+    INakedObjectAdapter NakedObject { get; }
+    string Title { get; }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

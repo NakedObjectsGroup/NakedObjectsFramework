@@ -11,36 +11,36 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
-namespace NakedFramework.DependencyInjection.Component {
-    public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
-        private readonly Type[] facetFactories;
+namespace NakedFramework.DependencyInjection.Component; 
 
-        public FacetFactoryOrder(FacetFactoryTypesProvider facetFactories) =>
-            this.facetFactories = FacetFactoryTypesProvider.FacetFactoryTypes.GroupBy(Group).OrderBy(kvp => kvp.Key).SelectMany(kvp => kvp).ToArray();
+public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
+    private readonly Type[] facetFactories;
 
-        public int Order => Array.IndexOf(facetFactories, typeof(T));
+    public FacetFactoryOrder(FacetFactoryTypesProvider facetFactories) =>
+        this.facetFactories = FacetFactoryTypesProvider.FacetFactoryTypes.GroupBy(Group).OrderBy(kvp => kvp.Key).SelectMany(kvp => kvp).ToArray();
 
-        private static string Group(Type type) =>
-            type.FullName?.Contains("FallbackFacetFactory") == true
-                ? "AGroup"
-                : !type.IsAssignableTo(typeof(SystemTypeFacetFactoryProcessor))
-                    ? "BGroup"
-                    : "CGroup";
-    }
+    public int Order => Array.IndexOf(facetFactories, typeof(T));
 
-    public class TestFacetFactoryOrder<T> : IFacetFactoryOrder<T> {
-        private readonly Type[] facetFactories;
+    private static string Group(Type type) =>
+        type.FullName?.Contains("FallbackFacetFactory") == true
+            ? "AGroup"
+            : !type.IsAssignableTo(typeof(SystemTypeFacetFactoryProcessor))
+                ? "BGroup"
+                : "CGroup";
+}
 
-        public TestFacetFactoryOrder(Type[] facetFactories) => this.facetFactories = facetFactories;
+public class TestFacetFactoryOrder<T> : IFacetFactoryOrder<T> {
+    private readonly Type[] facetFactories;
 
-        public int Order => Array.IndexOf(facetFactories, typeof(T));
-    }
+    public TestFacetFactoryOrder(Type[] facetFactories) => this.facetFactories = facetFactories;
 
-    public class AppendFacetFactoryOrder<T> : IFacetFactoryOrder<T> {
-        public AppendFacetFactoryOrder(FacetFactoryTypesProvider facetFactories) => LastIndex = FacetFactoryTypesProvider.FacetFactoryTypes.Length - 1;
+    public int Order => Array.IndexOf(facetFactories, typeof(T));
+}
 
-        private int LastIndex { get; set; }
+public class AppendFacetFactoryOrder<T> : IFacetFactoryOrder<T> {
+    public AppendFacetFactoryOrder(FacetFactoryTypesProvider facetFactories) => LastIndex = FacetFactoryTypesProvider.FacetFactoryTypes.Length - 1;
 
-        public int Order => ++LastIndex;
-    }
+    private int LastIndex { get; set; }
+
+    public int Order => ++LastIndex;
 }

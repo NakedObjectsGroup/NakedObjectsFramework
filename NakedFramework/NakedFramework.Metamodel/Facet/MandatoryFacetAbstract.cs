@@ -12,26 +12,26 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Error;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
-        protected MandatoryFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IMandatoryFacet);
+[Serializable]
+public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
+    protected MandatoryFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region IMandatoryFacet Members
+    public static Type Type => typeof(IMandatoryFacet);
 
-        public virtual string Invalidates(IInteractionContext ic) => IsRequiredButNull(ic.ProposedArgument) ? NakedObjects.Resources.NakedObjects.Mandatory : null;
+    #region IMandatoryFacet Members
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMandatoryException(ic, Invalidates(ic));
+    public virtual string Invalidates(IInteractionContext ic) => IsRequiredButNull(ic.ProposedArgument) ? NakedObjects.Resources.NakedObjects.Mandatory : null;
 
-        public virtual bool IsOptional => !IsMandatory;
+    public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMandatoryException(ic, Invalidates(ic));
 
-        public abstract bool IsMandatory { get; }
+    public virtual bool IsOptional => !IsMandatory;
 
-        public virtual bool IsRequiredButNull(INakedObjectAdapter nakedObjectAdapter) => IsMandatory && nakedObjectAdapter == null;
+    public abstract bool IsMandatory { get; }
 
-        #endregion
-    }
+    public virtual bool IsRequiredButNull(INakedObjectAdapter nakedObjectAdapter) => IsMandatory && nakedObjectAdapter == null;
+
+    #endregion
 }

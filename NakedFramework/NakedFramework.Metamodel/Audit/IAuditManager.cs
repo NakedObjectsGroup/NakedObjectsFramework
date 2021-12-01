@@ -8,10 +8,10 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Metamodel.Audit {
-    public interface IAuditManager {
-        void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedFramework framework);
-        void Updated(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-        void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-    }
+namespace NakedFramework.Metamodel.Audit; 
+
+public interface IAuditManager {
+    void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, INakedFramework framework);
+    void Updated(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+    void Persisted(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 }

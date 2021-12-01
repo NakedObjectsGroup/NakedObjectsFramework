@@ -10,15 +10,15 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class CollectionValueRelType : RelType {
-        public CollectionValueRelType(UriMtHelper helper) : base(RelValues.CollectionValue, helper) { }
-        public CollectionValueRelType(string name, UriMtHelper helper) : base(name, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
+public class CollectionValueRelType : RelType {
+    public CollectionValueRelType(UriMtHelper helper) : base(RelValues.CollectionValue, helper) { }
+    public CollectionValueRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override Uri GetUri() => Helper.GetCollectionValueUri();
+    public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.CollectionValue);
-    }
+    public override Uri GetUri() => Helper.GetCollectionValueUri();
+
+    public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.CollectionValue);
 }

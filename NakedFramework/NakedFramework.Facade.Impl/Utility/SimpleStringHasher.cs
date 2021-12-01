@@ -11,21 +11,21 @@ using System.Security.Cryptography;
 using System.Text;
 using NakedFramework.Facade.Utility;
 
-namespace NakedFramework.Facade.Impl.Utility {
-    public class SimpleStringHasher : IStringHasher {
-        #region IStringHasher Members
+namespace NakedFramework.Facade.Impl.Utility; 
 
-        public string GetHash(string toHash) => ComputeSha256HashAsString(toHash);
+public class SimpleStringHasher : IStringHasher {
+    #region IStringHasher Members
 
-        #endregion
+    public string GetHash(string toHash) => ComputeSha256HashAsString(toHash);
 
-        private static string ComputeSha256HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeSha256HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
+    #endregion
 
-        private static byte[] ComputeSha256HashFromString(string s) {
-            var idAsBytes = Encoding.UTF8.GetBytes(s);
+    private static string ComputeSha256HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeSha256HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
+
+    private static byte[] ComputeSha256HashFromString(string s) {
+        var idAsBytes = Encoding.UTF8.GetBytes(s);
 #pragma warning disable SYSLIB0021 // Type or member is obsolete
-            return new SHA256Managed().ComputeHash(idAsBytes);
+        return new SHA256Managed().ComputeHash(idAsBytes);
 #pragma warning restore SYSLIB0021 // Type or member is obsolete
-        }
     }
 }

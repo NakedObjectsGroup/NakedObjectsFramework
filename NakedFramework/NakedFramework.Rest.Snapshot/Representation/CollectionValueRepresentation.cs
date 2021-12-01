@@ -16,54 +16,54 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class CollectionValueRepresentation : Representation {
-        protected CollectionValueRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags)
-            : base(oidStrategy, flags) {
-            SetScalars(propertyContext);
-            SetValue(propertyContext, req, flags);
-            SelfRelType = new CollectionValueRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, propertyContext));
-            SetLinks(req, propertyContext, new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, propertyContext.Target)));
-            SetExtensions();
-            SetHeader(propertyContext.Target);
-        }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        [DataMember(Name = JsonPropertyNames.Id)]
-        public string Id { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Links)]
-        public LinkRepresentation[] Links { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Extensions)]
-        public MapRepresentation Extensions { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Value)]
-        public LinkRepresentation[] Value { get; set; }
-
-        private void SetValue(PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) {
-            var collectionItems = propertyContext.Property.GetValue(propertyContext.Target).ToEnumerable();
-            Value = collectionItems.Select(i => LinkRepresentation.Create(OidStrategy, new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
-        }
-
-        private void SetScalars(PropertyContextFacade propertyContext) => Id = propertyContext.Property.Id;
-
-        private void SetExtensions() => Extensions = new MapRepresentation();
-
-        private void SetLinks(HttpRequest req, PropertyContextFacade propertyContext, RelType parentRelType) {
-            var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(OidStrategy, parentRelType, Flags),
-                LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)
-            };
-
-            Links = tempLinks.ToArray();
-        }
-
-        private void SetHeader(IObjectFacade target) {
-            Caching = CacheType.Transactional;
-            SetEtag(target);
-        }
-
-        public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) => new(oidStrategy, propertyContext, req, flags);
+[DataContract]
+public class CollectionValueRepresentation : Representation {
+    protected CollectionValueRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags)
+        : base(oidStrategy, flags) {
+        SetScalars(propertyContext);
+        SetValue(propertyContext, req, flags);
+        SelfRelType = new CollectionValueRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, propertyContext));
+        SetLinks(req, propertyContext, new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, propertyContext.Target)));
+        SetExtensions();
+        SetHeader(propertyContext.Target);
     }
+
+    [DataMember(Name = JsonPropertyNames.Id)]
+    public string Id { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Links)]
+    public LinkRepresentation[] Links { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Extensions)]
+    public MapRepresentation Extensions { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Value)]
+    public LinkRepresentation[] Value { get; set; }
+
+    private void SetValue(PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) {
+        var collectionItems = propertyContext.Property.GetValue(propertyContext.Target).ToEnumerable();
+        Value = collectionItems.Select(i => LinkRepresentation.Create(OidStrategy, new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
+    }
+
+    private void SetScalars(PropertyContextFacade propertyContext) => Id = propertyContext.Property.Id;
+
+    private void SetExtensions() => Extensions = new MapRepresentation();
+
+    private void SetLinks(HttpRequest req, PropertyContextFacade propertyContext, RelType parentRelType) {
+        var tempLinks = new List<LinkRepresentation> {
+            LinkRepresentation.Create(OidStrategy, parentRelType, Flags),
+            LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)
+        };
+
+        Links = tempLinks.ToArray();
+    }
+
+    private void SetHeader(IObjectFacade target) {
+        Caching = CacheType.Transactional;
+        SetEtag(target);
+    }
+
+    public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) => new(oidStrategy, propertyContext, req, flags);
 }

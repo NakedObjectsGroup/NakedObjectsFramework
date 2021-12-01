@@ -8,27 +8,27 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
-namespace NakedFramework.Persistor.EF6.Component {
-    public class EF6DestroyObjectCommand : IDestroyObjectCommand {
-        private readonly EF6LocalContext context;
-        private readonly INakedObjectAdapter nakedObjectAdapter;
+namespace NakedFramework.Persistor.EF6.Component; 
 
-        public EF6DestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, EF6LocalContext context) {
-            this.context = context;
-            this.nakedObjectAdapter = nakedObjectAdapter;
-        }
+public class EF6DestroyObjectCommand : IDestroyObjectCommand {
+    private readonly EF6LocalContext context;
+    private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public override string ToString() => $"EF6 DestroyObjectCommand [object={nakedObjectAdapter}]";
-
-        #region IDestroyObjectCommand Members
-
-        public void Execute() {
-            context.WrappedObjectContext.DeleteObject(nakedObjectAdapter.Object);
-            context.DeletedNakedObjects.Add(nakedObjectAdapter);
-        }
-
-        public INakedObjectAdapter OnObject() => nakedObjectAdapter;
-
-        #endregion
+    public EF6DestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter, EF6LocalContext context) {
+        this.context = context;
+        this.nakedObjectAdapter = nakedObjectAdapter;
     }
+
+    public override string ToString() => $"EF6 DestroyObjectCommand [object={nakedObjectAdapter}]";
+
+    #region IDestroyObjectCommand Members
+
+    public void Execute() {
+        context.WrappedObjectContext.DeleteObject(nakedObjectAdapter.Object);
+        context.DeletedNakedObjects.Add(nakedObjectAdapter);
+    }
+
+    public INakedObjectAdapter OnObject() => nakedObjectAdapter;
+
+    #endregion
 }

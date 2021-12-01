@@ -8,12 +8,12 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace NakedObjects.Reflector.Extensions {
-    public class NakedObjectsOptions {
-        public Type[] DomainModelTypes { get; set; } = Array.Empty<Type>();
-        public Type[] DomainModelServices { get; set; } = Array.Empty<Type>();
-        public bool ConcurrencyCheck { get; set; } = true;
-        public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
-        public bool NoValidate { get; set; }
-    }
+namespace NakedObjects.Reflector.Extensions; 
+
+public class NakedObjectsOptions {
+    public Type[] DomainModelTypes { get; set; } = Array.Empty<Type>();
+    public Type[] DomainModelServices { get; set; } = Array.Empty<Type>();
+    public bool ConcurrencyCheck { get; set; } = true;
+    public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
+    public bool NoValidate { get; set; }
 }

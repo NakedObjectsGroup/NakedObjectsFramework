@@ -9,21 +9,21 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class SingleStringValueFacetAbstract : FacetAbstract, ISingleStringValueFacet {
-        private readonly string valueString;
+namespace NakedFramework.Metamodel.Facet; 
 
-        protected SingleStringValueFacetAbstract(Type facetType, ISpecification holder, string valueString)
-            : base(facetType, holder) =>
-            this.valueString = valueString;
+[Serializable]
+public abstract class SingleStringValueFacetAbstract : FacetAbstract, ISingleStringValueFacet {
+    private readonly string valueString;
 
-        #region ISingleStringValueFacet Members
+    protected SingleStringValueFacetAbstract(Type facetType, ISpecification holder, string valueString)
+        : base(facetType, holder) =>
+        this.valueString = valueString;
 
-        public virtual string Value => valueString;
+    #region ISingleStringValueFacet Members
 
-        #endregion
+    public virtual string Value => valueString;
 
-        protected override string ToStringValues() => valueString == null ? "null" : $"\"{valueString}\"";
-    }
+    #endregion
+
+    protected override string ToStringValues() => valueString == null ? "null" : $"\"{valueString}\"";
 }

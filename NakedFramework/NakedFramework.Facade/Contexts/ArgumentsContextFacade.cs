@@ -7,14 +7,14 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Facade.Contexts {
-    public class ArgumentsContextFacade {
-        public IDictionary<string, object> Values { get; set; }
-        public bool ValidateOnly { get; init; }
-        public string Digest { get; init; }
-        public string SearchTerm { get; init; }
-        public int Page { get; init; }
-        public int PageSize { get; init; }
-        public MethodType ExpectedActionType { get; init; }
-    }
+namespace NakedFramework.Facade.Contexts; 
+
+public class ArgumentsContextFacade {
+    public IDictionary<string, object> Values { get; set; }
+    public bool ValidateOnly { get; init; }
+    public string Digest { get; init; }
+    public string SearchTerm { get; init; }
+    public int Page { get; init; }
+    public int PageSize { get; init; }
+    public MethodType ExpectedActionType { get; init; }
 }

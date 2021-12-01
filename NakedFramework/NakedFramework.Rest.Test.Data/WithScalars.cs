@@ -15,78 +15,78 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public enum TestEnum {
-        Value1,
-        Value2
+namespace RestfulObjects.Test.Data; 
+
+public enum TestEnum {
+    Value1,
+    Value2
+}
+
+public class WithScalars {
+    private char c;
+
+    public WithScalars() {
+        SByte = 10;
+        UInt = 14;
+        ULong = 15;
+        UShort = 16;
+        DateTime = DateTime.UtcNow;
     }
 
-    public class WithScalars {
-        private char c;
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    [DefaultValue(0)]
+    public virtual int Id { get; set; }
 
-        public WithScalars() {
-            SByte = 10;
-            UInt = 14;
-            ULong = 15;
-            UShort = 16;
-            DateTime = DateTime.UtcNow;
-        }
+    [NotMapped]
+    public virtual sbyte SByte { get; set; }
 
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        [DefaultValue(0)]
-        public virtual int Id { get; set; }
+    public virtual byte Byte { get; set; }
+    public virtual short Short { get; set; }
 
-        [NotMapped]
-        public virtual sbyte SByte { get; set; }
+    [NotMapped]
+    public virtual ushort UShort { get; set; }
 
-        public virtual byte Byte { get; set; }
-        public virtual short Short { get; set; }
+    public virtual int Int { get; set; }
 
-        [NotMapped]
-        public virtual ushort UShort { get; set; }
+    [NotMapped]
+    [Range(0, 400)]
+    public virtual int IntWithRange { get; set; }
 
-        public virtual int Int { get; set; }
+    [NotMapped]
+    public virtual uint UInt { get; set; }
 
-        [NotMapped]
-        [Range(0, 400)]
-        public virtual int IntWithRange { get; set; }
+    public virtual long Long { get; set; }
 
-        [NotMapped]
-        public virtual uint UInt { get; set; }
+    [NotMapped]
+    public virtual ulong ULong { get; set; }
 
-        public virtual long Long { get; set; }
-
-        [NotMapped]
-        public virtual ulong ULong { get; set; }
-
-        public virtual char Char {
-            get => '3';
-            set => c = value;
-        }
-
-        public virtual bool Bool { get; set; }
-        public virtual string String { get; set; }
-        public virtual float Float { get; set; }
-        public virtual double Double { get; set; }
-        public virtual decimal Decimal { get; set; }
-        public virtual byte[] ByteArray { get; set; }
-        public virtual sbyte[] SByteArray { get; set; }
-        public virtual char[] CharArray { get; set; }
-
-        public virtual DateTime DateTime { get; set; }
-
-        [DataType(DataType.Password)]
-        [NotMapped]
-        public virtual string Password { get; set; }
-
-        public virtual ICollection<MostSimple> List { get; set; } = new List<MostSimple>();
-
-        [NotMapped]
-        public virtual ISet<MostSimple> Set { get; set; } = new HashSet<MostSimple>();
-
-        [EnumDataType(typeof(TestEnum))]
-        public virtual int EnumByAttributeChoices { get; set; }
+    public virtual char Char {
+        get => '3';
+        set => c = value;
     }
+
+    public virtual bool Bool { get; set; }
+    public virtual string String { get; set; }
+    public virtual float Float { get; set; }
+    public virtual double Double { get; set; }
+    public virtual decimal Decimal { get; set; }
+    public virtual byte[] ByteArray { get; set; }
+    public virtual sbyte[] SByteArray { get; set; }
+    public virtual char[] CharArray { get; set; }
+
+    public virtual DateTime DateTime { get; set; }
+
+    [DataType(DataType.Password)]
+    [NotMapped]
+    public virtual string Password { get; set; }
+
+    public virtual ICollection<MostSimple> List { get; set; } = new List<MostSimple>();
+
+    [NotMapped]
+    public virtual ISet<MostSimple> Set { get; set; } = new HashSet<MostSimple>();
+
+    [EnumDataType(typeof(TestEnum))]
+    public virtual int EnumByAttributeChoices { get; set; }
 }

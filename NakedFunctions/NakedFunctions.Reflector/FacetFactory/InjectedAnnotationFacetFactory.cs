@@ -16,17 +16,17 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class InjectedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public InjectedAnnotationFacetFactory(IFacetFactoryOrder<InjectedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {
-                FacetUtils.AddFacet(new InjectedFacet(holder));
-            }
+public sealed class InjectedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public InjectedAnnotationFacetFactory(IFacetFactoryOrder<InjectedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
 
-            return metamodel;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {
+            FacetUtils.AddFacet(new InjectedFacet(holder));
         }
+
+        return metamodel;
     }
 }

@@ -12,67 +12,67 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Transaction;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component {
-    public sealed class TransactionManager : ITransactionManager {
-        private readonly ILogger<TransactionManager> logger;
-        private readonly ILoggerFactory loggerFactory;
-        private readonly IObjectStore objectStore;
-        private ITransaction transaction;
-        private bool userAborted;
+namespace NakedFramework.Core.Component; 
 
-        public TransactionManager(IObjectStore objectStore, ILoggerFactory loggerFactory, ILogger<TransactionManager> logger) {
-            this.objectStore = objectStore ?? throw new InitialisationException($"{nameof(objectStore)} is null");
-            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
-            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
-        }
+public sealed class TransactionManager : ITransactionManager {
+    private readonly ILogger<TransactionManager> logger;
+    private readonly ILoggerFactory loggerFactory;
+    private readonly IObjectStore objectStore;
+    private ITransaction transaction;
+    private bool userAborted;
 
-        private ITransaction Transaction => transaction ?? new NestedTransaction(objectStore, loggerFactory.CreateLogger<NestedTransaction>());
-
-        #region ITransactionManager Members
-
-        public void StartTransaction() {
-            if (transaction is null) {
-                transaction = new NestedTransaction(objectStore, loggerFactory.CreateLogger<NestedTransaction>());
-                TransactionLevel = 0;
-                userAborted = false;
-                objectStore.StartTransaction();
-            }
-
-            TransactionLevel++;
-        }
-
-        public void AbortTransaction() {
-            if (transaction is not null) {
-                transaction.Abort();
-                transaction = null;
-                TransactionLevel = 0;
-                objectStore.AbortTransaction();
-            }
-        }
-
-        public void UserAbortTransaction() {
-            AbortTransaction();
-            userAborted = true;
-        }
-
-        public void EndTransaction() {
-            TransactionLevel--;
-            if (TransactionLevel == 0) {
-                Transaction.Commit();
-                transaction = null;
-            }
-            else if (TransactionLevel < 0) {
-                TransactionLevel = 0;
-                if (!userAborted) {
-                    throw new TransactionException(logger.LogAndReturn("No transaction running to end"));
-                }
-            }
-        }
-
-        public int TransactionLevel { get; private set; }
-
-        #endregion
+    public TransactionManager(IObjectStore objectStore, ILoggerFactory loggerFactory, ILogger<TransactionManager> logger) {
+        this.objectStore = objectStore ?? throw new InitialisationException($"{nameof(objectStore)} is null");
+        this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+        this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    private ITransaction Transaction => transaction ?? new NestedTransaction(objectStore, loggerFactory.CreateLogger<NestedTransaction>());
+
+    #region ITransactionManager Members
+
+    public void StartTransaction() {
+        if (transaction is null) {
+            transaction = new NestedTransaction(objectStore, loggerFactory.CreateLogger<NestedTransaction>());
+            TransactionLevel = 0;
+            userAborted = false;
+            objectStore.StartTransaction();
+        }
+
+        TransactionLevel++;
+    }
+
+    public void AbortTransaction() {
+        if (transaction is not null) {
+            transaction.Abort();
+            transaction = null;
+            TransactionLevel = 0;
+            objectStore.AbortTransaction();
+        }
+    }
+
+    public void UserAbortTransaction() {
+        AbortTransaction();
+        userAborted = true;
+    }
+
+    public void EndTransaction() {
+        TransactionLevel--;
+        if (TransactionLevel == 0) {
+            Transaction.Commit();
+            transaction = null;
+        }
+        else if (TransactionLevel < 0) {
+            TransactionLevel = 0;
+            if (!userAborted) {
+                throw new TransactionException(logger.LogAndReturn("No transaction running to end"));
+            }
+        }
+    }
+
+    public int TransactionLevel { get; private set; }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

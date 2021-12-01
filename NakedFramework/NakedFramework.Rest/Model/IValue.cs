@@ -9,8 +9,8 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Model {
-    public interface IValue {
-        object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy);
-    }
+namespace NakedFramework.Rest.Model; 
+
+public interface IValue {
+    object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy);
 }

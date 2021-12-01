@@ -9,9 +9,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace NakedFramework.Persistor.EFCore.Extensions {
-    public class EFCorePersistorOptions {
-        public int MaximumCommitCycles { get; } = 10;
-        public Func<IConfiguration, DbContext>[] ContextCreators { get; set; }
-    }
+namespace NakedFramework.Persistor.EFCore.Extensions; 
+
+public class EFCorePersistorOptions {
+    public int MaximumCommitCycles { get; } = 10;
+    public Func<IConfiguration, DbContext>[] ContextCreators { get; set; }
 }

@@ -13,18 +13,18 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts {
-    public class ListContext {
-        public INakedObjectAdapter[] List { get; init; }
-        public IObjectSpec ElementType { get; init; }
-        public bool IsListOfServices { get; init; }
+namespace NakedFramework.Facade.Impl.Contexts; 
 
-        public ListContextFacade ToListContextFacade(IFrameworkFacade facade, INakedFramework framework) {
-            return new() {
-                ElementType = new TypeFacade(ElementType, facade, framework),
-                List = List.Select(no => ObjectFacade.Wrap(no, facade, framework)).Cast<IObjectFacade>().ToArray(),
-                IsListOfServices = IsListOfServices
-            };
-        }
+public class ListContext {
+    public INakedObjectAdapter[] List { get; init; }
+    public IObjectSpec ElementType { get; init; }
+    public bool IsListOfServices { get; init; }
+
+    public ListContextFacade ToListContextFacade(IFrameworkFacade facade, INakedFramework framework) {
+        return new() {
+            ElementType = new TypeFacade(ElementType, facade, framework),
+            List = List.Select(no => ObjectFacade.Wrap(no, facade, framework)).Cast<IObjectFacade>().ToArray(),
+            IsListOfServices = IsListOfServices
+        };
     }
 }

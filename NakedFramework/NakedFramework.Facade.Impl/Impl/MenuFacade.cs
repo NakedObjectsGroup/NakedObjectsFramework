@@ -11,31 +11,31 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl {
-    public class MenuFacade : IMenuFacade {
-        public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade facade, INakedFramework framework) {
-            Wrapped = wrapped;
-            MenuItems = wrapped.MenuItems.Select(i => Wrap(i, facade, framework)).ToList();
-            Name = wrapped.Name;
-            Id = wrapped.Id;
-            Grouping = wrapped.Grouping;
-        }
+namespace NakedFramework.Facade.Impl.Impl; 
 
-        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedFramework framework) =>
-            menu switch {
-                IMenuActionImmutable immutable => new MenuActionFacade(immutable, facade, framework),
-                IMenuImmutable menuImmutable => new MenuFacade(menuImmutable, facade, framework),
-                _ => new MenuItemFacade(menu)
-            };
-
-        #region IMenuFacade Members
-
-        public object Wrapped { get; }
-        public IList<IMenuItemFacade> MenuItems { get; }
-        public string Name { get; }
-        public string Id { get; }
-        public string Grouping { get; }
-
-        #endregion
+public class MenuFacade : IMenuFacade {
+    public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade facade, INakedFramework framework) {
+        Wrapped = wrapped;
+        MenuItems = wrapped.MenuItems.Select(i => Wrap(i, facade, framework)).ToList();
+        Name = wrapped.Name;
+        Id = wrapped.Id;
+        Grouping = wrapped.Grouping;
     }
+
+    private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedFramework framework) =>
+        menu switch {
+            IMenuActionImmutable immutable => new MenuActionFacade(immutable, facade, framework),
+            IMenuImmutable menuImmutable => new MenuFacade(menuImmutable, facade, framework),
+            _ => new MenuItemFacade(menu)
+        };
+
+    #region IMenuFacade Members
+
+    public object Wrapped { get; }
+    public IList<IMenuItemFacade> MenuItems { get; }
+    public string Name { get; }
+    public string Id { get; }
+    public string Grouping { get; }
+
+    #endregion
 }

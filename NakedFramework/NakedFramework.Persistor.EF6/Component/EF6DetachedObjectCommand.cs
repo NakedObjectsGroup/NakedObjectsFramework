@@ -17,186 +17,186 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EF6.Util;
 
-namespace NakedFramework.Persistor.EF6.Component {
-    public class EF6DetachedObjectCommand : IDetachedObjectCommand {
-        private readonly IDetachedObjects detachedObjects;
-        private readonly EF6ObjectStore parent;
-        private EF6LocalContext context;
+namespace NakedFramework.Persistor.EF6.Component; 
 
-        public EF6DetachedObjectCommand(IDetachedObjects detachedObjects, EF6ObjectStore parent) {
-            this.detachedObjects = detachedObjects;
-            this.parent = parent;
-        }
+public class EF6DetachedObjectCommand : IDetachedObjectCommand {
+    private readonly IDetachedObjects detachedObjects;
+    private readonly EF6ObjectStore parent;
+    private EF6LocalContext context;
 
-        public IList<(object original, object updated)> Execute() {
-            ValidateDetachedObjects();
-            try {
-                foreach (var toSave in detachedObjects.ToSave) {
-                    ProxyIfNotAlreadySeen((null, toSave));
-                }
+    public EF6DetachedObjectCommand(IDetachedObjects detachedObjects, EF6ObjectStore parent) {
+        this.detachedObjects = detachedObjects;
+        this.parent = parent;
+    }
 
-                foreach (var updateTuple in detachedObjects.ToUpdate) {
-                    ProxyIfNotAlreadySeen(updateTuple);
-                }
-
-                foreach (var toDelete in detachedObjects.ToDelete) {
-                    DeleteObject(toDelete);
-                }
-
-                return detachedObjects.SavedAndUpdated;
-            }
-            catch (Exception e) {
-                parent.Logger.LogWarning($"Error in EF6CreateObjectCommand.Execute: {e.Message}");
-                throw;
-            }
-        }
-
-        public INakedObjectAdapter OnObject() => context.CurrentSaveRootObjectAdapter;
-
-        private bool IsSavedOrUpdated(object obj) => detachedObjects.SavedAndUpdated.Any(t => t.original == obj);
-
-        private object AlreadyUpdatedProxy(object obj) => detachedObjects.SavedAndUpdated.Where(t => t.original == obj).Select(t => t.updated).SingleOrDefault();
-
-        private void ProxyIfNotAlreadySeen((object proxy, object toProxy) updateTuple) {
-            var (proxy, updated) = updateTuple;
-
-            if (!IsSavedOrUpdated(updated)) {
-                context = parent.GetContext(updated);
-                ProxyObjectIfAppropriate(updated, proxy);
-            }
-        }
-
-        private void ValidateDetachedObjects() {
-            var errors = new List<string>();
-
+    public IList<(object original, object updated)> Execute() {
+        ValidateDetachedObjects();
+        try {
             foreach (var toSave in detachedObjects.ToSave) {
-                context = parent.GetContext(toSave);
-                if (!context.GetKey(toSave).All(TypeKeyUtils.EmptyKey)) {
-                    errors.Add($"Save object {toSave} already has a key");
-                }
+                ProxyIfNotAlreadySeen((null, toSave));
             }
 
             foreach (var updateTuple in detachedObjects.ToUpdate) {
-                var (_, toUpdate) = updateTuple;
-                context = parent.GetContext(toUpdate);
-                if (context.GetKey(toUpdate).All(TypeKeyUtils.EmptyKey)) {
-                    errors.Add($"Update object {toUpdate} has no key");
+                ProxyIfNotAlreadySeen(updateTuple);
+            }
+
+            foreach (var toDelete in detachedObjects.ToDelete) {
+                DeleteObject(toDelete);
+            }
+
+            return detachedObjects.SavedAndUpdated;
+        }
+        catch (Exception e) {
+            parent.Logger.LogWarning($"Error in EF6CreateObjectCommand.Execute: {e.Message}");
+            throw;
+        }
+    }
+
+    public INakedObjectAdapter OnObject() => context.CurrentSaveRootObjectAdapter;
+
+    private bool IsSavedOrUpdated(object obj) => detachedObjects.SavedAndUpdated.Any(t => t.original == obj);
+
+    private object AlreadyUpdatedProxy(object obj) => detachedObjects.SavedAndUpdated.Where(t => t.original == obj).Select(t => t.updated).SingleOrDefault();
+
+    private void ProxyIfNotAlreadySeen((object proxy, object toProxy) updateTuple) {
+        var (proxy, updated) = updateTuple;
+
+        if (!IsSavedOrUpdated(updated)) {
+            context = parent.GetContext(updated);
+            ProxyObjectIfAppropriate(updated, proxy);
+        }
+    }
+
+    private void ValidateDetachedObjects() {
+        var errors = new List<string>();
+
+        foreach (var toSave in detachedObjects.ToSave) {
+            context = parent.GetContext(toSave);
+            if (!context.GetKey(toSave).All(TypeKeyUtils.EmptyKey)) {
+                errors.Add($"Save object {toSave} already has a key");
+            }
+        }
+
+        foreach (var updateTuple in detachedObjects.ToUpdate) {
+            var (_, toUpdate) = updateTuple;
+            context = parent.GetContext(toUpdate);
+            if (context.GetKey(toUpdate).All(TypeKeyUtils.EmptyKey)) {
+                errors.Add($"Update object {toUpdate} has no key");
+            }
+        }
+
+        if (errors.Any()) {
+            var error = errors.Aggregate("", (s, a) => $"{a}{(string.IsNullOrEmpty(a) ? "" : ", ")}{s}");
+            throw new PersistFailedException(error);
+        }
+    }
+
+    private void DeleteObject(object toDelete) {
+        var adapter = parent.CreateAdapter(null, toDelete);
+        context = parent.GetContext(toDelete);
+        context.WrappedObjectContext.DeleteObject(toDelete);
+        adapter.ResolveState.Handle(Events.DestroyEvent);
+    }
+
+    private void SetKeyAsNecessary(object objectToProxy, object proxy) {
+        if (!context.IdMembersAreIdentity(objectToProxy.GetType())) {
+            var idMembers = context.GetIdMembers(objectToProxy.GetType());
+            idMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+        }
+    }
+
+    private static object GetOrCreateProxiedObject(object originalObject, EF6LocalContext context, object potentialProxy) {
+        var proxy = potentialProxy ?? context.CreateObject(originalObject.GetType());
+
+        if (proxy is null) {
+            throw new PersistFailedException($"unexpected null proxy for {originalObject} type {originalObject.GetType()}");
+        }
+
+        return proxy;
+    }
+
+    private object ProxyObject(object originalObject, object potentialProxy = null) {
+        var alreadyUpdatedProxy = AlreadyUpdatedProxy(originalObject);
+        if (alreadyUpdatedProxy is not null) {
+            return alreadyUpdatedProxy;
+        }
+
+        var persisting = potentialProxy is null;
+        var proxy = GetOrCreateProxiedObject(originalObject, context, potentialProxy);
+
+        // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
+        INakedObjectAdapter proxyAdapter = null;
+        if (persisting) {
+            proxyAdapter = parent.CreateAdapter(null, proxy);
+        }
+
+        SetKeyAsNecessary(originalObject, proxy);
+
+        if (persisting) {
+            context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", proxy);
+        }
+
+        // need to update
+        ProxyReferencesAndCopyValuesToProxy(originalObject, proxy);
+        if (persisting) {
+            parent.RemoveAdapter(proxyAdapter);
+        }
+
+        detachedObjects.SavedAndUpdated.Add((originalObject, proxy));
+
+        return proxy;
+    }
+
+    private void ProxyReferencesAndCopyValuesToProxy(object originalObject, object proxy) {
+        var nonIdMembers = context.GetNonIdMembers(originalObject.GetType());
+        nonIdMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
+
+        var refMembers = context.GetReferenceMembers(originalObject.GetType());
+        refMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, ProxyReferenceIfAppropriate(pi.GetValue(originalObject, null)), null));
+
+        var colmembers = context.GetCollectionMembers(originalObject.GetType());
+        foreach (var pi in colmembers) {
+            var toCol = proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
+            var fromCol = pi.GetValue(originalObject, null);
+
+            if (!ReferenceEquals(toCol, fromCol) && fromCol is not null) {
+                toCol.Invoke("Clear");
+                foreach (var item in (IEnumerable) fromCol) {
+                    toCol.Invoke("Add", ProxyReferenceIfAppropriate(item));
                 }
             }
-
-            if (errors.Any()) {
-                var error = errors.Aggregate("", (s, a) => $"{a}{(string.IsNullOrEmpty(a) ? "" : ", ")}{s}");
-                throw new PersistFailedException(error);
-            }
         }
 
-        private void DeleteObject(object toDelete) {
-            var adapter = parent.CreateAdapter(null, toDelete);
-            context = parent.GetContext(toDelete);
-            context.WrappedObjectContext.DeleteObject(toDelete);
-            adapter.ResolveState.Handle(Events.DestroyEvent);
+        var notPersistedMembers = originalObject.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && parent.IsNotPersisted(originalObject, p)).ToArray();
+        notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
+    }
+
+    public override string ToString() => "EF6 DetachedObjectCommand";
+
+    private void ProxyObjectIfAppropriate(object originalObject, object existingProxy) {
+        if (originalObject is not null) {
+            ProxyObject(originalObject, existingProxy);
+        }
+    }
+
+    private object ProxyReferenceIfAppropriate(object originalObject) {
+        if (originalObject == null) {
+            return null;
         }
 
-        private void SetKeyAsNecessary(object objectToProxy, object proxy) {
-            if (!context.IdMembersAreIdentity(objectToProxy.GetType())) {
-                var idMembers = context.GetIdMembers(objectToProxy.GetType());
-                idMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
-            }
+        var alreadyUpdatedProxy = AlreadyUpdatedProxy(originalObject);
+        if (alreadyUpdatedProxy is not null) {
+            return alreadyUpdatedProxy;
         }
 
-        private static object GetOrCreateProxiedObject(object originalObject, EF6LocalContext context, object potentialProxy) {
-            var proxy = potentialProxy ?? context.CreateObject(originalObject.GetType());
-
-            if (proxy is null) {
-                throw new PersistFailedException($"unexpected null proxy for {originalObject} type {originalObject.GetType()}");
-            }
-
-            return proxy;
+        if (detachedObjects.ToUpdate.Select(t => t.updated).Contains(originalObject)) {
+            var (proxy, _) = detachedObjects.ToUpdate.SingleOrDefault(t => t.updated == originalObject);
+            return ProxyObject(originalObject, proxy);
         }
 
-        private object ProxyObject(object originalObject, object potentialProxy = null) {
-            var alreadyUpdatedProxy = AlreadyUpdatedProxy(originalObject);
-            if (alreadyUpdatedProxy is not null) {
-                return alreadyUpdatedProxy;
-            }
+        var keys = context.GetKey(originalObject);
+        var persisting = keys.All(TypeKeyUtils.EmptyKey);
 
-            var persisting = potentialProxy is null;
-            var proxy = GetOrCreateProxiedObject(originalObject, context, potentialProxy);
-
-            // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
-            INakedObjectAdapter proxyAdapter = null;
-            if (persisting) {
-                proxyAdapter = parent.CreateAdapter(null, proxy);
-            }
-
-            SetKeyAsNecessary(originalObject, proxy);
-
-            if (persisting) {
-                context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", proxy);
-            }
-
-            // need to update
-            ProxyReferencesAndCopyValuesToProxy(originalObject, proxy);
-            if (persisting) {
-                parent.RemoveAdapter(proxyAdapter);
-            }
-
-            detachedObjects.SavedAndUpdated.Add((originalObject, proxy));
-
-            return proxy;
-        }
-
-        private void ProxyReferencesAndCopyValuesToProxy(object originalObject, object proxy) {
-            var nonIdMembers = context.GetNonIdMembers(originalObject.GetType());
-            nonIdMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
-
-            var refMembers = context.GetReferenceMembers(originalObject.GetType());
-            refMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, ProxyReferenceIfAppropriate(pi.GetValue(originalObject, null)), null));
-
-            var colmembers = context.GetCollectionMembers(originalObject.GetType());
-            foreach (var pi in colmembers) {
-                var toCol = proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
-                var fromCol = pi.GetValue(originalObject, null);
-
-                if (!ReferenceEquals(toCol, fromCol) && fromCol is not null) {
-                    toCol.Invoke("Clear");
-                    foreach (var item in (IEnumerable) fromCol) {
-                        toCol.Invoke("Add", ProxyReferenceIfAppropriate(item));
-                    }
-                }
-            }
-
-            var notPersistedMembers = originalObject.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && parent.IsNotPersisted(originalObject, p)).ToArray();
-            notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(originalObject, null), null));
-        }
-
-        public override string ToString() => "EF6 DetachedObjectCommand";
-
-        private void ProxyObjectIfAppropriate(object originalObject, object existingProxy) {
-            if (originalObject is not null) {
-                ProxyObject(originalObject, existingProxy);
-            }
-        }
-
-        private object ProxyReferenceIfAppropriate(object originalObject) {
-            if (originalObject == null) {
-                return null;
-            }
-
-            var alreadyUpdatedProxy = AlreadyUpdatedProxy(originalObject);
-            if (alreadyUpdatedProxy is not null) {
-                return alreadyUpdatedProxy;
-            }
-
-            if (detachedObjects.ToUpdate.Select(t => t.updated).Contains(originalObject)) {
-                var (proxy, _) = detachedObjects.ToUpdate.SingleOrDefault(t => t.updated == originalObject);
-                return ProxyObject(originalObject, proxy);
-            }
-
-            var keys = context.GetKey(originalObject);
-            var persisting = keys.All(TypeKeyUtils.EmptyKey);
-
-            return persisting ? ProxyObject(originalObject) : originalObject;
-        }
+        return persisting ? ProxyObject(originalObject) : originalObject;
     }
 }

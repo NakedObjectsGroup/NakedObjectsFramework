@@ -15,98 +15,98 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.Performance {
-    [TestFixture]
-    public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
-        [SetUp]
-        public void SetUp() => StartTest();
+namespace NakedObjects.SystemTest.Performance; 
 
-        [TearDown]
-        public void TearDown() => EndTest();
+[TestFixture]
+public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
+    [SetUp]
+    public void SetUp() => StartTest();
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            PerformanceDbContext.Delete();
-            var context = Activator.CreateInstance<PerformanceDbContext>();
+    [TearDown]
+    public void TearDown() => EndTest();
 
-            context.Database.Create();
-            MyDbInitialiser.Seed(context);
-            InitializeNakedObjectsFramework(this);
-        }
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        PerformanceDbContext.Delete();
+        var context = Activator.CreateInstance<PerformanceDbContext>();
 
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            PerformanceDbContext.Delete();
-        }
+        context.Database.Create();
+        MyDbInitialiser.Seed(context);
+        InitializeNakedObjectsFramework(this);
+    }
 
-        protected override Type[] ObjectTypes =>
-            new[] {
-                typeof(Qux)
-            };
+    [OneTimeTearDown]
+    public void FixtureTearDown() {
+        CleanupNakedObjectsFramework(this);
+        PerformanceDbContext.Delete();
+    }
 
-        protected override Type[] Services => new[] {
-            typeof(SimpleRepository<Qux>)
+    protected override Type[] ObjectTypes =>
+        new[] {
+            typeof(Qux)
         };
 
-        private void GetSingleRandomQux() {
-            var q = GetTestService("Quxes").GetAction("Get Random").InvokeReturnObject();
-            Assert.IsNotNull(q);
-        }
+    protected override Type[] Services => new[] {
+        typeof(SimpleRepository<Qux>)
+    };
 
-        [Test]
-        public virtual void BenchMark() {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            for (var i = 0; i < 1000; i++) {
-                StartTest();
-                GetSingleRandomQux();
-                EndTest();
-            }
-
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            // with dynamic 2929 ms
-            // without dynamic 2918 ms
-            Assert.IsTrue(time < 3000, $"Elapsed time was {time} milliseconds");
-        }
+    private void GetSingleRandomQux() {
+        var q = GetTestService("Quxes").GetAction("Get Random").InvokeReturnObject();
+        Assert.IsNotNull(q);
     }
 
-    #region Classes used by tests
-
-    public class PerformanceDbContext : DbContext {
-        public const string DatabaseName = "TestPerformance";
-
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-        public PerformanceDbContext() : base(Cs) { }
-
-        public DbSet<Qux> Quxes { get; set; }
-
-        public static void Delete() => Database.Delete(Cs);
-    }
-
-    public class MyDbInitialiser {
-        public static void Seed(PerformanceDbContext context) {
-            for (var i = 0; i < 100; i++) {
-                NewQux($"Qux {i}", context);
-            }
-
-            context.SaveChanges();
+    [Test]
+    public virtual void BenchMark() {
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        for (var i = 0; i < 1000; i++) {
+            StartTest();
+            GetSingleRandomQux();
+            EndTest();
         }
 
-        private static Qux NewQux(string name, PerformanceDbContext context) {
-            var q = new Qux {Name = name};
-            context.Quxes.Add(q);
-            return q;
-        }
+        stopWatch.Stop();
+        var time = stopWatch.ElapsedMilliseconds;
+        // with dynamic 2929 ms
+        // without dynamic 2918 ms
+        Assert.IsTrue(time < 3000, $"Elapsed time was {time} milliseconds");
     }
-
-    public class Qux {
-        public virtual int Id { get; set; }
-
-        [Optionally]
-        public virtual string Name { get; set; }
-    }
-
-    #endregion
 }
+
+#region Classes used by tests
+
+public class PerformanceDbContext : DbContext {
+    public const string DatabaseName = "TestPerformance";
+
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    public PerformanceDbContext() : base(Cs) { }
+
+    public DbSet<Qux> Quxes { get; set; }
+
+    public static void Delete() => Database.Delete(Cs);
+}
+
+public class MyDbInitialiser {
+    public static void Seed(PerformanceDbContext context) {
+        for (var i = 0; i < 100; i++) {
+            NewQux($"Qux {i}", context);
+        }
+
+        context.SaveChanges();
+    }
+
+    private static Qux NewQux(string name, PerformanceDbContext context) {
+        var q = new Qux {Name = name};
+        context.Quxes.Add(q);
+        return q;
+    }
+}
+
+public class Qux {
+    public virtual int Id { get; set; }
+
+    [Optionally]
+    public virtual string Name { get; set; }
+}
+
+#endregion

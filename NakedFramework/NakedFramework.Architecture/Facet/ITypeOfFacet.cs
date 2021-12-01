@@ -11,14 +11,14 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface ITypeOfFacet : IFacet {
-        Type GetValue(INakedObjectAdapter collection);
+namespace NakedFramework.Architecture.Facet; 
 
-        /// <summary>
-        ///     Convenience to return the <see cref="IObjectSpec" /> corresponding to this facet's
-        ///     <see cref="Value" />
-        /// </summary>
-        IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel);
-    }
+public interface ITypeOfFacet : IFacet {
+    Type GetValue(INakedObjectAdapter collection);
+
+    /// <summary>
+    ///     Convenience to return the <see cref="IObjectSpec" /> corresponding to this facet's
+    ///     <see cref="Value" />
+    /// </summary>
+    IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel);
 }

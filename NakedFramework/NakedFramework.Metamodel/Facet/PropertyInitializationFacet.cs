@@ -12,28 +12,28 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet {
-        private readonly PropertyInfo property;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public PropertyInitializationFacet(PropertyInfo property, ISpecification holder)
-            : base(typeof(IPropertyInitializationFacet), holder) =>
-            this.property = property;
+[Serializable]
+public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet {
+    private readonly PropertyInfo property;
 
-        #region IPropertyInitializationFacet Members
+    public PropertyInitializationFacet(PropertyInfo property, ISpecification holder)
+        : base(typeof(IPropertyInitializationFacet), holder) =>
+        this.property = property;
 
-        public void InitProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value) {
-            try {
-                property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
-            }
-            catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException($"Exception executing {property}", e);
-            }
+    #region IPropertyInitializationFacet Members
+
+    public void InitProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value) {
+        try {
+            property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
         }
-
-        #endregion
-
-        protected override string ToStringValues() => $"property={property}";
+        catch (TargetInvocationException e) {
+            InvokeUtils.InvocationException($"Exception executing {property}", e);
+        }
     }
+
+    #endregion
+
+    protected override string ToStringValues() => $"property={property}";
 }

@@ -8,20 +8,20 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace SimpleDatabase {
-    public class Food {
-        #region Navigation Properties
+namespace SimpleDatabase; 
 
-        public virtual Person Person { get; set; }
+public class Food {
+    #region Navigation Properties
 
-        #endregion
+    public virtual Person Person { get; set; }
 
-        #region Primitive Properties
+    #endregion
 
-        public virtual int Id { get; set; }
+    #region Primitive Properties
 
-        public virtual string Name { get; set; }
+    public virtual int Id { get; set; }
 
-        #endregion
-    }
+    public virtual string Name { get; set; }
+
+    #endregion
 }

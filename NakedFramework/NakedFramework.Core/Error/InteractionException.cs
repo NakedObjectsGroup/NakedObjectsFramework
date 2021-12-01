@@ -9,28 +9,28 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Core.Error {
-    public abstract class InteractionException : Exception {
-        protected InteractionException(IInteractionContext ic, string message)
-            : base(message) {
-            InteractionType = ic.InteractionType;
-            Identifier = ic.Id;
-            Target = ic.Target;
-        }
+namespace NakedFramework.Core.Error; 
 
-        /// <summary>
-        ///     The type of interaction that caused this exception to be raised
-        /// </summary>
-        public virtual InteractionType InteractionType { get; }
-
-        /// <summary>
-        ///     The identifier of the feature (object or member) being interacted with
-        /// </summary>
-        public virtual IIdentifier Identifier { get; }
-
-        /// <summary>
-        ///     The object being interacted with
-        /// </summary>
-        public virtual INakedObjectAdapter Target { get; }
+public abstract class InteractionException : Exception {
+    protected InteractionException(IInteractionContext ic, string message)
+        : base(message) {
+        InteractionType = ic.InteractionType;
+        Identifier = ic.Id;
+        Target = ic.Target;
     }
+
+    /// <summary>
+    ///     The type of interaction that caused this exception to be raised
+    /// </summary>
+    public virtual InteractionType InteractionType { get; }
+
+    /// <summary>
+    ///     The identifier of the feature (object or member) being interacted with
+    /// </summary>
+    public virtual IIdentifier Identifier { get; }
+
+    /// <summary>
+    ///     The object being interacted with
+    /// </summary>
+    public virtual INakedObjectAdapter Target { get; }
 }

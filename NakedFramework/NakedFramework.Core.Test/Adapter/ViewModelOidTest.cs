@@ -12,33 +12,33 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Adapter {
-    [TestFixture]
-    public class ViewModelOidTest {
-        private readonly Mock<IMetamodelManager> mockMetamodel = new();
-        private readonly Mock<IObjectSpec> mockObjectSpec = new();
+namespace NakedFramework.Core.Test.Adapter; 
 
-        [SetUp]
-        public void SetUp() {
-            mockObjectSpec.Setup(f => f.FullName).Returns("System.Object");
-            mockMetamodel.Setup(f => f.GetSpecification(It.IsAny<string>())).Returns(mockObjectSpec.Object);
-        }
+[TestFixture]
+public class ViewModelOidTest {
+    private readonly Mock<IMetamodelManager> mockMetamodel = new();
+    private readonly Mock<IObjectSpec> mockObjectSpec = new();
 
-        [Test]
-        public void TestDefaultIsFinal() {
-            IViewModelOid testOid = new ViewModelOid(mockMetamodel.Object, mockObjectSpec.Object);
-            Assert.IsFalse(testOid.IsFinal);
-        }
+    [SetUp]
+    public void SetUp() {
+        mockObjectSpec.Setup(f => f.FullName).Returns("System.Object");
+        mockMetamodel.Setup(f => f.GetSpecification(It.IsAny<string>())).Returns(mockObjectSpec.Object);
+    }
 
-        [Test]
-        public void TestUpdateIsFinal() {
-            IViewModelOid testOid = new ViewModelOid(mockMetamodel.Object, mockObjectSpec.Object);
-            var testkeys = new[] {"key1", "key2"};
+    [Test]
+    public void TestDefaultIsFinal() {
+        IViewModelOid testOid = new ViewModelOid(mockMetamodel.Object, mockObjectSpec.Object);
+        Assert.IsFalse(testOid.IsFinal);
+    }
 
-            testOid.UpdateKeys(testkeys, true);
+    [Test]
+    public void TestUpdateIsFinal() {
+        IViewModelOid testOid = new ViewModelOid(mockMetamodel.Object, mockObjectSpec.Object);
+        var testkeys = new[] {"key1", "key2"};
 
-            Assert.AreEqual(testkeys, testOid.Keys);
-            Assert.IsTrue(testOid.IsFinal);
-        }
+        testOid.UpdateKeys(testkeys, true);
+
+        Assert.AreEqual(testkeys, testOid.Keys);
+        Assert.IsTrue(testOid.IsFinal);
     }
 }

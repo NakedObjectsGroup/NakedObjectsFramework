@@ -13,19 +13,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Person.ContactType")]
-    public class ContactType {
-        public int ContactTypeID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Person.ContactType")]
+public class ContactType {
+    public int ContactTypeID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public virtual ICollection<StoreContact> StoreContacts { get; set; } = new HashSet<StoreContact>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<VendorContact> VendorContacts { get; set; } = new HashSet<VendorContact>();
-    }
+    public virtual ICollection<StoreContact> StoreContacts { get; set; } = new HashSet<StoreContact>();
+
+    public virtual ICollection<VendorContact> VendorContacts { get; set; } = new HashSet<VendorContact>();
 }

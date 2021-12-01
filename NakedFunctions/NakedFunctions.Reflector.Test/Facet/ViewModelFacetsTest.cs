@@ -12,69 +12,69 @@ using NakedFramework.Architecture.Resolve;
 using NakedFramework.Architecture.Spec;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class ViewModelFacetsTest {
-        private static readonly TestClass testClass = new("1", "2");
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        [TestMethod]
-        public void TestViewModelFacetViaFunctionsConvention() {
-            var deriveMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Derive));
-            var populateMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Populate));
+[TestClass]
+public class ViewModelFacetsTest {
+    private static readonly TestClass testClass = new("1", "2");
 
-            var testFacet = new ViewModelFacetViaFunctionsConvention(null, deriveMethod, populateMethod);
+    [TestMethod]
+    public void TestViewModelFacetViaFunctionsConvention() {
+        var deriveMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Derive));
+        var populateMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Populate));
 
-            var keys = testFacet.Derive(null, null);
+        var testFacet = new ViewModelFacetViaFunctionsConvention(null, deriveMethod, populateMethod);
 
-            Assert.AreEqual(testClass.Keys, keys);
+        var keys = testFacet.Derive(null, null);
 
-            var testAdapter = new TestAdapter();
-            testFacet.Populate(keys, testAdapter, null);
+        Assert.AreEqual(testClass.Keys, keys);
 
-            Assert.AreEqual(testClass, testAdapter.Object);
-        }
+        var testAdapter = new TestAdapter();
+        testFacet.Populate(keys, testAdapter, null);
 
-        private class TestAdapter : INakedObjectAdapter {
-            public object Object { get; private set; }
-            public ITypeSpec Spec { get; }
-            public IOid Oid { get; }
-            public IResolveStateMachine ResolveState { get; }
-            public IVersion Version { get; }
-            public IVersion OptimisticLock { get; set; }
-            public string TitleString() => throw new NotImplementedException();
-            public string InvariantString() => throw new NotImplementedException();
-            public void CheckLock(IVersion otherVersion) => throw new NotImplementedException();
-            public void ReplacePoco(object poco) => Object = poco;
-            public string ValidToPersist() => throw new NotImplementedException();
-            public void SetATransientOid(IOid oid) => throw new NotImplementedException();
-            public void LoadAnyComplexTypes() => throw new NotImplementedException();
-            public void Created() => throw new NotImplementedException();
-            public void Deleting() => throw new NotImplementedException();
-            public void Deleted() => throw new NotImplementedException();
-            public void Loading() => throw new NotImplementedException();
-            public void Loaded() => throw new NotImplementedException();
-            public void Persisting() => throw new NotImplementedException();
-            public void Persisted() => throw new NotImplementedException();
-            public void Updating() => throw new NotImplementedException();
-            public void Updated() => throw new NotImplementedException();
-            public string IconName() => throw new NotImplementedException();
-            public object PersistingAndReturn() => throw new NotImplementedException();
-            public object PersistedAndReturn() => throw new NotImplementedException();
-            public object UpdatingAndReturn() => throw new NotImplementedException();
-            public object UpdatedAndReturn() => throw new NotImplementedException();
-        }
+        Assert.AreEqual(testClass, testAdapter.Object);
+    }
 
-        private record TestClass {
-            public TestClass(params string[] keys) => Keys = keys;
+    private class TestAdapter : INakedObjectAdapter {
+        public object Object { get; private set; }
+        public ITypeSpec Spec { get; }
+        public IOid Oid { get; }
+        public IResolveStateMachine ResolveState { get; }
+        public IVersion Version { get; }
+        public IVersion OptimisticLock { get; set; }
+        public string TitleString() => throw new NotImplementedException();
+        public string InvariantString() => throw new NotImplementedException();
+        public void CheckLock(IVersion otherVersion) => throw new NotImplementedException();
+        public void ReplacePoco(object poco) => Object = poco;
+        public string ValidToPersist() => throw new NotImplementedException();
+        public void SetATransientOid(IOid oid) => throw new NotImplementedException();
+        public void LoadAnyComplexTypes() => throw new NotImplementedException();
+        public void Created() => throw new NotImplementedException();
+        public void Deleting() => throw new NotImplementedException();
+        public void Deleted() => throw new NotImplementedException();
+        public void Loading() => throw new NotImplementedException();
+        public void Loaded() => throw new NotImplementedException();
+        public void Persisting() => throw new NotImplementedException();
+        public void Persisted() => throw new NotImplementedException();
+        public void Updating() => throw new NotImplementedException();
+        public void Updated() => throw new NotImplementedException();
+        public string IconName() => throw new NotImplementedException();
+        public object PersistingAndReturn() => throw new NotImplementedException();
+        public object PersistedAndReturn() => throw new NotImplementedException();
+        public object UpdatingAndReturn() => throw new NotImplementedException();
+        public object UpdatedAndReturn() => throw new NotImplementedException();
+    }
 
-            public string[] Keys { get; }
-        }
+    private record TestClass {
+        public TestClass(params string[] keys) => Keys = keys;
 
-        public static class TestViewModelClass {
-            public static object Derive() => testClass.Keys;
-            public static object Populate(string[] keys) => new TestClass(keys);
+        public string[] Keys { get; }
+    }
 
-            public static bool IsEditable() => false;
-        }
+    public static class TestViewModelClass {
+        public static object Derive() => testClass.Keys;
+        public static object Populate(string[] keys) => new TestClass(keys);
+
+        public static bool IsEditable() => false;
     }
 }

@@ -8,12 +8,12 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Indicates that this class can be encoded/decoded as a string
-    /// </summary>
-    public interface IEncodeableFacet {
-        INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager);
-        string ToEncodedString(INakedObjectAdapter nakedObjectAdapter);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Indicates that this class can be encoded/decoded as a string
+/// </summary>
+public interface IEncodeableFacet {
+    INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager);
+    string ToEncodedString(INakedObjectAdapter nakedObjectAdapter);
 }

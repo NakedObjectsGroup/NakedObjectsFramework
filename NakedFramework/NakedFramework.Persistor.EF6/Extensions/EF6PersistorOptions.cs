@@ -10,16 +10,16 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using Microsoft.Extensions.Configuration;
 
-namespace NakedFramework.Persistor.EF6.Extensions {
-    public class EF6PersistorOptions {
-        public MergeOption DefaultMergeOption { get; set; } = MergeOption.AppendOnly;
-        public bool EnforceProxies { get; set; } = true;
-        public Func<bool> IsInitializedCheck { get; set; } = () => true;
-        public int MaximumCommitCycles { get; set; } = 10;
-        public Func<Type[]> NotPersistedTypes { get; set; } = Array.Empty<Type>;
-        public bool RollBackOnError { get; set; } = false;
-        public Func<IConfiguration, DbContext>[] ContextCreators { get; set; }
-        public Action<ObjectContext> CustomConfig { get; set; } = oc => { };
-        public bool RequireExplicitAssociationOfTypes { get; set; } = false;
-    }
+namespace NakedFramework.Persistor.EF6.Extensions; 
+
+public class EF6PersistorOptions {
+    public MergeOption DefaultMergeOption { get; set; } = MergeOption.AppendOnly;
+    public bool EnforceProxies { get; set; } = true;
+    public Func<bool> IsInitializedCheck { get; set; } = () => true;
+    public int MaximumCommitCycles { get; set; } = 10;
+    public Func<Type[]> NotPersistedTypes { get; set; } = Array.Empty<Type>;
+    public bool RollBackOnError { get; set; } = false;
+    public Func<IConfiguration, DbContext>[] ContextCreators { get; set; }
+    public Action<ObjectContext> CustomConfig { get; set; } = oc => { };
+    public bool RequireExplicitAssociationOfTypes { get; set; } = false;
 }

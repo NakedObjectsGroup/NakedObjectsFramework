@@ -11,29 +11,29 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public abstract class RelType {
-        private static readonly HashSet<string> HasRelParameterSet = new() {
-            RelValues.AddTo, RelValues.Attachment, RelValues.Choice, RelValues.Clear, RelValues.Collection,
-            RelValues.Default, RelValues.Details, RelValues.Invoke, RelValues.Modify, RelValues.RemoveFrom,
-            RelValues.Service, RelValues.Value, RelValues.Prompt, RelValues.CollectionValue, RelValues.Menu
-        };
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        protected readonly UriMtHelper Helper;
+public abstract class RelType {
+    private static readonly HashSet<string> HasRelParameterSet = new() {
+        RelValues.AddTo, RelValues.Attachment, RelValues.Choice, RelValues.Clear, RelValues.Collection,
+        RelValues.Default, RelValues.Details, RelValues.Invoke, RelValues.Modify, RelValues.RemoveFrom,
+        RelValues.Service, RelValues.Value, RelValues.Prompt, RelValues.CollectionValue, RelValues.Menu
+    };
 
-        protected RelType(string name, UriMtHelper helper) {
-            Helper = helper;
-            Name = name;
-            Method = RelMethod.Get;
-            HasRelParameter = HasRelParameterSet.Contains(name);
-        }
+    protected readonly UriMtHelper Helper;
 
-        public virtual string Name { get; }
-        public RelMethod Method { get; init; }
-        protected bool HasRelParameter { get; }
-
-        public abstract Uri GetUri();
-
-        public abstract MediaTypeHeaderValue GetMediaType(RestControlFlags flags);
+    protected RelType(string name, UriMtHelper helper) {
+        Helper = helper;
+        Name = name;
+        Method = RelMethod.Get;
+        HasRelParameter = HasRelParameterSet.Contains(name);
     }
+
+    public virtual string Name { get; }
+    public RelMethod Method { get; init; }
+    protected bool HasRelParameter { get; }
+
+    public abstract Uri GetUri();
+
+    public abstract MediaTypeHeaderValue GetMediaType(RestControlFlags flags);
 }

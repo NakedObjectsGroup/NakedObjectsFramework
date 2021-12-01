@@ -13,58 +13,58 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Value;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFileAttachmentValueFacet, IFromStream {
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthDefault = 0;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) { }
+[Serializable]
+public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFileAttachmentValueFacet, IFromStream {
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthDefault = 0;
 
-        public static Type Type => typeof(IFileAttachmentValueFacet);
+    public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) { }
 
-        public static Type AdaptedType => typeof(FileAttachment);
+    public static Type Type => typeof(IFileAttachmentValueFacet);
 
-        #region IFromStream Members
+    public static Type AdaptedType => typeof(FileAttachment);
 
-        public object ParseFromStream(Stream stream, string mimeType = null, string name = null) => new FileAttachment(stream, name, mimeType);
+    #region IFromStream Members
 
-        #endregion
+    public object ParseFromStream(Stream stream, string mimeType = null, string name = null) => new FileAttachment(stream, name, mimeType);
 
-        public static bool IsAdaptedType(Type type) => type == AdaptedType;
+    #endregion
 
-        protected override FileAttachment DoParse(string entry) => throw new NakedObjectSystemException($"FileAttachment cannot parse: {entry}");
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-        protected override FileAttachment DoParseInvariant(string entry) => throw new NakedObjectSystemException($"FileAttachment cannot parse invariant: {entry}");
+    protected override FileAttachment DoParse(string entry) => throw new NakedObjectSystemException($"FileAttachment cannot parse: {entry}");
 
-        protected override string GetInvariantString(FileAttachment obj) => throw new NakedObjectSystemException("FileAttachment cannot get invariant string");
+    protected override FileAttachment DoParseInvariant(string entry) => throw new NakedObjectSystemException($"FileAttachment cannot parse invariant: {entry}");
 
-        protected override string DoEncode(FileAttachment fileAttachment) {
-            var stream = fileAttachment.GetResourceAsStream();
+    protected override string GetInvariantString(FileAttachment obj) => throw new NakedObjectSystemException("FileAttachment cannot get invariant string");
 
-            if (stream.Length > int.MaxValue) {
-                throw new ModelException($"Attachment is too large size: {stream.Length} max: {int.MaxValue} name: {fileAttachment.Name}");
-            }
+    protected override string DoEncode(FileAttachment fileAttachment) {
+        var stream = fileAttachment.GetResourceAsStream();
 
-            var len = Convert.ToInt32(stream.Length);
-            var buffer = new byte[len];
-            ReadWholeArray(stream, buffer);
-            var encoded = Convert.ToBase64String(buffer);
-            return $"{fileAttachment.MimeType} {encoded}";
+        if (stream.Length > int.MaxValue) {
+            throw new ModelException($"Attachment is too large size: {stream.Length} max: {int.MaxValue} name: {fileAttachment.Name}");
         }
 
-        protected override FileAttachment DoRestore(string data) {
-            var offset = data.IndexOf(' ');
-            var mime = data.Substring(0, offset);
-            var buffer = Convert.FromBase64String(data[offset..]);
-            var stream = new MemoryStream(buffer);
-            return new FileAttachment(stream);
-        }
-
-        protected override string TitleString(FileAttachment obj) => obj.Name;
-
-        protected override string TitleStringWithMask(string mask, FileAttachment obj) => obj.Name;
+        var len = Convert.ToInt32(stream.Length);
+        var buffer = new byte[len];
+        ReadWholeArray(stream, buffer);
+        var encoded = Convert.ToBase64String(buffer);
+        return $"{fileAttachment.MimeType} {encoded}";
     }
+
+    protected override FileAttachment DoRestore(string data) {
+        var offset = data.IndexOf(' ');
+        var mime = data.Substring(0, offset);
+        var buffer = Convert.FromBase64String(data[offset..]);
+        var stream = new MemoryStream(buffer);
+        return new FileAttachment(stream);
+    }
+
+    protected override string TitleString(FileAttachment obj) => obj.Name;
+
+    protected override string TitleStringWithMask(string mask, FileAttachment obj) => obj.Name;
 }

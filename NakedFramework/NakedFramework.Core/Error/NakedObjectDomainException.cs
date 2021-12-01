@@ -7,17 +7,17 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     Indicates an error raised by the application code
-    /// </summary>
-    public class NakedObjectDomainException : NakedObjectApplicationException {
-        public NakedObjectDomainException(string msg)
-            : base(msg) { }
+namespace NakedFramework.Core.Error; 
 
-        public NakedObjectDomainException(string msg, Exception cause)
-            : base(msg, cause) { }
-    }
+/// <summary>
+///     Indicates an error raised by the application code
+/// </summary>
+public class NakedObjectDomainException : NakedObjectApplicationException {
+    public NakedObjectDomainException(string msg)
+        : base(msg) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public NakedObjectDomainException(string msg, Exception cause)
+        : base(msg, cause) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

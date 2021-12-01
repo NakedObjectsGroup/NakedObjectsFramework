@@ -5,16 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Represents the mechanism to inform the object that it has just been loaded from the object store
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, this is represented by a <c>Loaded</c> method.
-    /// </para>
-    /// <seealso cref="ILoadingCallbackFacet" />
-    /// <seealso cref="ICreatedCallbackFacet" />
-    public interface ILoadedCallbackFacet : ICallbackFacet { }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
-}
+/// <summary>
+///     Represents the mechanism to inform the object that it has just been loaded from the object store
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, this is represented by a <c>Loaded</c> method.
+/// </para>
+/// <seealso cref="ILoadingCallbackFacet" />
+/// <seealso cref="ICreatedCallbackFacet" />
+public interface ILoadedCallbackFacet : ICallbackFacet { }
+
+// Copyright (c) Naked Objects Group Ltd.

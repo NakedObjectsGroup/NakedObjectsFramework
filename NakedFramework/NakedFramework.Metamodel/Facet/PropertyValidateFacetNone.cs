@@ -9,22 +9,22 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class PropertyValidateFacetNone : PropertyValidateFacetAbstract {
-        public PropertyValidateFacetNone(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsNoOp => true;
+[Serializable]
+public sealed class PropertyValidateFacetNone : PropertyValidateFacetAbstract {
+    public PropertyValidateFacetNone(ISpecification holder)
+        : base(holder) { }
 
-        /// <summary>
-        ///     Returns <c>null</c>, ie property is valid.
-        /// </summary>
-        /// <para>
-        ///     Subclasses should override as required.
-        /// </para>
-        public override string InvalidReason(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter nakedParm) => null;
-    }
+    public override bool IsNoOp => true;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Returns <c>null</c>, ie property is valid.
+    /// </summary>
+    /// <para>
+    ///     Subclasses should override as required.
+    /// </para>
+    public override string InvalidReason(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter nakedParm) => null;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

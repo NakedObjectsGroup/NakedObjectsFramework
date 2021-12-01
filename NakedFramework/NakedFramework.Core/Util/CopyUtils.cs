@@ -13,62 +13,62 @@ using NakedFramework.Core.Error;
 
 // ReSharper disable UnusedType.Global
 
-namespace NakedFramework.Core.Util {
+namespace NakedFramework.Core.Util; 
+
+// used by reflection 
+public static class CopyUtils {
     // used by reflection 
-    public static class CopyUtils {
-        // used by reflection 
-        // ReSharper disable once UnusedMember.Local
-        private static void ShallowCopyCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
-            if (toCollection.Any()) {
-                throw new NakedObjectSystemException("Copy to collection not empty");
-            }
-
-            fromCollection.ForEach(toCollection.Add);
+    // ReSharper disable once UnusedMember.Local
+    private static void ShallowCopyCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
+        if (toCollection.Any()) {
+            throw new NakedObjectSystemException("Copy to collection not empty");
         }
 
-        // used by reflection 
-        // ReSharper disable once UnusedMember.Local
-        private static void ShallowUpdateCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
-            var toRemove = new List<T>();
-            toCollection.Where(i => !fromCollection.Contains(i)).ForEach(toRemove.Add);
-            toRemove.ForEach(i => toCollection.Remove(i));
-            var toAdd = new List<T>();
-            fromCollection.Where(i => !toCollection.Contains(i)).ForEach(toAdd.Add);
-            toAdd.ForEach(toCollection.Add);
-        }
+        fromCollection.ForEach(toCollection.Add);
+    }
 
-        private static void ShallowCopyCollection(object fromCollection, object toCollection) {
-            var cm = typeof(CopyUtils).GetMethod("ShallowCopyCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
-            var gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
-            gcm.Invoke(null, new[] {fromCollection, toCollection});
-        }
+    // used by reflection 
+    // ReSharper disable once UnusedMember.Local
+    private static void ShallowUpdateCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
+        var toRemove = new List<T>();
+        toCollection.Where(i => !fromCollection.Contains(i)).ForEach(toRemove.Add);
+        toRemove.ForEach(i => toCollection.Remove(i));
+        var toAdd = new List<T>();
+        fromCollection.Where(i => !toCollection.Contains(i)).ForEach(toAdd.Add);
+        toAdd.ForEach(toCollection.Add);
+    }
 
-        private static void ShallowUpdateCollection(object fromCollection, object toCollection) {
-            var cm = typeof(CopyUtils).GetMethod("ShallowUpdateCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
-            var gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
-            gcm.Invoke(null, new[] {fromCollection, toCollection});
-        }
+    private static void ShallowCopyCollection(object fromCollection, object toCollection) {
+        var cm = typeof(CopyUtils).GetMethod("ShallowCopyCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
+        var gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
+        gcm.Invoke(null, new[] {fromCollection, toCollection});
+    }
 
-        public static object CloneObjectTest(object domainObject) {
-            var clone = Activator.CreateInstance(domainObject.GetType());
-            return CopyProperties(domainObject, clone);
-        }
+    private static void ShallowUpdateCollection(object fromCollection, object toCollection) {
+        var cm = typeof(CopyUtils).GetMethod("ShallowUpdateCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
+        var gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
+        gcm.Invoke(null, new[] {fromCollection, toCollection});
+    }
 
-        private static object CopyProperties(object domainObject, object clone) {
-            CopyScalarProperties(domainObject, clone);
-            CopyCollectionProperties(domainObject, clone);
-            return clone;
-        }
+    public static object CloneObjectTest(object domainObject) {
+        var clone = Activator.CreateInstance(domainObject.GetType());
+        return CopyProperties(domainObject, clone);
+    }
 
-        private static void CopyCollectionProperties(object fromObject, object toObject) => fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowCopyCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
+    private static object CopyProperties(object domainObject, object clone) {
+        CopyScalarProperties(domainObject, clone);
+        CopyCollectionProperties(domainObject, clone);
+        return clone;
+    }
 
-        private static void UpdateCollectionProperties(object fromObject, object toObject) => fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowUpdateCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
+    private static void CopyCollectionProperties(object fromObject, object toObject) => fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowCopyCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
 
-        private static void CopyScalarProperties(object fromObject, object toObject) => fromObject.GetType().GetProperties().Where(p => !CollectionUtils.IsCollection(p.PropertyType)).Where(p => p.CanRead && p.CanWrite).ForEach(p => p.SetValue(toObject, p.GetValue(fromObject, null), null));
+    private static void UpdateCollectionProperties(object fromObject, object toObject) => fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowUpdateCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
 
-        public static void UpdateFromClone(object originalObject, object clonedObject) {
-            CopyScalarProperties(clonedObject, originalObject);
-            UpdateCollectionProperties(clonedObject, originalObject);
-        }
+    private static void CopyScalarProperties(object fromObject, object toObject) => fromObject.GetType().GetProperties().Where(p => !CollectionUtils.IsCollection(p.PropertyType)).Where(p => p.CanRead && p.CanWrite).ForEach(p => p.SetValue(toObject, p.GetValue(fromObject, null), null));
+
+    public static void UpdateFromClone(object originalObject, object clonedObject) {
+        CopyScalarProperties(clonedObject, originalObject);
+        UpdateCollectionProperties(clonedObject, originalObject);
     }
 }

@@ -5,18 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     Indicates that a call was made to a method (normally an overridden one) that was not expected, and hence
-    ///     not coded for.
-    /// </summary>
-    public class UnexpectedCallException : NakedObjectSystemException {
-        public UnexpectedCallException()
-            : base("This method call was not expected") { }
+namespace NakedFramework.Core.Error; 
 
-        public UnexpectedCallException(string arg0)
-            : base(arg0) { }
-    }
+/// <summary>
+///     Indicates that a call was made to a method (normally an overridden one) that was not expected, and hence
+///     not coded for.
+/// </summary>
+public class UnexpectedCallException : NakedObjectSystemException {
+    public UnexpectedCallException()
+        : base("This method call was not expected") { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public UnexpectedCallException(string arg0)
+        : base(arg0) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

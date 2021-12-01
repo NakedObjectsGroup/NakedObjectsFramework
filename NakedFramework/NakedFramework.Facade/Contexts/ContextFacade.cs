@@ -8,17 +8,17 @@
 using System;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts {
-    public abstract class ContextFacade {
-        public abstract string Id { get; }
-        public virtual IObjectFacade Target { get; set; }
-        public virtual string Reason { get; set; }
-        public virtual Cause ErrorCause { get; set; }
-        public virtual IObjectFacade ProposedObjectFacade { get; set; }
-        public virtual object ProposedValue { get; set; }
-        public abstract ITypeFacade Specification { get; }
-        public abstract ITypeFacade ElementSpecification { get; }
-        public virtual Func<string[]> Warnings { get; set; }
-        public virtual Func<string[]> Messages { get; set; }
-    }
+namespace NakedFramework.Facade.Contexts; 
+
+public abstract class ContextFacade {
+    public abstract string Id { get; }
+    public virtual IObjectFacade Target { get; set; }
+    public virtual string Reason { get; set; }
+    public virtual Cause ErrorCause { get; set; }
+    public virtual IObjectFacade ProposedObjectFacade { get; set; }
+    public virtual object ProposedValue { get; set; }
+    public abstract ITypeFacade Specification { get; }
+    public abstract ITypeFacade ElementSpecification { get; }
+    public virtual Func<string[]> Warnings { get; set; }
+    public virtual Func<string[]> Messages { get; set; }
 }

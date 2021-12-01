@@ -7,15 +7,15 @@
 
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IContributedActionFacet : IFacet {
-        bool IsContributedTo(IObjectSpecImmutable spec);
-        bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
+namespace NakedFramework.Architecture.Facet; 
 
-        //Returns null if the action is to be 'top-level'
-        string SubMenuWhenContributedTo(IObjectSpecImmutable spec);
+public interface IContributedActionFacet : IFacet {
+    bool IsContributedTo(IObjectSpecImmutable spec);
+    bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
 
-        //Id has been included for generating UI code that is backwards-compatible with NOF 6.
-        string IdWhenContributedTo(IObjectSpecImmutable spec);
-    }
+    //Returns null if the action is to be 'top-level'
+    string SubMenuWhenContributedTo(IObjectSpecImmutable spec);
+
+    //Id has been included for generating UI code that is backwards-compatible with NOF 6.
+    string IdWhenContributedTo(IObjectSpecImmutable spec);
 }

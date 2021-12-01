@@ -8,13 +8,13 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     A <see cref="IFacet" /> that represents some type of lifecycle callback on the object (eg about to be persisted).
-    /// </summary>
-    public interface ICallbackFacet : IFacet {
-        void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-    }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     A <see cref="IFacet" /> that represents some type of lifecycle callback on the object (eg about to be persisted).
+/// </summary>
+public interface ICallbackFacet : IFacet {
+    void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

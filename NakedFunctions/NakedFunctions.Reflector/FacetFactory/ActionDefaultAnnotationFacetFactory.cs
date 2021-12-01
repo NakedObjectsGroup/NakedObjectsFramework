@@ -18,18 +18,18 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class ActionDefaultAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public ActionDefaultAnnotationFacetFactory(IFacetFactoryOrder<ActionDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttribute<DefaultValueAttribute>();
-            FacetUtils.AddFacet(Create(attribute, parameter.ParameterType == typeof(DateTime), holder));
-            return metamodel;
-        }
+public sealed class ActionDefaultAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public ActionDefaultAnnotationFacetFactory(IFacetFactoryOrder<ActionDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
 
-        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, bool isDateTime, ISpecification holder) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, isDateTime, holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+        var attribute = parameter.GetCustomAttribute<DefaultValueAttribute>();
+        FacetUtils.AddFacet(Create(attribute, parameter.ParameterType == typeof(DateTime), holder));
+        return metamodel;
     }
+
+    private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, bool isDateTime, ISpecification holder) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, isDateTime, holder);
 }

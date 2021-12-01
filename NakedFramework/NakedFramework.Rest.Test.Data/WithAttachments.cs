@@ -13,25 +13,25 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class WithAttachments {
-        private byte[] attachment = { };
+namespace RestfulObjects.Test.Data; 
 
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        public virtual int Id { get; set; }
+public class WithAttachments {
+    private byte[] attachment = { };
 
-        [NakedObjectsIgnore]
-        public virtual byte[] Attachment {
-            get => attachment;
-            set => attachment = value;
-        }
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    public virtual int Id { get; set; }
 
-        public virtual FileAttachment FileAttachment => new(attachment, "afile", "application/pdf");
-
-        public virtual Image Image => new(attachment, "animage", "image/jpeg");
-
-        public virtual Image ImageWithDefault => new(attachment, "animage.gif");
+    [NakedObjectsIgnore]
+    public virtual byte[] Attachment {
+        get => attachment;
+        set => attachment = value;
     }
+
+    public virtual FileAttachment FileAttachment => new(attachment, "afile", "application/pdf");
+
+    public virtual Image Image => new(attachment, "animage", "image/jpeg");
+
+    public virtual Image ImageWithDefault => new(attachment, "animage.gif");
 }

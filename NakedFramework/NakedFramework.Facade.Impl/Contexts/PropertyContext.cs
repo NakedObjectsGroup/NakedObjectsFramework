@@ -11,25 +11,25 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts {
-    public class PropertyContext : Context {
-        public IAssociationSpec Property { get; init; }
-        public ListContext Completions { get; init; }
+namespace NakedFramework.Facade.Impl.Contexts; 
 
-        public bool Mutated { get; set; }
+public class PropertyContext : Context {
+    public IAssociationSpec Property { get; init; }
+    public ListContext Completions { get; init; }
 
-        public override string Id => Property.Id;
+    public bool Mutated { get; set; }
 
-        public override ITypeSpec Specification => Property.ReturnSpec;
+    public override string Id => Property.Id;
 
-        public PropertyContextFacade ToPropertyContextFacade(IFrameworkFacade facade, INakedFramework framework) {
-            var pc = new PropertyContextFacade {
-                Property = new AssociationFacade(Property, facade, framework),
-                Completions = Completions?.ToListContextFacade(facade, framework),
-                Mutated = Mutated
-            };
+    public override ITypeSpec Specification => Property.ReturnSpec;
 
-            return ToContextFacade(pc, facade, framework);
-        }
+    public PropertyContextFacade ToPropertyContextFacade(IFrameworkFacade facade, INakedFramework framework) {
+        var pc = new PropertyContextFacade {
+            Property = new AssociationFacade(Property, facade, framework),
+            Completions = Completions?.ToListContextFacade(facade, framework),
+            Mutated = Mutated
+        };
+
+        return ToContextFacade(pc, facade, framework);
     }
 }

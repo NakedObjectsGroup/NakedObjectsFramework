@@ -14,125 +14,125 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.PolymorphicNavigator {
-    [TestFixture]
-    public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
-        [SetUp]
-        public void SetUp() => StartTest();
+namespace NakedObjects.SystemTest.PolymorphicNavigator; 
 
-        [TearDown]
-        public void TearDown() => EndTest();
+[TestFixture]
+public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
+    [SetUp]
+    public void SetUp() => StartTest();
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            InitializeNakedObjectsFramework(this);
-            RunFixtures();
-        }
+    [TearDown]
+    public void TearDown() => EndTest();
 
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        private const string DatabaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
-
-        protected override bool EnforceProxies => false;
-
-        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
-            new Func<IConfiguration, DbContext>[] {config => new PolymorphicNavigationContext(DatabaseName)};
-
-        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()};
-
-        protected override Type[] Services => base.Services.Union(new[] {typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper)}).ToArray();
-
-        [Test]
-        public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
-            base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
-        }
-
-        [Test]
-        public override void AttemptToAddSameItemTwice() {
-            base.AttemptToAddSameItemTwice();
-        }
-
-        [Test]
-        public override void AttemptToRemoveNonExistentItem() {
-            base.AttemptToRemoveNonExistentItem();
-        }
-
-        [Test]
-        public void ChangePolymorphicPropertyOnPersistentObject() {
-            ChangePolymorphicPropertyOnPersistentObject("CUS", "SUP");
-        }
-
-        [Test]
-        public override void ClearPolymorphicProperty() {
-            base.ClearPolymorphicProperty();
-        }
-
-        [Test]
-        public override void FindOwnersForObject() {
-            base.FindOwnersForObject();
-        }
-
-        [Test]
-        public void PolymorphicCollectionAddDifferentItems() {
-            PolymorphicCollectionAddDifferentItems("INV", "EXP");
-        }
-
-        [Test]
-        public void PolymorphicCollectionAddMutlipleItemsOfOneType() {
-            PolymorphicCollectionAddMutlipleItemsOfOneType("INV");
-        }
-
-        [Test]
-        public override void RemoveItem() {
-            base.RemoveItem();
-        }
-
-        [Test]
-        public void SetPolymorphicPropertyOnPersistentObject() {
-            SetPolymorphicPropertyOnPersistentObject("CUS");
-        }
-
-        [Test]
-        public void SetPolymorphicPropertyOnTransientObject() {
-            SetPolymorphicPropertyOnTransientObject("CUS");
-        }
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        InitializeNakedObjectsFramework(this);
+        RunFixtures();
     }
 
-    public class SimpleTypeCodeMapper : ITypeCodeMapper {
-        #region ITypeCodeMapper Members
+    [OneTimeTearDown]
+    public void FixtureTearDown() {
+        CleanupNakedObjectsFramework(this);
+    }
 
-        public Type TypeFromCode(string code) =>
-            code switch {
-                "CUS" => typeof(CustomerAsPayee),
-                "SUP" => typeof(SupplierAsPayee),
-                "INV" => typeof(InvoiceAsPayableItem),
-                "EXP" => typeof(ExpenseClaimAsPayableItem),
-                _ => throw new DomainException("Code not recognised: " + code)
-            };
+    private const string DatabaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
 
-        public string CodeFromType(Type type) {
-            if (type == typeof(CustomerAsPayee)) {
-                return "CUS";
-            }
+    protected override bool EnforceProxies => false;
 
-            if (type == typeof(SupplierAsPayee)) {
-                return "SUP";
-            }
+    protected override Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] {config => new PolymorphicNavigationContext(DatabaseName)};
 
-            if (type == typeof(InvoiceAsPayableItem)) {
-                return "INV";
-            }
+    protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()};
 
-            if (type == typeof(ExpenseClaimAsPayableItem)) {
-                return "EXP";
-            }
+    protected override Type[] Services => base.Services.Union(new[] {typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper)}).ToArray();
 
-            throw new DomainException("Type not recognised: " + type);
+    [Test]
+    public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
+        base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
+    }
+
+    [Test]
+    public override void AttemptToAddSameItemTwice() {
+        base.AttemptToAddSameItemTwice();
+    }
+
+    [Test]
+    public override void AttemptToRemoveNonExistentItem() {
+        base.AttemptToRemoveNonExistentItem();
+    }
+
+    [Test]
+    public void ChangePolymorphicPropertyOnPersistentObject() {
+        ChangePolymorphicPropertyOnPersistentObject("CUS", "SUP");
+    }
+
+    [Test]
+    public override void ClearPolymorphicProperty() {
+        base.ClearPolymorphicProperty();
+    }
+
+    [Test]
+    public override void FindOwnersForObject() {
+        base.FindOwnersForObject();
+    }
+
+    [Test]
+    public void PolymorphicCollectionAddDifferentItems() {
+        PolymorphicCollectionAddDifferentItems("INV", "EXP");
+    }
+
+    [Test]
+    public void PolymorphicCollectionAddMutlipleItemsOfOneType() {
+        PolymorphicCollectionAddMutlipleItemsOfOneType("INV");
+    }
+
+    [Test]
+    public override void RemoveItem() {
+        base.RemoveItem();
+    }
+
+    [Test]
+    public void SetPolymorphicPropertyOnPersistentObject() {
+        SetPolymorphicPropertyOnPersistentObject("CUS");
+    }
+
+    [Test]
+    public void SetPolymorphicPropertyOnTransientObject() {
+        SetPolymorphicPropertyOnTransientObject("CUS");
+    }
+}
+
+public class SimpleTypeCodeMapper : ITypeCodeMapper {
+    #region ITypeCodeMapper Members
+
+    public Type TypeFromCode(string code) =>
+        code switch {
+            "CUS" => typeof(CustomerAsPayee),
+            "SUP" => typeof(SupplierAsPayee),
+            "INV" => typeof(InvoiceAsPayableItem),
+            "EXP" => typeof(ExpenseClaimAsPayableItem),
+            _ => throw new DomainException("Code not recognised: " + code)
+        };
+
+    public string CodeFromType(Type type) {
+        if (type == typeof(CustomerAsPayee)) {
+            return "CUS";
         }
 
-        #endregion
+        if (type == typeof(SupplierAsPayee)) {
+            return "SUP";
+        }
+
+        if (type == typeof(InvoiceAsPayableItem)) {
+            return "INV";
+        }
+
+        if (type == typeof(ExpenseClaimAsPayableItem)) {
+            return "EXP";
+        }
+
+        throw new DomainException("Type not recognised: " + type);
     }
+
+    #endregion
 }

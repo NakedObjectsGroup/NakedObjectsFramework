@@ -12,23 +12,23 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Authorization {
-    [Serializable]
-    public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {
-        private readonly IAuthorizationManager authorizationManager;
-        private readonly IIdentifier identifier;
+namespace NakedFramework.Metamodel.Authorization; 
 
-        public AuthorizationDisableForSessionFacet(IIdentifier identifier,
-                                                   IAuthorizationManager authorizationManager,
-                                                   ISpecification holder)
-            : base(holder) {
-            this.authorizationManager = authorizationManager;
-            this.identifier = identifier;
-        }
+[Serializable]
+public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {
+    private readonly IAuthorizationManager authorizationManager;
+    private readonly IIdentifier identifier;
 
-        public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) =>
-            authorizationManager.IsEditable(framework, target, identifier)
-                ? null
-                : "Not authorized to edit";
+    public AuthorizationDisableForSessionFacet(IIdentifier identifier,
+                                               IAuthorizationManager authorizationManager,
+                                               ISpecification holder)
+        : base(holder) {
+        this.authorizationManager = authorizationManager;
+        this.identifier = identifier;
     }
+
+    public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) =>
+        authorizationManager.IsEditable(framework, target, identifier)
+            ? null
+            : "Not authorized to edit";
 }

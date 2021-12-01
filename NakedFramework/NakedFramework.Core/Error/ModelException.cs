@@ -7,12 +7,12 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     ModelException represents a problem with the definition of the domain model.
-    /// </summary>
-    public class ModelException : NakedObjectApplicationException {
-        public ModelException(string messsage) : base(messsage) { }
-        public ModelException(string messsage, Exception cause) : base(messsage, cause) { }
-    }
+namespace NakedFramework.Core.Error; 
+
+/// <summary>
+///     ModelException represents a problem with the definition of the domain model.
+/// </summary>
+public class ModelException : NakedObjectApplicationException {
+    public ModelException(string messsage) : base(messsage) { }
+    public ModelException(string messsage, Exception cause) : base(messsage, cause) { }
 }

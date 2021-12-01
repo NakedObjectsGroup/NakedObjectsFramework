@@ -18,37 +18,37 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    /// <summary>
-    ///     Creates an <see cref="IDataTypeFacet" /> based on the presence of an
-    ///     <see cref="DataTypeAttribute" /> annotation
-    /// </summary>
-    public sealed class DataTypeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public DataTypeAnnotationFacetFactory(IFacetFactoryOrder<DataTypeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();
-            FacetUtils.AddFacet(Create(dataTypeAttribute, holder));
-        }
+/// <summary>
+///     Creates an <see cref="IDataTypeFacet" /> based on the presence of an
+///     <see cref="DataTypeAttribute" /> annotation
+/// </summary>
+public sealed class DataTypeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public DataTypeAnnotationFacetFactory(IFacetFactoryOrder<DataTypeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(property, specification);
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-            var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
-            FacetUtils.AddFacet(Create(dataTypeAttribute, holder));
-            return metamodel;
-        }
-
-        private static IDataTypeFacet Create(DataTypeAttribute attribute, ISpecification holder) =>
-            attribute is null
-                ? null
-                : attribute.DataType == DataType.Custom
-                    ? new DataTypeFacetAnnotation(attribute.CustomDataType, holder)
-                    : new DataTypeFacetAnnotation(attribute.DataType, holder);
+    private static void Process(MemberInfo member, ISpecification holder) {
+        var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();
+        FacetUtils.AddFacet(Create(dataTypeAttribute, holder));
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(property, specification);
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+        var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
+        FacetUtils.AddFacet(Create(dataTypeAttribute, holder));
+        return metamodel;
+    }
+
+    private static IDataTypeFacet Create(DataTypeAttribute attribute, ISpecification holder) =>
+        attribute is null
+            ? null
+            : attribute.DataType == DataType.Custom
+                ? new DataTypeFacetAnnotation(attribute.CustomDataType, holder)
+                : new DataTypeFacetAnnotation(attribute.DataType, holder);
 }

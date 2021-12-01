@@ -8,42 +8,42 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Reflect {
-    public interface IConsent {
-        /// <summary>
-        ///     Returns the permission's reason, detailing why, or why not, permission is being given, or denied
-        /// </summary>
-        /// <para>
-        ///     If an <see cref="Exception" /> is present, then will just equal that exception's
-        ///     <see
-        ///         cref="Exception.Message" />
-        /// </para>
-        string Reason { get; }
+namespace NakedFramework.Architecture.Reflect; 
 
-        /// <summary>
-        ///     Returns true if this object is giving permission
-        /// </summary>
-        bool IsAllowed { get; }
+public interface IConsent {
+    /// <summary>
+    ///     Returns the permission's reason, detailing why, or why not, permission is being given, or denied
+    /// </summary>
+    /// <para>
+    ///     If an <see cref="Exception" /> is present, then will just equal that exception's
+    ///     <see
+    ///         cref="Exception.Message" />
+    /// </para>
+    string Reason { get; }
 
-        /// <summary>
-        ///     Returns true if this object is NOT giving permission
-        /// </summary>
-        bool IsVetoed { get; }
+    /// <summary>
+    ///     Returns true if this object is giving permission
+    /// </summary>
+    bool IsAllowed { get; }
 
-        /// <summary>
-        ///     Represents the reason for an vetoed exception as an inheritance hierarchy
-        /// </summary>
-        /// <para>
-        ///     Consents that are <see cref="IsVetoed" /> will not necessary have a
-        ///     <see cref="Reason" /> nor a <see cref="Exception" />, though typically these should
-        /// </para>
-        /// <para>
-        ///     This design allows us to add new checks, (eg for new annotation semantics) without the
-        ///     intermediary <see cref="IActionSpec" />s and ActionPeer (etc) needing to be aware of
-        ///     these new subtypes
-        /// </para>
-        Exception Exception { get; }
-    }
+    /// <summary>
+    ///     Returns true if this object is NOT giving permission
+    /// </summary>
+    bool IsVetoed { get; }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Represents the reason for an vetoed exception as an inheritance hierarchy
+    /// </summary>
+    /// <para>
+    ///     Consents that are <see cref="IsVetoed" /> will not necessary have a
+    ///     <see cref="Reason" /> nor a <see cref="Exception" />, though typically these should
+    /// </para>
+    /// <para>
+    ///     This design allows us to add new checks, (eg for new annotation semantics) without the
+    ///     intermediary <see cref="IActionSpec" />s and ActionPeer (etc) needing to be aware of
+    ///     these new subtypes
+    /// </para>
+    Exception Exception { get; }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

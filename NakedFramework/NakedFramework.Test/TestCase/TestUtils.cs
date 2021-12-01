@@ -11,14 +11,14 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Test.Interface;
 using NakedFramework.Test.TestObjects;
 
-namespace NakedFramework.Test.TestCase {
-    public static class TestUtils {
-        private static ITestNaked AsTestNaked(this object parameter, INakedObjectManager manager) => parameter is ITestNaked testNaked ? testNaked : new TestParameterObject(manager, parameter);
+namespace NakedFramework.Test.TestCase; 
 
-        public static ITestNaked[] AsTestNakedArray(this IEnumerable<object> parameters, INakedObjectManager manager) {
-            // this is because passing null to a 'params' parameter  = null 
-            // while passing nothing = object[0] 
-            return parameters == null ? new ITestNaked[] {null} : parameters.Select(p => p.AsTestNaked(manager)).ToArray();
-        }
+public static class TestUtils {
+    private static ITestNaked AsTestNaked(this object parameter, INakedObjectManager manager) => parameter is ITestNaked testNaked ? testNaked : new TestParameterObject(manager, parameter);
+
+    public static ITestNaked[] AsTestNakedArray(this IEnumerable<object> parameters, INakedObjectManager manager) {
+        // this is because passing null to a 'params' parameter  = null 
+        // while passing nothing = object[0] 
+        return parameters == null ? new ITestNaked[] {null} : parameters.Select(p => p.AsTestNaked(manager)).ToArray();
     }
 }

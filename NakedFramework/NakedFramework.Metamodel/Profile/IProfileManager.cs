@@ -9,9 +9,9 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Profile;
 
-namespace NakedFramework.Metamodel.Profile {
-    public interface IProfileManager {
-        void Begin(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager);
-        void End(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager);
-    }
+namespace NakedFramework.Metamodel.Profile; 
+
+public interface IProfileManager {
+    void Begin(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager);
+    void End(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager);
 }

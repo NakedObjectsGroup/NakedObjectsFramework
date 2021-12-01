@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class EqualByContentFacet : MarkerFacetAbstract, IEqualByContentFacet {
-        public EqualByContentFacet(ISpecification holder)
-            : base(typeof(IEqualByContentFacet), holder) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class EqualByContentFacet : MarkerFacetAbstract, IEqualByContentFacet {
+    public EqualByContentFacet(ISpecification holder)
+        : base(typeof(IEqualByContentFacet), holder) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

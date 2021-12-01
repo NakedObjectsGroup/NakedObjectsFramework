@@ -8,27 +8,27 @@
 using NakedFramework.Value;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.Value {
-    [TestFixture]
-    public class FileAttachmentTest {
-        [Test]
-        public void TestConstructors() {
-            var resource = new byte[] { };
+namespace NakedObjects.SystemTest.Value; 
 
-            var fa = new FileAttachment(resource);
+[TestFixture]
+public class FileAttachmentTest {
+    [Test]
+    public void TestConstructors() {
+        var resource = new byte[] { };
 
-            Assert.AreEqual(resource, fa.GetResourceAsByteArray());
+        var fa = new FileAttachment(resource);
 
-            fa = new FileAttachment(resource, "MyName");
+        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
 
-            Assert.AreEqual(resource, fa.GetResourceAsByteArray());
-            Assert.AreEqual("MyName", fa.Name);
+        fa = new FileAttachment(resource, "MyName");
 
-            fa = new FileAttachment(resource, "MyName2", "Word Doc");
+        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
+        Assert.AreEqual("MyName", fa.Name);
 
-            Assert.AreEqual(resource, fa.GetResourceAsByteArray());
-            Assert.AreEqual("MyName2", fa.Name);
-            Assert.AreEqual("Word Doc", fa.MimeType);
-        }
+        fa = new FileAttachment(resource, "MyName2", "Word Doc");
+
+        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
+        Assert.AreEqual("MyName2", fa.Name);
+        Assert.AreEqual("Word Doc", fa.MimeType);
     }
 }

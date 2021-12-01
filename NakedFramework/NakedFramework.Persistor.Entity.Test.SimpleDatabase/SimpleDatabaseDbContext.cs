@@ -12,16 +12,16 @@
 
 using System.Data.Entity;
 
-namespace SimpleDatabase {
-    public class SimpleDatabaseDbContext : DbContext {
-        public SimpleDatabaseDbContext(string name) : base(name) { }
-        public SimpleDatabaseDbContext() { }
+namespace SimpleDatabase; 
 
-        //Add DbSet properties for root objects, thus:
-        public DbSet<Person> Persons { get; set; }
-        public DbSet<Fruit> Fruits { get; set; }
-        public DbSet<Food> Foods { get; set; }
+public class SimpleDatabaseDbContext : DbContext {
+    public SimpleDatabaseDbContext(string name) : base(name) { }
+    public SimpleDatabaseDbContext() { }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder) { }
-    }
+    //Add DbSet properties for root objects, thus:
+    public DbSet<Person> Persons { get; set; }
+    public DbSet<Fruit> Fruits { get; set; }
+    public DbSet<Food> Foods { get; set; }
+
+    protected override void OnModelCreating(DbModelBuilder modelBuilder) { }
 }

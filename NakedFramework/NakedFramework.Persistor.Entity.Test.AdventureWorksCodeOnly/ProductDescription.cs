@@ -13,19 +13,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.ProductDescription")]
-    public class ProductDescription {
-        public int ProductDescriptionID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(400)]
-        public string Description { get; set; }
+[Table("Production.ProductDescription")]
+public class ProductDescription {
+    public int ProductDescriptionID { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Required]
+    [StringLength(400)]
+    public string Description { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCultures { get; set; } = new HashSet<ProductModelProductDescriptionCulture>();
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCultures { get; set; } = new HashSet<ProductModelProductDescriptionCulture>();
 }

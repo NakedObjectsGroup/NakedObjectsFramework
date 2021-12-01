@@ -22,203 +22,203 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class Representation : IRepresentation {
-        private static readonly object ModuleBuilderLock = new();
-        protected CacheType Caching;
-        private string etag;
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        protected Representation(IOidStrategy oidStrategy, RestControlFlags flags) {
-            OidStrategy = oidStrategy;
-            Flags = flags;
-        }
+[DataContract]
+public class Representation : IRepresentation {
+    private static readonly object ModuleBuilderLock = new();
+    protected CacheType Caching;
+    private string etag;
 
-        protected IOidStrategy OidStrategy { get; }
-        protected RestControlFlags Flags { get; }
-
-        private static ModuleBuilder ModuleBuilder { get; set; }
-
-        protected RelType SelfRelType { get; init; }
-
-        protected void SetEtag(string digest) {
-            if (digest != null) {
-                etag = digest;
-            }
-        }
-
-        private bool IsMutable(IObjectFacade target) => Flags.AllowMutatingActionsOnImmutableObject || !target.Specification.IsImmutable(target);
-
-        protected void SetEtag(IObjectFacade target) {
-            if (target?.Specification.IsService == false && IsMutable(target)) {
-                var digest = target.Version.Digest;
-                SetEtag(digest);
-            }
-        }
-
-        private static void EnsureModuleBuilderExists() {
-            if (ModuleBuilder == null) {
-                const string assemblyName = "NakedObjectsRestProxies";
-                var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
-                ModuleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName);
-            }
-        }
-
-        private static void CreateProperty(TypeBuilder typeBuilder, Type propertyType, string name) {
-            var fieldBuilder = typeBuilder.DefineField("_" + name, propertyType, FieldAttributes.Private);
-
-            var propertyBuilder = typeBuilder.DefineProperty(name, PropertyAttributes.None, propertyType, Type.EmptyTypes);
-
-            var getMethodBuilder = typeBuilder.DefineMethod("get_" + name, MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Public, propertyType, Type.EmptyTypes);
-            var iLGenerator = getMethodBuilder.GetILGenerator();
-            iLGenerator.Emit(OpCodes.Ldarg_0);
-            iLGenerator.Emit(OpCodes.Ldfld, fieldBuilder);
-            iLGenerator.Emit(OpCodes.Ret);
-
-            var setMethodBuilder = typeBuilder.DefineMethod("set_" + name, MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Public, null, new[] {propertyType});
-
-            iLGenerator = setMethodBuilder.GetILGenerator();
-            iLGenerator.Emit(OpCodes.Ldarg_0);
-            iLGenerator.Emit(OpCodes.Ldarg_1);
-            iLGenerator.Emit(OpCodes.Stfld, fieldBuilder);
-            iLGenerator.Emit(OpCodes.Ret);
-
-            propertyBuilder.SetGetMethod(getMethodBuilder);
-            propertyBuilder.SetSetMethod(setMethodBuilder);
-
-            var dataMemberAttrType = typeof(DataMemberAttribute);
-            var prop = dataMemberAttrType.GetProperty("Name");
-
-            var customAttribute = new CustomAttributeBuilder(dataMemberAttrType.GetConstructor(Array.Empty<Type>()),
-                                                             Array.Empty<object>(),
-                                                             new[] {prop},
-                                                             new object[] {name});
-
-            propertyBuilder.SetCustomAttribute(customAttribute);
-        }
-
-        private static string ComputeMD5HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeMD5HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
-
-        private static byte[] ComputeMD5HashFromString(string s) {
-            var idAsBytes = Encoding.UTF8.GetBytes(s);
-#pragma warning disable SYSLIB0021 // Type or member is obsolete
-            return new MD5CryptoServiceProvider().ComputeHash(idAsBytes);
-#pragma warning restore SYSLIB0021 // Type or member is obsolete
-        }
-
-        protected static T CreateWithOptionals<T>(object[] ctorParms, IList<OptionalProperty> properties) {
-            var toHash = (properties.Aggregate("", (s, t) => s + t.Name + "." + t.PropertyType.FullName + ".") + typeof(T).Name).Replace("[]", "Array");
-            var hash = ComputeMD5HashAsString(toHash);
-
-            var typeName = "NakedObjects.Snapshot.Rest.Representations." + hash;
-
-            var newRep = CreateInstanceOfDynamicType<T>(ctorParms, properties, typeName);
-
-            foreach (var p in properties) {
-                newRep.GetType().GetProperty(p.Name)?.SetValue(newRep, p.Value, null);
-            }
-
-            return (T) newRep;
-        }
-
-        private static object CreateInstanceOfDynamicType<T>(object[] ctorParms, IList<OptionalProperty> properties, string typeName) {
-            Type proxyType;
-            lock (ModuleBuilderLock) {
-                EnsureModuleBuilderExists();
-                proxyType = ModuleBuilder.GetType(typeName);
-
-                if (proxyType == null) {
-                    var typeBuilder = ModuleBuilder.DefineType(typeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, typeof(T));
-
-                    foreach (var w in properties) {
-                        CreateProperty(typeBuilder, w.PropertyType, w.Name);
-                    }
-
-                    CreateConstructor<T>(typeBuilder);
-                    proxyType = typeBuilder.CreateType();
-                }
-            }
-
-            return Activator.CreateInstance(proxyType, ctorParms);
-        }
-
-        private static void CreateConstructor<T>(TypeBuilder typeBuilder) {
-            var parentCtor = typeof(T).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).SingleOrDefault();
-
-            if (parentCtor != null) {
-                var parentCtorParms = parentCtor.GetParameters();
-                var ctor = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, parentCtorParms.Select(p => p.ParameterType).ToArray());
-
-                for (var idx = 0; idx < parentCtorParms.Length; idx++) {
-                    ctor.DefineParameter(idx + 1, ParameterAttributes.None, parentCtorParms[idx].Name);
-                }
-
-                var ilGenerator = ctor.GetILGenerator();
-
-                ilGenerator.Emit(OpCodes.Ldarg_0);
-                for (var i = 1; i <= parentCtorParms.Length; i++) {
-                    ilGenerator.Emit(OpCodes.Ldarg, i);
-                }
-
-                ilGenerator.Emit(OpCodes.Call, parentCtor);
-                ilGenerator.Emit(OpCodes.Ret);
-            }
-        }
-
-        public static object GetPropertyValue(IFrameworkFacade frameworkFacade, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
-            var valueNakedObject = property.GetValue(target);
-
-            if (valueNakedObject == null) {
-                return null;
-            }
-
-            if (target.IsTransient && property.IsUsable(target).IsAllowed && property.IsVisible(target) && property.IsSetToImplicitDefault(target)) {
-                return null;
-            }
-
-            if (property.Specification.IsParseable || property.Specification.IsCollection) {
-                return RestUtils.ObjectToPredefinedType(valueNakedObject, useDateOverDateTime);
-            }
-
-            if (valueOnly) {
-                return RefValueRepresentation.Create(frameworkFacade.OidStrategy, new ValueRelType(property, new UriMtHelper(frameworkFacade.OidStrategy, req, valueNakedObject)), flags);
-            }
-
-            var title = RestUtils.SafeGetTitle(property, valueNakedObject);
-            var helper = new UriMtHelper(frameworkFacade.OidStrategy, req, property.IsInline ? target : valueNakedObject);
-            var optionals = new List<OptionalProperty> {new(JsonPropertyNames.Title, title)};
-
-            if (property.IsEager(target)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(frameworkFacade, valueNakedObject, req, flags)));
-            }
-
-            return LinkRepresentation.Create(frameworkFacade.OidStrategy, new ValueRelType(property, helper), flags, optionals.ToArray());
-        }
-
-        #region IRepresentation Members
-
-        public virtual MediaTypeHeaderValue GetContentType() => SelfRelType?.GetMediaType(Flags);
-
-        public EntityTagHeaderValue GetEtag() => etag != null ? new EntityTagHeaderValue($"\"{etag}\"") : null;
-
-        public CacheType GetCaching() => Caching;
-
-        public string[] GetWarnings() {
-            var allWarnings = new List<string>();
-
-            var properties = GetType().GetProperties();
-
-            var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
-            var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
-
-            allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
-            allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));
-
-            return allWarnings.ToArray();
-        }
-
-        public Uri GetLocation() => SelfRelType?.GetUri();
-
-        #endregion
+    protected Representation(IOidStrategy oidStrategy, RestControlFlags flags) {
+        OidStrategy = oidStrategy;
+        Flags = flags;
     }
+
+    protected IOidStrategy OidStrategy { get; }
+    protected RestControlFlags Flags { get; }
+
+    private static ModuleBuilder ModuleBuilder { get; set; }
+
+    protected RelType SelfRelType { get; init; }
+
+    protected void SetEtag(string digest) {
+        if (digest != null) {
+            etag = digest;
+        }
+    }
+
+    private bool IsMutable(IObjectFacade target) => Flags.AllowMutatingActionsOnImmutableObject || !target.Specification.IsImmutable(target);
+
+    protected void SetEtag(IObjectFacade target) {
+        if (target?.Specification.IsService == false && IsMutable(target)) {
+            var digest = target.Version.Digest;
+            SetEtag(digest);
+        }
+    }
+
+    private static void EnsureModuleBuilderExists() {
+        if (ModuleBuilder == null) {
+            const string assemblyName = "NakedObjectsRestProxies";
+            var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
+            ModuleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName);
+        }
+    }
+
+    private static void CreateProperty(TypeBuilder typeBuilder, Type propertyType, string name) {
+        var fieldBuilder = typeBuilder.DefineField("_" + name, propertyType, FieldAttributes.Private);
+
+        var propertyBuilder = typeBuilder.DefineProperty(name, PropertyAttributes.None, propertyType, Type.EmptyTypes);
+
+        var getMethodBuilder = typeBuilder.DefineMethod("get_" + name, MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Public, propertyType, Type.EmptyTypes);
+        var iLGenerator = getMethodBuilder.GetILGenerator();
+        iLGenerator.Emit(OpCodes.Ldarg_0);
+        iLGenerator.Emit(OpCodes.Ldfld, fieldBuilder);
+        iLGenerator.Emit(OpCodes.Ret);
+
+        var setMethodBuilder = typeBuilder.DefineMethod("set_" + name, MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Public, null, new[] {propertyType});
+
+        iLGenerator = setMethodBuilder.GetILGenerator();
+        iLGenerator.Emit(OpCodes.Ldarg_0);
+        iLGenerator.Emit(OpCodes.Ldarg_1);
+        iLGenerator.Emit(OpCodes.Stfld, fieldBuilder);
+        iLGenerator.Emit(OpCodes.Ret);
+
+        propertyBuilder.SetGetMethod(getMethodBuilder);
+        propertyBuilder.SetSetMethod(setMethodBuilder);
+
+        var dataMemberAttrType = typeof(DataMemberAttribute);
+        var prop = dataMemberAttrType.GetProperty("Name");
+
+        var customAttribute = new CustomAttributeBuilder(dataMemberAttrType.GetConstructor(Array.Empty<Type>()),
+                                                         Array.Empty<object>(),
+                                                         new[] {prop},
+                                                         new object[] {name});
+
+        propertyBuilder.SetCustomAttribute(customAttribute);
+    }
+
+    private static string ComputeMD5HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeMD5HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
+
+    private static byte[] ComputeMD5HashFromString(string s) {
+        var idAsBytes = Encoding.UTF8.GetBytes(s);
+#pragma warning disable SYSLIB0021 // Type or member is obsolete
+        return new MD5CryptoServiceProvider().ComputeHash(idAsBytes);
+#pragma warning restore SYSLIB0021 // Type or member is obsolete
+    }
+
+    protected static T CreateWithOptionals<T>(object[] ctorParms, IList<OptionalProperty> properties) {
+        var toHash = (properties.Aggregate("", (s, t) => s + t.Name + "." + t.PropertyType.FullName + ".") + typeof(T).Name).Replace("[]", "Array");
+        var hash = ComputeMD5HashAsString(toHash);
+
+        var typeName = "NakedObjects.Snapshot.Rest.Representations." + hash;
+
+        var newRep = CreateInstanceOfDynamicType<T>(ctorParms, properties, typeName);
+
+        foreach (var p in properties) {
+            newRep.GetType().GetProperty(p.Name)?.SetValue(newRep, p.Value, null);
+        }
+
+        return (T) newRep;
+    }
+
+    private static object CreateInstanceOfDynamicType<T>(object[] ctorParms, IList<OptionalProperty> properties, string typeName) {
+        Type proxyType;
+        lock (ModuleBuilderLock) {
+            EnsureModuleBuilderExists();
+            proxyType = ModuleBuilder.GetType(typeName);
+
+            if (proxyType == null) {
+                var typeBuilder = ModuleBuilder.DefineType(typeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, typeof(T));
+
+                foreach (var w in properties) {
+                    CreateProperty(typeBuilder, w.PropertyType, w.Name);
+                }
+
+                CreateConstructor<T>(typeBuilder);
+                proxyType = typeBuilder.CreateType();
+            }
+        }
+
+        return Activator.CreateInstance(proxyType, ctorParms);
+    }
+
+    private static void CreateConstructor<T>(TypeBuilder typeBuilder) {
+        var parentCtor = typeof(T).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).SingleOrDefault();
+
+        if (parentCtor != null) {
+            var parentCtorParms = parentCtor.GetParameters();
+            var ctor = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, parentCtorParms.Select(p => p.ParameterType).ToArray());
+
+            for (var idx = 0; idx < parentCtorParms.Length; idx++) {
+                ctor.DefineParameter(idx + 1, ParameterAttributes.None, parentCtorParms[idx].Name);
+            }
+
+            var ilGenerator = ctor.GetILGenerator();
+
+            ilGenerator.Emit(OpCodes.Ldarg_0);
+            for (var i = 1; i <= parentCtorParms.Length; i++) {
+                ilGenerator.Emit(OpCodes.Ldarg, i);
+            }
+
+            ilGenerator.Emit(OpCodes.Call, parentCtor);
+            ilGenerator.Emit(OpCodes.Ret);
+        }
+    }
+
+    public static object GetPropertyValue(IFrameworkFacade frameworkFacade, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
+        var valueNakedObject = property.GetValue(target);
+
+        if (valueNakedObject == null) {
+            return null;
+        }
+
+        if (target.IsTransient && property.IsUsable(target).IsAllowed && property.IsVisible(target) && property.IsSetToImplicitDefault(target)) {
+            return null;
+        }
+
+        if (property.Specification.IsParseable || property.Specification.IsCollection) {
+            return RestUtils.ObjectToPredefinedType(valueNakedObject, useDateOverDateTime);
+        }
+
+        if (valueOnly) {
+            return RefValueRepresentation.Create(frameworkFacade.OidStrategy, new ValueRelType(property, new UriMtHelper(frameworkFacade.OidStrategy, req, valueNakedObject)), flags);
+        }
+
+        var title = RestUtils.SafeGetTitle(property, valueNakedObject);
+        var helper = new UriMtHelper(frameworkFacade.OidStrategy, req, property.IsInline ? target : valueNakedObject);
+        var optionals = new List<OptionalProperty> {new(JsonPropertyNames.Title, title)};
+
+        if (property.IsEager(target)) {
+            optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(frameworkFacade, valueNakedObject, req, flags)));
+        }
+
+        return LinkRepresentation.Create(frameworkFacade.OidStrategy, new ValueRelType(property, helper), flags, optionals.ToArray());
+    }
+
+    #region IRepresentation Members
+
+    public virtual MediaTypeHeaderValue GetContentType() => SelfRelType?.GetMediaType(Flags);
+
+    public EntityTagHeaderValue GetEtag() => etag != null ? new EntityTagHeaderValue($"\"{etag}\"") : null;
+
+    public CacheType GetCaching() => Caching;
+
+    public string[] GetWarnings() {
+        var allWarnings = new List<string>();
+
+        var properties = GetType().GetProperties();
+
+        var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
+        var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
+
+        allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
+        allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));
+
+        return allWarnings.ToArray();
+    }
+
+    public Uri GetLocation() => SelfRelType?.GetUri();
+
+    #endregion
 }

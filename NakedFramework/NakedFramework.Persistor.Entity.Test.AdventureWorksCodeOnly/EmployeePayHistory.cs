@@ -11,25 +11,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("HumanResources.EmployeePayHistory")]
-    public class EmployeePayHistory {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("HumanResources.EmployeePayHistory")]
+public class EmployeePayHistory {
    
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int EmployeeID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int EmployeeID { get; set; }
 
       
-        [Column(Order = 1)]
-        public DateTime RateChangeDate { get; set; }
+    [Column(Order = 1)]
+    public DateTime RateChangeDate { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal Rate { get; set; }
+    [Column(TypeName = "money")]
+    public decimal Rate { get; set; }
 
-        public byte PayFrequency { get; set; }
+    public byte PayFrequency { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Employee Employee { get; set; }
-    }
+    public virtual Employee Employee { get; set; }
 }

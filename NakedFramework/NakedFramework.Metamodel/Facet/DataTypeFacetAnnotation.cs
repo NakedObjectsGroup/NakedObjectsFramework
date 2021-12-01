@@ -9,15 +9,15 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class DataTypeFacetAnnotation : DataTypeFacetAbstract {
-        public DataTypeFacetAnnotation(DataType dataType, ISpecification holder)
-            : base(dataType, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public DataTypeFacetAnnotation(string customDataType, ISpecification holder)
-            : base(customDataType, holder) { }
-    }
+[Serializable]
+public sealed class DataTypeFacetAnnotation : DataTypeFacetAbstract {
+    public DataTypeFacetAnnotation(DataType dataType, ISpecification holder)
+        : base(dataType, holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public DataTypeFacetAnnotation(string customDataType, ISpecification holder)
+        : base(customDataType, holder) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

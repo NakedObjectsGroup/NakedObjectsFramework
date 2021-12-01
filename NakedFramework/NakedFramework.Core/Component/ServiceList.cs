@@ -8,10 +8,10 @@
 using System;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Core.Component {
-    public class ServiceList : IServiceList {
-        public ServiceList(Type[] services = null) => Services = services ?? Array.Empty<Type>();
+namespace NakedFramework.Core.Component; 
 
-        public Type[] Services { get; }
-    }
+public class ServiceList : IServiceList {
+    public ServiceList(Type[] services = null) => Services = services ?? Array.Empty<Type>();
+
+    public Type[] Services { get; }
 }

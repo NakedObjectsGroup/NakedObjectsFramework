@@ -19,32 +19,32 @@ using NakedLegacy.Reflector.Configuration;
 using NakedLegacy.Reflector.FacetFactory;
 using NakedLegacy.Reflector.Reflect;
 
-namespace NakedLegacy.Reflector.Extensions {
-    public static class LegacyExtensions {
-        private static LegacyObjectReflectorConfiguration LegacyObjectReflectorConfig(NakedLegacyOptions options) {
-            LegacyObjectReflectorConfiguration.NoValidate = options.NoValidate;
-            return new LegacyObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ConcurrencyCheck);
-        }
+namespace NakedLegacy.Reflector.Extensions; 
 
-        public static void AddNakedLegacy(this NakedFrameworkOptions frameworkOptions, Action<NakedLegacyOptions> setupAction) {
-            var options = new NakedLegacyOptions();
-            setupAction(options);
+public static class LegacyExtensions {
+    private static LegacyObjectReflectorConfiguration LegacyObjectReflectorConfig(NakedLegacyOptions options) {
+        LegacyObjectReflectorConfiguration.NoValidate = options.NoValidate;
+        return new LegacyObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ConcurrencyCheck);
+    }
 
-            frameworkOptions.Services.RegisterFacetFactories<ILegacyFacetFactoryProcessor>(LegacyObjectFacetFactories.StandardFacetFactories());
-            frameworkOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(LegacyObjectFacetFactories.TypeFacetFactories());
+    public static void AddNakedLegacy(this NakedFrameworkOptions frameworkOptions, Action<NakedLegacyOptions> setupAction) {
+        var options = new NakedLegacyOptions();
+        setupAction(options);
 
-            frameworkOptions.Services.AddDefaultSingleton<LegacyObjectFacetFactorySet, LegacyObjectFacetFactorySet>();
-            frameworkOptions.Services.AddDefaultSingleton<LegacyObjectClassStrategy, LegacyObjectClassStrategy>();
+        frameworkOptions.Services.RegisterFacetFactories<ILegacyFacetFactoryProcessor>(LegacyObjectFacetFactories.StandardFacetFactories());
+        frameworkOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(LegacyObjectFacetFactories.TypeFacetFactories());
 
-            frameworkOptions.Services.AddSingleton(typeof(IReflectorOrder<>), typeof(LegacyObjectReflectorOrder<>));
-            frameworkOptions.Services.AddSingleton<IReflector, LegacyObjectReflector>();
-            frameworkOptions.Services.AddSingleton<ILegacyObjectReflectorConfiguration>(p => LegacyObjectReflectorConfig(options));
-            frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
+        frameworkOptions.Services.AddDefaultSingleton<LegacyObjectFacetFactorySet, LegacyObjectFacetFactorySet>();
+        frameworkOptions.Services.AddDefaultSingleton<LegacyObjectClassStrategy, LegacyObjectClassStrategy>();
 
-            frameworkOptions.Services.AddDefaultScoped<LegacyAboutCache, LegacyAboutCache>();
+        frameworkOptions.Services.AddSingleton(typeof(IReflectorOrder<>), typeof(LegacyObjectReflectorOrder<>));
+        frameworkOptions.Services.AddSingleton<IReflector, LegacyObjectReflector>();
+        frameworkOptions.Services.AddSingleton<ILegacyObjectReflectorConfiguration>(p => LegacyObjectReflectorConfig(options));
+        frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
+
+        frameworkOptions.Services.AddDefaultScoped<LegacyAboutCache, LegacyAboutCache>();
 
 
-            frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(ReflectorDefaults.DefaultLegacyTypes).ToArray();
-        }
+        frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(ReflectorDefaults.DefaultLegacyTypes).ToArray();
     }
 }

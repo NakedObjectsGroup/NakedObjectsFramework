@@ -18,159 +18,159 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestClass]
-    public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
-        private INakedObjectAdapter booleanNO;
-        private INakedObjectAdapter booleanNO1;
-        private object booleanObj;
-        private ISpecification specification;
-        private BooleanValueSemanticsProvider value;
-        private IBooleanValueFacet valueFacet;
+namespace NakedObjects.Meta.Test.SemanticsProvider; 
 
-        [TestMethod]
-        public void TestDecodeFalse() {
-            object parsed = value.FromEncodedString("F");
-            Assert.AreEqual(false, parsed);
-        }
+[TestClass]
+public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
+    private INakedObjectAdapter booleanNO;
+    private INakedObjectAdapter booleanNO1;
+    private object booleanObj;
+    private ISpecification specification;
+    private BooleanValueSemanticsProvider value;
+    private IBooleanValueFacet valueFacet;
 
-        [TestMethod]
-        public void TestDecodeTrue() {
-            object parsed = value.FromEncodedString("T");
-            Assert.AreEqual(true, parsed);
-        }
-
-        [TestMethod]
-        public void TestEncodeFalse() {
-            Assert.AreEqual("F", value.ToEncodedString(false));
-        }
-
-        [TestMethod]
-        public void TestEncodeTrue() {
-            Assert.AreEqual("T", value.ToEncodedString(true));
-        }
-
-        [TestMethod]
-        public void TestIsNotSet() {
-            Assert.AreEqual(false, valueFacet.IsSet(CreateAdapter(false)));
-        }
-
-        [TestMethod]
-        public void TestIsSet() {
-            Assert.AreEqual(true, valueFacet.IsSet(booleanNO));
-        }
-
-        [TestMethod]
-        public void TestToggle() {
-            Assert.IsTrue((bool) booleanNO1.Object);
-            valueFacet.Toggle(booleanNO1);
-            Assert.IsFalse((bool) booleanNO1.Object);
-        }
-
-        [TestMethod]
-        public override void TestParseEmptyString() {
-            try {
-                var newValue = value.ParseTextEntry("");
-                Assert.IsNull(newValue);
-            }
-            catch (Exception) {
-                Assert.Fail();
-            }
-        }
-
-        [TestMethod]
-        public void TestParseFalseString() {
-            var parsed = value.ParseTextEntry("faLSe");
-            Assert.AreEqual(false, parsed);
-        }
-
-        [TestMethod]
-        public void TestParseInvalidString() {
-            try {
-                value.ParseTextEntry("yes");
-                Assert.Fail("Invalid string");
-            }
-            catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
-            }
-        }
-
-        [TestMethod]
-        public void TestParseInvariant() {
-            new[] {true, false}.ForEach(b => {
-                var b1 = b.ToString(CultureInfo.InvariantCulture);
-                var b2 = value.ParseInvariant(b1);
-                Assert.AreEqual(b, b2);
-            });
-        }
-
-        [TestMethod]
-        public void TestParseTrueString() {
-            var parsed = value.ParseTextEntry("TRue");
-            Assert.AreEqual(true, parsed);
-        }
-
-        [TestMethod]
-        public void TestTitleFalse() {
-            Assert.AreEqual("False", value.DisplayTitleOf(false));
-        }
-
-        [TestMethod]
-        public void TestTitleTrue() {
-            Assert.AreEqual("True", value.DisplayTitleOf(true));
-        }
-
-        [TestMethod]
-        public override void TestParseNull() {
-            base.TestParseNull();
-        }
-
-        [TestMethod]
-        public override void TestDecodeNull() {
-            base.TestDecodeNull();
-        }
-
-        [TestMethod]
-        public override void TestEmptyEncoding() {
-            base.TestEmptyEncoding();
-        }
-
-        [TestMethod]
-        public void TestAsParserInvariant() {
-            var mgr = MockNakedObjectManager();
-            IParseableFacet parser = new ParseableFacetUsingParser<bool>(value, null);
-            Assert.AreEqual(true, parser.ParseInvariant("true", mgr.Object).Object);
-            Assert.AreEqual(false, parser.ParseInvariant("false", mgr.Object).Object);
-        }
-
-        [TestMethod]
-        public void TestAsParserTitle() {
-            IParseableFacet parser = new ParseableFacetUsingParser<bool>(value, null);
-            var mockAdapter = MockAdapter(true);
-            Assert.AreEqual("True", parser.ParseableTitle(mockAdapter));
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            booleanObj = true;
-            booleanNO = CreateAdapter(booleanObj);
-            booleanNO1 = CreateAdapter(true);
-            specification = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
-            valueFacet = value;
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public void TestDecodeFalse() {
+        object parsed = value.FromEncodedString("F");
+        Assert.AreEqual(false, parsed);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestDecodeTrue() {
+        object parsed = value.FromEncodedString("T");
+        Assert.AreEqual(true, parsed);
+    }
+
+    [TestMethod]
+    public void TestEncodeFalse() {
+        Assert.AreEqual("F", value.ToEncodedString(false));
+    }
+
+    [TestMethod]
+    public void TestEncodeTrue() {
+        Assert.AreEqual("T", value.ToEncodedString(true));
+    }
+
+    [TestMethod]
+    public void TestIsNotSet() {
+        Assert.AreEqual(false, valueFacet.IsSet(CreateAdapter(false)));
+    }
+
+    [TestMethod]
+    public void TestIsSet() {
+        Assert.AreEqual(true, valueFacet.IsSet(booleanNO));
+    }
+
+    [TestMethod]
+    public void TestToggle() {
+        Assert.IsTrue((bool) booleanNO1.Object);
+        valueFacet.Toggle(booleanNO1);
+        Assert.IsFalse((bool) booleanNO1.Object);
+    }
+
+    [TestMethod]
+    public override void TestParseEmptyString() {
+        try {
+            var newValue = value.ParseTextEntry("");
+            Assert.IsNull(newValue);
+        }
+        catch (Exception) {
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
+    public void TestParseFalseString() {
+        var parsed = value.ParseTextEntry("faLSe");
+        Assert.AreEqual(false, parsed);
+    }
+
+    [TestMethod]
+    public void TestParseInvalidString() {
+        try {
+            value.ParseTextEntry("yes");
+            Assert.Fail("Invalid string");
+        }
+        catch (Exception e) {
+            Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+        }
+    }
+
+    [TestMethod]
+    public void TestParseInvariant() {
+        new[] {true, false}.ForEach(b => {
+            var b1 = b.ToString(CultureInfo.InvariantCulture);
+            var b2 = value.ParseInvariant(b1);
+            Assert.AreEqual(b, b2);
+        });
+    }
+
+    [TestMethod]
+    public void TestParseTrueString() {
+        var parsed = value.ParseTextEntry("TRue");
+        Assert.AreEqual(true, parsed);
+    }
+
+    [TestMethod]
+    public void TestTitleFalse() {
+        Assert.AreEqual("False", value.DisplayTitleOf(false));
+    }
+
+    [TestMethod]
+    public void TestTitleTrue() {
+        Assert.AreEqual("True", value.DisplayTitleOf(true));
+    }
+
+    [TestMethod]
+    public override void TestParseNull() {
+        base.TestParseNull();
+    }
+
+    [TestMethod]
+    public override void TestDecodeNull() {
+        base.TestDecodeNull();
+    }
+
+    [TestMethod]
+    public override void TestEmptyEncoding() {
+        base.TestEmptyEncoding();
+    }
+
+    [TestMethod]
+    public void TestAsParserInvariant() {
+        var mgr = MockNakedObjectManager();
+        IParseableFacet parser = new ParseableFacetUsingParser<bool>(value, null);
+        Assert.AreEqual(true, parser.ParseInvariant("true", mgr.Object).Object);
+        Assert.AreEqual(false, parser.ParseInvariant("false", mgr.Object).Object);
+    }
+
+    [TestMethod]
+    public void TestAsParserTitle() {
+        IParseableFacet parser = new ParseableFacetUsingParser<bool>(value, null);
+        var mockAdapter = MockAdapter(true);
+        Assert.AreEqual("True", parser.ParseableTitle(mockAdapter));
+    }
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        booleanObj = true;
+        booleanNO = CreateAdapter(booleanObj);
+        booleanNO1 = CreateAdapter(true);
+        specification = new Mock<ISpecification>().Object;
+        var spec = new Mock<IObjectSpecImmutable>().Object;
+        SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
+        valueFacet = value;
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -9,17 +9,17 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class DisabledFacetAlways : DisabledFacetAbstract {
-        public DisabledFacetAlways(ISpecification holder)
-            : base(WhenTo.Always, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        /// <summary>
-        ///     Always returns <i>Always disabled</i>
-        /// </summary>
-        public override string DisabledReason(INakedObjectAdapter target) => NakedObjects.Resources.NakedObjects.AlwaysDisabled;
-    }
+[Serializable]
+public sealed class DisabledFacetAlways : DisabledFacetAbstract {
+    public DisabledFacetAlways(ISpecification holder)
+        : base(WhenTo.Always, holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Always returns <i>Always disabled</i>
+    /// </summary>
+    public override string DisabledReason(INakedObjectAdapter target) => NakedObjects.Resources.NakedObjects.AlwaysDisabled;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

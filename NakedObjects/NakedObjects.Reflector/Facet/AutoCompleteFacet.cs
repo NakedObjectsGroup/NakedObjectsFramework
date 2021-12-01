@@ -19,64 +19,64 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
-        private const int DefaultPageSize = 50;
-        private readonly ILogger<AutoCompleteFacet> logger;
-        private readonly MethodInfo method;
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+namespace NakedObjects.Reflector.Facet; 
 
-        private AutoCompleteFacet(ISpecification holder)
-            : base(Type, holder) { }
+[Serializable]
+public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
+    private const int DefaultPageSize = 50;
+    private readonly ILogger<AutoCompleteFacet> logger;
+    private readonly MethodInfo method;
+    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder, ILogger<AutoCompleteFacet> logger)
-            : this(holder) {
-            method = autoCompleteMethod;
-            this.logger = logger;
-            PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
-            MinLength = minLength;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+    private AutoCompleteFacet(ISpecification holder)
+        : base(Type, holder) { }
 
-        public static Type Type => typeof(IAutoCompleteFacet);
-
-        public int PageSize { get; }
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-
-        #region IAutoCompleteFacet Members
-
-        public int MinLength { get; }
-
-        public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedFramework framework) {
-            try {
-                var autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] {autoCompleteParm});
-                return autoComplete switch {
-                    IQueryable queryable => queryable.Take(PageSize).ToArray(),
-                    IEnumerable<string> strings => strings.Cast<object>().ToArray(),
-                    _ when !CollectionUtils.IsCollection(autoComplete.GetType()) => new[] {autoComplete},
-                    _ => throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {method.Name}")
-                };
-            }
-            catch (ArgumentException ae) {
-                throw new InvokeException($"autoComplete exception: {method.Name} has mismatched parameter type - must be string", ae);
-            }
-        }
-
-        #endregion
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder, ILogger<AutoCompleteFacet> logger)
+        : this(holder) {
+        method = autoCompleteMethod;
+        this.logger = logger;
+        PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
+        MinLength = minLength;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public static Type Type => typeof(IAutoCompleteFacet);
+
+    public int PageSize { get; }
+
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+
+    #region IAutoCompleteFacet Members
+
+    public int MinLength { get; }
+
+    public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedFramework framework) {
+        try {
+            var autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] {autoCompleteParm});
+            return autoComplete switch {
+                IQueryable queryable => queryable.Take(PageSize).ToArray(),
+                IEnumerable<string> strings => strings.Cast<object>().ToArray(),
+                _ when !CollectionUtils.IsCollection(autoComplete.GetType()) => new[] {autoComplete},
+                _ => throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {method.Name}")
+            };
+        }
+        catch (ArgumentException ae) {
+            throw new InvokeException($"autoComplete exception: {method.Name} has mismatched parameter type - must be string", ae);
+        }
+    }
+
+    #endregion
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

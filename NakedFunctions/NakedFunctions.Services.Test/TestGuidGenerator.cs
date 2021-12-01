@@ -8,18 +8,18 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace NakedFunctions.Services.Test {
-    [TestClass]
-    public class TestGuidGenerator {
-        [TestMethod]
-        public void Test1() {
-            IGuidGenerator gen = new GuidGenerator();
-            var g1 = gen.NewGuid();
-            Assert.AreNotEqual(Guid.Empty, g1);
-            Assert.AreNotEqual(Guid.NewGuid(), g1);
+namespace NakedFunctions.Services.Test; 
 
-            var g2 = gen.NewGuid();
-            Assert.AreNotEqual(g1, g2);
-        }
+[TestClass]
+public class TestGuidGenerator {
+    [TestMethod]
+    public void Test1() {
+        IGuidGenerator gen = new GuidGenerator();
+        var g1 = gen.NewGuid();
+        Assert.AreNotEqual(Guid.Empty, g1);
+        Assert.AreNotEqual(Guid.NewGuid(), g1);
+
+        var g2 = gen.NewGuid();
+        Assert.AreNotEqual(g1, g2);
     }
 }

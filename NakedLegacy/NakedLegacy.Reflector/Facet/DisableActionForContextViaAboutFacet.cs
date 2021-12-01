@@ -18,49 +18,49 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.Facet {
-    [Serializable]
-    public sealed class DisableActionForContextViaAboutFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
+namespace NakedLegacy.Reflector.Facet; 
+
+[Serializable]
+public sealed class DisableActionForContextViaAboutFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
      
 
-        private readonly AboutHelpers.AboutType aboutType;
+    private readonly AboutHelpers.AboutType aboutType;
 
-        private readonly ILogger<DisableActionForContextViaAboutFacet> logger;
-        private readonly MethodInfo method;
+    private readonly ILogger<DisableActionForContextViaAboutFacet> logger;
+    private readonly MethodInfo method;
 
-        public DisableActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DisableActionForContextViaAboutFacet> logger)
-            : base(typeof(IDisableForContextFacet), holder) {
-            this.method = method;
-            this.aboutType = aboutType;
-            this.logger = logger;
-        }
-
-        protected override string ToStringValues() => $"method={method}";
-
-        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
-
-        public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
-
-        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            if (nakedObjectAdapter == null) {
-                return null;
-            }
-
-            var about = aboutType.AboutFactory(AboutTypeCodes.Usable);
-
-            method.Invoke(nakedObjectAdapter.GetDomainObject(), method.GetParameters(about));
-
-            return about.Usable ? null : global::NakedObjects.Resources.NakedObjects.Disabled;
-        }
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => null;
-
-        #endregion
+    public DisableActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DisableActionForContextViaAboutFacet> logger)
+        : base(typeof(IDisableForContextFacet), holder) {
+        this.method = method;
+        this.aboutType = aboutType;
+        this.logger = logger;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override string ToStringValues() => $"method={method}";
+
+    public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
+
+    public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
+
+    public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        if (nakedObjectAdapter == null) {
+            return null;
+        }
+
+        var about = aboutType.AboutFactory(AboutTypeCodes.Usable);
+
+        method.Invoke(nakedObjectAdapter.GetDomainObject(), method.GetParameters(about));
+
+        return about.Usable ? null : global::NakedObjects.Resources.NakedObjects.Disabled;
+    }
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => null;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

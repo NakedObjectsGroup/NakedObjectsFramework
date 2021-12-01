@@ -19,44 +19,44 @@ using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.Facet {
-    [Serializable]
-    public sealed class ActionValidationViaFunctionFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
-        private readonly MethodInfo method;
-        private readonly Func<object, object[], object> methodDelegate;
+namespace NakedFunctions.Reflector.Facet; 
 
-        public ActionValidationViaFunctionFacet(MethodInfo method,
-                                                ISpecification holder,
-                                                ILogger<ActionValidationViaFunctionFacet> logger)
-            : base(typeof(IActionValidationFacet), holder) {
-            this.method = method;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+[Serializable]
+public sealed class ActionValidationViaFunctionFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
+    private readonly MethodInfo method;
+    private readonly Func<object, object[], object> methodDelegate;
 
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private static void OnDeserialized(StreamingContext context) { }
-
-        #region IActionValidationFacet Members
-
-        public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);
-
-        public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
-
-        public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArguments) =>
-            methodDelegate.Invoke<string>(method, method.GetParameterValues(target, proposedArguments, framework));
-
-        #endregion
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public ActionValidationViaFunctionFacet(MethodInfo method,
+                                            ISpecification holder,
+                                            ILogger<ActionValidationViaFunctionFacet> logger)
+        : base(typeof(IActionValidationFacet), holder) {
+        this.method = method;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private static void OnDeserialized(StreamingContext context) { }
+
+    #region IActionValidationFacet Members
+
+    public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);
+
+    public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
+
+    public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArguments) =>
+        methodDelegate.Invoke<string>(method, method.GetParameterValues(target, proposedArguments, framework));
+
+    #endregion
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

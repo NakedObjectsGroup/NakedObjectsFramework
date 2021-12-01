@@ -10,15 +10,15 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class MenuRelType : RelType {
-        public MenuRelType(UriMtHelper helper) : base(RelValues.Menu, helper) { }
-        public MenuRelType(string name, UriMtHelper helper) : base(name, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetMenuRelParameter() : "")}";
+public class MenuRelType : RelType {
+    public MenuRelType(UriMtHelper helper) : base(RelValues.Menu, helper) { }
+    public MenuRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override Uri GetUri() => Helper.GetMenuUri();
+    public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetMenuRelParameter() : "")}";
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(UriMtHelper.GetMenuMediaType());
-    }
+    public override Uri GetUri() => Helper.GetMenuUri();
+
+    public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(UriMtHelper.GetMenuMediaType());
 }

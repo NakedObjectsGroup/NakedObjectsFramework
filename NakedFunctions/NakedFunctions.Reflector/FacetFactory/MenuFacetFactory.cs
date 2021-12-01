@@ -19,29 +19,29 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class MenuFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
-        private static readonly string[] FixedPrefixes;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        static MenuFacetFactory() {
-            FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.MenuMethod};
+public sealed class MenuFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+    private static readonly string[] FixedPrefixes;
+
+    static MenuFacetFactory() {
+        FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.MenuMethod};
+    }
+
+    public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+
+    public string[] Prefixes => FixedPrefixes;
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
+        if (method is not null) {
+            FacetUtils.AddFacet(new MenuFacetViaMethod(method, specification));
+        }
+        else {
+            FacetUtils.AddFacet(new MenuFacetDefault(specification));
         }
 
-        public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
-
-        public string[] Prefixes => FixedPrefixes;
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
-            if (method is not null) {
-                FacetUtils.AddFacet(new MenuFacetViaMethod(method, specification));
-            }
-            else {
-                FacetUtils.AddFacet(new MenuFacetDefault(specification));
-            }
-
-            return metamodel;
-        }
+        return metamodel;
     }
 }

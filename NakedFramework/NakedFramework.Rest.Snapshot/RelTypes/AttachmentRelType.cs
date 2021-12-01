@@ -10,14 +10,14 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class AttachmentRelType : RelType {
-        public AttachmentRelType(UriMtHelper helper) : base(RelValues.Attachment, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
+public class AttachmentRelType : RelType {
+    public AttachmentRelType(UriMtHelper helper) : base(RelValues.Attachment, helper) { }
 
-        public override Uri GetUri() => Helper.GetDetailsUri();
+    public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => Helper.GetAttachmentMediaType();
-    }
+    public override Uri GetUri() => Helper.GetDetailsUri();
+
+    public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => Helper.GetAttachmentMediaType();
 }

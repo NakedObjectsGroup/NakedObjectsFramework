@@ -13,25 +13,25 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
-        private readonly IValueSemanticsProvider<T> encoderDecoder;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public EncodeableFacetUsingEncoderDecoder(IValueSemanticsProvider<T> encoderDecoder, ISpecification holder)
-            : base(typeof(IEncodeableFacet), holder) =>
-            this.encoderDecoder = encoderDecoder;
+[Serializable]
+public sealed class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
+    private readonly IValueSemanticsProvider<T> encoderDecoder;
 
-        public static string EncodedNull => "NULL";
+    public EncodeableFacetUsingEncoderDecoder(IValueSemanticsProvider<T> encoderDecoder, ISpecification holder)
+        : base(typeof(IEncodeableFacet), holder) =>
+        this.encoderDecoder = encoderDecoder;
 
-        protected override string ToStringValues() => encoderDecoder.ToString();
+    public static string EncodedNull => "NULL";
 
-        #region IEncodeableFacet Members
+    protected override string ToStringValues() => encoderDecoder.ToString();
 
-        public INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager) => EncodedNull.Equals(encodedData) ? null : manager.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
+    #region IEncodeableFacet Members
 
-        public string ToEncodedString(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter == null ? EncodedNull : encoderDecoder.ToEncodedString(nakedObjectAdapter.GetDomainObject<T>());
+    public INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager) => EncodedNull.Equals(encodedData) ? null : manager.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
 
-        #endregion
-    }
+    public string ToEncodedString(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter == null ? EncodedNull : encoderDecoder.ToEncodedString(nakedObjectAdapter.GetDomainObject<T>());
+
+    #endregion
 }

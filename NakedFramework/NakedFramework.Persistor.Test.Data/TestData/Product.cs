@@ -10,31 +10,31 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework.Core.Error;
 using NakedObjects;
 
-namespace TestData {
-    public class Product : TestHelper {
-        public virtual int Id { get; set; }
+namespace TestData; 
 
-        [Title]
-        public virtual string Name { get; set; }
+public class Product : TestHelper {
+    public virtual int Id { get; set; }
 
-        [ConcurrencyCheck]
-        public virtual string ModifiedDate { get; set; }
+    [Title]
+    public virtual string Name { get; set; }
 
-        public override void Persisting() {
-            ModifiedDate = DateTime.Now.ToBinary().ToString();
-            base.Persisting();
+    [ConcurrencyCheck]
+    public virtual string ModifiedDate { get; set; }
+
+    public override void Persisting() {
+        ModifiedDate = DateTime.Now.ToBinary().ToString();
+        base.Persisting();
+    }
+
+    public override void Persisted() {
+        base.Persisted();
+        if (Id == 0) {
+            throw new UnexpectedCallException("Id must not be null");
         }
+    }
 
-        public override void Persisted() {
-            base.Persisted();
-            if (Id == 0) {
-                throw new UnexpectedCallException("Id must not be null");
-            }
-        }
-
-        public override void Updating() {
-            ModifiedDate = DateTime.Now.ToBinary().ToString();
-            base.Updating();
-        }
+    public override void Updating() {
+        ModifiedDate = DateTime.Now.ToBinary().ToString();
+        base.Updating();
     }
 }

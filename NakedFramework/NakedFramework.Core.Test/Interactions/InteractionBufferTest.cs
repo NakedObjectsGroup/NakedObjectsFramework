@@ -9,15 +9,15 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Interactions;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Interactions {
-    [TestFixture]
-    public class InteractionBufferTest {
-        [Test]
-        public void IsNotEmptyTest() {
-            IInteractionBuffer buffer = new InteractionBuffer();
-            Assert.IsFalse(buffer.IsNotEmpty);
-            buffer.Append("a reason");
-            Assert.IsTrue(buffer.IsNotEmpty);
-        }
+namespace NakedFramework.Core.Test.Interactions; 
+
+[TestFixture]
+public class InteractionBufferTest {
+    [Test]
+    public void IsNotEmptyTest() {
+        IInteractionBuffer buffer = new InteractionBuffer();
+        Assert.IsFalse(buffer.IsNotEmpty);
+        buffer.Append("a reason");
+        Assert.IsTrue(buffer.IsNotEmpty);
     }
 }

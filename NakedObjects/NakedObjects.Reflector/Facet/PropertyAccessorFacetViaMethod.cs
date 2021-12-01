@@ -16,36 +16,36 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class PropertyAccessorFacetViaMethod : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
-        private readonly MethodInfo propertyMethod;
+namespace NakedObjects.Reflector.Facet; 
 
-        public PropertyAccessorFacetViaMethod(MethodInfo propertyMethod, ISpecification holder, ILogger<PropertyAccessorFacetViaMethod> logger)
-            : base(typeof(IPropertyAccessorFacet), holder) {
-            this.propertyMethod = propertyMethod;
-            PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
-        }
+[Serializable]
+public sealed class PropertyAccessorFacetViaMethod : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
+    private readonly MethodInfo propertyMethod;
 
-        private Func<object, object[], object> PropertyDelegate { get; set; }
-        public MethodInfo GetMethod() => propertyMethod;
-
-        public Func<object, object[], object> GetMethodDelegate() => PropertyDelegate;
-
-        #region IPropertyAccessorFacet Members
-
-        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
-            try {
-                return PropertyDelegate.Invoke<object>(propertyMethod, nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
-            }
-            catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);
-                return null;
-            }
-        }
-
-        #endregion
-
-        protected override string ToStringValues() => $"method={propertyMethod}";
+    public PropertyAccessorFacetViaMethod(MethodInfo propertyMethod, ISpecification holder, ILogger<PropertyAccessorFacetViaMethod> logger)
+        : base(typeof(IPropertyAccessorFacet), holder) {
+        this.propertyMethod = propertyMethod;
+        PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
     }
+
+    private Func<object, object[], object> PropertyDelegate { get; set; }
+    public MethodInfo GetMethod() => propertyMethod;
+
+    public Func<object, object[], object> GetMethodDelegate() => PropertyDelegate;
+
+    #region IPropertyAccessorFacet Members
+
+    public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
+        try {
+            return PropertyDelegate.Invoke<object>(propertyMethod, nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        }
+        catch (TargetInvocationException e) {
+            InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);
+            return null;
+        }
+    }
+
+    #endregion
+
+    protected override string ToStringValues() => $"method={propertyMethod}";
 }

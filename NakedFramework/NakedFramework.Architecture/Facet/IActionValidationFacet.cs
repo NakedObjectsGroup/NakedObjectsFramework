@@ -9,23 +9,23 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     The mechanism by which the set of parameters of the action can be validated
+///     before the action itself is invoked.
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to invoking the
+///     <c>ValidateXxx</c> support method for an action.
+/// </para>
+/// <para>
+///     The parameters may be validated independently first (eg a range check on a numeric parameter).
+/// </para>
+/// <seealso cref="IActionInvocationFacet" />
+public interface IActionValidationFacet : IFacet, IValidatingInteractionAdvisor {
     /// <summary>
-    ///     The mechanism by which the set of parameters of the action can be validated
-    ///     before the action itself is invoked.
+    ///     Reason why the validation has failed, or <c>null</c> if okay
     /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to invoking the
-    ///     <c>ValidateXxx</c> support method for an action.
-    /// </para>
-    /// <para>
-    ///     The parameters may be validated independently first (eg a range check on a numeric parameter).
-    /// </para>
-    /// <seealso cref="IActionInvocationFacet" />
-    public interface IActionValidationFacet : IFacet, IValidatingInteractionAdvisor {
-        /// <summary>
-        ///     Reason why the validation has failed, or <c>null</c> if okay
-        /// </summary>
-        string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArgument);
-    }
+    string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArgument);
 }

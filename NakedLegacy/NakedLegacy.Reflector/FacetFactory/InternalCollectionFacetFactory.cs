@@ -19,25 +19,25 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.FacetFactory {
-    public sealed class InternalCollectionFacetFactory : LegacyFacetFactoryProcessor {
-        public InternalCollectionFacetFactory(IFacetFactoryOrder<InternalCollectionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
+namespace NakedLegacy.Reflector.FacetFactory; 
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (type == typeof(InternalCollection)) {
-                var collectionElementType = typeof(object);
-                IObjectSpecBuilder oSpec;
-                (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
-                FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, oSpec));
-            }
+public sealed class InternalCollectionFacetFactory : LegacyFacetFactoryProcessor {
+    public InternalCollectionFacetFactory(IFacetFactoryOrder<InternalCollectionFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
-            return metamodel;
+    private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (type == typeof(InternalCollection)) {
+            var collectionElementType = typeof(object);
+            IObjectSpecBuilder oSpec;
+            (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
+            FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, oSpec));
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-            property.HasPublicGetter()
-                ? Process(reflector, property.PropertyType, specification, metamodel)
-                : metamodel;
+        return metamodel;
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+        property.HasPublicGetter()
+            ? Process(reflector, property.PropertyType, specification, metamodel)
+            : metamodel;
 }

@@ -12,52 +12,52 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace TestCodeOnly {
-    public class EFCoreCodeFirstContext : DbContext {
-        private readonly string cs;
+namespace TestCodeOnly; 
 
-        public EFCoreCodeFirstContext(string cs) {
-            this.cs = cs;
-        }
-        public DbSet<Address> Addresses { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<CountryCode> CountryCodes { get; set; }
-        public DbSet<DomesticAddress> DomesticAddresses { get; set; }
-        public DbSet<InternationalAddress> InternationalAddresses { get; set; }
-        public DbSet<Person> People { get; set; }
-        public DbSet<Product> Products { get; set; }
+public class EFCoreCodeFirstContext : DbContext {
+    private readonly string cs;
 
-        public void Delete() => Database.EnsureDeleted();
+    public EFCoreCodeFirstContext(string cs) {
+        this.cs = cs;
+    }
+    public DbSet<Address> Addresses { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<CountryCode> CountryCodes { get; set; }
+    public DbSet<DomesticAddress> DomesticAddresses { get; set; }
+    public DbSet<InternationalAddress> InternationalAddresses { get; set; }
+    public DbSet<Person> People { get; set; }
+    public DbSet<Product> Products { get; set; }
 
-        public void Create() => Database.EnsureCreated();
+    public void Delete() => Database.EnsureDeleted();
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(cs);
-            optionsBuilder.UseLazyLoadingProxies();
-            //optionsBuilder.EnableDetailedErrors();
-            //optionsBuilder.EnableSensitiveDataLogging();
-            //optionsBuilder.LogTo(m => Console.WriteLine(m), LogLevel.Trace);
-        }
+    public void Create() => Database.EnsureCreated();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(cs);
+        optionsBuilder.UseLazyLoadingProxies();
+        //optionsBuilder.EnableDetailedErrors();
+        //optionsBuilder.EnableSensitiveDataLogging();
+        //optionsBuilder.LogTo(m => Console.WriteLine(m), LogLevel.Trace);
+    }
 
-            modelBuilder.Entity<CountryCode>().HasKey(cc => cc.Code);
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
-            var food = new Category { ID = 1, Name = "Food" };
-            modelBuilder.Entity<Category>().HasData(food);
+        modelBuilder.Entity<CountryCode>().HasKey(cc => cc.Code);
 
-            modelBuilder.Entity<Product>().HasData(new { ID = 1, Name = "Bovril", OwningcategoryID = 1 });
-            modelBuilder.Entity<Product>().HasData(new { ID = 2, Name = "Marmite", OwningcategoryID = 1 });
-            modelBuilder.Entity<Product>().HasData(new { ID = 3, Name = "Vegemite", OwningcategoryID = 1 });
+        var food = new Category { ID = 1, Name = "Food" };
+        modelBuilder.Entity<Category>().HasData(food);
 
-            modelBuilder.Entity<DomesticAddress>().HasData(new DomesticAddress { ID = 1, Lines = "22 Westleigh Drive", Postcode = "RG4 9LB" });
-            modelBuilder.Entity<DomesticAddress>().HasData(new DomesticAddress { ID = 2, Lines = "BNR Park, Concorde Road", Postcode = "SL6 4AG" });
-            modelBuilder.Entity<InternationalAddress>().HasData(new InternationalAddress { ID = 3, Lines = "1 Madison Avenue, New York", Country = "USA" });
+        modelBuilder.Entity<Product>().HasData(new { ID = 1, Name = "Bovril", OwningcategoryID = 1 });
+        modelBuilder.Entity<Product>().HasData(new { ID = 2, Name = "Marmite", OwningcategoryID = 1 });
+        modelBuilder.Entity<Product>().HasData(new { ID = 3, Name = "Vegemite", OwningcategoryID = 1 });
 
-            modelBuilder.Entity<Person>().HasData(new { ID = 1, Name = "Ted", FavouriteID = 1, AddressID = 1 });
-            modelBuilder.Entity<Person>().HasData(new { ID = 2, Name = "Bob", FavouriteID = 2, AddressID = 2 });
-            modelBuilder.Entity<Person>().HasData(new { ID = 3, Name = "Jane", FavouriteID = 3, AddressID = 3 });
-        }
+        modelBuilder.Entity<DomesticAddress>().HasData(new DomesticAddress { ID = 1, Lines = "22 Westleigh Drive", Postcode = "RG4 9LB" });
+        modelBuilder.Entity<DomesticAddress>().HasData(new DomesticAddress { ID = 2, Lines = "BNR Park, Concorde Road", Postcode = "SL6 4AG" });
+        modelBuilder.Entity<InternationalAddress>().HasData(new InternationalAddress { ID = 3, Lines = "1 Madison Avenue, New York", Country = "USA" });
+
+        modelBuilder.Entity<Person>().HasData(new { ID = 1, Name = "Ted", FavouriteID = 1, AddressID = 1 });
+        modelBuilder.Entity<Person>().HasData(new { ID = 2, Name = "Bob", FavouriteID = 2, AddressID = 2 });
+        modelBuilder.Entity<Person>().HasData(new { ID = 3, Name = "Jane", FavouriteID = 3, AddressID = 3 });
     }
 }

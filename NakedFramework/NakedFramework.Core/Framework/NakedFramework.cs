@@ -14,89 +14,89 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Component;
 using NakedFramework.Core.Spec;
 
-namespace NakedFramework.Core.Framework {
-    public sealed class NakedFramework : INakedFramework {
-        public NakedFramework(IMessageBroker messageBroker,
-                                     ISession session,
-                                     ILifecycleManager lifecycleManager,
-                                     IServicesManager servicesManager,
-                                     INakedObjectManager nakedObjectManager,
-                                     IObjectPersistor persistor,
-                                     IEnumerable<IReflector> reflectors,
-                                     IMetamodelManager metamodelManagerManager,
-                                     IDomainObjectInjector domainObjectInjector,
-                                     NakedObjectFactory nakedObjectFactory,
-                                     SpecFactory memberFactory,
-                                     ITransactionManager transactionManager,
-                                     IFrameworkResolver frameworkResolver,
-                                     ILoggerFactory loggerFactory,
-                                     IServiceProvider serviceProvider) {
-            MessageBroker = messageBroker;
-            Session = session;
-            LifecycleManager = lifecycleManager;
-            ServicesManager = servicesManager;
-            NakedObjectManager = nakedObjectManager;
-            Persistor = persistor;
-            Reflectors = reflectors;
-            MetamodelManager = metamodelManagerManager;
-            DomainObjectInjector = domainObjectInjector;
-            TransactionManager = transactionManager;
-            FrameworkResolver = frameworkResolver;
-            ServiceProvider = serviceProvider;
-            domainObjectInjector.Framework = this;
-            memberFactory.Initialize(this, loggerFactory, loggerFactory.CreateLogger<SpecFactory>());
-            nakedObjectFactory.Initialize(this, loggerFactory);
-        }
+namespace NakedFramework.Core.Framework; 
 
-        #region INakedFramework Members
-
-        public IDomainObjectInjector DomainObjectInjector { get; }
-
-        public ITransactionManager TransactionManager { get; }
-
-        public IFrameworkResolver FrameworkResolver { get; }
-
-        public IServiceProvider ServiceProvider { get; }
-
-        public IMessageBroker MessageBroker { get; }
-
-        public ISession Session { get; }
-
-        public ILifecycleManager LifecycleManager { get; }
-
-        public INakedObjectManager NakedObjectManager { get; }
-
-        public IServicesManager ServicesManager { get; }
-
-        public IObjectPersistor Persistor { get; }
-
-        public IEnumerable<IReflector> Reflectors { get; }
-
-        public IMetamodelManager MetamodelManager { get; }
-
-        public string[] ServerTypes => Reflectors.Select(r => r.Name).ToArray();
-
-        private ReflectorType? reflectorType; 
-
-        public ReflectorType ReflectorType {
-            get {
-                reflectorType ??= GetReflectorType();
-                return reflectorType.Value;
-            }
-        }
-
-        private ReflectorType GetReflectorType() {
-            var types = Reflectors.Select(r => r.ReflectorType).ToArray();
-            var isObject = types.Contains(ReflectorType.Object);
-            var isFunction = types.Contains(ReflectorType.Functional);
-
-            return isObject && isFunction
-                ? ReflectorType.Hybrid
-                : isFunction
-                    ? ReflectorType.Functional
-                    : ReflectorType.Object;
-        }
-
-        #endregion
+public sealed class NakedFramework : INakedFramework {
+    public NakedFramework(IMessageBroker messageBroker,
+                          ISession session,
+                          ILifecycleManager lifecycleManager,
+                          IServicesManager servicesManager,
+                          INakedObjectManager nakedObjectManager,
+                          IObjectPersistor persistor,
+                          IEnumerable<IReflector> reflectors,
+                          IMetamodelManager metamodelManagerManager,
+                          IDomainObjectInjector domainObjectInjector,
+                          NakedObjectFactory nakedObjectFactory,
+                          SpecFactory memberFactory,
+                          ITransactionManager transactionManager,
+                          IFrameworkResolver frameworkResolver,
+                          ILoggerFactory loggerFactory,
+                          IServiceProvider serviceProvider) {
+        MessageBroker = messageBroker;
+        Session = session;
+        LifecycleManager = lifecycleManager;
+        ServicesManager = servicesManager;
+        NakedObjectManager = nakedObjectManager;
+        Persistor = persistor;
+        Reflectors = reflectors;
+        MetamodelManager = metamodelManagerManager;
+        DomainObjectInjector = domainObjectInjector;
+        TransactionManager = transactionManager;
+        FrameworkResolver = frameworkResolver;
+        ServiceProvider = serviceProvider;
+        domainObjectInjector.Framework = this;
+        memberFactory.Initialize(this, loggerFactory, loggerFactory.CreateLogger<SpecFactory>());
+        nakedObjectFactory.Initialize(this, loggerFactory);
     }
+
+    #region INakedFramework Members
+
+    public IDomainObjectInjector DomainObjectInjector { get; }
+
+    public ITransactionManager TransactionManager { get; }
+
+    public IFrameworkResolver FrameworkResolver { get; }
+
+    public IServiceProvider ServiceProvider { get; }
+
+    public IMessageBroker MessageBroker { get; }
+
+    public ISession Session { get; }
+
+    public ILifecycleManager LifecycleManager { get; }
+
+    public INakedObjectManager NakedObjectManager { get; }
+
+    public IServicesManager ServicesManager { get; }
+
+    public IObjectPersistor Persistor { get; }
+
+    public IEnumerable<IReflector> Reflectors { get; }
+
+    public IMetamodelManager MetamodelManager { get; }
+
+    public string[] ServerTypes => Reflectors.Select(r => r.Name).ToArray();
+
+    private ReflectorType? reflectorType; 
+
+    public ReflectorType ReflectorType {
+        get {
+            reflectorType ??= GetReflectorType();
+            return reflectorType.Value;
+        }
+    }
+
+    private ReflectorType GetReflectorType() {
+        var types = Reflectors.Select(r => r.ReflectorType).ToArray();
+        var isObject = types.Contains(ReflectorType.Object);
+        var isFunction = types.Contains(ReflectorType.Functional);
+
+        return isObject && isFunction
+            ? ReflectorType.Hybrid
+            : isFunction
+                ? ReflectorType.Functional
+                : ReflectorType.Object;
+    }
+
+    #endregion
 }

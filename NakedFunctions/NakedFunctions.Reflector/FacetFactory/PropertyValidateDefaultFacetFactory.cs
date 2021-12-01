@@ -16,26 +16,26 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class PropertyValidateDefaultFacetFactory : FunctionalFacetFactoryProcessor {
-        public PropertyValidateDefaultFacetFactory(IFacetFactoryOrder<PropertyValidateDefaultFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo propertyInfo, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            FacetUtils.AddFacet(Create(specification));
-            return metamodel;
-        }
+public sealed class PropertyValidateDefaultFacetFactory : FunctionalFacetFactoryProcessor {
+    public PropertyValidateDefaultFacetFactory(IFacetFactoryOrder<PropertyValidateDefaultFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            FacetUtils.AddFacet(Create(specification));
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            FacetUtils.AddFacet(Create(holder));
-            return metamodel;
-        }
-
-        private static IPropertyValidateFacet Create(ISpecification holder) => new PropertyValidateFacetDefault(holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo propertyInfo, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        FacetUtils.AddFacet(Create(specification));
+        return metamodel;
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        FacetUtils.AddFacet(Create(specification));
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        FacetUtils.AddFacet(Create(holder));
+        return metamodel;
+    }
+
+    private static IPropertyValidateFacet Create(ISpecification holder) => new PropertyValidateFacetDefault(holder);
 }

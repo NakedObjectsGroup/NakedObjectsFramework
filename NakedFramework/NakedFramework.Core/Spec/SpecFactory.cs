@@ -14,85 +14,85 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Spec {
-    public class SpecFactory {
-        private INakedFramework framework;
-        private bool isInitialised;
-        private ILogger<SpecFactory> logger;
-        private ILoggerFactory loggerFactory;
+namespace NakedFramework.Core.Spec; 
 
-        public void Initialize(INakedFramework newFramework, ILoggerFactory newLoggerFactory, ILogger<SpecFactory> newLogger) {
-            framework = newFramework ?? throw new InitialisationException($"{nameof(newFramework)} is null");
-            loggerFactory = newLoggerFactory ?? throw new InitialisationException($"{nameof(newLoggerFactory)} is null");
-            logger = newLogger ?? throw new InitialisationException($"{nameof(newLogger)} is null");
-            isInitialised = true;
+public class SpecFactory {
+    private INakedFramework framework;
+    private bool isInitialised;
+    private ILogger<SpecFactory> logger;
+    private ILoggerFactory loggerFactory;
+
+    public void Initialize(INakedFramework newFramework, ILoggerFactory newLoggerFactory, ILogger<SpecFactory> newLogger) {
+        framework = newFramework ?? throw new InitialisationException($"{nameof(newFramework)} is null");
+        loggerFactory = newLoggerFactory ?? throw new InitialisationException($"{nameof(newLoggerFactory)} is null");
+        logger = newLogger ?? throw new InitialisationException($"{nameof(newLogger)} is null");
+        isInitialised = true;
+    }
+
+    private void CheckInitialised() {
+        if (isInitialised) {
+            return;
         }
 
-        private void CheckInitialised() {
-            if (isInitialised) {
-                return;
-            }
+        throw new InitialisationException($"{nameof(SpecFactory)} not initialised");
+    }
 
-            throw new InitialisationException($"{nameof(SpecFactory)} not initialised");
-        }
+    public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
+        CheckInitialised();
+        var specification = parameterSpecImmutable.Specification;
+        return specification switch {
+            _ when specification.IsParseable => new ActionParseableParameterSpec(index, actionSpec, parameterSpecImmutable, framework),
+            _ when specification.IsObject => new OneToOneActionParameter(index, actionSpec, parameterSpecImmutable, framework),
+            _ when specification.IsCollection => new OneToManyActionParameter(index, actionSpec, parameterSpecImmutable, framework),
+            _ => throw new UnknownTypeException(logger.LogAndReturn($"{specification}"))
+        };
+    }
 
-        public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
-            CheckInitialised();
-            var specification = parameterSpecImmutable.Specification;
-            return specification switch {
-                _ when specification.IsParseable => new ActionParseableParameterSpec(index, actionSpec, parameterSpecImmutable, framework),
-                _ when specification.IsObject => new OneToOneActionParameter(index, actionSpec, parameterSpecImmutable, framework),
-                _ when specification.IsCollection => new OneToManyActionParameter(index, actionSpec, parameterSpecImmutable, framework),
-                _ => throw new UnknownTypeException(logger.LogAndReturn($"{specification}"))
-            };
-        }
+    private IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
+        CheckInitialised();
+        return specImmutable switch {
+            IOneToOneAssociationSpecImmutable oneToOneAssociationSpecImmutable => new OneToOneAssociationSpec(oneToOneAssociationSpecImmutable, framework),
+            IOneToManyAssociationSpecImmutable oneToManyAssociationSpecImmutable => new OneToManyAssociationSpec(oneToManyAssociationSpecImmutable, framework),
+            _ => throw new ReflectionException(logger.LogAndReturn($"Unknown spec type: {specImmutable}"))
+        };
+    }
 
-        private IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
-            CheckInitialised();
-            return specImmutable switch {
-                IOneToOneAssociationSpecImmutable oneToOneAssociationSpecImmutable => new OneToOneAssociationSpec(oneToOneAssociationSpecImmutable, framework),
-                IOneToManyAssociationSpecImmutable oneToManyAssociationSpecImmutable => new OneToManyAssociationSpec(oneToManyAssociationSpecImmutable, framework),
-                _ => throw new ReflectionException(logger.LogAndReturn($"Unknown spec type: {specImmutable}"))
-            };
-        }
+    public IActionSpec[] CreateActionSpecs(IReadOnlyList<IActionSpecImmutable> specImmutables) => specImmutables.Select(CreateActionSpec).ToArray();
 
-        public IActionSpec[] CreateActionSpecs(IReadOnlyList<IActionSpecImmutable> specImmutables) => specImmutables.Select(CreateActionSpec).ToArray();
+    public IAssociationSpec[] CreateAssociationSpecs(IList<IAssociationSpecImmutable> specImmutables) => specImmutables.Select(CreateAssociationSpec).ToArray();
 
-        public IAssociationSpec[] CreateAssociationSpecs(IList<IAssociationSpecImmutable> specImmutables) => specImmutables.Select(CreateAssociationSpec).ToArray();
+    public IActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
+        CheckInitialised();
+        return new ActionSpec(
+            framework,
+            this,
+            specImmutable,
+            loggerFactory,
+            loggerFactory.CreateLogger<ActionSpec>());
+    }
 
-        public IActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
-            CheckInitialised();
-            return new ActionSpec(
-                framework,
-                this,
-                specImmutable,
-                loggerFactory,
-                loggerFactory.CreateLogger<ActionSpec>());
-        }
+    public IAssociationSpec CreateAssociationSpec(IAssociationSpecImmutable specImmutable) {
+        CheckInitialised();
+        return CreateAssociation(specImmutable);
+    }
 
-        public IAssociationSpec CreateAssociationSpec(IAssociationSpecImmutable specImmutable) {
-            CheckInitialised();
-            return CreateAssociation(specImmutable);
-        }
+    public ITypeSpec CreateTypeSpec(ITypeSpecImmutable specImmutable) =>
+        specImmutable switch {
+            IObjectSpecImmutable osi => CreateObjectSpec(osi),
+            IServiceSpecImmutable ssi => CreateServiceSpec(ssi),
+            _ => throw new InitialisationException(logger.LogAndReturn($"Unexpected Spec Type {specImmutable.Type}"))
+        };
 
-        public ITypeSpec CreateTypeSpec(ITypeSpecImmutable specImmutable) =>
-            specImmutable switch {
-                IObjectSpecImmutable osi => CreateObjectSpec(osi),
-                IServiceSpecImmutable ssi => CreateServiceSpec(ssi),
-                _ => throw new InitialisationException(logger.LogAndReturn($"Unexpected Spec Type {specImmutable.Type}"))
-            };
+    private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {
+        CheckInitialised();
+        return new ServiceSpec(this, specImmutable, framework);
+    }
 
-        private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {
-            CheckInitialised();
-            return new ServiceSpec(this, specImmutable, framework);
-        }
-
-        private IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
-            CheckInitialised();
-            return new ObjectSpec(this,
-                                  specImmutable,
-                                  framework,
-                                  loggerFactory.CreateLogger<ObjectSpec>());
-        }
+    private IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
+        CheckInitialised();
+        return new ObjectSpec(this,
+                              specImmutable,
+                              framework,
+                              loggerFactory.CreateLogger<ObjectSpec>());
     }
 }

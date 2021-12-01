@@ -15,20 +15,20 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedLegacy.Reflector.SemanticsProvider;
 
-namespace NakedLegacy.Reflector.FacetFactory {
-    public sealed class DateValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public DateValueTypeFacetFactory(IFacetFactoryOrder<DateValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+namespace NakedLegacy.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!DateValueSemanticsProvider.IsAdaptedType(type)) {
-                return metamodel;
-            }
+public sealed class DateValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public DateValueTypeFacetFactory(IFacetFactoryOrder<DateValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-            methodRemover.RemoveMethods(type.GetMethods());
-            
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(DateValueSemanticsProvider.AdaptedType, metamodel);
-            AddValueFacets(new DateValueSemanticsProvider(oSpec, specification), specification);
-            return mm;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!DateValueSemanticsProvider.IsAdaptedType(type)) {
+            return metamodel;
         }
+
+        methodRemover.RemoveMethods(type.GetMethods());
+            
+        var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(DateValueSemanticsProvider.AdaptedType, metamodel);
+        AddValueFacets(new DateValueSemanticsProvider(oSpec, specification), specification);
+        return mm;
     }
 }

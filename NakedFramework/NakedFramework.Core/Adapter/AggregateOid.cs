@@ -11,79 +11,79 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Core.Adapter {
-    public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {
-        private readonly IMetamodelManager metamodel;
-        private readonly string typeName;
+namespace NakedFramework.Core.Adapter; 
 
-        public AggregateOid(IMetamodelManager metamodel, IOid oid, string id, string typeName) {
-            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
-            ParentOid = oid ?? throw new InitialisationException($"{nameof(oid)} is null");
-            FieldName = id ?? throw new InitialisationException($"{nameof(id)} is null");
-            this.typeName = typeName ?? throw new InitialisationException($"{nameof(typeName)} is null");
-        }
+public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {
+    private readonly IMetamodelManager metamodel;
+    private readonly string typeName;
 
-        public AggregateOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
-            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
-            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
-            typeName = helper.GetNextString();
-            FieldName = helper.GetNextString();
-            if (helper.HasNext) {
-                ParentOid = (IOid) helper.GetNextEncodedToStrings();
-            }
-        }
-
-        public override bool Equals(object obj) => obj == this || obj is AggregateOid otherOid && Equals(otherOid);
-
-        private bool Equals(AggregateOid otherOid) =>
-            otherOid.ParentOid.Equals(ParentOid) &&
-            otherOid.FieldName.Equals(FieldName) &&
-            otherOid.typeName.Equals(typeName);
-
-        public override int GetHashCode() {
-            var hashCode = 17;
-            hashCode = 37 * hashCode + ParentOid.GetHashCode();
-            hashCode = 37 * hashCode + FieldName.GetHashCode();
-            return hashCode;
-        }
-
-        public override string ToString() => $"AOID[{ParentOid},{FieldName}]";
-
-        #region IAggregateOid Members
-
-        public IOid ParentOid { get; }
-
-        public string FieldName { get; }
-
-        public IOid Previous => null;
-
-        public bool IsTransient => ParentOid.IsTransient;
-
-        public void CopyFrom(IOid oid) => throw new NakedObjectSystemException("CopyFrom not supported on Aggregate oid");
-
-        public ITypeSpec Spec => metamodel.GetSpecification(typeName);
-
-        public bool HasPrevious => false;
-
-        #endregion
-
-        #region IEncodedToStrings Members
-
-        public string[] ToEncodedStrings() {
-            var helper = new StringEncoderHelper();
-            helper.Add(typeName);
-            helper.Add(FieldName);
-            if (ParentOid != null) {
-                helper.Add(ParentOid as IEncodedToStrings);
-            }
-
-            return helper.ToArray();
-        }
-
-        public string[] ToShortEncodedStrings() => ToEncodedStrings();
-
-        #endregion
+    public AggregateOid(IMetamodelManager metamodel, IOid oid, string id, string typeName) {
+        this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+        ParentOid = oid ?? throw new InitialisationException($"{nameof(oid)} is null");
+        FieldName = id ?? throw new InitialisationException($"{nameof(id)} is null");
+        this.typeName = typeName ?? throw new InitialisationException($"{nameof(typeName)} is null");
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public AggregateOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
+        this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+        var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
+        typeName = helper.GetNextString();
+        FieldName = helper.GetNextString();
+        if (helper.HasNext) {
+            ParentOid = (IOid) helper.GetNextEncodedToStrings();
+        }
+    }
+
+    public override bool Equals(object obj) => obj == this || obj is AggregateOid otherOid && Equals(otherOid);
+
+    private bool Equals(AggregateOid otherOid) =>
+        otherOid.ParentOid.Equals(ParentOid) &&
+        otherOid.FieldName.Equals(FieldName) &&
+        otherOid.typeName.Equals(typeName);
+
+    public override int GetHashCode() {
+        var hashCode = 17;
+        hashCode = 37 * hashCode + ParentOid.GetHashCode();
+        hashCode = 37 * hashCode + FieldName.GetHashCode();
+        return hashCode;
+    }
+
+    public override string ToString() => $"AOID[{ParentOid},{FieldName}]";
+
+    #region IAggregateOid Members
+
+    public IOid ParentOid { get; }
+
+    public string FieldName { get; }
+
+    public IOid Previous => null;
+
+    public bool IsTransient => ParentOid.IsTransient;
+
+    public void CopyFrom(IOid oid) => throw new NakedObjectSystemException("CopyFrom not supported on Aggregate oid");
+
+    public ITypeSpec Spec => metamodel.GetSpecification(typeName);
+
+    public bool HasPrevious => false;
+
+    #endregion
+
+    #region IEncodedToStrings Members
+
+    public string[] ToEncodedStrings() {
+        var helper = new StringEncoderHelper();
+        helper.Add(typeName);
+        helper.Add(FieldName);
+        if (ParentOid != null) {
+            helper.Add(ParentOid as IEncodedToStrings);
+        }
+
+        return helper.ToArray();
+    }
+
+    public string[] ToShortEncodedStrings() => ToEncodedStrings();
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

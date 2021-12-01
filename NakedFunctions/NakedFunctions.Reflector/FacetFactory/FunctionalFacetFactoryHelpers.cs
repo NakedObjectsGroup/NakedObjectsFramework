@@ -9,14 +9,14 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public static class FunctionalFacetFactoryHelpers {
-        public static bool IsInjectedParameter(MethodInfo method, int paramNum) {
-            if (method.IsDefined(typeof(ExtensionAttribute), false) && paramNum == 0) {
-                return false;
-            }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-            return method.GetParameters()[paramNum].IsInjectedParameter();
+public static class FunctionalFacetFactoryHelpers {
+    public static bool IsInjectedParameter(MethodInfo method, int paramNum) {
+        if (method.IsDefined(typeof(ExtensionAttribute), false) && paramNum == 0) {
+            return false;
         }
+
+        return method.GetParameters()[paramNum].IsInjectedParameter();
     }
 }

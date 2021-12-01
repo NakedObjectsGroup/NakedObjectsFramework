@@ -8,11 +8,11 @@
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Error {
-    public class ActionArgumentsInvalidException : InvalidException {
-        public ActionArgumentsInvalidException(IInteractionContext ic, string message)
-            : base(ic, message) { }
-    }
+namespace NakedFramework.Metamodel.Error; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public class ActionArgumentsInvalidException : InvalidException {
+    public ActionArgumentsInvalidException(IInteractionContext ic, string message)
+        : base(ic, message) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -14,34 +14,34 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet {
-        private readonly PropertyInfo property;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public CollectionResetFacet(PropertyInfo property, ISpecification holder)
-            : base(Type, holder) =>
-            this.property = property;
+[Serializable]
+public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet {
+    private readonly PropertyInfo property;
 
-        public static Type Type => typeof(ICollectionResetFacet);
+    public CollectionResetFacet(PropertyInfo property, ISpecification holder)
+        : base(Type, holder) =>
+        this.property = property;
 
-        #region ICollectionResetFacet Members
+    public static Type Type => typeof(ICollectionResetFacet);
 
-        public void Reset(INakedObjectAdapter inObjectAdapter) {
-            try {
-                var collection = (IList) property.GetValue(inObjectAdapter.GetDomainObject(), null);
-                collection.Clear();
-                property.SetValue(inObjectAdapter.GetDomainObject(), collection, null);
-            }
-            catch (Exception e) {
-                throw new ReflectionException($"Failed to get/set property {property.Name} in {inObjectAdapter.Spec.FullName}", e);
-            }
+    #region ICollectionResetFacet Members
+
+    public void Reset(INakedObjectAdapter inObjectAdapter) {
+        try {
+            var collection = (IList) property.GetValue(inObjectAdapter.GetDomainObject(), null);
+            collection.Clear();
+            property.SetValue(inObjectAdapter.GetDomainObject(), collection, null);
         }
-
-        #endregion
-
-        protected override string ToStringValues() => $"property={property}";
+        catch (Exception e) {
+            throw new ReflectionException($"Failed to get/set property {property.Name} in {inObjectAdapter.Spec.FullName}", e);
+        }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
+
+    protected override string ToStringValues() => $"property={property}";
 }
+
+// Copyright (c) Naked Objects Group Ltd.

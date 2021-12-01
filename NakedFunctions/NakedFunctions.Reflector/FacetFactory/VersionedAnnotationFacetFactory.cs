@@ -17,17 +17,17 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class VersionedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public VersionedAnnotationFacetFactory(IFacetFactoryOrder<VersionedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = property.GetCustomAttribute<VersionedAttribute>();
-            FacetUtils.AddFacet(Create(reflector, attribute, specification));
-            return metamodel;
-        }
+public sealed class VersionedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public VersionedAnnotationFacetFactory(IFacetFactoryOrder<VersionedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
-        private static IConcurrencyCheckFacet Create(IReflector reflector, VersionedAttribute attribute, ISpecification holder) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = property.GetCustomAttribute<VersionedAttribute>();
+        FacetUtils.AddFacet(Create(reflector, attribute, specification));
+        return metamodel;
     }
+
+    private static IConcurrencyCheckFacet Create(IReflector reflector, VersionedAttribute attribute, ISpecification holder) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
 }

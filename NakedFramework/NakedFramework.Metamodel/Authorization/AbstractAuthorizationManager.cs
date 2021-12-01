@@ -17,45 +17,45 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Authorization {
-    [Serializable]
-    public abstract class AbstractAuthorizationManager : IAuthorizationManager, IFacetDecorator {
-        protected readonly Type defaultAuthorizer;
-        protected readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
-        protected readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
+namespace NakedFramework.Metamodel.Authorization; 
 
-        protected AbstractAuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger logger) {
-            defaultAuthorizer = authorizationConfiguration.DefaultAuthorizer;
-            if (defaultAuthorizer is null) {
-                throw new InitialisationException(logger.LogAndReturn("Default Authorizer cannot be null"));
-            }
+[Serializable]
+public abstract class AbstractAuthorizationManager : IAuthorizationManager, IFacetDecorator {
+    protected readonly Type defaultAuthorizer;
+    protected readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
+    protected readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
 
-            if (authorizationConfiguration.NamespaceAuthorizers.Any()) {
-                namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.ToImmutableDictionary();
-            }
-
-            if (authorizationConfiguration.TypeAuthorizers.Any()) {
-                typeAuthorizers = authorizationConfiguration.TypeAuthorizers.ToImmutableDictionary();
-            }
+    protected AbstractAuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger logger) {
+        defaultAuthorizer = authorizationConfiguration.DefaultAuthorizer;
+        if (defaultAuthorizer is null) {
+            throw new InitialisationException(logger.LogAndReturn("Default Authorizer cannot be null"));
         }
 
-        public abstract bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier);
-        public abstract bool IsEditable(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier);
-        public abstract IFacet Decorate(IFacet facet, ISpecification holder);
-
-        public Type[] ForFacetTypes { get; } = { typeof(IHideForSessionFacet), typeof(IDisableForSessionFacet) };
-
-        protected abstract object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager);
-
-        protected object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
-            //Look for exact-fit TypeAuthorizer
-            // order here as ImmutableDictionary not ordered
-            var fullyQualifiedOfTarget = target.Spec.FullName;
-            var authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
-                             namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
-                             defaultAuthorizer;
-
-            return CreateAuthorizer(authorizer, lifecycleManager);
+        if (authorizationConfiguration.NamespaceAuthorizers.Any()) {
+            namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.ToImmutableDictionary();
         }
+
+        if (authorizationConfiguration.TypeAuthorizers.Any()) {
+            typeAuthorizers = authorizationConfiguration.TypeAuthorizers.ToImmutableDictionary();
+        }
+    }
+
+    public abstract bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier);
+    public abstract bool IsEditable(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier);
+    public abstract IFacet Decorate(IFacet facet, ISpecification holder);
+
+    public Type[] ForFacetTypes { get; } = { typeof(IHideForSessionFacet), typeof(IDisableForSessionFacet) };
+
+    protected abstract object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager);
+
+    protected object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
+        //Look for exact-fit TypeAuthorizer
+        // order here as ImmutableDictionary not ordered
+        var fullyQualifiedOfTarget = target.Spec.FullName;
+        var authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
+                         namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
+                         defaultAuthorizer;
+
+        return CreateAuthorizer(authorizer, lifecycleManager);
     }
 }

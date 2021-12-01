@@ -7,30 +7,30 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Interactions {
-    /// <summary>
-    ///     Mix-in interface for facets that can advise as to whether a member
-    ///     should be hidden.
-    /// </summary>
-    /// <seealso cref="IDisablingInteractionAdvisor" />
-    /// <seealso cref="IValidatingInteractionAdvisor" />
-    public interface IHidingInteractionAdvisor {
-        /// <summary>
-        ///     Whether the rule represented by this facet hides the
-        ///     member to which it applies.
-        /// </summary>
-        /// <para>
-        ///     Implementations should use the provided <see cref="IInteractionContext" /> to
-        ///     determine whether they disable the member from being modified or used.  They must
-        ///     however guard against a <c>null</c> target <see cref="IInteractionContext.Target" />
-        ///     and session <see cref="IInteractionContext.Session" /> - neither are guaranteed to be populated.
-        /// </para>
-        string Hides(IInteractionContext ic);
+namespace NakedFramework.Architecture.Interactions; 
 
-        /// <summary>
-        ///     Create (not throw) an exception to indicate that this
-        ///     interaction cannot be performed because the target object or member is hidden.
-        /// </summary>
-        Exception CreateExceptionFor(IInteractionContext ic);
-    }
+/// <summary>
+///     Mix-in interface for facets that can advise as to whether a member
+///     should be hidden.
+/// </summary>
+/// <seealso cref="IDisablingInteractionAdvisor" />
+/// <seealso cref="IValidatingInteractionAdvisor" />
+public interface IHidingInteractionAdvisor {
+    /// <summary>
+    ///     Whether the rule represented by this facet hides the
+    ///     member to which it applies.
+    /// </summary>
+    /// <para>
+    ///     Implementations should use the provided <see cref="IInteractionContext" /> to
+    ///     determine whether they disable the member from being modified or used.  They must
+    ///     however guard against a <c>null</c> target <see cref="IInteractionContext.Target" />
+    ///     and session <see cref="IInteractionContext.Session" /> - neither are guaranteed to be populated.
+    /// </para>
+    string Hides(IInteractionContext ic);
+
+    /// <summary>
+    ///     Create (not throw) an exception to indicate that this
+    ///     interaction cannot be performed because the target object or member is hidden.
+    /// </summary>
+    Exception CreateExceptionFor(IInteractionContext ic);
 }

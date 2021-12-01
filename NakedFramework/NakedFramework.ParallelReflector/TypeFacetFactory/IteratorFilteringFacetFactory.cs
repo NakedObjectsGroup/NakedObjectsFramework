@@ -19,32 +19,32 @@ using NakedFramework.Core.Util;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    /// <summary>
-    ///     Designed to simply filter out <see cref="IEnumerable.GetEnumerator" /> method if it exists.
-    /// </summary>
-    /// <para>
-    ///     Does not add any <see cref="IFacet" />s
-    /// </para>
-    public sealed class IteratorFilteringFacetFactory : SystemTypeFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
-        private static readonly string[] FixedPrefixes;
+namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
 
-        static IteratorFilteringFacetFactory() => FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.GetEnumeratorMethod};
+/// <summary>
+///     Designed to simply filter out <see cref="IEnumerable.GetEnumerator" /> method if it exists.
+/// </summary>
+/// <para>
+///     Does not add any <see cref="IFacet" />s
+/// </para>
+public sealed class IteratorFilteringFacetFactory : SystemTypeFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+    private static readonly string[] FixedPrefixes;
 
-        public IteratorFilteringFacetFactory(IFacetFactoryOrder<IteratorFilteringFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+    static IteratorFilteringFacetFactory() => FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.GetEnumeratorMethod};
 
-        public string[] Prefixes => FixedPrefixes;
+    public IteratorFilteringFacetFactory(IFacetFactoryOrder<IteratorFilteringFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (typeof(IEnumerable).IsAssignableFrom(type) && !FasterTypeUtils.IsSystem(type)) {
-                var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes);
-                methodRemover.SafeRemoveMethod(method);
-            }
+    public string[] Prefixes => FixedPrefixes;
 
-            return metamodel;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (typeof(IEnumerable).IsAssignableFrom(type) && !FasterTypeUtils.IsSystem(type)) {
+            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes);
+            methodRemover.SafeRemoveMethod(method);
         }
-    }
 
-    // Copyright (c) Naked Objects Group Ltd.
+        return metamodel;
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

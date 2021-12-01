@@ -10,21 +10,21 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class DisabledFacetAnnotation : DisabledFacetAbstract {
-        public DisabledFacetAnnotation(WhenTo value, ISpecification holder)
-            : base(value, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override string DisabledReason(INakedObjectAdapter target) =>
-            Value switch {
-                WhenTo.Always => NakedObjects.Resources.NakedObjects.AlwaysDisabled,
-                WhenTo.Never => null,
-                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => NakedObjects.Resources.NakedObjects.DisabledUntilPersisted,
-                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => NakedObjects.Resources.NakedObjects.DisabledOncePersisted,
-                _ => null
-            };
-    }
+[Serializable]
+public sealed class DisabledFacetAnnotation : DisabledFacetAbstract {
+    public DisabledFacetAnnotation(WhenTo value, ISpecification holder)
+        : base(value, holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string DisabledReason(INakedObjectAdapter target) =>
+        Value switch {
+            WhenTo.Always => NakedObjects.Resources.NakedObjects.AlwaysDisabled,
+            WhenTo.Never => null,
+            WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => NakedObjects.Resources.NakedObjects.DisabledUntilPersisted,
+            WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => NakedObjects.Resources.NakedObjects.DisabledOncePersisted,
+            _ => null
+        };
 }
+
+// Copyright (c) Naked Objects Group Ltd.

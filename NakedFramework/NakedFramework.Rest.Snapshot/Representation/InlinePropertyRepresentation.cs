@@ -16,33 +16,33 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class InlinePropertyRepresentation : InlineMemberAbstractRepresentation {
-        protected InlinePropertyRepresentation(IOidStrategy oidStrategy, AbstractPropertyRepresentationStrategy strategy)
-            : base(oidStrategy, strategy.GetFlags()) {
-            MemberType = MemberTypes.Property;
-            Id = strategy.GetId();
-            Links = strategy.GetLinks();
-            Extensions = strategy.GetExtensions();
-            SetHeader(strategy.GetTarget());
+namespace NakedFramework.Rest.Snapshot.Representation; 
+
+[DataContract]
+public class InlinePropertyRepresentation : InlineMemberAbstractRepresentation {
+    protected InlinePropertyRepresentation(IOidStrategy oidStrategy, AbstractPropertyRepresentationStrategy strategy)
+        : base(oidStrategy, strategy.GetFlags()) {
+        MemberType = MemberTypes.Property;
+        Id = strategy.GetId();
+        Links = strategy.GetLinks();
+        Extensions = strategy.GetExtensions();
+        SetHeader(strategy.GetTarget());
+    }
+
+    public static InlinePropertyRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        var strategy = AbstractPropertyRepresentationStrategy.GetStrategy(true, frameworkFacade, req, propertyContext, flags);
+
+        if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
+            optionals.Add(new OptionalProperty(JsonPropertyNames.Value, strategy.GetPropertyValue(frameworkFacade, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
         }
 
-        public static InlinePropertyRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var strategy = AbstractPropertyRepresentationStrategy.GetStrategy(true, frameworkFacade, req, propertyContext, flags);
-
-            if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, strategy.GetPropertyValue(frameworkFacade, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
-            }
-
-            if (strategy.ShowChoices()) {
-                RestUtils.AddChoices(frameworkFacade.OidStrategy, req, propertyContext, optionals, flags);
-                optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices()));
-            }
-
-            return optionals.Any()
-                ? CreateWithOptionals<InlinePropertyRepresentation>(new object[] {frameworkFacade.OidStrategy, strategy}, optionals)
-                : new InlinePropertyRepresentation(frameworkFacade.OidStrategy, strategy);
+        if (strategy.ShowChoices()) {
+            RestUtils.AddChoices(frameworkFacade.OidStrategy, req, propertyContext, optionals, flags);
+            optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices()));
         }
+
+        return optionals.Any()
+            ? CreateWithOptionals<InlinePropertyRepresentation>(new object[] {frameworkFacade.OidStrategy, strategy}, optionals)
+            : new InlinePropertyRepresentation(frameworkFacade.OidStrategy, strategy);
     }
 }

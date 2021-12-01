@@ -8,18 +8,18 @@
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class DefaultRelType : ObjectRelType {
-        private readonly string actionId;
-        private readonly string paramId;
-        private DefaultRelType(UriMtHelper helper) : base(RelValues.Default, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public DefaultRelType(string actionId, string paramId, UriMtHelper helper)
-            : this(helper) {
-            this.actionId = actionId;
-            this.paramId = paramId;
-        }
+public class DefaultRelType : ObjectRelType {
+    private readonly string actionId;
+    private readonly string paramId;
+    private DefaultRelType(UriMtHelper helper) : base(RelValues.Default, helper) { }
 
-        public override string Name => $"{base.Name}{UriMtHelper.GetRelParametersFor(actionId, paramId)}";
+    public DefaultRelType(string actionId, string paramId, UriMtHelper helper)
+        : this(helper) {
+        this.actionId = actionId;
+        this.paramId = paramId;
     }
+
+    public override string Name => $"{base.Name}{UriMtHelper.GetRelParametersFor(actionId, paramId)}";
 }

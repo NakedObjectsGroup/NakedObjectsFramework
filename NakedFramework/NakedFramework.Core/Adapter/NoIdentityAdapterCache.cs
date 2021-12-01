@@ -8,18 +8,18 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Core.Adapter {
-    public sealed class NoIdentityAdapterCache : INoIdentityAdapterCache {
-        private readonly Dictionary<object, INakedObjectAdapter> adapters = new();
+namespace NakedFramework.Core.Adapter; 
 
-        #region INoIdentityAdapterCache Members
+public sealed class NoIdentityAdapterCache : INoIdentityAdapterCache {
+    private readonly Dictionary<object, INakedObjectAdapter> adapters = new();
 
-        public void AddAdapter(INakedObjectAdapter adapter) => adapters[adapter.Object] = adapter;
+    #region INoIdentityAdapterCache Members
 
-        public INakedObjectAdapter GetAdapter(object domainObject) => adapters.ContainsKey(domainObject) ? adapters[domainObject] : null;
+    public void AddAdapter(INakedObjectAdapter adapter) => adapters[adapter.Object] = adapter;
 
-        public void Reset() => adapters.Clear();
+    public INakedObjectAdapter GetAdapter(object domainObject) => adapters.ContainsKey(domainObject) ? adapters[domainObject] : null;
 
-        #endregion
-    }
+    public void Reset() => adapters.Clear();
+
+    #endregion
 }

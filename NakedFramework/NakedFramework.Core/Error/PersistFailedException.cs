@@ -5,14 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     Indicates that the persistence of an object failed.
-    /// </summary>
-    public class PersistFailedException : NakedObjectApplicationException {
-        public PersistFailedException(string msg)
-            : base(msg) { }
-    }
+namespace NakedFramework.Core.Error; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Indicates that the persistence of an object failed.
+/// </summary>
+public class PersistFailedException : NakedObjectApplicationException {
+    public PersistFailedException(string msg)
+        : base(msg) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

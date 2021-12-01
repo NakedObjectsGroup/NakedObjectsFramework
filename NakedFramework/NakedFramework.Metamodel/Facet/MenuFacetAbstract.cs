@@ -14,25 +14,25 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Menu;
 using NakedObjects.Resources;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
-        protected MenuFacetAbstract(ISpecification holder)
-            : base(typeof(IMenuFacet), holder) =>
-            Menu = null;
+namespace NakedFramework.Metamodel.Facet; 
 
-        protected ITypeSpecImmutable Spec => (ITypeSpecImmutable) Specification;
+[Serializable]
+public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
+    protected MenuFacetAbstract(ISpecification holder)
+        : base(typeof(IMenuFacet), holder) =>
+        Menu = null;
 
-        protected MenuImpl Menu { get; set; }
+    protected ITypeSpecImmutable Spec => (ITypeSpecImmutable) Specification;
 
-        protected static string GetMenuName(ITypeSpecImmutable spec) => spec is IServiceSpecImmutable ? spec.GetFacet<INamedFacet>().NaturalName : Model.ActionsMenuName;
+    protected MenuImpl Menu { get; set; }
 
-        #region IMenuFacet Members
+    protected static string GetMenuName(ITypeSpecImmutable spec) => spec is IServiceSpecImmutable ? spec.GetFacet<INamedFacet>().NaturalName : Model.ActionsMenuName;
 
-        public IMenuImmutable GetMenu() => Menu;
+    #region IMenuFacet Members
 
-        public abstract void CreateMenu(IMetamodelBuilder metamodel);
+    public IMenuImmutable GetMenu() => Menu;
 
-        #endregion
-    }
+    public abstract void CreateMenu(IMetamodelBuilder metamodel);
+
+    #endregion
 }

@@ -8,11 +8,11 @@
 using System;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Error {
-    public class PreconditionFailedNOSException : NakedObjectsFacadeException {
-        public PreconditionFailedNOSException() { }
-        public PreconditionFailedNOSException(string message, Exception e) : base(message, e) { }
-        public IObjectFacade SourceNakedObject { get; init; }
-        public override string Message => "Object changed by another user";
-    }
+namespace NakedFramework.Facade.Error; 
+
+public class PreconditionFailedNOSException : NakedObjectsFacadeException {
+    public PreconditionFailedNOSException() { }
+    public PreconditionFailedNOSException(string message, Exception e) : base(message, e) { }
+    public IObjectFacade SourceNakedObject { get; init; }
+    public override string Message => "Object changed by another user";
 }

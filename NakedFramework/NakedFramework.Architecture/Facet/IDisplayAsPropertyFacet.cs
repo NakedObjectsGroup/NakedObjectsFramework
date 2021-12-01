@@ -7,8 +7,8 @@
 
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IDisplayAsPropertyFacet : IFacet {
-        bool IsContributedTo(ITypeSpecImmutable spec);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+public interface IDisplayAsPropertyFacet : IFacet {
+    bool IsContributedTo(ITypeSpecImmutable spec);
 }

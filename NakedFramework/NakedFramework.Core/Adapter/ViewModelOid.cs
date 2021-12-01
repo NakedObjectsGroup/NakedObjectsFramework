@@ -16,99 +16,99 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter {
-    public sealed class ViewModelOid : IEncodedToStrings, IViewModelOid {
-        private readonly IMetamodelManager metamodel;
-        private int cachedHashCode;
-        private string cachedToString;
-        private ViewModelOid previous;
+namespace NakedFramework.Core.Adapter; 
 
-        public ViewModelOid(IMetamodelManager metamodel, IObjectSpec spec) {
-            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
-            IsTransient = false;
-            TypeName = TypeNameUtils.EncodeTypeName(spec.FullName);
-            Keys = new[] {Guid.NewGuid().ToString()};
-            CacheState();
-        }
+public sealed class ViewModelOid : IEncodedToStrings, IViewModelOid {
+    private readonly IMetamodelManager metamodel;
+    private int cachedHashCode;
+    private string cachedToString;
+    private ViewModelOid previous;
 
-        public ViewModelOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
-            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
-            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
-            TypeName = helper.GetNextString();
-
-            Keys = helper.HasNext ? helper.GetNextArray() : new[] {Guid.NewGuid().ToString()};
-
-            IsTransient = false;
-            CacheState();
-        }
-
-        private void CacheState() {
-            cachedHashCode = HashCodeUtils.Seed;
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Keys);
-
-            var keys = Keys.Aggregate((s, t) => $"{s}:{t}");
-
-            cachedToString = $"{(IsTransient ? "T" : "")}VMOID#{keys}{(previous == null ? "" : "+")}";
-        }
-
-        #region IEncodedToStrings Members
-
-        public string[] ToEncodedStrings() {
-            var helper = new StringEncoderHelper();
-            helper.Add(TypeName);
-
-            if (Keys.Any()) {
-                helper.Add(Keys);
-            }
-
-            return helper.ToArray();
-        }
-
-        public string[] ToShortEncodedStrings() => ToEncodedStrings();
-
-        #endregion
-
-        #region IViewModelOid Members
-
-        public string TypeName { get; }
-        public string[] Keys { get; private set; }
-        public bool IsFinal { get; private set; }
-        public void CopyFrom(IOid oid) { }
-
-        public IOid Previous => previous;
-
-        public bool IsTransient { get; }
-
-        public bool HasPrevious => previous != null;
-
-        public ITypeSpec Spec => metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName));
-
-        public void UpdateKeys(string[] newKeys, bool final) {
-            previous = new ViewModelOid(metamodel, (IObjectSpec) Spec) {Keys = Keys};
-            Keys = newKeys; // after old key is saved ! 
-            IsFinal = final;
-            CacheState();
-        }
-
-        public void UpdateKeysIfNecessary(INakedObjectAdapter adapter, INakedFramework framework) {
-            if (!IsFinal) {
-                UpdateKeys(adapter.Spec.GetFacet<IViewModelFacet>().Derive(adapter, framework), true);
-            }
-        }
-
-        #endregion
-
-        #region Object Overrides
-
-        public override bool Equals(object obj) => obj == this || obj is ViewModelOid oid && TypeName.Equals(oid.TypeName) && Keys.SequenceEqual(oid.Keys);
-
-        // ReSharper disable once NonReadonlyFieldInGetHashCode
-        // investigate making Oid immutable
-        public override int GetHashCode() => cachedHashCode;
-
-        public override string ToString() => cachedToString;
-
-        #endregion
+    public ViewModelOid(IMetamodelManager metamodel, IObjectSpec spec) {
+        this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+        IsTransient = false;
+        TypeName = TypeNameUtils.EncodeTypeName(spec.FullName);
+        Keys = new[] {Guid.NewGuid().ToString()};
+        CacheState();
     }
+
+    public ViewModelOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
+        this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+        var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
+        TypeName = helper.GetNextString();
+
+        Keys = helper.HasNext ? helper.GetNextArray() : new[] {Guid.NewGuid().ToString()};
+
+        IsTransient = false;
+        CacheState();
+    }
+
+    private void CacheState() {
+        cachedHashCode = HashCodeUtils.Seed;
+        cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
+        cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Keys);
+
+        var keys = Keys.Aggregate((s, t) => $"{s}:{t}");
+
+        cachedToString = $"{(IsTransient ? "T" : "")}VMOID#{keys}{(previous == null ? "" : "+")}";
+    }
+
+    #region IEncodedToStrings Members
+
+    public string[] ToEncodedStrings() {
+        var helper = new StringEncoderHelper();
+        helper.Add(TypeName);
+
+        if (Keys.Any()) {
+            helper.Add(Keys);
+        }
+
+        return helper.ToArray();
+    }
+
+    public string[] ToShortEncodedStrings() => ToEncodedStrings();
+
+    #endregion
+
+    #region IViewModelOid Members
+
+    public string TypeName { get; }
+    public string[] Keys { get; private set; }
+    public bool IsFinal { get; private set; }
+    public void CopyFrom(IOid oid) { }
+
+    public IOid Previous => previous;
+
+    public bool IsTransient { get; }
+
+    public bool HasPrevious => previous != null;
+
+    public ITypeSpec Spec => metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName));
+
+    public void UpdateKeys(string[] newKeys, bool final) {
+        previous = new ViewModelOid(metamodel, (IObjectSpec) Spec) {Keys = Keys};
+        Keys = newKeys; // after old key is saved ! 
+        IsFinal = final;
+        CacheState();
+    }
+
+    public void UpdateKeysIfNecessary(INakedObjectAdapter adapter, INakedFramework framework) {
+        if (!IsFinal) {
+            UpdateKeys(adapter.Spec.GetFacet<IViewModelFacet>().Derive(adapter, framework), true);
+        }
+    }
+
+    #endregion
+
+    #region Object Overrides
+
+    public override bool Equals(object obj) => obj == this || obj is ViewModelOid oid && TypeName.Equals(oid.TypeName) && Keys.SequenceEqual(oid.Keys);
+
+    // ReSharper disable once NonReadonlyFieldInGetHashCode
+    // investigate making Oid immutable
+    public override int GetHashCode() => cachedHashCode;
+
+    public override string ToString() => cachedToString;
+
+    #endregion
 }

@@ -8,25 +8,25 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace NakedFramework.Rest.Model {
-    public class SingleValueArgumentBinder : IModelBinder {
-        #region IModelBinder Members
+namespace NakedFramework.Rest.Model; 
 
-        public Task BindModelAsync(ModelBindingContext bindingContext) =>
-            bindingContext.HttpContext.Request.IsGet()
-                ? BindFromQuery(bindingContext)
-                : BindFromBody(bindingContext);
+public class SingleValueArgumentBinder : IModelBinder {
+    #region IModelBinder Members
 
-        #endregion
+    public Task BindModelAsync(ModelBindingContext bindingContext) =>
+        bindingContext.HttpContext.Request.IsGet()
+            ? BindFromQuery(bindingContext)
+            : BindFromBody(bindingContext);
 
-        private static Task BindFromBody(ModelBindingContext bindingContext) =>
-            ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                                                      async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeContent(bindingContext), true),
-                                                      ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
+    #endregion
 
-        private static Task BindFromQuery(ModelBindingContext bindingContext) =>
-            ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                                                      async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
-                                                      ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
-    }
+    private static Task BindFromBody(ModelBindingContext bindingContext) =>
+        ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                                                  async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeContent(bindingContext), true),
+                                                  ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
+
+    private static Task BindFromQuery(ModelBindingContext bindingContext) =>
+        ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                                                  async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
+                                                  ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
 }

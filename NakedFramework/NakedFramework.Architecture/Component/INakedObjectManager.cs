@@ -10,27 +10,27 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Component {
-    /// <summary>
-    ///     Broadly speaking, keeps track of the oid/adapter/domain object tuple
-    /// </summary>
-    public interface INakedObjectManager {
-        void RemoveAdapter(INakedObjectAdapter objectAdapterToDispose);
-        INakedObjectAdapter GetAdapterFor(object obj);
-        INakedObjectAdapter GetAdapterFor(IOid oid);
-        INakedObjectAdapter CreateAdapter(object domainObject, IOid oid, IVersion version);
-        void ReplacePoco(INakedObjectAdapter nakedObjectAdapter, object newDomainObject);
-        INakedObjectAdapter CreateAggregatedAdapter(INakedObjectAdapter parent, string fieldId, object obj);
-        INakedObjectAdapter NewAdapterForKnownObject(object domainObject, IOid transientOid);
-        void MadePersistent(INakedObjectAdapter nakedObjectAdapter);
-        void UpdateViewModel(INakedObjectAdapter adapter, string[] keys);
-        List<INakedObjectAdapter> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
-        INakedObjectAdapter GetServiceAdapter(object service);
-        INakedObjectAdapter GetKnownAdapter(IOid oid);
-        INakedObjectAdapter CreateViewModelAdapter(IObjectSpec spec, object viewModel);
-        INakedObjectAdapter CreateInstanceAdapter(object obj);
-        INakedObjectAdapter AdapterForExistingObject(object domainObject, IOid oid);
-    }
+namespace NakedFramework.Architecture.Component; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Broadly speaking, keeps track of the oid/adapter/domain object tuple
+/// </summary>
+public interface INakedObjectManager {
+    void RemoveAdapter(INakedObjectAdapter objectAdapterToDispose);
+    INakedObjectAdapter GetAdapterFor(object obj);
+    INakedObjectAdapter GetAdapterFor(IOid oid);
+    INakedObjectAdapter CreateAdapter(object domainObject, IOid oid, IVersion version);
+    void ReplacePoco(INakedObjectAdapter nakedObjectAdapter, object newDomainObject);
+    INakedObjectAdapter CreateAggregatedAdapter(INakedObjectAdapter parent, string fieldId, object obj);
+    INakedObjectAdapter NewAdapterForKnownObject(object domainObject, IOid transientOid);
+    void MadePersistent(INakedObjectAdapter nakedObjectAdapter);
+    void UpdateViewModel(INakedObjectAdapter adapter, string[] keys);
+    List<INakedObjectAdapter> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
+    INakedObjectAdapter GetServiceAdapter(object service);
+    INakedObjectAdapter GetKnownAdapter(IOid oid);
+    INakedObjectAdapter CreateViewModelAdapter(IObjectSpec spec, object viewModel);
+    INakedObjectAdapter CreateInstanceAdapter(object obj);
+    INakedObjectAdapter AdapterForExistingObject(object domainObject, IOid oid);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

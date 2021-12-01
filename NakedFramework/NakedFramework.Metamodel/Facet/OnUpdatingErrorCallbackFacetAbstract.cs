@@ -9,14 +9,14 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class OnUpdatingErrorCallbackFacetAbstract : CallbackWithExceptionFacetAbstract, IOnUpdatingErrorCallbackFacet {
-        protected OnUpdatingErrorCallbackFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IOnUpdatingErrorCallbackFacet);
-    }
+[Serializable]
+public abstract class OnUpdatingErrorCallbackFacetAbstract : CallbackWithExceptionFacetAbstract, IOnUpdatingErrorCallbackFacet {
+    protected OnUpdatingErrorCallbackFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
+
+    public static Type Type => typeof(IOnUpdatingErrorCallbackFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

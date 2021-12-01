@@ -19,30 +19,30 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class HiddenAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public HiddenAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(type.GetCustomAttribute<HiddenAttribute>(), specification);
-            return metamodel;
-        }
+public sealed class HiddenAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public HiddenAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
-        private static void Process(MemberInfo member, ISpecification holder) => Process(member.GetCustomAttribute<HiddenAttribute>(), holder);
-
-        private static void Process(HiddenAttribute attribute, ISpecification specification) => FacetUtils.AddFacet(Create(attribute, specification));
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, specification);
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(property, specification);
-            return metamodel;
-        }
-
-        private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(WhenTo.Always, holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(type.GetCustomAttribute<HiddenAttribute>(), specification);
+        return metamodel;
     }
+
+    private static void Process(MemberInfo member, ISpecification holder) => Process(member.GetCustomAttribute<HiddenAttribute>(), holder);
+
+    private static void Process(HiddenAttribute attribute, ISpecification specification) => FacetUtils.AddFacet(Create(attribute, specification));
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(property, specification);
+        return metamodel;
+    }
+
+    private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(WhenTo.Always, holder);
 }

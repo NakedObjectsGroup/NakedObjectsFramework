@@ -14,76 +14,76 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.SpecImmutable {
-    [Serializable]
-    public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
-        public ActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec,
-                                   IActionParameterSpecImmutable[] parameters)
-            : base(identifier) {
-            OwnerSpec = ownerSpec;
-            Parameters = parameters;
-        }
+namespace NakedFramework.Metamodel.SpecImmutable; 
 
-        private bool HasReturn() => ReturnSpec != null;
-
-        private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
-            GetFacet<IContributedActionFacet>()?.IsContributedTo(contributeeSpec) == true && contributeeSpec.IsOfType(parmSpec);
-
-        #region IActionSpecImmutable Members
-
-        public override IObjectSpecImmutable ReturnSpec => GetFacet<IActionInvocationFacet>().ReturnType;
-
-        public ITypeSpecImmutable OwnerSpec { get; }
-
-        public IActionParameterSpecImmutable[] Parameters { get; }
-
-        public override IObjectSpecImmutable ElementSpec => GetFacet<IActionInvocationFacet>().ElementType;
-
-        public bool IsFinderMethod =>
-            HasReturn() &&
-            ContainsFacet(typeof(IFinderActionFacet)) &&
-            Parameters.All(p => p.Specification.IsParseable || p.IsChoicesEnabled || p.IsMultipleChoicesEnabled);
-
-        public bool IsFinderMethodFor(IObjectSpecImmutable spec) => IsFinderMethod && (ReturnSpec.IsOfType(spec) || ReturnSpec.IsCollection && ElementSpec.IsOfType(spec));
-
-        public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && Parameters.Any() &&
-                                           ContainsFacet(typeof(IContributedActionFacet));
-
-        public bool IsStaticFunction => ContainsFacet<IStaticFunctionFacet>();
-
-        public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) =>
-            Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));
-
-        public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) =>
-            GetFacet<IContributedActionFacet>()?.IsContributedToCollectionOf(objectSpecImmutable) == true;
-
-        public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id) {
-            var memberOrderFacet = GetFacet<IMemberOrderFacet>();
-            var directlyContributed = string.Equals(memberOrderFacet?.Name, id, StringComparison.CurrentCultureIgnoreCase);
-
-            return directlyContributed ||
-                   GetFacet<IContributedToLocalCollectionFacet>()?.IsContributedToLocalCollectionOf(objectSpecImmutable, id) == true;
-        }
-
-        #endregion
-
-        #region ISerializable
-
-        // The special constructor is used to deserialize values. 
-        public ActionSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            OwnerSpec = info.GetValue<ITypeSpecImmutable>("specification");
-            Parameters = info.GetValue<IActionParameterSpecImmutable[]>("parameters");
-        }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue<ISpecification>("specification", OwnerSpec);
-            info.AddValue<IActionParameterSpecImmutable[]>("parameters", Parameters);
-
-            base.GetObjectData(info, context);
-        }
-
-        #endregion
+[Serializable]
+public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
+    public ActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec,
+                               IActionParameterSpecImmutable[] parameters)
+        : base(identifier) {
+        OwnerSpec = ownerSpec;
+        Parameters = parameters;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    private bool HasReturn() => ReturnSpec != null;
+
+    private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
+        GetFacet<IContributedActionFacet>()?.IsContributedTo(contributeeSpec) == true && contributeeSpec.IsOfType(parmSpec);
+
+    #region IActionSpecImmutable Members
+
+    public override IObjectSpecImmutable ReturnSpec => GetFacet<IActionInvocationFacet>().ReturnType;
+
+    public ITypeSpecImmutable OwnerSpec { get; }
+
+    public IActionParameterSpecImmutable[] Parameters { get; }
+
+    public override IObjectSpecImmutable ElementSpec => GetFacet<IActionInvocationFacet>().ElementType;
+
+    public bool IsFinderMethod =>
+        HasReturn() &&
+        ContainsFacet(typeof(IFinderActionFacet)) &&
+        Parameters.All(p => p.Specification.IsParseable || p.IsChoicesEnabled || p.IsMultipleChoicesEnabled);
+
+    public bool IsFinderMethodFor(IObjectSpecImmutable spec) => IsFinderMethod && (ReturnSpec.IsOfType(spec) || ReturnSpec.IsCollection && ElementSpec.IsOfType(spec));
+
+    public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && Parameters.Any() &&
+                                       ContainsFacet(typeof(IContributedActionFacet));
+
+    public bool IsStaticFunction => ContainsFacet<IStaticFunctionFacet>();
+
+    public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) =>
+        Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));
+
+    public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) =>
+        GetFacet<IContributedActionFacet>()?.IsContributedToCollectionOf(objectSpecImmutable) == true;
+
+    public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id) {
+        var memberOrderFacet = GetFacet<IMemberOrderFacet>();
+        var directlyContributed = string.Equals(memberOrderFacet?.Name, id, StringComparison.CurrentCultureIgnoreCase);
+
+        return directlyContributed ||
+               GetFacet<IContributedToLocalCollectionFacet>()?.IsContributedToLocalCollectionOf(objectSpecImmutable, id) == true;
+    }
+
+    #endregion
+
+    #region ISerializable
+
+    // The special constructor is used to deserialize values. 
+    public ActionSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
+        OwnerSpec = info.GetValue<ITypeSpecImmutable>("specification");
+        Parameters = info.GetValue<IActionParameterSpecImmutable[]>("parameters");
+    }
+
+    public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+        info.AddValue<ISpecification>("specification", OwnerSpec);
+        info.AddValue<IActionParameterSpecImmutable[]>("parameters", Parameters);
+
+        base.GetObjectData(info, context);
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

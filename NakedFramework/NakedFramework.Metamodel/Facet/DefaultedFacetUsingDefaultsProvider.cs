@@ -10,21 +10,21 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
-        private readonly IValueSemanticsProvider<T> defaultsProvider;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser, ISpecification holder)
-            : base(typeof(IDefaultedFacet), holder) =>
-            defaultsProvider = parser;
+[Serializable]
+public sealed class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
+    private readonly IValueSemanticsProvider<T> defaultsProvider;
 
-        #region IDefaultedFacet Members
+    public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser, ISpecification holder)
+        : base(typeof(IDefaultedFacet), holder) =>
+        defaultsProvider = parser;
 
-        public object Default => defaultsProvider.DefaultValue;
+    #region IDefaultedFacet Members
 
-        #endregion
+    public object Default => defaultsProvider.DefaultValue;
 
-        protected override string ToStringValues() => defaultsProvider.ToString();
-    }
+    #endregion
+
+    protected override string ToStringValues() => defaultsProvider.ToString();
 }

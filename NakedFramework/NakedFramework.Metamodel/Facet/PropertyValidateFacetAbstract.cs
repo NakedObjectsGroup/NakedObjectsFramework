@@ -12,24 +12,24 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class PropertyValidateFacetAbstract : FacetAbstract, IPropertyValidateFacet {
-        protected PropertyValidateFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IPropertyValidateFacet);
+[Serializable]
+public abstract class PropertyValidateFacetAbstract : FacetAbstract, IPropertyValidateFacet {
+    protected PropertyValidateFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region IPropertyValidateFacet Members
+    public static Type Type => typeof(IPropertyValidateFacet);
 
-        public virtual string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArgument);
+    #region IPropertyValidateFacet Members
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
+    public virtual string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArgument);
 
-        public abstract string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedParm);
+    public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
-        #endregion
-    }
+    public abstract string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedParm);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

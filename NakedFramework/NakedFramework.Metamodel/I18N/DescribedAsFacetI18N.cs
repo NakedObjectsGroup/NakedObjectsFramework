@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.I18N {
-    [Serializable]
-    public sealed class DescribedAsFacetI18N : DescribedAsFacetAbstract {
-        public DescribedAsFacetI18N(string valueString, ISpecification holder)
-            : base(valueString, holder) { }
-    }
+namespace NakedFramework.Metamodel.I18N; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class DescribedAsFacetI18N : DescribedAsFacetAbstract {
+    public DescribedAsFacetI18N(string valueString, ISpecification holder)
+        : base(valueString, holder) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

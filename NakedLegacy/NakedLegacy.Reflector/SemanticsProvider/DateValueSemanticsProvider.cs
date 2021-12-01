@@ -16,60 +16,60 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.SemanticsProvider {
-    [Serializable]
-    public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<Date>, IDateValueFacet {
-        private const bool EqualByContent = false;
-        private const bool Immutable = false;
-        private const int TypicalLengthConst = 18;
-        private static readonly Date DefaultValueConst = new(new DateTime());
+namespace NakedLegacy.Reflector.SemanticsProvider; 
 
-        public DateValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<Date>, IDateValueFacet {
+    private const bool EqualByContent = false;
+    private const bool Immutable = false;
+    private const int TypicalLengthConst = 18;
+    private static readonly Date DefaultValueConst = new(new DateTime());
 
-        // inject for testing 
-        public static DateTime? TestDateTime { get; set; }
+    public DateValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type Type => typeof(IDateValueFacet);
+    // inject for testing 
+    public static DateTime? TestDateTime { get; set; }
 
-        public static Type AdaptedType => typeof(Date);
+    public static Type Type => typeof(IDateValueFacet);
 
-        #region IDateValueFacet Members
+    public static Type AdaptedType => typeof(Date);
 
-        public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<Date>().DateTime;
-        }
+    #region IDateValueFacet Members
 
-        #endregion
-
-        public static bool IsAdaptedType(Type type) => type == typeof(Date);
-
-        protected override string DoEncode(Date date) {
-            return date.DateTime.ToString(CultureInfo.InvariantCulture);
-        }
-
-        protected override Date DoParse(string entry) {
-            var dateString = entry.Trim();
-            try {
-                return new Date(DateTime.Parse(entry));
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(dateString));
-            }
-        }
-
-        protected override Date DoParseInvariant(string entry) => DoParse(entry);
-
-        protected override string GetInvariantString(Date date) => date.DateTime.ToString(CultureInfo.InvariantCulture);
-
-        protected override Date DoRestore(string data) {
-            return new Date(DateTime.Parse(data, CultureInfo.InvariantCulture));
-        }
-
-        protected override string TitleStringWithMask(string mask, Date value) => value.DateTime.ToString(mask);
-
-        private static DateTime Now() => TestDateTime ?? DateTime.Now;
+    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) {
+        return nakedObjectAdapter.GetDomainObject<Date>().DateTime;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
+
+    public static bool IsAdaptedType(Type type) => type == typeof(Date);
+
+    protected override string DoEncode(Date date) {
+        return date.DateTime.ToString(CultureInfo.InvariantCulture);
+    }
+
+    protected override Date DoParse(string entry) {
+        var dateString = entry.Trim();
+        try {
+            return new Date(DateTime.Parse(entry));
+        }
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(dateString));
+        }
+    }
+
+    protected override Date DoParseInvariant(string entry) => DoParse(entry);
+
+    protected override string GetInvariantString(Date date) => date.DateTime.ToString(CultureInfo.InvariantCulture);
+
+    protected override Date DoRestore(string data) {
+        return new Date(DateTime.Parse(data, CultureInfo.InvariantCulture));
+    }
+
+    protected override string TitleStringWithMask(string mask, Date value) => value.DateTime.ToString(mask);
+
+    private static DateTime Now() => TestDateTime ?? DateTime.Now;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

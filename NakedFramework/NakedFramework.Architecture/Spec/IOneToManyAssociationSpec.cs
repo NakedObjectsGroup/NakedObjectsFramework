@@ -7,20 +7,20 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Spec {
-    public interface IOneToManyAssociationSpec : IAssociationSpec, IOneToManyFeatureSpec {
-        /// <summary>
-        ///     The collection has set semantics
-        /// </summary>
-        bool IsASet { get; }
+namespace NakedFramework.Architecture.Spec; 
 
-        IObjectSpec ElementSpec { get; }
+public interface IOneToManyAssociationSpec : IAssociationSpec, IOneToManyFeatureSpec {
+    /// <summary>
+    ///     The collection has set semantics
+    /// </summary>
+    bool IsASet { get; }
 
-        /// <summary>
-        ///     Return the count of elements in this collection field on the specified object
-        /// </summary>
-        int Count(INakedObjectAdapter nakedObjectAdapter);
-    }
+    IObjectSpec ElementSpec { get; }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Return the count of elements in this collection field on the specified object
+    /// </summary>
+    int Count(INakedObjectAdapter nakedObjectAdapter);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

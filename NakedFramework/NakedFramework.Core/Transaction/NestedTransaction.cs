@@ -12,41 +12,40 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Transaction
-{
-    public sealed class NestedTransaction : ITransaction {
-        private readonly ILogger<NestedTransaction> logger;
-        private readonly IObjectStore objectStore;
-        private bool complete;
+namespace NakedFramework.Core.Transaction; 
 
-        public NestedTransaction(IObjectStore objectStore, ILogger<NestedTransaction> logger) {
-            this.objectStore = objectStore;
-            this.logger = logger;
-        }
+public sealed class NestedTransaction : ITransaction {
+    private readonly ILogger<NestedTransaction> logger;
+    private readonly IObjectStore objectStore;
+    private bool complete;
 
-        public override string ToString() => $"{NameAndHashCode(this)} [complete={complete}]";
-
-        #region ITransaction Members
-
-        public void Abort() {
-            if (complete) {
-                throw new TransactionException(logger.LogAndReturn("Transaction already complete; cannot abort"));
-            }
-
-            complete = true;
-        }
-
-        public void Commit() {
-            if (complete) {
-                throw new TransactionException(logger.LogAndReturn("Transaction already complete; cannot commit"));
-            }
-
-            objectStore.EndTransaction();
-            complete = true;
-        }
-
-        #endregion
+    public NestedTransaction(IObjectStore objectStore, ILogger<NestedTransaction> logger) {
+        this.objectStore = objectStore;
+        this.logger = logger;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string ToString() => $"{NameAndHashCode(this)} [complete={complete}]";
+
+    #region ITransaction Members
+
+    public void Abort() {
+        if (complete) {
+            throw new TransactionException(logger.LogAndReturn("Transaction already complete; cannot abort"));
+        }
+
+        complete = true;
+    }
+
+    public void Commit() {
+        if (complete) {
+            throw new TransactionException(logger.LogAndReturn("Transaction already complete; cannot commit"));
+        }
+
+        objectStore.EndTransaction();
+        complete = true;
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

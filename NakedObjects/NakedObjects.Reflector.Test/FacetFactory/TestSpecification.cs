@@ -7,7 +7,7 @@
 
 using NakedFramework.Metamodel.Spec;
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    // This is for testing of facets 
-    internal class TestSpecification : Specification { }
-}
+namespace NakedObjects.Reflector.Test.FacetFactory; 
+
+// This is for testing of facets 
+internal class TestSpecification : Specification { }

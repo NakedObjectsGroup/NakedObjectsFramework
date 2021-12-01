@@ -10,23 +10,23 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Spec {
-    public sealed class OneToOneActionParameter : ActionParameterSpec, IOneToOneActionParameterSpec {
-        private bool? isFindMenuEnabled;
+namespace NakedFramework.Core.Spec; 
 
-        public OneToOneActionParameter(int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedFramework framework)
-            : base(index, actionImpl, actionParameterSpecImmutable, framework) { }
+public sealed class OneToOneActionParameter : ActionParameterSpec, IOneToOneActionParameterSpec {
+    private bool? isFindMenuEnabled;
 
-        #region IOneToOneActionParameterSpec Members
+    public OneToOneActionParameter(int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedFramework framework)
+        : base(index, actionImpl, actionParameterSpecImmutable, framework) { }
 
-        public bool IsFindMenuEnabled {
-            get {
-                isFindMenuEnabled ??= ContainsFacet<IFindMenuFacet>();
+    #region IOneToOneActionParameterSpec Members
 
-                return isFindMenuEnabled.Value;
-            }
+    public bool IsFindMenuEnabled {
+        get {
+            isFindMenuEnabled ??= ContainsFacet<IFindMenuFacet>();
+
+            return isFindMenuEnabled.Value;
         }
-
-        #endregion
     }
+
+    #endregion
 }

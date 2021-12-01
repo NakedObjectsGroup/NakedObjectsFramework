@@ -11,18 +11,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("HumanResources.JobCandidate")]
-    public class JobCandidate {
-        public int JobCandidateID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public int? EmployeeID { get; set; }
+[Table("HumanResources.JobCandidate")]
+public class JobCandidate {
+    public int JobCandidateID { get; set; }
 
-        [Column(TypeName = "xml")]
-        public string Resume { get; set; }
+    public int? EmployeeID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Column(TypeName = "xml")]
+    public string Resume { get; set; }
 
-        public virtual Employee Employee { get; set; }
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual Employee Employee { get; set; }
 }

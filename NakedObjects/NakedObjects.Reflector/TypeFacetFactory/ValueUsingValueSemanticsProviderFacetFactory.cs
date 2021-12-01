@@ -13,42 +13,42 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.TypeFacetFactory {
-    public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeFacetFactoryProcessor {
-        protected ValueUsingValueSemanticsProviderFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedObjects.Reflector.TypeFacetFactory; 
 
-        public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
-            FacetUtils.AddFacet(semanticsProvider as IFacet);
+public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeFacetFactoryProcessor {
+    protected ValueUsingValueSemanticsProviderFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+        : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-            // value implies aggregated
-            FacetUtils.AddFacet(new AggregatedFacetAlways(holder));
+    public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
+        FacetUtils.AddFacet(semanticsProvider as IFacet);
 
-            // ImmutableFacet, if appropriate
-            var immutable = semanticsProvider == null || semanticsProvider.IsImmutable;
-            if (immutable) {
-                FacetUtils.AddFacet(new ImmutableFacetViaValueSemantics(holder));
+        // value implies aggregated
+        FacetUtils.AddFacet(new AggregatedFacetAlways(holder));
+
+        // ImmutableFacet, if appropriate
+        var immutable = semanticsProvider == null || semanticsProvider.IsImmutable;
+        if (immutable) {
+            FacetUtils.AddFacet(new ImmutableFacetViaValueSemantics(holder));
+        }
+
+        // EqualByContentFacet, if appropriate
+        var equalByContent = semanticsProvider == null || semanticsProvider.IsEqualByContent;
+        if (equalByContent) {
+            FacetUtils.AddFacet(new EqualByContentFacet(holder));
+        }
+
+        if (semanticsProvider != null) {
+            FacetUtils.AddFacet(new EncodeableFacetUsingEncoderDecoder<T>(semanticsProvider, holder));
+            FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
+            FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
+
+            if (semanticsProvider is IFromStream fromStream) {
+                FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
             }
-
-            // EqualByContentFacet, if appropriate
-            var equalByContent = semanticsProvider == null || semanticsProvider.IsEqualByContent;
-            if (equalByContent) {
-                FacetUtils.AddFacet(new EqualByContentFacet(holder));
-            }
-
-            if (semanticsProvider != null) {
-                FacetUtils.AddFacet(new EncodeableFacetUsingEncoderDecoder<T>(semanticsProvider, holder));
-                FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
-                FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
-
-                if (semanticsProvider is IFromStream fromStream) {
-                    FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
-                }
 
 // ReSharper disable once CompareNonConstrainedGenericWithNull
-                if (semanticsProvider.DefaultValue != null) {
-                    FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
-                }
+            if (semanticsProvider.DefaultValue != null) {
+                FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
             }
         }
     }

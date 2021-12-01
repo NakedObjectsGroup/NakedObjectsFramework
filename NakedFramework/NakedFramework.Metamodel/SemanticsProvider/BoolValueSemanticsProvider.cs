@@ -14,66 +14,66 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstract<bool>, IBooleanValueFacet {
-        private const bool DefaultValueConst = false;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 5;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public BooleanValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstract<bool>, IBooleanValueFacet {
+    private const bool DefaultValueConst = false;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 5;
 
-        private static Type Type => typeof(IBooleanValueFacet);
+    public BooleanValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(bool);
+    private static Type Type => typeof(IBooleanValueFacet);
 
-        public static bool IsAdaptedType(Type type) => type == AdaptedType;
+    public static Type AdaptedType => typeof(bool);
 
-        protected override bool DoParse(string entry) {
-            if ("true".StartsWith(entry.ToLower())) {
-                return true;
-            }
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-            if ("false".StartsWith(entry.ToLower())) {
-                return false;
-            }
-
-            throw new InvalidEntryException(string.Format(NakedObjects.Resources.NakedObjects.NotALogical, entry));
+    protected override bool DoParse(string entry) {
+        if ("true".StartsWith(entry.ToLower())) {
+            return true;
         }
 
-        protected override bool DoParseInvariant(string entry) => bool.Parse(entry);
-
-        protected override string GetInvariantString(bool obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string DoEncode(bool obj) => obj ? "T" : "F";
-
-        protected override bool DoRestore(string data) {
-            if (data.Length != 1) {
-                throw new InvalidDataException(string.Format(NakedObjects.Resources.NakedObjects.InvalidLogicalLength, data.Length));
-            }
-
-            return data[0] switch {
-                'T' => true,
-                'F' => false,
-                _ => throw new InvalidDataException(string.Format(NakedObjects.Resources.NakedObjects.InvalidLogicalType, data[0]))
-            };
+        if ("false".StartsWith(entry.ToLower())) {
+            return false;
         }
 
-        #region IBooleanValueFacet Members
-
-        public bool IsSet(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Exists() && nakedObjectAdapter.GetDomainObject<bool>();
-
-        public void Reset(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.ReplacePoco(false);
-
-        public void Set(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.ReplacePoco(true);
-
-        public void Toggle(INakedObjectAdapter nakedObjectAdapter) {
-            var newValue = !(bool) nakedObjectAdapter.Object;
-            nakedObjectAdapter.ReplacePoco(newValue);
-        }
-
-        #endregion
+        throw new InvalidEntryException(string.Format(NakedObjects.Resources.NakedObjects.NotALogical, entry));
     }
+
+    protected override bool DoParseInvariant(string entry) => bool.Parse(entry);
+
+    protected override string GetInvariantString(bool obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string DoEncode(bool obj) => obj ? "T" : "F";
+
+    protected override bool DoRestore(string data) {
+        if (data.Length != 1) {
+            throw new InvalidDataException(string.Format(NakedObjects.Resources.NakedObjects.InvalidLogicalLength, data.Length));
+        }
+
+        return data[0] switch {
+            'T' => true,
+            'F' => false,
+            _ => throw new InvalidDataException(string.Format(NakedObjects.Resources.NakedObjects.InvalidLogicalType, data[0]))
+        };
+    }
+
+    #region IBooleanValueFacet Members
+
+    public bool IsSet(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Exists() && nakedObjectAdapter.GetDomainObject<bool>();
+
+    public void Reset(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.ReplacePoco(false);
+
+    public void Set(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.ReplacePoco(true);
+
+    public void Toggle(INakedObjectAdapter nakedObjectAdapter) {
+        var newValue = !(bool) nakedObjectAdapter.Object;
+        nakedObjectAdapter.ReplacePoco(newValue);
+    }
+
+    #endregion
 }

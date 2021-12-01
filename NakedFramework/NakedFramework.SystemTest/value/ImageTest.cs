@@ -8,27 +8,27 @@
 using NakedFramework.Value;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.Value {
-    [TestFixture]
-    public class ImageTest {
-        [Test]
-        public void TestConstructors() {
-            var resource = new byte[] { };
+namespace NakedObjects.SystemTest.Value; 
 
-            var fa = new Image(resource);
+[TestFixture]
+public class ImageTest {
+    [Test]
+    public void TestConstructors() {
+        var resource = new byte[] { };
 
-            Assert.AreEqual(resource, fa.GetResourceAsByteArray());
+        var fa = new Image(resource);
 
-            fa = new Image(resource, "MyName");
+        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
 
-            Assert.AreEqual(resource, fa.GetResourceAsByteArray());
-            Assert.AreEqual("MyName", fa.Name);
+        fa = new Image(resource, "MyName");
 
-            fa = new Image(resource, "MyName2", @"Image/gif");
+        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
+        Assert.AreEqual("MyName", fa.Name);
 
-            Assert.AreEqual(resource, fa.GetResourceAsByteArray());
-            Assert.AreEqual("MyName2", fa.Name);
-            Assert.AreEqual(@"Image/gif", fa.MimeType);
-        }
+        fa = new Image(resource, "MyName2", @"Image/gif");
+
+        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
+        Assert.AreEqual("MyName2", fa.Name);
+        Assert.AreEqual(@"Image/gif", fa.MimeType);
     }
 }

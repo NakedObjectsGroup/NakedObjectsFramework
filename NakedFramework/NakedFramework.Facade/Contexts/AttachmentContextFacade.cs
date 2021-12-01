@@ -7,26 +7,26 @@
 
 using System.IO;
 
-namespace NakedFramework.Facade.Contexts {
-    public class AttachmentContextFacade {
-        public const string DefaultMimeType = "application/octet-stream";
-        public const string DefaultContentDisposition = "attachment";
-        public const string DefaultFileName = "unknown.txt";
-        private Stream content;
-        private string fileName;
+namespace NakedFramework.Facade.Contexts; 
 
-        public Stream Content {
-            get => content ?? new MemoryStream();
-            set => content = value;
-        }
+public class AttachmentContextFacade {
+    public const string DefaultMimeType = "application/octet-stream";
+    public const string DefaultContentDisposition = "attachment";
+    public const string DefaultFileName = "unknown.txt";
+    private Stream content;
+    private string fileName;
 
-        public string MimeType { get; set; }
+    public Stream Content {
+        get => content ?? new MemoryStream();
+        set => content = value;
+    }
 
-        public string ContentDisposition { get; set; }
+    public string MimeType { get; set; }
 
-        public string FileName {
-            get => string.IsNullOrWhiteSpace(fileName) ? DefaultFileName : fileName;
-            set => fileName = value;
-        }
+    public string ContentDisposition { get; set; }
+
+    public string FileName {
+        get => string.IsNullOrWhiteSpace(fileName) ? DefaultFileName : fileName;
+        set => fileName = value;
     }
 }

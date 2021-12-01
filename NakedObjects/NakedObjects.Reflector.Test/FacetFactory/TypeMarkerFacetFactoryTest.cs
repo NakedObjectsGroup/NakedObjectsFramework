@@ -18,141 +18,141 @@ using NakedFramework.ParallelReflector.TypeFacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    // Reflector place holder for type marker facet factory tests !!!
-    [TestClass]
-    public class TypeMarkerFacetFactoryTest : AbstractFacetFactoryTest {
-        private TypeMarkerFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {
-            typeof(ITypeIsAbstractFacet),
-            typeof(ITypeIsVoidFacet),
-            typeof(ITypeIsInterfaceFacet),
-            typeof(ITypeIsSealedFacet),
-            typeof(ITypeIsStaticFacet)
-        };
+// Reflector place holder for type marker facet factory tests !!!
+[TestClass]
+public class TypeMarkerFacetFactoryTest : AbstractFacetFactoryTest {
+    private TypeMarkerFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {
+        typeof(ITypeIsAbstractFacet),
+        typeof(ITypeIsVoidFacet),
+        typeof(ITypeIsInterfaceFacet),
+        typeof(ITypeIsSealedFacet),
+        typeof(ITypeIsStaticFacet)
+    };
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        private void AssertAbstract(bool isAbstract) {
-            var facet = Specification.GetFacet<ITypeIsAbstractFacet>();
-            Assert.IsNotNull(facet);
-            Assert.AreEqual(isAbstract, facet.Flag);
-        }
-
-        private void AssertVoid(bool isVoid) {
-            var facet = Specification.GetFacet<ITypeIsVoidFacet>();
-            Assert.IsNotNull(facet);
-            Assert.AreEqual(isVoid, facet.Flag);
-        }
-
-        private void AssertSealed(bool isSealed) {
-            var facet = Specification.GetFacet<ITypeIsSealedFacet>();
-            Assert.IsNotNull(facet);
-            Assert.AreEqual(isSealed, facet.Flag);
-        }
-
-        private void AssertInterface(bool isInterface) {
-            var facet = Specification.GetFacet<ITypeIsInterfaceFacet>();
-            Assert.IsNotNull(facet);
-            Assert.AreEqual(isInterface, facet.Flag);
-        }
-
-        private void AssertStatic(bool isStatic) {
-            var facet = Specification.GetFacet<ITypeIsStaticFacet>();
-            Assert.IsNotNull(facet);
-            Assert.AreEqual(isStatic, facet.Flag);
-        }
-
-        private void Process(Type type) {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            facetFactory.Process(Reflector, type, MethodRemover, Specification, metamodel);
-        }
-
-        [TestMethod]
-        public void TestIsAbstract() {
-            Process(typeof(AbstractTestClass));
-            AssertAbstract(true);
-            AssertVoid(false);
-            AssertSealed(false);
-            AssertInterface(false);
-            AssertStatic(false);
-        }
-
-        [TestMethod]
-        public void TestIsVoid() {
-            Process(typeof(void));
-            AssertAbstract(false);
-            AssertVoid(true);
-            AssertSealed(true);
-            AssertInterface(false);
-            AssertStatic(false);
-        }
-
-        [TestMethod]
-        public void TestIsSealed() {
-            Process(typeof(SealedTestClass));
-            AssertAbstract(false);
-            AssertVoid(false);
-            AssertSealed(true);
-            AssertInterface(false);
-            AssertStatic(false);
-        }
-
-        [TestMethod]
-        public void TestIsInterface() {
-            Process(typeof(ITestInterface));
-            AssertAbstract(true);
-            AssertVoid(false);
-            AssertSealed(false);
-            AssertInterface(true);
-            AssertStatic(false);
-        }
-
-        [TestMethod]
-        public void TestIsStatic() {
-            Process(typeof(StaticTestClass));
-            AssertAbstract(true);
-            AssertVoid(false);
-            AssertSealed(true);
-            AssertInterface(false);
-            AssertStatic(true);
-        }
-
-        private sealed class SealedTestClass { }
-
-        private abstract class AbstractTestClass { }
-
-        private static class StaticTestClass { }
-
-        private interface ITestInterface { }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new TypeMarkerFacetFactory(GetOrder<TypeMarkerFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    private void AssertAbstract(bool isAbstract) {
+        var facet = Specification.GetFacet<ITypeIsAbstractFacet>();
+        Assert.IsNotNull(facet);
+        Assert.AreEqual(isAbstract, facet.Flag);
+    }
+
+    private void AssertVoid(bool isVoid) {
+        var facet = Specification.GetFacet<ITypeIsVoidFacet>();
+        Assert.IsNotNull(facet);
+        Assert.AreEqual(isVoid, facet.Flag);
+    }
+
+    private void AssertSealed(bool isSealed) {
+        var facet = Specification.GetFacet<ITypeIsSealedFacet>();
+        Assert.IsNotNull(facet);
+        Assert.AreEqual(isSealed, facet.Flag);
+    }
+
+    private void AssertInterface(bool isInterface) {
+        var facet = Specification.GetFacet<ITypeIsInterfaceFacet>();
+        Assert.IsNotNull(facet);
+        Assert.AreEqual(isInterface, facet.Flag);
+    }
+
+    private void AssertStatic(bool isStatic) {
+        var facet = Specification.GetFacet<ITypeIsStaticFacet>();
+        Assert.IsNotNull(facet);
+        Assert.AreEqual(isStatic, facet.Flag);
+    }
+
+    private void Process(Type type) {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        facetFactory.Process(Reflector, type, MethodRemover, Specification, metamodel);
+    }
+
+    [TestMethod]
+    public void TestIsAbstract() {
+        Process(typeof(AbstractTestClass));
+        AssertAbstract(true);
+        AssertVoid(false);
+        AssertSealed(false);
+        AssertInterface(false);
+        AssertStatic(false);
+    }
+
+    [TestMethod]
+    public void TestIsVoid() {
+        Process(typeof(void));
+        AssertAbstract(false);
+        AssertVoid(true);
+        AssertSealed(true);
+        AssertInterface(false);
+        AssertStatic(false);
+    }
+
+    [TestMethod]
+    public void TestIsSealed() {
+        Process(typeof(SealedTestClass));
+        AssertAbstract(false);
+        AssertVoid(false);
+        AssertSealed(true);
+        AssertInterface(false);
+        AssertStatic(false);
+    }
+
+    [TestMethod]
+    public void TestIsInterface() {
+        Process(typeof(ITestInterface));
+        AssertAbstract(true);
+        AssertVoid(false);
+        AssertSealed(false);
+        AssertInterface(true);
+        AssertStatic(false);
+    }
+
+    [TestMethod]
+    public void TestIsStatic() {
+        Process(typeof(StaticTestClass));
+        AssertAbstract(true);
+        AssertVoid(false);
+        AssertSealed(true);
+        AssertInterface(false);
+        AssertStatic(true);
+    }
+
+    private sealed class SealedTestClass { }
+
+    private abstract class AbstractTestClass { }
+
+    private static class StaticTestClass { }
+
+    private interface ITestInterface { }
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new TypeMarkerFacetFactory(GetOrder<TypeMarkerFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

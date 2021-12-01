@@ -12,17 +12,17 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Component;
 
-namespace NakedFunctions.Reflector.Facet {
-    [Serializable]
-    public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedParameterFacet {
-        public InjectedIContextParameterFacet(ISpecification holder) : base(Type, holder) { }
+namespace NakedFunctions.Reflector.Facet; 
 
-        public static Type Type => typeof(IInjectedParameterFacet);
+[Serializable]
+public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedParameterFacet {
+    public InjectedIContextParameterFacet(ISpecification holder) : base(Type, holder) { }
 
-        #region IInjectedParameterFacet Members
+    public static Type Type => typeof(IInjectedParameterFacet);
 
-        public object GetInjectedValue(INakedFramework framework, IServiceProvider provider) => new FunctionalContext {Persistor = framework.Persistor, Provider = provider};
+    #region IInjectedParameterFacet Members
 
-        #endregion
-    }
+    public object GetInjectedValue(INakedFramework framework, IServiceProvider provider) => new FunctionalContext {Persistor = framework.Persistor, Provider = provider};
+
+    #endregion
 }

@@ -8,26 +8,26 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace NakedFramework.Rest.Model {
-    public class ArgumentMapBinder : IModelBinder {
-        #region IModelBinder Members
+namespace NakedFramework.Rest.Model; 
 
-        public Task BindModelAsync(ModelBindingContext bindingContext) =>
-            bindingContext.HttpContext.Request.IsGet()
-                ? BindFromQuery(bindingContext)
-                : BindFromBody(bindingContext);
+public class ArgumentMapBinder : IModelBinder {
+    #region IModelBinder Members
 
-        #endregion
+    public Task BindModelAsync(ModelBindingContext bindingContext) =>
+        bindingContext.HttpContext.Request.IsGet()
+            ? BindFromQuery(bindingContext)
+            : BindFromBody(bindingContext);
 
-        private static Task BindFromBody(ModelBindingContext bindingContext) =>
-            ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                                                      async () => ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
-                                                      ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
+    #endregion
 
-        private static Task BindFromQuery(ModelBindingContext bindingContext) =>
-            ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                                                      async () => ModelBinderUtils.CreateSimpleArgumentMap(bindingContext.HttpContext.Request.QueryString.ToString()) ??
-                                                                  ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext), true),
-                                                      ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
-    }
+    private static Task BindFromBody(ModelBindingContext bindingContext) =>
+        ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                                                  async () => ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
+                                                  ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
+
+    private static Task BindFromQuery(ModelBindingContext bindingContext) =>
+        ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                                                  async () => ModelBinderUtils.CreateSimpleArgumentMap(bindingContext.HttpContext.Request.QueryString.ToString()) ??
+                                                              ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext), true),
+                                                  ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
 }

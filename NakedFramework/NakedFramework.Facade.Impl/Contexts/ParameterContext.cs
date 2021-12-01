@@ -11,26 +11,26 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts {
-    public class ParameterContext : Context {
-        public IActionParameterSpec Parameter { get; set; }
-        public IActionSpec Action { get; set; }
-        public ListContext Completions { get; set; }
+namespace NakedFramework.Facade.Impl.Contexts; 
 
-        public override string Id => Parameter.Id;
+public class ParameterContext : Context {
+    public IActionParameterSpec Parameter { get; set; }
+    public IActionSpec Action { get; set; }
+    public ListContext Completions { get; set; }
 
-        public override ITypeSpec Specification => Parameter.Spec;
+    public override string Id => Parameter.Id;
 
-        public string OverloadedUniqueId { get; init; }
+    public override ITypeSpec Specification => Parameter.Spec;
 
-        public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedFramework framework, string menuId) {
-            var pc = new ParameterContextFacade {
-                Parameter = new ActionParameterFacade(Parameter, facade, framework),
-                Action = new ActionFacade(Action, facade, framework),
-                Completions = Completions?.ToListContextFacade(facade, framework),
-                MenuId = menuId
-            };
-            return ToContextFacade(pc, facade, framework);
-        }
+    public string OverloadedUniqueId { get; init; }
+
+    public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedFramework framework, string menuId) {
+        var pc = new ParameterContextFacade {
+            Parameter = new ActionParameterFacade(Parameter, facade, framework),
+            Action = new ActionFacade(Action, facade, framework),
+            Completions = Completions?.ToListContextFacade(facade, framework),
+            MenuId = menuId
+        };
+        return ToContextFacade(pc, facade, framework);
     }
 }

@@ -13,51 +13,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<Guid>, IGuidValueFacet {
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 36;
-        private static readonly Guid DefaultValueConst = Guid.Empty;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public GuidValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<Guid>, IGuidValueFacet {
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 36;
+    private static readonly Guid DefaultValueConst = Guid.Empty;
 
-        public static Type Type => typeof(IGuidValueFacet);
+    public GuidValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(Guid);
+    public static Type Type => typeof(IGuidValueFacet);
 
-        #region IGuidValueFacet Members
+    public static Type AdaptedType => typeof(Guid);
 
-        public Guid GuidValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<Guid>();
+    #region IGuidValueFacet Members
 
-        #endregion
+    public Guid GuidValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<Guid>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(Guid);
+    #endregion
 
-        protected override Guid DoParse(string entry) {
-            try {
-                return new Guid(entry);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(Guid);
+
+    protected override Guid DoParse(string entry) {
+        try {
+            return new Guid(entry);
         }
-
-        protected override Guid DoParseInvariant(string entry) => Guid.Parse(entry);
-
-        protected override string GetInvariantString(Guid obj) => obj.ToString();
-
-        protected override string TitleStringWithMask(string mask, Guid value) => value.ToString(mask);
-
-        protected override string DoEncode(Guid obj) => obj.ToString();
-
-        protected override Guid DoRestore(string data) => new(data);
-
-        public override string ToString() => "GuidAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
     }
+
+    protected override Guid DoParseInvariant(string entry) => Guid.Parse(entry);
+
+    protected override string GetInvariantString(Guid obj) => obj.ToString();
+
+    protected override string TitleStringWithMask(string mask, Guid value) => value.ToString(mask);
+
+    protected override string DoEncode(Guid obj) => obj.ToString();
+
+    protected override Guid DoRestore(string data) => new(data);
+
+    public override string ToString() => "GuidAdapter: ";
 }

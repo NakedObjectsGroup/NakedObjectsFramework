@@ -8,16 +8,16 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class PageSizeFacetDefault : PageSizeFacetAbstract {
-        private const int DefaultPageSize = 20;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public PageSizeFacetDefault(ISpecification holder)
-            : base(DefaultPageSize, holder) { }
+[Serializable]
+public sealed class PageSizeFacetDefault : PageSizeFacetAbstract {
+    private const int DefaultPageSize = 20;
 
-        public override bool IsNoOp => true;
-    }
+    public PageSizeFacetDefault(ISpecification holder)
+        : base(DefaultPageSize, holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override bool IsNoOp => true;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

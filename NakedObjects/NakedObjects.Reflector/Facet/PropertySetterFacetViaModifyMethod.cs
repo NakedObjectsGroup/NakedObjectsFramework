@@ -16,39 +16,39 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbstract, IImperativeFacet {
-        private readonly ILogger<PropertySetterFacetViaModifyMethod> logger;
-        private readonly MethodInfo method;
+namespace NakedObjects.Reflector.Facet; 
 
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+[Serializable]
+public sealed class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbstract, IImperativeFacet {
+    private readonly ILogger<PropertySetterFacetViaModifyMethod> logger;
+    private readonly MethodInfo method;
 
-        public PropertySetterFacetViaModifyMethod(MethodInfo method, string name, ISpecification holder, ILogger<PropertySetterFacetViaModifyMethod> logger)
-            : base(holder) {
-            this.method = method;
-            this.logger = logger;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-            PropertyName = name;
-        }
+    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public override string PropertyName { get; protected set; }
-
-        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, INakedFramework framework) => methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public PropertySetterFacetViaModifyMethod(MethodInfo method, string name, ISpecification holder, ILogger<PropertySetterFacetViaModifyMethod> logger)
+        : base(holder) {
+        this.method = method;
+        this.logger = logger;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        PropertyName = name;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string PropertyName { get; protected set; }
+
+    public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, INakedFramework framework) => methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
+
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

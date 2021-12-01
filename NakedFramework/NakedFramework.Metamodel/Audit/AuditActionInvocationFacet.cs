@@ -13,38 +13,38 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Audit {
-    [Serializable]
-    public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
-        private readonly IAuditManager auditManager;
-        private readonly IIdentifier identifier;
-        private readonly IActionInvocationFacet underlyingFacet;
+namespace NakedFramework.Metamodel.Audit; 
 
-        public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, IAuditManager auditManager)
-            : base(underlyingFacet.Specification) {
-            this.underlyingFacet = underlyingFacet;
-            this.auditManager = auditManager;
-            identifier = underlyingFacet.Specification.Identifier;
-        }
+[Serializable]
+public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
+    private readonly IAuditManager auditManager;
+    private readonly IIdentifier identifier;
+    private readonly IActionInvocationFacet underlyingFacet;
 
-        public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;
+    public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, IAuditManager auditManager)
+        : base(underlyingFacet.Specification) {
+        this.underlyingFacet = underlyingFacet;
+        this.auditManager = auditManager;
+        identifier = underlyingFacet.Specification.Identifier;
+    }
 
-        public override MethodInfo ActionMethod => underlyingFacet.ActionMethod;
+    public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;
 
-        public override IObjectSpecImmutable ReturnType => underlyingFacet.ReturnType;
+    public override MethodInfo ActionMethod => underlyingFacet.ActionMethod;
 
-        public override IObjectSpecImmutable ElementType => underlyingFacet.ElementType;
+    public override IObjectSpecImmutable ReturnType => underlyingFacet.ReturnType;
 
-        public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
+    public override IObjectSpecImmutable ElementType => underlyingFacet.ElementType;
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
-            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
-            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
-        }
+    public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) {
-            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
-            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
-        }
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
+        auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
+        return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
+    }
+
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) {
+        auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
+        return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
     }
 }

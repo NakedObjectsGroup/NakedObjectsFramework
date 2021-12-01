@@ -13,26 +13,26 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvocationFacet {
-        protected ActionInvocationFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IActionInvocationFacet);
+[Serializable]
+public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvocationFacet {
+    protected ActionInvocationFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region IActionInvocationFacet Members
+    public static Type Type => typeof(IActionInvocationFacet);
 
-        public abstract MethodInfo ActionMethod { get; } //This is exposed to permit third-party decoration DO NOT REMOVE.
-        public abstract ITypeSpecImmutable OnType { get; }
-        public abstract IObjectSpecImmutable ReturnType { get; }
-        public abstract IObjectSpecImmutable ElementType { get; }
+    #region IActionInvocationFacet Members
 
-        //Note: Some passed-in components are not used within NOF code, but are provided for third-party customization. DO NOT REMOVE.
-        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework);
-        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework);
-        public abstract bool IsQueryOnly { get; }
+    public abstract MethodInfo ActionMethod { get; } //This is exposed to permit third-party decoration DO NOT REMOVE.
+    public abstract ITypeSpecImmutable OnType { get; }
+    public abstract IObjectSpecImmutable ReturnType { get; }
+    public abstract IObjectSpecImmutable ElementType { get; }
 
-        #endregion
-    }
+    //Note: Some passed-in components are not used within NOF code, but are provided for third-party customization. DO NOT REMOVE.
+    public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework);
+    public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework);
+    public abstract bool IsQueryOnly { get; }
+
+    #endregion
 }

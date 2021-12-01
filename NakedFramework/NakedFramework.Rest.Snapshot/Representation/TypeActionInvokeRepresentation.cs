@@ -13,54 +13,54 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class TypeActionInvokeRepresentation : Representation {
-        protected TypeActionInvokeRepresentation(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags)
-            : base(oidStrategy, flags) {
-            SelfRelType = new TypeActionInvokeRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, context));
-            SetScalars(context);
-            SetLinks(req, context);
-            SetExtensions();
-            SetHeader();
-        }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        [DataMember(Name = JsonPropertyNames.Id)]
-        public string Id { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Value)]
-        public bool Value { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Links)]
-        public LinkRepresentation[] Links { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Extensions)]
-        public MapRepresentation Extensions { get; set; }
-
-        private void SetScalars(TypeActionInvokeContext context) {
-            Id = context.Id;
-            Value = context.Value;
-        }
-
-        private void SetHeader() => Caching = CacheType.NonExpiring;
-
-        private void SetExtensions() => Extensions = MapRepresentation.Create();
-
-        private void SetLinks(HttpRequest req, TypeActionInvokeContext context) {
-            var uri = new DomainTypeRelType(new UriMtHelper(OidStrategy, req, context.OtherSpecification)).GetUri().AbsoluteUri;
-
-            var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(OidStrategy, SelfRelType,
-                                          Flags,
-                                          new OptionalProperty(JsonPropertyNames.Arguments,
-                                                               MapRepresentation.Create(new OptionalProperty(context.ParameterId,
-                                                                                                             MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href,
-                                                                                                                                                           uri))))))
-            };
-
-            Links = tempLinks.ToArray();
-        }
-
-        public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags) => new(oidStrategy, req, context, flags);
+[DataContract]
+public class TypeActionInvokeRepresentation : Representation {
+    protected TypeActionInvokeRepresentation(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags)
+        : base(oidStrategy, flags) {
+        SelfRelType = new TypeActionInvokeRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, context));
+        SetScalars(context);
+        SetLinks(req, context);
+        SetExtensions();
+        SetHeader();
     }
+
+    [DataMember(Name = JsonPropertyNames.Id)]
+    public string Id { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Value)]
+    public bool Value { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Links)]
+    public LinkRepresentation[] Links { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Extensions)]
+    public MapRepresentation Extensions { get; set; }
+
+    private void SetScalars(TypeActionInvokeContext context) {
+        Id = context.Id;
+        Value = context.Value;
+    }
+
+    private void SetHeader() => Caching = CacheType.NonExpiring;
+
+    private void SetExtensions() => Extensions = MapRepresentation.Create();
+
+    private void SetLinks(HttpRequest req, TypeActionInvokeContext context) {
+        var uri = new DomainTypeRelType(new UriMtHelper(OidStrategy, req, context.OtherSpecification)).GetUri().AbsoluteUri;
+
+        var tempLinks = new List<LinkRepresentation> {
+            LinkRepresentation.Create(OidStrategy, SelfRelType,
+                                      Flags,
+                                      new OptionalProperty(JsonPropertyNames.Arguments,
+                                                           MapRepresentation.Create(new OptionalProperty(context.ParameterId,
+                                                                                                         MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href,
+                                                                                                                                                       uri))))))
+        };
+
+        Links = tempLinks.ToArray();
+    }
+
+    public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags) => new(oidStrategy, req, context, flags);
 }

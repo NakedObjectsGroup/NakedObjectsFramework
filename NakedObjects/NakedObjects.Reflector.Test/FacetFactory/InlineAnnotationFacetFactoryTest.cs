@@ -20,59 +20,59 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class InlineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private ComplexTypeAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(INamedFacet)};
+[TestClass]
+public class InlineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private ComplexTypeAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(INamedFacet)};
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IComplexTypeFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ComplexTypeFacetAnnotation);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        #region Nested type: Customer
-
-        [ComplexType]
-        private class Customer { }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            facetFactory = new ComplexTypeAnnotationFacetFactory(GetOrder<ComplexTypeAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public new void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
+
+    [TestMethod]
+    public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IComplexTypeFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is ComplexTypeFacetAnnotation);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    #region Nested type: Customer
+
+    [ComplexType]
+    private class Customer { }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+
+        facetFactory = new ComplexTypeAnnotationFacetFactory(GetOrder<ComplexTypeAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public new void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }

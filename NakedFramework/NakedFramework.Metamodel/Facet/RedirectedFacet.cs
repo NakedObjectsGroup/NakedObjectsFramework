@@ -10,23 +10,23 @@ using System.Reflection;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
-        private readonly PropertyInfo oid;
-        private readonly PropertyInfo serverName;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public RedirectedFacet(ISpecification holder, PropertyInfo serverName, PropertyInfo oid)
-            : base(Type, holder) {
-            this.serverName = serverName;
-            this.oid = oid;
-        }
+[Serializable]
+public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
+    private readonly PropertyInfo oid;
+    private readonly PropertyInfo serverName;
 
-        private static Type Type => typeof(IRedirectedFacet);
-        public (string serverName, string oid)? GetRedirection(object target) => (ServerName(target), Oid(target));
-
-        private string Oid(object target) => (string) oid.GetValue(target, null);
-
-        private string ServerName(object target) => (string) serverName.GetValue(target, null);
+    public RedirectedFacet(ISpecification holder, PropertyInfo serverName, PropertyInfo oid)
+        : base(Type, holder) {
+        this.serverName = serverName;
+        this.oid = oid;
     }
+
+    private static Type Type => typeof(IRedirectedFacet);
+    public (string serverName, string oid)? GetRedirection(object target) => (ServerName(target), Oid(target));
+
+    private string Oid(object target) => (string) oid.GetValue(target, null);
+
+    private string ServerName(object target) => (string) serverName.GetValue(target, null);
 }

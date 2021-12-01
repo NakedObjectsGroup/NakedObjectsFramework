@@ -24,54 +24,54 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
-        private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ModifyPrefix
-        };
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public CollectionFieldMethodsFacetFactory(IFacetFactoryOrder<CollectionFieldMethodsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Collections) { }
+public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
+    private static readonly string[] FixedPrefixes = {
+        RecognisedMethodsAndPrefixes.ModifyPrefix
+    };
 
-        public string[] Prefixes => FixedPrefixes;
+    public CollectionFieldMethodsFacetFactory(IFacetFactoryOrder<CollectionFieldMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Collections) { }
 
-        public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            var collectionTypes = BuildCollectionTypes(candidates, classStrategy);
-            candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToArray();
-            return PropertiesToBeIntrospected(candidates, classStrategy);
+    public string[] Prefixes => FixedPrefixes;
+
+    public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+        var collectionTypes = BuildCollectionTypes(candidates, classStrategy);
+        candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToArray();
+        return PropertiesToBeIntrospected(candidates, classStrategy);
+    }
+
+    private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
+        candidates.Where(property => property.HasPublicGetter() &&
+                                     !classStrategy.IsIgnored(property.PropertyType) &&
+                                     !classStrategy.IsIgnored(property)).ToList();
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var capitalizedName = property.Name;
+        var type = property.DeclaringType;
+
+        var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
+
+        AddSetFacet(facets, property, collection);
+
+        MethodHelpers.AddHideForSessionFacetNone(facets, collection);
+        MethodHelpers.AddDisableFacetAlways(facets, collection);
+        FacetUtils.AddFacets(facets);
+        return metamodel;
+    }
+
+    private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, ISpecification collection) {
+        if (CollectionUtils.IsSet(property.PropertyType)) {
+            collectionFacets.Add(new IsASetFacet(collection));
         }
+    }
 
-        private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
-            candidates.Where(property => property.HasPublicGetter() &&
-                                         !classStrategy.IsIgnored(property.PropertyType) &&
-                                         !classStrategy.IsIgnored(property)).ToList();
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var capitalizedName = property.Name;
-            var type = property.DeclaringType;
-
-            var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
-
-            AddSetFacet(facets, property, collection);
-
-            MethodHelpers.AddHideForSessionFacetNone(facets, collection);
-            MethodHelpers.AddDisableFacetAlways(facets, collection);
-            FacetUtils.AddFacets(facets);
-            return metamodel;
-        }
-
-        private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, ISpecification collection) {
-            if (CollectionUtils.IsSet(property.PropertyType)) {
-                collectionFacets.Add(new IsASetFacet(collection));
-            }
-        }
-
-        public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties, IClassStrategy classStrategy) {
-            return properties.Where(property => property.HasPublicGetter() &&
-                                                CollectionUtils.IsCollection(property.PropertyType) &&
-                                                !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
-                                                !classStrategy.IsIgnored(property) &&
-                                                !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToArray();
-        }
+    public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties, IClassStrategy classStrategy) {
+        return properties.Where(property => property.HasPublicGetter() &&
+                                            CollectionUtils.IsCollection(property.PropertyType) &&
+                                            !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
+                                            !classStrategy.IsIgnored(property) &&
+                                            !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToArray();
     }
 }

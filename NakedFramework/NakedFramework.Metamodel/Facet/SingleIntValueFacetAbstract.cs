@@ -9,17 +9,17 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class SingleIntValueFacetAbstract : FacetAbstract, ISingleIntValueFacet {
-        protected SingleIntValueFacetAbstract(Type facetType, ISpecification holder, int valueInt)
-            : base(facetType, holder) =>
-            Value = valueInt;
+namespace NakedFramework.Metamodel.Facet; 
 
-        #region ISingleIntValueFacet Members
+[Serializable]
+public abstract class SingleIntValueFacetAbstract : FacetAbstract, ISingleIntValueFacet {
+    protected SingleIntValueFacetAbstract(Type facetType, ISpecification holder, int valueInt)
+        : base(facetType, holder) =>
+        Value = valueInt;
 
-        public virtual int Value { get; }
+    #region ISingleIntValueFacet Members
 
-        #endregion
-    }
+    public virtual int Value { get; }
+
+    #endregion
 }

@@ -19,22 +19,22 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using static NakedFunctions.Reflector.Utils.FactoryUtils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class TypeMarkerFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var facets = new List<IFacet> {
-                new TypeIsAbstractFacet(specification, IsAbstract(type)),
-                new TypeIsInterfaceFacet(specification, IsInterface(type)),
-                new TypeIsSealedFacet(specification, IsSealed(type)),
-                new TypeIsVoidFacet(specification, IsVoid(type)),
-                new TypeIsStaticFacet(specification, IsStatic(type))
-            };
+public sealed class TypeMarkerFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-            FacetUtils.AddFacets(facets);
-            return metamodel;
-        }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var facets = new List<IFacet> {
+            new TypeIsAbstractFacet(specification, IsAbstract(type)),
+            new TypeIsInterfaceFacet(specification, IsInterface(type)),
+            new TypeIsSealedFacet(specification, IsSealed(type)),
+            new TypeIsVoidFacet(specification, IsVoid(type)),
+            new TypeIsStaticFacet(specification, IsStatic(type))
+        };
+
+        FacetUtils.AddFacets(facets);
+        return metamodel;
     }
 }

@@ -10,21 +10,21 @@ using NakedFramework;
 using NakedObjects;
 using NakedObjects.Redirect;
 
-namespace RestfulObjects.Test.Data {
-    public class RedirectedObject : IRedirectedObject {
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        public virtual int Id { get; set; }
+namespace RestfulObjects.Test.Data; 
 
-        #region IRedirectedObject Members
+public class RedirectedObject : IRedirectedObject {
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    public virtual int Id { get; set; }
 
-        [Hidden(WhenTo.Always)]
-        public virtual string ServerName { get; set; }
+    #region IRedirectedObject Members
 
-        [Hidden(WhenTo.Always)]
-        public virtual string Oid { get; set; }
+    [Hidden(WhenTo.Always)]
+    public virtual string ServerName { get; set; }
 
-        #endregion
-    }
+    [Hidden(WhenTo.Always)]
+    public virtual string Oid { get; set; }
+
+    #endregion
 }

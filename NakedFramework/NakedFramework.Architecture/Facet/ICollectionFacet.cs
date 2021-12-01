@@ -10,16 +10,16 @@ using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface ICollectionFacet : IFacet {
-        bool IsASet { get; }
-        bool IsQueryable { get; }
-        bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element);
-        INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable);
-        IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager);
-        IQueryable AsQueryable(INakedObjectAdapter objectAdapterRepresentingCollection);
-        void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData);
-    }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface ICollectionFacet : IFacet {
+    bool IsASet { get; }
+    bool IsQueryable { get; }
+    bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element);
+    INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable);
+    IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager);
+    IQueryable AsQueryable(INakedObjectAdapter objectAdapterRepresentingCollection);
+    void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

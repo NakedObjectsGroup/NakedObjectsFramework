@@ -13,42 +13,42 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Menu;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class MenuFacetDefault : MenuFacetAbstract {
-        public MenuFacetDefault(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        //Creates a menu based on the object's actions and their specified ordering
-        //For backwards compatibility of UI only, it gives the menu an Id of the type name
-        public override void CreateMenu(IMetamodelBuilder metamodel) {
-            if (FasterTypeUtils.IsSystem(Spec.Type)) {
-                return; //Menu not relevant, and could cause error below
-            }
+[Serializable]
+public sealed class MenuFacetDefault : MenuFacetAbstract {
+    public MenuFacetDefault(ISpecification holder)
+        : base(holder) { }
 
-            //The Id is specified as follows purely to facilitate backwards compatibility with existing UI
-            //It is not needed for menus to function
-            var id = Spec is IServiceSpecImmutable ? UniqueShortName(Spec) : $"{Spec.ShortName}-Actions";
-            CreateDefaultMenu(metamodel, Spec.Type, GetMenuName(Spec), id);
+    //Creates a menu based on the object's actions and their specified ordering
+    //For backwards compatibility of UI only, it gives the menu an Id of the type name
+    public override void CreateMenu(IMetamodelBuilder metamodel) {
+        if (FasterTypeUtils.IsSystem(Spec.Type)) {
+            return; //Menu not relevant, and could cause error below
         }
 
-        private static string UniqueShortName(ITypeSpecImmutable spec) {
-            var usn = spec.ShortName;
-            var type = spec.Type;
-            if (type.IsGenericType) {
-                usn += $"-{type.GetGenericArguments().First().Name}";
-            }
-
-            return usn;
-        }
-
-        public void CreateDefaultMenu(IMetamodelBuilder metamodel, Type type, string menuName, string id) {
-            var menu = new MenuImpl(metamodel, type, false, menuName) {Id = id};
-            menu.AddRemainingNativeActions();
-            menu.AddContributedActions();
-            Menu = menu;
-        }
+        //The Id is specified as follows purely to facilitate backwards compatibility with existing UI
+        //It is not needed for menus to function
+        var id = Spec is IServiceSpecImmutable ? UniqueShortName(Spec) : $"{Spec.ShortName}-Actions";
+        CreateDefaultMenu(metamodel, Spec.Type, GetMenuName(Spec), id);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    private static string UniqueShortName(ITypeSpecImmutable spec) {
+        var usn = spec.ShortName;
+        var type = spec.Type;
+        if (type.IsGenericType) {
+            usn += $"-{type.GetGenericArguments().First().Name}";
+        }
+
+        return usn;
+    }
+
+    public void CreateDefaultMenu(IMetamodelBuilder metamodel, Type type, string menuName, string id) {
+        var menu = new MenuImpl(metamodel, type, false, menuName) {Id = id};
+        menu.AddRemainingNativeActions();
+        menu.AddContributedActions();
+        Menu = menu;
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -14,33 +14,33 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Component {
-    /// <summary>
-    ///     The non-store specific parts of the Object persistence mechanism. Implemented as a composite rather than with
-    ///     inheritance.
-    /// </summary>
-    public interface IObjectPersistor {
-        IQueryable<T> Instances<T>() where T : class;
-        IQueryable Instances(Type type);
-        IQueryable Instances(IObjectSpec spec);
-        INakedObjectAdapter LoadObject(IOid oid, IObjectSpec spec);
-        void AddPersistedObject(INakedObjectAdapter nakedObjectAdapter);
-        void Reload(INakedObjectAdapter nakedObjectAdapter);
-        void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field);
-        void LoadField(INakedObjectAdapter nakedObjectAdapter, string field);
-        int CountField(INakedObjectAdapter nakedObjectAdapter, string field);
-        PropertyInfo[] GetKeys(Type type);
-        INakedObjectAdapter FindByKeys(Type type, object[] keys);
-        void Refresh(INakedObjectAdapter nakedObjectAdapter);
-        object Resolve(object domainObject);
-        void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter);
-        void DestroyObject(INakedObjectAdapter nakedObjectAdapter);
-        object CreateObject(ITypeSpec spec);
-        IEnumerable GetBoundedSet(IObjectSpec spec);
-        void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost);
-        void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
-        IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects);
-        bool HasChanges();
-        T ValidateProxy<T>(T toCheck) where T : class;
-    }
+namespace NakedFramework.Architecture.Component; 
+
+/// <summary>
+///     The non-store specific parts of the Object persistence mechanism. Implemented as a composite rather than with
+///     inheritance.
+/// </summary>
+public interface IObjectPersistor {
+    IQueryable<T> Instances<T>() where T : class;
+    IQueryable Instances(Type type);
+    IQueryable Instances(IObjectSpec spec);
+    INakedObjectAdapter LoadObject(IOid oid, IObjectSpec spec);
+    void AddPersistedObject(INakedObjectAdapter nakedObjectAdapter);
+    void Reload(INakedObjectAdapter nakedObjectAdapter);
+    void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field);
+    void LoadField(INakedObjectAdapter nakedObjectAdapter, string field);
+    int CountField(INakedObjectAdapter nakedObjectAdapter, string field);
+    PropertyInfo[] GetKeys(Type type);
+    INakedObjectAdapter FindByKeys(Type type, object[] keys);
+    void Refresh(INakedObjectAdapter nakedObjectAdapter);
+    object Resolve(object domainObject);
+    void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter);
+    void DestroyObject(INakedObjectAdapter nakedObjectAdapter);
+    object CreateObject(ITypeSpec spec);
+    IEnumerable GetBoundedSet(IObjectSpec spec);
+    void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost);
+    void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
+    IList<(object original, object updated)> UpdateDetachedObjects(IDetachedObjects objects);
+    bool HasChanges();
+    T ValidateProxy<T>(T toCheck) where T : class;
 }

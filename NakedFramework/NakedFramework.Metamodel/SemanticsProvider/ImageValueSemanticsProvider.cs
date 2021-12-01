@@ -13,58 +13,58 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Value;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IImageValueFacet, IFromStream {
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 0;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, null, spec) { }
+[Serializable]
+public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IImageValueFacet, IFromStream {
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 0;
 
-        private static Type Type => typeof(IImageValueFacet);
+    public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, null, spec) { }
 
-        public static Type AdaptedType => typeof(Image);
+    private static Type Type => typeof(IImageValueFacet);
 
-        #region IFromStream Members
+    public static Type AdaptedType => typeof(Image);
 
-        public object ParseFromStream(Stream stream, string mimeType = null, string name = null) => new Image(stream, name, mimeType);
+    #region IFromStream Members
 
-        #endregion
+    public object ParseFromStream(Stream stream, string mimeType = null, string name = null) => new Image(stream, name, mimeType);
 
-        public static bool IsAdaptedType(Type type) => type == AdaptedType;
+    #endregion
 
-        protected override Image DoParse(string entry) => throw new NakedObjectSystemException($"Image cannot parse: {entry}");
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-        protected override Image DoParseInvariant(string entry) => throw new NakedObjectSystemException($"Image cannot parse invariant: {entry}");
+    protected override Image DoParse(string entry) => throw new NakedObjectSystemException($"Image cannot parse: {entry}");
 
-        protected override string GetInvariantString(Image obj) => throw new NakedObjectSystemException("Image cannot get invariant string");
+    protected override Image DoParseInvariant(string entry) => throw new NakedObjectSystemException($"Image cannot parse invariant: {entry}");
 
-        protected override string DoEncode(Image image) {
-            var stream = image.GetResourceAsStream();
+    protected override string GetInvariantString(Image obj) => throw new NakedObjectSystemException("Image cannot get invariant string");
 
-            if (stream.Length > int.MaxValue) {
-                throw new ModelException($"Image is too large size: {stream.Length} max: {int.MaxValue} name: {image.Name}");
-            }
+    protected override string DoEncode(Image image) {
+        var stream = image.GetResourceAsStream();
 
-            var len = Convert.ToInt32(stream.Length);
-            var buffer = new byte[len];
-            ReadWholeArray(stream, buffer);
-            var encoded = Convert.ToBase64String(buffer);
-            return $"{image.MimeType} {encoded}";
+        if (stream.Length > int.MaxValue) {
+            throw new ModelException($"Image is too large size: {stream.Length} max: {int.MaxValue} name: {image.Name}");
         }
 
-        protected override Image DoRestore(string data) {
-            var offset = data.IndexOf(' ');
-            var mime = data.Substring(0, offset);
-            var buffer = Convert.FromBase64String(data[offset..]);
-            var stream = new MemoryStream(buffer);
-            return new Image(stream);
-        }
-
-        protected override string TitleString(Image obj) => obj.Name;
-
-        protected override string TitleStringWithMask(string mask, Image obj) => obj.Name;
+        var len = Convert.ToInt32(stream.Length);
+        var buffer = new byte[len];
+        ReadWholeArray(stream, buffer);
+        var encoded = Convert.ToBase64String(buffer);
+        return $"{image.MimeType} {encoded}";
     }
+
+    protected override Image DoRestore(string data) {
+        var offset = data.IndexOf(' ');
+        var mime = data.Substring(0, offset);
+        var buffer = Convert.FromBase64String(data[offset..]);
+        var stream = new MemoryStream(buffer);
+        return new Image(stream);
+    }
+
+    protected override string TitleString(Image obj) => obj.Name;
+
+    protected override string TitleStringWithMask(string mask, Image obj) => obj.Name;
 }

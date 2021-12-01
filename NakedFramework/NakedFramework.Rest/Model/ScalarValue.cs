@@ -9,16 +9,16 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Model {
-    public class ScalarValue : IValue {
-        private readonly object internalValue;
+namespace NakedFramework.Rest.Model; 
 
-        public ScalarValue(object value) => internalValue = value;
+public class ScalarValue : IValue {
+    private readonly object internalValue;
 
-        #region IValue Members
+    public ScalarValue(object value) => internalValue = value;
 
-        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => internalValue;
+    #region IValue Members
 
-        #endregion
-    }
+    public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => internalValue;
+
+    #endregion
 }

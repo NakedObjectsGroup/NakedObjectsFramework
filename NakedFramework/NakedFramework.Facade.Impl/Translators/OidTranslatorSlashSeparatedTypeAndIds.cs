@@ -14,72 +14,72 @@ using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 
-namespace NakedFramework.Facade.Impl.Translators {
-    public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
-        private readonly INakedFramework framework;
-        private readonly IKeyCodeMapper keyCodeMapper;
-        private readonly ITypeCodeMapper typeCodeMapper;
+namespace NakedFramework.Facade.Impl.Translators; 
 
-        public OidTranslatorSlashSeparatedTypeAndIds(INakedFramework framework, ITypeCodeMapper typeCodeMapper, IKeyCodeMapper keyCodeMapper) {
-            this.framework = framework;
-            this.typeCodeMapper = typeCodeMapper;
-            this.keyCodeMapper = keyCodeMapper;
-        }
+public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
+    private readonly INakedFramework framework;
+    private readonly IKeyCodeMapper keyCodeMapper;
+    private readonly ITypeCodeMapper typeCodeMapper;
 
-        private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
-
-        protected (string code, string key) GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
-            var code = GetCode(nakedObject.Specification);
-            return (code, GetKeyValues(nakedObject));
-        }
-
-        private static string KeyRepresentation(object obj) {
-            var key = obj switch {
-                DateTime time => time.Ticks,
-                Guid => obj.ToString(),
-                _ => obj
-            };
-
-            return (string) Convert.ChangeType(key, typeof(string));
-        }
-
-        protected string GetKeyValues(IObjectFacade nakedObjectForKey) {
-            string[] keys;
-            var wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
-
-            if (wrappedNakedObject.Oid is ViewModelOid vmOid) {
-                vmOid.UpdateKeysIfNecessary(wrappedNakedObject, framework);
-                keys = vmOid.Keys;
-            }
-            else {
-                var keyPropertyInfo = nakedObjectForKey.GetKeys();
-                keys = keyPropertyInfo.Select(pi => KeyRepresentation(pi.GetValue(nakedObjectForKey.Object, null))).ToArray();
-            }
-
-            return keyCodeMapper.CodeFromKey(keys, nakedObjectForKey.Object.GetType());
-        }
-
-        private string GetCode(Type type) => typeCodeMapper.CodeFromType(type);
-
-        #region IOidTranslator Members
-
-        public IOidTranslation GetOidTranslation(params string[] id) =>
-            id.Length switch {
-                2 => new OidTranslationSlashSeparatedTypeAndIds(id.First(), id.Last()),
-                1 => new OidTranslationSlashSeparatedTypeAndIds(id.First()),
-                _ => null
-            };
-
-        public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
-            if (objectFacade.IsViewModel) {
-                var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
-                framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
-            }
-
-            var (code, key) = GetCodeAndKeyAsTuple(objectFacade);
-            return new OidTranslationSlashSeparatedTypeAndIds(code, key);
-        }
-
-        #endregion
+    public OidTranslatorSlashSeparatedTypeAndIds(INakedFramework framework, ITypeCodeMapper typeCodeMapper, IKeyCodeMapper keyCodeMapper) {
+        this.framework = framework;
+        this.typeCodeMapper = typeCodeMapper;
+        this.keyCodeMapper = keyCodeMapper;
     }
+
+    private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
+
+    protected (string code, string key) GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
+        var code = GetCode(nakedObject.Specification);
+        return (code, GetKeyValues(nakedObject));
+    }
+
+    private static string KeyRepresentation(object obj) {
+        var key = obj switch {
+            DateTime time => time.Ticks,
+            Guid => obj.ToString(),
+            _ => obj
+        };
+
+        return (string) Convert.ChangeType(key, typeof(string));
+    }
+
+    protected string GetKeyValues(IObjectFacade nakedObjectForKey) {
+        string[] keys;
+        var wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
+
+        if (wrappedNakedObject.Oid is ViewModelOid vmOid) {
+            vmOid.UpdateKeysIfNecessary(wrappedNakedObject, framework);
+            keys = vmOid.Keys;
+        }
+        else {
+            var keyPropertyInfo = nakedObjectForKey.GetKeys();
+            keys = keyPropertyInfo.Select(pi => KeyRepresentation(pi.GetValue(nakedObjectForKey.Object, null))).ToArray();
+        }
+
+        return keyCodeMapper.CodeFromKey(keys, nakedObjectForKey.Object.GetType());
+    }
+
+    private string GetCode(Type type) => typeCodeMapper.CodeFromType(type);
+
+    #region IOidTranslator Members
+
+    public IOidTranslation GetOidTranslation(params string[] id) =>
+        id.Length switch {
+            2 => new OidTranslationSlashSeparatedTypeAndIds(id.First(), id.Last()),
+            1 => new OidTranslationSlashSeparatedTypeAndIds(id.First()),
+            _ => null
+        };
+
+    public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
+        if (objectFacade.IsViewModel) {
+            var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
+            framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
+        }
+
+        var (code, key) = GetCodeAndKeyAsTuple(objectFacade);
+        return new OidTranslationSlashSeparatedTypeAndIds(code, key);
+    }
+
+    #endregion
 }

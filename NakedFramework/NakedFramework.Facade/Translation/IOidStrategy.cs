@@ -7,19 +7,19 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Translation {
-    public interface IOidStrategy {
-        IFrameworkFacade FrameworkFacade { set; }
-        IOidTranslator OidTranslator { get; }
-        object GetDomainObjectByOid(IOidTranslation objectId);
-        IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId);
-        object GetServiceByServiceName(IOidTranslation serviceName);
-        ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType);
-        string GetLinkDomainTypeBySpecification(ITypeFacade spec);
-        IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id);
-        IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id);
-        IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id);
-        IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id);
-        ITypeFacade GetServiceTypeByServiceName(IOidTranslation id);
-    }
+namespace NakedFramework.Facade.Translation; 
+
+public interface IOidStrategy {
+    IFrameworkFacade FrameworkFacade { set; }
+    IOidTranslator OidTranslator { get; }
+    object GetDomainObjectByOid(IOidTranslation objectId);
+    IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId);
+    object GetServiceByServiceName(IOidTranslation serviceName);
+    ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType);
+    string GetLinkDomainTypeBySpecification(ITypeFacade spec);
+    IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id);
+    IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id);
+    IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id);
+    IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id);
+    ITypeFacade GetServiceTypeByServiceName(IOidTranslation id);
 }

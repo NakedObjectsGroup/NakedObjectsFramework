@@ -19,252 +19,252 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
-    [TestFixture]
-    public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
-        protected override Type[] ObjectTypes => new[] {
-            typeof(Foo),
-            typeof(NakedObjects.SystemTest.Audit.Foo),
-            typeof(FooSub),
-            typeof(SubTypeOfFoo),
-            typeof(Bar),
-            typeof(Qux),
-            typeof(QueryableList<Foo>)
-        };
+namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer; 
 
-        protected override Type[] Services => new[] {
-            typeof(SimpleRepository<Foo>),
-            typeof(SimpleRepository<FooSub>),
-            typeof(SimpleRepository<SubTypeOfFoo>),
-            typeof(SimpleRepository<Bar>),
-            typeof(SimpleRepository<Qux>),
-            typeof(FooService),
-            typeof(BarService),
-            typeof(QuxService)
-        };
+[TestFixture]
+public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
+    protected override Type[] ObjectTypes => new[] {
+        typeof(Foo),
+        typeof(NakedObjects.SystemTest.Audit.Foo),
+        typeof(FooSub),
+        typeof(SubTypeOfFoo),
+        typeof(Bar),
+        typeof(Qux),
+        typeof(QueryableList<Foo>)
+    };
 
-        [SetUp]
-        public void SetUp() {
-            StartTest();
-            SetUser("sven");
-        }
+    protected override Type[] Services => new[] {
+        typeof(SimpleRepository<Foo>),
+        typeof(SimpleRepository<FooSub>),
+        typeof(SimpleRepository<SubTypeOfFoo>),
+        typeof(SimpleRepository<Bar>),
+        typeof(SimpleRepository<Qux>),
+        typeof(FooService),
+        typeof(BarService),
+        typeof(QuxService)
+    };
 
-        [TearDown]
-        public void TearDown() => EndTest();
+    [SetUp]
+    public void SetUp() {
+        StartTest();
+        SetUser("sven");
+    }
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            CustomAuthorizationManagerDbContext.Delete();
-            var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
+    [TearDown]
+    public void TearDown() => EndTest();
 
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        CustomAuthorizationManagerDbContext.Delete();
+        var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
 
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            CustomAuthorizationManagerDbContext.Delete();
-        }
+        context.Database.Create();
+        InitializeNakedObjectsFramework(this);
+    }
 
-        protected override IAuthorizationConfiguration AuthorizationConfiguration
+    [OneTimeTearDown]
+    public void FixtureTearDown() {
+        CleanupNakedObjectsFramework(this);
+        CustomAuthorizationManagerDbContext.Delete();
+    }
+
+    protected override IAuthorizationConfiguration AuthorizationConfiguration
+    {
+        get
         {
-            get
-            {
-                var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
-                config.AddTypeAuthorizer<Foo, FooAuthorizer>();
-                config.AddTypeAuthorizer<Qux, QuxAuthorizer>();
-                return config;
-            }
-        }
-
-        [Test]
-        public void DefaultAuthorizerCalledForNonSpecificType() {
-            var bar1 = GetTestService(typeof(SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();
-            var prop1 = bar1.GetPropertyByName("Prop1");
-            prop1.AssertIsVisible();
-            prop1.AssertIsModifiable();
-        }
-
-        [Test]
-        public void EditabilityUsingSpecificTypeAuthorizer() {
-            var qux = GetTestService(typeof(SimpleRepository<Qux>)).GetAction("New Instance").InvokeReturnObject();
-            try {
-                qux.GetPropertyByName("Prop1").AssertIsModifiable();
-                Assert.Fail("Should not get to here");
-            }
-            catch (Exception e) {
-                Assert.AreEqual("QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Prop1", e.Message);
-            }
-        }
-
-        [Test]
-        public void SubClassIsNotPickedUpByTypeAuthorizer() {
-            var fooSub = GetTestService(typeof(SimpleRepository<FooSub>)).GetAction("New Instance").InvokeReturnObject();
-            var prop1 = fooSub.GetPropertyByName("Prop1");
-            prop1.AssertIsVisible();
-            prop1.AssertIsModifiable();
-        }
-
-        [Test]
-        public void SubClassIsNotPickedUpByTypeAuthorizerWhereSubTypeNameExtendsSupertypeName() {
-            var fooSub = GetTestService(typeof(SimpleRepository<SubTypeOfFoo>)).GetAction("New Instance").InvokeReturnObject();
-            var prop1 = fooSub.GetPropertyByName("Prop1");
-            prop1.AssertIsVisible();
-            prop1.AssertIsModifiable();
-        }
-
-        [Test]
-        public void VisibilityUsingSpecificTypeAuthorizer() {
-            var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
-            try {
-                foo.GetPropertyByName("Prop1").AssertIsVisible();
-                Assert.Fail("Should not get to here");
-            }
-            catch (Exception e) {
-                Assert.AreEqual("FooAuthorizer#IsVisible, user: sven, target: foo1, memberName: Prop1", e.Message);
-            }
+            var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
+            config.AddTypeAuthorizer<Foo, FooAuthorizer>();
+            config.AddTypeAuthorizer<Qux, QuxAuthorizer>();
+            return config;
         }
     }
 
-    #region Classes used by tests
-
-    public class CustomAuthorizationManagerDbContext : DbContext {
-        public const string DatabaseName = "TestCustomAuthorizationManager";
-
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-        public CustomAuthorizationManagerDbContext() : base(Cs) { }
-
-        public DbSet<Foo> Foos { get; set; }
-        public DbSet<Bar> Bars { get; set; }
-        public DbSet<Qux> Quxes { get; set; }
-        public static void Delete() => Database.Delete(Cs);
+    [Test]
+    public void DefaultAuthorizerCalledForNonSpecificType() {
+        var bar1 = GetTestService(typeof(SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();
+        var prop1 = bar1.GetPropertyByName("Prop1");
+        prop1.AssertIsVisible();
+        prop1.AssertIsModifiable();
     }
 
-    public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
-        public IDomainObjectContainer Container { protected get; set; }
-        public SimpleRepository<Foo> Service { protected get; set; }
-
-        #region ITypeAuthorizer<object> Members
-
-        public bool IsEditable(IPrincipal principal, object target, string memberName) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
-            return true;
+    [Test]
+    public void EditabilityUsingSpecificTypeAuthorizer() {
+        var qux = GetTestService(typeof(SimpleRepository<Qux>)).GetAction("New Instance").InvokeReturnObject();
+        try {
+            qux.GetPropertyByName("Prop1").AssertIsModifiable();
+            Assert.Fail("Should not get to here");
         }
-
-        public bool IsVisible(IPrincipal principal, object target, string memberName) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
-            return true;
-        }
-
-        #endregion
-
-        public void Init() {
-            throw new NotImplementedException();
-        }
-
-        public void Shutdown() {
-            //Does nothing
+        catch (Exception e) {
+            Assert.AreEqual("QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Prop1", e.Message);
         }
     }
 
-    public class FooAuthorizer : ITypeAuthorizer<Foo> {
-        public IDomainObjectContainer Container { protected get; set; }
-        public SimpleRepository<Foo> Service { protected get; set; }
-
-        #region ITypeAuthorizer<Foo> Members
-
-        public bool IsEditable(IPrincipal principal, Foo target, string memberName) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
-            throw new NotImplementedException();
-        }
-
-        public bool IsVisible(IPrincipal principal, Foo target, string memberName) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
-            throw new Exception($"FooAuthorizer#IsVisible, user: {principal.Identity?.Name}, target: {target}, memberName: {memberName}");
-        }
-
-        #endregion
-
-        public void Init() {
-            //Does nothing
-        }
-
-        public void Shutdown() {
-            //Does nothing
-        }
+    [Test]
+    public void SubClassIsNotPickedUpByTypeAuthorizer() {
+        var fooSub = GetTestService(typeof(SimpleRepository<FooSub>)).GetAction("New Instance").InvokeReturnObject();
+        var prop1 = fooSub.GetPropertyByName("Prop1");
+        prop1.AssertIsVisible();
+        prop1.AssertIsModifiable();
     }
 
-    public class QuxAuthorizer : ITypeAuthorizer<Qux> {
-        public IDomainObjectContainer Container { protected get; set; }
-        public SimpleRepository<Foo> Service { protected get; set; }
+    [Test]
+    public void SubClassIsNotPickedUpByTypeAuthorizerWhereSubTypeNameExtendsSupertypeName() {
+        var fooSub = GetTestService(typeof(SimpleRepository<SubTypeOfFoo>)).GetAction("New Instance").InvokeReturnObject();
+        var prop1 = fooSub.GetPropertyByName("Prop1");
+        prop1.AssertIsVisible();
+        prop1.AssertIsModifiable();
+    }
 
-        #region ITypeAuthorizer<Qux> Members
-
-        //"QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Prop1"
-        public bool IsEditable(IPrincipal principal, Qux target, string memberName) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
-            throw new Exception($"QuxAuthorizer#IsEditable, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
+    [Test]
+    public void VisibilityUsingSpecificTypeAuthorizer() {
+        var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
+        try {
+            foo.GetPropertyByName("Prop1").AssertIsVisible();
+            Assert.Fail("Should not get to here");
         }
-
-        public bool IsVisible(IPrincipal principal, Qux target, string memberName) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
-            return true;
-        }
-
-        #endregion
-
-        public void Init() {
-            //Does nothing
-        }
-
-        public void Shutdown() {
-            //Does nothing
+        catch (Exception e) {
+            Assert.AreEqual("FooAuthorizer#IsVisible, user: sven, target: foo1, memberName: Prop1", e.Message);
         }
     }
+}
 
-    public class Foo {
-        public virtual int Id { get; set; }
+#region Classes used by tests
 
-        [Optionally]
-        public virtual string Prop1 { get; set; }
+public class CustomAuthorizationManagerDbContext : DbContext {
+    public const string DatabaseName = "TestCustomAuthorizationManager";
 
-        public override string ToString() => "foo1";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    public CustomAuthorizationManagerDbContext() : base(Cs) { }
+
+    public DbSet<Foo> Foos { get; set; }
+    public DbSet<Bar> Bars { get; set; }
+    public DbSet<Qux> Quxes { get; set; }
+    public static void Delete() => Database.Delete(Cs);
+}
+
+public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
+    public IDomainObjectContainer Container { protected get; set; }
+    public SimpleRepository<Foo> Service { protected get; set; }
+
+    #region ITypeAuthorizer<object> Members
+
+    public bool IsEditable(IPrincipal principal, object target, string memberName) {
+        Assert.IsNotNull(Container);
+        Assert.IsNotNull(Service);
+        return true;
     }
 
-    public class Bar {
-        public virtual int Id { get; set; }
-
-        [Optionally]
-        public virtual string Prop1 { get; set; }
-
-        public void Act1() { }
-    }
-
-    public class Qux {
-        public virtual int Id { get; set; }
-
-        [Optionally]
-        public virtual string Prop1 { get; set; }
-
-        public override string ToString() => "qux1";
-    }
-
-    public class FooSub : Foo {
-        [Optionally]
-        public virtual string Prop2 { get; set; }
-    }
-
-    public class SubTypeOfFoo : Foo {
-        [Optionally]
-        public virtual string Prop2 { get; set; }
+    public bool IsVisible(IPrincipal principal, object target, string memberName) {
+        Assert.IsNotNull(Container);
+        Assert.IsNotNull(Service);
+        return true;
     }
 
     #endregion
+
+    public void Init() {
+        throw new NotImplementedException();
+    }
+
+    public void Shutdown() {
+        //Does nothing
+    }
 }
+
+public class FooAuthorizer : ITypeAuthorizer<Foo> {
+    public IDomainObjectContainer Container { protected get; set; }
+    public SimpleRepository<Foo> Service { protected get; set; }
+
+    #region ITypeAuthorizer<Foo> Members
+
+    public bool IsEditable(IPrincipal principal, Foo target, string memberName) {
+        Assert.IsNotNull(Container);
+        Assert.IsNotNull(Service);
+        throw new NotImplementedException();
+    }
+
+    public bool IsVisible(IPrincipal principal, Foo target, string memberName) {
+        Assert.IsNotNull(Container);
+        Assert.IsNotNull(Service);
+        throw new Exception($"FooAuthorizer#IsVisible, user: {principal.Identity?.Name}, target: {target}, memberName: {memberName}");
+    }
+
+    #endregion
+
+    public void Init() {
+        //Does nothing
+    }
+
+    public void Shutdown() {
+        //Does nothing
+    }
+}
+
+public class QuxAuthorizer : ITypeAuthorizer<Qux> {
+    public IDomainObjectContainer Container { protected get; set; }
+    public SimpleRepository<Foo> Service { protected get; set; }
+
+    #region ITypeAuthorizer<Qux> Members
+
+    //"QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Prop1"
+    public bool IsEditable(IPrincipal principal, Qux target, string memberName) {
+        Assert.IsNotNull(Container);
+        Assert.IsNotNull(Service);
+        throw new Exception($"QuxAuthorizer#IsEditable, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
+    }
+
+    public bool IsVisible(IPrincipal principal, Qux target, string memberName) {
+        Assert.IsNotNull(Container);
+        Assert.IsNotNull(Service);
+        return true;
+    }
+
+    #endregion
+
+    public void Init() {
+        //Does nothing
+    }
+
+    public void Shutdown() {
+        //Does nothing
+    }
+}
+
+public class Foo {
+    public virtual int Id { get; set; }
+
+    [Optionally]
+    public virtual string Prop1 { get; set; }
+
+    public override string ToString() => "foo1";
+}
+
+public class Bar {
+    public virtual int Id { get; set; }
+
+    [Optionally]
+    public virtual string Prop1 { get; set; }
+
+    public void Act1() { }
+}
+
+public class Qux {
+    public virtual int Id { get; set; }
+
+    [Optionally]
+    public virtual string Prop1 { get; set; }
+
+    public override string ToString() => "qux1";
+}
+
+public class FooSub : Foo {
+    [Optionally]
+    public virtual string Prop2 { get; set; }
+}
+
+public class SubTypeOfFoo : Foo {
+    [Optionally]
+    public virtual string Prop2 { get; set; }
+}
+
+#endregion

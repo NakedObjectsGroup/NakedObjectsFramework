@@ -21,73 +21,73 @@ using NakedFramework.Metamodel.Facet;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-        private readonly ILogger<ActionInvocationFacetViaMethod> logger;
-        private readonly int paramCount;
+namespace NakedObjects.Reflector.Facet; 
 
-        public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger)
-            : base(holder) {
-            this.logger = logger;
-            ActionMethod = method;
-            paramCount = method.GetParameters().Length;
-            OnType = onType;
-            ReturnType = returnType;
-            ElementType = elementType;
-            IsQueryOnly = isQueryOnly;
-            ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
-        }
+[Serializable]
+public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
+    private readonly ILogger<ActionInvocationFacetViaMethod> logger;
+    private readonly int paramCount;
 
-        // for testing only 
-        [field: NonSerialized]
-        internal Func<object, object[], object> ActionDelegate { get; private set; }
-
-        public override MethodInfo ActionMethod { get; }
-
-        public override IObjectSpecImmutable ReturnType { get; }
-
-        public override ITypeSpecImmutable OnType { get; }
-
-        public override IObjectSpecImmutable ElementType { get; }
-
-        public override bool IsQueryOnly { get; }
-
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
-            if (parameters.Length != paramCount) {
-                logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
-            }
-
-            object result;
-            if (ActionDelegate != null) {
-                result = ActionDelegate(inObjectAdapter.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
-            }
-            else {
-                logger.LogWarning($"Invoking action via reflection as no delegate {OnType}.{ActionMethod}");
-                result = InvokeUtils.Invoke(ActionMethod, inObjectAdapter, parameters);
-            }
-
-            return framework.NakedObjectManager.CreateAdapter(result, null, null);
-        }
-
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) => Invoke(nakedObjectAdapter, parameters, framework);
-
-        protected override string ToStringValues() => $"method={ActionMethod}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
-
-        #region IImperativeFacet Members
-
-        /// <summary>
-        ///     See <see cref="IImperativeFacet" />
-        /// </summary>
-        public MethodInfo GetMethod() => ActionMethod;
-
-        public Func<object, object[], object> GetMethodDelegate() => ActionDelegate;
-
-        #endregion
+    public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger)
+        : base(holder) {
+        this.logger = logger;
+        ActionMethod = method;
+        paramCount = method.GetParameters().Length;
+        OnType = onType;
+        ReturnType = returnType;
+        ElementType = elementType;
+        IsQueryOnly = isQueryOnly;
+        ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    // for testing only 
+    [field: NonSerialized]
+    internal Func<object, object[], object> ActionDelegate { get; private set; }
+
+    public override MethodInfo ActionMethod { get; }
+
+    public override IObjectSpecImmutable ReturnType { get; }
+
+    public override ITypeSpecImmutable OnType { get; }
+
+    public override IObjectSpecImmutable ElementType { get; }
+
+    public override bool IsQueryOnly { get; }
+
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
+        if (parameters.Length != paramCount) {
+            logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
+        }
+
+        object result;
+        if (ActionDelegate != null) {
+            result = ActionDelegate(inObjectAdapter.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
+        }
+        else {
+            logger.LogWarning($"Invoking action via reflection as no delegate {OnType}.{ActionMethod}");
+            result = InvokeUtils.Invoke(ActionMethod, inObjectAdapter, parameters);
+        }
+
+        return framework.NakedObjectManager.CreateAdapter(result, null, null);
+    }
+
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) => Invoke(nakedObjectAdapter, parameters, framework);
+
+    protected override string ToStringValues() => $"method={ActionMethod}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
+
+    #region IImperativeFacet Members
+
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => ActionMethod;
+
+    public Func<object, object[], object> GetMethodDelegate() => ActionDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -10,88 +10,88 @@ using System.Data.Entity;
 using NakedObjects.Services;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.Repositories {
-    [TestFixture]
-    public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext> {
-        [SetUp]
-        public void SetUp() {
-            StartTest();
-            var cust1To = NewTestObject<Customer>();
-            cust1 = (Customer) cust1To.GetDomainObject();
-            cust1.Id = 1;
-            cust1To.Save();
+namespace NakedObjects.SystemTest.Repositories; 
 
-            var cust2To = NewTestObject<Customer>();
-            cust2 = (Customer) cust2To.GetDomainObject();
-            cust2.Id = 2;
-            cust2To.Save();
-        }
+[TestFixture]
+public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext> {
+    [SetUp]
+    public void SetUp() {
+        StartTest();
+        var cust1To = NewTestObject<Customer>();
+        cust1 = (Customer) cust1To.GetDomainObject();
+        cust1.Id = 1;
+        cust1To.Save();
 
-        [TearDown]
-        public void TearDown() => EndTest();
-
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            SimpleRepositoryDbContext.Delete();
-            var context = Activator.CreateInstance<SimpleRepositoryDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            SimpleRepositoryDbContext.Delete();
-        }
-
-        private Customer cust1;
-        private Customer cust2;
-
-        protected override Type[] ObjectTypes =>
-            new[] {
-                typeof(Customer)
-            };
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(SimpleRepository<Customer>)
-            };
-
-        [Test]
-        public void FindByKey() {
-            var find = GetTestService("Customers").GetAction("Find By Key");
-            var result = find.InvokeReturnObject(1);
-            result.GetPropertyByName("Id").AssertValueIsEqual("1");
-            result = find.InvokeReturnObject(2);
-            result.GetPropertyByName("Id").AssertValueIsEqual("2");
-        }
-
-        [Test]
-        public void KeyValueDoesNotExist() {
-            var find = GetTestService("Customers").GetAction("Find By Key");
-            var result = find.InvokeReturnObject(1000);
-            Assert.IsNull(result);
-        }
+        var cust2To = NewTestObject<Customer>();
+        cust2 = (Customer) cust2To.GetDomainObject();
+        cust2.Id = 2;
+        cust2To.Save();
     }
 
-    #region Classes used in tests
+    [TearDown]
+    public void TearDown() => EndTest();
 
-    public class SimpleRepositoryDbContext : DbContext {
-        public const string DatabaseName = "TestSimpleRepository";
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        SimpleRepositoryDbContext.Delete();
+        var context = Activator.CreateInstance<SimpleRepositoryDbContext>();
 
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-
-        public SimpleRepositoryDbContext() : base(Cs) { }
-
-        public DbSet<Customer> Customer { get; set; }
-
-        public static void Delete() => Database.Delete(Cs);
+        context.Database.Create();
+        InitializeNakedObjectsFramework(this);
     }
 
-    public class Customer {
-        public virtual int Id { get; set; }
+    [OneTimeTearDown]
+    public void FixtureTearDown() {
+        CleanupNakedObjectsFramework(this);
+        SimpleRepositoryDbContext.Delete();
     }
 
-    #endregion
+    private Customer cust1;
+    private Customer cust2;
+
+    protected override Type[] ObjectTypes =>
+        new[] {
+            typeof(Customer)
+        };
+
+    protected override Type[] Services =>
+        new[] {
+            typeof(SimpleRepository<Customer>)
+        };
+
+    [Test]
+    public void FindByKey() {
+        var find = GetTestService("Customers").GetAction("Find By Key");
+        var result = find.InvokeReturnObject(1);
+        result.GetPropertyByName("Id").AssertValueIsEqual("1");
+        result = find.InvokeReturnObject(2);
+        result.GetPropertyByName("Id").AssertValueIsEqual("2");
+    }
+
+    [Test]
+    public void KeyValueDoesNotExist() {
+        var find = GetTestService("Customers").GetAction("Find By Key");
+        var result = find.InvokeReturnObject(1000);
+        Assert.IsNull(result);
+    }
 }
+
+#region Classes used in tests
+
+public class SimpleRepositoryDbContext : DbContext {
+    public const string DatabaseName = "TestSimpleRepository";
+
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+
+    public SimpleRepositoryDbContext() : base(Cs) { }
+
+    public DbSet<Customer> Customer { get; set; }
+
+    public static void Delete() => Database.Delete(Cs);
+}
+
+public class Customer {
+    public virtual int Id { get; set; }
+}
+
+#endregion

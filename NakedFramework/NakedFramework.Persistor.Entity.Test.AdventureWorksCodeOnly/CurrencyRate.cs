@@ -13,33 +13,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.CurrencyRate")]
-    public class CurrencyRate {
-        public int CurrencyRateID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public DateTime CurrencyRateDate { get; set; }
+[Table("Sales.CurrencyRate")]
+public class CurrencyRate {
+    public int CurrencyRateID { get; set; }
 
-        [Required]
-        [StringLength(3)]
-        public string FromCurrencyCode { get; set; }
+    public DateTime CurrencyRateDate { get; set; }
 
-        [Required]
-        [StringLength(3)]
-        public string ToCurrencyCode { get; set; }
+    [Required]
+    [StringLength(3)]
+    public string FromCurrencyCode { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal AverageRate { get; set; }
+    [Required]
+    [StringLength(3)]
+    public string ToCurrencyCode { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal EndOfDayRate { get; set; }
+    [Column(TypeName = "money")]
+    public decimal AverageRate { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Column(TypeName = "money")]
+    public decimal EndOfDayRate { get; set; }
 
-        public virtual Currency Currency { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Currency Currency1 { get; set; }
+    public virtual Currency Currency { get; set; }
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
-    }
+    public virtual Currency Currency1 { get; set; }
+
+    public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 }

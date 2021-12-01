@@ -11,33 +11,33 @@ using System.Reflection;
 using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Configuration;
 
-namespace NakedObjects.Reflector.Component {
-    /// <summary>
-    ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
-    /// </summary>
-    [Serializable]
-    public class ObjectClassStrategy : AbstractClassStrategy {
-        private readonly IObjectReflectorConfiguration config;
+namespace NakedObjects.Reflector.Component; 
 
-        public ObjectClassStrategy(IObjectReflectorConfiguration config) => this.config = config;
+/// <summary>
+///     Standard way of determining which fields are to be exposed in a Naked Objects system.
+/// </summary>
+[Serializable]
+public class ObjectClassStrategy : AbstractClassStrategy {
+    private readonly IObjectReflectorConfiguration config;
 
-        protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
+    public ObjectClassStrategy(IObjectReflectorConfiguration config) => this.config = config;
 
-        protected override bool IsTypeExplicitlyRequested(Type type) {
-            var services = config.Services.ToArray();
-            return config.TypesToIntrospect.Any(t => t == type) ||
-                   services.Any(t => t == type) ||
-                   type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
-        }
+    protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
 
-        #region IClassStrategy Members
-
-        public override bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
-        public override bool IsService(Type type) => config.Services.Contains(type);
-        public override bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
-
-        #endregion
+    protected override bool IsTypeExplicitlyRequested(Type type) {
+        var services = config.Services.ToArray();
+        return config.TypesToIntrospect.Any(t => t == type) ||
+               services.Any(t => t == type) ||
+               type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region IClassStrategy Members
+
+    public override bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
+    public override bool IsService(Type type) => config.Services.Contains(type);
+    public override bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

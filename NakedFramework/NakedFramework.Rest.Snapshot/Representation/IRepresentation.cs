@@ -8,20 +8,20 @@
 using System;
 using Microsoft.Net.Http.Headers;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    public enum CacheType {
-        Transactional,
-        UserInfo,
-        NonExpiring
-    }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-    public interface IRepresentation {
-        MediaTypeHeaderValue GetContentType();
-        EntityTagHeaderValue GetEtag();
-        CacheType GetCaching();
+public enum CacheType {
+    Transactional,
+    UserInfo,
+    NonExpiring
+}
 
-        string[] GetWarnings();
+public interface IRepresentation {
+    MediaTypeHeaderValue GetContentType();
+    EntityTagHeaderValue GetEtag();
+    CacheType GetCaching();
 
-        Uri GetLocation();
-    }
+    string[] GetWarnings();
+
+    Uri GetLocation();
 }

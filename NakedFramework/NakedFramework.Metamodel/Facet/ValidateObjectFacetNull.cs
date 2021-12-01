@@ -10,20 +10,20 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFacet {
-        public ValidateObjectFacetNull(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IValidateObjectFacet);
+[Serializable]
+public sealed class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFacet {
+    public ValidateObjectFacetNull(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region IValidateObjectFacet Members
+    public static Type Type => typeof(IValidateObjectFacet);
 
-        public string Validate(INakedObjectAdapter nakedObjectAdapter) => null;
+    #region IValidateObjectFacet Members
 
-        public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string, INakedObjectAdapter)[] parms) => null;
+    public string Validate(INakedObjectAdapter nakedObjectAdapter) => null;
 
-        #endregion
-    }
+    public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string, INakedObjectAdapter)[] parms) => null;
+
+    #endregion
 }

@@ -7,20 +7,20 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     Indicates that the persistence of an object failed.
-    /// </summary>
-    [Serializable]
-    public class DisposeFailedException : Exception {
-        public DisposeFailedException() { }
+namespace NakedFramework.Core.Error; 
 
-        public DisposeFailedException(string msg)
-            : base(msg) { }
+/// <summary>
+///     Indicates that the persistence of an object failed.
+/// </summary>
+[Serializable]
+public class DisposeFailedException : Exception {
+    public DisposeFailedException() { }
 
-        public DisposeFailedException(string msg, Exception cause)
-            : base(msg, cause) { }
-    }
+    public DisposeFailedException(string msg)
+        : base(msg) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public DisposeFailedException(string msg, Exception cause)
+        : base(msg, cause) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

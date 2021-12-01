@@ -25,47 +25,47 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class ValidateObjectFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
-        private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ValidatePrefix
-        };
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        private ILogger<ValidateObjectFacetFactory> logger;
+public sealed class ValidateObjectFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+    private static readonly string[] FixedPrefixes = {
+        RecognisedMethodsAndPrefixes.ValidatePrefix
+    };
 
-        public ValidateObjectFacetFactory(IFacetFactoryOrder<ValidateObjectFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
-            logger = loggerFactory.CreateLogger<ValidateObjectFacetFactory>();
+    private ILogger<ValidateObjectFacetFactory> logger;
 
-        public string[] Prefixes => FixedPrefixes;
+    public ValidateObjectFacetFactory(IFacetFactoryOrder<ValidateObjectFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+        logger = loggerFactory.CreateLogger<ValidateObjectFacetFactory>();
 
-        private static bool ContainsField(string name, Type type, IClassStrategy classStrategy) =>
-            type.GetProperties().Any(p => p.Name.Equals(name, StringComparison.Ordinal) &&
-                                          p.HasPublicGetter() &&
-                                          !classStrategy.IsIgnored(p) &&
-                                          !CollectionUtils.IsCollection(p.PropertyType) &&
-                                          !CollectionUtils.IsQueryable(p.PropertyType));
+    public string[] Prefixes => FixedPrefixes;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
-            var methods = ObjectMethodHelpers.FindMethods(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix, typeof(string));
+    private static bool ContainsField(string name, Type type, IClassStrategy classStrategy) =>
+        type.GetProperties().Any(p => p.Name.Equals(name, StringComparison.Ordinal) &&
+                                      p.HasPublicGetter() &&
+                                      !classStrategy.IsIgnored(p) &&
+                                      !CollectionUtils.IsCollection(p.PropertyType) &&
+                                      !CollectionUtils.IsQueryable(p.PropertyType));
 
-            if (methods.Any()) {
-                foreach (var method in methods) {
-                    var parameters = method.GetParameters();
-                    if (parameters.Length >= 2) {
-                        var parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => $"{name[0].ToString(Thread.CurrentThread.CurrentCulture).ToUpper()}{name.Substring(1)}").All(p => ContainsField(p, type, reflector.ClassStrategy));
-                        if (parametersMatch) {
-                            methodPeers.Add(new ValidateObjectFacet.NakedObjectValidationMethod(method, Logger<ValidateObjectFacet.NakedObjectValidationMethod>()));
-                            methodRemover.SafeRemoveMethod(method);
-                        }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
+        var methods = ObjectMethodHelpers.FindMethods(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix, typeof(string));
+
+        if (methods.Any()) {
+            foreach (var method in methods) {
+                var parameters = method.GetParameters();
+                if (parameters.Length >= 2) {
+                    var parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => $"{name[0].ToString(Thread.CurrentThread.CurrentCulture).ToUpper()}{name.Substring(1)}").All(p => ContainsField(p, type, reflector.ClassStrategy));
+                    if (parametersMatch) {
+                        methodPeers.Add(new ValidateObjectFacet.NakedObjectValidationMethod(method, Logger<ValidateObjectFacet.NakedObjectValidationMethod>()));
+                        methodRemover.SafeRemoveMethod(method);
                     }
                 }
             }
-
-            var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers, Logger<ValidateObjectFacet>()) : new ValidateObjectFacetNull(specification);
-            FacetUtils.AddFacet(validateFacet);
-            return metamodel;
         }
+
+        var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers, Logger<ValidateObjectFacet>()) : new ValidateObjectFacetNull(specification);
+        FacetUtils.AddFacet(validateFacet);
+        return metamodel;
     }
 }

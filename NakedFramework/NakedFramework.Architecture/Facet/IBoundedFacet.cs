@@ -7,17 +7,17 @@
 
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Whether the number of instances of this class is bounded.
-    /// </summary>
-    /// <para>
-    ///     Typically viewers will interpret this information by displaying
-    ///     all instances of the class in a drop-down list box or similar widget.
-    /// </para>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     annotating the member with <see cref="BoundedAttribute" />
-    /// </para>
-    public interface IBoundedFacet : IMarkerFacet, IDisablingInteractionAdvisor { }
-}
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Whether the number of instances of this class is bounded.
+/// </summary>
+/// <para>
+///     Typically viewers will interpret this information by displaying
+///     all instances of the class in a drop-down list box or similar widget.
+/// </para>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     annotating the member with <see cref="BoundedAttribute" />
+/// </para>
+public interface IBoundedFacet : IMarkerFacet, IDisablingInteractionAdvisor { }

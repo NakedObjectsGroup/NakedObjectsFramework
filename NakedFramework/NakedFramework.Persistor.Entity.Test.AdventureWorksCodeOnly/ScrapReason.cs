@@ -13,18 +13,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.ScrapReason")]
-    public class ScrapReason {
-        public virtual short ScrapReasonID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        [ConcurrencyCheck]
-        public virtual string Name { get; set; }
+[Table("Production.ScrapReason")]
+public class ScrapReason {
+    public virtual short ScrapReasonID { get; set; }
 
-        public virtual DateTime ModifiedDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    [ConcurrencyCheck]
+    public virtual string Name { get; set; }
 
-        public virtual ICollection<WorkOrder> WorkOrders { get; set; } = new List<WorkOrder>();
-    }
+    public virtual DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<WorkOrder> WorkOrders { get; set; } = new List<WorkOrder>();
 }

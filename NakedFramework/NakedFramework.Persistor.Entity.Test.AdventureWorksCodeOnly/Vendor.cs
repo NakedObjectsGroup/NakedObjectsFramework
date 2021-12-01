@@ -13,36 +13,36 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Purchasing.Vendor")]
-    public class Vendor {
-        public int VendorID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(15)]
-        public string AccountNumber { get; set; }
+[Table("Purchasing.Vendor")]
+public class Vendor {
+    public int VendorID { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+    [Required]
+    [StringLength(15)]
+    public string AccountNumber { get; set; }
 
-        public byte CreditRating { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public bool PreferredVendorStatus { get; set; }
+    public byte CreditRating { get; set; }
 
-        public bool ActiveFlag { get; set; }
+    public bool PreferredVendorStatus { get; set; }
 
-        [StringLength(1024)]
-        public string PurchasingWebServiceURL { get; set; }
+    public bool ActiveFlag { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [StringLength(1024)]
+    public string PurchasingWebServiceURL { get; set; }
 
-        public virtual ICollection<ProductVendor> ProductVendors { get; set; } = new HashSet<ProductVendor>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; } = new HashSet<PurchaseOrderHeader>();
+    public virtual ICollection<ProductVendor> ProductVendors { get; set; } = new HashSet<ProductVendor>();
 
-        public virtual ICollection<VendorAddress> VendorAddresses { get; set; } = new HashSet<VendorAddress>();
+    public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; } = new HashSet<PurchaseOrderHeader>();
 
-        public virtual ICollection<VendorContact> VendorContacts { get; set; } = new HashSet<VendorContact>();
-    }
+    public virtual ICollection<VendorAddress> VendorAddresses { get; set; } = new HashSet<VendorAddress>();
+
+    public virtual ICollection<VendorContact> VendorContacts { get; set; } = new HashSet<VendorContact>();
 }

@@ -13,67 +13,67 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("HumanResources.Employee")]
-    public class Employee {
-        public int EmployeeID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(15)]
-        public string NationalIDNumber { get; set; }
+[Table("HumanResources.Employee")]
+public class Employee {
+    public int EmployeeID { get; set; }
 
-        public int ContactID { get; set; }
+    [Required]
+    [StringLength(15)]
+    public string NationalIDNumber { get; set; }
 
-        [Required]
-        [StringLength(256)]
-        public string LoginID { get; set; }
+    public int ContactID { get; set; }
 
-        public int? ManagerID { get; set; }
+    [Required]
+    [StringLength(256)]
+    public string LoginID { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Title { get; set; }
+    public int? ManagerID { get; set; }
 
-        public DateTime BirthDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Title { get; set; }
 
-        [Required]
-        [StringLength(1)]
-        public string MaritalStatus { get; set; }
+    public DateTime BirthDate { get; set; }
 
-        [Required]
-        [StringLength(1)]
-        public string Gender { get; set; }
+    [Required]
+    [StringLength(1)]
+    public string MaritalStatus { get; set; }
 
-        public DateTime HireDate { get; set; }
+    [Required]
+    [StringLength(1)]
+    public string Gender { get; set; }
 
-        public bool SalariedFlag { get; set; }
+    public DateTime HireDate { get; set; }
 
-        public short VacationHours { get; set; }
+    public bool SalariedFlag { get; set; }
 
-        public short SickLeaveHours { get; set; }
+    public short VacationHours { get; set; }
 
-        public bool CurrentFlag { get; set; }
+    public short SickLeaveHours { get; set; }
 
-        public Guid rowguid { get; set; }
+    public bool CurrentFlag { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual Contact Contact { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Employee> Employee1 { get; set; } = new HashSet<Employee>();
+    public virtual Contact Contact { get; set; }
 
-        public virtual Employee Employee2 { get; set; }
+    public virtual ICollection<Employee> Employee1 { get; set; } = new HashSet<Employee>();
 
-        public virtual ICollection<EmployeeAddress> EmployeeAddresses { get; set; } = new HashSet<EmployeeAddress>();
+    public virtual Employee Employee2 { get; set; }
 
-        public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistories { get; set; } = new HashSet<EmployeeDepartmentHistory>();
+    public virtual ICollection<EmployeeAddress> EmployeeAddresses { get; set; } = new HashSet<EmployeeAddress>();
 
-        public virtual ICollection<EmployeePayHistory> EmployeePayHistories { get; set; } = new HashSet<EmployeePayHistory>();
+    public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistories { get; set; } = new HashSet<EmployeeDepartmentHistory>();
 
-        public virtual ICollection<JobCandidate> JobCandidates { get; set; } = new HashSet<JobCandidate>();
+    public virtual ICollection<EmployeePayHistory> EmployeePayHistories { get; set; } = new HashSet<EmployeePayHistory>();
 
-        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; } = new HashSet<PurchaseOrderHeader>();
+    public virtual ICollection<JobCandidate> JobCandidates { get; set; } = new HashSet<JobCandidate>();
 
-        public virtual SalesPerson SalesPerson { get; set; }
-    }
+    public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; } = new HashSet<PurchaseOrderHeader>();
+
+    public virtual SalesPerson SalesPerson { get; set; }
 }

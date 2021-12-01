@@ -12,18 +12,18 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace TestData {
-    public class Pet : TestHelper {
-        [Key]
-        [ForeignKey("Owner")]
-        public virtual int PetId { get; set; }
+namespace TestData; 
 
-        [Title]
-        [Optionally]
-        public virtual string Name { get; set; }
+public class Pet : TestHelper {
+    [Key]
+    [ForeignKey("Owner")]
+    public virtual int PetId { get; set; }
 
-        public virtual Person Owner { get; set; }
+    [Title]
+    [Optionally]
+    public virtual string Name { get; set; }
 
-        public virtual string ValidateOwner(Person owner) => owner.Name == "Cruella" ? "Bad owner" : null;
-    }
+    public virtual Person Owner { get; set; }
+
+    public virtual string ValidateOwner(Person owner) => owner.Name == "Cruella" ? "Bad owner" : null;
 }

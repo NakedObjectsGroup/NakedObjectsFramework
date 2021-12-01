@@ -5,18 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Indicates that this class is aggregated, that is, wholly contained within a larger object.
-    /// </summary>
-    /// <para>
-    ///     The object may or may not be immutable <see cref="IImmutableFacet" />, and may
-    ///     reference regular entity domain objects or other aggregated objects.
-    /// </para>
-    /// <para>
-    ///     In terms of an analogy, aggregated is similar to Hibernate's component types
-    ///     (for larger mutable in-line objects) or to Hibernate's user-defined types (for
-    ///     smaller immutable values).
-    /// </para>
-    public interface IAggregatedFacet : IMarkerFacet { }
-}
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Indicates that this class is aggregated, that is, wholly contained within a larger object.
+/// </summary>
+/// <para>
+///     The object may or may not be immutable <see cref="IImmutableFacet" />, and may
+///     reference regular entity domain objects or other aggregated objects.
+/// </para>
+/// <para>
+///     In terms of an analogy, aggregated is similar to Hibernate's component types
+///     (for larger mutable in-line objects) or to Hibernate's user-defined types (for
+///     smaller immutable values).
+/// </para>
+public interface IAggregatedFacet : IMarkerFacet { }

@@ -5,8 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Component {
-    public interface II18NManager { }
+namespace NakedFramework.Architecture.Component; 
 
-    // Copyright (c) Naked Objects Group Ltd.
-}
+public interface II18NManager { }
+
+// Copyright (c) Naked Objects Group Ltd.

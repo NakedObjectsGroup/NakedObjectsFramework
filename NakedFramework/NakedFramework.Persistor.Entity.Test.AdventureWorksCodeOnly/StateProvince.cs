@@ -13,37 +13,37 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Person.StateProvince")]
-    public class StateProvince {
-        public int StateProvinceID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(3)]
-        public string StateProvinceCode { get; set; }
+[Table("Person.StateProvince")]
+public class StateProvince {
+    public int StateProvinceID { get; set; }
 
-        [Required]
-        [StringLength(3)]
-        public string CountryRegionCode { get; set; }
+    [Required]
+    [StringLength(3)]
+    public string StateProvinceCode { get; set; }
 
-        public bool IsOnlyStateProvinceFlag { get; set; }
+    [Required]
+    [StringLength(3)]
+    public string CountryRegionCode { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+    public bool IsOnlyStateProvinceFlag { get; set; }
 
-        public int TerritoryID { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public Guid rowguid { get; set; }
+    public int TerritoryID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; } = new HashSet<Address>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual CountryRegion CountryRegion { get; set; }
+    public virtual ICollection<Address> Addresses { get; set; } = new HashSet<Address>();
 
-        public virtual ICollection<SalesTaxRate> SalesTaxRates { get; set; } = new HashSet<SalesTaxRate>();
+    public virtual CountryRegion CountryRegion { get; set; }
 
-        public virtual SalesTerritory SalesTerritory { get; set; }
-    }
+    public virtual ICollection<SalesTaxRate> SalesTaxRates { get; set; } = new HashSet<SalesTaxRate>();
+
+    public virtual SalesTerritory SalesTerritory { get; set; }
 }

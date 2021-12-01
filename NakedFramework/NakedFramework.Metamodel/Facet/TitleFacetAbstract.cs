@@ -11,20 +11,20 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class TitleFacetAbstract : FacetAbstract, ITitleFacet {
-        protected TitleFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(ITitleFacet);
+[Serializable]
+public abstract class TitleFacetAbstract : FacetAbstract, ITitleFacet {
+    protected TitleFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region ITitleFacet Members
+    public static Type Type => typeof(ITitleFacet);
 
-        public virtual string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetTitle(nakedObjectAdapter, framework);
+    #region ITitleFacet Members
 
-        public abstract string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+    public virtual string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetTitle(nakedObjectAdapter, framework);
 
-        #endregion
-    }
+    public abstract string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+
+    #endregion
 }

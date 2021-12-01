@@ -20,125 +20,125 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class PasswordAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private PasswordAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IPasswordFacet)};
+[TestClass]
+public class PasswordAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private PasswordAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IPasswordFacet)};
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPasswordFacet));
-            Assert.IsNull(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestPasswordAnnotationNotPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer3), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPasswordFacet));
-            Assert.IsNull(facet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestPasswordAnnotationPickedUpOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPasswordFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PasswordFacet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestPasswordAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPasswordFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PasswordFacet);
-            Assert.IsNotNull(metamodel);
-        }
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [DataType(DataType.Password)]
-
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer2
-
-        private class Customer2 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.Password)] string foo) { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer3
-
-        private class Customer3 {
-            [DataType(DataType.PhoneNumber)]
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer4
-
-        private class Customer4 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PasswordAnnotationFacetFactory(GetOrder<PasswordAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
+    [TestMethod]
+    public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(string)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPasswordFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestPasswordAnnotationNotPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer3), "FirstName");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPasswordFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestPasswordAnnotationPickedUpOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPasswordFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is PasswordFacet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestPasswordAnnotationPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "FirstName");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPasswordFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is PasswordFacet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [DataType(DataType.Password)]
+
+        public string FirstName => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer2
+
+    private class Customer2 {
+// ReSharper disable once UnusedParameter.Local
+        public void SomeAction([DataType(DataType.Password)] string foo) { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer3
+
+    private class Customer3 {
+        [DataType(DataType.PhoneNumber)]
+        public string FirstName => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer4
+
+    private class Customer4 {
+// ReSharper disable once UnusedParameter.Local
+        public void SomeAction([DataType(DataType.PhoneNumber)] string foo) { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new PasswordAnnotationFacetFactory(GetOrder<PasswordAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.
+// ReSharper restore UnusedMember.Local

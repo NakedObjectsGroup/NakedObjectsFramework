@@ -14,17 +14,17 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class ViewModelEditFacetConvention : ViewModelFacetAbstract {
-        public ViewModelEditFacetConvention(ISpecification holder) : base(Type, holder) { }
+namespace NakedObjects.Reflector.Facet; 
 
-        private static Type Type => typeof(IViewModelFacet);
+[Serializable]
+public sealed class ViewModelEditFacetConvention : ViewModelFacetAbstract {
+    public ViewModelEditFacetConvention(ISpecification holder) : base(Type, holder) { }
 
-        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
+    private static Type Type => typeof(IViewModelFacet);
 
-        public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
+    public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 
-        public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => true;
-    }
+    public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
+
+    public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => true;
 }

@@ -5,11 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Core.Error {
-    public class FindObjectException : ObjectPersistenceException {
-        public FindObjectException(string s)
-            : base(s) { }
-    }
+namespace NakedFramework.Core.Error; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public class FindObjectException : ObjectPersistenceException {
+    public FindObjectException(string s)
+        : base(s) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

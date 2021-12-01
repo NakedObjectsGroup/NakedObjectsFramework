@@ -13,31 +13,31 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Facet {
-    /// <summary>
-    ///     Hide a property, collection or action based on the current session.
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     invoking the <c>HideXxx</c> support method for the member.
-    /// </para>
-    [Serializable]
-    public abstract class HideForSessionFacetAbstract : FacetAbstract, IHideForSessionFacet {
-        protected HideForSessionFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IHideForSessionFacet);
+/// <summary>
+///     Hide a property, collection or action based on the current session.
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     invoking the <c>HideXxx</c> support method for the member.
+/// </para>
+[Serializable]
+public abstract class HideForSessionFacetAbstract : FacetAbstract, IHideForSessionFacet {
+    protected HideForSessionFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region IHideForSessionFacet Members
+    public static Type Type => typeof(IHideForSessionFacet);
 
-        public virtual string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
+    #region IHideForSessionFacet Members
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
+    public virtual string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);
 
-        public abstract string HiddenReason(INakedObjectAdapter target, INakedFramework framework);
+    public virtual Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
-        #endregion
-    }
+    public abstract string HiddenReason(INakedObjectAdapter target, INakedFramework framework);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

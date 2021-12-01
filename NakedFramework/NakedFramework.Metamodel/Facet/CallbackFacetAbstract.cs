@@ -11,21 +11,21 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    /// <summary>
-    ///     Adapter superclass for <see cref="IFacet" />s for <see cref="ICallbackFacet" />
-    /// </summary>
-    [Serializable]
-    public abstract class CallbackFacetAbstract : FacetAbstract, ICallbackFacet {
-        protected CallbackFacetAbstract(Type facetType, ISpecification holder)
-            : base(facetType, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        #region ICallbackFacet Members
+/// <summary>
+///     Adapter superclass for <see cref="IFacet" />s for <see cref="ICallbackFacet" />
+/// </summary>
+[Serializable]
+public abstract class CallbackFacetAbstract : FacetAbstract, ICallbackFacet {
+    protected CallbackFacetAbstract(Type facetType, ISpecification holder)
+        : base(facetType, holder) { }
 
-        public abstract void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+    #region ICallbackFacet Members
 
-        #endregion
-    }
+    public abstract void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

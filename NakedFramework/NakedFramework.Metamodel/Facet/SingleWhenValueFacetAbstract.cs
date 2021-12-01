@@ -9,21 +9,21 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenValueFacet {
-        private readonly WhenTo when;
+namespace NakedFramework.Metamodel.Facet; 
 
-        protected SingleWhenValueFacetAbstract(Type facetType, ISpecification holder, WhenTo when)
-            : base(facetType, holder) =>
-            this.when = when;
+[Serializable]
+public abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenValueFacet {
+    private readonly WhenTo when;
 
-        #region ISingleWhenValueFacet Members
+    protected SingleWhenValueFacetAbstract(Type facetType, ISpecification holder, WhenTo when)
+        : base(facetType, holder) =>
+        this.when = when;
 
-        public virtual WhenTo Value => when;
+    #region ISingleWhenValueFacet Members
 
-        #endregion
+    public virtual WhenTo Value => when;
 
-        protected override string ToStringValues() => $"when={when}";
-    }
+    #endregion
+
+    protected override string ToStringValues() => $"when={when}";
 }

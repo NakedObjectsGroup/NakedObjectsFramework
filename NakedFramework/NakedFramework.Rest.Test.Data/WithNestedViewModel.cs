@@ -15,60 +15,60 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class WithNestedViewModel : IViewModel {
-        private int deriveCheck;
-        private int populateCheck;
-        public IDomainObjectContainer Container { set; protected get; }
+namespace RestfulObjects.Test.Data; 
 
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        public virtual int Id { get; set; }
+public class WithNestedViewModel : IViewModel {
+    private int deriveCheck;
+    private int populateCheck;
+    public IDomainObjectContainer Container { set; protected get; }
 
-        [Hidden(WhenTo.Always)]
-        public virtual string AggregateKey {
-            get { return DeriveKeys().Aggregate("", (s, t) => s + " " + t); }
-        }
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    public virtual int Id { get; set; }
 
-        public virtual MostSimple AReference { get; set; }
-
-        public virtual WithReferenceViewModel AViewModelReference { get; set; }
-
-        #region IViewModel Members
-
-        [NakedObjectsIgnore]
-        public string[] DeriveKeys() {
-            deriveCheck++;
-
-            if (deriveCheck > 1) {
-                throw new Exception("Derive called multiple times");
-            }
-
-            var keys = new List<string> {AReference.Id.ToString()};
-            keys.AddRange(AViewModelReference.TestDeriveKeys());
-            return keys.ToArray();
-        }
-
-        [NakedObjectsIgnore]
-        public void PopulateUsingKeys(string[] keys) {
-            populateCheck++;
-
-            if (populateCheck > 1) {
-                throw new Exception("PopulateUsingKeys called multiple times");
-            }
-
-            var msId = int.Parse(keys[0]);
-            var vmKey = keys.Skip(1).ToArray();
-
-            Id = msId;
-
-            AReference = Container.Instances<MostSimple>().FirstOrDefault(ms => ms.Id == msId);
-
-            AViewModelReference = Container.NewViewModel<WithReferenceViewModel>();
-            AViewModelReference.PopulateUsingKeys(vmKey);
-        }
-
-        #endregion
+    [Hidden(WhenTo.Always)]
+    public virtual string AggregateKey {
+        get { return DeriveKeys().Aggregate("", (s, t) => s + " " + t); }
     }
+
+    public virtual MostSimple AReference { get; set; }
+
+    public virtual WithReferenceViewModel AViewModelReference { get; set; }
+
+    #region IViewModel Members
+
+    [NakedObjectsIgnore]
+    public string[] DeriveKeys() {
+        deriveCheck++;
+
+        if (deriveCheck > 1) {
+            throw new Exception("Derive called multiple times");
+        }
+
+        var keys = new List<string> {AReference.Id.ToString()};
+        keys.AddRange(AViewModelReference.TestDeriveKeys());
+        return keys.ToArray();
+    }
+
+    [NakedObjectsIgnore]
+    public void PopulateUsingKeys(string[] keys) {
+        populateCheck++;
+
+        if (populateCheck > 1) {
+            throw new Exception("PopulateUsingKeys called multiple times");
+        }
+
+        var msId = int.Parse(keys[0]);
+        var vmKey = keys.Skip(1).ToArray();
+
+        Id = msId;
+
+        AReference = Container.Instances<MostSimple>().FirstOrDefault(ms => ms.Id == msId);
+
+        AViewModelReference = Container.NewViewModel<WithReferenceViewModel>();
+        AViewModelReference.PopulateUsingKeys(vmKey);
+    }
+
+    #endregion
 }

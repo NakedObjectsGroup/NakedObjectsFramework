@@ -11,38 +11,38 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 
-namespace NakedFramework.Core.Component {
-    public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
-        private readonly IDictionary<IOid, INakedObjectAdapter> adapters;
-        private readonly int capacity;
+namespace NakedFramework.Core.Component; 
 
-        private IdentityAdapterHashMap() => adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
+public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
+    private readonly IDictionary<IOid, INakedObjectAdapter> adapters;
+    private readonly int capacity;
 
-        // used by DI
-        // ReSharper disable once UnusedMember.Global
-        public IdentityAdapterHashMap(ICoreConfiguration config) : this() {
-            capacity = config.HashMapCapacity;
-            adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
-        }
+    private IdentityAdapterHashMap() => adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
 
-        #region IIdentityAdapterMap Members
-
-        public void Add(IOid oid, INakedObjectAdapter adapter) => adapters[oid] = adapter;
-
-        public INakedObjectAdapter GetAdapter(IOid oid) => adapters.ContainsKey(oid) ? adapters[oid] : null;
-
-        public bool IsIdentityKnown(IOid oid) => adapters.ContainsKey(oid);
-
-        public IEnumerator<IOid> GetEnumerator() => adapters.Keys.GetEnumerator();
-
-        public void Remove(IOid oid) => adapters.Remove(oid);
-
-        public void Reset() => adapters.Clear();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        #endregion
+    // used by DI
+    // ReSharper disable once UnusedMember.Global
+    public IdentityAdapterHashMap(ICoreConfiguration config) : this() {
+        capacity = config.HashMapCapacity;
+        adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region IIdentityAdapterMap Members
+
+    public void Add(IOid oid, INakedObjectAdapter adapter) => adapters[oid] = adapter;
+
+    public INakedObjectAdapter GetAdapter(IOid oid) => adapters.ContainsKey(oid) ? adapters[oid] : null;
+
+    public bool IsIdentityKnown(IOid oid) => adapters.ContainsKey(oid);
+
+    public IEnumerator<IOid> GetEnumerator() => adapters.Keys.GetEnumerator();
+
+    public void Remove(IOid oid) => adapters.Remove(oid);
+
+    public void Reset() => adapters.Clear();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

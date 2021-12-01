@@ -12,43 +12,43 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class EnumFacet : MarkerFacetAbstract, IEnumFacet {
-        private readonly Type typeOfEnum;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public EnumFacet(ISpecification holder, Type typeOfEnum)
-            : base(typeof(IEnumFacet), holder) =>
-            this.typeOfEnum = typeOfEnum;
+[Serializable]
+public sealed class EnumFacet : MarkerFacetAbstract, IEnumFacet {
+    private readonly Type typeOfEnum;
 
-        private string ToDisplayName(string enumName) => NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
+    public EnumFacet(ISpecification holder, Type typeOfEnum)
+        : base(typeof(IEnumFacet), holder) =>
+        this.typeOfEnum = typeOfEnum;
 
-        #region Nested type: EnumNameComparer
+    private string ToDisplayName(string enumName) => NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
 
-        private class EnumNameComparer : IComparer<string> {
-            private readonly EnumFacet facet;
+    #region Nested type: EnumNameComparer
 
-            public EnumNameComparer(EnumFacet facet) => this.facet = facet;
+    private class EnumNameComparer : IComparer<string> {
+        private readonly EnumFacet facet;
 
-            #region IComparer<string> Members
+        public EnumNameComparer(EnumFacet facet) => this.facet = facet;
 
-            public int Compare(string x, string y) => string.Compare(facet.ToDisplayName(x), facet.ToDisplayName(y), StringComparison.CurrentCulture);
+        #region IComparer<string> Members
 
-            #endregion
-        }
-
-        #endregion
-
-        #region IEnumFacet Members
-
-        public object[] GetChoices(INakedObjectAdapter inObjectAdapter) => Enum.GetNames(typeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
-
-        public object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues) => choiceValues.Select(o => Enum.Parse(typeOfEnum, o.ToString())).ToArray();
-
-        public string GetTitle(INakedObjectAdapter inObjectAdapter) => ToDisplayName(inObjectAdapter.Object.ToString());
+        public int Compare(string x, string y) => string.Compare(facet.ToDisplayName(x), facet.ToDisplayName(y), StringComparison.CurrentCulture);
 
         #endregion
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
+
+    #region IEnumFacet Members
+
+    public object[] GetChoices(INakedObjectAdapter inObjectAdapter) => Enum.GetNames(typeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
+
+    public object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues) => choiceValues.Select(o => Enum.Parse(typeOfEnum, o.ToString())).ToArray();
+
+    public string GetTitle(INakedObjectAdapter inObjectAdapter) => ToDisplayName(inObjectAdapter.Object.ToString());
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

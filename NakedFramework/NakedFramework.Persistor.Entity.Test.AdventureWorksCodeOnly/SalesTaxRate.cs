@@ -12,26 +12,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.SalesTaxRate")]
-    public class SalesTaxRate {
-        public int SalesTaxRateID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public int StateProvinceID { get; set; }
+[Table("Sales.SalesTaxRate")]
+public class SalesTaxRate {
+    public int SalesTaxRateID { get; set; }
 
-        public byte TaxType { get; set; }
+    public int StateProvinceID { get; set; }
 
-        [Column(TypeName = "smallmoney")]
-        public decimal TaxRate { get; set; }
+    public byte TaxType { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+    [Column(TypeName = "smallmoney")]
+    public decimal TaxRate { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual StateProvince StateProvince { get; set; }
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual StateProvince StateProvince { get; set; }
 }

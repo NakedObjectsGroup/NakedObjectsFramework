@@ -13,42 +13,42 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Person.Address")]
-    public class Address {
-        public int AddressID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(60)]
-        public string AddressLine1 { get; set; }
+[Table("Person.Address")]
+public class Address {
+    public int AddressID { get; set; }
 
-        [StringLength(60)]
-        public string AddressLine2 { get; set; }
+    [Required]
+    [StringLength(60)]
+    public string AddressLine1 { get; set; }
 
-        [Required]
-        [StringLength(30)]
-        public string City { get; set; }
+    [StringLength(60)]
+    public string AddressLine2 { get; set; }
 
-        public int StateProvinceID { get; set; }
+    [Required]
+    [StringLength(30)]
+    public string City { get; set; }
 
-        [Required]
-        [StringLength(15)]
-        public string PostalCode { get; set; }
+    public int StateProvinceID { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Required]
+    [StringLength(15)]
+    public string PostalCode { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual ICollection<EmployeeAddress> EmployeeAddresses { get; set; } = new HashSet<EmployeeAddress>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual StateProvince StateProvince { get; set; }
+    public virtual ICollection<EmployeeAddress> EmployeeAddresses { get; set; } = new HashSet<EmployeeAddress>();
 
-        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new HashSet<CustomerAddress>();
+    public virtual StateProvince StateProvince { get; set; }
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
+    public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new HashSet<CustomerAddress>();
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders1 { get; set; } = new HashSet<SalesOrderHeader>();
+    public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 
-        public virtual ICollection<VendorAddress> VendorAddresses { get; set; } = new HashSet<VendorAddress>();
-    }
+    public virtual ICollection<SalesOrderHeader> SalesOrderHeaders1 { get; set; } = new HashSet<SalesOrderHeader>();
+
+    public virtual ICollection<VendorAddress> VendorAddresses { get; set; } = new HashSet<VendorAddress>();
 }

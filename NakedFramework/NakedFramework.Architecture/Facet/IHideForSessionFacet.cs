@@ -9,17 +9,17 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Hide a property, collection or action based on the current session.
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     invoking the <c>HideXxx</c> support method for the member
-    /// </para>
-    public interface IHideForSessionFacet : IFacet, IHidingInteractionAdvisor {
-        string HiddenReason(INakedObjectAdapter target, INakedFramework framework);
-    }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Hide a property, collection or action based on the current session.
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     invoking the <c>HideXxx</c> support method for the member
+/// </para>
+public interface IHideForSessionFacet : IFacet, IHidingInteractionAdvisor {
+    string HiddenReason(INakedObjectAdapter target, INakedFramework framework);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

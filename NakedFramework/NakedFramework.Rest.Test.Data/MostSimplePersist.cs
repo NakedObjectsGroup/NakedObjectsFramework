@@ -9,12 +9,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace RestfulObjects.Test.Data {
-    public class MostSimplePersist {
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        [DefaultValue(0)]
-        public virtual int Id { get; set; }
-    }
+namespace RestfulObjects.Test.Data; 
+
+public class MostSimplePersist {
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    [DefaultValue(0)]
+    public virtual int Id { get; set; }
 }

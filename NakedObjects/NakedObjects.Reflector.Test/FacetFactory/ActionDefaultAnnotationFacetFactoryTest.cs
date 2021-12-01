@@ -18,67 +18,67 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class ActionDefaultAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private ActionDefaultAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IActionDefaultsFacet)}; }
-        }
+[TestClass]
+public class ActionDefaultAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private ActionDefaultAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        [TestMethod]
-        public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IActionDefaultsFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ActionDefaultsFacetAnnotation);
-            var actionDefaultFacetAnnotation = (ActionDefaultsFacetAnnotation) facet;
-            Assert.AreEqual(1, actionDefaultFacetAnnotation.GetDefault(null, null).value);
-            Assert.AreEqual(TypeOfDefaultValue.Explicit, actionDefaultFacetAnnotation.GetDefault(null, null).type);
-            Assert.AreEqual(0, metamodel.Count);
-        }
-
-        #region Nested type: Customer2
-
-        private class Customer2 {
-            // ReSharper disable once UnusedMember.Local
-            // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DefaultValue(1)] int foo) { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new ActionDefaultAnnotationFacetFactory(GetOrder<ActionDefaultAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    protected override Type[] SupportedTypes {
+        get { return new[] {typeof(IActionDefaultsFacet)}; }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override IFacetFactory FacetFactory => facetFactory;
+
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    [TestMethod]
+    public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IActionDefaultsFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is ActionDefaultsFacetAnnotation);
+        var actionDefaultFacetAnnotation = (ActionDefaultsFacetAnnotation) facet;
+        Assert.AreEqual(1, actionDefaultFacetAnnotation.GetDefault(null, null).value);
+        Assert.AreEqual(TypeOfDefaultValue.Explicit, actionDefaultFacetAnnotation.GetDefault(null, null).type);
+        Assert.AreEqual(0, metamodel.Count);
+    }
+
+    #region Nested type: Customer2
+
+    private class Customer2 {
+        // ReSharper disable once UnusedMember.Local
+        // ReSharper disable once UnusedParameter.Local
+        public void SomeAction([DefaultValue(1)] int foo) { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new ActionDefaultAnnotationFacetFactory(GetOrder<ActionDefaultAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

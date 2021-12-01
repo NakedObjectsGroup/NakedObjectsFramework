@@ -7,11 +7,11 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Persist {
-    public interface IPersistenceCommand {
-        void Execute();
-        INakedObjectAdapter OnObject();
-    }
+namespace NakedFramework.Architecture.Persist; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface IPersistenceCommand {
+    void Execute();
+    INakedObjectAdapter OnObject();
 }
+
+// Copyright (c) Naked Objects Group Ltd.

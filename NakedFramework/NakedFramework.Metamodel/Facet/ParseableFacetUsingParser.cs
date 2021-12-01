@@ -13,43 +13,43 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
-        private readonly IValueSemanticsProvider<T> parser;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
-            : base(typeof(IParseableFacet), holder) =>
-            this.parser = parser;
+[Serializable]
+public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
+    private readonly IValueSemanticsProvider<T> parser;
 
-        protected override string ToStringValues() => parser.ToString();
+    public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
+        : base(typeof(IParseableFacet), holder) =>
+        this.parser = parser;
 
-        #region IParseableFacet Members
+    protected override string ToStringValues() => parser.ToString();
 
-        public INakedObjectAdapter ParseTextEntry(string entry, INakedObjectManager manager) {
-            if (entry == null) {
-                throw new ArgumentException(NakedObjects.Resources.NakedObjects.MissingEntryError);
-            }
+    #region IParseableFacet Members
 
-            var parsed = parser.ParseTextEntry(entry);
-            return manager.CreateAdapter(parsed, null, null);
+    public INakedObjectAdapter ParseTextEntry(string entry, INakedObjectManager manager) {
+        if (entry == null) {
+            throw new ArgumentException(NakedObjects.Resources.NakedObjects.MissingEntryError);
         }
 
-        public INakedObjectAdapter ParseInvariant(string text, INakedObjectManager manager) {
-            var parsed = parser.ParseInvariant(text);
-            return manager.CreateAdapter(parsed, null, null);
-        }
-
-        public string ParseableTitle(INakedObjectAdapter nakedObjectAdapter) {
-            var context = nakedObjectAdapter.GetDomainObject<T>();
-            return parser.EditableTitleOf(context);
-        }
-
-        public string InvariantString(INakedObjectAdapter nakedObjectAdapter) {
-            var context = nakedObjectAdapter.GetDomainObject<T>();
-            return parser.InvariantString(context);
-        }
-
-        #endregion
+        var parsed = parser.ParseTextEntry(entry);
+        return manager.CreateAdapter(parsed, null, null);
     }
+
+    public INakedObjectAdapter ParseInvariant(string text, INakedObjectManager manager) {
+        var parsed = parser.ParseInvariant(text);
+        return manager.CreateAdapter(parsed, null, null);
+    }
+
+    public string ParseableTitle(INakedObjectAdapter nakedObjectAdapter) {
+        var context = nakedObjectAdapter.GetDomainObject<T>();
+        return parser.EditableTitleOf(context);
+    }
+
+    public string InvariantString(INakedObjectAdapter nakedObjectAdapter) {
+        var context = nakedObjectAdapter.GetDomainObject<T>();
+        return parser.InvariantString(context);
+    }
+
+    #endregion
 }

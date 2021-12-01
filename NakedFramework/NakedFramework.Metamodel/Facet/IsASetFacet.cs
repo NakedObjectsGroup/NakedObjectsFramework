@@ -9,11 +9,11 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class IsASetFacet : MarkerFacetAbstract, IIsASetFacet {
-        public IsASetFacet(ISpecification holder) : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IIsASetFacet);
-    }
+[Serializable]
+public sealed class IsASetFacet : MarkerFacetAbstract, IIsASetFacet {
+    public IsASetFacet(ISpecification holder) : base(Type, holder) { }
+
+    public static Type Type => typeof(IIsASetFacet);
 }

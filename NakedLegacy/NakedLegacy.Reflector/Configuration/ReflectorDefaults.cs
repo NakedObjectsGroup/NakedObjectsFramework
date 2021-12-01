@@ -8,19 +8,19 @@
 using System;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.Configuration {
-    public static class ReflectorDefaults {
-        public static readonly Type[] DefaultLegacyTypes = {
-            typeof(TextString),
-            typeof(InternalCollection),
-            typeof(InternalCollection<>),
-            typeof(Date),
-            typeof(TimeStamp),
-            typeof(TitledObject),
-            typeof(ActionAbout),
-            typeof(FieldAbout),
-            typeof(Title),
-            typeof(WholeNumber)
-        };
-    }
+namespace NakedLegacy.Reflector.Configuration; 
+
+public static class ReflectorDefaults {
+    public static readonly Type[] DefaultLegacyTypes = {
+        typeof(TextString),
+        typeof(InternalCollection),
+        typeof(InternalCollection<>),
+        typeof(Date),
+        typeof(TimeStamp),
+        typeof(TitledObject),
+        typeof(ActionAbout),
+        typeof(FieldAbout),
+        typeof(Title),
+        typeof(WholeNumber)
+    };
 }

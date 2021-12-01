@@ -20,35 +20,35 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class HiddenAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public HiddenAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(type.GetCustomAttribute<HiddenAttribute>, type.GetCustomAttribute<ScaffoldColumnAttribute>, specification);
-            return metamodel;
-        }
+public sealed class HiddenAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public HiddenAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
-        private static void Process(MemberInfo member, ISpecification holder) => Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
-
-        private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
-            var attribute = getHidden();
-            FacetUtils.AddFacet(attribute is not null ? Create((HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, specification);
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(property, specification);
-            return metamodel;
-        }
-
-        private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Value, holder);
-
-        private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(type.GetCustomAttribute<HiddenAttribute>, type.GetCustomAttribute<ScaffoldColumnAttribute>, specification);
+        return metamodel;
     }
+
+    private static void Process(MemberInfo member, ISpecification holder) => Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
+
+    private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
+        var attribute = getHidden();
+        FacetUtils.AddFacet(attribute is not null ? Create((HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(property, specification);
+        return metamodel;
+    }
+
+    private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Value, holder);
+
+    private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
 }

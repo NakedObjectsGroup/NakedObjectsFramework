@@ -8,36 +8,36 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Component {
+namespace NakedFramework.Architecture.Component; 
+
+/// <summary>
+///     A map of the objects' identities and the adapters' of the objects
+/// </summary>
+public interface IIdentityAdapterMap : IEnumerable<IOid> {
     /// <summary>
-    ///     A map of the objects' identities and the adapters' of the objects
+    ///     Add an adapter for a given oid
     /// </summary>
-    public interface IIdentityAdapterMap : IEnumerable<IOid> {
-        /// <summary>
-        ///     Add an adapter for a given oid
-        /// </summary>
-        void Add(IOid oid, INakedObjectAdapter adapter);
+    void Add(IOid oid, INakedObjectAdapter adapter);
 
-        /// <summary>
-        ///     Get the adapter identified by the specified OID
-        /// </summary>
-        INakedObjectAdapter GetAdapter(IOid oid);
+    /// <summary>
+    ///     Get the adapter identified by the specified OID
+    /// </summary>
+    INakedObjectAdapter GetAdapter(IOid oid);
 
-        /// <summary>
-        ///     Determine if an adapter exists for the the specified OID
-        /// </summary>
-        bool IsIdentityKnown(IOid oid);
+    /// <summary>
+    ///     Determine if an adapter exists for the the specified OID
+    /// </summary>
+    bool IsIdentityKnown(IOid oid);
 
-        /// <summary>
-        ///     Remove the adapter for the given oid
-        /// </summary>
-        void Remove(IOid oid);
+    /// <summary>
+    ///     Remove the adapter for the given oid
+    /// </summary>
+    void Remove(IOid oid);
 
-        /// <summary>
-        ///     Clear out all mappings
-        /// </summary>
-        void Reset();
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Clear out all mappings
+    /// </summary>
+    void Reset();
 }
+
+// Copyright (c) Naked Objects Group Ltd.

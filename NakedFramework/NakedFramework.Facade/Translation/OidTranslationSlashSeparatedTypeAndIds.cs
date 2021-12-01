@@ -8,33 +8,33 @@
 using System.Linq;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Translation {
-    public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
-        // when using this ctor be aware of encoded values that might include a "/"
-        public OidTranslationSlashSeparatedTypeAndIds(string id) {
-            var split = id.Split('/');
-            DomainType = split.First();
-            InstanceId = split.Skip(1).FirstOrDefault();
-        }
+namespace NakedFramework.Facade.Translation; 
 
-        public OidTranslationSlashSeparatedTypeAndIds(string domainType, string instanceId) {
-            DomainType = domainType;
-            InstanceId = instanceId;
-        }
-
-        public override string ToString() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : $"-{InstanceId}");
-
-        #region IOidTranslation Members
-
-        public string DomainType { get; set; }
-        public string InstanceId { get; set; }
-
-        public IOidFacade GetOid(IOidStrategy oidStrategy) => oidStrategy.RestoreOid(this);
-
-        public IOidFacade GetSid(IOidStrategy oidStrategy) => oidStrategy.RestoreSid(this);
-
-        public string Encode() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : $"/{InstanceId}");
-
-        #endregion
+public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
+    // when using this ctor be aware of encoded values that might include a "/"
+    public OidTranslationSlashSeparatedTypeAndIds(string id) {
+        var split = id.Split('/');
+        DomainType = split.First();
+        InstanceId = split.Skip(1).FirstOrDefault();
     }
+
+    public OidTranslationSlashSeparatedTypeAndIds(string domainType, string instanceId) {
+        DomainType = domainType;
+        InstanceId = instanceId;
+    }
+
+    public override string ToString() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : $"-{InstanceId}");
+
+    #region IOidTranslation Members
+
+    public string DomainType { get; set; }
+    public string InstanceId { get; set; }
+
+    public IOidFacade GetOid(IOidStrategy oidStrategy) => oidStrategy.RestoreOid(this);
+
+    public IOidFacade GetSid(IOidStrategy oidStrategy) => oidStrategy.RestoreSid(this);
+
+    public string Encode() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : $"/{InstanceId}");
+
+    #endregion
 }

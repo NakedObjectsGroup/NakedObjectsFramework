@@ -10,12 +10,12 @@ using NakedFramework;
 
 [assembly:InternalsVisibleTo("NakedFramework.Rest.Test.Data")]
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the
-    ///     specified type
-    ///     with the minimum data set, but with the expectation that the user will likely want to immediately then specify
-    ///     further properties (see EditAttribute).
-    /// </summary>
-    internal class CreateNewAttribute : AbstractCreateNewAttribute { }
-}
+namespace NakedObjects; 
+
+/// <summary>
+///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the
+///     specified type
+///     with the minimum data set, but with the expectation that the user will likely want to immediately then specify
+///     further properties (see EditAttribute).
+/// </summary>
+internal class CreateNewAttribute : AbstractCreateNewAttribute { }

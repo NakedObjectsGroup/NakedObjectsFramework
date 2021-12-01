@@ -14,39 +14,39 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class ActionRepresentation : Representation {
-        protected ActionRepresentation(IOidStrategy oidStrategy, AbstractActionRepresentationStrategy strategy)
-            : base(oidStrategy, strategy.GetFlags()) {
-            SelfRelType = strategy.GetSelf();
-            Id = strategy.GetId();
-            Parameters = strategy.GetParameters();
-            Links = strategy.GetLinks();
-            Extensions = strategy.GetExtensions();
-            SetHeader(strategy.GetTarget());
-        }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        [DataMember(Name = JsonPropertyNames.Id)]
-        public string Id { get; set; }
+[DataContract]
+public class ActionRepresentation : Representation {
+    protected ActionRepresentation(IOidStrategy oidStrategy, AbstractActionRepresentationStrategy strategy)
+        : base(oidStrategy, strategy.GetFlags()) {
+        SelfRelType = strategy.GetSelf();
+        Id = strategy.GetId();
+        Parameters = strategy.GetParameters();
+        Links = strategy.GetLinks();
+        Extensions = strategy.GetExtensions();
+        SetHeader(strategy.GetTarget());
+    }
 
-        [DataMember(Name = JsonPropertyNames.Parameters)]
-        public MapRepresentation Parameters { get; set; }
+    [DataMember(Name = JsonPropertyNames.Id)]
+    public string Id { get; set; }
 
-        [DataMember(Name = JsonPropertyNames.Extensions)]
-        public MapRepresentation Extensions { get; set; }
+    [DataMember(Name = JsonPropertyNames.Parameters)]
+    public MapRepresentation Parameters { get; set; }
 
-        [DataMember(Name = JsonPropertyNames.Links)]
-        public LinkRepresentation[] Links { get; set; }
+    [DataMember(Name = JsonPropertyNames.Extensions)]
+    public MapRepresentation Extensions { get; set; }
 
-        private void SetHeader(IObjectFacade target) {
-            Caching = CacheType.Transactional;
-            SetEtag(target);
-        }
+    [DataMember(Name = JsonPropertyNames.Links)]
+    public LinkRepresentation[] Links { get; set; }
 
-        public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
-            var actionRepresentationStrategy = AbstractActionRepresentationStrategy.GetStrategy(false, oidStrategy, req, actionContext, flags);
-            return new ActionRepresentation(oidStrategy, actionRepresentationStrategy);
-        }
+    private void SetHeader(IObjectFacade target) {
+        Caching = CacheType.Transactional;
+        SetEtag(target);
+    }
+
+    public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
+        var actionRepresentationStrategy = AbstractActionRepresentationStrategy.GetStrategy(false, oidStrategy, req, actionContext, flags);
+        return new ActionRepresentation(oidStrategy, actionRepresentationStrategy);
     }
 }

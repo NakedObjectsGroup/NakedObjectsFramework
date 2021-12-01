@@ -7,11 +7,11 @@
 
 using System;
 
-namespace NakedFramework.Facade.Error {
-    public class NakedObjectsFacadeException : Exception {
-        public NakedObjectsFacadeException(string message, Exception e) : base(message, e) { }
-        public NakedObjectsFacadeException(Exception e) : base("", e) { }
-        public NakedObjectsFacadeException() { }
-        public NakedObjectsFacadeException(string message) : base(message) { }
-    }
+namespace NakedFramework.Facade.Error; 
+
+public class NakedObjectsFacadeException : Exception {
+    public NakedObjectsFacadeException(string message, Exception e) : base(message, e) { }
+    public NakedObjectsFacadeException(Exception e) : base("", e) { }
+    public NakedObjectsFacadeException() { }
+    public NakedObjectsFacadeException(string message) : base(message) { }
 }

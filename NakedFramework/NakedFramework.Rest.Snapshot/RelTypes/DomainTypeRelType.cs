@@ -10,12 +10,12 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class DomainTypeRelType : RelType {
-        public DomainTypeRelType(UriMtHelper helper) : base(RelValues.DomainType, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public override Uri GetUri() => Helper.GetDomainTypeUri();
+public class DomainTypeRelType : RelType {
+    public DomainTypeRelType(UriMtHelper helper) : base(RelValues.DomainType, helper) { }
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.DomainType);
-    }
+    public override Uri GetUri() => Helper.GetDomainTypeUri();
+
+    public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.DomainType);
 }

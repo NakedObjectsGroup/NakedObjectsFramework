@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class PageSizeFacetAbstract : SingleIntValueFacetAbstract, IPageSizeFacet {
-        protected PageSizeFacetAbstract(int pageSize, ISpecification holder)
-            : base(Type, holder, pageSize) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IPageSizeFacet);
-    }
+[Serializable]
+public abstract class PageSizeFacetAbstract : SingleIntValueFacetAbstract, IPageSizeFacet {
+    protected PageSizeFacetAbstract(int pageSize, ISpecification holder)
+        : base(Type, holder, pageSize) { }
+
+    public static Type Type => typeof(IPageSizeFacet);
 }

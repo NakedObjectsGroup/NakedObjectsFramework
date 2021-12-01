@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class TypeIsVoidFacet : MarkerFlagFacetAbstract, ITypeIsVoidFacet {
-        public TypeIsVoidFacet(ISpecification holder, bool flag)
-            : base(Type, holder, flag) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(ITypeIsVoidFacet);
-    }
+[Serializable]
+public sealed class TypeIsVoidFacet : MarkerFlagFacetAbstract, ITypeIsVoidFacet {
+    public TypeIsVoidFacet(ISpecification holder, bool flag)
+        : base(Type, holder, flag) { }
+
+    public static Type Type => typeof(ITypeIsVoidFacet);
 }

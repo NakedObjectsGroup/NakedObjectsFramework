@@ -13,27 +13,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Purchasing.ShipMethod")]
-    public class ShipMethod {
-        public int ShipMethodID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Purchasing.ShipMethod")]
+public class ShipMethod {
+    public int ShipMethodID { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal ShipBase { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal ShipRate { get; set; }
+    [Column(TypeName = "money")]
+    public decimal ShipBase { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Column(TypeName = "money")]
+    public decimal ShipRate { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; } = new HashSet<PurchaseOrderHeader>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
-    }
+    public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; } = new HashSet<PurchaseOrderHeader>();
+
+    public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 }

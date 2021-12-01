@@ -10,18 +10,18 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class ListRelType : RelType {
-        private readonly string endPoint;
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public ListRelType(string name, string endPoint, UriMtHelper helper) : base(name, helper) => this.endPoint = endPoint;
+public class ListRelType : RelType {
+    private readonly string endPoint;
 
-        public override Uri GetUri() => Helper.GetWellKnownUri(endPoint);
+    public ListRelType(string name, string endPoint, UriMtHelper helper) : base(name, helper) => this.endPoint = endPoint;
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            var mediaType = UriMtHelper.GetJsonMediaType(RepresentationTypes.List);
-            Helper.AddListRepresentationParameter(mediaType, flags);
-            return mediaType;
-        }
+    public override Uri GetUri() => Helper.GetWellKnownUri(endPoint);
+
+    public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
+        var mediaType = UriMtHelper.GetJsonMediaType(RepresentationTypes.List);
+        Helper.AddListRepresentationParameter(mediaType, flags);
+        return mediaType;
     }
 }

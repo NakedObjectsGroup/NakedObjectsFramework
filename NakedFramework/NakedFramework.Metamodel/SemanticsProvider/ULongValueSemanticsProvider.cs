@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract<ulong>, IUnsignedLongValueFacet {
-        private const ulong DefaultValueConst = 0;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 20;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public ULongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract<ulong>, IUnsignedLongValueFacet {
+    private const ulong DefaultValueConst = 0;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 20;
 
-        public static Type Type => typeof(IUnsignedLongValueFacet);
+    public ULongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(ulong);
+    public static Type Type => typeof(IUnsignedLongValueFacet);
 
-        #region IUnsignedLongValueFacet Members
+    public static Type AdaptedType => typeof(ulong);
 
-        public ulong UnsignedLongValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<ulong>();
+    #region IUnsignedLongValueFacet Members
 
-        #endregion
+    public ulong UnsignedLongValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<ulong>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(ulong);
+    #endregion
 
-        protected override ulong DoParse(string entry) {
-            try {
-                return ulong.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, ulong.MinValue, ulong.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(ulong);
+
+    protected override ulong DoParse(string entry) {
+        try {
+            return ulong.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
         }
-
-        protected override ulong DoParseInvariant(string entry) => ulong.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(ulong obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, ulong value) => value.ToString(mask);
-
-        protected override string DoEncode(ulong obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override ulong DoRestore(string data) => ulong.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "ULongAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, ulong.MinValue, ulong.MaxValue));
+        }
     }
+
+    protected override ulong DoParseInvariant(string entry) => ulong.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(ulong obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, ulong value) => value.ToString(mask);
+
+    protected override string DoEncode(ulong obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override ulong DoRestore(string data) => ulong.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "ULongAdapter: ";
 }

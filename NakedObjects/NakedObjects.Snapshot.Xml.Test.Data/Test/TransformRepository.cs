@@ -12,32 +12,32 @@ using TransformFull = Snapshot.Xml.Test.One.TransformFull;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace Snapshot.Xml.Test {
-    public class TransformRepository : AbstractFactoryAndRepository {
-        public TransformFull TransformFull() {
-            var obj = NewTransientInstance<TransformFull>();
+namespace Snapshot.Xml.Test; 
 
-            obj.FieldOne = 1;
-            obj.FieldTwo = "";
-            obj.FieldThree = 3;
-            obj.FieldFour = "";
+public class TransformRepository : AbstractFactoryAndRepository {
+    public TransformFull TransformFull() {
+        var obj = NewTransientInstance<TransformFull>();
 
-            return obj;
-        }
+        obj.FieldOne = 1;
+        obj.FieldTwo = "";
+        obj.FieldThree = 3;
+        obj.FieldFour = "";
 
-        public Two.TransformFull TransformWithSubObject() {
-            var subObj = NewTransientInstance<TransformSubObject>();
+        return obj;
+    }
 
-            subObj.FieldThree = 3;
-            subObj.FieldFour = "";
+    public Two.TransformFull TransformWithSubObject() {
+        var subObj = NewTransientInstance<TransformSubObject>();
 
-            var obj = NewTransientInstance<Two.TransformFull>();
+        subObj.FieldThree = 3;
+        subObj.FieldFour = "";
 
-            obj.FieldOne = 1;
-            obj.FieldTwo = "";
-            obj.Content = subObj;
+        var obj = NewTransientInstance<Two.TransformFull>();
 
-            return obj;
-        }
+        obj.FieldOne = 1;
+        obj.FieldTwo = "";
+        obj.Content = subObj;
+
+        return obj;
     }
 }

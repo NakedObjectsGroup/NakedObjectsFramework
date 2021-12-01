@@ -13,21 +13,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("HumanResources.Department")]
-    public class Department {
-        public short DepartmentID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("HumanResources.Department")]
+public class Department {
+    public short DepartmentID { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string GroupName { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string GroupName { get; set; }
 
-        public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistories { get; set; } = new HashSet<EmployeeDepartmentHistory>();
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistories { get; set; } = new HashSet<EmployeeDepartmentHistory>();
 }

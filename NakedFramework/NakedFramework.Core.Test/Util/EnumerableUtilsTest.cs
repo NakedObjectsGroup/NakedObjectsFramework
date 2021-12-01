@@ -11,54 +11,54 @@ using System.Linq;
 using NakedFramework.Core.Util;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Util {
-    [TestFixture]
+namespace NakedFramework.Core.Test.Util; 
 
-    // cast ensures correct extension is called 
-    // ReSharper disable RedundantCast
-    public class EnumerableUtilsTest {
-        [Test]
-        public void TestCount() {
-            var list = new List<int>();
-            list.AddRange(Enumerable.Range(0, 100));
+[TestFixture]
 
-            Assert.AreEqual(100, ((IEnumerable) list).Count());
-        }
+// cast ensures correct extension is called 
+// ReSharper disable RedundantCast
+public class EnumerableUtilsTest {
+    [Test]
+    public void TestCount() {
+        var list = new List<int>();
+        list.AddRange(Enumerable.Range(0, 100));
 
-        [Test]
-        public void TestFirst() {
-            var list = new List<int>();
-            list.AddRange(Enumerable.Range(0, 100));
-
-            Assert.AreEqual(0, ((IEnumerable) list).First());
-        }
-
-        [Test]
-        public void TestTake() {
-            var list = new List<int>();
-            list.AddRange(Enumerable.Range(0, 100));
-
-            Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable) list).Take(9).Cast<object>().ToArray()));
-            Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable) list).Take(9).Cast<object>().ToList()));
-        }
-
-        [Test]
-        public void TestSkip() {
-            var list = new List<int>();
-            list.AddRange(Enumerable.Range(10, 100));
-
-            Assert.AreEqual(47, ((IEnumerable) list).Skip(37).First());
-        }
-
-        [Test]
-        public void TestContains() {
-            var list = new List<int>();
-            list.AddRange(Enumerable.Range(10, 100));
-
-            Assert.IsTrue(((IEnumerable) list).Contains(49));
-            Assert.IsFalse(((IEnumerable) list).Contains(201));
-        }
+        Assert.AreEqual(100, ((IEnumerable) list).Count());
     }
 
-    // ReSharper restore RedundantCast
+    [Test]
+    public void TestFirst() {
+        var list = new List<int>();
+        list.AddRange(Enumerable.Range(0, 100));
+
+        Assert.AreEqual(0, ((IEnumerable) list).First());
+    }
+
+    [Test]
+    public void TestTake() {
+        var list = new List<int>();
+        list.AddRange(Enumerable.Range(0, 100));
+
+        Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable) list).Take(9).Cast<object>().ToArray()));
+        Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable) list).Take(9).Cast<object>().ToList()));
+    }
+
+    [Test]
+    public void TestSkip() {
+        var list = new List<int>();
+        list.AddRange(Enumerable.Range(10, 100));
+
+        Assert.AreEqual(47, ((IEnumerable) list).Skip(37).First());
+    }
+
+    [Test]
+    public void TestContains() {
+        var list = new List<int>();
+        list.AddRange(Enumerable.Range(10, 100));
+
+        Assert.IsTrue(((IEnumerable) list).Contains(49));
+        Assert.IsFalse(((IEnumerable) list).Contains(201));
+    }
 }
+
+// ReSharper restore RedundantCast

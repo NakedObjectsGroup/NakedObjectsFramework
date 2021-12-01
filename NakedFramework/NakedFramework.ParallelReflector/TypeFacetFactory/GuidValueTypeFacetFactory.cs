@@ -14,18 +14,18 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    public sealed class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public GuidValueTypeFacetFactory(IFacetFactoryOrder<GuidValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!GuidValueSemanticsProvider.IsAdaptedType(type)) {
-                return metamodel;
-            }
+public sealed class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public GuidValueTypeFacetFactory(IFacetFactoryOrder<GuidValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(GuidValueSemanticsProvider.AdaptedType, metamodel);
-            AddValueFacets(new GuidValueSemanticsProvider(oSpec, specification), specification);
-            return mm;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!GuidValueSemanticsProvider.IsAdaptedType(type)) {
+            return metamodel;
         }
+
+        var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(GuidValueSemanticsProvider.AdaptedType, metamodel);
+        AddValueFacets(new GuidValueSemanticsProvider(oSpec, specification), specification);
+        return mm;
     }
 }

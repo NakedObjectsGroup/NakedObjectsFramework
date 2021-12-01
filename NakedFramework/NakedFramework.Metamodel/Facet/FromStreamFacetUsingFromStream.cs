@@ -13,24 +13,24 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
-        private readonly IFromStream fromStream;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public FromStreamFacetUsingFromStream(IFromStream fromStream, ISpecification holder)
-            : base(typeof(IFromStreamFacet), holder) =>
-            this.fromStream = fromStream;
+[Serializable]
+public sealed class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
+    private readonly IFromStream fromStream;
 
-        #region IFromStreamFacet Members
+    public FromStreamFacetUsingFromStream(IFromStream fromStream, ISpecification holder)
+        : base(typeof(IFromStreamFacet), holder) =>
+        this.fromStream = fromStream;
 
-        public INakedObjectAdapter ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager) {
-            var obj = fromStream.ParseFromStream(stream, mimeType, name);
-            return manager.CreateAdapter(obj, null, null);
-        }
+    #region IFromStreamFacet Members
 
-        #endregion
-
-        protected override string ToStringValues() => fromStream.ToString();
+    public INakedObjectAdapter ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager) {
+        var obj = fromStream.ParseFromStream(stream, mimeType, name);
+        return manager.CreateAdapter(obj, null, null);
     }
+
+    #endregion
+
+    protected override string ToStringValues() => fromStream.ToString();
 }

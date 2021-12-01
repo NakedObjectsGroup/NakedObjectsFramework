@@ -12,25 +12,25 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Reflect {
-    public interface IIntrospector {
-        Type IntrospectedType { get; }
+namespace NakedFramework.Architecture.Reflect; 
 
-        Type SpecificationType { get; }
+public interface IIntrospector {
+    Type IntrospectedType { get; }
 
-        /// <summary>
-        ///     As per <see cref="MemberInfo.Name" />
-        /// </summary>
-        string ClassName { get; }
+    Type SpecificationType { get; }
 
-        IIdentifier Identifier { get; }
-        string FullName { get; }
-        string ShortName { get; }
-        IList<IAssociationSpecImmutable> UnorderedFields { get; }
-        IList<IActionSpecImmutable> UnorderedObjectActions { get; }
-        ITypeSpecBuilder[] Interfaces { get; set; }
-        ITypeSpecBuilder Superclass { get; set; }
+    /// <summary>
+    ///     As per <see cref="MemberInfo.Name" />
+    /// </summary>
+    string ClassName { get; }
 
-        IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-    }
+    IIdentifier Identifier { get; }
+    string FullName { get; }
+    string ShortName { get; }
+    IList<IAssociationSpecImmutable> UnorderedFields { get; }
+    IList<IActionSpecImmutable> UnorderedObjectActions { get; }
+    ITypeSpecBuilder[] Interfaces { get; set; }
+    ITypeSpecBuilder Superclass { get; set; }
+
+    IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 }

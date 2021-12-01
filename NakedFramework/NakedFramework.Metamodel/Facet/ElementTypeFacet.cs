@@ -10,22 +10,22 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
-        public ElementTypeFacet(ISpecification holder, Type type, IObjectSpecImmutable spec) : base(Type, holder) {
-            Value = type;
-            ValueSpec = spec;
-        }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IElementTypeFacet);
-
-        #region IElementTypeFacet Members
-
-        public Type Value { get; }
-
-        public IObjectSpecImmutable ValueSpec { get; }
-
-        #endregion
+[Serializable]
+public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
+    public ElementTypeFacet(ISpecification holder, Type type, IObjectSpecImmutable spec) : base(Type, holder) {
+        Value = type;
+        ValueSpec = spec;
     }
+
+    public static Type Type => typeof(IElementTypeFacet);
+
+    #region IElementTypeFacet Members
+
+    public Type Value { get; }
+
+    public IObjectSpecImmutable ValueSpec { get; }
+
+    #endregion
 }

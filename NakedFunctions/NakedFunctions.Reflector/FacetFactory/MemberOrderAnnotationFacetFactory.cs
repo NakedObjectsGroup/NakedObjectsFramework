@@ -17,26 +17,26 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class MemberOrderAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public MemberOrderAnnotationFacetFactory(IFacetFactoryOrder<MemberOrderAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<MemberOrderAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-        }
+public sealed class MemberOrderAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public MemberOrderAnnotationFacetFactory(IFacetFactoryOrder<MemberOrderAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, specification);
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(property, specification);
-            return metamodel;
-        }
-
-        private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute is null ? null : new MemberOrderFacet(attribute.Grouping ?? "", attribute.Order.ToString(), holder) {Grouping = attribute.Grouping};
+    private static void Process(MemberInfo member, ISpecification holder) {
+        var attribute = member.GetCustomAttribute<MemberOrderAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(property, specification);
+        return metamodel;
+    }
+
+    private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute is null ? null : new MemberOrderFacet(attribute.Grouping ?? "", attribute.Order.ToString(), holder) {Grouping = attribute.Grouping};
 }

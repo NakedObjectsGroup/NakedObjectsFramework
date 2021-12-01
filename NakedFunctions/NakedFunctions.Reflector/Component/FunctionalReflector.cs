@@ -17,48 +17,48 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
 using NakedFunctions.Reflector.Reflect;
 
-namespace NakedFunctions.Reflector.Component {
-    public sealed class FunctionalReflector : AbstractParallelReflector {
-        private readonly IFunctionalReflectorConfiguration functionalReflectorConfiguration;
+namespace NakedFunctions.Reflector.Component; 
 
-        public FunctionalReflector(FunctionalFacetFactorySet functionalFacetFactorySet,
-                                   FunctionClassStrategy functionClassStrategy,
-                                   IFunctionalReflectorConfiguration functionalReflectorConfiguration,
-                                   IEnumerable<IFacetDecorator> facetDecorators,
-                                   IReflectorOrder<FunctionalReflector> reflectorOrder,
-                                   ILoggerFactory loggerFactory,
-                                   ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder,  loggerFactory, logger) {
-            this.functionalReflectorConfiguration = functionalReflectorConfiguration;
-            ClassStrategy = functionClassStrategy;
-            FacetFactorySet = functionalFacetFactorySet;
-        }
+public sealed class FunctionalReflector : AbstractParallelReflector {
+    private readonly IFunctionalReflectorConfiguration functionalReflectorConfiguration;
 
-        public override bool IgnoreCase => functionalReflectorConfiguration.IgnoreCase;
-
-        public override bool ConcurrencyChecking => functionalReflectorConfiguration.ConcurrencyChecking;
-        public override string Name => "Naked Functions";
-        public override ReflectorType ReflectorType => ReflectorType.Functional;
-
-        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var allFunctionalTypes = records.Union(functions).ToArray();
-
-            var placeholders = GetPlaceholders(allFunctionalTypes);
-            var pending = specDictionary.Where(i => i.Value.IsPendingIntrospection).Select(i => i.Value.Type);
-            var toIntrospect = placeholders.Select(kvp => kvp.Value.Type).Union(pending).ToArray();
-            return placeholders.Any()
-                ? IntrospectTypes(toIntrospect, specDictionary.AddRange(placeholders))
-                : specDictionary;
-        }
-
-        protected override IIntrospector GetNewIntrospector() => new FunctionalIntrospector(this, LoggerFactory.CreateLogger<FunctionalIntrospector>());
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var records = functionalReflectorConfiguration.Types;
-            var functions = functionalReflectorConfiguration.Functions;
-            specDictionary = IntrospectFunctionalTypes(records, functions, specDictionary);
-            return specDictionary;
-        }
+    public FunctionalReflector(FunctionalFacetFactorySet functionalFacetFactorySet,
+                               FunctionClassStrategy functionClassStrategy,
+                               IFunctionalReflectorConfiguration functionalReflectorConfiguration,
+                               IEnumerable<IFacetDecorator> facetDecorators,
+                               IReflectorOrder<FunctionalReflector> reflectorOrder,
+                               ILoggerFactory loggerFactory,
+                               ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder,  loggerFactory, logger) {
+        this.functionalReflectorConfiguration = functionalReflectorConfiguration;
+        ClassStrategy = functionClassStrategy;
+        FacetFactorySet = functionalFacetFactorySet;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override bool IgnoreCase => functionalReflectorConfiguration.IgnoreCase;
+
+    public override bool ConcurrencyChecking => functionalReflectorConfiguration.ConcurrencyChecking;
+    public override string Name => "Naked Functions";
+    public override ReflectorType ReflectorType => ReflectorType.Functional;
+
+    private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
+        var allFunctionalTypes = records.Union(functions).ToArray();
+
+        var placeholders = GetPlaceholders(allFunctionalTypes);
+        var pending = specDictionary.Where(i => i.Value.IsPendingIntrospection).Select(i => i.Value.Type);
+        var toIntrospect = placeholders.Select(kvp => kvp.Value.Type).Union(pending).ToArray();
+        return placeholders.Any()
+            ? IntrospectTypes(toIntrospect, specDictionary.AddRange(placeholders))
+            : specDictionary;
+    }
+
+    protected override IIntrospector GetNewIntrospector() => new FunctionalIntrospector(this, LoggerFactory.CreateLogger<FunctionalIntrospector>());
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
+        var records = functionalReflectorConfiguration.Types;
+        var functions = functionalReflectorConfiguration.Functions;
+        specDictionary = IntrospectFunctionalTypes(records, functions, specDictionary);
+        return specDictionary;
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

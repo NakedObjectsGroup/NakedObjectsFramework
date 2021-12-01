@@ -9,15 +9,15 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Obtain defaults for each of the parameters of the action
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     invoking the <c>DefaultsXxx(...)</c> support method for an action
-    /// </para>
-    public interface IActionDefaultsFacet : IFacet {
-        (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Obtain defaults for each of the parameters of the action
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     invoking the <c>DefaultsXxx(...)</c> support method for an action
+/// </para>
+public interface IActionDefaultsFacet : IFacet {
+    (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 }

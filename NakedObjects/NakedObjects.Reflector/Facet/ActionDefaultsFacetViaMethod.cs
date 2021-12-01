@@ -20,43 +20,43 @@ using NakedFramework.Metamodel.Facet;
 [assembly: InternalsVisibleTo("NakedFramework.ParallelReflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
-        private readonly ILogger<ActionDefaultsFacetViaMethod> logger;
-        private readonly MethodInfo method;
+namespace NakedObjects.Reflector.Facet; 
 
-        public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<ActionDefaultsFacetViaMethod> logger)
-            : base(holder) {
-            this.method = method;
-            this.logger = logger;
-            MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+[Serializable]
+public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
+    private readonly ILogger<ActionDefaultsFacetViaMethod> logger;
+    private readonly MethodInfo method;
 
-        // for testing only 
-        [field: NonSerialized]
-        internal Func<object, object[], object> MethodDelegate { get; private set; }
-
-        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            // type safety is given by the reflector only identifying methods that match the 
-            // parameter type
-            var defaultValue = MethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
-            return (defaultValue, TypeOfDefaultValue.Explicit);
-        }
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
-
-        #endregion
+    public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<ActionDefaultsFacetViaMethod> logger)
+        : base(holder) {
+        this.method = method;
+        this.logger = logger;
+        MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    // for testing only 
+    [field: NonSerialized]
+    internal Func<object, object[], object> MethodDelegate { get; private set; }
+
+    public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        // type safety is given by the reflector only identifying methods that match the 
+        // parameter type
+        var defaultValue = MethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        return (defaultValue, TypeOfDefaultValue.Explicit);
+    }
+
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

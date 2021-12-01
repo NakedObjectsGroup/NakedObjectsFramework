@@ -8,32 +8,32 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Utility {
-    public class MessageBrokerWrapper : IMessageBrokerFacade {
-        private readonly IMessageBroker messageBroker;
+namespace NakedFramework.Facade.Impl.Utility; 
 
-        public MessageBrokerWrapper(IMessageBroker messageBroker) => this.messageBroker = messageBroker;
+public class MessageBrokerWrapper : IMessageBrokerFacade {
+    private readonly IMessageBroker messageBroker;
 
-        #region IMessageBrokerFacade Members
+    public MessageBrokerWrapper(IMessageBroker messageBroker) => this.messageBroker = messageBroker;
 
-        public string[] PeekMessages => messageBroker.PeekMessages;
+    #region IMessageBrokerFacade Members
 
-        public string[] PeekWarnings => messageBroker.PeekWarnings;
+    public string[] PeekMessages => messageBroker.PeekMessages;
 
-        public string[] Messages => messageBroker.Messages;
+    public string[] PeekWarnings => messageBroker.PeekWarnings;
 
-        public string[] Warnings => messageBroker.Warnings;
+    public string[] Messages => messageBroker.Messages;
 
-        public void AddWarning(string message) => messageBroker.AddWarning(message);
+    public string[] Warnings => messageBroker.Warnings;
 
-        public void AddMessage(string message) => messageBroker.AddMessage(message);
+    public void AddWarning(string message) => messageBroker.AddWarning(message);
 
-        public void ClearWarnings() => messageBroker.ClearWarnings();
+    public void AddMessage(string message) => messageBroker.AddMessage(message);
 
-        public void ClearMessages() => messageBroker.ClearMessages();
+    public void ClearWarnings() => messageBroker.ClearWarnings();
 
-        public void EnsureEmpty() => messageBroker.EnsureEmpty();
+    public void ClearMessages() => messageBroker.ClearMessages();
 
-        #endregion
-    }
+    public void EnsureEmpty() => messageBroker.EnsureEmpty();
+
+    #endregion
 }

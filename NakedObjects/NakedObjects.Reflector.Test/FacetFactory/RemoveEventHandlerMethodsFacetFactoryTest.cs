@@ -28,98 +28,98 @@ using NakedObjects.Reflector.Test.Reflect;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTest {
-        private RemoveEventHandlerMethodsFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes =>
-            new[] {
-                typeof(INamedFacet),
-                typeof(IActionValidationFacet),
-                typeof(IActionInvocationFacet),
-                typeof(IActionDefaultsFacet),
-                typeof(IActionChoicesFacet),
-                typeof(IDescribedAsFacet),
-                typeof(IMandatoryFacet)
-            };
+[TestClass]
+public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTest {
+    private RemoveEventHandlerMethodsFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes =>
+        new[] {
+            typeof(INamedFacet),
+            typeof(IActionValidationFacet),
+            typeof(IActionInvocationFacet),
+            typeof(IActionDefaultsFacet),
+            typeof(IActionChoicesFacet),
+            typeof(IDescribedAsFacet),
+            typeof(IMandatoryFacet)
+        };
 
-        [TestMethod]
-        public void TestActionWithNoParameters() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+    [TestMethod]
+    public void TestActionWithNoParameters() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            AssertRemovedCalled(2);
+        metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
 
-            var eInfo = typeof(Customer).GetEvent("AnEventHandler");
+        AssertRemovedCalled(2);
 
-            var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRemoveMethod()};
+        var eInfo = typeof(Customer).GetEvent("AnEventHandler");
 
-            foreach (var removedMethod in eventMethods) {
-                AssertMethodRemoved(removedMethod);
-            }
+        var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRemoveMethod()};
 
-            Assert.IsNotNull(metamodel);
+        foreach (var removedMethod in eventMethods) {
+            AssertMethodRemoved(removedMethod);
         }
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+        Assert.IsNotNull(metamodel);
+    }
 
-        #region Nested type: Customer
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
 
-        #region TestClass
+    #region Nested type: Customer
+
+    #region TestClass
 
 #pragma warning disable 67
-        // ReSharper disable EventNeverSubscribedTo.Local
-        private class Customer {
-            public event EventHandler AnEventHandler;
-        }
+    // ReSharper disable EventNeverSubscribedTo.Local
+    private class Customer {
+        public event EventHandler AnEventHandler;
+    }
 
-        // ReSharper restore EventNeverSubscribedTo.Local
+    // ReSharper restore EventNeverSubscribedTo.Local
 #pragma warning restore 67
 
-        #endregion
+    #endregion
 
-        #endregion
+    #endregion
 
-        #region Setup/Teardown
+    #region Setup/Teardown
 
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            var cache = new ImmutableInMemorySpecCache();
-            ObjectReflectorConfiguration.NoValidate = true;
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        var cache = new ImmutableInMemorySpecCache();
+        ObjectReflectorConfiguration.NoValidate = true;
 
-            var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
-            var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
+        var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
+        var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
 
-            facetFactory = new RemoveEventHandlerMethodsFacetFactory(GetOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);
-            var menuFactory = new NullMenuFactory();
-            var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] {facetFactory});
-            var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
-            var metamodel = new MetamodelHolder(cache, null);
-            var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
-            var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
-            var order = new ObjectReflectorOrder<ObjectReflector>();
-            Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, reflectorConfiguration, Array.Empty<IFacetDecorator>(), order, mockLoggerFactory, mockLogger);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+        facetFactory = new RemoveEventHandlerMethodsFacetFactory(GetOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);
+        var menuFactory = new NullMenuFactory();
+        var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] {facetFactory});
+        var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
+        var metamodel = new MetamodelHolder(cache, null);
+        var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
+        var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
+        var order = new ObjectReflectorOrder<ObjectReflector>();
+        Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, reflectorConfiguration, Array.Empty<IFacetDecorator>(), order, mockLoggerFactory, mockLogger);
     }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }

@@ -17,21 +17,21 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class PropertyDefaultAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public PropertyDefaultAnnotationFacetFactory(IFacetFactoryOrder<PropertyDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<DefaultValueAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-        }
+public sealed class PropertyDefaultAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public PropertyDefaultAnnotationFacetFactory(IFacetFactoryOrder<PropertyDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(property, specification);
-            return metamodel;
-        }
-
-        private static IPropertyDefaultFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute is null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
+    private static void Process(MemberInfo member, ISpecification holder) {
+        var attribute = member.GetCustomAttribute<DefaultValueAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(property, specification);
+        return metamodel;
+    }
+
+    private static IPropertyDefaultFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute is null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
 }

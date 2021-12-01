@@ -7,11 +7,11 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    public class DataUpdateException : ObjectPersistenceException {
-        public DataUpdateException(string message, Exception cause)
-            : base(message, cause) { }
-    }
+namespace NakedFramework.Core.Error; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public class DataUpdateException : ObjectPersistenceException {
+    public DataUpdateException(string message, Exception cause)
+        : base(message, cause) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

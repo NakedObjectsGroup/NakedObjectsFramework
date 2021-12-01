@@ -15,52 +15,52 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class VerySimplePersist {
-        [Key]
-        [Hidden(WhenTo.Always)]
-        [ConcurrencyCheck]
-        [DefaultValue(0)]
-        public virtual int Id { get; set; }
+namespace RestfulObjects.Test.Data; 
 
-        [Optionally]
-        [Title]
-        public virtual string Name { get; set; }
+public class VerySimplePersist {
+    [Key]
+    [Hidden(WhenTo.Always)]
+    [ConcurrencyCheck]
+    [DefaultValue(0)]
+    public virtual int Id { get; set; }
 
-        [Optionally]
-        [Title]
-        public virtual MostSimple MostSimple { get; set; }
+    [Optionally]
+    [Title]
+    public virtual string Name { get; set; }
 
-        [Hidden(WhenTo.Always)]
-        public virtual ICollection<MostSimple> ASetAsCollection { get; set; } = new List<MostSimple>();
+    [Optionally]
+    [Title]
+    public virtual MostSimple MostSimple { get; set; }
 
-        #region SimpleSet (collection)
+    [Hidden(WhenTo.Always)]
+    public virtual ICollection<MostSimple> ASetAsCollection { get; set; } = new List<MostSimple>();
 
-        [NotMapped]
-        public virtual ISet<MostSimple> SimpleSet {
-            get => new SetWrapper<MostSimple>(ASetAsCollection);
-            set => ASetAsCollection = value;
-        }
+    #region SimpleSet (collection)
 
-        public void EmptyTheSet() {
-            SimpleSet.Clear();
-        }
-
-        #endregion
-
-        #region SimpleList (collection)
-
-        private ICollection<MostSimple> simpleList = new List<MostSimple>();
-
-        public virtual ICollection<MostSimple> SimpleList {
-            get => simpleList;
-            set => simpleList = value;
-        }
-
-        public void EmptyTheList() {
-            simpleList.Clear();
-        }
-
-        #endregion
+    [NotMapped]
+    public virtual ISet<MostSimple> SimpleSet {
+        get => new SetWrapper<MostSimple>(ASetAsCollection);
+        set => ASetAsCollection = value;
     }
+
+    public void EmptyTheSet() {
+        SimpleSet.Clear();
+    }
+
+    #endregion
+
+    #region SimpleList (collection)
+
+    private ICollection<MostSimple> simpleList = new List<MostSimple>();
+
+    public virtual ICollection<MostSimple> SimpleList {
+        get => simpleList;
+        set => simpleList = value;
+    }
+
+    public void EmptyTheList() {
+        simpleList.Clear();
+    }
+
+    #endregion
 }

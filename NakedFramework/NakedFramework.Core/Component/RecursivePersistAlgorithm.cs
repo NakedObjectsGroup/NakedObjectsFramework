@@ -15,90 +15,90 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Component {
-    /// <summary>
-    ///     Recursively walk the object's fields and collections persisting them.
-    /// </summary>
-    public sealed class RecursivePersistAlgorithm : IPersistAlgorithm {
-        private readonly ILogger<RecursivePersistAlgorithm> logger;
-        private readonly INakedObjectManager manager;
-        private readonly IObjectPersistor persistor;
+namespace NakedFramework.Core.Component; 
 
-        public RecursivePersistAlgorithm(IObjectPersistor persistor,
-                                         INakedObjectManager manager,
-                                         ILogger<RecursivePersistAlgorithm> logger) {
-            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
-            this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
-            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
-        }
+/// <summary>
+///     Recursively walk the object's fields and collections persisting them.
+/// </summary>
+public sealed class RecursivePersistAlgorithm : IPersistAlgorithm {
+    private readonly ILogger<RecursivePersistAlgorithm> logger;
+    private readonly INakedObjectManager manager;
+    private readonly IObjectPersistor persistor;
 
-        private void Persist(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter.ResolveState.IsAggregated() || nakedObjectAdapter.ResolveState.IsTransient() && nakedObjectAdapter.Spec.Persistable != PersistableType.Transient) {
-                var fields = ((IObjectSpec) nakedObjectAdapter.Spec).Properties;
-                if (!nakedObjectAdapter.Spec.IsEncodeable && fields.Length > 0) {
-                    nakedObjectAdapter.Persisting();
-                    if (!nakedObjectAdapter.Spec.ContainsFacet(typeof(IComplexTypeFacet))) {
-                        manager.MadePersistent(nakedObjectAdapter);
+    public RecursivePersistAlgorithm(IObjectPersistor persistor,
+                                     INakedObjectManager manager,
+                                     ILogger<RecursivePersistAlgorithm> logger) {
+        this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
+        this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
+        this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
+    }
+
+    private void Persist(INakedObjectAdapter nakedObjectAdapter) {
+        if (nakedObjectAdapter.ResolveState.IsAggregated() || nakedObjectAdapter.ResolveState.IsTransient() && nakedObjectAdapter.Spec.Persistable != PersistableType.Transient) {
+            var fields = ((IObjectSpec) nakedObjectAdapter.Spec).Properties;
+            if (!nakedObjectAdapter.Spec.IsEncodeable && fields.Length > 0) {
+                nakedObjectAdapter.Persisting();
+                if (!nakedObjectAdapter.Spec.ContainsFacet(typeof(IComplexTypeFacet))) {
+                    manager.MadePersistent(nakedObjectAdapter);
+                }
+
+                foreach (var field in fields) {
+                    if (!field.IsPersisted) {
+                        continue;
                     }
 
-                    foreach (var field in fields) {
-                        if (!field.IsPersisted) {
+                    if (field is IOneToManyAssociationSpec) {
+                        var collection = field.GetNakedObject(nakedObjectAdapter);
+                        if (collection is null) {
+                            throw new NotPersistableException(logger.LogAndReturn($"Collection {field.Name} does not exist in {nakedObjectAdapter.Spec.FullName}"));
+                        }
+
+                        MakePersistent(collection);
+                    }
+                    else {
+                        var fieldValue = field.GetNakedObject(nakedObjectAdapter);
+                        if (fieldValue is null) {
                             continue;
                         }
 
-                        if (field is IOneToManyAssociationSpec) {
-                            var collection = field.GetNakedObject(nakedObjectAdapter);
-                            if (collection is null) {
-                                throw new NotPersistableException(logger.LogAndReturn($"Collection {field.Name} does not exist in {nakedObjectAdapter.Spec.FullName}"));
-                            }
-
-                            MakePersistent(collection);
-                        }
-                        else {
-                            var fieldValue = field.GetNakedObject(nakedObjectAdapter);
-                            if (fieldValue is null) {
-                                continue;
-                            }
-
-                            Persist(fieldValue);
-                        }
+                        Persist(fieldValue);
                     }
-
-                    persistor.AddPersistedObject(nakedObjectAdapter);
                 }
+
+                persistor.AddPersistedObject(nakedObjectAdapter);
             }
         }
-
-        public override string ToString() => $"{NameAndHashCode(this)} []";
-
-        #region IPersistAlgorithm Members
-
-        public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter.Spec.IsCollection) {
-                nakedObjectAdapter.GetAsEnumerable(manager).ForEach(Persist);
-
-                if (nakedObjectAdapter.ResolveState.IsGhost()) {
-                    nakedObjectAdapter.ResolveState.Handle(Events.StartResolvingEvent);
-                    nakedObjectAdapter.ResolveState.Handle(Events.EndResolvingEvent);
-                }
-            }
-            else {
-                if (nakedObjectAdapter.ResolveState.IsPersistent()) {
-                    throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is already persistent: {nakedObjectAdapter}"));
-                }
-
-                if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
-                    throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is not persistable: {nakedObjectAdapter}"));
-                }
-
-                Persist(nakedObjectAdapter);
-            }
-        }
-
-        public string Name => "Simple Bottom Up Persistence Walker";
-
-        #endregion
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string ToString() => $"{NameAndHashCode(this)} []";
+
+    #region IPersistAlgorithm Members
+
+    public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
+        if (nakedObjectAdapter.Spec.IsCollection) {
+            nakedObjectAdapter.GetAsEnumerable(manager).ForEach(Persist);
+
+            if (nakedObjectAdapter.ResolveState.IsGhost()) {
+                nakedObjectAdapter.ResolveState.Handle(Events.StartResolvingEvent);
+                nakedObjectAdapter.ResolveState.Handle(Events.EndResolvingEvent);
+            }
+        }
+        else {
+            if (nakedObjectAdapter.ResolveState.IsPersistent()) {
+                throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is already persistent: {nakedObjectAdapter}"));
+            }
+
+            if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
+                throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is not persistable: {nakedObjectAdapter}"));
+            }
+
+            Persist(nakedObjectAdapter);
+        }
+    }
+
+    public string Name => "Simple Bottom Up Persistence Walker";
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -9,28 +9,28 @@ using System;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl {
-    public class ConsentFacade : IConsentFacade {
-        private readonly IConsent consent;
+namespace NakedFramework.Facade.Impl.Impl; 
 
-        public ConsentFacade(IConsent consent) => this.consent = consent ?? throw new NullReferenceException($"{nameof(consent)} is null");
+public class ConsentFacade : IConsentFacade {
+    private readonly IConsent consent;
 
-        public override bool Equals(object obj) => obj is ConsentFacade cf && Equals(cf);
+    public ConsentFacade(IConsent consent) => this.consent = consent ?? throw new NullReferenceException($"{nameof(consent)} is null");
 
-        private bool Equals(ConsentFacade other) => other is not null && (ReferenceEquals(this, other) || Equals(other.consent, consent));
+    public override bool Equals(object obj) => obj is ConsentFacade cf && Equals(cf);
 
-        public override int GetHashCode() => consent != null ? consent.GetHashCode() : 0;
+    private bool Equals(ConsentFacade other) => other is not null && (ReferenceEquals(this, other) || Equals(other.consent, consent));
 
-        #region IConsentFacade Members
+    public override int GetHashCode() => consent != null ? consent.GetHashCode() : 0;
 
-        public bool IsAllowed => consent.IsAllowed;
+    #region IConsentFacade Members
 
-        public bool IsVetoed => consent.IsVetoed;
+    public bool IsAllowed => consent.IsAllowed;
 
-        public string Reason => consent.Reason;
+    public bool IsVetoed => consent.IsVetoed;
 
-        public Exception Exception => consent.Exception;
+    public string Reason => consent.Reason;
 
-        #endregion
-    }
+    public Exception Exception => consent.Exception;
+
+    #endregion
 }

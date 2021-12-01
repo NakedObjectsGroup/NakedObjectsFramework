@@ -20,33 +20,33 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class RemoveDynamicProxyMethodsFacetFactory : ObjectFacetFactoryProcessor {
-        private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public RemoveDynamicProxyMethodsFacetFactory(IFacetFactoryOrder<RemoveDynamicProxyMethodsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }
+public sealed class RemoveDynamicProxyMethodsFacetFactory : ObjectFacetFactoryProcessor {
+    private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
 
-        private static bool IsDynamicProxyType(Type type) => type.FullName?.StartsWith("System.Data.Entity.DynamicProxies", StringComparison.Ordinal) == true;
+    public RemoveDynamicProxyMethodsFacetFactory(IFacetFactoryOrder<RemoveDynamicProxyMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (IsDynamicProxyType(type)) {
-                foreach (var method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
-                    methodRemover.SafeRemoveMethod(method);
-                }
+    private static bool IsDynamicProxyType(Type type) => type.FullName?.StartsWith("System.Data.Entity.DynamicProxies", StringComparison.Ordinal) == true;
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (IsDynamicProxyType(type)) {
+            foreach (var method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
+                methodRemover.SafeRemoveMethod(method);
             }
-
-            return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (IsDynamicProxyType(property.DeclaringType) && property.Name.Equals("RelationshipManager", StringComparison.Ordinal)) {
-                FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
-            }
-
-            return metamodel;
-        }
+        return metamodel;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (IsDynamicProxyType(property.DeclaringType) && property.Name.Equals("RelationshipManager", StringComparison.Ordinal)) {
+            FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
+        }
+
+        return metamodel;
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

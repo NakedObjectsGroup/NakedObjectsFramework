@@ -9,16 +9,16 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Profile;
 
-namespace NakedFramework.Metamodel.Profile {
-    public class ProfileConfiguration<T> : IProfileConfiguration where T : IProfiler {
-        public ProfileConfiguration() => Profiler = typeof(T);
+namespace NakedFramework.Metamodel.Profile; 
 
-        #region IProfileConfiguration Members
+public class ProfileConfiguration<T> : IProfileConfiguration where T : IProfiler {
+    public ProfileConfiguration() => Profiler = typeof(T);
 
-        public Type Profiler { get; }
+    #region IProfileConfiguration Members
 
-        public ISet<ProfileEvent> EventsToProfile { get; set; } = new HashSet<ProfileEvent>();
+    public Type Profiler { get; }
 
-        #endregion
-    }
+    public ISet<ProfileEvent> EventsToProfile { get; set; } = new HashSet<ProfileEvent>();
+
+    #endregion
 }

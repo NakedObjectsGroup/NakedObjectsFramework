@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstract<decimal>, IDecimalValueFacet {
-        private const decimal DefaultValueConst = 0;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 18;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public DecimalValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstract<decimal>, IDecimalValueFacet {
+    private const decimal DefaultValueConst = 0;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 18;
 
-        public static Type Type => typeof(IDecimalValueFacet);
+    public DecimalValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(decimal);
+    public static Type Type => typeof(IDecimalValueFacet);
 
-        #region IDecimalValueFacet Members
+    public static Type AdaptedType => typeof(decimal);
 
-        public decimal DecimalValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<decimal>();
+    #region IDecimalValueFacet Members
 
-        #endregion
+    public decimal DecimalValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<decimal>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(decimal);
+    #endregion
 
-        protected override decimal DoParse(string entry) {
-            try {
-                return decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, decimal.MinValue, decimal.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(decimal);
+
+    protected override decimal DoParse(string entry) {
+        try {
+            return decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
         }
-
-        protected override decimal DoParseInvariant(string entry) => decimal.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(decimal obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, decimal value) => value.ToString(mask);
-
-        protected override string DoEncode(decimal obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override decimal DoRestore(string data) => decimal.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "DecimalAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, decimal.MinValue, decimal.MaxValue));
+        }
     }
+
+    protected override decimal DoParseInvariant(string entry) => decimal.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(decimal obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, decimal value) => value.ToString(mask);
+
+    protected override string DoEncode(decimal obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override decimal DoRestore(string data) => decimal.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "DecimalAdapter: ";
 }

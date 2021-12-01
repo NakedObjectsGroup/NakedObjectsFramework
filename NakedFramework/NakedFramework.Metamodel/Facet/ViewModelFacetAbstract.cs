@@ -11,19 +11,19 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class ViewModelFacetAbstract : FacetAbstract, IViewModelFacet {
-        protected ViewModelFacetAbstract(Type type, ISpecification holder)
-            : base(type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        #region IViewModelFacet Members
+[Serializable]
+public abstract class ViewModelFacetAbstract : FacetAbstract, IViewModelFacet {
+    protected ViewModelFacetAbstract(Type type, ISpecification holder)
+        : base(type, holder) { }
 
-        public abstract string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-        public abstract void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+    #region IViewModelFacet Members
 
-        public virtual bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => false;
+    public abstract string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+    public abstract void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 
-        #endregion
-    }
+    public virtual bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => false;
+
+    #endregion
 }

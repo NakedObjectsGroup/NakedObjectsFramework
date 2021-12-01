@@ -7,13 +7,13 @@
 
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     Superclass of exceptions which indicate an attempt to interact
-    ///     with a class member that is in some way hidden or invisible.
-    /// </summary>
-    public class HiddenException : InteractionException {
-        public HiddenException(IInteractionContext ic, string message)
-            : base(ic, message) { }
-    }
+namespace NakedFramework.Core.Error; 
+
+/// <summary>
+///     Superclass of exceptions which indicate an attempt to interact
+///     with a class member that is in some way hidden or invisible.
+/// </summary>
+public class HiddenException : InteractionException {
+    public HiddenException(IInteractionContext ic, string message)
+        : base(ic, message) { }
 }

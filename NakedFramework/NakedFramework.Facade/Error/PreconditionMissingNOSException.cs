@@ -7,10 +7,10 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Error {
-    public class PreconditionMissingNOSException : NakedObjectsFacadeException {
-        public IObjectFacade SourceNakedObject { get; set; }
+namespace NakedFramework.Facade.Error; 
 
-        public override string Message => "If-Match header required with last-known value of ETag for the resource in order to modify its state";
-    }
+public class PreconditionMissingNOSException : NakedObjectsFacadeException {
+    public IObjectFacade SourceNakedObject { get; set; }
+
+    public override string Message => "If-Match header required with last-known value of ETag for the resource in order to modify its state";
 }

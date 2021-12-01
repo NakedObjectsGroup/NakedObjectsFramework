@@ -10,36 +10,36 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.SpecImmutable {
-    /// <summary>
-    ///     This is the immutable or 'static' core of the IObjectSpec.  It is created by the reflector during start-up, but can
-    ///     also be
-    ///     serialized/deserialized and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in
-    ///     order to
-    ///     provide various run-time behaviors required of the Spec, which depend upon the run-time framework services.
-    /// </summary>
-    public interface ITypeSpecImmutable : ISpecificationBuilder {
-        Type Type { get; }
-        string FullName { get; }
-        string ShortName { get; }
-        IMenuImmutable ObjectMenu { get; }
-        IReadOnlyList<IActionSpecImmutable> OrderedObjectActions { get; }
-        IReadOnlyList<IActionSpecImmutable> OrderedContributedActions { get; }
-        IReadOnlyList<IActionSpecImmutable> OrderedCollectionContributedActions { get; }
-        IReadOnlyList<IActionSpecImmutable> OrderedFinderActions { get; }
-        IReadOnlyList<IAssociationSpecImmutable> OrderedFields { get; }
-        IReadOnlyList<ITypeSpecImmutable> Interfaces { get; }
-        IReadOnlyList<ITypeSpecImmutable> Subclasses { get; }
-        ITypeSpecImmutable Superclass { get; }
-        bool IsObject { get; }
-        bool IsCollection { get; }
-        bool IsQueryable { get; }
+namespace NakedFramework.Architecture.SpecImmutable; 
 
-        bool IsParseable { get; }
+/// <summary>
+///     This is the immutable or 'static' core of the IObjectSpec.  It is created by the reflector during start-up, but can
+///     also be
+///     serialized/deserialized and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in
+///     order to
+///     provide various run-time behaviors required of the Spec, which depend upon the run-time framework services.
+/// </summary>
+public interface ITypeSpecImmutable : ISpecificationBuilder {
+    Type Type { get; }
+    string FullName { get; }
+    string ShortName { get; }
+    IMenuImmutable ObjectMenu { get; }
+    IReadOnlyList<IActionSpecImmutable> OrderedObjectActions { get; }
+    IReadOnlyList<IActionSpecImmutable> OrderedContributedActions { get; }
+    IReadOnlyList<IActionSpecImmutable> OrderedCollectionContributedActions { get; }
+    IReadOnlyList<IActionSpecImmutable> OrderedFinderActions { get; }
+    IReadOnlyList<IAssociationSpecImmutable> OrderedFields { get; }
+    IReadOnlyList<ITypeSpecImmutable> Interfaces { get; }
+    IReadOnlyList<ITypeSpecImmutable> Subclasses { get; }
+    ITypeSpecImmutable Superclass { get; }
+    bool IsObject { get; }
+    bool IsCollection { get; }
+    bool IsQueryable { get; }
 
-        //Will return true if this is a sub-type of the passed-in spec
-        bool IsOfType(ITypeSpecImmutable otherSpecification);
-    }
+    bool IsParseable { get; }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    //Will return true if this is a sub-type of the passed-in spec
+    bool IsOfType(ITypeSpecImmutable otherSpecification);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

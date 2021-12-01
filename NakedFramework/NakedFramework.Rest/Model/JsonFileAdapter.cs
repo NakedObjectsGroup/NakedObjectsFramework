@@ -9,31 +9,31 @@ using System;
 using System.IO;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Rest.Model {
-    public class JsonFileAdapter : IAttachmentFacade {
-        private readonly string data;
+namespace NakedFramework.Rest.Model; 
 
-        public JsonFileAdapter(string data, string type, string name) {
-            this.data = data;
-            ContentType = type;
-            FileName = name;
-        }
+public class JsonFileAdapter : IAttachmentFacade {
+    private readonly string data;
 
-        #region IAttachmentFacade Members
-
-        public Stream InputStream {
-            get {
-                // This assumes the data url is base64 encoded  
-                var body = data[(data.IndexOf(",", StringComparison.InvariantCulture) + 1)..];
-                var bytes = Convert.FromBase64String(body);
-                return new MemoryStream(bytes);
-            }
-        }
-
-        public string ContentType { get; }
-
-        public string FileName { get; }
-
-        #endregion
+    public JsonFileAdapter(string data, string type, string name) {
+        this.data = data;
+        ContentType = type;
+        FileName = name;
     }
+
+    #region IAttachmentFacade Members
+
+    public Stream InputStream {
+        get {
+            // This assumes the data url is base64 encoded  
+            var body = data[(data.IndexOf(",", StringComparison.InvariantCulture) + 1)..];
+            var bytes = Convert.FromBase64String(body);
+            return new MemoryStream(bytes);
+        }
+    }
+
+    public string ContentType { get; }
+
+    public string FileName { get; }
+
+    #endregion
 }

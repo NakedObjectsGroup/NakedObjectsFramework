@@ -5,22 +5,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Whether the (string) property or parameter should be rendered over multiple lines
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to the <see cref="MultiLineAttribute" /> annotation
-    /// </para>
-    public interface IMultiLineFacet : IFacet {
-        /// <summary>
-        ///     How many lines to use
-        /// </summary>
-        int NumberOfLines { get; }
+namespace NakedFramework.Architecture.Facet; 
 
-        /// <summary>
-        ///     Width of each line before wrapping
-        /// </summary>
-        int Width { get; }
-    }
+/// <summary>
+///     Whether the (string) property or parameter should be rendered over multiple lines
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to the <see cref="MultiLineAttribute" /> annotation
+/// </para>
+public interface IMultiLineFacet : IFacet {
+    /// <summary>
+    ///     How many lines to use
+    /// </summary>
+    int NumberOfLines { get; }
+
+    /// <summary>
+    ///     Width of each line before wrapping
+    /// </summary>
+    int Width { get; }
 }

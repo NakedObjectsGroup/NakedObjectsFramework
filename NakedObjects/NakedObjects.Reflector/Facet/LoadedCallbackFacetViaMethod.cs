@@ -14,38 +14,38 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, IImperativeFacet {
-        private readonly MethodInfo method;
+namespace NakedObjects.Reflector.Facet; 
 
-        [field: NonSerialized] private Action<object> loadedDelegate;
+[Serializable]
+public sealed class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, IImperativeFacet {
+    private readonly MethodInfo method;
 
-        public LoadedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
-            : base(holder) {
-            this.method = method;
-            loadedDelegate = DelegateUtils.CreateCallbackDelegate(method);
-        }
+    [field: NonSerialized] private Action<object> loadedDelegate;
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => loadedDelegate(nakedObjectAdapter.GetDomainObject());
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => loadedDelegate = DelegateUtils.CreateCallbackDelegate(method);
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() =>
-            (tgt, p) => {
-                loadedDelegate(tgt);
-                return null;
-            };
-
-        #endregion
+    public LoadedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
+        : base(holder) {
+        this.method = method;
+        loadedDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => loadedDelegate(nakedObjectAdapter.GetDomainObject());
+
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => loadedDelegate = DelegateUtils.CreateCallbackDelegate(method);
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() =>
+        (tgt, p) => {
+            loadedDelegate(tgt);
+            return null;
+        };
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -17,25 +17,25 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    /// <summary>
-    ///     Creates an <see cref="IPageSizeFacet" /> based on the presence of an
-    ///     <see cref="NakedObjects.PageSizeAttribute" /> annotation
-    /// </summary>
-    public sealed class PageSizeAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public PageSizeAnnotationFacetFactory(IFacetFactoryOrder<PageSizeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<PageSizeAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-        }
+/// <summary>
+///     Creates an <see cref="IPageSizeFacet" /> based on the presence of an
+///     <see cref="NakedObjects.PageSizeAttribute" /> annotation
+/// </summary>
+public sealed class PageSizeAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public PageSizeAnnotationFacetFactory(IFacetFactoryOrder<PageSizeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, specification);
-            return metamodel;
-        }
-
-        private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) => attribute is null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
+    private static void Process(MemberInfo member, ISpecification holder) {
+        var attribute = member.GetCustomAttribute<PageSizeAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
+    }
+
+    private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) => attribute is null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
 }

@@ -5,10 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Resolve {
-    public interface IResolveStateMachine {
-        IResolveState CurrentState { get; }
-        void Handle(IResolveEvent rEvent);
-        void AddHistoryNote(string note);
-    }
+namespace NakedFramework.Architecture.Resolve; 
+
+public interface IResolveStateMachine {
+    IResolveState CurrentState { get; }
+    void Handle(IResolveEvent rEvent);
+    void AddHistoryNote(string note);
 }

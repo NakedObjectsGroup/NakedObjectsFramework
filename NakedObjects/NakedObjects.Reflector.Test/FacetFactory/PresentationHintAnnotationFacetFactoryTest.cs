@@ -19,171 +19,171 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class PresentationHintAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private PresentationHintAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IPresentationHintFacet)};
+[TestClass]
+public class PresentationHintAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private PresentationHintAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IPresentationHintFacet)};
 
-        #region Nested type: Customer
+    protected override IFacetFactory FacetFactory => facetFactory;
+
+    #region Nested type: Customer
+
+    [PresentationHint("ahint")]
+    private class Customer { }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [PresentationHint("ahint")]
+
+        public string FirstName => null;
 
         [PresentationHint("ahint")]
-        private class Customer { }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [PresentationHint("ahint")]
-
-            public string FirstName => null;
-
-            [PresentationHint("ahint")]
-            public List<Customer3> Customers { get; set; }
-        }
-
-        #endregion
-
-        #region Nested type: Customer2
-
-        private class Customer2 {
-            [PresentationHint("ahint")]
-// ReSharper disable UnusedParameter.Local
-            public void SomeAction([PresentationHint("ahint")] string foo) { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PresentationHintAnnotationFacetFactory(GetOrder<PresentationHintAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer3 {
-            [PresentationHint("ahint")]
-            public int NumberOfOrders => 0;
-        }
-
-        private class Customer4 {
-            public void SomeAction([PresentationHint("ahint")] int foo) { }
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        [TestMethod]
-        public void TestPresentationHintAnnotationNotIgnoredForNonStringsProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer3), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestPresentationHintAnnotationNotIgnoredForPrimitiveOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestPresentationHintAnnotationPickedUpOnAction() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacet);
-            var maskFacet = (PresentationHintFacet) facet;
-            Assert.AreEqual("ahint", maskFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestPresentationHintAnnotationPickedUpOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacet);
-            var maskFacet = (PresentationHintFacet) facet;
-            Assert.AreEqual("ahint", maskFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestPresentationHintAnnotationPickedUpOnClass() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacet);
-            var maskFacet = (PresentationHintFacet) facet;
-            Assert.AreEqual("ahint", maskFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestPresentationHintAnnotationPickedUpOnCollectionProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "Customers");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacet);
-            var maskFacet = (PresentationHintFacet) facet;
-            Assert.AreEqual("ahint", maskFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestPresentationHintAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacet);
-            var maskFacet = (PresentationHintFacet) facet;
-            Assert.AreEqual("ahint", maskFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
+        public List<Customer3> Customers { get; set; }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
-    // ReSharper restore UnusedParameter.Local
+    #endregion
+
+    #region Nested type: Customer2
+
+    private class Customer2 {
+        [PresentationHint("ahint")]
+// ReSharper disable UnusedParameter.Local
+        public void SomeAction([PresentationHint("ahint")] string foo) { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new PresentationHintAnnotationFacetFactory(GetOrder<PresentationHintAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
+
+    private class Customer3 {
+        [PresentationHint("ahint")]
+        public int NumberOfOrders => 0;
+    }
+
+    private class Customer4 {
+        public void SomeAction([PresentationHint("ahint")] int foo) { }
+    }
+
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    [TestMethod]
+    public void TestPresentationHintAnnotationNotIgnoredForNonStringsProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer3), "NumberOfOrders");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestPresentationHintAnnotationNotIgnoredForPrimitiveOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestPresentationHintAnnotationPickedUpOnAction() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+        metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is PresentationHintFacet);
+        var maskFacet = (PresentationHintFacet) facet;
+        Assert.AreEqual("ahint", maskFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestPresentationHintAnnotationPickedUpOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is PresentationHintFacet);
+        var maskFacet = (PresentationHintFacet) facet;
+        Assert.AreEqual("ahint", maskFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestPresentationHintAnnotationPickedUpOnClass() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is PresentationHintFacet);
+        var maskFacet = (PresentationHintFacet) facet;
+        Assert.AreEqual("ahint", maskFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestPresentationHintAnnotationPickedUpOnCollectionProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "Customers");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is PresentationHintFacet);
+        var maskFacet = (PresentationHintFacet) facet;
+        Assert.AreEqual("ahint", maskFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestPresentationHintAnnotationPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "FirstName");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is PresentationHintFacet);
+        var maskFacet = (PresentationHintFacet) facet;
+        Assert.AreEqual("ahint", maskFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.
+// ReSharper restore UnusedMember.Local
+// ReSharper restore UnusedParameter.Local

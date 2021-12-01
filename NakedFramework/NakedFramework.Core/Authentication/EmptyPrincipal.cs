@@ -10,32 +10,32 @@ using System.Security.Principal;
 
 [assembly: InternalsVisibleTo("NakedFunctions.Services.Test")]
 
-namespace NakedFramework.Core.Authentication {
-    internal class EmptyPrincipal : IPrincipal {
-        public EmptyPrincipal() => Identity = new EmptyIdentity();
+namespace NakedFramework.Core.Authentication; 
 
-        #region IPrincipal Members
+internal class EmptyPrincipal : IPrincipal {
+    public EmptyPrincipal() => Identity = new EmptyIdentity();
 
-        public bool IsInRole(string role) => false;
+    #region IPrincipal Members
 
-        public IIdentity Identity { get; }
+    public bool IsInRole(string role) => false;
 
-        #endregion
+    public IIdentity Identity { get; }
+
+    #endregion
+}
+
+internal class EmptyIdentity : IIdentity {
+    public EmptyIdentity() {
+        Name = "";
+        AuthenticationType = "";
+        IsAuthenticated = false;
     }
 
-    internal class EmptyIdentity : IIdentity {
-        public EmptyIdentity() {
-            Name = "";
-            AuthenticationType = "";
-            IsAuthenticated = false;
-        }
+    #region IIdentity Members
 
-        #region IIdentity Members
+    public string Name { get; }
+    public string AuthenticationType { get; }
+    public bool IsAuthenticated { get; }
 
-        public string Name { get; }
-        public string AuthenticationType { get; }
-        public bool IsAuthenticated { get; }
-
-        #endregion
-    }
+    #endregion
 }

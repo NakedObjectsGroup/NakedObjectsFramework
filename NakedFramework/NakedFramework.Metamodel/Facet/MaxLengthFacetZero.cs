@@ -9,21 +9,21 @@ using System;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class MaxLengthFacetZero : MaxLengthFacetAbstract {
-        private const int NoLimit = 0;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public MaxLengthFacetZero(ISpecification holder)
-            : base(NoLimit, holder) { }
+[Serializable]
+public sealed class MaxLengthFacetZero : MaxLengthFacetAbstract {
+    private const int NoLimit = 0;
 
-        public override bool IsNoOp => true;
+    public MaxLengthFacetZero(ISpecification holder)
+        : base(NoLimit, holder) { }
 
-        /// <summary>
-        ///     No limit to maximum length
-        /// </summary>
-        public override string Invalidates(IInteractionContext interactionContext) => null;
-    }
+    public override bool IsNoOp => true;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     No limit to maximum length
+    /// </summary>
+    public override string Invalidates(IInteractionContext interactionContext) => null;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

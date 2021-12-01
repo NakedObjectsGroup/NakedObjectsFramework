@@ -14,28 +14,28 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    public class FormActionRepresentationStrategy : AbstractActionRepresentationStrategy {
-        public FormActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
-            : base(oidStrategy, req, actionContext, flags) { }
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        protected override IEnumerable<ParameterRepresentation> GetParameterList() {
-            var visibleProperties = ActionContext.Target.Specification.Properties.Where(p => p.IsUsable(ActionContext.Target).IsAllowed && p.IsVisible(ActionContext.Target));
-            return visibleProperties.Select(GetParameter);
-        }
+public class FormActionRepresentationStrategy : AbstractActionRepresentationStrategy {
+    public FormActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
+        : base(oidStrategy, req, actionContext, flags) { }
 
-        public override LinkRepresentation[] GetLinks() =>
-            new List<LinkRepresentation> {
-                CreateSelfLink(),
-                CreateUpLink(),
-                CreateActionLink()
-            }.ToArray();
-
-        private ParameterRepresentation GetParameter(IAssociationFacade assoc) {
-            var objectFacade = ActionContext.Target;
-            return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, assoc, ActionContext, Flags);
-        }
-
-        protected override bool HasParams() => GetParameterList().Any();
+    protected override IEnumerable<ParameterRepresentation> GetParameterList() {
+        var visibleProperties = ActionContext.Target.Specification.Properties.Where(p => p.IsUsable(ActionContext.Target).IsAllowed && p.IsVisible(ActionContext.Target));
+        return visibleProperties.Select(GetParameter);
     }
+
+    public override LinkRepresentation[] GetLinks() =>
+        new List<LinkRepresentation> {
+            CreateSelfLink(),
+            CreateUpLink(),
+            CreateActionLink()
+        }.ToArray();
+
+    private ParameterRepresentation GetParameter(IAssociationFacade assoc) {
+        var objectFacade = ActionContext.Target;
+        return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, assoc, ActionContext, Flags);
+    }
+
+    protected override bool HasParams() => GetParameterList().Any();
 }

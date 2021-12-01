@@ -8,10 +8,10 @@
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.SpecImmutable {
-    public interface IActionParameterSpecImmutable : ISpecificationBuilder, ISerializable {
-        IObjectSpecImmutable Specification { get; }
-        bool IsChoicesEnabled { get; }
-        bool IsMultipleChoicesEnabled { get; }
-    }
+namespace NakedFramework.Architecture.SpecImmutable; 
+
+public interface IActionParameterSpecImmutable : ISpecificationBuilder, ISerializable {
+    IObjectSpecImmutable Specification { get; }
+    bool IsChoicesEnabled { get; }
+    bool IsMultipleChoicesEnabled { get; }
 }

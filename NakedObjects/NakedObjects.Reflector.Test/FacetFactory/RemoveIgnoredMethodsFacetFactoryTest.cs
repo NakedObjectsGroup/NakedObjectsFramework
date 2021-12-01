@@ -26,86 +26,86 @@ using NakedObjects.Reflector.Reflect;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class RemoveIgnoredMethodsFacetFactoryTest : AbstractFacetFactoryTest {
-        private RemoveIgnoredMethodsFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes =>
-            new[] {
-                typeof(INamedFacet),
-                typeof(IActionValidationFacet),
-                typeof(IActionInvocationFacet),
-                typeof(IActionDefaultsFacet),
-                typeof(IActionChoicesFacet),
-                typeof(IDescribedAsFacet),
-                typeof(IMandatoryFacet)
-            };
+[TestClass]
+public class RemoveIgnoredMethodsFacetFactoryTest : AbstractFacetFactoryTest {
+    private RemoveIgnoredMethodsFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes =>
+        new[] {
+            typeof(INamedFacet),
+            typeof(IActionValidationFacet),
+            typeof(IActionInvocationFacet),
+            typeof(IActionDefaultsFacet),
+            typeof(IActionChoicesFacet),
+            typeof(IDescribedAsFacet),
+            typeof(IMandatoryFacet)
+        };
 
-        [TestMethod]
-        public void TestMethodsMarkedIgnoredAreRemoved() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
-            AssertRemovedCalled(2);
-            Assert.IsNotNull(metamodel);
-        }
+    [TestMethod]
+    public void TestMethodsMarkedIgnoredAreRemoved() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        #region Nested type: Customer1
-
-        #region TestClasses
-
-        private class Customer1 {
-            [NakedObjectsIgnore]
-            public void Method1() { }
-
-            [NakedObjectsIgnore]
-            public void Method2() { }
-
-            public void Method3() { }
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            var cache = new ImmutableInMemorySpecCache();
-            ObjectReflectorConfiguration.NoValidate = true;
-
-            var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
-            facetFactory = new RemoveIgnoredMethodsFacetFactory(GetOrder<RemoveIgnoredMethodsFacetFactory>(), LoggerFactory);
-            var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] {facetFactory});
-            var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
-            var metamodel = new MetamodelHolder(cache, null);
-            var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
-            var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
-            var order = new ObjectReflectorOrder<ObjectReflector>();
-            Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, reflectorConfiguration, Array.Empty<IFacetDecorator>(), order, mockLoggerFactory, mockLogger);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+        metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
+        AssertRemovedCalled(2);
+        Assert.IsNotNull(metamodel);
     }
+
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    #region Nested type: Customer1
+
+    #region TestClasses
+
+    private class Customer1 {
+        [NakedObjectsIgnore]
+        public void Method1() { }
+
+        [NakedObjectsIgnore]
+        public void Method2() { }
+
+        public void Method3() { }
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        var cache = new ImmutableInMemorySpecCache();
+        ObjectReflectorConfiguration.NoValidate = true;
+
+        var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
+        facetFactory = new RemoveIgnoredMethodsFacetFactory(GetOrder<RemoveIgnoredMethodsFacetFactory>(), LoggerFactory);
+        var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] {facetFactory});
+        var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
+        var metamodel = new MetamodelHolder(cache, null);
+        var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
+        var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
+        var order = new ObjectReflectorOrder<ObjectReflector>();
+        Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, reflectorConfiguration, Array.Empty<IFacetDecorator>(), order, mockLoggerFactory, mockLogger);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }

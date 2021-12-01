@@ -8,24 +8,24 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
-namespace NakedFramework.Persistor.EF6.Component {
-    public class EF6SaveObjectCommand : ISaveObjectCommand {
-        private readonly EF6LocalContext context;
-        private readonly INakedObjectAdapter nakedObjectAdapter;
+namespace NakedFramework.Persistor.EF6.Component; 
 
-        public EF6SaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, EF6LocalContext context) {
-            this.context = context;
-            this.nakedObjectAdapter = nakedObjectAdapter;
-        }
+public class EF6SaveObjectCommand : ISaveObjectCommand {
+    private readonly EF6LocalContext context;
+    private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public override string ToString() => $"EF6 SaveObjectCommand [object={nakedObjectAdapter}]";
-
-        #region ISaveObjectCommand Members
-
-        public void Execute() => context.CurrentUpdateRootObjectAdapter = nakedObjectAdapter;
-
-        public INakedObjectAdapter OnObject() => nakedObjectAdapter;
-
-        #endregion
+    public EF6SaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, EF6LocalContext context) {
+        this.context = context;
+        this.nakedObjectAdapter = nakedObjectAdapter;
     }
+
+    public override string ToString() => $"EF6 SaveObjectCommand [object={nakedObjectAdapter}]";
+
+    #region ISaveObjectCommand Members
+
+    public void Execute() => context.CurrentUpdateRootObjectAdapter = nakedObjectAdapter;
+
+    public INakedObjectAdapter OnObject() => nakedObjectAdapter;
+
+    #endregion
 }

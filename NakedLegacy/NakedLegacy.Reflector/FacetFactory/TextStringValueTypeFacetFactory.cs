@@ -19,26 +19,26 @@ using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.SemanticsProvider;
 using NakedObjects;
 
-namespace NakedLegacy.Reflector.FacetFactory {
-    public sealed class TextStringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public TextStringValueTypeFacetFactory(IFacetFactoryOrder<TextStringValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+namespace NakedLegacy.Reflector.FacetFactory; 
 
-        private static void RemoveExplicitlyIgnoredMembers(Type type, IMethodRemover methodRemover) {
-            foreach (var method in type.GetMethods().Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null)) {
-                methodRemover.SafeRemoveMethod(method);
-            }
+public sealed class TextStringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public TextStringValueTypeFacetFactory(IFacetFactoryOrder<TextStringValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+
+    private static void RemoveExplicitlyIgnoredMembers(Type type, IMethodRemover methodRemover) {
+        foreach (var method in type.GetMethods().Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null)) {
+            methodRemover.SafeRemoveMethod(method);
+        }
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!TextStringValueSemanticsProvider.IsAdaptedType(type)) {
+            return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!TextStringValueSemanticsProvider.IsAdaptedType(type)) {
-                return metamodel;
-            }
+        RemoveExplicitlyIgnoredMembers(type, methodRemover);
 
-            RemoveExplicitlyIgnoredMembers(type, methodRemover);
-
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(TextStringValueSemanticsProvider.AdaptedType, metamodel);
-            AddValueFacets(new TextStringValueSemanticsProvider(oSpec, specification), specification);
-            return mm;
-        }
+        var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(TextStringValueSemanticsProvider.AdaptedType, metamodel);
+        AddValueFacets(new TextStringValueSemanticsProvider(oSpec, specification), specification);
+        return mm;
     }
 }

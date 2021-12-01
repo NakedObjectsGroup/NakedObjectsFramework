@@ -10,9 +10,9 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Error;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Error {
-    public class BadPersistArgumentsException : BadArgumentsNOSException {
-        public BadPersistArgumentsException(string message, ObjectContextFacade context, IList<ContextFacade> contexts, RestControlFlags flags) : base(message, context, contexts) => Flags = flags;
-        public RestControlFlags Flags { get; }
-    }
+namespace NakedFramework.Rest.Snapshot.Error; 
+
+public class BadPersistArgumentsException : BadArgumentsNOSException {
+    public BadPersistArgumentsException(string message, ObjectContextFacade context, IList<ContextFacade> contexts, RestControlFlags flags) : base(message, context, contexts) => Flags = flags;
+    public RestControlFlags Flags { get; }
 }

@@ -15,299 +15,299 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.I18N;
 
-namespace NakedObjects.Meta.Test.I18N {
-    [TestClass]
-    public class I18NManagerTest {
-        private static readonly ILogger<I18NManager> mockLogger = new Mock<ILogger<I18NManager>>().Object;
+namespace NakedObjects.Meta.Test.I18N; 
 
-        #region Setup/Teardown
+[TestClass]
+public class I18NManagerTest {
+    private static readonly ILogger<I18NManager> mockLogger = new Mock<ILogger<I18NManager>>().Object;
 
-        [TestInitialize]
-        public void SetUp() { }
+    #region Setup/Teardown
 
-        #endregion
+    [TestInitialize]
+    public void SetUp() { }
 
-        [TestMethod]
-        public void TestDecoratePropertyName() {
-            var manager = new I18NManager(mockLogger);
+    #endregion
 
-            var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+    [TestMethod]
+    public void TestDecoratePropertyName() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
+        var testName = new Mock<INamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
-            identifier.Setup(i => i.IsField).Returns(true);
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
 
-            var testResources = new Mock<ResourceManager>();
+        identifier.Setup(i => i.IsField).Returns(true);
 
-            testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_property_name"))).Returns("I18N property name");
+        var testResources = new Mock<ResourceManager>();
 
-            manager.Resources = testResources.Object;
+        testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_property_name"))).Returns("I18N property name");
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testName.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-            Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
-        }
+        var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestDecorateActionName() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
+        Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
+    }
 
-            var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+    [TestMethod]
+    public void TestDecorateActionName() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
+        var testName = new Mock<INamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
-            identifier.Setup(i => i.IsField).Returns(false);
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
 
-            var testResources = new Mock<ResourceManager>();
+        identifier.Setup(i => i.IsField).Returns(false);
 
-            testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_action_name"))).Returns("I18N action name");
+        var testResources = new Mock<ResourceManager>();
 
-            manager.Resources = testResources.Object;
+        testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_action_name"))).Returns("I18N action name");
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testName.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-            Assert.AreEqual("I18N action name", ((NamedFacetI18N) facet).Value);
-        }
+        var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestDecorateParameterName() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
+        Assert.AreEqual("I18N action name", ((NamedFacetI18N) facet).Value);
+    }
 
-            var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+    [TestMethod]
+    public void TestDecorateParameterName() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<IActionParameterSpec>();
-            var identifier = new Mock<IIdentifier>();
-            var testResources = new Mock<ResourceManager>();
+        var testName = new Mock<INamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
-            testResources.Setup(r => r.GetString(It.Is<string>(s => s == "action_parameter1_name"))).Returns("I18N parameter name");
+        var testHolder = new Mock<IActionParameterSpec>();
+        var identifier = new Mock<IIdentifier>();
+        var testResources = new Mock<ResourceManager>();
 
-            manager.Resources = testResources.Object;
+        testResources.Setup(r => r.GetString(It.Is<string>(s => s == "action_parameter1_name"))).Returns("I18N parameter name");
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testName.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-            Assert.AreEqual("I18N parameter name", ((NamedFacetI18N) facet).Value);
-        }
+        var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestDecoratePropertyDescription() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
+        Assert.AreEqual("I18N parameter name", ((NamedFacetI18N) facet).Value);
+    }
 
-            var testDescribed = new Mock<IDescribedAsFacet>();
-            testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
+    [TestMethod]
+    public void TestDecoratePropertyDescription() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
+        var testDescribed = new Mock<IDescribedAsFacet>();
+        testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
 
-            identifier.Setup(i => i.IsField).Returns(true);
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
 
-            var testResources = new Mock<ResourceManager>();
+        identifier.Setup(i => i.IsField).Returns(true);
 
-            testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_property_description"))).Returns("I18N property description");
+        var testResources = new Mock<ResourceManager>();
 
-            manager.Resources = testResources.Object;
+        testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_property_description"))).Returns("I18N property description");
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
-            Assert.AreEqual("I18N property description", ((DescribedAsFacetI18N) facet).Value);
-        }
+        var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestDecorateActionDescription() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
+        Assert.AreEqual("I18N property description", ((DescribedAsFacetI18N) facet).Value);
+    }
 
-            var testDescribed = new Mock<IDescribedAsFacet>();
-            testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
+    [TestMethod]
+    public void TestDecorateActionDescription() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
+        var testDescribed = new Mock<IDescribedAsFacet>();
+        testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
 
-            identifier.Setup(i => i.IsField).Returns(false);
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
 
-            var testResources = new Mock<ResourceManager>();
+        identifier.Setup(i => i.IsField).Returns(false);
 
-            testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_action_description"))).Returns("I18N action description");
+        var testResources = new Mock<ResourceManager>();
 
-            manager.Resources = testResources.Object;
+        testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_action_description"))).Returns("I18N action description");
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
-            Assert.AreEqual("I18N action description", ((DescribedAsFacetI18N) facet).Value);
-        }
+        var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestDecorateParameterDescription() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
+        Assert.AreEqual("I18N action description", ((DescribedAsFacetI18N) facet).Value);
+    }
 
-            var testDescribed = new Mock<IDescribedAsFacet>();
-            testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
+    [TestMethod]
+    public void TestDecorateParameterDescription() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<IActionParameterSpec>();
-            var identifier = new Mock<IIdentifier>();
-            var testResources = new Mock<ResourceManager>();
+        var testDescribed = new Mock<IDescribedAsFacet>();
+        testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
 
-            testResources.Setup(r => r.GetString(It.Is<string>(s => s == "action_parameter1_description"))).Returns("I18N parameter description");
+        var testHolder = new Mock<IActionParameterSpec>();
+        var identifier = new Mock<IIdentifier>();
+        var testResources = new Mock<ResourceManager>();
 
-            manager.Resources = testResources.Object;
+        testResources.Setup(r => r.GetString(It.Is<string>(s => s == "action_parameter1_description"))).Returns("I18N parameter description");
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
-            Assert.AreEqual("I18N parameter description", ((DescribedAsFacetI18N) facet).Value);
-        }
+        var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestMissingResource() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
+        Assert.AreEqual("I18N parameter description", ((DescribedAsFacetI18N) facet).Value);
+    }
 
-            var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+    [TestMethod]
+    public void TestMissingResource() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
+        var testName = new Mock<INamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
-            identifier.Setup(i => i.IsField).Returns(true);
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
 
-            var testResources = new Mock<ResourceManager>();
+        identifier.Setup(i => i.IsField).Returns(true);
 
-            manager.Resources = testResources.Object;
+        var testResources = new Mock<ResourceManager>();
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testName.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsNull(facet);
-        }
+        var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestSystemOrNakedObjectsResource() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsNull(facet);
+    }
 
-            var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+    [TestMethod]
+    public void TestSystemOrNakedObjectsResource() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
+        var testName = new Mock<INamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
-            identifier.Setup(i => i.IsField).Returns(true);
-            identifier.Setup(i => i.ToIdentityString(It.IsAny<IdentifierDepth>())).Returns("System.");
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
 
-            var testResources = new Mock<ResourceManager>();
+        identifier.Setup(i => i.IsField).Returns(true);
+        identifier.Setup(i => i.ToIdentityString(It.IsAny<IdentifierDepth>())).Returns("System.");
 
-            manager.Resources = testResources.Object;
+        var testResources = new Mock<ResourceManager>();
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testName.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsNull(facet);
+        var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-            identifier.Setup(i => i.ToIdentityString(It.IsAny<IdentifierDepth>())).Returns("NakedObjects.");
+        Assert.IsNull(facet);
 
-            facet = manager.Decorate(testName.Object, testHolder.Object);
+        identifier.Setup(i => i.ToIdentityString(It.IsAny<IdentifierDepth>())).Returns("NakedObjects.");
 
-            Assert.IsNull(facet);
-        }
+        facet = manager.Decorate(testName.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestMissingResourceException() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsNull(facet);
+    }
 
-            var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+    [TestMethod]
+    public void TestMissingResourceException() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
+        var testName = new Mock<INamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
-            identifier.Setup(i => i.IsField).Returns(true);
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
 
-            var testResources = new Mock<ResourceManager>();
+        identifier.Setup(i => i.IsField).Returns(true);
 
-            testResources.Setup(r => r.GetString(It.IsAny<string>())).Throws<MissingManifestResourceException>();
+        var testResources = new Mock<ResourceManager>();
 
-            manager.Resources = testResources.Object;
+        testResources.Setup(r => r.GetString(It.IsAny<string>())).Throws<MissingManifestResourceException>();
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testName.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsNull(facet);
-        }
+        var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestFacetTypes() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsNull(facet);
+    }
 
-            var facets = manager.ForFacetTypes;
+    [TestMethod]
+    public void TestFacetTypes() {
+        var manager = new I18NManager(mockLogger);
 
-            Assert.IsTrue(facets.SequenceEqual(new[] {typeof(INamedFacet), typeof(IDescribedAsFacet)}));
-        }
+        var facets = manager.ForFacetTypes;
 
-        [TestMethod]
-        public void TestUndecoratedFacet() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsTrue(facets.SequenceEqual(new[] {typeof(INamedFacet), typeof(IDescribedAsFacet)}));
+    }
 
-            var testTitle = new Mock<ITitleFacet>();
-            testTitle.Setup(n => n.FacetType).Returns(typeof(ITitleFacet));
+    [TestMethod]
+    public void TestUndecoratedFacet() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<ISpecification>();
+        var testTitle = new Mock<ITitleFacet>();
+        testTitle.Setup(n => n.FacetType).Returns(typeof(ITitleFacet));
 
-            var facet = manager.Decorate(testTitle.Object, testHolder.Object);
+        var testHolder = new Mock<ISpecification>();
 
-            Assert.IsInstanceOfType(facet, typeof(ITitleFacet));
-            Assert.AreEqual(testTitle.Object, facet);
-        }
+        var facet = manager.Decorate(testTitle.Object, testHolder.Object);
 
-        [TestMethod]
-        public void TestCaching() {
-            var manager = new I18NManager(mockLogger);
+        Assert.IsInstanceOfType(facet, typeof(ITitleFacet));
+        Assert.AreEqual(testTitle.Object, facet);
+    }
 
-            var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+    [TestMethod]
+    public void TestCaching() {
+        var manager = new I18NManager(mockLogger);
 
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
+        var testName = new Mock<INamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
-            identifier.Setup(i => i.IsField).Returns(true);
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
 
-            var testResources = new Mock<ResourceManager>();
+        identifier.Setup(i => i.IsField).Returns(true);
 
-            testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_property_name"))).Returns("I18N property name");
+        var testResources = new Mock<ResourceManager>();
 
-            manager.Resources = testResources.Object;
+        testResources.Setup(r => r.GetString(It.Is<string>(s => s == "_property_name"))).Returns("I18N property name");
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        manager.Resources = testResources.Object;
 
-            var facet = manager.Decorate(testName.Object, testHolder.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-            Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
+        var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-            facet = manager.Decorate(testName.Object, testHolder.Object);
+        Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
+        Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
 
-            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-            Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
-        }
+        facet = manager.Decorate(testName.Object, testHolder.Object);
+
+        Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
+        Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
     }
 }

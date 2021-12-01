@@ -14,21 +14,21 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace Snapshot.Xml.Test {
-    public class TestObjectContext : DbContext {
-        public TestObjectContext(string name) : base(name) { }
-        public DbSet<TestObject> TestObjects { get; set; }
-    }
+namespace Snapshot.Xml.Test; 
 
-    public class TestObject {
-        [Key]
-        [Hidden(WhenTo.Always)]
-        public virtual int TestObjectId { get; set; }
+public class TestObjectContext : DbContext {
+    public TestObjectContext(string name) : base(name) { }
+    public DbSet<TestObject> TestObjects { get; set; }
+}
 
-        public virtual int TestInt { get; set; }
-        public virtual string TestString { get; set; }
-        public virtual TestObject TestReference { get; set; }
+public class TestObject {
+    [Key]
+    [Hidden(WhenTo.Always)]
+    public virtual int TestObjectId { get; set; }
 
-        public virtual IList<TestObject> TestCollection { get; set; } = new List<TestObject>();
-    }
+    public virtual int TestInt { get; set; }
+    public virtual string TestString { get; set; }
+    public virtual TestObject TestReference { get; set; }
+
+    public virtual IList<TestObject> TestCollection { get; set; } = new List<TestObject>();
 }

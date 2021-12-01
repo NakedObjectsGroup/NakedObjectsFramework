@@ -11,29 +11,29 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.CustomerAddress")]
-    public class CustomerAddress {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Sales.CustomerAddress")]
+public class CustomerAddress {
        
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int CustomerID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int CustomerID { get; set; }
 
        
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int AddressID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int AddressID { get; set; }
 
-        public int AddressTypeID { get; set; }
+    public int AddressTypeID { get; set; }
 
-        public Guid rowguid { get; set; }
+    public Guid rowguid { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Address Address { get; set; }
+    public virtual Address Address { get; set; }
 
-        public virtual AddressType AddressType { get; set; }
+    public virtual AddressType AddressType { get; set; }
 
-        public virtual Customer Customer { get; set; }
-    }
+    public virtual Customer Customer { get; set; }
 }

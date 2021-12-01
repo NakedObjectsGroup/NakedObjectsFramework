@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, ILongValueFacet {
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 20;
-        private const long DefaultValueConst = 0;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public LongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, ILongValueFacet {
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 20;
+    private const long DefaultValueConst = 0;
 
-        public static Type Type => typeof(ILongValueFacet);
+    public LongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(long);
+    public static Type Type => typeof(ILongValueFacet);
 
-        #region ILongValueFacet Members
+    public static Type AdaptedType => typeof(long);
 
-        public long LongValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<long>();
+    #region ILongValueFacet Members
 
-        #endregion
+    public long LongValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<long>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(long);
+    #endregion
 
-        protected override long DoParse(string entry) {
-            try {
-                return long.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, long.MinValue, long.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(long);
+
+    protected override long DoParse(string entry) {
+        try {
+            return long.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
         }
-
-        protected override long DoParseInvariant(string entry) => long.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(long obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, long value) => value.ToString(mask);
-
-        protected override string DoEncode(long obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-        protected override long DoRestore(string data) => long.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "LongAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, long.MinValue, long.MaxValue));
+        }
     }
+
+    protected override long DoParseInvariant(string entry) => long.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(long obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, long value) => value.ToString(mask);
+
+    protected override string DoEncode(long obj) => obj.ToString("G", CultureInfo.InvariantCulture);
+
+    protected override long DoRestore(string data) => long.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "LongAdapter: ";
 }

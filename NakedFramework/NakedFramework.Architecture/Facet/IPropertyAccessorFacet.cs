@@ -8,18 +8,18 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     The mechanism by which the value of the property can be accessed
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to invoking the accessor method for a property.
+/// </para>
+/// <seealso cref="IPropertySetterFacet" />
+public interface IPropertyAccessorFacet : IFacet {
     /// <summary>
-    ///     The mechanism by which the value of the property can be accessed
+    ///     Gets the value of this property from this object
     /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to invoking the accessor method for a property.
-    /// </para>
-    /// <seealso cref="IPropertySetterFacet" />
-    public interface IPropertyAccessorFacet : IFacet {
-        /// <summary>
-        ///     Gets the value of this property from this object
-        /// </summary>
-        object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework);
-    }
+    object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework);
 }

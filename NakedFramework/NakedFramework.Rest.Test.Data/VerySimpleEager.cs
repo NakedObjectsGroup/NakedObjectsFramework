@@ -14,35 +14,35 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    [Eagerly(Do.Rendering)]
-    public class VerySimpleEager {
-        [Key]
-        [Hidden(WhenTo.Always)]
-        [ConcurrencyCheck]
-        public virtual int Id { get; set; }
+namespace RestfulObjects.Test.Data; 
 
-        [Optionally]
-        [Title]
-        [MaxLength(101)]
-        [RegEx(Validation = @"[A-Z]")]
-        public virtual string Name { get; set; }
+[Eagerly(Do.Rendering)]
+public class VerySimpleEager {
+    [Key]
+    [Hidden(WhenTo.Always)]
+    [ConcurrencyCheck]
+    public virtual int Id { get; set; }
 
-        [Optionally]
-        [Title]
-        public virtual MostSimple MostSimple { get; set; }
+    [Optionally]
+    [Title]
+    [MaxLength(101)]
+    [RegEx(Validation = @"[A-Z]")]
+    public virtual string Name { get; set; }
 
-        #region SimpleList (collection)
+    [Optionally]
+    [Title]
+    public virtual MostSimple MostSimple { get; set; }
 
-        public virtual ICollection<MostSimple> SimpleList { get; set; } = new List<MostSimple>();
+    #region SimpleList (collection)
 
-        #endregion
+    public virtual ICollection<MostSimple> SimpleList { get; set; } = new List<MostSimple>();
 
-        #region SimpleSet (collection)
+    #endregion
 
-        [NotMapped]
-        public virtual ISet<MostSimple> SimpleSet { get; set; } = new HashSet<MostSimple>();
+    #region SimpleSet (collection)
 
-        #endregion
-    }
+    [NotMapped]
+    public virtual ISet<MostSimple> SimpleSet { get; set; } = new HashSet<MostSimple>();
+
+    #endregion
 }

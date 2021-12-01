@@ -7,14 +7,14 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    public class ReflectionException : NakedObjectSystemException {
-        public ReflectionException(string message)
-            : base(message) { }
+namespace NakedFramework.Core.Error; 
 
-        public ReflectionException(string message, Exception cause)
-            : base(message, cause) { }
-    }
+public class ReflectionException : NakedObjectSystemException {
+    public ReflectionException(string message)
+        : base(message) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public ReflectionException(string message, Exception cause)
+        : base(message, cause) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -5,14 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Rest.Model {
-    public class ReservedArguments {
-        public virtual bool? InlinePropertyDetails { get; set; }
-        public virtual bool ValidateOnly { get; set; }
-        public virtual string DomainModel { get; set; }
-        public string SearchTerm { get; init; }
-        public int Page { get; set; }
-        public int PageSize { get; set; }
-        public virtual bool? InlineCollectionItems { get; set; }
-    }
+namespace NakedFramework.Rest.Model; 
+
+public class ReservedArguments {
+    public virtual bool? InlinePropertyDetails { get; set; }
+    public virtual bool ValidateOnly { get; set; }
+    public virtual string DomainModel { get; set; }
+    public string SearchTerm { get; init; }
+    public int Page { get; set; }
+    public int PageSize { get; set; }
+    public virtual bool? InlineCollectionItems { get; set; }
 }

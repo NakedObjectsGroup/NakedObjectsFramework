@@ -7,7 +7,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace NakedFramework.Rest.Model {
-    [ModelBinder(BinderType = typeof(PersistArgumentMapBinder))]
-    public class PersistArgumentMap : ArgumentMap { }
-}
+namespace NakedFramework.Rest.Model; 
+
+[ModelBinder(BinderType = typeof(PersistArgumentMapBinder))]
+public class PersistArgumentMap : ArgumentMap { }

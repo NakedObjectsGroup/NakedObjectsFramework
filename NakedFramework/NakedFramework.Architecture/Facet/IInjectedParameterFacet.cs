@@ -8,8 +8,8 @@
 using System;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IInjectedParameterFacet : IFacet {
-        object GetInjectedValue(INakedFramework framework, IServiceProvider provider);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+public interface IInjectedParameterFacet : IFacet {
+    object GetInjectedValue(INakedFramework framework, IServiceProvider provider);
 }

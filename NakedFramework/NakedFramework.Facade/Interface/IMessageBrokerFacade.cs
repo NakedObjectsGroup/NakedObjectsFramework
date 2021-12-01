@@ -5,16 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Facade.Interface {
-    public interface IMessageBrokerFacade {
-        string[] PeekMessages { get; }
-        string[] PeekWarnings { get; }
-        string[] Messages { get; }
-        string[] Warnings { get; }
-        void AddWarning(string message);
-        void AddMessage(string message);
-        void ClearWarnings();
-        void ClearMessages();
-        void EnsureEmpty();
-    }
+namespace NakedFramework.Facade.Interface; 
+
+public interface IMessageBrokerFacade {
+    string[] PeekMessages { get; }
+    string[] PeekWarnings { get; }
+    string[] Messages { get; }
+    string[] Warnings { get; }
+    void AddWarning(string message);
+    void AddMessage(string message);
+    void ClearWarnings();
+    void ClearMessages();
+    void EnsureEmpty();
 }

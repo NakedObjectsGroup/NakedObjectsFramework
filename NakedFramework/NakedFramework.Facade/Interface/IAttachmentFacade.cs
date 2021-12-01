@@ -7,10 +7,10 @@
 
 using System.IO;
 
-namespace NakedFramework.Facade.Interface {
-    public interface IAttachmentFacade {
-        Stream InputStream { get; }
-        string ContentType { get; }
-        string FileName { get; }
-    }
+namespace NakedFramework.Facade.Interface; 
+
+public interface IAttachmentFacade {
+    Stream InputStream { get; }
+    string ContentType { get; }
+    string FileName { get; }
 }

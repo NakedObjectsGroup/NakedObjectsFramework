@@ -7,34 +7,34 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec; 
+
+/// <summary>
+///     Base interface for specifications covering properties and actions.
+/// </summary>
+public interface IMemberSpec : IFeatureSpec {
     /// <summary>
-    ///     Base interface for specifications covering properties and actions.
+    ///     Returns the identifier of the member, which must not change. This should be all Pascal-case with no
+    ///     spaces: so if the member is called 'Return Date' then the a suitable id would be 'ReturnDate'.
     /// </summary>
-    public interface IMemberSpec : IFeatureSpec {
-        /// <summary>
-        ///     Returns the identifier of the member, which must not change. This should be all Pascal-case with no
-        ///     spaces: so if the member is called 'Return Date' then the a suitable id would be 'ReturnDate'.
-        /// </summary>
-        string Id { get; }
+    string Id { get; }
 
-        IObjectSpec ReturnSpec { get; }
+    IObjectSpec ReturnSpec { get; }
 
-        /// <summary>
-        ///     Determines if this member is visible imperatively (ie <c>HideXxx(...)</c>).
-        /// </summary>
-        /// <param name="target">
-        ///     may be <c>null</c> if just checking for authorization
-        /// </param>
-        bool IsVisible(INakedObjectAdapter target);
+    /// <summary>
+    ///     Determines if this member is visible imperatively (ie <c>HideXxx(...)</c>).
+    /// </summary>
+    /// <param name="target">
+    ///     may be <c>null</c> if just checking for authorization
+    /// </param>
+    bool IsVisible(INakedObjectAdapter target);
 
-        /// <summary>
-        ///     Determines if this member is visible imperatively (ie <c>HideXxx(...)</c>).
-        ///     Ignores 'UntilPersisted' annotations
-        /// </summary>
-        /// <param name="target">
-        ///     may be <c>null</c> if just checking for authorization
-        /// </param>
-        bool IsVisibleWhenPersistent(INakedObjectAdapter target);
-    }
+    /// <summary>
+    ///     Determines if this member is visible imperatively (ie <c>HideXxx(...)</c>).
+    ///     Ignores 'UntilPersisted' annotations
+    /// </summary>
+    /// <param name="target">
+    ///     may be <c>null</c> if just checking for authorization
+    /// </param>
+    bool IsVisibleWhenPersistent(INakedObjectAdapter target);
 }

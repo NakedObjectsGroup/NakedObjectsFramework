@@ -5,18 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Component {
-    public interface ITransactionManager {
-        /// <summary>
-        ///     Number of nested transaction levels; 0 indicates that no transaction is running
-        /// </summary>
-        int TransactionLevel { get; }
+namespace NakedFramework.Architecture.Component; 
 
-        void StartTransaction();
-        void AbortTransaction();
-        void UserAbortTransaction();
-        void EndTransaction();
-    }
+public interface ITransactionManager {
+    /// <summary>
+    ///     Number of nested transaction levels; 0 indicates that no transaction is running
+    /// </summary>
+    int TransactionLevel { get; }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    void StartTransaction();
+    void AbortTransaction();
+    void UserAbortTransaction();
+    void EndTransaction();
 }
+
+// Copyright (c) Naked Objects Group Ltd.

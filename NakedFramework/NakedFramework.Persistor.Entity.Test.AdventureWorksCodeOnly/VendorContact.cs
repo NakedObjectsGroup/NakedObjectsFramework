@@ -11,27 +11,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Purchasing.VendorContact")]
-    public class VendorContact {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Purchasing.VendorContact")]
+public class VendorContact {
      
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int VendorID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int VendorID { get; set; }
 
       
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ContactID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int ContactID { get; set; }
 
-        public int ContactTypeID { get; set; }
+    public int ContactTypeID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Contact Contact { get; set; }
+    public virtual Contact Contact { get; set; }
 
-        public virtual ContactType ContactType { get; set; }
+    public virtual ContactType ContactType { get; set; }
 
-        public virtual Vendor Vendor { get; set; }
-    }
+    public virtual Vendor Vendor { get; set; }
 }

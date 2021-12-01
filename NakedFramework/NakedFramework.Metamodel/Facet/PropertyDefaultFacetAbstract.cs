@@ -10,20 +10,20 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class PropertyDefaultFacetAbstract : FacetAbstract, IPropertyDefaultFacet {
-        protected PropertyDefaultFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IPropertyDefaultFacet);
+[Serializable]
+public abstract class PropertyDefaultFacetAbstract : FacetAbstract, IPropertyDefaultFacet {
+    protected PropertyDefaultFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region IPropertyDefaultFacet Members
+    public static Type Type => typeof(IPropertyDefaultFacet);
 
-        public abstract object GetDefault(INakedObjectAdapter nakedObjectAdapter);
+    #region IPropertyDefaultFacet Members
 
-        #endregion
-    }
+    public abstract object GetDefault(INakedObjectAdapter nakedObjectAdapter);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

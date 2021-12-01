@@ -12,22 +12,22 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Menu;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class MenuFacetViaMethod : MenuFacetAbstract {
-        private readonly MethodInfo method;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public MenuFacetViaMethod(MethodInfo method, ISpecification holder)
-            : base(holder) =>
-            this.method = method;
+[Serializable]
+public sealed class MenuFacetViaMethod : MenuFacetAbstract {
+    private readonly MethodInfo method;
 
-        //Creates a menu based on the definition in the object's Menu method
-        public override void CreateMenu(IMetamodelBuilder metamodel) {
-            var menu = new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(Spec));
-            InvokeUtils.InvokeStatic(method, new object[] {menu});
-            Menu = menu;
-        }
+    public MenuFacetViaMethod(MethodInfo method, ISpecification holder)
+        : base(holder) =>
+        this.method = method;
+
+    //Creates a menu based on the definition in the object's Menu method
+    public override void CreateMenu(IMetamodelBuilder metamodel) {
+        var menu = new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(Spec));
+        InvokeUtils.InvokeStatic(method, new object[] {menu});
+        Menu = menu;
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }
+
+// Copyright (c) Naked Objects Group Ltd.

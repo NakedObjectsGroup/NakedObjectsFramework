@@ -10,26 +10,26 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ActionDefaultsFacetAnnotation : ActionDefaultsFacetAbstract {
-        private readonly bool isDateTime;
-        private readonly object value;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public ActionDefaultsFacetAnnotation(object value, bool isDateTime, ISpecification holder)
-            : base(holder) {
-            this.value = value;
-            this.isDateTime = isDateTime;
-        }
+[Serializable]
+public sealed class ActionDefaultsFacetAnnotation : ActionDefaultsFacetAbstract {
+    private readonly bool isDateTime;
+    private readonly object value;
 
-        public override bool CanAlwaysReplace => false;
-
-        private object GetDefaultValue() => isDateTime && value is int i ? DateTime.UtcNow.AddDays(i) : value;
-
-        public override (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (GetDefaultValue(), TypeOfDefaultValue.Explicit);
-
-        protected override string ToStringValues() => $"Value={value}";
+    public ActionDefaultsFacetAnnotation(object value, bool isDateTime, ISpecification holder)
+        : base(holder) {
+        this.value = value;
+        this.isDateTime = isDateTime;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override bool CanAlwaysReplace => false;
+
+    private object GetDefaultValue() => isDateTime && value is int i ? DateTime.UtcNow.AddDays(i) : value;
+
+    public override (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (GetDefaultValue(), TypeOfDefaultValue.Explicit);
+
+    protected override string ToStringValues() => $"Value={value}";
 }
+
+// Copyright (c) Naked Objects Group Ltd.

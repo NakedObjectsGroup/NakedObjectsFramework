@@ -21,47 +21,47 @@ using NakedFramework.Metamodel.Component;
 using NakedFramework.Metamodel.Menu;
 using NakedFramework.ModelBuilding.Component;
 
-namespace NakedFramework.DependencyInjection.Configuration {
-    public static class ParallelConfig {
-        public static void RegisterCoreSingletonTypes(IServiceCollection services) {
-            services.AddDefaultSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
-            services.AddDefaultSingleton<IMetamodel, MetamodelHolder>();
-            services.AddDefaultSingleton<IMetamodelBuilder, MetamodelHolder>();
-            services.AddDefaultSingleton<IMenuFactory, MenuFactory>();
-            services.AddDefaultSingleton<IModelIntegrator, ModelIntegrator>();
-            services.AddDefaultSingleton<IModelBuilder, ModelBuilder>();
-            services.AddDefaultSingleton<FacetFactoryTypesProvider, FacetFactoryTypesProvider>();
-            services.AddDefaultSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
-            services.AddDefaultSingleton<IAllServiceList, AllServiceList>();
-        }
+namespace NakedFramework.DependencyInjection.Configuration; 
 
-        public static void RegisterCoreScopedTypes(IServiceCollection services) {
-            services.AddDefaultScoped<INakedObjectAdapterMap, NakedObjectAdapterHashMap>();
-            services.AddDefaultScoped<IIdentityAdapterMap, IdentityAdapterHashMap>();
-            services.AddDefaultScoped<SpecFactory, SpecFactory>();
-            services.AddDefaultScoped<IMetamodelManager, MetamodelManager>();
-            services.AddDefaultScoped<IPersistAlgorithm, FlatPersistAlgorithm>();
-            services.AddDefaultScoped<IIdentityMap, IdentityMapImpl>();
-            services.AddDefaultScoped<ITransactionManager, TransactionManager>();
-            services.AddDefaultScoped<INakedObjectManager, NakedObjectManager>();
-            services.AddDefaultScoped<IObjectPersistor, ObjectPersistor>();
-            services.AddDefaultScoped<IServicesManager, ServicesManager>();
-            services.AddDefaultScoped<ILifecycleManager, LifeCycleManager>();
+public static class ParallelConfig {
+    public static void RegisterCoreSingletonTypes(IServiceCollection services) {
+        services.AddDefaultSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
+        services.AddDefaultSingleton<IMetamodel, MetamodelHolder>();
+        services.AddDefaultSingleton<IMetamodelBuilder, MetamodelHolder>();
+        services.AddDefaultSingleton<IMenuFactory, MenuFactory>();
+        services.AddDefaultSingleton<IModelIntegrator, ModelIntegrator>();
+        services.AddDefaultSingleton<IModelBuilder, ModelBuilder>();
+        services.AddDefaultSingleton<FacetFactoryTypesProvider, FacetFactoryTypesProvider>();
+        services.AddDefaultSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
+        services.AddDefaultSingleton<IAllServiceList, AllServiceList>();
+    }
 
-            services.AddDefaultScoped<IMessageBroker, MessageBroker>();
-            services.AddDefaultScoped<INakedFramework, Core.Framework.NakedFramework>();
-            services.AddDefaultScoped<ISession, WindowsSession>();
-            services.AddScoped<IFrameworkResolver>(p => new FrameworkResolver(p));
+    public static void RegisterCoreScopedTypes(IServiceCollection services) {
+        services.AddDefaultScoped<INakedObjectAdapterMap, NakedObjectAdapterHashMap>();
+        services.AddDefaultScoped<IIdentityAdapterMap, IdentityAdapterHashMap>();
+        services.AddDefaultScoped<SpecFactory, SpecFactory>();
+        services.AddDefaultScoped<IMetamodelManager, MetamodelManager>();
+        services.AddDefaultScoped<IPersistAlgorithm, FlatPersistAlgorithm>();
+        services.AddDefaultScoped<IIdentityMap, IdentityMapImpl>();
+        services.AddDefaultScoped<ITransactionManager, TransactionManager>();
+        services.AddDefaultScoped<INakedObjectManager, NakedObjectManager>();
+        services.AddDefaultScoped<IObjectPersistor, ObjectPersistor>();
+        services.AddDefaultScoped<IServicesManager, ServicesManager>();
+        services.AddDefaultScoped<ILifecycleManager, LifeCycleManager>();
 
-            //Temporary scaffolding
-            services.AddDefaultScoped<NakedObjectFactory, NakedObjectFactory>();
-            services.AddDefaultScoped<SpecFactory, SpecFactory>();
-        }
+        services.AddDefaultScoped<IMessageBroker, MessageBroker>();
+        services.AddDefaultScoped<INakedFramework, Core.Framework.NakedFramework>();
+        services.AddDefaultScoped<ISession, WindowsSession>();
+        services.AddScoped<IFrameworkResolver>(p => new FrameworkResolver(p));
 
-        public static void RegisterFacetFactories<T>(this IServiceCollection services, Type[] facetFactories) where T : IFacetFactory {
-            foreach (var factory in facetFactories) {
-                services.RegisterFacetFactory<T>(factory);
-            }
+        //Temporary scaffolding
+        services.AddDefaultScoped<NakedObjectFactory, NakedObjectFactory>();
+        services.AddDefaultScoped<SpecFactory, SpecFactory>();
+    }
+
+    public static void RegisterFacetFactories<T>(this IServiceCollection services, Type[] facetFactories) where T : IFacetFactory {
+        foreach (var factory in facetFactories) {
+            services.RegisterFacetFactory<T>(factory);
         }
     }
 }

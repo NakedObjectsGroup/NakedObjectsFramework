@@ -5,37 +5,37 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Test.Interface {
-    public interface ITestHasProperties {
-        ITestProperty[] Properties { get; }
-        ITestObject Save();
-        ITestObject Refresh();
+namespace NakedFramework.Test.Interface; 
 
-        /// <summary>
-        ///     Given the 'friendly name' of a property (as would be rendered to the user)
-        ///     returns the matching test property.
-        /// </summary>
-        /// <param name="friendlyName"></param>
-        /// <returns></returns>
-        ITestProperty GetPropertyByName(string friendlyName);
+public interface ITestHasProperties {
+    ITestProperty[] Properties { get; }
+    ITestObject Save();
+    ITestObject Refresh();
 
-        /// <summary>
-        ///     Given the Id (the actual member name in code), returns the matching test property (if any).
-        ///     Designed to work with C# 6 nameof() operator.
-        /// </summary>
-        ITestProperty GetPropertyById(string id);
+    /// <summary>
+    ///     Given the 'friendly name' of a property (as would be rendered to the user)
+    ///     returns the matching test property.
+    /// </summary>
+    /// <param name="friendlyName"></param>
+    /// <returns></returns>
+    ITestProperty GetPropertyByName(string friendlyName);
 
-        ITestObject AssertCanBeSaved();
-        ITestObject AssertCannotBeSaved();
-        ITestObject AssertIsTransient();
-        ITestObject AssertIsPersistent();
-        string GetPropertyOrder();
+    /// <summary>
+    ///     Given the Id (the actual member name in code), returns the matching test property (if any).
+    ///     Designed to work with C# 6 nameof() operator.
+    /// </summary>
+    ITestProperty GetPropertyById(string id);
 
-        /// <summary>
-        ///     Test action order against string of form: "Property1, Property2"
-        /// </summary>
-        /// <param name="order"></param>
-        /// <returns>The current object</returns>
-        ITestHasProperties AssertPropertyOrderIs(string order);
-    }
+    ITestObject AssertCanBeSaved();
+    ITestObject AssertCannotBeSaved();
+    ITestObject AssertIsTransient();
+    ITestObject AssertIsPersistent();
+    string GetPropertyOrder();
+
+    /// <summary>
+    ///     Test action order against string of form: "Property1, Property2"
+    /// </summary>
+    /// <param name="order"></param>
+    /// <returns>The current object</returns>
+    ITestHasProperties AssertPropertyOrderIs(string order);
 }

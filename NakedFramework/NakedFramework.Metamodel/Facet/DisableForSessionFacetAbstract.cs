@@ -11,20 +11,20 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class DisableForSessionFacetAbstract : FacetAbstract, IDisableForSessionFacet {
-        protected DisableForSessionFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IDisableForSessionFacet);
+[Serializable]
+public abstract class DisableForSessionFacetAbstract : FacetAbstract, IDisableForSessionFacet {
+    protected DisableForSessionFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region IDisableForSessionFacet Members
+    public static Type Type => typeof(IDisableForSessionFacet);
 
-        public abstract string DisabledReason(INakedObjectAdapter target, INakedFramework framework);
+    #region IDisableForSessionFacet Members
 
-        #endregion
-    }
+    public abstract string DisabledReason(INakedObjectAdapter target, INakedFramework framework);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

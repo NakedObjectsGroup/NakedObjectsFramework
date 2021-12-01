@@ -8,18 +8,18 @@
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Error {
-    /// <summary>
-    ///     The interaction is invalid because the input value is outside the specified range.
-    /// </summary>
-    public class InvalidRangeException : InvalidException {
-        public InvalidRangeException(IInteractionContext ic, object min, object max, string message)
-            : base(ic, message) {
-            Min = min;
-            Max = max;
-        }
+namespace NakedFramework.Metamodel.Error; 
 
-        public object Min { get; }
-        public object Max { get; }
+/// <summary>
+///     The interaction is invalid because the input value is outside the specified range.
+/// </summary>
+public class InvalidRangeException : InvalidException {
+    public InvalidRangeException(IInteractionContext ic, object min, object max, string message)
+        : base(ic, message) {
+        Min = min;
+        Max = max;
     }
+
+    public object Min { get; }
+    public object Max { get; }
 }

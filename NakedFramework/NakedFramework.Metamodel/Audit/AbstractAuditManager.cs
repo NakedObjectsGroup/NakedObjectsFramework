@@ -11,27 +11,27 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Audit {
-    [Serializable]
-    public abstract class AbstractAuditManager {
-        protected readonly Type DefaultAuditor;
-        protected readonly ILogger Logger;
-        protected readonly ImmutableDictionary<string, Type> NamespaceAuditors;
+namespace NakedFramework.Metamodel.Audit; 
 
-        protected AbstractAuditManager(IAuditConfiguration config, ILogger logger) {
-            Logger = logger;
-            DefaultAuditor = config.DefaultAuditor;
-            NamespaceAuditors = config.NamespaceAuditors.ToImmutableDictionary();
-            Validate();
-        }
+[Serializable]
+public abstract class AbstractAuditManager {
+    protected readonly Type DefaultAuditor;
+    protected readonly ILogger Logger;
+    protected readonly ImmutableDictionary<string, Type> NamespaceAuditors;
 
-        protected abstract void ValidateType(Type toValidate);
+    protected AbstractAuditManager(IAuditConfiguration config, ILogger logger) {
+        Logger = logger;
+        DefaultAuditor = config.DefaultAuditor;
+        NamespaceAuditors = config.NamespaceAuditors.ToImmutableDictionary();
+        Validate();
+    }
 
-        private void Validate() {
-            ValidateType(DefaultAuditor);
-            if (NamespaceAuditors.Any()) {
-                NamespaceAuditors.ForEach(kvp => ValidateType(kvp.Value));
-            }
+    protected abstract void ValidateType(Type toValidate);
+
+    private void Validate() {
+        ValidateType(DefaultAuditor);
+        if (NamespaceAuditors.Any()) {
+            NamespaceAuditors.ForEach(kvp => ValidateType(kvp.Value));
         }
     }
 }

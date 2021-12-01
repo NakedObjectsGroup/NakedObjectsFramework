@@ -7,10 +7,10 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Core.Adapter {
-    public interface INoIdentityAdapterCache {
-        void AddAdapter(INakedObjectAdapter adapter);
-        INakedObjectAdapter GetAdapter(object domainObject);
-        void Reset();
-    }
+namespace NakedFramework.Core.Adapter; 
+
+public interface INoIdentityAdapterCache {
+    void AddAdapter(INakedObjectAdapter adapter);
+    INakedObjectAdapter GetAdapter(object domainObject);
+    void Reset();
 }

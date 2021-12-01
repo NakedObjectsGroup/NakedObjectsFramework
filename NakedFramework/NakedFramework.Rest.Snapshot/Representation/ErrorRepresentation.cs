@@ -13,34 +13,34 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    public class ErrorRepresentation : Representation {
-        public ErrorRepresentation(IOidStrategy oidStrategy, Exception e)
-            : base(oidStrategy, RestControlFlags.DefaultFlags()) {
-            var exception = GetInnermostException(e);
-            Message = exception.Message;
-            StackTrace = exception.StackTrace?.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray() ?? Array.Empty<string>();
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-            Links = Array.Empty<LinkRepresentation>();
-            Extensions = new MapRepresentation();
-        }
+public class ErrorRepresentation : Representation {
+    public ErrorRepresentation(IOidStrategy oidStrategy, Exception e)
+        : base(oidStrategy, RestControlFlags.DefaultFlags()) {
+        var exception = GetInnermostException(e);
+        Message = exception.Message;
+        StackTrace = exception.StackTrace?.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray() ?? Array.Empty<string>();
 
-        [DataMember(Name = JsonPropertyNames.Message)]
-        public string Message { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.StackTrace)]
-        public string[] StackTrace { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Links)]
-        public LinkRepresentation[] Links { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Extensions)]
-        public MapRepresentation Extensions { get; set; }
-
-        public override MediaTypeHeaderValue GetContentType() => UriMtHelper.GetJsonMediaType(RepresentationTypes.Error);
-
-        private static Exception GetInnermostException(Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
-
-        public static Representation Create(IOidStrategy oidStrategy, Exception exception) => new ErrorRepresentation(oidStrategy, exception);
+        Links = Array.Empty<LinkRepresentation>();
+        Extensions = new MapRepresentation();
     }
+
+    [DataMember(Name = JsonPropertyNames.Message)]
+    public string Message { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.StackTrace)]
+    public string[] StackTrace { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Links)]
+    public LinkRepresentation[] Links { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Extensions)]
+    public MapRepresentation Extensions { get; set; }
+
+    public override MediaTypeHeaderValue GetContentType() => UriMtHelper.GetJsonMediaType(RepresentationTypes.Error);
+
+    private static Exception GetInnermostException(Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
+
+    public static Representation Create(IOidStrategy oidStrategy, Exception exception) => new ErrorRepresentation(oidStrategy, exception);
 }

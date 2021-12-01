@@ -12,54 +12,54 @@ using NakedFramework.Architecture.Framework;
 using NakedObjects.Async;
 using NakedObjects.Core.Container;
 
-namespace NakedObjects.Core.Async {
+namespace NakedObjects.Core.Async; 
+
+/// <summary>
+///     A service to be injected into domain code that allows multiple actions to be initiated
+///     asynchronously -  each running within its own separate NakedObjects context.
+/// </summary>
+public class AsyncService : IAsyncService {
+    public INakedFramework Framework { set; protected get; }
+    public ILoggerFactory LoggerFactory { set; protected get; }
+    public ILogger<AsyncService> Logger { set; protected get; }
+
+    #region IAsyncService Members
+
     /// <summary>
-    ///     A service to be injected into domain code that allows multiple actions to be initiated
-    ///     asynchronously -  each running within its own separate NakedObjects context.
+    ///     Domain programmers must take care to ensure thread safety.
+    ///     The action passed in must not include any references to stateful objects (e.g. persistent domain objects).
+    ///     Typically the action should be on a (stateless) service; it may include primitive references
+    ///     such as object Ids that can be used within the called method to retrieve and action on specific
+    ///     object instances.
     /// </summary>
-    public class AsyncService : IAsyncService {
-        public INakedFramework Framework { set; protected get; }
-        public ILoggerFactory LoggerFactory { set; protected get; }
-        public ILogger<AsyncService> Logger { set; protected get; }
+    /// <param name="toRun"></param>
+    public Task RunAsync(Action<IDomainObjectContainer> toRun) => TaskWrapper(toRun);
 
-        #region IAsyncService Members
+    #endregion
 
-        /// <summary>
-        ///     Domain programmers must take care to ensure thread safety.
-        ///     The action passed in must not include any references to stateful objects (e.g. persistent domain objects).
-        ///     Typically the action should be on a (stateless) service; it may include primitive references
-        ///     such as object Ids that can be used within the called method to retrieve and action on specific
-        ///     object instances.
-        /// </summary>
-        /// <param name="toRun"></param>
-        public Task RunAsync(Action<IDomainObjectContainer> toRun) => TaskWrapper(toRun);
+    protected Action WorkWrapper(Action<IDomainObjectContainer> action) {
+        var resolver = Framework.FrameworkResolver;
+        var fw = Framework.FrameworkResolver.GetFramework();
+        return () => {
+            try {
+                fw.TransactionManager.StartTransaction();
+                action(new DomainObjectContainer(fw, LoggerFactory.CreateLogger<DomainObjectContainer>()));
+                fw.TransactionManager.EndTransaction();
+            }
+            catch (Exception e) {
+                Logger.LogError($"Action threw exception {e.Message}");
+                fw.TransactionManager.AbortTransaction();
+                throw;
+            }
+            finally {
+                resolver.Dispose();
+            }
+        };
+    }
 
-        #endregion
-
-        protected Action WorkWrapper(Action<IDomainObjectContainer> action) {
-            var resolver = Framework.FrameworkResolver;
-            var fw = Framework.FrameworkResolver.GetFramework();
-            return () => {
-                try {
-                    fw.TransactionManager.StartTransaction();
-                    action(new DomainObjectContainer(fw, LoggerFactory.CreateLogger<DomainObjectContainer>()));
-                    fw.TransactionManager.EndTransaction();
-                }
-                catch (Exception e) {
-                    Logger.LogError($"Action threw exception {e.Message}");
-                    fw.TransactionManager.AbortTransaction();
-                    throw;
-                }
-                finally {
-                    resolver.Dispose();
-                }
-            };
-        }
-
-        protected Task TaskWrapper(Action<IDomainObjectContainer> action) {
-            var task = new Task(WorkWrapper(action));
-            task.Start();
-            return task;
-        }
+    protected Task TaskWrapper(Action<IDomainObjectContainer> action) {
+        var task = new Task(WorkWrapper(action));
+        task.Start();
+        return task;
     }
 }

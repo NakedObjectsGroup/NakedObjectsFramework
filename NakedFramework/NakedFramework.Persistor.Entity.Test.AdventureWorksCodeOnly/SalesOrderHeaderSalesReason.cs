@@ -11,23 +11,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.SalesOrderHeaderSalesReason")]
-    public class SalesOrderHeaderSalesReason {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Sales.SalesOrderHeaderSalesReason")]
+public class SalesOrderHeaderSalesReason {
       
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int SalesOrderID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int SalesOrderID { get; set; }
 
        
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int SalesReasonID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int SalesReasonID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual SalesOrderHeader SalesOrderHeader { get; set; }
+    public virtual SalesOrderHeader SalesOrderHeader { get; set; }
 
-        public virtual SalesReason SalesReason { get; set; }
-    }
+    public virtual SalesReason SalesReason { get; set; }
 }

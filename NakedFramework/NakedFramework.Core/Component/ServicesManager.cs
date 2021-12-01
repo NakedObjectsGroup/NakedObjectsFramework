@@ -14,47 +14,47 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component {
-    public sealed class ServicesManager : IServicesManager {
-        private readonly IDomainObjectInjector injector;
-        private readonly INakedObjectManager manager;
+namespace NakedFramework.Core.Component; 
 
-        private readonly List<object> services;
+public sealed class ServicesManager : IServicesManager {
+    private readonly IDomainObjectInjector injector;
+    private readonly INakedObjectManager manager;
 
-        // cache the adapters 
-        private INakedObjectAdapter[] serviceAdapters;
-        private bool servicesInit;
+    private readonly List<object> services;
 
-        public ServicesManager(IDomainObjectInjector injector,
-                               INakedObjectManager manager,
-                               IAllServiceList serviceList) {
-            this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
-            this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
+    // cache the adapters 
+    private INakedObjectAdapter[] serviceAdapters;
+    private bool servicesInit;
 
-            services = serviceList.Services.Select(Activator.CreateInstance).ToList();
-        }
+    public ServicesManager(IDomainObjectInjector injector,
+                           INakedObjectManager manager,
+                           IAllServiceList serviceList) {
+        this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
+        this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
 
-        private IList<object> Services {
-            get {
-                if (!servicesInit) {
-                    services.ForEach(s => injector.InjectInto(s));
-                    servicesInit = true;
-                }
-
-                return services;
-            }
-        }
-
-        #region IServicesManager Members
-
-        public INakedObjectAdapter GetService(string id) => GetServices().FirstOrDefault(no => id.Equals(ServiceUtils.GetId(no.Object)));
-
-        public INakedObjectAdapter GetService(IServiceSpec spec) => GetServices().FirstOrDefault(s => Equals(s.Spec, spec));
-
-        public INakedObjectAdapter[] GetServices() => serviceAdapters ??= Services.Select(service => manager.GetServiceAdapter(service)).ToArray();
-
-        public INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) => GetServices().Where(no => no.Spec.GetActions().Any(a => a.IsVisible(no))).ToArray();
-
-        #endregion
+        services = serviceList.Services.Select(Activator.CreateInstance).ToList();
     }
+
+    private IList<object> Services {
+        get {
+            if (!servicesInit) {
+                services.ForEach(s => injector.InjectInto(s));
+                servicesInit = true;
+            }
+
+            return services;
+        }
+    }
+
+    #region IServicesManager Members
+
+    public INakedObjectAdapter GetService(string id) => GetServices().FirstOrDefault(no => id.Equals(ServiceUtils.GetId(no.Object)));
+
+    public INakedObjectAdapter GetService(IServiceSpec spec) => GetServices().FirstOrDefault(s => Equals(s.Spec, spec));
+
+    public INakedObjectAdapter[] GetServices() => serviceAdapters ??= Services.Select(service => manager.GetServiceAdapter(service)).ToArray();
+
+    public INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) => GetServices().Where(no => no.Spec.GetActions().Any(a => a.IsVisible(no))).ToArray();
+
+    #endregion
 }

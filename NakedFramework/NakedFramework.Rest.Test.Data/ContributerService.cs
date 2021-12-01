@@ -11,19 +11,19 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class ContributorService {
-        public IDomainObjectContainer Container { set; protected get; }
+namespace RestfulObjects.Test.Data; 
 
-        public virtual MostSimple ANonContributedAction() {
-            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        }
+public class ContributorService {
+    public IDomainObjectContainer Container { set; protected get; }
 
-        // do nothing
-        public virtual MostSimple ACollectionContributedActionNoParms([ContributedAction("submenu")] IQueryable<MostSimple> ms) => ms.FirstOrDefault();
+    public virtual MostSimple ANonContributedAction() {
+        return Container.Instances<MostSimple>().Single(x => x.Id == 1);
+    }
 
-        public virtual MostSimple ACollectionContributedActionParm([ContributedAction] IQueryable<MostSimple> ms, int id) {
-            return ms.SingleOrDefault(i => i.Id == id);
-        }
+    // do nothing
+    public virtual MostSimple ACollectionContributedActionNoParms([ContributedAction("submenu")] IQueryable<MostSimple> ms) => ms.FirstOrDefault();
+
+    public virtual MostSimple ACollectionContributedActionParm([ContributedAction] IQueryable<MostSimple> ms, int id) {
+        return ms.SingleOrDefault(i => i.Id == id);
     }
 }

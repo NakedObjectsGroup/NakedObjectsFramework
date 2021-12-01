@@ -13,58 +13,58 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Meta.Test.Facet {
-    [TestClass]
-    public class FacetAbstractTest {
-        private ISpecification facetHolder2;
-        private FacetAbstract fooFacet;
-        private ISpecification specification;
+namespace NakedObjects.Meta.Test.Facet; 
 
-        #region Setup/Teardown
+[TestClass]
+public class FacetAbstractTest {
+    private ISpecification facetHolder2;
+    private FacetAbstract fooFacet;
+    private ISpecification specification;
 
-        [TestInitialize]
-        public void SetUp() {
-            specification = new Mock<ISpecificationBuilder>().Object;
-            facetHolder2 = new Mock<ISpecification>().Object;
-            fooFacet = new ConcreteFacet(typeof(IFooFacet), specification);
-            FacetUtils.AddFacet(fooFacet);
-        }
+    #region Setup/Teardown
 
-        #endregion
-
-        [TestMethod]
-        public void FacetType() {
-            Assert.AreEqual(typeof(IFooFacet), fooFacet.FacetType);
-        }
-
-        [TestMethod]
-        public void GetFacetHolder() {
-            Assert.AreEqual(specification, fooFacet.Specification);
-        }
-
-        [TestMethod]
-        public void SetFacetHolder() {
-            fooFacet.Specification = facetHolder2;
-            Assert.AreEqual(facetHolder2, fooFacet.Specification);
-        }
-
-        [TestMethod]
-        public void TestToString() {
-            Assert.AreEqual("FacetAbstractTest+ConcreteFacet[type=FacetAbstractTest+IFooFacet]", fooFacet.ToString());
-        }
-
-        #region Nested type: ConcreteFacet
-
-        internal class ConcreteFacet : FacetAbstract, IFooFacet {
-            public ConcreteFacet(Type facetType, ISpecification holder) : base(facetType, holder) { }
-        }
-
-        #endregion
-
-        #region Nested type: IFooFacet
-
-        public interface IFooFacet : IFacet { }
-
-        #endregion
+    [TestInitialize]
+    public void SetUp() {
+        specification = new Mock<ISpecificationBuilder>().Object;
+        facetHolder2 = new Mock<ISpecification>().Object;
+        fooFacet = new ConcreteFacet(typeof(IFooFacet), specification);
+        FacetUtils.AddFacet(fooFacet);
     }
+
+    #endregion
+
+    [TestMethod]
+    public void FacetType() {
+        Assert.AreEqual(typeof(IFooFacet), fooFacet.FacetType);
+    }
+
+    [TestMethod]
+    public void GetFacetHolder() {
+        Assert.AreEqual(specification, fooFacet.Specification);
+    }
+
+    [TestMethod]
+    public void SetFacetHolder() {
+        fooFacet.Specification = facetHolder2;
+        Assert.AreEqual(facetHolder2, fooFacet.Specification);
+    }
+
+    [TestMethod]
+    public void TestToString() {
+        Assert.AreEqual("FacetAbstractTest+ConcreteFacet[type=FacetAbstractTest+IFooFacet]", fooFacet.ToString());
+    }
+
+    #region Nested type: ConcreteFacet
+
+    internal class ConcreteFacet : FacetAbstract, IFooFacet {
+        public ConcreteFacet(Type facetType, ISpecification holder) : base(facetType, holder) { }
+    }
+
+    #endregion
+
+    #region Nested type: IFooFacet
+
+    public interface IFooFacet : IFacet { }
+
+    #endregion
 }

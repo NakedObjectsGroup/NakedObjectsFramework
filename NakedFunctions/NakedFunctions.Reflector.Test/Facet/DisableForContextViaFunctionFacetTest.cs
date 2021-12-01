@@ -8,23 +8,23 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class DisableForContextViaFunctionFacetTest {
-        private static readonly string TestValue = "disabled";
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        [TestMethod]
-        public void TestDisabled() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Disables));
-            var testFacet = new DisableForContextViaFunctionFacet(method, null, null);
+[TestClass]
+public class DisableForContextViaFunctionFacetTest {
+    private static readonly string TestValue = "disabled";
 
-            var result = testFacet.DisabledReason(null, null);
+    [TestMethod]
+    public void TestDisabled() {
+        var method = typeof(TestClass).GetMethod(nameof(TestClass.Disables));
+        var testFacet = new DisableForContextViaFunctionFacet(method, null, null);
 
-            Assert.AreEqual(TestValue, result);
-        }
+        var result = testFacet.DisabledReason(null, null);
 
-        public static class TestClass {
-            public static string Disables() => TestValue;
-        }
+        Assert.AreEqual(TestValue, result);
+    }
+
+    public static class TestClass {
+        public static string Disables() => TestValue;
     }
 }

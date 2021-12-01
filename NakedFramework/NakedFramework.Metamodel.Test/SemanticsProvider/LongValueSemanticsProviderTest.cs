@@ -17,128 +17,128 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestClass]
-    public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<long> {
-        private ISpecification holder;
-        private long l;
-        private LongValueSemanticsProvider value;
+namespace NakedObjects.Meta.Test.SemanticsProvider; 
 
-        [TestMethod]
-        public void TestDecode() {
-            var decoded = GetValue().FromEncodedString("304211223");
-            Assert.AreEqual(304211223L, decoded);
-        }
+[TestClass]
+public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<long> {
+    private ISpecification holder;
+    private long l;
+    private LongValueSemanticsProvider value;
 
-        [TestMethod]
-        public void TestEncode() {
-            var encoded = GetValue().ToEncodedString(213434790L);
-            Assert.AreEqual("213434790", encoded);
-        }
-
-        [TestMethod]
-        public void TestInvalidParse() {
-            try {
-                value.ParseTextEntry("one");
-                Assert.Fail();
-            }
-            catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
-            }
-        }
-
-        [TestMethod]
-        public void TestParse() {
-            var newValue = value.ParseTextEntry("120");
-            Assert.AreEqual(120L, newValue);
-        }
-
-        [TestMethod]
-        public override void TestParseEmptyString() {
-            try {
-                var newValue = value.ParseTextEntry("");
-                Assert.IsNull(newValue);
-            }
-            catch (Exception) {
-                Assert.Fail();
-            }
-        }
-
-        [TestMethod]
-        public void TestParseInvariant() {
-            const long c1 = 123456L;
-            var s1 = c1.ToString(CultureInfo.InvariantCulture);
-            var c2 = GetValue().ParseInvariant(s1);
-            Assert.AreEqual(c1, c2);
-        }
-
-        [TestMethod]
-        public void TestParseOddlyFormedEntry() {
-            var newValue = value.ParseTextEntry("1,20.0");
-            Assert.AreEqual(120L, newValue);
-        }
-
-        [TestMethod]
-        public void TestTitleString() {
-            Assert.AreEqual("32", value.DisplayTitleOf(l));
-        }
-
-        [TestMethod]
-        public override void TestParseNull() {
-            base.TestParseNull();
-        }
-
-        [TestMethod]
-        public override void TestDecodeNull() {
-            base.TestDecodeNull();
-        }
-
-        [TestMethod]
-        public override void TestEmptyEncoding() {
-            base.TestEmptyEncoding();
-        }
-
-        [TestMethod]
-        public void TestValue() {
-            var facet = (ILongValueFacet) GetValue();
-            const long testValue = 121L;
-            var mockNo = new Mock<INakedObjectAdapter>();
-            mockNo.Setup(no => no.Object).Returns(testValue);
-            Assert.AreEqual(testValue, facet.LongValue(mockNo.Object));
-        }
-
-        [TestMethod]
-        public void TestAsParserInvariant() {
-            var mgr = MockNakedObjectManager();
-            IParseableFacet parser = new ParseableFacetUsingParser<long>(value, null);
-            Assert.AreEqual(91L, parser.ParseInvariant("91", mgr.Object).Object);
-        }
-
-        [TestMethod]
-        public void TestAsParserTitle() {
-            IParseableFacet parser = new ParseableFacetUsingParser<long>(value, null);
-            var mockAdapter = MockAdapter(101L);
-            Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            l = 32;
-            holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new LongValueSemanticsProvider(spec, holder));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public void TestDecode() {
+        var decoded = GetValue().FromEncodedString("304211223");
+        Assert.AreEqual(304211223L, decoded);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestEncode() {
+        var encoded = GetValue().ToEncodedString(213434790L);
+        Assert.AreEqual("213434790", encoded);
+    }
+
+    [TestMethod]
+    public void TestInvalidParse() {
+        try {
+            value.ParseTextEntry("one");
+            Assert.Fail();
+        }
+        catch (Exception e) {
+            Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+        }
+    }
+
+    [TestMethod]
+    public void TestParse() {
+        var newValue = value.ParseTextEntry("120");
+        Assert.AreEqual(120L, newValue);
+    }
+
+    [TestMethod]
+    public override void TestParseEmptyString() {
+        try {
+            var newValue = value.ParseTextEntry("");
+            Assert.IsNull(newValue);
+        }
+        catch (Exception) {
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
+    public void TestParseInvariant() {
+        const long c1 = 123456L;
+        var s1 = c1.ToString(CultureInfo.InvariantCulture);
+        var c2 = GetValue().ParseInvariant(s1);
+        Assert.AreEqual(c1, c2);
+    }
+
+    [TestMethod]
+    public void TestParseOddlyFormedEntry() {
+        var newValue = value.ParseTextEntry("1,20.0");
+        Assert.AreEqual(120L, newValue);
+    }
+
+    [TestMethod]
+    public void TestTitleString() {
+        Assert.AreEqual("32", value.DisplayTitleOf(l));
+    }
+
+    [TestMethod]
+    public override void TestParseNull() {
+        base.TestParseNull();
+    }
+
+    [TestMethod]
+    public override void TestDecodeNull() {
+        base.TestDecodeNull();
+    }
+
+    [TestMethod]
+    public override void TestEmptyEncoding() {
+        base.TestEmptyEncoding();
+    }
+
+    [TestMethod]
+    public void TestValue() {
+        var facet = (ILongValueFacet) GetValue();
+        const long testValue = 121L;
+        var mockNo = new Mock<INakedObjectAdapter>();
+        mockNo.Setup(no => no.Object).Returns(testValue);
+        Assert.AreEqual(testValue, facet.LongValue(mockNo.Object));
+    }
+
+    [TestMethod]
+    public void TestAsParserInvariant() {
+        var mgr = MockNakedObjectManager();
+        IParseableFacet parser = new ParseableFacetUsingParser<long>(value, null);
+        Assert.AreEqual(91L, parser.ParseInvariant("91", mgr.Object).Object);
+    }
+
+    [TestMethod]
+    public void TestAsParserTitle() {
+        IParseableFacet parser = new ParseableFacetUsingParser<long>(value, null);
+        var mockAdapter = MockAdapter(101L);
+        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
+    }
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        l = 32;
+        holder = new Mock<ISpecification>().Object;
+        var spec = new Mock<IObjectSpecImmutable>().Object;
+        SetValue(value = new LongValueSemanticsProvider(spec, holder));
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

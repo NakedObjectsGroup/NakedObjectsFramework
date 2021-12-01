@@ -14,38 +14,38 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbstract, IImperativeFacet {
-        private readonly MethodInfo method;
+namespace NakedObjects.Reflector.Facet; 
 
-        [field: NonSerialized] private Action<object> persistedDelegate;
+[Serializable]
+public sealed class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbstract, IImperativeFacet {
+    private readonly MethodInfo method;
 
-        public PersistedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
-            : base(holder) {
-            this.method = method;
-            persistedDelegate = DelegateUtils.CreateCallbackDelegate(method);
-        }
+    [field: NonSerialized] private Action<object> persistedDelegate;
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => persistedDelegate(nakedObjectAdapter.GetDomainObject());
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => persistedDelegate = DelegateUtils.CreateCallbackDelegate(method);
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() =>
-            (tgt, p) => {
-                persistedDelegate(tgt);
-                return null;
-            };
-
-        #endregion
+    public PersistedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
+        : base(holder) {
+        this.method = method;
+        persistedDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => persistedDelegate(nakedObjectAdapter.GetDomainObject());
+
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => persistedDelegate = DelegateUtils.CreateCallbackDelegate(method);
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() =>
+        (tgt, p) => {
+            persistedDelegate(tgt);
+            return null;
+        };
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

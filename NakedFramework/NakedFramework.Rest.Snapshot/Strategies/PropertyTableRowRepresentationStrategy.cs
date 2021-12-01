@@ -13,21 +13,21 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    [DataContract]
-    public class PropertyTableRowRepresentationStrategy : AbstractPropertyRepresentationStrategy {
-        public PropertyTableRowRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(frameworkFacade, req, propertyContext, flags) { }
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        public override bool ShowChoices() => false;
+[DataContract]
+public class PropertyTableRowRepresentationStrategy : AbstractPropertyRepresentationStrategy {
+    public PropertyTableRowRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+        base(frameworkFacade, req, propertyContext, flags) { }
 
-        public override LinkRepresentation[] GetLinks() => Array.Empty<LinkRepresentation>();
+    public override bool ShowChoices() => false;
 
-        protected override bool AddChoices() =>
-            PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-            (PropertyContext.Property.Specification.IsEnum ||
-             PropertyContext.Property.Specification.IsParseable);
+    public override LinkRepresentation[] GetLinks() => Array.Empty<LinkRepresentation>();
 
-        public override object GetPropertyValue(IFrameworkFacade frameworkFacade, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.Representation.GetPropertyValue(frameworkFacade, req, property, target, flags, valueOnly, useDateOverDateTime);
-    }
+    protected override bool AddChoices() =>
+        PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+        (PropertyContext.Property.Specification.IsEnum ||
+         PropertyContext.Property.Specification.IsParseable);
+
+    public override object GetPropertyValue(IFrameworkFacade frameworkFacade, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.Representation.GetPropertyValue(frameworkFacade, req, property, target, flags, valueOnly, useDateOverDateTime);
 }

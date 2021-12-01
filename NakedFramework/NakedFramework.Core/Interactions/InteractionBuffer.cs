@@ -8,30 +8,30 @@
 using System.Text;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Core.Interactions {
-    public sealed class InteractionBuffer : IInteractionBuffer {
-        private readonly StringBuilder buf = new();
+namespace NakedFramework.Core.Interactions; 
 
-        #region IInteractionBuffer Members
+public sealed class InteractionBuffer : IInteractionBuffer {
+    private readonly StringBuilder buf = new();
 
-        public bool IsNotEmpty => !IsEmpty;
+    #region IInteractionBuffer Members
 
-        public bool IsEmpty => buf.Length == 0;
+    public bool IsNotEmpty => !IsEmpty;
 
-        public void Append(string reason) {
-            if (reason is not null) {
-                if (IsNotEmpty) {
-                    buf.Append("; ");
-                }
+    public bool IsEmpty => buf.Length == 0;
 
-                buf.Append(reason);
+    public void Append(string reason) {
+        if (reason is not null) {
+            if (IsNotEmpty) {
+                buf.Append("; ");
             }
+
+            buf.Append(reason);
         }
-
-        public override string ToString() => buf.ToString();
-
-        #endregion
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string ToString() => buf.ToString();
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

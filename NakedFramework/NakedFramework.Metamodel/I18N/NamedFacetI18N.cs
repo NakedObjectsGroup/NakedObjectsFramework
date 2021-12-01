@@ -10,17 +10,17 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.I18N {
-    [Serializable]
-    public sealed class NamedFacetI18N : NamedFacetAbstract {
-        public NamedFacetI18N(string valueString, ISpecification holder)
-            : base(valueString, holder) {
-            ShortName = TypeNameUtils.GetShortName(valueString);
-            CapitalizedName = NameUtils.CapitalizeName(ShortName);
-            SimpleName = NameUtils.SimpleName(ShortName);
-            NaturalName = NameUtils.NaturalName(ShortName);
-        }
-    }
+namespace NakedFramework.Metamodel.I18N; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class NamedFacetI18N : NamedFacetAbstract {
+    public NamedFacetI18N(string valueString, ISpecification holder)
+        : base(valueString, holder) {
+        ShortName = TypeNameUtils.GetShortName(valueString);
+        CapitalizedName = NameUtils.CapitalizeName(ShortName);
+        SimpleName = NameUtils.SimpleName(ShortName);
+        NaturalName = NameUtils.NaturalName(ShortName);
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

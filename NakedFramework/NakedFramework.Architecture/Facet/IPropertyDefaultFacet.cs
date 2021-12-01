@@ -7,22 +7,22 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Provides a default value for a property of a newly created object.
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     the <c>DefaultXxx</c> supporting method for the property  <c>Xxx</c>.
+/// </para>
+/// <para>
+///     An alternative mechanism may be to specify the value in the created callback.
+/// </para>
+/// <seealso cref="ICreatedCallbackFacet" />
+public interface IPropertyDefaultFacet : IFacet {
     /// <summary>
-    ///     Provides a default value for a property of a newly created object.
+    ///     The default value for this property in a newly created object
     /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     the <c>DefaultXxx</c> supporting method for the property  <c>Xxx</c>.
-    /// </para>
-    /// <para>
-    ///     An alternative mechanism may be to specify the value in the created callback.
-    /// </para>
-    /// <seealso cref="ICreatedCallbackFacet" />
-    public interface IPropertyDefaultFacet : IFacet {
-        /// <summary>
-        ///     The default value for this property in a newly created object
-        /// </summary>
-        object GetDefault(INakedObjectAdapter inObjectAdapter);
-    }
+    object GetDefault(INakedObjectAdapter inObjectAdapter);
 }

@@ -9,49 +9,49 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Core.Util {
-    public static class TypeNameUtils {
-        public static string DecodeTypeName(string typeName, string separator = "-") {
-            if (typeName.Contains("-")) {
-                var rootType = typeName[..(typeName.IndexOf('`') + 2)];
-                var args = typeName[(typeName.IndexOf('`') + 3)..].Split('-');
+namespace NakedFramework.Core.Util; 
 
-                var genericType = TypeUtils.GetType(rootType);
-                var argTypes = Enumerable.ToArray(args.Select(TypeUtils.GetType));
+public static class TypeNameUtils {
+    public static string DecodeTypeName(string typeName, string separator = "-") {
+        if (typeName.Contains("-")) {
+            var rootType = typeName[..(typeName.IndexOf('`') + 2)];
+            var args = typeName[(typeName.IndexOf('`') + 3)..].Split('-');
 
-                var newType = genericType.MakeGenericType(argTypes);
+            var genericType = TypeUtils.GetType(rootType);
+            var argTypes = Enumerable.ToArray(args.Select(TypeUtils.GetType));
 
-                return newType.FullName;
-            }
+            var newType = genericType.MakeGenericType(argTypes);
 
-            return typeName;
+            return newType.FullName;
         }
 
-        public static string EncodeTypeName(this IObjectSpec spec, params IObjectSpec[] elements) => EncodeTypeName(spec.FullName, "-", elements);
+        return typeName;
+    }
 
-        public static string EncodeTypeName(string typeName, string separator = "-", params IObjectSpec[] elements) {
-            var type = TypeUtils.GetType(typeName);
+    public static string EncodeTypeName(this IObjectSpec spec, params IObjectSpec[] elements) => EncodeTypeName(spec.FullName, "-", elements);
 
-            return type.IsGenericType ? EncodeGenericTypeName(type, separator, elements) : type.FullName;
+    public static string EncodeTypeName(string typeName, string separator = "-", params IObjectSpec[] elements) {
+        var type = TypeUtils.GetType(typeName);
+
+        return type.IsGenericType ? EncodeGenericTypeName(type, separator, elements) : type.FullName;
+    }
+
+    public static string EncodeGenericTypeName(Type type, string separator = "-", params IObjectSpec[] elements) {
+        var rootType = type.GetGenericTypeDefinition().FullName;
+
+        var args = Enumerable.ToArray(type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName));
+
+        args = args.Any() ? args : Enumerable.ToArray(elements.Select(e => e.FullName));
+
+        return args.Aggregate(rootType, (s, t) => s + separator + t);
+    }
+
+    public static string GetShortName(string name) {
+        name = name[(name.LastIndexOf('.') + 1)..];
+        if (name.LastIndexOf('`') > 0) {
+            name = name[..name.LastIndexOf('`')];
         }
 
-        public static string EncodeGenericTypeName(Type type, string separator = "-", params IObjectSpec[] elements) {
-            var rootType = type.GetGenericTypeDefinition().FullName;
-
-            var args = Enumerable.ToArray(type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName));
-
-            args = args.Any() ? args : Enumerable.ToArray(elements.Select(e => e.FullName));
-
-            return args.Aggregate(rootType, (s, t) => s + separator + t);
-        }
-
-        public static string GetShortName(string name) {
-            name = name[(name.LastIndexOf('.') + 1)..];
-            if (name.LastIndexOf('`') > 0) {
-                name = name[..name.LastIndexOf('`')];
-            }
-
-            return name;
-        }
+        return name;
     }
 }

@@ -7,16 +7,16 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    public abstract class NakedObjectException : Exception {
-        protected NakedObjectException() { }
+namespace NakedFramework.Core.Error; 
 
-        protected NakedObjectException(string messsage)
-            : base(messsage) { }
+public abstract class NakedObjectException : Exception {
+    protected NakedObjectException() { }
 
-        protected NakedObjectException(string messsage, Exception cause)
-            : base(messsage, cause) { }
+    protected NakedObjectException(string messsage)
+        : base(messsage) { }
 
-        protected NakedObjectException(Exception cause) : base(cause?.ToString(), cause) { }
-    }
+    protected NakedObjectException(string messsage, Exception cause)
+        : base(messsage, cause) { }
+
+    protected NakedObjectException(Exception cause) : base(cause?.ToString(), cause) { }
 }

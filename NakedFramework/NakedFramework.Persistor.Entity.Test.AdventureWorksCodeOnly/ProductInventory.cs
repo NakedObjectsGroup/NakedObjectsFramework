@@ -12,33 +12,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.ProductInventory")]
-    public class ProductInventory {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Production.ProductInventory")]
+public class ProductInventory {
     
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int ProductID { get; set; }
 
        
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public short LocationID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public short LocationID { get; set; }
 
-        [Required]
-        [StringLength(10)]
-        public string Shelf { get; set; }
+    [Required]
+    [StringLength(10)]
+    public string Shelf { get; set; }
 
-        public byte Bin { get; set; }
+    public byte Bin { get; set; }
 
-        public short Quantity { get; set; }
+    public short Quantity { get; set; }
 
-        public Guid rowguid { get; set; }
+    public Guid rowguid { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Location Location { get; set; }
+    public virtual Location Location { get; set; }
 
-        public virtual Product Product { get; set; }
-    }
+    public virtual Product Product { get; set; }
 }

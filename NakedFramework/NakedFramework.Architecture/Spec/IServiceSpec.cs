@@ -5,14 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Spec {
-    /// <summary>
-    ///     Gives access to the full specification (metadata) for a specific domain object type
-    ///     (defined by the FullName property). This is the 'runtime specification', which can provide
-    ///     services in relation to a specific object; where possible its responsibilities are delegated
-    ///     to the static version of the specification: IObjectSpecImmutable.
-    /// </summary>
-    public interface IServiceSpec : ITypeSpec { }
+namespace NakedFramework.Architecture.Spec; 
 
-    // Copyright (c) Naked Objects Group Ltd.
-}
+/// <summary>
+///     Gives access to the full specification (metadata) for a specific domain object type
+///     (defined by the FullName property). This is the 'runtime specification', which can provide
+///     services in relation to a specific object; where possible its responsibilities are delegated
+///     to the static version of the specification: IObjectSpecImmutable.
+/// </summary>
+public interface IServiceSpec : ITypeSpec { }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -7,8 +7,8 @@
 
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Reflect {
-    public interface IFacetDecoratorSet {
-        void DecorateAllHoldersFacets(ISpecification holder);
-    }
+namespace NakedFramework.Architecture.Reflect; 
+
+public interface IFacetDecoratorSet {
+    void DecorateAllHoldersFacets(ISpecification holder);
 }

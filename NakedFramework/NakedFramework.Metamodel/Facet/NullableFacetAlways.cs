@@ -9,9 +9,9 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class NullableFacetAlways : FacetAbstract, INullableFacet {
-        public NullableFacetAlways(ISpecification holder) : base(typeof(INullableFacet), holder) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
+
+[Serializable]
+public sealed class NullableFacetAlways : FacetAbstract, INullableFacet {
+    public NullableFacetAlways(ISpecification holder) : base(typeof(INullableFacet), holder) { }
 }

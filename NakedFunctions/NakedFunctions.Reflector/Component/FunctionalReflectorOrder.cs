@@ -9,12 +9,12 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
 using NakedFramework.ParallelReflector.Component;
 
-namespace NakedFunctions.Reflector.Component {
-    public class FunctionalReflectorOrder<T> : IReflectorOrder<T> {
-        public int Order => typeof(T) switch {
-            { } t when t.IsAssignableTo(typeof(SystemTypeReflector)) => 0,
-            { } t when t.IsAssignableTo(typeof(FunctionalReflector)) => 1,
-            _ => throw new InitialisationException($"Unexpected reflector type {typeof(T)}")
-        };
-    }
+namespace NakedFunctions.Reflector.Component; 
+
+public class FunctionalReflectorOrder<T> : IReflectorOrder<T> {
+    public int Order => typeof(T) switch {
+        { } t when t.IsAssignableTo(typeof(SystemTypeReflector)) => 0,
+        { } t when t.IsAssignableTo(typeof(FunctionalReflector)) => 1,
+        _ => throw new InitialisationException($"Unexpected reflector type {typeof(T)}")
+    };
 }

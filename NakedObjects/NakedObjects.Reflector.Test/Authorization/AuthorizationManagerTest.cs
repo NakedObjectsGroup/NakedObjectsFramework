@@ -18,135 +18,135 @@ using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
 using NakedObjects.Reflector.Authorization;
 
-namespace NakedObjects.Reflector.Test.Authorization {
-    [TestClass]
-    public class AuthorizationManagerTest {
-        private readonly ILogger<AuthorizationManager> mockLogger = new Mock<ILogger<AuthorizationManager>>().Object;
+namespace NakedObjects.Reflector.Test.Authorization; 
 
-        #region Setup/Teardown
+[TestClass]
+public class AuthorizationManagerTest {
+    private readonly ILogger<AuthorizationManager> mockLogger = new Mock<ILogger<AuthorizationManager>>().Object;
 
-        [TestInitialize]
-        public void SetUp() { }
+    #region Setup/Teardown
 
-        #endregion
+    [TestInitialize]
+    public void SetUp() { }
 
-        [TestMethod]
-        public void TestCreateOk() {
-            var config = new AuthorizationConfiguration<ITypeAuthorizer<object>>();
+    #endregion
 
-            config.AddNamespaceAuthorizer<INamespaceAuthorizer>("1");
-            config.AddTypeAuthorizer<TestClass, ITypeAuthorizer<TestClass>>();
+    [TestMethod]
+    public void TestCreateOk() {
+        var config = new AuthorizationConfiguration<ITypeAuthorizer<object>>();
 
+        config.AddNamespaceAuthorizer<INamespaceAuthorizer>("1");
+        config.AddTypeAuthorizer<TestClass, ITypeAuthorizer<TestClass>>();
+
+        // ReSharper disable once UnusedVariable
+        var sink = new AuthorizationManager(config, mockLogger);
+    }
+
+    [TestMethod]
+    public void TestCreateNullAuthorizer() {
+        var config = new Mock<IAuthorizationConfiguration>();
+
+        config.Setup(c => c.DefaultAuthorizer).Returns((Type) null);
+        config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type>());
+
+        try {
             // ReSharper disable once UnusedVariable
-            var sink = new AuthorizationManager(config, mockLogger);
+            var sink = new AuthorizationManager(config.Object, mockLogger);
+            Assert.Fail("Expect exception");
         }
-
-        [TestMethod]
-        public void TestCreateNullAuthorizer() {
-            var config = new Mock<IAuthorizationConfiguration>();
-
-            config.Setup(c => c.DefaultAuthorizer).Returns((Type) null);
-            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type>());
-
-            try {
-                // ReSharper disable once UnusedVariable
-                var sink = new AuthorizationManager(config.Object, mockLogger);
-                Assert.Fail("Expect exception");
-            }
-            catch (Exception expected) {
-                // pass test
-                Assert.AreEqual("Default Authorizer cannot be null", expected.Message);
-            }
+        catch (Exception expected) {
+            // pass test
+            Assert.AreEqual("Default Authorizer cannot be null", expected.Message);
         }
+    }
 
-        [TestMethod]
-        public void TestDecorateHideForSessionFacet() {
-            var config = new Mock<IAuthorizationConfiguration>();
+    [TestMethod]
+    public void TestDecorateHideForSessionFacet() {
+        var config = new Mock<IAuthorizationConfiguration>();
 
-            config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
-            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
-            config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
+        config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
+        config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
+        config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
-            var manager = new AuthorizationManager(config.Object, mockLogger);
+        var manager = new AuthorizationManager(config.Object, mockLogger);
 
-            var testSpec = new Mock<ISpecification>();
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
-            var testFacet = new Mock<IHideForSessionFacet>();
+        var testSpec = new Mock<ISpecification>();
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
+        var testFacet = new Mock<IHideForSessionFacet>();
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
+        testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
 
-            testFacet.Setup(n => n.FacetType).Returns(typeof(IHideForSessionFacet));
+        testFacet.Setup(n => n.FacetType).Returns(typeof(IHideForSessionFacet));
 
-            testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
+        testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
-            var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+        var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof(AuthorizationHideForSessionFacet));
-        }
+        Assert.IsInstanceOfType(facet, typeof(AuthorizationHideForSessionFacet));
+    }
 
-        [TestMethod]
-        public void TestDecorateDisableForSessionFacet() {
-            var config = new Mock<IAuthorizationConfiguration>();
+    [TestMethod]
+    public void TestDecorateDisableForSessionFacet() {
+        var config = new Mock<IAuthorizationConfiguration>();
 
-            config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
-            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
-            config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
+        config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
+        config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
+        config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
-            var manager = new AuthorizationManager(config.Object, mockLogger);
+        var manager = new AuthorizationManager(config.Object, mockLogger);
 
-            var testSpec = new Mock<ISpecification>();
-            var testHolder = new Mock<ISpecification>();
-            var identifier = new Mock<IIdentifier>();
-            var testFacet = new Mock<IDisableForSessionFacet>();
+        var testSpec = new Mock<ISpecification>();
+        var testHolder = new Mock<ISpecification>();
+        var identifier = new Mock<IIdentifier>();
+        var testFacet = new Mock<IDisableForSessionFacet>();
 
-            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+        testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
 
-            testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
+        testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
 
-            testFacet.Setup(n => n.FacetType).Returns(typeof(IDisableForSessionFacet));
+        testFacet.Setup(n => n.FacetType).Returns(typeof(IDisableForSessionFacet));
 
-            testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
+        testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
-            var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+        var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof(AuthorizationDisableForSessionFacet));
-        }
+        Assert.IsInstanceOfType(facet, typeof(AuthorizationDisableForSessionFacet));
+    }
 
-        #region Nested type: TestClass
+    #region Nested type: TestClass
 
-        public class TestClass { }
+    public class TestClass { }
 
-        #endregion
+    #endregion
 
-        #region Nested type: TestDefaultAuthorizer
+    #region Nested type: TestDefaultAuthorizer
 
-        public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
-            #region ITypeAuthorizer<object> Members
+    public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
+        #region ITypeAuthorizer<object> Members
 
-            public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
 
-            public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Nested type: TestNamespaceAuthorizer
-
-        public class TestNamespaceAuthorizer : INamespaceAuthorizer {
-            #region INamespaceAuthorizer Members
-
-            public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
-
-            public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
-
-            #endregion
-        }
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
 
         #endregion
     }
+
+    #endregion
+
+    #region Nested type: TestNamespaceAuthorizer
+
+    public class TestNamespaceAuthorizer : INamespaceAuthorizer {
+        #region INamespaceAuthorizer Members
+
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
+
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
+
+        #endregion
+    }
+
+    #endregion
 }

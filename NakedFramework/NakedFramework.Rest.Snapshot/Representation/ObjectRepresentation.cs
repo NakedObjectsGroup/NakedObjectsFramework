@@ -17,204 +17,204 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class ObjectRepresentation : Representation {
-        protected ObjectRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, ObjectContextFacade objectContext, RestControlFlags flags)
-            : base(frameworkFacade.OidStrategy, flags) {
-            var objectUri = GetHelper(frameworkFacade.OidStrategy, req, objectContext);
-            SetScalars(objectContext);
-            SelfRelType = objectContext.Specification.IsService ? new ServiceRelType(RelValues.Self, objectUri) : new ObjectRelType(RelValues.Self, objectUri);
-            SetLinksAndMembers(frameworkFacade, req, objectContext);
-            SetExtensions(objectContext.Target);
-            SetHeader(objectContext);
+namespace NakedFramework.Rest.Snapshot.Representation; 
+
+[DataContract]
+public class ObjectRepresentation : Representation {
+    protected ObjectRepresentation(IFrameworkFacade frameworkFacade, HttpRequest req, ObjectContextFacade objectContext, RestControlFlags flags)
+        : base(frameworkFacade.OidStrategy, flags) {
+        var objectUri = GetHelper(frameworkFacade.OidStrategy, req, objectContext);
+        SetScalars(objectContext);
+        SelfRelType = objectContext.Specification.IsService ? new ServiceRelType(RelValues.Self, objectUri) : new ObjectRelType(RelValues.Self, objectUri);
+        SetLinksAndMembers(frameworkFacade, req, objectContext);
+        SetExtensions(objectContext.Target);
+        SetHeader(objectContext);
+    }
+
+    [DataMember(Name = JsonPropertyNames.Title)]
+    public string Title { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Links)]
+    public LinkRepresentation[] Links { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Extensions)]
+    public MapRepresentation Extensions { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Members)]
+    public MapRepresentation Members { get; set; }
+
+    private static UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext) => new(oidStrategy, req, objectContext.Target);
+
+    private static bool IsProtoPersistent(IObjectFacade objectFacade) => objectFacade.IsTransient;
+
+    private static bool IsForm(IObjectFacade objectFacade) => objectFacade.IsViewModelEditView;
+
+    private void SetScalars(ObjectContextFacade objectContext) => Title = objectContext.Target.TitleString;
+
+    private void SetHeader(ObjectContextFacade objectContext) {
+        Caching = objectContext.Specification.IsService ? CacheType.NonExpiring : CacheType.Transactional;
+        SetEtag(objectContext.Target);
+    }
+
+    private LinkRepresentation[] CreateIsOfTypeLinks(HttpRequest req, ObjectContextFacade objectContext) {
+        var spec = objectContext.Target.Specification;
+
+        return new[] {
+            LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSubtypeOf), Flags,
+                                      new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
+                                      new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))))),
+            LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSupertypeOf), Flags,
+                                      new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
+                                      new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))))))
+        };
+    }
+
+    private void SetLinksAndMembers(IFrameworkFacade frameworkFacade, HttpRequest req, ObjectContextFacade objectContext) {
+        var tempLinks = new List<LinkRepresentation>();
+        if (!objectContext.Mutated && !IsProtoPersistent(objectContext.Target)) {
+            tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
         }
 
-        [DataMember(Name = JsonPropertyNames.Title)]
-        public string Title { get; set; }
+        // custom isSub/SupertypeOf links 
 
-        [DataMember(Name = JsonPropertyNames.Links)]
-        public LinkRepresentation[] Links { get; set; }
+        tempLinks.AddRange(CreateIsOfTypeLinks(req, objectContext));
 
-        [DataMember(Name = JsonPropertyNames.Extensions)]
-        public MapRepresentation Extensions { get; set; }
+        SetMembers(frameworkFacade, objectContext, req, tempLinks);
+        Links = tempLinks.ToArray();
+    }
 
-        [DataMember(Name = JsonPropertyNames.Members)]
-        public MapRepresentation Members { get; set; }
+    private void SetMembers(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, List<LinkRepresentation> tempLinks) {
+        var visiblePropertiesAndCollections = objectContext.VisibleProperties;
 
-        private static UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext) => new(oidStrategy, req, objectContext.Target);
-
-        private static bool IsProtoPersistent(IObjectFacade objectFacade) => objectFacade.IsTransient;
-
-        private static bool IsForm(IObjectFacade objectFacade) => objectFacade.IsViewModelEditView;
-
-        private void SetScalars(ObjectContextFacade objectContext) => Title = objectContext.Target.TitleString;
-
-        private void SetHeader(ObjectContextFacade objectContext) {
-            Caching = objectContext.Specification.IsService ? CacheType.NonExpiring : CacheType.Transactional;
-            SetEtag(objectContext.Target);
+        if (!Flags.BlobsClobs) {
+            // filter any blobs and clobs 
+            visiblePropertiesAndCollections = visiblePropertiesAndCollections.Where(vp => !RestUtils.IsBlobOrClob(vp.Specification)).ToArray();
         }
 
-        private LinkRepresentation[] CreateIsOfTypeLinks(HttpRequest req, ObjectContextFacade objectContext) {
-            var spec = objectContext.Target.Specification;
+        var visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
 
-            return new[] {
-                LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSubtypeOf), Flags,
-                                          new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
-                                          new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))))),
-                LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSupertypeOf), Flags,
-                                          new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
-                                          new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))))))
-            };
+        if (!IsProtoPersistent(objectContext.Target) && !IsForm(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
+            var ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
+            var props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))).ToArray();
+
+            var helper = GetHelper(OidStrategy, req, objectContext);
+
+            var modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) {Method = RelMethod.Put}, Flags,
+                                                       new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
+
+            tempLinks.Add(modifyLink);
         }
 
-        private void SetLinksAndMembers(IFrameworkFacade frameworkFacade, HttpRequest req, ObjectContextFacade objectContext) {
-            var tempLinks = new List<LinkRepresentation>();
-            if (!objectContext.Mutated && !IsProtoPersistent(objectContext.Target)) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
-            }
+        if (IsProtoPersistent(objectContext.Target)) {
+            var ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => {
+                var useDate = p.IsDateOnly;
+                return GetPropertyValue(frameworkFacade, req, p, objectContext.Target, Flags, true, useDate);
+            }).ToArray();
+            var props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
-            // custom isSub/SupertypeOf links 
+            var argMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));
+            var args = new List<OptionalProperty> {argMembers};
 
-            tempLinks.AddRange(CreateIsOfTypeLinks(req, objectContext));
+            var persistLink = LinkRepresentation.Create(OidStrategy, new ObjectsRelType(RelValues.Persist, new UriMtHelper(OidStrategy, req, objectContext.Target.Specification)) {Method = RelMethod.Post}, Flags,
+                                                        new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray())));
 
-            SetMembers(frameworkFacade, objectContext, req, tempLinks);
-            Links = tempLinks.ToArray();
+            tempLinks.Add(persistLink);
         }
 
-        private void SetMembers(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, List<LinkRepresentation> tempLinks) {
-            var visiblePropertiesAndCollections = objectContext.VisibleProperties;
+        var properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(frameworkFacade, req, p, Flags, false)).ToArray();
 
-            if (!Flags.BlobsClobs) {
-                // filter any blobs and clobs 
-                visiblePropertiesAndCollections = visiblePropertiesAndCollections.Where(vp => !RestUtils.IsBlobOrClob(vp.Specification)).ToArray();
-            }
+        ActionContextFacade[] visibleActions;
 
-            var visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
-
-            if (!IsProtoPersistent(objectContext.Target) && !IsForm(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
-                var ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
-                var props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))).ToArray();
-
-                var helper = GetHelper(OidStrategy, req, objectContext);
-
-                var modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) {Method = RelMethod.Put}, Flags,
-                                                           new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
-
-                tempLinks.Add(modifyLink);
-            }
-
-            if (IsProtoPersistent(objectContext.Target)) {
-                var ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => {
-                    var useDate = p.IsDateOnly;
-                    return GetPropertyValue(frameworkFacade, req, p, objectContext.Target, Flags, true, useDate);
-                }).ToArray();
-                var props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
-
-                var argMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));
-                var args = new List<OptionalProperty> {argMembers};
-
-                var persistLink = LinkRepresentation.Create(OidStrategy, new ObjectsRelType(RelValues.Persist, new UriMtHelper(OidStrategy, req, objectContext.Target.Specification)) {Method = RelMethod.Post}, Flags,
-                                                            new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray())));
-
-                tempLinks.Add(persistLink);
-            }
-
-            var properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(frameworkFacade, req, p, Flags, false)).ToArray();
-
-            ActionContextFacade[] visibleActions;
-
-            if (IsProtoPersistent(objectContext.Target)) {
-                visibleActions = Array.Empty<ActionContextFacade>();
-            }
-            else if (IsForm(objectContext.Target)) {
-                visibleActions = objectContext.VisibleActions.Where(af => af.Action.ParameterCount == 0).ToArray();
-            }
-            else {
-                visibleActions = FilterLocallyContributedActions(objectContext.VisibleActions, visiblePropertiesAndCollections.Where(p => p.Property.IsCollection).ToArray());
-            }
-
-            var actions = visibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
-
-            var allMembers = properties.Union(actions);
-
-            Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
+        if (IsProtoPersistent(objectContext.Target)) {
+            visibleActions = Array.Empty<ActionContextFacade>();
+        }
+        else if (IsForm(objectContext.Target)) {
+            visibleActions = objectContext.VisibleActions.Where(af => af.Action.ParameterCount == 0).ToArray();
+        }
+        else {
+            visibleActions = FilterLocallyContributedActions(objectContext.VisibleActions, visiblePropertiesAndCollections.Where(p => p.Property.IsCollection).ToArray());
         }
 
-        private static ActionContextFacade[] FilterLocallyContributedActions(ActionContextFacade[] actions, PropertyContextFacade[] collections) {
-            var lcas = collections.SelectMany(c => c.Target.Specification.GetLocallyContributedActions(c.Property.ElementSpecification, c.Property.Id));
-            return actions.Where(a => !lcas.Select(lca => lca.Id).Contains(a.Id)).ToArray();
+        var actions = visibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
+
+        var allMembers = properties.Union(actions);
+
+        Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
+    }
+
+    private static ActionContextFacade[] FilterLocallyContributedActions(ActionContextFacade[] actions, PropertyContextFacade[] collections) {
+        var lcas = collections.SelectMany(c => c.Target.Specification.GetLocallyContributedActions(c.Property.ElementSpecification, c.Property.Id));
+        return actions.Where(a => !lcas.Select(lca => lca.Id).Contains(a.Id)).ToArray();
+    }
+
+    private static IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
+        InteractionMode mode;
+
+        if (objectFacade.IsNotPersistent && !objectFacade.IsViewModel) {
+            mode = InteractionMode.NotPersistent;
+        }
+        else if (objectFacade.IsTransient) {
+            mode = InteractionMode.Transient;
+        }
+        else if (objectFacade.IsViewModelEditView) {
+            mode = InteractionMode.Form;
+        }
+        else {
+            mode = InteractionMode.Persistent;
         }
 
-        private static IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
-            InteractionMode mode;
+        return new Dictionary<string, object> {
+            [JsonPropertyNames.InteractionMode] = mode.ToString().ToLower()
+        };
+    }
 
-            if (objectFacade.IsNotPersistent && !objectFacade.IsViewModel) {
-                mode = InteractionMode.NotPersistent;
-            }
-            else if (objectFacade.IsTransient) {
-                mode = InteractionMode.Transient;
-            }
-            else if (objectFacade.IsViewModelEditView) {
-                mode = InteractionMode.Form;
-            }
-            else {
-                mode = InteractionMode.Persistent;
-            }
+    private void SetExtensions(IObjectFacade objectFacade) => Extensions = GetExtensions(objectFacade);
 
-            return new Dictionary<string, object> {
-                [JsonPropertyNames.InteractionMode] = mode.ToString().ToLower()
-            };
+    private MapRepresentation GetExtensions(IObjectFacade objectFacade) =>
+        RestUtils.GetExtensions(
+            objectFacade.Specification.SingularName,
+            objectFacade.Specification.Description,
+            objectFacade.Specification.PluralName,
+            objectFacade.Specification.DomainTypeName(OidStrategy),
+            objectFacade.Specification.IsService,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            objectFacade.PresentationHint,
+            GetCustomExtensions(objectFacade),
+            null,
+            null,
+            OidStrategy,
+            false);
+
+    public static ObjectRepresentation Create(IFrameworkFacade frameworkFacade, IObjectFacade target, HttpRequest req, RestControlFlags flags) {
+        var oc = frameworkFacade.GetObject(target);
+        return Create(frameworkFacade, oc, req, flags);
+    }
+
+    public static ObjectRepresentation Create(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
+        if (objectContext.Target != null && (objectContext.Specification.IsService || !IsProtoPersistent(objectContext.Target))) {
+            return CreateObjectWithOptionals(frameworkFacade, objectContext, req, flags);
         }
 
-        private void SetExtensions(IObjectFacade objectFacade) => Extensions = GetExtensions(objectFacade);
+        return new ObjectRepresentation(frameworkFacade, req, objectContext, flags);
+    }
 
-        private MapRepresentation GetExtensions(IObjectFacade objectFacade) =>
-            RestUtils.GetExtensions(
-                objectFacade.Specification.SingularName,
-                objectFacade.Specification.Description,
-                objectFacade.Specification.PluralName,
-                objectFacade.Specification.DomainTypeName(OidStrategy),
-                objectFacade.Specification.IsService,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                objectFacade.PresentationHint,
-                GetCustomExtensions(objectFacade),
-                null,
-                null,
-                OidStrategy,
-                false);
+    private static ObjectRepresentation CreateObjectWithOptionals(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
+        var oid = frameworkFacade.OidStrategy.OidTranslator.GetOidTranslation(objectContext.Target);
 
-        public static ObjectRepresentation Create(IFrameworkFacade frameworkFacade, IObjectFacade target, HttpRequest req, RestControlFlags flags) {
-            var oc = frameworkFacade.GetObject(target);
-            return Create(frameworkFacade, oc, req, flags);
+        var props = new List<OptionalProperty>();
+        if (objectContext.Specification.IsService) {
+            props.Add(new OptionalProperty(JsonPropertyNames.ServiceId, oid.DomainType));
+        }
+        else {
+            props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, oid.InstanceId));
+            props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
         }
 
-        public static ObjectRepresentation Create(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
-            if (objectContext.Target != null && (objectContext.Specification.IsService || !IsProtoPersistent(objectContext.Target))) {
-                return CreateObjectWithOptionals(frameworkFacade, objectContext, req, flags);
-            }
-
-            return new ObjectRepresentation(frameworkFacade, req, objectContext, flags);
-        }
-
-        private static ObjectRepresentation CreateObjectWithOptionals(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
-            var oid = frameworkFacade.OidStrategy.OidTranslator.GetOidTranslation(objectContext.Target);
-
-            var props = new List<OptionalProperty>();
-            if (objectContext.Specification.IsService) {
-                props.Add(new OptionalProperty(JsonPropertyNames.ServiceId, oid.DomainType));
-            }
-            else {
-                props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, oid.InstanceId));
-                props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
-            }
-
-            return CreateWithOptionals<ObjectRepresentation>(new object[] {frameworkFacade, req, objectContext, flags}, props);
-        }
+        return CreateWithOptionals<ObjectRepresentation>(new object[] {frameworkFacade, req, objectContext, flags}, props);
     }
 }

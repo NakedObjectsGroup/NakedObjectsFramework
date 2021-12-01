@@ -10,22 +10,22 @@ using System.Collections.Generic;
 using NakedFramework.Audit;
 using NakedFramework.Metamodel.Audit;
 
-namespace NakedObjects.Reflector.Audit {
-    //Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary
-    //and set the NamespaceAuditors property.
-    public class AuditConfiguration<TDefault> : IAuditConfiguration where TDefault : IAuditor {
-        public AuditConfiguration() {
-            DefaultAuditor = typeof(TDefault);
-            NamespaceAuditors = new Dictionary<string, Type>();
-        }
+namespace NakedObjects.Reflector.Audit; 
 
-        #region IAuditConfiguration Members
-
-        public Type DefaultAuditor { get; }
-        public Dictionary<string, Type> NamespaceAuditors { get; }
-
-        public void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor => NamespaceAuditors.Add(namespaceCovered, typeof(T));
-
-        #endregion
+//Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary
+//and set the NamespaceAuditors property.
+public class AuditConfiguration<TDefault> : IAuditConfiguration where TDefault : IAuditor {
+    public AuditConfiguration() {
+        DefaultAuditor = typeof(TDefault);
+        NamespaceAuditors = new Dictionary<string, Type>();
     }
+
+    #region IAuditConfiguration Members
+
+    public Type DefaultAuditor { get; }
+    public Dictionary<string, Type> NamespaceAuditors { get; }
+
+    public void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor => NamespaceAuditors.Add(namespaceCovered, typeof(T));
+
+    #endregion
 }

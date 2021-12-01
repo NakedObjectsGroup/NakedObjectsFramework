@@ -20,54 +20,54 @@ using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFactoryProcessor {
-        public DisplayAsPropertyIntegrationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyIntegrationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;
+public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFactoryProcessor {
+    public DisplayAsPropertyIntegrationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyIntegrationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
+    private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;
 
-        private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecBuilder[] functions, IMetamodel metamodel) {
-            var result = functions.AsParallel().SelectMany(functionsSpec => {
-                var serviceActions =  functionsSpec.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
+    private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
 
-                var matchingActionsForObject = new List<IActionSpecImmutable>();
+    private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecBuilder[] functions, IMetamodel metamodel) {
+        var result = functions.AsParallel().SelectMany(functionsSpec => {
+            var serviceActions =  functionsSpec.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
 
-                foreach (var sa in serviceActions) {
-                    if (IsContributedProperty(sa, spec)) {
-                        matchingActionsForObject.Add(sa);
-                    }
-                }
+            var matchingActionsForObject = new List<IActionSpecImmutable>();
 
-                return matchingActionsForObject;
-            }).ToList();
-
-            if (result.Any()) {
-                var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
-                spec.AddContributedFields(adaptedMembers);
-            }
-        }
-
-        private static Action<IMetamodelBuilder> GetAddAction(Type type) {
-            void Action(IMetamodelBuilder m) {
-                if (m.GetSpecification(type) is ITypeSpecBuilder spec) {
-                    var functions = m.AllSpecifications.Where(IsStatic).OfType<ITypeSpecBuilder>().ToArray();
-                    PopulateDisplayAsPropertyFunctions(spec, functions, m);
+            foreach (var sa in serviceActions) {
+                if (IsContributedProperty(sa, spec)) {
+                    matchingActionsForObject.Add(sa);
                 }
             }
 
-            return Action;
-        }
+            return matchingActionsForObject;
+        }).ToList();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!FactoryUtils.IsStatic(type)) {
-                var action = GetAddAction(type);
-                FacetUtils.AddIntegrationFacet(specification, action);
+        if (result.Any()) {
+            var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
+            spec.AddContributedFields(adaptedMembers);
+        }
+    }
+
+    private static Action<IMetamodelBuilder> GetAddAction(Type type) {
+        void Action(IMetamodelBuilder m) {
+            if (m.GetSpecification(type) is ITypeSpecBuilder spec) {
+                var functions = m.AllSpecifications.Where(IsStatic).OfType<ITypeSpecBuilder>().ToArray();
+                PopulateDisplayAsPropertyFunctions(spec, functions, m);
             }
-
-            return metamodel;
         }
+
+        return Action;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!FactoryUtils.IsStatic(type)) {
+            var action = GetAddAction(type);
+            FacetUtils.AddIntegrationFacet(specification, action);
+        }
+
+        return metamodel;
     }
 }

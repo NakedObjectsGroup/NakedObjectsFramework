@@ -20,183 +20,183 @@ using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Value;
 
-namespace NakedFramework.Facade.Impl.Impl {
-    public class ObjectFacade : IObjectFacade {
-        private readonly INakedFramework framework;
+namespace NakedFramework.Facade.Impl.Impl; 
 
-        protected ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade frameworkFacade, INakedFramework framework) {
-            WrappedNakedObject = nakedObject ?? throw new NullReferenceException($"{nameof(nakedObject)} is null");
-            this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
-            FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
+public class ObjectFacade : IObjectFacade {
+    private readonly INakedFramework framework;
+
+    protected ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade frameworkFacade, INakedFramework framework) {
+        WrappedNakedObject = nakedObject ?? throw new NullReferenceException($"{nameof(nakedObject)} is null");
+        this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
+        FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
+    }
+
+    public INakedObjectAdapter WrappedNakedObject { get; }
+
+    public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedFramework framework) => nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
+
+    private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento {IsNotQueryable: true};
+
+    private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size, bool forceEnumerable) {
+        var toEnumerable = IsNotQueryable(objectRepresentingCollection) || forceEnumerable;
+
+        var newNakedObject = objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, toEnumerable);
+
+        var objects = newNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => no.Object).ToArray();
+
+        var currentMemento = (ICollectionMemento) WrappedNakedObject.Oid;
+        var newMemento = currentMemento.NewSelectionMemento(objects, true);
+        newNakedObject.SetATransientOid(newMemento);
+        return newNakedObject;
+    }
+
+    private INakedObjectAdapter Select(INakedObjectAdapter objectRepresentingCollection, object[] selected, bool forceEnumerable) {
+        var result = CollectionUtils.CloneCollectionAndPopulate(objectRepresentingCollection.Object, selected);
+        var adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? result.AsQueryable() : result, null, null);
+        var currentMemento = (ICollectionMemento) objectRepresentingCollection.Oid;
+        var newMemento = currentMemento.NewSelectionMemento(selected, false);
+        adapter.SetATransientOid(newMemento);
+        return adapter;
+    }
+
+    public override bool Equals(object obj) => obj is ObjectFacade of && Equals(of);
+
+    public bool Equals(ObjectFacade other) {
+        if (ReferenceEquals(null, other)) {
+            return false;
         }
 
-        public INakedObjectAdapter WrappedNakedObject { get; }
+        return ReferenceEquals(this, other) || Equals(other.WrappedNakedObject, WrappedNakedObject);
+    }
 
-        public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedFramework framework) => nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
+    public override int GetHashCode() => WrappedNakedObject != null ? WrappedNakedObject.GetHashCode() : 0;
 
-        private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento {IsNotQueryable: true};
+    #region IObjectFacade Members
 
-        private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size, bool forceEnumerable) {
-            var toEnumerable = IsNotQueryable(objectRepresentingCollection) || forceEnumerable;
+    public bool IsTransient => WrappedNakedObject.ResolveState.IsTransient();
 
-            var newNakedObject = objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, toEnumerable);
+    public void SetIsNotQueryableState(bool state) {
+        if (WrappedNakedObject.Oid is ICollectionMemento memento) {
+            memento.IsNotQueryable = state;
+        }
+    }
 
-            var objects = newNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => no.Object).ToArray();
+    public ITypeFacade Specification => new TypeFacade(WrappedNakedObject.Spec, FrameworkFacade, framework);
 
-            var currentMemento = (ICollectionMemento) WrappedNakedObject.Oid;
-            var newMemento = currentMemento.NewSelectionMemento(objects, true);
-            newNakedObject.SetATransientOid(newMemento);
-            return newNakedObject;
+    public ITypeFacade ElementSpecification {
+        get {
+            var typeOfFacet = WrappedNakedObject.GetTypeOfFacetFromSpec();
+            var introspectableSpecification = typeOfFacet.GetValueSpec(WrappedNakedObject, framework.MetamodelManager.Metamodel);
+            var spec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
+            return new TypeFacade(spec, FrameworkFacade, framework);
+        }
+    }
+
+    public string PresentationHint {
+        get {
+            var spec = WrappedNakedObject.Spec;
+            var hintFacet = spec.GetFacet<IPresentationHintFacet>();
+            return hintFacet == null ? "" : hintFacet.Value;
+        }
+    }
+
+    public object Object => WrappedNakedObject.Object;
+
+    public IEnumerable<IObjectFacade> ToEnumerable() => WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
+
+    public IObjectFacade Page(int page, int size, bool forceEnumerable) => new ObjectFacade(Page(WrappedNakedObject, page, size, forceEnumerable), FrameworkFacade, framework);
+
+    public IObjectFacade Select(object[] selection, bool forceEnumerable) => new ObjectFacade(Select(WrappedNakedObject, selection, forceEnumerable), FrameworkFacade, framework);
+
+    public int Count() => WrappedNakedObject.GetAsQueryable().Count();
+
+    public AttachmentContextFacade GetAttachment() {
+        var fa = WrappedNakedObject.Object as FileAttachment;
+        var context = new AttachmentContextFacade();
+
+        if (fa != null) {
+            context.Content = fa.GetResourceAsStream();
+            context.MimeType = fa.MimeType;
+            context.ContentDisposition = fa.DispositionType;
+            context.FileName = fa.Name;
         }
 
-        private INakedObjectAdapter Select(INakedObjectAdapter objectRepresentingCollection, object[] selected, bool forceEnumerable) {
-            var result = CollectionUtils.CloneCollectionAndPopulate(objectRepresentingCollection.Object, selected);
-            var adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? result.AsQueryable() : result, null, null);
-            var currentMemento = (ICollectionMemento) objectRepresentingCollection.Oid;
-            var newMemento = currentMemento.NewSelectionMemento(selected, false);
-            adapter.SetATransientOid(newMemento);
-            return adapter;
+        return context;
+    }
+
+    public PropertyInfo[] GetKeys() =>
+        WrappedNakedObject.Spec is IServiceSpec
+            ? Array.Empty<PropertyInfo>()
+            : framework.Persistor.GetKeys(WrappedNakedObject.Object.GetType());
+
+    public IVersionFacade Version => new VersionFacade(WrappedNakedObject.Version);
+
+    public IOidFacade Oid => WrappedNakedObject.Oid == null ? null : new OidFacade(WrappedNakedObject.Oid);
+
+    public IFrameworkFacade FrameworkFacade { get; set; }
+
+    public bool IsViewModelEditView => IsViewModel && WrappedNakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject, framework);
+
+    public bool IsViewModel => WrappedNakedObject.Spec.ContainsFacet<IViewModelFacet>();
+
+    public bool IsDestroyed => WrappedNakedObject.ResolveState.IsDestroyed();
+
+    public string InvariantString => WrappedNakedObject.InvariantString();
+
+    public bool IsUserPersistable => WrappedNakedObject.Spec.Persistable == PersistableType.UserPersistable;
+
+    public bool IsNotPersistent => WrappedNakedObject.IsNotPersistent();
+
+    public string TitleString {
+        get {
+            var title = WrappedNakedObject.TitleString();
+            return string.IsNullOrWhiteSpace(title) && !WrappedNakedObject.Spec.IsParseable ? WrappedNakedObject.Spec.UntitledName : title;
         }
+    }
 
-        public override bool Equals(object obj) => obj is ObjectFacade of && Equals(of);
+    public string ToString(string format = "") {
 
-        public bool Equals(ObjectFacade other) {
-            if (ReferenceEquals(null, other)) {
-                return false;
-            }
-
-            return ReferenceEquals(this, other) || Equals(other.WrappedNakedObject, WrappedNakedObject);
-        }
-
-        public override int GetHashCode() => WrappedNakedObject != null ? WrappedNakedObject.GetHashCode() : 0;
-
-        #region IObjectFacade Members
-
-        public bool IsTransient => WrappedNakedObject.ResolveState.IsTransient();
-
-        public void SetIsNotQueryableState(bool state) {
-            if (WrappedNakedObject.Oid is ICollectionMemento memento) {
-                memento.IsNotQueryable = state;
-            }
-        }
-
-        public ITypeFacade Specification => new TypeFacade(WrappedNakedObject.Spec, FrameworkFacade, framework);
-
-        public ITypeFacade ElementSpecification {
-            get {
-                var typeOfFacet = WrappedNakedObject.GetTypeOfFacetFromSpec();
-                var introspectableSpecification = typeOfFacet.GetValueSpec(WrappedNakedObject, framework.MetamodelManager.Metamodel);
-                var spec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
-                return new TypeFacade(spec, FrameworkFacade, framework);
-            }
-        }
-
-        public string PresentationHint {
-            get {
-                var spec = WrappedNakedObject.Spec;
-                var hintFacet = spec.GetFacet<IPresentationHintFacet>();
-                return hintFacet == null ? "" : hintFacet.Value;
-            }
-        }
-
-        public object Object => WrappedNakedObject.Object;
-
-        public IEnumerable<IObjectFacade> ToEnumerable() => WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
-
-        public IObjectFacade Page(int page, int size, bool forceEnumerable) => new ObjectFacade(Page(WrappedNakedObject, page, size, forceEnumerable), FrameworkFacade, framework);
-
-        public IObjectFacade Select(object[] selection, bool forceEnumerable) => new ObjectFacade(Select(WrappedNakedObject, selection, forceEnumerable), FrameworkFacade, framework);
-
-        public int Count() => WrappedNakedObject.GetAsQueryable().Count();
-
-        public AttachmentContextFacade GetAttachment() {
-            var fa = WrappedNakedObject.Object as FileAttachment;
-            var context = new AttachmentContextFacade();
-
-            if (fa != null) {
-                context.Content = fa.GetResourceAsStream();
-                context.MimeType = fa.MimeType;
-                context.ContentDisposition = fa.DispositionType;
-                context.FileName = fa.Name;
-            }
-
-            return context;
-        }
-
-        public PropertyInfo[] GetKeys() =>
-            WrappedNakedObject.Spec is IServiceSpec
-                ? Array.Empty<PropertyInfo>()
-                : framework.Persistor.GetKeys(WrappedNakedObject.Object.GetType());
-
-        public IVersionFacade Version => new VersionFacade(WrappedNakedObject.Version);
-
-        public IOidFacade Oid => WrappedNakedObject.Oid == null ? null : new OidFacade(WrappedNakedObject.Oid);
-
-        public IFrameworkFacade FrameworkFacade { get; set; }
-
-        public bool IsViewModelEditView => IsViewModel && WrappedNakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject, framework);
-
-        public bool IsViewModel => WrappedNakedObject.Spec.ContainsFacet<IViewModelFacet>();
-
-        public bool IsDestroyed => WrappedNakedObject.ResolveState.IsDestroyed();
-
-        public string InvariantString => WrappedNakedObject.InvariantString();
-
-        public bool IsUserPersistable => WrappedNakedObject.Spec.Persistable == PersistableType.UserPersistable;
-
-        public bool IsNotPersistent => WrappedNakedObject.IsNotPersistent();
-
-        public string TitleString {
-            get {
-                var title = WrappedNakedObject.TitleString();
-                return string.IsNullOrWhiteSpace(title) && !WrappedNakedObject.Spec.IsParseable ? WrappedNakedObject.Spec.UntitledName : title;
-            }
-        }
-
-        public string ToString(string format = "") {
-
-            if (!string.IsNullOrWhiteSpace(format)) {
-                var spec = WrappedNakedObject.Spec;
-
-                if (spec.GetFacet<IDateValueFacet>() is { } df) {
-                    var dt = df.DateValue(WrappedNakedObject);
-
-                    if (format == "s") {
-                        return ToUniversalTime(dt).ToString(format);
-                    }
-
-                    return dt.Date.ToString(format);
-                }
-
-                if (spec.GetFacet<ITimeValueFacet>() is { } tf) {
-                    return tf.TimeValue(WrappedNakedObject).ToString(format);
-                }
-            }
-
-            return WrappedNakedObject.Object.ToString();
-        }
-
-        public object ToValue() {
+        if (!string.IsNullOrWhiteSpace(format)) {
             var spec = WrappedNakedObject.Spec;
 
             if (spec.GetFacet<IDateValueFacet>() is { } df) {
                 var dt = df.DateValue(WrappedNakedObject);
-                return ToUniversalTime(dt);
+
+                if (format == "s") {
+                    return ToUniversalTime(dt).ToString(format);
+                }
+
+                return dt.Date.ToString(format);
             }
 
-            if (spec.GetFacet<IIntegerValueFacet>() is { } intf) {
-                return intf.IntegerValue(WrappedNakedObject);
+            if (spec.GetFacet<ITimeValueFacet>() is { } tf) {
+                return tf.TimeValue(WrappedNakedObject).ToString(format);
             }
-
-            return WrappedNakedObject.Object;
         }
 
-
-        private static  DateTime ToUniversalTime(DateTime dt) =>
-            dt.Kind == DateTimeKind.Unspecified
-                ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
-                : dt.ToUniversalTime();
-
-        #endregion
+        return WrappedNakedObject.Object.ToString();
     }
+
+    public object ToValue() {
+        var spec = WrappedNakedObject.Spec;
+
+        if (spec.GetFacet<IDateValueFacet>() is { } df) {
+            var dt = df.DateValue(WrappedNakedObject);
+            return ToUniversalTime(dt);
+        }
+
+        if (spec.GetFacet<IIntegerValueFacet>() is { } intf) {
+            return intf.IntegerValue(WrappedNakedObject);
+        }
+
+        return WrappedNakedObject.Object;
+    }
+
+
+    private static  DateTime ToUniversalTime(DateTime dt) =>
+        dt.Kind == DateTimeKind.Unspecified
+            ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
+            : dt.ToUniversalTime();
+
+    #endregion
 }

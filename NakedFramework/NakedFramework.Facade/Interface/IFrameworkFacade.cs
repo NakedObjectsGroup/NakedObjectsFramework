@@ -9,45 +9,45 @@ using System.Security.Principal;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Translation;
 
-namespace NakedFramework.Facade.Interface {
-    public interface IFrameworkFacade {
-        IOidTranslator OidTranslator { get; }
-        IOidStrategy OidStrategy { get; }
-        IMessageBrokerFacade MessageBroker { get; }
-        string[] ServerTypes { get; }
-        void Start();
-        void End(bool success);
-        IPrincipal GetUser();
-        ObjectContextFacade GetService(IOidTranslation serviceName);
-        ListContextFacade GetServices();
-        MenuContextFacade GetMainMenus();
-        ObjectContextFacade GetObject(IObjectFacade objectFacade);
-        ObjectContextFacade GetObject(IOidTranslation objectId);
-        ObjectContextFacade PutObject(IOidTranslation objectId, ArgumentsContextFacade arguments);
-        PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);
-        PropertyContextFacade GetPropertyWithCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments);
-        ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName);
-        ActionContextFacade GetMenuAction(string menuName, string actionName);
-        ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName);
-        ActionContextFacade GetServiceActionWithCompletions(IOidTranslation serviceName, string actionName, string parmName, ArgumentsContextFacade arguments);
-        ActionContextFacade GetMenuActionWithCompletions(string menuName, string actionName, string parmName, ArgumentsContextFacade arguments);
-        ActionContextFacade GetObjectActionWithCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments);
-        PropertyContextFacade PutProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
-        PropertyContextFacade DeleteProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
-        ActionResultContextFacade ExecuteObjectAction(IOidTranslation objectId, string actionName, ArgumentsContextFacade arguments);
-        ActionResultContextFacade ExecuteServiceAction(IOidTranslation serviceName, string actionName, ArgumentsContextFacade arguments);
-        ActionResultContextFacade ExecuteMenuAction(string menuName, string actionName, ArgumentsContextFacade argsContext);
-        ObjectContextFacade GetImage(string imageId);
-        ITypeFacade GetDomainType(string typeName);
-        ObjectContextFacade Persist(string typeName, ArgumentsContextFacade arguments);
-        ObjectContextFacade GetTransient(string typeName, ArgumentsContextFacade arguments);
+namespace NakedFramework.Facade.Interface; 
 
-        IObjectFacade GetObject(object domainObject);
+public interface IFrameworkFacade {
+    IOidTranslator OidTranslator { get; }
+    IOidStrategy OidStrategy { get; }
+    IMessageBrokerFacade MessageBroker { get; }
+    string[] ServerTypes { get; }
+    void Start();
+    void End(bool success);
+    IPrincipal GetUser();
+    ObjectContextFacade GetService(IOidTranslation serviceName);
+    ListContextFacade GetServices();
+    MenuContextFacade GetMainMenus();
+    ObjectContextFacade GetObject(IObjectFacade objectFacade);
+    ObjectContextFacade GetObject(IOidTranslation objectId);
+    ObjectContextFacade PutObject(IOidTranslation objectId, ArgumentsContextFacade arguments);
+    PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);
+    PropertyContextFacade GetPropertyWithCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments);
+    ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName);
+    ActionContextFacade GetMenuAction(string menuName, string actionName);
+    ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName);
+    ActionContextFacade GetServiceActionWithCompletions(IOidTranslation serviceName, string actionName, string parmName, ArgumentsContextFacade arguments);
+    ActionContextFacade GetMenuActionWithCompletions(string menuName, string actionName, string parmName, ArgumentsContextFacade arguments);
+    ActionContextFacade GetObjectActionWithCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments);
+    PropertyContextFacade PutProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
+    PropertyContextFacade DeleteProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
+    ActionResultContextFacade ExecuteObjectAction(IOidTranslation objectId, string actionName, ArgumentsContextFacade arguments);
+    ActionResultContextFacade ExecuteServiceAction(IOidTranslation serviceName, string actionName, ArgumentsContextFacade arguments);
+    ActionResultContextFacade ExecuteMenuAction(string menuName, string actionName, ArgumentsContextFacade argsContext);
+    ObjectContextFacade GetImage(string imageId);
+    ITypeFacade GetDomainType(string typeName);
+    ObjectContextFacade Persist(string typeName, ArgumentsContextFacade arguments);
+    ObjectContextFacade GetTransient(string typeName, ArgumentsContextFacade arguments);
 
-        // Do not remove; used in custom code
-        void Inject(object toInject);
-        (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "");
+    IObjectFacade GetObject(object domainObject);
 
-        ActionContextFacade[] GetLocallyContributedActions(PropertyContextFacade propertyContext);
-    }
+    // Do not remove; used in custom code
+    void Inject(object toInject);
+    (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "");
+
+    ActionContextFacade[] GetLocallyContributedActions(PropertyContextFacade propertyContext);
 }

@@ -13,29 +13,29 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet {
-        private readonly PropertyInfo propertyMethod;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public PropertyAccessorFacet(PropertyInfo property, ISpecification holder)
-            : base(typeof(IPropertyAccessorFacet), holder) =>
-            propertyMethod = property;
+[Serializable]
+public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet {
+    private readonly PropertyInfo propertyMethod;
 
-        #region IPropertyAccessorFacet Members
+    public PropertyAccessorFacet(PropertyInfo property, ISpecification holder)
+        : base(typeof(IPropertyAccessorFacet), holder) =>
+        propertyMethod = property;
 
-        public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
-            try {
-                return propertyMethod.GetValue(nakedObjectAdapter.GetDomainObject(), null);
-            }
-            catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);
-                return null;
-            }
+    #region IPropertyAccessorFacet Members
+
+    public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
+        try {
+            return propertyMethod.GetValue(nakedObjectAdapter.GetDomainObject(), null);
         }
-
-        #endregion
-
-        protected override string ToStringValues() => $"propertyMethod={propertyMethod}";
+        catch (TargetInvocationException e) {
+            InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);
+            return null;
+        }
     }
+
+    #endregion
+
+    protected override string ToStringValues() => $"propertyMethod={propertyMethod}";
 }

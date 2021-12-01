@@ -14,37 +14,37 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public abstract class InlineMemberAbstractRepresentation : Representation {
-        protected InlineMemberAbstractRepresentation(IOidStrategy oidStrategy, RestControlFlags flags) : base(oidStrategy, flags) { }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        [DataMember(Name = JsonPropertyNames.MemberType)]
-        public string MemberType { get; set; }
+[DataContract]
+public abstract class InlineMemberAbstractRepresentation : Representation {
+    protected InlineMemberAbstractRepresentation(IOidStrategy oidStrategy, RestControlFlags flags) : base(oidStrategy, flags) { }
 
-        [DataMember(Name = JsonPropertyNames.Id)]
-        public string Id { get; set; }
+    [DataMember(Name = JsonPropertyNames.MemberType)]
+    public string MemberType { get; set; }
 
-        [DataMember(Name = JsonPropertyNames.Links)]
-        public LinkRepresentation[] Links { get; set; }
+    [DataMember(Name = JsonPropertyNames.Id)]
+    public string Id { get; set; }
 
-        [DataMember(Name = JsonPropertyNames.Extensions)]
-        public MapRepresentation Extensions { get; set; }
+    [DataMember(Name = JsonPropertyNames.Links)]
+    public LinkRepresentation[] Links { get; set; }
 
-        protected void SetHeader(IObjectFacade target) => SetEtag(target);
+    [DataMember(Name = JsonPropertyNames.Extensions)]
+    public MapRepresentation Extensions { get; set; }
 
-        public static InlineMemberAbstractRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags, bool asTableColumn) {
-            var consent = propertyContext.Property.IsUsable(propertyContext.Target);
-            var optionals = new List<OptionalProperty>();
-            if (consent.IsVetoed) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));
-            }
+    protected void SetHeader(IObjectFacade target) => SetEtag(target);
 
-            if (propertyContext.Property.IsCollection) {
-                return InlineCollectionRepresentation.Create(frameworkFacade, req, propertyContext, optionals, flags, asTableColumn);
-            }
-
-            return InlinePropertyRepresentation.Create(frameworkFacade, req, propertyContext, optionals, flags);
+    public static InlineMemberAbstractRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags, bool asTableColumn) {
+        var consent = propertyContext.Property.IsUsable(propertyContext.Target);
+        var optionals = new List<OptionalProperty>();
+        if (consent.IsVetoed) {
+            optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));
         }
+
+        if (propertyContext.Property.IsCollection) {
+            return InlineCollectionRepresentation.Create(frameworkFacade, req, propertyContext, optionals, flags, asTableColumn);
+        }
+
+        return InlinePropertyRepresentation.Create(frameworkFacade, req, propertyContext, optionals, flags);
     }
 }

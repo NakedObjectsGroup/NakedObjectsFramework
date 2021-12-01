@@ -8,73 +8,73 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec; 
+
+/// <summary>
+///     The specification for an action method on a domain object (or service).
+/// </summary>
+public interface IActionSpec : IMemberSpec {
     /// <summary>
-    ///     The specification for an action method on a domain object (or service).
+    ///     Returns the specification for the type of object that this action can be invoked upon
     /// </summary>
-    public interface IActionSpec : IMemberSpec {
-        /// <summary>
-        ///     Returns the specification for the type of object that this action can be invoked upon
-        /// </summary>
-        ITypeSpec OnSpec { get; }
+    ITypeSpec OnSpec { get; }
 
-        IObjectSpec ElementSpec { get; }
+    IObjectSpec ElementSpec { get; }
 
-        /// <summary>
-        ///     Return true if the action is run on a service object using the target object as a parameter
-        /// </summary>
-        bool IsContributedMethod { get; }
+    /// <summary>
+    ///     Return true if the action is run on a service object using the target object as a parameter
+    /// </summary>
+    bool IsContributedMethod { get; }
 
-        bool IsStaticFunction { get; }
+    bool IsStaticFunction { get; }
 
-        /// <summary>
-        ///     Return true if the action is run on a service object and can be used as a finder
-        /// </summary>
-        bool IsFinderMethod { get; }
+    /// <summary>
+    ///     Return true if the action is run on a service object and can be used as a finder
+    /// </summary>
+    bool IsFinderMethod { get; }
 
-        /// <summary>
-        ///     Returns the number of parameters used by this method
-        /// </summary>
-        int ParameterCount { get; }
+    /// <summary>
+    ///     Returns the number of parameters used by this method
+    /// </summary>
+    int ParameterCount { get; }
 
-        /// <summary>
-        ///     Returns set of parameter information.
-        /// </summary>
-        /// <para>
-        ///     Implementations may build this array lazily or eagerly as required
-        /// </para>
-        IActionParameterSpec[] Parameters { get; }
+    /// <summary>
+    ///     Returns set of parameter information.
+    /// </summary>
+    /// <para>
+    ///     Implementations may build this array lazily or eagerly as required
+    /// </para>
+    IActionParameterSpec[] Parameters { get; }
 
-        /// <summary>
-        ///     Returns true if the represented action returns something, else returns false
-        /// </summary>
-        bool HasReturn { get; }
+    /// <summary>
+    ///     Returns true if the represented action returns something, else returns false
+    /// </summary>
+    bool HasReturn { get; }
 
-        /// <summary>
-        ///     Determine the real target for this action. If this action represents an object action than the target
-        ///     is returned. If this action is on a service then that service will be returned.
-        /// </summary>
-        INakedObjectAdapter RealTarget(INakedObjectAdapter target);
+    /// <summary>
+    ///     Determine the real target for this action. If this action represents an object action than the target
+    ///     is returned. If this action is on a service then that service will be returned.
+    /// </summary>
+    INakedObjectAdapter RealTarget(INakedObjectAdapter target);
 
-        /// <summary>
-        ///     Invokes the action's method on the target object given the specified set of parameters
-        /// </summary>
-        INakedObjectAdapter Execute(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet);
+    /// <summary>
+    ///     Invokes the action's method on the target object given the specified set of parameters
+    /// </summary>
+    INakedObjectAdapter Execute(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet);
 
-        /// <summary>
-        ///     Whether the provided parameter set is valid
-        /// </summary>
-        IConsent IsParameterSetValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet);
+    /// <summary>
+    ///     Whether the provided parameter set is valid
+    /// </summary>
+    IConsent IsParameterSetValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet);
 
-        INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet);
+    INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet);
 
-        /// <summary>
-        ///     Return true if the action is run on a service object using the target object as a parameter
-        /// </summary>
-        bool IsLocallyContributedTo(ITypeSpec typeSpec, string id);
+    /// <summary>
+    ///     Return true if the action is run on a service object using the target object as a parameter
+    /// </summary>
+    bool IsLocallyContributedTo(ITypeSpec typeSpec, string id);
 
-        string GetFinderMethodPrefix();
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    string GetFinderMethodPrefix();
 }
+
+// Copyright (c) Naked Objects Group Ltd.

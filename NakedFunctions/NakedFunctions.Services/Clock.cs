@@ -7,10 +7,10 @@
 
 using System;
 
-namespace NakedFunctions.Services {
-    public class Clock : IClock {
-        public DateTime Now() => DateTime.UtcNow;
+namespace NakedFunctions.Services; 
 
-        public DateTime Today() => DateTime.UtcNow.Date;
-    }
+public class Clock : IClock {
+    public DateTime Now() => DateTime.UtcNow;
+
+    public DateTime Today() => DateTime.UtcNow.Date;
 }

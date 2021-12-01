@@ -11,32 +11,32 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.ParallelReflector.FacetFactory {
-    public abstract class FacetFactoryAbstract {
-        protected FacetFactoryAbstract(int numericOrder,
-                                       ILoggerFactory loggerFactory,
-                                       FeatureType featureTypes) {
-            NumericOrder = numericOrder;
-            LoggerFactory = loggerFactory;
-            FeatureTypes = featureTypes;
-        }
+namespace NakedFramework.ParallelReflector.FacetFactory; 
 
-        protected ILoggerFactory LoggerFactory { get; }
-
-        protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
-
-        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => System.Array.Empty<PropertyInfo>();
-
-        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => System.Array.Empty<PropertyInfo>();
-
-        #region IFacetFactory Members
-
-        public int NumericOrder { get; }
-
-        public virtual FeatureType FeatureTypes { get; }
-
-        public int CompareTo(IFacetFactory other) => NumericOrder.CompareTo(other.NumericOrder);
-
-        #endregion
+public abstract class FacetFactoryAbstract {
+    protected FacetFactoryAbstract(int numericOrder,
+                                   ILoggerFactory loggerFactory,
+                                   FeatureType featureTypes) {
+        NumericOrder = numericOrder;
+        LoggerFactory = loggerFactory;
+        FeatureTypes = featureTypes;
     }
+
+    protected ILoggerFactory LoggerFactory { get; }
+
+    protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
+
+    public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => System.Array.Empty<PropertyInfo>();
+
+    public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => System.Array.Empty<PropertyInfo>();
+
+    #region IFacetFactory Members
+
+    public int NumericOrder { get; }
+
+    public virtual FeatureType FeatureTypes { get; }
+
+    public int CompareTo(IFacetFactory other) => NumericOrder.CompareTo(other.NumericOrder);
+
+    #endregion
 }

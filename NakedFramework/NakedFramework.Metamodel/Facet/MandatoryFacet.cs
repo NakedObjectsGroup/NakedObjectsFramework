@@ -9,23 +9,23 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedFramework.Metamodel.Facet; 
+
+/// <summary>
+///     Derived by presence of a <see cref="RequiredAttribute" /> annotation.
+/// </summary>
+/// <para>
+///     This implementation indicates that the <see cref="ISpecification" /> is mandatory.
+/// </para>
+[Serializable]
+public sealed class MandatoryFacet : MandatoryFacetAbstract {
+    public MandatoryFacet(ISpecification holder)
+        : base(holder) { }
+
     /// <summary>
-    ///     Derived by presence of a <see cref="RequiredAttribute" /> annotation.
+    ///     Always returns <c>true</c>, indicating that the facet holder is in fact mandatory.
     /// </summary>
-    /// <para>
-    ///     This implementation indicates that the <see cref="ISpecification" /> is mandatory.
-    /// </para>
-    [Serializable]
-    public sealed class MandatoryFacet : MandatoryFacetAbstract {
-        public MandatoryFacet(ISpecification holder)
-            : base(holder) { }
-
-        /// <summary>
-        ///     Always returns <c>true</c>, indicating that the facet holder is in fact mandatory.
-        /// </summary>
-        public override bool IsMandatory => true;
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    public override bool IsMandatory => true;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

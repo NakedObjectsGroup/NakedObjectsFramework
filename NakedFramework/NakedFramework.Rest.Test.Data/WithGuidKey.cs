@@ -9,11 +9,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace RestfulObjects.Test.Data {
-    public class WithGuidKey {
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        public virtual Guid Id { get; set; }
-    }
+namespace RestfulObjects.Test.Data; 
+
+public class WithGuidKey {
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    public virtual Guid Id { get; set; }
 }

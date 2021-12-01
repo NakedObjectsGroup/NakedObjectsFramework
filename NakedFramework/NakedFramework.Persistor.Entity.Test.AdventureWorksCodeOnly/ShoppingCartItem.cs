@@ -12,23 +12,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.ShoppingCartItem")]
-    public class ShoppingCartItem {
-        public int ShoppingCartItemID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string ShoppingCartID { get; set; }
+[Table("Sales.ShoppingCartItem")]
+public class ShoppingCartItem {
+    public int ShoppingCartItemID { get; set; }
 
-        public int Quantity { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string ShoppingCartID { get; set; }
 
-        public int ProductID { get; set; }
+    public int Quantity { get; set; }
 
-        public DateTime DateCreated { get; set; }
+    public int ProductID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime DateCreated { get; set; }
 
-        public virtual Product Product { get; set; }
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual Product Product { get; set; }
 }

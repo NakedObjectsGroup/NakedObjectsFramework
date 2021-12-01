@@ -7,17 +7,17 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts {
-    public class ChoiceContextFacade : ContextFacade {
-        public ChoiceContextFacade(string id, ITypeFacade spec) {
-            Id = id;
-            Specification = spec;
-        }
+namespace NakedFramework.Facade.Contexts; 
 
-        public override string Id { get; }
-
-        public override ITypeFacade Specification { get; }
-
-        public override ITypeFacade ElementSpecification => null;
+public class ChoiceContextFacade : ContextFacade {
+    public ChoiceContextFacade(string id, ITypeFacade spec) {
+        Id = id;
+        Specification = spec;
     }
+
+    public override string Id { get; }
+
+    public override ITypeFacade Specification { get; }
+
+    public override ITypeFacade ElementSpecification => null;
 }

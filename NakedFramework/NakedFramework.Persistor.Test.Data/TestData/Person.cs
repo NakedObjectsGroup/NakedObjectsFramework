@@ -14,96 +14,96 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace TestData {
-    [ValidateProgrammaticUpdates]
-    public class Person : TestHelper {
-        private string name;
-        private bool persistInUpdated;
-        private bool updateInPersisting;
+namespace TestData; 
 
-        [Key]
-        public virtual int PersonId { get; set; }
+[ValidateProgrammaticUpdates]
+public class Person : TestHelper {
+    private string name;
+    private bool persistInUpdated;
+    private bool updateInPersisting;
 
-        [Title]
-        [Optionally]
-        public virtual string Name {
-            get => name;
-            set => name = value;
-        }
+    [Key]
+    public virtual int PersonId { get; set; }
 
-        [Optionally]
-        public virtual Product FavouriteProduct { get; set; }
+    [Title]
+    [Optionally]
+    public virtual string Name {
+        get => name;
+        set => name = value;
+    }
 
-        [Optionally]
-        public virtual Pet Pet { get; set; }
+    [Optionally]
+    public virtual Product FavouriteProduct { get; set; }
 
-        public virtual Address Address { get; set; } = new();
+    [Optionally]
+    public virtual Pet Pet { get; set; }
 
-        public virtual ICollection<Person> Relatives { get; set; } = new List<Person>();
+    public virtual Address Address { get; set; } = new();
 
-        public virtual void AddToRelatives(Person person) {
-            Relatives.Add(person);
-        }
+    public virtual ICollection<Person> Relatives { get; set; } = new List<Person>();
 
-        public virtual void RemoveFromRelatives(Person person) {
-            Relatives.Remove(person);
-        }
+    public virtual void AddToRelatives(Person person) {
+        Relatives.Add(person);
+    }
 
-        public virtual void ClearRelatives() {
-            Relatives.Clear();
-        }
+    public virtual void RemoveFromRelatives(Person person) {
+        Relatives.Remove(person);
+    }
 
-        public void ChangeName(string newName) {
-            name = newName;
-        }
+    public virtual void ClearRelatives() {
+        Relatives.Clear();
+    }
+
+    public void ChangeName(string newName) {
+        name = newName;
+    }
 
 // ReSharper disable once ParameterHidesMember
-        public string Validate(string name, Product favouriteProduct) => name == "fail" ? name : null;
+    public string Validate(string name, Product favouriteProduct) => name == "fail" ? name : null;
 
-        public IQueryable<Person> FindRelativesByName(IQueryable<Person> persons, string newName) =>
-            (from r in persons
-                where r.Name == newName
-                select r).AsQueryable();
+    public IQueryable<Person> FindRelativesByName(IQueryable<Person> persons, string newName) =>
+        (from r in persons
+         where r.Name == newName
+         select r).AsQueryable();
 
-        //[Executed(Where.Remotely)]
-        public string DisableFindRelativesByName(IQueryable<Person> persons, string newName) => "disabled";
+    //[Executed(Where.Remotely)]
+    public string DisableFindRelativesByName(IQueryable<Person> persons, string newName) => "disabled";
 
-        public IEnumerable<Person> FindRelativesById(IQueryable<Person> persons, int id) =>
-            from r in persons
-            where r.PersonId == id
-            select r;
+    public IEnumerable<Person> FindRelativesById(IQueryable<Person> persons, int id) =>
+        from r in persons
+        where r.PersonId == id
+        select r;
 
-        //[Executed(Where.Remotely)]
-        public bool HideFindRelativesById() => true;
+    //[Executed(Where.Remotely)]
+    public bool HideFindRelativesById() => true;
 
-        public void UpdateInPersisting() {
-            updateInPersisting = true;
+    public void UpdateInPersisting() {
+        updateInPersisting = true;
+    }
+
+    public void PersistInUpdated() {
+        persistInUpdated = true;
+    }
+
+    public override void Persisting() {
+        base.Persisting();
+
+        if (updateInPersisting) {
+            // update  to test updating/updated not called 
+            var product = Container.NewTransientInstance<Product>();
+            product.Name = "ProductOne";
+            FavouriteProduct = product;
         }
+    }
 
-        public void PersistInUpdated() {
-            persistInUpdated = true;
-        }
+    public override void Updated() {
+        base.Updated();
 
-        public override void Persisting() {
-            base.Persisting();
-
-            if (updateInPersisting) {
-                // update  to test updating/updated not called 
-                var product = Container.NewTransientInstance<Product>();
-                product.Name = "ProductOne";
-                FavouriteProduct = product;
-            }
-        }
-
-        public override void Updated() {
-            base.Updated();
-
-            if (persistInUpdated) {
-                // 
-                var product = Container.NewTransientInstance<Product>();
-                product.Name = "ProductTest";
-                Container.Persist(ref product);
-            }
+        if (persistInUpdated) {
+            // 
+            var product = Container.NewTransientInstance<Product>();
+            product.Name = "ProductTest";
+            Container.Persist(ref product);
         }
     }
 }

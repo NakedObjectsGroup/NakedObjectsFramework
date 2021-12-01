@@ -5,36 +5,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Rest.Configuration {
-    public class RestfulObjectsConfiguration : IRestfulObjectsConfiguration {
-        public bool DebugWarnings { get; set; }
+namespace NakedFramework.Rest.Configuration; 
 
-        public bool IsReadOnly { get; set; }
+public class RestfulObjectsConfiguration : IRestfulObjectsConfiguration {
+    public bool DebugWarnings { get; set; }
 
-        public (int, int, int) CacheSettings { get; set; }
+    public bool IsReadOnly { get; set; }
 
-        public bool AcceptHeaderStrict { get; set; }
+    public (int, int, int) CacheSettings { get; set; }
 
-        public int DefaultPageSize { get; set; }
+    public bool AcceptHeaderStrict { get; set; }
 
-        public bool InlineDetailsInActionMemberRepresentations { get; set; }
+    public int DefaultPageSize { get; set; }
 
-        public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
+    public bool InlineDetailsInActionMemberRepresentations { get; set; }
 
-        public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
+    public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
 
-        public bool ProtoPersistentObjects { get; set; }
-        public bool DeleteObjects { get; set; }
-        public bool ValidateOnly { get; set; }
-        public string DomainModel { get; set; }
-        public bool BlobsClobs { get; set; }
-        public bool InlinedMemberRepresentations { get; set; }
+    public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
 
-        /// <summary>
-        ///     It is recommended that this flag remain set at the default (false).
-        ///     It should only be set to true if necesssary for backwards-compatibility
-        ///     with earlier versions of the framework.
-        /// </summary>
-        public bool AllowMutatingActionOnImmutableObject { get; set; }
-    }
+    public bool ProtoPersistentObjects { get; set; }
+    public bool DeleteObjects { get; set; }
+    public bool ValidateOnly { get; set; }
+    public string DomainModel { get; set; }
+    public bool BlobsClobs { get; set; }
+    public bool InlinedMemberRepresentations { get; set; }
+
+    /// <summary>
+    ///     It is recommended that this flag remain set at the default (false).
+    ///     It should only be set to true if necesssary for backwards-compatibility
+    ///     with earlier versions of the framework.
+    /// </summary>
+    public bool AllowMutatingActionOnImmutableObject { get; set; }
 }

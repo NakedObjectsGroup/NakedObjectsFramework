@@ -12,31 +12,31 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.TransactionHistory")]
-    public class TransactionHistory {
-        [Key]
-        public int TransactionID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public int ProductID { get; set; }
+[Table("Production.TransactionHistory")]
+public class TransactionHistory {
+    [Key]
+    public int TransactionID { get; set; }
 
-        public int ReferenceOrderID { get; set; }
+    public int ProductID { get; set; }
 
-        public int ReferenceOrderLineID { get; set; }
+    public int ReferenceOrderID { get; set; }
 
-        public DateTime TransactionDate { get; set; }
+    public int ReferenceOrderLineID { get; set; }
 
-        [Required]
-        [StringLength(1)]
-        public string TransactionType { get; set; }
+    public DateTime TransactionDate { get; set; }
 
-        public int Quantity { get; set; }
+    [Required]
+    [StringLength(1)]
+    public string TransactionType { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal ActualCost { get; set; }
+    public int Quantity { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Column(TypeName = "money")]
+    public decimal ActualCost { get; set; }
 
-        public virtual Product Product { get; set; }
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual Product Product { get; set; }
 }

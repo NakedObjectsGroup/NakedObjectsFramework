@@ -8,12 +8,12 @@
 using System.Security.Principal;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFunctions.Services {
-    public class PrincipalProvider : IPrincipalProvider {
-        private readonly ISession session;
+namespace NakedFunctions.Services; 
 
-        public PrincipalProvider(ISession session) => this.session = session;
+public class PrincipalProvider : IPrincipalProvider {
+    private readonly ISession session;
 
-        public IPrincipal CurrentUser => session.Principal;
-    }
+    public PrincipalProvider(ISession session) => this.session = session;
+
+    public IPrincipal CurrentUser => session.Principal;
 }

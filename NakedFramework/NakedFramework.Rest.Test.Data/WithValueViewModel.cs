@@ -14,108 +14,108 @@ using NakedObjects.Security;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class WithValueViewModel : IViewModel {
-        private int deriveCheck;
-        private int populateCheck;
+namespace RestfulObjects.Test.Data; 
 
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        public virtual int Id { get; set; }
+public class WithValueViewModel : IViewModel {
+    private int deriveCheck;
+    private int populateCheck;
 
-        [PresentationHint("class3 class4")]
-        public virtual int AValue { get; set; }
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    public virtual int Id { get; set; }
 
-        [Disabled]
-        public virtual int ADisabledValue { get; set; }
+    [PresentationHint("class3 class4")]
+    public virtual int AValue { get; set; }
 
-        [Hidden(WhenTo.Always)]
-        public virtual int AHiddenValue { get; set; }
+    [Disabled]
+    public virtual int ADisabledValue { get; set; }
 
-        public virtual int AChoicesValue { get; set; }
+    [Hidden(WhenTo.Always)]
+    public virtual int AHiddenValue { get; set; }
 
-        [MaxLength(101)]
-        [RegEx(Validation = @"[A-Z]")]
-        [Optionally]
-        [DescribedAs("A string value for testing")]
-        [MemberOrder(Sequence = "3")]
-        public string AStringValue { get; set; }
+    public virtual int AChoicesValue { get; set; }
 
-        [Optionally]
-        [DescribedAs("A datetime value for testing")]
-        [Mask("d")]
-        [MemberOrder(Sequence = "4")]
-        public DateTime ADateTimeValue { get; set; } = new(2012, 2, 10);
+    [MaxLength(101)]
+    [RegEx(Validation = @"[A-Z]")]
+    [Optionally]
+    [DescribedAs("A string value for testing")]
+    [MemberOrder(Sequence = "3")]
+    public string AStringValue { get; set; }
 
-        [Optionally]
-        [DescribedAs("A timespan value for testing")]
-        [Mask("d")]
-        [MemberOrder(Sequence = "5")]
-        public virtual TimeSpan ATimeSpanValue { get; set; } = new(1, 2, 3, 4, 5);
+    [Optionally]
+    [DescribedAs("A datetime value for testing")]
+    [Mask("d")]
+    [MemberOrder(Sequence = "4")]
+    public DateTime ADateTimeValue { get; set; } = new(2012, 2, 10);
 
-        [AuthorizeProperty(ViewUsers = "viewUser")]
-        public virtual int AUserHiddenValue { get; set; }
+    [Optionally]
+    [DescribedAs("A timespan value for testing")]
+    [Mask("d")]
+    [MemberOrder(Sequence = "5")]
+    public virtual TimeSpan ATimeSpanValue { get; set; } = new(1, 2, 3, 4, 5);
 
-        [AuthorizeProperty(EditUsers = "editUser")]
-        public virtual int AUserDisabledValue { get; set; }
+    [AuthorizeProperty(ViewUsers = "viewUser")]
+    public virtual int AUserHiddenValue { get; set; }
 
-        public virtual int[] ChoicesAChoicesValue() {
-            return new[] {1, 2, 3};
-        }
+    [AuthorizeProperty(EditUsers = "editUser")]
+    public virtual int AUserDisabledValue { get; set; }
 
-        public virtual string Validate(int aValue, int aChoicesValue) {
-            if (aValue == 101 && aChoicesValue == 3) {
-                return "Cross validation failed";
-            }
-
-            return "";
-        }
-
-        #region IViewModel Members
-
-        [NakedObjectsIgnore]
-        public string[] DeriveKeys() {
-            deriveCheck++;
-
-            if (deriveCheck > 1) {
-                throw new Exception("Derive called multiple times");
-            }
-
-            return new[] {
-                Id.ToString(),
-                AValue.ToString(),
-                ADisabledValue.ToString(),
-                AHiddenValue.ToString(),
-                AChoicesValue.ToString(),
-                AStringValue,
-                ADateTimeValue.Ticks.ToString(),
-                ATimeSpanValue.Ticks.ToString(),
-                AUserHiddenValue.ToString(),
-                AUserDisabledValue.ToString()
-            };
-        }
-
-        [NakedObjectsIgnore]
-        public void PopulateUsingKeys(string[] instanceId) {
-            populateCheck++;
-
-            if (populateCheck > 1) {
-                throw new Exception("PopulateUsingKeys called multiple times");
-            }
-
-            Id = int.Parse(instanceId[0]);
-            AValue = int.Parse(instanceId[1]);
-            ADisabledValue = int.Parse(instanceId[2]);
-            AHiddenValue = int.Parse(instanceId[3]);
-            AChoicesValue = int.Parse(instanceId[4]);
-            AStringValue = instanceId[5];
-            ADateTimeValue = new DateTime(long.Parse(instanceId[6]));
-            ATimeSpanValue = new TimeSpan(long.Parse(instanceId[7]));
-            AUserHiddenValue = int.Parse(instanceId[8]);
-            AUserDisabledValue = int.Parse(instanceId[9]);
-        }
-
-        #endregion
+    public virtual int[] ChoicesAChoicesValue() {
+        return new[] {1, 2, 3};
     }
+
+    public virtual string Validate(int aValue, int aChoicesValue) {
+        if (aValue == 101 && aChoicesValue == 3) {
+            return "Cross validation failed";
+        }
+
+        return "";
+    }
+
+    #region IViewModel Members
+
+    [NakedObjectsIgnore]
+    public string[] DeriveKeys() {
+        deriveCheck++;
+
+        if (deriveCheck > 1) {
+            throw new Exception("Derive called multiple times");
+        }
+
+        return new[] {
+            Id.ToString(),
+            AValue.ToString(),
+            ADisabledValue.ToString(),
+            AHiddenValue.ToString(),
+            AChoicesValue.ToString(),
+            AStringValue,
+            ADateTimeValue.Ticks.ToString(),
+            ATimeSpanValue.Ticks.ToString(),
+            AUserHiddenValue.ToString(),
+            AUserDisabledValue.ToString()
+        };
+    }
+
+    [NakedObjectsIgnore]
+    public void PopulateUsingKeys(string[] instanceId) {
+        populateCheck++;
+
+        if (populateCheck > 1) {
+            throw new Exception("PopulateUsingKeys called multiple times");
+        }
+
+        Id = int.Parse(instanceId[0]);
+        AValue = int.Parse(instanceId[1]);
+        ADisabledValue = int.Parse(instanceId[2]);
+        AHiddenValue = int.Parse(instanceId[3]);
+        AChoicesValue = int.Parse(instanceId[4]);
+        AStringValue = instanceId[5];
+        ADateTimeValue = new DateTime(long.Parse(instanceId[6]));
+        ATimeSpanValue = new TimeSpan(long.Parse(instanceId[7]));
+        AUserHiddenValue = int.Parse(instanceId[8]);
+        AUserDisabledValue = int.Parse(instanceId[9]);
+    }
+
+    #endregion
 }

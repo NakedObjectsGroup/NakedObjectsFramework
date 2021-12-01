@@ -15,21 +15,21 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory {
-    public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public EnumValueTypeFacetFactory(IFacetFactoryOrder<EnumValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!typeof(Enum).IsAssignableFrom(type)) {
-                return metamodel;
-            }
+public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public EnumValueTypeFacetFactory(IFacetFactoryOrder<EnumValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-            var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
-            var semanticsProvider = Activator.CreateInstance(semanticsProviderType, oSpec, specification);
-            var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.NonPublic).MakeGenericMethod(type);
-            method.Invoke(null, new[] {semanticsProvider, specification});
-            return mm;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!typeof(Enum).IsAssignableFrom(type)) {
+            return metamodel;
         }
+
+        var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
+        var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
+        var semanticsProvider = Activator.CreateInstance(semanticsProviderType, oSpec, specification);
+        var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.NonPublic).MakeGenericMethod(type);
+        method.Invoke(null, new[] {semanticsProvider, specification});
+        return mm;
     }
 }

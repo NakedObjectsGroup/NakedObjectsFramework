@@ -7,11 +7,11 @@
 
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IContributedFunctionFacet : IFacet {
-        bool IsContributedToObject { get; }
-        bool IsContributedToCollection { get; }
-        bool IsContributedTo(ITypeSpecImmutable spec);
-        bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+public interface IContributedFunctionFacet : IFacet {
+    bool IsContributedToObject { get; }
+    bool IsContributedToCollection { get; }
+    bool IsContributedTo(ITypeSpecImmutable spec);
+    bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
 }

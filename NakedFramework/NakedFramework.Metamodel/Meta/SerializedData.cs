@@ -10,11 +10,11 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Meta {
-    [Serializable]
-    public sealed class SerializedData {
-        public IList<string> SpecKeys { get; set; }
-        public IList<ITypeSpecImmutable> SpecValues { get; set; }
-        public IList<IMenuImmutable> MenuValues { get; set; }
-    }
+namespace NakedFramework.Metamodel.Meta; 
+
+[Serializable]
+public sealed class SerializedData {
+    public IList<string> SpecKeys { get; set; }
+    public IList<ITypeSpecImmutable> SpecValues { get; set; }
+    public IList<IMenuImmutable> MenuValues { get; set; }
 }

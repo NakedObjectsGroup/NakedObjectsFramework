@@ -8,18 +8,18 @@
 using System.Text.RegularExpressions;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Whether the (string) property or a parameter must correspond to a specific regular expression
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to the <see cref="RegExAttribute" /> annotation
-    /// </para>
-    /// <seealso cref="IMaskFacet" />
-    public interface IRegExFacet : IFacet, IValidatingInteractionAdvisor {
-        Regex Pattern { get; }
-        string FailureMessage { get; }
-        bool DoesNotMatch(string proposed);
-        string Format(string text);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Whether the (string) property or a parameter must correspond to a specific regular expression
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to the <see cref="RegExAttribute" /> annotation
+/// </para>
+/// <seealso cref="IMaskFacet" />
+public interface IRegExFacet : IFacet, IValidatingInteractionAdvisor {
+    Regex Pattern { get; }
+    string FailureMessage { get; }
+    bool DoesNotMatch(string proposed);
+    string Format(string text);
 }

@@ -8,12 +8,12 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ImmutableFacetViaValueSemantics : ImmutableFacetImpl {
-        public ImmutableFacetViaValueSemantics(ISpecification holder)
-            : base(WhenTo.Always, holder) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class ImmutableFacetViaValueSemantics : ImmutableFacetImpl {
+    public ImmutableFacetViaValueSemantics(ISpecification holder)
+        : base(WhenTo.Always, holder) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

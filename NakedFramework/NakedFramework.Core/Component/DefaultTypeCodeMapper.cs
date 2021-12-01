@@ -8,14 +8,14 @@
 using System;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Core.Component {
-    public class DefaultTypeCodeMapper : ITypeCodeMapper {
-        #region ITypeCodeMapper Members
+namespace NakedFramework.Core.Component; 
 
-        public Type TypeFromCode(string code) => Type.GetType(code) ?? TypeUtils.GetType(code);
+public class DefaultTypeCodeMapper : ITypeCodeMapper {
+    #region ITypeCodeMapper Members
 
-        public string CodeFromType(Type type) => type.FullName;
+    public Type TypeFromCode(string code) => Type.GetType(code) ?? TypeUtils.GetType(code);
 
-        #endregion
-    }
+    public string CodeFromType(Type type) => type.FullName;
+
+    #endregion
 }

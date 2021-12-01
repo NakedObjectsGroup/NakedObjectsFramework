@@ -10,38 +10,38 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Model {
-    public class ReferenceValue : IValue {
-        private readonly string internalValue;
+namespace NakedFramework.Rest.Model; 
 
-        public ReferenceValue(object value, string name) {
-            internalValue = value as string;
-            Validate(internalValue, name);
+public class ReferenceValue : IValue {
+    private readonly string internalValue;
+
+    public ReferenceValue(object value, string name) {
+        internalValue = value as string;
+        Validate(internalValue, name);
+    }
+
+    #region IValue Members
+
+    public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => GetObjectByHref(internalValue, facade, helper, oidStrategy);
+
+    #endregion
+
+    // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
+    private static void Validate(string internalValue, string name) {
+        if (string.IsNullOrWhiteSpace(internalValue)) {
+            var msg = $"Malformed json name: {name} arguments: href = null or empty";
+            throw new ArgumentException($"malformed arguments : {msg}");
+        }
+    }
+
+    private static object GetObjectByHref(string href, IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
+        var oids = UriMtHelper.GetObjectId(href);
+        if (oids != null) {
+            var oid = facade.OidTranslator.GetOidTranslation($"{oids.Value.type}/{oids.Value.key}");
+            return facade.GetObject(oid).Target?.Object;
         }
 
-        #region IValue Members
-
-        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => GetObjectByHref(internalValue, facade, helper, oidStrategy);
-
-        #endregion
-
-        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-        private static void Validate(string internalValue, string name) {
-            if (string.IsNullOrWhiteSpace(internalValue)) {
-                var msg = $"Malformed json name: {name} arguments: href = null or empty";
-                throw new ArgumentException($"malformed arguments : {msg}");
-            }
-        }
-
-        private static object GetObjectByHref(string href, IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
-            var oids = UriMtHelper.GetObjectId(href);
-            if (oids != null) {
-                var oid = facade.OidTranslator.GetOidTranslation($"{oids.Value.type}/{oids.Value.key}");
-                return facade.GetObject(oid).Target?.Object;
-            }
-
-            var typeName = UriMtHelper.GetTypeId(href);
-            return facade.GetDomainType(typeName);
-        }
+        var typeName = UriMtHelper.GetTypeId(href);
+        return facade.GetDomainType(typeName);
     }
 }

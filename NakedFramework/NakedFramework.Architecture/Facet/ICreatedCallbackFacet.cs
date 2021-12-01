@@ -5,21 +5,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Represents the mechanism to inform the object that it has just been created.
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, this is represented
-    ///     by a <c>Created</c> method.  The framework calls this once the object
-    ///     has been created via <c>NewTransientInstance</c> or
-    ///     <c>NewInstance</c>.  The method is <i>not</i> called when the object
-    ///     is subsequently resolved having been persisted; for that see
-    ///     <see cref="ILoadingCallbackFacet" /> and <see cref="ILoadedCallbackFacet" />
-    /// </para>
-    /// <seealso cref="ILoadingCallbackFacet" />
-    /// <seealso cref="ILoadedCallbackFacet" />
-    public interface ICreatedCallbackFacet : ICallbackFacet { }
+namespace NakedFramework.Architecture.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
-}
+/// <summary>
+///     Represents the mechanism to inform the object that it has just been created.
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, this is represented
+///     by a <c>Created</c> method.  The framework calls this once the object
+///     has been created via <c>NewTransientInstance</c> or
+///     <c>NewInstance</c>.  The method is <i>not</i> called when the object
+///     is subsequently resolved having been persisted; for that see
+///     <see cref="ILoadingCallbackFacet" /> and <see cref="ILoadedCallbackFacet" />
+/// </para>
+/// <seealso cref="ILoadingCallbackFacet" />
+/// <seealso cref="ILoadedCallbackFacet" />
+public interface ICreatedCallbackFacet : ICallbackFacet { }
+
+// Copyright (c) Naked Objects Group Ltd.

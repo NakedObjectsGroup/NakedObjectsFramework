@@ -8,23 +8,23 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
+namespace NakedFramework.Metamodel.Facet; 
+
+/// <summary>
+///     Derived by presence of an <see cref="OptionallyAttribute" /> annotation.
+/// </summary>
+/// <para>
+///     This implementation indicates that the <see cref="ISpecification" /> is <i>not</i> mandatory.
+/// </para>
+[Serializable]
+public sealed class OptionalFacet : MandatoryFacetAbstract {
+    public OptionalFacet(ISpecification holder)
+        : base(holder) { }
+
     /// <summary>
-    ///     Derived by presence of an <see cref="OptionallyAttribute" /> annotation.
+    ///     Always returns <c>false</c>, indicating that the facet holder is in fact optional.
     /// </summary>
-    /// <para>
-    ///     This implementation indicates that the <see cref="ISpecification" /> is <i>not</i> mandatory.
-    /// </para>
-    [Serializable]
-    public sealed class OptionalFacet : MandatoryFacetAbstract {
-        public OptionalFacet(ISpecification holder)
-            : base(holder) { }
-
-        /// <summary>
-        ///     Always returns <c>false</c>, indicating that the facet holder is in fact optional.
-        /// </summary>
-        public override bool IsMandatory => false;
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    public override bool IsMandatory => false;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

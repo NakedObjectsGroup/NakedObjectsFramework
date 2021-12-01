@@ -20,39 +20,39 @@ using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.Reflector.Extensions {
-    public static class NakedObjectsExtensions {
-        private static ObjectReflectorConfiguration ObjectReflectorConfig(NakedObjectsOptions options) {
-            ObjectReflectorConfiguration.NoValidate = options.NoValidate;
-            return new ObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ConcurrencyCheck);
+namespace NakedObjects.Reflector.Extensions; 
+
+public static class NakedObjectsExtensions {
+    private static ObjectReflectorConfiguration ObjectReflectorConfig(NakedObjectsOptions options) {
+        ObjectReflectorConfiguration.NoValidate = options.NoValidate;
+        return new ObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ConcurrencyCheck);
+    }
+
+    public static void AddNakedObjects(this NakedFrameworkOptions frameworkOptions, Action<NakedObjectsOptions> setupAction) {
+        var options = new NakedObjectsOptions();
+        setupAction(options);
+
+        frameworkOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
+        frameworkOptions.Services.AddDefaultSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
+        frameworkOptions.Services.AddDefaultSingleton<ObjectClassStrategy, ObjectClassStrategy>();
+
+        frameworkOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(ObjectReflectorOrder<>));
+        frameworkOptions.Services.AddSingleton<IReflector, ObjectReflector>();
+        frameworkOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
+        frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
+
+        frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
+
+        options.RegisterCustomTypes?.Invoke(frameworkOptions.Services);
+
+        if (frameworkOptions.AuthorizationConfiguration is not null) {
+            frameworkOptions.Services.AddSingleton(frameworkOptions.AuthorizationConfiguration);
+            frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuthorizationManager>();
         }
 
-        public static void AddNakedObjects(this NakedFrameworkOptions frameworkOptions, Action<NakedObjectsOptions> setupAction) {
-            var options = new NakedObjectsOptions();
-            setupAction(options);
-
-            frameworkOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
-            frameworkOptions.Services.AddDefaultSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
-            frameworkOptions.Services.AddDefaultSingleton<ObjectClassStrategy, ObjectClassStrategy>();
-
-            frameworkOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(ObjectReflectorOrder<>));
-            frameworkOptions.Services.AddSingleton<IReflector, ObjectReflector>();
-            frameworkOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
-            frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
-
-            frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
-
-            options.RegisterCustomTypes?.Invoke(frameworkOptions.Services);
-
-            if (frameworkOptions.AuthorizationConfiguration is not null) {
-                frameworkOptions.Services.AddSingleton(frameworkOptions.AuthorizationConfiguration);
-                frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuthorizationManager>();
-            }
-
-            if (frameworkOptions.AuditConfiguration is not null) {
-                frameworkOptions.Services.AddSingleton(frameworkOptions.AuditConfiguration);
-                frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuditManager>();
-            }
+        if (frameworkOptions.AuditConfiguration is not null) {
+            frameworkOptions.Services.AddSingleton(frameworkOptions.AuditConfiguration);
+            frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuditManager>();
         }
     }
 }

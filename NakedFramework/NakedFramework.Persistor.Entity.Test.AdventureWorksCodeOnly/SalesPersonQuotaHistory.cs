@@ -11,25 +11,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.SalesPersonQuotaHistory")]
-    public class SalesPersonQuotaHistory {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Sales.SalesPersonQuotaHistory")]
+public class SalesPersonQuotaHistory {
       
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int SalesPersonID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int SalesPersonID { get; set; }
 
       
-        [Column(Order = 1)]
-        public DateTime QuotaDate { get; set; }
+    [Column(Order = 1)]
+    public DateTime QuotaDate { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal SalesQuota { get; set; }
+    [Column(TypeName = "money")]
+    public decimal SalesQuota { get; set; }
 
-        public Guid rowguid { get; set; }
+    public Guid rowguid { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual SalesPerson SalesPerson { get; set; }
-    }
+    public virtual SalesPerson SalesPerson { get; set; }
 }

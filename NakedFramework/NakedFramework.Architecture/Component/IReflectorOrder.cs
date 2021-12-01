@@ -5,10 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Component {
-    public interface IReflectorOrder {
-        int Order { get; }
-    }
+namespace NakedFramework.Architecture.Component; 
 
-    public interface IReflectorOrder<T> : IReflectorOrder { }
+public interface IReflectorOrder {
+    int Order { get; }
 }
+
+public interface IReflectorOrder<T> : IReflectorOrder { }

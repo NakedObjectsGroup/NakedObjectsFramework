@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract<short>, IShortValueFacet {
-        private const short DefaultValueConst = 0;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 6;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public ShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract<short>, IShortValueFacet {
+    private const short DefaultValueConst = 0;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 6;
 
-        public static Type Type => typeof(IShortValueFacet);
+    public ShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(short);
+    public static Type Type => typeof(IShortValueFacet);
 
-        #region IShortValueFacet Members
+    public static Type AdaptedType => typeof(short);
 
-        public short ShortValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<short>();
+    #region IShortValueFacet Members
 
-        #endregion
+    public short ShortValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<short>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(short);
+    #endregion
 
-        protected override short DoParse(string entry) {
-            try {
-                return short.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, short.MinValue, short.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(short);
+
+    protected override short DoParse(string entry) {
+        try {
+            return short.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
         }
-
-        protected override short DoParseInvariant(string entry) => short.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(short obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, short value) => value.ToString(mask);
-
-        protected override string DoEncode(short obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-        protected override short DoRestore(string data) => short.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "ShortAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, short.MinValue, short.MaxValue));
+        }
     }
+
+    protected override short DoParseInvariant(string entry) => short.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(short obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, short value) => value.ToString(mask);
+
+    protected override string DoEncode(short obj) => obj.ToString("G", CultureInfo.InvariantCulture);
+
+    protected override short DoRestore(string data) => short.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "ShortAdapter: ";
 }

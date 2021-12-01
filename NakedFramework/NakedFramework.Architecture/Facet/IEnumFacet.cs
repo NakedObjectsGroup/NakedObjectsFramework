@@ -7,10 +7,10 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IEnumFacet : IMarkerFacet {
-        object[] GetChoices(INakedObjectAdapter inObjectAdapter);
-        object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues);
-        string GetTitle(INakedObjectAdapter inObjectAdapter);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+public interface IEnumFacet : IMarkerFacet {
+    object[] GetChoices(INakedObjectAdapter inObjectAdapter);
+    object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues);
+    string GetTitle(INakedObjectAdapter inObjectAdapter);
 }

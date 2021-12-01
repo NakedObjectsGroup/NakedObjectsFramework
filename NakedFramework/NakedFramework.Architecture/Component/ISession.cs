@@ -7,19 +7,19 @@
 
 using System.Security.Principal;
 
-namespace NakedFramework.Architecture.Component {
+namespace NakedFramework.Architecture.Component; 
+
+/// <summary>
+///     The representation within the system of an authenticated user
+/// </summary>
+public interface ISession {
     /// <summary>
-    ///     The representation within the system of an authenticated user
+    ///     The name of the authenticated user; for display purposes only
     /// </summary>
-    public interface ISession {
-        /// <summary>
-        ///     The name of the authenticated user; for display purposes only
-        /// </summary>
-        string UserName { get; }
+    string UserName { get; }
 
-        bool IsAuthenticated { get; }
-        IPrincipal Principal { get; }
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    bool IsAuthenticated { get; }
+    IPrincipal Principal { get; }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

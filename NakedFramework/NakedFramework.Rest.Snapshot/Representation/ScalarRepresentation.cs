@@ -13,31 +13,31 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class ScalarRepresentation : Representation {
-        protected ScalarRepresentation(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext, RestControlFlags flags)
-            : base(oidStrategy, flags) {
-            SetScalars(objectContext);
-            SetLinks(req, objectContext);
-            SetExtensions();
-        }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        [DataMember(Name = JsonPropertyNames.Value)]
-        public object Value { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Links)]
-        public LinkRepresentation[] Links { get; set; }
-
-        [DataMember(Name = JsonPropertyNames.Extensions)]
-        public MapRepresentation Extensions { get; set; }
-
-        private void SetScalars(ObjectContextFacade objectContext) => Value = RestUtils.ObjectToPredefinedType(objectContext.Target, false);
-
-        private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) => Links = Array.Empty<LinkRepresentation>();
-
-        private void SetExtensions() => Extensions = MapRepresentation.Create();
-
-        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) => new(oidStrategy, req, objectContext, flags);
+[DataContract]
+public class ScalarRepresentation : Representation {
+    protected ScalarRepresentation(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext, RestControlFlags flags)
+        : base(oidStrategy, flags) {
+        SetScalars(objectContext);
+        SetLinks(req, objectContext);
+        SetExtensions();
     }
+
+    [DataMember(Name = JsonPropertyNames.Value)]
+    public object Value { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Links)]
+    public LinkRepresentation[] Links { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.Extensions)]
+    public MapRepresentation Extensions { get; set; }
+
+    private void SetScalars(ObjectContextFacade objectContext) => Value = RestUtils.ObjectToPredefinedType(objectContext.Target, false);
+
+    private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) => Links = Array.Empty<LinkRepresentation>();
+
+    private void SetExtensions() => Extensions = MapRepresentation.Create();
+
+    public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) => new(oidStrategy, req, objectContext, flags);
 }

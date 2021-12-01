@@ -19,17 +19,17 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class ConcurrencyCheckAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public ConcurrencyCheckAnnotationFacetFactory(IFacetFactoryOrder<ConcurrencyCheckAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();
-            FacetUtils.AddFacet(Create(reflector, attribute, specification));
-            return metamodel;
-        }
+public sealed class ConcurrencyCheckAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public ConcurrencyCheckAnnotationFacetFactory(IFacetFactoryOrder<ConcurrencyCheckAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
-        private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();
+        FacetUtils.AddFacet(Create(reflector, attribute, specification));
+        return metamodel;
     }
+
+    private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
 }

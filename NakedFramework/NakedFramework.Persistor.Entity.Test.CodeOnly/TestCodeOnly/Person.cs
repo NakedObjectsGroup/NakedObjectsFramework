@@ -10,16 +10,16 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace TestCodeOnly {
-    public class AbstractPerson : AbstractTestCode { }
+namespace TestCodeOnly; 
 
-    public class Person : AbstractPerson {
-        public IDomainObjectContainer Container { protected get; set; }
-        public virtual int ID { get; set; }
-        public virtual string Name { get; set; }
-        public virtual Product Favourite { get; set; }
-        public virtual Address Address { get; set; }
+public class AbstractPerson : AbstractTestCode { }
 
-        public object ExposeContainerForTest() => Container;
-    }
+public class Person : AbstractPerson {
+    public IDomainObjectContainer Container { protected get; set; }
+    public virtual int ID { get; set; }
+    public virtual string Name { get; set; }
+    public virtual Product Favourite { get; set; }
+    public virtual Address Address { get; set; }
+
+    public object ExposeContainerForTest() => Container;
 }

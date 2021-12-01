@@ -9,18 +9,18 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Core.Component {
-    public class DefaultKeyCodeMapper : IKeyCodeMapper {
-        private readonly string keySeparator;
+namespace NakedFramework.Core.Component; 
 
-        public DefaultKeyCodeMapper() => keySeparator = "--";
+public class DefaultKeyCodeMapper : IKeyCodeMapper {
+    private readonly string keySeparator;
 
-        #region IKeyCodeMapper Members
+    public DefaultKeyCodeMapper() => keySeparator = "--";
 
-        public string[] KeyFromCode(string code, Type type) => code.Split(new[] {keySeparator}, StringSplitOptions.None);
+    #region IKeyCodeMapper Members
 
-        public string CodeFromKey(string[] key, Type type) => key.Length == 0 ? "" : key.Aggregate((s, t) => $"{s}{keySeparator}{t}");
+    public string[] KeyFromCode(string code, Type type) => code.Split(new[] {keySeparator}, StringSplitOptions.None);
 
-        #endregion
-    }
+    public string CodeFromKey(string[] key, Type type) => key.Length == 0 ? "" : key.Aggregate((s, t) => $"{s}{keySeparator}{t}");
+
+    #endregion
 }

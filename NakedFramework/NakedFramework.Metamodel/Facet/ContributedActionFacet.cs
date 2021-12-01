@@ -12,35 +12,35 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
-        private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> collectionContributees = new();
-        private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> objectContributees = new();
+namespace NakedFramework.Metamodel.Facet; 
 
-        public ContributedActionFacet(ISpecification holder)
-            : base(typeof(IContributedActionFacet), holder) { }
+[Serializable]
+public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
+    private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> collectionContributees = new();
+    private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> objectContributees = new();
 
-        public void AddObjectContributee(IObjectSpecImmutable objectSpec, string subMenu, string id) => objectContributees.Add((objectSpec, subMenu, id));
+    public ContributedActionFacet(ISpecification holder)
+        : base(typeof(IContributedActionFacet), holder) { }
 
-        //Here the type is the ElementType of the collection, not the type of collection.
-        public void AddCollectionContributee(IObjectSpecImmutable objectSpec, string subMenu, string id) => collectionContributees.Add((objectSpec, subMenu, id));
+    public void AddObjectContributee(IObjectSpecImmutable objectSpec, string subMenu, string id) => objectContributees.Add((objectSpec, subMenu, id));
 
-        private (IObjectSpecImmutable spec, string subMenu, string id) FindContributee(IObjectSpecImmutable objectSpec) =>
-            IsContributedTo(objectSpec)
-                ? objectContributees.First(t => objectSpec.IsOfType(t.spec))
-                : throw new Exception($"Action is not contributed to {objectSpec.Type}");
+    //Here the type is the ElementType of the collection, not the type of collection.
+    public void AddCollectionContributee(IObjectSpecImmutable objectSpec, string subMenu, string id) => collectionContributees.Add((objectSpec, subMenu, id));
 
-        #region IContributedActionFacet Members
+    private (IObjectSpecImmutable spec, string subMenu, string id) FindContributee(IObjectSpecImmutable objectSpec) =>
+        IsContributedTo(objectSpec)
+            ? objectContributees.First(t => objectSpec.IsOfType(t.spec))
+            : throw new Exception($"Action is not contributed to {objectSpec.Type}");
 
-        public bool IsContributedTo(IObjectSpecImmutable objectSpec) => objectContributees.Select(t => t.spec).Any(objectSpec.IsOfType);
+    #region IContributedActionFacet Members
 
-        public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec) => collectionContributees.Select(t => t.spec).Any(objectSpec.IsOfType);
+    public bool IsContributedTo(IObjectSpecImmutable objectSpec) => objectContributees.Select(t => t.spec).Any(objectSpec.IsOfType);
 
-        public string SubMenuWhenContributedTo(IObjectSpecImmutable objectSpec) => FindContributee(objectSpec).subMenu;
+    public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec) => collectionContributees.Select(t => t.spec).Any(objectSpec.IsOfType);
 
-        public string IdWhenContributedTo(IObjectSpecImmutable objectSpec) => FindContributee(objectSpec).id;
+    public string SubMenuWhenContributedTo(IObjectSpecImmutable objectSpec) => FindContributee(objectSpec).subMenu;
 
-        #endregion
-    }
+    public string IdWhenContributedTo(IObjectSpecImmutable objectSpec) => FindContributee(objectSpec).id;
+
+    #endregion
 }

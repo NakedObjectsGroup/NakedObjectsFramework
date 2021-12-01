@@ -12,45 +12,45 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Purchasing.ProductVendor")]
-    public class ProductVendor {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Purchasing.ProductVendor")]
+public class ProductVendor {
       
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int ProductID { get; set; }
 
       
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int VendorID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int VendorID { get; set; }
 
-        public int AverageLeadTime { get; set; }
+    public int AverageLeadTime { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal StandardPrice { get; set; }
+    [Column(TypeName = "money")]
+    public decimal StandardPrice { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal? LastReceiptCost { get; set; }
+    [Column(TypeName = "money")]
+    public decimal? LastReceiptCost { get; set; }
 
-        public DateTime? LastReceiptDate { get; set; }
+    public DateTime? LastReceiptDate { get; set; }
 
-        public int MinOrderQty { get; set; }
+    public int MinOrderQty { get; set; }
 
-        public int MaxOrderQty { get; set; }
+    public int MaxOrderQty { get; set; }
 
-        public int? OnOrderQty { get; set; }
+    public int? OnOrderQty { get; set; }
 
-        [Required]
-        [StringLength(3)]
-        public string UnitMeasureCode { get; set; }
+    [Required]
+    [StringLength(3)]
+    public string UnitMeasureCode { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Product Product { get; set; }
+    public virtual Product Product { get; set; }
 
-        public virtual UnitMeasure UnitMeasure { get; set; }
+    public virtual UnitMeasure UnitMeasure { get; set; }
 
-        public virtual Vendor Vendor { get; set; }
-    }
+    public virtual Vendor Vendor { get; set; }
 }

@@ -8,23 +8,23 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class TitleFacetViaTitleFunctionTest {
-        private static readonly string TestValue = "title";
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        [TestMethod]
-        public void TestTitle() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Title));
-            var testFacet = new TitleFacetViaTitleFunction(method, null, null);
+[TestClass]
+public class TitleFacetViaTitleFunctionTest {
+    private static readonly string TestValue = "title";
 
-            var result = testFacet.GetTitle(null, null);
+    [TestMethod]
+    public void TestTitle() {
+        var method = typeof(TestClass).GetMethod(nameof(TestClass.Title));
+        var testFacet = new TitleFacetViaTitleFunction(method, null, null);
 
-            Assert.AreEqual(TestValue, result);
-        }
+        var result = testFacet.GetTitle(null, null);
 
-        public static class TestClass {
-            public static string Title() => TestValue;
-        }
+        Assert.AreEqual(TestValue, result);
+    }
+
+    public static class TestClass {
+        public static string Title() => TestValue;
     }
 }

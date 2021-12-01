@@ -10,32 +10,32 @@
 
 // ReSharper disable UnusedMethodReturnValue.Local
 
-namespace NakedObjects.SystemTest.PolymorphicAssociations {
-    public class FixtureEntities {
-        #region Injected Services
+namespace NakedObjects.SystemTest.PolymorphicAssociations; 
 
-        public IDomainObjectContainer Container { set; protected get; }
+public class FixtureEntities {
+    #region Injected Services
 
-        #endregion
+    public IDomainObjectContainer Container { set; protected get; }
 
-        public void Install() {
-            //Create Payments 1 to 11
-            for (var i = 1; i <= 11; i++) {
-                NewPersisted<PolymorphicPayment>();
-            }
+    #endregion
 
-            NewPersisted<CustomerAsPayee>();
-            NewPersisted<CustomerAsPayee>();
-
-            NewPersisted<InvoiceAsPayableItem>();
-            NewPersisted<InvoiceAsPayableItem>();
-            NewPersisted<InvoiceAsPayableItem>();
+    public void Install() {
+        //Create Payments 1 to 11
+        for (var i = 1; i <= 11; i++) {
+            NewPersisted<PolymorphicPayment>();
         }
 
-        private T NewPersisted<T>() where T : class, new() {
-            var t = Container.NewTransientInstance<T>();
-            Container.Persist(ref t);
-            return t;
-        }
+        NewPersisted<CustomerAsPayee>();
+        NewPersisted<CustomerAsPayee>();
+
+        NewPersisted<InvoiceAsPayableItem>();
+        NewPersisted<InvoiceAsPayableItem>();
+        NewPersisted<InvoiceAsPayableItem>();
+    }
+
+    private T NewPersisted<T>() where T : class, new() {
+        var t = Container.NewTransientInstance<T>();
+        Container.Persist(ref t);
+        return t;
     }
 }

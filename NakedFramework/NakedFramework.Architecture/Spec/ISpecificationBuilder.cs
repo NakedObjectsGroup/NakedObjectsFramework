@@ -7,18 +7,18 @@
 
 using NakedFramework.Architecture.Facet;
 
-namespace NakedFramework.Architecture.Spec {
-    public interface ISpecificationBuilder : ISpecification {
-        /// <summary>
-        ///     Adds the facet, extracting its <see cref="IFacet.FacetType" /> as the key.
-        /// </summary>
-        /// <para>
-        ///     If there are any facet of the same type, they will be overwritten <i>provided</i>
-        ///     that either the <see cref="IFacet" /> specifies to <see cref="IFacet.CanAlwaysReplace" />
-        ///     or if the existing <see cref="IFacet" /> is an <see cref="IFacet.IsNoOp" />
-        /// </para>
-        void AddFacet(IFacet facet);
+namespace NakedFramework.Architecture.Spec; 
 
-        void RemoveFacet(IFacet facet);
-    }
+public interface ISpecificationBuilder : ISpecification {
+    /// <summary>
+    ///     Adds the facet, extracting its <see cref="IFacet.FacetType" /> as the key.
+    /// </summary>
+    /// <para>
+    ///     If there are any facet of the same type, they will be overwritten <i>provided</i>
+    ///     that either the <see cref="IFacet" /> specifies to <see cref="IFacet.CanAlwaysReplace" />
+    ///     or if the existing <see cref="IFacet" /> is an <see cref="IFacet.IsNoOp" />
+    /// </para>
+    void AddFacet(IFacet facet);
+
+    void RemoveFacet(IFacet facet);
 }

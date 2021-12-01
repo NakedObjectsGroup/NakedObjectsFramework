@@ -15,41 +15,41 @@ using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 
-namespace NakedFramework.Rest.Extensions {
-    public static class RestfulObjectsExtensions {
-        public static void AddRestfulObjects(this NakedFrameworkOptions frameworkOptions, Action<RestfulObjectsOptions> setupAction = null) {
-            var options = new RestfulObjectsOptions();
-            setupAction?.Invoke(options);
+namespace NakedFramework.Rest.Extensions; 
 
-            frameworkOptions.Services.AddDefaultScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
-            frameworkOptions.Services.AddSingleton<IRestfulObjectsConfiguration>(p => RestfulObjectsConfiguration(options));
-        }
+public static class RestfulObjectsExtensions {
+    public static void AddRestfulObjects(this NakedFrameworkOptions frameworkOptions, Action<RestfulObjectsOptions> setupAction = null) {
+        var options = new RestfulObjectsOptions();
+        setupAction?.Invoke(options);
 
-        private static RestfulObjectsConfiguration RestfulObjectsConfiguration(RestfulObjectsOptions options) {
-            var config = new RestfulObjectsConfiguration {
-                DebugWarnings = options.DebugWarnings,
-                IsReadOnly = options.IsReadOnly,
-                CacheSettings = options.CacheSettings,
-                AcceptHeaderStrict = options.AcceptHeaderStrict,
-                DefaultPageSize = options.DefaultPageSize,
-                InlineDetailsInActionMemberRepresentations = options.InlineDetailsInActionMemberRepresentations,
-                InlineDetailsInCollectionMemberRepresentations = options.InlineDetailsInCollectionMemberRepresentations,
-                InlineDetailsInPropertyMemberRepresentations = options.InlineDetailsInPropertyMemberRepresentations,
-                ProtoPersistentObjects = options.ProtoPersistentObjects,
-                DeleteObjects = options.DeleteObjects,
-                ValidateOnly = options.ValidateOnly,
-                DomainModel = "simple",
-                BlobsClobs = options.BlobsClobs,
-                InlinedMemberRepresentations = options.InlinedMemberRepresentations,
-                AllowMutatingActionOnImmutableObject = options.AllowMutatingActionOnImmutableObject
-            };
+        frameworkOptions.Services.AddDefaultScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
+        frameworkOptions.Services.AddSingleton<IRestfulObjectsConfiguration>(p => RestfulObjectsConfiguration(options));
+    }
 
-            return config;
-        }
+    private static RestfulObjectsConfiguration RestfulObjectsConfiguration(RestfulObjectsOptions options) {
+        var config = new RestfulObjectsConfiguration {
+            DebugWarnings = options.DebugWarnings,
+            IsReadOnly = options.IsReadOnly,
+            CacheSettings = options.CacheSettings,
+            AcceptHeaderStrict = options.AcceptHeaderStrict,
+            DefaultPageSize = options.DefaultPageSize,
+            InlineDetailsInActionMemberRepresentations = options.InlineDetailsInActionMemberRepresentations,
+            InlineDetailsInCollectionMemberRepresentations = options.InlineDetailsInCollectionMemberRepresentations,
+            InlineDetailsInPropertyMemberRepresentations = options.InlineDetailsInPropertyMemberRepresentations,
+            ProtoPersistentObjects = options.ProtoPersistentObjects,
+            DeleteObjects = options.DeleteObjects,
+            ValidateOnly = options.ValidateOnly,
+            DomainModel = "simple",
+            BlobsClobs = options.BlobsClobs,
+            InlinedMemberRepresentations = options.InlinedMemberRepresentations,
+            AllowMutatingActionOnImmutableObject = options.AllowMutatingActionOnImmutableObject
+        };
 
-        public static void UseRestfulObjects(this IApplicationBuilder app, string restRoot = "") {
-            restRoot ??= "";
-            app.UseMvc(routeBuilder => RestfulObjectsRouting.AddRestRoutes(routeBuilder, restRoot));
-        }
+        return config;
+    }
+
+    public static void UseRestfulObjects(this IApplicationBuilder app, string restRoot = "") {
+        restRoot ??= "";
+        app.UseMvc(routeBuilder => RestfulObjectsRouting.AddRestRoutes(routeBuilder, restRoot));
     }
 }

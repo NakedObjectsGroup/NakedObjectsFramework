@@ -10,14 +10,14 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class InvokeRelType : RelType {
-        public InvokeRelType(UriMtHelper helper) : base(RelValues.Invoke, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
+public class InvokeRelType : RelType {
+    public InvokeRelType(UriMtHelper helper) : base(RelValues.Invoke, helper) { }
 
-        public override Uri GetUri() => Helper.GetInvokeUri();
+    public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(UriMtHelper.GetInvokeMediaType());
-    }
+    public override Uri GetUri() => Helper.GetInvokeUri();
+
+    public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(UriMtHelper.GetInvokeMediaType());
 }

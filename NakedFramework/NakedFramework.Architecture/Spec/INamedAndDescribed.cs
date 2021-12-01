@@ -5,20 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Spec {
-    /// <summary>
-    ///     Anything in the metamodel (which also includes peers in the reflector) that has a name and description.
-    /// </summary>
-    public interface INamedAndDescribed {
-        /// <summary>
-        ///     Returns a description of how the member is used - this complements the help text.
-        /// </summary>
-        string Description { get; }
+namespace NakedFramework.Architecture.Spec; 
 
-        /// <summary>
-        ///     Return the name for this member - the field or action. This is based on the name of this member.
-        /// </summary>
-        /// <seealso cref="IMemberSpec.Id" />
-        string Name { get; }
-    }
+/// <summary>
+///     Anything in the metamodel (which also includes peers in the reflector) that has a name and description.
+/// </summary>
+public interface INamedAndDescribed {
+    /// <summary>
+    ///     Returns a description of how the member is used - this complements the help text.
+    /// </summary>
+    string Description { get; }
+
+    /// <summary>
+    ///     Return the name for this member - the field or action. This is based on the name of this member.
+    /// </summary>
+    /// <seealso cref="IMemberSpec.Id" />
+    string Name { get; }
 }

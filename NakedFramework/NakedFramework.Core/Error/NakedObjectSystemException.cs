@@ -7,12 +7,12 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     A NakedObjectSystemException represents an exception that has occurred within the framework code.
-    /// </summary>
-    public class NakedObjectSystemException : NakedObjectException {
-        public NakedObjectSystemException(string messsage) : base(messsage) { }
-        public NakedObjectSystemException(string messsage, Exception cause) : base(messsage, cause) { }
-    }
+namespace NakedFramework.Core.Error; 
+
+/// <summary>
+///     A NakedObjectSystemException represents an exception that has occurred within the framework code.
+/// </summary>
+public class NakedObjectSystemException : NakedObjectException {
+    public NakedObjectSystemException(string messsage) : base(messsage) { }
+    public NakedObjectSystemException(string messsage, Exception cause) : base(messsage, cause) { }
 }

@@ -8,10 +8,10 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
-        public ComplexTypeFacetConvention(ISpecification holder)
-            : base(holder) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
+
+[Serializable]
+public sealed class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
+    public ComplexTypeFacetConvention(ISpecification holder)
+        : base(holder) { }
 }

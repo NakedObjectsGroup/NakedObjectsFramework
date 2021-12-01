@@ -12,34 +12,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.WorkOrder")]
-    public class WorkOrder {
-        public virtual int WorkOrderID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public virtual int ProductID { get; set; }
+[Table("Production.WorkOrder")]
+public class WorkOrder {
+    public virtual int WorkOrderID { get; set; }
 
-        public virtual int OrderQty { get; set; }
+    public virtual int ProductID { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public virtual int StockedQty { get; set; }
+    public virtual int OrderQty { get; set; }
 
-        public virtual short ScrappedQty { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public virtual int StockedQty { get; set; }
 
-        public virtual DateTime StartDate { get; set; }
+    public virtual short ScrappedQty { get; set; }
 
-        public virtual DateTime? EndDate { get; set; }
+    public virtual DateTime StartDate { get; set; }
 
-        public virtual DateTime DueDate { get; set; }
+    public virtual DateTime? EndDate { get; set; }
 
-        public virtual short? ScrapReasonID { get; set; }
+    public virtual DateTime DueDate { get; set; }
 
-        public virtual DateTime ModifiedDate { get; set; }
+    public virtual short? ScrapReasonID { get; set; }
 
-        public virtual Product Product { get; set; }
+    public virtual DateTime ModifiedDate { get; set; }
 
-        public virtual ScrapReason ScrapReason { get; set; }
+    public virtual Product Product { get; set; }
 
-        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; }
-    }
+    public virtual ScrapReason ScrapReason { get; set; }
+
+    public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; }
 }

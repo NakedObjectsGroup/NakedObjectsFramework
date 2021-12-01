@@ -9,16 +9,16 @@ using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.FacetFactory {
-    /// <summary>
-    ///     A <see cref="IFacetFactory" /> which filters out arbitrary <see cref="PropertyInfo" /> properties.
-    /// </summary>
-    /// <para>
-    ///     Used by <see cref="IFacetFactorySet.Filters(PropertyInfo, IClassStrategy)" />
-    /// </para>
-    public interface IPropertyFilteringFacetFactory : IFacetFactory {
-        bool Filters(PropertyInfo property, IClassStrategy classStrategy);
-    }
+namespace NakedFramework.Architecture.FacetFactory; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     A <see cref="IFacetFactory" /> which filters out arbitrary <see cref="PropertyInfo" /> properties.
+/// </summary>
+/// <para>
+///     Used by <see cref="IFacetFactorySet.Filters(PropertyInfo, IClassStrategy)" />
+/// </para>
+public interface IPropertyFilteringFacetFactory : IFacetFactory {
+    bool Filters(PropertyInfo property, IClassStrategy classStrategy);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

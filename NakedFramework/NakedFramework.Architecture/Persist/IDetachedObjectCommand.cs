@@ -7,10 +7,10 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Architecture.Persist {
-    public interface IDetachedObjectCommand {
-        IList<(object original, object updated)> Execute();
-    }
+namespace NakedFramework.Architecture.Persist; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface IDetachedObjectCommand {
+    IList<(object original, object updated)> Execute();
 }
+
+// Copyright (c) Naked Objects Group Ltd.

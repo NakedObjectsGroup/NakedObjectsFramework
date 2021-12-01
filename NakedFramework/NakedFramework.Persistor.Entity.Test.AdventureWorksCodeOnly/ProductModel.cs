@@ -13,29 +13,29 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.ProductModel")]
-    public class ProductModel {
-        public int ProductModelID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Production.ProductModel")]
+public class ProductModel {
+    public int ProductModelID { get; set; }
 
-        [Column(TypeName = "xml")]
-        public string CatalogDescription { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        [Column(TypeName = "xml")]
-        public string Instructions { get; set; }
+    [Column(TypeName = "xml")]
+    public string CatalogDescription { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Column(TypeName = "xml")]
+    public string Instructions { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<ProductModelIllustration> ProductModelIllustrations { get; set; } = new HashSet<ProductModelIllustration>();
+    public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
 
-        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCultures { get; set; } = new HashSet<ProductModelProductDescriptionCulture>();
-    }
+    public virtual ICollection<ProductModelIllustration> ProductModelIllustrations { get; set; } = new HashSet<ProductModelIllustration>();
+
+    public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCultures { get; set; } = new HashSet<ProductModelProductDescriptionCulture>();
 }

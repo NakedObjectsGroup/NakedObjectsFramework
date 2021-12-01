@@ -10,20 +10,20 @@ using Moq;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class IntegrationFacetTest {
-        private readonly Mock<INakedFramework> mockFramework = new();
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        [TestMethod]
-        public void TestIntegrate() {
-            var executed = false;
+[TestClass]
+public class IntegrationFacetTest {
+    private readonly Mock<INakedFramework> mockFramework = new();
 
-            var testFacet = new IntegrationFacet(null, mb => executed = true);
+    [TestMethod]
+    public void TestIntegrate() {
+        var executed = false;
 
-            testFacet.Execute(null);
+        var testFacet = new IntegrationFacet(null, mb => executed = true);
 
-            Assert.IsTrue(executed);
-        }
+        testFacet.Execute(null);
+
+        Assert.IsTrue(executed);
     }
 }

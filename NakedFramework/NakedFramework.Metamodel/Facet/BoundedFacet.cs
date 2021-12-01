@@ -12,25 +12,25 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
-        public BoundedFacet(ISpecification holder)
-            : base(typeof(IBoundedFacet), holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;
+[Serializable]
+public sealed class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
+    public BoundedFacet(ISpecification holder)
+        : base(typeof(IBoundedFacet), holder) { }
 
-        #region IBoundedFacet Members
+    public static string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;
 
-        public string Disables(IInteractionContext ic) =>
-            ic.TypeEquals(InteractionType.ObjectPersist)
-                ? DisabledReason(ic.Target)
-                : null;
+    #region IBoundedFacet Members
 
-        public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
+    public string Disables(IInteractionContext ic) =>
+        ic.TypeEquals(InteractionType.ObjectPersist)
+            ? DisabledReason(ic.Target)
+            : null;
 
-        #endregion
-    }
+    public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

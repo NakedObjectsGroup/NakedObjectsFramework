@@ -13,38 +13,38 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.Document")]
-    public class Document {
-        public int DocumentID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Title { get; set; }
+[Table("Production.Document")]
+public class Document {
+    public int DocumentID { get; set; }
 
-        [Required]
-        [StringLength(400)]
-        public string FileName { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Title { get; set; }
 
-        [Required]
-        [StringLength(8)]
-        public string FileExtension { get; set; }
+    [Required]
+    [StringLength(400)]
+    public string FileName { get; set; }
 
-        [Required]
-        [StringLength(5)]
-        public string Revision { get; set; }
+    [Required]
+    [StringLength(8)]
+    public string FileExtension { get; set; }
 
-        public int ChangeNumber { get; set; }
+    [Required]
+    [StringLength(5)]
+    public string Revision { get; set; }
 
-        public byte Status { get; set; }
+    public int ChangeNumber { get; set; }
 
-        public string DocumentSummary { get; set; }
+    public byte Status { get; set; }
 
-        [Column("Document")]
-        public byte[] Document1 { get; set; }
+    public string DocumentSummary { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Column("Document")]
+    public byte[] Document1 { get; set; }
 
-        public virtual ICollection<ProductDocument> ProductDocuments { get; set; } = new HashSet<ProductDocument>();
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<ProductDocument> ProductDocuments { get; set; } = new HashSet<ProductDocument>();
 }

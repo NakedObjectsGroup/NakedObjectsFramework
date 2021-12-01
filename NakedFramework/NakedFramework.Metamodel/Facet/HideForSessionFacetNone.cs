@@ -10,19 +10,19 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class HideForSessionFacetNone : HideForSessionFacetAbstract {
-        public HideForSessionFacetNone(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsNoOp => true;
+[Serializable]
+public sealed class HideForSessionFacetNone : HideForSessionFacetAbstract {
+    public HideForSessionFacetNone(ISpecification holder)
+        : base(holder) { }
 
-        /// <summary>
-        ///     Always returns <c>null</c>
-        /// </summary>
-        public override string HiddenReason(INakedObjectAdapter target, INakedFramework framework) => null;
-    }
+    public override bool IsNoOp => true;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Always returns <c>null</c>
+    /// </summary>
+    public override string HiddenReason(INakedObjectAdapter target, INakedFramework framework) => null;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

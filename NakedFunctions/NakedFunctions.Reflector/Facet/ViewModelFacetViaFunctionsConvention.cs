@@ -14,33 +14,33 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.Facet {
-    [Serializable]
-    public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstract {
-        private readonly MethodInfo deriveFunction;
-        private readonly ISpecification holder;
-        private readonly MethodInfo populateFunction;
+namespace NakedFunctions.Reflector.Facet; 
 
-        public ViewModelFacetViaFunctionsConvention(ISpecification holder,
-                                                    MethodInfo deriveFunction,
-                                                    MethodInfo populateFunction)
-            : base(Type, holder) {
-            this.holder = holder;
-            this.deriveFunction = deriveFunction;
-            this.populateFunction = populateFunction;
-        }
+[Serializable]
+public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstract {
+    private readonly MethodInfo deriveFunction;
+    private readonly ISpecification holder;
+    private readonly MethodInfo populateFunction;
 
-        private static Type Type => typeof(IViewModelFacet);
+    public ViewModelFacetViaFunctionsConvention(ISpecification holder,
+                                                MethodInfo deriveFunction,
+                                                MethodInfo populateFunction)
+        : base(Type, holder) {
+        this.holder = holder;
+        this.deriveFunction = deriveFunction;
+        this.populateFunction = populateFunction;
+    }
 
-        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
-                                        INakedFramework framework) =>
-            deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, framework)) as string[];
+    private static Type Type => typeof(IViewModelFacet);
 
-        public override void Populate(string[] keys,
-                                      INakedObjectAdapter nakedObjectAdapter,
-                                      INakedFramework framework) {
-            var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys, framework));
-            nakedObjectAdapter.ReplacePoco(newVm);
-        }
+    public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
+                                    INakedFramework framework) =>
+        deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, framework)) as string[];
+
+    public override void Populate(string[] keys,
+                                  INakedObjectAdapter nakedObjectAdapter,
+                                  INakedFramework framework) {
+        var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys, framework));
+        nakedObjectAdapter.ReplacePoco(newVm);
     }
 }

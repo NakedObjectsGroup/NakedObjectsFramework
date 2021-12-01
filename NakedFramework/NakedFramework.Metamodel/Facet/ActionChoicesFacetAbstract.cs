@@ -13,22 +13,22 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoicesFacet {
-        protected ActionChoicesFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IActionChoicesFacet);
+[Serializable]
+public abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoicesFacet {
+    protected ActionChoicesFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region IActionChoicesFacet Members
+    public static Type Type => typeof(IActionChoicesFacet);
 
-        public abstract object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework);
-        public abstract (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
-        public abstract bool IsMultiple { get; }
+    #region IActionChoicesFacet Members
 
-        #endregion
-    }
+    public abstract object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework);
+    public abstract (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+    public abstract bool IsMultiple { get; }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

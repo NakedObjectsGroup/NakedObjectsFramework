@@ -13,31 +13,31 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class ActionInvocationFacetViaStaticMethodTest {
-        private static readonly object TestValue = new();
-        private readonly Mock<INakedFramework> mockFramework = new();
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        private readonly Mock<INakedObjectManager> mockNakedObjectManager = new();
+[TestClass]
+public class ActionInvocationFacetViaStaticMethodTest {
+    private static readonly object TestValue = new();
+    private readonly Mock<INakedFramework> mockFramework = new();
 
-        private readonly Mock<IObjectPersistor> mockPersistor = new();
+    private readonly Mock<INakedObjectManager> mockNakedObjectManager = new();
 
-        public ActionInvocationFacetViaStaticMethodTest() {
-            mockFramework.SetupGet(p => p.NakedObjectManager).Returns(mockNakedObjectManager.Object);
-            mockFramework.SetupGet(p => p.Persistor).Returns(mockPersistor.Object);
-        }
+    private readonly Mock<IObjectPersistor> mockPersistor = new();
 
-        [TestMethod]
-        public void TestInvoke() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.TestMethod1));
-            var testFacet = new ActionInvocationFacetViaStaticMethod(method, null, null, null, null, false, null);
+    public ActionInvocationFacetViaStaticMethodTest() {
+        mockFramework.SetupGet(p => p.NakedObjectManager).Returns(mockNakedObjectManager.Object);
+        mockFramework.SetupGet(p => p.Persistor).Returns(mockPersistor.Object);
+    }
 
-            var result = testFacet.Invoke(null, Array.Empty<INakedObjectAdapter>(), mockFramework.Object);
-        }
+    [TestMethod]
+    public void TestInvoke() {
+        var method = typeof(TestClass).GetMethod(nameof(TestClass.TestMethod1));
+        var testFacet = new ActionInvocationFacetViaStaticMethod(method, null, null, null, null, false, null);
 
-        public static class TestClass {
-            public static object TestMethod1() => TestValue;
-        }
+        var result = testFacet.Invoke(null, Array.Empty<INakedObjectAdapter>(), mockFramework.Object);
+    }
+
+    public static class TestClass {
+        public static object TestMethod1() => TestValue;
     }
 }

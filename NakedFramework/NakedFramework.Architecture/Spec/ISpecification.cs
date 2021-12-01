@@ -10,51 +10,51 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 
-namespace NakedFramework.Architecture.Spec {
+namespace NakedFramework.Architecture.Spec; 
+
+/// <summary>
+///     The 'metamodel' is made up of various implementations of ISpecification, which, in turn, are largely
+///     made up of Facets.
+/// </summary>
+public interface ISpecification {
     /// <summary>
-    ///     The 'metamodel' is made up of various implementations of ISpecification, which, in turn, are largely
-    ///     made up of Facets.
+    ///     Get the list of all facet <see cref="Type" />s that are supported by objects with this specification
     /// </summary>
-    public interface ISpecification {
-        /// <summary>
-        ///     Get the list of all facet <see cref="Type" />s that are supported by objects with this specification
-        /// </summary>
-        Type[] FacetTypes { get; }
+    Type[] FacetTypes { get; }
 
-        /// <summary>
-        ///     Identifier of this <see cref="ISpecification" /> (feature)
-        /// </summary>
-        IIdentifier Identifier { get; }
+    /// <summary>
+    ///     Identifier of this <see cref="ISpecification" /> (feature)
+    /// </summary>
+    IIdentifier Identifier { get; }
 
-        /// <summary>
-        ///     Whether there is a facet registered of the specified type.
-        /// </summary>
-        /// <para>
-        ///     Convenience; saves having to <see cref="GetFacet" /> and then check if <c>null</c>.
-        /// </para>
-        bool ContainsFacet(Type facetType);
+    /// <summary>
+    ///     Whether there is a facet registered of the specified type.
+    /// </summary>
+    /// <para>
+    ///     Convenience; saves having to <see cref="GetFacet" /> and then check if <c>null</c>.
+    /// </para>
+    bool ContainsFacet(Type facetType);
 
-        /// <summary>
-        ///     Whether there is a facet registered of the specified type.
-        /// </summary>
-        /// <para>
-        ///     Convenience; saves having to <see cref="GetFacet" /> and then check if <c>null</c>.
-        /// </para>
-        bool ContainsFacet<T>() where T : IFacet;
+    /// <summary>
+    ///     Whether there is a facet registered of the specified type.
+    /// </summary>
+    /// <para>
+    ///     Convenience; saves having to <see cref="GetFacet" /> and then check if <c>null</c>.
+    /// </para>
+    bool ContainsFacet<T>() where T : IFacet;
 
-        /// <summary>
-        ///     Get the facet of the specified type (as per the type it reports from <see cref="IFacet.FacetType" />)
-        /// </summary>
-        IFacet GetFacet(Type type);
+    /// <summary>
+    ///     Get the facet of the specified type (as per the type it reports from <see cref="IFacet.FacetType" />)
+    /// </summary>
+    IFacet GetFacet(Type type);
 
-        /// <summary>
-        ///     Get the facet of type T (as per the type it reports from <see cref="IFacet.FacetType" />)
-        /// </summary>
-        T GetFacet<T>() where T : IFacet;
+    /// <summary>
+    ///     Get the facet of type T (as per the type it reports from <see cref="IFacet.FacetType" />)
+    /// </summary>
+    T GetFacet<T>() where T : IFacet;
 
-        /// <summary>
-        ///     Returns all <see cref="IFacet" />s  />
-        /// </summary>
-        IEnumerable<IFacet> GetFacets();
-    }
+    /// <summary>
+    ///     Returns all <see cref="IFacet" />s  />
+    /// </summary>
+    IEnumerable<IFacet> GetFacets();
 }

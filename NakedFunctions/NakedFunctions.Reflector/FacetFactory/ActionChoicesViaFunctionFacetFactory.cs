@@ -23,102 +23,102 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class ActionChoicesViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {
-        private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ParameterChoicesPrefix
-        };
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        private readonly ILogger<ActionChoicesViaFunctionFacetFactory> logger;
+public sealed class ActionChoicesViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {
+    private static readonly string[] FixedPrefixes = {
+        RecognisedMethodsAndPrefixes.ParameterChoicesPrefix
+    };
 
-        public ActionChoicesViaFunctionFacetFactory(IFacetFactoryOrder<ActionChoicesViaFunctionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<ActionChoicesViaFunctionFacetFactory>();
+    private readonly ILogger<ActionChoicesViaFunctionFacetFactory> logger;
 
-        public string[] Prefixes => FixedPrefixes;
+    public ActionChoicesViaFunctionFacetFactory(IFacetFactoryOrder<ActionChoicesViaFunctionFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) =>
+        logger = loggerFactory.CreateLogger<ActionChoicesViaFunctionFacetFactory>();
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, MethodInfo actionMethod, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            for (var i = 0; i < paramTypes.Length; i++) {
-                var paramType = paramTypes[i];
-                var isMultiple = false;
+    public string[] Prefixes => FixedPrefixes;
 
-                if (CollectionUtils.IsGenericEnumerable(paramType)) {
-                    paramType = paramType.GetGenericArguments().First();
-                    isMultiple = true;
-                }
+    private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, MethodInfo actionMethod, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        for (var i = 0; i < paramTypes.Length; i++) {
+            var paramType = paramTypes[i];
+            var isMultiple = false;
 
-                var returnType = typeof(IEnumerable<>).MakeGenericType(paramType);
-                var name = $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{i}{capitalizedName}";
-                var targetType = actionMethod.ContributedToType();
-                bool Matcher(MethodInfo mi) => Matches(mi, name, returnType, targetType);
-
-                var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
-
-                if (methodToUse is not null) {
-                    // add facets directly to parameters, not to actions
-                    var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
-                    var mismatchedParm = false;
-
-                    foreach (var parameterInfo in InjectUtils.FilterParms(methodToUse)) {
-                        ITypeSpecBuilder typeSpecBuilder;
-                        (typeSpecBuilder, metamodel) = reflector.LoadSpecification(parameterInfo.ParameterType, metamodel);
-                        var paramName = parameterInfo.Name?.ToLower();
-                        if (typeSpecBuilder is IObjectSpecBuilder objectSpec && paramName is not null) {
-                            parameterNamesAndTypes.Add((paramName, objectSpec));
-                        }
-                        else {
-                            logger.LogWarning($"Unexpected name: {paramName} or spec: {typeSpecBuilder}");
-                        }
-                    }
-
-                    // all parameter names and types must match 
-                    foreach (var (pName, _) in parameterNamesAndTypes) {
-                        var actionParm = actionMethod.GetParameters().SingleOrDefault(p => p.Name?.ToLower() == pName);
-                        var choicesParm = methodToUse.GetParameters().SingleOrDefault(p => p.Name?.ToLower() == pName);
-
-                        if (actionParm is null) {
-                            logger.LogWarning($"Choices method: {methodToUse.DeclaringType}.{methodToUse.Name} has non matching parameter name: {pName}");
-                            mismatchedParm = true;
-                        }
-                        else if (actionParm.ParameterType != choicesParm?.ParameterType) {
-                            logger.LogWarning($"Choices method parameter: {methodToUse.DeclaringType}.{methodToUse.Name}.{pName} has non matching type: {choicesParm?.ParameterType} should be: {actionParm.ParameterType}");
-                            mismatchedParm = true;
-                        }
-                    }
-
-                    if (!mismatchedParm) {
-                        FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], LoggerFactory.CreateLogger<ActionChoicesFacetViaFunction>(), isMultiple));
-                    }
-                }
+            if (CollectionUtils.IsGenericEnumerable(paramType)) {
+                paramType = paramType.GetGenericArguments().First();
+                isMultiple = true;
             }
 
-            return metamodel;
-        }
+            var returnType = typeof(IEnumerable<>).MakeGenericType(paramType);
+            var name = $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{i}{capitalizedName}";
+            var targetType = actionMethod.ContributedToType();
+            bool Matcher(MethodInfo mi) => Matches(mi, name, returnType, targetType);
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type returnType, Type targetType) =>
-            methodInfo.Name == name &&
-            methodInfo.ContributedToType() == targetType &&
-            MatchReturnType(methodInfo.ReturnType, returnType);
+            var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
-        private static bool MatchReturnType(Type returnType, Type toMatch) => CollectionUtils.IsGenericEnumerable(returnType) && returnType.GenericTypeArguments.SequenceEqual(toMatch.GenericTypeArguments);
+            if (methodToUse is not null) {
+                // add facets directly to parameters, not to actions
+                var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
+                var mismatchedParm = false;
 
-        #region IMethodFilteringFacetFactory Members
+                foreach (var parameterInfo in InjectUtils.FilterParms(methodToUse)) {
+                    ITypeSpecBuilder typeSpecBuilder;
+                    (typeSpecBuilder, metamodel) = reflector.LoadSpecification(parameterInfo.ParameterType, metamodel);
+                    var paramName = parameterInfo.Name?.ToLower();
+                    if (typeSpecBuilder is IObjectSpecBuilder objectSpec && paramName is not null) {
+                        parameterNamesAndTypes.Add((paramName, objectSpec));
+                    }
+                    else {
+                        logger.LogWarning($"Unexpected name: {paramName} or spec: {typeSpecBuilder}");
+                    }
+                }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
-            var declaringType = actionMethod.DeclaringType;
-            var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
+                // all parameter names and types must match 
+                foreach (var (pName, _) in parameterNamesAndTypes) {
+                    var actionParm = actionMethod.GetParameters().SingleOrDefault(p => p.Name?.ToLower() == pName);
+                    var choicesParm = methodToUse.GetParameters().SingleOrDefault(p => p.Name?.ToLower() == pName);
 
-            if (action is IActionSpecImmutable actionSpecImmutable) {
-                var actionParameters = actionSpecImmutable.Parameters;
-                metamodel = FindChoicesMethod(reflector, declaringType, capitalizedName, paramTypes, actionMethod, actionParameters, metamodel);
+                    if (actionParm is null) {
+                        logger.LogWarning($"Choices method: {methodToUse.DeclaringType}.{methodToUse.Name} has non matching parameter name: {pName}");
+                        mismatchedParm = true;
+                    }
+                    else if (actionParm.ParameterType != choicesParm?.ParameterType) {
+                        logger.LogWarning($"Choices method parameter: {methodToUse.DeclaringType}.{methodToUse.Name}.{pName} has non matching type: {choicesParm?.ParameterType} should be: {actionParm.ParameterType}");
+                        mismatchedParm = true;
+                    }
+                }
+
+                if (!mismatchedParm) {
+                    FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], LoggerFactory.CreateLogger<ActionChoicesFacetViaFunction>(), isMultiple));
+                }
             }
-
-            return metamodel;
         }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.ParameterChoicesPrefix);
-
-        #endregion
+        return metamodel;
     }
+
+    private static bool Matches(MethodInfo methodInfo, string name, Type returnType, Type targetType) =>
+        methodInfo.Name == name &&
+        methodInfo.ContributedToType() == targetType &&
+        MatchReturnType(methodInfo.ReturnType, returnType);
+
+    private static bool MatchReturnType(Type returnType, Type toMatch) => CollectionUtils.IsGenericEnumerable(returnType) && returnType.GenericTypeArguments.SequenceEqual(toMatch.GenericTypeArguments);
+
+    #region IMethodFilteringFacetFactory Members
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
+        var declaringType = actionMethod.DeclaringType;
+        var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
+
+        if (action is IActionSpecImmutable actionSpecImmutable) {
+            var actionParameters = actionSpecImmutable.Parameters;
+            metamodel = FindChoicesMethod(reflector, declaringType, capitalizedName, paramTypes, actionMethod, actionParameters, metamodel);
+        }
+
+        return metamodel;
+    }
+
+    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.ParameterChoicesPrefix);
+
+    #endregion
 }

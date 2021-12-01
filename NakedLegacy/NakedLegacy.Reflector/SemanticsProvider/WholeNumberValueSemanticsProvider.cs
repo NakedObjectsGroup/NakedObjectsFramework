@@ -16,51 +16,51 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.SemanticsProvider {
-    [Serializable]
-    public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAbstract<WholeNumber>, IIntegerValueFacet {
-        private static  WholeNumber DefaultValueConst = new WholeNumber(0);
-        private const bool EqualBycontent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 11;
+namespace NakedLegacy.Reflector.SemanticsProvider; 
 
-        public WholeNumberValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAbstract<WholeNumber>, IIntegerValueFacet {
+    private static  WholeNumber DefaultValueConst = new WholeNumber(0);
+    private const bool EqualBycontent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 11;
 
-        public static Type Type => typeof(IIntegerValueFacet);
+    public WholeNumberValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(WholeNumber);
+    public static Type Type => typeof(IIntegerValueFacet);
 
-        #region IIntegerValueFacet Members
+    public static Type AdaptedType => typeof(WholeNumber);
 
-        public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<WholeNumber>().Number;
+    #region IIntegerValueFacet Members
 
-        #endregion
+    public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<WholeNumber>().Number;
 
-        public static bool IsAdaptedType(Type type) => type == typeof(WholeNumber);
+    #endregion
 
-        protected override WholeNumber DoParse(string entry) {
-            try {
-                return  new WholeNumber(int.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, new WholeNumber(int.MinValue), new WholeNumber(int.MaxValue)));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(WholeNumber);
+
+    protected override WholeNumber DoParse(string entry) {
+        try {
+            return  new WholeNumber(int.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
         }
-
-        protected override WholeNumber DoParseInvariant(string entry) => new WholeNumber(int.Parse(entry, CultureInfo.InvariantCulture));
-
-        protected override string GetInvariantString(WholeNumber obj) => obj.Number.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, WholeNumber value) => value.Number.ToString(mask);
-
-        protected override string DoEncode(WholeNumber obj) => obj.Number.ToString("G", CultureInfo.InvariantCulture);
-
-        protected override WholeNumber DoRestore(string data) => new WholeNumber(int.Parse(data, CultureInfo.InvariantCulture));
-
-        public override string ToString() => "WholeNumberAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, new WholeNumber(int.MinValue), new WholeNumber(int.MaxValue)));
+        }
     }
+
+    protected override WholeNumber DoParseInvariant(string entry) => new WholeNumber(int.Parse(entry, CultureInfo.InvariantCulture));
+
+    protected override string GetInvariantString(WholeNumber obj) => obj.Number.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, WholeNumber value) => value.Number.ToString(mask);
+
+    protected override string DoEncode(WholeNumber obj) => obj.Number.ToString("G", CultureInfo.InvariantCulture);
+
+    protected override WholeNumber DoRestore(string data) => new WholeNumber(int.Parse(data, CultureInfo.InvariantCulture));
+
+    public override string ToString() => "WholeNumberAdapter: ";
 }

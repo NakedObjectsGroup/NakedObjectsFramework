@@ -7,11 +7,11 @@
 
 using System;
 
-namespace NakedFramework.Facade.Interface {
-    public interface IConsentFacade {
-        bool IsAllowed { get; }
-        bool IsVetoed { get; }
-        string Reason { get; }
-        Exception Exception { get; }
-    }
+namespace NakedFramework.Facade.Interface; 
+
+public interface IConsentFacade {
+    bool IsAllowed { get; }
+    bool IsVetoed { get; }
+    string Reason { get; }
+    Exception Exception { get; }
 }

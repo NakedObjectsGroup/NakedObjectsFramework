@@ -9,17 +9,17 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Component {
-    public interface ISpecificationCache {
-        ITypeSpecImmutable GetSpecification(string key);
-        void Clear();
-        ITypeSpecImmutable[] AllSpecifications();
-        void Cache(string key, ITypeSpecImmutable spec);
-        void Cache(IMenuImmutable mainMenu);
-        IMenuImmutable[] MainMenus();
-        void Serialize(string file);
-        void Serialize(string file, IFormatter formatter);
-    }
+namespace NakedFramework.Architecture.Component; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public interface ISpecificationCache {
+    ITypeSpecImmutable GetSpecification(string key);
+    void Clear();
+    ITypeSpecImmutable[] AllSpecifications();
+    void Cache(string key, ITypeSpecImmutable spec);
+    void Cache(IMenuImmutable mainMenu);
+    IMenuImmutable[] MainMenus();
+    void Serialize(string file);
+    void Serialize(string file, IFormatter formatter);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

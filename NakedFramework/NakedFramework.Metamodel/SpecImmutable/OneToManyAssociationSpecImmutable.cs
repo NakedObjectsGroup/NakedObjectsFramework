@@ -13,53 +13,53 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.SpecImmutable {
-    [Serializable]
-    public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable, IOneToManyAssociationSpecImmutable {
-        private readonly IObjectSpecImmutable defaultElementSpec;
-        private readonly Type defaultElementType;
+namespace NakedFramework.Metamodel.SpecImmutable; 
 
-        public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
-            : base(name, returnSpec) {
-            defaultElementType = defaultElementSpec.Type;
-            OwnerSpec = ownerSpec;
-            this.defaultElementSpec = defaultElementSpec;
-        }
+[Serializable]
+public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable, IOneToManyAssociationSpecImmutable {
+    private readonly IObjectSpecImmutable defaultElementSpec;
+    private readonly Type defaultElementType;
 
-        public override string ToString() => $"OneToManyAssociation [name=\"{Identifier}\",Type={ReturnSpec} ]";
-
-        #region IOneToManyAssociationSpecImmutable Members
-
-        /// <summary>
-        ///     Return the <see cref="IObjectSpec" /> for the  Type that the collection holds.
-        /// </summary>
-        public override IObjectSpecImmutable ElementSpec {
-            get {
-                var typeOfFacet = GetFacet<IElementTypeFacet>();
-                return typeOfFacet != null ? typeOfFacet.ValueSpec : defaultElementSpec;
-            }
-        }
-
-        public override IObjectSpecImmutable OwnerSpec { get; }
-
-        #endregion
-
-        #region ISerializable
-
-        // The special constructor is used to deserialize values. 
-        public OneToManyAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            defaultElementType = info.GetValue<Type>("defaultElementType");
-            defaultElementSpec = info.GetValue<IObjectSpecImmutable>("defaultElementSpec");
-        }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue<Type>("defaultElementType", defaultElementType);
-            info.AddValue<IObjectSpecImmutable>("defaultElementSpec", defaultElementSpec);
-            base.GetObjectData(info, context);
-        }
-
-        #endregion
+    public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
+        : base(name, returnSpec) {
+        defaultElementType = defaultElementSpec.Type;
+        OwnerSpec = ownerSpec;
+        this.defaultElementSpec = defaultElementSpec;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string ToString() => $"OneToManyAssociation [name=\"{Identifier}\",Type={ReturnSpec} ]";
+
+    #region IOneToManyAssociationSpecImmutable Members
+
+    /// <summary>
+    ///     Return the <see cref="IObjectSpec" /> for the  Type that the collection holds.
+    /// </summary>
+    public override IObjectSpecImmutable ElementSpec {
+        get {
+            var typeOfFacet = GetFacet<IElementTypeFacet>();
+            return typeOfFacet != null ? typeOfFacet.ValueSpec : defaultElementSpec;
+        }
+    }
+
+    public override IObjectSpecImmutable OwnerSpec { get; }
+
+    #endregion
+
+    #region ISerializable
+
+    // The special constructor is used to deserialize values. 
+    public OneToManyAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
+        defaultElementType = info.GetValue<Type>("defaultElementType");
+        defaultElementSpec = info.GetValue<IObjectSpecImmutable>("defaultElementSpec");
+    }
+
+    public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+        info.AddValue<Type>("defaultElementType", defaultElementType);
+        info.AddValue<IObjectSpecImmutable>("defaultElementSpec", defaultElementSpec);
+        base.GetObjectData(info, context);
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

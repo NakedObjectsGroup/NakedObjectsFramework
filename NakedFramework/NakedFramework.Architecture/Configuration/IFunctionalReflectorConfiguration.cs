@@ -7,11 +7,11 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Configuration {
-    public interface IFunctionalReflectorConfiguration {
-        Type[] Types { get; }
-        Type[] Functions { get; }
-        bool ConcurrencyChecking { get; }
-        bool IgnoreCase { get; }
-    }
+namespace NakedFramework.Architecture.Configuration; 
+
+public interface IFunctionalReflectorConfiguration {
+    Type[] Types { get; }
+    Type[] Functions { get; }
+    bool ConcurrencyChecking { get; }
+    bool IgnoreCase { get; }
 }

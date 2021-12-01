@@ -8,22 +8,22 @@
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Error {
-    /// <summary>
-    ///     The interaction is invalid because the input value does not match the specified RegEx.
-    /// </summary>
-    public class InvalidRegExException : InvalidException {
-        public InvalidRegExException(IInteractionContext ic, string format, string validation, bool caseSensitive, string message)
-            : base(ic, message) {
-            FormatPattern = format;
-            ValidationPattern = validation;
-            IsCaseSensitive = caseSensitive;
-        }
+namespace NakedFramework.Metamodel.Error; 
 
-        public virtual string FormatPattern { get; }
-
-        public virtual string ValidationPattern { get; }
-
-        public virtual bool IsCaseSensitive { get; }
+/// <summary>
+///     The interaction is invalid because the input value does not match the specified RegEx.
+/// </summary>
+public class InvalidRegExException : InvalidException {
+    public InvalidRegExException(IInteractionContext ic, string format, string validation, bool caseSensitive, string message)
+        : base(ic, message) {
+        FormatPattern = format;
+        ValidationPattern = validation;
+        IsCaseSensitive = caseSensitive;
     }
+
+    public virtual string FormatPattern { get; }
+
+    public virtual string ValidationPattern { get; }
+
+    public virtual bool IsCaseSensitive { get; }
 }

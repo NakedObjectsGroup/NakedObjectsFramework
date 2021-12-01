@@ -8,13 +8,13 @@
 using System.Collections.Generic;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Rest.Snapshot.Utility {
-    public class MenuIdHolder : IMenuFacade {
-        public MenuIdHolder(string id) => Id = id;
-        public string Name => null;
-        public string Id { get; }
-        public string Grouping => "";
-        public object Wrapped => null;
-        public IList<IMenuItemFacade> MenuItems => null;
-    }
+namespace NakedFramework.Rest.Snapshot.Utility; 
+
+public class MenuIdHolder : IMenuFacade {
+    public MenuIdHolder(string id) => Id = id;
+    public string Name => null;
+    public string Id { get; }
+    public string Grouping => "";
+    public object Wrapped => null;
+    public IList<IMenuItemFacade> MenuItems => null;
 }

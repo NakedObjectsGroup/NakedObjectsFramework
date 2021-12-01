@@ -9,19 +9,19 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ImmutableFacetNever : ImmutableFacetAbstract {
-        public ImmutableFacetNever(ISpecification holder)
-            : base(WhenTo.Never, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsNoOp => true;
+[Serializable]
+public sealed class ImmutableFacetNever : ImmutableFacetAbstract {
+    public ImmutableFacetNever(ISpecification holder)
+        : base(WhenTo.Never, holder) { }
 
-        /// <summary>
-        ///     Always returns <c>null</c>
-        /// </summary>
-        public override string DisabledReason(INakedObjectAdapter no) => null;
-    }
+    public override bool IsNoOp => true;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Always returns <c>null</c>
+    /// </summary>
+    public override string DisabledReason(INakedObjectAdapter no) => null;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

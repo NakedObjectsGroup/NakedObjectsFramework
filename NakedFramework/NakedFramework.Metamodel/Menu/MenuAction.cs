@@ -10,21 +10,21 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Menu {
-    [Serializable]
-    public sealed class MenuAction : IMenuActionImmutable {
-        public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {
-            Action = actionSpec;
-            Name = renamedTo ?? actionSpec.Name;
-        }
+namespace NakedFramework.Metamodel.Menu; 
 
-        #region IMenuActionImmutable Members
-
-        public string Name { get; set; }
-        public string Id { get; set; }
-        public IActionSpecImmutable Action { get; set; }
-        public string Grouping => Action.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
-
-        #endregion
+[Serializable]
+public sealed class MenuAction : IMenuActionImmutable {
+    public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {
+        Action = actionSpec;
+        Name = renamedTo ?? actionSpec.Name;
     }
+
+    #region IMenuActionImmutable Members
+
+    public string Name { get; set; }
+    public string Id { get; set; }
+    public IActionSpecImmutable Action { get; set; }
+    public string Grouping => Action.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
+
+    #endregion
 }

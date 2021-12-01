@@ -7,12 +7,12 @@
 
 using System;
 
-namespace NakedFramework.Facade.Error {
-    public abstract class ResourceNotFoundNOSException : NakedObjectsFacadeException {
-        protected ResourceNotFoundNOSException(string resourceId, Exception e) : base(e) => ResourceId = resourceId;
+namespace NakedFramework.Facade.Error; 
 
-        protected ResourceNotFoundNOSException(string resourceId) => ResourceId = resourceId;
+public abstract class ResourceNotFoundNOSException : NakedObjectsFacadeException {
+    protected ResourceNotFoundNOSException(string resourceId, Exception e) : base(e) => ResourceId = resourceId;
 
-        public string ResourceId { get; set; }
-    }
+    protected ResourceNotFoundNOSException(string resourceId) => ResourceId = resourceId;
+
+    public string ResourceId { get; set; }
 }

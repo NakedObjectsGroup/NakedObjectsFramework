@@ -9,19 +9,19 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Interactions;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Interactions {
-    [TestFixture]
-    public class InteractionContextTest {
-        [Test]
-        public void IsProgramaticTest() {
-            IInteractionContext context = InteractionContext.InvokingAction(null, true, null, null, null);
-            Assert.IsTrue(context.IsProgrammatic);
-        }
+namespace NakedFramework.Core.Test.Interactions; 
 
-        [Test]
-        public void IsNotProgramaticTest() {
-            IInteractionContext context = InteractionContext.InvokingAction(null, false, null, null, null);
-            Assert.IsFalse(context.IsProgrammatic);
-        }
+[TestFixture]
+public class InteractionContextTest {
+    [Test]
+    public void IsProgramaticTest() {
+        IInteractionContext context = InteractionContext.InvokingAction(null, true, null, null, null);
+        Assert.IsTrue(context.IsProgrammatic);
+    }
+
+    [Test]
+    public void IsNotProgramaticTest() {
+        IInteractionContext context = InteractionContext.InvokingAction(null, false, null, null, null);
+        Assert.IsFalse(context.IsProgrammatic);
     }
 }

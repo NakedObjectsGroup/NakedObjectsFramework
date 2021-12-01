@@ -8,17 +8,17 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.ParallelReflector.FacetFactory {
-    /// <summary>
-    ///     Indicates that the <see cref="IFacetFactory" /> works by recognizing methods
-    ///     with a certain prefix (or prefixes).
-    /// </summary>
-    /// <para>
-    ///     Used by <see cref="IFacetFactorySet.Recognizes" />
-    /// </para>
-    public interface IMethodPrefixBasedFacetFactory : IFacetFactory {
-        string[] Prefixes { get; }
-    }
+namespace NakedFramework.ParallelReflector.FacetFactory; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Indicates that the <see cref="IFacetFactory" /> works by recognizing methods
+///     with a certain prefix (or prefixes).
+/// </summary>
+/// <para>
+///     Used by <see cref="IFacetFactorySet.Recognizes" />
+/// </para>
+public interface IMethodPrefixBasedFacetFactory : IFacetFactory {
+    string[] Prefixes { get; }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -14,44 +14,44 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet {
-    [TestClass]
-    public class DisabledFacetTest {
-        [TestMethod]
-        public void TestDisabledFacetAlways() {
-            IDisabledFacet facet = new DisabledFacetAlways(null);
-            Assert.AreEqual(Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
-        }
+namespace NakedObjects.Metamodel.Test.Facet; 
 
-        [TestMethod]
-        public void TestDisabledFacetAnnotationAlways() {
-            IDisabledFacet facet = new DisabledFacetAnnotation(WhenTo.Always, null);
-            Assert.AreEqual(Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
-        }
+[TestClass]
+public class DisabledFacetTest {
+    [TestMethod]
+    public void TestDisabledFacetAlways() {
+        IDisabledFacet facet = new DisabledFacetAlways(null);
+        Assert.AreEqual(Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
+    }
 
-        [TestMethod]
-        public void TestDisabledFacetAnnotationNever() {
-            IDisabledFacet facet = new DisabledFacetAnnotation(WhenTo.Never, null);
-            Assert.IsNull(facet.DisabledReason(null));
-        }
+    [TestMethod]
+    public void TestDisabledFacetAnnotationAlways() {
+        IDisabledFacet facet = new DisabledFacetAnnotation(WhenTo.Always, null);
+        Assert.AreEqual(Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
+    }
 
-        private static INakedObjectAdapter Mock(object obj) {
-            var mockParm = new Mock<INakedObjectAdapter>();
-            mockParm.Setup(p => p.Object).Returns(obj);
-            return mockParm.Object;
-        }
+    [TestMethod]
+    public void TestDisabledFacetAnnotationNever() {
+        IDisabledFacet facet = new DisabledFacetAnnotation(WhenTo.Never, null);
+        Assert.IsNull(facet.DisabledReason(null));
+    }
 
-        [TestMethod]
-        public void TestDisabledFacetAnnotationAsInteraction() {
-            IDisablingInteractionAdvisor facet = new DisabledFacetAnnotation(WhenTo.Never, null);
-            var target = Mock(new object());
-            var mockIc = new Mock<IInteractionContext>();
-            mockIc.Setup(ic => ic.Target).Returns(target);
+    private static INakedObjectAdapter Mock(object obj) {
+        var mockParm = new Mock<INakedObjectAdapter>();
+        mockParm.Setup(p => p.Object).Returns(obj);
+        return mockParm.Object;
+    }
 
-            var e = facet.CreateExceptionFor(mockIc.Object);
+    [TestMethod]
+    public void TestDisabledFacetAnnotationAsInteraction() {
+        IDisablingInteractionAdvisor facet = new DisabledFacetAnnotation(WhenTo.Never, null);
+        var target = Mock(new object());
+        var mockIc = new Mock<IInteractionContext>();
+        mockIc.Setup(ic => ic.Target).Returns(target);
 
-            Assert.IsInstanceOfType(e, typeof(DisabledException));
-            Assert.AreEqual("Exception of type 'NakedFramework.Core.Error.DisabledException' was thrown.", e.Message);
-        }
+        var e = facet.CreateExceptionFor(mockIc.Object);
+
+        Assert.IsInstanceOfType(e, typeof(DisabledException));
+        Assert.AreEqual("Exception of type 'NakedFramework.Core.Error.DisabledException' was thrown.", e.Message);
     }
 }

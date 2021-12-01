@@ -8,14 +8,14 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class MultiLineFacetNone : MultiLineFacetAbstract {
-        public MultiLineFacetNone(ISpecification holder)
-            : base(1, 0, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsNoOp => true;
-    }
+[Serializable]
+public sealed class MultiLineFacetNone : MultiLineFacetAbstract {
+    public MultiLineFacetNone(ISpecification holder)
+        : base(1, 0, holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override bool IsNoOp => true;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

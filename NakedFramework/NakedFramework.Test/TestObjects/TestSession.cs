@@ -8,14 +8,13 @@
 using System.Security.Principal;
 using NakedFramework.Core.Authentication;
 
-namespace NakedFramework.Test.TestObjects {
-    // Allow principal to be changed - only for test use 
+namespace NakedFramework.Test.TestObjects; 
+// Allow principal to be changed - only for test use 
 
-    public class TestSession : WindowsSession {
-        public TestSession(IPrincipal principal) : base(principal) { }
+public class TestSession : WindowsSession {
+    public TestSession(IPrincipal principal) : base(principal) { }
 
-        public void ReplacePrincipal(IPrincipal newPrincipal) {
-            Principal = newPrincipal;
-        }
+    public void ReplacePrincipal(IPrincipal newPrincipal) {
+        Principal = newPrincipal;
     }
 }

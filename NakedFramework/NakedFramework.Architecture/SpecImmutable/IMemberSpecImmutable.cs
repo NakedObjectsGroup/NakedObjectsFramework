@@ -7,13 +7,13 @@
 
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.SpecImmutable {
-    /// <summary>
-    ///     Details about action and field members gained via reflection.
-    /// </summary>
-    public interface IMemberSpecImmutable : ISpecificationBuilder, INamedAndDescribed {
-        IObjectSpecImmutable ReturnSpec { get; }
-    }
+namespace NakedFramework.Architecture.SpecImmutable; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Details about action and field members gained via reflection.
+/// </summary>
+public interface IMemberSpecImmutable : ISpecificationBuilder, INamedAndDescribed {
+    IObjectSpecImmutable ReturnSpec { get; }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

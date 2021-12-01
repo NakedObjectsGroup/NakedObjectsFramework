@@ -15,36 +15,36 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
-        private readonly ILogger<PropertyDefaultFacetViaMethod> logger;
-        private readonly MethodInfo method;
+namespace NakedObjects.Reflector.Facet; 
 
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+[Serializable]
+public sealed class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
+    private readonly ILogger<PropertyDefaultFacetViaMethod> logger;
+    private readonly MethodInfo method;
 
-        public PropertyDefaultFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<PropertyDefaultFacetViaMethod> logger)
-            : base(holder) {
-            this.method = method;
-            this.logger = logger;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public override object GetDefault(INakedObjectAdapter inObjectAdapter) => methodDelegate(inObjectAdapter.GetDomainObject(), Array.Empty<object>());
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public PropertyDefaultFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<PropertyDefaultFacetViaMethod> logger)
+        : base(holder) {
+        this.method = method;
+        this.logger = logger;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override object GetDefault(INakedObjectAdapter inObjectAdapter) => methodDelegate(inObjectAdapter.GetDomainObject(), Array.Empty<object>());
+
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

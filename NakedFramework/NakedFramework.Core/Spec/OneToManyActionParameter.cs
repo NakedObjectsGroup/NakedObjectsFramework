@@ -9,9 +9,9 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Spec {
-    public sealed class OneToManyActionParameter : ActionParameterSpec, IOneToManyActionParameterSpec {
-        public OneToManyActionParameter(int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedFramework framework)
-            : base(index, actionImpl, actionParameterSpecImmutable, framework) { }
-    }
+namespace NakedFramework.Core.Spec; 
+
+public sealed class OneToManyActionParameter : ActionParameterSpec, IOneToManyActionParameterSpec {
+    public OneToManyActionParameter(int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedFramework framework)
+        : base(index, actionImpl, actionParameterSpecImmutable, framework) { }
 }

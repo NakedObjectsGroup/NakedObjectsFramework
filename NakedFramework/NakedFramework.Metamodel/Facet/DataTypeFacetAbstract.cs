@@ -10,32 +10,32 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class DataTypeFacetAbstract : FacetAbstract, IDataTypeFacet {
-        private readonly string customDataType;
-        private readonly DataType dataType;
+namespace NakedFramework.Metamodel.Facet; 
 
-        private DataTypeFacetAbstract(DataType dataType, string customDataType, ISpecification holder)
-            : base(Type, holder) {
-            this.dataType = dataType;
-            this.customDataType = customDataType;
-        }
+[Serializable]
+public abstract class DataTypeFacetAbstract : FacetAbstract, IDataTypeFacet {
+    private readonly string customDataType;
+    private readonly DataType dataType;
 
-        protected DataTypeFacetAbstract(DataType dataType, ISpecification holder)
-            : this(dataType, "", holder) { }
-
-        protected DataTypeFacetAbstract(string customDataType, ISpecification holder)
-            : this(System.ComponentModel.DataAnnotations.DataType.Custom, customDataType, holder) { }
-
-        public static Type Type => typeof(IDataTypeFacet);
-
-        #region IDataTypeFacet Members
-
-        public DataType DataType() => dataType;
-
-        public string CustomDataType() => customDataType;
-
-        #endregion
+    private DataTypeFacetAbstract(DataType dataType, string customDataType, ISpecification holder)
+        : base(Type, holder) {
+        this.dataType = dataType;
+        this.customDataType = customDataType;
     }
+
+    protected DataTypeFacetAbstract(DataType dataType, ISpecification holder)
+        : this(dataType, "", holder) { }
+
+    protected DataTypeFacetAbstract(string customDataType, ISpecification holder)
+        : this(System.ComponentModel.DataAnnotations.DataType.Custom, customDataType, holder) { }
+
+    public static Type Type => typeof(IDataTypeFacet);
+
+    #region IDataTypeFacet Members
+
+    public DataType DataType() => dataType;
+
+    public string CustomDataType() => customDataType;
+
+    #endregion
 }

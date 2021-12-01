@@ -9,21 +9,21 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Component {
-    public interface IFacetDecorator {
-        /// <summary>
-        ///     Return a list of facet types that this decorator will decorate
-        /// </summary>
-        Type[] ForFacetTypes { get; }
+namespace NakedFramework.Architecture.Component; 
 
-        /// <summary>
-        ///     Decorate a facet
-        /// </summary>
-        /// <param name="facet">The facet to decorate</param>
-        /// <param name="holder">The facet's holder</param>
-        /// <returns>The decorated facet</returns>
-        IFacet Decorate(IFacet facet, ISpecification holder);
-    }
+public interface IFacetDecorator {
+    /// <summary>
+    ///     Return a list of facet types that this decorator will decorate
+    /// </summary>
+    Type[] ForFacetTypes { get; }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Decorate a facet
+    /// </summary>
+    /// <param name="facet">The facet to decorate</param>
+    /// <param name="holder">The facet's holder</param>
+    /// <returns>The decorated facet</returns>
+    IFacet Decorate(IFacet facet, ISpecification holder);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -10,57 +10,57 @@ using System.Linq;
 using NakedFramework.Core.Error;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedLegacy.Reflector.Configuration {
-    [Serializable]
-    public class LegacyObjectReflectorConfiguration : ILegacyObjectReflectorConfiguration {
-        public LegacyObjectReflectorConfiguration(Type[] typesToIntrospect,
-                                                  Type[] services,
-                                                  bool concurrencyChecking = true) {
-            TypesToIntrospect = typesToIntrospect;
-            Services = services;
-            IgnoreCase = true;
-            ConcurrencyChecking = concurrencyChecking;
+namespace NakedLegacy.Reflector.Configuration; 
 
-            ValidateConfig();
-        }
+[Serializable]
+public class LegacyObjectReflectorConfiguration : ILegacyObjectReflectorConfiguration {
+    public LegacyObjectReflectorConfiguration(Type[] typesToIntrospect,
+                                              Type[] services,
+                                              bool concurrencyChecking = true) {
+        TypesToIntrospect = typesToIntrospect;
+        Services = services;
+        IgnoreCase = true;
+        ConcurrencyChecking = concurrencyChecking;
 
-        // for testing
-        public static bool NoValidate { get; set; }
-
-        private void ValidateConfig() {
-            if (NoValidate) {
-                return;
-            }
-
-            var msg = "Reflector configuration errors;\r\n";
-            var configError = false;
-
-            if (Services == null || !Services.Any()) {
-                configError = true;
-                msg += "No services specified;\r\n";
-            }
-
-            if (configError) {
-                throw new InitialisationException(msg);
-            }
-        }
-
-        private Type[] GetObjectTypesToIntrospect() {
-            var types = TypesToIntrospect.Select(ReflectorHelpers.EnsureGenericTypeIsComplete);
-            return types.ToArray();
-        }
-
-        #region ILegacyObjectReflectorConfiguration Members
-
-        public Type[] TypesToIntrospect { get; }
-        public bool IgnoreCase { get; }
-        public bool ConcurrencyChecking { get; }
-        public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
-
-        public Type[] Services { get; }
-
-        public Type[] ObjectTypes => Services.Union(GetObjectTypesToIntrospect()).ToArray();
-
-        #endregion
+        ValidateConfig();
     }
+
+    // for testing
+    public static bool NoValidate { get; set; }
+
+    private void ValidateConfig() {
+        if (NoValidate) {
+            return;
+        }
+
+        var msg = "Reflector configuration errors;\r\n";
+        var configError = false;
+
+        if (Services == null || !Services.Any()) {
+            configError = true;
+            msg += "No services specified;\r\n";
+        }
+
+        if (configError) {
+            throw new InitialisationException(msg);
+        }
+    }
+
+    private Type[] GetObjectTypesToIntrospect() {
+        var types = TypesToIntrospect.Select(ReflectorHelpers.EnsureGenericTypeIsComplete);
+        return types.ToArray();
+    }
+
+    #region ILegacyObjectReflectorConfiguration Members
+
+    public Type[] TypesToIntrospect { get; }
+    public bool IgnoreCase { get; }
+    public bool ConcurrencyChecking { get; }
+    public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
+
+    public Type[] Services { get; }
+
+    public Type[] ObjectTypes => Services.Union(GetObjectTypesToIntrospect()).ToArray();
+
+    #endregion
 }

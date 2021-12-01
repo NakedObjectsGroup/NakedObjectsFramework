@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class PluralFacetAbstract : SingleStringValueFacetAbstract, IPluralFacet {
-        protected PluralFacetAbstract(string stringValue, ISpecification holder)
-            : base(Type, holder, stringValue) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IPluralFacet);
-    }
+[Serializable]
+public abstract class PluralFacetAbstract : SingleStringValueFacetAbstract, IPluralFacet {
+    protected PluralFacetAbstract(string stringValue, ISpecification holder)
+        : base(Type, holder, stringValue) { }
+
+    public static Type Type => typeof(IPluralFacet);
 }

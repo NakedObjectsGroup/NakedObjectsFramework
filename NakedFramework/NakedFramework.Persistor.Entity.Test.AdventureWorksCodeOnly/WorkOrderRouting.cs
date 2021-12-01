@@ -11,46 +11,46 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.WorkOrderRouting")]
-    public class WorkOrderRouting {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Production.WorkOrderRouting")]
+public class WorkOrderRouting {
      
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int WorkOrderID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int WorkOrderID { get; set; }
 
        
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int ProductID { get; set; }
 
        
-        [Column(Order = 2)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public short OperationSequence { get; set; }
+    [Column(Order = 2)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public short OperationSequence { get; set; }
 
-        public short LocationID { get; set; }
+    public short LocationID { get; set; }
 
-        public DateTime ScheduledStartDate { get; set; }
+    public DateTime ScheduledStartDate { get; set; }
 
-        public DateTime ScheduledEndDate { get; set; }
+    public DateTime ScheduledEndDate { get; set; }
 
-        public DateTime? ActualStartDate { get; set; }
+    public DateTime? ActualStartDate { get; set; }
 
-        public DateTime? ActualEndDate { get; set; }
+    public DateTime? ActualEndDate { get; set; }
 
-        public decimal? ActualResourceHrs { get; set; }
+    public decimal? ActualResourceHrs { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal PlannedCost { get; set; }
+    [Column(TypeName = "money")]
+    public decimal PlannedCost { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal? ActualCost { get; set; }
+    [Column(TypeName = "money")]
+    public decimal? ActualCost { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Location Location { get; set; }
+    public virtual Location Location { get; set; }
 
-        public virtual WorkOrder WorkOrder { get; set; }
-    }
+    public virtual WorkOrder WorkOrder { get; set; }
 }

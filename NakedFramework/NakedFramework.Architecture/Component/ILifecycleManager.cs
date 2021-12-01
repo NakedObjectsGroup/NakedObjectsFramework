@@ -12,44 +12,44 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Component {
+namespace NakedFramework.Architecture.Component; 
+
+/// <summary>
+///     Most of this type's responsibilities will be delegated to an injected INakedObjectManager and/or IObjectPersistor.
+///     The primary purpose in having a separate interface ILifecycleManager is so that the caller need not
+///     be concerned with whether the object already exists in memory, persistently, or both.
+/// </summary>
+public interface ILifecycleManager {
+    INakedObjectAdapter CreateInstance(IObjectSpec spec);
+    INakedObjectAdapter CreateViewModel(IObjectSpec spec);
+    INakedObjectAdapter RecreateInstance(IOid oid, ITypeSpec spec);
+
+    object CreateNonAdaptedInjectedObject(Type type);
+
+    object CreateNonAdaptedObject(Type type);
+
     /// <summary>
-    ///     Most of this type's responsibilities will be delegated to an injected INakedObjectManager and/or IObjectPersistor.
-    ///     The primary purpose in having a separate interface ILifecycleManager is so that the caller need not
-    ///     be concerned with whether the object already exists in memory, persistently, or both.
+    ///     Makes a naked object persistent. The specified object should be stored away via this object store's
+    ///     persistence mechanism, and have an new and unique OID assigned to it (by calling the object's
+    ///     <c>setOid</c> method). The object, should also be added to the cache as the object is
+    ///     implicitly 'in use'.
     /// </summary>
-    public interface ILifecycleManager {
-        INakedObjectAdapter CreateInstance(IObjectSpec spec);
-        INakedObjectAdapter CreateViewModel(IObjectSpec spec);
-        INakedObjectAdapter RecreateInstance(IOid oid, ITypeSpec spec);
+    /// <para>
+    ///     If the object has any associations then each of these, where they aren't already persistent, should
+    ///     also be made persistent by recursively calling this method.
+    /// </para>
+    /// <para>
+    ///     If the object to be persisted is a collection, then each element of that collection, that is not
+    ///     already persistent, should be made persistent by recursively calling this method.
+    /// </para>
+    void MakePersistent(INakedObjectAdapter nakedObjectAdapter);
 
-        object CreateNonAdaptedInjectedObject(Type type);
+    void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+    INakedObjectAdapter GetViewModel(IOid oid, INakedFramework framework);
+    IOid RestoreOid(string[] encodedData, INakedFramework framework);
+    INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec);
 
-        object CreateNonAdaptedObject(Type type);
-
-        /// <summary>
-        ///     Makes a naked object persistent. The specified object should be stored away via this object store's
-        ///     persistence mechanism, and have an new and unique OID assigned to it (by calling the object's
-        ///     <c>setOid</c> method). The object, should also be added to the cache as the object is
-        ///     implicitly 'in use'.
-        /// </summary>
-        /// <para>
-        ///     If the object has any associations then each of these, where they aren't already persistent, should
-        ///     also be made persistent by recursively calling this method.
-        /// </para>
-        /// <para>
-        ///     If the object to be persisted is a collection, then each element of that collection, that is not
-        ///     already persistent, should be made persistent by recursively calling this method.
-        /// </para>
-        void MakePersistent(INakedObjectAdapter nakedObjectAdapter);
-
-        void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-        INakedObjectAdapter GetViewModel(IOid oid, INakedFramework framework);
-        IOid RestoreOid(string[] encodedData, INakedFramework framework);
-        INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec);
-
-        IList<(object original, object updated)> Persist(IDetachedObjects objects);
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+    IList<(object original, object updated)> Persist(IDetachedObjects objects);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

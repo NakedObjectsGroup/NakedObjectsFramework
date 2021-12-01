@@ -13,22 +13,22 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {
-        public TypeOfFacetInferredFromGenerics(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(ITypeOfFacet);
+[Serializable]
+public sealed class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {
+    public TypeOfFacetInferredFromGenerics(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region ITypeOfFacet Members
+    public static Type Type => typeof(ITypeOfFacet);
 
-        public Type GetValue(INakedObjectAdapter collection) => collection.Object.GetType().GenericTypeArguments.First();
+    #region ITypeOfFacet Members
 
-        public IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => (IObjectSpecImmutable) metamodel.GetSpecification(GetValue(collection));
+    public Type GetValue(INakedObjectAdapter collection) => collection.Object.GetType().GenericTypeArguments.First();
 
-        #endregion
-    }
+    public IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => (IObjectSpecImmutable) metamodel.GetSpecification(GetValue(collection));
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -12,45 +12,45 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component {
-    public sealed class MessageBroker : IMessageBroker {
-        private readonly ILogger<MessageBroker> logger;
+namespace NakedFramework.Core.Component; 
 
-        private readonly List<string> messages = new();
-        private readonly List<string> warnings = new();
+public sealed class MessageBroker : IMessageBroker {
+    private readonly ILogger<MessageBroker> logger;
 
-        public MessageBroker(ILogger<MessageBroker> logger) => this.logger = logger;
+    private readonly List<string> messages = new();
+    private readonly List<string> warnings = new();
 
-        #region IMessageBroker Members
+    public MessageBroker(ILogger<MessageBroker> logger) => this.logger = logger;
 
-        public string[] PeekMessages => messages.ToArray();
+    #region IMessageBroker Members
 
-        public string[] PeekWarnings => warnings.ToArray();
+    public string[] PeekMessages => messages.ToArray();
 
-        public string[] Messages => messages.ToArray();
+    public string[] PeekWarnings => warnings.ToArray();
 
-        public string[] Warnings => warnings.ToArray();
+    public string[] Messages => messages.ToArray();
 
-        public void EnsureEmpty() {
-            if (warnings.Count > 0) {
-                throw new InvalidStateException(logger.LogAndReturn($"Message broker still has warnings: {warnings.Aggregate((s, t) => s + t + "; ")}"));
-            }
+    public string[] Warnings => warnings.ToArray();
 
-            if (messages.Count > 0) {
-                throw new InvalidStateException(logger.LogAndReturn($"Message broker still has messages: {messages.Aggregate((s, t) => s + t + "; ")}"));
-            }
+    public void EnsureEmpty() {
+        if (warnings.Count > 0) {
+            throw new InvalidStateException(logger.LogAndReturn($"Message broker still has warnings: {warnings.Aggregate((s, t) => s + t + "; ")}"));
         }
 
-        public void AddWarning(string message) => warnings.Add(message);
-
-        public void AddMessage(string message) => messages.Add(message);
-
-        public void ClearMessages() => messages.Clear();
-
-        public void ClearWarnings() => warnings.Clear();
-
-        #endregion
+        if (messages.Count > 0) {
+            throw new InvalidStateException(logger.LogAndReturn($"Message broker still has messages: {messages.Aggregate((s, t) => s + t + "; ")}"));
+        }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public void AddWarning(string message) => warnings.Add(message);
+
+    public void AddMessage(string message) => messages.Add(message);
+
+    public void ClearMessages() => messages.Clear();
+
+    public void ClearWarnings() => warnings.Clear();
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

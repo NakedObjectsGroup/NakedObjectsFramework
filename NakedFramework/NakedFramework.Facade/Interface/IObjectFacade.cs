@@ -10,33 +10,33 @@ using System.Collections.Generic;
 using System.Reflection;
 using NakedFramework.Facade.Contexts;
 
-namespace NakedFramework.Facade.Interface {
-    public interface IObjectFacade : IFacadeHolder {
-        ITypeFacade Specification { get; }
-        ITypeFacade ElementSpecification { get; }
-        object Object { get; }
-        IOidFacade Oid { get; }
-        IVersionFacade Version { get; }
-        string PresentationHint { get; }
-        bool IsTransient { get; }
-        bool IsDestroyed { get; }
-        bool IsUserPersistable { get; }
-        bool IsNotPersistent { get; }
-        string TitleString { get; }
-        string InvariantString { get; }
-        bool IsViewModelEditView { get; }
-        bool IsViewModel { get; }
-        IEnumerable<IObjectFacade> ToEnumerable();
-        PropertyInfo[] GetKeys();
+namespace NakedFramework.Facade.Interface; 
 
-        // forceEnumerable will cause the returned object collection to be 
-        // no longer a queryable. 
-        IObjectFacade Page(int page, int size, bool forceEnumerable);
-        IObjectFacade Select(object[] selection, bool forceEnumerable);
-        int Count();
-        AttachmentContextFacade GetAttachment();
-        void SetIsNotQueryableState(bool state);
-        string ToString(string format = "");
-        object ToValue();
-    }
+public interface IObjectFacade : IFacadeHolder {
+    ITypeFacade Specification { get; }
+    ITypeFacade ElementSpecification { get; }
+    object Object { get; }
+    IOidFacade Oid { get; }
+    IVersionFacade Version { get; }
+    string PresentationHint { get; }
+    bool IsTransient { get; }
+    bool IsDestroyed { get; }
+    bool IsUserPersistable { get; }
+    bool IsNotPersistent { get; }
+    string TitleString { get; }
+    string InvariantString { get; }
+    bool IsViewModelEditView { get; }
+    bool IsViewModel { get; }
+    IEnumerable<IObjectFacade> ToEnumerable();
+    PropertyInfo[] GetKeys();
+
+    // forceEnumerable will cause the returned object collection to be 
+    // no longer a queryable. 
+    IObjectFacade Page(int page, int size, bool forceEnumerable);
+    IObjectFacade Select(object[] selection, bool forceEnumerable);
+    int Count();
+    AttachmentContextFacade GetAttachment();
+    void SetIsNotQueryableState(bool state);
+    string ToString(string format = "");
+    object ToValue();
 }

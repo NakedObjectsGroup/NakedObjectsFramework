@@ -20,43 +20,43 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class TypeOfAnnotationFacetFactory : ObjectFacetFactoryProcessor {
-        public TypeOfAnnotationFacetFactory(IFacetFactoryOrder<TypeOfAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type methodReturnType, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!CollectionUtils.IsCollection(methodReturnType)) {
-                return metamodel;
-            }
+public sealed class TypeOfAnnotationFacetFactory : ObjectFacetFactoryProcessor {
+    public TypeOfAnnotationFacetFactory(IFacetFactoryOrder<TypeOfAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) { }
 
-            if (methodReturnType.IsArray) {
-                var elementType = methodReturnType.GetElementType();
-                IObjectSpecBuilder elementSpec;
-                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-                FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
-                FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
-            }
-            else if (methodReturnType.IsGenericType) {
-                var actualTypeArguments = methodReturnType.GetGenericArguments();
-                if (actualTypeArguments.Any()) {
-                    var elementType = actualTypeArguments.First();
-                    IObjectSpecBuilder elementSpec;
-                    (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-                    FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
-                    FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
-                }
-            }
-
+    private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type methodReturnType, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!CollectionUtils.IsCollection(methodReturnType)) {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-            Process(reflector, method.ReturnType, specification, metamodel);
+        if (methodReturnType.IsArray) {
+            var elementType = methodReturnType.GetElementType();
+            IObjectSpecBuilder elementSpec;
+            (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+            FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
+            FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
+        }
+        else if (methodReturnType.IsGenericType) {
+            var actualTypeArguments = methodReturnType.GetGenericArguments();
+            if (actualTypeArguments.Any()) {
+                var elementType = actualTypeArguments.First();
+                IObjectSpecBuilder elementSpec;
+                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+                FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
+                FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
+            }
+        }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-            property.HasPublicGetter()
-                ? Process(reflector, property.PropertyType, specification, metamodel)
-                : metamodel;
+        return metamodel;
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+        Process(reflector, method.ReturnType, specification, metamodel);
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+        property.HasPublicGetter()
+            ? Process(reflector, property.PropertyType, specification, metamodel)
+            : metamodel;
 }

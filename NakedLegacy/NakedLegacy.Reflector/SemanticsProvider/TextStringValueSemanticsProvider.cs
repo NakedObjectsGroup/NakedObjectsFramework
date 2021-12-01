@@ -14,43 +14,43 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.SemanticsProvider {
-    [Serializable]
-    public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbstract<TextString>, IStringValueFacet {
-        private const TextString DefaultValueConst = null;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 25;
+namespace NakedLegacy.Reflector.SemanticsProvider; 
 
-        public TextStringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbstract<TextString>, IStringValueFacet {
+    private const TextString DefaultValueConst = null;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 25;
 
-        public static Type Type => typeof(IStringValueFacet);
+    public TextStringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(TextString);
+    public static Type Type => typeof(IStringValueFacet);
 
-        #region IStringValueFacet Members
+    public static Type AdaptedType => typeof(TextString);
 
-        public string StringValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TextString>().Text;
+    #region IStringValueFacet Members
 
-        #endregion
+    public string StringValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TextString>().Text;
 
-        public static bool IsAdaptedType(Type type) => type == AdaptedType;
+    #endregion
 
-        protected override TextString DoParse(string entry) => entry.Trim().Equals("") ? null : new TextString(entry);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-        protected override TextString DoParseInvariant(string entry) => new(entry);
+    protected override TextString DoParse(string entry) => entry.Trim().Equals("") ? null : new TextString(entry);
 
-        protected override string GetInvariantString(TextString textString) => textString.Text;
+    protected override TextString DoParseInvariant(string entry) => new(entry);
 
-        protected override string DoEncode(TextString textString) => textString.Text;
+    protected override string GetInvariantString(TextString textString) => textString.Text;
 
-        protected override TextString DoRestore(string data) {
-            return new TextString(data);
-        }
+    protected override string DoEncode(TextString textString) => textString.Text;
 
-        private static bool IsEscaped(string text) => text.StartsWith("/");
-
-        private static string EscapeText(string text) => $"/{text}";
+    protected override TextString DoRestore(string data) {
+        return new TextString(data);
     }
+
+    private static bool IsEscaped(string text) => text.StartsWith("/");
+
+    private static string EscapeText(string text) => $"/{text}";
 }

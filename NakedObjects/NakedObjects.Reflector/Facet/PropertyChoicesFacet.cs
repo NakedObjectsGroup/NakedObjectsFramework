@@ -21,61 +21,61 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
-        private readonly ILogger<PropertyChoicesFacet> logger;
+namespace NakedObjects.Reflector.Facet; 
 
-        private readonly MethodInfo method;
+[Serializable]
+public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
+    private readonly ILogger<PropertyChoicesFacet> logger;
 
-        private readonly string[] parameterNames;
+    private readonly MethodInfo method;
 
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+    private readonly string[] parameterNames;
 
-        public PropertyChoicesFacet(MethodInfo optionsMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, ISpecification holder, ILogger<PropertyChoicesFacet> logger)
-            : base(typeof(IPropertyChoicesFacet), holder) {
-            method = optionsMethod;
-            this.logger = logger;
+    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-            ParameterNamesAndTypes = parameterNamesAndTypes;
-            parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+    public PropertyChoicesFacet(MethodInfo optionsMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, ISpecification holder, ILogger<PropertyChoicesFacet> logger)
+        : base(typeof(IPropertyChoicesFacet), holder) {
+        method = optionsMethod;
+        this.logger = logger;
 
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
-
-        #region IPropertyChoicesFacet Members
-
-        public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
-
-        public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
-            var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
-            try {
-                var options = methodDelegate(inObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray());
-                if (options is IEnumerable enumerable) {
-                    return enumerable.Cast<object>().ToArray();
-                }
-
-                throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {method.Name}");
-            }
-            catch (ArgumentException ae) {
-                throw new InvokeException($"Choices exception: {method.Name} has mismatched (ie type of parameter does not match type of property) parameter types", ae);
-            }
-        }
-
-        #endregion
+        ParameterNamesAndTypes = parameterNamesAndTypes;
+        parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
+
+    #region IPropertyChoicesFacet Members
+
+    public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+
+    public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
+        var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
+        try {
+            var options = methodDelegate(inObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray());
+            if (options is IEnumerable enumerable) {
+                return enumerable.Cast<object>().ToArray();
+            }
+
+            throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {method.Name}");
+        }
+        catch (ArgumentException ae) {
+            throw new InvokeException($"Choices exception: {method.Name} has mismatched (ie type of parameter does not match type of property) parameter types", ae);
+        }
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

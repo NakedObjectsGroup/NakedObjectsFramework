@@ -15,76 +15,76 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class SwitchableViewModel : IViewModelSwitchable {
-        private int deriveCheck;
-        private int populateCheck;
-        public virtual IDomainObjectContainer Container { set; protected get; }
+namespace RestfulObjects.Test.Data; 
 
-        [Key]
-        [ConcurrencyCheck]
-        [Hidden(WhenTo.Always)]
-        public virtual int Id { get; set; }
+public class SwitchableViewModel : IViewModelSwitchable {
+    private int deriveCheck;
+    private int populateCheck;
+    public virtual IDomainObjectContainer Container { set; protected get; }
 
-        [Title]
-        public virtual string Name { get; set; }
+    [Key]
+    [ConcurrencyCheck]
+    [Hidden(WhenTo.Always)]
+    public virtual int Id { get; set; }
 
-        [Optionally]
-        [Title]
-        public virtual MostSimple MostSimple { get; set; }
+    [Title]
+    public virtual string Name { get; set; }
 
-        [Hidden(WhenTo.Always)]
-        public virtual bool IsEdit { get; set; }
+    [Optionally]
+    [Title]
+    public virtual MostSimple MostSimple { get; set; }
 
-        public SwitchableViewModel Step() {
-            var vm = Container.NewViewModel<SwitchableViewModel>();
-            vm.Id = 2;
-            vm.MostSimple = MostSimple;
-            return vm;
-        }
+    [Hidden(WhenTo.Always)]
+    public virtual bool IsEdit { get; set; }
 
-        public SwitchableViewModel ToggleView() {
-            IsEdit = !IsEdit;
-            return this;
-        }
-
-        #region IViewModelSwitchable Members
-
-        [NakedObjectsIgnore]
-        public string[] DeriveKeys() {
-            deriveCheck++;
-
-            if (deriveCheck > 1) {
-                throw new Exception("Derive called multiple times");
-            }
-
-            var keys = new List<string> {
-                Id.ToString(),
-                MostSimple.Id.ToString(),
-                IsEdit.ToString(),
-                Name
-            };
-
-            return keys.ToArray();
-        }
-
-        [NakedObjectsIgnore]
-        public void PopulateUsingKeys(string[] keys) {
-            populateCheck++;
-
-            if (populateCheck > 1) {
-                throw new Exception("PopulateUsingKeys called multiple times");
-            }
-
-            Id = int.Parse(keys[0]);
-            var msId = int.Parse(keys[1]);
-            MostSimple = Container.Instances<MostSimple>().FirstOrDefault(ms => ms.Id == msId);
-            IsEdit = bool.Parse(keys[2]);
-            Name = keys[3];
-        }
-
-        public bool IsEditView() => IsEdit;
-
-        #endregion
+    public SwitchableViewModel Step() {
+        var vm = Container.NewViewModel<SwitchableViewModel>();
+        vm.Id = 2;
+        vm.MostSimple = MostSimple;
+        return vm;
     }
+
+    public SwitchableViewModel ToggleView() {
+        IsEdit = !IsEdit;
+        return this;
+    }
+
+    #region IViewModelSwitchable Members
+
+    [NakedObjectsIgnore]
+    public string[] DeriveKeys() {
+        deriveCheck++;
+
+        if (deriveCheck > 1) {
+            throw new Exception("Derive called multiple times");
+        }
+
+        var keys = new List<string> {
+            Id.ToString(),
+            MostSimple.Id.ToString(),
+            IsEdit.ToString(),
+            Name
+        };
+
+        return keys.ToArray();
+    }
+
+    [NakedObjectsIgnore]
+    public void PopulateUsingKeys(string[] keys) {
+        populateCheck++;
+
+        if (populateCheck > 1) {
+            throw new Exception("PopulateUsingKeys called multiple times");
+        }
+
+        Id = int.Parse(keys[0]);
+        var msId = int.Parse(keys[1]);
+        MostSimple = Container.Instances<MostSimple>().FirstOrDefault(ms => ms.Id == msId);
+        IsEdit = bool.Parse(keys[2]);
+        Name = keys[3];
+    }
+
+    public bool IsEditView() => IsEdit;
+
+    #endregion
 }

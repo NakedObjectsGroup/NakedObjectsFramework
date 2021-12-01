@@ -10,30 +10,30 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.SpecImmutable {
-    [Serializable]
-    public sealed class OneToOneAssociationSpecImmutable : AssociationSpecImmutable, IOneToOneAssociationSpecImmutable {
-        public OneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec)
-            : base(identifier, returnSpec) =>
-            OwnerSpec = ownerSpec;
+namespace NakedFramework.Metamodel.SpecImmutable; 
 
-        #region ISerializable
+[Serializable]
+public sealed class OneToOneAssociationSpecImmutable : AssociationSpecImmutable, IOneToOneAssociationSpecImmutable {
+    public OneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec)
+        : base(identifier, returnSpec) =>
+        OwnerSpec = ownerSpec;
 
-        // The special constructor is used to deserialize values. 
-        public OneToOneAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    #region ISerializable
 
-        #endregion
+    // The special constructor is used to deserialize values. 
+    public OneToOneAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
-        public override IObjectSpecImmutable ElementSpec => null;
+    #endregion
 
-        #region IOneToOneAssociationSpecImmutable Members
+    public override IObjectSpecImmutable ElementSpec => null;
 
-        public override IObjectSpecImmutable OwnerSpec { get; }
+    #region IOneToOneAssociationSpecImmutable Members
 
-        #endregion
+    public override IObjectSpecImmutable OwnerSpec { get; }
 
-        public override string ToString() => $"Reference Association [name=\"{Identifier}\", Type={ReturnSpec} ]";
-    }
+    #endregion
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string ToString() => $"Reference Association [name=\"{Identifier}\", Type={ReturnSpec} ]";
 }
+
+// Copyright (c) Naked Objects Group Ltd.

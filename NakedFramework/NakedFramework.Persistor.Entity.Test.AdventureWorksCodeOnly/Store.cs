@@ -13,30 +13,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.Store")]
-    public class Store {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int CustomerID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Sales.Store")]
+public class Store {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int CustomerID { get; set; }
 
-        public int? SalesPersonID { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        [Column(TypeName = "xml")]
-        public string Demographics { get; set; }
+    public int? SalesPersonID { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Column(TypeName = "xml")]
+    public string Demographics { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual Customer Customer { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual SalesPerson SalesPerson { get; set; }
+    public virtual Customer Customer { get; set; }
 
-        public virtual ICollection<StoreContact> StoreContacts { get; set; } = new HashSet<StoreContact>();
-    }
+    public virtual SalesPerson SalesPerson { get; set; }
+
+    public virtual ICollection<StoreContact> StoreContacts { get; set; } = new HashSet<StoreContact>();
 }

@@ -13,39 +13,39 @@ using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 
-namespace NakedFramework.Facade.Impl.Translators {
-    public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
-        private readonly INakedFramework framework;
+namespace NakedFramework.Facade.Impl.Translators; 
 
-        public OidTranslatorSemiColonSeparatedList(INakedFramework framework) => this.framework = framework;
+public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
+    private readonly INakedFramework framework;
 
-        private static string Encode(IEncodedToStrings encoder) => encoder.ToShortEncodedStrings().Aggregate((a, b) => $"{a};{b}");
+    public OidTranslatorSemiColonSeparatedList(INakedFramework framework) => this.framework = framework;
 
-        private static string GetObjectId(IOidFacade oid) => Encode((IEncodedToStrings) oid.Value);
+    private static string Encode(IEncodedToStrings encoder) => encoder.ToShortEncodedStrings().Aggregate((a, b) => $"{a};{b}");
 
-        #region IOidTranslator Members
+    private static string GetObjectId(IOidFacade oid) => Encode((IEncodedToStrings) oid.Value);
 
-        public IOidTranslation GetOidTranslation(params string[] id) {
-            if (id.Length != 1) {
-                throw new ObjectResourceNotFoundNOSException($"{id.Aggregate((s, t) => $"{s} {t}")}: Parsing Id error");
-            }
+    #region IOidTranslator Members
 
-            return string.IsNullOrEmpty(id.First())
-                ? null
-                : new OidTranslationSemiColonSeparatedList(id.First());
+    public IOidTranslation GetOidTranslation(params string[] id) {
+        if (id.Length != 1) {
+            throw new ObjectResourceNotFoundNOSException($"{id.Aggregate((s, t) => $"{s} {t}")}: Parsing Id error");
         }
 
-        public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
-            if (objectFacade.IsViewModel) {
-                var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
-                framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
-            }
-
-            var oid = objectFacade.Oid;
-            var id = GetObjectId(oid);
-            return GetOidTranslation(id);
-        }
-
-        #endregion
+        return string.IsNullOrEmpty(id.First())
+            ? null
+            : new OidTranslationSemiColonSeparatedList(id.First());
     }
+
+    public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
+        if (objectFacade.IsViewModel) {
+            var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
+            framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
+        }
+
+        var oid = objectFacade.Oid;
+        var id = GetObjectId(oid);
+        return GetOidTranslation(id);
+    }
+
+    #endregion
 }

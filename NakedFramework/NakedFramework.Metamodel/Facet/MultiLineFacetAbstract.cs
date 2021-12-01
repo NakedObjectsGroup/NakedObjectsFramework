@@ -9,28 +9,28 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class MultiLineFacetAbstract : FacetAbstract, IMultiLineFacet {
-        private readonly int numberOfLines;
-        private readonly int width;
+namespace NakedFramework.Metamodel.Facet; 
 
-        protected MultiLineFacetAbstract(int numberOfLines, int width, ISpecification holder)
-            : base(Type, holder) {
-            this.numberOfLines = numberOfLines;
-            this.width = width;
-        }
+[Serializable]
+public abstract class MultiLineFacetAbstract : FacetAbstract, IMultiLineFacet {
+    private readonly int numberOfLines;
+    private readonly int width;
 
-        public static Type Type => typeof(IMultiLineFacet);
-
-        protected override string ToStringValues() => $"lines={numberOfLines}, width={width}";
-
-        #region IMultiLineFacet Members
-
-        public virtual int NumberOfLines => numberOfLines;
-
-        public virtual int Width => width;
-
-        #endregion
+    protected MultiLineFacetAbstract(int numberOfLines, int width, ISpecification holder)
+        : base(Type, holder) {
+        this.numberOfLines = numberOfLines;
+        this.width = width;
     }
+
+    public static Type Type => typeof(IMultiLineFacet);
+
+    protected override string ToStringValues() => $"lines={numberOfLines}, width={width}";
+
+    #region IMultiLineFacet Members
+
+    public virtual int NumberOfLines => numberOfLines;
+
+    public virtual int Width => width;
+
+    #endregion
 }

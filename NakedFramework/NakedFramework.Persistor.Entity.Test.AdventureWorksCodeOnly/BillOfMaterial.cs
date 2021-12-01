@@ -12,34 +12,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.BillOfMaterials")]
-    public class BillOfMaterial {
-        [Key]
-        public int BillOfMaterialsID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public int? ProductAssemblyID { get; set; }
+[Table("Production.BillOfMaterials")]
+public class BillOfMaterial {
+    [Key]
+    public int BillOfMaterialsID { get; set; }
 
-        public int ComponentID { get; set; }
+    public int? ProductAssemblyID { get; set; }
 
-        public DateTime StartDate { get; set; }
+    public int ComponentID { get; set; }
 
-        public DateTime? EndDate { get; set; }
+    public DateTime StartDate { get; set; }
 
-        [Required]
-        [StringLength(3)]
-        public string UnitMeasureCode { get; set; }
+    public DateTime? EndDate { get; set; }
 
-        public short BOMLevel { get; set; }
+    [Required]
+    [StringLength(3)]
+    public string UnitMeasureCode { get; set; }
 
-        public decimal PerAssemblyQty { get; set; }
+    public short BOMLevel { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public decimal PerAssemblyQty { get; set; }
 
-        public virtual Product Product { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Product Product1 { get; set; }
+    public virtual Product Product { get; set; }
 
-        public virtual UnitMeasure UnitMeasure { get; set; }
-    }
+    public virtual Product Product1 { get; set; }
+
+    public virtual UnitMeasure UnitMeasure { get; set; }
 }

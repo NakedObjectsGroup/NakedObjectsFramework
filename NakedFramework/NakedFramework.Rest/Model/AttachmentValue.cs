@@ -9,16 +9,16 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Model {
-    public class AttachmentValue : IValue {
-        private readonly byte[] internalValue;
+namespace NakedFramework.Rest.Model; 
 
-        public AttachmentValue(byte[] value) => internalValue = value;
+public class AttachmentValue : IValue {
+    private readonly byte[] internalValue;
 
-        #region IValue Members
+    public AttachmentValue(byte[] value) => internalValue = value;
 
-        object IValue.GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => internalValue;
+    #region IValue Members
 
-        #endregion
-    }
+    object IValue.GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => internalValue;
+
+    #endregion
 }

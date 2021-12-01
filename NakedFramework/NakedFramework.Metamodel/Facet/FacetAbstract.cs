@@ -12,99 +12,99 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class FacetAbstract : IFacet, IDeserializationCallback {
-        private ISpecification holder;
+namespace NakedFramework.Metamodel.Facet; 
 
-        protected FacetAbstract(Type facetType, ISpecification holder) {
-            FacetType = facetType;
-            this.holder = holder;
-        }
+[Serializable]
+public abstract class FacetAbstract : IFacet, IDeserializationCallback {
+    private ISpecification holder;
 
-        #region IDeserializationCallback Members
-
-        public virtual void OnDeserialization(object sender) {
-            // hook if we need a log
-        }
-
-        #endregion
-
-        protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair, ILogger logger) {
-            var (delFunc, warning) = pair;
-            if (delFunc is null && !string.IsNullOrWhiteSpace(warning)) {
-                logger.LogInformation(warning);
-            }
-
-            return delFunc;
-        }
-
-        public override string ToString() {
-            var details = "";
-            if (typeof(IValidatingInteractionAdvisor).IsAssignableFrom(GetType())) {
-                details += "Validating";
-            }
-
-            if (typeof(IDisablingInteractionAdvisor).IsAssignableFrom(GetType())) {
-                details += $"{(details.Length > 0 ? ";" : "")}Disabling";
-            }
-
-            if (typeof(IHidingInteractionAdvisor).IsAssignableFrom(GetType())) {
-                details += $"{(details.Length > 0 ? ";" : "")}Hiding";
-            }
-
-            if (!"".Equals(details)) {
-                details = $"interaction={details},";
-            }
-
-            if (GetType() != FacetType) {
-                var sFacetType = FacetType.FullName;
-                details += $"type={sFacetType[(sFacetType.LastIndexOf('.') + 1)..]}";
-            }
-
-            var stringValues = ToStringValues();
-            if (!"".Equals(stringValues)) {
-                details += ",";
-            }
-
-            var typeName = GetType().FullName;
-            var last = typeName.IndexOf('`');
-            if (last == -1) {
-                last = typeName.Length - 1;
-            }
-
-            return $"{typeName[(typeName.LastIndexOf('.', last) + 1)..]}[{details}{stringValues}]";
-        }
-
-        protected virtual string ToStringValues() => "";
-
-        #region IFacet Members
-
-        public virtual ISpecification Specification {
-            get => holder;
-            set => holder = value;
-        }
-
-        /// <summary>
-        ///     Assume implementation is <i>not</i> a no-op.
-        /// </summary>
-        /// <para>
-        ///     No-op implementations should override and return <c>true</c>.
-        /// </para>
-        public virtual bool IsNoOp => false;
-
-        public Type FacetType { get; }
-
-        /// <summary>
-        ///     Default implementation of this method that returns <c>true</c>, ie
-        ///     should replace non-<see cref="IsNoOp" /> implementations.
-        /// </summary>
-        /// <para>
-        ///     Implementations that don't wish to replace non-<see cref="IsNoOp" /> implementations
-        ///     should override and return <c>false</c>.
-        /// </para>
-        public virtual bool CanAlwaysReplace => true;
-
-        #endregion
+    protected FacetAbstract(Type facetType, ISpecification holder) {
+        FacetType = facetType;
+        this.holder = holder;
     }
+
+    #region IDeserializationCallback Members
+
+    public virtual void OnDeserialization(object sender) {
+        // hook if we need a log
+    }
+
+    #endregion
+
+    protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair, ILogger logger) {
+        var (delFunc, warning) = pair;
+        if (delFunc is null && !string.IsNullOrWhiteSpace(warning)) {
+            logger.LogInformation(warning);
+        }
+
+        return delFunc;
+    }
+
+    public override string ToString() {
+        var details = "";
+        if (typeof(IValidatingInteractionAdvisor).IsAssignableFrom(GetType())) {
+            details += "Validating";
+        }
+
+        if (typeof(IDisablingInteractionAdvisor).IsAssignableFrom(GetType())) {
+            details += $"{(details.Length > 0 ? ";" : "")}Disabling";
+        }
+
+        if (typeof(IHidingInteractionAdvisor).IsAssignableFrom(GetType())) {
+            details += $"{(details.Length > 0 ? ";" : "")}Hiding";
+        }
+
+        if (!"".Equals(details)) {
+            details = $"interaction={details},";
+        }
+
+        if (GetType() != FacetType) {
+            var sFacetType = FacetType.FullName;
+            details += $"type={sFacetType[(sFacetType.LastIndexOf('.') + 1)..]}";
+        }
+
+        var stringValues = ToStringValues();
+        if (!"".Equals(stringValues)) {
+            details += ",";
+        }
+
+        var typeName = GetType().FullName;
+        var last = typeName.IndexOf('`');
+        if (last == -1) {
+            last = typeName.Length - 1;
+        }
+
+        return $"{typeName[(typeName.LastIndexOf('.', last) + 1)..]}[{details}{stringValues}]";
+    }
+
+    protected virtual string ToStringValues() => "";
+
+    #region IFacet Members
+
+    public virtual ISpecification Specification {
+        get => holder;
+        set => holder = value;
+    }
+
+    /// <summary>
+    ///     Assume implementation is <i>not</i> a no-op.
+    /// </summary>
+    /// <para>
+    ///     No-op implementations should override and return <c>true</c>.
+    /// </para>
+    public virtual bool IsNoOp => false;
+
+    public Type FacetType { get; }
+
+    /// <summary>
+    ///     Default implementation of this method that returns <c>true</c>, ie
+    ///     should replace non-<see cref="IsNoOp" /> implementations.
+    /// </summary>
+    /// <para>
+    ///     Implementations that don't wish to replace non-<see cref="IsNoOp" /> implementations
+    ///     should override and return <c>false</c>.
+    /// </para>
+    public virtual bool CanAlwaysReplace => true;
+
+    #endregion
 }

@@ -9,20 +9,20 @@ using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    public class IntegrationFacet : AbstractIntegrationFacet {
-        private Action<IMetamodelBuilder> toExecute;
-        public IntegrationFacet(ISpecification holder, Action<IMetamodelBuilder> toExecute) : base(holder) => this.toExecute = toExecute;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override void Execute(IMetamodelBuilder metamodelBuilder) => toExecute(metamodelBuilder);
+public class IntegrationFacet : AbstractIntegrationFacet {
+    private Action<IMetamodelBuilder> toExecute;
+    public IntegrationFacet(ISpecification holder, Action<IMetamodelBuilder> toExecute) : base(holder) => this.toExecute = toExecute;
 
-        public override void AddAction(Action<IMetamodelBuilder> action) {
-            var oldToExecute = toExecute;
+    public override void Execute(IMetamodelBuilder metamodelBuilder) => toExecute(metamodelBuilder);
 
-            toExecute = mb => {
-                oldToExecute(mb);
-                action(mb);
-            };
-        }
+    public override void AddAction(Action<IMetamodelBuilder> action) {
+        var oldToExecute = toExecute;
+
+        toExecute = mb => {
+            oldToExecute(mb);
+            action(mb);
+        };
     }
 }

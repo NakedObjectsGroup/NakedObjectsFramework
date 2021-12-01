@@ -5,13 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Whether the (string) property or a parameter must correspond to a specific mask.
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to the <see cref="MaskAttribute" /> annotation.
-    /// </para>
-    /// <seealso cref="IRegExFacet" />
-    public interface IMaskFacet : ISingleStringValueFacet { }
-}
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Whether the (string) property or a parameter must correspond to a specific mask.
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to the <see cref="MaskAttribute" /> annotation.
+/// </para>
+/// <seealso cref="IRegExFacet" />
+public interface IMaskFacet : ISingleStringValueFacet { }

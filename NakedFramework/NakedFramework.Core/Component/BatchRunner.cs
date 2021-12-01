@@ -9,25 +9,25 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Core.Component {
-    public sealed class BatchRunner : IBatchRunner {
-        private readonly INakedFramework framework;
+namespace NakedFramework.Core.Component; 
 
-        public BatchRunner(INakedFramework framework) => this.framework = framework ?? throw new InitialisationException($"{nameof(framework)} is null");
+public sealed class BatchRunner : IBatchRunner {
+    private readonly INakedFramework framework;
 
-        #region IBatchRunner Members
+    public BatchRunner(INakedFramework framework) => this.framework = framework ?? throw new InitialisationException($"{nameof(framework)} is null");
 
-        public void Run(IBatchStartPoint batchStartPoint) {
-            framework.DomainObjectInjector.InjectInto(batchStartPoint);
-            StartTransaction();
-            batchStartPoint.Execute();
-            EndTransaction();
-        }
+    #region IBatchRunner Members
 
-        #endregion
-
-        private void StartTransaction() => framework.TransactionManager.StartTransaction();
-
-        private void EndTransaction() => framework.TransactionManager.EndTransaction();
+    public void Run(IBatchStartPoint batchStartPoint) {
+        framework.DomainObjectInjector.InjectInto(batchStartPoint);
+        StartTransaction();
+        batchStartPoint.Execute();
+        EndTransaction();
     }
+
+    #endregion
+
+    private void StartTransaction() => framework.TransactionManager.StartTransaction();
+
+    private void EndTransaction() => framework.TransactionManager.EndTransaction();
 }

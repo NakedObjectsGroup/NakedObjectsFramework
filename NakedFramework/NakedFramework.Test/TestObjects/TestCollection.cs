@@ -14,32 +14,32 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects {
-    internal class TestCollection : ITestCollection {
-        private readonly IEnumerable<ITestObject> wrappedCollection;
+namespace NakedFramework.Test.TestObjects; 
 
-        public TestCollection(INakedObjectAdapter collection, ITestObjectFactory factory, INakedObjectManager manager) {
-            NakedObject = collection;
-            wrappedCollection = collection.GetAsEnumerable(manager).Select(factory.CreateTestObject);
-        }
+internal class TestCollection : ITestCollection {
+    private readonly IEnumerable<ITestObject> wrappedCollection;
 
-        #region ITestCollection Members
-
-        public string Title => NakedObject.TitleString();
-
-        public INakedObjectAdapter NakedObject { get; }
-
-        public ITestCollection AssertCountIs(int count) {
-            Assert.IsTrue(this.Count() == count, $"Collection Size is: {this.Count()} expected: {count}");
-            return this;
-        }
-
-        public IEnumerator<ITestObject> GetEnumerator() => wrappedCollection.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        #endregion
+    public TestCollection(INakedObjectAdapter collection, ITestObjectFactory factory, INakedObjectManager manager) {
+        NakedObject = collection;
+        wrappedCollection = collection.GetAsEnumerable(manager).Select(factory.CreateTestObject);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region ITestCollection Members
+
+    public string Title => NakedObject.TitleString();
+
+    public INakedObjectAdapter NakedObject { get; }
+
+    public ITestCollection AssertCountIs(int count) {
+        Assert.IsTrue(this.Count() == count, $"Collection Size is: {this.Count()} expected: {count}");
+        return this;
+    }
+
+    public IEnumerator<ITestObject> GetEnumerator() => wrappedCollection.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

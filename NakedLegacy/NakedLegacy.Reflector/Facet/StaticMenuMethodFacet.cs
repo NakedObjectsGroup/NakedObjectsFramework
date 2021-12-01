@@ -10,10 +10,10 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedLegacy.Reflector.Facet {
-    [Serializable]
-    public sealed class StaticMenuMethodFacet : MarkerFacetAbstract, IStaticMenuFunctionFacet {
-        public StaticMenuMethodFacet(ISpecification holder)
-            : base(typeof(IStaticMenuFunctionFacet), holder) { }
-    }
+namespace NakedLegacy.Reflector.Facet; 
+
+[Serializable]
+public sealed class StaticMenuMethodFacet : MarkerFacetAbstract, IStaticMenuFunctionFacet {
+    public StaticMenuMethodFacet(ISpecification holder)
+        : base(typeof(IStaticMenuFunctionFacet), holder) { }
 }

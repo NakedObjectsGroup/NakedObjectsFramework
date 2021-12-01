@@ -14,18 +14,18 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Reflector.TypeFacetFactory {
-    public sealed class ArrayValueTypeFacetFactory<T> : ValueUsingValueSemanticsProviderFacetFactory {
-        public ArrayValueTypeFacetFactory(IFacetFactoryOrder<ArrayValueTypeFacetFactory<T>> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+namespace NakedObjects.Reflector.TypeFacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (!ArrayValueSemanticsProvider<T>.IsAdaptedType(type)) {
-                return metamodel;
-            }
+public sealed class ArrayValueTypeFacetFactory<T> : ValueUsingValueSemanticsProviderFacetFactory {
+    public ArrayValueTypeFacetFactory(IFacetFactoryOrder<ArrayValueTypeFacetFactory<T>> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(ArrayValueSemanticsProvider<T>.AdaptedType, metamodel);
-            AddValueFacets(new ArrayValueSemanticsProvider<T>(oSpec, specification), specification);
-            return mm;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (!ArrayValueSemanticsProvider<T>.IsAdaptedType(type)) {
+            return metamodel;
         }
+
+        var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(ArrayValueSemanticsProvider<T>.AdaptedType, metamodel);
+        AddValueFacets(new ArrayValueSemanticsProvider<T>(oSpec, specification), specification);
+        return mm;
     }
 }

@@ -19,88 +19,88 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedLegacy.Reflector.Facet {
-    [Serializable]
-    public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-        private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
-        private readonly Func<object, object[], object> methodDelegate;
+namespace NakedLegacy.Reflector.Facet; 
 
-        private readonly int paramCount;
+[Serializable]
+public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
+    private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
+    private readonly Func<object, object[], object> methodDelegate;
 
-        public ActionInvocationFacetViaStaticMethod(MethodInfo method,
-                                                    ITypeSpecImmutable onType,
-                                                    IObjectSpecImmutable returnType,
-                                                    IObjectSpecImmutable elementType,
-                                                    ISpecification holder,
-                                                    bool isQueryOnly,
-                                                    ILogger<ActionInvocationFacetViaStaticMethod> logger)
-            : base(holder) {
-            ActionMethod = method;
-            this.logger = logger;
-            paramCount = method.GetParameters().Length;
-            OnType = onType;
-            ReturnType = returnType;
-            ElementType = elementType;
-            IsQueryOnly = isQueryOnly;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+    private readonly int paramCount;
 
-        [field: NonSerialized] public override MethodInfo ActionMethod { get; }
-
-        public override IObjectSpecImmutable ReturnType { get; }
-
-        public override ITypeSpecImmutable OnType { get; }
-
-        public override IObjectSpecImmutable ElementType { get; }
-
-        public override bool IsQueryOnly { get; }
-
-        private INakedObjectAdapter HandleInvokeResult(INakedFramework framework, object result) =>
-            // if any changes made by invocation fail 
-            framework.NakedObjectManager.CreateAdapter(result, null, null);
-
-        private static T Invoke<T>(Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
-            try {
-                return methodDelegate is not null ? (T)methodDelegate(null, parms) : (T)method.Invoke(null, parms);
-            } catch (InvalidCastException) {
-                throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.DeclaringType}.{method.Name}");
-            }
-        }
-
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
-                                                   INakedObjectAdapter[] parameters,
-                                                   INakedFramework framework) {
-            if (parameters.Length != paramCount) {
-                logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
-            }
-
-            var rawParms = parameters.Select(p => p?.Object).ToArray();
-
-            return HandleInvokeResult(framework, Invoke<object>(methodDelegate, ActionMethod, rawParms));
-        }
-
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
-                                                   INakedObjectAdapter[] parameters,
-                                                   int resultPage,
-                                                   INakedFramework framework) =>
-            Invoke(nakedObjectAdapter, parameters, framework);
-
-        protected override string ToStringValues() => $"method={ActionMethod}";
-
-        [OnDeserialized]
-        private static void OnDeserialized(StreamingContext context) { }
-
-        #region IImperativeFacet Members
-
-        /// <summary>
-        ///     See <see cref="IImperativeFacet" />
-        /// </summary>
-        public MethodInfo GetMethod() => ActionMethod;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public ActionInvocationFacetViaStaticMethod(MethodInfo method,
+                                                ITypeSpecImmutable onType,
+                                                IObjectSpecImmutable returnType,
+                                                IObjectSpecImmutable elementType,
+                                                ISpecification holder,
+                                                bool isQueryOnly,
+                                                ILogger<ActionInvocationFacetViaStaticMethod> logger)
+        : base(holder) {
+        ActionMethod = method;
+        this.logger = logger;
+        paramCount = method.GetParameters().Length;
+        OnType = onType;
+        ReturnType = returnType;
+        ElementType = elementType;
+        IsQueryOnly = isQueryOnly;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [field: NonSerialized] public override MethodInfo ActionMethod { get; }
+
+    public override IObjectSpecImmutable ReturnType { get; }
+
+    public override ITypeSpecImmutable OnType { get; }
+
+    public override IObjectSpecImmutable ElementType { get; }
+
+    public override bool IsQueryOnly { get; }
+
+    private INakedObjectAdapter HandleInvokeResult(INakedFramework framework, object result) =>
+        // if any changes made by invocation fail 
+        framework.NakedObjectManager.CreateAdapter(result, null, null);
+
+    private static T Invoke<T>(Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
+        try {
+            return methodDelegate is not null ? (T)methodDelegate(null, parms) : (T)method.Invoke(null, parms);
+        } catch (InvalidCastException) {
+            throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.DeclaringType}.{method.Name}");
+        }
+    }
+
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
+                                               INakedObjectAdapter[] parameters,
+                                               INakedFramework framework) {
+        if (parameters.Length != paramCount) {
+            logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
+        }
+
+        var rawParms = parameters.Select(p => p?.Object).ToArray();
+
+        return HandleInvokeResult(framework, Invoke<object>(methodDelegate, ActionMethod, rawParms));
+    }
+
+    public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
+                                               INakedObjectAdapter[] parameters,
+                                               int resultPage,
+                                               INakedFramework framework) =>
+        Invoke(nakedObjectAdapter, parameters, framework);
+
+    protected override string ToStringValues() => $"method={ActionMethod}";
+
+    [OnDeserialized]
+    private static void OnDeserialized(StreamingContext context) { }
+
+    #region IImperativeFacet Members
+
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => ActionMethod;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

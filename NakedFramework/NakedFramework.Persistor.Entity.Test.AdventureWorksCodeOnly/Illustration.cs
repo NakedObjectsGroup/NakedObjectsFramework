@@ -12,16 +12,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.Illustration")]
-    public class Illustration {
-        public int IllustrationID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Column(TypeName = "xml")]
-        public string Diagram { get; set; }
+[Table("Production.Illustration")]
+public class Illustration {
+    public int IllustrationID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Column(TypeName = "xml")]
+    public string Diagram { get; set; }
 
-        public virtual ICollection<ProductModelIllustration> ProductModelIllustrations { get; set; } = new HashSet<ProductModelIllustration>();
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<ProductModelIllustration> ProductModelIllustrations { get; set; } = new HashSet<ProductModelIllustration>();
 }

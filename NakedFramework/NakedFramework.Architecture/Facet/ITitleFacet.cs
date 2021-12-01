@@ -8,18 +8,18 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Mechanism for obtaining the title of an instance of a class, used to label the instance in the viewer
-    ///     (usually alongside an icon representation)
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, typically corresponds to a method named <c>Title</c>
-    /// </para>
-    /// <seealso cref="IIconFacet" />
-    /// <seealso cref="IPluralFacet" />
-    public interface ITitleFacet : IFacet {
-        string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-        string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Mechanism for obtaining the title of an instance of a class, used to label the instance in the viewer
+///     (usually alongside an icon representation)
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, typically corresponds to a method named <c>Title</c>
+/// </para>
+/// <seealso cref="IIconFacet" />
+/// <seealso cref="IPluralFacet" />
+public interface ITitleFacet : IFacet {
+    string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+    string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 }

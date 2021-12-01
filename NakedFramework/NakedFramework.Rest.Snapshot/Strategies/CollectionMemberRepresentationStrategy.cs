@@ -11,13 +11,13 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    public class CollectionMemberRepresentationStrategy : AbstractCollectionRepresentationStrategy {
-        public CollectionMemberRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(frameworkFacade, req, propertyContext, flags) { }
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        public override LinkRepresentation[] GetValue() => null;
+public class CollectionMemberRepresentationStrategy : AbstractCollectionRepresentationStrategy {
+    public CollectionMemberRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
+        : base(frameworkFacade, req, propertyContext, flags) { }
 
-        public override int? GetSize() => PropertyContext.Property.Count(PropertyContext.Target);
-    }
+    public override LinkRepresentation[] GetValue() => null;
+
+    public override int? GetSize() => PropertyContext.Property.Count(PropertyContext.Target);
 }

@@ -11,44 +11,44 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter {
-    public sealed class NullVersion : IVersion, IEncodedToStrings {
-        private readonly ILogger<NullVersion> logger;
+namespace NakedFramework.Core.Adapter; 
 
-        public NullVersion(ILogger<NullVersion> logger) => this.logger = logger;
+public sealed class NullVersion : IVersion, IEncodedToStrings {
+    private readonly ILogger<NullVersion> logger;
 
-        public IVersion Next(string user, DateTime time) => throw new UnexpectedCallException(logger.LogAndReturn("Unexpected call of 'Next'"));
+    public NullVersion(ILogger<NullVersion> logger) => this.logger = logger;
 
-        public override bool Equals(object other) => other is IVersion a && Equals(a);
+    public IVersion Next(string user, DateTime time) => throw new UnexpectedCallException(logger.LogAndReturn("Unexpected call of 'Next'"));
 
-        public override int GetHashCode() => 0;
+    public override bool Equals(object other) => other is IVersion a && Equals(a);
 
-        #region IEncodedToStrings Members
+    public override int GetHashCode() => 0;
 
-        public string[] ToEncodedStrings() => Array.Empty<string>();
+    #region IEncodedToStrings Members
 
-        public string[] ToShortEncodedStrings() => Array.Empty<string>();
+    public string[] ToEncodedStrings() => Array.Empty<string>();
 
-        #endregion
+    public string[] ToShortEncodedStrings() => Array.Empty<string>();
 
-        #region IVersion Members
+    #endregion
 
-        public string User => "";
+    #region IVersion Members
 
-        public DateTime? Time => DateTime.Now;
+    public string User => "";
 
-        public string Digest => null;
+    public DateTime? Time => DateTime.Now;
 
-        public bool IsDifferent(IVersion version) => !Equals(version);
+    public string Digest => null;
 
-        public bool IsDifferent(string digest) => Digest != digest;
+    public bool IsDifferent(IVersion version) => !Equals(version);
 
-        public string AsSequence() => "";
+    public bool IsDifferent(string digest) => Digest != digest;
 
-        public bool Equals(IVersion other) => other is NullVersion;
+    public string AsSequence() => "";
 
-        #endregion
-    }
+    public bool Equals(IVersion other) => other is NullVersion;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

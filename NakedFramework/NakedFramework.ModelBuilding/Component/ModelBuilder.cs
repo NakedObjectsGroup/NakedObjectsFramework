@@ -13,33 +13,33 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.ModelBuilding.Component {
-    public class ModelBuilder : IModelBuilder {
-        private readonly IMetamodelBuilder initialMetamodel;
-        private readonly IModelIntegrator integrator;
-        private readonly IEnumerable<IReflector> reflectors;
+namespace NakedFramework.ModelBuilding.Component; 
 
-        public ModelBuilder(IEnumerable<IReflector> reflectors, IModelIntegrator integrator, IMetamodelBuilder initialMetamodel) {
-            this.reflectors = reflectors;
-            this.integrator = integrator;
-            this.initialMetamodel = initialMetamodel;
-        }
+public class ModelBuilder : IModelBuilder {
+    private readonly IMetamodelBuilder initialMetamodel;
+    private readonly IModelIntegrator integrator;
+    private readonly IEnumerable<IReflector> reflectors;
 
-        public void Build() {
-            IImmutableDictionary<string, ITypeSpecBuilder> specDictionary = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            specDictionary = reflectors.OrderBy(r => r.Order).Aggregate(specDictionary, (current, reflector) => reflector.Reflect(current));
-            Validate(specDictionary);
-            specDictionary.ForEach(i => initialMetamodel.Add(i.Value.Type, i.Value));
-            integrator.Integrate();
-        }
+    public ModelBuilder(IEnumerable<IReflector> reflectors, IModelIntegrator integrator, IMetamodelBuilder initialMetamodel) {
+        this.reflectors = reflectors;
+        this.integrator = integrator;
+        this.initialMetamodel = initialMetamodel;
+    }
 
-        private static void Validate(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var unIntrospectedSpecs = specDictionary.Values.Where(v => v.IsPlaceHolder || v.IsPendingIntrospection);
+    public void Build() {
+        IImmutableDictionary<string, ITypeSpecBuilder> specDictionary = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        specDictionary = reflectors.OrderBy(r => r.Order).Aggregate(specDictionary, (current, reflector) => reflector.Reflect(current));
+        Validate(specDictionary);
+        specDictionary.ForEach(i => initialMetamodel.Add(i.Value.Type, i.Value));
+        integrator.Integrate();
+    }
 
-            if (unIntrospectedSpecs.Any()) {
-                var names = unIntrospectedSpecs.Aggregate("", (s, sp) => $"{s}{sp.Type},");
-                throw new ReflectionException($"Unintrospected specs: {names}");
-            }
+    private static void Validate(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
+        var unIntrospectedSpecs = specDictionary.Values.Where(v => v.IsPlaceHolder || v.IsPendingIntrospection);
+
+        if (unIntrospectedSpecs.Any()) {
+            var names = unIntrospectedSpecs.Aggregate("", (s, sp) => $"{s}{sp.Type},");
+            throw new ReflectionException($"Unintrospected specs: {names}");
         }
     }
 }

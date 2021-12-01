@@ -18,18 +18,18 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class DisabledAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public DisabledAnnotationFacetFactory(IFacetFactoryOrder<DisabledAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttribute<DisabledAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-            return metamodel;
-        }
+public sealed class DisabledAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public DisabledAnnotationFacetFactory(IFacetFactoryOrder<DisabledAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
 
-        private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute is null ? null : new DisabledFacetAnnotation(WhenTo.Always, holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+        var attribute = parameter.GetCustomAttribute<DisabledAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
+        return metamodel;
     }
+
+    private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute is null ? null : new DisabledFacetAnnotation(WhenTo.Always, holder);
 }

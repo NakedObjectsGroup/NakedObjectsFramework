@@ -18,23 +18,23 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class RangeAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<RangeAnnotationFacetFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public RangeAnnotationFacetFactory(IFacetFactoryOrder<RangeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionParameters) =>
-            logger = loggerFactory.CreateLogger<RangeAnnotationFacetFactory>();
+public sealed class RangeAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<RangeAnnotationFacetFactory> logger;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-            var isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
-            var range = parameter.GetCustomAttribute<ValueRangeAttribute>();
-            FacetUtils.AddFacet(Create(range, isDate, holder));
-            return metamodel;
-        }
+    public RangeAnnotationFacetFactory(IFacetFactoryOrder<RangeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ActionParameters) =>
+        logger = loggerFactory.CreateLogger<RangeAnnotationFacetFactory>();
 
-        private static IRangeFacet Create(ValueRangeAttribute attribute, bool isDate, ISpecification holder) =>
-            attribute is null ? null : new RangeFacet(attribute.Minimum, attribute.Maximum, isDate, holder);
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+        var isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
+        var range = parameter.GetCustomAttribute<ValueRangeAttribute>();
+        FacetUtils.AddFacet(Create(range, isDate, holder));
+        return metamodel;
     }
+
+    private static IRangeFacet Create(ValueRangeAttribute attribute, bool isDate, ISpecification holder) =>
+        attribute is null ? null : new RangeFacet(attribute.Minimum, attribute.Maximum, isDate, holder);
 }

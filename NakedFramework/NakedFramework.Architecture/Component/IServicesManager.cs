@@ -8,14 +8,14 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Component {
-    /// <summary>
-    ///     Provides access to the domain services that have been registered as part of the application.
-    /// </summary>
-    public interface IServicesManager {
-        INakedObjectAdapter GetService(string id);
-        INakedObjectAdapter GetService(IServiceSpec spec);
-        INakedObjectAdapter[] GetServices();
-        INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager);
-    }
+namespace NakedFramework.Architecture.Component; 
+
+/// <summary>
+///     Provides access to the domain services that have been registered as part of the application.
+/// </summary>
+public interface IServicesManager {
+    INakedObjectAdapter GetService(string id);
+    INakedObjectAdapter GetService(IServiceSpec spec);
+    INakedObjectAdapter[] GetServices();
+    INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager);
 }

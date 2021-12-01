@@ -8,11 +8,11 @@
 using System.Runtime.Serialization;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class NullRepresentation : Representation {
-        protected NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        public static Representation Create() => new NullRepresentation();
-    }
+[DataContract]
+public class NullRepresentation : Representation {
+    protected NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
+
+    public static Representation Create() => new NullRepresentation();
 }

@@ -19,36 +19,36 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EF6.Component;
 using NakedFramework.Persistor.EF6.Configuration;
 
-namespace NakedFramework.Persistor.EF6.Extensions {
-    public static class EF6PersistorExtensions {
-        private static EF6ObjectStoreConfiguration EF6ObjectStoreConfiguration(IConfiguration configuration, EF6PersistorOptions options) {
-            var config = new EF6ObjectStoreConfiguration {
-                EnforceProxies = options.EnforceProxies,
-                CustomConfig = options.CustomConfig,
-                DefaultMergeOption = options.DefaultMergeOption,
-                MaximumCommitCycles = options.MaximumCommitCycles,
-                NotPersistedTypes = options.NotPersistedTypes,
-                RollBackOnError = options.RollBackOnError,
-                RequireExplicitAssociationOfTypes = options.RequireExplicitAssociationOfTypes
-            };
+namespace NakedFramework.Persistor.EF6.Extensions; 
 
-            var contexts = options.ContextCreators.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(f => () => f(configuration));
-            contexts.ForEach(c => config.UsingContext(c));
-            return config;
-        }
+public static class EF6PersistorExtensions {
+    private static EF6ObjectStoreConfiguration EF6ObjectStoreConfiguration(IConfiguration configuration, EF6PersistorOptions options) {
+        var config = new EF6ObjectStoreConfiguration {
+            EnforceProxies = options.EnforceProxies,
+            CustomConfig = options.CustomConfig,
+            DefaultMergeOption = options.DefaultMergeOption,
+            MaximumCommitCycles = options.MaximumCommitCycles,
+            NotPersistedTypes = options.NotPersistedTypes,
+            RollBackOnError = options.RollBackOnError,
+            RequireExplicitAssociationOfTypes = options.RequireExplicitAssociationOfTypes
+        };
 
-        public static void AddEF6Persistor(this NakedFrameworkOptions frameworkOptions, Action<EF6PersistorOptions> setupAction) {
-            var options = new EF6PersistorOptions();
-            setupAction(options);
-            frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Append(typeof(ObjectQuery<>)).Append(typeof(EntityCollection<>)).ToArray();
+        var contexts = options.ContextCreators.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(f => () => f(configuration));
+        contexts.ForEach(c => config.UsingContext(c));
+        return config;
+    }
 
-            var unpersistedTypes = options.NotPersistedTypes();
-            options.NotPersistedTypes = () => unpersistedTypes.Union(frameworkOptions.AdditionalUnpersistedTypes).ToArray();
+    public static void AddEF6Persistor(this NakedFrameworkOptions frameworkOptions, Action<EF6PersistorOptions> setupAction) {
+        var options = new EF6PersistorOptions();
+        setupAction(options);
+        frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Append(typeof(ObjectQuery<>)).Append(typeof(EntityCollection<>)).ToArray();
 
-            frameworkOptions.Services.AddSingleton<IEF6ObjectStoreConfiguration>(p => EF6ObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
-            frameworkOptions.Services.AddScoped<DatabaseOidGenerator, DatabaseOidGenerator>();
-            frameworkOptions.Services.AddScoped<IOidGenerator, DatabaseOidGenerator>();
-            frameworkOptions.Services.AddScoped<IObjectStore, EF6ObjectStore>();
-        }
+        var unpersistedTypes = options.NotPersistedTypes();
+        options.NotPersistedTypes = () => unpersistedTypes.Union(frameworkOptions.AdditionalUnpersistedTypes).ToArray();
+
+        frameworkOptions.Services.AddSingleton<IEF6ObjectStoreConfiguration>(p => EF6ObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
+        frameworkOptions.Services.AddScoped<DatabaseOidGenerator, DatabaseOidGenerator>();
+        frameworkOptions.Services.AddScoped<IOidGenerator, DatabaseOidGenerator>();
+        frameworkOptions.Services.AddScoped<IObjectStore, EF6ObjectStore>();
     }
 }

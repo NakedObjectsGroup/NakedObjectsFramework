@@ -5,23 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Adapter {
-    public enum PersistableType {
-        /// <summary>
-        ///     Marks a class as being persistable, but only by under application program control
-        /// </summary>
-        ProgramPersistable,
+namespace NakedFramework.Architecture.Adapter; 
 
-        /// <summary>
-        ///     Marks a class as transient - such an object cannot be persisted
-        /// </summary>
-        Transient,
+public enum PersistableType {
+    /// <summary>
+    ///     Marks a class as being persistable, but only by under application program control
+    /// </summary>
+    ProgramPersistable,
 
-        /// <summary>
-        ///     Marks a class as being persistable by the user (or under application program control)
-        /// </summary>
-        UserPersistable
-    }
+    /// <summary>
+    ///     Marks a class as transient - such an object cannot be persisted
+    /// </summary>
+    Transient,
+
+    /// <summary>
+    ///     Marks a class as being persistable by the user (or under application program control)
+    /// </summary>
+    UserPersistable
 }
 
 // Copyright (c) Naked Objects Group Ltd.

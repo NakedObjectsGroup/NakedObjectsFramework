@@ -14,46 +14,46 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.ParallelReflector.Reflect {
-    public sealed class FacetDecoratorSet : IFacetDecoratorSet {
-        private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();
+namespace NakedFramework.ParallelReflector.Reflect; 
 
-        public FacetDecoratorSet(IFacetDecorator[] decorators) => decorators?.ForEach(Add);
+public sealed class FacetDecoratorSet : IFacetDecoratorSet {
+    private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();
 
-        #region IFacetDecoratorSet Members
+    public FacetDecoratorSet(IFacetDecorator[] decorators) => decorators?.ForEach(Add);
 
-        public void DecorateAllHoldersFacets(ISpecification holder) {
-            if (facetDecorators.Any()) {
-                foreach (var facetType in holder.FacetTypes) {
-                    DecorateFacet(facetType, holder);
-                }
-            }
-        }
+    #region IFacetDecoratorSet Members
 
-        #endregion
-
-        private void Add(IFacetDecorator decorator) {
-            foreach (var type in decorator.ForFacetTypes) {
-                if (!facetDecorators.ContainsKey(type)) {
-                    facetDecorators[type] = new List<IFacetDecorator>();
-                }
-
-                facetDecorators[type].Add(decorator);
-            }
-        }
-
-        private void DecorateFacet(Type facetType, ISpecification holder) {
-            if (facetDecorators.ContainsKey(facetType)) {
-                foreach (var decorator in facetDecorators[facetType]) {
-                    var previousFacet = holder.GetFacet(facetType);
-                    var decoratedFacet = decorator.Decorate(previousFacet, holder);
-                    if (decoratedFacet != null && decoratedFacet != previousFacet) {
-                        FacetUtils.AddFacet(decoratedFacet);
-                    }
-                }
+    public void DecorateAllHoldersFacets(ISpecification holder) {
+        if (facetDecorators.Any()) {
+            foreach (var facetType in holder.FacetTypes) {
+                DecorateFacet(facetType, holder);
             }
         }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
+
+    private void Add(IFacetDecorator decorator) {
+        foreach (var type in decorator.ForFacetTypes) {
+            if (!facetDecorators.ContainsKey(type)) {
+                facetDecorators[type] = new List<IFacetDecorator>();
+            }
+
+            facetDecorators[type].Add(decorator);
+        }
+    }
+
+    private void DecorateFacet(Type facetType, ISpecification holder) {
+        if (facetDecorators.ContainsKey(facetType)) {
+            foreach (var decorator in facetDecorators[facetType]) {
+                var previousFacet = holder.GetFacet(facetType);
+                var decoratedFacet = decorator.Decorate(previousFacet, holder);
+                if (decoratedFacet != null && decoratedFacet != previousFacet) {
+                    FacetUtils.AddFacet(decoratedFacet);
+                }
+            }
+        }
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

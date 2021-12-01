@@ -15,56 +15,56 @@ using NakedObjects.Reflector.Facet;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class ActionParameterValidationFacetViaMethodTest {
-        private IActionParameterValidationFacet facet;
-        private INakedObjectAdapter target;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        [TestMethod]
-        public void Test1() {
-            var mock = new Mock<INakedObjectAdapter>();
-            var value = mock.Object;
-            mock.Setup(no => no.Object).Returns(10);
-            Assert.IsNull(facet.InvalidReason(target, null, value));
-        }
+[TestClass]
+public class ActionParameterValidationFacetViaMethodTest {
+    private IActionParameterValidationFacet facet;
+    private INakedObjectAdapter target;
 
-        [TestMethod]
-        public void Test2() {
-            var mock = new Mock<INakedObjectAdapter>();
-            var value = mock.Object;
-            mock.Setup(no => no.Object).Returns(-7);
-            Assert.AreEqual(facet.InvalidReason(target, null, value), "must be positive");
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public void SetUp() {
-            var holder = new Mock<ISpecification>().Object;
-            var customer = new Customer17();
-
-            var mock = new Mock<INakedObjectAdapter>();
-            target = mock.Object;
-
-            mock.Setup(no => no.Object).Returns(customer);
-            var mockLogger = new Mock<ILogger<ActionParameterValidation>>().Object;
-
-            var method = typeof(Customer17).GetMethod("Validate0SomeAction");
-            facet = new ActionParameterValidation(method, holder, mockLogger);
-        }
-
-        [TestCleanup]
-        public void TearDown() { }
-
-        #endregion
+    [TestMethod]
+    public void Test1() {
+        var mock = new Mock<INakedObjectAdapter>();
+        var value = mock.Object;
+        mock.Setup(no => no.Object).Returns(10);
+        Assert.IsNull(facet.InvalidReason(target, null, value));
     }
 
-    internal class Customer17 {
-        public void SomeAction(int x, long y, long z) { }
-
-        public string Validate0SomeAction(int x) => x > 0 ? null : "must be positive";
-
-        public string Validate1SomeAction(long x) => null;
+    [TestMethod]
+    public void Test2() {
+        var mock = new Mock<INakedObjectAdapter>();
+        var value = mock.Object;
+        mock.Setup(no => no.Object).Returns(-7);
+        Assert.AreEqual(facet.InvalidReason(target, null, value), "must be positive");
     }
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public void SetUp() {
+        var holder = new Mock<ISpecification>().Object;
+        var customer = new Customer17();
+
+        var mock = new Mock<INakedObjectAdapter>();
+        target = mock.Object;
+
+        mock.Setup(no => no.Object).Returns(customer);
+        var mockLogger = new Mock<ILogger<ActionParameterValidation>>().Object;
+
+        var method = typeof(Customer17).GetMethod("Validate0SomeAction");
+        facet = new ActionParameterValidation(method, holder, mockLogger);
+    }
+
+    [TestCleanup]
+    public void TearDown() { }
+
+    #endregion
+}
+
+internal class Customer17 {
+    public void SomeAction(int x, long y, long z) { }
+
+    public string Validate0SomeAction(int x) => x > 0 ? null : "must be positive";
+
+    public string Validate1SomeAction(long x) => null;
 }

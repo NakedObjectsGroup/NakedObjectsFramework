@@ -12,40 +12,40 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
 
-namespace NakedFramework.Metamodel.Profile {
-    [Serializable]
-    public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
-                                               ICreatedCallbackFacet,
-                                               IDeletedCallbackFacet,
-                                               IDeletingCallbackFacet,
-                                               ILoadedCallbackFacet,
-                                               ILoadingCallbackFacet,
-                                               IPersistedCallbackFacet,
-                                               IPersistingCallbackFacet,
-                                               IUpdatedCallbackFacet,
-                                               IUpdatingCallbackFacet {
-        private readonly ProfileEvent associatedEvent;
-        private readonly IProfileManager profileManager;
-        private readonly ICallbackFacet underlyingFacet;
+namespace NakedFramework.Metamodel.Profile; 
 
-        public ProfileCallbackFacet(ProfileEvent associatedEvent, ICallbackFacet underlyingFacet, IProfileManager profileManager) : base(underlyingFacet.FacetType, underlyingFacet.Specification) {
-            this.associatedEvent = associatedEvent;
-            this.underlyingFacet = underlyingFacet;
-            this.profileManager = profileManager;
-        }
+[Serializable]
+public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
+                                           ICreatedCallbackFacet,
+                                           IDeletedCallbackFacet,
+                                           IDeletingCallbackFacet,
+                                           ILoadedCallbackFacet,
+                                           ILoadingCallbackFacet,
+                                           IPersistedCallbackFacet,
+                                           IPersistingCallbackFacet,
+                                           IUpdatedCallbackFacet,
+                                           IUpdatingCallbackFacet {
+    private readonly ProfileEvent associatedEvent;
+    private readonly IProfileManager profileManager;
+    private readonly ICallbackFacet underlyingFacet;
 
-        #region ICreatedCallbackFacet Members
-
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            profileManager.Begin(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
-            try {
-                underlyingFacet.Invoke(nakedObjectAdapter, framework);
-            }
-            finally {
-                profileManager.End(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
-            }
-        }
-
-        #endregion
+    public ProfileCallbackFacet(ProfileEvent associatedEvent, ICallbackFacet underlyingFacet, IProfileManager profileManager) : base(underlyingFacet.FacetType, underlyingFacet.Specification) {
+        this.associatedEvent = associatedEvent;
+        this.underlyingFacet = underlyingFacet;
+        this.profileManager = profileManager;
     }
+
+    #region ICreatedCallbackFacet Members
+
+    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        profileManager.Begin(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
+        try {
+            underlyingFacet.Invoke(nakedObjectAdapter, framework);
+        }
+        finally {
+            profileManager.End(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
+        }
+    }
+
+    #endregion
 }

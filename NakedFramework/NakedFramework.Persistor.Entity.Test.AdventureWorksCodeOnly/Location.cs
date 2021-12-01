@@ -13,25 +13,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.Location")]
-    public class Location {
-        public short LocationID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        [ConcurrencyCheck]
-        public string Name { get; set; }
+[Table("Production.Location")]
+public class Location {
+    public short LocationID { get; set; }
 
-        [Column(TypeName = "smallmoney")]
-        public decimal CostRate { get; set; }
+    [Required]
+    [StringLength(50)]
+    [ConcurrencyCheck]
+    public string Name { get; set; }
 
-        public decimal Availability { get; set; }
+    [Column(TypeName = "smallmoney")]
+    public decimal CostRate { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public decimal Availability { get; set; }
 
-        public virtual ICollection<ProductInventory> ProductInventories { get; set; } = new HashSet<ProductInventory>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; } = new HashSet<WorkOrderRouting>();
-    }
+    public virtual ICollection<ProductInventory> ProductInventories { get; set; } = new HashSet<ProductInventory>();
+
+    public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; } = new HashSet<WorkOrderRouting>();
 }

@@ -12,20 +12,20 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContributedToLocalCollectionFacet {
-        private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
+namespace NakedFramework.Metamodel.Facet; 
 
-        public ContributedToLocalCollectionFacet(ISpecification holder)
-            : base(typeof(IContributedToLocalCollectionFacet), holder) { }
+[Serializable]
+public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContributedToLocalCollectionFacet {
+    private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
 
-        #region IContributedActionFacet Members
+    public ContributedToLocalCollectionFacet(ISpecification holder)
+        : base(typeof(IContributedToLocalCollectionFacet), holder) { }
 
-        public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpec, string id) => localCollectionContributees.Where(t => t.id == id.ToLower()).Select(t => t.spec).Any(objectSpec.IsOfType);
+    #region IContributedActionFacet Members
 
-        #endregion
+    public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpec, string id) => localCollectionContributees.Where(t => t.id == id.ToLower()).Select(t => t.spec).Any(objectSpec.IsOfType);
 
-        public void AddLocalCollectionContributee(IObjectSpecImmutable objectSpec, string id) => localCollectionContributees.Add((objectSpec, id.ToLower()));
-    }
+    #endregion
+
+    public void AddLocalCollectionContributee(IObjectSpecImmutable objectSpec, string id) => localCollectionContributees.Add((objectSpec, id.ToLower()));
 }

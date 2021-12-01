@@ -10,23 +10,23 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class ActionValidationViaFunctionFacetTest {
-        private static readonly string TestValue = "fail";
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        [TestMethod]
-        public void TestValidate() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Validate));
-            var testFacet = new ActionValidationViaFunctionFacet(method, null, null);
+[TestClass]
+public class ActionValidationViaFunctionFacetTest {
+    private static readonly string TestValue = "fail";
 
-            var result = testFacet.InvalidReason(null, null, Array.Empty<INakedObjectAdapter>());
+    [TestMethod]
+    public void TestValidate() {
+        var method = typeof(TestClass).GetMethod(nameof(TestClass.Validate));
+        var testFacet = new ActionValidationViaFunctionFacet(method, null, null);
 
-            Assert.AreEqual(TestValue, result);
-        }
+        var result = testFacet.InvalidReason(null, null, Array.Empty<INakedObjectAdapter>());
 
-        public static class TestClass {
-            public static string Validate() => TestValue;
-        }
+        Assert.AreEqual(TestValue, result);
+    }
+
+    public static class TestClass {
+        public static string Validate() => TestValue;
     }
 }

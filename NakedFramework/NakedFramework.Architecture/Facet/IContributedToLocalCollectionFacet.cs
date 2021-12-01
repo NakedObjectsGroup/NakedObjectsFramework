@@ -7,8 +7,8 @@
 
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface IContributedToLocalCollectionFacet : IFacet {
-        bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec, string id);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+public interface IContributedToLocalCollectionFacet : IFacet {
+    bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec, string id);
 }

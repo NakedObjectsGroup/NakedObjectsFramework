@@ -9,30 +9,30 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl {
-    public class MenuActionFacade : IMenuActionFacade, IMenuItemFacade {
-        public MenuActionFacade(IMenuActionImmutable wrapped, IFrameworkFacade facade, INakedFramework framework) {
-            Wrapped = wrapped;
-            Name = wrapped.Name;
-            Id = wrapped.Id;
-            Grouping = wrapped.Grouping;
-            var action = framework.MetamodelManager.GetActionSpec(wrapped.Action);
-            Action = new ActionFacade(action, facade, framework);
-        }
+namespace NakedFramework.Facade.Impl.Impl; 
 
-        #region IMenuActionFacade Members
-
-        public IActionFacade Action { get; }
-
-        #endregion
-
-        #region IMenuItemFacade Members
-
-        public string Name { get; }
-        public string Id { get; }
-        public string Grouping { get; }
-        public object Wrapped { get; }
-
-        #endregion
+public class MenuActionFacade : IMenuActionFacade, IMenuItemFacade {
+    public MenuActionFacade(IMenuActionImmutable wrapped, IFrameworkFacade facade, INakedFramework framework) {
+        Wrapped = wrapped;
+        Name = wrapped.Name;
+        Id = wrapped.Id;
+        Grouping = wrapped.Grouping;
+        var action = framework.MetamodelManager.GetActionSpec(wrapped.Action);
+        Action = new ActionFacade(action, facade, framework);
     }
+
+    #region IMenuActionFacade Members
+
+    public IActionFacade Action { get; }
+
+    #endregion
+
+    #region IMenuItemFacade Members
+
+    public string Name { get; }
+    public string Id { get; }
+    public string Grouping { get; }
+    public object Wrapped { get; }
+
+    #endregion
 }

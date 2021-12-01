@@ -19,152 +19,152 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class TypeOfAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private TypeOfAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(ITypeOfFacet)};
+[TestClass]
+public class TypeOfAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private TypeOfAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(ITypeOfFacet)};
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestTypeOfFacetInferredForActionWithArrayReturnType() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer9), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
-            Assert.IsNotNull(typeOfFacet);
-            Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
-
-            var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
-            Assert.IsNotNull(elementTypeFacet);
-            Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
-            Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestTypeOfFacetInferredForActionWithGenericCollectionReturnType() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
-            Assert.IsNotNull(typeOfFacet);
-            Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
-
-            var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
-            Assert.IsNotNull(elementTypeFacet);
-            Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
-            Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestTypeOfFacetInferredForCollectionWithGenericCollectionReturnType() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer4), "Orders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
-            Assert.IsNotNull(typeOfFacet);
-            Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
-
-            var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
-            Assert.IsNotNull(elementTypeFacet);
-            Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
-            Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestTypeOfFacetIsInferredForCollectionFromOrderArray() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer10), "Orders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
-            Assert.IsNotNull(typeOfFacet);
-            Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
-
-            var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
-            Assert.IsNotNull(elementTypeFacet);
-            Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
-            Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        #region Nested type: Customer10
-
-        private class Customer10 {
-// ReSharper disable once UnusedMember.Local
-            public Order[] Orders => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer3
-
-        private class Customer3 {
-            // ReSharper disable once UnusedMember.Local
-            public IList<Order> SomeAction() => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer4
-
-        private class Customer4 {
-// ReSharper disable once UnusedMember.Local
-            public IList<Order> Orders => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer9
-
-        private class Customer9 {
-            // ReSharper disable once UnusedMember.Local
-            public Order[] SomeAction() => null;
-        }
-
-        #endregion
-
-        #region Nested type: Order
-
-        private class Order { }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new TypeOfAnnotationFacetFactory(GetOrder<TypeOfAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestTypeOfFacetInferredForActionWithArrayReturnType() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer9), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+        Assert.IsNotNull(typeOfFacet);
+        Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
+
+        var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
+        Assert.IsNotNull(elementTypeFacet);
+        Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
+        Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestTypeOfFacetInferredForActionWithGenericCollectionReturnType() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+        Assert.IsNotNull(typeOfFacet);
+        Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
+
+        var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
+        Assert.IsNotNull(elementTypeFacet);
+        Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
+        Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestTypeOfFacetInferredForCollectionWithGenericCollectionReturnType() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer4), "Orders");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+        Assert.IsNotNull(typeOfFacet);
+        Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
+
+        var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
+        Assert.IsNotNull(elementTypeFacet);
+        Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
+        Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestTypeOfFacetIsInferredForCollectionFromOrderArray() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer10), "Orders");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+        Assert.IsNotNull(typeOfFacet);
+        Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
+
+        var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
+        Assert.IsNotNull(elementTypeFacet);
+        Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
+        Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    #region Nested type: Customer10
+
+    private class Customer10 {
+// ReSharper disable once UnusedMember.Local
+        public Order[] Orders => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer3
+
+    private class Customer3 {
+        // ReSharper disable once UnusedMember.Local
+        public IList<Order> SomeAction() => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer4
+
+    private class Customer4 {
+// ReSharper disable once UnusedMember.Local
+        public IList<Order> Orders => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer9
+
+    private class Customer9 {
+        // ReSharper disable once UnusedMember.Local
+        public Order[] SomeAction() => null;
+    }
+
+    #endregion
+
+    #region Nested type: Order
+
+    private class Order { }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new TypeOfAnnotationFacetFactory(GetOrder<TypeOfAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -11,88 +11,88 @@ using Microsoft.Extensions.Configuration;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.PolymorphicNavigator {
-    [TestFixture]
-    public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
-        [SetUp]
-        public void SetUp() => StartTest();
+namespace NakedObjects.SystemTest.PolymorphicNavigator; 
 
-        [TearDown]
-        public void TearDown() => EndTest();
+[TestFixture]
+public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
+    [SetUp]
+    public void SetUp() => StartTest();
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp() {
-            InitializeNakedObjectsFramework(this);
-            RunFixtures();
-        }
+    [TearDown]
+    public void TearDown() => EndTest();
 
-        [OneTimeTearDown]
-        public void DeleteDatabase() {
-            CleanupNakedObjectsFramework(this);
-        }
+    [OneTimeSetUp]
+    public void OneTimeSetUp() {
+        InitializeNakedObjectsFramework(this);
+        RunFixtures();
+    }
 
-        private const string DatabaseName = "TestPolymorphicNavigator";
+    [OneTimeTearDown]
+    public void DeleteDatabase() {
+        CleanupNakedObjectsFramework(this);
+    }
 
-        protected override bool EnforceProxies => false;
+    private const string DatabaseName = "TestPolymorphicNavigator";
 
-        protected override Func<IConfiguration, DbContext>[] ContextCreators =>
-            new Func<IConfiguration, DbContext>[] {config => new PolymorphicNavigationContext(DatabaseName)};
+    protected override bool EnforceProxies => false;
 
-        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()};
+    protected override Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] {config => new PolymorphicNavigationContext(DatabaseName)};
 
-        [Test]
-        public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
-            base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
-        }
+    protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()};
 
-        [Test]
-        public override void AttemptToAddSameItemTwice() {
-            base.AttemptToAddSameItemTwice();
-        }
+    [Test]
+    public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
+        base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
+    }
 
-        [Test]
-        public override void AttemptToRemoveNonExistentItem() {
-            base.AttemptToRemoveNonExistentItem();
-        }
+    [Test]
+    public override void AttemptToAddSameItemTwice() {
+        base.AttemptToAddSameItemTwice();
+    }
 
-        [Test]
-        public void ChangePolymorphicPropertyOnPersistentObject() {
-            ChangePolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee", "NakedObjects.SystemTest.PolymorphicAssociations.SupplierAsPayee");
-        }
+    [Test]
+    public override void AttemptToRemoveNonExistentItem() {
+        base.AttemptToRemoveNonExistentItem();
+    }
 
-        [Test]
-        public override void ClearPolymorphicProperty() {
-            base.ClearPolymorphicProperty();
-        }
+    [Test]
+    public void ChangePolymorphicPropertyOnPersistentObject() {
+        ChangePolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee", "NakedObjects.SystemTest.PolymorphicAssociations.SupplierAsPayee");
+    }
 
-        [Test]
-        public override void FindOwnersForObject() {
-            base.FindOwnersForObject();
-        }
+    [Test]
+    public override void ClearPolymorphicProperty() {
+        base.ClearPolymorphicProperty();
+    }
 
-        [Test]
-        public void PolymorphicCollectionAddDifferentItems() {
-            PolymorphicCollectionAddDifferentItems("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem", "NakedObjects.SystemTest.PolymorphicAssociations.ExpenseClaimAsPayableItem");
-        }
+    [Test]
+    public override void FindOwnersForObject() {
+        base.FindOwnersForObject();
+    }
 
-        [Test]
-        public void PolymorphicCollectionAddMutlipleItemsOfOneType() {
-            PolymorphicCollectionAddMutlipleItemsOfOneType("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem");
-        }
+    [Test]
+    public void PolymorphicCollectionAddDifferentItems() {
+        PolymorphicCollectionAddDifferentItems("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem", "NakedObjects.SystemTest.PolymorphicAssociations.ExpenseClaimAsPayableItem");
+    }
 
-        [Test]
-        public override void RemoveItem() {
-            base.RemoveItem();
-        }
+    [Test]
+    public void PolymorphicCollectionAddMutlipleItemsOfOneType() {
+        PolymorphicCollectionAddMutlipleItemsOfOneType("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem");
+    }
 
-        [Test]
-        public void SetPolymorphicPropertyOnPersistentObject() {
-            SetPolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
-        }
+    [Test]
+    public override void RemoveItem() {
+        base.RemoveItem();
+    }
 
-        [Test]
-        public void SetPolymorphicPropertyOnTransientObject() {
-            SetPolymorphicPropertyOnTransientObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
-        }
+    [Test]
+    public void SetPolymorphicPropertyOnPersistentObject() {
+        SetPolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
+    }
+
+    [Test]
+    public void SetPolymorphicPropertyOnTransientObject() {
+        SetPolymorphicPropertyOnTransientObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
     }
 }

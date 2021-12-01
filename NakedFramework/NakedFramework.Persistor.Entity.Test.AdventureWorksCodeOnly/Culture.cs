@@ -10,18 +10,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.Culture")]
-    public class Culture {
-        [StringLength(6)]
-        public string CultureID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Production.Culture")]
+public class Culture {
+    [StringLength(6)]
+    public string CultureID { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCultures { get; set; } = new HashSet<ProductModelProductDescriptionCulture>();
-    }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCultures { get; set; } = new HashSet<ProductModelProductDescriptionCulture>();
 }

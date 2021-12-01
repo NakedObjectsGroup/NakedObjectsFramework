@@ -7,21 +7,21 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Adapter {
-    public interface IIdentifier : IComparable {
-        string ClassName { get; }
-        string MemberName { get; }
-        string[] MemberParameterTypeNames { get; }
-        string[] MemberParameterNames { get; }
+namespace NakedFramework.Architecture.Adapter; 
 
-        /// <summary>
-        ///     Returns <c>true</c> if the member is for a property or collection; <c>false</c> if for an action
-        /// </summary>
-        bool IsField { get; }
+public interface IIdentifier : IComparable {
+    string ClassName { get; }
+    string MemberName { get; }
+    string[] MemberParameterTypeNames { get; }
+    string[] MemberParameterNames { get; }
 
-        string ToIdentityString(IdentifierDepth depth);
-        string ToIdentityStringWithCheckType(IdentifierDepth depth, CheckType checkType);
-    }
+    /// <summary>
+    ///     Returns <c>true</c> if the member is for a property or collection; <c>false</c> if for an action
+    /// </summary>
+    bool IsField { get; }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    string ToIdentityString(IdentifierDepth depth);
+    string ToIdentityStringWithCheckType(IdentifierDepth depth, CheckType checkType);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

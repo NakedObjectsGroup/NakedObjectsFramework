@@ -10,25 +10,25 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Test.Interface {
-    /// <summary>
-    ///     Creates test objects for XAT
-    ///     This interface is not used by XAT2.
-    /// </summary>
-    public interface ITestObjectFactory {
-        ITestService CreateTestService(object service);
-        ITestMenu CreateTestMenuMain(IMenuImmutable menu);
-        ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestHasActions owningObject);
-        ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestHasActions owningObject);
-        ITestCollection CreateTestCollection(INakedObjectAdapter instances);
-        ITestObject CreateTestObject(INakedObjectAdapter nakedObjectAdapter);
-        ITestNaked CreateTestNaked(INakedObjectAdapter nakedObjectAdapter);
-        ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm);
-        ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestHasActions owningObject);
-        ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject);
-        ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject);
-        ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject);
-    }
+namespace NakedFramework.Test.Interface; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Creates test objects for XAT
+///     This interface is not used by XAT2.
+/// </summary>
+public interface ITestObjectFactory {
+    ITestService CreateTestService(object service);
+    ITestMenu CreateTestMenuMain(IMenuImmutable menu);
+    ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestHasActions owningObject);
+    ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestHasActions owningObject);
+    ITestCollection CreateTestCollection(INakedObjectAdapter instances);
+    ITestObject CreateTestObject(INakedObjectAdapter nakedObjectAdapter);
+    ITestNaked CreateTestNaked(INakedObjectAdapter nakedObjectAdapter);
+    ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm);
+    ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestHasActions owningObject);
+    ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject);
+    ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject);
+    ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

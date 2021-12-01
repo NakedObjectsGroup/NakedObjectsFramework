@@ -10,15 +10,15 @@ using System.Linq;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    public class MapRepresentation : Representation {
-        private MediaTypeHeaderValue mediaType;
-        public MapRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        public static MapRepresentation Create(params OptionalProperty[] properties) => properties.Any() ? CreateWithOptionals<MapRepresentation>(Array.Empty<object>(), properties) : new MapRepresentation();
+public class MapRepresentation : Representation {
+    private MediaTypeHeaderValue mediaType;
+    public MapRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
 
-        public void SetContentType(MediaTypeHeaderValue mt) => mediaType = mt;
+    public static MapRepresentation Create(params OptionalProperty[] properties) => properties.Any() ? CreateWithOptionals<MapRepresentation>(Array.Empty<object>(), properties) : new MapRepresentation();
 
-        public override MediaTypeHeaderValue GetContentType() => mediaType ?? base.GetContentType();
-    }
+    public void SetContentType(MediaTypeHeaderValue mt) => mediaType = mt;
+
+    public override MediaTypeHeaderValue GetContentType() => mediaType ?? base.GetContentType();
 }

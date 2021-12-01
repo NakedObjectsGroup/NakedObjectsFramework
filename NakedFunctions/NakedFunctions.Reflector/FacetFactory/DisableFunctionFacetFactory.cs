@@ -21,45 +21,45 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class DisableFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {
-        private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.DisablePrefix
-        };
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        private readonly ILogger<DisableFunctionFacetFactory> logger;
+public sealed class DisableFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {
+    private static readonly string[] FixedPrefixes = {
+        RecognisedMethodsAndPrefixes.DisablePrefix
+    };
 
-        public DisableFunctionFacetFactory(IFacetFactoryOrder<DisableFunctionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<DisableFunctionFacetFactory>();
+    private readonly ILogger<DisableFunctionFacetFactory> logger;
 
-        public string[] Prefixes => FixedPrefixes;
+    public DisableFunctionFacetFactory(IFacetFactoryOrder<DisableFunctionFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) =>
+        logger = loggerFactory.CreateLogger<DisableFunctionFacetFactory>();
 
-        #region IMethodFilteringFacetFactory Members
+    public string[] Prefixes => FixedPrefixes;
 
-        private static bool Matches(MethodInfo methodInfo, string name, Type declaringType, Type targetType) =>
-            methodInfo.Matches(name, declaringType, typeof(string), targetType) &&
-            !InjectUtils.FilterParms(methodInfo).Any();
+    #region IMethodFilteringFacetFactory Members
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, Type targetType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType);
-            var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
-            if (methodToUse is not null) {
-                FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(methodToUse, action, LoggerFactory.CreateLogger<DisableForContextViaFunctionFacet>()));
-            }
+    private static bool Matches(MethodInfo methodInfo, string name, Type declaringType, Type targetType) =>
+        methodInfo.Matches(name, declaringType, typeof(string), targetType) &&
+        !InjectUtils.FilterParms(methodInfo).Any();
 
-            return metamodel;
+    private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, Type targetType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType);
+        var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
+        if (methodToUse is not null) {
+            FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(methodToUse, action, LoggerFactory.CreateLogger<DisableForContextViaFunctionFacet>()));
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var name = $"{RecognisedMethodsAndPrefixes.DisablePrefix}{NameUtils.CapitalizeName(actionMethod.Name)}";
-            var declaringType = actionMethod.DeclaringType;
-            var targetType = actionMethod.ContributedToType();
-            return FindAndAddFacet(declaringType, targetType, name, action, metamodel);
-        }
-
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.DisablePrefix);
-
-        #endregion
+        return metamodel;
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var name = $"{RecognisedMethodsAndPrefixes.DisablePrefix}{NameUtils.CapitalizeName(actionMethod.Name)}";
+        var declaringType = actionMethod.DeclaringType;
+        var targetType = actionMethod.ContributedToType();
+        return FindAndAddFacet(declaringType, targetType, name, action, metamodel);
+    }
+
+    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.DisablePrefix);
+
+    #endregion
 }

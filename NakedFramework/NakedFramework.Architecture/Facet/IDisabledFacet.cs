@@ -8,18 +8,18 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet {
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Disable a property, collection or action
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to annotating the member
+///     with <see cref="DisabledAttribute" />
+/// </para>
+public interface IDisabledFacet : ISingleWhenValueFacet, IDisablingInteractionAdvisor {
     /// <summary>
-    ///     Disable a property, collection or action
+    ///     The reason why the (feature of the) target object is currently disabled, or <c>null</c> if enabled
     /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to annotating the member
-    ///     with <see cref="DisabledAttribute" />
-    /// </para>
-    public interface IDisabledFacet : ISingleWhenValueFacet, IDisablingInteractionAdvisor {
-        /// <summary>
-        ///     The reason why the (feature of the) target object is currently disabled, or <c>null</c> if enabled
-        /// </summary>
-        string DisabledReason(INakedObjectAdapter target);
-    }
+    string DisabledReason(INakedObjectAdapter target);
 }

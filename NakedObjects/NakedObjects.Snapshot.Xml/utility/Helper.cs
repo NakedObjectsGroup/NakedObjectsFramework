@@ -7,46 +7,46 @@
 
 using System.Xml.Linq;
 
-namespace NakedObjects.Snapshot.Xml.utility {
-    public static class Helper {
-        // Helper method
-        public static string TrailingSlash(string str) => str.EndsWith("/") ? str : str + "/";
+namespace NakedObjects.Snapshot.Xml.utility; 
 
-        // Utility method that returns just the class's name for the supplied fully qualified class name.
-        // cf 'basename' in Unix.
-        public static string ClassNameFor(string fullyQualifiedClassName) {
-            var fullNameLastPeriodIdx = fullyQualifiedClassName.LastIndexOf('.');
-            if (fullNameLastPeriodIdx > 0 && fullNameLastPeriodIdx < fullyQualifiedClassName.Length) {
-                return fullyQualifiedClassName.Substring(fullNameLastPeriodIdx + 1);
-            }
+public static class Helper {
+    // Helper method
+    public static string TrailingSlash(string str) => str.EndsWith("/") ? str : str + "/";
 
-            return fullyQualifiedClassName;
+    // Utility method that returns just the class's name for the supplied fully qualified class name.
+    // cf 'basename' in Unix.
+    public static string ClassNameFor(string fullyQualifiedClassName) {
+        var fullNameLastPeriodIdx = fullyQualifiedClassName.LastIndexOf('.');
+        if (fullNameLastPeriodIdx > 0 && fullNameLastPeriodIdx < fullyQualifiedClassName.Length) {
+            return fullyQualifiedClassName.Substring(fullNameLastPeriodIdx + 1);
         }
 
-        // Utility method that returns the package name for the supplied fully qualified class name, or
-        // <code>default</code> if  the class is in no namespace / in the default namespace.
-        // cf 'dirname' in Unix.
-        public static string PackageNameFor(string fullyQualifiedClassName) {
-            var fullNameLastPeriodIdx = fullyQualifiedClassName.LastIndexOf('.');
-            if (fullNameLastPeriodIdx > 0) {
-                return fullyQualifiedClassName.Substring(0, fullNameLastPeriodIdx);
-            }
-
-            return "default";
-        }
-
-        // Returns the root element for the element by looking up the owner document for the element,
-        // and from that its document element.
-        // If no document element exists, just returns the supplied document.
-        public static XElement RootElementFor(XElement element) {
-            var doc = element.Document;
-            if (doc == null) {
-                return element;
-            }
-
-            return doc.Root ?? element;
-        }
-
-        public static XDocument DocFor(XElement element) => element.Document;
+        return fullyQualifiedClassName;
     }
+
+    // Utility method that returns the package name for the supplied fully qualified class name, or
+    // <code>default</code> if  the class is in no namespace / in the default namespace.
+    // cf 'dirname' in Unix.
+    public static string PackageNameFor(string fullyQualifiedClassName) {
+        var fullNameLastPeriodIdx = fullyQualifiedClassName.LastIndexOf('.');
+        if (fullNameLastPeriodIdx > 0) {
+            return fullyQualifiedClassName.Substring(0, fullNameLastPeriodIdx);
+        }
+
+        return "default";
+    }
+
+    // Returns the root element for the element by looking up the owner document for the element,
+    // and from that its document element.
+    // If no document element exists, just returns the supplied document.
+    public static XElement RootElementFor(XElement element) {
+        var doc = element.Document;
+        if (doc == null) {
+            return element;
+        }
+
+        return doc.Root ?? element;
+    }
+
+    public static XDocument DocFor(XElement element) => element.Document;
 }

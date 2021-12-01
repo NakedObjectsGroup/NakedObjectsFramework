@@ -12,24 +12,24 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Core.Util;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    /// <summary>
-    ///     This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a
-    ///     string.
-    /// </summary>
-    public sealed class SystemClassMethodFilteringFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory {
-        private readonly ILogger<SystemClassMethodFilteringFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public SystemClassMethodFilteringFactory(IFacetFactoryOrder<SystemClassMethodFilteringFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<SystemClassMethodFilteringFactory>();
+/// <summary>
+///     This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a
+///     string.
+/// </summary>
+public sealed class SystemClassMethodFilteringFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory {
+    private readonly ILogger<SystemClassMethodFilteringFactory> logger;
 
-        #region IMethodFilteringFacetFactory Members
+    public SystemClassMethodFilteringFactory(IFacetFactoryOrder<SystemClassMethodFilteringFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) =>
+        logger = loggerFactory.CreateLogger<SystemClassMethodFilteringFactory>();
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(method.DeclaringType);
+    #region IMethodFilteringFacetFactory Members
 
-        #endregion
-    }
+    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(method.DeclaringType);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

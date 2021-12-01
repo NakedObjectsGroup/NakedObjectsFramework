@@ -8,20 +8,20 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
-namespace NakedFramework.Persistor.EFCore.Component {
-    public class EFCoreSaveObjectCommand : ISaveObjectCommand {
-        private readonly EFCoreLocalContext context;
-        private readonly INakedObjectAdapter nakedObjectAdapter;
+namespace NakedFramework.Persistor.EFCore.Component; 
 
-        public EFCoreSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context) {
-            this.context = context;
-            this.nakedObjectAdapter = nakedObjectAdapter;
-        }
+public class EFCoreSaveObjectCommand : ISaveObjectCommand {
+    private readonly EFCoreLocalContext context;
+    private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public void Execute() => context.CurrentUpdateRootObjectAdapter = nakedObjectAdapter;
-
-        public INakedObjectAdapter OnObject() => nakedObjectAdapter;
-
-        public override string ToString() => $"EFCoreSaveObjectCommand [object={nakedObjectAdapter}]";
+    public EFCoreSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter, EFCoreLocalContext context) {
+        this.context = context;
+        this.nakedObjectAdapter = nakedObjectAdapter;
     }
+
+    public void Execute() => context.CurrentUpdateRootObjectAdapter = nakedObjectAdapter;
+
+    public INakedObjectAdapter OnObject() => nakedObjectAdapter;
+
+    public override string ToString() => $"EFCoreSaveObjectCommand [object={nakedObjectAdapter}]";
 }

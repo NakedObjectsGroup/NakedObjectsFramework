@@ -11,23 +11,23 @@ using System.Linq;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Menu;
 
-namespace NakedFramework.Core.Configuration {
-    public class CoreConfiguration : ICoreConfiguration {
-        public CoreConfiguration(Func<IMenuFactory, IMenu[]> mainMenus = null) => MainMenus = mainMenus;
+namespace NakedFramework.Core.Configuration; 
 
-        public Func<IMenuFactory, IMenu[]> MainMenus { get; }
+public class CoreConfiguration : ICoreConfiguration {
+    public CoreConfiguration(Func<IMenuFactory, IMenu[]> mainMenus = null) => MainMenus = mainMenus;
 
-        /// <summary>
-        ///     Standard implementation of this contains system value and collection types recognized by the Framework.
-        ///     The list is exposed so that types can be added or removed before reflection. Generic collection types should be
-        ///     specified
-        ///     without type parameters.
-        /// </summary>
-        /// <remarks>
-        ///     These types will always be introspected and so are implicitly 'whitelisted'
-        /// </remarks>
-        public List<Type> SupportedSystemTypes { get; set; } = ReflectorDefaults.DefaultSystemTypes.ToList();
+    public Func<IMenuFactory, IMenu[]> MainMenus { get; }
 
-        public int HashMapCapacity { get; set; }
-    }
+    /// <summary>
+    ///     Standard implementation of this contains system value and collection types recognized by the Framework.
+    ///     The list is exposed so that types can be added or removed before reflection. Generic collection types should be
+    ///     specified
+    ///     without type parameters.
+    /// </summary>
+    /// <remarks>
+    ///     These types will always be introspected and so are implicitly 'whitelisted'
+    /// </remarks>
+    public List<Type> SupportedSystemTypes { get; set; } = ReflectorDefaults.DefaultSystemTypes.ToList();
+
+    public int HashMapCapacity { get; set; }
 }

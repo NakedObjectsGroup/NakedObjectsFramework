@@ -8,15 +8,15 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace NakedFramework.Rest.Model {
-    public class PersistArgumentMapBinder : IModelBinder {
-        #region IModelBinder Members
+namespace NakedFramework.Rest.Model; 
 
-        public Task BindModelAsync(ModelBindingContext bindingContext) =>
-            ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                                                      async () => ModelBinderUtils.CreatePersistArgMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
-                                                      ModelBinderUtils.CreateMalformedArguments<PersistArgumentMap>);
+public class PersistArgumentMapBinder : IModelBinder {
+    #region IModelBinder Members
 
-        #endregion
-    }
+    public Task BindModelAsync(ModelBindingContext bindingContext) =>
+        ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                                                  async () => ModelBinderUtils.CreatePersistArgMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
+                                                  ModelBinderUtils.CreateMalformedArguments<PersistArgumentMap>);
+
+    #endregion
 }

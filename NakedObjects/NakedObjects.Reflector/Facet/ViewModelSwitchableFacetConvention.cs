@@ -15,27 +15,27 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract {
-        public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) { }
+namespace NakedObjects.Reflector.Facet; 
 
-        private static Type Type => typeof(IViewModelFacet);
+[Serializable]
+public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract {
+    public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) { }
 
-        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
+    private static Type Type => typeof(IViewModelFacet);
 
-        public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
+    public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 
-        public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            var target = nakedObjectAdapter.GetDomainObject<IViewModelSwitchable>();
+    public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
 
-            if (target == null) {
-                throw new NakedObjectSystemException(nakedObjectAdapter.Object == null
-                                                         ? "Null domain object"
-                                                         : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}");
-            }
+    public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        var target = nakedObjectAdapter.GetDomainObject<IViewModelSwitchable>();
 
-            return target.IsEditView();
+        if (target == null) {
+            throw new NakedObjectSystemException(nakedObjectAdapter.Object == null
+                                                     ? "Null domain object"
+                                                     : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}");
         }
+
+        return target.IsEditView();
     }
 }

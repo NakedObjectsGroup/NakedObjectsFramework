@@ -8,18 +8,18 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects {
-    internal class TestValue : ITestValue {
-        public TestValue(INakedObjectAdapter nakedObjectAdapter) => NakedObject = nakedObjectAdapter;
+namespace NakedFramework.Test.TestObjects; 
 
-        #region ITestValue Members
+internal class TestValue : ITestValue {
+    public TestValue(INakedObjectAdapter nakedObjectAdapter) => NakedObject = nakedObjectAdapter;
 
-        public string Title => NakedObject.TitleString();
+    #region ITestValue Members
 
-        public INakedObjectAdapter NakedObject { get; }
+    public string Title => NakedObject.TitleString();
 
-        #endregion
-    }
+    public INakedObjectAdapter NakedObject { get; }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -12,20 +12,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("AWBuildVersion")]
-    public class AWBuildVersion {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public byte SystemInformationID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Column("Database Version")]
-        [Required]
-        [StringLength(25)]
-        public string Database_Version { get; set; }
+[Table("AWBuildVersion")]
+public class AWBuildVersion {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public byte SystemInformationID { get; set; }
 
-        public DateTime VersionDate { get; set; }
+    [Column("Database Version")]
+    [Required]
+    [StringLength(25)]
+    public string Database_Version { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
-    }
+    public DateTime VersionDate { get; set; }
+
+    public DateTime ModifiedDate { get; set; }
 }

@@ -9,26 +9,26 @@ using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Menu;
 
-namespace NakedFramework.Metamodel.Menu {
-    [Serializable]
-    public class MenuFactory : IMenuFactory {
-        #region Injected ServicesManager
+namespace NakedFramework.Metamodel.Menu; 
 
-        private readonly IMetamodelBuilder metamodel;
+[Serializable]
+public class MenuFactory : IMenuFactory {
+    #region Injected ServicesManager
 
-        #endregion
+    private readonly IMetamodelBuilder metamodel;
 
-        public MenuFactory(IMetamodelBuilder metamodel) => this.metamodel = metamodel;
+    #endregion
 
-        #region IMenuFactory Members
+    public MenuFactory(IMetamodelBuilder metamodel) => this.metamodel = metamodel;
 
-        public IMenu NewMenu<T>(bool addAllActions = false, string name = null) => new MenuImpl(metamodel, typeof(T), addAllActions, name);
+    #region IMenuFactory Members
 
-        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => new MenuImpl(metamodel, type, addAllActions, name);
+    public IMenu NewMenu<T>(bool addAllActions = false, string name = null) => new MenuImpl(metamodel, typeof(T), addAllActions, name);
 
-        public IMenu NewMenu(string name, string id) => new MenuImpl(metamodel, name, id);
-        public IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false) => new MenuImpl(metamodel, defaultType, addAllActions, name, id);
+    public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => new MenuImpl(metamodel, type, addAllActions, name);
 
-        #endregion
-    }
+    public IMenu NewMenu(string name, string id) => new MenuImpl(metamodel, name, id);
+    public IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false) => new MenuImpl(metamodel, defaultType, addAllActions, name, id);
+
+    #endregion
 }

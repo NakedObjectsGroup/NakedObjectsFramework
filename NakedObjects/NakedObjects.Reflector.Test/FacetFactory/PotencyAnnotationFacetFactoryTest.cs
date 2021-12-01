@@ -19,134 +19,134 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class PotencyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private PotencyAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IQueryOnlyFacet), typeof(IIdempotentFacet)};
+[TestClass]
+public class PotencyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private PotencyAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IQueryOnlyFacet), typeof(IIdempotentFacet)};
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestIdempotentAnnotationPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IIdempotentFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is IdempotentFacet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestIdempotentPriorityAnnotationPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IIdempotentFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is IdempotentFacet);
-            facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestNoAnnotationPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer2), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
-            Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof(IIdempotentFacet));
-            Assert.IsNull(facet);
-
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestQueryOnlyAnnotationPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is QueryOnlyFacet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [QueryOnly]
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [Idempotent]
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer2
-
-        private class Customer2 {
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer3
-
-        private class Customer3 {
-            [QueryOnly]
-            [Idempotent]
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PotencyAnnotationFacetFactory(GetOrder<PotencyAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
+    [TestMethod]
+    public void TestIdempotentAnnotationPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IIdempotentFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is IdempotentFacet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestIdempotentPriorityAnnotationPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IIdempotentFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is IdempotentFacet);
+        facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
+        Assert.IsNull(facet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestNoAnnotationPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer2), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
+        Assert.IsNull(facet);
+        facet = Specification.GetFacet(typeof(IIdempotentFacet));
+        Assert.IsNull(facet);
+
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestQueryOnlyAnnotationPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is QueryOnlyFacet);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    #region Nested type: Customer
+
+    private class Customer {
+        [QueryOnly]
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [Idempotent]
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer2
+
+    private class Customer2 {
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer3
+
+    private class Customer3 {
+        [QueryOnly]
+        [Idempotent]
+        public void SomeAction() { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new PotencyAnnotationFacetFactory(GetOrder<PotencyAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.
+// ReSharper restore UnusedMember.Local

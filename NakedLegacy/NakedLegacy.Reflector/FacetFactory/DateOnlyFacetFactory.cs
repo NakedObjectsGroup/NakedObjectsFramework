@@ -20,46 +20,46 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.FacetFactory {
-    public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+namespace NakedLegacy.Reflector.FacetFactory; 
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();
-            var concurrencyCheckAttribute = member.GetCustomAttribute<ConcurrencyCheckAttribute>();
+public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+
+    private static void Process(MemberInfo member, ISpecification holder) {
+        var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();
+        var concurrencyCheckAttribute = member.GetCustomAttribute<ConcurrencyCheckAttribute>();
+        FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
+    }
+
+    private static bool IsDate(Type type) => type == typeof(Date);
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (IsDate(property.PropertyType)) {
+            Process(property, specification);
+        }
+
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+
+        if (IsDate(parameter.ParameterType)) {
+            var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
+            var concurrencyCheckAttribute = parameter.GetCustomAttribute<ConcurrencyCheckAttribute>();
             FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
         }
 
-        private static bool IsDate(Type type) => type == typeof(Date);
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (IsDate(property.PropertyType)) {
-                Process(property, specification);
-            }
-
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-
-            if (IsDate(parameter.ParameterType)) {
-                var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
-                var concurrencyCheckAttribute = parameter.GetCustomAttribute<ConcurrencyCheckAttribute>();
-                FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
-            }
-
-            return metamodel;
-        }
-
-        private static IDateOnlyFacet Create(DataTypeAttribute attribute, ConcurrencyCheckAttribute concurrencyCheckAttribute, ISpecification holder) =>
-            attribute?.DataType == DataType.Date
-                ? new DateOnlyFacet(holder)
-                : concurrencyCheckAttribute is not null
-                    ? null
-                    : attribute?.DataType == DataType.DateTime
-                        ? null
-                        : new DateOnlyFacet(holder);
+        return metamodel;
     }
+
+    private static IDateOnlyFacet Create(DataTypeAttribute attribute, ConcurrencyCheckAttribute concurrencyCheckAttribute, ISpecification holder) =>
+        attribute?.DataType == DataType.Date
+            ? new DateOnlyFacet(holder)
+            : concurrencyCheckAttribute is not null
+                ? null
+                : attribute?.DataType == DataType.DateTime
+                    ? null
+                    : new DateOnlyFacet(holder);
 }

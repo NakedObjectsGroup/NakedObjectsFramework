@@ -9,10 +9,10 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Audit;
 
-namespace NakedFramework.Metamodel.Audit {
-    public interface IAuditConfiguration {
-        Type DefaultAuditor { get; }
-        Dictionary<string, Type> NamespaceAuditors { get; }
-        //void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor;
-    }
+namespace NakedFramework.Metamodel.Audit; 
+
+public interface IAuditConfiguration {
+    Type DefaultAuditor { get; }
+    Dictionary<string, Type> NamespaceAuditors { get; }
+    //void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor;
 }

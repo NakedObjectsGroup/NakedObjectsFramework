@@ -9,16 +9,16 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Menu;
 
-namespace NakedFramework.Architecture.Configuration {
-    public interface ICoreConfiguration {
-        /// <summary>
-        ///     Specify a function that can create the array of main menus, having been passed-in an
-        ///     implementation of IMenuFactory.
-        /// </summary>
-        Func<IMenuFactory, IMenu[]> MainMenus { get; }
+namespace NakedFramework.Architecture.Configuration; 
 
-        List<Type> SupportedSystemTypes { get; }
+public interface ICoreConfiguration {
+    /// <summary>
+    ///     Specify a function that can create the array of main menus, having been passed-in an
+    ///     implementation of IMenuFactory.
+    /// </summary>
+    Func<IMenuFactory, IMenu[]> MainMenus { get; }
 
-        int HashMapCapacity { get; }
-    }
+    List<Type> SupportedSystemTypes { get; }
+
+    int HashMapCapacity { get; }
 }

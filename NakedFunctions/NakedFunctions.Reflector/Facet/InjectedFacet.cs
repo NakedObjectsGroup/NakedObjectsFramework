@@ -10,11 +10,11 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFunctions.Reflector.Facet {
-    [Serializable]
-    public sealed class InjectedFacet : MarkerFacetAbstract, IInjectedFacet {
-        public InjectedFacet(ISpecification holder) : base(Type, holder) { }
+namespace NakedFunctions.Reflector.Facet; 
 
-        public static Type Type => typeof(IInjectedFacet);
-    }
+[Serializable]
+public sealed class InjectedFacet : MarkerFacetAbstract, IInjectedFacet {
+    public InjectedFacet(ISpecification holder) : base(Type, holder) { }
+
+    public static Type Type => typeof(IInjectedFacet);
 }

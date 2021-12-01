@@ -18,126 +18,126 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class FindMenuFacetFactoryTest : AbstractFacetFactoryTest {
-        private FindMenuFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IFindMenuFacet)};
+[TestClass]
+public class FindMenuFacetFactoryTest : AbstractFacetFactoryTest {
+    private FindMenuFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IFindMenuFacet)};
 
-        [TestMethod]
-        public void TestFindMenuFacetNotAddedToParameterByDefault() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-            var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IFindMenuFacet));
-            Assert.IsNull(facet);
-            Assert.IsNotNull(metamodel);
-        }
+    [TestMethod]
+    public void TestFindMenuFacetNotAddedToParameterByDefault() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        [TestMethod]
-        public void TestFindMenuAnnotationOnParameterPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 1, Specification, metamodel);
-            Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestFindMenuAnnotationIgnoredForPrimitiveParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer), "Action2", new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestFindMenuFacetNotAddedToPropertyByDefault() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer), "Property1");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestFindMenuAnnotationOnPropertyPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer), "Property2");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestFindMenuAnnotationIgnoredForPrimitiveProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer), "Property3");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        #region Nested type: Customer
-
-        private class Customer {
-            public Foo Property1 { get; set; }
-
-            [FindMenu]
-            public Foo Property2 { get; set; }
-
-            [FindMenu]
-            public string Property3 { get; set; }
-
-            public void Action1(Foo param1, [FindMenu] Foo param2) { }
-
-            public void Action2([FindMenu] string param1) { }
-        }
-
-        #endregion
-
-        #region Nested type: Foo
-
-        private class Foo { }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new FindMenuFacetFactory(GetOrder<FindMenuFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+        var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IFindMenuFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestFindMenuAnnotationOnParameterPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 1, Specification, metamodel);
+        Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestFindMenuAnnotationIgnoredForPrimitiveParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer), "Action2", new[] {typeof(string)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestFindMenuFacetNotAddedToPropertyByDefault() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer), "Property1");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestFindMenuAnnotationOnPropertyPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer), "Property2");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestFindMenuAnnotationIgnoredForPrimitiveProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer), "Property3");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    #region Nested type: Customer
+
+    private class Customer {
+        public Foo Property1 { get; set; }
+
+        [FindMenu]
+        public Foo Property2 { get; set; }
+
+        [FindMenu]
+        public string Property3 { get; set; }
+
+        public void Action1(Foo param1, [FindMenu] Foo param2) { }
+
+        public void Action2([FindMenu] string param1) { }
+    }
+
+    #endregion
+
+    #region Nested type: Foo
+
+    private class Foo { }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new FindMenuFacetFactory(GetOrder<FindMenuFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

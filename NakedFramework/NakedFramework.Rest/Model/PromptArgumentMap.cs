@@ -8,9 +8,9 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NakedFramework.Rest.Model {
-    [ModelBinder(BinderType = typeof(PromptArgumentMapBinder))]
-    public class PromptArgumentMap : ArgumentMap {
-        public IDictionary<string, IValue> MemberMap { get; set; } = new Dictionary<string, IValue>();
-    }
+namespace NakedFramework.Rest.Model; 
+
+[ModelBinder(BinderType = typeof(PromptArgumentMapBinder))]
+public class PromptArgumentMap : ArgumentMap {
+    public IDictionary<string, IValue> MemberMap { get; set; } = new Dictionary<string, IValue>();
 }

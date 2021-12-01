@@ -8,15 +8,15 @@
 using System.Xml.Linq;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Snapshot.Xml.utility {
-    public class Place {
-        public Place(INakedObjectAdapter nakedObjectAdapter, XElement element) {
-            NakedObjectAdapter = nakedObjectAdapter;
-            XmlElement = element;
-        }
+namespace NakedObjects.Snapshot.Xml.utility; 
 
-        public XElement XmlElement { get; }
-
-        public INakedObjectAdapter NakedObjectAdapter { get; }
+public class Place {
+    public Place(INakedObjectAdapter nakedObjectAdapter, XElement element) {
+        NakedObjectAdapter = nakedObjectAdapter;
+        XmlElement = element;
     }
+
+    public XElement XmlElement { get; }
+
+    public INakedObjectAdapter NakedObjectAdapter { get; }
 }

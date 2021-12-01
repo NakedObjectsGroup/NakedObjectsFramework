@@ -19,147 +19,147 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class MaskAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private MaskAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IMaskFacet)};
+[TestClass]
+public class MaskAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private MaskAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IMaskFacet)};
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-        [TestMethod]
-        public void TestMaskAnnotationNotIgnoredForNonStringsProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer3), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestMaskAnnotationNotIgnoredForPrimitiveOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestMaskAnnotationPickedUpOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IMaskFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MaskFacet);
-            var maskFacet = (MaskFacet) facet;
-            Assert.AreEqual("###", maskFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestMaskAnnotationPickedUpOnClass() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IMaskFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MaskFacet);
-            var maskFacet = (MaskFacet) facet;
-            Assert.AreEqual("###", maskFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        [TestMethod]
-        public void TestMaskAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var property = FindProperty(typeof(Customer1), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IMaskFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MaskFacet);
-            var maskFacet = (MaskFacet) facet;
-            Assert.AreEqual("###", maskFacet.Value);
-            Assert.IsNotNull(metamodel);
-        }
-
-        #region Nested type: Customer
-
-        [Mask("###")]
-        private class Customer { }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [Mask("###")]
-
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer2
-
-        private class Customer2 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Mask("###")] string foo) { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer3
-
-        private class Customer3 {
-            [Mask("###")]
-            public int NumberOfOrders => 0;
-        }
-
-        #endregion
-
-        #region Nested type: Customer4
-
-        private class Customer4 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Mask("###")] int foo) { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new MaskAnnotationFacetFactory(GetOrder<MaskAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
+    [TestMethod]
+    public void TestMaskAnnotationNotIgnoredForNonStringsProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer3), "NumberOfOrders");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestMaskAnnotationNotIgnoredForPrimitiveOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestMaskAnnotationPickedUpOnActionParameter() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+        metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMaskFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is MaskFacet);
+        var maskFacet = (MaskFacet) facet;
+        Assert.AreEqual("###", maskFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestMaskAnnotationPickedUpOnClass() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMaskFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is MaskFacet);
+        var maskFacet = (MaskFacet) facet;
+        Assert.AreEqual("###", maskFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestMaskAnnotationPickedUpOnProperty() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property = FindProperty(typeof(Customer1), "FirstName");
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMaskFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is MaskFacet);
+        var maskFacet = (MaskFacet) facet;
+        Assert.AreEqual("###", maskFacet.Value);
+        Assert.IsNotNull(metamodel);
+    }
+
+    #region Nested type: Customer
+
+    [Mask("###")]
+    private class Customer { }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        [Mask("###")]
+
+        public string FirstName => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer2
+
+    private class Customer2 {
+// ReSharper disable once UnusedParameter.Local
+        public void SomeAction([Mask("###")] string foo) { }
+    }
+
+    #endregion
+
+    #region Nested type: Customer3
+
+    private class Customer3 {
+        [Mask("###")]
+        public int NumberOfOrders => 0;
+    }
+
+    #endregion
+
+    #region Nested type: Customer4
+
+    private class Customer4 {
+// ReSharper disable once UnusedParameter.Local
+        public void SomeAction([Mask("###")] int foo) { }
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new MaskAnnotationFacetFactory(GetOrder<MaskAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.
+// ReSharper restore UnusedMember.Local

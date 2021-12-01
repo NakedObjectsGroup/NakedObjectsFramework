@@ -16,179 +16,179 @@ using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies {
-    public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
-        private readonly UriMtHelper helper;
-        private readonly RelType self;
-        private IEnumerable<ParameterRepresentation> parameterList;
+namespace NakedFramework.Rest.Snapshot.Strategies; 
 
-        protected AbstractActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
-            : base(oidStrategy, flags) {
-            Req = req;
-            ActionContext = actionContext;
-            helper = new UriMtHelper(oidStrategy, req, actionContext);
-            self = new MemberRelType(RelValues.Self, helper);
+public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
+    private readonly UriMtHelper helper;
+    private readonly RelType self;
+    private IEnumerable<ParameterRepresentation> parameterList;
+
+    protected AbstractActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
+        : base(oidStrategy, flags) {
+        Req = req;
+        ActionContext = actionContext;
+        helper = new UriMtHelper(oidStrategy, req, actionContext);
+        self = new MemberRelType(RelValues.Self, helper);
+    }
+
+    protected ActionContextFacade ActionContext { get; }
+
+    protected HttpRequest Req { get; }
+
+    public virtual bool ShowParameters() => true;
+
+    public virtual void CreateParameters() => parameterList = GetParameterList();
+
+    public virtual RestControlFlags GetFlags() => Flags;
+
+    public virtual IObjectFacade GetTarget() => ActionContext.Target;
+
+    public virtual RelType GetSelf() => self;
+
+    public virtual string GetId() => ActionContext.Action.Id;
+
+    private ParameterRepresentation GetParameter(ParameterContextFacade parameterContext) {
+        var objectFacade = ActionContext.Target;
+        return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, parameterContext, Flags);
+    }
+
+    protected virtual IEnumerable<ParameterRepresentation> GetParameterList() => ActionContext.VisibleParameters.Select(GetParameter);
+
+    public virtual MapRepresentation GetParameters() => RestUtils.CreateMap(parameterList.ToDictionary(p => p.Name, p => (object) p));
+
+    protected LinkRepresentation CreateDetailsLink() => LinkRepresentation.Create(OidStrategy, new MemberRelType(helper), Flags);
+
+    public abstract LinkRepresentation[] GetLinks();
+
+    protected LinkRepresentation CreateUpLink() {
+        RelType parentRelType;
+
+        if (ActionContext.Target is not null) {
+            var parentHelper = new UriMtHelper(OidStrategy, Req, ActionContext.Target);
+            parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, parentHelper) : new ObjectRelType(RelValues.Up, parentHelper);
+        }
+        else if (ActionContext.MenuId is not null) {
+            var parentHelper = new UriMtHelper(OidStrategy, Req, new MenuIdHolder(ActionContext.MenuId));
+            parentRelType = new MenuRelType(RelValues.Up, parentHelper);
+        }
+        else {
+            // no parent as such create uplink to home 
+            parentRelType = new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, Req));
         }
 
-        protected ActionContextFacade ActionContext { get; }
+        return LinkRepresentation.Create(OidStrategy, parentRelType, Flags);
+    }
 
-        protected HttpRequest Req { get; }
+    protected LinkRepresentation CreateSelfLink() => LinkRepresentation.Create(OidStrategy, self, Flags);
 
-        public virtual bool ShowParameters() => true;
+    protected virtual bool HasParams() => ActionContext.VisibleParameters.Any();
 
-        public virtual void CreateParameters() => parameterList = GetParameterList();
+    protected override MapRepresentation GetExtensionsForSimple() =>
+        RestUtils.GetExtensions(
+            ActionContext.Action.Name,
+            ActionContext.Action.Description,
+            null,
+            null,
+            null,
+            HasParams(),
+            null,
+            null,
+            null,
+            ActionContext.Action.MemberOrder,
+            null,
+            ActionContext.Action.PresentationHint,
+            GetCustomActionExtensions(),
+            ActionContext.Action.ReturnType,
+            ActionContext.Action.ElementType,
+            OidStrategy,
+            false);
 
-        public virtual RestControlFlags GetFlags() => Flags;
+    private IDictionary<string, object> GetCustomActionExtensions() {
+        var ext = GetTableViewCustomExtensions(ActionContext.Action.TableViewData);
 
-        public virtual IObjectFacade GetTarget() => ActionContext.Target;
-
-        public virtual RelType GetSelf() => self;
-
-        public virtual string GetId() => ActionContext.Action.Id;
-
-        private ParameterRepresentation GetParameter(ParameterContextFacade parameterContext) {
-            var objectFacade = ActionContext.Target;
-            return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, parameterContext, Flags);
+        if (!string.IsNullOrEmpty(ActionContext.MenuPath)) {
+            ext ??= new Dictionary<string, object>();
+            ext[JsonPropertyNames.CustomMenuPath] = ActionContext.MenuPath;
         }
 
-        protected virtual IEnumerable<ParameterRepresentation> GetParameterList() => ActionContext.VisibleParameters.Select(GetParameter);
+        if (ActionContext.Action.RenderEagerly) {
+            ext ??= new Dictionary<string, object>();
+            ext[JsonPropertyNames.CustomRenderEagerly] = true;
+        }
 
-        public virtual MapRepresentation GetParameters() => RestUtils.CreateMap(parameterList.ToDictionary(p => p.Name, p => (object) p));
+        var multipleLines = ActionContext.Action.NumberOfLines;
 
-        protected LinkRepresentation CreateDetailsLink() => LinkRepresentation.Create(OidStrategy, new MemberRelType(helper), Flags);
+        if (multipleLines.HasValue) {
+            ext ??= new Dictionary<string, object>();
+            ext[JsonPropertyNames.CustomMultipleLines] = multipleLines.Value;
+        }
 
-        public abstract LinkRepresentation[] GetLinks();
+        var createNewProperties = ActionContext.Action.CreateNewProperties;
 
-        protected LinkRepresentation CreateUpLink() {
-            RelType parentRelType;
+        if (createNewProperties.Any()) {
+            ext ??= new Dictionary<string, object>();
+            ext[JsonPropertyNames.CustomCreateNew] = string.Join(',', createNewProperties);
+        }
 
-            if (ActionContext.Target is not null) {
-                var parentHelper = new UriMtHelper(OidStrategy, Req, ActionContext.Target);
-                parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, parentHelper) : new ObjectRelType(RelValues.Up, parentHelper);
+        var editProperties = ActionContext.Action.EditProperties;
+
+        if (editProperties.Any()) {
+            ext ??= new Dictionary<string, object>();
+            ext[JsonPropertyNames.CustomEditProperties] = string.Join(',', editProperties);
+        }
+
+        var finderMethodPrefix = ActionContext.Action.FinderMethodPrefix;
+
+        if (finderMethodPrefix is not null) {
+            ext ??= new Dictionary<string, object>();
+            ext[JsonPropertyNames.CustomFinderAction] = finderMethodPrefix;
+        }
+
+        return ext;
+    }
+
+    protected virtual LinkRepresentation CreateActionLink() {
+        var optionalProperties = parameterList.Select(pr => new OptionalProperty(pr.Name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))).ToList();
+
+        var method = GetRelMethod();
+        return LinkRepresentation.Create(OidStrategy, new InvokeRelType(new UriMtHelper(OidStrategy, Req, ActionContext)) {Method = method}, Flags,
+                                         new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
+    }
+
+    private RelMethod GetRelMethod() {
+        if (ActionContext.Action.IsQueryOnly) {
+            return RelMethod.Get;
+        }
+
+        return ActionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
+    }
+
+    private static bool InlineDetails(ActionContextFacade actionContext, RestControlFlags flags) => flags.InlineDetailsInActionMemberRepresentations || actionContext.Action.RenderEagerly;
+
+    public static AbstractActionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
+        AbstractActionRepresentationStrategy strategy;
+        if (inline) {
+            if (actionContext.Target?.IsViewModelEditView == true) {
+                strategy = new FormActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
             }
-            else if (ActionContext.MenuId is not null) {
-                var parentHelper = new UriMtHelper(OidStrategy, Req, new MenuIdHolder(ActionContext.MenuId));
-                parentRelType = new MenuRelType(RelValues.Up, parentHelper);
+            else if (InlineDetails(actionContext, flags)) {
+                strategy = new ActionMemberWithDetailsRepresentationStrategy(oidStrategy, req, actionContext, flags);
             }
             else {
-                // no parent as such create uplink to home 
-                parentRelType = new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, Req));
+                strategy = new ActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
             }
-
-            return LinkRepresentation.Create(OidStrategy, parentRelType, Flags);
         }
-
-        protected LinkRepresentation CreateSelfLink() => LinkRepresentation.Create(OidStrategy, self, Flags);
-
-        protected virtual bool HasParams() => ActionContext.VisibleParameters.Any();
-
-        protected override MapRepresentation GetExtensionsForSimple() =>
-            RestUtils.GetExtensions(
-                ActionContext.Action.Name,
-                ActionContext.Action.Description,
-                null,
-                null,
-                null,
-                HasParams(),
-                null,
-                null,
-                null,
-                ActionContext.Action.MemberOrder,
-                null,
-                ActionContext.Action.PresentationHint,
-                GetCustomActionExtensions(),
-                ActionContext.Action.ReturnType,
-                ActionContext.Action.ElementType,
-                OidStrategy,
-                false);
-
-        private IDictionary<string, object> GetCustomActionExtensions() {
-            var ext = GetTableViewCustomExtensions(ActionContext.Action.TableViewData);
-
-            if (!string.IsNullOrEmpty(ActionContext.MenuPath)) {
-                ext ??= new Dictionary<string, object>();
-                ext[JsonPropertyNames.CustomMenuPath] = ActionContext.MenuPath;
-            }
-
-            if (ActionContext.Action.RenderEagerly) {
-                ext ??= new Dictionary<string, object>();
-                ext[JsonPropertyNames.CustomRenderEagerly] = true;
-            }
-
-            var multipleLines = ActionContext.Action.NumberOfLines;
-
-            if (multipleLines.HasValue) {
-                ext ??= new Dictionary<string, object>();
-                ext[JsonPropertyNames.CustomMultipleLines] = multipleLines.Value;
-            }
-
-            var createNewProperties = ActionContext.Action.CreateNewProperties;
-
-            if (createNewProperties.Any()) {
-                ext ??= new Dictionary<string, object>();
-                ext[JsonPropertyNames.CustomCreateNew] = string.Join(',', createNewProperties);
-            }
-
-            var editProperties = ActionContext.Action.EditProperties;
-
-            if (editProperties.Any()) {
-                ext ??= new Dictionary<string, object>();
-                ext[JsonPropertyNames.CustomEditProperties] = string.Join(',', editProperties);
-            }
-
-            var finderMethodPrefix = ActionContext.Action.FinderMethodPrefix;
-
-            if (finderMethodPrefix is not null) {
-                ext ??= new Dictionary<string, object>();
-                ext[JsonPropertyNames.CustomFinderAction] = finderMethodPrefix;
-            }
-
-            return ext;
-        }
-
-        protected virtual LinkRepresentation CreateActionLink() {
-            var optionalProperties = parameterList.Select(pr => new OptionalProperty(pr.Name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))).ToList();
-
-            var method = GetRelMethod();
-            return LinkRepresentation.Create(OidStrategy, new InvokeRelType(new UriMtHelper(OidStrategy, Req, ActionContext)) {Method = method}, Flags,
-                                             new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
-        }
-
-        private RelMethod GetRelMethod() {
-            if (ActionContext.Action.IsQueryOnly) {
-                return RelMethod.Get;
-            }
-
-            return ActionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
-        }
-
-        private static bool InlineDetails(ActionContextFacade actionContext, RestControlFlags flags) => flags.InlineDetailsInActionMemberRepresentations || actionContext.Action.RenderEagerly;
-
-        public static AbstractActionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
-            AbstractActionRepresentationStrategy strategy;
-            if (inline) {
-                if (actionContext.Target?.IsViewModelEditView == true) {
-                    strategy = new FormActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
-                }
-                else if (InlineDetails(actionContext, flags)) {
-                    strategy = new ActionMemberWithDetailsRepresentationStrategy(oidStrategy, req, actionContext, flags);
-                }
-                else {
-                    strategy = new ActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
-                }
+        else {
+            if (actionContext.Target?.IsViewModelEditView == true) {
+                strategy = new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
             }
             else {
-                if (actionContext.Target?.IsViewModelEditView == true) {
-                    strategy = new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
-                }
-                else {
-                    strategy = new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
-                }
+                strategy = new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
             }
-
-            strategy.CreateParameters();
-
-            return strategy;
         }
+
+        strategy.CreateParameters();
+
+        return strategy;
     }
 }

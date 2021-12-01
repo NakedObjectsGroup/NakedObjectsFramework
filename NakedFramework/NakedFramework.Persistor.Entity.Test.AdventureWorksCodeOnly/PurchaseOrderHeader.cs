@@ -13,47 +13,47 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Purchasing.PurchaseOrderHeader")]
-    public class PurchaseOrderHeader {
-        [Key]
-        public int PurchaseOrderID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public byte RevisionNumber { get; set; }
+[Table("Purchasing.PurchaseOrderHeader")]
+public class PurchaseOrderHeader {
+    [Key]
+    public int PurchaseOrderID { get; set; }
 
-        public byte Status { get; set; }
+    public byte RevisionNumber { get; set; }
 
-        public int EmployeeID { get; set; }
+    public byte Status { get; set; }
 
-        public int VendorID { get; set; }
+    public int EmployeeID { get; set; }
 
-        public int ShipMethodID { get; set; }
+    public int VendorID { get; set; }
 
-        public DateTime OrderDate { get; set; }
+    public int ShipMethodID { get; set; }
 
-        public DateTime? ShipDate { get; set; }
+    public DateTime OrderDate { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal SubTotal { get; set; }
+    public DateTime? ShipDate { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal TaxAmt { get; set; }
+    [Column(TypeName = "money")]
+    public decimal SubTotal { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal Freight { get; set; }
+    [Column(TypeName = "money")]
+    public decimal TaxAmt { get; set; }
 
-        [Column(TypeName = "money")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public decimal TotalDue { get; set; }
+    [Column(TypeName = "money")]
+    public decimal Freight { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Column(TypeName = "money")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public decimal TotalDue { get; set; }
 
-        public virtual Employee Employee { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; } = new HashSet<PurchaseOrderDetail>();
+    public virtual Employee Employee { get; set; }
 
-        public virtual ShipMethod ShipMethod { get; set; }
+    public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; } = new HashSet<PurchaseOrderDetail>();
 
-        public virtual Vendor Vendor { get; set; }
-    }
+    public virtual ShipMethod ShipMethod { get; set; }
+
+    public virtual Vendor Vendor { get; set; }
 }

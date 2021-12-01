@@ -22,73 +22,73 @@ using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class DisplayAsPropertyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        private static void RemoveAction(IActionSpecImmutable actionSpec) {
-            if (actionSpec.OwnerSpec is ITypeSpecBuilder tsb) {
-                tsb.RemoveAction(actionSpec);
-            }
+public sealed class DisplayAsPropertyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) =>
+        loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();
+
+    private static void RemoveAction(IActionSpecImmutable actionSpec) {
+        if (actionSpec.OwnerSpec is ITypeSpecBuilder tsb) {
+            tsb.RemoveAction(actionSpec);
         }
+    }
 
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, ISpecificationBuilder specification, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ITypeSpecBuilder displayOnTypeSpec;
-            (displayOnTypeSpec, metamodel) = reflector.LoadSpecification(type, metamodel);
+    private static IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, ISpecificationBuilder specification, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        ITypeSpecBuilder displayOnTypeSpec;
+        (displayOnTypeSpec, metamodel) = reflector.LoadSpecification(type, metamodel);
 
-            if (specification is IActionSpecImmutable actionSpec) {
-                void Action(IMetamodelBuilder b) {
-                    var adaptedMember = ImmutableSpecFactory.CreateSpecAdapter(actionSpec);
-                    displayOnTypeSpec.AddContributedFields(new[] { adaptedMember });
-                    RemoveAction(actionSpec);
-                }
-
-                FacetUtils.AddIntegrationFacet(displayOnTypeSpec, Action);
+        if (specification is IActionSpecImmutable actionSpec) {
+            void Action(IMetamodelBuilder b) {
+                var adaptedMember = ImmutableSpecFactory.CreateSpecAdapter(actionSpec);
+                displayOnTypeSpec.AddContributedFields(new[] { adaptedMember });
+                RemoveAction(actionSpec);
             }
 
-            return metamodel;
+            FacetUtils.AddIntegrationFacet(displayOnTypeSpec, Action);
         }
 
-        private static bool IsObjectMethod(MethodInfo method) => method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null && !method.GetParameters().Any();
+        return metamodel;
+    }
 
-        private static bool IsContributedMethod(MethodInfo method) => method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null
-                                                                      && method.GetParameters().Length == 1
-                                                                      && method.GetParameters().First().GetCustomAttribute<ContributedActionAttribute>() is not null
-                                                                      && !FasterTypeUtils.IsGenericCollection(method.GetParameters().First().ParameterType);
+    private static bool IsObjectMethod(MethodInfo method) => method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null && !method.GetParameters().Any();
 
-        private static bool MatchesPropertySignature(MethodInfo method) => method.ReturnType != typeof(void);
+    private static bool IsContributedMethod(MethodInfo method) => method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null
+                                                                  && method.GetParameters().Length == 1
+                                                                  && method.GetParameters().First().GetCustomAttribute<ContributedActionAttribute>() is not null
+                                                                  && !FasterTypeUtils.IsGenericCollection(method.GetParameters().First().ParameterType);
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    private static bool MatchesPropertySignature(MethodInfo method) => method.ReturnType != typeof(void);
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             
-            if ((IsObjectMethod(method) || IsContributedMethod(method)) && MatchesPropertySignature(method)) {
-                Type displayOnType;
-                IPropertyAccessorFacet accessorFacet;
+        if ((IsObjectMethod(method) || IsContributedMethod(method)) && MatchesPropertySignature(method)) {
+            Type displayOnType;
+            IPropertyAccessorFacet accessorFacet;
 
-                if (IsContributedMethod(method)) {
-                    displayOnType = method.GetParameters().First().ParameterType;
-                    accessorFacet = new PropertyAccessorFacetViaContributedAction(method, specification, LoggerFactory.CreateLogger<PropertyAccessorFacetViaContributedAction>());
-                }
-                else {
-                    displayOnType = method.DeclaringType;
-                    accessorFacet = new PropertyAccessorFacetViaMethod(method, specification, LoggerFactory.CreateLogger<PropertyAccessorFacetViaMethod>());
-                }
-
-                FacetUtils.AddFacets(new IFacet[] {
-                    new DisplayAsPropertyFacet(specification),
-                    accessorFacet,
-                    new MandatoryFacetDefault(specification),
-                    new DisabledFacetAlways(specification)
-                });
-
-                metamodel = AddIntegrationFacet(reflector, specification, displayOnType, metamodel);
-
-                methodRemover.RemoveMethod(method);
+            if (IsContributedMethod(method)) {
+                displayOnType = method.GetParameters().First().ParameterType;
+                accessorFacet = new PropertyAccessorFacetViaContributedAction(method, specification, LoggerFactory.CreateLogger<PropertyAccessorFacetViaContributedAction>());
+            }
+            else {
+                displayOnType = method.DeclaringType;
+                accessorFacet = new PropertyAccessorFacetViaMethod(method, specification, LoggerFactory.CreateLogger<PropertyAccessorFacetViaMethod>());
             }
 
-            return metamodel;
+            FacetUtils.AddFacets(new IFacet[] {
+                new DisplayAsPropertyFacet(specification),
+                accessorFacet,
+                new MandatoryFacetDefault(specification),
+                new DisabledFacetAlways(specification)
+            });
+
+            metamodel = AddIntegrationFacet(reflector, specification, displayOnType, metamodel);
+
+            methodRemover.RemoveMethod(method);
         }
+
+        return metamodel;
     }
 }

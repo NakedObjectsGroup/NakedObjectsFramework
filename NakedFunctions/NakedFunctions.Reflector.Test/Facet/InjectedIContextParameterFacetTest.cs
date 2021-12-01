@@ -14,35 +14,35 @@ using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Facet;
 using NakedObjects.Core.Util;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class InjectedIContextParameterFacetTest {
-        private readonly Mock<INakedFramework> mockFramework = new();
-        private readonly Mock<IObjectPersistor> mockPersistor = new();
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        private readonly IQueryable<object> testValue = new QueryableList<object>();
+[TestClass]
+public class InjectedIContextParameterFacetTest {
+    private readonly Mock<INakedFramework> mockFramework = new();
+    private readonly Mock<IObjectPersistor> mockPersistor = new();
 
-        public InjectedIContextParameterFacetTest() {
-            mockFramework.SetupGet(p => p.Persistor).Returns(mockPersistor.Object);
-            mockPersistor.Setup(p => p.Instances<object>()).Returns(testValue);
-        }
+    private readonly IQueryable<object> testValue = new QueryableList<object>();
 
-        [TestMethod]
-        public void TestInjected() {
-            var testFacet = new InjectedIContextParameterFacet(null);
+    public InjectedIContextParameterFacetTest() {
+        mockFramework.SetupGet(p => p.Persistor).Returns(mockPersistor.Object);
+        mockPersistor.Setup(p => p.Instances<object>()).Returns(testValue);
+    }
 
-            var result = testFacet.GetInjectedValue(mockFramework.Object, null);
+    [TestMethod]
+    public void TestInjected() {
+        var testFacet = new InjectedIContextParameterFacet(null);
 
-            Assert.AreEqual(result.GetType(), typeof(FunctionalContext));
-        }
+        var result = testFacet.GetInjectedValue(mockFramework.Object, null);
 
-        [TestMethod]
-        public void TestInjectedInstances() {
-            var testFacet = new InjectedIContextParameterFacet(null);
+        Assert.AreEqual(result.GetType(), typeof(FunctionalContext));
+    }
 
-            var result = ((IContext) testFacet.GetInjectedValue(mockFramework.Object, null)).Instances<object>();
+    [TestMethod]
+    public void TestInjectedInstances() {
+        var testFacet = new InjectedIContextParameterFacet(null);
 
-            Assert.AreEqual(result, testValue);
-        }
+        var result = ((IContext) testFacet.GetInjectedValue(mockFramework.Object, null)).Instances<object>();
+
+        Assert.AreEqual(result, testValue);
     }
 }

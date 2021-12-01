@@ -9,12 +9,12 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class OnPersistingErrorCallbackFacetNull : OnPersistingErrorCallbackFacetAbstract {
-        public OnPersistingErrorCallbackFacetNull(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => throw exception;
-    }
+[Serializable]
+public sealed class OnPersistingErrorCallbackFacetNull : OnPersistingErrorCallbackFacetAbstract {
+    public OnPersistingErrorCallbackFacetNull(ISpecification holder)
+        : base(holder) { }
+
+    public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => throw exception;
 }

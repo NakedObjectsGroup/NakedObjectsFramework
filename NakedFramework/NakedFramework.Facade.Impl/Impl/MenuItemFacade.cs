@@ -8,22 +8,22 @@
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl {
-    public class MenuItemFacade : IMenuItemFacade {
-        public MenuItemFacade(IMenuItemImmutable wrapped) {
-            Wrapped = wrapped;
-            Name = wrapped.Name;
-            Id = wrapped.Id;
-            Grouping = wrapped.Grouping;
-        }
+namespace NakedFramework.Facade.Impl.Impl; 
 
-        #region IMenuItemFacade Members
-
-        public string Name { get; }
-        public string Id { get; }
-        public object Wrapped { get; }
-        public string Grouping { get; }
-
-        #endregion
+public class MenuItemFacade : IMenuItemFacade {
+    public MenuItemFacade(IMenuItemImmutable wrapped) {
+        Wrapped = wrapped;
+        Name = wrapped.Name;
+        Id = wrapped.Id;
+        Grouping = wrapped.Grouping;
     }
+
+    #region IMenuItemFacade Members
+
+    public string Name { get; }
+    public string Id { get; }
+    public object Wrapped { get; }
+    public string Grouping { get; }
+
+    #endregion
 }

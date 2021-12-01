@@ -8,12 +8,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace NakedFramework.Architecture.FacetFactory {
-    /// <summary>
-    ///     This is a bit of a hack, but want to be able to centralize knowledge about rules.
-    /// </summary>
-    public interface IMethodRemover {
-        void RemoveMethod(MethodInfo method);
-        void RemoveMethods(IList<MethodInfo> methodList);
-    }
+namespace NakedFramework.Architecture.FacetFactory; 
+
+/// <summary>
+///     This is a bit of a hack, but want to be able to centralize knowledge about rules.
+/// </summary>
+public interface IMethodRemover {
+    void RemoveMethod(MethodInfo method);
+    void RemoveMethods(IList<MethodInfo> methodList);
 }

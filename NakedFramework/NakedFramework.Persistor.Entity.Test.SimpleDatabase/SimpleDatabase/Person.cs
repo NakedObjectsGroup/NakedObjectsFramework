@@ -11,100 +11,100 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace SimpleDatabase {
-    public abstract class AbstractTestCode {
-        #region test code
+namespace SimpleDatabase; 
 
-        private IDictionary<string, int> callbackStatus;
+public abstract class AbstractTestCode {
+    #region test code
 
-        public virtual void Created() {
-            SetupStatus();
-            callbackStatus["Created"]++;
-        }
+    private IDictionary<string, int> callbackStatus;
 
-        public virtual void Updating() {
-            SetupStatus();
-            callbackStatus["Updating"]++;
-        }
-
-        public virtual void Updated() {
-            SetupStatus();
-            callbackStatus["Updated"]++;
-        }
-
-        public virtual void Loading() {
-            SetupStatus();
-            callbackStatus["Loading"]++;
-        }
-
-        public virtual void Loaded() {
-            SetupStatus();
-            callbackStatus["Loaded"]++;
-        }
-
-        public virtual void Persisting() {
-            SetupStatus();
-            callbackStatus["Persisting"]++;
-        }
-
-        public virtual void Persisted() {
-            SetupStatus();
-            callbackStatus["Persisted"]++;
-        }
-
-        private void SetupStatus() =>
-            callbackStatus ??= new Dictionary<string, int> {
-                {"Created", 0},
-                {"Updating", 0},
-                {"Updated", 0},
-                {"Loading", 0},
-                {"Loaded", 0},
-                {"Persisting", 0},
-                {"Persisted", 0}
-            };
-
-        public void ResetCallbackStatus() {
-            callbackStatus = null;
-        }
-
-        [NakedObjectsIgnore]
-        public IDictionary<string, int> GetCallbackStatus() => callbackStatus;
-
-        #endregion
+    public virtual void Created() {
+        SetupStatus();
+        callbackStatus["Created"]++;
     }
 
-    public class Person : AbstractTestCode {
-        [Root]
-        public object Parent { get; set; }
+    public virtual void Updating() {
+        SetupStatus();
+        callbackStatus["Updating"]++;
+    }
 
-        public IDomainObjectContainer Container { protected get; set; }
+    public virtual void Updated() {
+        SetupStatus();
+        callbackStatus["Updated"]++;
+    }
 
-        #region Primitive Properties
+    public virtual void Loading() {
+        SetupStatus();
+        callbackStatus["Loading"]++;
+    }
 
-        public virtual int Id { get; set; }
+    public virtual void Loaded() {
+        SetupStatus();
+        callbackStatus["Loaded"]++;
+    }
 
-        #endregion
+    public virtual void Persisting() {
+        SetupStatus();
+        callbackStatus["Persisting"]++;
+    }
 
-        #region Complex Properties
+    public virtual void Persisted() {
+        SetupStatus();
+        callbackStatus["Persisted"]++;
+    }
+
+    private void SetupStatus() =>
+        callbackStatus ??= new Dictionary<string, int> {
+            {"Created", 0},
+            {"Updating", 0},
+            {"Updated", 0},
+            {"Loading", 0},
+            {"Loaded", 0},
+            {"Persisting", 0},
+            {"Persisted", 0}
+        };
+
+    public void ResetCallbackStatus() {
+        callbackStatus = null;
+    }
+
+    [NakedObjectsIgnore]
+    public IDictionary<string, int> GetCallbackStatus() => callbackStatus;
+
+    #endregion
+}
+
+public class Person : AbstractTestCode {
+    [Root]
+    public object Parent { get; set; }
+
+    public IDomainObjectContainer Container { protected get; set; }
+
+    #region Primitive Properties
+
+    public virtual int Id { get; set; }
+
+    #endregion
+
+    #region Complex Properties
 
 // ReSharper disable InconsistentNaming
 
-        public virtual NameType ComplexProperty { get; set; } = new();
+    public virtual NameType ComplexProperty { get; set; } = new();
 
-        public virtual ComplexType1 ComplexProperty_1 { get; set; } = new();
+    public virtual ComplexType1 ComplexProperty_1 { get; set; } = new();
 
-        #endregion
+    #endregion
 
-        #region Navigation Properties
+    #region Navigation Properties
 
-        private readonly List<Food> _food = new();
+    private readonly List<Food> _food = new();
 
-        public virtual ICollection<Food> Food => _food;
+    public virtual ICollection<Food> Food => _food;
 
-        #endregion
+    #endregion
 
-        public object ExposeContainerForTest() => Container;
-    }
+    public object ExposeContainerForTest() => Container;
 }
 
 // ReSharper restore InconsistentNaming

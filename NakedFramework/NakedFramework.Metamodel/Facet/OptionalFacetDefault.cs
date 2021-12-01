@@ -8,27 +8,27 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    /// <summary>
-    ///     Whether a property or a parameter is optional (not mandatory).
-    /// </summary>
-    /// <para>
-    ///     For a mandatory property, the object cannot be saved/updated without
-    ///     the value being provided.  For a mandatory parameter, the action cannot
-    ///     be invoked without the value being provided.
-    /// </para>
-    /// <para>
-    ///     This is used in the alternative Naked Objects Programming Model, where
-    ///     all properties and parameters are optional by default and need to be annotated
-    ///     as mandatory.
-    /// </para>
-    [Serializable]
-    public sealed class OptionalFacetDefault : MandatoryFacetAbstract {
-        public OptionalFacetDefault(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsMandatory => false;
+/// <summary>
+///     Whether a property or a parameter is optional (not mandatory).
+/// </summary>
+/// <para>
+///     For a mandatory property, the object cannot be saved/updated without
+///     the value being provided.  For a mandatory parameter, the action cannot
+///     be invoked without the value being provided.
+/// </para>
+/// <para>
+///     This is used in the alternative Naked Objects Programming Model, where
+///     all properties and parameters are optional by default and need to be annotated
+///     as mandatory.
+/// </para>
+[Serializable]
+public sealed class OptionalFacetDefault : MandatoryFacetAbstract {
+    public OptionalFacetDefault(ISpecification holder)
+        : base(holder) { }
 
-        public override bool CanAlwaysReplace => false;
-    }
+    public override bool IsMandatory => false;
+
+    public override bool CanAlwaysReplace => false;
 }

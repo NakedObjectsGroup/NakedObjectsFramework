@@ -1,14 +1,14 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace NakedFramework.Persistor.EFCore.Configuration {
-    public class EFCorePersistorConfiguration {
-        public Func<DbContext>[] Contexts { get; set; }
+namespace NakedFramework.Persistor.EFCore.Configuration; 
 
-        public int MaximumCommitCycles { get; set; }
+public class EFCorePersistorConfiguration {
+    public Func<DbContext>[] Contexts { get; set; }
 
-        public Type[] PreCachedTypes() => Array.Empty<Type>();
+    public int MaximumCommitCycles { get; set; }
 
-        public Type[] NotPersistedTypes() => Array.Empty<Type>();
-    }
+    public Type[] PreCachedTypes() => Array.Empty<Type>();
+
+    public Type[] NotPersistedTypes() => Array.Empty<Type>();
 }

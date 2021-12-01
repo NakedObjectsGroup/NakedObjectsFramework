@@ -13,46 +13,46 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.SalesTerritory")]
-    public class SalesTerritory {
-        [Key]
-        public int TerritoryID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Sales.SalesTerritory")]
+public class SalesTerritory {
+    [Key]
+    public int TerritoryID { get; set; }
 
-        [Required]
-        [StringLength(3)]
-        public string CountryRegionCode { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Group { get; set; }
+    [Required]
+    [StringLength(3)]
+    public string CountryRegionCode { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal SalesYTD { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Group { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal SalesLastYear { get; set; }
+    [Column(TypeName = "money")]
+    public decimal SalesYTD { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal CostYTD { get; set; }
+    [Column(TypeName = "money")]
+    public decimal SalesLastYear { get; set; }
 
-        [Column(TypeName = "money")]
-        public decimal CostLastYear { get; set; }
+    [Column(TypeName = "money")]
+    public decimal CostYTD { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Column(TypeName = "money")]
+    public decimal CostLastYear { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual ICollection<StateProvince> StateProvinces { get; set; } = new HashSet<StateProvince>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Customer> Customers { get; set; } = new HashSet<Customer>();
+    public virtual ICollection<StateProvince> StateProvinces { get; set; } = new HashSet<StateProvince>();
 
-        public virtual ICollection<SalesPerson> SalesPersons { get; set; } = new HashSet<SalesPerson>();
+    public virtual ICollection<Customer> Customers { get; set; } = new HashSet<Customer>();
 
-        public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; } = new HashSet<SalesTerritoryHistory>();
-    }
+    public virtual ICollection<SalesPerson> SalesPersons { get; set; } = new HashSet<SalesPerson>();
+
+    public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; } = new HashSet<SalesTerritoryHistory>();
 }

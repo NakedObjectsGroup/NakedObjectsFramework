@@ -12,28 +12,28 @@
 
 using System.Data.Entity;
 
-namespace RestfulObjects.Test.Data {
-    public class CodeFirstContext : DbContext {
-        public CodeFirstContext(string cs) : base(cs) { }
-        public DbSet<Immutable> Immutables { get; set; }
-        public DbSet<MostSimple> MostSimples { get; set; }
-        public DbSet<RedirectedObject> RedirectedObjects { get; set; }
-        public DbSet<VerySimple> VerySimples { get; set; }
-        public DbSet<VerySimpleEager> VerySimpleEagers { get; set; }
-        public DbSet<WithActionObject> WithActionObjects { get; set; }
-        public DbSet<WithAttachments> WithAttachments { get; set; }
-        public DbSet<WithCollection> WithCollections { get; set; }
-        public DbSet<WithDateTimeKey> WithDateTimeKeys { get; set; }
-        public DbSet<WithError> WithErrors { get; set; }
-        public DbSet<WithGetError> WithGetErrors { get; set; }
-        public DbSet<WithReference> WithReferences { get; set; }
-        public DbSet<WithScalars> WithScalarses { get; set; }
-        public DbSet<WithValue> WithValues { get; set; }
+namespace RestfulObjects.Test.Data; 
 
-        public DbSet<MostSimplePersist> MostSimplePersists { get; set; }
-        public DbSet<VerySimplePersist> VerySimplePersists { get; set; }
-        public DbSet<WithValuePersist> WithValuePersists { get; set; }
-        public DbSet<WithReferencePersist> WithReferencePersists { get; set; }
-        public DbSet<WithCollectionPersist> WithCollectionPersists { get; set; }
-    }
+public class CodeFirstContext : DbContext {
+    public CodeFirstContext(string cs) : base(cs) { }
+    public DbSet<Immutable> Immutables { get; set; }
+    public DbSet<MostSimple> MostSimples { get; set; }
+    public DbSet<RedirectedObject> RedirectedObjects { get; set; }
+    public DbSet<VerySimple> VerySimples { get; set; }
+    public DbSet<VerySimpleEager> VerySimpleEagers { get; set; }
+    public DbSet<WithActionObject> WithActionObjects { get; set; }
+    public DbSet<WithAttachments> WithAttachments { get; set; }
+    public DbSet<WithCollection> WithCollections { get; set; }
+    public DbSet<WithDateTimeKey> WithDateTimeKeys { get; set; }
+    public DbSet<WithError> WithErrors { get; set; }
+    public DbSet<WithGetError> WithGetErrors { get; set; }
+    public DbSet<WithReference> WithReferences { get; set; }
+    public DbSet<WithScalars> WithScalarses { get; set; }
+    public DbSet<WithValue> WithValues { get; set; }
+
+    public DbSet<MostSimplePersist> MostSimplePersists { get; set; }
+    public DbSet<VerySimplePersist> VerySimplePersists { get; set; }
+    public DbSet<WithValuePersist> WithValuePersists { get; set; }
+    public DbSet<WithReferencePersist> WithReferencePersists { get; set; }
+    public DbSet<WithCollectionPersist> WithCollectionPersists { get; set; }
 }

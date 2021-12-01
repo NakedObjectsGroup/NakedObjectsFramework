@@ -5,14 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Rest.Snapshot.Constants {
-    public class RelParamValues {
-        public const string Action = "action";
-        public const string Collection = "collection";
-        public const string Property = "property";
-        public const string Param = "param";
-        public const string TypeAction = "typeaction";
-        public const string ServiceId = "serviceId";
-        public const string MenuId = "menuId";
-    }
+namespace NakedFramework.Rest.Snapshot.Constants; 
+
+public class RelParamValues {
+    public const string Action = "action";
+    public const string Collection = "collection";
+    public const string Property = "property";
+    public const string Param = "param";
+    public const string TypeAction = "typeaction";
+    public const string ServiceId = "serviceId";
+    public const string MenuId = "menuId";
 }

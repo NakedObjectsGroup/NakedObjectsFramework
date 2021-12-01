@@ -7,8 +7,8 @@
 
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Facet {
-    public interface ICreateNewFacet : IFacet {
-        public string[] OrderedProperties(INakedFramework framework);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+public interface ICreateNewFacet : IFacet {
+    public string[] OrderedProperties(INakedFramework framework);
 }

@@ -9,18 +9,18 @@ using System.IO;
 using System.Security.Principal;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Core.Authentication {
-    public class WindowsSession : ISession {
-        public WindowsSession(IPrincipal principal) => Principal = principal ?? new EmptyPrincipal();
+namespace NakedFramework.Core.Authentication; 
 
-        #region ISession Members
+public class WindowsSession : ISession {
+    public WindowsSession(IPrincipal principal) => Principal = principal ?? new EmptyPrincipal();
 
-        public IPrincipal Principal { get; protected set; }
+    #region ISession Members
 
-        public string UserName => Path.GetFileName(Principal.Identity?.Name);
+    public IPrincipal Principal { get; protected set; }
 
-        public bool IsAuthenticated => Principal.Identity?.IsAuthenticated ?? false;
+    public string UserName => Path.GetFileName(Principal.Identity?.Name);
 
-        #endregion
-    }
+    public bool IsAuthenticated => Principal.Identity?.IsAuthenticated ?? false;
+
+    #endregion
 }

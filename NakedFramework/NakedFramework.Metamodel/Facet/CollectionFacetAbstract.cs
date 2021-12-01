@@ -13,38 +13,38 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
-        protected CollectionFacetAbstract(ISpecification holder)
-            : base(typeof(ICollectionFacet), holder) =>
-            IsASet = false;
+namespace NakedFramework.Metamodel.Facet; 
 
-        protected CollectionFacetAbstract(ISpecification holder, bool isASet)
-            : this(holder) =>
-            IsASet = isASet;
+[Serializable]
+public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
+    protected CollectionFacetAbstract(ISpecification holder)
+        : base(typeof(ICollectionFacet), holder) =>
+        IsASet = false;
 
-        protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {
-            var m = GetType().GetMethod(name);
-            var t = collection.Object.GetType().GenericTypeArguments.First();
+    protected CollectionFacetAbstract(ISpecification holder, bool isASet)
+        : this(holder) =>
+        IsASet = isASet;
 
-            return m.MakeGenericMethod(t).Invoke(this, pp);
-        }
+    protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {
+        var m = GetType().GetMethod(name);
+        var t = collection.Object.GetType().GenericTypeArguments.First();
 
-        #region ICollectionFacet Members
-
-        public bool IsASet { get; private set; }
-
-        public abstract bool IsQueryable { get; }
-        public abstract bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element);
-        public abstract INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable);
-
-        public abstract IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager);
-        public abstract IQueryable AsQueryable(INakedObjectAdapter collection);
-        public abstract void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData);
-
-        #endregion
+        return m.MakeGenericMethod(t).Invoke(this, pp);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region ICollectionFacet Members
+
+    public bool IsASet { get; private set; }
+
+    public abstract bool IsQueryable { get; }
+    public abstract bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element);
+    public abstract INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable);
+
+    public abstract IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager);
+    public abstract IQueryable AsQueryable(INakedObjectAdapter collection);
+    public abstract void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData);
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -17,31 +17,31 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    /// <summary>
-    ///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
-    ///     <see cref="QueryOnlyAttribute" /> or <see cref="NakedObjects.IdempotentAttribute" /> annotation
-    /// </summary>
-    public sealed class PotencyDerivedFromSignatureFacetFactory : FunctionalFacetFactoryProcessor {
-        private readonly ILogger<PotencyDerivedFromSignatureFacetFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public PotencyDerivedFromSignatureFacetFactory(IFacetFactoryOrder<PotencyDerivedFromSignatureFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<PotencyDerivedFromSignatureFacetFactory>();
+/// <summary>
+///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
+///     <see cref="QueryOnlyAttribute" /> or <see cref="NakedObjects.IdempotentAttribute" /> annotation
+/// </summary>
+public sealed class PotencyDerivedFromSignatureFacetFactory : FunctionalFacetFactoryProcessor {
+    private readonly ILogger<PotencyDerivedFromSignatureFacetFactory> logger;
 
-        private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsTuple(returnType) && !returnType.IsAssignableTo(typeof(IContext));
+    public PotencyDerivedFromSignatureFacetFactory(IFacetFactoryOrder<PotencyDerivedFromSignatureFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) =>
+        logger = loggerFactory.CreateLogger<PotencyDerivedFromSignatureFacetFactory>();
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            if (member is MethodInfo method) {
-                if (IsSideEffectFree(method.ReturnType)) {
-                    FacetUtils.AddFacet(new QueryOnlyFacet(holder));
-                }
+    private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsTuple(returnType) && !returnType.IsAssignableTo(typeof(IContext));
+
+    private static void Process(MemberInfo member, ISpecification holder) {
+        if (member is MethodInfo method) {
+            if (IsSideEffectFree(method.ReturnType)) {
+                FacetUtils.AddFacet(new QueryOnlyFacet(holder));
             }
         }
+    }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, specification);
-            return metamodel;
-        }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
     }
 }

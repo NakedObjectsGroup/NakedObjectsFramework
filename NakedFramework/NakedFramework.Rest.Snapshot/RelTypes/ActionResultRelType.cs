@@ -9,16 +9,16 @@ using System;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class ActionResultRelType : RelType {
-        public ActionResultRelType(string name, UriMtHelper helper) : base(name, helper) { }
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public override Uri GetUri() => Helper.GetInvokeUri();
+public class ActionResultRelType : RelType {
+    public ActionResultRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            var mediaType = UriMtHelper.GetJsonMediaType(UriMtHelper.GetActionResultMediaType());
-            Helper.AddActionResultRepresentationParameter(mediaType, flags);
-            return mediaType;
-        }
+    public override Uri GetUri() => Helper.GetInvokeUri();
+
+    public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
+        var mediaType = UriMtHelper.GetJsonMediaType(UriMtHelper.GetActionResultMediaType());
+        Helper.AddActionResultRepresentationParameter(mediaType, flags);
+        return mediaType;
     }
 }

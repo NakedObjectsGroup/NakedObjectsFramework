@@ -8,13 +8,13 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Indicates that class is a view model
-    /// </summary>
-    public interface IViewModelFacet : IFacet {
-        string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-        void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-        bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Indicates that class is a view model
+/// </summary>
+public interface IViewModelFacet : IFacet {
+    string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+    void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+    bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 }

@@ -7,18 +7,18 @@
 
 using System;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    public class OptionalProperty {
-        public OptionalProperty(string name, object value) : this(name, value, value == null ? typeof(object) : value.GetType()) { }
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        public OptionalProperty(string name, object value, Type propertyType) {
-            Name = name;
-            Value = value;
-            PropertyType = propertyType;
-        }
+public class OptionalProperty {
+    public OptionalProperty(string name, object value) : this(name, value, value == null ? typeof(object) : value.GetType()) { }
 
-        public string Name { get; }
-        public object Value { get; }
-        public Type PropertyType { get; }
+    public OptionalProperty(string name, object value, Type propertyType) {
+        Name = name;
+        Value = value;
+        PropertyType = propertyType;
     }
+
+    public string Name { get; }
+    public object Value { get; }
+    public Type PropertyType { get; }
 }

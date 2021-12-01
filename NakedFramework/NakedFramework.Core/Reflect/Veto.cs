@@ -5,28 +5,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Core.Reflect {
-    public sealed class Veto : ConsentAbstract {
-        /// <summary>
-        ///     A Veto object with no reason
-        /// </summary>
-        public static readonly Veto Default = new();
+namespace NakedFramework.Core.Reflect; 
 
-        public Veto() { }
+public sealed class Veto : ConsentAbstract {
+    /// <summary>
+    ///     A Veto object with no reason
+    /// </summary>
+    public static readonly Veto Default = new();
 
-        public Veto(string reason)
-            : base(reason) { }
+    public Veto() { }
 
-        /// <summary>
-        ///     Returns <c>false</c>
-        /// </summary>
-        public override bool IsAllowed => false;
+    public Veto(string reason)
+        : base(reason) { }
 
-        /// <summary>
-        ///     Returns <c>true</c>
-        /// </summary>
-        public override bool IsVetoed => true;
-    }
+    /// <summary>
+    ///     Returns <c>false</c>
+    /// </summary>
+    public override bool IsAllowed => false;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Returns <c>true</c>
+    /// </summary>
+    public override bool IsVetoed => true;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

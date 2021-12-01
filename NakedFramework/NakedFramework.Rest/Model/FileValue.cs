@@ -9,16 +9,16 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Model {
-    public class FileValue : IValue {
-        private readonly IAttachmentFacade value;
+namespace NakedFramework.Rest.Model; 
 
-        public FileValue(string data, string type, string name) => value = new JsonFileAdapter(data, type, name);
+public class FileValue : IValue {
+    private readonly IAttachmentFacade value;
 
-        #region IValue Members
+    public FileValue(string data, string type, string name) => value = new JsonFileAdapter(data, type, name);
 
-        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => value;
+    #region IValue Members
 
-        #endregion
-    }
+    public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => value;
+
+    #endregion
 }

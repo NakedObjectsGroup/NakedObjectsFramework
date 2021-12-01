@@ -9,31 +9,31 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace NakedLegacy.Rest.Test.Data {
-    public interface IRoleInterface { }
+namespace NakedLegacy.Rest.Test.Data; 
 
-    public class SimpleNOService {
-        public ClassWithString GetClassWithString() => null;
+public interface IRoleInterface { }
 
-        public void ContributedAction([ContributedAction] LegacyClassWithInterface contributee) {
+public class SimpleNOService {
+    public ClassWithString GetClassWithString() => null;
 
-        }
+    public void ContributedAction([ContributedAction] LegacyClassWithInterface contributee) {
+
     }
+}
 
-    public class ClassWithString {
-        [Key]
-        public int Id { get; init; }
+public class ClassWithString {
+    [Key]
+    public int Id { get; init; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public virtual ClassWithTextString LinkToLegacyClass { get; set; }
+    public virtual ClassWithTextString LinkToLegacyClass { get; set; }
 
-        public virtual ICollection<ClassWithTextString> CollectionOfLegacyClass { get; set; } = new List<ClassWithTextString>();
-    }
+    public virtual ICollection<ClassWithTextString> CollectionOfLegacyClass { get; set; } = new List<ClassWithTextString>();
+}
 
 
-    public class ClassWithLegacyInterface :  ILegacyRoleInterface {
-        [Key]
-        public int Id { get; init; }
-    }
+public class ClassWithLegacyInterface :  ILegacyRoleInterface {
+    [Key]
+    public int Id { get; init; }
 }

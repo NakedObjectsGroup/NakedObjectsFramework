@@ -17,44 +17,44 @@ using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.Reflector.Component {
-    public sealed class ObjectReflector : AbstractParallelReflector {
-        private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
+namespace NakedObjects.Reflector.Component; 
 
-        public ObjectReflector(ObjectFacetFactorySet objectFacetFactorySet,
-                               ObjectClassStrategy objectClassStrategy,
-                               IObjectReflectorConfiguration objectReflectorConfiguration,
-                               IEnumerable<IFacetDecorator> facetDecorators,
-                               IReflectorOrder<ObjectReflector> reflectorOrder,
-                               ILoggerFactory loggerFactory,
-                               ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder,  loggerFactory, logger) {
-            this.objectReflectorConfiguration = objectReflectorConfiguration;
-            FacetFactorySet = objectFacetFactorySet;
-            ClassStrategy = objectClassStrategy;
-        }
+public sealed class ObjectReflector : AbstractParallelReflector {
+    private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
 
-        public override bool ConcurrencyChecking => objectReflectorConfiguration.ConcurrencyChecking;
-        public override string Name => "Naked Objects";
-        public override ReflectorType ReflectorType => ReflectorType.Object;
-        public override bool IgnoreCase => objectReflectorConfiguration.IgnoreCase;
-
-        protected override IIntrospector GetNewIntrospector() => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>());
-
-        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var placeholders = GetPlaceholders(ooTypes);
-            var pending = specDictionary.Where(i => i.Value.IsPendingIntrospection).Select(i => i.Value.Type);
-            var toIntrospect = placeholders.Select(kvp => kvp.Value.Type).Union(pending).ToArray();
-            return placeholders.Any()
-                ? IntrospectTypes(toIntrospect, specDictionary.AddRange(placeholders))
-                : specDictionary;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var ooTypes = objectReflectorConfiguration.ObjectTypes;
-            specDictionary = IntrospectObjectTypes(ooTypes, specDictionary);
-            return specDictionary;
-        }
+    public ObjectReflector(ObjectFacetFactorySet objectFacetFactorySet,
+                           ObjectClassStrategy objectClassStrategy,
+                           IObjectReflectorConfiguration objectReflectorConfiguration,
+                           IEnumerable<IFacetDecorator> facetDecorators,
+                           IReflectorOrder<ObjectReflector> reflectorOrder,
+                           ILoggerFactory loggerFactory,
+                           ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder,  loggerFactory, logger) {
+        this.objectReflectorConfiguration = objectReflectorConfiguration;
+        FacetFactorySet = objectFacetFactorySet;
+        ClassStrategy = objectClassStrategy;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override bool ConcurrencyChecking => objectReflectorConfiguration.ConcurrencyChecking;
+    public override string Name => "Naked Objects";
+    public override ReflectorType ReflectorType => ReflectorType.Object;
+    public override bool IgnoreCase => objectReflectorConfiguration.IgnoreCase;
+
+    protected override IIntrospector GetNewIntrospector() => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>());
+
+    private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
+        var placeholders = GetPlaceholders(ooTypes);
+        var pending = specDictionary.Where(i => i.Value.IsPendingIntrospection).Select(i => i.Value.Type);
+        var toIntrospect = placeholders.Select(kvp => kvp.Value.Type).Union(pending).ToArray();
+        return placeholders.Any()
+            ? IntrospectTypes(toIntrospect, specDictionary.AddRange(placeholders))
+            : specDictionary;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
+        var ooTypes = objectReflectorConfiguration.ObjectTypes;
+        specDictionary = IntrospectObjectTypes(ooTypes, specDictionary);
+        return specDictionary;
+    }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

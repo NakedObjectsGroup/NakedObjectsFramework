@@ -11,19 +11,19 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
-        protected PropertySetterFacetAbstract(ISpecification holder)
-            : base(Type, holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IPropertySetterFacet);
+[Serializable]
+public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
+    protected PropertySetterFacetAbstract(ISpecification holder)
+        : base(Type, holder) { }
 
-        #region IPropertySetterFacet Members
+    public static Type Type => typeof(IPropertySetterFacet);
 
-        public abstract void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework);
-        public abstract string PropertyName { get; protected set; }
+    #region IPropertySetterFacet Members
 
-        #endregion
-    }
+    public abstract void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework);
+    public abstract string PropertyName { get; protected set; }
+
+    #endregion
 }

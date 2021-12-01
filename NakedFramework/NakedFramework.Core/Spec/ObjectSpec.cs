@@ -17,69 +17,69 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Spec {
-    public sealed class ObjectSpec : TypeSpec, IObjectSpec {
-        private readonly IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
-        private readonly ILogger<ObjectSpec> logger;
-        private IActionSpec[] collectionContributedActions;
-        private IActionSpec[] combinedActions;
-        private IActionSpec[] contributedActions;
-        private IActionSpec[] finderActions;
-        private IAssociationSpec[] objectFields;
+namespace NakedFramework.Core.Spec; 
 
-        public ObjectSpec(SpecFactory memberFactory,
-                          IObjectSpecImmutable innerSpec,
-                          INakedFramework framework,
-                          ILogger<ObjectSpec> logger) :
-            base(memberFactory, innerSpec, framework) => this.logger = logger;
+public sealed class ObjectSpec : TypeSpec, IObjectSpec {
+    private readonly IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
+    private readonly ILogger<ObjectSpec> logger;
+    private IActionSpec[] collectionContributedActions;
+    private IActionSpec[] combinedActions;
+    private IActionSpec[] contributedActions;
+    private IActionSpec[] finderActions;
+    private IAssociationSpec[] objectFields;
 
-        private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedContributedActions);
+    public ObjectSpec(SpecFactory memberFactory,
+                      IObjectSpecImmutable innerSpec,
+                      INakedFramework framework,
+                      ILogger<ObjectSpec> logger) :
+        base(memberFactory, innerSpec, framework) => this.logger = logger;
 
-        protected override PersistableType GetPersistable() =>
-            InnerSpec.ContainsFacet<INotPersistedFacet>()
-                ? PersistableType.Transient
-                : PersistableType.UserPersistable;
+    private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedContributedActions);
 
-        #region IObjectSpec Members
+    protected override PersistableType GetPersistable() =>
+        InnerSpec.ContainsFacet<INotPersistedFacet>()
+            ? PersistableType.Transient
+            : PersistableType.UserPersistable;
 
-        private IAssociationSpec[] ObjectFields => objectFields ??= InnerSpec.OrderedFields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray();
+    #region IObjectSpec Members
 
-        public IAssociationSpec[] Properties => ObjectFields;
+    private IAssociationSpec[] ObjectFields => objectFields ??= InnerSpec.OrderedFields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray();
 
-        public IAssociationSpec GetProperty(string id) {
-            try {
-                return Properties.First(f => f.Id.Equals(id));
-            }
-            catch (InvalidOperationException) {
-                throw new ReflectionException(logger.LogAndReturn($"No field called '{id}' in '{SingularName}'"));
-            }
+    public IAssociationSpec[] Properties => ObjectFields;
+
+    public IAssociationSpec GetProperty(string id) {
+        try {
+            return Properties.First(f => f.Id.Equals(id));
         }
-
-        public override IActionSpec[] GetActions() {
-            if (combinedActions is null) {
-                var ca = new List<IActionSpec>();
-                ca.AddRange(ObjectActions);
-                ca.AddRange(ContributedActions);
-                combinedActions = ca.ToArray();
-            }
-
-            return combinedActions;
+        catch (InvalidOperationException) {
+            throw new ReflectionException(logger.LogAndReturn($"No field called '{id}' in '{SingularName}'"));
         }
-
-        public IActionSpec[] GetCollectionContributedActions() => collectionContributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedCollectionContributedActions);
-
-        public IActionSpec[] GetFinderActions() => finderActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedFinderActions);
-
-        public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec, string id) {
-            if (!locallyContributedActions.ContainsKey(id)) {
-                locallyContributedActions[id] = GetActions().Where(oa => oa.IsLocallyContributedTo(typeSpec, id)).ToArray();
-            }
-
-            return locallyContributedActions[id];
-        }
-
-        #endregion
     }
+
+    public override IActionSpec[] GetActions() {
+        if (combinedActions is null) {
+            var ca = new List<IActionSpec>();
+            ca.AddRange(ObjectActions);
+            ca.AddRange(ContributedActions);
+            combinedActions = ca.ToArray();
+        }
+
+        return combinedActions;
+    }
+
+    public IActionSpec[] GetCollectionContributedActions() => collectionContributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedCollectionContributedActions);
+
+    public IActionSpec[] GetFinderActions() => finderActions ??= MemberFactory.CreateActionSpecs(InnerSpec.OrderedFinderActions);
+
+    public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec, string id) {
+        if (!locallyContributedActions.ContainsKey(id)) {
+            locallyContributedActions[id] = GetActions().Where(oa => oa.IsLocallyContributedTo(typeSpec, id)).ToArray();
+        }
+
+        return locallyContributedActions[id];
+    }
+
+    #endregion
 }
 
 // Copyright (c) Naked Objects Group Ltd.

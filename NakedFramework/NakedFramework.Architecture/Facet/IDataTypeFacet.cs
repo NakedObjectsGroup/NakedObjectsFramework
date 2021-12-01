@@ -7,16 +7,16 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Expose any DataType annotation
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     annotating the action method using <see cref="DataTypeAttribute" />
-    /// </para>
-    public interface IDataTypeFacet : IFacet {
-        DataType DataType();
-        string CustomDataType();
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Expose any DataType annotation
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     annotating the action method using <see cref="DataTypeAttribute" />
+/// </para>
+public interface IDataTypeFacet : IFacet {
+    DataType DataType();
+    string CustomDataType();
 }

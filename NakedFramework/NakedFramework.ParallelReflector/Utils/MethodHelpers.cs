@@ -18,92 +18,92 @@ using NakedFramework.Metamodel.Facet;
 
 #pragma warning disable 612
 
-namespace NakedFramework.ParallelReflector.Utils {
-    public static class MethodHelpers {
-        public static MethodInfo FindMethodWithOrWithoutParameters(IReflector reflector, Type type, MethodType methodType, string name, Type returnType, Type[] parms) =>
-            FindMethod(reflector, type, methodType, name, returnType, parms) ??
-            FindMethod(reflector, type, methodType, name, returnType, Type.EmptyTypes);
+namespace NakedFramework.ParallelReflector.Utils; 
+
+public static class MethodHelpers {
+    public static MethodInfo FindMethodWithOrWithoutParameters(IReflector reflector, Type type, MethodType methodType, string name, Type returnType, Type[] parms) =>
+        FindMethod(reflector, type, methodType, name, returnType, parms) ??
+        FindMethod(reflector, type, methodType, name, returnType, Type.EmptyTypes);
 
       
-        /// <summary>
-        ///     Returns  specific public methods that: have the specified prefix; have the specified return Type, or
-        ///     void, and has the specified number of parameters. If the returnType is specified as null then the return
-        ///     Type is ignored.
-        /// </summary>
-        /// <param name="reflector"></param>
-        /// <param name="type"></param>
-        /// <param name="methodType"></param>
-        /// <param name="name"></param>
-        /// <param name="returnType"></param>
-        /// <param name="paramTypes">the set of parameters the method should have, if null then is ignored</param>
-        /// <param name="paramNames">the names of the parameters the method should have, if null then is ignored</param>
-        public static MethodInfo FindMethod(IReflector reflector,
-                                            Type type,
-                                            MethodType methodType,
-                                            string name,
-                                            Type returnType,
-                                            Type[] paramTypes,
-                                            string[] paramNames = null) {
-            try {
-                var method = paramTypes == null
-                    ? type.GetMethod(name, GetBindingFlagsForMethodType(methodType, reflector))
-                    : type.GetMethod(name, GetBindingFlagsForMethodType(methodType, reflector), null, paramTypes, null);
+    /// <summary>
+    ///     Returns  specific public methods that: have the specified prefix; have the specified return Type, or
+    ///     void, and has the specified number of parameters. If the returnType is specified as null then the return
+    ///     Type is ignored.
+    /// </summary>
+    /// <param name="reflector"></param>
+    /// <param name="type"></param>
+    /// <param name="methodType"></param>
+    /// <param name="name"></param>
+    /// <param name="returnType"></param>
+    /// <param name="paramTypes">the set of parameters the method should have, if null then is ignored</param>
+    /// <param name="paramNames">the names of the parameters the method should have, if null then is ignored</param>
+    public static MethodInfo FindMethod(IReflector reflector,
+                                        Type type,
+                                        MethodType methodType,
+                                        string name,
+                                        Type returnType,
+                                        Type[] paramTypes,
+                                        string[] paramNames = null) {
+        try {
+            var method = paramTypes == null
+                ? type.GetMethod(name, GetBindingFlagsForMethodType(methodType, reflector))
+                : type.GetMethod(name, GetBindingFlagsForMethodType(methodType, reflector), null, paramTypes, null);
 
-                if (method == null) {
-                    return null;
-                }
-
-                // check for static modifier
-                if (method.IsStatic && methodType == MethodType.Object) {
-                    return null;
-                }
-
-                if (!method.IsStatic && methodType == MethodType.Class) {
-                    return null;
-                }
-
-                if (reflector.ClassStrategy.IsIgnored(method)) {
-                    return null;
-                }
-
-                // check for return Type
-                if (returnType != null && !returnType.IsAssignableFrom(method.ReturnType)) {
-                    return null;
-                }
-
-                if (paramNames != null) {
-                    var methodParamNames = method.GetParameters().Select(p => p.Name).ToArray();
-
-                    if (!paramNames.SequenceEqual(methodParamNames)) {
-                        return null;
-                    }
-                }
-
-                return method;
+            if (method == null) {
+                return null;
             }
-            catch (AmbiguousMatchException e) {
-                throw new ModelException(string.Format(NakedObjects.Resources.NakedObjects.AmbiguousMethodError, name, type.FullName), e);
+
+            // check for static modifier
+            if (method.IsStatic && methodType == MethodType.Object) {
+                return null;
             }
+
+            if (!method.IsStatic && methodType == MethodType.Class) {
+                return null;
+            }
+
+            if (reflector.ClassStrategy.IsIgnored(method)) {
+                return null;
+            }
+
+            // check for return Type
+            if (returnType != null && !returnType.IsAssignableFrom(method.ReturnType)) {
+                return null;
+            }
+
+            if (paramNames != null) {
+                var methodParamNames = method.GetParameters().Select(p => p.Name).ToArray();
+
+                if (!paramNames.SequenceEqual(methodParamNames)) {
+                    return null;
+                }
+            }
+
+            return method;
         }
-
-        public static BindingFlags GetBindingFlagsForMethodType(MethodType methodType, IReflector reflector) =>
-            BindingFlags.Public |
-            (methodType == MethodType.Object ? BindingFlags.Instance : BindingFlags.Static) |
-            (reflector.IgnoreCase ? BindingFlags.IgnoreCase : BindingFlags.Default);
-
-        public static void SafeRemoveMethod(this IMethodRemover methodRemover, MethodInfo method) {
-            if (method is not null) {
-                methodRemover?.RemoveMethod(method);
-            }
+        catch (AmbiguousMatchException e) {
+            throw new ModelException(string.Format(NakedObjects.Resources.NakedObjects.AmbiguousMethodError, name, type.FullName), e);
         }
+    }
+
+    public static BindingFlags GetBindingFlagsForMethodType(MethodType methodType, IReflector reflector) =>
+        BindingFlags.Public |
+        (methodType == MethodType.Object ? BindingFlags.Instance : BindingFlags.Static) |
+        (reflector.IgnoreCase ? BindingFlags.IgnoreCase : BindingFlags.Default);
+
+    public static void SafeRemoveMethod(this IMethodRemover methodRemover, MethodInfo method) {
+        if (method is not null) {
+            methodRemover?.RemoveMethod(method);
+        }
+    }
 
        
 
-        public static void AddHideForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new HideForSessionFacetNone(specification));
+    public static void AddHideForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new HideForSessionFacetNone(specification));
 
-        public static void AddDisableForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisableForSessionFacetNone(specification));
+    public static void AddDisableForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisableForSessionFacetNone(specification));
 
-        public static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisabledFacetAlways(specification));
+    public static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisabledFacetAlways(specification));
 
-    }
 }

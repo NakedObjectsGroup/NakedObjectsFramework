@@ -12,24 +12,24 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Core.Util;
 
-namespace NakedFunctions.Reflector.FacetFactory {
-    /// <summary>
-    ///     This factory filters out properties on system types. So for example 'Length' will not show up when displaying a
-    ///     string.
-    /// </summary>
-    public sealed class SystemClassPropertyFilteringFactory : FunctionalFacetFactoryProcessor, IPropertyFilteringFacetFactory {
-        private readonly ILogger<SystemClassPropertyFilteringFactory> logger;
+namespace NakedFunctions.Reflector.FacetFactory; 
 
-        public SystemClassPropertyFilteringFactory(IFacetFactoryOrder<SystemClassPropertyFilteringFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties) =>
-            logger = loggerFactory.CreateLogger<SystemClassPropertyFilteringFactory>();
+/// <summary>
+///     This factory filters out properties on system types. So for example 'Length' will not show up when displaying a
+///     string.
+/// </summary>
+public sealed class SystemClassPropertyFilteringFactory : FunctionalFacetFactoryProcessor, IPropertyFilteringFacetFactory {
+    private readonly ILogger<SystemClassPropertyFilteringFactory> logger;
 
-        #region IPropertyFilteringFacetFactory Members
+    public SystemClassPropertyFilteringFactory(IFacetFactoryOrder<SystemClassPropertyFilteringFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Properties) =>
+        logger = loggerFactory.CreateLogger<SystemClassPropertyFilteringFactory>();
 
-        public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(property.DeclaringType);
+    #region IPropertyFilteringFacetFactory Members
 
-        #endregion
-    }
+    public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(property.DeclaringType);
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

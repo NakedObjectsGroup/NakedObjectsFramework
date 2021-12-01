@@ -7,17 +7,17 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Component {
-    /// <summary>
-    ///     Defines a service that can convert between a Type and a string code where you don't wish to use the fully-qualified
-    ///     type name as the string representation.
-    ///     Possible uses include:
-    ///     - To create compound keys for defining polymorphic associations
-    ///     - To create Oids for use in URLs
-    /// </summary>
-    public interface ITypeCodeMapper {
-        Type TypeFromCode(string code);
+namespace NakedFramework.Architecture.Component; 
 
-        string CodeFromType(Type type);
-    }
+/// <summary>
+///     Defines a service that can convert between a Type and a string code where you don't wish to use the fully-qualified
+///     type name as the string representation.
+///     Possible uses include:
+///     - To create compound keys for defining polymorphic associations
+///     - To create Oids for use in URLs
+/// </summary>
+public interface ITypeCodeMapper {
+    Type TypeFromCode(string code);
+
+    string CodeFromType(Type type);
 }

@@ -8,17 +8,17 @@
 using System.Security.Principal;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Authentication {
-    public sealed class SimpleSession : WindowsSession {
-        public SimpleSession(IPrincipal principal, string code) : base(principal) => ValidationCode = code;
+namespace NakedFramework.Core.Authentication; 
 
-        public SimpleSession(IPrincipal principal)
-            : this(principal, string.Empty) { }
+public sealed class SimpleSession : WindowsSession {
+    public SimpleSession(IPrincipal principal, string code) : base(principal) => ValidationCode = code;
 
-        private string ValidationCode { get; }
+    public SimpleSession(IPrincipal principal)
+        : this(principal, string.Empty) { }
 
-        public override string ToString() => $"{NameAndHashCode(this)} [name={UserName},code={ValidationCode}]";
-    }
+    private string ValidationCode { get; }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override string ToString() => $"{NameAndHashCode(this)} [name={UserName},code={ValidationCode}]";
 }
+
+// Copyright (c) Naked Objects Group Ltd.

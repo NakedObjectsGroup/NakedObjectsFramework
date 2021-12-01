@@ -10,25 +10,25 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class ActionChoicesFacetViaFunctionTest {
-        private static readonly string[] TestValue = {"one", "two"};
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        [TestMethod]
-        public void TestGetChoices() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
-            var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null, null);
+[TestClass]
+public class ActionChoicesFacetViaFunctionTest {
+    private static readonly string[] TestValue = {"one", "two"};
 
-            var result = testFacet.GetChoices(null, null, null);
+    [TestMethod]
+    public void TestGetChoices() {
+        var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
+        var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null, null);
 
-            Assert.AreEqual(TestValue.Length, result.Length);
-            Assert.AreEqual(TestValue[0], result[0]);
-            Assert.AreEqual(TestValue[1], result[1]);
-        }
+        var result = testFacet.GetChoices(null, null, null);
 
-        public static class TestClass {
-            public static string[] Choices() => TestValue;
-        }
+        Assert.AreEqual(TestValue.Length, result.Length);
+        Assert.AreEqual(TestValue[0], result[0]);
+        Assert.AreEqual(TestValue[1], result[1]);
+    }
+
+    public static class TestClass {
+        public static string[] Choices() => TestValue;
     }
 }

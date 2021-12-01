@@ -8,17 +8,17 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    /// <summary>
-    ///     Has a description of the empty string
-    /// </summary>
-    [Serializable]
-    public sealed class DescribedAsFacetNone : DescribedAsFacetAbstract {
-        public DescribedAsFacetNone(ISpecification holder)
-            : base("", holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsNoOp => true;
-    }
+/// <summary>
+///     Has a description of the empty string
+/// </summary>
+[Serializable]
+public sealed class DescribedAsFacetNone : DescribedAsFacetAbstract {
+    public DescribedAsFacetNone(ISpecification holder)
+        : base("", holder) { }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    public override bool IsNoOp => true;
 }
+
+// Copyright (c) Naked Objects Group Ltd.

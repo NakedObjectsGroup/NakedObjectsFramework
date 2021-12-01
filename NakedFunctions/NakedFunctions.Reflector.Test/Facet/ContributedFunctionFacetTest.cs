@@ -10,23 +10,23 @@ using Moq;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet {
-    [TestClass]
-    public class ContributedFunctionFacetTest {
-        private readonly Mock<ITypeSpecImmutable> mockSpec = new();
+namespace NakedFunctions.Reflector.Test.Facet; 
 
-        public ContributedFunctionFacetTest() {
-            mockSpec.Setup(s => s.IsOfType(mockSpec.Object)).Returns(true);
-        }
+[TestClass]
+public class ContributedFunctionFacetTest {
+    private readonly Mock<ITypeSpecImmutable> mockSpec = new();
 
-        [TestMethod]
-        public void TestContributee() {
-            var testFacet = new ContributedFunctionFacet(null, false);
+    public ContributedFunctionFacetTest() {
+        mockSpec.Setup(s => s.IsOfType(mockSpec.Object)).Returns(true);
+    }
 
-            testFacet.AddContributee(mockSpec.Object);
-            var result = testFacet.IsContributedTo(mockSpec.Object);
+    [TestMethod]
+    public void TestContributee() {
+        var testFacet = new ContributedFunctionFacet(null, false);
 
-            Assert.IsTrue(result);
-        }
+        testFacet.AddContributee(mockSpec.Object);
+        var result = testFacet.IsContributedTo(mockSpec.Object);
+
+        Assert.IsTrue(result);
     }
 }

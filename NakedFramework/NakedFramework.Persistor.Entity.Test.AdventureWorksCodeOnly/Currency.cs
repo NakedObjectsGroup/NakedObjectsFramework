@@ -10,23 +10,23 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Sales.Currency")]
-    public class Currency {
-        [Key]
-        [StringLength(3)]
-        public string CurrencyCode { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+[Table("Sales.Currency")]
+public class Currency {
+    [Key]
+    [StringLength(3)]
+    public string CurrencyCode { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
 
-        public virtual ICollection<CountryRegionCurrency> CountryRegionCurrencies { get; set; } = new HashSet<CountryRegionCurrency>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<CurrencyRate> CurrencyRates { get; set; } = new HashSet<CurrencyRate>();
+    public virtual ICollection<CountryRegionCurrency> CountryRegionCurrencies { get; set; } = new HashSet<CountryRegionCurrency>();
 
-        public virtual ICollection<CurrencyRate> CurrencyRates1 { get; set; } = new HashSet<CurrencyRate>();
-    }
+    public virtual ICollection<CurrencyRate> CurrencyRates { get; set; } = new HashSet<CurrencyRate>();
+
+    public virtual ICollection<CurrencyRate> CurrencyRates1 { get; set; } = new HashSet<CurrencyRate>();
 }

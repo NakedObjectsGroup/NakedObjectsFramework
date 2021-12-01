@@ -5,10 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Facade.Error {
-    public class PropertyResourceNotFoundNOSException : ResourceNotFoundNOSException {
-        public PropertyResourceNotFoundNOSException(string resourceId) : base(resourceId) { }
+namespace NakedFramework.Facade.Error; 
 
-        public override string Message => $"No such property {ResourceId}";
-    }
+public class PropertyResourceNotFoundNOSException : ResourceNotFoundNOSException {
+    public PropertyResourceNotFoundNOSException(string resourceId) : base(resourceId) { }
+
+    public override string Message => $"No such property {ResourceId}";
 }

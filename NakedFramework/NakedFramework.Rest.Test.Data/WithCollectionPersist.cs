@@ -19,72 +19,72 @@ using NakedObjects;
     
 
 
-namespace RestfulObjects.Test.Data {
-    public class WithCollectionPersist {
-        private ICollection<MostSimpleViewModel> aCollectionViewModels = new List<MostSimpleViewModel>();
-        private IDomainObjectContainer container;
+namespace RestfulObjects.Test.Data; 
 
-        public IDomainObjectContainer Container {
-            set {
-                container = value;
-                // hack for testing 
-                var vm1 = container.NewViewModel<MostSimpleViewModel>();
-                var vm2 = container.NewViewModel<MostSimpleViewModel>();
-                vm1.Id = 1;
-                vm2.Id = 2;
+public class WithCollectionPersist {
+    private ICollection<MostSimpleViewModel> aCollectionViewModels = new List<MostSimpleViewModel>();
+    private IDomainObjectContainer container;
 
-                aCollectionViewModels.Add(vm1);
-                aCollectionViewModels.Add(vm2);
-            }
-            protected get { return container; }
+    public IDomainObjectContainer Container {
+        set {
+            container = value;
+            // hack for testing 
+            var vm1 = container.NewViewModel<MostSimpleViewModel>();
+            var vm2 = container.NewViewModel<MostSimpleViewModel>();
+            vm1.Id = 1;
+            vm2.Id = 2;
+
+            aCollectionViewModels.Add(vm1);
+            aCollectionViewModels.Add(vm2);
         }
-
-        [Key]
-        [Title]
-        [ConcurrencyCheck]
-        [DefaultValue(0)]
-        public virtual int Id { get; set; }
-
-        [PresentationHint("class7 class8")]
-        public virtual ICollection<MostSimple> ACollection { get; set; } = new List<MostSimple>();
-
-        public virtual ICollection<MostSimpleViewModel> ACollectionViewModels {
-            get => aCollectionViewModels;
-            set => aCollectionViewModels = value;
-        }
-
-        [NakedObjectsIgnore]
-        public virtual ICollection<MostSimple> ASetAsCollection { get; set; } = new List<MostSimple>();
-
-        [NotMapped]
-        public virtual ISet<MostSimple> ASet {
-            get => new SetWrapper<MostSimple>(ASetAsCollection);
-            set => ASetAsCollection = value;
-        }
-
-        [Disabled]
-        public virtual ICollection<MostSimple> ADisabledCollection { get; set; } = new List<MostSimple>();
-
-        [Hidden(WhenTo.Always)]
-        public virtual ICollection<MostSimple> AHiddenCollection { get; set; } = new List<MostSimple>();
-
-        [NakedObjectsIgnore]
-        public virtual ICollection<MostSimple> ANakedObjectsIgnoredCollection { get; set; } = new List<MostSimple>();
-
-        [DescribedAs("an empty collection for testing")]
-        [MemberOrder(Sequence = "2")]
-        public virtual ICollection<MostSimple> AnEmptyCollection { get; set; } = new List<MostSimple>();
-
-        [DescribedAs("an empty set for testing")]
-        [MemberOrder(Sequence = "2")]
-        [NotMapped]
-        public virtual ISet<MostSimple> AnEmptySet { get; set; } = new HashSet<MostSimple>();
-
-        [Eagerly(Do.Rendering)]
-        public virtual ICollection<MostSimple> AnEagerCollection { get; set; } = new List<MostSimple>();
-
-        public IList<MostSimple> LocallyContributedAction([ContributedAction] IList<MostSimple> acollection) => acollection;
-
-        public IList<MostSimple> LocallyContributedActionWithParm([ContributedAction] IList<MostSimple> acollection, string p1) => acollection;
+        protected get { return container; }
     }
+
+    [Key]
+    [Title]
+    [ConcurrencyCheck]
+    [DefaultValue(0)]
+    public virtual int Id { get; set; }
+
+    [PresentationHint("class7 class8")]
+    public virtual ICollection<MostSimple> ACollection { get; set; } = new List<MostSimple>();
+
+    public virtual ICollection<MostSimpleViewModel> ACollectionViewModels {
+        get => aCollectionViewModels;
+        set => aCollectionViewModels = value;
+    }
+
+    [NakedObjectsIgnore]
+    public virtual ICollection<MostSimple> ASetAsCollection { get; set; } = new List<MostSimple>();
+
+    [NotMapped]
+    public virtual ISet<MostSimple> ASet {
+        get => new SetWrapper<MostSimple>(ASetAsCollection);
+        set => ASetAsCollection = value;
+    }
+
+    [Disabled]
+    public virtual ICollection<MostSimple> ADisabledCollection { get; set; } = new List<MostSimple>();
+
+    [Hidden(WhenTo.Always)]
+    public virtual ICollection<MostSimple> AHiddenCollection { get; set; } = new List<MostSimple>();
+
+    [NakedObjectsIgnore]
+    public virtual ICollection<MostSimple> ANakedObjectsIgnoredCollection { get; set; } = new List<MostSimple>();
+
+    [DescribedAs("an empty collection for testing")]
+    [MemberOrder(Sequence = "2")]
+    public virtual ICollection<MostSimple> AnEmptyCollection { get; set; } = new List<MostSimple>();
+
+    [DescribedAs("an empty set for testing")]
+    [MemberOrder(Sequence = "2")]
+    [NotMapped]
+    public virtual ISet<MostSimple> AnEmptySet { get; set; } = new HashSet<MostSimple>();
+
+    [Eagerly(Do.Rendering)]
+    public virtual ICollection<MostSimple> AnEagerCollection { get; set; } = new List<MostSimple>();
+
+    public IList<MostSimple> LocallyContributedAction([ContributedAction] IList<MostSimple> acollection) => acollection;
+
+    public IList<MostSimple> LocallyContributedActionWithParm([ContributedAction] IList<MostSimple> acollection, string p1) => acollection;
 }

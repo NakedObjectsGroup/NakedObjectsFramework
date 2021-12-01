@@ -15,34 +15,34 @@ using NakedFramework.Architecture.Component;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data {
-    public class TestTypeCodeMapper : ITypeCodeMapper {
-        private const string DefaultPrefix = "RestfulObjects.Test.Data.";
-        private static readonly IDictionary<string, string> PrefixDictionary = new Dictionary<string, string>();
+namespace RestfulObjects.Test.Data; 
 
-        #region ITypeCodeMapper Members
+public class TestTypeCodeMapper : ITypeCodeMapper {
+    private const string DefaultPrefix = "RestfulObjects.Test.Data.";
+    private static readonly IDictionary<string, string> PrefixDictionary = new Dictionary<string, string>();
 
-        public Type TypeFromCode(string code) {
-            var fullCode = TypeStringFromCode(code);
-            return TypeUtils.GetType(fullCode);
+    #region ITypeCodeMapper Members
+
+    public Type TypeFromCode(string code) {
+        var fullCode = TypeStringFromCode(code);
+        return TypeUtils.GetType(fullCode);
+    }
+
+    public string CodeFromType(Type type) => CodeFromTypeString(type.FullName);
+
+    #endregion
+
+    public string TypeStringFromCode(string code) {
+        if (PrefixDictionary.ContainsKey(code)) {
+            return PrefixDictionary[code];
         }
 
-        public string CodeFromType(Type type) => CodeFromTypeString(type.FullName);
+        return DefaultPrefix + code;
+    }
 
-        #endregion
-
-        public string TypeStringFromCode(string code) {
-            if (PrefixDictionary.ContainsKey(code)) {
-                return PrefixDictionary[code];
-            }
-
-            return DefaultPrefix + code;
-        }
-
-        public string CodeFromTypeString(string typeString) {
-            var code = typeString.Split('.').Last();
-            PrefixDictionary[code] = typeString;
-            return code;
-        }
+    public string CodeFromTypeString(string typeString) {
+        var code = typeString.Split('.').Last();
+        PrefixDictionary[code] = typeString;
+        return code;
     }
 }

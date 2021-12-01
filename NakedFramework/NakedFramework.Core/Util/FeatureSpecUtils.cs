@@ -10,26 +10,26 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Core.Util {
-    public static class FeatureSpecUtils {
-        public static string PropertyTitle(this IMemberSpec memberSpec, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-            if (nakedObjectAdapter is null) {
-                return "";
-            }
+namespace NakedFramework.Core.Util; 
 
-            string text = null;
-            var regex = memberSpec.GetFacet<IRegExFacet>();
-            if (regex is not null) {
-                text = regex.Format(nakedObjectAdapter.TitleString());
-            }
-
-            var mask = memberSpec.GetFacet<IMaskFacet>();
-            if (mask is not null) {
-                var title = memberSpec.ReturnSpec.GetFacet<ITitleFacet>();
-                text = title.GetTitleWithMask(mask.Value, nakedObjectAdapter, framework);
-            }
-
-            return text ?? nakedObjectAdapter.TitleString();
+public static class FeatureSpecUtils {
+    public static string PropertyTitle(this IMemberSpec memberSpec, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        if (nakedObjectAdapter is null) {
+            return "";
         }
+
+        string text = null;
+        var regex = memberSpec.GetFacet<IRegExFacet>();
+        if (regex is not null) {
+            text = regex.Format(nakedObjectAdapter.TitleString());
+        }
+
+        var mask = memberSpec.GetFacet<IMaskFacet>();
+        if (mask is not null) {
+            var title = memberSpec.ReturnSpec.GetFacet<ITitleFacet>();
+            text = title.GetTitleWithMask(mask.Value, nakedObjectAdapter, framework);
+        }
+
+        return text ?? nakedObjectAdapter.TitleString();
     }
 }

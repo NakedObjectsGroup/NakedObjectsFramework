@@ -11,168 +11,168 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Core.Interactions {
-    /// <summary>
-    ///     Represents an interaction between the framework and (a <see cref="IFacet" /> of) the domain object.
-    /// </summary>
-    /// <para>
-    ///     Effectively just wraps up a target object, parameters and a <see cref="ISession" />.
-    ///     Defining this as a separate interface makes for a more stable API, however.
-    /// </para>
-    internal sealed class InteractionContext : IInteractionContext {
-        private InteractionContext(InteractionType interactionType,
-                                   INakedFramework framework,
-                                   bool programmatic,
-                                   INakedObjectAdapter target,
-                                   IIdentifier id,
-                                   INakedObjectAdapter proposedArgument,
-                                   INakedObjectAdapter[] arguments) {
-            InteractionType = interactionType;
-            IsProgrammatic = programmatic;
-            Id = id;
-            Framework = framework;
-            Target = target;
-            ProposedArgument = proposedArgument;
-            ProposedArguments = arguments;
-        }
+namespace NakedFramework.Core.Interactions; 
 
-        /// <summary>
-        ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.MemberAccess" />  reading a property.
-        /// </summary>
-        public static InteractionContext AccessMember(INakedFramework framework,
-                                                      bool programmatic,
-                                                      INakedObjectAdapter target,
-                                                      IIdentifier memberIdentifier) =>
-            new(InteractionType.MemberAccess,
-                framework,
-                programmatic,
-                target,
-                memberIdentifier,
-                null,
-                null);
-
-        /// <summary>
-        ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.PropertyParamModify" />  modifying a property
-        ///     or parameter.
-        /// </summary>
-        public static InteractionContext ModifyingPropParam(INakedFramework framework,
-                                                            bool programmatic,
-                                                            INakedObjectAdapter target,
-                                                            IIdentifier propertyIdentifier,
-                                                            INakedObjectAdapter proposedArgument) =>
-            new(InteractionType.PropertyParamModify,
-                framework,
-                programmatic,
-                target,
-                propertyIdentifier,
-                proposedArgument,
-                null);
-
-        /// <summary>
-        ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ActionInvoke" />  invoking an action.
-        /// </summary>
-        public static InteractionContext InvokingAction(INakedFramework framework,
-                                                        bool programmatic,
-                                                        INakedObjectAdapter target,
-                                                        IIdentifier actionIdentifier,
-                                                        INakedObjectAdapter[] arguments) =>
-            new(InteractionType.ActionInvoke,
-                framework,
-                programmatic,
-                target,
-                actionIdentifier,
-                null,
-                arguments);
-
-        #region IInteractionContext Members
-
-        /// <summary>
-        ///     The type of interaction
-        /// </summary>
-        /// <para>
-        ///     Used by <see cref="IFacet" />s that apply only in certain conditions.  For
-        ///     example, some facets for collections will care only when an object is
-        ///     being added to the collection, but won't care when an object is being removed from
-        ///     the collection.
-        /// </para>
-        /// <para>
-        ///     Will be set for all interactions.
-        /// </para>
-        public InteractionType InteractionType { get; }
-
-        /// <summary>
-        ///     The  user or role <see cref="ISession" /> that is performing this interaction.
-        /// </summary>
-        /// <para>
-        ///     Will be set for all interactions.
-        /// </para>
-        public INakedFramework Framework { get; }
-
-        /// <summary>
-        ///     How the interaction was initiated
-        /// </summary>
-        public bool IsProgrammatic { get; }
-
-        /// <summary>
-        ///     The target object that this interaction is with.
-        /// </summary>
-        /// <para>
-        ///     Will be set for all interactions.
-        /// </para>
-        public INakedObjectAdapter Target { get; }
-
-        /// <summary>
-        ///     The identifier of the object or member that is being identified with.
-        /// </summary>
-        /// <para>
-        ///     If the <see cref="InteractionType" /> type is
-        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ObjectPersist" />,
-        ///     will be the identifier of the <see cref="Target" /> object's specification.
-        ///     Otherwise will be the identifier of the member.
-        /// </para>
-        /// <para>
-        ///     Will be set for all interactions.
-        /// </para>
-        public IIdentifier Id { get; }
-
-        /// <summary>
-        ///     The proposed value for a property, or object being added/removed from a collection.
-        /// </summary>
-        /// <para>
-        ///     Will be set if the <see cref="InteractionType" /> type is
-        ///     <see
-        ///         cref="NakedFramework.Architecture.Interactions.InteractionType.PropertyParamModify" />
-        ///     ,
-        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.CollectionAddTo" /> or
-        ///     <see
-        ///         cref="NakedFramework.Architecture.Interactions.InteractionType.CollectionRemoveFrom" />
-        ///     ;
-        ///     <c>null</c> otherwise.  In the case of the collection interactions, may be safely downcast
-        ///     to <see cref="INakedObjectAdapter" />
-        /// </para>
-        public INakedObjectAdapter ProposedArgument { get; }
-
-        /// <summary>
-        ///     The arguments for a proposed action invocation.
-        /// </summary>
-        /// <para>
-        ///     Will be set if the <see cref="InteractionType" /> type is
-        ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ActionInvoke" />;
-        ///     <c>null</c> otherwise.
-        /// </para>
-        public INakedObjectAdapter[] ProposedArguments { get; }
-
-        /// <summary>
-        ///     Convenience to allow implementors of <see cref="IValidatingInteractionAdvisor" /> etc to determine
-        ///     if the interaction's type applies.
-        /// </summary>
-        public bool TypeEquals(InteractionType other) => InteractionType.Equals(other);
-
-        #endregion
+/// <summary>
+///     Represents an interaction between the framework and (a <see cref="IFacet" /> of) the domain object.
+/// </summary>
+/// <para>
+///     Effectively just wraps up a target object, parameters and a <see cref="ISession" />.
+///     Defining this as a separate interface makes for a more stable API, however.
+/// </para>
+internal sealed class InteractionContext : IInteractionContext {
+    private InteractionContext(InteractionType interactionType,
+                               INakedFramework framework,
+                               bool programmatic,
+                               INakedObjectAdapter target,
+                               IIdentifier id,
+                               INakedObjectAdapter proposedArgument,
+                               INakedObjectAdapter[] arguments) {
+        InteractionType = interactionType;
+        IsProgrammatic = programmatic;
+        Id = id;
+        Framework = framework;
+        Target = target;
+        ProposedArgument = proposedArgument;
+        ProposedArguments = arguments;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Factory method to create an an <see cref="InteractionContext" /> to represent
+    ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.MemberAccess" />  reading a property.
+    /// </summary>
+    public static InteractionContext AccessMember(INakedFramework framework,
+                                                  bool programmatic,
+                                                  INakedObjectAdapter target,
+                                                  IIdentifier memberIdentifier) =>
+        new(InteractionType.MemberAccess,
+            framework,
+            programmatic,
+            target,
+            memberIdentifier,
+            null,
+            null);
+
+    /// <summary>
+    ///     Factory method to create an an <see cref="InteractionContext" /> to represent
+    ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.PropertyParamModify" />  modifying a property
+    ///     or parameter.
+    /// </summary>
+    public static InteractionContext ModifyingPropParam(INakedFramework framework,
+                                                        bool programmatic,
+                                                        INakedObjectAdapter target,
+                                                        IIdentifier propertyIdentifier,
+                                                        INakedObjectAdapter proposedArgument) =>
+        new(InteractionType.PropertyParamModify,
+            framework,
+            programmatic,
+            target,
+            propertyIdentifier,
+            proposedArgument,
+            null);
+
+    /// <summary>
+    ///     Factory method to create an an <see cref="InteractionContext" /> to represent
+    ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ActionInvoke" />  invoking an action.
+    /// </summary>
+    public static InteractionContext InvokingAction(INakedFramework framework,
+                                                    bool programmatic,
+                                                    INakedObjectAdapter target,
+                                                    IIdentifier actionIdentifier,
+                                                    INakedObjectAdapter[] arguments) =>
+        new(InteractionType.ActionInvoke,
+            framework,
+            programmatic,
+            target,
+            actionIdentifier,
+            null,
+            arguments);
+
+    #region IInteractionContext Members
+
+    /// <summary>
+    ///     The type of interaction
+    /// </summary>
+    /// <para>
+    ///     Used by <see cref="IFacet" />s that apply only in certain conditions.  For
+    ///     example, some facets for collections will care only when an object is
+    ///     being added to the collection, but won't care when an object is being removed from
+    ///     the collection.
+    /// </para>
+    /// <para>
+    ///     Will be set for all interactions.
+    /// </para>
+    public InteractionType InteractionType { get; }
+
+    /// <summary>
+    ///     The  user or role <see cref="ISession" /> that is performing this interaction.
+    /// </summary>
+    /// <para>
+    ///     Will be set for all interactions.
+    /// </para>
+    public INakedFramework Framework { get; }
+
+    /// <summary>
+    ///     How the interaction was initiated
+    /// </summary>
+    public bool IsProgrammatic { get; }
+
+    /// <summary>
+    ///     The target object that this interaction is with.
+    /// </summary>
+    /// <para>
+    ///     Will be set for all interactions.
+    /// </para>
+    public INakedObjectAdapter Target { get; }
+
+    /// <summary>
+    ///     The identifier of the object or member that is being identified with.
+    /// </summary>
+    /// <para>
+    ///     If the <see cref="InteractionType" /> type is
+    ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ObjectPersist" />,
+    ///     will be the identifier of the <see cref="Target" /> object's specification.
+    ///     Otherwise will be the identifier of the member.
+    /// </para>
+    /// <para>
+    ///     Will be set for all interactions.
+    /// </para>
+    public IIdentifier Id { get; }
+
+    /// <summary>
+    ///     The proposed value for a property, or object being added/removed from a collection.
+    /// </summary>
+    /// <para>
+    ///     Will be set if the <see cref="InteractionType" /> type is
+    ///     <see
+    ///         cref="NakedFramework.Architecture.Interactions.InteractionType.PropertyParamModify" />
+    ///     ,
+    ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.CollectionAddTo" /> or
+    ///     <see
+    ///         cref="NakedFramework.Architecture.Interactions.InteractionType.CollectionRemoveFrom" />
+    ///     ;
+    ///     <c>null</c> otherwise.  In the case of the collection interactions, may be safely downcast
+    ///     to <see cref="INakedObjectAdapter" />
+    /// </para>
+    public INakedObjectAdapter ProposedArgument { get; }
+
+    /// <summary>
+    ///     The arguments for a proposed action invocation.
+    /// </summary>
+    /// <para>
+    ///     Will be set if the <see cref="InteractionType" /> type is
+    ///     <see cref="NakedFramework.Architecture.Interactions.InteractionType.ActionInvoke" />;
+    ///     <c>null</c> otherwise.
+    /// </para>
+    public INakedObjectAdapter[] ProposedArguments { get; }
+
+    /// <summary>
+    ///     Convenience to allow implementors of <see cref="IValidatingInteractionAdvisor" /> etc to determine
+    ///     if the interaction's type applies.
+    /// </summary>
+    public bool TypeEquals(InteractionType other) => InteractionType.Equals(other);
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

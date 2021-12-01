@@ -17,134 +17,134 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestClass]
-    public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<float> {
-        private float floatObj;
-        private ISpecification holder;
+namespace NakedObjects.Meta.Test.SemanticsProvider; 
 
-        [TestMethod]
-        public void TestDecode() {
-            var decoded = GetValue().FromEncodedString("3.042112234E6");
-            Assert.AreEqual(3042112.234f, decoded);
-        }
+[TestClass]
+public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<float> {
+    private float floatObj;
+    private ISpecification holder;
 
-        [TestMethod]
-        public void TestEncode() {
-            var encoded = GetValue().ToEncodedString(0.0000454566f);
-            Assert.AreEqual("4.54566E-05", encoded);
-        }
-
-        [TestMethod]
-        public void TestInvalidParse() {
-            try {
-                GetValue().ParseTextEntry("one");
-                Assert.Fail();
-            }
-            catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
-            }
-        }
-
-        [TestMethod]
-        public void TestParse() {
-            var newValue = GetValue().ParseTextEntry("120.56");
-            Assert.AreEqual(120.56F, newValue);
-        }
-
-        [TestMethod]
-        public void TestParse2() {
-            var newValue = GetValue().ParseTextEntry("1,20.0");
-            Assert.AreEqual(120F, newValue);
-        }
-
-        [TestMethod]
-        public override void TestParseEmptyString() {
-            try {
-                var newValue = GetValue().ParseTextEntry("");
-                Assert.IsNull(newValue);
-            }
-            catch (Exception) {
-                Assert.Fail();
-            }
-        }
-
-        [TestMethod]
-        public void TestParseInvariant() {
-            const float c1 = 123.456F;
-            var s1 = c1.ToString(CultureInfo.InvariantCulture);
-            var c2 = GetValue().ParseInvariant(s1);
-            Assert.AreEqual(c1, c2);
-        }
-
-        [TestMethod]
-        public void TestTitleOf() {
-            Assert.AreEqual("3500000", GetValue().DisplayTitleOf(3500000.0F));
-        }
-
-        [TestMethod]
-        public void TestTitleOfWithMantissa() {
-            Assert.AreEqual("32.5", GetValue().DisplayTitleOf(floatObj));
-        }
-
-        [TestMethod]
-        public override void TestParseNull() {
-            base.TestParseNull();
-        }
-
-        [TestMethod]
-        public override void TestDecodeNull() {
-            base.TestDecodeNull();
-        }
-
-        [TestMethod]
-        public override void TestEmptyEncoding() {
-            base.TestEmptyEncoding();
-        }
-
-        [TestMethod]
-        public void TestValue() {
-            var facet = (IFloatingPointValueFacet) GetValue();
-            const float testValue = 100.100f;
-            var mockNo = new Mock<INakedObjectAdapter>();
-            mockNo.Setup(no => no.Object).Returns(testValue);
-            Assert.AreEqual(testValue, facet.FloatValue(mockNo.Object));
-        }
-
-        [TestMethod]
-        public void TestAsParserInvariant() {
-            var mgr = MockNakedObjectManager();
-            IParseableFacet parser = new ParseableFacetUsingParser<float>(GetValue(), null);
-            Assert.AreEqual(91f, parser.ParseInvariant("91", mgr.Object).Object);
-        }
-
-        [TestMethod]
-        public void TestAsParserTitle() {
-            IParseableFacet parser = new ParseableFacetUsingParser<float>(GetValue(), null);
-            var mockAdapter = MockAdapter(101f);
-            Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(new FloatValueSemanticsProvider(spec, holder));
-
-            floatObj = 32.5F;
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public void TestDecode() {
+        var decoded = GetValue().FromEncodedString("3.042112234E6");
+        Assert.AreEqual(3042112.234f, decoded);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public void TestEncode() {
+        var encoded = GetValue().ToEncodedString(0.0000454566f);
+        Assert.AreEqual("4.54566E-05", encoded);
+    }
+
+    [TestMethod]
+    public void TestInvalidParse() {
+        try {
+            GetValue().ParseTextEntry("one");
+            Assert.Fail();
+        }
+        catch (Exception e) {
+            Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+        }
+    }
+
+    [TestMethod]
+    public void TestParse() {
+        var newValue = GetValue().ParseTextEntry("120.56");
+        Assert.AreEqual(120.56F, newValue);
+    }
+
+    [TestMethod]
+    public void TestParse2() {
+        var newValue = GetValue().ParseTextEntry("1,20.0");
+        Assert.AreEqual(120F, newValue);
+    }
+
+    [TestMethod]
+    public override void TestParseEmptyString() {
+        try {
+            var newValue = GetValue().ParseTextEntry("");
+            Assert.IsNull(newValue);
+        }
+        catch (Exception) {
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
+    public void TestParseInvariant() {
+        const float c1 = 123.456F;
+        var s1 = c1.ToString(CultureInfo.InvariantCulture);
+        var c2 = GetValue().ParseInvariant(s1);
+        Assert.AreEqual(c1, c2);
+    }
+
+    [TestMethod]
+    public void TestTitleOf() {
+        Assert.AreEqual("3500000", GetValue().DisplayTitleOf(3500000.0F));
+    }
+
+    [TestMethod]
+    public void TestTitleOfWithMantissa() {
+        Assert.AreEqual("32.5", GetValue().DisplayTitleOf(floatObj));
+    }
+
+    [TestMethod]
+    public override void TestParseNull() {
+        base.TestParseNull();
+    }
+
+    [TestMethod]
+    public override void TestDecodeNull() {
+        base.TestDecodeNull();
+    }
+
+    [TestMethod]
+    public override void TestEmptyEncoding() {
+        base.TestEmptyEncoding();
+    }
+
+    [TestMethod]
+    public void TestValue() {
+        var facet = (IFloatingPointValueFacet) GetValue();
+        const float testValue = 100.100f;
+        var mockNo = new Mock<INakedObjectAdapter>();
+        mockNo.Setup(no => no.Object).Returns(testValue);
+        Assert.AreEqual(testValue, facet.FloatValue(mockNo.Object));
+    }
+
+    [TestMethod]
+    public void TestAsParserInvariant() {
+        var mgr = MockNakedObjectManager();
+        IParseableFacet parser = new ParseableFacetUsingParser<float>(GetValue(), null);
+        Assert.AreEqual(91f, parser.ParseInvariant("91", mgr.Object).Object);
+    }
+
+    [TestMethod]
+    public void TestAsParserTitle() {
+        IParseableFacet parser = new ParseableFacetUsingParser<float>(GetValue(), null);
+        var mockAdapter = MockAdapter(101f);
+        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
+    }
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+
+        holder = new Mock<ISpecification>().Object;
+        var spec = new Mock<IObjectSpecImmutable>().Object;
+        SetValue(new FloatValueSemanticsProvider(spec, holder));
+
+        floatObj = 32.5F;
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -8,15 +8,15 @@
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Error {
-    /// <summary>
-    ///     The interaction is invalid because the input value has exceeded the specified maximum length.
-    /// </summary>
-    public class InvalidMaxLengthException : InvalidException {
-        public InvalidMaxLengthException(IInteractionContext ic, int maximumLength, string message)
-            : base(ic, message) =>
-            MaximumLength = maximumLength;
+namespace NakedFramework.Metamodel.Error; 
 
-        public virtual int MaximumLength { get; }
-    }
+/// <summary>
+///     The interaction is invalid because the input value has exceeded the specified maximum length.
+/// </summary>
+public class InvalidMaxLengthException : InvalidException {
+    public InvalidMaxLengthException(IInteractionContext ic, int maximumLength, string message)
+        : base(ic, message) =>
+        MaximumLength = maximumLength;
+
+    public virtual int MaximumLength { get; }
 }

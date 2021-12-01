@@ -10,18 +10,18 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes {
-    public class TypeActionRelType : RelType {
-        private readonly string action;
+namespace NakedFramework.Rest.Snapshot.RelTypes; 
 
-        public TypeActionRelType(UriMtHelper helper, string action) : this(RelValues.Invoke, helper, action) { }
+public class TypeActionRelType : RelType {
+    private readonly string action;
 
-        private TypeActionRelType(string name, UriMtHelper helper, string action) : base(name, helper) => this.action = action;
+    public TypeActionRelType(UriMtHelper helper, string action) : this(RelValues.Invoke, helper, action) { }
 
-        public override string Name => $"{base.Name}{UriMtHelper.GetRelParametersFor(action)}";
+    private TypeActionRelType(string name, UriMtHelper helper, string action) : base(name, helper) => this.action = action;
 
-        public override Uri GetUri() => Helper.GetTypeActionsUri(action);
+    public override string Name => $"{base.Name}{UriMtHelper.GetRelParametersFor(action)}";
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(UriMtHelper.GetTypeActionMediaType());
-    }
+    public override Uri GetUri() => Helper.GetTypeActionsUri(action);
+
+    public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(UriMtHelper.GetTypeActionMediaType());
 }

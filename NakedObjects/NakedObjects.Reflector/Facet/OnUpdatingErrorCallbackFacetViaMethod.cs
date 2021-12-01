@@ -15,34 +15,34 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet {
-    [Serializable]
-    public sealed class OnUpdatingErrorCallbackFacetViaMethod : OnUpdatingErrorCallbackFacetAbstract, IImperativeFacet {
-        private readonly ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger;
-        private readonly MethodInfo method;
+namespace NakedObjects.Reflector.Facet; 
 
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+[Serializable]
+public sealed class OnUpdatingErrorCallbackFacetViaMethod : OnUpdatingErrorCallbackFacetAbstract, IImperativeFacet {
+    private readonly ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger;
+    private readonly MethodInfo method;
 
-        public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger)
-            : base(holder) {
-            this.method = method;
-            this.logger = logger;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
+    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {exception});
-
-        protected override string ToStringValues() => $"method={method}";
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() => method;
-
-        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
-
-        #endregion
+    public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger)
+        : base(holder) {
+        this.method = method;
+        this.logger = logger;
+        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
+
+    public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {exception});
+
+    protected override string ToStringValues() => $"method={method}";
+
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+
+    #endregion
 }

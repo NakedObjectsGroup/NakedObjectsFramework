@@ -13,63 +13,63 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Person.Contact")]
-    public class Contact {
-        public int ContactID { get; set; }
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
 
-        public bool NameStyle { get; set; }
+[Table("Person.Contact")]
+public class Contact {
+    public int ContactID { get; set; }
 
-        [StringLength(8)]
-        public string Title { get; set; }
+    public bool NameStyle { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string FirstName { get; set; }
+    [StringLength(8)]
+    public string Title { get; set; }
 
-        [StringLength(50)]
-        public string MiddleName { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string FirstName { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string LastName { get; set; }
+    [StringLength(50)]
+    public string MiddleName { get; set; }
 
-        [StringLength(10)]
-        public string Suffix { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string LastName { get; set; }
 
-        [StringLength(50)]
-        public string EmailAddress { get; set; }
+    [StringLength(10)]
+    public string Suffix { get; set; }
 
-        public int EmailPromotion { get; set; }
+    [StringLength(50)]
+    public string EmailAddress { get; set; }
 
-        [StringLength(25)]
-        public string Phone { get; set; }
+    public int EmailPromotion { get; set; }
 
-        [Required]
-        [StringLength(128)]
-        public string PasswordHash { get; set; }
+    [StringLength(25)]
+    public string Phone { get; set; }
 
-        [Required]
-        [StringLength(10)]
-        public string PasswordSalt { get; set; }
+    [Required]
+    [StringLength(128)]
+    public string PasswordHash { get; set; }
 
-        [Column(TypeName = "xml")]
-        public string AdditionalContactInfo { get; set; }
+    [Required]
+    [StringLength(10)]
+    public string PasswordSalt { get; set; }
 
-        public Guid rowguid { get; set; }
+    [Column(TypeName = "xml")]
+    public string AdditionalContactInfo { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public Guid rowguid { get; set; }
 
-        public virtual ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<ContactCreditCard> ContactCreditCards { get; set; } = new HashSet<ContactCreditCard>();
+    public virtual ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 
-        public virtual ICollection<Individual> Individuals { get; set; } = new HashSet<Individual>();
+    public virtual ICollection<ContactCreditCard> ContactCreditCards { get; set; } = new HashSet<ContactCreditCard>();
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
+    public virtual ICollection<Individual> Individuals { get; set; } = new HashSet<Individual>();
 
-        public virtual ICollection<StoreContact> StoreContacts { get; set; } = new HashSet<StoreContact>();
+    public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 
-        public virtual ICollection<VendorContact> VendorContacts { get; set; } = new HashSet<VendorContact>();
-    }
+    public virtual ICollection<StoreContact> StoreContacts { get; set; } = new HashSet<StoreContact>();
+
+    public virtual ICollection<VendorContact> VendorContacts { get; set; } = new HashSet<VendorContact>();
 }

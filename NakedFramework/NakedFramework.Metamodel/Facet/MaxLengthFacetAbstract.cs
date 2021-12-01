@@ -14,37 +14,37 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
-        protected MaxLengthFacetAbstract(int intValue, ISpecification holder)
-            : base(Type, holder, intValue) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IMaxLengthFacet);
+[Serializable]
+public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
+    protected MaxLengthFacetAbstract(int intValue, ISpecification holder)
+        : base(Type, holder, intValue) { }
 
-        protected override string ToStringValues() => Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
+    public static Type Type => typeof(IMaxLengthFacet);
 
-        #region IMaxLengthFacet Members
+    protected override string ToStringValues() => Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
 
-        /// <summary>
-        ///     Whether the provided argument exceeds the <see cref="SingleIntValueFacetAbstract.Value" /> maximum length}.
-        /// </summary>
-        public virtual bool Exceeds(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter.GetDomainObject() is string str) {
-                var maxLength = Value;
-                return maxLength != 0 && str.Length > maxLength;
-            }
+    #region IMaxLengthFacet Members
 
-            return false;
+    /// <summary>
+    ///     Whether the provided argument exceeds the <see cref="SingleIntValueFacetAbstract.Value" /> maximum length}.
+    /// </summary>
+    public virtual bool Exceeds(INakedObjectAdapter nakedObjectAdapter) {
+        if (nakedObjectAdapter.GetDomainObject() is string str) {
+            var maxLength = Value;
+            return maxLength != 0 && str.Length > maxLength;
         }
 
-        public virtual string Invalidates(IInteractionContext ic) {
-            var proposedArgument = ic.ProposedArgument;
-            return !Exceeds(proposedArgument) ? null : string.Format(NakedObjects.Resources.NakedObjects.MaximumLengthMismatch, Value);
-        }
-
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaxLengthException(ic, Value, Invalidates(ic));
-
-        #endregion
+        return false;
     }
+
+    public virtual string Invalidates(IInteractionContext ic) {
+        var proposedArgument = ic.ProposedArgument;
+        return !Exceeds(proposedArgument) ? null : string.Format(NakedObjects.Resources.NakedObjects.MaximumLengthMismatch, Value);
+    }
+
+    public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaxLengthException(ic, Value, Invalidates(ic));
+
+    #endregion
 }

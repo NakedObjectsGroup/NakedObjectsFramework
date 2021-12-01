@@ -23,92 +23,92 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory {
-    [TestClass]
-    public class PageSizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private PageSizeAnnotationFacetFactory facetFactory;
+namespace NakedObjects.Reflector.Test.FacetFactory; 
 
-        protected override Type[] SupportedTypes => new[] {typeof(IPageSizeFacet)};
+[TestClass]
+public class PageSizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private PageSizeAnnotationFacetFactory facetFactory;
 
-        protected override IFacetFactory FacetFactory => facetFactory;
+    protected override Type[] SupportedTypes => new[] {typeof(IPageSizeFacet)};
 
-        [TestMethod]
-        public void TestDefaultPageSizePickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+    protected override IFacetFactory FacetFactory => facetFactory;
 
-            var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
-            var identifier = new IdentifierImpl("Customer1", "SomeAction");
-            var actionPeer = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, null, null);
-            metamodel = new FallbackFacetFactory(GetOrder<FallbackFacetFactory>(), null).Process(Reflector, actionMethod, MethodRemover, actionPeer, metamodel);
-            var facet = actionPeer.GetFacet(typeof(IPageSizeFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PageSizeFacetDefault);
-            var pageSizeFacet = (IPageSizeFacet) facet;
-            Assert.AreEqual(20, pageSizeFacet.Value);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
+    [TestMethod]
+    public void TestDefaultPageSizePickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            var featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        [TestMethod]
-        public void TestPageSizeAnnotationPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            var actionMethod = FindMethod(typeof(Customer), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            var facet = Specification.GetFacet(typeof(IPageSizeFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PageSizeFacetAnnotation);
-            var pageSizeFacet = (IPageSizeFacet) facet;
-            Assert.AreEqual(7, pageSizeFacet.Value);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-        }
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [PageSize(7)]
-            // ReSharper disable once UnusedMember.Local
-            public IQueryable<Customer> SomeAction() => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            // ReSharper disable once UnusedMember.Local
-            public IQueryable<Customer1> SomeAction() => null;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PageSizeAnnotationFacetFactory(GetOrder<PageSizeAnnotationFacetFactory>(), LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
+        var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+        var identifier = new IdentifierImpl("Customer1", "SomeAction");
+        var actionPeer = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, null, null);
+        metamodel = new FallbackFacetFactory(GetOrder<FallbackFacetFactory>(), null).Process(Reflector, actionMethod, MethodRemover, actionPeer, metamodel);
+        var facet = actionPeer.GetFacet(typeof(IPageSizeFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is PageSizeFacetDefault);
+        var pageSizeFacet = (IPageSizeFacet) facet;
+        Assert.AreEqual(20, pageSizeFacet.Value);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    [TestMethod]
+    public override void TestFeatureTypes() {
+        var featureTypes = facetFactory.FeatureTypes;
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+    }
+
+    [TestMethod]
+    public void TestPageSizeAnnotationPickedUp() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer), "SomeAction");
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IPageSizeFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is PageSizeFacetAnnotation);
+        var pageSizeFacet = (IPageSizeFacet) facet;
+        Assert.AreEqual(7, pageSizeFacet.Value);
+        AssertNoMethodsRemoved();
+        Assert.IsNotNull(metamodel);
+    }
+
+    #region Nested type: Customer
+
+    private class Customer {
+        [PageSize(7)]
+        // ReSharper disable once UnusedMember.Local
+        public IQueryable<Customer> SomeAction() => null;
+    }
+
+    #endregion
+
+    #region Nested type: Customer1
+
+    private class Customer1 {
+        // ReSharper disable once UnusedMember.Local
+        public IQueryable<Customer1> SomeAction() => null;
+    }
+
+    #endregion
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        facetFactory = new PageSizeAnnotationFacetFactory(GetOrder<PageSizeAnnotationFacetFactory>(), LoggerFactory);
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        facetFactory = null;
+        base.TearDown();
+    }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

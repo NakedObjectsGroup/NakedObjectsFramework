@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstract<ushort>, IUnsignedShortValueFacet {
-        private const ushort DefaultValueConst = 0;
-        private const bool EqualByContent = true;
-        private const bool Immutable = true;
-        private const int TypicalLengthConst = 5;
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public UShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstract<ushort>, IUnsignedShortValueFacet {
+    private const ushort DefaultValueConst = 0;
+    private const bool EqualByContent = true;
+    private const bool Immutable = true;
+    private const int TypicalLengthConst = 5;
 
-        public static Type Type => typeof(IUnsignedShortValueFacet);
+    public UShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(ushort);
+    public static Type Type => typeof(IUnsignedShortValueFacet);
 
-        #region IUnsignedShortValueFacet Members
+    public static Type AdaptedType => typeof(ushort);
 
-        public ushort UnsignedShortValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<ushort>();
+    #region IUnsignedShortValueFacet Members
 
-        #endregion
+    public ushort UnsignedShortValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<ushort>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(ushort);
+    #endregion
 
-        protected override ushort DoParse(string entry) {
-            try {
-                return ushort.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(entry));
-            }
-            catch (OverflowException) {
-                throw new InvalidEntryException(OutOfRangeMessage(entry, ushort.MinValue, ushort.MaxValue));
-            }
+    public static bool IsAdaptedType(Type type) => type == typeof(ushort);
+
+    protected override ushort DoParse(string entry) {
+        try {
+            return ushort.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
         }
-
-        protected override ushort DoParseInvariant(string entry) => ushort.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(ushort obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override string TitleStringWithMask(string mask, ushort value) => value.ToString(mask);
-
-        protected override string DoEncode(ushort obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-        protected override ushort DoRestore(string data) => ushort.Parse(data, CultureInfo.InvariantCulture);
-
-        public override string ToString() => "UShortAdapter: ";
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(entry));
+        }
+        catch (OverflowException) {
+            throw new InvalidEntryException(OutOfRangeMessage(entry, ushort.MinValue, ushort.MaxValue));
+        }
     }
+
+    protected override ushort DoParseInvariant(string entry) => ushort.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(ushort obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override string TitleStringWithMask(string mask, ushort value) => value.ToString(mask);
+
+    protected override string DoEncode(ushort obj) => obj.ToString(CultureInfo.InvariantCulture);
+
+    protected override ushort DoRestore(string data) => ushort.Parse(data, CultureInfo.InvariantCulture);
+
+    public override string ToString() => "UShortAdapter: ";
 }

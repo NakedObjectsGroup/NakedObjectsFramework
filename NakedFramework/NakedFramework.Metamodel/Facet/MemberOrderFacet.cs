@@ -9,25 +9,25 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class MemberOrderFacet : FacetAbstract, IMemberOrderFacet {
-        public MemberOrderFacet(string name, string sequence, ISpecification holder)
-            : base(typeof(IMemberOrderFacet), holder) {
-            Sequence = sequence;
-            Name = name;
-        }
+namespace NakedFramework.Metamodel.Facet; 
 
-        #region IMemberOrderFacet Members
-
-        public string Sequence { get; }
-
-        public string Name { get; }
-
-        public string Grouping { get; init; }
-
-        #endregion
+[Serializable]
+public sealed class MemberOrderFacet : FacetAbstract, IMemberOrderFacet {
+    public MemberOrderFacet(string name, string sequence, ISpecification holder)
+        : base(typeof(IMemberOrderFacet), holder) {
+        Sequence = sequence;
+        Name = name;
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #region IMemberOrderFacet Members
+
+    public string Sequence { get; }
+
+    public string Name { get; }
+
+    public string Grouping { get; init; }
+
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

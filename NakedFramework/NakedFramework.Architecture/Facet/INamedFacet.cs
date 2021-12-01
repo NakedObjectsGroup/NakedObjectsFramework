@@ -5,18 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     The name of a class, a property, collection, an action  or a parameter
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     annotating the member with <see cref="NamedAttribute" />
-    /// </para>
-    public interface INamedFacet : ISingleStringValueFacet {
-        string ShortName { get; }
-        string SimpleName { get; }
-        string NaturalName { get; }
-        string CapitalizedName { get; }
-    }
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     The name of a class, a property, collection, an action  or a parameter
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     annotating the member with <see cref="NamedAttribute" />
+/// </para>
+public interface INamedFacet : ISingleStringValueFacet {
+    string ShortName { get; }
+    string SimpleName { get; }
+    string NaturalName { get; }
+    string CapitalizedName { get; }
 }

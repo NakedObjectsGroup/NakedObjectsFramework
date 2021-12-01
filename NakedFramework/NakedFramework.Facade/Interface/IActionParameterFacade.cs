@@ -5,14 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Facade.Interface {
-    public interface IActionParameterFacade : IFieldFacade, IFacadeHolder {
-        string Id { get; }
-        int Number { get; }
-        ITypeFacade ElementType { get; }
-        IActionFacade Action { get; }
-        bool IsInjected { get; }
-        IObjectFacade GetDefault(IObjectFacade objectFacade);
-        IConsentFacade IsUsable();
-    }
+namespace NakedFramework.Facade.Interface; 
+
+public interface IActionParameterFacade : IFieldFacade, IFacadeHolder {
+    string Id { get; }
+    int Number { get; }
+    ITypeFacade ElementType { get; }
+    IActionFacade Action { get; }
+    bool IsInjected { get; }
+    IObjectFacade GetDefault(IObjectFacade objectFacade);
+    IConsentFacade IsUsable();
 }

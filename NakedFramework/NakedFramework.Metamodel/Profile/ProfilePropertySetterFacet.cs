@@ -12,30 +12,30 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
 
-namespace NakedFramework.Metamodel.Profile {
-    [Serializable]
-    public sealed class ProfilePropertySetterFacet : PropertySetterFacetAbstract {
-        private readonly IProfileManager profileManager;
-        private readonly IPropertySetterFacet underlyingFacet;
+namespace NakedFramework.Metamodel.Profile; 
 
-        public ProfilePropertySetterFacet(IPropertySetterFacet underlyingFacet, IProfileManager profileManager) : base(underlyingFacet.Specification) {
-            this.underlyingFacet = underlyingFacet;
-            this.profileManager = profileManager;
+[Serializable]
+public sealed class ProfilePropertySetterFacet : PropertySetterFacetAbstract {
+    private readonly IProfileManager profileManager;
+    private readonly IPropertySetterFacet underlyingFacet;
+
+    public ProfilePropertySetterFacet(IPropertySetterFacet underlyingFacet, IProfileManager profileManager) : base(underlyingFacet.Specification) {
+        this.underlyingFacet = underlyingFacet;
+        this.profileManager = profileManager;
+    }
+
+    public override string PropertyName {
+        get => underlyingFacet.PropertyName;
+        protected set { }
+    }
+
+    public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework) {
+        profileManager.Begin(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
+        try {
+            underlyingFacet.SetProperty(nakedObjectAdapter, nakedValue, framework);
         }
-
-        public override string PropertyName {
-            get => underlyingFacet.PropertyName;
-            protected set { }
-        }
-
-        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework) {
-            profileManager.Begin(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
-            try {
-                underlyingFacet.SetProperty(nakedObjectAdapter, nakedValue, framework);
-            }
-            finally {
-                profileManager.End(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
-            }
+        finally {
+            profileManager.End(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
         }
     }
 }

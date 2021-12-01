@@ -7,11 +7,11 @@
 
 using System;
 
-namespace NakedFramework.Core.Error {
-    public class TitleException : NakedObjectApplicationException {
-        public TitleException(string msg, Exception cause)
-            : base(msg, cause) { }
-    }
+namespace NakedFramework.Core.Error; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+public class TitleException : NakedObjectApplicationException {
+    public TitleException(string msg, Exception cause)
+        : base(msg, cause) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

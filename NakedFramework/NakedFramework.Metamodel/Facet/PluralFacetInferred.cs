@@ -8,12 +8,12 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class PluralFacetInferred : PluralFacetAbstract {
-        public PluralFacetInferred(string value, ISpecification holder)
-            : base(value, holder) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class PluralFacetInferred : PluralFacetAbstract {
+    public PluralFacetInferred(string value, ISpecification holder)
+        : base(value, holder) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

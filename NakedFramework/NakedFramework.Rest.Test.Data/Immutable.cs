@@ -9,17 +9,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace RestfulObjects.Test.Data {
-    [Immutable]
-    public class Immutable {
-        [Key]
-        [Title]
-        public virtual int Id { get; set; }
+namespace RestfulObjects.Test.Data; 
 
-        public virtual int AValue { get; set; }
+[Immutable]
+public class Immutable {
+    [Key]
+    [Title]
+    public virtual int Id { get; set; }
 
-        public virtual MostSimple AReference { get; set; }
+    public virtual int AValue { get; set; }
 
-        public virtual ICollection<MostSimple> ACollection { get; set; } = new List<MostSimple>();
-    }
+    public virtual MostSimple AReference { get; set; }
+
+    public virtual ICollection<MostSimple> ACollection { get; set; } = new List<MostSimple>();
 }

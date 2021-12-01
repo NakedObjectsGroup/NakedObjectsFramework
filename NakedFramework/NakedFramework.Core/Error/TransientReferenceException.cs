@@ -5,8 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Core.Error {
-    public class TransientReferenceException : NakedObjectApplicationException {
-        public TransientReferenceException(string msg) : base(msg) { }
-    }
+namespace NakedFramework.Core.Error; 
+
+public class TransientReferenceException : NakedObjectApplicationException {
+    public TransientReferenceException(string msg) : base(msg) { }
 }

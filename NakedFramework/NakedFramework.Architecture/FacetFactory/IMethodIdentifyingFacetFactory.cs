@@ -10,15 +10,15 @@ using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.FacetFactory {
-    /// <summary>
-    ///     A <see cref="IFacetFactory" /> implementation that is able to identify an action
-    /// </summary>
-    /// <para>
-    ///     Used by <see cref="IFacetFactorySet" /> to determine which facet factories to ask
-    ///     whether a <see cref="MethodInfo" /> represents an action.
-    /// </para>
-    public interface IMethodIdentifyingFacetFactory : IFacetFactory {
-        IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy);
-    }
+namespace NakedFramework.Architecture.FacetFactory; 
+
+/// <summary>
+///     A <see cref="IFacetFactory" /> implementation that is able to identify an action
+/// </summary>
+/// <para>
+///     Used by <see cref="IFacetFactorySet" /> to determine which facet factories to ask
+///     whether a <see cref="MethodInfo" /> represents an action.
+/// </para>
+public interface IMethodIdentifyingFacetFactory : IFacetFactory {
+    IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy);
 }

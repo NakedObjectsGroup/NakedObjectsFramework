@@ -10,22 +10,22 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class ArrayFacet : CollectionFacet {
-        public ArrayFacet(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
-            var newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);
-            collection.ReplacePoco(newCollection);
+[Serializable]
+public sealed class ArrayFacet : CollectionFacet {
+    public ArrayFacet(ISpecification holder)
+        : base(holder) { }
 
-            var i = 0;
-            foreach (var nakedObject in initData) {
-                AsCollection(collection)[i++] = nakedObject.Object;
-            }
+    public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
+        var newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);
+        collection.ReplacePoco(newCollection);
+
+        var i = 0;
+        foreach (var nakedObject in initData) {
+            AsCollection(collection)[i++] = nakedObject.Object;
         }
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -8,38 +8,38 @@
 using System;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
-namespace NakedFramework.ParallelReflector.Reflect {
-    public static class TypeFacetFactories {
-        public static Type[] FacetFactories() =>
-            new[] {
-                typeof(IteratorFilteringFacetFactory),
-                typeof(SystemClassMethodFilteringFactory),
-                typeof(SystemClassPropertyFilteringFactory),
-                typeof(RemoveSuperclassMethodsFacetFactory),
-                typeof(TypeMarkerFacetFactory),
-                typeof(FallbackFacetFactory),
-                typeof(BooleanValueTypeFacetFactory),
-                typeof(ByteValueTypeFacetFactory),
-                typeof(SbyteValueTypeFacetFactory),
-                typeof(ShortValueTypeFacetFactory),
-                typeof(IntValueTypeFacetFactory),
-                typeof(LongValueTypeFacetFactory),
-                typeof(UShortValueTypeFacetFactory),
-                typeof(UIntValueTypeFacetFactory),
-                typeof(ULongValueTypeFacetFactory),
-                typeof(FloatValueTypeFacetFactory),
-                typeof(DoubleValueTypeFacetFactory),
-                typeof(DecimalValueTypeFacetFactory),
-                typeof(CharValueTypeFacetFactory),
-                typeof(DateTimeValueTypeFacetFactory),
-                typeof(TimeValueTypeFacetFactory),
-                typeof(StringValueTypeFacetFactory),
-                typeof(GuidValueTypeFacetFactory),
-                typeof(EnumValueTypeFacetFactory),
-                typeof(FileAttachmentValueTypeFacetFactory),
-                typeof(ImageValueTypeFacetFactory),
-                typeof(ArrayValueTypeFacetFactory<byte>),
-                typeof(CollectionFacetFactory)
-            };
-    }
+namespace NakedFramework.ParallelReflector.Reflect; 
+
+public static class TypeFacetFactories {
+    public static Type[] FacetFactories() =>
+        new[] {
+            typeof(IteratorFilteringFacetFactory),
+            typeof(SystemClassMethodFilteringFactory),
+            typeof(SystemClassPropertyFilteringFactory),
+            typeof(RemoveSuperclassMethodsFacetFactory),
+            typeof(TypeMarkerFacetFactory),
+            typeof(FallbackFacetFactory),
+            typeof(BooleanValueTypeFacetFactory),
+            typeof(ByteValueTypeFacetFactory),
+            typeof(SbyteValueTypeFacetFactory),
+            typeof(ShortValueTypeFacetFactory),
+            typeof(IntValueTypeFacetFactory),
+            typeof(LongValueTypeFacetFactory),
+            typeof(UShortValueTypeFacetFactory),
+            typeof(UIntValueTypeFacetFactory),
+            typeof(ULongValueTypeFacetFactory),
+            typeof(FloatValueTypeFacetFactory),
+            typeof(DoubleValueTypeFacetFactory),
+            typeof(DecimalValueTypeFacetFactory),
+            typeof(CharValueTypeFacetFactory),
+            typeof(DateTimeValueTypeFacetFactory),
+            typeof(TimeValueTypeFacetFactory),
+            typeof(StringValueTypeFacetFactory),
+            typeof(GuidValueTypeFacetFactory),
+            typeof(EnumValueTypeFacetFactory),
+            typeof(FileAttachmentValueTypeFacetFactory),
+            typeof(ImageValueTypeFacetFactory),
+            typeof(ArrayValueTypeFacetFactory<byte>),
+            typeof(CollectionFacetFactory)
+        };
 }

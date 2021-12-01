@@ -9,20 +9,20 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl {
-    public class VersionFacade : IVersionFacade {
-        private readonly IVersion version;
+namespace NakedFramework.Facade.Impl.Impl; 
 
-        public VersionFacade(IVersion version) => this.version = version ?? throw new NullReferenceException($"{nameof(version)} is null");
+public class VersionFacade : IVersionFacade {
+    private readonly IVersion version;
 
-        public DateTime? Time => version.Time;
+    public VersionFacade(IVersion version) => this.version = version ?? throw new NullReferenceException($"{nameof(version)} is null");
 
-        #region IVersionFacade Members
+    public DateTime? Time => version.Time;
 
-        public string Digest => version.Digest;
+    #region IVersionFacade Members
 
-        public bool IsDifferent(string digest) => version.IsDifferent(digest);
+    public string Digest => version.Digest;
 
-        #endregion
-    }
+    public bool IsDifferent(string digest) => version.IsDifferent(digest);
+
+    #endregion
 }

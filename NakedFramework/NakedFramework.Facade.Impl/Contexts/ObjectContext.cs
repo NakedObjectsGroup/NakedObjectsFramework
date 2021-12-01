@@ -13,29 +13,29 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts {
-    public class ObjectContext : Context {
-        public ObjectContext(INakedObjectAdapter target) => Target = target;
+namespace NakedFramework.Facade.Impl.Contexts; 
 
-        public bool Mutated { get; set; }
+public class ObjectContext : Context {
+    public ObjectContext(INakedObjectAdapter target) => Target = target;
 
-        public (string serverName, string oid)? Redirected => Specification?.GetFacet<IRedirectedFacet>()?.GetRedirection(Target.Object);
+    public bool Mutated { get; set; }
 
-        public override string Id => Target.Oid.ToString();
+    public (string serverName, string oid)? Redirected => Specification?.GetFacet<IRedirectedFacet>()?.GetRedirection(Target.Object);
 
-        public override ITypeSpec Specification => Target.Spec;
+    public override string Id => Target.Oid.ToString();
 
-        public PropertyContext[] VisibleProperties { get; set; }
-        public ActionContext[] VisibleActions { get; init; }
+    public override ITypeSpec Specification => Target.Spec;
 
-        public ObjectContextFacade ToObjectContextFacade(IFrameworkFacade facade, INakedFramework framework) {
-            var oc = new ObjectContextFacade {
-                VisibleProperties = VisibleProperties?.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray(),
-                VisibleActions = VisibleActions?.Select(p => p.ToActionContextFacade(facade, framework)).ToArray(),
-                Mutated = Mutated,
-                Redirected = Redirected
-            };
-            return ToContextFacade(oc, facade, framework);
-        }
+    public PropertyContext[] VisibleProperties { get; set; }
+    public ActionContext[] VisibleActions { get; init; }
+
+    public ObjectContextFacade ToObjectContextFacade(IFrameworkFacade facade, INakedFramework framework) {
+        var oc = new ObjectContextFacade {
+            VisibleProperties = VisibleProperties?.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray(),
+            VisibleActions = VisibleActions?.Select(p => p.ToActionContextFacade(facade, framework)).ToArray(),
+            Mutated = Mutated,
+            Redirected = Redirected
+        };
+        return ToContextFacade(oc, facade, framework);
     }
 }

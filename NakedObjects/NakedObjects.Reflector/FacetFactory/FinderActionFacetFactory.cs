@@ -17,25 +17,25 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    /// <summary>
-    ///     Creates an <see cref="IFinderActionFacet" /> based on the presence of an
-    ///     <see cref="FinderActionAttribute" /> annotation
-    /// </summary>
-    public sealed class FinderActionFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public FinderActionFacetFactory(IFacetFactoryOrder<FinderActionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        private static void Process(MethodInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<FinderActionAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-        }
+/// <summary>
+///     Creates an <see cref="IFinderActionFacet" /> based on the presence of an
+///     <see cref="FinderActionAttribute" /> annotation
+/// </summary>
+public sealed class FinderActionFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public FinderActionFacetFactory(IFacetFactoryOrder<FinderActionFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, specification);
-            return metamodel;
-        }
-
-        private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) => attribute is null ? null : new FinderActionFacet(holder, attribute.Prefix ?? "");
+    private static void Process(MethodInfo member, ISpecification holder) {
+        var attribute = member.GetCustomAttribute<FinderActionAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
     }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
+    }
+
+    private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) => attribute is null ? null : new FinderActionFacet(holder, attribute.Prefix ?? "");
 }

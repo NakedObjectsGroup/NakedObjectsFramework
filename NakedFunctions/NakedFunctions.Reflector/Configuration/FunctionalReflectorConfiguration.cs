@@ -9,26 +9,26 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Configuration;
 
-namespace NakedFunctions.Reflector.Configuration {
-    public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguration {
-        public FunctionalReflectorConfiguration(Type[] types,
-                                                Type[] functions,
-                                                bool concurrencyChecking = true) {
-            Types = types;
-            Functions = functions;
-            ConcurrencyChecking = concurrencyChecking;
-            IgnoreCase = false;
-        }
+namespace NakedFunctions.Reflector.Configuration; 
 
-        public bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
-
-        #region IFunctionalReflectorConfiguration Members
-
-        public Type[] Types { get; }
-        public Type[] Functions { get; }
-        public bool ConcurrencyChecking { get; }
-        public bool IgnoreCase { get; }
-
-        #endregion
+public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguration {
+    public FunctionalReflectorConfiguration(Type[] types,
+                                            Type[] functions,
+                                            bool concurrencyChecking = true) {
+        Types = types;
+        Functions = functions;
+        ConcurrencyChecking = concurrencyChecking;
+        IgnoreCase = false;
     }
+
+    public bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
+
+    #region IFunctionalReflectorConfiguration Members
+
+    public Type[] Types { get; }
+    public Type[] Functions { get; }
+    public bool ConcurrencyChecking { get; }
+    public bool IgnoreCase { get; }
+
+    #endregion
 }

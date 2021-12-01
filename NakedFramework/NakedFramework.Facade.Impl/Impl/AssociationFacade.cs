@@ -17,184 +17,184 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl {
-    public class AssociationFacade : IAssociationFacade {
-        private readonly INakedFramework framework;
+namespace NakedFramework.Facade.Impl.Impl; 
 
-        public AssociationFacade(IAssociationSpec assoc, IFrameworkFacade frameworkFacade, INakedFramework framework) {
-            WrappedSpec = assoc ?? throw new NullReferenceException($"{nameof(assoc)} is null");
-            this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
-            FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
-        }
+public class AssociationFacade : IAssociationFacade {
+    private readonly INakedFramework framework;
 
-        public IAssociationSpec WrappedSpec { get; }
+    public AssociationFacade(IAssociationSpec assoc, IFrameworkFacade frameworkFacade, INakedFramework framework) {
+        WrappedSpec = assoc ?? throw new NullReferenceException($"{nameof(assoc)} is null");
+        this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
+        FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
+    }
 
-        private (string, ITypeFacade) WrapChoiceParm((string name, IObjectSpec spec) parm) => (parm.name, new TypeFacade(parm.spec, FrameworkFacade, framework));
+    public IAssociationSpec WrappedSpec { get; }
 
-        public override bool Equals(object obj) => obj is AssociationFacade af && Equals(af);
+    private (string, ITypeFacade) WrapChoiceParm((string name, IObjectSpec spec) parm) => (parm.name, new TypeFacade(parm.spec, FrameworkFacade, framework));
 
-        public bool Equals(AssociationFacade other) {
-            if (ReferenceEquals(null, other)) {
-                return false;
-            }
+    public override bool Equals(object obj) => obj is AssociationFacade af && Equals(af);
 
-            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
-        }
-
-        public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
-
-        #region IAssociationFacade Members
-
-        public string Name => WrappedSpec.Name;
-
-        public string Description => WrappedSpec.Description;
-
-        public bool IsMandatory => WrappedSpec.IsMandatory;
-
-        public bool IsCollection => WrappedSpec is IOneToManyAssociationSpec;
-
-        public bool IsObject => WrappedSpec is IOneToOneAssociationSpec;
-
-        public bool IsConcurrency => WrappedSpec.ContainsFacet<IConcurrencyCheckFacet>();
-
-        public bool NotNavigable => WrappedSpec.ContainsFacet<INotNavigableFacet>();
-
-        public int? MaxLength => WrappedSpec.GetMaxLength();
-
-        public string Pattern => WrappedSpec.GetPattern();
-
-        public int MemberOrder => WrappedSpec.GetMemberOrder();
-
-        public bool IsASet => WrappedSpec is IOneToManyAssociationSpec {IsASet: true};
-
-        public bool IsInline => WrappedSpec.IsInline;
-
-        public string Mask => WrappedSpec.GetMask();
-
-        public int AutoCompleteMinLength => WrappedSpec.GetAutoCompleteMinLength();
-
-        public ITypeFacade Specification => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
-
-        public ITypeFacade ElementSpecification {
-            get {
-                var coll = WrappedSpec as IOneToManyAssociationSpec;
-                var elementSpec = coll?.ElementSpec;
-                return elementSpec == null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
-            }
-        }
-
-        public string Id => WrappedSpec.Id;
-
-        public Choices IsChoicesEnabled => WrappedSpec is IOneToOneFeatureSpec {IsChoicesEnabled: true} ? Choices.Single : Choices.NotEnabled;
-
-        public bool IsAutoCompleteEnabled => WrappedSpec is IOneToOneFeatureSpec {IsAutoCompleteEnabled: true};
-
-        public IConsentFacade IsUsable(IObjectFacade target) {
-            var consent = WrappedSpec.IsUsable(((ObjectFacade) target).WrappedNakedObject);
-            return new ConsentFacade(consent);
-        }
-
-        public IObjectFacade GetValue(IObjectFacade target) {
-            var result = WrappedSpec.GetNakedObject(((ObjectFacade) target).WrappedNakedObject);
-            return ObjectFacade.Wrap(result, FrameworkFacade, framework);
-        }
-
-        public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
-
-        public bool IsEager(IObjectFacade objectFacade) =>
-            ((TypeFacade) objectFacade.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
-            WrappedSpec.ContainsFacet<IEagerlyFacet>();
-
-        public DataType? DataType => WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType() ?? WrappedSpec.GetFacet<IPasswordFacet>()?.DataType;
-
-        public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
-            var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
-            var pnv = parameterNameValues?.ToDictionary(kvp => kvp.Key, kvp => framework.GetNakedObject(kvp.Value));
-            return oneToOneFeature?.GetChoices(((ObjectFacade) target).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
-        }
-
-        public (string, ITypeFacade)[] GetChoicesParameters() =>
-            WrappedSpec is IOneToOneFeatureSpec oneToOneFeature
-                ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray()
-                : Array.Empty<(string, ITypeFacade)>();
-
-        public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) =>
-            GetChoices(target, parameterNameValues).Select(c => (c, c.TitleString)).ToArray();
-
-        public IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm) {
-            var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
-            return oneToOneFeature?.GetCompletions(((ObjectFacade) target).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
-        }
-
-        public int Count(IObjectFacade target) => IsCollection ? framework.Persistor.CountField(((ObjectFacade) target).WrappedNakedObject, Id) : 0;
-
-        public bool IsSetToImplicitDefault(IObjectFacade objectFacade) {
-            // return true if it's scalar and and still set to its implicit default value (eg 0 for an int)
-            if (!DefaultTypeIsExplicit(objectFacade) && WrappedSpec.ReturnSpec.IsParseable) {
-                var dflt = WrappedSpec.GetDefault(objectFacade.WrappedAdapter());
-                var currentValue = GetValue(objectFacade);
-
-                return dflt?.Object == currentValue?.Object;
-            }
-
+    public bool Equals(AssociationFacade other) {
+        if (ReferenceEquals(null, other)) {
             return false;
         }
 
-        public string GetTitle(IObjectFacade objectFacade) {
-            var enumFacet = WrappedSpec.GetFacet<IEnumFacet>();
-
-            if (enumFacet != null) {
-                return enumFacet.GetTitle(((ObjectFacade) objectFacade).WrappedNakedObject);
-            }
-
-            var mask = WrappedSpec.GetFacet<IMaskFacet>();
-            if (mask == null) {
-                return objectFacade.TitleString;
-            }
-
-            var titleFacet = ((TypeFacade) objectFacade.Specification).WrappedValue.GetFacet<ITitleFacet>();
-            return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade) objectFacade).WrappedNakedObject, framework);
-        }
-
-        public IFrameworkFacade FrameworkFacade { get; set; }
-
-        public bool IsFile => WrappedSpec.IsFile(framework);
-
-        public bool IsDateOnly => WrappedSpec.ContainsFacet<IDateOnlyFacet>();
-
-        public bool IsEnum => WrappedSpec.ContainsFacet<IEnumFacet>();
-
-        public bool IsFindMenuEnabled => WrappedSpec is IOneToOneAssociationSpec {IsFindMenuEnabled: true};
-
-        public (Regex, string)? RegEx => WrappedSpec.GetRegEx();
-
-        public (IConvertible, IConvertible, bool)? Range => WrappedSpec.GetRange();
-
-        public bool DoNotCount => WrappedSpec.ContainsFacet<INotCountedFacet>();
-
-        public int Width => WrappedSpec.GetWidth();
-
-        public string PresentationHint => WrappedSpec.GetPresentationHint();
-
-        public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework);
-
-        public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
-            var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
-            return WrappedSpec.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
-        }
-
-        public int NumberOfLines => WrappedSpec.GetNumberOfLinesWithDefault();
-
-        public (bool, string[])? TableViewData => WrappedSpec.GetTableViewData();
-
-        public bool RenderEagerly => WrappedSpec.GetRenderEagerly();
-
-        public bool IsPassword => WrappedSpec.ContainsFacet<IPasswordFacet>();
-
-        public bool IsNullable => WrappedSpec.ContainsFacet<INullableFacet>();
-
-        public string Grouping => WrappedSpec.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
-
-        #endregion
+        return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
     }
+
+    public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
+
+    #region IAssociationFacade Members
+
+    public string Name => WrappedSpec.Name;
+
+    public string Description => WrappedSpec.Description;
+
+    public bool IsMandatory => WrappedSpec.IsMandatory;
+
+    public bool IsCollection => WrappedSpec is IOneToManyAssociationSpec;
+
+    public bool IsObject => WrappedSpec is IOneToOneAssociationSpec;
+
+    public bool IsConcurrency => WrappedSpec.ContainsFacet<IConcurrencyCheckFacet>();
+
+    public bool NotNavigable => WrappedSpec.ContainsFacet<INotNavigableFacet>();
+
+    public int? MaxLength => WrappedSpec.GetMaxLength();
+
+    public string Pattern => WrappedSpec.GetPattern();
+
+    public int MemberOrder => WrappedSpec.GetMemberOrder();
+
+    public bool IsASet => WrappedSpec is IOneToManyAssociationSpec {IsASet: true};
+
+    public bool IsInline => WrappedSpec.IsInline;
+
+    public string Mask => WrappedSpec.GetMask();
+
+    public int AutoCompleteMinLength => WrappedSpec.GetAutoCompleteMinLength();
+
+    public ITypeFacade Specification => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
+
+    public ITypeFacade ElementSpecification {
+        get {
+            var coll = WrappedSpec as IOneToManyAssociationSpec;
+            var elementSpec = coll?.ElementSpec;
+            return elementSpec == null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
+        }
+    }
+
+    public string Id => WrappedSpec.Id;
+
+    public Choices IsChoicesEnabled => WrappedSpec is IOneToOneFeatureSpec {IsChoicesEnabled: true} ? Choices.Single : Choices.NotEnabled;
+
+    public bool IsAutoCompleteEnabled => WrappedSpec is IOneToOneFeatureSpec {IsAutoCompleteEnabled: true};
+
+    public IConsentFacade IsUsable(IObjectFacade target) {
+        var consent = WrappedSpec.IsUsable(((ObjectFacade) target).WrappedNakedObject);
+        return new ConsentFacade(consent);
+    }
+
+    public IObjectFacade GetValue(IObjectFacade target) {
+        var result = WrappedSpec.GetNakedObject(((ObjectFacade) target).WrappedNakedObject);
+        return ObjectFacade.Wrap(result, FrameworkFacade, framework);
+    }
+
+    public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
+
+    public bool IsEager(IObjectFacade objectFacade) =>
+        ((TypeFacade) objectFacade.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
+        WrappedSpec.ContainsFacet<IEagerlyFacet>();
+
+    public DataType? DataType => WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType() ?? WrappedSpec.GetFacet<IPasswordFacet>()?.DataType;
+
+    public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
+        var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
+        var pnv = parameterNameValues?.ToDictionary(kvp => kvp.Key, kvp => framework.GetNakedObject(kvp.Value));
+        return oneToOneFeature?.GetChoices(((ObjectFacade) target).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+    }
+
+    public (string, ITypeFacade)[] GetChoicesParameters() =>
+        WrappedSpec is IOneToOneFeatureSpec oneToOneFeature
+            ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray()
+            : Array.Empty<(string, ITypeFacade)>();
+
+    public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) =>
+        GetChoices(target, parameterNameValues).Select(c => (c, c.TitleString)).ToArray();
+
+    public IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm) {
+        var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
+        return oneToOneFeature?.GetCompletions(((ObjectFacade) target).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+    }
+
+    public int Count(IObjectFacade target) => IsCollection ? framework.Persistor.CountField(((ObjectFacade) target).WrappedNakedObject, Id) : 0;
+
+    public bool IsSetToImplicitDefault(IObjectFacade objectFacade) {
+        // return true if it's scalar and and still set to its implicit default value (eg 0 for an int)
+        if (!DefaultTypeIsExplicit(objectFacade) && WrappedSpec.ReturnSpec.IsParseable) {
+            var dflt = WrappedSpec.GetDefault(objectFacade.WrappedAdapter());
+            var currentValue = GetValue(objectFacade);
+
+            return dflt?.Object == currentValue?.Object;
+        }
+
+        return false;
+    }
+
+    public string GetTitle(IObjectFacade objectFacade) {
+        var enumFacet = WrappedSpec.GetFacet<IEnumFacet>();
+
+        if (enumFacet != null) {
+            return enumFacet.GetTitle(((ObjectFacade) objectFacade).WrappedNakedObject);
+        }
+
+        var mask = WrappedSpec.GetFacet<IMaskFacet>();
+        if (mask == null) {
+            return objectFacade.TitleString;
+        }
+
+        var titleFacet = ((TypeFacade) objectFacade.Specification).WrappedValue.GetFacet<ITitleFacet>();
+        return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade) objectFacade).WrappedNakedObject, framework);
+    }
+
+    public IFrameworkFacade FrameworkFacade { get; set; }
+
+    public bool IsFile => WrappedSpec.IsFile(framework);
+
+    public bool IsDateOnly => WrappedSpec.ContainsFacet<IDateOnlyFacet>();
+
+    public bool IsEnum => WrappedSpec.ContainsFacet<IEnumFacet>();
+
+    public bool IsFindMenuEnabled => WrappedSpec is IOneToOneAssociationSpec {IsFindMenuEnabled: true};
+
+    public (Regex, string)? RegEx => WrappedSpec.GetRegEx();
+
+    public (IConvertible, IConvertible, bool)? Range => WrappedSpec.GetRange();
+
+    public bool DoNotCount => WrappedSpec.ContainsFacet<INotCountedFacet>();
+
+    public int Width => WrappedSpec.GetWidth();
+
+    public string PresentationHint => WrappedSpec.GetPresentationHint();
+
+    public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework);
+
+    public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
+        var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
+        return WrappedSpec.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
+    }
+
+    public int NumberOfLines => WrappedSpec.GetNumberOfLinesWithDefault();
+
+    public (bool, string[])? TableViewData => WrappedSpec.GetTableViewData();
+
+    public bool RenderEagerly => WrappedSpec.GetRenderEagerly();
+
+    public bool IsPassword => WrappedSpec.ContainsFacet<IPasswordFacet>();
+
+    public bool IsNullable => WrappedSpec.ContainsFacet<INullableFacet>();
+
+    public string Grouping => WrappedSpec.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
+
+    #endregion
 }

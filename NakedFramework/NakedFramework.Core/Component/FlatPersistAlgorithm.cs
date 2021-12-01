@@ -11,62 +11,62 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component {
-    /// <summary>
-    ///     Algorithm to use when the object store will automatically persist all associated objects. Simply adds the single
-    ///     object or each
-    ///     object in the collection to the store.
-    /// </summary>
-    public sealed class FlatPersistAlgorithm : IPersistAlgorithm {
-        private readonly INakedObjectManager manager;
-        private readonly IObjectPersistor persistor;
+namespace NakedFramework.Core.Component; 
 
-        public FlatPersistAlgorithm(IObjectPersistor persistor,
-                                    INakedObjectManager manager) {
-            this.persistor = persistor;
-            this.manager = manager;
-        }
+/// <summary>
+///     Algorithm to use when the object store will automatically persist all associated objects. Simply adds the single
+///     object or each
+///     object in the collection to the store.
+/// </summary>
+public sealed class FlatPersistAlgorithm : IPersistAlgorithm {
+    private readonly INakedObjectManager manager;
+    private readonly IObjectPersistor persistor;
 
-        private void MakeObjectPersistent(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter.ResolveState.IsAggregated() ||
-                nakedObjectAdapter.ResolveState.IsPersistent() ||
-                nakedObjectAdapter.Spec.Persistable == PersistableType.Transient ||
-                nakedObjectAdapter.Spec is IServiceSpec) {
-                return;
-            }
-
-            persistor.AddPersistedObject(nakedObjectAdapter);
-        }
-
-        private void MakeCollectionPersistent(INakedObjectAdapter collection) {
-            if (collection.ResolveState.IsPersistent() || collection.Spec.Persistable == PersistableType.Transient) {
-                return;
-            }
-
-            if (collection.ResolveState.IsTransient()) {
-                collection.ResolveState.Handle(Events.StartResolvingEvent);
-                collection.ResolveState.Handle(Events.EndResolvingEvent);
-            }
-
-            manager.MadePersistent(collection);
-            collection.GetAsEnumerable(manager).ForEach(MakePersistent);
-        }
-
-        public override string ToString() => Name;
-
-        #region IPersistAlgorithm Members
-
-        public string Name => "Entity Framework Persist Algorithm";
-
-        public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter.Spec.IsCollection) {
-                MakeCollectionPersistent(nakedObjectAdapter);
-            }
-            else {
-                MakeObjectPersistent(nakedObjectAdapter);
-            }
-        }
-
-        #endregion
+    public FlatPersistAlgorithm(IObjectPersistor persistor,
+                                INakedObjectManager manager) {
+        this.persistor = persistor;
+        this.manager = manager;
     }
+
+    private void MakeObjectPersistent(INakedObjectAdapter nakedObjectAdapter) {
+        if (nakedObjectAdapter.ResolveState.IsAggregated() ||
+            nakedObjectAdapter.ResolveState.IsPersistent() ||
+            nakedObjectAdapter.Spec.Persistable == PersistableType.Transient ||
+            nakedObjectAdapter.Spec is IServiceSpec) {
+            return;
+        }
+
+        persistor.AddPersistedObject(nakedObjectAdapter);
+    }
+
+    private void MakeCollectionPersistent(INakedObjectAdapter collection) {
+        if (collection.ResolveState.IsPersistent() || collection.Spec.Persistable == PersistableType.Transient) {
+            return;
+        }
+
+        if (collection.ResolveState.IsTransient()) {
+            collection.ResolveState.Handle(Events.StartResolvingEvent);
+            collection.ResolveState.Handle(Events.EndResolvingEvent);
+        }
+
+        manager.MadePersistent(collection);
+        collection.GetAsEnumerable(manager).ForEach(MakePersistent);
+    }
+
+    public override string ToString() => Name;
+
+    #region IPersistAlgorithm Members
+
+    public string Name => "Entity Framework Persist Algorithm";
+
+    public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
+        if (nakedObjectAdapter.Spec.IsCollection) {
+            MakeCollectionPersistent(nakedObjectAdapter);
+        }
+        else {
+            MakeObjectPersistent(nakedObjectAdapter);
+        }
+    }
+
+    #endregion
 }

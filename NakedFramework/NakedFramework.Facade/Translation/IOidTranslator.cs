@@ -7,9 +7,9 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Translation {
-    public interface IOidTranslator {
-        IOidTranslation GetOidTranslation(params string[] id);
-        IOidTranslation GetOidTranslation(IObjectFacade objectFacade);
-    }
+namespace NakedFramework.Facade.Translation; 
+
+public interface IOidTranslator {
+    IOidTranslation GetOidTranslation(params string[] id);
+    IOidTranslation GetOidTranslation(IObjectFacade objectFacade);
 }

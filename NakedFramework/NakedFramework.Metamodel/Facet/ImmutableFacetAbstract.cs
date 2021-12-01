@@ -12,25 +12,25 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {
-        protected ImmutableFacetAbstract(WhenTo when, ISpecification holder)
-            : base(Type, holder, when) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IImmutableFacet);
+[Serializable]
+public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {
+    protected ImmutableFacetAbstract(WhenTo when, ISpecification holder)
+        : base(Type, holder, when) { }
 
-        /// <summary>
-        ///     Hook method for subclasses to override
-        /// </summary>
-        public abstract string DisabledReason(INakedObjectAdapter no);
+    public static Type Type => typeof(IImmutableFacet);
 
-        #region IImmutableFacet Members
+    /// <summary>
+    ///     Hook method for subclasses to override
+    /// </summary>
+    public abstract string DisabledReason(INakedObjectAdapter no);
 
-        public virtual string Disables(IInteractionContext ic) => DisabledReason(ic.Target);
+    #region IImmutableFacet Members
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
+    public virtual string Disables(IInteractionContext ic) => DisabledReason(ic.Target);
 
-        #endregion
-    }
+    public virtual Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
+
+    #endregion
 }

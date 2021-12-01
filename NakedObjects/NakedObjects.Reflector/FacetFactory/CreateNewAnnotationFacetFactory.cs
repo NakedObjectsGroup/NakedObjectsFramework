@@ -21,36 +21,36 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class CreateNewAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<CreateNewAnnotationFacetFactory> logger;
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) {
-            logger = loggerFactory.CreateLogger<CreateNewAnnotationFacetFactory>();
-        }
+public sealed class CreateNewAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<CreateNewAnnotationFacetFactory> logger;
 
-        private static bool IsCollectionOrVoid(Type type) =>
-            type == typeof(void) ||
-            CollectionUtils.IsGenericEnumerable(type) ||
-            type.IsArray ||
-            CollectionUtils.IsCollectionButNotArray(type);
+    public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) {
+        logger = loggerFactory.CreateLogger<CreateNewAnnotationFacetFactory>();
+    }
 
-        private static Type ToCreateType(MethodInfo method) {
-            var returnType = method.ReturnType;
-            return IsCollectionOrVoid(returnType) ? null : returnType;
-        }
+    private static bool IsCollectionOrVoid(Type type) =>
+        type == typeof(void) ||
+        CollectionUtils.IsGenericEnumerable(type) ||
+        type.IsArray ||
+        CollectionUtils.IsCollectionButNotArray(type);
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (method.IsDefined(typeof(CreateNewAttribute), false)) {
-                var toCreateType = ToCreateType(method);
+    private static Type ToCreateType(MethodInfo method) {
+        var returnType = method.ReturnType;
+        return IsCollectionOrVoid(returnType) ? null : returnType;
+    }
 
-                if (toCreateType is not null && ObjectMethodHelpers.MatchParmsAndProperties(method, toCreateType, logger).Any()) {
-                    FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
-                }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (method.IsDefined(typeof(CreateNewAttribute), false)) {
+            var toCreateType = ToCreateType(method);
+
+            if (toCreateType is not null && ObjectMethodHelpers.MatchParmsAndProperties(method, toCreateType, logger).Any()) {
+                FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
             }
-
-            return metamodel;
         }
+
+        return metamodel;
     }
 }

@@ -7,12 +7,12 @@
 
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Core.Error {
-    /// <summary>
-    ///     Superclass of exceptions which indicate an attempt to interact with a class member that is disabled.
-    /// </summary>
-    public class DisabledException : InteractionException {
-        public DisabledException(IInteractionContext ic, string message)
-            : base(ic, message) { }
-    }
+namespace NakedFramework.Core.Error; 
+
+/// <summary>
+///     Superclass of exceptions which indicate an attempt to interact with a class member that is disabled.
+/// </summary>
+public class DisabledException : InteractionException {
+    public DisabledException(IInteractionContext ic, string message)
+        : base(ic, message) { }
 }

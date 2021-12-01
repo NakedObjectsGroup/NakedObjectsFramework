@@ -10,30 +10,30 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.SpecImmutable {
-    public abstract class AbstractAdapter : MemberSpecImmutable {
-        private readonly IActionSpecImmutable action;
+namespace NakedFramework.Metamodel.SpecImmutable; 
 
-        protected AbstractAdapter(IActionSpecImmutable action) : base(action.Identifier) => this.action = action;
+public abstract class AbstractAdapter : MemberSpecImmutable {
+    private readonly IActionSpecImmutable action;
 
-        public override IObjectSpecImmutable ElementSpec => action.ElementSpec;
-        public override IObjectSpecImmutable ReturnSpec => action.ReturnSpec;
-        public IObjectSpecImmutable OwnerSpec => action.OwnerSpec as IObjectSpecImmutable;
+    protected AbstractAdapter(IActionSpecImmutable action) : base(action.Identifier) => this.action = action;
 
-        public override Type[] FacetTypes => action.FacetTypes;
+    public override IObjectSpecImmutable ElementSpec => action.ElementSpec;
+    public override IObjectSpecImmutable ReturnSpec => action.ReturnSpec;
+    public IObjectSpecImmutable OwnerSpec => action.OwnerSpec as IObjectSpecImmutable;
 
-        public override IFacet GetFacet(Type facetType) => action.GetFacet(facetType);
+    public override Type[] FacetTypes => action.FacetTypes;
 
-        public override IEnumerable<IFacet> GetFacets() => action.GetFacets();
+    public override IFacet GetFacet(Type facetType) => action.GetFacet(facetType);
 
-        public override void AddFacet(IFacet facet) => action.AddFacet(facet);
-    }
+    public override IEnumerable<IFacet> GetFacets() => action.GetFacets();
 
-    public class ActionToAssociationSpecAdapter : AbstractAdapter, IOneToOneAssociationSpecImmutable {
-        public ActionToAssociationSpecAdapter(IActionSpecImmutable action) : base(action) { }
-    }
+    public override void AddFacet(IFacet facet) => action.AddFacet(facet);
+}
 
-    public class ActionToCollectionSpecAdapter : AbstractAdapter, IOneToManyAssociationSpecImmutable {
-        public ActionToCollectionSpecAdapter(IActionSpecImmutable action) : base(action) { }
-    }
+public class ActionToAssociationSpecAdapter : AbstractAdapter, IOneToOneAssociationSpecImmutable {
+    public ActionToAssociationSpecAdapter(IActionSpecImmutable action) : base(action) { }
+}
+
+public class ActionToCollectionSpecAdapter : AbstractAdapter, IOneToManyAssociationSpecImmutable {
+    public ActionToCollectionSpecAdapter(IActionSpecImmutable action) : base(action) { }
 }

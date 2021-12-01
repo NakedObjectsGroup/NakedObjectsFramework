@@ -9,16 +9,16 @@ using System;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Component {
-    /// <summary>
-    ///     Provides access to the 'Immutable' object specifications.
-    /// </summary>
-    public interface IMetamodel {
-        ITypeSpecImmutable[] AllSpecifications { get; }
-        IMenuImmutable[] MainMenus { get; }
-        ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false);
-        ITypeSpecImmutable GetSpecification(string name);
-    }
+namespace NakedFramework.Architecture.Component; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+/// <summary>
+///     Provides access to the 'Immutable' object specifications.
+/// </summary>
+public interface IMetamodel {
+    ITypeSpecImmutable[] AllSpecifications { get; }
+    IMenuImmutable[] MainMenus { get; }
+    ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false);
+    ITypeSpecImmutable GetSpecification(string name);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

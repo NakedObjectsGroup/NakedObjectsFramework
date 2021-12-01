@@ -5,11 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Adapter {
-    public interface IViewModelOid : IOid {
-        string TypeName { get; }
-        string[] Keys { get; }
-        bool IsFinal { get; }
-        void UpdateKeys(string[] newKeys, bool final);
-    }
+namespace NakedFramework.Architecture.Adapter; 
+
+public interface IViewModelOid : IOid {
+    string TypeName { get; }
+    string[] Keys { get; }
+    bool IsFinal { get; }
+    void UpdateKeys(string[] newKeys, bool final);
 }

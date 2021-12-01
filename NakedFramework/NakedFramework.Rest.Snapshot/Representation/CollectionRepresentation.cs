@@ -15,30 +15,30 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation {
-    [DataContract]
-    public class CollectionRepresentation : MemberAbstractRepresentation {
-        protected CollectionRepresentation(IFrameworkFacade frameworkFacade, AbstractCollectionRepresentationStrategy strategy) : base(frameworkFacade, strategy) => Extensions = strategy.GetExtensions();
+namespace NakedFramework.Rest.Snapshot.Representation; 
 
-        public static CollectionRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, false, frameworkFacade, req, propertyContext, flags);
+[DataContract]
+public class CollectionRepresentation : MemberAbstractRepresentation {
+    protected CollectionRepresentation(IFrameworkFacade frameworkFacade, AbstractCollectionRepresentationStrategy strategy) : base(frameworkFacade, strategy) => Extensions = strategy.GetExtensions();
 
-            var value = collectionRepresentationStrategy.GetValue();
+    public static CollectionRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, false, frameworkFacade, req, propertyContext, flags);
 
-            if (value != null) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, value));
-            }
+        var value = collectionRepresentationStrategy.GetValue();
 
-            var actions = collectionRepresentationStrategy.GetActions();
-
-            if (actions.Any()) {
-                var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
-            }
-
-            return optionals.Any()
-                ? CreateWithOptionals<CollectionRepresentation>(new object[] {frameworkFacade, collectionRepresentationStrategy}, optionals)
-                : new CollectionRepresentation(frameworkFacade, collectionRepresentationStrategy);
+        if (value != null) {
+            optionals.Add(new OptionalProperty(JsonPropertyNames.Value, value));
         }
+
+        var actions = collectionRepresentationStrategy.GetActions();
+
+        if (actions.Any()) {
+            var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
+            optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
+        }
+
+        return optionals.Any()
+            ? CreateWithOptionals<CollectionRepresentation>(new object[] {frameworkFacade, collectionRepresentationStrategy}, optionals)
+            : new CollectionRepresentation(frameworkFacade, collectionRepresentationStrategy);
     }
 }

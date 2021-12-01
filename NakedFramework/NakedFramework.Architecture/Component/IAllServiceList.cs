@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace NakedFramework.Architecture.Component {
-    public interface IAllServiceList {
-        Type[] Services { get; }
-    }
+namespace NakedFramework.Architecture.Component; 
+
+public interface IAllServiceList {
+    Type[] Services { get; }
 }

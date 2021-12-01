@@ -10,20 +10,20 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Component {
-    /// <summary>
-    ///     Provides access to the run-time object specifications (implementations of IObjectSpec).
-    ///     The NakedObjectManager takes responsibility to inject these specifications with the necessary framework services.
-    /// </summary>
-    public interface IMetamodelManager {
-        ITypeSpec[] AllSpecs { get; }
-        IMetamodel Metamodel { get; }
-        ITypeSpec GetSpecification(Type type);
-        ITypeSpec GetSpecification(string name);
-        ITypeSpec GetSpecification(ITypeSpecImmutable spec);
-        IObjectSpec GetSpecification(IObjectSpecImmutable spec);
-        IServiceSpec GetSpecification(IServiceSpecImmutable spec);
-        IMenuImmutable[] MainMenus();
-        IActionSpec GetActionSpec(IActionSpecImmutable spec);
-    }
+namespace NakedFramework.Architecture.Component; 
+
+/// <summary>
+///     Provides access to the run-time object specifications (implementations of IObjectSpec).
+///     The NakedObjectManager takes responsibility to inject these specifications with the necessary framework services.
+/// </summary>
+public interface IMetamodelManager {
+    ITypeSpec[] AllSpecs { get; }
+    IMetamodel Metamodel { get; }
+    ITypeSpec GetSpecification(Type type);
+    ITypeSpec GetSpecification(string name);
+    ITypeSpec GetSpecification(ITypeSpecImmutable spec);
+    IObjectSpec GetSpecification(IObjectSpecImmutable spec);
+    IServiceSpec GetSpecification(IServiceSpecImmutable spec);
+    IMenuImmutable[] MainMenus();
+    IActionSpec GetActionSpec(IActionSpecImmutable spec);
 }

@@ -9,19 +9,19 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class EagerlyFacet : FacetAbstract, IEagerlyFacet {
-        public EagerlyFacet(Do what, ISpecification holder)
-            : base(Type, holder) =>
-            What = what;
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IEagerlyFacet);
+[Serializable]
+public sealed class EagerlyFacet : FacetAbstract, IEagerlyFacet {
+    public EagerlyFacet(Do what, ISpecification holder)
+        : base(Type, holder) =>
+        What = what;
 
-        #region IEagerlyFacet Members
+    public static Type Type => typeof(IEagerlyFacet);
 
-        public Do What { get; private set; }
+    #region IEagerlyFacet Members
 
-        #endregion
-    }
+    public Do What { get; private set; }
+
+    #endregion
 }

@@ -8,16 +8,16 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects {
-    internal class TestService : TestHasActions, ITestService {
-        public TestService(INakedObjectAdapter service, ITestObjectFactory factory) : base(factory) => NakedObject = service;
+namespace NakedFramework.Test.TestObjects; 
 
-        #region ITestService Members
+internal class TestService : TestHasActions, ITestService {
+    public TestService(INakedObjectAdapter service, ITestObjectFactory factory) : base(factory) => NakedObject = service;
 
-        public override string Title => NakedObject.TitleString();
+    #region ITestService Members
 
-        #endregion
-    }
+    public override string Title => NakedObject.TitleString();
 
-    // Copyright (c) Naked Objects Group Ltd.
+    #endregion
 }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -8,34 +8,34 @@
 using System;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Translation {
-    public class OidTranslationSemiColonSeparatedList : IOidTranslation {
-        private readonly string id;
+namespace NakedFramework.Facade.Translation; 
 
-        public OidTranslationSemiColonSeparatedList(string id) => this.id = id;
+public class OidTranslationSemiColonSeparatedList : IOidTranslation {
+    private readonly string id;
 
-        public override string ToString() => id;
+    public OidTranslationSemiColonSeparatedList(string id) => this.id = id;
 
-        public string[] Tokenize() => id.Split(';');
+    public override string ToString() => id;
 
-        #region IOidTranslation Members
+    public string[] Tokenize() => id.Split(';');
 
-        public string DomainType {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
+    #region IOidTranslation Members
 
-        public string InstanceId {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
-        public IOidFacade GetOid(IOidStrategy oidStrategy) => oidStrategy.RestoreOid(this);
-
-        public IOidFacade GetSid(IOidStrategy oidStrategy) => oidStrategy.RestoreSid(this);
-
-        public string Encode() => id;
-
-        #endregion
+    public string DomainType {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
     }
+
+    public string InstanceId {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
+    }
+
+    public IOidFacade GetOid(IOidStrategy oidStrategy) => oidStrategy.RestoreOid(this);
+
+    public IOidFacade GetSid(IOidStrategy oidStrategy) => oidStrategy.RestoreSid(this);
+
+    public string Encode() => id;
+
+    #endregion
 }

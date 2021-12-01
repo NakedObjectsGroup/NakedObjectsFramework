@@ -5,13 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Facet {
-    /// <summary>
-    ///     Indicates that a property or a collection shouldn't be persisted
-    /// </summary>
-    /// <para>
-    ///     In the standard Naked Objects Programming Model, corresponds to annotating the property
-    ///     or collection with the <see cref="NotPersistedAttribute" /> annotation
-    /// </para>
-    public interface INotPersistedFacet : IMarkerFacet { }
-}
+namespace NakedFramework.Architecture.Facet; 
+
+/// <summary>
+///     Indicates that a property or a collection shouldn't be persisted
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to annotating the property
+///     or collection with the <see cref="NotPersistedAttribute" /> annotation
+/// </para>
+public interface INotPersistedFacet : IMarkerFacet { }

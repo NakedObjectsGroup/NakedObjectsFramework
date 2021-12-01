@@ -10,35 +10,35 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace SimpleDatabase {
-    public class EFCoreSimpleDatabaseDbContext : DbContext {
-        private readonly string cs;
+namespace SimpleDatabase; 
 
-        public EFCoreSimpleDatabaseDbContext(string cs) => this.cs = cs;
+public class EFCoreSimpleDatabaseDbContext : DbContext {
+    private readonly string cs;
 
-        public EFCoreSimpleDatabaseDbContext() { }
+    public EFCoreSimpleDatabaseDbContext(string cs) => this.cs = cs;
 
-        //Add DbSet properties for root objects, thus:
-        public DbSet<Person> Persons { get; set; }
-        public DbSet<Fruit> Fruits { get; set; }
-        public DbSet<Food> Foods { get; set; }
+    public EFCoreSimpleDatabaseDbContext() { }
 
-        public void Delete() => Database.EnsureDeleted();
+    //Add DbSet properties for root objects, thus:
+    public DbSet<Person> Persons { get; set; }
+    public DbSet<Fruit> Fruits { get; set; }
+    public DbSet<Food> Foods { get; set; }
 
-        public void Create() => Database.EnsureCreated();
+    public void Delete() => Database.EnsureDeleted();
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseSqlServer(cs);
-            optionsBuilder.UseLazyLoadingProxies();
-        }
+    public void Create() => Database.EnsureCreated();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        optionsBuilder.UseSqlServer(cs);
+        optionsBuilder.UseLazyLoadingProxies();
+    }
 
-            modelBuilder.Entity<Person>().Ignore(p => p.Parent);
-            modelBuilder.Entity<Person>().ToTable("People", "dbo");
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
-            modelBuilder.Entity<Person>().HasMany(p => p.Food).WithOne(f => f.Person).HasForeignKey("Person_Id");
+        modelBuilder.Entity<Person>().Ignore(p => p.Parent);
+        modelBuilder.Entity<Person>().ToTable("People", "dbo");
+
+        modelBuilder.Entity<Person>().HasMany(p => p.Food).WithOne(f => f.Person).HasForeignKey("Person_Id");
      
-        }
     }
 }

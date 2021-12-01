@@ -12,22 +12,22 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDisabledFacet {
-        protected DisabledFacetAbstract(WhenTo when, ISpecification holder)
-            : base(Type, holder, when) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public static Type Type => typeof(IDisabledFacet);
+[Serializable]
+public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDisabledFacet {
+    protected DisabledFacetAbstract(WhenTo when, ISpecification holder)
+        : base(Type, holder, when) { }
 
-        #region IDisabledFacet Members
+    public static Type Type => typeof(IDisabledFacet);
 
-        public virtual string Disables(IInteractionContext ic) => DisabledReason(ic.Target);
+    #region IDisabledFacet Members
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
+    public virtual string Disables(IInteractionContext ic) => DisabledReason(ic.Target);
 
-        public abstract string DisabledReason(INakedObjectAdapter nakedObjectAdapter);
+    public virtual Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-        #endregion
-    }
+    public abstract string DisabledReason(INakedObjectAdapter nakedObjectAdapter);
+
+    #endregion
 }

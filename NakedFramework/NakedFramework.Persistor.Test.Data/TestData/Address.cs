@@ -10,25 +10,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NakedObjects;
 
-namespace TestData {
-    [ComplexType]
-    [Owned]
-    public class Address : TestHelper {
-        [Root]
-        [NotMapped]
-        public Person Parent { protected get; set; }
+namespace TestData; 
 
-        public virtual string Line1 { get; 
-            set; }
-        public virtual string Line2 { get; 
-            set; }
+[ComplexType]
+[Owned]
+public class Address : TestHelper {
+    [Root]
+    [NotMapped]
+    public Person Parent { protected get; set; }
 
-        #region test code
+    public virtual string Line1 { get; 
+        set; }
+    public virtual string Line2 { get; 
+        set; }
 
-        public bool HasParent => Parent != null;
+    #region test code
 
-        public bool ParentIsType(Type type) => type.IsInstanceOfType(Parent);
+    public bool HasParent => Parent != null;
 
-        #endregion
-    }
+    public bool ParentIsType(Type type) => type.IsInstanceOfType(Parent);
+
+    #endregion
 }

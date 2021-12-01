@@ -14,51 +14,51 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider {
-    [Serializable]
-    public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeSpan>, ITimeValueFacet {
-        private const bool EqualByContent = false;
-        private const bool Immutable = false;
-        private const int TypicalLengthConst = 6;
-        private static readonly TimeSpan DefaultValueConst = new();
+namespace NakedFramework.Metamodel.SemanticsProvider; 
 
-        public TimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+[Serializable]
+public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeSpan>, ITimeValueFacet {
+    private const bool EqualByContent = false;
+    private const bool Immutable = false;
+    private const int TypicalLengthConst = 6;
+    private static readonly TimeSpan DefaultValueConst = new();
 
-        public static Type Type => typeof(ITimeValueFacet);
+    public TimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
-        public static Type AdaptedType => typeof(TimeSpan);
+    public static Type Type => typeof(ITimeValueFacet);
 
-        #region ITimeValueFacet Members
+    public static Type AdaptedType => typeof(TimeSpan);
 
-        public TimeSpan TimeValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TimeSpan>();
+    #region ITimeValueFacet Members
 
-        #endregion
+    public TimeSpan TimeValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TimeSpan>();
 
-        public static bool IsAdaptedType(Type type) => type == typeof(TimeSpan);
+    #endregion
 
-        protected override string DoEncode(TimeSpan time) => time.ToString();
+    public static bool IsAdaptedType(Type type) => type == typeof(TimeSpan);
 
-        protected override TimeSpan DoParse(string entry) {
-            var dateString = entry.Trim();
-            try {
-                return DateTime.Parse(dateString).TimeOfDay;
-            }
-            catch (FormatException) {
-                throw new InvalidEntryException(FormatMessage(dateString));
-            }
+    protected override string DoEncode(TimeSpan time) => time.ToString();
+
+    protected override TimeSpan DoParse(string entry) {
+        var dateString = entry.Trim();
+        try {
+            return DateTime.Parse(dateString).TimeOfDay;
         }
-
-        protected override TimeSpan DoParseInvariant(string entry) => TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
-
-        protected override string GetInvariantString(TimeSpan obj) => obj.ToString(null, CultureInfo.InvariantCulture);
-
-        protected override TimeSpan DoRestore(string data) => TimeSpan.Parse(data);
-
-        protected override string TitleString(TimeSpan obj) => DateTime.Today.Add(obj).ToShortTimeString();
-
-        protected override string TitleStringWithMask(string mask, TimeSpan obj) => DateTime.Today.Add(obj).ToString(mask);
+        catch (FormatException) {
+            throw new InvalidEntryException(FormatMessage(dateString));
+        }
     }
 
-    // Copyright (c) Naked Objects Group Ltd.
+    protected override TimeSpan DoParseInvariant(string entry) => TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
+
+    protected override string GetInvariantString(TimeSpan obj) => obj.ToString(null, CultureInfo.InvariantCulture);
+
+    protected override TimeSpan DoRestore(string data) => TimeSpan.Parse(data);
+
+    protected override string TitleString(TimeSpan obj) => DateTime.Today.Add(obj).ToShortTimeString();
+
+    protected override string TitleStringWithMask(string mask, TimeSpan obj) => DateTime.Today.Add(obj).ToString(mask);
 }
+
+// Copyright (c) Naked Objects Group Ltd.

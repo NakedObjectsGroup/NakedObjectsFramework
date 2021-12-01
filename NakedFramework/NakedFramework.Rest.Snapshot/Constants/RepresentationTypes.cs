@@ -5,27 +5,27 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Rest.Snapshot.Constants {
-    public static class RepresentationTypes {
-        public const string HomePage = "homepage";
-        public const string User = "user";
-        public const string Version = "version";
-        public const string List = "list";
-        public const string Object = "object";
-        public const string ObjectProperty = "object-property";
-        public const string ObjectCollection = "object-collection";
-        public const string ObjectAction = "object-action";
-        public const string ActionResult = "action-result";
-        public const string DomainType = "domain-type";
-        public const string CollectionDescription = "collection-description";
-        public const string ActionDescription = "action-description";
-        public const string TypeActionResult = "type-action-result";
-        public const string Error = "error";
-        public const string Prompt = "prompt";
-        public const string CollectionValue = "collection-value";
-        public const string BadArguments = "bad-arguments";
+namespace NakedFramework.Rest.Snapshot.Constants; 
 
-        // custom 
-        public const string Menu = "menu";
-    }
+public static class RepresentationTypes {
+    public const string HomePage = "homepage";
+    public const string User = "user";
+    public const string Version = "version";
+    public const string List = "list";
+    public const string Object = "object";
+    public const string ObjectProperty = "object-property";
+    public const string ObjectCollection = "object-collection";
+    public const string ObjectAction = "object-action";
+    public const string ActionResult = "action-result";
+    public const string DomainType = "domain-type";
+    public const string CollectionDescription = "collection-description";
+    public const string ActionDescription = "action-description";
+    public const string TypeActionResult = "type-action-result";
+    public const string Error = "error";
+    public const string Prompt = "prompt";
+    public const string CollectionValue = "collection-value";
+    public const string BadArguments = "bad-arguments";
+
+    // custom 
+    public const string Menu = "menu";
 }

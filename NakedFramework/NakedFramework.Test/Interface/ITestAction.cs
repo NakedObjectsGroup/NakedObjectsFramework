@@ -7,27 +7,27 @@
 
 using System;
 
-namespace NakedFramework.Test.Interface {
-    public interface ITestAction {
-        string Name { get; }
-        string SubMenu { get; }
-        ITestParameter[] Parameters { get; }
-        bool MatchParameters(Type[] typestoMatch);
-        ITestObject InvokeReturnObject(params object[] parameters);
-        ITestCollection InvokeReturnCollection(params object[] parameters);
-        void Invoke(params object[] parameters);
-        ITestAction AssertIsDisabled();
-        ITestAction AssertIsEnabled();
-        ITestAction AssertIsInvalidWithParms(params object[] parameters);
-        ITestAction AssertIsValidWithParms(params object[] parameters);
-        ITestAction AssertIsVisible();
-        ITestAction AssertIsInvisible();
-        ITestAction AssertIsDescribedAs(string expected);
-        ITestAction AssertLastMessageIs(string message);
+namespace NakedFramework.Test.Interface; 
 
-        /// <summary>
-        ///     Test how the action will be rendered to the user.
-        /// </summary>
-        ITestAction AssertHasFriendlyName(string friendlyName);
-    }
+public interface ITestAction {
+    string Name { get; }
+    string SubMenu { get; }
+    ITestParameter[] Parameters { get; }
+    bool MatchParameters(Type[] typestoMatch);
+    ITestObject InvokeReturnObject(params object[] parameters);
+    ITestCollection InvokeReturnCollection(params object[] parameters);
+    void Invoke(params object[] parameters);
+    ITestAction AssertIsDisabled();
+    ITestAction AssertIsEnabled();
+    ITestAction AssertIsInvalidWithParms(params object[] parameters);
+    ITestAction AssertIsValidWithParms(params object[] parameters);
+    ITestAction AssertIsVisible();
+    ITestAction AssertIsInvisible();
+    ITestAction AssertIsDescribedAs(string expected);
+    ITestAction AssertLastMessageIs(string message);
+
+    /// <summary>
+    ///     Test how the action will be rendered to the user.
+    /// </summary>
+    ITestAction AssertHasFriendlyName(string friendlyName);
 }

@@ -8,13 +8,13 @@
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Error {
-    /// <summary>
-    ///     The interaction is invalid because the property or action parameter is mandatory
-    ///     (eg not annotated with <see cref="OptionallyAttribute" />).
-    /// </summary>
-    public class InvalidMandatoryException : InvalidException {
-        public InvalidMandatoryException(IInteractionContext ic, string message)
-            : base(ic, message) { }
-    }
+namespace NakedFramework.Metamodel.Error; 
+
+/// <summary>
+///     The interaction is invalid because the property or action parameter is mandatory
+///     (eg not annotated with <see cref="OptionallyAttribute" />).
+/// </summary>
+public class InvalidMandatoryException : InvalidException {
+    public InvalidMandatoryException(IInteractionContext ic, string message)
+        : base(ic, message) { }
 }

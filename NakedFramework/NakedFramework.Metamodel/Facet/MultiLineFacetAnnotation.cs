@@ -8,12 +8,12 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class MultiLineFacetAnnotation : MultiLineFacetAbstract {
-        public MultiLineFacetAnnotation(int numberOfLines, int width, ISpecification holder)
-            : base(numberOfLines, width, holder) { }
-    }
+namespace NakedFramework.Metamodel.Facet; 
 
-    // Copyright (c) Naked Objects Group Ltd.
+[Serializable]
+public sealed class MultiLineFacetAnnotation : MultiLineFacetAbstract {
+    public MultiLineFacetAnnotation(int numberOfLines, int width, ISpecification holder)
+        : base(numberOfLines, width, holder) { }
 }
+
+// Copyright (c) Naked Objects Group Ltd.

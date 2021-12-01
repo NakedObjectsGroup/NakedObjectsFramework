@@ -12,23 +12,23 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Authorization {
-    [Serializable]
-    public sealed class AuthorizationHideForSessionFacet : HideForSessionFacetAbstract {
-        private readonly IAuthorizationManager authorizationManager;
-        private readonly IIdentifier identifier;
+namespace NakedFramework.Metamodel.Authorization; 
 
-        public AuthorizationHideForSessionFacet(IIdentifier identifier,
-                                                IAuthorizationManager authorizationManager,
-                                                ISpecification holder)
-            : base(holder) {
-            this.identifier = identifier;
-            this.authorizationManager = authorizationManager;
-        }
+[Serializable]
+public sealed class AuthorizationHideForSessionFacet : HideForSessionFacetAbstract {
+    private readonly IAuthorizationManager authorizationManager;
+    private readonly IIdentifier identifier;
 
-        public override string HiddenReason(INakedObjectAdapter target, INakedFramework framework) =>
-            authorizationManager.IsVisible(framework, target, identifier)
-                ? null
-                : "Not authorized to view";
+    public AuthorizationHideForSessionFacet(IIdentifier identifier,
+                                            IAuthorizationManager authorizationManager,
+                                            ISpecification holder)
+        : base(holder) {
+        this.identifier = identifier;
+        this.authorizationManager = authorizationManager;
     }
+
+    public override string HiddenReason(INakedObjectAdapter target, INakedFramework framework) =>
+        authorizationManager.IsVisible(framework, target, identifier)
+            ? null
+            : "Not authorized to view";
 }

@@ -8,34 +8,34 @@
 using System;
 using NakedFramework.Architecture.Facet;
 
-namespace NakedFramework.Architecture.Interactions {
+namespace NakedFramework.Architecture.Interactions; 
+
+/// <summary>
+///     Mix-in interface for facets that can advise as to whether a proposed value is valid
+/// </summary>
+/// <para>
+///     For example, <see cref="IMaxLengthFacet" /> does constrain the
+///     length of candidate values, whereas <see cref="IMemberOrderFacet" /> does not - it's basically basically just
+///     a UI hint
+/// </para>
+/// <seealso cref="IDisablingInteractionAdvisor" />
+/// <seealso cref="IHidingInteractionAdvisor" />
+public interface IValidatingInteractionAdvisor {
     /// <summary>
-    ///     Mix-in interface for facets that can advise as to whether a proposed value is valid
+    ///     Whether the validation represented by this facet passes or fails
     /// </summary>
     /// <para>
-    ///     For example, <see cref="IMaxLengthFacet" /> does constrain the
-    ///     length of candidate values, whereas <see cref="IMemberOrderFacet" /> does not - it's basically basically just
-    ///     a UI hint
+    ///     Implementations should use the provided <see cref="IInteractionContext" /> to
+    ///     determine whether they declare the interaction invalid.  They must
+    ///     however guard against a <c>null</c> <see cref="IInteractionContext.Target" /> target
+    ///     and <see cref="IInteractionContext.Session" /> session} - neither are
+    ///     guaranteed to be populated
     /// </para>
-    /// <seealso cref="IDisablingInteractionAdvisor" />
-    /// <seealso cref="IHidingInteractionAdvisor" />
-    public interface IValidatingInteractionAdvisor {
-        /// <summary>
-        ///     Whether the validation represented by this facet passes or fails
-        /// </summary>
-        /// <para>
-        ///     Implementations should use the provided <see cref="IInteractionContext" /> to
-        ///     determine whether they declare the interaction invalid.  They must
-        ///     however guard against a <c>null</c> <see cref="IInteractionContext.Target" /> target
-        ///     and <see cref="IInteractionContext.Session" /> session} - neither are
-        ///     guaranteed to be populated
-        /// </para>
-        string Invalidates(IInteractionContext ic);
+    string Invalidates(IInteractionContext ic);
 
-        /// <summary>
-        ///     Create (not throw) an exception of the appropriate subclass
-        ///     if the validation has failed
-        /// </summary>
-        Exception CreateExceptionFor(IInteractionContext ic);
-    }
+    /// <summary>
+    ///     Create (not throw) an exception of the appropriate subclass
+    ///     if the validation has failed
+    /// </summary>
+    Exception CreateExceptionFor(IInteractionContext ic);
 }

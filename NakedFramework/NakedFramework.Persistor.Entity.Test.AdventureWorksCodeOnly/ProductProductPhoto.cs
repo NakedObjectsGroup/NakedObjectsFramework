@@ -11,25 +11,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    [Table("Production.ProductProductPhoto")]
-    public class ProductProductPhoto {
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+
+[Table("Production.ProductProductPhoto")]
+public class ProductProductPhoto {
        
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductID { get; set; }
+    [Column(Order = 0)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int ProductID { get; set; }
 
      
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductPhotoID { get; set; }
+    [Column(Order = 1)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int ProductPhotoID { get; set; }
 
-        public bool Primary { get; set; }
+    public bool Primary { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 
-        public virtual Product Product { get; set; }
+    public virtual Product Product { get; set; }
 
-        public virtual ProductPhoto ProductPhoto { get; set; }
-    }
+    public virtual ProductPhoto ProductPhoto { get; set; }
 }

@@ -9,84 +9,84 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.Spec {
-    public interface IActionParameterSpec : IFeatureSpec {
-        /// <summary>
-        ///     The parameter type spec
-        /// </summary>
-        IObjectSpec Spec { get; }
+namespace NakedFramework.Architecture.Spec; 
 
-        /// <summary>
-        ///     The Owning <see cref="IActionSpec" />
-        /// </summary>
-        IActionSpec Action { get; }
+public interface IActionParameterSpec : IFeatureSpec {
+    /// <summary>
+    ///     The parameter type spec
+    /// </summary>
+    IObjectSpec Spec { get; }
 
-        /// <summary>
-        ///     Returns a flag indicating if it can be left unset when the action can be invoked
-        /// </summary>
-        bool IsMandatory { get; }
+    /// <summary>
+    ///     The Owning <see cref="IActionSpec" />
+    /// </summary>
+    IActionSpec Action { get; }
 
-        /// <summary>
-        ///     Returns a flag indicating if it is injected
-        /// </summary>
-        bool IsInjected { get; }
+    /// <summary>
+    ///     Returns a flag indicating if it can be left unset when the action can be invoked
+    /// </summary>
+    bool IsMandatory { get; }
 
-        /// <summary>
-        ///     Returns the zero-based index to this parameter
-        /// </summary>
-        int Number { get; }
+    /// <summary>
+    ///     Returns a flag indicating if it is injected
+    /// </summary>
+    bool IsInjected { get; }
 
-        /// <summary>
-        ///     Returns the identifier of the member, which must not change. This should be all Pascal-case with no
-        ///     spaces: so if the member is called 'Return Date' then the a suitable id would be 'ReturnDate'.
-        /// </summary>
-        string Id { get; }
+    /// <summary>
+    ///     Returns the zero-based index to this parameter
+    /// </summary>
+    int Number { get; }
 
-        /// <summary>
-        ///     Whether the parameter has a bounded set associated or a set of options coded.
-        /// </summary>
-        bool IsChoicesEnabled { get; }
+    /// <summary>
+    ///     Returns the identifier of the member, which must not change. This should be all Pascal-case with no
+    ///     spaces: so if the member is called 'Return Date' then the a suitable id would be 'ReturnDate'.
+    /// </summary>
+    string Id { get; }
 
-        /// <summary>
-        ///     Whether the parameter has a bounded set associated or a set of options coded.
-        /// </summary>
-        bool IsMultipleChoicesEnabled { get; }
+    /// <summary>
+    ///     Whether the parameter has a bounded set associated or a set of options coded.
+    /// </summary>
+    bool IsChoicesEnabled { get; }
 
-        /// <summary>
-        ///     Whether the parameter has a autocomplete method associated.
-        /// </summary>
-        bool IsAutoCompleteEnabled { get; }
+    /// <summary>
+    ///     Whether the parameter has a bounded set associated or a set of options coded.
+    /// </summary>
+    bool IsMultipleChoicesEnabled { get; }
 
-        /// <summary>
-        ///     Whether proposed value for this parameter is valid
-        /// </summary>
-        IConsent IsValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue);
+    /// <summary>
+    ///     Whether the parameter has a autocomplete method associated.
+    /// </summary>
+    bool IsAutoCompleteEnabled { get; }
 
-        /// <summary>
-        ///     Get set of options for the parameter - either coded choices or bounded set
-        /// </summary>
-        INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
+    /// <summary>
+    ///     Whether proposed value for this parameter is valid
+    /// </summary>
+    IConsent IsValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue);
 
-        /// <summary>
-        ///     Get set of options for the parameter - either coded choices or bounded set
-        /// </summary>
-        (string, IObjectSpec)[] GetChoicesParameters();
+    /// <summary>
+    ///     Get set of options for the parameter - either coded choices or bounded set
+    /// </summary>
+    INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
 
-        /// <summary>
-        ///     Get set of autocompletions for the parameter
-        /// </summary>
-        INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
+    /// <summary>
+    ///     Get set of options for the parameter - either coded choices or bounded set
+    /// </summary>
+    (string, IObjectSpec)[] GetChoicesParameters();
 
-        /// <summary>
-        ///     GetDefault value for parameter
-        /// </summary>
-        INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter);
+    /// <summary>
+    ///     Get set of autocompletions for the parameter
+    /// </summary>
+    INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
 
-        /// <summary>
-        ///     GetDefault type value for parameter
-        /// </summary>
-        TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter);
+    /// <summary>
+    ///     GetDefault value for parameter
+    /// </summary>
+    INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter);
 
-        (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter);
-    }
+    /// <summary>
+    ///     GetDefault type value for parameter
+    /// </summary>
+    TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter);
+
+    (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter);
 }

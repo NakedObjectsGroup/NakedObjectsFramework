@@ -16,117 +16,117 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestClass]
-    public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<Guid> {
-        private Guid guidObj;
-        private ISpecification holder;
-        private GuidValueSemanticsProvider value;
+namespace NakedObjects.Meta.Test.SemanticsProvider; 
 
-        [TestMethod]
-        public void TestParseValidString() {
-            var guid = Guid.NewGuid();
-            var str = guid.ToString();
-            var parsed = (Guid) value.ParseTextEntry(str);
-            Assert.AreEqual(guid, parsed);
-        }
+[TestClass]
+public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<Guid> {
+    private Guid guidObj;
+    private ISpecification holder;
+    private GuidValueSemanticsProvider value;
 
-        [TestMethod]
-        public void TestParseInvalidString() {
-            try {
-                value.ParseTextEntry("xs21z4xxx23");
-                Assert.Fail();
-            }
-            catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
-            }
-        }
-
-        [TestMethod]
-        public void TestTitleOf() {
-            var guid = Guid.NewGuid();
-            var str = guid.ToString();
-            Assert.AreEqual(str, value.DisplayTitleOf(guid));
-        }
-
-        [TestMethod]
-        public void TestEncode() {
-            Assert.AreEqual(guidObj.ToString(), value.ToEncodedString(guidObj));
-        }
-
-        [TestMethod]
-        public void TestDecode() {
-            var parsed = value.FromEncodedString(guidObj.ToString());
-            Assert.AreEqual(guidObj, parsed);
-        }
-
-        [TestMethod]
-        public override void TestParseEmptyString() {
-            try {
-                var newValue = value.ParseTextEntry("");
-                Assert.IsNull(newValue);
-            }
-            catch (Exception) {
-                Assert.Fail();
-            }
-        }
-
-        [TestMethod]
-        public override void TestParseNull() {
-            base.TestParseNull();
-        }
-
-        [TestMethod]
-        public override void TestDecodeNull() {
-            base.TestDecodeNull();
-        }
-
-        [TestMethod]
-        public override void TestEmptyEncoding() {
-            base.TestEmptyEncoding();
-        }
-
-        [TestMethod]
-        public void TestValue() {
-            IGuidValueFacet facet = value;
-            var testValue = Guid.NewGuid();
-            var mockNo = new Mock<INakedObjectAdapter>();
-            mockNo.Setup(no => no.Object).Returns(testValue);
-            Assert.AreEqual(testValue, facet.GuidValue(mockNo.Object));
-        }
-
-        [TestMethod]
-        public void TestAsParserInvariant() {
-            var mgr = MockNakedObjectManager();
-            var testValue = Guid.NewGuid();
-            IParseableFacet parser = new ParseableFacetUsingParser<Guid>(value, null);
-            Assert.AreEqual(testValue, parser.ParseInvariant(testValue.ToString(), mgr.Object).Object);
-        }
-
-        [TestMethod]
-        public void TestAsParserTitle() {
-            IParseableFacet parser = new ParseableFacetUsingParser<Guid>(value, null);
-            var testValue = Guid.NewGuid();
-            var mockAdapter = MockAdapter(testValue);
-            Assert.AreEqual(testValue.ToString(), parser.ParseableTitle(mockAdapter));
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            guidObj = Guid.NewGuid();
-            holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new GuidValueSemanticsProvider(spec, holder));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
+    [TestMethod]
+    public void TestParseValidString() {
+        var guid = Guid.NewGuid();
+        var str = guid.ToString();
+        var parsed = (Guid) value.ParseTextEntry(str);
+        Assert.AreEqual(guid, parsed);
     }
+
+    [TestMethod]
+    public void TestParseInvalidString() {
+        try {
+            value.ParseTextEntry("xs21z4xxx23");
+            Assert.Fail();
+        }
+        catch (Exception e) {
+            Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+        }
+    }
+
+    [TestMethod]
+    public void TestTitleOf() {
+        var guid = Guid.NewGuid();
+        var str = guid.ToString();
+        Assert.AreEqual(str, value.DisplayTitleOf(guid));
+    }
+
+    [TestMethod]
+    public void TestEncode() {
+        Assert.AreEqual(guidObj.ToString(), value.ToEncodedString(guidObj));
+    }
+
+    [TestMethod]
+    public void TestDecode() {
+        var parsed = value.FromEncodedString(guidObj.ToString());
+        Assert.AreEqual(guidObj, parsed);
+    }
+
+    [TestMethod]
+    public override void TestParseEmptyString() {
+        try {
+            var newValue = value.ParseTextEntry("");
+            Assert.IsNull(newValue);
+        }
+        catch (Exception) {
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
+    public override void TestParseNull() {
+        base.TestParseNull();
+    }
+
+    [TestMethod]
+    public override void TestDecodeNull() {
+        base.TestDecodeNull();
+    }
+
+    [TestMethod]
+    public override void TestEmptyEncoding() {
+        base.TestEmptyEncoding();
+    }
+
+    [TestMethod]
+    public void TestValue() {
+        IGuidValueFacet facet = value;
+        var testValue = Guid.NewGuid();
+        var mockNo = new Mock<INakedObjectAdapter>();
+        mockNo.Setup(no => no.Object).Returns(testValue);
+        Assert.AreEqual(testValue, facet.GuidValue(mockNo.Object));
+    }
+
+    [TestMethod]
+    public void TestAsParserInvariant() {
+        var mgr = MockNakedObjectManager();
+        var testValue = Guid.NewGuid();
+        IParseableFacet parser = new ParseableFacetUsingParser<Guid>(value, null);
+        Assert.AreEqual(testValue, parser.ParseInvariant(testValue.ToString(), mgr.Object).Object);
+    }
+
+    [TestMethod]
+    public void TestAsParserTitle() {
+        IParseableFacet parser = new ParseableFacetUsingParser<Guid>(value, null);
+        var testValue = Guid.NewGuid();
+        var mockAdapter = MockAdapter(testValue);
+        Assert.AreEqual(testValue.ToString(), parser.ParseableTitle(mockAdapter));
+    }
+
+    #region Setup/Teardown
+
+    [TestInitialize]
+    public override void SetUp() {
+        base.SetUp();
+        guidObj = Guid.NewGuid();
+        holder = new Mock<ISpecification>().Object;
+        var spec = new Mock<IObjectSpecImmutable>().Object;
+        SetValue(value = new GuidValueSemanticsProvider(spec, holder));
+    }
+
+    [TestCleanup]
+    public override void TearDown() {
+        base.TearDown();
+    }
+
+    #endregion
 }

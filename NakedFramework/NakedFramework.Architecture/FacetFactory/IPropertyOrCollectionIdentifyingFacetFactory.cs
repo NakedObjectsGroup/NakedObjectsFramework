@@ -10,20 +10,20 @@ using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.FacetFactory {
-    /// <summary>
-    ///     A <see cref="IFacetFactory" /> implementation that is able to identify a property or collection.
-    /// </summary>
-    /// <para>
-    ///     For example, property  is  used to represent either a property (value or reference) or a collection,
-    ///     with the return type indicating which.
-    /// </para>
-    /// <para>
-    ///     Used by <see cref="IFacetFactorySet" /> to determine which facet factories to ask
-    ///     whether a <see cref="PropertyInfo" /> represents a property or a collection.
-    /// </para>
-    public interface IPropertyOrCollectionIdentifyingFacetFactory : IFacetFactory {
-        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
-        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
-    }
+namespace NakedFramework.Architecture.FacetFactory; 
+
+/// <summary>
+///     A <see cref="IFacetFactory" /> implementation that is able to identify a property or collection.
+/// </summary>
+/// <para>
+///     For example, property  is  used to represent either a property (value or reference) or a collection,
+///     with the return type indicating which.
+/// </para>
+/// <para>
+///     Used by <see cref="IFacetFactorySet" /> to determine which facet factories to ask
+///     whether a <see cref="PropertyInfo" /> represents a property or a collection.
+/// </para>
+public interface IPropertyOrCollectionIdentifyingFacetFactory : IFacetFactory {
+    IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
+    IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
 }

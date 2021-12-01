@@ -5,18 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Menu {
+namespace NakedFramework.Architecture.Menu; 
+
+/// <summary>
+///     Runtime metamodel of a menu item, which might be an action or a sub-menu
+/// </summary>
+public interface IMenuItemImmutable {
+    string Name { get; }
+
     /// <summary>
-    ///     Runtime metamodel of a menu item, which might be an action or a sub-menu
+    ///     Id is optional
     /// </summary>
-    public interface IMenuItemImmutable {
-        string Name { get; }
+    string Id { get; }
 
-        /// <summary>
-        ///     Id is optional
-        /// </summary>
-        string Id { get; }
-
-        string Grouping { get; }
-    }
+    string Grouping { get; }
 }

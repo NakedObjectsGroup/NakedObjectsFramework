@@ -18,62 +18,62 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedObjects.Security;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class AuthorizeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        private readonly ILogger<AuthorizeAnnotationFacetFactory> logger;
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public AuthorizeAnnotationFacetFactory(IFacetFactoryOrder<AuthorizeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) =>
-            logger = loggerFactory.CreateLogger<AuthorizeAnnotationFacetFactory>();
+public sealed class AuthorizeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<AuthorizeAnnotationFacetFactory> logger;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
+    public AuthorizeAnnotationFacetFactory(IFacetFactoryOrder<AuthorizeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) =>
+        logger = loggerFactory.CreateLogger<AuthorizeAnnotationFacetFactory>();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var declaringType = method.DeclaringType;
-            var classAttribute = declaringType?.GetCustomAttribute<AuthorizeActionAttribute>();
-            var methodAttribute = method.GetCustomAttribute<AuthorizeActionAttribute>();
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
-            if (classAttribute is not null && methodAttribute is not null) {
-                logger.LogWarning($"Class and method level AuthorizeAttributes applied to class {declaringType.FullName} - ignoring attribute on method {method.Name}");
-            }
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var declaringType = method.DeclaringType;
+        var classAttribute = declaringType?.GetCustomAttribute<AuthorizeActionAttribute>();
+        var methodAttribute = method.GetCustomAttribute<AuthorizeActionAttribute>();
 
-            Create(classAttribute ?? methodAttribute, specification);
-            return metamodel;
+        if (classAttribute is not null && methodAttribute is not null) {
+            logger.LogWarning($"Class and method level AuthorizeAttributes applied to class {declaringType.FullName} - ignoring attribute on method {method.Name}");
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var declaringType = property.DeclaringType;
-            var classAttribute = declaringType?.GetCustomAttribute<AuthorizePropertyAttribute>();
-            var propertyAttribute = property.GetCustomAttribute<AuthorizePropertyAttribute>();
+        Create(classAttribute ?? methodAttribute, specification);
+        return metamodel;
+    }
 
-            if (classAttribute is not null && propertyAttribute is not null) {
-                var declaringTypeName = declaringType.FullName;
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var declaringType = property.DeclaringType;
+        var classAttribute = declaringType?.GetCustomAttribute<AuthorizePropertyAttribute>();
+        var propertyAttribute = property.GetCustomAttribute<AuthorizePropertyAttribute>();
 
-                logger.LogWarning($"Class and property level AuthorizeAttributes applied to class {declaringTypeName} - ignoring attribute on property {property.Name}");
-            }
+        if (classAttribute is not null && propertyAttribute is not null) {
+            var declaringTypeName = declaringType.FullName;
 
-            Create(classAttribute ?? propertyAttribute, specification);
-            return metamodel;
+            logger.LogWarning($"Class and property level AuthorizeAttributes applied to class {declaringTypeName} - ignoring attribute on property {property.Name}");
         }
 
-        private static void Create(AuthorizePropertyAttribute attribute, ISpecification holder) {
-            if (attribute is not null) {
-                if (attribute.ViewRoles is not null || attribute.ViewUsers is not null) {
-                    FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.ViewRoles, attribute.ViewUsers, holder));
-                }
+        Create(classAttribute ?? propertyAttribute, specification);
+        return metamodel;
+    }
 
-                if (attribute.EditRoles is not null || attribute.EditUsers is not null) {
-                    FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.EditRoles, attribute.EditUsers, holder));
-                }
+    private static void Create(AuthorizePropertyAttribute attribute, ISpecification holder) {
+        if (attribute is not null) {
+            if (attribute.ViewRoles is not null || attribute.ViewUsers is not null) {
+                FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.ViewRoles, attribute.ViewUsers, holder));
+            }
+
+            if (attribute.EditRoles is not null || attribute.EditUsers is not null) {
+                FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.EditRoles, attribute.EditUsers, holder));
             }
         }
+    }
 
-        private static void Create(AuthorizeActionAttribute attribute, ISpecification holder) {
-            if (attribute is not null) {
-                if (attribute.Roles is not null || attribute.Users is not null) {
-                    FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.Roles, attribute.Users, holder));
-                    FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.Roles, attribute.Users, holder));
-                }
+    private static void Create(AuthorizeActionAttribute attribute, ISpecification holder) {
+        if (attribute is not null) {
+            if (attribute.Roles is not null || attribute.Users is not null) {
+                FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.Roles, attribute.Users, holder));
+                FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.Roles, attribute.Users, holder));
             }
         }
     }

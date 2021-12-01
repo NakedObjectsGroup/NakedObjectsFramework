@@ -7,11 +7,11 @@
 
 using System;
 
-namespace NakedFramework.Facade.Error {
-    public class ObjectResourceNotFoundNOSException : ResourceNotFoundNOSException {
-        public ObjectResourceNotFoundNOSException(string resourceId, Exception e) : base(resourceId, e) { }
-        public ObjectResourceNotFoundNOSException(string resourceId) : base(resourceId) { }
+namespace NakedFramework.Facade.Error; 
 
-        public override string Message => $"No such domain object {ResourceId}";
-    }
+public class ObjectResourceNotFoundNOSException : ResourceNotFoundNOSException {
+    public ObjectResourceNotFoundNOSException(string resourceId, Exception e) : base(resourceId, e) { }
+    public ObjectResourceNotFoundNOSException(string resourceId) : base(resourceId) { }
+
+    public override string Message => $"No such domain object {ResourceId}";
 }

@@ -5,15 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.SpecImmutable {
-    /// <summary>
-    ///     This is the immutable or 'static' core of the IObjectSpec.  It is created by the reflector during start-up, but can
-    ///     also be
-    ///     serialized/deserialized and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in
-    ///     order to
-    ///     provide various run-time behaviors required of the Spec, which depend upon the run-time framework services.
-    /// </summary>
-    public interface IObjectSpecImmutable : ITypeSpecImmutable { }
+namespace NakedFramework.Architecture.SpecImmutable; 
 
-    // Copyright (c) Naked Objects Group Ltd.
-}
+/// <summary>
+///     This is the immutable or 'static' core of the IObjectSpec.  It is created by the reflector during start-up, but can
+///     also be
+///     serialized/deserialized and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in
+///     order to
+///     provide various run-time behaviors required of the Spec, which depend upon the run-time framework services.
+/// </summary>
+public interface IObjectSpecImmutable : ITypeSpecImmutable { }
+
+// Copyright (c) Naked Objects Group Ltd.

@@ -20,45 +20,45 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class MultiLineAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public MultiLineAnnotationFacetFactory(IFacetFactoryOrder<MultiLineAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.EverythingButCollections) { }
+namespace NakedObjects.Reflector.FacetFactory; 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<MultiLineAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-            return metamodel;
+public sealed class MultiLineAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public MultiLineAnnotationFacetFactory(IFacetFactoryOrder<MultiLineAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.EverythingButCollections) { }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var attribute = type.GetCustomAttribute<MultiLineAttribute>();
+        FacetUtils.AddFacet(Create(attribute, specification));
+        return metamodel;
+    }
+
+    private static void Process(MemberInfo member, ISpecification holder) {
+        var attribute = member.GetCustomAttribute<MultiLineAttribute>();
+        FacetUtils.AddFacet(Create(attribute, holder));
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        if (property.HasPublicGetter() && TypeUtils.IsString(property.PropertyType)) {
+            Process(property, specification);
         }
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<MultiLineAttribute>();
+        return metamodel;
+    }
+
+    public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var parameter = method.GetParameters()[paramNum];
+        if (TypeUtils.IsString(parameter.ParameterType)) {
+            var attribute = parameter.GetCustomAttribute<MultiLineAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(method, specification);
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (property.HasPublicGetter() && TypeUtils.IsString(property.PropertyType)) {
-                Process(property, specification);
-            }
-
-            return metamodel;
-        }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
-            if (TypeUtils.IsString(parameter.ParameterType)) {
-                var attribute = parameter.GetCustomAttribute<MultiLineAttribute>();
-                FacetUtils.AddFacet(Create(attribute, holder));
-            }
-
-            return metamodel;
-        }
-
-        private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) => attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
+        return metamodel;
     }
+
+    private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) => attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
 }

@@ -9,19 +9,19 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet {
-    [Serializable]
-    public sealed class PropertyDefaultFacetNone : PropertyDefaultFacetAbstract {
-        public PropertyDefaultFacetNone(ISpecification holder)
-            : base(holder) { }
+namespace NakedFramework.Metamodel.Facet; 
 
-        public override bool IsNoOp => true;
+[Serializable]
+public sealed class PropertyDefaultFacetNone : PropertyDefaultFacetAbstract {
+    public PropertyDefaultFacetNone(ISpecification holder)
+        : base(holder) { }
 
-        /// <summary>
-        ///     Provides a default of <c>null</c>
-        /// </summary>
-        public override object GetDefault(INakedObjectAdapter inObjectAdapter) => null;
-    }
+    public override bool IsNoOp => true;
 
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <summary>
+    ///     Provides a default of <c>null</c>
+    /// </summary>
+    public override object GetDefault(INakedObjectAdapter inObjectAdapter) => null;
 }
+
+// Copyright (c) Naked Objects Group Ltd.
