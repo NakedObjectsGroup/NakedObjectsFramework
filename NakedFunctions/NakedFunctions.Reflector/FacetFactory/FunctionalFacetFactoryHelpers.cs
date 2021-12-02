@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public static class FunctionalFacetFactoryHelpers {
     public static bool IsInjectedParameter(MethodInfo method, int paramNum) {

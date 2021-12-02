@@ -9,7 +9,7 @@ using System;
 using System.IO;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Rest.Model; 
+namespace NakedFramework.Rest.Model;
 
 public class JsonFileAdapter : IAttachmentFacade {
     private readonly string data;

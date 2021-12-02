@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace NakedFunctions.Rest.Test; 
+namespace NakedFunctions.Rest.Test;
 
 public class ObjectTestEF6 : AcceptanceTestCase {
     protected override Type[] Functions { get; } = {

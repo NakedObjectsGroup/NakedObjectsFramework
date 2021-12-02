@@ -8,7 +8,7 @@
 using System.Security.Principal;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Authentication; 
+namespace NakedFramework.Core.Authentication;
 
 public sealed class SimpleSession : WindowsSession {
     public SimpleSession(IPrincipal principal, string code) : base(principal) => ValidationCode = code;

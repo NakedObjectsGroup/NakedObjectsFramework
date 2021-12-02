@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl; 
+namespace NakedFramework.Facade.Impl.Impl;
 
 public class MenuFacade : IMenuFacade {
     public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade facade, INakedFramework framework) {

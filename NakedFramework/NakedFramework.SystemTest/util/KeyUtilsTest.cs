@@ -18,7 +18,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.Util; 
+namespace NakedObjects.SystemTest.Util;
 
 [TestFixture]
 public class KeyUtilsTest {
@@ -83,11 +83,11 @@ public class KeyUtilsTest {
 
         public IQueryable<T> Instances<T>() where T : class {
             if (typeof(T) == typeof(TestKey)) {
-                return new[] {new TestKey {AName = 1}}.Cast<T>().AsQueryable();
+                return new[] { new TestKey { AName = 1 } }.Cast<T>().AsQueryable();
             }
 
             if (typeof(T) == typeof(TestStringKey)) {
-                return new[] {new TestStringKey {AName = "aName"}}.Cast<T>().AsQueryable();
+                return new[] { new TestStringKey { AName = "aName" } }.Cast<T>().AsQueryable();
             }
 
             return null;

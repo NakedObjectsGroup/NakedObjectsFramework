@@ -13,7 +13,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.ModelBuilding.Component; 
+namespace NakedFramework.ModelBuilding.Component;
 
 public class ModelBuilder : IModelBuilder {
     private readonly IMetamodelBuilder initialMetamodel;

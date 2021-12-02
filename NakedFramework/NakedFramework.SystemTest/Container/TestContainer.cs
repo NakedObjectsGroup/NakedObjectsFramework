@@ -15,7 +15,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Container; 
+namespace NakedObjects.SystemTest.Container;
 
 [TestFixture]
 public class TestContainer : AbstractSystemTest<ContainerDbContext> {
@@ -40,7 +40,7 @@ public class TestContainer : AbstractSystemTest<ContainerDbContext> {
         ContainerDbContext.Delete();
     }
 
-    protected override Type[] ObjectTypes => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2), typeof(TestEnum)};
+    protected override Type[] ObjectTypes => new[] { typeof(Object1), typeof(Object2), typeof(ViewModel2), typeof(TestEnum) };
 
     protected override Type[] Services =>
         new[] {
@@ -49,7 +49,7 @@ public class TestContainer : AbstractSystemTest<ContainerDbContext> {
 
     [Test]
     public void DefaultsTransient() {
-        var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
+        var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
         Assert.IsNotNull(testObject.Container);
 
         var o2 = testObject.Container.NewTransientInstance<Object2>();
@@ -68,7 +68,7 @@ public class TestContainer : AbstractSystemTest<ContainerDbContext> {
 
     [Test]
     public void DefaultsViewModel() {
-        var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
+        var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
         Assert.IsNotNull(testObject.Container);
 
         var vm = testObject.NewViewModel();

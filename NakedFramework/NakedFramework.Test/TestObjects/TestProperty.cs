@@ -17,7 +17,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 public class TestProperty : ITestProperty {
     private readonly ITestObjectFactory factory;
@@ -61,9 +61,9 @@ public class TestProperty : ITestProperty {
         }
     }
 
-    public ITestObject ContentAsObject => (ITestObject) Content;
+    public ITestObject ContentAsObject => (ITestObject)Content;
 
-    public ITestCollection ContentAsCollection => (ITestCollection) Content;
+    public ITestCollection ContentAsCollection => (ITestCollection)Content;
 
     public ITestNaked GetDefault() {
         var defaultValue = field.GetDefault(owningObject.NakedObject);
@@ -71,12 +71,12 @@ public class TestProperty : ITestProperty {
     }
 
     public ITestNaked[] GetChoices() {
-        var choices = ((IOneToOneAssociationSpec) field).GetChoices(owningObject.NakedObject, null);
+        var choices = ((IOneToOneAssociationSpec)field).GetChoices(owningObject.NakedObject, null);
         return choices.Select(x => factory.CreateTestNaked(x)).ToArray();
     }
 
     public ITestNaked[] GetCompletions(string autoCompleteParm) {
-        var completions = ((IOneToOneAssociationSpec) field).GetCompletions(owningObject.NakedObject, autoCompleteParm);
+        var completions = ((IOneToOneAssociationSpec)field).GetCompletions(owningObject.NakedObject, autoCompleteParm);
         return completions.Select(x => factory.CreateTestNaked(x)).ToArray();
     }
 
@@ -147,12 +147,12 @@ public class TestProperty : ITestProperty {
 
             var newValue = parseableFacet.ParseTextEntry(textEntry, manager);
 
-            var consent = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObjectAdapter, newValue);
+            var consent = ((IOneToOneAssociationSpec)field).IsAssociationValid(nakedObjectAdapter, newValue);
             LastMessage = consent.Reason;
 
             Assert.IsFalse(consent.IsVetoed, $"Content: '{textEntry}' is not valid. Reason: {consent.Reason}");
 
-            ((IOneToOneAssociationSpec) field).SetAssociation(nakedObjectAdapter, textEntry.Trim().Equals("") ? null : newValue);
+            ((IOneToOneAssociationSpec)field).SetAssociation(nakedObjectAdapter, textEntry.Trim().Equals("") ? null : newValue);
         }
         catch (InvalidEntryException) {
             Assert.Fail("Entry not recognised " + textEntry);
@@ -168,10 +168,10 @@ public class TestProperty : ITestProperty {
 
         var nakedObjectAdapter = owningObject.NakedObject;
         try {
-            var consent = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObjectAdapter, null);
+            var consent = ((IOneToOneAssociationSpec)field).IsAssociationValid(nakedObjectAdapter, null);
             LastMessage = consent.Reason;
             Assert.IsFalse(consent.IsVetoed, $"Content: 'null' is not valid. Reason: {consent.Reason}");
-            ((IOneToOneAssociationSpec) field).SetAssociation(nakedObjectAdapter, null);
+            ((IOneToOneAssociationSpec)field).SetAssociation(nakedObjectAdapter, null);
         }
         catch (InvalidEntryException) {
             Assert.Fail("Null Entry not recognised ");
@@ -325,7 +325,7 @@ public class TestProperty : ITestProperty {
         var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
         try {
             var newValue = parseableFacet.ParseTextEntry(text, manager);
-            var isAssociationValid = ((IOneToOneAssociationSpec) field).IsAssociationValid(owningObject.NakedObject, newValue);
+            var isAssociationValid = ((IOneToOneAssociationSpec)field).IsAssociationValid(owningObject.NakedObject, newValue);
             LastMessage = isAssociationValid.Reason;
             Assert.IsFalse(isAssociationValid.IsAllowed, "Content was unexpectedly validated");
         }
@@ -345,7 +345,7 @@ public class TestProperty : ITestProperty {
         field.GetNakedObject(nakedObjectAdapter);
         var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
         var newValue = parseableFacet.ParseTextEntry(text, manager);
-        var isAssociationValid = ((IOneToOneAssociationSpec) field).IsAssociationValid(owningObject.NakedObject, newValue);
+        var isAssociationValid = ((IOneToOneAssociationSpec)field).IsAssociationValid(owningObject.NakedObject, newValue);
         LastMessage = isAssociationValid.Reason;
         Assert.IsTrue(isAssociationValid.IsAllowed, "Content was unexpectedly invalidated");
         return this;

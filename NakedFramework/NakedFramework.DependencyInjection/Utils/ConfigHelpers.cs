@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.FacetFactory;
 
-namespace NakedFramework.DependencyInjection.Utils; 
+namespace NakedFramework.DependencyInjection.Utils;
 
 public static class ConfigHelpers {
     private static bool ServiceImplementationExists(this IServiceCollection services, Type tService) => services.Any(descriptor => descriptor.ServiceType == tService);

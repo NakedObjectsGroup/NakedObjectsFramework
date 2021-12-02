@@ -28,7 +28,7 @@ using NakedObjects.Reflector.Test.Reflect;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -57,7 +57,7 @@ public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTes
 
         var eInfo = typeof(Customer).GetEvent("AnEventHandler");
 
-        var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRemoveMethod()};
+        var eventMethods = new[] { eInfo.GetAddMethod(), eInfo.GetRemoveMethod() };
 
         foreach (var removedMethod in eventMethods) {
             AssertMethodRemoved(removedMethod);
@@ -106,7 +106,7 @@ public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTes
 
         facetFactory = new RemoveEventHandlerMethodsFacetFactory(GetOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);
         var menuFactory = new NullMenuFactory();
-        var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] {facetFactory});
+        var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] { facetFactory });
         var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
         var metamodel = new MetamodelHolder(cache, null);
         var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;

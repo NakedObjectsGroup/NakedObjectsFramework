@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 /// <summary>
 ///     Compares <see cref="IMemberSpecImmutable" /> by <see cref="ISpecification.Identifier" />

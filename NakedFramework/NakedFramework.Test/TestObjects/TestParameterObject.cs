@@ -9,7 +9,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 internal class TestParameterObject : ITestValue {
     private readonly object domainObject;

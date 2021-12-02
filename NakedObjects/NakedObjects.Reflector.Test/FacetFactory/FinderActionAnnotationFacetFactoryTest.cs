@@ -16,13 +16,13 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class FinderActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private FinderActionFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IFinderActionFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IFinderActionFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 

@@ -18,7 +18,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 public sealed class NakedObjectAdapter : INakedObjectAdapter {
     private readonly INakedFramework framework;
@@ -61,13 +61,12 @@ public sealed class NakedObjectAdapter : INakedObjectAdapter {
 
     private bool CanCount() => !Spec.ContainsFacet<INotCountedFacet>();
 
-
     private string GetTitle() {
         // don't do title of unresolved objects as this may force the resolving of the object.
-        if (ResolveState.IsTransient() || ResolveState.IsResolved() || ResolveState.IsAggregated())
-        {
+        if (ResolveState.IsTransient() || ResolveState.IsResolved() || ResolveState.IsAggregated()) {
             return $"title={TitleString()},";
         }
+
         return "";
     }
 
@@ -76,15 +75,14 @@ public sealed class NakedObjectAdapter : INakedObjectAdapter {
 
     private bool ShouldSetVersion(IVersion newVersion) => newVersion.IsDifferent(Version);
 
-    private string AddProperties()
-    {
+    private string AddProperties() {
         var objectType = Object.GetType();
         string GetOid() => Oid is not null ? $":{Oid}," : ":-,";
 
-        string GetSpec() => 
+        string GetSpec() =>
             spec is null ? $"class={objectType.FullName}," : $"specification={spec.ShortName},Type={spec.FullName},";
 
-        string GetProxy() => 
+        string GetProxy() =>
             Object is not null && FasterTypeUtils.IsAnyProxy(objectType) ? $"{objectType.FullName}," : "None,";
 
         string GetVersion() =>

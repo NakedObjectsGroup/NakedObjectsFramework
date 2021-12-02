@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework.Core.Error;
 using NakedObjects;
 
-namespace TestData; 
+namespace TestData;
 
 public class Product : TestHelper {
     public virtual int Id { get; set; }

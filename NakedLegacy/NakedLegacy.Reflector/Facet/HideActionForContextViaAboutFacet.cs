@@ -18,11 +18,10 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.Facet; 
+namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
 public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
-        
     private readonly AboutHelpers.AboutType aboutType;
 
     private readonly ILogger<HideActionForContextViaAboutFacet> logger;

@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class TypeKeyUtils {
     // because Sets don't implement IEnumerable<>

@@ -8,9 +8,9 @@
 using System.Runtime.CompilerServices;
 using NakedFramework;
 
-[assembly:InternalsVisibleTo("NakedFramework.Rest.Test.Data")]
+[assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Data")]
 
-namespace NakedObjects; 
+namespace NakedObjects;
 
 /// <summary>
 ///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the

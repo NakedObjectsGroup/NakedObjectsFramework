@@ -10,7 +10,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class EFCoreCodeFirstContext : DbContext {
     private readonly string cs;

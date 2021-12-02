@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Interactions; 
+namespace NakedFramework.Architecture.Interactions;
 
 public interface IInteractionContext {
     /// <summary>

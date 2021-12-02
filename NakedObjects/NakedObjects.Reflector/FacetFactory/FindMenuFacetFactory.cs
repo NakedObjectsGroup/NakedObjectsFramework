@@ -19,7 +19,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 /// <summary>
 ///     Creates an <see cref="IFindMenuFacet" /> based on the presence of an

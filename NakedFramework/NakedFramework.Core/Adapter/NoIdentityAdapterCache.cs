@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 public sealed class NoIdentityAdapterCache : INoIdentityAdapterCache {
     private readonly Dictionary<object, INakedObjectAdapter> adapters = new();

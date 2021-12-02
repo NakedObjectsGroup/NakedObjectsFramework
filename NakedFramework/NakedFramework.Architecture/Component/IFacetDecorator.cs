@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 public interface IFacetDecorator {
     /// <summary>

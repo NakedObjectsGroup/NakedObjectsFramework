@@ -18,7 +18,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class DisabledAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public DisabledAnnotationFacetFactory(IFacetFactoryOrder<DisabledAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

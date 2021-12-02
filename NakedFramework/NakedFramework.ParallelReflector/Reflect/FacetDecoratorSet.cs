@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.ParallelReflector.Reflect; 
+namespace NakedFramework.ParallelReflector.Reflect;
 
 public sealed class FacetDecoratorSet : IFacetDecoratorSet {
     private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();

@@ -15,7 +15,7 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 [NotPersisted]
 [NotMapped]
@@ -43,7 +43,7 @@ public class MostSimpleViewModel : IViewModel {
             throw new Exception("Derive called multiple times");
         }
 
-        return new[] {Id.ToString()};
+        return new[] { Id.ToString() };
     }
 
     [NakedObjectsIgnore]

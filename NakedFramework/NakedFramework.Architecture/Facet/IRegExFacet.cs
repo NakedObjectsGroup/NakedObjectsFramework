@@ -8,7 +8,7 @@
 using System.Text.RegularExpressions;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 /// <summary>
 ///     Whether the (string) property or a parameter must correspond to a specific regular expression

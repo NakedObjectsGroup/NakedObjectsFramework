@@ -20,7 +20,7 @@ using NakedFramework.Metamodel.Utils;
 #pragma warning disable 618
 #pragma warning disable SYSLIB0011
 
-namespace NakedFramework.Metamodel.Component; 
+namespace NakedFramework.Metamodel.Component;
 
 [Serializable]
 public sealed class ImmutableInMemorySpecCache : ISpecificationCache, ISerializable, IDeserializationCallback {
@@ -36,17 +36,17 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache, ISerializa
     public ImmutableInMemorySpecCache(string file) {
         using var fs = File.Open(file, FileMode.Open);
         IFormatter formatter = new BinaryFormatter();
-        var data = (SerializedData) formatter.Deserialize(fs);
+        var data = (SerializedData)formatter.Deserialize(fs);
 
-        specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+        specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new { k, v }).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
 
         mainMenus = data.MenuValues.ToImmutableList();
     }
 
     public ImmutableInMemorySpecCache(string file, IFormatter formatter) {
         using var fs = File.Open(file, FileMode.Open);
-        var data = (SerializedData) formatter.Deserialize(fs);
-        specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+        var data = (SerializedData)formatter.Deserialize(fs);
+        specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new { k, v }).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
 
         mainMenus = data.MenuValues.ToImmutableList();
     }
@@ -57,7 +57,7 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache, ISerializa
     #region IDeserializationCallback Members
 
     public void OnDeserialization(object sender) {
-        specs = tempData.SpecKeys.Zip(tempData.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+        specs = tempData.SpecKeys.Zip(tempData.SpecValues, (k, v) => new { k, v }).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
         mainMenus = tempData.MenuValues.ToImmutableList();
     }
 
@@ -66,7 +66,7 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache, ISerializa
     #region ISerializable Members
 
     public void GetObjectData(SerializationInfo info, StreamingContext context) {
-        var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+        var data = new SerializedData { SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList() };
         info.AddValue<SerializedData>("data", data);
     }
 
@@ -77,13 +77,13 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache, ISerializa
     public void Serialize(string file) {
         using var fs = File.Open(file, FileMode.OpenOrCreate);
         IFormatter formatter = new BinaryFormatter();
-        var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+        var data = new SerializedData { SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList() };
         formatter.Serialize(fs, data);
     }
 
     public void Serialize(string file, IFormatter formatter) {
         using var fs = File.Open(file, FileMode.OpenOrCreate);
-        var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+        var data = new SerializedData { SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList() };
         formatter.Serialize(fs, data);
     }
 

@@ -16,7 +16,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<Guid> {
@@ -28,7 +28,7 @@ public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     public void TestParseValidString() {
         var guid = Guid.NewGuid();
         var str = guid.ToString();
-        var parsed = (Guid) value.ParseTextEntry(str);
+        var parsed = (Guid)value.ParseTextEntry(str);
         Assert.AreEqual(guid, parsed);
     }
 

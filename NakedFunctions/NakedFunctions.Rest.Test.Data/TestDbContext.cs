@@ -9,7 +9,7 @@ using System.Data.Entity;
 using Rest.Test.Data;
 using Rest.Test.Data.Sub;
 
-namespace NakedFunctions.Rest.Test.Data; 
+namespace NakedFunctions.Rest.Test.Data;
 
 public static class Constants {
     public static string AppveyorServer => @"(local)\SQL2017";

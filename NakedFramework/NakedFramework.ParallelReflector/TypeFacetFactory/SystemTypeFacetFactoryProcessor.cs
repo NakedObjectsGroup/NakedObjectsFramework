@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
+namespace NakedFramework.ParallelReflector.TypeFacetFactory;
 
 public abstract class SystemTypeFacetFactoryProcessor : FacetFactoryAbstract, IObjectFacetFactoryProcessor {
     protected SystemTypeFacetFactoryProcessor(int numericOrder,

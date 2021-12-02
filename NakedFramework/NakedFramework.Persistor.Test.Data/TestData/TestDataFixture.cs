@@ -11,7 +11,7 @@ using TestData;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.TestData; 
+namespace NakedObjects.Persistor.TestData;
 
 public class TestDataFixture {
     public IDomainObjectContainer Container { protected get; set; }
@@ -48,8 +48,8 @@ public class TestDataFixture {
 
         var pet1 = NewPet(1, "PetOne", person1);
 
-        var products = new[] {product1, product2};
-        var persons = new[] {person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11};
+        var products = new[] { product1, product2 };
+        var persons = new[] { person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11 };
 
         person1.Relatives.Add(person2);
         person1.Relatives.Add(person3);

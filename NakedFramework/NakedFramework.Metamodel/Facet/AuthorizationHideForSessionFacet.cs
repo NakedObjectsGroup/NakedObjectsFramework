@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class AuthorizationHideForSessionFacet : HideForSessionFacetAbstract {

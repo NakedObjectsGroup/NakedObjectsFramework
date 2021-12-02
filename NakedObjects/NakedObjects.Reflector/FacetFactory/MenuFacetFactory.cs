@@ -20,13 +20,13 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class MenuFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;
 
     static MenuFacetFactory() {
-        FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.MenuMethod};
+        FixedPrefixes = new[] { RecognisedMethodsAndPrefixes.MenuMethod };
     }
 
     public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
@@ -37,7 +37,7 @@ public sealed class MenuFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefi
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
         methodRemover.SafeRemoveMethod(method);
-        var facet = method is not null ? (IFacet) new MenuFacetViaMethod(method, specification) : new MenuFacetDefault(specification);
+        var facet = method is not null ? (IFacet)new MenuFacetViaMethod(method, specification) : new MenuFacetDefault(specification);
         FacetUtils.AddFacet(facet);
         return metamodel;
     }

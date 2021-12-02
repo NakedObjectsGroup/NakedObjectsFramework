@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Utility; 
+namespace NakedFramework.Facade.Impl.Utility;
 
 public static class FacetUtils {
     public static string GetMaskedValue(this ISpecification spec, IObjectFacade objectFacade, INakedFramework framework) {
@@ -22,7 +22,7 @@ public static class FacetUtils {
         }
 
         var mask = spec.GetFacet<IMaskFacet>();
-        var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
+        var no = ((ObjectFacade)objectFacade).WrappedNakedObject;
         return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework) : no.TitleString();
     }
 

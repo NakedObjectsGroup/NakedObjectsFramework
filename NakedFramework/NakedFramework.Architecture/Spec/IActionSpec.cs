@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.Spec; 
+namespace NakedFramework.Architecture.Spec;
 
 /// <summary>
 ///     The specification for an action method on a domain object (or service).

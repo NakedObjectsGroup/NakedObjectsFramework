@@ -17,7 +17,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class ObjectRepresentation : Representation {
@@ -99,7 +99,7 @@ public class ObjectRepresentation : Representation {
 
             var helper = GetHelper(OidStrategy, req, objectContext);
 
-            var modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) {Method = RelMethod.Put}, Flags,
+            var modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) { Method = RelMethod.Put }, Flags,
                                                        new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
 
             tempLinks.Add(modifyLink);
@@ -113,9 +113,9 @@ public class ObjectRepresentation : Representation {
             var props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
             var argMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));
-            var args = new List<OptionalProperty> {argMembers};
+            var args = new List<OptionalProperty> { argMembers };
 
-            var persistLink = LinkRepresentation.Create(OidStrategy, new ObjectsRelType(RelValues.Persist, new UriMtHelper(OidStrategy, req, objectContext.Target.Specification)) {Method = RelMethod.Post}, Flags,
+            var persistLink = LinkRepresentation.Create(OidStrategy, new ObjectsRelType(RelValues.Persist, new UriMtHelper(OidStrategy, req, objectContext.Target.Specification)) { Method = RelMethod.Post }, Flags,
                                                         new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray())));
 
             tempLinks.Add(persistLink);
@@ -139,7 +139,7 @@ public class ObjectRepresentation : Representation {
 
         var allMembers = properties.Union(actions);
 
-        Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
+        Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object)m));
     }
 
     private static ActionContextFacade[] FilterLocallyContributedActions(ActionContextFacade[] actions, PropertyContextFacade[] collections) {
@@ -215,6 +215,6 @@ public class ObjectRepresentation : Representation {
             props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
         }
 
-        return CreateWithOptionals<ObjectRepresentation>(new object[] {frameworkFacade, req, objectContext, flags}, props);
+        return CreateWithOptionals<ObjectRepresentation>(new object[] { frameworkFacade, req, objectContext, flags }, props);
     }
 }

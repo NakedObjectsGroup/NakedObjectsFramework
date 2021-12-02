@@ -19,13 +19,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class PluralAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private PluralAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IPluralFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IPluralFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -47,7 +47,7 @@ public class PluralAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPluralFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PluralFacetAnnotation);
-        var pluralFacet = (PluralFacetAnnotation) facet;
+        var pluralFacet = (PluralFacetAnnotation)facet;
         Assert.AreEqual("Some plural name", pluralFacet.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);

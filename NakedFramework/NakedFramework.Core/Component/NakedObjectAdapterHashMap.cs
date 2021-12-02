@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public sealed class NakedObjectAdapterHashMap : INakedObjectAdapterMap {
     private readonly int capacity;

@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Facet;
 
-namespace NakedFramework.Architecture.Spec; 
+namespace NakedFramework.Architecture.Spec;
 
 public interface ISpecificationBuilder : ISpecification {
     /// <summary>

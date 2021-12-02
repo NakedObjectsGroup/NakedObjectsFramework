@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
-namespace NakedFramework.Persistor.EF6.Component; 
+namespace NakedFramework.Persistor.EF6.Component;
 
 public class EF6SaveObjectCommand : ISaveObjectCommand {
     private readonly EF6LocalContext context;

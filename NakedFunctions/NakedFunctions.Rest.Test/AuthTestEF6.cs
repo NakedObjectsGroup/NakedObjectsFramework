@@ -28,7 +28,7 @@ using Rest.Test.Data;
 using Rest.Test.Data.Sub;
 using static NakedFunctions.Rest.Test.AuthHelpers;
 
-namespace NakedFunctions.Rest.Test; 
+namespace NakedFunctions.Rest.Test;
 
 public class NullStringHasher : IStringHasher {
     public string GetHash(string toHash) => null;

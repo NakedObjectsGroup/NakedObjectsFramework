@@ -17,7 +17,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 /// <summary>
 ///     Provide consistent string decoding strategy for <see cref="IEncodedToStrings" />
@@ -66,7 +66,7 @@ public class StringDecoderHelper {
 
     public T GetNextEnum<T>() {
         CheckCurrentIndex();
-        return (T) Enum.Parse(typeof(T), strings[index++]);
+        return (T)Enum.Parse(typeof(T), strings[index++]);
     }
 
     public string[] GetNextArray() {
@@ -128,12 +128,12 @@ public class StringDecoderHelper {
             return Enum.Parse(objectType, value);
         }
 
-        var parseMethod = objectType.GetMethod("Parse", new[] {typeof(string)});
+        var parseMethod = objectType.GetMethod("Parse", new[] { typeof(string) });
         if (parseMethod == null) {
             throw new Exception(logger.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
         }
 
-        var result = parseMethod.Invoke(null, new object[] {value});
+        var result = parseMethod.Invoke(null, new object[] { value });
         if (result == null) {
             throw new Exception(logger.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
         }
@@ -192,7 +192,7 @@ public class StringDecoderHelper {
             throw new Exception(logger.LogAndReturn($"Type: {objectType} needs to be: {typeof(IEncodedToStrings)}"));
         }
 
-        return (IEncodedToStrings) Activator.CreateInstance(objectType, metamodel, loggerFactory, encodedData);
+        return (IEncodedToStrings)Activator.CreateInstance(objectType, metamodel, loggerFactory, encodedData);
     }
 
     private void CheckCurrentIndex() {

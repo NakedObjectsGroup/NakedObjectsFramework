@@ -10,18 +10,18 @@ using System.Linq;
 using NakedFramework.Core.Util;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Util; 
+namespace NakedFramework.Core.Test.Util;
 
 [TestFixture]
 public class CopyUtilsTest {
     [Test]
     public void TestAllClone() {
-        var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
-        var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
-        var ao = new AllObject {ValueOne = 5, ValueTwo = 6, ReferenceOne = so1};
+        var so1 = new SimpleObject { ValueOne = 1, ValueTwo = 2 };
+        var so2 = new SimpleObject { ValueOne = 3, ValueTwo = 4 };
+        var ao = new AllObject { ValueOne = 5, ValueTwo = 6, ReferenceOne = so1 };
         ao.CollectionOne.Add(so2);
 
-        var clone = (AllObject) CopyUtils.CloneObjectTest(ao);
+        var clone = (AllObject)CopyUtils.CloneObjectTest(ao);
         Assert.AreNotSame(ao, clone);
         Assert.AreSame(ao.GetType(), clone.GetType());
         Assert.AreEqual(ao.ValueOne, clone.ValueOne);
@@ -33,14 +33,14 @@ public class CopyUtilsTest {
 
     [Test]
     public void TestAllUpdate() {
-        var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
-        var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
-        var so3 = new SimpleObject {ValueOne = 5, ValueTwo = 6};
-        var so4 = new SimpleObject {ValueOne = 7, ValueTwo = 8};
-        var ao = new AllObject {ValueOne = 9, ValueTwo = 10, ReferenceOne = so1};
+        var so1 = new SimpleObject { ValueOne = 1, ValueTwo = 2 };
+        var so2 = new SimpleObject { ValueOne = 3, ValueTwo = 4 };
+        var so3 = new SimpleObject { ValueOne = 5, ValueTwo = 6 };
+        var so4 = new SimpleObject { ValueOne = 7, ValueTwo = 8 };
+        var ao = new AllObject { ValueOne = 9, ValueTwo = 10, ReferenceOne = so1 };
         ao.CollectionOne.Add(so2);
 
-        var clone = (AllObject) CopyUtils.CloneObjectTest(ao);
+        var clone = (AllObject)CopyUtils.CloneObjectTest(ao);
 
         clone.ValueTwo = 11;
         clone.ReferenceOne = so3;
@@ -69,11 +69,11 @@ public class CopyUtilsTest {
 
     [Test]
     public void TestCollectionClone() {
-        var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
+        var so = new SimpleObject { ValueOne = 1, ValueTwo = 2 };
         var co = new CollectionObject();
         co.CollectionOne.Add(so);
 
-        var clone = (CollectionObject) CopyUtils.CloneObjectTest(co);
+        var clone = (CollectionObject)CopyUtils.CloneObjectTest(co);
         Assert.AreNotSame(co, clone);
         Assert.AreSame(co.GetType(), clone.GetType());
         Assert.AreNotSame(co.CollectionOne, clone.CollectionOne);
@@ -82,12 +82,12 @@ public class CopyUtilsTest {
 
     [Test]
     public void TestCollectionUpdate() {
-        var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
-        var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
+        var so1 = new SimpleObject { ValueOne = 1, ValueTwo = 2 };
+        var so2 = new SimpleObject { ValueOne = 3, ValueTwo = 4 };
         var co = new CollectionObject();
         co.CollectionOne.Add(so1);
 
-        var clone = (CollectionObject) CopyUtils.CloneObjectTest(co);
+        var clone = (CollectionObject)CopyUtils.CloneObjectTest(co);
 
         clone.CollectionOne.Add(so2);
 
@@ -108,10 +108,10 @@ public class CopyUtilsTest {
 
     [Test]
     public void TestReferenceClone() {
-        var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
-        var ro = new ReferenceObject {ReferenceOne = so};
+        var so = new SimpleObject { ValueOne = 1, ValueTwo = 2 };
+        var ro = new ReferenceObject { ReferenceOne = so };
 
-        var clone = (ReferenceObject) CopyUtils.CloneObjectTest(ro);
+        var clone = (ReferenceObject)CopyUtils.CloneObjectTest(ro);
 
         Assert.AreNotSame(ro, clone);
         Assert.AreSame(ro.GetType(), clone.GetType());
@@ -121,11 +121,11 @@ public class CopyUtilsTest {
 
     [Test]
     public void TestReferenceUpdate() {
-        var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
-        var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
-        var ro = new ReferenceObject {ReferenceOne = so1};
+        var so1 = new SimpleObject { ValueOne = 1, ValueTwo = 2 };
+        var so2 = new SimpleObject { ValueOne = 3, ValueTwo = 4 };
+        var ro = new ReferenceObject { ReferenceOne = so1 };
 
-        var clone = (ReferenceObject) CopyUtils.CloneObjectTest(ro);
+        var clone = (ReferenceObject)CopyUtils.CloneObjectTest(ro);
         clone.ReferenceOne = so2;
 
         Assert.AreNotSame(ro, clone);
@@ -141,8 +141,8 @@ public class CopyUtilsTest {
 
     [Test]
     public void TestSimpleClone() {
-        var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
-        var clone = (SimpleObject) CopyUtils.CloneObjectTest(so);
+        var so = new SimpleObject { ValueOne = 1, ValueTwo = 2 };
+        var clone = (SimpleObject)CopyUtils.CloneObjectTest(so);
 
         Assert.AreNotSame(so, clone);
         Assert.AreSame(so.GetType(), clone.GetType());
@@ -152,8 +152,8 @@ public class CopyUtilsTest {
 
     [Test]
     public void TestSimpleUpdate() {
-        var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
-        var clone = (SimpleObject) CopyUtils.CloneObjectTest(so);
+        var so = new SimpleObject { ValueOne = 1, ValueTwo = 2 };
+        var clone = (SimpleObject)CopyUtils.CloneObjectTest(so);
         clone.ValueTwo = 3;
 
         Assert.AreNotSame(so, clone);
@@ -169,8 +169,6 @@ public class CopyUtilsTest {
         Assert.AreEqual(so.ValueTwo, clone.ValueTwo);
     }
 
-    #region Nested type: AllObject
-
     public class AllObject {
         public int ValueOne { get; set; }
         public int ValueTwo { get; set; }
@@ -179,30 +177,16 @@ public class CopyUtilsTest {
         public ICollection<SimpleObject> CollectionOne { get; set; } = new List<SimpleObject>();
     }
 
-    #endregion
-
-    #region Nested type: CollectionObject
-
     public class CollectionObject {
         public ICollection<SimpleObject> CollectionOne { get; set; } = new List<SimpleObject>();
     }
-
-    #endregion
-
-    #region Nested type: ReferenceObject
 
     public class ReferenceObject {
         public SimpleObject ReferenceOne { get; set; }
     }
 
-    #endregion
-
-    #region Nested type: SimpleObject
-
     public class SimpleObject {
         public int ValueOne { get; set; }
         public int ValueTwo { get; set; }
     }
-
-    #endregion
 }

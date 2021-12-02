@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Resolve; 
+namespace NakedFramework.Core.Test.Resolve;
 
 [TestFixture]
 public class ResolveStateTest {
@@ -337,9 +337,5 @@ public class ResolveStateTest {
         ExpectNoException(() => UpdatingSm().Handle(Events.EndUpdatingEvent));
     }
 
-    #region Nested type: ITestCallbackFacet
-
     public interface ITestCallbackFacet : ILoadingCallbackFacet, ILoadedCallbackFacet { }
-
-    #endregion
 }

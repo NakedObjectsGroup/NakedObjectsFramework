@@ -10,7 +10,7 @@ using System.Linq;
 using NakedFramework.Core.Error;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.Configuration; 
+namespace NakedObjects.Reflector.Configuration;
 
 [Serializable]
 public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {

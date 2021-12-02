@@ -18,7 +18,7 @@ using NakedFramework.Metamodel.Profile;
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.EFCore")]
 [assembly: InternalsVisibleTo("NakedLegacy.Reflector")]
 
-namespace NakedFramework.DependencyInjection.Extensions; 
+namespace NakedFramework.DependencyInjection.Extensions;
 
 public class NakedFrameworkOptions {
     public NakedFrameworkOptions(IServiceCollection services) => Services = services;

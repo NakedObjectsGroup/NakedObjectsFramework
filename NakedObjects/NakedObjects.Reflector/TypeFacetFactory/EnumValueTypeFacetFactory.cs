@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Reflector.TypeFacetFactory; 
+namespace NakedObjects.Reflector.TypeFacetFactory;
 
 public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public EnumValueTypeFacetFactory(IFacetFactoryOrder<EnumValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
@@ -29,7 +29,7 @@ public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProvider
         var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
         var semanticsProvider = Activator.CreateInstance(semanticsProviderType, oSpec, specification);
         var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
-        method.Invoke(null, new[] {semanticsProvider, specification});
+        method.Invoke(null, new[] { semanticsProvider, specification });
         return mm;
     }
 }

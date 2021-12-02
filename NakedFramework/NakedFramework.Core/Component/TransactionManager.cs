@@ -12,7 +12,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Transaction;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public sealed class TransactionManager : ITransactionManager {
     private readonly ILogger<TransactionManager> logger;

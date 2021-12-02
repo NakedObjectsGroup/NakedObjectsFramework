@@ -21,7 +21,7 @@ using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
 using NakedFunctions.Services;
 
-namespace NakedFunctions.Reflector.Extensions; 
+namespace NakedFunctions.Reflector.Extensions;
 
 public static class NakedFunctionsExtensions {
     public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
@@ -34,7 +34,7 @@ public static class NakedFunctionsExtensions {
         if (options.DomainTypes.Any()) {
             // filter enums and add to SystemTypes 
             var enums = options.DomainTypes.Where(t => t.IsEnum).ToArray();
-            var coreFunctionalTypes = new[] {typeof(FunctionalContext), typeof(IContext)};
+            var coreFunctionalTypes = new[] { typeof(FunctionalContext), typeof(IContext) };
             options.DomainTypes = options.DomainTypes.Except(enums).ToArray();
             frameworkOptions.SupportedSystemTypes ??= t => t;
             frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(enums).ToArray();

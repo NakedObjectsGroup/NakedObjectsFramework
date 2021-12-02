@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 public interface ITypeOfFacet : IFacet {
     Type GetValue(INakedObjectAdapter collection);

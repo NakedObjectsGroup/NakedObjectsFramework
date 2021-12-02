@@ -15,7 +15,7 @@ using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 
-namespace NakedFramework.Rest.Extensions; 
+namespace NakedFramework.Rest.Extensions;
 
 public static class RestfulObjectsExtensions {
     public static void AddRestfulObjects(this NakedFrameworkOptions frameworkOptions, Action<RestfulObjectsOptions> setupAction = null) {

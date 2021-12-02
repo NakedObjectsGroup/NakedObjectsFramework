@@ -10,7 +10,7 @@
 
 // ReSharper disable UnusedMethodReturnValue.Local
 
-namespace NakedObjects.SystemTest.PolymorphicAssociations; 
+namespace NakedObjects.SystemTest.PolymorphicAssociations;
 
 public class FixtureEntities {
     #region Injected Services

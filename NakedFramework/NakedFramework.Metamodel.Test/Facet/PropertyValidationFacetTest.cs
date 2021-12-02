@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet; 
+namespace NakedObjects.Metamodel.Test.Facet;
 
 [TestClass]
 public class PropertyValidationFacetTest {
@@ -21,7 +21,7 @@ public class PropertyValidationFacetTest {
 
     private static void DelegateFuncTest(MethodInfo method) {
         IImperativeFacet validationFacet = new PropertyValidateFacetViaMethod(method, null, mockLogger);
-        var facet = (IPropertyValidateFacet) validationFacet;
+        var facet = (IPropertyValidateFacet)validationFacet;
         Assert.IsNotNull(validationFacet.GetMethodDelegate(), method.Name);
         var target = MockParm(new TestDelegateClass());
         var value = MockParm("astring");

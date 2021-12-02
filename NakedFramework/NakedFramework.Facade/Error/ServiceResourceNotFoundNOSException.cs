@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Facade.Error; 
+namespace NakedFramework.Facade.Error;
 
 public class ServiceResourceNotFoundNOSException : ResourceNotFoundNOSException {
     public ServiceResourceNotFoundNOSException(string resourceId, Exception e) : base(resourceId, e) { }

@@ -19,10 +19,9 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class EditAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<EditAnnotationFacetFactory> logger;
@@ -63,7 +62,6 @@ public sealed class EditAnnotationFacetFactory : ObjectFacetFactoryProcessor, IA
 
         return (method.DeclaringType?.IsAssignableTo(method.ReturnType) == true, method.ReturnType);
     }
-
 
     private static (bool, Type) IsEditMethod(MethodInfo method) {
         if (method.IsDefined(typeof(EditAttribute), false)) {

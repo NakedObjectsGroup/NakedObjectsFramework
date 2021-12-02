@@ -19,7 +19,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Spec;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.SpecImmutable; 
+namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class CollectionUtils {
     #region public
@@ -79,7 +79,7 @@ public static class CollectionUtils {
 
     public static IList ToTypedIList(IEnumerable<object> toWrap, Type instanceType) {
         var typedListType = typeof(List<>).MakeGenericType(instanceType);
-        var typedList = (IList) Activator.CreateInstance(typedListType);
+        var typedList = (IList)Activator.CreateInstance(typedListType);
         toWrap.ForEach(o => typedList.Add(o));
         return typedList;
     }

@@ -21,13 +21,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private DisabledAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IDisabledFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IDisabledFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -74,10 +74,10 @@ public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestDisabledAnnotationPickedUpOnParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer7), nameof(Customer7.SomeAction), new[] {typeof(string)});
+        var actionMethod = FindMethod(typeof(Customer7), nameof(Customer7.SomeAction), new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDisabledFacet));
-        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        var disabledFacetAbstract = (DisabledFacetAbstract)facet;
         Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -89,7 +89,7 @@ public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDisabledFacet));
-        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        var disabledFacetAbstract = (DisabledFacetAbstract)facet;
         Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -101,7 +101,7 @@ public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var actionMethod = FindMethod(typeof(Customer4), "SomeAction");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDisabledFacet));
-        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        var disabledFacetAbstract = (DisabledFacetAbstract)facet;
         Assert.AreEqual(WhenTo.Never, disabledFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -113,7 +113,7 @@ public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var actionMethod = FindMethod(typeof(Customer5), "SomeAction");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDisabledFacet));
-        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        var disabledFacetAbstract = (DisabledFacetAbstract)facet;
         Assert.AreEqual(WhenTo.OncePersisted, disabledFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -125,7 +125,7 @@ public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var actionMethod = FindMethod(typeof(Customer6), "SomeAction");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDisabledFacet));
-        var disabledFacetAbstract = (DisabledFacetAbstract) facet;
+        var disabledFacetAbstract = (DisabledFacetAbstract)facet;
         Assert.AreEqual(WhenTo.UntilPersisted, disabledFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }

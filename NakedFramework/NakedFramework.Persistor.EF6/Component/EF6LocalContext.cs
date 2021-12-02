@@ -19,7 +19,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EF6.Configuration;
 using NakedFramework.Persistor.EF6.Util;
 
-namespace NakedFramework.Persistor.EF6.Component; 
+namespace NakedFramework.Persistor.EF6.Component;
 
 public class EF6LocalContext : IDisposable {
     private readonly List<object> added = new();
@@ -42,7 +42,7 @@ public class EF6LocalContext : IDisposable {
 
     public EF6LocalContext(EF6ContextConfiguration config, ISession session, EF6ObjectStore parent)
         : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, parent) {
-        WrappedObjectContext = ((IObjectContextAdapter) config.DbContext()).ObjectContext;
+        WrappedObjectContext = ((IObjectContextAdapter)config.DbContext()).ObjectContext;
         Name = WrappedObjectContext.DefaultContainerName;
     }
 

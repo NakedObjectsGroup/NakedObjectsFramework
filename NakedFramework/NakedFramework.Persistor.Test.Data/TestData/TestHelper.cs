@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace TestData; 
+namespace TestData;
 
 public class TestHelper {
     #region testcode
@@ -50,15 +50,15 @@ public class TestHelper {
 
     private void SetupEvents() =>
         events ??= new Dictionary<string, int> {
-            {"Created", 0},
-            {"Updating", 0},
-            {"Updated", 0},
-            {"Loading", 0},
-            {"Loaded", 0},
-            {"Persisting", 0},
-            {"Persisted", 0},
-            {"Deleting", 0},
-            {"Deleted", 0}
+            { "Created", 0 },
+            { "Updating", 0 },
+            { "Updated", 0 },
+            { "Loading", 0 },
+            { "Loaded", 0 },
+            { "Persisting", 0 },
+            { "Persisted", 0 },
+            { "Deleting", 0 },
+            { "Deleted", 0 }
         };
 
     #endregion

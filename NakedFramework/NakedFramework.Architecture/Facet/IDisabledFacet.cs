@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 /// <summary>
 ///     Disable a property, collection or action

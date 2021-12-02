@@ -8,7 +8,7 @@
 using NakedFramework.Test.Interface;
 using NakedObjects.Services;
 
-namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys; 
+namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 
 public abstract class TestObjectFinderWithCompoundKeysAbstract : AbstractSystemTest<PaymentContext> {
     protected ITestObject customer1;

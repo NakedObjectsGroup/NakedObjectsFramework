@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NakedFramework.Rest.Model; 
+namespace NakedFramework.Rest.Model;
 
 [ModelBinder(BinderType = typeof(PromptArgumentMapBinder))]
 public class PromptArgumentMap : ArgumentMap {

@@ -15,12 +15,11 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFactoryProcessor {
     public DisplayAsPropertyIntegrationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyIntegrationFacetFactory> order, ILoggerFactory loggerFactory)
@@ -32,7 +31,7 @@ public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFa
 
     private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecBuilder[] functions, IMetamodel metamodel) {
         var result = functions.AsParallel().SelectMany(functionsSpec => {
-            var serviceActions =  functionsSpec.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
+            var serviceActions = functionsSpec.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
 
             var matchingActionsForObject = new List<IActionSpecImmutable>();
 

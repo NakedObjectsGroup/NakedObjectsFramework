@@ -16,16 +16,16 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
+using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Test.TestCase;
 using NakedObjects;
 using NakedObjects.Services;
 using NUnit.Framework;
-using AdapterUtils = NakedFramework.Core.Util.AdapterUtils;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedFramework.Core.Test.Adapter; 
+namespace NakedFramework.Core.Test.Adapter;
 
 public class TestDomainObject {
     public IDomainObjectContainer Container { protected get; set; }
@@ -33,13 +33,13 @@ public class TestDomainObject {
     [Key]
     public virtual int Id { get; set; }
 
-    public ICollection<TestDomainObject> Action1() => Container.Instances<TestDomainObject>().ToList();
+    public ICollection<TestDomainObject> Action1() => Enumerable.ToList(Container.Instances<TestDomainObject>());
 
-    public ICollection<TestDomainObject> Action2(int filter) => Container.Instances<TestDomainObject>().Where(tdo => tdo.Id != filter).ToList();
+    public ICollection<TestDomainObject> Action2(int filter) => Enumerable.ToList(Container.Instances<TestDomainObject>().Where(tdo => tdo.Id != filter));
 
     public ICollection<TestDomainObject> Action3(TestDomainObject filter) {
         if (filter != null) {
-            return Container.Instances<TestDomainObject>().Where(tdo => tdo.Id != filter.Id).ToList();
+            return Enumerable.ToList(Container.Instances<TestDomainObject>().Where(tdo => tdo.Id != filter.Id));
         }
 
         return new TestDomainObject[] { };
@@ -62,7 +62,7 @@ public class TestDomainObject {
 
     public ICollection<TestDomainObject> Action6(string filter) {
         var filterInt = int.Parse(filter);
-        return Container.Instances<TestDomainObject>().Where(tdo => tdo.Id != filterInt).ToList();
+        return Enumerable.ToList(Container.Instances<TestDomainObject>().Where(tdo => tdo.Id != filterInt));
     }
 
     public IQueryable<TestDomainObject> Action7(IEnumerable<string> filter) {
@@ -95,37 +95,10 @@ public class TestDataFixture {
 
 [TestFixture]
 public class CollectionMementoTest : AcceptanceTestCase {
-    protected override Type[] ObjectTypes => new[] {
-        typeof(TestDomainObject)
-    };
-
-    protected override object[] Fixtures => new object[] {new TestDataFixture()};
-
-    protected override Type[] Services => new[] {typeof(SimpleRepository<TestDomainObject>)};
-
-    protected override Func<IConfiguration, DbContext>[] ContextCreators =>
-        new Func<IConfiguration, DbContext>[] { config => {
-                var cs = config.GetConnectionString("TestContext");
-                return new TestContext(cs);
-            }
-        };
-
-    protected override Action<NakedFrameworkOptions> AddNakedFunctions => builder => { };
-
-    #region Setup/Teardown
-
     [SetUp]
     public void Setup() {
         RunFixtures();
         StartTest();
-    }
-
-    #endregion
-
-    protected override IDictionary<string, string> Configuration() {
-        var config = base.Configuration();
-        config["ConnectionStrings:TestContext"] = @"Server=(localdb)\MSSQLLocalDB;Initial Catalog=CodeSystemTest;Integrated Security=True;";
-        return config;
     }
 
     [OneTimeSetUp]
@@ -133,6 +106,30 @@ public class CollectionMementoTest : AcceptanceTestCase {
 
     [OneTimeTearDown]
     public void TearDownFixture() => CleanupNakedObjectsFramework(this);
+
+    protected override Type[] ObjectTypes => new[] {
+        typeof(TestDomainObject)
+    };
+
+    protected override object[] Fixtures => new object[] { new TestDataFixture() };
+
+    protected override Type[] Services => new[] { typeof(SimpleRepository<TestDomainObject>) };
+
+    protected override Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] {
+            config => {
+                var cs = config.GetConnectionString("TestContext");
+                return new TestContext(cs);
+            }
+        };
+
+    protected override Action<NakedFrameworkOptions> AddNakedFunctions => builder => { };
+
+    protected override IDictionary<string, string> Configuration() {
+        var config = base.Configuration();
+        config["ConnectionStrings:TestContext"] = @"Server=(localdb)\MSSQLLocalDB;Initial Catalog=CodeSystemTest;Integrated Security=True;";
+        return config;
+    }
 
     private void RoundTrip(CollectionMemento memento) {
         var strings1 = memento.ToEncodedStrings();
@@ -168,7 +165,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
 
     [Test]
     public void TestActionNoParmsTransient() {
-        var targetNo = NakedFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedFramework.MetamodelManager.GetSpecification(typeof(TestDomainObject)));
+        var targetNo = NakedFramework.LifecycleManager.CreateInstance((IObjectSpec)NakedFramework.MetamodelManager.GetSpecification(typeof(TestDomainObject)));
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action1");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
@@ -188,7 +185,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
 
         var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
 
-        var selectedMemento = new CollectionMemento(NakedFramework, logger, memento, new object[] {target});
+        var selectedMemento = new CollectionMemento(NakedFramework, logger, memento, new object[] { target });
 
         RoundTrip(selectedMemento);
         var recoveredCollection = AdapterUtils.GetAsEnumerable(selectedMemento.RecoverCollection(), NakedFramework.NakedObjectManager).Select(AdapterUtils.GetDomainObject<TestDomainObject>);
@@ -210,11 +207,11 @@ public class CollectionMementoTest : AcceptanceTestCase {
 
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action5");
 
-        var rawParm = new List<TestDomainObject> {target, obj2};
+        var rawParm = new List<TestDomainObject> { target, obj2 };
         var parm = NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null);
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {parm});
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] { parm });
 
         RoundTrip(memento);
         RecoverCollection(target.Action5(rawParm), memento, NakedFramework.NakedObjectManager);
@@ -231,7 +228,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var parm = NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null);
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {parm});
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] { parm });
 
         RoundTrip(memento);
         RecoverCollection(target.Action5(rawParm), memento, NakedFramework.NakedObjectManager);
@@ -244,7 +241,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action3");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {targetNo});
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] { targetNo });
 
         RoundTrip(memento);
         RecoverCollection(target.Action3(target), memento, NakedFramework.NakedObjectManager);
@@ -257,7 +254,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action3");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] {null});
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { null });
 
         RoundTrip(memento);
         RecoverCollection(target.Action3(null), memento, NakedFramework.NakedObjectManager);
@@ -269,8 +266,8 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var targetNo = NakedFramework.NakedObjectManager.CreateAdapter(target, null, null);
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action4");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
-        var rawParm = new List<int> {1, 2};
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
+        var rawParm = new List<int> { 1, 2 };
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] { NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null) });
 
         RoundTrip(memento);
         RecoverCollection(target.Action4(rawParm), memento, NakedFramework.NakedObjectManager);
@@ -284,7 +281,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
         var rawParm = new List<int>();
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] { NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null) });
 
         RoundTrip(memento);
         RecoverCollection(target.Action4(rawParm), memento, NakedFramework.NakedObjectManager);
@@ -297,8 +294,8 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action7");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var rawParm = new List<string> {"1", "2"};
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
+        var rawParm = new List<string> { "1", "2" };
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] { NakedFramework.NakedObjectManager.CreateAdapter(rawParm, null, null) });
 
         RoundTrip(memento);
         RecoverCollection(target.Action7(rawParm), memento, NakedFramework.NakedObjectManager);
@@ -311,7 +308,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action2");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter(1, null, null)});
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] { NakedFramework.NakedObjectManager.CreateAdapter(1, null, null) });
 
         RoundTrip(memento);
         RecoverCollection(target.Action2(1), memento, NakedFramework.NakedObjectManager);
@@ -324,7 +321,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action6");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] {NakedFramework.NakedObjectManager.CreateAdapter("1", null, null)});
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new[] { NakedFramework.NakedObjectManager.CreateAdapter("1", null, null) });
 
         RoundTrip(memento);
         RecoverCollection(target.Action6("1"), memento, NakedFramework.NakedObjectManager);

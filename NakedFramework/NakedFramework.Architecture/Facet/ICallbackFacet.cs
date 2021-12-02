@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 /// <summary>
 ///     A <see cref="IFacet" /> that represents some type of lifecycle callback on the object (eg about to be persisted).

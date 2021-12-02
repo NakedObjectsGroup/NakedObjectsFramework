@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Reflector.Configuration; 
+namespace NakedObjects.Reflector.Configuration;
 
 public interface IObjectReflectorConfiguration {
     /// <summary>

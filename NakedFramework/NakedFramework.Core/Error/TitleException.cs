@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 public class TitleException : NakedObjectApplicationException {
     public TitleException(string msg, Exception cause)

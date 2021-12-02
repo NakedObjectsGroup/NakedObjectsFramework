@@ -13,12 +13,11 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class ActionResultRepresentation : Representation {
@@ -69,7 +68,7 @@ public class ActionResultRepresentation : Representation {
     }
 
     private void SetLinks(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult) {
-        Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(frameworkFacade, req, actionResult)))} : Array.Empty<LinkRepresentation>();
+        Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] { LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(frameworkFacade, req, actionResult))) } : Array.Empty<LinkRepresentation>();
     }
 
     private void SetResultType(ActionResultContextFacade actionResult) {
@@ -132,7 +131,7 @@ public class ActionResultRepresentation : Representation {
 
     public static ActionResultRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags) {
         if (!actionResult.HasResult) {
-            return new ActionResultRepresentation(frameworkFacade,  req, actionResult, flags);
+            return new ActionResultRepresentation(frameworkFacade, req, actionResult, flags);
         }
 
         IRepresentation result = actionResult switch {
@@ -142,6 +141,6 @@ public class ActionResultRepresentation : Representation {
             _ => PagedListRepresentation.Create(frameworkFacade, actionResult, req, flags)
         };
 
-        return CreateWithOptionals<ActionResultRepresentation>(new object[] {frameworkFacade, req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
+        return CreateWithOptionals<ActionResultRepresentation>(new object[] { frameworkFacade, req, actionResult, flags }, new[] { new OptionalProperty(JsonPropertyNames.Result, result) });
     }
 }

@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("NakedFunctions.Services.Test")]
 
-namespace NakedFunctions.Services; 
+namespace NakedFunctions.Services;
 
 public class RandomNumber : IRandom {
     internal readonly uint U;
@@ -36,5 +36,5 @@ public class RandomNumber : IRandom {
 
     private static double CalculateDoubleValue(uint u, uint v) => ((u << 16) + v + 1.0) * 2.328306435454494e-10;
 
-    private static int CalculateValue(uint u, uint v) => (int) (CalculateDoubleValue(u, v) * int.MaxValue);
+    private static int CalculateValue(uint u, uint v) => (int)(CalculateDoubleValue(u, v) * int.MaxValue);
 }

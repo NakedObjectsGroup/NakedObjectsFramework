@@ -10,7 +10,7 @@ using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes; 
+namespace NakedFramework.Rest.Snapshot.RelTypes;
 
 public class InvokeRelType : RelType {
     public InvokeRelType(UriMtHelper helper) : base(RelValues.Invoke, helper) { }

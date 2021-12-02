@@ -29,7 +29,7 @@ using NakedFramework.Persistor.EFCore.Util;
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.EFCore.Test")]
 
-namespace NakedFramework.Persistor.EFCore.Component; 
+namespace NakedFramework.Persistor.EFCore.Component;
 
 public class EFCoreObjectStore : IObjectStore, IDisposable {
     private readonly Dictionary<ComplexTypeMatcher, (INakedObjectAdapter, PropertyInfo)> adaptersWithComplexChildren = new();
@@ -69,7 +69,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
         CreateAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);
         ReplacePoco = (nakedObject, newDomainObject) => this.nakedObjectManager.ReplacePoco(nakedObject, newDomainObject);
         RemoveAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
-        CreateAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec) parent.Spec).GetProperty(property.Name).Id, obj);
+        CreateAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec)parent.Spec).GetProperty(property.Name).Id, obj);
         HandleLoaded = HandleLoadedDefault;
         savingChanges = SavingChangesHandler;
 
@@ -105,7 +105,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
             PostSaveWrapUp();
         }
         catch (DbUpdateConcurrencyException oce) {
-            InvokeErrorFacet(new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObjectAdapter = GetSourceNakedObject(oce)});
+            InvokeErrorFacet(new ConcurrencyException(ConcatenateMessages(oce), oce) { SourceNakedObjectAdapter = GetSourceNakedObject(oce) });
         }
         catch (DbUpdateException ue) {
             InvokeErrorFacet(new DataUpdateException(ConcatenateMessages(ue), ue));
@@ -125,7 +125,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
     public IQueryable GetInstances(Type type) {
         var dbContext = GetContext(type).WrappedDbContext;
         var mi = dbContext.GetType().GetMethod("Set", Array.Empty<Type>())?.MakeGenericMethod(type);
-        return (IQueryable) mi?.Invoke(dbContext, Array.Empty<object>());
+        return (IQueryable)mi?.Invoke(dbContext, Array.Empty<object>());
     }
 
     public IQueryable GetInstances(IObjectSpec spec) {
@@ -133,7 +133,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
         return GetInstances(type);
     }
 
-    public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => (T) CreateInstance(typeof(T));
+    public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => (T)CreateInstance(typeof(T));
 
     public object CreateInstance(Type type) {
         if (type.IsArray) {
@@ -164,9 +164,9 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
     public INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint) {
         switch (oid) {
             case IAggregateOid aggregateOid: {
-                var parentOid = (IDatabaseOid) aggregateOid.ParentOid;
+                var parentOid = (IDatabaseOid)aggregateOid.ParentOid;
                 var parentType = parentOid.TypeName;
-                var parentSpec = (IObjectSpec) metamodelManager.GetSpecification(parentType);
+                var parentSpec = (IObjectSpec)metamodelManager.GetSpecification(parentType);
                 var parent = CreateAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
                 return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
@@ -233,7 +233,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
     public int CountField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec associationSpec) {
         var type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
         var countMethod = GetType().GetMethod("Count")?.GetGenericMethodDefinition().MakeGenericMethod(type);
-        return (int) (countMethod?.Invoke(this, new object[] {nakedObjectAdapter, associationSpec, nakedObjectManager}) ?? 0);
+        return (int)(countMethod?.Invoke(this, new object[] { nakedObjectAdapter, associationSpec, nakedObjectManager }) ?? 0);
     }
 
     public INakedObjectAdapter FindByKeys(Type type, object[] keys) {
@@ -337,7 +337,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
 
         switch (exception) {
             case ConcurrencyException concurrencyException:
-                throw new ConcurrencyException(newMessage, exception) {SourceNakedObjectAdapter = concurrencyException.SourceNakedObjectAdapter};
+                throw new ConcurrencyException(newMessage, exception) { SourceNakedObjectAdapter = concurrencyException.SourceNakedObjectAdapter };
             case DataUpdateException:
                 throw new DataUpdateException(newMessage, exception);
             default:
@@ -406,7 +406,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
     }
 
     private static TransactionScope CreateTransactionScope() {
-        var transactionOptions = new TransactionOptions {IsolationLevel = IsolationLevel.ReadCommitted, Timeout = TimeSpan.MaxValue};
+        var transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted, Timeout = TimeSpan.MaxValue };
         return new TransactionScope(TransactionScopeOption.Required, transactionOptions);
     }
 
@@ -483,7 +483,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
     }
 
     internal void HandleAdded(INakedObjectAdapter nakedObjectAdapter) {
-        var oid = (IDatabaseOid) nakedObjectAdapter.Oid;
+        var oid = (IDatabaseOid)nakedObjectAdapter.Oid;
         var key = GetContext(nakedObjectAdapter.Object).WrappedDbContext.GetKeyValues(nakedObjectAdapter.Object);
 
         if (key is null || !key.Any()) {
@@ -555,7 +555,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
             cmd.Execute();
         }
         catch (DbUpdateConcurrencyException oce) {
-            throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObjectAdapter = cmd.OnObject()};
+            throw new ConcurrencyException(ConcatenateMessages(oce), oce) { SourceNakedObjectAdapter = cmd.OnObject() };
         }
         catch (DbUpdateException ue) {
             throw new DataUpdateException(ConcatenateMessages(ue), ue);
@@ -595,7 +595,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
         }
 
         return CollectionUtils.IsCollection(objectType)
-            ? GetTypeToUse(((IEnumerable) domainObject).Cast<object>().FirstOrDefault())
+            ? GetTypeToUse(((IEnumerable)domainObject).Cast<object>().FirstOrDefault())
             : objectType;
     }
 

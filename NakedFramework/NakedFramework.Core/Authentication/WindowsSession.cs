@@ -9,7 +9,7 @@ using System.IO;
 using System.Security.Principal;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Core.Authentication; 
+namespace NakedFramework.Core.Authentication;
 
 public class WindowsSession : ISession {
     public WindowsSession(IPrincipal principal) => Principal = principal ?? new EmptyPrincipal();

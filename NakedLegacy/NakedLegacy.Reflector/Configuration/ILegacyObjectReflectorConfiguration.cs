@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedLegacy.Reflector.Configuration; 
+namespace NakedLegacy.Reflector.Configuration;
 
 public interface ILegacyObjectReflectorConfiguration {
     /// <summary>

@@ -19,7 +19,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.ModelBuilding.Component; 
+namespace NakedFramework.ModelBuilding.Component;
 
 public class ModelIntegrator : IModelIntegrator {
     private readonly ICoreConfiguration coreConfiguration;
@@ -62,7 +62,7 @@ public class ModelIntegrator : IModelIntegrator {
 
     private static IMenuActionImmutable[] GetMenuActions(IMenuItemImmutable item) =>
         item switch {
-            IMenuActionImmutable actionImmutable => new[] {actionImmutable},
+            IMenuActionImmutable actionImmutable => new[] { actionImmutable },
             IMenuImmutable menu => menu.MenuItems.SelectMany(GetMenuActions).ToArray(),
             _ => Array.Empty<IMenuActionImmutable>()
         };
@@ -128,7 +128,7 @@ public class ModelIntegrator : IModelIntegrator {
 
     private static void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel) {
         var (contribActions, collContribActions, finderActions) = services.AsParallel().Select(serviceType => {
-            var serviceSpecification = (ITypeSpecBuilder) metamodel.GetSpecification(serviceType);
+            var serviceSpecification = (ITypeSpecBuilder)metamodel.GetSpecification(serviceType);
             var serviceActions = serviceSpecification.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
 
             var matchingActionsForObject = new List<IActionSpecImmutable>();

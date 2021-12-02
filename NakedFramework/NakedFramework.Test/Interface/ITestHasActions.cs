@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Test.Interface; 
+namespace NakedFramework.Test.Interface;
 
 public interface ITestHasActions : ITestNaked {
     ITestAction[] Actions { get; }

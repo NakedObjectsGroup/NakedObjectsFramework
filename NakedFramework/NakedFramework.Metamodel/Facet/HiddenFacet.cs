@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {

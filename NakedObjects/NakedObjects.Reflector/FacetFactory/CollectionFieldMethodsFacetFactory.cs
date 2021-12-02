@@ -25,7 +25,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class CollectionFieldMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {
@@ -52,7 +52,7 @@ public sealed class CollectionFieldMethodsFacetFactory : ObjectFacetFactoryProce
         var capitalizedName = property.Name;
         var type = property.DeclaringType;
 
-        var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property, collection) };
 
         AddSetFacet(facets, property, collection);
 

@@ -15,7 +15,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class MenuRepresentation : Representation {
@@ -52,7 +52,7 @@ public class MenuRepresentation : Representation {
     private void SetHeader(IMenuFacade menu) => Caching = CacheType.NonExpiring;
 
     private void SetLinksAndMembers(HttpRequest req, IFrameworkFacade frameworkFacade, IMenuFacade menu) {
-        var tempLinks = new List<LinkRepresentation> {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)};
+        var tempLinks = new List<LinkRepresentation> { LinkRepresentation.Create(OidStrategy, SelfRelType, Flags) };
 
         SetMembers(frameworkFacade, menu, req);
         Links = tempLinks.ToArray();
@@ -82,7 +82,7 @@ public class MenuRepresentation : Representation {
         var actionComparer = new ActionComparer();
         actions = actions.Distinct(actionComparer).ToArray();
 
-        Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
+        Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object)m));
     }
 
     private void SetExtensions(IMenuFacade menu) => Extensions = MapRepresentation.Create();

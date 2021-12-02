@@ -11,25 +11,25 @@ using System.Collections.Immutable;
 using System.Linq;
 using NakedFunctions.Reflector.Component;
 
-namespace NakedFunctions.Rest.Test.Data; 
+namespace NakedFunctions.Rest.Test.Data;
 
 internal static class Helpers {
     internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) where T : class => (obj, context.WithNew(obj));
 
-    internal static (T, IContext) DisplayAndUpdate<T>(T obj, T proxy, IContext context) where T : class => (obj, ((FunctionalContext) context).WithUpdated(proxy, obj));
+    internal static (T, IContext) DisplayAndUpdate<T>(T obj, T proxy, IContext context) where T : class => (obj, ((FunctionalContext)context).WithUpdated(proxy, obj));
 }
 
 public static class SimpleRecordFunctions {
     [Edit]
     [PresentationHint("Hint3")]
-    public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context) => Helpers.DisplayAndUpdate(sp with {Name = name}, sp, context);
+    public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")] string name, IContext context) => Helpers.DisplayAndUpdate(sp with { Name = name }, sp, context);
 
     [Edit]
     public static (SimpleRecord, IContext) EditSimpleRecordWithPostPersist(this SimpleRecord sp, string name, IContext context) {
-        var updated = sp with {Name = name};
+        var updated = sp with { Name = name };
         context = context.WithUpdated(sp, updated);
         context = context.WithDeferred(c => {
-            var updated2 = updated with {Name = updated.Name + "Updated"};
+            var updated2 = updated with { Name = updated.Name + "Updated" };
             c = c.WithUpdated(sp, updated2);
             return c;
         });
@@ -38,14 +38,14 @@ public static class SimpleRecordFunctions {
 
     [Edit]
     public static (SimpleRecord, IContext) EditSimpleRecordWithRepeatedPostPersist(this SimpleRecord sp, string name, IContext context) {
-        var updated = sp with {Name = name};
+        var updated = sp with { Name = name };
         context = context.WithUpdated(sp, updated);
         context = context.WithDeferred(c => {
-            var updated2 = updated with {Name = updated.Name + "Updated"};
+            var updated2 = updated with { Name = updated.Name + "Updated" };
             c = c.WithUpdated(sp, updated2).WithDeferred(cc => {
-                var updated3 = updated2 with {Name = updated2.Name + "Updated"};
+                var updated3 = updated2 with { Name = updated2.Name + "Updated" };
                 cc = cc.WithUpdated(sp, updated3).WithDeferred(ccc => {
-                    var updated4 = updated3 with {Name = updated3.Name + "Updated"};
+                    var updated4 = updated3 with { Name = updated3.Name + "Updated" };
                     ccc = ccc.WithUpdated(sp, updated4);
                     return ccc;
                 });
@@ -56,14 +56,14 @@ public static class SimpleRecordFunctions {
         return (updated, context);
     }
 
-    public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context) => Helpers.DisplayAndSave(new SimpleRecord {Name = name}, context);
+    public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context) => Helpers.DisplayAndSave(new SimpleRecord { Name = name }, context);
 
     public static (SimpleRecord, IContext) CreateSimpleRecordWithPostPersist(this SimpleRecord sp, string name, IContext context) {
-        var newObj = new SimpleRecord {Name = name};
+        var newObj = new SimpleRecord { Name = name };
         context = context.WithNew(newObj);
         context = context.WithDeferred(c => {
             var original = c.Reload(newObj);
-            var updated2 = original with {Name = newObj.Name + "Updated"};
+            var updated2 = original with { Name = newObj.Name + "Updated" };
             c = c.WithUpdated(original, updated2);
             return c;
         });
@@ -71,14 +71,14 @@ public static class SimpleRecordFunctions {
     }
 
     public static (SimpleRecord, IContext) CreateSimpleRecordWithRepeatedPostPersist(this SimpleRecord sp, string name, IContext context) {
-        var newObj = new SimpleRecord {Name = name};
+        var newObj = new SimpleRecord { Name = name };
         context = context.WithNew(newObj).WithDeferred(c => {
             var original = c.Reload(newObj);
-            var updated2 = original with {Name = newObj.Name + "Updated"};
+            var updated2 = original with { Name = newObj.Name + "Updated" };
             c = c.WithUpdated(original, updated2).WithDeferred(cc => {
-                var updated3 = cc.Resolve(updated2) with {Name = updated2.Name + "Updated"};
+                var updated3 = cc.Resolve(updated2) with { Name = updated2.Name + "Updated" };
                 cc = cc.WithUpdated(original, updated3).WithDeferred(ccc => {
-                    var updated4 = ccc.Resolve(updated3) with {Name = updated3.Name + "Updated"};
+                    var updated4 = ccc.Resolve(updated3) with { Name = updated3.Name + "Updated" };
                     ccc = ccc.WithUpdated(original, updated4);
                     return ccc;
                 });
@@ -99,14 +99,14 @@ public static class SimpleRecordFunctions {
     public static SimpleRecord PasswordParmSimpleRecord(this SimpleRecord sp, [Password] string parm, IContext context) => sp;
 
     public static (SimpleRecord, IContext) SimpleRecordAsCurrentUser(this SimpleRecord sp, IContext context) {
-        var updated = sp with {Name = context.CurrentUser().Identity.Name};
+        var updated = sp with { Name = context.CurrentUser().Identity.Name };
         context = context.WithUpdated(sp, updated);
 
         return (updated, context);
     }
 
     public static (SimpleRecord, IContext) SimpleRecordAsReset(this SimpleRecord sp, IContext context) {
-        var updated = sp with {Name = "Fred"};
+        var updated = sp with { Name = "Fred" };
         context = context.WithUpdated(sp, updated);
 
         return (updated, context);
@@ -120,7 +120,7 @@ public static class SimpleRecordFunctions {
 public static class DateRecordFunctions {
     [Edit]
     public static (DateRecord, IContext) EditDates(this DateRecord sp, DateTime? startDate, DateTime? endDate, IContext context)
-        => Helpers.DisplayAndUpdate(sp with {StartDate = startDate, EndDate = endDate}, sp, context);
+        => Helpers.DisplayAndUpdate(sp with { StartDate = startDate, EndDate = endDate }, sp, context);
 
     public static DateTime? Default1EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today().AddDays(1);
 
@@ -135,7 +135,6 @@ public static class ChoicesRecordFunctions {
 
     public static SimpleRecord WithBoundedChoices(this SimpleRecord sp, BoundedRecord record, IContext context) => sp;
 
-
     public static SimpleRecord WithChoicesWithParameters(this SimpleRecord sp, SimpleRecord record, int parm1, string parm2, IContext context) => record;
 
     public static IList<SimpleRecord> Choices1WithChoicesWithParameters(this SimpleRecord sp, int parm1, string parm2, IContext context) =>
@@ -146,13 +145,13 @@ public static class ChoicesRecordFunctions {
     public static IQueryable<DateRecord> Choices2WithMultipleChoices(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords, IContext context) => context.Instances<DateRecord>();
 
     public static SimpleRecord WithChoicesNoContext(this SimpleRecord sp, SimpleRecord record, IContext context) => record;
-    public static IList<SimpleRecord> Choices1WithChoicesNoContext(this SimpleRecord sp) => new List<SimpleRecord> {sp};
+    public static IList<SimpleRecord> Choices1WithChoicesNoContext(this SimpleRecord sp) => new List<SimpleRecord> { sp };
 
     public static SimpleRecord WithChoicesWithParametersNoContext(this SimpleRecord sp, SimpleRecord record, int parm1, string parm2, IContext context) => record;
-    public static IList<SimpleRecord> Choices1WithChoicesWithParametersNoContext(this SimpleRecord sp, int parm1, string parm2) => new List<SimpleRecord> {sp};
+    public static IList<SimpleRecord> Choices1WithChoicesWithParametersNoContext(this SimpleRecord sp, int parm1, string parm2) => new List<SimpleRecord> { sp };
 
     public static IQueryable<SimpleRecord> WithMultipleChoicesNoContext(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords, IEnumerable<DateRecord> dateRecords, IContext context) => simpleRecords.AsQueryable();
-    public static IQueryable<SimpleRecord> Choices1WithMultipleChoicesNoContext(this SimpleRecord sp) => new List<SimpleRecord> {sp}.AsQueryable();
+    public static IQueryable<SimpleRecord> Choices1WithMultipleChoicesNoContext(this SimpleRecord sp) => new List<SimpleRecord> { sp }.AsQueryable();
     public static IQueryable<DateRecord> Choices2WithMultipleChoicesNoContext(this SimpleRecord sp, IEnumerable<SimpleRecord> simpleRecords) => new List<DateRecord>().AsQueryable();
 }
 
@@ -230,9 +229,9 @@ public static class DisplayAsPropertyRecordFunctions {
 }
 
 public static class ViewModelFunctions {
-    public static string[] DeriveKeys(this ViewModel target) => new[] {target.Name};
-    public static ViewModel CreateFromKeys(string[] keys) => new() {Name = keys.First()};
-    public static ViewModel UpdateName(this ViewModel vm, string name) => vm with {Name = name};
+    public static string[] DeriveKeys(this ViewModel target) => new[] { target.Name };
+    public static ViewModel CreateFromKeys(string[] keys) => new() { Name = keys.First() };
+    public static ViewModel UpdateName(this ViewModel vm, string name) => vm with { Name = name };
 }
 
 public static class OrderedRecordFunctions {

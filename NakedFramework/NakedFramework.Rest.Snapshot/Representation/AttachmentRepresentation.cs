@@ -13,7 +13,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 public class AttachmentRepresentation : Representation {
     private MediaTypeHeaderValue contentType;
@@ -48,7 +48,7 @@ public class AttachmentRepresentation : Representation {
         var no = context.Property.GetValue(context.Target);
         var cd = string.IsNullOrWhiteSpace(no?.GetAttachment().ContentDisposition) ? AttachmentContextFacade.DefaultContentDisposition : no.GetAttachment().ContentDisposition;
         var fn = no?.GetAttachment().FileName ?? AttachmentContextFacade.DefaultFileName;
-        ContentDisposition = new ContentDispositionHeaderValue(cd) {FileName = fn};
+        ContentDisposition = new ContentDispositionHeaderValue(cd) { FileName = fn };
     }
 
     private void SetStream(PropertyContextFacade context) {

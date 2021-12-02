@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 internal abstract class TestHasActions : ITestHasActions {
     protected TestHasActions(ITestObjectFactory factory) => Factory = factory;
@@ -46,7 +46,7 @@ internal abstract class TestHasActions : ITestHasActions {
     public ITestObject AssertIsDescribedAs(string expected) {
         var description = NakedObject.Spec.Description;
         Assert.IsTrue(expected.Equals(description), $"Description expected: '{expected}' actual: '{description}'");
-        return (ITestObject) this;
+        return (ITestObject)this;
     }
 
     public override string ToString() => NakedObject is null ? $"{base.ToString()} null" : $"{base.ToString()} {NakedObject.Spec.ShortName}/{NakedObject}";

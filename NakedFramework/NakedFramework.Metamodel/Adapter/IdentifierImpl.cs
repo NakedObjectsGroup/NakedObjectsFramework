@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Adapter; 
+namespace NakedFramework.Metamodel.Adapter;
 
 [Serializable]
 public class IdentifierImpl : IIdentifier {
@@ -84,7 +84,7 @@ public class IdentifierImpl : IIdentifier {
 
     private string ToParmsIdentityString() => !IsField ? $"({string.Join(",", parameterTypes)})" : "";
 
-    private string ToFullIdentityString() => 
+    private string ToFullIdentityString() =>
         identityString ??= name.Length == 0
             ? ToClassIdentityString()
             : $"{ToClassAndNameIdentityString()}{ToParmsIdentityString()}";
@@ -110,7 +110,7 @@ public class IdentifierImpl : IIdentifier {
 
         name = asString[(indexOfHash + 1)..indexOfOpenBracket];
         var allParms = asString[(indexOfOpenBracket + 1)..indexOfCloseBracket].Trim();
-        var parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
+        var parms = allParms.Length > 0 ? allParms.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
         return new IdentifierImpl(className, name, parms);
     }
 

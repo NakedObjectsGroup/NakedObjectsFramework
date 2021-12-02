@@ -16,7 +16,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
@@ -74,7 +74,7 @@ public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
 
     [TestMethod]
     public void TestValue() {
-        var facet = (ITimeValueFacet) GetValue();
+        var facet = (ITimeValueFacet)GetValue();
         var testValue = TimeSpan.FromHours(22);
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);

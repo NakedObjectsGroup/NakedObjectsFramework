@@ -8,7 +8,7 @@
 using System.Security.Principal;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFunctions.Services; 
+namespace NakedFunctions.Services;
 
 public class PrincipalProvider : IPrincipalProvider {
     private readonly ISession session;

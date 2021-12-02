@@ -15,7 +15,7 @@ using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies; 
+namespace NakedFramework.Rest.Snapshot.Strategies;
 
 [DataContract]
 public abstract class MemberRepresentationStrategy : AbstractStrategy {

@@ -10,7 +10,7 @@ using NakedFramework;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet; 
+namespace NakedObjects.Metamodel.Test.Facet;
 
 [TestClass]
 public class HiddenFacetTest {

@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 public abstract class InteractionException : Exception {
     protected InteractionException(IInteractionContext ic, string message)

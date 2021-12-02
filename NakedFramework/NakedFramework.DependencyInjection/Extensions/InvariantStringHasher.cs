@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Utility;
 
-namespace NakedFramework.DependencyInjection.Extensions; 
+namespace NakedFramework.DependencyInjection.Extensions;
 
 public class InvariantStringHasher : IStringHasher {
     public string GetHash(string toHash) => "1234";

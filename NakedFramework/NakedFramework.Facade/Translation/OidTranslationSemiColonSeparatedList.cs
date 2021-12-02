@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Translation; 
+namespace NakedFramework.Facade.Translation;
 
 public class OidTranslationSemiColonSeparatedList : IOidTranslation {
     private readonly string id;

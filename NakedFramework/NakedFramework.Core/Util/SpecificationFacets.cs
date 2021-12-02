@@ -9,19 +9,19 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class SpecificationFacets {
     public static bool IsNeverPersisted(this ITypeSpec spec) => spec.IsViewModel;
 
     public static bool IsAlwaysImmutable(this ITypeSpec spec) {
         var immutableFacet = spec.GetFacet<IImmutableFacet>();
-        return immutableFacet is {Value: WhenTo.Always};
+        return immutableFacet is { Value: WhenTo.Always };
     }
 
     public static bool IsImmutableOncePersisted(this ITypeSpec spec) {
         var immutableFacet = spec.GetFacet<IImmutableFacet>();
-        return immutableFacet is {Value: WhenTo.OncePersisted};
+        return immutableFacet is { Value: WhenTo.OncePersisted };
     }
 
     public static bool IsBoundedSet(this ITypeSpec spec) => spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
@@ -34,7 +34,7 @@ public static class SpecificationFacets {
 
     public static IFacet GetOpFacet<T>(this ISpecification s) where T : class, IFacet {
         var facet = s.GetFacet<T>();
-        return facet is {IsNoOp: false} ? facet : null;
+        return facet is { IsNoOp: false } ? facet : null;
     }
 }
 

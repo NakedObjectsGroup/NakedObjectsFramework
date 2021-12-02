@@ -10,19 +10,19 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class QueryableUtils {
     public static int Count(this IQueryable q) {
         var countMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Count" && m.GetParameters().Length == 1);
         var gm = countMethod.MakeGenericMethod(q.ElementType);
-        return (int) gm.Invoke(null, new object[] {q});
+        return (int)gm.Invoke(null, new object[] { q });
     }
 
     public static object First(this IQueryable q) {
         var firstMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "First" && m.GetParameters().Length == 1);
         var gm = firstMethod.MakeGenericMethod(q.ElementType);
-        return gm.Invoke(null, new object[] {q});
+        return gm.Invoke(null, new object[] { q });
     }
 
     public static IQueryable Take(this IQueryable q, int count) {
@@ -30,33 +30,34 @@ public static class QueryableUtils {
             var parms = m.GetParameters();
             return parms.Length == 2 && parms[1].ParameterType == typeof(int);
         }
+
         var takeMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Take" && MatchParms(m));
         var gm = takeMethod.MakeGenericMethod(q.ElementType);
-        return (IQueryable) gm.Invoke(null, new object[] {q, count});
+        return (IQueryable)gm.Invoke(null, new object[] { q, count });
     }
 
     public static IQueryable Skip(this IQueryable q, int count) {
         var takeMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Skip" && m.GetParameters().Length == 2);
         var gm = takeMethod.MakeGenericMethod(q.ElementType);
-        return (IQueryable) gm.Invoke(null, new object[] {q, count});
+        return (IQueryable)gm.Invoke(null, new object[] { q, count });
     }
 
     public static bool Contains(this IQueryable q, object item) {
         var containsMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Contains" && m.GetParameters().Length == 2);
         var gm = containsMethod.MakeGenericMethod(q.ElementType);
-        return (bool) gm.Invoke(null, new[] {q, item});
+        return (bool)gm.Invoke(null, new[] { q, item });
     }
 
     public static object[] ToArray(this IQueryable q) {
         var toArrayMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "ToArray" && m.GetParameters().Length == 1);
         var gm = toArrayMethod.MakeGenericMethod(q.ElementType);
-        return (object[]) gm.Invoke(null, new object[] {q});
+        return (object[])gm.Invoke(null, new object[] { q });
     }
 
     public static IList ToList(this IQueryable q) {
         var toArrayMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "ToList" && m.GetParameters().Length == 1);
         var gm = toArrayMethod.MakeGenericMethod(q.ElementType);
-        return (IList) gm.Invoke(null, new object[] {q});
+        return (IList)gm.Invoke(null, new object[] { q });
     }
 
     private static bool IsOrderExpression(Expression expr) {

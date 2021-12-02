@@ -21,7 +21,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Snapshot.Xml.utility; 
+namespace NakedObjects.Snapshot.Xml.utility;
 
 [NotMapped]
 public class XmlSnapshot : IXmlSnapshot {
@@ -187,7 +187,7 @@ public class XmlSnapshot : IXmlSnapshot {
         fieldNames.Remove(fieldName);
 
         // locate the field in the object's class
-        var nos = (IObjectSpec) nakedObjectAdapter.Spec;
+        var nos = (IObjectSpec)nakedObjectAdapter.Spec;
         var field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
 
         if (field == null) {
@@ -295,7 +295,7 @@ public class XmlSnapshot : IXmlSnapshot {
 
     [NakedObjectsIgnore]
     public Place ObjectToElement(INakedObjectAdapter nakedObjectAdapter) {
-        var nos = (IObjectSpec) nakedObjectAdapter.Spec;
+        var nos = (IObjectSpec)nakedObjectAdapter.Spec;
 
         var element = Schema.CreateElement(XmlDocument, nos.ShortName, nos.FullName, nos.SingularName, nos.PluralName);
         NofMetaModel.AppendNofTitle(element, nakedObjectAdapter.TitleString());

@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 internal class TestCollection : ITestCollection {
     private readonly IEnumerable<ITestObject> wrappedCollection;

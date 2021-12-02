@@ -22,7 +22,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class EnumFacetFactory : ObjectFacetFactoryProcessor {
     public EnumFacetFactory(IFacetFactoryOrder<EnumFacetFactory> order, ILoggerFactory loggerFactory)

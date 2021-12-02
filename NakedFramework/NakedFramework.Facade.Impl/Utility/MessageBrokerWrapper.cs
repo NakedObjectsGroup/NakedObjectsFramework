@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Utility; 
+namespace NakedFramework.Facade.Impl.Utility;
 
 public class MessageBrokerWrapper : IMessageBrokerFacade {
     private readonly IMessageBroker messageBroker;

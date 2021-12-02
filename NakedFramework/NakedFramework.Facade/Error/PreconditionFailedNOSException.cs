@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Error; 
+namespace NakedFramework.Facade.Error;
 
 public class PreconditionFailedNOSException : NakedObjectsFacadeException {
     public PreconditionFailedNOSException() { }

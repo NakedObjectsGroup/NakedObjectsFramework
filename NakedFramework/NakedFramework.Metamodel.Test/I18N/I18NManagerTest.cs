@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.I18N;
 
-namespace NakedObjects.Meta.Test.I18N; 
+namespace NakedObjects.Meta.Test.I18N;
 
 [TestClass]
 public class I18NManagerTest {
@@ -51,7 +51,7 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-        Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
+        Assert.AreEqual("I18N property name", ((NamedFacetI18N)facet).Value);
     }
 
     [TestMethod]
@@ -77,7 +77,7 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-        Assert.AreEqual("I18N action name", ((NamedFacetI18N) facet).Value);
+        Assert.AreEqual("I18N action name", ((NamedFacetI18N)facet).Value);
     }
 
     [TestMethod]
@@ -100,7 +100,7 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-        Assert.AreEqual("I18N parameter name", ((NamedFacetI18N) facet).Value);
+        Assert.AreEqual("I18N parameter name", ((NamedFacetI18N)facet).Value);
     }
 
     [TestMethod]
@@ -126,7 +126,7 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
-        Assert.AreEqual("I18N property description", ((DescribedAsFacetI18N) facet).Value);
+        Assert.AreEqual("I18N property description", ((DescribedAsFacetI18N)facet).Value);
     }
 
     [TestMethod]
@@ -152,7 +152,7 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
-        Assert.AreEqual("I18N action description", ((DescribedAsFacetI18N) facet).Value);
+        Assert.AreEqual("I18N action description", ((DescribedAsFacetI18N)facet).Value);
     }
 
     [TestMethod]
@@ -175,7 +175,7 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
-        Assert.AreEqual("I18N parameter description", ((DescribedAsFacetI18N) facet).Value);
+        Assert.AreEqual("I18N parameter description", ((DescribedAsFacetI18N)facet).Value);
     }
 
     [TestMethod]
@@ -262,7 +262,7 @@ public class I18NManagerTest {
 
         var facets = manager.ForFacetTypes;
 
-        Assert.IsTrue(facets.SequenceEqual(new[] {typeof(INamedFacet), typeof(IDescribedAsFacet)}));
+        Assert.IsTrue(facets.SequenceEqual(new[] { typeof(INamedFacet), typeof(IDescribedAsFacet) }));
     }
 
     [TestMethod]
@@ -303,11 +303,11 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-        Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
+        Assert.AreEqual("I18N property name", ((NamedFacetI18N)facet).Value);
 
         facet = manager.Decorate(testName.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-        Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
+        Assert.AreEqual("I18N property name", ((NamedFacetI18N)facet).Value);
     }
 }

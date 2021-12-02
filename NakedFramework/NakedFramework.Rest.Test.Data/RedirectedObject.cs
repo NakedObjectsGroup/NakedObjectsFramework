@@ -10,7 +10,7 @@ using NakedFramework;
 using NakedObjects;
 using NakedObjects.Redirect;
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class RedirectedObject : IRedirectedObject {
     [Key]

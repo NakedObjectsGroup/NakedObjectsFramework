@@ -19,7 +19,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Utils; 
+namespace NakedFramework.Metamodel.Utils;
 
 public static class FacetUtils {
     public static string[] SplitOnComma(string toSplit) {
@@ -27,7 +27,7 @@ public static class FacetUtils {
             return Array.Empty<string>();
         }
 
-        return toSplit.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+        return toSplit.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
     }
 
     public static bool IsAllowed(ISession session, string[] roles, string[] users) =>
@@ -37,7 +37,7 @@ public static class FacetUtils {
     /// <summary>
     ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
     /// </summary>
-    public static void AddFacet(IFacet facet) => ((ISpecificationBuilder) facet?.Specification)?.AddFacet(facet);
+    public static void AddFacet(IFacet facet) => ((ISpecificationBuilder)facet?.Specification)?.AddFacet(facet);
 
     /// <summary>
     ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
@@ -53,7 +53,7 @@ public static class FacetUtils {
         return parameterNames.Select(GetValue).ToArray();
     }
 
-    public static bool IsNotANoopFacet(IFacet facet) => facet is {IsNoOp: false};
+    public static bool IsNotANoopFacet(IFacet facet) => facet is { IsNoOp: false };
 
     public static bool IsTuple(Type type) => type.GetInterfaces().Any(i => i == typeof(ITuple));
 
@@ -73,6 +73,18 @@ public static class FacetUtils {
             }
 
             throw new ReflectionException(string.Join(", ", errors));
+        }
+    }
+
+    public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action) {
+        var integrationFacet = specification.GetFacet<IIntegrationFacet>();
+
+        if (integrationFacet is null) {
+            integrationFacet = new IntegrationFacet(specification, action);
+            AddFacet(integrationFacet);
+        }
+        else {
+            integrationFacet.AddAction(action);
         }
     }
 
@@ -98,17 +110,5 @@ public static class FacetUtils {
             IMenuActionImmutable menu => menu.Action.OwnerSpec,
             _ => null
         };
-    }
-
-    public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action) {
-        var integrationFacet = specification.GetFacet<IIntegrationFacet>();
-
-        if (integrationFacet is null) {
-            integrationFacet = new IntegrationFacet(specification, action);
-            AddFacet(integrationFacet);
-        }
-        else {
-            integrationFacet.AddAction(action);
-        }
     }
 }

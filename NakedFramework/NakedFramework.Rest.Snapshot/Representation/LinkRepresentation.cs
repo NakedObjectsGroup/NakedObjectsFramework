@@ -12,7 +12,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class LinkRepresentation : RefValueRepresentation {
@@ -38,6 +38,6 @@ public class LinkRepresentation : RefValueRepresentation {
 
     public static LinkRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags, params OptionalProperty[] properties) =>
         properties.Any()
-            ? CreateWithOptionals<LinkRepresentation>(new object[] {oidStrategy, relType, flags}, properties)
+            ? CreateWithOptionals<LinkRepresentation>(new object[] { oidStrategy, relType, flags }, properties)
             : new LinkRepresentation(oidStrategy, relType, flags);
 }

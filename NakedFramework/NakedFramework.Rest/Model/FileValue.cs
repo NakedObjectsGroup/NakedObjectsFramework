@@ -9,7 +9,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Model; 
+namespace NakedFramework.Rest.Model;
 
 public class FileValue : IValue {
     private readonly IAttachmentFacade value;

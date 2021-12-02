@@ -21,7 +21,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class DisplayAsPropertyAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<DisplayAsPropertyAnnotationFacetFactory> logger;

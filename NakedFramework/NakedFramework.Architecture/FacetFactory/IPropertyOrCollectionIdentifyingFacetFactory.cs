@@ -10,7 +10,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.FacetFactory; 
+namespace NakedFramework.Architecture.FacetFactory;
 
 /// <summary>
 ///     A <see cref="IFacetFactory" /> implementation that is able to identify a property or collection.

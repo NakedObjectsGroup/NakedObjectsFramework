@@ -9,12 +9,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
+
 #pragma warning disable 612
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace TestData; 
+namespace TestData;
 
 [ValidateProgrammaticUpdates]
 public class Person : TestHelper {

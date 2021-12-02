@@ -8,7 +8,7 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace SimpleDatabase; 
+namespace SimpleDatabase;
 
 public class Fruit : Food {
     #region Primitive Properties

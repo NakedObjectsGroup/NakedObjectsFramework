@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisableForSessionFacetNone : DisableForSessionFacetAbstract {

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFunctions.Reflector.Utils; 
+namespace NakedFunctions.Reflector.Utils;
 
 public static class FactoryUtils {
     public static bool Matches(this MethodInfo methodInfo, string name, Type declaringType, Type returnType, Type targetType) =>
@@ -43,7 +43,7 @@ public static class FactoryUtils {
 
     public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
         try {
-            return methodDelegate is not null ? (T) methodDelegate(null, parms) : (T) method.Invoke(null, parms);
+            return methodDelegate is not null ? (T)methodDelegate(null, parms) : (T)method.Invoke(null, parms);
         }
         catch (InvalidCastException) {
             throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.DeclaringType}.{method.Name}");
@@ -114,7 +114,7 @@ public static class FactoryUtils {
         var genericHelper = typeof(FactoryUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
 
         // Now supply the type arguments
-        var typeArgs = new List<Type> { method.DeclaringType, Enumerable.First(DelegateUtils.GetTypeAuthorizerType(method.DeclaringType).GenericTypeArguments) };
+        var typeArgs = new List<Type> { method.DeclaringType, DelegateUtils.GetTypeAuthorizerType(method.DeclaringType).GenericTypeArguments.First() };
         var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
 
         // Now call it. The null argument is because it’s a static method.

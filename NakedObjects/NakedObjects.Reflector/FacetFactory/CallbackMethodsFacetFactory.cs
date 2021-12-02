@@ -23,7 +23,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class CallbackMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes = {
@@ -132,7 +132,7 @@ public sealed class CallbackMethodsFacetFactory : ObjectFacetFactoryProcessor, I
             facets.Add(new DeletedCallbackFacetNull(specification));
         }
 
-        method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.OnUpdatingErrorMethod, typeof(string), new[] {typeof(Exception)});
+        method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.OnUpdatingErrorMethod, typeof(string), new[] { typeof(Exception) });
         if (method is not null) {
             methods.Add(method);
             facets.Add(new OnUpdatingErrorCallbackFacetViaMethod(method, specification, Logger<OnUpdatingErrorCallbackFacetViaMethod>()));
@@ -141,7 +141,7 @@ public sealed class CallbackMethodsFacetFactory : ObjectFacetFactoryProcessor, I
             facets.Add(new OnUpdatingErrorCallbackFacetNull(specification));
         }
 
-        method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.OnPersistingErrorMethod, typeof(string), new[] {typeof(Exception)});
+        method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.OnPersistingErrorMethod, typeof(string), new[] { typeof(Exception) });
         if (method is not null) {
             methods.Add(method);
             facets.Add(new OnPersistingErrorCallbackFacetViaMethod(method, specification, Logger<OnPersistingErrorCallbackFacetViaMethod>()));

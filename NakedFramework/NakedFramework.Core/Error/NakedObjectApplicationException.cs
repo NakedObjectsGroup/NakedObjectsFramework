@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 /// <summary>
 ///     A NakedObjectApplicationException represents exception that has occurred within the domain code, or as a result

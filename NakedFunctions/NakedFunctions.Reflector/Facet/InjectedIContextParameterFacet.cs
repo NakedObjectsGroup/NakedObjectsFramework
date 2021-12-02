@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Component;
 
-namespace NakedFunctions.Reflector.Facet; 
+namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedParameterFacet {
@@ -22,7 +22,7 @@ public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedPar
 
     #region IInjectedParameterFacet Members
 
-    public object GetInjectedValue(INakedFramework framework, IServiceProvider provider) => new FunctionalContext {Persistor = framework.Persistor, Provider = provider};
+    public object GetInjectedValue(INakedFramework framework, IServiceProvider provider) => new FunctionalContext { Persistor = framework.Persistor, Provider = provider };
 
     #endregion
 }

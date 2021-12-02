@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Adapter; 
+namespace NakedFramework.Architecture.Adapter;
 
 public interface ICollectionMemento : IOid {
     INakedObjectAdapter Target { get; }

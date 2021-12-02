@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 public class ConcurrencyException : ObjectPersistenceException {
     public ConcurrencyException(INakedObjectAdapter nakedObjectAdapter)

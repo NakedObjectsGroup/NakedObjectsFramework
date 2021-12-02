@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 public interface IIntegrationFacet : IFacet {
     public void Execute(IMetamodelBuilder metamodelBuilder);

@@ -19,7 +19,7 @@ using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.Facet; 
+namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionValidationViaFunctionFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {

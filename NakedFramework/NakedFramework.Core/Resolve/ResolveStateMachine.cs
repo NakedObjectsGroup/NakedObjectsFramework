@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 
 [assembly: InternalsVisibleTo("NakedFramework.Core.Test")]
 
-namespace NakedFramework.Core.Resolve; 
+namespace NakedFramework.Core.Resolve;
 
 public sealed class ResolveStateMachine : IResolveStateMachine {
     #region Delegates

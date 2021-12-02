@@ -15,13 +15,13 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract, IImperativeFacet {
+    private readonly IActionDefaultsFacet actionDefaultsFacet;
     private readonly Func<object, object[], object> methodDelegate;
     private readonly PropertyInfo property;
-    private readonly IActionDefaultsFacet actionDefaultsFacet;
 
     public ActionDefaultsFacetViaProperty(PropertyInfo property, ISpecification holder, IActionDefaultsFacet actionDefaultsFacet, ILogger<ActionDefaultsFacetViaProperty> logger)
         : base(holder) {

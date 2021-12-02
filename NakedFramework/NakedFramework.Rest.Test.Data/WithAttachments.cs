@@ -9,11 +9,10 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework.Value;
 using NakedObjects;
 
-
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class WithAttachments {
     private byte[] attachment = { };

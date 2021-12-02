@@ -13,11 +13,11 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Core.Util;
 using NakedFramework.Error;
 
-namespace NakedObjects.Core.Container; 
+namespace NakedObjects.Core.Container;
 
 internal static class Methods {
     private static readonly MethodInfo CreateMethod = typeof(LoggerFactoryExtensions).GetMethods().Single(m => m.Name == "CreateLogger" && m.ContainsGenericParameters);
-    public static void InjectContainer(object target, object container) => InjectContainer(target, container, new[] {"Container", "DomainObjectContainer", "ProxyContainer"});
+    public static void InjectContainer(object target, object container) => InjectContainer(target, container, new[] { "Container", "DomainObjectContainer", "ProxyContainer" });
 
     public static void InjectRoot(object root, object inlineObject) {
         var property = inlineObject.GetType().GetProperties().SingleOrDefault(p => p.GetCustomAttribute<RootAttribute>() != null &&
@@ -70,7 +70,7 @@ internal static class Methods {
         var targetLoggers = targetProperties.Where(p => p.PropertyType == loggerType).ToList();
         if (targetLoggers.Any()) {
             var createLoggerType = CreateMethod.MakeGenericMethod(targetType);
-            var logger = createLoggerType.Invoke(null, new object[] {loggerFactory});
+            var logger = createLoggerType.Invoke(null, new object[] { loggerFactory });
             targetLoggers.ForEach(l => l.SetValue(target, logger));
         }
     }

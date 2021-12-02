@@ -20,15 +20,13 @@ using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Facade.Utility;
-using NakedFramework.Metamodel.Audit;
-using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.I18N;
 using NakedFramework.Metamodel.Profile;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
 
-namespace NakedFramework.DependencyInjection.Extensions; 
+namespace NakedFramework.DependencyInjection.Extensions;
 
 public static class NakedFrameworkExtensions {
     public static CoreConfiguration CoreConfig(NakedFrameworkOptions options) {
@@ -36,7 +34,7 @@ public static class NakedFrameworkExtensions {
 
         options.SupportedSystemTypes ??= t => t;
         config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).Union(options.AdditionalSystemTypes).ToList();
-            
+
         config.HashMapCapacity = options.HashMapCapacity;
         return config;
     }

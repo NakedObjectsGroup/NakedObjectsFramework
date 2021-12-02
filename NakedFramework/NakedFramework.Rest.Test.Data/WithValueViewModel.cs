@@ -14,7 +14,7 @@ using NakedObjects.Security;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class WithValueViewModel : IViewModel {
     private int deriveCheck;
@@ -62,7 +62,7 @@ public class WithValueViewModel : IViewModel {
     public virtual int AUserDisabledValue { get; set; }
 
     public virtual int[] ChoicesAChoicesValue() {
-        return new[] {1, 2, 3};
+        return new[] { 1, 2, 3 };
     }
 
     public virtual string Validate(int aValue, int aChoicesValue) {

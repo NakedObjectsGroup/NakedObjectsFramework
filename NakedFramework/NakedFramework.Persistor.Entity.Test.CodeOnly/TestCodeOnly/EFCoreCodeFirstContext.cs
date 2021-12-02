@@ -5,21 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
-
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
 using Microsoft.EntityFrameworkCore;
 
-namespace TestCodeOnly; 
+namespace TestCodeOnly;
 
 public class EFCoreCodeFirstContext : DbContext {
     private readonly string cs;
 
-    public EFCoreCodeFirstContext(string cs) {
-        this.cs = cs;
-    }
+    public EFCoreCodeFirstContext(string cs) => this.cs = cs;
+
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<CountryCode> CountryCodes { get; set; }
@@ -32,8 +29,7 @@ public class EFCoreCodeFirstContext : DbContext {
 
     public void Create() => Database.EnsureCreated();
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
         optionsBuilder.UseLazyLoadingProxies();
         //optionsBuilder.EnableDetailedErrors();
@@ -42,7 +38,6 @@ public class EFCoreCodeFirstContext : DbContext {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-
         modelBuilder.Entity<CountryCode>().HasKey(cc => cc.Code);
 
         var food = new Category { ID = 1, Name = "Food" };

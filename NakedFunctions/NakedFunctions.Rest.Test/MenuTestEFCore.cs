@@ -12,7 +12,7 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFunctions.Rest.Test.Data;
 
-namespace NakedFunctions.Rest.Test; 
+namespace NakedFunctions.Rest.Test;
 
 public class MenuTestEFCore : MenuTestEF6 {
     protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {

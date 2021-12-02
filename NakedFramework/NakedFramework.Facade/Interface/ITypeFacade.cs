@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Facade.Interface; 
+namespace NakedFramework.Facade.Interface;
 
 public interface ITypeFacade : IFacadeHolder, IEquatable<ITypeFacade> {
     IAssociationFacade[] Properties { get; }

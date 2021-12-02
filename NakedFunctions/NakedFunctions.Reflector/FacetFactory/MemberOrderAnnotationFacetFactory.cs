@@ -17,7 +17,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class MemberOrderAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public MemberOrderAnnotationFacetFactory(IFacetFactoryOrder<MemberOrderAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
@@ -38,5 +38,5 @@ public sealed class MemberOrderAnnotationFacetFactory : FunctionalFacetFactoryPr
         return metamodel;
     }
 
-    private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute is null ? null : new MemberOrderFacet(attribute.Grouping ?? "", attribute.Order.ToString(), holder) {Grouping = attribute.Grouping};
+    private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute is null ? null : new MemberOrderFacet(attribute.Grouping ?? "", attribute.Order.ToString(), holder) { Grouping = attribute.Grouping };
 }

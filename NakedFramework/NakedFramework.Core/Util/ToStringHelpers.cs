@@ -5,18 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework.Architecture.SpecImmutable;
 using System;
+using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class ToStringHelpers {
     public static string NameAndHashCode(object forObject) => $"{CreateName(forObject)}";
 
     private static string CreateName(object forObject) => $"{Name(forObject)}@{HashCode(forObject)}";
 
-    public static string Name(object forObject)
-    {
+    public static string Name(object forObject) {
         var name = forObject.GetType().FullName;
         return name[(name.LastIndexOf('.') + 1)..];
     }

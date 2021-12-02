@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Framework;
 using NakedObjects.Core.Async;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Async; 
+namespace NakedFramework.Core.Test.Async;
 
 [TestFixture]
 public class AsyncServiceTest {

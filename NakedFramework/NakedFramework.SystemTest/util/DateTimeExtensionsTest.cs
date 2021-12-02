@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.Util; 
+namespace NakedObjects.SystemTest.Util;
 
 [TestFixture]
 public class DateTimeExtensionsTest {
@@ -58,7 +58,7 @@ public class DateTimeExtensionsTest {
 
         Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsFalse(x.IsAfterToday()));
 
-        Assert.IsFalse(((DateTime?) null).IsAfterToday());
+        Assert.IsFalse(((DateTime?)null).IsAfterToday());
     }
 
     [Test]
@@ -74,7 +74,7 @@ public class DateTimeExtensionsTest {
 
         Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
 
-        Assert.IsFalse(((DateTime?) null).IsBeforeToday());
+        Assert.IsFalse(((DateTime?)null).IsBeforeToday());
     }
 
     [Test]
@@ -94,7 +94,7 @@ public class DateTimeExtensionsTest {
         Assert.IsFalse(tomorrow.IsToday());
         Assert.IsFalse(yesterday.IsToday());
 
-        Assert.IsFalse(((DateTime?) null).IsToday());
+        Assert.IsFalse(((DateTime?)null).IsToday());
     }
 
     [Test]
@@ -131,8 +131,8 @@ public class DateTimeExtensionsTest {
         Assert.IsFalse(wellKnownDay.IsSameDayAs(afterWellKnownDay));
         Assert.IsFalse(wellKnownDay.IsSameDayAs(beforeWellKnownDay));
         Assert.IsFalse(wellKnownDay.IsSameDayAs(null));
-        Assert.IsFalse(((DateTime?) null).IsSameDayAs(wellKnownDay));
-        Assert.IsFalse(((DateTime?) null).IsSameDayAs(null));
+        Assert.IsFalse(((DateTime?)null).IsSameDayAs(wellKnownDay));
+        Assert.IsFalse(((DateTime?)null).IsSameDayAs(null));
     }
 
     [Test]
@@ -145,8 +145,8 @@ public class DateTimeExtensionsTest {
         Assert.IsFalse(wellKnownDay.IsSameMonthAs(afterWellKnownDay));
         Assert.IsFalse(wellKnownDay.IsSameMonthAs(beforeWellKnownDay));
         Assert.IsFalse(wellKnownDay.IsSameMonthAs(null));
-        Assert.IsFalse(((DateTime?) null).IsSameMonthAs(wellKnownDay));
-        Assert.IsFalse(((DateTime?) null).IsSameMonthAs(null));
+        Assert.IsFalse(((DateTime?)null).IsSameMonthAs(wellKnownDay));
+        Assert.IsFalse(((DateTime?)null).IsSameMonthAs(null));
     }
 
     [Test]
@@ -159,8 +159,8 @@ public class DateTimeExtensionsTest {
         Assert.IsFalse(wellKnownDay.IsSameWeekAs(afterWellKnownDay));
         Assert.IsFalse(wellKnownDay.IsSameWeekAs(beforeWellKnownDay));
         Assert.IsFalse(wellKnownDay.IsSameWeekAs(null));
-        Assert.IsFalse(((DateTime?) null).IsSameWeekAs(wellKnownDay));
-        Assert.IsFalse(((DateTime?) null).IsSameWeekAs(null));
+        Assert.IsFalse(((DateTime?)null).IsSameWeekAs(wellKnownDay));
+        Assert.IsFalse(((DateTime?)null).IsSameWeekAs(null));
     }
 
     [Test]
@@ -173,8 +173,8 @@ public class DateTimeExtensionsTest {
         Assert.IsFalse(wellKnownDay.IsSameYearAs(afterWellKnownDay));
         Assert.IsFalse(wellKnownDay.IsSameYearAs(beforeWellKnownDay));
         Assert.IsFalse(wellKnownDay.IsSameYearAs(null));
-        Assert.IsFalse(((DateTime?) null).IsSameYearAs(wellKnownDay));
-        Assert.IsFalse(((DateTime?) null).IsSameYearAs(null));
+        Assert.IsFalse(((DateTime?)null).IsSameYearAs(wellKnownDay));
+        Assert.IsFalse(((DateTime?)null).IsSameYearAs(null));
     }
 
     [Test]

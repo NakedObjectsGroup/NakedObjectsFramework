@@ -15,7 +15,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class InlineCollectionRepresentation : InlineMemberAbstractRepresentation {
@@ -46,12 +46,12 @@ public class InlineCollectionRepresentation : InlineMemberAbstractRepresentation
         var actions = collectionRepresentationStrategy.GetActions();
 
         if (actions.Any()) {
-            var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
+            var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object)m));
             optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
         }
 
         return optionals.Any()
-            ? CreateWithOptionals<InlineCollectionRepresentation>(new object[] {frameworkFacade, collectionRepresentationStrategy}, optionals)
+            ? CreateWithOptionals<InlineCollectionRepresentation>(new object[] { frameworkFacade, collectionRepresentationStrategy }, optionals)
             : new InlineCollectionRepresentation(frameworkFacade, collectionRepresentationStrategy);
     }
 }

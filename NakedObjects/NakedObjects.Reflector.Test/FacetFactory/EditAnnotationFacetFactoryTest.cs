@@ -19,13 +19,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class EditAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private EditAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IEditPropertiesFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IEditPropertiesFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -33,7 +33,7 @@ public class EditAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestEditAnnotationPickedUpOnAction() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer), nameof(Customer.EditTest), new[] {typeof(string), typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer), nameof(Customer.EditTest), new[] { typeof(string), typeof(int) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IEditPropertiesFacet));
         Assert.IsNotNull(facet);
@@ -46,7 +46,7 @@ public class EditAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestDefaultsPickedUpOnEditAction() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer), nameof(Customer.EditTest), new[] {typeof(string), typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer), nameof(Customer.EditTest), new[] { typeof(string), typeof(int) });
 
         for (var i = 0; i < actionMethod.GetParameters().Length; i++) {
             metamodel = facetFactory.ProcessParams(Reflector, actionMethod, i, Specification, metamodel);
@@ -62,7 +62,7 @@ public class EditAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestEditAnnotationPickedUpUnmatchedProperty() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer1), nameof(Customer1.EditTest), new[] {typeof(string), typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer1), nameof(Customer1.EditTest), new[] { typeof(string), typeof(int) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IEditPropertiesFacet));
         Assert.IsNotNull(facet);
@@ -75,7 +75,7 @@ public class EditAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestDefaultsPickedUpOnSubclass() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer5), nameof(Customer5.EditTest), new[] {typeof(string), typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer5), nameof(Customer5.EditTest), new[] { typeof(string), typeof(int) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IEditPropertiesFacet));
         Assert.IsNotNull(facet);
@@ -88,7 +88,7 @@ public class EditAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestEditAnnotationIgnoredUnmatchedParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer2), nameof(Customer2.EditTest), new[] {typeof(string), typeof(int), typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer2), nameof(Customer2.EditTest), new[] { typeof(string), typeof(int), typeof(int) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IEditPropertiesFacet));
         Assert.IsNull(facet);

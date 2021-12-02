@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class PasswordAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private PasswordAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IPasswordFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IPasswordFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -44,7 +44,7 @@ public class PasswordAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(string)});
+        var method = FindMethod(typeof(Customer4), "SomeAction", new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IPasswordFacet));
         Assert.IsNull(facet);
@@ -66,7 +66,7 @@ public class PasswordAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPasswordAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IPasswordFacet));
         Assert.IsNotNull(facet);

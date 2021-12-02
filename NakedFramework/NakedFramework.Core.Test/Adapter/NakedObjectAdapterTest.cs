@@ -15,7 +15,7 @@ using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Error;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Adapter; 
+namespace NakedFramework.Core.Test.Adapter;
 
 [TestFixture]
 public class NakedObjectAdapterTest {

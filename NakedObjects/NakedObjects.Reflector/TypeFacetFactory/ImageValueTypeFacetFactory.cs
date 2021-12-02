@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Reflector.TypeFacetFactory; 
+namespace NakedObjects.Reflector.TypeFacetFactory;
 
 public sealed class ImageValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public ImageValueTypeFacetFactory(IFacetFactoryOrder<ImageValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }

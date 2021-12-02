@@ -18,7 +18,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Audit;
 
-namespace NakedObjects.Reflector.Audit; 
+namespace NakedObjects.Reflector.Audit;
 
 [Serializable]
 public sealed class AuditManager : AbstractAuditManager, IFacetDecorator, IAuditManager {

@@ -34,7 +34,7 @@ using static NakedFramework.Rest.API.ControllerHelpers;
 [assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Impl3")]
 [assembly: InternalsVisibleTo("NakedFramework.Rest.Test.Impl4")]
 
-namespace NakedFramework.Rest.API; 
+namespace NakedFramework.Rest.API;
 
 public class RestfulObjectsControllerBase : ControllerBase {
     private readonly ILogger logger;
@@ -251,9 +251,9 @@ public class RestfulObjectsControllerBase : ControllerBase {
         return InitAndHandleErrors(() => SnapshotOrNoContent(DeleteProperty()));
     }
 
-    public virtual ActionResult PostCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) => StatusCode((int) HttpStatusCode.Forbidden);
+    public virtual ActionResult PostCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) => StatusCode((int)HttpStatusCode.Forbidden);
 
-    public virtual ActionResult DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) => StatusCode((int) HttpStatusCode.Forbidden);
+    public virtual ActionResult DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) => StatusCode((int)HttpStatusCode.Forbidden);
 
     private ActionResult Invoke(string domainType, string instanceId, string actionName, ArgumentMap arguments, bool queryOnly) {
         (Func<RestSnapshot>, bool) Execute() {
@@ -334,7 +334,7 @@ public class RestfulObjectsControllerBase : ControllerBase {
         return InitAndHandleErrors(TypeAction());
     }
 
-    public virtual ActionResult InvalidMethod() => StatusCode((int) HttpStatusCode.MethodNotAllowed);
+    public virtual ActionResult InvalidMethod() => StatusCode((int)HttpStatusCode.MethodNotAllowed);
 
     #endregion
 
@@ -378,7 +378,7 @@ public class RestfulObjectsControllerBase : ControllerBase {
         SetCaching(responseHeaders, ss, CacheSettings);
 
         ss.ValidateOutgoingMediaType(ss.Representation is AttachmentRepresentation);
-        msg.StatusCode = (int) ss.HttpStatusCode;
+        msg.StatusCode = (int)ss.HttpStatusCode;
     }
 
     private void Validate() {
@@ -496,7 +496,7 @@ public class RestfulObjectsControllerBase : ControllerBase {
         SetHeaders(ss);
 
         return ss.Representation switch {
-            NullRepresentation => new StatusCodeResult((int) ss.HttpStatusCode),
+            NullRepresentation => new StatusCodeResult((int)ss.HttpStatusCode),
             AttachmentRepresentation attachmentRepresentation => FileResult(attachmentRepresentation),
             _ => new JsonResult(ss.Representation)
         };
@@ -540,7 +540,7 @@ public class RestfulObjectsControllerBase : ControllerBase {
         var thisSpecification = FrameworkFacade.GetDomainType(typeName);
         var parameter = arguments.Map[context.ParameterId];
         var value = parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
-        var otherSpecification = (ITypeFacade) (value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string) value));
+        var otherSpecification = (ITypeFacade)(value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string)value));
         context.ThisSpecification = thisSpecification;
         context.OtherSpecification = otherSpecification;
         return context;

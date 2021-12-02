@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Core.Reflect; 
+namespace NakedFramework.Core.Reflect;
 
 public abstract class ConsentAbstract : IConsent {
     private readonly string reason;

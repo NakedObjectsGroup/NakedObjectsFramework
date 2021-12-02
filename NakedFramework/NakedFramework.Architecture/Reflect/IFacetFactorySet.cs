@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.Reflect; 
+namespace NakedFramework.Architecture.Reflect;
 
 /// <summary>
 ///     Mechanism for applying actions to All/Any of the FacetFactories. The implementation

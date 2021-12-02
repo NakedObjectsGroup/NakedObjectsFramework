@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 /// <summary>
 ///     Superclass of exceptions which indicate an attempt to interact with a class member that is disabled.

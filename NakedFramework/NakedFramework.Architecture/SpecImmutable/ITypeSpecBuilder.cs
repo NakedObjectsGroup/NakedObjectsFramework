@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.SpecImmutable; 
+namespace NakedFramework.Architecture.SpecImmutable;
 
 public enum ReflectionStatus {
     PlaceHolder,
@@ -20,6 +20,9 @@ public enum ReflectionStatus {
 public interface ITypeSpecBuilder : ITypeSpecImmutable {
     bool IsPlaceHolder { get; }
     bool IsPendingIntrospection { get; }
+
+    IList<IAssociationSpecImmutable> UnorderedFields { get; }
+    IList<IActionSpecImmutable> UnorderedObjectActions { get; }
 
     /// <summary>
     ///     Discovers what attributes and behaviour the type specified by this specification. As specification are
@@ -36,7 +39,4 @@ public interface ITypeSpecBuilder : ITypeSpecImmutable {
     void RemoveAction(IActionSpecImmutable action);
 
     void CompleteIntegration();
-
-    IList<IAssociationSpecImmutable> UnorderedFields { get; }
-    IList<IActionSpecImmutable> UnorderedObjectActions { get; }
 }

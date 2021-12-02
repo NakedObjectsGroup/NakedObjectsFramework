@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 
-namespace NakedFramework.Architecture.Spec; 
+namespace NakedFramework.Architecture.Spec;
 
 /// <summary>
 ///     The 'metamodel' is made up of various implementations of ISpecification, which, in turn, are largely

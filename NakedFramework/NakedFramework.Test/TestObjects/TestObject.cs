@@ -17,7 +17,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 internal class TestObject : TestHasActions, ITestObject {
     private readonly ILifecycleManager lifecycleManager;
@@ -41,7 +41,7 @@ internal class TestObject : TestHasActions, ITestObject {
     #region ITestObject Members
 
     public ITestProperty[] Properties {
-        get { return ((IObjectSpec) NakedObject.Spec).Properties.Select(x => Factory.CreateTestProperty(x, this)).ToArray(); }
+        get { return ((IObjectSpec)NakedObject.Spec).Properties.Select(x => Factory.CreateTestProperty(x, this)).ToArray(); }
     }
 
     public object GetDomainObject() => NakedObject.GetDomainObject();

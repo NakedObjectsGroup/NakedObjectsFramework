@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet; 
+namespace NakedFunctions.Reflector.Test.Facet;
 
 [TestClass]
 public class ActionValidationViaFunctionFacetTest {

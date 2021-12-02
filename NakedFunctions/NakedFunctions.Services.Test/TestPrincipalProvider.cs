@@ -10,7 +10,7 @@ using Moq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Authentication;
 
-namespace NakedFunctions.Services.Test; 
+namespace NakedFunctions.Services.Test;
 
 [TestClass]
 public class TestPrincipalProvider {

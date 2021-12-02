@@ -15,7 +15,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class InlineActionRepresentation : InlineMemberAbstractRepresentation {
@@ -43,7 +43,7 @@ public class InlineActionRepresentation : InlineMemberAbstractRepresentation {
         }
 
         return optionals.Any()
-            ? CreateWithOptionals<InlineActionRepresentation>(new object[] {oidStrategy, strategy}, optionals)
+            ? CreateWithOptionals<InlineActionRepresentation>(new object[] { oidStrategy, strategy }, optionals)
             : new InlineActionRepresentation(oidStrategy, strategy);
     }
 }

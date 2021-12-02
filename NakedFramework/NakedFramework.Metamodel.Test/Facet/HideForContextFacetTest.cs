@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet; 
+namespace NakedObjects.Metamodel.Test.Facet;
 
 [TestClass]
 public class HideForContextFacetTest {

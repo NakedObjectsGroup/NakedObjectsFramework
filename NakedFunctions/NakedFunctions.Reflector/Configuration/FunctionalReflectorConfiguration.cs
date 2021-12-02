@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Configuration;
 
-namespace NakedFunctions.Reflector.Configuration; 
+namespace NakedFunctions.Reflector.Configuration;
 
 public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguration {
     public FunctionalReflectorConfiguration(Type[] types,

@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {
@@ -26,7 +26,7 @@ public sealed class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFace
 
     public Type GetValue(INakedObjectAdapter collection) => collection.Object.GetType().GenericTypeArguments.First();
 
-    public IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => (IObjectSpecImmutable) metamodel.GetSpecification(GetValue(collection));
+    public IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => (IObjectSpecImmutable)metamodel.GetSpecification(GetValue(collection));
 
     #endregion
 }

@@ -18,7 +18,7 @@ using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
 using NakedObjects.Reflector.Authorization;
 
-namespace NakedObjects.Reflector.Test.Authorization; 
+namespace NakedObjects.Reflector.Test.Authorization;
 
 [TestClass]
 public class AuthorizationManagerTest {
@@ -46,7 +46,7 @@ public class AuthorizationManagerTest {
     public void TestCreateNullAuthorizer() {
         var config = new Mock<IAuthorizationConfiguration>();
 
-        config.Setup(c => c.DefaultAuthorizer).Returns((Type) null);
+        config.Setup(c => c.DefaultAuthorizer).Returns((Type)null);
         config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type>());
 
         try {
@@ -65,7 +65,7 @@ public class AuthorizationManagerTest {
         var config = new Mock<IAuthorizationConfiguration>();
 
         config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
-        config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
+        config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> { { "1", typeof(TestNamespaceAuthorizer) } });
         config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
         var manager = new AuthorizationManager(config.Object, mockLogger);
@@ -93,7 +93,7 @@ public class AuthorizationManagerTest {
         var config = new Mock<IAuthorizationConfiguration>();
 
         config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
-        config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
+        config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> { { "1", typeof(TestNamespaceAuthorizer) } });
         config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
         var manager = new AuthorizationManager(config.Object, mockLogger);

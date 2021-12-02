@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl; 
+namespace NakedFramework.Facade.Impl.Impl;
 
 public class ActionFacade : IActionFacade {
     private readonly INakedFramework framework;
@@ -75,9 +75,9 @@ public class ActionFacade : IActionFacade {
 
     public IActionParameterFacade[] Parameters => WrappedSpec.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework)).Cast<IActionParameterFacade>().ToArray();
 
-    public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade) objectFacade)?.WrappedNakedObject);
+    public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade)objectFacade)?.WrappedNakedObject);
 
-    public IConsentFacade IsUsable(IObjectFacade objectFacade) => new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade) objectFacade)?.WrappedNakedObject));
+    public IConsentFacade IsUsable(IObjectFacade objectFacade) => new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade)objectFacade)?.WrappedNakedObject));
 
     public string FinderMethodPrefix => WrappedSpec.GetFinderMethodPrefix();
 

@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 public interface INoIdentityAdapterCache {
     void AddAdapter(INakedObjectAdapter adapter);

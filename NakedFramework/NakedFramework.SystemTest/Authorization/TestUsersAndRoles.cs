@@ -18,25 +18,10 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Authorization.UsersAndRoles; 
+namespace NakedObjects.SystemTest.Authorization.UsersAndRoles;
 
 [TestFixture]
 public class TestUsersAndRoles : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
-    protected override Type[] ObjectTypes => new[] {
-        typeof(Foo),
-        typeof(NakedObjects.SystemTest.Audit.Foo),
-        typeof(MyDefaultAuthorizer)
-    };
-
-    protected override Type[] Services {
-        get {
-            return new[] {
-                typeof(SimpleRepository<Foo>),
-                typeof(FooService)
-            };
-        }
-    }
-
     [SetUp]
     public void SetUp() {
         StartTest();
@@ -59,6 +44,21 @@ public class TestUsersAndRoles : AbstractSystemTest<CustomAuthorizationManagerDb
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
         CustomAuthorizationManagerDbContext.Delete();
+    }
+
+    protected override Type[] ObjectTypes => new[] {
+        typeof(Foo),
+        typeof(Audit.Foo),
+        typeof(MyDefaultAuthorizer)
+    };
+
+    protected override Type[] Services {
+        get {
+            return new[] {
+                typeof(SimpleRepository<Foo>),
+                typeof(FooService)
+            };
+        }
     }
 
     protected override IAuthorizationConfiguration AuthorizationConfiguration => new AuthorizationConfiguration<MyDefaultAuthorizer>();
@@ -110,14 +110,6 @@ public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
     public IDomainObjectContainer Container { protected get; set; }
     public SimpleRepository<Foo> Service { protected get; set; }
 
-    #region ITypeAuthorizer<object> Members
-
-    public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new NotImplementedException();
-
-    public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception("User name: " + principal.Identity.Name + ", IsInRole Bar = " + principal.IsInRole("Bar"));
-
-    #endregion
-
     public void Init() {
         throw new NotImplementedException();
     }
@@ -125,6 +117,14 @@ public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
     public void Shutdown() {
         //Does nothing
     }
+
+    #region ITypeAuthorizer<object> Members
+
+    public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new NotImplementedException();
+
+    public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception("User name: " + principal.Identity.Name + ", IsInRole Bar = " + principal.IsInRole("Bar"));
+
+    #endregion
 }
 
 public class Foo {

@@ -19,7 +19,7 @@ using NakedLegacy.Reflector.Configuration;
 using NakedLegacy.Reflector.FacetFactory;
 using NakedLegacy.Reflector.Reflect;
 
-namespace NakedLegacy.Reflector.Extensions; 
+namespace NakedLegacy.Reflector.Extensions;
 
 public static class LegacyExtensions {
     private static LegacyObjectReflectorConfiguration LegacyObjectReflectorConfig(NakedLegacyOptions options) {
@@ -43,7 +43,6 @@ public static class LegacyExtensions {
         frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 
         frameworkOptions.Services.AddDefaultScoped<LegacyAboutCache, LegacyAboutCache>();
-
 
         frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(ReflectorDefaults.DefaultLegacyTypes).ToArray();
     }

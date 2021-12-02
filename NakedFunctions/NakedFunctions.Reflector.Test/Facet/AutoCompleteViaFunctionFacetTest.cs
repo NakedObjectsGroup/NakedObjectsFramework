@@ -9,11 +9,11 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet; 
+namespace NakedFunctions.Reflector.Test.Facet;
 
 [TestClass]
 public class AutoCompleteViaFunctionFacetTest {
-    private static readonly string[] TestValue = {"one", "two"};
+    private static readonly string[] TestValue = { "one", "two" };
 
     [TestMethod]
     public void TestGetCompletions() {

@@ -25,7 +25,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.FacetFactory; 
+namespace NakedLegacy.Reflector.FacetFactory;
 
 public sealed class LegacyCollectionFieldMethodsFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {
@@ -52,7 +52,7 @@ public sealed class LegacyCollectionFieldMethodsFacetFactory : LegacyFacetFactor
         var capitalizedName = property.Name;
         var type = property.DeclaringType;
 
-        var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property, collection) };
 
         AddSetFacet(facets, property, collection);
 

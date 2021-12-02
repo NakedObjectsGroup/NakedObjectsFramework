@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts; 
+namespace NakedFramework.Facade.Contexts;
 
 public class ChoiceContextFacade : ContextFacade {
     public ChoiceContextFacade(string id, ITypeFacade spec) {

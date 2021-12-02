@@ -32,7 +32,7 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.Facade.Utility;
 using NakedFramework.Metamodel.Menu;
 
-namespace NakedFramework.Facade.Impl.Impl; 
+namespace NakedFramework.Facade.Impl.Impl;
 
 public class FrameworkFacade : IFrameworkFacade {
     private readonly ILogger<FrameworkFacade> logger;
@@ -103,7 +103,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
     public MenuContextFacade GetMainMenus() => MapErrors(() => GetMenusInternal().ToMenuContextFacade(this, Framework));
 
-    public ObjectContextFacade GetObject(IObjectFacade objectFacade) => MapErrors(() => GetObjectContext(((ObjectFacade) objectFacade).WrappedNakedObject).ToObjectContextFacade(this, Framework));
+    public ObjectContextFacade GetObject(IObjectFacade objectFacade) => MapErrors(() => GetObjectContext(((ObjectFacade)objectFacade).WrappedNakedObject).ToObjectContextFacade(this, Framework));
 
     public ITypeFacade GetDomainType(string typeName) => MapErrors(() => GetSpecificationWrapper(GetDomainTypeInternal(typeName)));
 
@@ -162,7 +162,7 @@ public class FrameworkFacade : IFrameworkFacade {
     public (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "") {
         switch (item) {
             case IMenuActionFacade menuActionFacade:
-                return new[] {(item.Name, GetActionContext(menuActionFacade, parent))};
+                return new[] { (item.Name, GetActionContext(menuActionFacade, parent)) };
             case IMenuFacade menuFacade:
                 parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menuFacade.Name;
                 return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
@@ -172,7 +172,7 @@ public class FrameworkFacade : IFrameworkFacade {
     }
 
     public ActionContextFacade[] GetLocallyContributedActions(PropertyContextFacade propertyContext) =>
-        propertyContext.Target.Specification.GetLocallyContributedActions(propertyContext.Property.ElementSpecification, propertyContext.Property.Id).Select(a => ((ActionFacade) a).WrappedSpec).Select(a => new ActionContext {
+        propertyContext.Target.Specification.GetLocallyContributedActions(propertyContext.Property.ElementSpecification, propertyContext.Property.Id).Select(a => ((ActionFacade)a).WrappedSpec).Select(a => new ActionContext {
             MenuPath = "",
             Target = propertyContext.Target.WrappedAdapter(),
             Action = a,
@@ -204,7 +204,7 @@ public class FrameworkFacade : IFrameworkFacade {
             throw new BadRequestNOSException();
         }
 
-        var propertyQuery = ((IObjectSpec) nakedObject.Spec).Properties.Where(p => p.Id == propertyName);
+        var propertyQuery = ((IObjectSpec)nakedObject.Spec).Properties.Where(p => p.Id == propertyName);
 
         if (onlyVisible) {
             propertyQuery = propertyQuery.Where(p => p.IsVisible(nakedObject));
@@ -221,12 +221,12 @@ public class FrameworkFacade : IFrameworkFacade {
 
     private static PropertyContext GetProperty(INakedObjectAdapter nakedObject, string propertyName, bool onlyVisible = true) {
         var property = GetPropertyInternal(nakedObject, propertyName, onlyVisible);
-        return new PropertyContext {Target = nakedObject, Property = property};
+        return new PropertyContext { Target = nakedObject, Property = property };
     }
 
     private ListContext GetServicesInternal() {
         var services = Framework.ServicesManager.GetServicesWithVisibleActions(Framework.LifecycleManager);
-        var elementType = (IObjectSpec) Framework.MetamodelManager.GetSpecification(typeof(object));
+        var elementType = (IObjectSpec)Framework.MetamodelManager.GetSpecification(typeof(object));
 
         return new ListContext {
             ElementType = elementType,
@@ -237,7 +237,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
     private static IMenuActionImmutable[] GetMenuActions(IMenuItemImmutable item) =>
         item switch {
-            IMenuActionImmutable actionImmutable => new[] {actionImmutable},
+            IMenuActionImmutable actionImmutable => new[] { actionImmutable },
             IMenuImmutable menu => menu.MenuItems.SelectMany(GetMenuActions).ToArray(),
             _ => Array.Empty<IMenuActionImmutable>()
         };
@@ -260,7 +260,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
     private MenuContext GetMenusInternal() {
         var menus = GetMenusWithVisibleActions(Framework.MetamodelManager) ?? Framework.ServicesManager.GetServicesWithVisibleActions(Framework.LifecycleManager).Select(s => s.GetServiceSpec().Menu);
-        var elementType = (IObjectSpec) Framework.MetamodelManager.GetSpecification(typeof(object));
+        var elementType = (IObjectSpec)Framework.MetamodelManager.GetSpecification(typeof(object));
 
         return new MenuContext {
             ElementType = elementType,
@@ -281,13 +281,13 @@ public class FrameworkFacade : IFrameworkFacade {
     private PropertyContext GetPropertyWithCompletions(INakedObjectAdapter nakedObject, string propertyName, ArgumentsContextFacade arguments) {
         var property = GetPropertyInternal(nakedObject, propertyName) as IOneToOneAssociationSpec;
         var completions = GetCompletions(new PropParmAdapter(property, this, Framework), nakedObject, arguments);
-        return new PropertyContext {Target = nakedObject, Property = property, Completions = completions};
+        return new PropertyContext { Target = nakedObject, Property = property, Completions = completions };
     }
 
     private PropertyContext CanChangeProperty(INakedObjectAdapter nakedObject, string propertyName, object toPut = null) {
         var context = GetProperty(nakedObject, propertyName);
         context.ProposedValue = toPut;
-        var property = (IOneToOneAssociationSpec) context.Property;
+        var property = (IOneToOneAssociationSpec)context.Property;
 
         if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
             if (ConsentHandler(property.IsUsable(context.Target), context, Cause.Disabled)) {
@@ -301,14 +301,14 @@ public class FrameworkFacade : IFrameworkFacade {
     }
 
     private static bool IsVisibleAndUsable(PropertyContext context) {
-        var property = (IOneToOneAssociationSpec) context.Property;
+        var property = (IOneToOneAssociationSpec)context.Property;
         return property.IsVisible(context.Target) && property.IsUsable(context.Target).IsAllowed;
     }
 
     private PropertyContext CanSetProperty(INakedObjectAdapter nakedObject, string propertyName, object toPut = null) {
         var context = GetProperty(nakedObject, propertyName, false);
         context.ProposedValue = toPut;
-        var property = (IOneToOneAssociationSpec) context.Property;
+        var property = (IOneToOneAssociationSpec)context.Property;
 
         if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
             if (IsVisibleAndUsable(context)) {
@@ -352,15 +352,15 @@ public class FrameworkFacade : IFrameworkFacade {
         if (string.IsNullOrEmpty(context.Reason)) {
             var spec = context.Target.Spec as IObjectSpec ?? throw new NakedObjectsFacadeException("context.Target.Spec must be IObjectSpec");
 
-            var existingValues = spec.Properties.Where(p => p.Id != context.Id).Select(p => new {p, no = p.GetNakedObject(context.Target)}).Select(ao => new PropertyContext {
+            var existingValues = spec.Properties.Where(p => p.Id != context.Id).Select(p => new { p, no = p.GetNakedObject(context.Target) }).Select(ao => new PropertyContext {
                     Property = ao.p,
                     ProposedNakedObject = ao.no,
                     ProposedValue = ao.no?.Object,
                     Target = context.Target
                 }
-            ).Union(new[] {context});
+            ).Union(new[] { context });
 
-            var objectContext = new ObjectContext(context.Target) {VisibleProperties = existingValues.ToArray()};
+            var objectContext = new ObjectContext(context.Target) { VisibleProperties = existingValues.ToArray() };
 
             if (ConsentHandler(CrossValidate(objectContext), objectContext, Cause.Other)) {
                 if (!argument.ValidateOnly) {
@@ -377,7 +377,7 @@ public class FrameworkFacade : IFrameworkFacade {
         return context.ToPropertyContextFacade(this, Framework);
     }
 
-    private static void SetProperty(PropertyContext context) => ((IOneToOneAssociationSpec) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject);
+    private static void SetProperty(PropertyContext context) => ((IOneToOneAssociationSpec)context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject);
 
     private static void ValidateConcurrency(INakedObjectAdapter nakedObject, string digest) {
         if (!string.IsNullOrEmpty(nakedObject?.Version.Digest) && string.IsNullOrEmpty(digest)) {
@@ -448,7 +448,7 @@ public class FrameworkFacade : IFrameworkFacade {
             throw new BadRequestNOSException(e.Message);
         }
 
-        var objectContext = new ObjectContext(contexts.First().Value.Target) {VisibleProperties = contexts.Values.ToArray()};
+        var objectContext = new ObjectContext(contexts.First().Value.Target) { VisibleProperties = contexts.Values.ToArray() };
 
         // if we fail we need to display passed in properties - if OK all visible
         var propertiesToDisplay = objectContext.VisibleProperties;
@@ -466,7 +466,7 @@ public class FrameworkFacade : IFrameworkFacade {
                     }
                 }
 
-                propertiesToDisplay = ((IObjectSpec) nakedObject.Spec).Properties.Where(p => p.IsVisible(nakedObject)).Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
+                propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.Where(p => p.IsVisible(nakedObject)).Select(p => new PropertyContext { Target = nakedObject, Property = p }).ToArray();
             }
         }
 
@@ -480,12 +480,12 @@ public class FrameworkFacade : IFrameworkFacade {
     private ObjectContextFacade SetObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments, bool save) {
         // this is for ProtoPersistents where the arguments must contain all values 
         // for standard transients the object may already have values set so no need to check  
-        if (((IObjectSpec) nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
+        if (((IObjectSpec)nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
             throw new BadRequestNOSException("Malformed arguments");
         }
 
         var contexts = arguments.Values.ToDictionary(kvp => kvp.Key, kvp => CanSetProperty(nakedObject, kvp.Key, kvp.Value));
-        var objectContext = new ObjectContext(contexts.First().Value.Target) {VisibleProperties = contexts.Values.ToArray()};
+        var objectContext = new ObjectContext(contexts.First().Value.Target) { VisibleProperties = contexts.Values.ToArray() };
 
         // if we fail we need to display all - if OK only those that are visible 
         var propertiesToDisplay = objectContext.VisibleProperties;
@@ -509,7 +509,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
                     // return the visible properties when the object is persistent 
                     // it won't actually be until end of transaction
-                    propertiesToDisplay = ((IObjectSpec) nakedObject.Spec).Properties.Where(p => p.IsVisibleWhenPersistent(nakedObject)).Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
+                    propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.Where(p => p.IsVisibleWhenPersistent(nakedObject)).Select(p => new PropertyContext { Target = nakedObject, Property = p }).ToArray();
                     isPersisted = true;
                 }
             }
@@ -653,7 +653,7 @@ public class FrameworkFacade : IFrameworkFacade {
             ValidateConcurrency(actionContext.Target, arguments.Digest);
         }
 
-        var actionResultContext = new ActionResultContext {Target = actionContext.Target, ActionContext = actionContext};
+        var actionResultContext = new ActionResultContext { Target = actionContext.Target, ActionContext = actionContext };
         var errorOnChange = false;
 
         if (actionContext.Target?.IsViewModelEditView(Framework) == true) {
@@ -733,7 +733,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
         var fromStreamFacet = specification.GetFacet<IFromStreamFacet>();
         if (fromStreamFacet != null) {
-            var attachmentFacade = (IAttachmentFacade) rawValue;
+            var attachmentFacade = (IAttachmentFacade)rawValue;
             return fromStreamFacet.ParseFromStream(attachmentFacade.InputStream, attachmentFacade.ContentType, attachmentFacade.FileName, Framework.NakedObjectManager);
         }
 
@@ -741,11 +741,11 @@ public class FrameworkFacade : IFrameworkFacade {
             return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), Framework.NakedObjectManager);
         }
 
-        if (elementSpec is {IsParseable: true}) {
-            var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), Framework.NakedObjectManager)).ToArray();
+        if (elementSpec is { IsParseable: true }) {
+            var elements = ((IEnumerable)rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), Framework.NakedObjectManager)).ToArray();
             var elementType = TypeUtils.GetType(elementSpec.FullName);
             var collType = typeof(List<>).MakeGenericType(elementType);
-            var list = ((IList) Activator.CreateInstance(collType))?.AsQueryable();
+            var list = ((IList)Activator.CreateInstance(collType))?.AsQueryable();
             var collection = Framework.NakedObjectManager.CreateAdapter(list, null, null);
             collection.Spec.GetFacet<ICollectionFacet>().Init(collection, elements);
             return collection;
@@ -761,7 +761,7 @@ public class FrameworkFacade : IFrameworkFacade {
     private IConsent CanSetPropertyValue(PropertyContext context) {
         try {
             var coll = context.Property as IOneToManyAssociationSpec;
-            context.ProposedNakedObject = GetValue((IObjectSpec) context.Specification, coll?.ElementSpec, context.ProposedValue);
+            context.ProposedNakedObject = GetValue((IObjectSpec)context.Specification, coll?.ElementSpec, context.ProposedValue);
             return new Allow();
         }
         catch (InvalidEntryException e) {
@@ -804,13 +804,13 @@ public class FrameworkFacade : IFrameworkFacade {
             parms = parms.Where(p => !p.IsInjected).ToArray();
         }
 
-        return parms.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade.Action}).ToArray();
+        return parms.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade.Action }).ToArray();
     }
 
     private static bool IsTargetParm(IActionSpec action, IActionParameterSpec parm) =>
         parm.Number == 0 &&
         action.GetFacet<IContributedFunctionFacet>() switch {
-            {IsContributedToObject: true} and {IsContributedToCollection: false} => true,
+            { IsContributedToObject: true } and { IsContributedToCollection: false } => true,
             _ => false
         };
 
@@ -898,7 +898,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
     private IEnumerable<IActionSpecImmutable> GetActionFromMenuItem(IMenuItemImmutable menuItemImmutable) =>
         menuItemImmutable switch {
-            MenuAction menuAction => new[] {menuAction.Action},
+            MenuAction menuAction => new[] { menuAction.Action },
             MenuImpl menuImpl => GetActionsFromMenuItems(menuImpl.MenuItems),
             _ => Array.Empty<IActionSpecImmutable>()
         };
@@ -948,7 +948,7 @@ public class FrameworkFacade : IFrameworkFacade {
                 var targetKey = actionSpec.Parameters.First().Id;
                 INakedObjectAdapter target = null;
                 if (argumentsContextFacade?.Values.ContainsKey(targetKey) == true) {
-                    var rawTarget = ((IEnumerable) argumentsContextFacade.Values[targetKey]).AsQueryable();
+                    var rawTarget = ((IEnumerable)argumentsContextFacade.Values[targetKey]).AsQueryable();
                     target = Framework.NakedObjectManager.CreateAdapter(rawTarget, null, null);
                 }
 
@@ -1049,7 +1049,7 @@ public class FrameworkFacade : IFrameworkFacade {
         string MenuItemDivider() => string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider;
 
         return item switch {
-            IMenuActionImmutable menuAction => new[] {(parent, menuAction.Action)},
+            IMenuActionImmutable menuAction => new[] { (parent, menuAction.Action) },
             IMenuImmutable menu => menu.MenuItems.SelectMany(i => GetMenuItem(i, $"{parent}{MenuItemDivider()}{menu.Name}")).ToArray(),
             _ => Array.Empty<(string, IActionSpecImmutable)>()
         };
@@ -1081,7 +1081,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
         var menuActions = menuItems.SelectMany(m => GetMenuItem(m, m.Grouping));
 
-        var actions = menuActions.Select(m => new {m.parent, action = GetLeaf(m.action)}).Where(a => a.action != null);
+        var actions = menuActions.Select(m => new { m.parent, action = GetLeaf(m.action) }).Where(a => a.action != null);
 
         var objectSpec = nakedObject.Spec as IObjectSpec;
         var properties = objectSpec?.Properties.Where(p => IsVisible(p, nakedObject, isPersisted)).ToArray() ?? Array.Empty<IAssociationSpec>();
@@ -1094,14 +1094,14 @@ public class FrameworkFacade : IFrameworkFacade {
             var elementSpec = Framework.MetamodelManager.GetSpecification(introspectableSpecification);
             var cca = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
 
-            ccaContexts = cca.Select(a => new {action = a}).Select(a => new ActionContext {
+            ccaContexts = cca.Select(a => new { action = a }).Select(a => new ActionContext {
                 Action = a.action,
                 Target = Framework.ServicesManager.GetService(a.action.OnSpec as IServiceSpec),
                 VisibleParameters = FilterCCAParms(a.action)
             }).ToArray();
         }
 
-        var actionContexts = actions.Select(a => new {a.action, mp = a.parent}).Select(a => new ActionContext {
+        var actionContexts = actions.Select(a => new { a.action, mp = a.parent }).Select(a => new ActionContext {
             Action = a.action,
             Target = nakedObject,
             VisibleParameters = FilterParms(a.action, nakedObject.Spec),
@@ -1131,7 +1131,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
     private ITypeSpec GetDomainTypeInternal(string domainTypeId) {
         try {
-            var spec = (TypeFacade) OidStrategy.GetSpecificationByLinkDomainType(domainTypeId);
+            var spec = (TypeFacade)OidStrategy.GetSpecificationByLinkDomainType(domainTypeId);
             return spec.WrappedValue;
         }
         catch (Exception) {
@@ -1144,7 +1144,7 @@ public class FrameworkFacade : IFrameworkFacade {
             throw new BadRequestNOSException();
         }
 
-        var spec = (IObjectSpec) GetDomainTypeInternal(typeName);
+        var spec = (IObjectSpec)GetDomainTypeInternal(typeName);
         var nakedObject = Framework.LifecycleManager.CreateInstance(spec);
 
         return SetObject(nakedObject, arguments, save);
@@ -1167,13 +1167,13 @@ public class FrameworkFacade : IFrameworkFacade {
         }
 
         public PropParmAdapter(IOneToOneAssociationSpec prop, IFrameworkFacade frameworkFacade, INakedFramework framework)
-            : this((object) prop, frameworkFacade, framework) {
+            : this((object)prop, frameworkFacade, framework) {
             this.prop = prop;
             CheckAutocompleOrConditional();
         }
 
         public PropParmAdapter(IActionParameterSpec parm, IFrameworkFacade frameworkFacade, INakedFramework framework)
-            : this((object) parm, frameworkFacade, framework) {
+            : this((object)parm, frameworkFacade, framework) {
             this.parm = parm;
             CheckAutocompleOrConditional();
         }
@@ -1182,7 +1182,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
         public IObjectSpec Specification => prop == null ? parm.Spec : prop.ReturnSpec;
 
-        private Func<(string name, IObjectSpec spec)[]> GetChoicesParameters => prop == null ? (Func<(string, IObjectSpec)[]>) parm.GetChoicesParameters : prop.GetChoicesParameters;
+        private Func<(string name, IObjectSpec spec)[]> GetChoicesParameters => prop == null ? (Func<(string, IObjectSpec)[]>)parm.GetChoicesParameters : prop.GetChoicesParameters;
 
         private Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]> GetChoices => prop == null ? parm.GetChoices : prop.GetChoices;
 

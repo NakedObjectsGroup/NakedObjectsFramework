@@ -12,7 +12,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Transaction; 
+namespace NakedFramework.Core.Transaction;
 
 public sealed class NestedTransaction : ITransaction {
     private readonly ILogger<NestedTransaction> logger;

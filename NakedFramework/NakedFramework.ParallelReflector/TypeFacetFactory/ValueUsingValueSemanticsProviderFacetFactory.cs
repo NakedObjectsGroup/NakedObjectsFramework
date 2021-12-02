@@ -13,7 +13,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
+namespace NakedFramework.ParallelReflector.TypeFacetFactory;
 
 public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeFacetFactoryProcessor {
     protected ValueUsingValueSemanticsProviderFacetFactory(int numericOrder, ILoggerFactory loggerFactory)

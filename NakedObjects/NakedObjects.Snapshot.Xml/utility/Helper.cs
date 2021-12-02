@@ -7,7 +7,7 @@
 
 using System.Xml.Linq;
 
-namespace NakedObjects.Snapshot.Xml.utility; 
+namespace NakedObjects.Snapshot.Xml.utility;
 
 public static class Helper {
     // Helper method

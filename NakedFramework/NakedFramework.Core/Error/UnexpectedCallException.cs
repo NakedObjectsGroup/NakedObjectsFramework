@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 /// <summary>
 ///     Indicates that a call was made to a method (normally an overridden one) that was not expected, and hence

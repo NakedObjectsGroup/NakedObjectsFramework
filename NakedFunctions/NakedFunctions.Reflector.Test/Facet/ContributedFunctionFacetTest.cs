@@ -10,7 +10,7 @@ using Moq;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet; 
+namespace NakedFunctions.Reflector.Test.Facet;
 
 [TestClass]
 public class ContributedFunctionFacetTest {

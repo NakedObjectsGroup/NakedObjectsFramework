@@ -17,7 +17,7 @@ using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.Reflector.Component; 
+namespace NakedObjects.Reflector.Component;
 
 public sealed class ObjectReflector : AbstractParallelReflector {
     private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
@@ -28,7 +28,7 @@ public sealed class ObjectReflector : AbstractParallelReflector {
                            IEnumerable<IFacetDecorator> facetDecorators,
                            IReflectorOrder<ObjectReflector> reflectorOrder,
                            ILoggerFactory loggerFactory,
-                           ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder,  loggerFactory, logger) {
+                           ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
         this.objectReflectorConfiguration = objectReflectorConfiguration;
         FacetFactorySet = objectFacetFactorySet;
         ClassStrategy = objectClassStrategy;

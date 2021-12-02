@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class WithActionObject : WithAction {
     [Key]
@@ -25,7 +25,7 @@ public class WithActionObject : WithAction {
     public virtual MostSimple AnOverloadedAction1(string parm) => Container.Instances<MostSimple>().Single(x => x.Id == 1);
 
     [Edit]
-    public WithActionObject AnActionWithEditAnnotation(int id) => new() {Id = id};
+    public WithActionObject AnActionWithEditAnnotation(int id) => new() { Id = id };
 
     [Edit]
     public void AnActionVoidWithEditAnnotation(int id) => Id = id;

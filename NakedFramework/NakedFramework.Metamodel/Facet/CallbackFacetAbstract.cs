@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 /// <summary>
 ///     Adapter superclass for <see cref="IFacet" />s for <see cref="ICallbackFacet" />

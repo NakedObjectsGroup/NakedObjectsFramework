@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public class RangeFacet : IRangeFacet, ISerializable {
@@ -87,7 +87,7 @@ public class RangeFacet : IRangeFacet, ISerializable {
     public bool IsDateRange { get; set; }
 
     public virtual int OutOfRange(INakedObjectAdapter nakedObjectAdapter) {
-        var origVal = (IConvertible) nakedObjectAdapter?.Object;
+        var origVal = (IConvertible)nakedObjectAdapter?.Object;
         return origVal switch {
             null => 0,
             _ when IsSIntegral(origVal) => Compare(origVal.ToInt64(null), Min.ToInt64(null), Max.ToInt64(null)),

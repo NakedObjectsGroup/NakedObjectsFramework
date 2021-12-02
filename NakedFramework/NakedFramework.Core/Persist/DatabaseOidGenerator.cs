@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Core.Persist; 
+namespace NakedFramework.Core.Persist;
 
 public sealed class DatabaseOidGenerator : IOidGenerator {
     private static long transientId;
@@ -30,7 +30,7 @@ public sealed class DatabaseOidGenerator : IOidGenerator {
 
     public void ConvertTransientToPersistentOid(IOid oid) => (oid as IDatabaseOid)?.MakePersistent();
 
-    public IOid CreateTransientOid(object obj) => new DatabaseOid(metamodel, obj.GetType(), new object[] {++transientId}, true, Logger());
+    public IOid CreateTransientOid(object obj) => new DatabaseOid(metamodel, obj.GetType(), new object[] { ++transientId }, true, Logger());
 
     public IOid RestoreOid(string[] encodedData) => new DatabaseOid(metamodel, loggerFactory, encodedData);
 

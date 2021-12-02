@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class TitleMethodFacetFactoryTest : AbstractFacetFactoryTest {
     private TitleMethodFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(ITitleFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(ITitleFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -59,7 +59,7 @@ public class TitleMethodFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ITitleFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TitleFacetViaTitleMethod);
-        var titleFacetViaTitleMethod = (TitleFacetViaTitleMethod) facet;
+        var titleFacetViaTitleMethod = (TitleFacetViaTitleMethod)facet;
         Assert.AreEqual(titleMethod, titleFacetViaTitleMethod.GetMethod());
         AssertMethodRemoved(titleMethod);
         Assert.IsNotNull(metamodel);
@@ -69,12 +69,12 @@ public class TitleMethodFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var toStringMethod = FindMethod(typeof(Customer1), "ToString", new[] {typeof(string)});
+        var toStringMethod = FindMethod(typeof(Customer1), "ToString", new[] { typeof(string) });
         metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(ITitleFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TitleFacetViaToStringMethod);
-        var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod) facet;
+        var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod)facet;
         Assert.AreEqual(toStringMethod, titleFacetViaTitleMethod.GetMethod());
         AssertMethodRemoved(toStringMethod);
         Assert.IsNotNull(metamodel);

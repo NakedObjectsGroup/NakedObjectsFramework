@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 public sealed class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
     private const string Wildcard = "*";

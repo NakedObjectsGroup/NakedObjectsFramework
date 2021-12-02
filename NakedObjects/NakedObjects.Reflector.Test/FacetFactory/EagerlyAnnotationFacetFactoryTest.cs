@@ -19,13 +19,13 @@ using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private EagerlyAnnotationFacetFactory annotationFacetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IEagerlyFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IEagerlyFacet) };
 
     protected override IFacetFactory FacetFactory => annotationFacetFactory;
 
@@ -37,7 +37,7 @@ public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IEagerlyFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is EagerlyFacet);
-        var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
+        var propertyDefaultFacetAnnotation = (EagerlyFacet)facet;
         Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
         Assert.IsNotNull(metamodel);
     }
@@ -51,7 +51,7 @@ public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IEagerlyFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is EagerlyFacet);
-        var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
+        var propertyDefaultFacetAnnotation = (EagerlyFacet)facet;
         Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
         Assert.IsNotNull(metamodel);
     }
@@ -65,7 +65,7 @@ public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IEagerlyFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is EagerlyFacet);
-        var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
+        var propertyDefaultFacetAnnotation = (EagerlyFacet)facet;
         Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
         Assert.IsNotNull(metamodel);
     }
@@ -79,7 +79,7 @@ public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IEagerlyFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is EagerlyFacet);
-        var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
+        var propertyDefaultFacetAnnotation = (EagerlyFacet)facet;
         Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
         Assert.IsNotNull(metamodel);
     }

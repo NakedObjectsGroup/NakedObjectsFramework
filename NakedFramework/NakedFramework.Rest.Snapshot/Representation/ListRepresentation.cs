@@ -17,7 +17,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class ListRepresentation : Representation {
@@ -69,7 +69,7 @@ public class ListRepresentation : Representation {
         Extensions = RestUtils.CreateMap(exts);
     }
 
-    private void SetLinks(HttpRequest req) => Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags)};
+    private void SetLinks(HttpRequest req) => Links = new[] { LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags) };
 
     private void SetLinks(HttpRequest req, ITypeFacade spec) => Links = Array.Empty<LinkRepresentation>();
 

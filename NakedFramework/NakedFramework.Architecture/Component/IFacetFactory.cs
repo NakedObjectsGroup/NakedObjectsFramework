@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 public interface IFacetFactory : IComparable<IFacetFactory> {
     /// <summary>

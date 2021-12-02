@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Attributes; 
+namespace NakedFramework.Architecture.Attributes;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class NotCountedAttribute : Attribute { }

@@ -16,7 +16,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class ParameterRepresentation : Representation {
@@ -153,7 +153,7 @@ public class ParameterRepresentation : Representation {
             optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
         }
 
-        var adapter = new FieldFacadeAdapter(parameter) {MenuId = parameterContext.MenuId};
+        var adapter = new FieldFacadeAdapter(parameter) { MenuId = parameterContext.MenuId };
 
         // include default value for for non-nullable boolean so we can distinguish from nullable on client 
         if (parameter.DefaultTypeIsExplicit(objectFacade) || parameter.Specification.IsBoolean && !parameter.IsNullable) {
@@ -174,7 +174,7 @@ public class ParameterRepresentation : Representation {
         }
 
         return optionals.Any()
-            ? CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals)
+            ? CreateWithOptionals<ParameterRepresentation>(new object[] { oidStrategy, req, objectFacade, adapter, flags }, optionals)
             : new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
     }
 
@@ -200,7 +200,7 @@ public class ParameterRepresentation : Representation {
         }
 
         return optionals.Any()
-            ? CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals)
+            ? CreateWithOptionals<ParameterRepresentation>(new object[] { oidStrategy, req, objectFacade, adapter, flags }, optionals)
             : new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
     }
 }

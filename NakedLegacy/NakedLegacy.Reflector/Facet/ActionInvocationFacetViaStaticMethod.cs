@@ -19,7 +19,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedLegacy.Reflector.Facet; 
+namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
@@ -63,7 +63,8 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
     private static T Invoke<T>(Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
         try {
             return methodDelegate is not null ? (T)methodDelegate(null, parms) : (T)method.Invoke(null, parms);
-        } catch (InvalidCastException) {
+        }
+        catch (InvalidCastException) {
             throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.DeclaringType}.{method.Name}");
         }
     }

@@ -12,7 +12,7 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 
-namespace NakedFramework.Rest.Snapshot.Utility; 
+namespace NakedFramework.Rest.Snapshot.Utility;
 
 public class FieldFacadeAdapter {
     private readonly IAssociationFacade association;
@@ -22,7 +22,7 @@ public class FieldFacadeAdapter {
 
     public FieldFacadeAdapter(IAssociationFacade association) => this.association = association;
 
-    public IFieldFacade AsField => (IFieldFacade) parameter ?? association;
+    public IFieldFacade AsField => (IFieldFacade)parameter ?? association;
 
     public string Id => parameter?.Id ?? association?.Id;
 

@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl; 
+namespace NakedFramework.Facade.Impl.Impl;
 
 public class ConsentFacade : IConsentFacade {
     private readonly IConsent consent;

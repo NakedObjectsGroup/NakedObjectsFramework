@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Reflect; 
+namespace NakedObjects.Reflector.Reflect;
 
 public static class ObjectFacetFactories {
     public static Type[] StandardFacetFactories() =>

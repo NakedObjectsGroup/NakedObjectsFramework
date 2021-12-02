@@ -21,7 +21,7 @@ using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.SystemTest.MultiReflector; 
+namespace NakedObjects.SystemTest.MultiReflector;
 
 internal class MultiReflectorOrder<T> : IReflectorOrder<T> {
     public int Order => typeof(T) switch {
@@ -66,13 +66,13 @@ public class MultiReflectorTest : AbstractSystemTest<FooContext> {
 
     protected override Action<NakedFrameworkOptions> AddNakedFunctions => builder => builder.AddNakedFunctions(NakedFunctionsOptions);
 
-    protected override Type[] ObjectTypes => new[] {typeof(Foo)};
+    protected override Type[] ObjectTypes => new[] { typeof(Foo) };
 
-    protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
+    protected override Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
 
-    protected override Type[] Records => new[] {typeof(Bar)};
+    protected override Type[] Records => new[] { typeof(Bar) };
 
-    protected override Func<Type[], Type[]> SupportedSystemTypes => t => new[] {typeof(string), typeof(int)};
+    protected override Func<Type[], Type[]> SupportedSystemTypes => t => new[] { typeof(string), typeof(int) };
 
     [Test]
     public virtual void AllSpecs() {

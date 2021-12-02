@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
 
-namespace NakedFramework.Metamodel.Profile; 
+namespace NakedFramework.Metamodel.Profile;
 
 [Serializable]
 public sealed class ProfilePropertySetterFacet : PropertySetterFacetAbstract {

@@ -17,7 +17,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
 
-namespace NakedFramework.Persistor.EFCore.Component; 
+namespace NakedFramework.Persistor.EFCore.Component;
 
 public class EFCoreCreateObjectCommand : ICreateObjectCommand {
     private readonly EFCoreLocalContext context;

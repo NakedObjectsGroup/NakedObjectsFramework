@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public class AllServiceList : IAllServiceList {
     public AllServiceList(IEnumerable<IServiceList> services) {

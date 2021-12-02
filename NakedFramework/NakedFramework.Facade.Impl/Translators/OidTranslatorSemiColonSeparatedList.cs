@@ -13,7 +13,7 @@ using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 
-namespace NakedFramework.Facade.Impl.Translators; 
+namespace NakedFramework.Facade.Impl.Translators;
 
 public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
     private readonly INakedFramework framework;
@@ -22,7 +22,7 @@ public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
 
     private static string Encode(IEncodedToStrings encoder) => encoder.ToShortEncodedStrings().Aggregate((a, b) => $"{a};{b}");
 
-    private static string GetObjectId(IOidFacade oid) => Encode((IEncodedToStrings) oid.Value);
+    private static string GetObjectId(IOidFacade oid) => Encode((IEncodedToStrings)oid.Value);
 
     #region IOidTranslator Members
 
@@ -38,7 +38,7 @@ public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
 
     public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
         if (objectFacade.IsViewModel) {
-            var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
+            var vm = ((ObjectFacade)objectFacade).WrappedNakedObject;
             framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
         }
 

@@ -21,7 +21,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public sealed class LifeCycleManager : ILifecycleManager {
     private readonly IDomainObjectInjector injector;
@@ -97,7 +97,7 @@ public sealed class LifeCycleManager : ILifecycleManager {
 
     private INakedObjectAdapter RecreateViewModel(ViewModelOid oid, INakedFramework framework) {
         var keys = oid.Keys;
-        var spec = (IObjectSpec) oid.Spec;
+        var spec = (IObjectSpec)oid.Spec;
         var vm = CreateViewModel(spec);
         vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm, framework);
         nakedObjectManager.UpdateViewModel(vm, keys);
@@ -138,7 +138,7 @@ public sealed class LifeCycleManager : ILifecycleManager {
             throw new NakedObjectSystemException("needs a specification");
         }
 
-        return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, (IObjectSpec) spec);
+        return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, (IObjectSpec)spec);
     }
 
     public IList<(object original, object updated)> Persist(IDetachedObjects objects) => objectPersistor.UpdateDetachedObjects(objects);
@@ -182,7 +182,7 @@ public sealed class LifeCycleManager : ILifecycleManager {
 
     public object CreateNonAdaptedObject(Type type) => CreateNotPersistedObject(type, true);
 
-    public INakedObjectAdapter GetViewModel(IOid oid, INakedFramework framework) => nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid, framework);
+    public INakedObjectAdapter GetViewModel(IOid oid, INakedFramework framework) => nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid)oid, framework);
 
     /// <summary>
     ///     Makes a naked object persistent. The specified object should be stored away via this object store's

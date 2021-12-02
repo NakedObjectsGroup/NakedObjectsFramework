@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 /// <summary>
 ///     Service that will inject an implementation of IDomainObjectContainer and/or INakedFramework into

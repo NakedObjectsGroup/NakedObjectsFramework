@@ -12,7 +12,7 @@ using System.Data.Entity.Core.Objects;
 using System.Linq;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Persistor.EF6.Configuration; 
+namespace NakedFramework.Persistor.EF6.Configuration;
 
 public class EF6ObjectStoreConfiguration : IEF6ObjectStoreConfiguration {
     private bool isContextSet;

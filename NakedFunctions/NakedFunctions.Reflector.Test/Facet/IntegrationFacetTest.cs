@@ -10,7 +10,7 @@ using Moq;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFunctions.Reflector.Test.Facet; 
+namespace NakedFunctions.Reflector.Test.Facet;
 
 [TestClass]
 public class IntegrationFacetTest {

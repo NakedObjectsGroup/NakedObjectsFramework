@@ -21,7 +21,7 @@ using NakedFramework.Core.Interactions;
 using NakedFramework.Core.Reflect;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Spec; 
+namespace NakedFramework.Core.Spec;
 
 public abstract class ActionParameterSpec : IActionParameterSpec {
     private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
@@ -214,7 +214,7 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
 
         if (Spec.IsCollectionOfBoundedSet(ElementSpec) || Spec.IsCollectionOfEnum(ElementSpec)) {
             var elementEnumFacet = ElementSpec.GetFacet<IEnumFacet>();
-            var domainObjects = elementEnumFacet != null ? (IEnumerable) elementEnumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter)) : persistor.Instances(ElementSpec);
+            var domainObjects = elementEnumFacet != null ? (IEnumerable)elementEnumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter)) : persistor.Instances(ElementSpec);
             return manager.GetCollectionOfAdaptedObjects(domainObjects).ToArray();
         }
 

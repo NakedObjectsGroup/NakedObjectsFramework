@@ -15,7 +15,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Component;
 
-namespace NakedObjects.Reflector.Test.Reflect; 
+namespace NakedObjects.Reflector.Test.Reflect;
 
 public class TestPoco { }
 
@@ -24,7 +24,7 @@ public class ReflectorArrayTest : AbstractReflectorTest {
     protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
         (_, metamodel) = reflector.LoadSpecification(typeof(TestPoco[]), metamodel);
-        return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(TestPoco[]), metamodel);
+        return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(TestPoco[]), metamodel);
     }
 
     [TestMethod]
@@ -43,7 +43,7 @@ public class ReflectorArrayTest : AbstractReflectorTest {
 
     [TestMethod]
     public void TestElementTypeFacet() {
-        var facet = (IElementTypeFacet) Specification.GetFacet(typeof(IElementTypeFacet));
+        var facet = (IElementTypeFacet)Specification.GetFacet(typeof(IElementTypeFacet));
         Assert.IsNull(facet);
     }
 
@@ -78,7 +78,7 @@ public class ReflectorArrayTest : AbstractReflectorTest {
 
     [TestMethod]
     public void TestTypeOfFacet() {
-        var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
+        var facet = (ITypeOfFacet)Specification.GetFacet(typeof(ITypeOfFacet));
         Assert.IsNotNull(facet);
         AssertIsInstanceOfType<TypeOfFacetInferredFromArray>(facet);
     }

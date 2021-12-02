@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Rest.Snapshot.Utility; 
+namespace NakedFramework.Rest.Snapshot.Utility;
 
 public class MenuIdHolder : IMenuFacade {
     public MenuIdHolder(string id) => Id = id;

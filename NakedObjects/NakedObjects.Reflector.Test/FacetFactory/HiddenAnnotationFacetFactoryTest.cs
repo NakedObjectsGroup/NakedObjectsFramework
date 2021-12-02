@@ -22,13 +22,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class HiddenAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private HiddenAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IHiddenFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IHiddenFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -39,7 +39,7 @@ public class HiddenAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var actionMethod = FindMethod(typeof(Customer6), "SomeAction");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IHiddenFacet));
-        var hiddenFacetAbstract = (HiddenFacet) facet;
+        var hiddenFacetAbstract = (HiddenFacet)facet;
         Assert.AreEqual(WhenTo.UntilPersisted, hiddenFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -100,7 +100,7 @@ public class HiddenAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IHiddenFacet));
-        var hiddenFacetAbstract = (HiddenFacet) facet;
+        var hiddenFacetAbstract = (HiddenFacet)facet;
         Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -112,7 +112,7 @@ public class HiddenAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var actionMethod = FindMethod(typeof(Customer4), "SomeAction");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IHiddenFacet));
-        var hiddenFacetAbstract = (HiddenFacet) facet;
+        var hiddenFacetAbstract = (HiddenFacet)facet;
         Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -124,7 +124,7 @@ public class HiddenAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var actionMethod = FindMethod(typeof(Customer5), "SomeAction");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IHiddenFacet));
-        var hiddenFacetAbstract = (HiddenFacet) facet;
+        var hiddenFacetAbstract = (HiddenFacet)facet;
         Assert.AreEqual(WhenTo.OncePersisted, hiddenFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -136,7 +136,7 @@ public class HiddenAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var property = FindProperty(typeof(Customer10), "NumberOfOrders");
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IHiddenFacet));
-        var hiddenFacetAbstract = (HiddenFacet) facet;
+        var hiddenFacetAbstract = (HiddenFacet)facet;
         Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -174,7 +174,7 @@ public class HiddenAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var property = FindProperty(typeof(Customer9), "NumberOfOrders");
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IHiddenFacet));
-        var hiddenFacetAbstract = (HiddenFacet) facet;
+        var hiddenFacetAbstract = (HiddenFacet)facet;
         Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }

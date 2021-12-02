@@ -14,7 +14,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Menu;
 using NakedObjects.Resources;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
@@ -22,7 +22,7 @@ public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
         : base(typeof(IMenuFacet), holder) =>
         Menu = null;
 
-    protected ITypeSpecImmutable Spec => (ITypeSpecImmutable) Specification;
+    protected ITypeSpecImmutable Spec => (ITypeSpecImmutable)Specification;
 
     protected MenuImpl Menu { get; set; }
 

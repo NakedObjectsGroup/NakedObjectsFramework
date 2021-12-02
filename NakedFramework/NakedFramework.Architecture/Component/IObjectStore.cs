@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 /// <summary>
 ///     Provides a generic interface to a specific persistence mechanism

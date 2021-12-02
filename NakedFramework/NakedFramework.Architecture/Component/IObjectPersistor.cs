@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 /// <summary>
 ///     The non-store specific parts of the Object persistence mechanism. Implemented as a composite rather than with

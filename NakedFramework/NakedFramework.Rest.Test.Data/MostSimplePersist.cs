@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class MostSimplePersist {
     [Key]

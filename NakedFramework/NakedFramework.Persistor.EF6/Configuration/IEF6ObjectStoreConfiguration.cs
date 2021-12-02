@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 
-namespace NakedFramework.Persistor.EF6.Configuration; 
+namespace NakedFramework.Persistor.EF6.Configuration;
 
 public interface IEF6ObjectStoreConfiguration {
     IEnumerable<EF6ContextConfiguration> ContextConfiguration { get; }

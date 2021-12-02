@@ -18,13 +18,12 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Authorization.Installer; 
+namespace NakedObjects.SystemTest.Authorization.Installer;
 
 public abstract class TestCustomAuthorizer<TDefault> : AbstractSystemTest<CustomAuthorizerInstallerDbContext> where TDefault : ITypeAuthorizer<object> {
-    protected override Type[] ObjectTypes => new[] {typeof(TDefault), typeof(Foo)};
+    protected override Type[] ObjectTypes => new[] { typeof(TDefault), typeof(Foo) };
 
-    protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
-
+    protected override Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
 
     protected override IAuthorizationConfiguration AuthorizationConfiguration => new AuthorizationConfiguration<TDefault>();
 }
@@ -259,14 +258,6 @@ public class CustomAuthorizerInstallerDbContext : DbContext {
 }
 
 public class DefaultAuthorizer1 : ITypeAuthorizer<object> {
-    #region ITypeAuthorizer<object> Members
-
-    public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
-
-    public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
-
-    #endregion
-
     public void Init() {
         //Does nothing
     }
@@ -274,9 +265,7 @@ public class DefaultAuthorizer1 : ITypeAuthorizer<object> {
     public void Shutdown() {
         //Does nothing
     }
-}
 
-public class DefaultAuthorizer2 : ITypeAuthorizer<object> {
     #region ITypeAuthorizer<object> Members
 
     public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
@@ -284,7 +273,9 @@ public class DefaultAuthorizer2 : ITypeAuthorizer<object> {
     public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
 
     #endregion
+}
 
+public class DefaultAuthorizer2 : ITypeAuthorizer<object> {
     public void Init() {
         throw new NotImplementedException();
     }
@@ -292,9 +283,25 @@ public class DefaultAuthorizer2 : ITypeAuthorizer<object> {
     public void Shutdown() {
         //Does nothing
     }
+
+    #region ITypeAuthorizer<object> Members
+
+    public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
+
+    public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
+
+    #endregion
 }
 
 public class DefaultAuthorizer3 : ITypeAuthorizer<object> {
+    public void Init() {
+        //Does nothing
+    }
+
+    public void Shutdown() {
+        //Does nothing
+    }
+
     #region ITypeAuthorizer<object> Members
 
     public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
@@ -302,7 +309,9 @@ public class DefaultAuthorizer3 : ITypeAuthorizer<object> {
     public bool IsVisible(IPrincipal principal, object target, string memberName) => principal.Identity.Name == "Fred" || principal.IsInRole("sysAdmin");
 
     #endregion
+}
 
+public class FooAbstractAuthorizer : ITypeAuthorizer<BarAbstract> {
     public void Init() {
         //Does nothing
     }
@@ -310,9 +319,7 @@ public class DefaultAuthorizer3 : ITypeAuthorizer<object> {
     public void Shutdown() {
         //Does nothing
     }
-}
 
-public class FooAbstractAuthorizer : ITypeAuthorizer<BarAbstract> {
     #region ITypeAuthorizer<BarAbstract> Members
 
     public bool IsEditable(IPrincipal principal, BarAbstract target, string memberName) => throw new NotImplementedException();
@@ -320,14 +327,6 @@ public class FooAbstractAuthorizer : ITypeAuthorizer<BarAbstract> {
     public bool IsVisible(IPrincipal principal, BarAbstract target, string memberName) => throw new NotImplementedException();
 
     #endregion
-
-    public void Init() {
-        //Does nothing
-    }
-
-    public void Shutdown() {
-        //Does nothing
-    }
 }
 
 public abstract class BarAbstract {

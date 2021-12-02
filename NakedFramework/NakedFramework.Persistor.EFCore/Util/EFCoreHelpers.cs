@@ -17,7 +17,7 @@ using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Persistor.EFCore.Util; 
+namespace NakedFramework.Persistor.EFCore.Util;
 
 public static class EFCoreHelpers {
     private static IEntityType GetEntityType(this DbContext context, Type type) => context.Model.FindEntityType(type.GetProxiedType());
@@ -42,7 +42,7 @@ public static class EFCoreHelpers {
         var keyPropertiesName = eType.GetForeignKeys().Where(k => k.PrincipalEntityType == ofType).SelectMany(k => k.Properties).Select(p => p.Name).SingleOrDefault();
         var matchingMember = context.Entry(obj).Members.SingleOrDefault(m => m.Metadata.Name == keyPropertiesName);
 
-        return new[] {matchingMember?.CurrentValue};
+        return new[] { matchingMember?.CurrentValue };
     }
 
     public static PropertyInfo[] GetNonIdMembers(this DbContext context, Type type) {

@@ -7,7 +7,7 @@
 
 using System.Security.Principal;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 /// <summary>
 ///     The representation within the system of an authenticated user

@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private DescribedAsAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IDescribedAsFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IDescribedAsFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -39,7 +39,7 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -49,12 +49,12 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestDescribedAsAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer4), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -67,7 +67,7 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -82,7 +82,7 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -97,7 +97,7 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -112,7 +112,7 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -122,12 +122,12 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestDescriptionAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer9), "SomeAction", new[] {typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer9), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         Assert.IsNotNull(metamodel);
     }
@@ -140,7 +140,7 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -155,7 +155,7 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -170,7 +170,7 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DescribedAsFacetAbstract);
-        var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
+        var describedAsFacetAbstract = (DescribedAsFacetAbstract)facet;
         Assert.AreEqual("some description", describedAsFacetAbstract.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -267,8 +267,7 @@ public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
 
     private class Customer9 {
 // ReSharper disable once UnusedParameter.Local
-        public void SomeAction([System.ComponentModel.Description("some description")]
-                               int x) { }
+        public void SomeAction([System.ComponentModel.Description("some description")] int x) { }
     }
 
     #endregion

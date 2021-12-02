@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
@@ -35,11 +35,11 @@ public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativ
 
     public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         if (maskDelegate is not null) {
-            return (string) maskDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {mask});
+            return (string)maskDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { mask });
         }
 
         if (maskMethod is not null) {
-            return (string) maskMethod.Invoke(nakedObjectAdapter.GetDomainObject(), new object[] {mask});
+            return (string)maskMethod.Invoke(nakedObjectAdapter.GetDomainObject(), new object[] { mask });
         }
 
         return GetTitle(nakedObjectAdapter, framework);

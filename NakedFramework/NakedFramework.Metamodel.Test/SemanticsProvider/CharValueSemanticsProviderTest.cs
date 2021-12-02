@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<char> {
@@ -95,7 +95,7 @@ public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     [TestMethod]
     public void TestValue() {
         ICharValueFacet facet = value;
-        const char testValue = (char) 101;
+        const char testValue = (char)101;
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.CharValue(mockNo.Object));

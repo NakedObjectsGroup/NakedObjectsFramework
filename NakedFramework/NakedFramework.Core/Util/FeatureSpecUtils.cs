@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class FeatureSpecUtils {
     public static string PropertyTitle(this IMemberSpec memberSpec, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {

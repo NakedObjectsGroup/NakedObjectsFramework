@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 public interface IDecimalValueFacet : IFacet {
     decimal DecimalValue(INakedObjectAdapter nakedObjectAdapter);

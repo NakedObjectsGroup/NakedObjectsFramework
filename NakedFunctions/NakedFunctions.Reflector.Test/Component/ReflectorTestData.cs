@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Menu;
 
-namespace NakedFunctions.Reflector.Test.Component; 
+namespace NakedFunctions.Reflector.Test.Component;
 
 public class NullMenuFactory : IMenuFactory {
     public IMenu NewMenu(string name) => null;
@@ -69,10 +69,10 @@ public record TableViewClass {
 
 public static class TableViewFunctions {
     [TableView(true)]
-    public static IQueryable<TableViewClass> TableViewFunction(this TableViewClass dac, IContext context) => new[] {dac}.AsQueryable();
+    public static IQueryable<TableViewClass> TableViewFunction(this TableViewClass dac, IContext context) => new[] { dac }.AsQueryable();
 
     [TableView(true)]
-    public static (IQueryable<TableViewClass>, IContext) TableViewFunction1(this TableViewClass dac, IContext context) => (new[] {dac}.AsQueryable(), context);
+    public static (IQueryable<TableViewClass>, IContext) TableViewFunction1(this TableViewClass dac, IContext context) => (new[] { dac }.AsQueryable(), context);
 }
 
 //[Mask("Class Mask")] (currently) allowed only on property
@@ -175,13 +175,13 @@ public record IgnoredClass {
 
 public static class ParameterDefaultClass {
     public static SimpleClass ParameterWithBoolDefaultFunction(this SimpleClass target, [DefaultValue(true)] bool parameter) => target;
-    public static SimpleClass ParameterWithByteDefaultFunction(this SimpleClass target, [DefaultValue((byte) 66)] byte parameter) => target;
+    public static SimpleClass ParameterWithByteDefaultFunction(this SimpleClass target, [DefaultValue((byte)66)] byte parameter) => target;
     public static SimpleClass ParameterWithCharDefaultFunction(this SimpleClass target, [DefaultValue('g')] char parameter) => target;
     public static SimpleClass ParameterWithDoubleDefaultFunction(this SimpleClass target, [DefaultValue(56.23)] double parameter) => target;
-    public static SimpleClass ParameterWithFloatDefaultFunction(this SimpleClass target, [DefaultValue((float) 22.82)] float parameter) => target;
+    public static SimpleClass ParameterWithFloatDefaultFunction(this SimpleClass target, [DefaultValue((float)22.82)] float parameter) => target;
     public static SimpleClass ParameterWithIntDefaultFunction(this SimpleClass target, [DefaultValue(72)] int parameter) => target;
-    public static SimpleClass ParameterWithLongDefaultFunction(this SimpleClass target, [DefaultValue((long) 91)] long parameter) => target;
-    public static SimpleClass ParameterWithShortDefaultFunction(this SimpleClass target, [DefaultValue((short) 30)] short parameter) => target;
+    public static SimpleClass ParameterWithLongDefaultFunction(this SimpleClass target, [DefaultValue((long)91)] long parameter) => target;
+    public static SimpleClass ParameterWithShortDefaultFunction(this SimpleClass target, [DefaultValue((short)30)] short parameter) => target;
     public static SimpleClass ParameterWithStringDefaultFunction(this SimpleClass target, [DefaultValue("a default")] string parameter) => target;
     public static SimpleClass ParameterWithDateTimeDefaultFunction(this SimpleClass target, [DefaultValue(35)] DateTime parameter) => target;
 }
@@ -207,7 +207,7 @@ public static class SimpleFunctions {
     public static SimpleClass SimpleFunction(this SimpleClass target) => target;
 
     public static IList<SimpleClass> SimpleFunction1(this SimpleClass target) {
-        return new[] {target};
+        return new[] { target };
     }
 }
 
@@ -294,17 +294,17 @@ public static class DuplicateFunctions2 {
 public static class ChoicesClass {
     public static IContext ActionWithChoices(this SimpleClass target, int parm1, string parm2, IContext context) => context;
 
-    public static IList<int> Choices1ActionWithChoices(this SimpleClass target, string parm2) => new List<int> {0};
-    public static IList<string> Choices2ActionWithChoices(this SimpleClass target, int parm1) => new List<string> {"0"};
+    public static IList<int> Choices1ActionWithChoices(this SimpleClass target, string parm2) => new List<int> { 0 };
+    public static IList<string> Choices2ActionWithChoices(this SimpleClass target, int parm1) => new List<string> { "0" };
 
     public static IContext ActionWithMismatchedChoices(this SimpleClass target, int parm1, string parm2, IContext context) => context;
 
-    public static IList<int> Choices1ActionWithMismatchedChoices(this SimpleClass target, string parm3) => new List<int> {0};
-    public static IList<string> Choices2ActionWithMismatchedChoices(this SimpleClass target, string parm1) => new List<string> {"0"};
+    public static IList<int> Choices1ActionWithMismatchedChoices(this SimpleClass target, string parm3) => new List<int> { 0 };
+    public static IList<string> Choices2ActionWithMismatchedChoices(this SimpleClass target, string parm1) => new List<string> { "0" };
 }
 
 public static class MismatchedTargetClass {
     public static IContext ActionWithChoices(this SimpleClass target, int parm1, string parm2, IContext context) => context;
 
-    public static IList<int> Choices1ActionWithChoices(this NavigableClass target, string parm2) => new List<int> {0};
+    public static IList<int> Choices1ActionWithChoices(this NavigableClass target, string parm2) => new List<int> { 0 };
 }

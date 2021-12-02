@@ -18,7 +18,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionParameterValidation : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
@@ -46,7 +46,7 @@ public sealed class ActionParameterValidation : FacetAbstract, IActionParameterV
     public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
     public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter proposedArgument) =>
-        (string) methodDelegate(target.GetDomainObject(), new[] {proposedArgument.GetDomainObject()});
+        (string)methodDelegate(target.GetDomainObject(), new[] { proposedArgument.GetDomainObject() });
 
     #endregion
 

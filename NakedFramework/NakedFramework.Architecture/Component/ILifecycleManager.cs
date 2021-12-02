@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Persist;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 /// <summary>
 ///     Most of this type's responsibilities will be delegated to an injected INakedObjectManager and/or IObjectPersistor.

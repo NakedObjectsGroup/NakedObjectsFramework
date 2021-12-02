@@ -18,7 +18,7 @@ using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 /// <summary>
 ///     Note: This is a limited test;  it does not test collection-contributed actions
@@ -29,7 +29,7 @@ public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryT
     private ContributedActionAnnotationFacetFactory facetFactory;
 
     protected override Type[] SupportedTypes {
-        get { return new[] {typeof(IContributedActionFacet)}; }
+        get { return new[] { typeof(IContributedActionFacet) }; }
     }
 
     protected override IFacetFactory FacetFactory => facetFactory;

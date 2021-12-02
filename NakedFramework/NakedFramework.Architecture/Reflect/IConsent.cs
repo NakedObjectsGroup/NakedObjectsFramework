@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Reflect; 
+namespace NakedFramework.Architecture.Reflect;
 
 public interface IConsent {
     /// <summary>

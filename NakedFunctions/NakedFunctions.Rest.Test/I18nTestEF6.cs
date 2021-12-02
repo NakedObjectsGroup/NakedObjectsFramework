@@ -22,9 +22,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Rest.Test.Data;
-using Rest.Test.Data.Sub;
 
-namespace NakedFunctions.Rest.Test; 
+namespace NakedFunctions.Rest.Test;
 
 public class I18nTestEF6 : AcceptanceTestCase {
     protected override Type[] Functions { get; } = {

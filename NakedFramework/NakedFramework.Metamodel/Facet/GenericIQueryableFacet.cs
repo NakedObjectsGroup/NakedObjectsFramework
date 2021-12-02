@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class GenericIQueryableFacet : CollectionFacetAbstract {
@@ -26,7 +26,7 @@ public sealed class GenericIQueryableFacet : CollectionFacetAbstract {
     public override bool IsQueryable => true;
 
     private static IQueryable<T> AsGenericIQueryable<T>(INakedObjectAdapter collection) {
-        var queryable = (IQueryable<T>) collection.Object;
+        var queryable = (IQueryable<T>)collection.Object;
         return queryable.IsOrdered() ? queryable : queryable.OrderBy(x => "");
     }
 
@@ -44,18 +44,18 @@ public sealed class GenericIQueryableFacet : CollectionFacetAbstract {
 
     public static IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericIQueryable<T>(collection);
 
-    public static bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericIQueryable<T>(collection).Contains((T) element.Object);
+    public static bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericIQueryable<T>(collection).Contains((T)element.Object);
 
-    public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => (INakedObjectAdapter) Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
+    public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => (INakedObjectAdapter)Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
 
-    public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => (IEnumerable<INakedObjectAdapter>) Call("AsEnumerableInternal", collection, collection, manager);
+    public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => (IEnumerable<INakedObjectAdapter>)Call("AsEnumerableInternal", collection, collection, manager);
 
-    public override IQueryable AsQueryable(INakedObjectAdapter collection) => (IQueryable) Call("AsQueryableInternal", collection, collection);
+    public override IQueryable AsQueryable(INakedObjectAdapter collection) => (IQueryable)Call("AsQueryableInternal", collection, collection);
 
     public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
         var newCollection = CollectionUtils.CloneCollectionAndPopulate(collection.Object, initData.Select(no => no.Object));
         collection.ReplacePoco(newCollection.AsQueryable());
     }
 
-    public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) => (bool) Call("ContainsInternal", collection, collection, element);
+    public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) => (bool)Call("ContainsInternal", collection, collection, element);
 }

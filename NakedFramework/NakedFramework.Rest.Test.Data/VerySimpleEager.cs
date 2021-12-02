@@ -14,7 +14,7 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 [Eagerly(Do.Rendering)]
 public class VerySimpleEager {

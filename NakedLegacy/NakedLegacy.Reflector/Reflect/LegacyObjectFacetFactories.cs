@@ -8,7 +8,7 @@
 using System;
 using NakedLegacy.Reflector.FacetFactory;
 
-namespace NakedLegacy.Reflector.Reflect; 
+namespace NakedLegacy.Reflector.Reflect;
 
 public static class LegacyObjectFacetFactories {
     public static Type[] StandardFacetFactories() =>

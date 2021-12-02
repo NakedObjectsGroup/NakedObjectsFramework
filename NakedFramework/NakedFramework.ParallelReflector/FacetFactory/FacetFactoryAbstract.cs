@@ -5,13 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.ParallelReflector.FacetFactory; 
+namespace NakedFramework.ParallelReflector.FacetFactory;
 
 public abstract class FacetFactoryAbstract {
     protected FacetFactoryAbstract(int numericOrder,
@@ -26,9 +27,9 @@ public abstract class FacetFactoryAbstract {
 
     protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
 
-    public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => System.Array.Empty<PropertyInfo>();
+    public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => Array.Empty<PropertyInfo>();
 
-    public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => System.Array.Empty<PropertyInfo>();
+    public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => Array.Empty<PropertyInfo>();
 
     #region IFacetFactory Members
 

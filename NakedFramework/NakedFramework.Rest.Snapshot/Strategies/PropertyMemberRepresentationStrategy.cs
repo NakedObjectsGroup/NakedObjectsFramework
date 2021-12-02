@@ -12,7 +12,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies; 
+namespace NakedFramework.Rest.Snapshot.Strategies;
 
 [DataContract]
 public class PropertyMemberRepresentationStrategy : AbstractPropertyRepresentationStrategy {

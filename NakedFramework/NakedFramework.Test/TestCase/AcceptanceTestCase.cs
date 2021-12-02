@@ -36,7 +36,7 @@ using NakedFramework.Test.TestObjects;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Reflector.Extensions;
 
-namespace NakedFramework.Test.TestCase; 
+namespace NakedFramework.Test.TestCase;
 
 public abstract class AcceptanceTestCase {
     private static IHost host;
@@ -197,7 +197,7 @@ public abstract class AcceptanceTestCase {
 
     protected virtual object[] GetFixtures(object fixture) {
         var getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", Array.Empty<Type>());
-        return getFixturesMethod == null ? Array.Empty<object>() : (object[]) getFixturesMethod.Invoke(fixture, Array.Empty<object>());
+        return getFixturesMethod == null ? Array.Empty<object>() : (object[])getFixturesMethod.Invoke(fixture, Array.Empty<object>());
     }
 
     protected virtual void InstallFixture(object fixture) {

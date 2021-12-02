@@ -5,14 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
-
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
 using System.Data.Entity;
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 public class AdventureWorksEntities : DbContext {
     public AdventureWorksEntities(string name)
@@ -90,8 +88,7 @@ public class AdventureWorksEntities : DbContext {
     public virtual DbSet<StoreContact> StoreContacts { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-
-        modelBuilder.Entity<ContactCreditCard>().HasKey(k => new {k.ContactID, k.CreditCardID});
+        modelBuilder.Entity<ContactCreditCard>().HasKey(k => new { k.ContactID, k.CreditCardID });
         modelBuilder.Entity<CountryRegionCurrency>().HasKey(k => new { k.CountryRegionCode, k.CurrencyCode });
         modelBuilder.Entity<CustomerAddress>().HasKey(k => new { k.CustomerID, k.AddressID });
         modelBuilder.Entity<EmployeeAddress>().HasKey(k => new { k.EmployeeID, k.AddressID });
@@ -798,7 +795,7 @@ public class AdventureWorksEntities : DbContext {
         modelBuilder.Entity<SpecialOfferProduct>()
                     .HasMany(e => e.SalesOrderDetails)
                     .WithRequired(e => e.SpecialOfferProduct)
-                    .HasForeignKey(e => new {e.SpecialOfferID, e.ProductID})
+                    .HasForeignKey(e => new { e.SpecialOfferID, e.ProductID })
                     .WillCascadeOnDelete(false);
 
         modelBuilder.Entity<Store>()

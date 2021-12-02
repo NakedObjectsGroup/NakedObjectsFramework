@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 internal class TestParameter : ITestParameter {
     private readonly ITestObjectFactory factory;

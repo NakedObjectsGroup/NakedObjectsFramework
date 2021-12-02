@@ -14,7 +14,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider; 
+namespace NakedFramework.Metamodel.SemanticsProvider;
 
 [Serializable]
 public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstract<bool>, IBooleanValueFacet {
@@ -71,7 +71,7 @@ public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstra
     public void Set(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.ReplacePoco(true);
 
     public void Toggle(INakedObjectAdapter nakedObjectAdapter) {
-        var newValue = !(bool) nakedObjectAdapter.Object;
+        var newValue = !(bool)nakedObjectAdapter.Object;
         nakedObjectAdapter.ReplacePoco(newValue);
     }
 

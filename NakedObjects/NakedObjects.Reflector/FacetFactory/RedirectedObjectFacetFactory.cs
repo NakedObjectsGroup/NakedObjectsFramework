@@ -17,7 +17,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedObjects.Redirect;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class RedirectedObjectFacetFactory : ObjectFacetFactoryProcessor {
     public RedirectedObjectFacetFactory(IFacetFactoryOrder<RedirectedObjectFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory, FeatureType.Objects) { }

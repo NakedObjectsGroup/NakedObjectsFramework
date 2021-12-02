@@ -26,7 +26,7 @@ using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.FacetFactory; 
+namespace NakedLegacy.Reflector.FacetFactory;
 
 /// <summary>
 ///     Sets up all the <see cref="IFacet" />s for an action in a single shot

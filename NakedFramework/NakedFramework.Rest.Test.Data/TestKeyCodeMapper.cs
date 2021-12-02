@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Component;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class TestKeyCodeMapper : IKeyCodeMapper {
     private const string KeySeparator = "--";
@@ -23,22 +23,8 @@ public class TestKeyCodeMapper : IKeyCodeMapper {
 #pragma warning restore SYSLIB0022 // Type or member is obsolete
 
     // these are constants so that tests are reproduceable
-    private static readonly byte[] Iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    private static readonly byte[] Key = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    #region IKeyCodeMapper Members
-
-    public string[] KeyFromCode(string code, Type type) {
-        var decryptedCode = string.IsNullOrEmpty(code) ? "" : Decrypt(code);
-        return decryptedCode.Split(new[] {KeySeparator}, StringSplitOptions.None);
-    }
-
-    public string CodeFromKey(string[] key, Type type) {
-        var instanceId = key.Aggregate("", (s, t) => s + (s == "" ? "" : KeySeparator) + t);
-        return string.IsNullOrEmpty(instanceId) ? instanceId : Encrypt(instanceId);
-    }
-
-    #endregion
+    private static readonly byte[] Iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private static readonly byte[] Key = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     public string KeyStringFromCode(string code) => Decrypt(code);
 
@@ -59,4 +45,18 @@ public class TestKeyCodeMapper : IKeyCodeMapper {
         var decryptedBytes = decrypter.TransformFinalBlock(valueBytes, 0, valueBytes.Length);
         return Encoding.UTF8.GetString(decryptedBytes);
     }
+
+    #region IKeyCodeMapper Members
+
+    public string[] KeyFromCode(string code, Type type) {
+        var decryptedCode = string.IsNullOrEmpty(code) ? "" : Decrypt(code);
+        return decryptedCode.Split(new[] { KeySeparator }, StringSplitOptions.None);
+    }
+
+    public string CodeFromKey(string[] key, Type type) {
+        var instanceId = key.Aggregate("", (s, t) => s + (s == "" ? "" : KeySeparator) + t);
+        return string.IsNullOrEmpty(instanceId) ? instanceId : Encrypt(instanceId);
+    }
+
+    #endregion
 }

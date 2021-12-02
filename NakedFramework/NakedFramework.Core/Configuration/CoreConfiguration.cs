@@ -11,7 +11,7 @@ using System.Linq;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Menu;
 
-namespace NakedFramework.Core.Configuration; 
+namespace NakedFramework.Core.Configuration;
 
 public class CoreConfiguration : ICoreConfiguration {
     public CoreConfiguration(Func<IMenuFactory, IMenu[]> mainMenus = null) => MainMenus = mainMenus;

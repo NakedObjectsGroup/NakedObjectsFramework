@@ -14,7 +14,7 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace Snapshot.Xml.Test; 
+namespace Snapshot.Xml.Test;
 
 public class TestObjectContext : DbContext {
     public TestObjectContext(string name) : base(name) { }

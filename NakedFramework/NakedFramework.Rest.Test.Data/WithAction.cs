@@ -18,7 +18,7 @@ using NakedObjects.Security;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public abstract class WithAction {
     public IDomainObjectContainer Container { set; protected get; }
@@ -51,8 +51,7 @@ public abstract class WithAction {
 
     public virtual MostSimpleViewModel AnActionReturnsNullViewModel() => null;
 
-    public virtual MostSimple AnActionWithOptionalParm([Optionally] [Named("Optional Parm")] [DescribedAs("an optional parm")] [MaxLength(101)] [RegEx(Validation = @"[A-Z]")]
-                                                       string parm) {
+    public virtual MostSimple AnActionWithOptionalParm([Optionally] [Named("Optional Parm")] [DescribedAs("an optional parm")] [MaxLength(101)] [RegEx(Validation = @"[A-Z]")] string parm) {
         return Container.Instances<MostSimple>().Single(x => x.Id == 1);
     }
 
@@ -214,7 +213,7 @@ public abstract class WithAction {
     }
 
     public virtual IList<int> Choices0AnActionWithValueParameterWithChoices() {
-        return new[] {1, 2, 3};
+        return new[] { 1, 2, 3 };
     }
 
     public virtual int Default0AnActionWithValueParameterWithDefault() => 4;
@@ -224,11 +223,11 @@ public abstract class WithAction {
     }
 
     public virtual IList<int> Choices0AnActionWithValueParametersWithConditionalChoices(int parm3, string parm4) {
-        return new[] {parm3, parm4 == null ? 0 : int.Parse(parm4)};
+        return new[] { parm3, parm4 == null ? 0 : int.Parse(parm4) };
     }
 
     public virtual IList<string> Choices1AnActionWithValueParametersWithConditionalChoices(int parm3, string parm4) {
-        return new[] {parm3.ToString(CultureInfo.InvariantCulture), parm4};
+        return new[] { parm3.ToString(CultureInfo.InvariantCulture), parm4 };
     }
 
     public virtual MostSimple AnActionWithDisabledReferenceParameter([Disabled] MostSimple parm2) {
@@ -264,7 +263,7 @@ public abstract class WithAction {
     public virtual MostSimple AnActionWithParametersWithChoicesWithDefaults(int parm1, int parm7, MostSimple parm2, MostSimple parm8) => Container.Instances<MostSimple>().First();
 
     public virtual IList<int> Choices1AnActionWithParametersWithChoicesWithDefaults() {
-        return new[] {1, 2, 3};
+        return new[] { 1, 2, 3 };
     }
 
     public virtual int Default1AnActionWithParametersWithChoicesWithDefaults() => 4;
@@ -309,7 +308,6 @@ public abstract class WithAction {
         return Container.Instances<MostSimple>().Where(ms => ms.Id == 2);
     }
 
-       
     public void AnActionWithCollectionParameter(IEnumerable<string> parm) { }
 
     public string[] Choices0AnActionWithCollectionParameter() {
@@ -338,9 +336,7 @@ public abstract class WithAction {
     }
 
     [CreateNew]
-    public WithValue AnActionWithCreateNewAnnotation(int aValue) {
-        return new();
-    }
+    public WithValue AnActionWithCreateNewAnnotation(int aValue) => new WithValue();
 
     [FinderAction]
     public WithValue FinderAction1(int aValue) => new();

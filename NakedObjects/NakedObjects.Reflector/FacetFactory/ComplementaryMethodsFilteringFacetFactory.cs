@@ -16,7 +16,7 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Core.Error;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 /// <summary>
 ///     Sets up all the <see cref="IFacet" />s for an action in a single shot

@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Test.Interface; 
+namespace NakedFramework.Test.Interface;
 
 /// <summary>
 ///     Creates test objects for XAT

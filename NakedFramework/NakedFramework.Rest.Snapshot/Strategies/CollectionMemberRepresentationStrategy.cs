@@ -11,7 +11,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies; 
+namespace NakedFramework.Rest.Snapshot.Strategies;
 
 public class CollectionMemberRepresentationStrategy : AbstractCollectionRepresentationStrategy {
     public CollectionMemberRepresentationStrategy(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)

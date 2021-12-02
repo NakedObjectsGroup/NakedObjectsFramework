@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 public interface IContributedActionFacet : IFacet {
     bool IsContributedTo(IObjectSpecImmutable spec);

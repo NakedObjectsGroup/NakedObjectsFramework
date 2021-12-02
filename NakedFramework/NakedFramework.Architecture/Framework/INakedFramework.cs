@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.Framework; 
+namespace NakedFramework.Architecture.Framework;
 
 /// <summary>
 ///     Defines a service that provides easy access to the principal components of the framework.

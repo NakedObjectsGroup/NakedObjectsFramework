@@ -17,7 +17,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 /// <summary>
 ///     Note - this factory simply removes the class level attribute from the list of methods.  The action and properties

@@ -19,7 +19,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.FacetFactory; 
+namespace NakedLegacy.Reflector.FacetFactory;
 
 public sealed class InternalCollectionFacetFactory : LegacyFacetFactoryProcessor {
     public InternalCollectionFacetFactory(IFacetFactoryOrder<InternalCollectionFacetFactory> order, ILoggerFactory loggerFactory)

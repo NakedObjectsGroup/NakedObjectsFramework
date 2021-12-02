@@ -14,13 +14,13 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class PersistingCallbackFacetViaMethod : PersistingCallbackFacetAbstract, IImperativeFacet {
     private readonly MethodInfo method;
 
-    [field: NonSerialized] 
+    [field: NonSerialized]
     private Action<object> persistingDelegate;
 
     public PersistingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)

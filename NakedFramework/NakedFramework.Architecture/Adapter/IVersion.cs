@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Adapter; 
+namespace NakedFramework.Architecture.Adapter;
 
 /// <summary>
 ///     Version marks an INakedObjectAdapter as being a particular version of that object.

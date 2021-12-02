@@ -13,7 +13,7 @@ using TestObjectMenu;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Menus; 
+namespace NakedObjects.SystemTest.Menus;
 
 [TestFixture]
 public class TestServiceMenus : AbstractSystemTest<MenusDbContext> {

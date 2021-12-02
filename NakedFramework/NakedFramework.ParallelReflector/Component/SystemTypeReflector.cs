@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Reflect;
 
-namespace NakedFramework.ParallelReflector.Component; 
+namespace NakedFramework.ParallelReflector.Component;
 
 public sealed class SystemTypeReflector : AbstractParallelReflector {
     public SystemTypeReflector(SystemTypeFacetFactorySet systemTypeFacetFactorySet,
@@ -37,7 +37,6 @@ public sealed class SystemTypeReflector : AbstractParallelReflector {
     public override string Name => "Naked Framework";
     public override ReflectorType ReflectorType => ReflectorType.System;
     public override bool IgnoreCase => false;
-
 
     protected override IIntrospector GetNewIntrospector() => new SystemTypeIntrospector(this, LoggerFactory.CreateLogger<SystemTypeIntrospector>());
 

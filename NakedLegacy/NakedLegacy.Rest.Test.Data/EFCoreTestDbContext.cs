@@ -8,7 +8,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace NakedLegacy.Rest.Test.Data; 
+namespace NakedLegacy.Rest.Test.Data;
 
 public static class Constants {
     public static string AppveyorServer => @"(local)\SQL2017";
@@ -62,23 +62,19 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithTimeStamp>().Property("date").HasColumnName("Date");
     }
 
-    private static void MapClassWithWholeNumber(ModelBuilder modelBuilder)
-    {
+    private static void MapClassWithWholeNumber(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithWholeNumber>().Ignore(t => t.WholeNumber);
         modelBuilder.Entity<ClassWithWholeNumber>().Property("number").HasColumnName("Number");
     }
 
-    private static void MapClassWithInternalCollection(ModelBuilder modelBuilder)
-    {
+    private static void MapClassWithInternalCollection(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithInternalCollection>().Ignore(t => t.TestCollection);
 
         modelBuilder.Entity<ClassWithInternalCollection>()
                     .HasMany(c => c._TestCollection);
     }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            
         MapClassWithTextString(modelBuilder);
         MapClassWithDate(modelBuilder);
         MapClassWithTimeStamp(modelBuilder);
@@ -117,7 +113,7 @@ public abstract class EFCoreTestDbContext : DbContext {
 
         modelBuilder.Entity<ClassWithLinkToNOFClass>().HasData(new { Id = 1, Name = "Jack", LinkToNOFClassId = 1 });
 
-        modelBuilder.Entity<ClassWithWholeNumber>().HasData(new ClassWithWholeNumber {Id = 1, number = 10});
+        modelBuilder.Entity<ClassWithWholeNumber>().HasData(new ClassWithWholeNumber { Id = 1, number = 10 });
     }
 }
 

@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
-namespace NakedFramework.ParallelReflector.Reflect; 
+namespace NakedFramework.ParallelReflector.Reflect;
 
 public static class TypeFacetFactories {
     public static Type[] FacetFactories() =>

@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using NakedFunctions;
-using Rest.Test.Data;
 
 // non NakedFunctions namespace for I18N tests
 namespace Rest.Test.Data {
@@ -18,7 +17,6 @@ namespace Rest.Test.Data {
         public virtual int Id { get; set; }
         public virtual string Message { get; set; }
     }
-
 
     public record Bar {
         public virtual int Id { get; set; }
@@ -48,6 +46,7 @@ namespace Rest.Test.Data {
     public static class FooMenuFunctions {
         [DescribedAs("Act1")]
         public static Foo Act1(IContext context) => context.Instances<Foo>().FirstOrDefault();
+
         public static Foo Act2(IContext context) => context.Instances<Foo>().FirstOrDefault();
     }
 }

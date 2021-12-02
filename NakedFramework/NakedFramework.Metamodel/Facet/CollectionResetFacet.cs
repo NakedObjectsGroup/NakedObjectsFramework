@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet {
@@ -30,7 +30,7 @@ public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet 
 
     public void Reset(INakedObjectAdapter inObjectAdapter) {
         try {
-            var collection = (IList) property.GetValue(inObjectAdapter.GetDomainObject(), null);
+            var collection = (IList)property.GetValue(inObjectAdapter.GetDomainObject(), null);
             collection.Clear();
             property.SetValue(inObjectAdapter.GetDomainObject(), collection, null);
         }

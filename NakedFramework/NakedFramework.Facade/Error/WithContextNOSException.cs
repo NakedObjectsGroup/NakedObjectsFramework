@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Facade.Contexts;
 
-namespace NakedFramework.Facade.Error; 
+namespace NakedFramework.Facade.Error;
 
 public abstract class WithContextNOSException : NakedObjectsFacadeException {
     private readonly IList<ContextFacade> contexts;
@@ -29,7 +29,7 @@ public abstract class WithContextNOSException : NakedObjectsFacadeException {
     public IList<ContextFacade> Contexts {
         get {
             if (contexts == null) {
-                return ContextFacade == null ? Array.Empty<ContextFacade>() : new[] {ContextFacade};
+                return ContextFacade == null ? Array.Empty<ContextFacade>() : new[] { ContextFacade };
             }
 
             return contexts;

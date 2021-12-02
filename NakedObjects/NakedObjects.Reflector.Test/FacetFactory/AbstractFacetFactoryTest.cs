@@ -20,7 +20,7 @@ using NakedFramework.DependencyInjection.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 public abstract class AbstractFacetFactoryTest {
     protected IClassStrategy ClassStrategy = new ObjectClassStrategy(null);

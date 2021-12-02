@@ -9,7 +9,7 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Interactions;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Interactions; 
+namespace NakedFramework.Core.Test.Interactions;
 
 [TestFixture]
 public class InteractionContextTest {

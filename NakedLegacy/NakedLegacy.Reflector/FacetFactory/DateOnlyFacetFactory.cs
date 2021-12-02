@@ -20,7 +20,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.FacetFactory; 
+namespace NakedLegacy.Reflector.FacetFactory;
 
 public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)

@@ -18,18 +18,16 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class CreateNewAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<CreateNewAnnotationFacetFactory> logger;
 
     public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.Actions) {
+        : base(order.Order, loggerFactory, FeatureType.Actions) =>
         logger = loggerFactory.CreateLogger<CreateNewAnnotationFacetFactory>();
-    }
 
     private static bool IsCollectionOrVoid(Type type) =>
         type == typeof(void) ||

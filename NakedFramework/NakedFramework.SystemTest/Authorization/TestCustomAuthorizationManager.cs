@@ -19,31 +19,10 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer; 
+namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer;
 
 [TestFixture]
 public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
-    protected override Type[] ObjectTypes => new[] {
-        typeof(Foo),
-        typeof(NakedObjects.SystemTest.Audit.Foo),
-        typeof(FooSub),
-        typeof(SubTypeOfFoo),
-        typeof(Bar),
-        typeof(Qux),
-        typeof(QueryableList<Foo>)
-    };
-
-    protected override Type[] Services => new[] {
-        typeof(SimpleRepository<Foo>),
-        typeof(SimpleRepository<FooSub>),
-        typeof(SimpleRepository<SubTypeOfFoo>),
-        typeof(SimpleRepository<Bar>),
-        typeof(SimpleRepository<Qux>),
-        typeof(FooService),
-        typeof(BarService),
-        typeof(QuxService)
-    };
-
     [SetUp]
     public void SetUp() {
         StartTest();
@@ -68,10 +47,29 @@ public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthoriza
         CustomAuthorizationManagerDbContext.Delete();
     }
 
-    protected override IAuthorizationConfiguration AuthorizationConfiguration
-    {
-        get
-        {
+    protected override Type[] ObjectTypes => new[] {
+        typeof(Foo),
+        typeof(Audit.Foo),
+        typeof(FooSub),
+        typeof(SubTypeOfFoo),
+        typeof(Bar),
+        typeof(Qux),
+        typeof(QueryableList<Foo>)
+    };
+
+    protected override Type[] Services => new[] {
+        typeof(SimpleRepository<Foo>),
+        typeof(SimpleRepository<FooSub>),
+        typeof(SimpleRepository<SubTypeOfFoo>),
+        typeof(SimpleRepository<Bar>),
+        typeof(SimpleRepository<Qux>),
+        typeof(FooService),
+        typeof(BarService),
+        typeof(QuxService)
+    };
+
+    protected override IAuthorizationConfiguration AuthorizationConfiguration {
+        get {
             var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
             config.AddTypeAuthorizer<Foo, FooAuthorizer>();
             config.AddTypeAuthorizer<Qux, QuxAuthorizer>();
@@ -146,6 +144,14 @@ public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
     public IDomainObjectContainer Container { protected get; set; }
     public SimpleRepository<Foo> Service { protected get; set; }
 
+    public void Init() {
+        throw new NotImplementedException();
+    }
+
+    public void Shutdown() {
+        //Does nothing
+    }
+
     #region ITypeAuthorizer<object> Members
 
     public bool IsEditable(IPrincipal principal, object target, string memberName) {
@@ -161,19 +167,19 @@ public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
     }
 
     #endregion
-
-    public void Init() {
-        throw new NotImplementedException();
-    }
-
-    public void Shutdown() {
-        //Does nothing
-    }
 }
 
 public class FooAuthorizer : ITypeAuthorizer<Foo> {
     public IDomainObjectContainer Container { protected get; set; }
     public SimpleRepository<Foo> Service { protected get; set; }
+
+    public void Init() {
+        //Does nothing
+    }
+
+    public void Shutdown() {
+        //Does nothing
+    }
 
     #region ITypeAuthorizer<Foo> Members
 
@@ -190,6 +196,11 @@ public class FooAuthorizer : ITypeAuthorizer<Foo> {
     }
 
     #endregion
+}
+
+public class QuxAuthorizer : ITypeAuthorizer<Qux> {
+    public IDomainObjectContainer Container { protected get; set; }
+    public SimpleRepository<Foo> Service { protected get; set; }
 
     public void Init() {
         //Does nothing
@@ -198,11 +209,6 @@ public class FooAuthorizer : ITypeAuthorizer<Foo> {
     public void Shutdown() {
         //Does nothing
     }
-}
-
-public class QuxAuthorizer : ITypeAuthorizer<Qux> {
-    public IDomainObjectContainer Container { protected get; set; }
-    public SimpleRepository<Foo> Service { protected get; set; }
 
     #region ITypeAuthorizer<Qux> Members
 
@@ -220,14 +226,6 @@ public class QuxAuthorizer : ITypeAuthorizer<Qux> {
     }
 
     #endregion
-
-    public void Init() {
-        //Does nothing
-    }
-
-    public void Shutdown() {
-        //Does nothing
-    }
 }
 
 public class Foo {

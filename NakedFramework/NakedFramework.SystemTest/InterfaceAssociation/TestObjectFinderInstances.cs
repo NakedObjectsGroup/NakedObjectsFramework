@@ -17,7 +17,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.ObjectFinderInstances; 
+namespace NakedObjects.SystemTest.ObjectFinderInstances;
 
 [TestFixture]
 public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext> {

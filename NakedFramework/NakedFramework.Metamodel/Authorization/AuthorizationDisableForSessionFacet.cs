@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Authorization; 
+namespace NakedFramework.Metamodel.Authorization;
 
 [Serializable]
 public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {

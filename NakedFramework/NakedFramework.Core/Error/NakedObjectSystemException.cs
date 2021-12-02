@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 /// <summary>
 ///     A NakedObjectSystemException represents an exception that has occurred within the framework code.

@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 internal class TestService : TestHasActions, ITestService {
     public TestService(INakedObjectAdapter service, ITestObjectFactory factory) : base(factory) => NakedObject = service;

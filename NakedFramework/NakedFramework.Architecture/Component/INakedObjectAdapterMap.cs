@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 /// <summary>
 ///     Service for mapping between POCO domain objects and their (INakedObjectAdapter) adapters

@@ -12,7 +12,7 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
+namespace NakedFramework.ParallelReflector.TypeFacetFactory;
 
 /// <summary>
 ///     This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a

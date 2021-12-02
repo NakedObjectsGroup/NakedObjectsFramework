@@ -21,7 +21,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.Method; 
+namespace NakedObjects.SystemTest.Method;
 
 [TestFixture]
 public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
@@ -337,7 +337,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void CreatedCalled() {
         var obj1 = NewTestObject<Created1>();
-        var dom1 = (Created1) obj1.GetDomainObject();
+        var dom1 = (Created1)obj1.GetDomainObject();
         Assert.IsTrue(dom1.CreatedCalled);
     }
 
@@ -473,7 +473,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void DeletedCalled() {
         var obj1 = NewTestObject<Deleted1>();
-        var dom1 = (Deleted1) obj1.GetDomainObject();
+        var dom1 = (Deleted1)obj1.GetDomainObject();
         obj1.Save();
 
         Assert.IsFalse(Deleted1.DeletedCalled);
@@ -497,7 +497,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void DeletingCalled() {
         var obj1 = NewTestObject<Deleting1>();
-        var dom1 = (Deleting1) obj1.GetDomainObject();
+        var dom1 = (Deleting1)obj1.GetDomainObject();
         obj1.Save();
 
         Assert.IsFalse(Deleting1.DeletingCalled);
@@ -758,7 +758,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void LowerCaseCreatedNotRecognisedAndShowsAsAction() {
         var obj1 = NewTestObject<Created2>();
-        var dom1 = (Created2) obj1.GetDomainObject();
+        var dom1 = (Created2)obj1.GetDomainObject();
         Assert.IsFalse(dom1.CreatedCalled);
         obj1.GetAction("Created");
     }
@@ -766,7 +766,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void LowerCaseDeletedNotRecognisedAndShowsAsAction() {
         var obj1 = NewTestObject<Deleted2>();
-        var dom1 = (Deleted2) obj1.GetDomainObject();
+        var dom1 = (Deleted2)obj1.GetDomainObject();
         Assert.IsFalse(Deleted2.DeletedCalled);
 
         try {
@@ -780,7 +780,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void LowerCaseDeletingNotRecognisedAndShowsAsAction() {
         var obj1 = NewTestObject<Deleting2>().Save();
-        var dom1 = (Deleting2) obj1.GetDomainObject();
+        var dom1 = (Deleting2)obj1.GetDomainObject();
 
         //Check method is visible as an action
         obj1.GetAction("Deleting").AssertIsVisible();
@@ -793,7 +793,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void LowerCaseNotRecognisedAndShowsAsAction() {
         var obj1 = NewTestObject<Updated2>();
-        var dom1 = (Updated2) obj1.GetDomainObject();
+        var dom1 = (Updated2)obj1.GetDomainObject();
         Assert.IsFalse(Updated2.UpdatedCalled);
         obj1.GetAction("Updated");
     }
@@ -801,7 +801,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void LowerCasePersistedNotRecognisedAndShowsAsAction() {
         var obj1 = NewTestObject<Persisted2>();
-        var dom1 = (Persisted2) obj1.GetDomainObject();
+        var dom1 = (Persisted2)obj1.GetDomainObject();
         Assert.IsFalse(dom1.PersistedCalled);
         obj1.GetAction("Persisted");
     }
@@ -869,7 +869,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void PersistedCalled() {
         var obj1 = NewTestObject<Persisted1>();
-        var dom1 = (Persisted1) obj1.GetDomainObject();
+        var dom1 = (Persisted1)obj1.GetDomainObject();
         try {
             obj1.Save();
             Assert.Fail("Shouldn't get to here");
@@ -907,7 +907,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void PersistingCalled() {
         var obj1 = NewTestObject<Persisting1>();
-        var dom1 = (Persisting1) obj1.GetDomainObject();
+        var dom1 = (Persisting1)obj1.GetDomainObject();
         Assert.IsFalse(Persisting1.PersistingCalled);
 
         obj1.Save();
@@ -1097,7 +1097,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void UpdatedCalled() {
         var obj1 = NewTestObject<Updated1>();
-        var dom1 = (Updated1) obj1.GetDomainObject();
+        var dom1 = (Updated1)obj1.GetDomainObject();
         obj1.Save();
         try {
             NakedFramework.TransactionManager.StartTransaction();
@@ -1124,7 +1124,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [Test]
     public void UpdatingCalled() {
         var obj1 = NewTestObject<Updating1>();
-        var dom1 = (Updating1) obj1.GetDomainObject();
+        var dom1 = (Updating1)obj1.GetDomainObject();
         obj1.Save();
         try {
             NakedFramework.TransactionManager.StartTransaction();
@@ -1504,7 +1504,7 @@ public class Auto1 {
     public virtual Auto2 Prop3 { get; set; }
     public virtual Auto2 Prop4 { get; set; }
 
-    public IList<string> AutoCompleteProp2(string autoCompleteParm) => new List<string> {"Fee", "Foo", "Fuu"};
+    public IList<string> AutoCompleteProp2(string autoCompleteParm) => new List<string> { "Fee", "Foo", "Fuu" };
 
     public IQueryable<Auto2> AutoCompleteProp3(string autoCompleteParm) {
         return Container.Instances<Auto2>().Where(a => a.Prop1.ToUpper().Contains(autoCompleteParm.ToUpper()));
@@ -1581,9 +1581,9 @@ public class Choices1 {
 
     public Choices4 Prop3 { get; set; }
 
-    public List<int> ChoicesProp1() => new() {4, 8, 9};
+    public List<int> ChoicesProp1() => new() { 4, 8, 9 };
 
-    public List<string> ChoicesProp2() => new() {"Fee", "Foo", "Fuu"};
+    public List<string> ChoicesProp2() => new() { "Fee", "Foo", "Fuu" };
 
     public List<Choices4> ChoicesProp3() => Container.Instances<Choices4>().ToList();
 

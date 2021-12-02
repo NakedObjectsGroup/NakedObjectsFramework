@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class MemberOrderAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private MemberOrderAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IMemberOrderFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IMemberOrderFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -49,7 +49,7 @@ public class MemberOrderAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IMemberOrderFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is MemberOrderFacet);
-        var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
+        var memberOrderFacetAnnotation = (MemberOrderFacet)facet;
         Assert.AreEqual("3", memberOrderFacetAnnotation.Sequence);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -64,7 +64,7 @@ public class MemberOrderAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IMemberOrderFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is MemberOrderFacet);
-        var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
+        var memberOrderFacetAnnotation = (MemberOrderFacet)facet;
         Assert.AreEqual("2", memberOrderFacetAnnotation.Sequence);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -79,7 +79,7 @@ public class MemberOrderAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IMemberOrderFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is MemberOrderFacet);
-        var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
+        var memberOrderFacetAnnotation = (MemberOrderFacet)facet;
         Assert.AreEqual("1", memberOrderFacetAnnotation.Sequence);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);

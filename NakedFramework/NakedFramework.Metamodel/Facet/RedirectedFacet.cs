@@ -10,7 +10,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
@@ -26,7 +26,7 @@ public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
     private static Type Type => typeof(IRedirectedFacet);
     public (string serverName, string oid)? GetRedirection(object target) => (ServerName(target), Oid(target));
 
-    private string Oid(object target) => (string) oid.GetValue(target, null);
+    private string Oid(object target) => (string)oid.GetValue(target, null);
 
-    private string ServerName(object target) => (string) serverName.GetValue(target, null);
+    private string ServerName(object target) => (string)serverName.GetValue(target, null);
 }

@@ -17,7 +17,7 @@ using NakedFramework.ParallelReflector.Component;
 using NakedLegacy.Reflector.Configuration;
 using NakedLegacy.Reflector.Reflect;
 
-namespace NakedLegacy.Reflector.Component; 
+namespace NakedLegacy.Reflector.Component;
 
 public sealed class LegacyObjectReflector : AbstractParallelReflector {
     private readonly ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration;

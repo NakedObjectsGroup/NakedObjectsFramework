@@ -16,7 +16,7 @@ using NakedFramework.Metamodel.Error;
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 [assembly: InternalsVisibleTo("NakedFunctions.Reflector.Test")]
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class RegExFacet : FacetAbstract, IRegExFacet {

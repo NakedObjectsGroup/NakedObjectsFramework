@@ -14,7 +14,7 @@ using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class ComplementaryMethodsFilteringFacetFactoryTest : AbstractFacetFactoryTest {
@@ -114,7 +114,7 @@ public class ComplementaryMethodsFilteringFacetFactoryTest : AbstractFacetFactor
 
     [TestMethod]
     public void TestFiltersParameterValidate() {
-        var actionMethod = FindMethod(typeof(ActionClass), "ValidateAnAction", new[] {typeof(string)});
+        var actionMethod = FindMethod(typeof(ActionClass), "ValidateAnAction", new[] { typeof(string) });
         Assert.IsTrue(facetFactory.Filters(actionMethod, null));
     }
 
@@ -246,7 +246,7 @@ public class ComplementaryMethodsFilteringFacetFactoryTest : AbstractFacetFactor
 
     [TestMethod]
     public void TestLeavesParameterValidateIfNoAction() {
-        var actionMethod = FindMethod(typeof(NoActionClass), "ValidateAnAction", new[] {typeof(string)});
+        var actionMethod = FindMethod(typeof(NoActionClass), "ValidateAnAction", new[] { typeof(string) });
         Assert.IsFalse(facetFactory.Filters(actionMethod, null));
     }
 

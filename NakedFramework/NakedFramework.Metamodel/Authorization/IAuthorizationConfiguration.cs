@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NakedFramework.Metamodel.Authorization; 
+namespace NakedFramework.Metamodel.Authorization;
 
 public interface IAuthorizationConfiguration {
     Type DefaultAuthorizer { get; }

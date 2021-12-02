@@ -21,7 +21,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class ViewModelAnnotationIntegrationFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory {
     private const string CreateFromKeys = "CreateFromKeys";

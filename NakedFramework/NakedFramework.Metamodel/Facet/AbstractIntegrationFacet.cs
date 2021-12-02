@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
     protected AbstractIntegrationFacet(ISpecification holder) : base(Type, holder) { }

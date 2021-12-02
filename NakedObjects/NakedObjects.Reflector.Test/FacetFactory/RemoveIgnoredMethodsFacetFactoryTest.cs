@@ -26,7 +26,7 @@ using NakedObjects.Reflector.Reflect;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class RemoveIgnoredMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -92,7 +92,7 @@ public class RemoveIgnoredMethodsFacetFactoryTest : AbstractFacetFactoryTest {
 
         var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
         facetFactory = new RemoveIgnoredMethodsFacetFactory(GetOrder<RemoveIgnoredMethodsFacetFactory>(), LoggerFactory);
-        var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] {facetFactory});
+        var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] { facetFactory });
         var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
         var metamodel = new MetamodelHolder(cache, null);
         var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;

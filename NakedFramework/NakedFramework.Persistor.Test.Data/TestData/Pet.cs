@@ -12,7 +12,7 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace TestData; 
+namespace TestData;
 
 public class Pet : TestHelper {
     [Key]

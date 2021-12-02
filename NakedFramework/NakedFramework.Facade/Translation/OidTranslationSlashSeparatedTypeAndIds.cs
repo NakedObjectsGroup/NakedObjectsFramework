@@ -8,7 +8,7 @@
 using System.Linq;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Translation; 
+namespace NakedFramework.Facade.Translation;
 
 public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
     // when using this ctor be aware of encoded values that might include a "/"

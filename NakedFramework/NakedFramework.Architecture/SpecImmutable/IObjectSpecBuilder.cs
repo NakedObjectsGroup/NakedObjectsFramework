@@ -5,12 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 
-namespace NakedFramework.Architecture.SpecImmutable; 
+namespace NakedFramework.Architecture.SpecImmutable;
 
 public interface IObjectSpecBuilder : IObjectSpecImmutable, ITypeSpecBuilder {
-    void AddContributedActions(IList<IActionSpecImmutable> contributedActions, System.Type[] services);
+    void AddContributedActions(IList<IActionSpecImmutable> contributedActions, Type[] services);
     void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionCntributedActions);
     void AddFinderActions(IList<IActionSpecImmutable> finderActions);
 }

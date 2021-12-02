@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.Spec; 
+namespace NakedFramework.Metamodel.Spec;
 
 /// <summary>
 ///     For base subclasses or, more likely, to help write tests
@@ -58,11 +58,12 @@ public abstract class Specification : ISpecificationBuilder, ISerializable, IDes
 
     public virtual IFacet GetFacet(Type facetType) => facetsByClass.ContainsKey(facetType) ? facetsByClass[facetType] : null;
 
-    public T GetFacet<T>() where T : IFacet => (T) GetFacet(typeof(T));
+    public T GetFacet<T>() where T : IFacet => (T)GetFacet(typeof(T));
 
     public virtual IEnumerable<IFacet> GetFacets() => facetsByClass.Values;
 
     public virtual void AddFacet(IFacet facet) => AddFacet(facet.FacetType, facet);
+
     public void RemoveFacet(IFacet facet) {
         if (ContainsFacet(facet.FacetType)) {
             facetsByClass = facetsByClass.Remove(facet.FacetType);

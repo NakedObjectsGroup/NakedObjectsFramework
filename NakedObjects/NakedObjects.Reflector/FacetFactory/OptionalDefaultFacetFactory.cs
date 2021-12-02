@@ -18,7 +18,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 /// <summary>
 ///     Installs a <see cref="OptionalFacetDefault" /> onto all properties and parameters if they are non primitive

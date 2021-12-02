@@ -21,7 +21,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
 
-namespace NakedObjects.Reflector.Authorization; 
+namespace NakedObjects.Reflector.Authorization;
 
 [Serializable]
 public sealed class AuthorizationManager : AbstractAuthorizationManager {

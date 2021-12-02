@@ -15,10 +15,9 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedFramework.Core.Util;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Spec; 
+namespace NakedFramework.Core.Spec;
 
 public abstract class TypeSpec : ITypeSpec {
     // cached values 
@@ -58,13 +57,13 @@ public abstract class TypeSpec : ITypeSpec {
 
     protected SpecFactory MemberFactory { get; }
 
+    private string TypeNameFor => IsCollection ? "Collection" : "Object";
+
     private string DefaultTitle() => InnerSpec is IServiceSpecImmutable ? SingularName : UntitledName;
 
     protected abstract PersistableType GetPersistable();
 
-    private string TypeNameFor => IsCollection ? "Collection" : "Object";
-
-    public override string ToString() => 
+    public override string ToString() =>
         $"{NameAndHashCode(this)} [class={FullName},type={TypeNameFor},persistable={Persistable},superclass={SuperClass(InnerSpec)}]";
 
     protected bool Equals(TypeSpec other) => Equals(InnerSpec, other.InnerSpec);
@@ -82,7 +81,7 @@ public abstract class TypeSpec : ITypeSpec {
             return false;
         }
 
-        return Equals((TypeSpec) obj);
+        return Equals((TypeSpec)obj);
     }
 
     public override int GetHashCode() => InnerSpec != null ? InnerSpec.GetHashCode() : 0;
@@ -170,7 +169,7 @@ public abstract class TypeSpec : ITypeSpec {
         get {
             if (!isASet.HasValue) {
                 var collectionFacet = InnerSpec.GetFacet<ICollectionFacet>();
-                isASet = collectionFacet is {IsASet: true};
+                isASet = collectionFacet is { IsASet: true };
             }
 
             return isASet.Value;

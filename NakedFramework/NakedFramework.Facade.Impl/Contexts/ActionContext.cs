@@ -13,7 +13,7 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts; 
+namespace NakedFramework.Facade.Impl.Contexts;
 
 public class ActionContext : Context {
     private ParameterContext[] parameters;

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using NakedFramework.Metamodel.Authorization;
 using NakedFunctions.Security;
 
-namespace NakedFunctions.Reflector.Authorization; 
+namespace NakedFunctions.Reflector.Authorization;
 
 public class AuthorizationConfiguration<TDefault, TMainMenu>
     : IAuthorizationConfiguration
@@ -21,7 +21,7 @@ public class AuthorizationConfiguration<TDefault, TMainMenu>
         NamespaceAuthorizers = new Dictionary<string, Type>();
         var stringQualifiedName = typeof(string).FullName;
 
-        TypeAuthorizers = new Dictionary<string, Type>() { { stringQualifiedName, typeof(TMainMenu) } };
+        TypeAuthorizers = new Dictionary<string, Type> { { stringQualifiedName, typeof(TMainMenu) } };
     }
 
     //The specified type authorizer will apply to the whole namespace specified

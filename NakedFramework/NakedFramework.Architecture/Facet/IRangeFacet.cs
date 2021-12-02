@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Interactions;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 /// <summary>
 ///     Whether the value of a property or parameter is outside a specified range

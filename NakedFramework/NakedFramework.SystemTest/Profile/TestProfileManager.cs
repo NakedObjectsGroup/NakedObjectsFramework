@@ -19,7 +19,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Profile; 
+namespace NakedObjects.SystemTest.Profile;
 
 [TestFixture]
 public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
@@ -56,7 +56,7 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
         typeof(QueryableList<Foo>)
     };
 
-    protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
+    protected override Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
 
     protected override IProfileConfiguration ProfileConfiguration =>
         new ProfileConfiguration<MyProfiler> {
@@ -368,7 +368,7 @@ public class ProfileDbContext : DbContext {
 
 public class DatabaseInitializer : DropCreateDatabaseAlways<ProfileDbContext> {
     protected override void Seed(ProfileDbContext context) {
-        context.Foos.Add(new Foo {Id = 1});
+        context.Foos.Add(new Foo { Id = 1 });
         context.SaveChanges();
     }
 }

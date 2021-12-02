@@ -16,7 +16,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Spec; 
+namespace NakedFramework.Core.Spec;
 
 public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
     public OneToManyAssociationSpec(IOneToManyAssociationSpecImmutable association, INakedFramework framework)
@@ -36,7 +36,7 @@ public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToMa
             return null;
         }
 
-        var adapterFor = Framework.NakedObjectManager.CreateAggregatedAdapter(inObjectAdapter, ((IAssociationSpec) this).Id, collection);
+        var adapterFor = Framework.NakedObjectManager.CreateAggregatedAdapter(inObjectAdapter, ((IAssociationSpec)this).Id, collection);
         SetResolveStateForDerivedCollections(adapterFor);
         return adapterFor;
     }
@@ -51,7 +51,7 @@ public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToMa
         }
     }
 
-    public override string ToString() => 
+    public override string ToString() =>
         $"{NameAndHashCode(this)} [{base.ToString()},persisted={IsPersisted},type={(ReturnSpec is null ? "unknown" : ReturnSpec.ShortName)}]";
 
     #region IOneToManyAssociationSpec Members

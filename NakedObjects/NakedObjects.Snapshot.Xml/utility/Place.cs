@@ -8,7 +8,7 @@
 using System.Xml.Linq;
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedObjects.Snapshot.Xml.utility; 
+namespace NakedObjects.Snapshot.Xml.utility;
 
 public class Place {
     public Place(INakedObjectAdapter nakedObjectAdapter, XElement element) {

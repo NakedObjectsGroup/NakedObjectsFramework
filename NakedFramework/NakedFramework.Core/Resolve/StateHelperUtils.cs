@@ -9,7 +9,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Resolve;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Core.Resolve; 
+namespace NakedFramework.Core.Resolve;
 
 public static class StateHelperUtils {
     public static bool IsGhost(this IResolveStateMachine stateMachine) => stateMachine.CurrentState is ResolveStateMachine.GhostState;

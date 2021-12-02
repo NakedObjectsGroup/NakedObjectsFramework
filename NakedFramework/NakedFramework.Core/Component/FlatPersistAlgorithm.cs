@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 /// <summary>
 ///     Algorithm to use when the object store will automatically persist all associated objects. Simply adds the single

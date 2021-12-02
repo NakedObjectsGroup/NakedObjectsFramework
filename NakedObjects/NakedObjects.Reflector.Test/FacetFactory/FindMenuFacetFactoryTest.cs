@@ -18,13 +18,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class FindMenuFacetFactoryTest : AbstractFacetFactoryTest {
     private FindMenuFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IFindMenuFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IFindMenuFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -32,7 +32,7 @@ public class FindMenuFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestFindMenuFacetNotAddedToParameterByDefault() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
+        var method = FindMethod(typeof(Customer), "Action1", new[] { typeof(Foo), typeof(Foo) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IFindMenuFacet));
         Assert.IsNull(facet);
@@ -43,7 +43,7 @@ public class FindMenuFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestFindMenuAnnotationOnParameterPickedUp() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
+        var method = FindMethod(typeof(Customer), "Action1", new[] { typeof(Foo), typeof(Foo) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 1, Specification, metamodel);
         Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         Assert.IsNotNull(metamodel);
@@ -53,7 +53,7 @@ public class FindMenuFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestFindMenuAnnotationIgnoredForPrimitiveParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer), "Action2", new[] {typeof(string)});
+        var method = FindMethod(typeof(Customer), "Action2", new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         Assert.IsNotNull(metamodel);

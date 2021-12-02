@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class DateOnlyFacetFactoryTest : AbstractFacetFactoryTest {
     private DateOnlyFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IDateOnlyFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IDateOnlyFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -148,7 +148,7 @@ public class DateOnlyFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestDefaultDateOnlyOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Test), "ADateMethod1", new[] {typeof(DateTime)});
+        var method = FindMethod(typeof(Test), "ADateMethod1", new[] { typeof(DateTime) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
         Assert.IsNotNull(facet);
@@ -160,7 +160,7 @@ public class DateOnlyFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestAnnotatedDateOnlyOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Test), "ADateMethod2", new[] {typeof(DateTime)});
+        var method = FindMethod(typeof(Test), "ADateMethod2", new[] { typeof(DateTime) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
         Assert.IsNotNull(facet);
@@ -172,7 +172,7 @@ public class DateOnlyFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestNoFacetOnDateTimeActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Test), "ADateMethod3", new[] {typeof(DateTime)});
+        var method = FindMethod(typeof(Test), "ADateMethod3", new[] { typeof(DateTime) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
         Assert.IsNull(facet);
@@ -183,7 +183,7 @@ public class DateOnlyFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestNoFacetOnNotDateActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Test), "NotADateMethod", new[] {typeof(TimeSpan)});
+        var method = FindMethod(typeof(Test), "NotADateMethod", new[] { typeof(TimeSpan) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
         Assert.IsNull(facet);

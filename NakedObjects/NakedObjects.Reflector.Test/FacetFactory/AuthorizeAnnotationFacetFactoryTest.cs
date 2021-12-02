@@ -22,7 +22,7 @@ using NakedObjects.Security;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class AuthorizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -33,7 +33,7 @@ public class AuthorizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private readonly Mock<INakedFramework> mockFramework = new();
     private readonly INakedFramework framework;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IHiddenFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IHiddenFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 

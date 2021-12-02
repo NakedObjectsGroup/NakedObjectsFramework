@@ -20,7 +20,7 @@ using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Value;
 
-namespace NakedFramework.Facade.Impl.Impl; 
+namespace NakedFramework.Facade.Impl.Impl;
 
 public class ObjectFacade : IObjectFacade {
     private readonly INakedFramework framework;
@@ -35,7 +35,7 @@ public class ObjectFacade : IObjectFacade {
 
     public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedFramework framework) => nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
 
-    private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento {IsNotQueryable: true};
+    private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento { IsNotQueryable: true };
 
     private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size, bool forceEnumerable) {
         var toEnumerable = IsNotQueryable(objectRepresentingCollection) || forceEnumerable;
@@ -44,7 +44,7 @@ public class ObjectFacade : IObjectFacade {
 
         var objects = newNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => no.Object).ToArray();
 
-        var currentMemento = (ICollectionMemento) WrappedNakedObject.Oid;
+        var currentMemento = (ICollectionMemento)WrappedNakedObject.Oid;
         var newMemento = currentMemento.NewSelectionMemento(objects, true);
         newNakedObject.SetATransientOid(newMemento);
         return newNakedObject;
@@ -53,7 +53,7 @@ public class ObjectFacade : IObjectFacade {
     private INakedObjectAdapter Select(INakedObjectAdapter objectRepresentingCollection, object[] selected, bool forceEnumerable) {
         var result = CollectionUtils.CloneCollectionAndPopulate(objectRepresentingCollection.Object, selected);
         var adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? result.AsQueryable() : result, null, null);
-        var currentMemento = (ICollectionMemento) objectRepresentingCollection.Oid;
+        var currentMemento = (ICollectionMemento)objectRepresentingCollection.Oid;
         var newMemento = currentMemento.NewSelectionMemento(selected, false);
         adapter.SetATransientOid(newMemento);
         return adapter;
@@ -155,7 +155,6 @@ public class ObjectFacade : IObjectFacade {
     }
 
     public string ToString(string format = "") {
-
         if (!string.IsNullOrWhiteSpace(format)) {
             var spec = WrappedNakedObject.Spec;
 
@@ -192,8 +191,7 @@ public class ObjectFacade : IObjectFacade {
         return WrappedNakedObject.Object;
     }
 
-
-    private static  DateTime ToUniversalTime(DateTime dt) =>
+    private static DateTime ToUniversalTime(DateTime dt) =>
         dt.Kind == DateTimeKind.Unspecified
             ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
             : dt.ToUniversalTime();

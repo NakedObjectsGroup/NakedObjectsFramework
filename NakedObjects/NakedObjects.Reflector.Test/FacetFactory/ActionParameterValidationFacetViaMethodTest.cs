@@ -15,7 +15,7 @@ using NakedObjects.Reflector.Facet;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class ActionParameterValidationFacetViaMethodTest {

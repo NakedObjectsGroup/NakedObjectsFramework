@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class ImmutableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private ImmutableAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IImmutableFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IImmutableFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -38,7 +38,7 @@ public class ImmutableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IImmutableFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is ImmutableFacetAnnotation);
-        var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
+        var immutableFacetAnnotation = (ImmutableFacetAnnotation)facet;
         Assert.AreEqual(WhenTo.Always, immutableFacetAnnotation.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -52,7 +52,7 @@ public class ImmutableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IImmutableFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is ImmutableFacetAnnotation);
-        var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
+        var immutableFacetAnnotation = (ImmutableFacetAnnotation)facet;
         Assert.AreEqual(WhenTo.Always, immutableFacetAnnotation.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -66,7 +66,7 @@ public class ImmutableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IImmutableFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is ImmutableFacetAnnotation);
-        var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
+        var immutableFacetAnnotation = (ImmutableFacetAnnotation)facet;
         Assert.AreEqual(WhenTo.Never, immutableFacetAnnotation.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -90,7 +90,7 @@ public class ImmutableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IImmutableFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is ImmutableFacetAnnotation);
-        var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
+        var immutableFacetAnnotation = (ImmutableFacetAnnotation)facet;
         Assert.AreEqual(WhenTo.OncePersisted, immutableFacetAnnotation.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -104,7 +104,7 @@ public class ImmutableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IImmutableFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is ImmutableFacetAnnotation);
-        var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
+        var immutableFacetAnnotation = (ImmutableFacetAnnotation)facet;
         Assert.AreEqual(WhenTo.UntilPersisted, immutableFacetAnnotation.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);

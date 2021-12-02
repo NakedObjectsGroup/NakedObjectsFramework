@@ -16,13 +16,13 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class ValidateProgrammaticUpdatesAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private ValidateProgrammaticUpdatesAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IValidateProgrammaticUpdatesFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IValidateProgrammaticUpdatesFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 

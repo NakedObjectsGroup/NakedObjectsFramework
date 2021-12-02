@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Linq;
 using NakedFramework.Value;
 
-namespace NakedFramework.Core.Configuration; 
+namespace NakedFramework.Core.Configuration;
 
 public static class ReflectorDefaults {
     public static readonly Type[] DefaultSystemTypes = {

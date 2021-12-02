@@ -18,7 +18,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class NotNavigableAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public NotNavigableAnnotationFacetFactory(IFacetFactoryOrder<NotNavigableAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

@@ -12,7 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using NakedFramework;
 
-namespace NakedObjects.Core.Util; 
+namespace NakedObjects.Core.Util;
 
 public class QueryableList<T> : IList, IList<T>, IQueryable<T> {
     private readonly IList<T> wrappedList;
@@ -30,26 +30,26 @@ public class QueryableList<T> : IList, IList<T>, IQueryable<T> {
 
     [Hidden(WhenTo.Always)]
     public void CopyTo(Array array, int index) {
-        wrappedList.CopyTo((T[]) array, index);
+        wrappedList.CopyTo((T[])array, index);
     }
 
     [Hidden(WhenTo.Always)]
     public int Count => wrappedList.Count;
 
     [Hidden(WhenTo.Always)]
-    public object SyncRoot => ((ICollection) wrappedList).SyncRoot;
+    public object SyncRoot => ((ICollection)wrappedList).SyncRoot;
 
     [Hidden(WhenTo.Always)]
-    public bool IsSynchronized => ((ICollection) wrappedList).IsSynchronized;
+    public bool IsSynchronized => ((ICollection)wrappedList).IsSynchronized;
 
     [Hidden(WhenTo.Always)]
     public int Add(object value) {
-        wrappedList.Add((T) value);
+        wrappedList.Add((T)value);
         return wrappedList.Count - 1;
     }
 
     [Hidden(WhenTo.Always)]
-    public bool Contains(object value) => wrappedList.Contains((T) value);
+    public bool Contains(object value) => wrappedList.Contains((T)value);
 
     [Hidden(WhenTo.Always)]
     public void Clear() {
@@ -57,16 +57,16 @@ public class QueryableList<T> : IList, IList<T>, IQueryable<T> {
     }
 
     [Hidden(WhenTo.Always)]
-    public int IndexOf(object value) => wrappedList.IndexOf((T) value);
+    public int IndexOf(object value) => wrappedList.IndexOf((T)value);
 
     [Hidden(WhenTo.Always)]
     public void Insert(int index, object value) {
-        wrappedList.Insert(index, (T) value);
+        wrappedList.Insert(index, (T)value);
     }
 
     [Hidden(WhenTo.Always)]
     public void Remove(object value) {
-        wrappedList.Remove((T) value);
+        wrappedList.Remove((T)value);
     }
 
     [Hidden(WhenTo.Always)]
@@ -77,14 +77,14 @@ public class QueryableList<T> : IList, IList<T>, IQueryable<T> {
     [Hidden(WhenTo.Always)]
     public object this[int index] {
         get => wrappedList[index];
-        set => wrappedList[index] = (T) value;
+        set => wrappedList[index] = (T)value;
     }
 
     [Hidden(WhenTo.Always)]
     public bool IsReadOnly => wrappedList.IsReadOnly;
 
     [Hidden(WhenTo.Always)]
-    public bool IsFixedSize => ((IList) wrappedList).IsFixedSize;
+    public bool IsFixedSize => ((IList)wrappedList).IsFixedSize;
 
     #endregion
 

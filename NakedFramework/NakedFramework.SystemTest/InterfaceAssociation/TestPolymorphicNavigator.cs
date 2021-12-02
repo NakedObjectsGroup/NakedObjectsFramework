@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.PolymorphicNavigator; 
+namespace NakedObjects.SystemTest.PolymorphicNavigator;
 
 [TestFixture]
 public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
@@ -37,9 +37,9 @@ public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
     protected override bool EnforceProxies => false;
 
     protected override Func<IConfiguration, DbContext>[] ContextCreators =>
-        new Func<IConfiguration, DbContext>[] {config => new PolymorphicNavigationContext(DatabaseName)};
+        new Func<IConfiguration, DbContext>[] { config => new PolymorphicNavigationContext(DatabaseName) };
 
-    protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()};
+    protected override object[] Fixtures => new object[] { new FixtureEntities(), new FixtureLinksUsingTypeName() };
 
     [Test]
     public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {

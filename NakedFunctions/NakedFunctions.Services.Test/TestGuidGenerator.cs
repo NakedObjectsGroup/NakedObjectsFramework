@@ -8,7 +8,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace NakedFunctions.Services.Test; 
+namespace NakedFunctions.Services.Test;
 
 [TestClass]
 public class TestGuidGenerator {

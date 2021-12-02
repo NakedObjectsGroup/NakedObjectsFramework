@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private TableViewAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(ITableViewFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(ITableViewFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -93,7 +93,7 @@ public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ITableViewFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TableViewFacet);
-        var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+        var tableViewFacetFromAnnotation = (TableViewFacet)facet;
         Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
         Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
         Assert.AreEqual("col1", tableViewFacetFromAnnotation.Columns[0]);
@@ -111,7 +111,7 @@ public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ITableViewFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TableViewFacet);
-        var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+        var tableViewFacetFromAnnotation = (TableViewFacet)facet;
         Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
         Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
         Assert.AreEqual("col5", tableViewFacetFromAnnotation.Columns[0]);
@@ -129,7 +129,7 @@ public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ITableViewFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TableViewFacet);
-        var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+        var tableViewFacetFromAnnotation = (TableViewFacet)facet;
         Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
         Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
         Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);
@@ -147,7 +147,7 @@ public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ITableViewFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TableViewFacet);
-        var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+        var tableViewFacetFromAnnotation = (TableViewFacet)facet;
         Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
         Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
         Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
@@ -165,7 +165,7 @@ public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ITableViewFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TableViewFacet);
-        var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+        var tableViewFacetFromAnnotation = (TableViewFacet)facet;
         Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
         Assert.AreEqual(0, tableViewFacetFromAnnotation.Columns.Length);
         AssertNoMethodsRemoved();
@@ -182,7 +182,7 @@ public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ITableViewFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TableViewFacet);
-        var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+        var tableViewFacetFromAnnotation = (TableViewFacet)facet;
         Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
         Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
         Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
@@ -200,7 +200,7 @@ public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ITableViewFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TableViewFacet);
-        var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+        var tableViewFacetFromAnnotation = (TableViewFacet)facet;
         Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
         Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
         Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
@@ -218,7 +218,7 @@ public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ITableViewFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is TableViewFacet);
-        var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+        var tableViewFacetFromAnnotation = (TableViewFacet)facet;
         Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
         Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
         Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);

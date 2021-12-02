@@ -8,7 +8,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace NakedFunctions.Rest.Test.Data; 
+namespace NakedFunctions.Rest.Test.Data;
 
 public static class EFCoreConstants {
     public static string AppveyorServer => @"(local)\SQL2017";
@@ -51,40 +51,40 @@ public abstract class EFCoreTestDbContext : DbContext {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-        var fred = new SimpleRecord {Id = 1, Name = "Fred"};
+        var fred = new SimpleRecord { Id = 1, Name = "Fred" };
 
         modelBuilder.Entity<SimpleRecord>().HasData(fred);
-        modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 2, Name = "Bill"});
-        modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 3, Name = "Jack"});
-        modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord {Id = 4, Name = "hide it"});
+        modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord { Id = 2, Name = "Bill" });
+        modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord { Id = 3, Name = "Jack" });
+        modelBuilder.Entity<SimpleRecord>().HasData(new SimpleRecord { Id = 4, Name = "hide it" });
 
-        var ur = new UpdatedRecord {Id = 1, Name = ""};
+        var ur = new UpdatedRecord { Id = 1, Name = "" };
         modelBuilder.Entity<UpdatedRecord>().HasData(ur);
 
-        var dr = new DateRecord {Id = 1, StartDate = DateTime.Now, EndDate = null};
+        var dr = new DateRecord { Id = 1, StartDate = DateTime.Now, EndDate = null };
 
         modelBuilder.Entity<DateRecord>().HasData(dr);
-        modelBuilder.Entity<EnumRecord>().HasData(new EnumRecord {Id = 1});
+        modelBuilder.Entity<EnumRecord>().HasData(new EnumRecord { Id = 1 });
 
-        modelBuilder.Entity<ReferenceRecord>().HasData(new {Id = 1, UpdatedRecordId = 1, DateRecordId = 1});
+        modelBuilder.Entity<ReferenceRecord>().HasData(new { Id = 1, UpdatedRecordId = 1, DateRecordId = 1 });
 
-        modelBuilder.Entity<CollectionRecord>().HasData(new CollectionRecord {Id = 1});
+        modelBuilder.Entity<CollectionRecord>().HasData(new CollectionRecord { Id = 1 });
 
-        modelBuilder.Entity<GuidRecord>().HasData(new GuidRecord {Id = 1});
+        modelBuilder.Entity<GuidRecord>().HasData(new GuidRecord { Id = 1 });
 
-        modelBuilder.Entity<DisplayAsPropertyRecord>().HasData(new DisplayAsPropertyRecord {Id = 1});
+        modelBuilder.Entity<DisplayAsPropertyRecord>().HasData(new DisplayAsPropertyRecord { Id = 1 });
 
-        modelBuilder.Entity<OrderedRecord>().HasData(new OrderedRecord {Id = 1});
+        modelBuilder.Entity<OrderedRecord>().HasData(new OrderedRecord { Id = 1 });
 
-        modelBuilder.Entity<EditRecord>().HasData(new {Id = 1, Name = "Jane", SimpleRecordId = 1, NotMatched = "no"});
+        modelBuilder.Entity<EditRecord>().HasData(new { Id = 1, Name = "Jane", SimpleRecordId = 1, NotMatched = "no" });
 
-        modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 1});
-        modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord {Id = 2});
+        modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord { Id = 1 });
+        modelBuilder.Entity<DeleteRecord>().HasData(new DeleteRecord { Id = 2 });
 
-        modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 1, Name = "One"});
-        modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 2, Name = "Two"});
+        modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 1, Name = "One" });
+        modelBuilder.Entity<BoundedRecord>().HasData(new BoundedRecord { Id = 2, Name = "Two" });
 
-        modelBuilder.Entity<ByteArrayRecord>().HasData(new ByteArrayRecord {Id = 1});
+        modelBuilder.Entity<ByteArrayRecord>().HasData(new ByteArrayRecord { Id = 1 });
 
         modelBuilder.Entity<MaskRecord>().Ignore(m => m.MaskRecordProperty);
         modelBuilder.Entity<MaskRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });

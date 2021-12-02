@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Component;
 
-namespace NakedFunctions.Services; 
+namespace NakedFunctions.Services;
 
 public sealed class Alert : IAlert {
     private readonly IMessageBroker messageBroker;

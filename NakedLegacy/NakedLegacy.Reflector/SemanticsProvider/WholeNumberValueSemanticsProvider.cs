@@ -16,14 +16,14 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.SemanticsProvider; 
+namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
 public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAbstract<WholeNumber>, IIntegerValueFacet {
-    private static  WholeNumber DefaultValueConst = new WholeNumber(0);
     private const bool EqualBycontent = true;
     private const bool Immutable = true;
     private const int TypicalLengthConst = 11;
+    private static WholeNumber DefaultValueConst = new(0);
 
     public WholeNumberValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
         : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) { }
@@ -42,7 +42,7 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
 
     protected override WholeNumber DoParse(string entry) {
         try {
-            return  new WholeNumber(int.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
+            return new WholeNumber(int.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
         }
         catch (FormatException) {
             throw new InvalidEntryException(FormatMessage(entry));
@@ -52,7 +52,7 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
         }
     }
 
-    protected override WholeNumber DoParseInvariant(string entry) => new WholeNumber(int.Parse(entry, CultureInfo.InvariantCulture));
+    protected override WholeNumber DoParseInvariant(string entry) => new(int.Parse(entry, CultureInfo.InvariantCulture));
 
     protected override string GetInvariantString(WholeNumber obj) => obj.Number.ToString(CultureInfo.InvariantCulture);
 
@@ -60,7 +60,7 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
 
     protected override string DoEncode(WholeNumber obj) => obj.Number.ToString("G", CultureInfo.InvariantCulture);
 
-    protected override WholeNumber DoRestore(string data) => new WholeNumber(int.Parse(data, CultureInfo.InvariantCulture));
+    protected override WholeNumber DoRestore(string data) => new(int.Parse(data, CultureInfo.InvariantCulture));
 
     public override string ToString() => "WholeNumberAdapter: ";
 }

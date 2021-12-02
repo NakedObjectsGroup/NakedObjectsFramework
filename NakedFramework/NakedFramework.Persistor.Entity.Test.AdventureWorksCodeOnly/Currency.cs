@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 [Table("Sales.Currency")]
 public class Currency {

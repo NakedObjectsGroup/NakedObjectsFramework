@@ -7,7 +7,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace TestCodeOnly; 
+namespace TestCodeOnly;
 
 public class CountryCode {
     [Key]

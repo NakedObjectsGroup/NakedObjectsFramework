@@ -14,7 +14,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Model; 
+namespace NakedFramework.Rest.Model;
 
 public class ListValue : IValue {
     private readonly IValue[] internalValue;
@@ -34,7 +34,7 @@ public class ListValue : IValue {
         var type = GetCommonBaseType(types, types.First());
 
         var collType = typeof(List<>).MakeGenericType(type);
-        var coll = (IList) Activator.CreateInstance(collType);
+        var coll = (IList)Activator.CreateInstance(collType);
 
         Array.ForEach(items, i => coll.Add(i));
         return coll;

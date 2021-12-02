@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Facade.Error; 
+namespace NakedFramework.Facade.Error;
 
 public class DataUpdateNOSException : NakedObjectsFacadeException {
     public DataUpdateNOSException(Exception e) : base(e) { }

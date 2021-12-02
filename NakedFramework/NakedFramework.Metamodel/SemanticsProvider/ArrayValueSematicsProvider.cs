@@ -17,7 +17,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.SemanticsProvider; 
+namespace NakedFramework.Metamodel.SemanticsProvider;
 
 [Serializable]
 public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T[]>, IArrayValueFacet<T>, IFromStream {
@@ -48,7 +48,7 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
 
         var ba = new byte[stream.Length];
         stream.Position = 0;
-        stream.Read(ba, 0, (int) stream.Length);
+        stream.Read(ba, 0, (int)stream.Length);
         return ba;
     }
 
@@ -62,7 +62,7 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
         try {
             return (from s in entry.Split(' ')
                     where s.Trim().Length > 0
-                    select (T) Convert.ChangeType(s, typeof(T))).ToArray();
+                    select (T)Convert.ChangeType(s, typeof(T))).ToArray();
         }
         catch (FormatException) {
             throw new InvalidEntryException(FormatMessage(entry));
@@ -80,7 +80,7 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
     }
 
     protected override T[] DoParseInvariant(string entry) =>
-        entry.Split(' ').Where(s => s.Trim().Length > 0).Select(s => (T) Convert.ChangeType(s, typeof(T), CultureInfo.InvariantCulture)).ToArray();
+        entry.Split(' ').Where(s => s.Trim().Length > 0).Select(s => (T)Convert.ChangeType(s, typeof(T), CultureInfo.InvariantCulture)).ToArray();
 
     protected override string GetInvariantString(T[] obj) => obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : $"{s} ") + t);
 
@@ -105,7 +105,7 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
         writer.Write(data);
         writer.Flush();
         stream.Position = 0;
-        return (T[]) serializer.ReadObject(stream);
+        return (T[])serializer.ReadObject(stream);
     }
 
     public override string ToString() => $"ArrayAdapter<{typeof(T)}>";

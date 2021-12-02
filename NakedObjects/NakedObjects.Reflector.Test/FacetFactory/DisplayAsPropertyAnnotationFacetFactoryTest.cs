@@ -21,13 +21,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class DisplayAsPropertyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private DisplayAsPropertyAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IDisplayAsPropertyFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IDisplayAsPropertyFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -81,7 +81,7 @@ public class DisplayAsPropertyAnnotationFacetFactoryTest : AbstractFacetFactoryT
     [TestMethod]
     public void TestDisplayAsPropertyAnnotationIgnoredOnWithParmsAction() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-        var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest2), new[] {typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer), nameof(Customer.DisplayAsPropertyTest2), new[] { typeof(int) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
         Assert.IsNull(facet1);
@@ -92,7 +92,7 @@ public class DisplayAsPropertyAnnotationFacetFactoryTest : AbstractFacetFactoryT
     [TestMethod]
     public void TestDisplayAsPropertyAnnotationIgnoredOnCollectionContributedAction() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-        var actionMethod = FindMethod(typeof(CustomerService), nameof(CustomerService.DisplayAsPropertyTest1), new[] {typeof(IQueryable<Customer>)});
+        var actionMethod = FindMethod(typeof(CustomerService), nameof(CustomerService.DisplayAsPropertyTest1), new[] { typeof(IQueryable<Customer>) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
         Assert.IsNull(facet1);
@@ -104,7 +104,7 @@ public class DisplayAsPropertyAnnotationFacetFactoryTest : AbstractFacetFactoryT
     public void TestDisplayAsPropertyAnnotationPickedUpOnServiceAction() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(CustomerService), nameof(Customer.DisplayAsPropertyTest), new[] {typeof(Customer)});
+        var actionMethod = FindMethod(typeof(CustomerService), nameof(Customer.DisplayAsPropertyTest), new[] { typeof(Customer) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet1 = Specification.GetFacet(typeof(IDisplayAsPropertyFacet));
         var facet2 = Specification.GetFacet(typeof(IPropertyAccessorFacet));

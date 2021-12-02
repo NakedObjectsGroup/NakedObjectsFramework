@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.SpecImmutable; 
+namespace NakedFramework.Architecture.SpecImmutable;
 
 /// <summary>
 ///     This is the immutable or 'static' core of the IObjectSpec.  It is created by the reflector during start-up, but can

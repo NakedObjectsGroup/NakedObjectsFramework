@@ -20,7 +20,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class DescribedAsAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<DescribedAsAnnotationFacetFactory> logger;
@@ -30,12 +30,12 @@ public sealed class DescribedAsAnnotationFacetFactory : ObjectFacetFactoryProces
         logger = loggerFactory.CreateLogger<DescribedAsAnnotationFacetFactory>();
 
     private void Process(MemberInfo member, ISpecification holder) {
-        var attribute = member.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) member.GetCustomAttribute<DescribedAsAttribute>();
+        var attribute = member.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute)member.GetCustomAttribute<DescribedAsAttribute>();
         FacetUtils.AddFacet(Create(attribute, holder));
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var attribute = type.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) type.GetCustomAttribute<DescribedAsAttribute>();
+        var attribute = type.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute)type.GetCustomAttribute<DescribedAsAttribute>();
         FacetUtils.AddFacet(Create(attribute, specification));
         return metamodel;
     }
@@ -52,7 +52,7 @@ public sealed class DescribedAsAnnotationFacetFactory : ObjectFacetFactoryProces
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
-        var attribute = parameter.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) parameter.GetCustomAttribute<DescribedAsAttribute>();
+        var attribute = parameter.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute)parameter.GetCustomAttribute<DescribedAsAttribute>();
         FacetUtils.AddFacet(Create(attribute, holder));
         return metamodel;
     }

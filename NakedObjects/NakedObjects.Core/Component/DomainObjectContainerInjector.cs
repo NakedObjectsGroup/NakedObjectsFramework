@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedObjects.Core.Container;
 
-namespace NakedObjects.Core.Component; 
+namespace NakedObjects.Core.Component;
 
 public sealed class DomainObjectContainerInjector : IDomainObjectInjector {
     private readonly ILoggerFactory loggerFactory;

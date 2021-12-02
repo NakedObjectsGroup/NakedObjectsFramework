@@ -13,7 +13,7 @@ using NakedObjects.Services;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
-namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys; 
+namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 
 [TestFixture]
 public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {

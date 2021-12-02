@@ -8,7 +8,7 @@
 using NakedFramework.Value;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.Value; 
+namespace NakedObjects.SystemTest.Value;
 
 [TestFixture]
 public class ImageTest {

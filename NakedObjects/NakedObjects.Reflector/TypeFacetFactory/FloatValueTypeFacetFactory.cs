@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Reflector.TypeFacetFactory; 
+namespace NakedObjects.Reflector.TypeFacetFactory;
 
 public sealed class FloatValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public FloatValueTypeFacetFactory(IFacetFactoryOrder<FloatValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }

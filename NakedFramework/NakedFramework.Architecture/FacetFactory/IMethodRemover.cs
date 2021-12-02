@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace NakedFramework.Architecture.FacetFactory; 
+namespace NakedFramework.Architecture.FacetFactory;
 
 /// <summary>
 ///     This is a bit of a hack, but want to be able to centralize knowledge about rules.

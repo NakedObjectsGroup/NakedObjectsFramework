@@ -10,7 +10,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 public class EFCoreAdventureWorksEntities : DbContext {
     private readonly string cs;
@@ -92,8 +92,7 @@ public class EFCoreAdventureWorksEntities : DbContext {
 
     public void Create() => Database.EnsureCreated();
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
         optionsBuilder.UseLazyLoadingProxies();
         //optionsBuilder.EnableDetailedErrors();
@@ -102,7 +101,6 @@ public class EFCoreAdventureWorksEntities : DbContext {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            
         modelBuilder.Entity<ProductSubcategory>().ToTable("ProductSubcategory", "Production");
         modelBuilder.Entity<ProductCategory>().ToTable("ProductCategory", "Production");
         modelBuilder.Entity<WorkOrder>().ToTable("WorkOrder", "Production");
@@ -708,7 +706,6 @@ public class EFCoreAdventureWorksEntities : DbContext {
         modelBuilder.Entity<SalesTaxRate>()
                     .Property(e => e.TaxRate)
                     .HasColumnType("smallmoney");
-            
 
         modelBuilder.Entity<SalesTerritory>()
                     .Property(e => e.SalesYTD)
@@ -745,7 +742,7 @@ public class EFCoreAdventureWorksEntities : DbContext {
         modelBuilder.Entity<SpecialOfferProduct>()
                     .HasMany(e => e.SalesOrderDetails)
                     .WithOne(e => e.SpecialOfferProduct)
-                    .HasForeignKey(e => new {e.SpecialOfferID, e.ProductID});
+                    .HasForeignKey(e => new { e.SpecialOfferID, e.ProductID });
 
         modelBuilder.Entity<Store>()
                     .HasMany(e => e.StoreContacts)

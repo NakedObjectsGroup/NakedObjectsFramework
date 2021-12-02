@@ -18,12 +18,10 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.Facet; 
+namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
 public sealed class DisableActionForContextViaAboutFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
-     
-
     private readonly AboutHelpers.AboutType aboutType;
 
     private readonly ILogger<DisableActionForContextViaAboutFacet> logger;
@@ -35,8 +33,6 @@ public sealed class DisableActionForContextViaAboutFacet : FacetAbstract, IDisab
         this.aboutType = aboutType;
         this.logger = logger;
     }
-
-    protected override string ToStringValues() => $"method={method}";
 
     public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
 
@@ -51,8 +47,10 @@ public sealed class DisableActionForContextViaAboutFacet : FacetAbstract, IDisab
 
         method.Invoke(nakedObjectAdapter.GetDomainObject(), method.GetParameters(about));
 
-        return about.Usable ? null : global::NakedObjects.Resources.NakedObjects.Disabled;
+        return about.Usable ? null : NakedObjects.Resources.NakedObjects.Disabled;
     }
+
+    protected override string ToStringValues() => $"method={method}";
 
     #region IImperativeFacet Members
 

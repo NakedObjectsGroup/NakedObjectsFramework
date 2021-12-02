@@ -20,7 +20,7 @@ using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.Reflector.Extensions; 
+namespace NakedObjects.Reflector.Extensions;
 
 public static class NakedObjectsExtensions {
     private static ObjectReflectorConfiguration ObjectReflectorConfig(NakedObjectsOptions options) {

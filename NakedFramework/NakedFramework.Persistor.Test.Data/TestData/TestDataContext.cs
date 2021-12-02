@@ -10,7 +10,7 @@
 
 using System.Data.Entity;
 
-namespace TestData; 
+namespace TestData;
 
 public class TestDataContext : DbContext {
     public TestDataContext(string cs) : base(cs) { }

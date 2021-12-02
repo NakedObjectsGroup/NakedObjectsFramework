@@ -22,7 +22,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class RegExAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<RegExAnnotationFacetFactory> logger;
@@ -32,13 +32,13 @@ public sealed class RegExAnnotationFacetFactory : ObjectFacetFactoryProcessor, I
         logger = loggerFactory.CreateLogger<RegExAnnotationFacetFactory>();
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var attribute = type.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) type.GetCustomAttribute<RegExAttribute>();
+        var attribute = type.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute)type.GetCustomAttribute<RegExAttribute>();
         FacetUtils.AddFacet(Create(attribute, specification));
         return metamodel;
     }
 
     private void Process(MemberInfo member, ISpecification holder) {
-        var attribute = member.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) member.GetCustomAttribute<RegExAttribute>();
+        var attribute = member.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute)member.GetCustomAttribute<RegExAttribute>();
         FacetUtils.AddFacet(Create(attribute, holder));
     }
 
@@ -61,7 +61,7 @@ public sealed class RegExAnnotationFacetFactory : ObjectFacetFactoryProcessor, I
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         if (TypeUtils.IsString(parameter.ParameterType)) {
-            var attribute = parameter.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) parameter.GetCustomAttribute<RegExAttribute>();
+            var attribute = parameter.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute)parameter.GetCustomAttribute<RegExAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

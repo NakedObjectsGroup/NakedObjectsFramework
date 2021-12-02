@@ -21,7 +21,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFunctions.Reflector.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class ActionValidateViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {
     private static readonly string[] FixedPrefixes = {
@@ -52,7 +52,7 @@ public sealed class ActionValidateViaFunctionFacetFactory : FunctionalFacetFacto
         MatchParams(methodInfo, paramTypes);
 
     private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacetToParameterValidateMethod(Type declaringType, Type targetType, string name, Type paramType, ISpecificationBuilder parameter, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType, new[] {paramType});
+        bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType, new[] { paramType });
         var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
         if (methodToUse is not null) {

@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Test.Interface;
 using NakedFramework.Test.TestCase;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 internal class TestAction : ITestAction {
     private readonly IActionSpec actionSpec;
@@ -88,7 +88,7 @@ internal class TestAction : ITestAction {
     public ITestObject InvokeReturnObject(params object[] parameters) {
         try {
             framework.TransactionManager.StartTransaction();
-            return (ITestObject) DoInvoke(ParsedParameters(parameters));
+            return (ITestObject)DoInvoke(ParsedParameters(parameters));
         }
         finally {
             framework.TransactionManager.EndTransaction();
@@ -98,7 +98,7 @@ internal class TestAction : ITestAction {
     public ITestCollection InvokeReturnCollection(params object[] parameters) {
         try {
             framework.TransactionManager.StartTransaction();
-            return (ITestCollection) DoInvoke(ParsedParameters(parameters));
+            return (ITestCollection)DoInvoke(ParsedParameters(parameters));
         }
         finally {
             framework.TransactionManager.EndTransaction();

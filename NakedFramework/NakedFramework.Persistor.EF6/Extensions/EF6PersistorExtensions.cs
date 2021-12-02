@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
@@ -19,7 +18,7 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EF6.Component;
 using NakedFramework.Persistor.EF6.Configuration;
 
-namespace NakedFramework.Persistor.EF6.Extensions; 
+namespace NakedFramework.Persistor.EF6.Extensions;
 
 public static class EF6PersistorExtensions {
     private static EF6ObjectStoreConfiguration EF6ObjectStoreConfiguration(IConfiguration configuration, EF6PersistorOptions options) {
@@ -33,7 +32,7 @@ public static class EF6PersistorExtensions {
             RequireExplicitAssociationOfTypes = options.RequireExplicitAssociationOfTypes
         };
 
-        var contexts = options.ContextCreators.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(f => () => f(configuration));
+        var contexts = options.ContextCreators.Select(f => () => f(configuration));
         contexts.ForEach(c => config.UsingContext(c));
         return config;
     }

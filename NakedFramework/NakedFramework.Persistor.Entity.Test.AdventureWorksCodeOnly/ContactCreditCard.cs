@@ -11,16 +11,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 [Table("Sales.ContactCreditCard")]
 public class ContactCreditCard {
-       
     [Column(Order = 0)]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int ContactID { get; set; }
 
-      
     [Column(Order = 1)]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int CreditCardID { get; set; }

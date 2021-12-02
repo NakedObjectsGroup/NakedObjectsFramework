@@ -10,7 +10,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Meta.Test.Facet; 
+namespace NakedObjects.Meta.Test.Facet;
 
 [TestClass]
 public class ActionInvocationFacetViaMethodTest {

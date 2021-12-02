@@ -8,7 +8,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace NakedFramework.Rest.Model; 
+namespace NakedFramework.Rest.Model;
 
 public class PromptArgumentMapBinder : IModelBinder {
     #region IModelBinder Members

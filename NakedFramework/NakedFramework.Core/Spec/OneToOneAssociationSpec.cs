@@ -20,7 +20,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Spec; 
+namespace NakedFramework.Core.Spec;
 
 public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
     private bool? isFindMenuEnabled;
@@ -36,7 +36,7 @@ public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOne
             return null;
         }
 
-        var spec = (IObjectSpec) Framework.MetamodelManager.GetSpecification(obj.GetType());
+        var spec = (IObjectSpec)Framework.MetamodelManager.GetSpecification(obj.GetType());
         return spec.ContainsFacet(typeof(IComplexTypeFacet))
             ? Framework.NakedObjectManager.CreateAggregatedAdapter(fromObjectAdapter, Id, obj)
             : Framework.NakedObjectManager.CreateAdapter(obj, null, null);
@@ -56,9 +56,8 @@ public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOne
         return (Framework.NakedObjectManager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
     }
 
-    public override string ToString() => 
+    public override string ToString() =>
         $"{NameAndHashCode(this)} [{base.ToString()},persisted={IsPersisted},type={ReturnSpec.ShortName}]";
-
 
     #region IOneToOneAssociationSpec Members
 

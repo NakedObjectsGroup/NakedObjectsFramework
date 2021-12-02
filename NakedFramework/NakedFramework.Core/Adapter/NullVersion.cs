@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 public sealed class NullVersion : IVersion, IEncodedToStrings {
     private readonly ILogger<NullVersion> logger;

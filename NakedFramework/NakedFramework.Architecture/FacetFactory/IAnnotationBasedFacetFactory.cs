@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Architecture.FacetFactory; 
+namespace NakedFramework.Architecture.FacetFactory;
 
 /// <summary>
 ///     Marker interface to indicate that the <see cref="IFacetFactory" /> works by checking for certain annotations

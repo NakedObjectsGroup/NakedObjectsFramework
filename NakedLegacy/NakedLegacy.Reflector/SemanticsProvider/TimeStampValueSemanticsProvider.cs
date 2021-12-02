@@ -16,7 +16,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.SemanticsProvider; 
+namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
 public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeStamp>, IDateValueFacet {
@@ -37,23 +37,20 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
 
     #region IDateValueFacet Members
 
-    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) {
-        return nakedObjectAdapter.GetDomainObject<TimeStamp>().DateTime;
-    }
+    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TimeStamp>().DateTime;
 
     #endregion
 
     public static bool IsAdaptedType(Type type) => type == typeof(TimeStamp);
 
-    protected override string DoEncode(TimeStamp timeStamp) {
-        return timeStamp.DateTime.ToString(CultureInfo.InvariantCulture);
-    }
+    protected override string DoEncode(TimeStamp timeStamp) => timeStamp.DateTime.ToString(CultureInfo.InvariantCulture);
 
     protected override TimeStamp DoParse(string entry) {
         var dateString = entry.Trim();
         try {
             return new TimeStamp(DateTime.Parse(entry));
-        } catch (FormatException) {
+        }
+        catch (FormatException) {
             throw new InvalidEntryException(FormatMessage(dateString));
         }
     }
@@ -62,9 +59,7 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
 
     protected override string GetInvariantString(TimeStamp timeStamp) => timeStamp.DateTime.ToString(CultureInfo.InvariantCulture);
 
-    protected override TimeStamp DoRestore(string data) {
-        return new TimeStamp(DateTime.Parse(data, CultureInfo.InvariantCulture));
-    }
+    protected override TimeStamp DoRestore(string data) => new TimeStamp(DateTime.Parse(data, CultureInfo.InvariantCulture));
 
     protected override string TitleStringWithMask(string mask, TimeStamp value) => value.DateTime.ToString(mask);
 

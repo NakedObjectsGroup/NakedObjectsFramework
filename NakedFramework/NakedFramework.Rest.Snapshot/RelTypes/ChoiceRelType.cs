@@ -9,7 +9,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.RelTypes; 
+namespace NakedFramework.Rest.Snapshot.RelTypes;
 
 public class ChoiceRelType : ObjectRelType {
     private readonly IMemberFacade member;

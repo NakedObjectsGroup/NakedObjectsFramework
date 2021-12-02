@@ -17,15 +17,11 @@ using NakedFramework.Metamodel.Authorization;
 using NakedFunctions.Reflector.Authorization;
 using NakedFunctions.Security;
 
-namespace NakedFunctions.Reflector.Test.Authorization; 
+namespace NakedFunctions.Reflector.Test.Authorization;
 
 [TestClass]
 public class AuthorizationManagerTest {
     private readonly ILogger<AuthorizationManager> mockLogger = new Mock<ILogger<AuthorizationManager>>().Object;
-
-    public class TestMainMenuAuthorizer : IMainMenuAuthorizer {
-        public bool IsVisible(string target, string memberName, IContext context) => throw new NotImplementedException();
-    }
 
     #region Setup/Teardown
 
@@ -49,7 +45,7 @@ public class AuthorizationManagerTest {
     public void TestCreateNullAuthorizer() {
         var config = new Mock<IAuthorizationConfiguration>();
 
-        config.Setup(c => c.DefaultAuthorizer).Returns((Type) null);
+        config.Setup(c => c.DefaultAuthorizer).Returns((Type)null);
         config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type>());
 
         try {
@@ -68,7 +64,7 @@ public class AuthorizationManagerTest {
         var config = new Mock<IAuthorizationConfiguration>();
 
         config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
-        config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
+        config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> { { "1", typeof(TestNamespaceAuthorizer) } });
         config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
         var manager = new AuthorizationManager(config.Object, mockLogger);
@@ -89,6 +85,10 @@ public class AuthorizationManagerTest {
         var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(AuthorizationHideForSessionFacet));
+    }
+
+    public class TestMainMenuAuthorizer : IMainMenuAuthorizer {
+        public bool IsVisible(string target, string memberName, IContext context) => throw new NotImplementedException();
     }
 
     #region Nested type: TestClass

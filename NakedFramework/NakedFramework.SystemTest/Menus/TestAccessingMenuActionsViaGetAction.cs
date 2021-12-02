@@ -7,12 +7,12 @@
 
 using System;
 using System.Data.Entity;
-using SystemTest.ContributedActions;
 using NakedFramework.Menu;
 using NakedObjects;
 using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using NUnit.Framework;
+using SystemTest.ContributedActions;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

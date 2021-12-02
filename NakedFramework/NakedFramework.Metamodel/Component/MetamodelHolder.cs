@@ -13,7 +13,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Component; 
+namespace NakedFramework.Metamodel.Component;
 
 [Serializable]
 public sealed class MetamodelHolder : IMetamodelBuilder {

@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 public interface IContributedFunctionFacet : IFacet {
     bool IsContributedToObject { get; }

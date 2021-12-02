@@ -15,7 +15,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Spec;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public sealed class MetamodelManager : IMetamodelManager {
     private readonly IDictionary<ITypeSpecImmutable, ITypeSpec> localCache = new Dictionary<ITypeSpecImmutable, ITypeSpec>();

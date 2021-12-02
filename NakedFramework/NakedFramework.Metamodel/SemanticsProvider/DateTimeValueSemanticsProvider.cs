@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.SemanticsProvider; 
+namespace NakedFramework.Metamodel.SemanticsProvider;
 
 [Serializable]
 public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstract<DateTime>, IDateValueFacet {
@@ -34,7 +34,7 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
 
     #region IDateValueFacet Members
 
-    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => (DateTime?) nakedObjectAdapter?.Object ?? Now();
+    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => (DateTime?)nakedObjectAdapter?.Object ?? Now();
 
     #endregion
 

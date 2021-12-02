@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.SemanticsProvider; 
+namespace NakedFramework.Metamodel.SemanticsProvider;
 
 [Serializable]
 public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IEnumValueFacet {
@@ -49,7 +49,7 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
         if (IsEnumSubtype()) {
             var values = Enum.GetValues(AdaptedType);
             if (values.Length > 0) {
-                return (T) values.GetValue(0);
+                return (T)values.GetValue(0);
             }
         }
 
@@ -60,7 +60,7 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
 
     protected override T DoParse(string entry) {
         try {
-            return (T) Enum.Parse(typeof(T), entry);
+            return (T)Enum.Parse(typeof(T), entry);
         }
         catch (ArgumentException) {
             throw new InvalidEntryException(FormatMessage(entry));
@@ -70,7 +70,7 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
         }
     }
 
-    protected override T DoParseInvariant(string entry) => (T) Enum.Parse(typeof(T), entry);
+    protected override T DoParseInvariant(string entry) => (T)Enum.Parse(typeof(T), entry);
 
     protected override string GetInvariantString(T obj) => obj.ToString();
 
@@ -82,7 +82,7 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
 
     protected override T DoRestore(string data) {
         var typeAndValue = data.Split(':');
-        return (T) Enum.Parse(TypeUtils.GetType(typeAndValue[0]), typeAndValue[1]);
+        return (T)Enum.Parse(TypeUtils.GetType(typeAndValue[0]), typeAndValue[1]);
     }
 
     public override string ToString() => "EnumAdapter: ";

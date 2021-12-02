@@ -14,7 +14,7 @@ using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Facet;
 using NakedObjects.Core.Util;
 
-namespace NakedFunctions.Reflector.Test.Facet; 
+namespace NakedFunctions.Reflector.Test.Facet;
 
 [TestClass]
 public class InjectedIContextParameterFacetTest {
@@ -41,7 +41,7 @@ public class InjectedIContextParameterFacetTest {
     public void TestInjectedInstances() {
         var testFacet = new InjectedIContextParameterFacet(null);
 
-        var result = ((IContext) testFacet.GetInjectedValue(mockFramework.Object, null)).Instances<object>();
+        var result = ((IContext)testFacet.GetInjectedValue(mockFramework.Object, null)).Instances<object>();
 
         Assert.AreEqual(result, testValue);
     }

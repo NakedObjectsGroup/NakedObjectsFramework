@@ -14,7 +14,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
 
-namespace NakedFramework.Metamodel.Profile; 
+namespace NakedFramework.Metamodel.Profile;
 
 [Serializable]
 public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {

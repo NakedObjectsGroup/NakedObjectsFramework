@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts; 
+namespace NakedFramework.Facade.Contexts;
 
 public class ParameterContextFacade : ContextFacade {
     public IActionParameterFacade Parameter { get; init; }

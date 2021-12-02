@@ -15,7 +15,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedLegacy.Reflector.SemanticsProvider;
 
-namespace NakedLegacy.Reflector.FacetFactory; 
+namespace NakedLegacy.Reflector.FacetFactory;
 
 public sealed class WholeNumberValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public WholeNumberValueTypeFacetFactory(IFacetFactoryOrder<IntValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }

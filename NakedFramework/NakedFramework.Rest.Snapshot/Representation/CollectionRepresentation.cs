@@ -15,7 +15,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class CollectionRepresentation : MemberAbstractRepresentation {
@@ -33,12 +33,12 @@ public class CollectionRepresentation : MemberAbstractRepresentation {
         var actions = collectionRepresentationStrategy.GetActions();
 
         if (actions.Any()) {
-            var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
+            var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object)m));
             optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
         }
 
         return optionals.Any()
-            ? CreateWithOptionals<CollectionRepresentation>(new object[] {frameworkFacade, collectionRepresentationStrategy}, optionals)
+            ? CreateWithOptionals<CollectionRepresentation>(new object[] { frameworkFacade, collectionRepresentationStrategy }, optionals)
             : new CollectionRepresentation(frameworkFacade, collectionRepresentationStrategy);
     }
 }

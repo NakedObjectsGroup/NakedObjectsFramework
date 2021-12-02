@@ -25,7 +25,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class ValidateObjectFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes = {
@@ -64,7 +64,7 @@ public sealed class ValidateObjectFacetFactory : ObjectFacetFactoryProcessor, IM
             }
         }
 
-        var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers, Logger<ValidateObjectFacet>()) : new ValidateObjectFacetNull(specification);
+        var validateFacet = methodPeers.Any() ? (IValidateObjectFacet)new ValidateObjectFacet(specification, methodPeers, Logger<ValidateObjectFacet>()) : new ValidateObjectFacetNull(specification);
         FacetUtils.AddFacet(validateFacet);
         return metamodel;
     }

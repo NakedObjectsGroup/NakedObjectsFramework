@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Persist;
 
-namespace NakedFramework.Persistor.EFCore.Component; 
+namespace NakedFramework.Persistor.EFCore.Component;
 
 public class EFCoreSaveObjectCommand : ISaveObjectCommand {
     private readonly EFCoreLocalContext context;

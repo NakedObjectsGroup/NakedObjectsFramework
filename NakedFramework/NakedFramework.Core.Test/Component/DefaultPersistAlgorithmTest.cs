@@ -17,21 +17,13 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Component; 
+namespace NakedFramework.Core.Test.Component;
 
 /// <summary>
 ///     Summary description for DefaultPersistAlgorithmTest
 /// </summary>
 [TestFixture]
 public class DefaultPersistAlgorithmTest {
-    private RecursivePersistAlgorithm algorithm;
-    private INakedObjectManager manager;
-    private Mock<INakedObjectManager> mockManager;
-    private Mock<IObjectPersistor> mockPersistor;
-    private IObjectPersistor persistor;
-
-    #region Setup/Teardown
-
     [SetUp]
     public void SetUp() {
         mockPersistor = new Mock<IObjectPersistor>();
@@ -44,7 +36,11 @@ public class DefaultPersistAlgorithmTest {
         algorithm = new RecursivePersistAlgorithm(persistor, manager, mockLogger.Object);
     }
 
-    #endregion
+    private RecursivePersistAlgorithm algorithm;
+    private INakedObjectManager manager;
+    private Mock<INakedObjectManager> mockManager;
+    private Mock<IObjectPersistor> mockPersistor;
+    private IObjectPersistor persistor;
 
     [Test]
     public void TestMakePersistent() {
@@ -59,7 +55,7 @@ public class DefaultPersistAlgorithmTest {
 
         mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.TransientState());
 
-        mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
+        mockSpec.Setup(s => s.Properties).Returns(new[] { mockASpec.Object });
         mockSpec.Setup(s => s.GetFacet<IPersistingCallbackFacet>()).Returns(mockCallBack.Object);
 
         mockASpec.Setup(s => s.IsPersisted).Returns(true);
@@ -127,7 +123,7 @@ public class DefaultPersistAlgorithmTest {
 
         mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.AggregatedState());
 
-        mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
+        mockSpec.Setup(s => s.Properties).Returns(new[] { mockASpec.Object });
         mockSpec.Setup(s => s.GetFacet<IPersistingCallbackFacet>()).Returns(mockCallBack.Object);
 
         mockASpec.Setup(s => s.IsPersisted).Returns(true);
@@ -154,7 +150,7 @@ public class DefaultPersistAlgorithmTest {
 
         mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.AggregatedState());
 
-        mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
+        mockSpec.Setup(s => s.Properties).Returns(new[] { mockASpec.Object });
         mockSpec.Setup(s => s.GetFacet<IPersistingCallbackFacet>()).Returns(mockCallBack.Object);
 
         mockASpec.Setup(s => s.IsPersisted).Returns(false);

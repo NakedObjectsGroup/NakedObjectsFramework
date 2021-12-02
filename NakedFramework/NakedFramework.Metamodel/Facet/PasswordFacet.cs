@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PasswordFacet : MarkerFacetAbstract, IPasswordFacet {

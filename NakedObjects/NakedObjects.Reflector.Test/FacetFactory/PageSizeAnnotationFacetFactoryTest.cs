@@ -23,13 +23,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class PageSizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private PageSizeAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IPageSizeFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IPageSizeFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -44,7 +44,7 @@ public class PageSizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = actionPeer.GetFacet(typeof(IPageSizeFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PageSizeFacetDefault);
-        var pageSizeFacet = (IPageSizeFacet) facet;
+        var pageSizeFacet = (IPageSizeFacet)facet;
         Assert.AreEqual(20, pageSizeFacet.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -69,7 +69,7 @@ public class PageSizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPageSizeFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PageSizeFacetAnnotation);
-        var pageSizeFacet = (IPageSizeFacet) facet;
+        var pageSizeFacet = (IPageSizeFacet)facet;
         Assert.AreEqual(7, pageSizeFacet.Value);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);

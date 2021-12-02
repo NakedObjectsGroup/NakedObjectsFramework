@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Menu;
 
-namespace NakedFramework.Architecture.Configuration; 
+namespace NakedFramework.Architecture.Configuration;
 
 public interface ICoreConfiguration {
     /// <summary>

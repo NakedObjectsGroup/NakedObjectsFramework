@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -23,7 +24,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace NakedFunctions.Rest.Test; 
+namespace NakedFunctions.Rest.Test;
 
 public class MenuTestEF6 : AcceptanceTestCase {
     protected override Type[] Functions { get; } = {
@@ -59,15 +60,14 @@ public class MenuTestEF6 : AcceptanceTestCase {
 
     protected override bool EnforceProxies => false;
 
-    protected override Func<IConfiguration, System.Data.Entity.DbContext>[] ContextCreators =>
-        new Func<IConfiguration, System.Data.Entity.DbContext>[] { config => new MenuDbContext() };
-
-    protected virtual void CleanUpDatabase()
-    {
-        MenuDbContext.Delete();
-    }
+    protected override Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new MenuDbContext() };
 
     protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
+
+    protected virtual void CleanUpDatabase() {
+        MenuDbContext.Delete();
+    }
 
     private static string FullName<T>() => typeof(T).FullName;
 
@@ -109,7 +109,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenus();
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var val = parsedResult.GetValue("value") as JArray;
@@ -127,7 +127,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenu(nameof(MenuTestFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(MenuTestFunctions), parsedResult["title"].ToString());
@@ -141,7 +141,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         Assert.AreEqual("findbyname_group", function["extensions"]["x-ro-nof-menuPath"].ToString());
 
         function.AssertAction(nameof(MenuTestFunctions.FindByName));
-        function["extensions"].AssertExtensions(8); 
+        function["extensions"].AssertExtensions(8);
 
         var links = function["links"] as JArray;
 
@@ -157,7 +157,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(MenuTestFunctions), nameof(MenuTestFunctions.FindByName));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(MenuTestFunctions.FindByName), parsedResult["id"].ToString());
@@ -176,7 +176,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(MenuTestFunctions), nameof(MenuTestFunctions.FindByEnum));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("number", parsedResult["parameters"]["eParm"]["extensions"]["returnType"].ToString());
@@ -185,11 +185,11 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionThatReturnsSingleItemList() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"searchString", new ScalarValue("Fred")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "searchString", new ScalarValue("Fred") } } };
         var result = api.GetInvokeOnMenu(nameof(MenuTestFunctions), nameof(MenuTestFunctions.FindByName), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("list", parsedResult["resultType"].ToString());
@@ -205,11 +205,11 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionThatReturnsMultipleItemList() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"length", new ScalarValue(4)}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "length", new ScalarValue(4) } } };
         var result = api.GetInvokeOnMenu(nameof(MenuTestFunctions), nameof(MenuTestFunctions.FindByLength), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("list", parsedResult["resultType"].ToString());
@@ -227,11 +227,11 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionThatReturnsRandomItem() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.GetInvokeOnMenu(nameof(MenuTestFunctions), nameof(MenuTestFunctions.Random), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("object", parsedResult["resultType"].ToString());
@@ -260,11 +260,11 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionThatGeneratesWarningNoObject() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"number", new ScalarValue("5")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "number", new ScalarValue("5") } } };
         var result = api.PostInvokeOnMenu(nameof(MenuTestFunctions), nameof(MenuTestFunctions.FindByNumber), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("object", parsedResult["resultType"].ToString());
@@ -279,11 +279,11 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionThatGeneratesWarningObject() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"number", new ScalarValue("1")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "number", new ScalarValue("1") } } };
         var result = api.PostInvokeOnMenu(nameof(MenuTestFunctions), nameof(MenuTestFunctions.FindByNumber), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("object", parsedResult["resultType"].ToString());
@@ -304,7 +304,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(DateMenuFunctions), nameof(DateMenuFunctions.DateWithDefault));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(DateRecordFunctions.DateWithDefault), parsedResult["id"].ToString());
@@ -320,7 +320,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoices));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoices), parsedResult["id"].ToString());
@@ -339,7 +339,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesNoContext));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesNoContext), parsedResult["id"].ToString());
@@ -355,7 +355,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParameters));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParameters), parsedResult["id"].ToString());
@@ -372,7 +372,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext), parsedResult["id"].ToString());
@@ -389,7 +389,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoices));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(ChoicesMenuFunctions.WithMultipleChoices), parsedResult["id"].ToString());
@@ -414,7 +414,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext), parsedResult["id"].ToString());
@@ -436,7 +436,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(MenuTestFunctions), nameof(MenuTestFunctions.CreateNewFunction));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("Name,Name1,Id", parsedResult["extensions"]["x-ro-nof-createNew"].ToString());
@@ -445,10 +445,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestGetMenuPrompt() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"parm1", new ScalarValue("1")}, {"parm2", new ScalarValue("J")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
         var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParameters), "record", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("record", parsedResult["id"].ToString());
@@ -460,10 +460,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestGetMenuPromptNoContext() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"parm1", new ScalarValue("1")}, {"parm2", new ScalarValue("J")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
         var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext), "record", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("record", parsedResult["id"].ToString());
@@ -474,10 +474,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestGetMenuPromptWithMultipleChoices() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"simplerecords", new ListValue(new IValue[] {new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord")})}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simplerecords", new ListValue(new IValue[] { new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") }) } } };
         var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoices), "dateRecords", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("dateRecords", parsedResult["id"].ToString());
@@ -489,10 +489,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestGetMenuPromptWithMultipleChoicesNoContext() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"simplerecords", new ListValue(new IValue[] {new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord")})}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simplerecords", new ListValue(new IValue[] { new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") }) } } };
         var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext), "dateRecords", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("dateRecords", parsedResult["id"].ToString());
@@ -505,7 +505,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(DefaultedMenuFunctions), nameof(DefaultedMenuFunctions.WithDefaults));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(DefaultedMenuFunctions.WithDefaults), parsedResult["id"].ToString());
@@ -520,10 +520,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeRecordActionWithValidateFail() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"validate1", new ScalarValue("2")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") } } };
         var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithValidation), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.UnprocessableEntity, sc);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("2", parsedResult["validate1"]["value"].ToString());
@@ -533,10 +533,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeRecordActionWithValidateSuccess() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"validate1", new ScalarValue("1")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithValidation), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -547,10 +547,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeRecordActionWithCrossValidateFail() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"validate1", new ScalarValue("2")}, {"validate2", new ScalarValue("1")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") }, { "validate2", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithCrossValidation), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.UnprocessableEntity, sc);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("invalid: 2:1", parsedResult["x-ro-invalidReason"].ToString());
@@ -559,10 +559,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeRecordActionWithCrossValidateSuccess() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"validate1", new ScalarValue("1")}, {"validate2", new ScalarValue("1")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") }, { "validate2", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithCrossValidation), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -575,7 +575,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenu(nameof(DisabledMenuFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.IsNull(parsedResult["members"]["WithDisabled1"]);
@@ -586,7 +586,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenu(nameof(DisabledMenuFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.IsNotNull(parsedResult["members"]["WithDisabled2"]);
@@ -597,7 +597,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenu(nameof(HiddenMenuFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.IsNull(parsedResult["members"]["WithHidden1"]);
@@ -608,7 +608,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenu(nameof(HiddenMenuFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.IsNotNull(parsedResult["members"]["WithHidden2"]);
@@ -619,7 +619,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(AutoCompleteMenuFunctions), nameof(AutoCompleteMenuFunctions.WithAutoComplete));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(AutoCompleteMenuFunctions.WithAutoComplete), parsedResult["id"].ToString());
@@ -635,10 +635,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionPromptWithAutoComplete() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments {SearchTerm = "Fr"}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments { SearchTerm = "Fr" } };
         var result = api.GetParameterPromptOnMenu(nameof(AutoCompleteMenuFunctions), nameof(AutoCompleteMenuFunctions.WithAutoComplete), "simpleRecord", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("simpleRecord", parsedResult["id"].ToString());
@@ -651,11 +651,11 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionWithAutoComplete() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"simpleRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simpleRecord", new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") } } };
 
         var result = api.GetInvokeOnMenu(nameof(AutoCompleteMenuFunctions), nameof(AutoCompleteMenuFunctions.WithAutoComplete), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -716,7 +716,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithValidationNoContext));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(ValidatedRecordFunctions.WithValidationNoContext), parsedResult["id"].ToString());
@@ -728,10 +728,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionWithValidateFailNoContext() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"validate1", new ScalarValue("2")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") } } };
         var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithValidationNoContext), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.UnprocessableEntity, sc);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("2", parsedResult["validate1"]["value"].ToString());
@@ -741,10 +741,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionWithValidateSuccessNoContext() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"validate1", new ScalarValue("1")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithValidationNoContext), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -755,10 +755,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionWithCrossValidateFailNoContext() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"validate1", new ScalarValue("2")}, {"validate2", new ScalarValue("1")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") }, { "validate2", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithCrossValidationNoContext), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.UnprocessableEntity, sc);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("invalid: 2:1", parsedResult["x-ro-invalidReason"].ToString());
@@ -767,10 +767,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeMenuActionWithCrossValidateSuccessNoContext() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"validate1", new ScalarValue("1")}, {"validate2", new ScalarValue("1")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") }, { "validate2", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(nameof(ValidatedMenuFunctions), nameof(ValidatedMenuFunctions.WithCrossValidationNoContext), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -781,10 +781,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeGetViewModel() {
         var api = Api();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"name", new ScalarValue("1")}}};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(nameof(ViewModelMenuFunctions), nameof(ViewModelMenuFunctions.GetViewModel), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -795,10 +795,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestCreateNewRecordWithReferences() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewWithExistingReferences), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -809,10 +809,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestCreateNewRecordNewReferences() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewWithNewReferences), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -824,10 +824,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestUpdateRecordWithReferences() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExisting), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -838,10 +838,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestUpdateExistingAndReference() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingAndReference), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -853,10 +853,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestCreateNewRecordWithUpdatedReferences() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewUpdateReference), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -868,10 +868,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestCreateNewRecordWithCollection() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNewWithExistingCollection), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -882,10 +882,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestUpdateRecordWithCollection() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingCollectionRecord), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -896,10 +896,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestUpdateExistingAndCollection() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingAndCollection), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -910,10 +910,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestUpdateExistingAndAddToCollection() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateExistingAndAddToCollection), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -924,10 +924,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestInvokeActionWithCollectionContribActions() {
         var api = Api().AsPost();
-        var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.GetInvokeOnMenu(nameof(CollectionMenuFunctions), nameof(CollectionMenuFunctions.GetQueryable), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];

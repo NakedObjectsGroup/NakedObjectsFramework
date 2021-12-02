@@ -20,7 +20,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class ViewModelFacetFactory : ObjectFacetFactoryProcessor {
     public ViewModelFacetFactory(IFacetFactoryOrder<ViewModelFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory, FeatureType.Objects) { }
@@ -29,9 +29,9 @@ public sealed class ViewModelFacetFactory : ObjectFacetFactoryProcessor {
         if (typeof(IViewModel).IsAssignableFrom(type)) {
             IFacet facet;
             var deriveMethod = type.GetMethod(nameof(IViewModel.DeriveKeys), new Type[] { });
-            var populateMethod = type.GetMethod(nameof(IViewModel.PopulateUsingKeys), new[] {typeof(string[])});
+            var populateMethod = type.GetMethod(nameof(IViewModel.PopulateUsingKeys), new[] { typeof(string[]) });
 
-            var toRemove = new List<MethodInfo> {deriveMethod, populateMethod};
+            var toRemove = new List<MethodInfo> { deriveMethod, populateMethod };
 
             if (typeof(IViewModelEdit).IsAssignableFrom(type)) {
                 facet = new ViewModelEditFacetConvention(specification);

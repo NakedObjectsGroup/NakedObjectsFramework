@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Facade.Interface; 
+namespace NakedFramework.Facade.Interface;
 
 public interface IActionFacade : IMemberFacade {
     ITypeFacade ReturnType { get; }
@@ -30,8 +30,8 @@ public interface IActionFacade : IMemberFacade {
     bool IsQueryContributedAction { get; }
     string[] EditProperties { get; }
     string FinderMethodPrefix { get; }
-    bool IsVisible(IObjectFacade objectFacade);
-    IConsentFacade IsUsable(IObjectFacade objectFacade);
 
     bool IsStaticObjectMenu { get; }
+    bool IsVisible(IObjectFacade objectFacade);
+    IConsentFacade IsUsable(IObjectFacade objectFacade);
 }

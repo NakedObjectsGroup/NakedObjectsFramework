@@ -10,7 +10,7 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace TestCodeOnly; 
+namespace TestCodeOnly;
 
 public class AbstractPerson : AbstractTestCode { }
 

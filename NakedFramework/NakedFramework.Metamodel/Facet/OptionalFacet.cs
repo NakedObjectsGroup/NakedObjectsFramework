@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 /// <summary>
 ///     Derived by presence of an <see cref="OptionallyAttribute" /> annotation.

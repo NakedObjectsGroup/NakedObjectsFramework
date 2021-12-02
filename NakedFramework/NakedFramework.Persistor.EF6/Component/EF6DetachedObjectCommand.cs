@@ -17,7 +17,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EF6.Util;
 
-namespace NakedFramework.Persistor.EF6.Component; 
+namespace NakedFramework.Persistor.EF6.Component;
 
 public class EF6DetachedObjectCommand : IDetachedObjectCommand {
     private readonly IDetachedObjects detachedObjects;
@@ -161,7 +161,7 @@ public class EF6DetachedObjectCommand : IDetachedObjectCommand {
 
             if (!ReferenceEquals(toCol, fromCol) && fromCol is not null) {
                 toCol.Invoke("Clear");
-                foreach (var item in (IEnumerable) fromCol) {
+                foreach (var item in (IEnumerable)fromCol) {
                     toCol.Invoke("Add", ProxyReferenceIfAppropriate(item));
                 }
             }

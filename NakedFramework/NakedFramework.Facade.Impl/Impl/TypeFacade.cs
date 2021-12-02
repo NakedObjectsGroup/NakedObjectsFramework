@@ -15,7 +15,7 @@ using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Value;
 
-namespace NakedFramework.Facade.Impl.Impl; 
+namespace NakedFramework.Facade.Impl.Impl;
 
 public class TypeFacade : ITypeFacade {
     private readonly INakedFramework framework;
@@ -101,14 +101,14 @@ public class TypeFacade : ITypeFacade {
     public bool IsAlwaysImmutable {
         get {
             var facet = WrappedValue.GetFacet<IImmutableFacet>();
-            return facet is {Value: WhenTo.Always};
+            return facet is { Value: WhenTo.Always };
         }
     }
 
     public bool IsImmutableOncePersisted {
         get {
             var facet = WrappedValue.GetFacet<IImmutableFacet>();
-            return facet is {Value: WhenTo.OncePersisted};
+            return facet is { Value: WhenTo.OncePersisted };
         }
     }
 
@@ -130,7 +130,7 @@ public class TypeFacade : ITypeFacade {
 
     public ITypeFacade GetElementType(IObjectFacade objectFacade) {
         if (IsCollection) {
-            var introspectableSpecification = WrappedValue.GetFacet<ITypeOfFacet>().GetValueSpec(((ObjectFacade) objectFacade).WrappedNakedObject, framework.MetamodelManager.Metamodel);
+            var introspectableSpecification = WrappedValue.GetFacet<ITypeOfFacet>().GetValueSpec(((ObjectFacade)objectFacade).WrappedNakedObject, framework.MetamodelManager.Metamodel);
             var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
             return new TypeFacade(elementSpec, FrameworkFacade, framework);
         }
@@ -138,7 +138,7 @@ public class TypeFacade : ITypeFacade {
         return null;
     }
 
-    public bool IsOfType(ITypeFacade otherSpec) => WrappedValue.IsOfType(((TypeFacade) otherSpec).WrappedValue);
+    public bool IsOfType(ITypeFacade otherSpec) => WrappedValue.IsOfType(((TypeFacade)otherSpec).WrappedValue);
 
     public Type GetUnderlyingType() => TypeUtils.GetType(WrappedValue.FullName);
 
@@ -152,7 +152,7 @@ public class TypeFacade : ITypeFacade {
 
     public IActionFacade[] GetLocallyContributedActions(ITypeFacade typeFacade, string id) {
         if (WrappedValue is IObjectSpec objectSpec) {
-            return objectSpec.GetLocallyContributedActions(((TypeFacade) typeFacade).WrappedValue, id).Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray();
+            return objectSpec.GetLocallyContributedActions(((TypeFacade)typeFacade).WrappedValue, id).Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray();
         }
 
         return Array.Empty<IActionFacade>();
@@ -160,7 +160,7 @@ public class TypeFacade : ITypeFacade {
 
     public IFrameworkFacade FrameworkFacade { get; set; }
 
-    public bool Equals(ITypeFacade other) => Equals((object) other);
+    public bool Equals(ITypeFacade other) => Equals((object)other);
 
     public string PresentationHint {
         get {

@@ -20,7 +20,7 @@ using NakedObjects.Reflector.Facet;
 
 #pragma warning disable 612
 
-namespace NakedObjects.Reflector.Utils; 
+namespace NakedObjects.Reflector.Utils;
 
 public static class ObjectMethodHelpers {
     /// <summary>

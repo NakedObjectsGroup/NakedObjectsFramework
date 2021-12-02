@@ -21,13 +21,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class NotNavigableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private NotNavigableAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(INotNavigableFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(INotNavigableFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 

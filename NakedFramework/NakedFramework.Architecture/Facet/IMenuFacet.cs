@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 /// <summary>
 ///     Mechanism for obtaining the action menu for a type.

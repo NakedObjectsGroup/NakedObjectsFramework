@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NakedObjects;
 
-namespace SimpleDatabase; 
+namespace SimpleDatabase;
 
 [ComplexType]
 [Owned]

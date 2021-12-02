@@ -20,7 +20,7 @@ using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 
-namespace NakedFramework.Facade.Impl.Utility; 
+namespace NakedFramework.Facade.Impl.Utility;
 
 public class EntityOidStrategy : IOidStrategy {
     private readonly INakedFramework framework;
@@ -84,7 +84,7 @@ public class EntityOidStrategy : IOidStrategy {
 
     private INakedObjectAdapter GetObject(string[] keys, Type type) {
         var spec = framework.MetamodelManager.GetSpecification(type);
-        return spec.IsViewModel ? GetViewModel(keys, (IObjectSpec) spec) : GetDomainObject(keys, type);
+        return spec.IsViewModel ? GetViewModel(keys, (IObjectSpec)spec) : GetDomainObject(keys, type);
     }
 
     private INakedObjectAdapter GetDomainObject(string[] keys, Type type) {

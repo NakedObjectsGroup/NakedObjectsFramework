@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public sealed class MessageBroker : IMessageBroker {
     private readonly ILogger<MessageBroker> logger;

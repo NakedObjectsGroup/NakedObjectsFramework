@@ -22,7 +22,7 @@ using NakedFramework.Rest.Snapshot.Utility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace NakedFramework.Rest.Model; 
+namespace NakedFramework.Rest.Model;
 
 public static class ModelBinderUtils {
     private static string ExceptionWarning(Exception e) => ControllerHelpers.DebugFilter(() => $"{e.Message} {e.StackTrace?.Replace("\r", " ").Replace("\n", " ")}");
@@ -38,7 +38,7 @@ public static class ModelBinderUtils {
     public static byte[] DeserializeBinaryStream(Stream stream) {
         if (stream.CanRead) {
             using var br = new BinaryReader(stream);
-            return br.ReadBytes((int) stream.Length);
+            return br.ReadBytes((int)stream.Length);
         }
 
         return Array.Empty<byte>();
@@ -75,7 +75,7 @@ public static class ModelBinderUtils {
         var href = value.HasValues ? value[JsonPropertyNames.Href] as JValue : null;
         var type = value.HasValues ? value[JsonPropertyNames.Type] as JValue : null;
         if (href == null) {
-            return new ScalarValue(((JValue) value).Value);
+            return new ScalarValue(((JValue)value).Value);
         }
 
         if (type == null) {
@@ -83,26 +83,26 @@ public static class ModelBinderUtils {
         }
 
         var fileName = value.HasValues ? (value[JsonPropertyNames.Title] as JValue)?.Value as string : "";
-        return new FileValue((string) href.Value, (string) type.Value, fileName);
+        return new FileValue((string)href.Value, (string)type.Value, fileName);
     }
 
     private static string GetSearchTerm(JObject jObject) {
         var searchTerm = jObject[RestControlFlags.SearchTermReserved] as JObject;
         var value = searchTerm?[JsonPropertyNames.Value] as JValue;
 
-        return (string) value?.Value;
+        return (string)value?.Value;
     }
 
-    private static bool GetValidateOnlyFlag(JObject jObject) => jObject[RestControlFlags.ValidateOnlyReserved] is JValue voFlag && (bool) voFlag.Value;
+    private static bool GetValidateOnlyFlag(JObject jObject) => jObject[RestControlFlags.ValidateOnlyReserved] is JValue voFlag && (bool)voFlag.Value;
 
     private static bool? GetInlinePropertyDetailsFlag(JObject jObject) {
         var flag = jObject[RestControlFlags.InlinePropertyDetailsReserved] as JValue;
-        return (bool?) flag?.Value;
+        return (bool?)flag?.Value;
     }
 
     private static bool? GetInlineCollectionItemsFlag(JObject jObject) {
         var flag = jObject[RestControlFlags.InlineCollectionItemsReserved] as JValue;
-        return (bool?) flag?.Value;
+        return (bool?)flag?.Value;
     }
 
     private static int GetIntValue(JObject jObject, string name) => jObject[name] is JValue v ? Convert.ToInt32(v.Value) : 0;
@@ -113,7 +113,7 @@ public static class ModelBinderUtils {
 
     private static string GetDomainModelValue(JObject m) {
         var domainModel = m[RestControlFlags.DomainModelReserved] as JValue;
-        return (string) domainModel?.Value;
+        return (string)domainModel?.Value;
     }
 
     private static IEnumerable<JProperty> FilterProperties(JToken jToken, Func<JProperty, bool> filter) => jToken.Children().Cast<JProperty>().Where(filter);
@@ -185,7 +185,7 @@ public static class ModelBinderUtils {
         return arg;
     }
 
-    private static IDictionary<string, IValue> ExtractProperties(JToken jObject) => GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
+    private static IDictionary<string, IValue> ExtractProperties(JToken jObject) => GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject)jt.Value, jt.Name));
 
     private static void PopulateArgumentMap(JToken jObject, ArgumentMap arg) => arg.Map = ExtractProperties(jObject);
 
@@ -207,9 +207,9 @@ public static class ModelBinderUtils {
     public static PromptArgumentMap CreatePromptArgMap(JObject jObject, bool includeReservedArgs) => InitArgumentMap<PromptArgumentMap>(jObject, PopulatePromptArgumentMap, includeReservedArgs);
 
     public static T CreateMalformedArguments<T>(string msg) where T : Arguments, new() =>
-        new() {IsMalformed = true, MalformedReason = ControllerHelpers.DebugFilter(() => msg)};
+        new() { IsMalformed = true, MalformedReason = ControllerHelpers.DebugFilter(() => msg) };
 
-    private static void PopulateSimpleArgumentMap(NameValueCollection collection, ArgumentMap args) => args.Map = collection.AllKeys.Where(k => !IsReservedName(k)).ToDictionary(s => s, s => (IValue) new ScalarValue(collection[s]));
+    private static void PopulateSimpleArgumentMap(NameValueCollection collection, ArgumentMap args) => args.Map = collection.AllKeys.Where(k => !IsReservedName(k)).ToDictionary(s => s, s => (IValue)new ScalarValue(collection[s]));
 
     public static ArgumentMap CreateSimpleArgumentMap(string query) {
         var collection = HttpUtility.ParseQueryString(query);
@@ -218,7 +218,7 @@ public static class ModelBinderUtils {
             return null;
         }
 
-        var args = new ArgumentMap {ReservedArguments = new ReservedArguments()};
+        var args = new ArgumentMap { ReservedArguments = new ReservedArguments() };
         PopulateSimpleArgumentMap(collection, args);
         PopulateReservedArgs(collection, args);
         return args;

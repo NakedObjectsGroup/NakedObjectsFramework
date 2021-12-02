@@ -8,7 +8,7 @@
 using System.Security.Principal;
 using NakedFramework.Core.Authentication;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 // Allow principal to be changed - only for test use 
 
 public class TestSession : WindowsSession {

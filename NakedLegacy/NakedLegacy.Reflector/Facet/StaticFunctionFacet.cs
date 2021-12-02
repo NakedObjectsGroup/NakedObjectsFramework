@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedLegacy.Reflector.Facet; 
+namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
 public sealed class StaticMethodFacet : MarkerFacetAbstract, IStaticFunctionFacet {

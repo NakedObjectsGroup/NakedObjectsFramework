@@ -10,7 +10,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using Microsoft.Extensions.Configuration;
 
-namespace NakedFramework.Persistor.EF6.Extensions; 
+namespace NakedFramework.Persistor.EF6.Extensions;
 
 public class EF6PersistorOptions {
     public MergeOption DefaultMergeOption { get; set; } = MergeOption.AppendOnly;

@@ -14,7 +14,7 @@ using NakedObjects.Services;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 //[DisplayName("")]
 public class RestDataRepository : AbstractFactoryAndRepository {
@@ -40,9 +40,7 @@ public class RestDataRepository : AbstractFactoryAndRepository {
     }
 
     [CreateNew]
-    public WithValue AzContributedActionWithCreateNewAnnotation([ContributedAction] WithActionObject withAction, int aValue) {
-        return new();
-    }
+    public WithValue AzContributedActionWithCreateNewAnnotation([ContributedAction] WithActionObject withAction, int aValue) => new WithValue();
 
     [DisplayAsProperty]
     public MostSimple AzContributedDisplayAsPropertyAction([ContributedAction] WithActionObject withAction) {
@@ -53,9 +51,7 @@ public class RestDataRepository : AbstractFactoryAndRepository {
     public IList<MostSimple> AzContributedDisplayAsPropertyAction1([ContributedAction] WithActionObject withAction) => Container.Instances<MostSimple>().Take(1).ToList();
 
     [DisplayAsProperty]
-    public int AzContributedDisplayAsPropertyAction2([ContributedAction] WithActionObject withAction) {
-        return withAction.Id;
-    }
+    public int AzContributedDisplayAsPropertyAction2([ContributedAction] WithActionObject withAction) => withAction.Id;
 
     public MostSimplePersist CreateTransientMostSimple() => Container.NewTransientInstance<MostSimplePersist>();
 

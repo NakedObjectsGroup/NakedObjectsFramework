@@ -21,7 +21,7 @@ using NakedFramework.Metamodel.Facet;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {

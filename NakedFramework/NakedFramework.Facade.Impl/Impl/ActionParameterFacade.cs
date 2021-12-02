@@ -18,7 +18,7 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl; 
+namespace NakedFramework.Facade.Impl.Impl;
 
 public class ActionParameterFacade : IActionParameterFacade {
     private readonly INakedFramework framework;
@@ -46,7 +46,7 @@ public class ActionParameterFacade : IActionParameterFacade {
         }
 
         if (parm.Specification.IsParseable) {
-            return parm.WrappedSpec().Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) rawValue, framework.NakedObjectManager);
+            return parm.WrappedSpec().Spec.GetFacet<IParseableFacet>().ParseTextEntry((string)rawValue, framework.NakedObjectManager);
         }
 
         if (parm.WrappedSpec() is IOneToManyActionParameterSpec collectionParm && collectionParm.ElementSpec.IsParseable) {
@@ -129,11 +129,11 @@ public class ActionParameterFacade : IActionParameterFacade {
     public bool IsAutoCompleteEnabled => WrappedSpec.IsAutoCompleteEnabled;
 
     public IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
-        var otherParms = parameterNameValues?.Select(kvp => new {kvp.Key, kvp.Value, parm = Action.Parameters.Single(p => p.Id == kvp.Key)});
+        var otherParms = parameterNameValues?.Select(kvp => new { kvp.Key, kvp.Value, parm = Action.Parameters.Single(p => p.Id == kvp.Key) });
 
         var pnv = otherParms?.ToDictionary(a => a.Key, a => SafeGetValue(a.parm, a.Value));
 
-        return WrappedSpec.GetChoices(((ObjectFacade) objectFacade)?.WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+        return WrappedSpec.GetChoices(((ObjectFacade)objectFacade)?.WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
     }
 
     public (string, ITypeFacade)[] GetChoicesParameters() => WrappedSpec.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
@@ -143,13 +143,13 @@ public class ActionParameterFacade : IActionParameterFacade {
     public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) =>
         GetChoices(objectFacade, parameterNameValues).Select(c => (c, c.TitleString)).ToArray();
 
-    public IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm) => WrappedSpec.GetCompletions(((ObjectFacade) objectFacade).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+    public IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm) => WrappedSpec.GetCompletions(((ObjectFacade)objectFacade).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
 
     private (IObjectFacade, TypeOfDefaultValue)? cachedDefault;
 
     private (IObjectFacade value, TypeOfDefaultValue type) GetDefaultAndType(IObjectFacade objectFacade) {
         if (cachedDefault is null) {
-            var (defaultValue, defaultType) = WrappedSpec.GetDefaultValueAndType(((ObjectFacade) objectFacade)?.WrappedNakedObject);
+            var (defaultValue, defaultType) = WrappedSpec.GetDefaultValueAndType(((ObjectFacade)objectFacade)?.WrappedNakedObject);
             cachedDefault = (ObjectFacade.Wrap(defaultValue, FrameworkFacade, framework), defaultType);
         }
 
@@ -166,7 +166,7 @@ public class ActionParameterFacade : IActionParameterFacade {
 
     public IFrameworkFacade FrameworkFacade { get; set; }
 
-    public bool IsFindMenuEnabled => WrappedSpec is IOneToOneActionParameterSpec {IsFindMenuEnabled: true};
+    public bool IsFindMenuEnabled => WrappedSpec is IOneToOneActionParameterSpec { IsFindMenuEnabled: true };
 
     public (Regex, string)? RegEx => WrappedSpec.GetRegEx();
 

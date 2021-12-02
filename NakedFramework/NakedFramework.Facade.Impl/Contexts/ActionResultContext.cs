@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts; 
+namespace NakedFramework.Facade.Impl.Contexts;
 
 public class ActionResultContext : Context {
     private bool hasResult;

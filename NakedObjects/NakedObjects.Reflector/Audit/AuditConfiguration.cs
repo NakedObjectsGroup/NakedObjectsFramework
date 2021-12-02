@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using NakedFramework.Audit;
 using NakedFramework.Metamodel.Audit;
 
-namespace NakedObjects.Reflector.Audit; 
+namespace NakedObjects.Reflector.Audit;
 
 //Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary
 //and set the NamespaceAuditors property.

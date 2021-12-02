@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Adapter; 
+namespace NakedFramework.Architecture.Adapter;
 
 /// <summary>
 ///     A unique Object Identifier associated with an INakedObjectAdapter (adapter), and hence, effectively

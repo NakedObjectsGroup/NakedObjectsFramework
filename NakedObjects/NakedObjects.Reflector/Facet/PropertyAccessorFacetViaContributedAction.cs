@@ -16,16 +16,16 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
     private readonly MethodInfo propertyMethod;
-        
+
     public PropertyAccessorFacetViaContributedAction(MethodInfo propertyMethod, ISpecification holder, ILogger<PropertyAccessorFacetViaContributedAction> logger)
         : base(typeof(IPropertyAccessorFacet), holder) {
         this.propertyMethod = propertyMethod;
-           
+
         PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
     }
 
@@ -40,7 +40,7 @@ public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, I
         try {
             var spec = nakedFramework.MetamodelManager.GetSpecification(propertyMethod.DeclaringType);
             var service = nakedFramework.ServicesManager.GetService(spec as IServiceSpec);
-            return PropertyDelegate.Invoke<object>(propertyMethod, service.GetDomainObject(),  new[] { nakedObjectAdapter.GetDomainObject()});
+            return PropertyDelegate.Invoke<object>(propertyMethod, service.GetDomainObject(), new[] { nakedObjectAdapter.GetDomainObject() });
         }
         catch (TargetInvocationException e) {
             InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.Architecture.Spec; 
+namespace NakedFramework.Architecture.Spec;
 
 public interface IActionParameterSpec : IFeatureSpec {
     /// <summary>

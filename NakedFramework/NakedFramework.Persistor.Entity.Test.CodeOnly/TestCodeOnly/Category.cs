@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace TestCodeOnly; 
+namespace TestCodeOnly;
 
 public class Category {
     private ICollection<Product> products;

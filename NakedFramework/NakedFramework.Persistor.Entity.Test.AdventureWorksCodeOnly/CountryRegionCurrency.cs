@@ -12,16 +12,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 [Table("Sales.CountryRegionCurrency")]
 public class CountryRegionCurrency {
-      
     [Column(Order = 0)]
     [StringLength(3)]
     public string CountryRegionCode { get; set; }
 
-       
     [Column(Order = 1)]
     [StringLength(3)]
     public string CurrencyCode { get; set; }

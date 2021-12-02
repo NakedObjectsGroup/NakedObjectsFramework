@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NakedObjects;
 
-namespace TestData; 
+namespace TestData;
 
 [ComplexType]
 [Owned]
@@ -19,10 +19,9 @@ public class Address : TestHelper {
     [NotMapped]
     public Person Parent { protected get; set; }
 
-    public virtual string Line1 { get; 
-        set; }
-    public virtual string Line2 { get; 
-        set; }
+    public virtual string Line1 { get; set; }
+
+    public virtual string Line2 { get; set; }
 
     #region test code
 

@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Spec; 
+namespace NakedFramework.Architecture.Spec;
 
 /// <summary>
 ///     Base interface for specifications covering properties and actions.

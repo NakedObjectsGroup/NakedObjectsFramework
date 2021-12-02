@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Interactions; 
+namespace NakedFramework.Architecture.Interactions;
 
 /// <summary>
 ///     Mix-in interface for facets that can advise as to whether a member should be disabled.

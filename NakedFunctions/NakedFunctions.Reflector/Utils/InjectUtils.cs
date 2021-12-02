@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFunctions.Reflector.Component;
 
-namespace NakedFunctions.Reflector.Utils; 
+namespace NakedFunctions.Reflector.Utils;
 
 public static class InjectUtils {
     public static ParameterInfo[] FilterParms(MethodInfo m) => m.GetParameters().Where(p => !(p.IsInjectedParameter() || p.IsTargetParameter())).ToArray();
@@ -31,7 +31,7 @@ public static class InjectUtils {
     private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedFramework framework) =>
         p switch {
             _ when p.IsTargetParameter() => adapter?.Object,
-            _ when p.IsInjectedParameter() => new FunctionalContext {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
+            _ when p.IsInjectedParameter() => new FunctionalContext { Persistor = framework.Persistor, Provider = framework.ServiceProvider },
             _ => null
         };
 
@@ -43,7 +43,7 @@ public static class InjectUtils {
     private static object GetParameterValue(this ParameterInfo p, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, int i, INakedFramework framework) =>
         p switch {
             _ when p.IsTargetParameter() => adapter?.Object,
-            _ when p.IsInjectedParameter() => new FunctionalContext {Persistor = framework.Persistor, Provider = framework.ServiceProvider},
+            _ when p.IsInjectedParameter() => new FunctionalContext { Persistor = framework.Persistor, Provider = framework.ServiceProvider },
             _ => parmValues[i].GetDomainObject()
         };
 
@@ -59,5 +59,4 @@ public static class InjectUtils {
     public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, INakedObjectAdapter[] parmValues, INakedFramework framework) => method.GetParameters().Select((p, i) => p.GetParameterValue(adapter, parmValues, i, framework)).ToArray();
 
     public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string[] keys, INakedFramework framework) => method.GetParameters().Select(p => p.GetParameterValue(adapter, framework) ?? keys).ToArray();
-
 }

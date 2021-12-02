@@ -19,13 +19,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class MenuFacetFactoryTest : AbstractFacetFactoryTest {
     private MenuFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IMenuFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IMenuFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 

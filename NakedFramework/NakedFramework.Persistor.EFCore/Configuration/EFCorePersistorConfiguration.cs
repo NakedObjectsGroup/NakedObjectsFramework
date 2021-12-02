@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace NakedFramework.Persistor.EFCore.Configuration; 
+namespace NakedFramework.Persistor.EFCore.Configuration;
 
 public class EFCorePersistorConfiguration {
     public Func<DbContext>[] Contexts { get; set; }

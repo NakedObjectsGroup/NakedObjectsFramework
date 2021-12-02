@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 public enum ReflectorType {
     System,

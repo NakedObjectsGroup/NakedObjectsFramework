@@ -24,7 +24,7 @@ using NakedFramework.Rest.Snapshot.Error;
 using NakedFramework.Rest.Snapshot.Representation;
 using EntityTagHeaderValue = Microsoft.Net.Http.Headers.EntityTagHeaderValue;
 
-namespace NakedFramework.Rest.Snapshot.Utility; 
+namespace NakedFramework.Rest.Snapshot.Utility;
 
 public class RestSnapshot {
     private readonly IList<string> allowHeaders = new List<string>();
@@ -237,7 +237,7 @@ public class RestSnapshot {
 
             var msg = DebugFilter(() => $"Failed incoming MT validation: {string.Join(',', incomingMediaTypes.Select(mt => mt.MediaType.ToString()).ToArray())}");
 
-            throw new ValidationException((int) HttpStatusCode.NotAcceptable, msg);
+            throw new ValidationException((int)HttpStatusCode.NotAcceptable, msg);
         }
     }
 
@@ -262,7 +262,7 @@ public class RestSnapshot {
         if (!incomingMediaTypes.Contains(outgoingMediaType)) {
             var msg = DebugFilter(() => $"Failed outgoing attachment MT validation ic: {string.Join(',', incomingMediaTypes.ToArray())} og: {outgoingMediaType}");
 
-            throw new ValidationException((int) HttpStatusCode.NotAcceptable, msg);
+            throw new ValidationException((int)HttpStatusCode.NotAcceptable, msg);
         }
     }
 
@@ -283,7 +283,7 @@ public class RestSnapshot {
                 var msg = DebugFilter(() => $"Failed outgoing json MT validation ic: {string.Join(',', incomingProfiles.ToArray())} og: {string.Join(',', outgoingProfiles.ToArray())}");
 
                 // outgoing profile not included in incoming profiles and not already an error so throw a 406
-                throw new ValidationException((int) HttpStatusCode.NotAcceptable, msg);
+                throw new ValidationException((int)HttpStatusCode.NotAcceptable, msg);
             }
         }
     }
@@ -318,8 +318,8 @@ public class RestSnapshot {
     }
 
     private void MapToHttpError(Exception e) {
-        const HttpStatusCode unprocessableEntity = (HttpStatusCode) 422;
-        const HttpStatusCode preconditionHeaderMissing = (HttpStatusCode) 428;
+        const HttpStatusCode unprocessableEntity = (HttpStatusCode)422;
+        const HttpStatusCode preconditionHeaderMissing = (HttpStatusCode)428;
 
         HttpStatusCode = e switch {
             ResourceNotFoundNOSException => HttpStatusCode.NotFound,
@@ -338,17 +338,17 @@ public class RestSnapshot {
     private void MapToWarningHeader(Exception e, ILogger logger) {
         IList<string> ImmutableWarning() {
             allowHeaders.Add("GET");
-            return new List<string> {"object is immutable"};
+            return new List<string> { "object is immutable" };
         }
 
         var warnings = e switch {
-            ResourceNotFoundNOSException => new List<string> {e.Message},
+            ResourceNotFoundNOSException => new List<string> { e.Message },
             WithContextNOSException bae when bae.Contexts.Any(c => c.ErrorCause == Cause.Immutable) => ImmutableWarning(),
             WithContextNOSException bae when bae.Contexts.Any(c => !string.IsNullOrEmpty(c.Reason)) => bae.Contexts.Where(c => !string.IsNullOrEmpty(c.Reason)).Select(c => c.Reason).ToList(),
             WithContextNOSException bae when string.IsNullOrWhiteSpace(bae.Message) => new List<string>(),
-            WithContextNOSException bae => new List<string> {bae.Message},
+            WithContextNOSException bae => new List<string> { bae.Message },
             NoContentNOSException => new List<string>(),
-            _ => new List<string> {e.Message}
+            _ => new List<string> { e.Message }
         };
 
         foreach (var w in warnings) {

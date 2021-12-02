@@ -12,14 +12,14 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 // Reflector place holder for defaulted naming facet factory tests !!!
 [TestClass]
 public class DefaultedNamingFacetFactoryTest : AbstractFacetFactoryTest {
     private DefaultNamingFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(INamedFacet), typeof(IPluralFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(INamedFacet), typeof(IPluralFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 

@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFramework.DependencyInjection.Component; 
+namespace NakedFramework.DependencyInjection.Component;
 
 public class FrameworkResolver : IFrameworkResolver {
     private readonly IServiceScope scopeServiceProvider;

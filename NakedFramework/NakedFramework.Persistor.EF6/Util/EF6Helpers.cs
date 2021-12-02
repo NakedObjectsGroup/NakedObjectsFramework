@@ -22,7 +22,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EF6.Component;
 
-namespace NakedFramework.Persistor.EF6.Util; 
+namespace NakedFramework.Persistor.EF6.Util;
 
 public static class EF6Helpers {
     public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager) {
@@ -40,11 +40,11 @@ public static class EF6Helpers {
             { } t => t
         };
 
-    internal static T Invoke<T>(this object onObject, string name, params object[] parms) => (T) onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
+    internal static T Invoke<T>(this object onObject, string name, params object[] parms) => (T)onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
 
     internal static void Invoke(this object onObject, string name, params object[] parms) => onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
 
-    internal static T GetProperty<T>(this object onObject, string name) => (T) onObject.GetType().GetProperty(name)?.GetValue(onObject);
+    internal static T GetProperty<T>(this object onObject, string name) => (T)onObject.GetType().GetProperty(name)?.GetValue(onObject);
 
     private static string GetNamespaceForType(this ObjectContext context, Type type) => context.MetadataWorkspace.GetItems(DataSpace.CSpace).Where(x => x.BuiltInTypeKind is BuiltInTypeKind.EntityType or BuiltInTypeKind.ComplexType).OfType<EdmType>().Where(et => et.Name == type.Name).Select(et => et.NamespaceName).SingleOrDefault();
 
@@ -108,7 +108,7 @@ public static class EF6Helpers {
     public static object CreateQuery(this EF6LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
         var mostBaseType = context.GetMostBaseType(type);
         var mi = context.WrappedObjectContext.GetType().GetMethod("CreateQuery").MakeGenericMethod(mostBaseType);
-        var parms = new List<object> {queryString, Array.Empty<ObjectParameter>()};
+        var parms = new List<object> { queryString, Array.Empty<ObjectParameter>() };
 
         var os = mi.Invoke(context.WrappedObjectContext, parms.ToArray());
 
@@ -140,7 +140,7 @@ public static class EF6Helpers {
     public static ObjectQuery GetObjectSet(this EF6LocalContext context, Type type) {
         var mostBaseType = context.GetMostBaseType(type);
         var mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(mostBaseType);
-        var os = (ObjectQuery) mi.Invoke(context.WrappedObjectContext, null);
+        var os = (ObjectQuery)mi.Invoke(context.WrappedObjectContext, null);
         os.MergeOption = context.DefaultMergeOption;
         return os;
     }
@@ -149,8 +149,8 @@ public static class EF6Helpers {
     // ReSharper disable once UnusedMember.Global
     public static IQueryable<TDerived> GetObjectSetOfType<TDerived, TBase>(this EF6LocalContext context) where TDerived : TBase {
         var mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(typeof(TBase));
-        var os = (IQueryable<TBase>) InvokeUtils.Invoke(mi, context.WrappedObjectContext, null);
-        ((ObjectQuery) os).MergeOption = context.DefaultMergeOption;
+        var os = (IQueryable<TBase>)InvokeUtils.Invoke(mi, context.WrappedObjectContext, null);
+        ((ObjectQuery)os).MergeOption = context.DefaultMergeOption;
         return os.OfType<TDerived>();
     }
 
@@ -159,7 +159,7 @@ public static class EF6Helpers {
     public static object GetQueryableOfDerivedType(this EF6LocalContext context, Type type) {
         var mostBaseType = context.GetMostBaseType(type);
         var mi = typeof(EF6Helpers).GetMethod("GetObjectSetOfType").MakeGenericMethod(type, mostBaseType);
-        return InvokeUtils.InvokeStatic(mi, new object[] {context});
+        return InvokeUtils.InvokeStatic(mi, new object[] { context });
     }
 
     public static object CreateObject(this EF6LocalContext context, Type type) {
@@ -189,18 +189,18 @@ public static class EF6Helpers {
             throw new NakedObjectSystemException("Member and value counts must match");
         }
 
-        return idmembers.Zip(keyValues, (k, v) => new {Key = k, Value = v})
+        return idmembers.Zip(keyValues, (k, v) => new { Key = k, Value = v })
                         .ToDictionary(x => x.Key.Name, x => x.Value);
     }
 
     public static IEnumerable<object> GetRelationshipEnds(ObjectContext context, ObjectStateEntry /*RelationshipEntry*/ ose) {
-        var key0 = (EntityKey) ose.GetType().GetProperty("Key0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
-        var key1 = (EntityKey) ose.GetType().GetProperty("Key1", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
+        var key0 = (EntityKey)ose.GetType().GetProperty("Key0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
+        var key1 = (EntityKey)ose.GetType().GetProperty("Key1", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ose, null);
 
         var o0 = context.GetObjectByKey(key0);
         var o1 = context.GetObjectByKey(key1);
 
-        return new[] {o0, o1};
+        return new[] { o0, o1 };
     }
 
     public static IEnumerable<object> GetChangedObjectsInContext(ObjectContext context) {
@@ -235,5 +235,5 @@ public static class EF6Helpers {
     }
 
     public static IEnumerable<object> GetChangedComplexObjectsInContext(EF6LocalContext context) =>
-        context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Select(ose => new {Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEF6ProxiedType())}).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).Where(x => x != null).Distinct();
+        context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Select(ose => new { Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEF6ProxiedType()) }).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).Where(x => x != null).Distinct();
 }

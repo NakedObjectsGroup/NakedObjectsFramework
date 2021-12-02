@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 /// <summary>
 ///     Indicates that the persistence of an object failed.

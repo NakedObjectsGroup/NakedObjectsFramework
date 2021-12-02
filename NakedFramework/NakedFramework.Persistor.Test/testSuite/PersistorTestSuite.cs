@@ -20,7 +20,7 @@ using TestData;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.TestSuite; 
+namespace NakedObjects.Persistor.TestSuite;
 
 /// <summary>
 ///     Prerequisite - TestData Fixture run and NakedObjects framework setup
@@ -123,43 +123,43 @@ public class PersistorTestSuite {
 
     private Person CreateNewTransientPerson() {
         var nextIndex = Persistor.Instances<Person>().Select(p => p.PersonId).Max() + 1;
-        var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Person));
+        var spec = (IObjectSpec)Metamodel.GetSpecification(typeof(Person));
         var newPersonAdapter = LifecycleManager.CreateInstance(spec);
-        var person = (Person) newPersonAdapter.Object;
+        var person = (Person)newPersonAdapter.Object;
         person.PersonId = nextIndex;
         return person;
     }
 
     private Order CreateNewTransientOrder() {
-        var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Order));
+        var spec = (IObjectSpec)Metamodel.GetSpecification(typeof(Order));
         var newOrderAdapter = LifecycleManager.CreateInstance(spec);
-        var order = (Order) newOrderAdapter.Object;
+        var order = (Order)newOrderAdapter.Object;
         order.OrderId = 0;
         return order;
     }
 
     private OrderFail CreateNewTransientOrderFail() {
-        var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(OrderFail));
+        var spec = (IObjectSpec)Metamodel.GetSpecification(typeof(OrderFail));
         var newOrderAdapter = LifecycleManager.CreateInstance(spec);
-        var order = (OrderFail) newOrderAdapter.Object;
+        var order = (OrderFail)newOrderAdapter.Object;
         order.OrderFailId = 0;
         return order;
     }
 
     private Product CreateNewTransientProduct() {
         var nextIndex = Persistor.Instances<Product>().Select(p => p.Id).Max() + 1;
-        var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Product));
+        var spec = (IObjectSpec)Metamodel.GetSpecification(typeof(Product));
         var newProductAdapter = LifecycleManager.CreateInstance(spec);
-        var product = (Product) newProductAdapter.Object;
+        var product = (Product)newProductAdapter.Object;
         product.Id = nextIndex;
         return product;
     }
 
     private Pet CreateNewTransientPet() {
         var nextIndex = Persistor.Instances<Pet>().Select(p => p.PetId).Max() + 1;
-        var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Pet));
+        var spec = (IObjectSpec)Metamodel.GetSpecification(typeof(Pet));
         var newPetAdapter = LifecycleManager.CreateInstance(spec);
-        var pet = (Pet) newPetAdapter.Object;
+        var pet = (Pet)newPetAdapter.Object;
         pet.PetId = nextIndex;
         return pet;
     }
@@ -181,7 +181,7 @@ public class PersistorTestSuite {
 
     private Address ChangeScalarOnAddress() {
         var adaptedAddress = GetAdaptedAddress(GetPerson(1));
-        var address = (Address) adaptedAddress.Object;
+        var address = (Address)adaptedAddress.Object;
         var original1 = address.Line1;
         TransactionManager.StartTransaction();
         address.Line1 = Guid.NewGuid().ToString();
@@ -195,14 +195,14 @@ public class PersistorTestSuite {
 
     private INakedObjectAdapter GetAdaptedAddress(Person person) {
         var personAdapter = AdapterFor(person);
-        return ((IObjectSpec) personAdapter.Spec).GetProperty("Address").GetNakedObject(personAdapter);
+        return ((IObjectSpec)personAdapter.Spec).GetProperty("Address").GetNakedObject(personAdapter);
     }
 
     private INakedObjectAdapter GetAdaptedRelatives(Person person) {
         TransactionManager.StartTransaction();
         var personAdapter = AdapterFor(person);
         TransactionManager.EndTransaction();
-        return ((IObjectSpec) personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
+        return ((IObjectSpec)personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
     }
 
     #endregion
@@ -220,13 +220,13 @@ public class PersistorTestSuite {
     }
 
     public void GetInstanceFromInstancesOfSpecification() {
-        var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Person));
+        var spec = (IObjectSpec)Metamodel.GetSpecification(typeof(Person));
         var person = Persistor.Instances(spec).Cast<Person>().Single(p => p.PersonId == 1);
         AssertIsPerson(person, 1);
     }
 
     public void GetInstanceIsAlwaysSameObject() {
-        var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Person));
+        var spec = (IObjectSpec)Metamodel.GetSpecification(typeof(Person));
         var person1 = GetPerson(1);
         var person2 = Persistor.Instances(typeof(Person)).Cast<Person>().Single(p => p.PersonId == 1);
         var person3 = Persistor.Instances(spec).Cast<Person>().Single(p => p.PersonId == 1);
@@ -309,7 +309,7 @@ public class PersistorTestSuite {
     public void LoadObjectReturnSameObject() {
         var person1 = GetPerson(1);
         var adapter1 = AdapterFor(person1);
-        var adapter2 = Persistor.LoadObject(adapter1.Oid, (IObjectSpec) adapter1.Spec);
+        var adapter2 = Persistor.LoadObject(adapter1.Oid, (IObjectSpec)adapter1.Spec);
         Assert.AreSame(person1, adapter2.Object);
     }
 
@@ -616,7 +616,7 @@ public class PersistorTestSuite {
         Assert.IsTrue(person2Adapter.ResolveState.IsPersistent(), "should be persistent");
         Assert.IsFalse(person2Adapter.Oid.IsTransient, "is transient");
 
-        var collectionAdapter = ((IObjectSpec) person1Adapter.Spec).GetProperty("Relatives").GetNakedObject(person1Adapter);
+        var collectionAdapter = ((IObjectSpec)person1Adapter.Spec).GetProperty("Relatives").GetNakedObject(person1Adapter);
         Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
         Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
     }
@@ -633,7 +633,7 @@ public class PersistorTestSuite {
         Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
         Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
 
-        var collectionAdapter = ((IObjectSpec) personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
+        var collectionAdapter = ((IObjectSpec)personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
         Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
         Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
     }
@@ -652,7 +652,7 @@ public class PersistorTestSuite {
         Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
         Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
 
-        var collectionAdapter = ((IObjectSpec) personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
+        var collectionAdapter = ((IObjectSpec)personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
         Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
         Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
     }
@@ -667,7 +667,7 @@ public class PersistorTestSuite {
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
-        var personAfter = (Person) adapter.Object;
+        var personAfter = (Person)adapter.Object;
         Assert.AreEqual(1, personAfter.GetEvents()["Persisted"], "persisted");
         Assert.AreEqual(0, personAfter.GetEvents()["Updated"], "persisted");
     }
@@ -685,7 +685,7 @@ public class PersistorTestSuite {
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
-        var orderAfter = (Order) adapter.Object;
+        var orderAfter = (Order)adapter.Object;
         Assert.AreEqual(1, orderAfter.GetEvents()["Persisted"], "persisted");
         Assert.AreEqual(1, orderAfter.GetEvents()["Updating"], "updating");
         Assert.AreEqual(1, orderAfter.GetEvents()["Updated"], "updated");
@@ -734,7 +734,7 @@ public class PersistorTestSuite {
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
-        var personAfter = (Person) adapter.Object;
+        var personAfter = (Person)adapter.Object;
         var productAfter = personAfter.FavouriteProduct;
         Assert.AreEqual(1, productAfter.GetEvents()["Persisted"], "persisted");
     }
@@ -750,7 +750,7 @@ public class PersistorTestSuite {
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
-        var personAfter = (Person) adapter.Object;
+        var personAfter = (Person)adapter.Object;
         var personAfter1 = personAfter.Relatives.Single();
         Assert.AreEqual(1, personAfter1.GetEvents()["Persisted"], "persisted");
     }
@@ -832,7 +832,7 @@ public class PersistorTestSuite {
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
-        var personAfter = (Person) adapter.Object;
+        var personAfter = (Person)adapter.Object;
         Assert.AreEqual(1, personAfter.GetEvents()["Persisted"], "persisted");
     }
 
@@ -862,7 +862,7 @@ public class PersistorTestSuite {
 
     public void FindByKey() {
         var person1 = GetPerson(1);
-        var person = Persistor.FindByKeys(typeof(Person), new object[] {1}).Object;
+        var person = Persistor.FindByKeys(typeof(Person), new object[] { 1 }).Object;
 
         Assert.AreEqual(person1, person);
     }

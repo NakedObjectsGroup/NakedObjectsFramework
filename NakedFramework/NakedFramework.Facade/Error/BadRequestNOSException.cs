@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Facade.Contexts;
 
-namespace NakedFramework.Facade.Error; 
+namespace NakedFramework.Facade.Error;
 
 public class BadRequestNOSException : WithContextNOSException {
     public BadRequestNOSException() { }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NakedFramework.ParallelReflector.Utils; 
+namespace NakedFramework.ParallelReflector.Utils;
 
 public static class ReflectorHelpers {
     public static Type EnsureGenericTypeIsComplete(Type type) {

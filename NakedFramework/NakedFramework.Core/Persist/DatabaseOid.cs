@@ -15,7 +15,7 @@ using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Persist; 
+namespace NakedFramework.Core.Persist;
 
 public sealed class DatabaseOid : IEncodedToStrings, IDatabaseOid {
     private readonly ILogger<DatabaseOid> logger;
@@ -93,7 +93,7 @@ public sealed class DatabaseOid : IEncodedToStrings, IDatabaseOid {
 
     public void MakePersistent() {
         ThrowErrorIfNotTransient();
-        previous = new DatabaseOid(metamodel, TypeName, Key, logger) {IsTransient = IsTransient};
+        previous = new DatabaseOid(metamodel, TypeName, Key, logger) { IsTransient = IsTransient };
         IsTransient = false;
         CacheState();
     }
@@ -104,7 +104,7 @@ public sealed class DatabaseOid : IEncodedToStrings, IDatabaseOid {
     }
 
     public void UpdateKey(object[] newKey) {
-        previous = new DatabaseOid(metamodel, TypeName, Key, logger) {IsTransient = IsTransient};
+        previous = new DatabaseOid(metamodel, TypeName, Key, logger) { IsTransient = IsTransient };
         Key = newKey; // after old key is saved ! 
         IsTransient = false;
         CacheState();
@@ -141,7 +141,7 @@ public sealed class DatabaseOid : IEncodedToStrings, IDatabaseOid {
         if (helper.HasNext) {
             var hasPrevious = helper.GetNextBool();
             if (hasPrevious) {
-                previous = (DatabaseOid) helper.GetNextEncodedToStrings();
+                previous = (DatabaseOid)helper.GetNextEncodedToStrings();
             }
         }
 

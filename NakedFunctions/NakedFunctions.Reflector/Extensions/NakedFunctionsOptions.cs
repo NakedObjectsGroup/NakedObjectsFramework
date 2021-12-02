@@ -8,7 +8,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace NakedFunctions.Reflector.Extensions; 
+namespace NakedFunctions.Reflector.Extensions;
 
 public class NakedFunctionsOptions {
     public Type[] DomainTypes { get; set; } = Array.Empty<Type>();

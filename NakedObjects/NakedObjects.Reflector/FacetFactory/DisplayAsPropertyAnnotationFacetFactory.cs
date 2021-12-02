@@ -22,7 +22,7 @@ using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class DisplayAsPropertyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
@@ -34,7 +34,6 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : ObjectFacetFactory
             tsb.RemoveAction(actionSpec);
         }
     }
-
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, ISpecificationBuilder specification, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         ITypeSpecBuilder displayOnTypeSpec;
@@ -63,7 +62,6 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : ObjectFacetFactory
     private static bool MatchesPropertySignature(MethodInfo method) => method.ReturnType != typeof(void);
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            
         if ((IsObjectMethod(method) || IsContributedMethod(method)) && MatchesPropertySignature(method)) {
             Type displayOnType;
             IPropertyAccessorFacet accessorFacet;

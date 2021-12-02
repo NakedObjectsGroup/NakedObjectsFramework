@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Spec; 
+namespace NakedFramework.Core.Spec;
 
 public sealed class ServiceSpec : TypeSpec, IServiceSpec {
     private IActionSpec[] contributedActions;

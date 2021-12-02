@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
+namespace NakedFramework.ParallelReflector.TypeFacetFactory;
 
 public sealed class DecimalValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public DecimalValueTypeFacetFactory(IFacetFactoryOrder<DecimalValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }

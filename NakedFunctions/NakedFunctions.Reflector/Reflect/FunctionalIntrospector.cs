@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Reflect;
 
-namespace NakedFunctions.Reflector.Reflect; 
+namespace NakedFunctions.Reflector.Reflect;
 
 public sealed class FunctionalIntrospector : Introspector, IIntrospector {
     public FunctionalIntrospector(IReflector reflector, ILogger<FunctionalIntrospector> logger) : base(reflector, logger) { }
@@ -27,19 +27,19 @@ public sealed class FunctionalIntrospector : Introspector, IIntrospector {
     }
 
     protected override IImmutableDictionary<string, ITypeSpecBuilder> ProcessType(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-        ((FunctionalFacetFactorySet) FacetFactorySet).Process(Reflector, IntrospectedType, new IntrospectorMethodRemover(Methods), spec, metamodel);
+        ((FunctionalFacetFactorySet)FacetFactorySet).Process(Reflector, IntrospectedType, new IntrospectorMethodRemover(Methods), spec, metamodel);
 
     protected override IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(PropertyInfo property, IOneToManyAssociationSpecImmutable collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-        ((FunctionalFacetFactorySet) FacetFactorySet).Process(Reflector, property, new IntrospectorMethodRemover(Methods), collection, FeatureType.Collections, metamodel);
+        ((FunctionalFacetFactorySet)FacetFactorySet).Process(Reflector, property, new IntrospectorMethodRemover(Methods), collection, FeatureType.Collections, metamodel);
 
     protected override IImmutableDictionary<string, ITypeSpecBuilder> ProcessProperty(PropertyInfo property, IOneToOneAssociationSpecImmutable referenceProperty, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-        ((FunctionalFacetFactorySet) FacetFactorySet).Process(Reflector, property, new IntrospectorMethodRemover(Methods), referenceProperty, FeatureType.Properties, metamodel);
+        ((FunctionalFacetFactorySet)FacetFactorySet).Process(Reflector, property, new IntrospectorMethodRemover(Methods), referenceProperty, FeatureType.Properties, metamodel);
 
     protected override IImmutableDictionary<string, ITypeSpecBuilder> ProcessAction(MethodInfo actionMethod, MethodInfo[] actions, IActionSpecImmutable action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-        ((FunctionalFacetFactorySet) FacetFactorySet).Process(Reflector, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions, metamodel);
+        ((FunctionalFacetFactorySet)FacetFactorySet).Process(Reflector, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions, metamodel);
 
     protected override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParameter(MethodInfo actionMethod, int i, IActionParameterSpecImmutable param, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-        ((FunctionalFacetFactorySet) FacetFactorySet).ProcessParams(Reflector, actionMethod, i, param, metamodel);
+        ((FunctionalFacetFactorySet)FacetFactorySet).ProcessParams(Reflector, actionMethod, i, param, metamodel);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -22,7 +22,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
 using NakedObjects.Reflector.Component;
 
-namespace NakedObjects.Reflector.Test.Reflect; 
+namespace NakedObjects.Reflector.Test.Reflect;
 
 [TestClass]
 public class ReflectorValueTest : AbstractReflectorTest {
@@ -32,7 +32,7 @@ public class ReflectorValueTest : AbstractReflectorTest {
         var systemTypeFacetFactorySet = new SystemTypeFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>());
         var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
         var order = new ObjectReflectorOrder<SystemTypeReflector>();
-        return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
+        return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy)ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
     }
 
     protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
@@ -40,8 +40,8 @@ public class ReflectorValueTest : AbstractReflectorTest {
         (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), metamodel);
         (_, metamodel) = reflector.LoadSpecification(typeof(string), metamodel);
 
-        (_, metamodel) = ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(IEnumerable<char>), metamodel);
-        return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(string), metamodel);
+        (_, metamodel) = ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(IEnumerable<char>), metamodel);
+        return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(string), metamodel);
     }
 
     [TestMethod]
@@ -90,7 +90,7 @@ public class ReflectorValueTest : AbstractReflectorTest {
 
     [TestMethod]
     public void TestTypeOfFacet() {
-        var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
+        var facet = (ITypeOfFacet)Specification.GetFacet(typeof(ITypeOfFacet));
         Assert.IsNotNull(facet);
     }
 }

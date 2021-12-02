@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public class DefaultKeyCodeMapper : IKeyCodeMapper {
     private readonly string keySeparator;
@@ -18,7 +18,7 @@ public class DefaultKeyCodeMapper : IKeyCodeMapper {
 
     #region IKeyCodeMapper Members
 
-    public string[] KeyFromCode(string code, Type type) => code.Split(new[] {keySeparator}, StringSplitOptions.None);
+    public string[] KeyFromCode(string code, Type type) => code.Split(new[] { keySeparator }, StringSplitOptions.None);
 
     public string CodeFromKey(string[] key, Type type) => key.Length == 0 ? "" : key.Aggregate((s, t) => $"{s}{keySeparator}{t}");
 

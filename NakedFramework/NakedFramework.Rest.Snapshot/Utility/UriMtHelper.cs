@@ -15,7 +15,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 
-namespace NakedFramework.Rest.Snapshot.Utility; 
+namespace NakedFramework.Rest.Snapshot.Utility;
 
 public class UriMtHelper {
     private static readonly Func<HttpRequest, string> GetAuthority;
@@ -210,19 +210,15 @@ public class UriMtHelper {
         }
     }
 
-    private static void CheckArgumentNotNull(string argument, string name, params string[] allArguments)
-    {
+    private static void CheckArgumentNotNull(string argument, string name, params string[] allArguments) {
         CheckArgumentNotNull(argument, name, string.Join(", ", allArguments));
     }
 
-    private static void CheckArgumentsNotNull(params (string argument, string name)[] arguments)
-    {
-        foreach (var (argument, name) in arguments)
-        {
+    private static void CheckArgumentsNotNull(params (string argument, string name)[] arguments) {
+        foreach (var (argument, name) in arguments) {
             CheckArgumentNotNull(argument, name, arguments.Select(t => t.argument).ToArray());
         }
     }
-
 
     private Uri BuildDomainTypeUri(string type) {
         CheckArgumentNotNull(type, "domain type");
@@ -331,7 +327,7 @@ public class UriMtHelper {
     private Uri GetObjectMemberUri(IMemberFacade member, string memberType) => string.IsNullOrEmpty(cachedId) ? GetTransientObjectMemberUri(member, memberType) : GetPersistentObjectMemberUri(member, memberType);
 
     private Uri GetMemberUri(IMemberFacade member, string memberType) =>
-        spec.IsService || member is IActionFacade {IsQueryContributedAction: true}
+        spec.IsService || member is IActionFacade { IsQueryContributedAction: true }
             ? GetServiceMemberUri(member, memberType)
             : spec.IsStatic
                 ? GetMenuMemberUri(member, memberType)
@@ -452,7 +448,7 @@ public class UriMtHelper {
 
     private static string FormatParameter(string resource, string name) => $";{resource}=\"{name}\"";
 
-    public string GetRelParameters() => GetRelParametersFor((IMemberFacade) action ?? assoc);
+    public string GetRelParameters() => GetRelParametersFor((IMemberFacade)action ?? assoc);
 
     public string GetServiceRelParameter() => FormatParameter(RelParamValues.ServiceId, CachedType);
 

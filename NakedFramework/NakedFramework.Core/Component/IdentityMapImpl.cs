@@ -15,7 +15,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public sealed class IdentityMapImpl : IIdentityMap {
     private readonly IIdentityAdapterMap identityAdapterMap;
@@ -123,7 +123,7 @@ public sealed class IdentityMapImpl : IIdentityMap {
         // finally re-add to the map.
 
         identityAdapterMap.Remove(oid);
-        ((ViewModelOid) adapter.Oid).UpdateKeys(keys, false);
+        ((ViewModelOid)adapter.Oid).UpdateKeys(keys, false);
         ValidateAndAdd(adapter, oid);
     }
 

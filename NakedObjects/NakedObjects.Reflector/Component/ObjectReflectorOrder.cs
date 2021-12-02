@@ -9,7 +9,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
 using NakedFramework.ParallelReflector.Component;
 
-namespace NakedObjects.Reflector.Component; 
+namespace NakedObjects.Reflector.Component;
 
 public class ObjectReflectorOrder<T> : IReflectorOrder<T> {
     public int Order => typeof(T) switch {

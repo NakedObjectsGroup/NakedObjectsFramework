@@ -18,7 +18,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest; 
+namespace NakedObjects.SystemTest;
 
 public static class Constants {
     public static string AppveyorServer => @"(local)\SQL2017";
@@ -38,7 +38,7 @@ public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
     protected override Action<NakedFrameworkOptions> AddNakedFunctions => builder => { };
 
     protected override Func<IConfiguration, DbContext>[] ContextCreators =>
-        new Func<IConfiguration, DbContext>[] {config => Activator.CreateInstance<TContext>()};
+        new Func<IConfiguration, DbContext>[] { config => Activator.CreateInstance<TContext>() };
 
     /// <summary>
     ///     Assumes that a SimpleRepository for the type T has been registered in Services

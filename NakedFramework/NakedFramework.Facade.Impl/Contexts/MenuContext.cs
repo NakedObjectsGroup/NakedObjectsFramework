@@ -13,14 +13,14 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts; 
+namespace NakedFramework.Facade.Impl.Contexts;
 
 public class MenuContext {
     public IMenuImmutable[] List { get; init; }
     public IObjectSpec ElementType { get; init; }
 
     public MenuContextFacade ToMenuContextFacade(IFrameworkFacade facade, INakedFramework framework) {
-        return new() {
+        return new MenuContextFacade {
             ElementType = new TypeFacade(ElementType, facade, framework),
             List = List.Select(m => new MenuFacade(m, facade, framework)).Cast<IMenuFacade>().ToArray()
         };

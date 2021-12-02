@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Persist;
 
-namespace NakedFramework.Core.Persist; 
+namespace NakedFramework.Core.Persist;
 
 public class DetachedObjects : IDetachedObjects {
     public DetachedObjects(object[] toSave, object[] toDelete, (object proxy, object updated)[] toUpdate, Func<IDictionary<object, object>, bool> postSaveFunction) {

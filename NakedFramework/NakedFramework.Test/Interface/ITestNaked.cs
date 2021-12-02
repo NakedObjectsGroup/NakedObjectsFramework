@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Test.Interface; 
+namespace NakedFramework.Test.Interface;
 
 public interface ITestNaked {
     INakedObjectAdapter NakedObject { get; }

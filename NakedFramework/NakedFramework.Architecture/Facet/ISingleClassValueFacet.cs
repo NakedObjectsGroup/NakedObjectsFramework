@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 public interface ISingleClassValueFacet : IFacet {
     Type Value { get; }

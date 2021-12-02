@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts; 
+namespace NakedFramework.Facade.Contexts;
 
 public class MenuContextFacade {
     public ITypeFacade ElementType { get; init; }

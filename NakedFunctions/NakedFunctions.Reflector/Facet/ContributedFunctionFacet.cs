@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFunctions.Reflector.Facet; 
+namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFunctionFacet {

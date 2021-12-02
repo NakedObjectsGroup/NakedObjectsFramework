@@ -16,12 +16,12 @@ using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Utility; 
+namespace NakedFramework.Facade.Impl.Utility;
 
 public static class FacadeUtils {
-    public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) => ((ObjectFacade) objectFacade)?.WrappedNakedObject;
+    public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) => ((ObjectFacade)objectFacade)?.WrappedNakedObject;
 
-    public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => ((ActionParameterFacade) actionParameterFacade)?.WrappedSpec;
+    public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => ((ActionParameterFacade)actionParameterFacade)?.WrappedSpec;
 
     public static NakedObjectsFacadeException Map(Exception e) =>
         e switch {

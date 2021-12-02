@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NakedFunctions.Rest.Test.Data; 
+namespace NakedFunctions.Rest.Test.Data;
 
 public static class MenuTestFunctions {
     [MemberOrder("findbyname_group", 1)]
@@ -139,22 +139,21 @@ public static class AutoCompleteMenuFunctions {
 }
 
 public static class ViewModelMenuFunctions {
-    public static ViewModel GetViewModel(string name, IContext context) => new() {Name = name};
+    public static ViewModel GetViewModel(string name, IContext context) => new() { Name = name };
 }
 
 public static class ReferenceMenuFunctions {
     public static (ReferenceRecord, IContext) CreateNewWithExistingReferences(IContext context) {
         var sr = context.Instances<UpdatedRecord>().First();
         var dr = context.Instances<DateRecord>().First();
-        return Helpers.DisplayAndSave(new ReferenceRecord {Name = "Test1", UpdatedRecord = sr, DateRecord = dr}, context);
+        return Helpers.DisplayAndSave(new ReferenceRecord { Name = "Test1", UpdatedRecord = sr, DateRecord = dr }, context);
     }
 
     public static (ReferenceRecord, IContext) CreateNewWithNewReferences(IContext context) {
-           
         var dr = context.Instances<DateRecord>().First();
 
-        var nsr = new UpdatedRecord {Name = "Test2"};
-        var nrr = new ReferenceRecord {Name = "Test1", UpdatedRecord = nsr, DateRecord = dr};
+        var nsr = new UpdatedRecord { Name = "Test2" };
+        var nrr = new ReferenceRecord { Name = "Test1", UpdatedRecord = nsr, DateRecord = dr };
 
         context = context.WithNew(nrr).WithNew(nsr);
 
@@ -164,7 +163,7 @@ public static class ReferenceMenuFunctions {
     public static (ReferenceRecord, IContext) UpdateExisting(IContext context) {
         var rr = context.Instances<ReferenceRecord>().First();
 
-        var updated = rr with {Name = "Test2", UpdatedRecord = rr.UpdatedRecord, DateRecord = rr.DateRecord};
+        var updated = rr with { Name = "Test2", UpdatedRecord = rr.UpdatedRecord, DateRecord = rr.DateRecord };
 
         context = context.WithUpdated(rr, updated);
 
@@ -174,8 +173,8 @@ public static class ReferenceMenuFunctions {
     public static (ReferenceRecord, IContext) UpdateExistingAndReference(IContext context) {
         var rr = context.Instances<ReferenceRecord>().First();
         var ur = context.Instances<UpdatedRecord>().First();
-        var nur = ur with {Name = "Jill"};
-        var nrr = rr with {Name = "Test3", UpdatedRecord = nur, DateRecord = rr.DateRecord};
+        var nur = ur with { Name = "Jill" };
+        var nrr = rr with { Name = "Test3", UpdatedRecord = nur, DateRecord = rr.DateRecord };
 
         context = context.WithUpdated(rr, nrr).WithUpdated(ur, nur);
 
@@ -185,8 +184,8 @@ public static class ReferenceMenuFunctions {
     public static (ReferenceRecord, IContext) CreateNewUpdateReference(IContext context) {
         var rr = context.Instances<ReferenceRecord>().First();
         var ur = context.Instances<UpdatedRecord>().First();
-        var nur = ur with {Name = "Janet"};
-        var nrr = new ReferenceRecord {Name = "Test4", UpdatedRecord = nur, DateRecord = rr.DateRecord};
+        var nur = ur with { Name = "Janet" };
+        var nrr = new ReferenceRecord { Name = "Test4", UpdatedRecord = nur, DateRecord = rr.DateRecord };
 
         var rr1 = context.Resolve(rr);
 
@@ -196,19 +195,19 @@ public static class ReferenceMenuFunctions {
 
     public static (CollectionRecord, IContext) CreateNewWithExistingCollection(IContext context) {
         var sr = context.Instances<UpdatedRecord>();
-        return Helpers.DisplayAndSave(new CollectionRecord {Name = "Test1", UpdatedRecords = sr.ToList()}, context);
+        return Helpers.DisplayAndSave(new CollectionRecord { Name = "Test1", UpdatedRecords = sr.ToList() }, context);
     }
 
     public static (CollectionRecord, IContext) UpdateExistingCollectionRecord(IContext context) {
         var sr = context.Instances<CollectionRecord>().First();
-        return Helpers.DisplayAndUpdate(sr with {Name = "Test2", UpdatedRecords = sr.UpdatedRecords}, sr, context);
+        return Helpers.DisplayAndUpdate(sr with { Name = "Test2", UpdatedRecords = sr.UpdatedRecords }, sr, context);
     }
 
     public static (CollectionRecord, IContext) UpdateExistingAndCollection(IContext context) {
         var rr = context.Instances<CollectionRecord>().ToArray().Last();
         var ur = context.Instances<UpdatedRecord>().First();
-        var nur = ur with {Name = "John"};
-        var nrr = rr with {Name = "Test3"};
+        var nur = ur with { Name = "John" };
+        var nrr = rr with { Name = "Test3" };
 
         context = context.WithUpdated(rr, nrr).WithUpdated(ur, nur);
 
@@ -218,8 +217,8 @@ public static class ReferenceMenuFunctions {
     public static (CollectionRecord, IContext) UpdateExistingAndAddToCollection(IContext context) {
         var rr = context.Instances<CollectionRecord>().First();
         var ur = context.Instances<UpdatedRecord>().First();
-        var nur = ur with {Name = "John"};
-        var nrr = rr with {Name = "Test3", UpdatedRecords = rr.UpdatedRecords.Union(new[] {nur}).ToList()};
+        var nur = ur with { Name = "John" };
+        var nrr = rr with { Name = "Test3", UpdatedRecords = rr.UpdatedRecords.Union(new[] { nur }).ToList() };
 
         context = context.WithUpdated(rr, nrr).WithUpdated(ur, nur);
 

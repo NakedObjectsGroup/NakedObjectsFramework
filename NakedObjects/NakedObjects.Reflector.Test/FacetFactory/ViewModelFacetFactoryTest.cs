@@ -22,13 +22,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
     private ViewModelFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IViewModelFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IViewModelFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -50,7 +50,7 @@ public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet<IViewModelFacet>();
         Assert.IsNotNull(facet);
 
-        var testClass = new Class1 {Value1 = "testValue1", Value2 = "testValue2"};
+        var testClass = new Class1 { Value1 = "testValue1", Value2 = "testValue2" };
         var mock = new Mock<INakedObjectAdapter>();
         var value = mock.Object;
         mock.Setup(no => no.Object).Returns(testClass);
@@ -86,7 +86,7 @@ public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         var m1 = class1Type.GetMethod("DeriveKeys");
         var m2 = class1Type.GetMethod("PopulateUsingKeys");
 
-        AssertMethodsRemoved(new[] {m1, m2});
+        AssertMethodsRemoved(new[] { m1, m2 });
         Assert.IsNotNull(metamodel);
     }
 
@@ -103,7 +103,7 @@ public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         var m1 = class3Type.GetMethod("DeriveKeys");
         var m2 = class3Type.GetMethod("PopulateUsingKeys");
 
-        AssertMethodsRemoved(new[] {m1, m2});
+        AssertMethodsRemoved(new[] { m1, m2 });
         Assert.IsNotNull(metamodel);
     }
 
@@ -121,7 +121,7 @@ public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         var m2 = class4Type.GetMethod("PopulateUsingKeys");
         var m3 = class4Type.GetMethod("IsEditView");
 
-        AssertMethodsRemoved(new[] {m1, m2, m3});
+        AssertMethodsRemoved(new[] { m1, m2, m3 });
         Assert.IsNotNull(metamodel);
     }
 
@@ -134,7 +134,7 @@ public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         Assert.IsNotNull(facet);
 
         var testClass = new Class1();
-        var keys = new[] {"testValue1", "testValue2"};
+        var keys = new[] { "testValue1", "testValue2" };
         var mock = new Mock<INakedObjectAdapter>();
         var value = mock.Object;
         mock.Setup(no => no.Object).Returns(testClass);
@@ -155,7 +155,7 @@ public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         #region IViewModel Members
 
         public string[] DeriveKeys() {
-            return new[] {Value1, Value2};
+            return new[] { Value1, Value2 };
         }
 
         public void PopulateUsingKeys(string[] instanceId) {
@@ -190,7 +190,7 @@ public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         #region IViewModelEdit Members
 
         public string[] DeriveKeys() {
-            return new[] {Value1, Value2};
+            return new[] { Value1, Value2 };
         }
 
         public void PopulateUsingKeys(string[] instanceId) {
@@ -212,7 +212,7 @@ public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         #region IViewModelSwitchable Members
 
         public string[] DeriveKeys() {
-            return new[] {Value1, Value2};
+            return new[] { Value1, Value2 };
         }
 
         public void PopulateUsingKeys(string[] instanceId) {

@@ -19,7 +19,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory; 
+namespace NakedFramework.ParallelReflector.TypeFacetFactory;
 
 /// <summary>
 ///     Designed to simply filter out <see cref="IEnumerable.GetEnumerator" /> method if it exists.
@@ -30,7 +30,7 @@ namespace NakedFramework.ParallelReflector.TypeFacetFactory;
 public sealed class IteratorFilteringFacetFactory : SystemTypeFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;
 
-    static IteratorFilteringFacetFactory() => FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.GetEnumeratorMethod};
+    static IteratorFilteringFacetFactory() => FixedPrefixes = new[] { RecognisedMethodsAndPrefixes.GetEnumeratorMethod };
 
     public IteratorFilteringFacetFactory(IFacetFactoryOrder<IteratorFilteringFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }

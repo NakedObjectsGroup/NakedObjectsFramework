@@ -25,7 +25,7 @@ using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class TitleMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
     private static readonly string[] FixedPrefixes = {
@@ -81,7 +81,7 @@ public sealed class TitleMethodFacetFactory : ObjectFacetFactoryProcessor, IMeth
                 toStringMethod = null;
             }
 
-            var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)});
+            var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] { typeof(string) });
 
             methodRemover.SafeRemoveMethod(maskMethod);
 

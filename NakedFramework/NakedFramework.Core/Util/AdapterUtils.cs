@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class AdapterUtils {
     /// <summary>
@@ -38,7 +38,7 @@ public static class AdapterUtils {
     /// <summary>
     ///     Safe (returns null if INakedObjectAdapter is null) generic getter
     /// </summary>
-    public static T GetDomainObject<T>(this INakedObjectAdapter inObjectAdapter) => inObjectAdapter == null ? default : (T) inObjectAdapter.Object;
+    public static T GetDomainObject<T>(this INakedObjectAdapter inObjectAdapter) => inObjectAdapter == null ? default : (T)inObjectAdapter.Object;
 
     public static bool Exists(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter?.Object != null;
 
@@ -57,7 +57,7 @@ public static class AdapterUtils {
     }
 
     public static IActionSpec[] GetActionLeafNodes(this IActionSpec actionSpec) {
-        return new[] {actionSpec};
+        return new[] { actionSpec };
     }
 
     public static IActionSpec[] GetActionLeafNodes(this INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Spec.GetActionLeafNodes();

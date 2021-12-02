@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class PropertyDefaultAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private PropertyDefaultAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IPropertyDefaultFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IPropertyDefaultFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -49,7 +49,7 @@ public class PropertyDefaultAnnotationFacetFactoryTest : AbstractFacetFactoryTes
         var facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);
-        var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation) facet;
+        var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation)facet;
         Assert.AreEqual(1, propertyDefaultFacetAnnotation.GetDefault(null));
         Assert.IsNotNull(metamodel);
     }

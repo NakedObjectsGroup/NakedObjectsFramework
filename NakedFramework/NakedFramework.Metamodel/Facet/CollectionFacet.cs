@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public class CollectionFacet : CollectionFacetAbstract {
@@ -22,7 +22,7 @@ public class CollectionFacet : CollectionFacetAbstract {
 
     public override bool IsQueryable => false;
 
-    protected static IList AsCollection(INakedObjectAdapter collection) => (IList) collection.Object;
+    protected static IList AsCollection(INakedObjectAdapter collection) => (IList)collection.Object;
 
     public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => AsCollection(collection).Cast<object>().Select(domainObject => manager.CreateAdapter(domainObject, null, null));
 

@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
-namespace NakedFramework.ParallelReflector.FacetFactory; 
+namespace NakedFramework.ParallelReflector.FacetFactory;
 
 /// <summary>
 ///     Indicates that the <see cref="IFacetFactory" /> works by recognizing methods

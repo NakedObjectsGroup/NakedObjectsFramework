@@ -10,7 +10,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace SimpleDatabase; 
+namespace SimpleDatabase;
 
 public class EFCoreSimpleDatabaseDbContext : DbContext {
     private readonly string cs;
@@ -34,11 +34,9 @@ public class EFCoreSimpleDatabaseDbContext : DbContext {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-
         modelBuilder.Entity<Person>().Ignore(p => p.Parent);
         modelBuilder.Entity<Person>().ToTable("People", "dbo");
 
         modelBuilder.Entity<Person>().HasMany(p => p.Food).WithOne(f => f.Person).HasForeignKey("Person_Id");
-     
     }
 }

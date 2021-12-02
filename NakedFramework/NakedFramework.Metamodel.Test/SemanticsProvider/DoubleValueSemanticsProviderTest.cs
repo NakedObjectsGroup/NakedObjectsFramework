@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<double> {
@@ -105,7 +105,7 @@ public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
 
     [TestMethod]
     public void TestValue() {
-        var facet = (IDoubleFloatingPointValueFacet) GetValue();
+        var facet = (IDoubleFloatingPointValueFacet)GetValue();
         const double testValue = 100.100d;
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);

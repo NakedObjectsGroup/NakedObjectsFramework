@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {

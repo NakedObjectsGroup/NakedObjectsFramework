@@ -8,7 +8,7 @@
 using System;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.Configuration; 
+namespace NakedLegacy.Reflector.Configuration;
 
 public static class ReflectorDefaults {
     public static readonly Type[] DefaultLegacyTypes = {

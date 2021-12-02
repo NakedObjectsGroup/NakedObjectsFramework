@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 /// <summary>
 ///     Indicates an error raised by the application code

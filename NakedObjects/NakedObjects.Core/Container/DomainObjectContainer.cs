@@ -20,7 +20,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Error;
 
-namespace NakedObjects.Core.Container; 
+namespace NakedObjects.Core.Container;
 
 public sealed class DomainObjectContainer : IDomainObjectContainer {
     private readonly INakedFramework framework;
@@ -81,17 +81,17 @@ public sealed class DomainObjectContainer : IDomainObjectContainer {
         transientObject = adapter.GetDomainObject<T>();
     }
 
-    public T NewTransientInstance<T>() where T : new() => (T) NewTransientInstance(typeof(T));
+    public T NewTransientInstance<T>() where T : new() => (T)NewTransientInstance(typeof(T));
 
-    public T NewViewModel<T>() where T : IViewModel, new() => (T) NewViewModel(typeof(T));
+    public T NewViewModel<T>() where T : IViewModel, new() => (T)NewViewModel(typeof(T));
 
     public IViewModel NewViewModel(Type type) {
-        var spec = (IObjectSpec) framework.MetamodelManager.GetSpecification(type);
+        var spec = (IObjectSpec)framework.MetamodelManager.GetSpecification(type);
         return spec.IsViewModel ? framework.LifecycleManager.CreateViewModel(spec).GetDomainObject<IViewModel>() : null;
     }
 
     public object NewTransientInstance(Type type) {
-        var spec = (IObjectSpec) framework.MetamodelManager.GetSpecification(type);
+        var spec = (IObjectSpec)framework.MetamodelManager.GetSpecification(type);
         return framework.LifecycleManager.CreateInstance(spec).Object;
     }
 

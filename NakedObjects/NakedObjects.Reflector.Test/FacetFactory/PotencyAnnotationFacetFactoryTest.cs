@@ -19,13 +19,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class PotencyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private PotencyAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IQueryOnlyFacet), typeof(IIdempotentFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IQueryOnlyFacet), typeof(IIdempotentFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 

@@ -15,7 +15,7 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class WithCollectionViewModel : IViewModel {
     private int deriveCheck;
@@ -88,7 +88,7 @@ public class WithCollectionViewModel : IViewModel {
         Id = fId;
 
         ACollection = Container.Instances<MostSimple>().Where(ms => ms.Id == fId || ms.Id == lId).ToList();
-        ACollectionViewModels = new[] {fId, lId}.Select(NewVM).ToList();
+        ACollectionViewModels = new[] { fId, lId }.Select(NewVM).ToList();
         ASet = new HashSet<MostSimple>(Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2));
         ADisabledCollection = Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         AHiddenCollection = Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();

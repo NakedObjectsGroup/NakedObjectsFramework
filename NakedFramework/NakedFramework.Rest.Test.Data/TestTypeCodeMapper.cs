@@ -11,26 +11,14 @@ using System.Linq;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
 
-
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class TestTypeCodeMapper : ITypeCodeMapper {
     private const string DefaultPrefix = "RestfulObjects.Test.Data.";
     private static readonly IDictionary<string, string> PrefixDictionary = new Dictionary<string, string>();
-
-    #region ITypeCodeMapper Members
-
-    public Type TypeFromCode(string code) {
-        var fullCode = TypeStringFromCode(code);
-        return TypeUtils.GetType(fullCode);
-    }
-
-    public string CodeFromType(Type type) => CodeFromTypeString(type.FullName);
-
-    #endregion
 
     public string TypeStringFromCode(string code) {
         if (PrefixDictionary.ContainsKey(code)) {
@@ -45,4 +33,15 @@ public class TestTypeCodeMapper : ITypeCodeMapper {
         PrefixDictionary[code] = typeString;
         return code;
     }
+
+    #region ITypeCodeMapper Members
+
+    public Type TypeFromCode(string code) {
+        var fullCode = TypeStringFromCode(code);
+        return TypeUtils.GetType(fullCode);
+    }
+
+    public string CodeFromType(Type type) => CodeFromTypeString(type.FullName);
+
+    #endregion
 }

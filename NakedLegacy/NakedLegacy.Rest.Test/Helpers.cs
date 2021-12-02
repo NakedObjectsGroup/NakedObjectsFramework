@@ -12,11 +12,10 @@ using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Interface;
-using NakedFramework.Rest.Configuration;
 using NakedFramework.Rest.API;
+using NakedFramework.Rest.Configuration;
 
-
-namespace NakedFunctions.Rest.Test; 
+namespace NakedFunctions.Rest.Test;
 
 public class RestfulObjectsController : RestfulObjectsControllerBase {
     public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf, IRestfulObjectsConfiguration c) : base(ff, l, lf, c) { }
@@ -24,7 +23,7 @@ public class RestfulObjectsController : RestfulObjectsControllerBase {
 
 public static class Helpers {
     public static DefaultHttpContext CreateTestHttpContext(IServiceProvider sp) {
-        var httpContext = new DefaultHttpContext {RequestServices = sp};
+        var httpContext = new DefaultHttpContext { RequestServices = sp };
         httpContext.Response.Body = new MemoryStream();
 
         var uri = new Uri(@"http://localhost/");
@@ -45,7 +44,7 @@ public static class Helpers {
     }
 
     public static (string, int, ResponseHeaders) ReadActionResult(ActionResult ar, HttpContext hc) {
-        var testContext = new ActionContext {HttpContext = hc};
+        var testContext = new ActionContext { HttpContext = hc };
         ar.ExecuteResultAsync(testContext).Wait();
         using var s = testContext.HttpContext.Response.Body;
         s.Position = 0L;

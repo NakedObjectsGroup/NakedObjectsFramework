@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class NotPersistedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private NotPersistedAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(INotPersistedFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(INotPersistedFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 

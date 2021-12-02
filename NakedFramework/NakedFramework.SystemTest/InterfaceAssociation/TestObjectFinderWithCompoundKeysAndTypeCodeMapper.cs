@@ -11,7 +11,7 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper; 
+namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper;
 
 [TestFixture]
 public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {

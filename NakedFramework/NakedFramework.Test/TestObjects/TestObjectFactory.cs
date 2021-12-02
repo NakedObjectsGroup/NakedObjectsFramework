@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 public class TestObjectFactory : ITestObjectFactory {
     private readonly INakedFramework framework;
@@ -73,7 +73,7 @@ public class TestObjectFactory : ITestObjectFactory {
             throw new Exception("Action is not on a known service");
         }
 
-        var serviceSpec = (IServiceSpec) framework.MetamodelManager.GetSpecification(objectIm);
+        var serviceSpec = (IServiceSpec)framework.MetamodelManager.GetSpecification(objectIm);
         var service = framework.ServicesManager.GetService(serviceSpec);
         var testService = CreateTestService(service);
         return CreateTestAction(actionSpecImm, testService);

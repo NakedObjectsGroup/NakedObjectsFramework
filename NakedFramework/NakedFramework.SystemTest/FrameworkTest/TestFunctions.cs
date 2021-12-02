@@ -23,7 +23,7 @@ using Assert = NUnit.Framework.Assert;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedFramework.SystemTest.FrameworkTest; 
+namespace NakedFramework.SystemTest.FrameworkTest;
 
 /// <summary>
 ///     Tests various functions of the XATs themselves
@@ -56,9 +56,9 @@ public class TestFunctions : AbstractSystemTest<XatDbContext> {
         Value2
     }
 
-    protected override Type[] ObjectTypes => new[] {typeof(Object1), typeof(TestEnum)};
+    protected override Type[] ObjectTypes => new[] { typeof(Object1), typeof(TestEnum) };
 
-    protected override Type[] Services => new[] {typeof(SimpleRepository<Object1>), typeof(MyService1), typeof(MyService2)};
+    protected override Type[] Services => new[] { typeof(SimpleRepository<Object1>), typeof(MyService1), typeof(MyService2) };
 
     [Test]
     public virtual void IncorrectTitle() {

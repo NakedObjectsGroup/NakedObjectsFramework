@@ -15,7 +15,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedLegacy.Reflector.SemanticsProvider;
 
-namespace NakedLegacy.Reflector.FacetFactory; 
+namespace NakedLegacy.Reflector.FacetFactory;
 
 public sealed class DateValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public DateValueTypeFacetFactory(IFacetFactoryOrder<DateValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
@@ -26,7 +26,7 @@ public sealed class DateValueTypeFacetFactory : ValueUsingValueSemanticsProvider
         }
 
         methodRemover.RemoveMethods(type.GetMethods());
-            
+
         var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(DateValueSemanticsProvider.AdaptedType, metamodel);
         AddValueFacets(new DateValueSemanticsProvider(oSpec, specification), specification);
         return mm;

@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private RegExAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IRegExFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IRegExFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -51,8 +51,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
 
     private class Customer2 {
         // ReSharper disable UnusedParameter.Local
-        public void SomeAction([RegEx(Validation = "^A.*", Message = "Parameter message", CaseSensitive = false)]
-                               string foo) { }
+        public void SomeAction([RegEx(Validation = "^A.*", Message = "Parameter message", CaseSensitive = false)] string foo) { }
     }
 
     #endregion
@@ -79,8 +78,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     }
 
     private class Customer4 {
-        public void SomeAction([RegEx(Validation = "^A.*", CaseSensitive = false)]
-                               int foo) { }
+        public void SomeAction([RegEx(Validation = "^A.*", CaseSensitive = false)] int foo) { }
     }
 
     private class Customer5 {
@@ -94,8 +92,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     }
 
     private class Customer8 {
-        public void SomeAction([RegularExpression("^A.*", ErrorMessage = "Parameter message")]
-                               string foo) { }
+        public void SomeAction([RegularExpression("^A.*", ErrorMessage = "Parameter message")] string foo) { }
     }
 
     private class Customer9 {
@@ -136,7 +133,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestRegExAnnotationIgnoredForPrimitiveOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
+        var method = FindMethod(typeof(Customer4), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         Assert.IsNull(Specification.GetFacet(typeof(IRegExFacet)));
         Assert.IsNotNull(metamodel);
@@ -149,7 +146,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var property = FindProperty(typeof(Customer5), "FirstName");
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IRegExFacet));
-        var regExFacet = (RegExFacet) facet;
+        var regExFacet = (RegExFacet)facet;
         Assert.AreEqual(null, regExFacet.FailureMessage);
         Assert.IsNotNull(metamodel);
     }
@@ -158,12 +155,12 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestRegExAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IRegExFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is RegExFacet);
-        var regExFacet = (RegExFacet) facet;
+        var regExFacet = (RegExFacet)facet;
         Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
         Assert.AreEqual("Parameter message", regExFacet.FailureMessage);
         Assert.AreEqual(false, regExFacet.IsCaseSensitive);
@@ -178,7 +175,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IRegExFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is RegExFacet);
-        var regExFacet = (RegExFacet) facet;
+        var regExFacet = (RegExFacet)facet;
         Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
         Assert.AreEqual("Class message", regExFacet.FailureMessage);
         Assert.AreEqual(false, regExFacet.IsCaseSensitive);
@@ -194,7 +191,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IRegExFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is RegExFacet);
-        var regExFacet = (RegExFacet) facet;
+        var regExFacet = (RegExFacet)facet;
         Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
         Assert.AreEqual("Property message", regExFacet.FailureMessage);
         Assert.AreEqual(false, regExFacet.IsCaseSensitive);
@@ -215,7 +212,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestRegularExpressionAnnotationIgnoredForPrimitiveOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer10), "SomeAction", new[] {typeof(int)});
+        var method = FindMethod(typeof(Customer10), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         Assert.IsNull(Specification.GetFacet(typeof(IRegExFacet)));
         Assert.IsNotNull(metamodel);
@@ -228,7 +225,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var property = FindProperty(typeof(Customer11), "FirstName");
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IRegExFacet));
-        var regExFacet = (RegExFacet) facet;
+        var regExFacet = (RegExFacet)facet;
         Assert.AreEqual(null, regExFacet.FailureMessage);
         Assert.IsNotNull(metamodel);
     }
@@ -237,12 +234,12 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestRegularExpressionAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer8), "SomeAction", new[] {typeof(string)});
+        var method = FindMethod(typeof(Customer8), "SomeAction", new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IRegExFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is RegExFacet);
-        var regExFacet = (RegExFacet) facet;
+        var regExFacet = (RegExFacet)facet;
         Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
         Assert.AreEqual("Parameter message", regExFacet.FailureMessage);
         Assert.AreEqual(true, regExFacet.IsCaseSensitive);
@@ -258,7 +255,7 @@ public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IRegExFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is RegExFacet);
-        var regExFacet = (RegExFacet) facet;
+        var regExFacet = (RegExFacet)facet;
         Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
         Assert.AreEqual("Property message", regExFacet.FailureMessage);
         Assert.AreEqual(true, regExFacet.IsCaseSensitive);

@@ -14,7 +14,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Strategies;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class PropertyRepresentation : MemberAbstractRepresentation {
@@ -37,6 +37,6 @@ public class PropertyRepresentation : MemberAbstractRepresentation {
 
         RestUtils.AddChoices(frameworkFacade.OidStrategy, req, propertyContext, optionals, flags);
 
-        return CreateWithOptionals<PropertyRepresentation>(new object[] {frameworkFacade, strategy}, optionals);
+        return CreateWithOptionals<PropertyRepresentation>(new object[] { frameworkFacade, strategy }, optionals);
     }
 }

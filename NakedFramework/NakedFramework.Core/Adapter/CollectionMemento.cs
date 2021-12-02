@@ -18,7 +18,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
     private readonly INakedFramework framework;
@@ -64,7 +64,7 @@ public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
         // ReSharper disable once UnusedVariable
         var specName = helper.GetNextString();
         var actionId = helper.GetNextString();
-        var targetOid = (IOid) helper.GetNextEncodedToStrings();
+        var targetOid = (IOid)helper.GetNextEncodedToStrings();
 
         Target = RestoreObject(targetOid);
         Action = Target.GetActionLeafNode(actionId);
@@ -80,7 +80,7 @@ public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
                     parameters.Add(nakedObjectManager.CreateAdapter(obj, null, null));
                     break;
                 case ParameterType.Object:
-                    var oid = (IOid) helper.GetNextEncodedToStrings();
+                    var oid = (IOid)helper.GetNextEncodedToStrings();
                     var nakedObjectAdapter = RestoreObject(oid);
                     parameters.Add(nakedObjectAdapter);
                     break;
@@ -146,7 +146,7 @@ public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
 
     public ITypeSpec Spec => Target.Spec;
 
-    public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) => new CollectionMemento(framework, logger, this, objects) {IsPaged = isPaged};
+    public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) => new CollectionMemento(framework, logger, this, objects) { IsPaged = isPaged };
 
     public INakedObjectAdapter RecoverCollection() {
         var nakedObjectAdapter = Action.Execute(Target, Parameters);
@@ -166,15 +166,15 @@ public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
     #region IEncodedToStrings Members
 
     public string[] ToEncodedStrings() {
-        var helper = new StringEncoderHelper {Encode = true};
-        helper.Add(Action.ReturnSpec.EncodeTypeName(Action.ReturnSpec.IsCollection ? new[] {Action.ElementSpec} : Array.Empty<IObjectSpec>()));
+        var helper = new StringEncoderHelper { Encode = true };
+        helper.Add(Action.ReturnSpec.EncodeTypeName(Action.ReturnSpec.IsCollection ? new[] { Action.ElementSpec } : Array.Empty<IObjectSpec>()));
         helper.Add(Action.Id);
         helper.Add(Target.Oid as IEncodedToStrings);
 
         foreach (var parameter in Parameters) {
             if (parameter is null) {
                 helper.Add(ParameterType.Value);
-                helper.Add((object) null);
+                helper.Add((object)null);
             }
             else if (parameter.Spec.IsParseable) {
                 helper.Add(ParameterType.Value);
@@ -186,7 +186,7 @@ public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
 
                 if (instanceSpec.IsParseable) {
                     helper.Add(ParameterType.ValueCollection);
-                    helper.Add((IEnumerable) parameter.Object, instanceType);
+                    helper.Add((IEnumerable)parameter.Object, instanceType);
                 }
                 else {
                     helper.Add(ParameterType.ObjectCollection);

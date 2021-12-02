@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Facet;
 
-namespace NakedFramework.Architecture.Interactions; 
+namespace NakedFramework.Architecture.Interactions;
 
 /// <summary>
 ///     Mix-in interface for facets that can advise as to whether a proposed value is valid

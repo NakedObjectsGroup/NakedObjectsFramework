@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Test.Interface;
 
-namespace NakedFramework.Test.TestObjects; 
+namespace NakedFramework.Test.TestObjects;
 
 public class TestMenuItem : ITestMenuItem {
     private readonly ITestObjectFactory factory;
@@ -36,7 +36,7 @@ public class TestMenuItem : ITestMenuItem {
 
     public ITestAction AsAction() {
         AssertIsAction();
-        var actionSpecIm = ((IMenuActionImmutable) item).Action;
+        var actionSpecIm = ((IMenuActionImmutable)item).Action;
         return owningObject is null ? factory.CreateTestActionOnService(actionSpecIm) : factory.CreateTestAction(actionSpecIm, owningObject);
     }
 

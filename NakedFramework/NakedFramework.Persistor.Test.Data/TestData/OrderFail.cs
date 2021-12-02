@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFramework.Error;
 using NakedObjects;
 
-namespace TestData; 
+namespace TestData;
 
 public class OrderFail : TestHelper {
     [Key]

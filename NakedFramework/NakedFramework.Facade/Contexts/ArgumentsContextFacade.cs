@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Facade.Contexts; 
+namespace NakedFramework.Facade.Contexts;
 
 public class ArgumentsContextFacade {
     public IDictionary<string, object> Values { get; set; }

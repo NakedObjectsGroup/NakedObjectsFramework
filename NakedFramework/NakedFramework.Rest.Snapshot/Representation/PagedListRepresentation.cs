@@ -16,7 +16,7 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class PagedListRepresentation : ListRepresentation {
@@ -43,14 +43,14 @@ public class PagedListRepresentation : ListRepresentation {
         var totalCount = list.Count();
         var pageSize = PageSize(flags, actionContext);
         var page = flags.Page;
-        var numPages = (int) Math.Round(totalCount / (decimal) pageSize + 0.5m);
+        var numPages = (int)Math.Round(totalCount / (decimal)pageSize + 0.5m);
         numPages = numPages == 0 ? 1 : numPages;
 
         var exts = new Dictionary<string, object> {
-            {JsonPropertyNames.Page, page},
-            {JsonPropertyNames.PageSize, pageSize},
-            {JsonPropertyNames.NumPages, numPages},
-            {JsonPropertyNames.TotalCount, totalCount}
+            { JsonPropertyNames.Page, page },
+            { JsonPropertyNames.PageSize, pageSize },
+            { JsonPropertyNames.NumPages, numPages },
+            { JsonPropertyNames.TotalCount, totalCount }
         };
 
         Pagination = RestUtils.CreateMap(exts);
@@ -58,7 +58,7 @@ public class PagedListRepresentation : ListRepresentation {
 
     private void SetActions(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
         var actions = objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(oidStrategy, req, a, flags)).ToArray();
-        Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
+        Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object)m));
     }
 
     public static ListRepresentation Create(IFrameworkFacade frameworkFacade, ActionResultContextFacade actionResultContext, HttpRequest req, RestControlFlags flags) => new PagedListRepresentation(frameworkFacade, actionResultContext.Result, req, flags, actionResultContext.ActionContext);

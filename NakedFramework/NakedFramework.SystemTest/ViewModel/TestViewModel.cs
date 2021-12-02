@@ -18,7 +18,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.Helpers.Test.ViewModel; 
+namespace NakedObjects.Helpers.Test.ViewModel;
 
 [TestFixture]
 public class TestViewModel : AbstractSystemTest<FooContext> {
@@ -56,9 +56,9 @@ public class TestViewModel : AbstractSystemTest<FooContext> {
     private ITestObject foo1;
     private ITestService views;
 
-    protected override Type[] ObjectTypes => new[] {typeof(Foo), typeof(ViewFoo)};
+    protected override Type[] ObjectTypes => new[] { typeof(Foo), typeof(ViewFoo) };
 
-    protected override Type[] Services => new[] {typeof(ViewModelService), typeof(SimpleRepository<Foo>)};
+    protected override Type[] Services => new[] { typeof(ViewModelService), typeof(SimpleRepository<Foo>) };
 
     [Test]
     public virtual void AttemptRestoreWithInvalidKey() {
@@ -134,7 +134,7 @@ public class ViewModelService {
 
     public ViewFoo NewViewFoo(string key) {
         var vm = Container.NewViewModel<ViewFoo>();
-        vm.PopulateUsingKeys(new[] {key});
+        vm.PopulateUsingKeys(new[] { key });
         return vm;
     }
 }

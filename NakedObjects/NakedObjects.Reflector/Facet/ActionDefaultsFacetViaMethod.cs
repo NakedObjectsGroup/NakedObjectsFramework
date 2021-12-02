@@ -20,7 +20,7 @@ using NakedFramework.Metamodel.Facet;
 [assembly: InternalsVisibleTo("NakedFramework.ParallelReflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {

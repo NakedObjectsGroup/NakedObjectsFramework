@@ -19,7 +19,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
@@ -55,11 +55,11 @@ public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImpe
 
     public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedFramework framework) {
         try {
-            var autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] {autoCompleteParm});
+            var autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] { autoCompleteParm });
             return autoComplete switch {
                 IQueryable queryable => queryable.Take(PageSize).ToArray(),
                 IEnumerable<string> strings => strings.Cast<object>().ToArray(),
-                _ when !CollectionUtils.IsCollection(autoComplete.GetType()) => new[] {autoComplete},
+                _ when !CollectionUtils.IsCollection(autoComplete.GetType()) => new[] { autoComplete },
                 _ => throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {method.Name}")
             };
         }

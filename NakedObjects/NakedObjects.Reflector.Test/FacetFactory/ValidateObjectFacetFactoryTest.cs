@@ -15,14 +15,14 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 // Reflector place holder for validate facet factory tests !!!
 [TestClass]
 public class ValidateObjectFacetFactoryTest : AbstractFacetFactoryTest {
     private ValidateObjectFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IValidateObjectFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IValidateObjectFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 

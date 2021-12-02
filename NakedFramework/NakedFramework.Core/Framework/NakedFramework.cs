@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Component;
 using NakedFramework.Core.Spec;
 
-namespace NakedFramework.Core.Framework; 
+namespace NakedFramework.Core.Framework;
 
 public sealed class NakedFramework : INakedFramework {
     public NakedFramework(IMessageBroker messageBroker,
@@ -77,7 +77,7 @@ public sealed class NakedFramework : INakedFramework {
 
     public string[] ServerTypes => Reflectors.Select(r => r.Name).ToArray();
 
-    private ReflectorType? reflectorType; 
+    private ReflectorType? reflectorType;
 
     public ReflectorType ReflectorType {
         get {

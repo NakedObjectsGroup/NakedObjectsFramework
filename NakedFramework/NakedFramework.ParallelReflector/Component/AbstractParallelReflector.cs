@@ -18,7 +18,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.ParallelReflector.Reflect;
 
-namespace NakedFramework.ParallelReflector.Component; 
+namespace NakedFramework.ParallelReflector.Component;
 
 public abstract class AbstractParallelReflector : IReflector {
     private readonly FacetDecoratorSet facetDecoratorSet;
@@ -84,9 +84,7 @@ public abstract class AbstractParallelReflector : IReflector {
         return (specification, metamodel);
     }
 
-    private ITypeSpecBuilder ThrowNullSpecificationError(Type type) {
-        throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
-    }
+    private ITypeSpecBuilder ThrowNullSpecificationError(Type type) => throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
 
     private ITypeSpecBuilder CreateSpecification(Type type) {
         TypeUtils.GetType(type.FullName); // This should ensure type is cached

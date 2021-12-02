@@ -22,7 +22,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class Representation : IRepresentation {
@@ -76,7 +76,7 @@ public class Representation : IRepresentation {
         iLGenerator.Emit(OpCodes.Ldfld, fieldBuilder);
         iLGenerator.Emit(OpCodes.Ret);
 
-        var setMethodBuilder = typeBuilder.DefineMethod("set_" + name, MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Public, null, new[] {propertyType});
+        var setMethodBuilder = typeBuilder.DefineMethod("set_" + name, MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Public, null, new[] { propertyType });
 
         iLGenerator = setMethodBuilder.GetILGenerator();
         iLGenerator.Emit(OpCodes.Ldarg_0);
@@ -92,8 +92,8 @@ public class Representation : IRepresentation {
 
         var customAttribute = new CustomAttributeBuilder(dataMemberAttrType.GetConstructor(Array.Empty<Type>()),
                                                          Array.Empty<object>(),
-                                                         new[] {prop},
-                                                         new object[] {name});
+                                                         new[] { prop },
+                                                         new object[] { name });
 
         propertyBuilder.SetCustomAttribute(customAttribute);
     }
@@ -119,7 +119,7 @@ public class Representation : IRepresentation {
             newRep.GetType().GetProperty(p.Name)?.SetValue(newRep, p.Value, null);
         }
 
-        return (T) newRep;
+        return (T)newRep;
     }
 
     private static object CreateInstanceOfDynamicType<T>(object[] ctorParms, IList<OptionalProperty> properties, string typeName) {
@@ -187,7 +187,7 @@ public class Representation : IRepresentation {
 
         var title = RestUtils.SafeGetTitle(property, valueNakedObject);
         var helper = new UriMtHelper(frameworkFacade.OidStrategy, req, property.IsInline ? target : valueNakedObject);
-        var optionals = new List<OptionalProperty> {new(JsonPropertyNames.Title, title)};
+        var optionals = new List<OptionalProperty> { new(JsonPropertyNames.Title, title) };
 
         if (property.IsEager(target)) {
             optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(frameworkFacade, valueNakedObject, req, flags)));
@@ -209,8 +209,8 @@ public class Representation : IRepresentation {
 
         var properties = GetType().GetProperties();
 
-        var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
-        var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
+        var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation)p.GetValue(this, null));
+        var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[])p.GetValue(this, null));
 
         allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
         allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));

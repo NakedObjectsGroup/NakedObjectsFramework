@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Menu;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MenuFacetViaMethod : MenuFacetAbstract {
@@ -25,7 +25,7 @@ public sealed class MenuFacetViaMethod : MenuFacetAbstract {
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel) {
         var menu = new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(Spec));
-        InvokeUtils.InvokeStatic(method, new object[] {menu});
+        InvokeUtils.InvokeStatic(method, new object[] { menu });
         Menu = menu;
     }
 }

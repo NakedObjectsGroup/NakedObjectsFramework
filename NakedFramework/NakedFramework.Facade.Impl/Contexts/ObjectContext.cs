@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Contexts; 
+namespace NakedFramework.Facade.Impl.Contexts;
 
 public class ObjectContext : Context {
     public ObjectContext(INakedObjectAdapter target) => Target = target;

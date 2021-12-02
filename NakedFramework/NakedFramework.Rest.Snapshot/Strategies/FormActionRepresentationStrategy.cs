@@ -14,7 +14,7 @@ using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies; 
+namespace NakedFramework.Rest.Snapshot.Strategies;
 
 public class FormActionRepresentationStrategy : AbstractActionRepresentationStrategy {
     public FormActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)

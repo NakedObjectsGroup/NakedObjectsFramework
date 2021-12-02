@@ -15,7 +15,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.Injection; 
+namespace NakedObjects.SystemTest.Injection;
 
 [TestFixture]
 public class TestInjection : AbstractSystemTest<InjectionDbContext> {
@@ -69,7 +69,7 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 
     [Test]
     public void InjectArrayOfServicesDefinedByInterface() {
-        var testObject = (Object4) NewTestObject<Object4>().GetDomainObject();
+        var testObject = (Object4)NewTestObject<Object4>().GetDomainObject();
         var arr = testObject.GetService4s();
         Assert.IsNotNull(arr);
         Assert.AreEqual(3, arr.Length);
@@ -98,7 +98,7 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 
     [Test]
     public void InjectContainer() {
-        var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
+        var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
         Assert.IsNotNull(testObject.Container);
         IsInstanceOfType(testObject.Container, typeof(IDomainObjectContainer));
     }
@@ -120,14 +120,14 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 
     [Test]
     public void InjectService() {
-        var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
+        var testObject = (Object2)NewTestObject<Object2>().GetDomainObject();
         Assert.IsNotNull(testObject.GetService1());
         IsInstanceOfType(testObject.GetService1(), typeof(Service1));
     }
 
     [Test]
     public void InjectServiceDefinedByInterface() {
-        var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
+        var testObject = (Object2)NewTestObject<Object2>().GetDomainObject();
         Assert.IsNotNull(testObject.GetService2());
         IsInstanceOfType(testObject.GetService2(), typeof(ServiceImplementation));
         Assert.IsNotNull(testObject.GetService3());
@@ -138,7 +138,7 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
     [Test]
     public void RuntimeExceptionForAmbigiousInjecton() {
         try {
-            var testObject = (Object5) NewTestObject<Object5>().GetDomainObject();
+            var testObject = (Object5)NewTestObject<Object5>().GetDomainObject();
             Assert.Fail("Should not get to here");
         }
         catch (Exception e) {
@@ -148,7 +148,7 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 
     [Test]
     public void InjectLogger() {
-        var testObject = (Object6) NewTestObject<Object6>().GetDomainObject();
+        var testObject = (Object6)NewTestObject<Object6>().GetDomainObject();
         Assert.IsNotNull(testObject.LoggerFactory);
         Assert.IsNotNull(testObject.Logger);
         IsInstanceOfType(testObject.LoggerFactory, typeof(ILoggerFactory));

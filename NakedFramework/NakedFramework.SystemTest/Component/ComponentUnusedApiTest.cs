@@ -17,15 +17,10 @@ using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.SystemTest.Component; 
+namespace NakedObjects.SystemTest.Component;
 
 [TestFixture]
 public class ComponentUnusedApiTest : AbstractSystemTest<FooContext> {
-    private ITestObject foo1;
-    protected override Type[] ObjectTypes => new[] {typeof(Foo)};
-
-    protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
-
     [SetUp]
     public void Initialize() {
         StartTest();
@@ -54,6 +49,11 @@ public class ComponentUnusedApiTest : AbstractSystemTest<FooContext> {
         CleanupNakedObjectsFramework(this);
         FooContext.Delete();
     }
+
+    private ITestObject foo1;
+    protected override Type[] ObjectTypes => new[] { typeof(Foo) };
+
+    protected override Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
 
     [Test]
     public virtual void MetamodelManagerAllSpecs() {

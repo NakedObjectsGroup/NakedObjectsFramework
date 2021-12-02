@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet; 
+namespace NakedObjects.Metamodel.Test.Facet;
 
 [TestClass]
 public class DisabledFacetTest {

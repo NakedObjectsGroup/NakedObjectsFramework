@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Contexts; 
+namespace NakedFramework.Facade.Contexts;
 
 public abstract class ContextFacade {
     public abstract string Id { get; }

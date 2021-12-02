@@ -11,7 +11,7 @@ using System.Data.Entity;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class CodeFirstContextLocal : DbContext {
     public CodeFirstContextLocal(string cs) : base(cs) { }
@@ -44,18 +44,18 @@ public class CodeFirstContextLocal : DbContext {
 
 public class CodeFirstInitializer : DropCreateDatabaseAlways<CodeFirstContextLocal> {
     private static void SeedCodeFirstDatabase(CodeFirstContextLocal context) {
-        var ms1 = new MostSimple {Id = 1};
-        var ms2 = new MostSimple {Id = 2};
-        var ms3 = new MostSimple {Id = 4};
+        var ms1 = new MostSimple { Id = 1 };
+        var ms2 = new MostSimple { Id = 2 };
+        var ms3 = new MostSimple { Id = 4 };
         context.MostSimples.Add(ms1);
 
         context.MostSimples.Add(ms2);
 
         context.MostSimples.Add(ms3);
 
-        var wr1 = new WithReference {Id = 1, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
-        var wr2 = new WithReference {Id = 2, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
-        var wr3 = new WithReference {Id = 3, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
+        var wr1 = new WithReference { Id = 1, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1 };
+        var wr2 = new WithReference { Id = 2, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1 };
+        var wr3 = new WithReference { Id = 3, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1 };
 
         context.WithReferences.Add(wr1);
 
@@ -63,10 +63,10 @@ public class CodeFirstInitializer : DropCreateDatabaseAlways<CodeFirstContextLoc
 
         context.WithReferences.Add(wr3);
 
-        var wv1 = new WithValue {Id = 1, AValue = 100, ADisabledValue = 200, AStringValue = ""};
+        var wv1 = new WithValue { Id = 1, AValue = 100, ADisabledValue = 200, AStringValue = "" };
         context.WithValues.Add(wv1);
 
-        var wv2 = new WithValue {Id = 2, AValue = 100, ADisabledValue = 200, AStringValue = ""};
+        var wv2 = new WithValue { Id = 2, AValue = 100, ADisabledValue = 200, AStringValue = "" };
         context.WithValues.Add(wv2);
 
         var ws1 = new WithScalars {
@@ -74,11 +74,11 @@ public class CodeFirstInitializer : DropCreateDatabaseAlways<CodeFirstContextLoc
             Bool = true,
             Byte = 1,
             ByteArray = new[] {
-                (byte) 2
+                (byte)2
             },
             Char = '3',
             CharArray = new[] {
-                (char) 4
+                (char)4
             },
             DateTime = new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc).ToUniversalTime(),
             Decimal = 5.1M,
@@ -88,7 +88,7 @@ public class CodeFirstInitializer : DropCreateDatabaseAlways<CodeFirstContextLoc
             Long = 9L,
             SByte = 10,
             SByteArray = new[] {
-                (sbyte) 11
+                (sbyte)11
             },
             Short = 12,
             String = "13",
@@ -99,10 +99,10 @@ public class CodeFirstInitializer : DropCreateDatabaseAlways<CodeFirstContextLoc
 
         context.WithScalarses.Add(ws1);
 
-        var wa1 = new WithActionObject {Id = 1};
+        var wa1 = new WithActionObject { Id = 1 };
         context.WithActionObjects.Add(wa1);
 
-        var wc1 = new WithCollection {Id = 1};
+        var wc1 = new WithCollection { Id = 1 };
         wc1.ACollection.Add(ms1);
         wc1.ACollection.Add(ms2);
         wc1.ACollection.Add(ms3);
@@ -119,43 +119,43 @@ public class CodeFirstInitializer : DropCreateDatabaseAlways<CodeFirstContextLoc
         wc1.AnEagerCollection.Add(ms2);
         context.WithCollections.Add(wc1);
 
-        var we1 = new WithError {Id = 1};
+        var we1 = new WithError { Id = 1 };
         context.WithErrors.Add(we1);
 
-        var we2 = new WithError {Id = 2};
+        var we2 = new WithError { Id = 2 };
         context.WithErrors.Add(we2);
 
-        var we3 = new WithError {Id = 3};
+        var we3 = new WithError { Id = 3 };
         context.WithErrors.Add(we3);
 
-        var we4 = new WithError {Id = 4};
+        var we4 = new WithError { Id = 4 };
         context.WithErrors.Add(we4);
 
-        var wge1 = new WithGetError {Id = 1};
+        var wge1 = new WithGetError { Id = 1 };
         context.WithGetErrors.Add(wge1);
 
-        var i1 = new Immutable {Id = 1};
+        var i1 = new Immutable { Id = 1 };
         context.Immutables.Add(i1);
 
-        var vs1 = new VerySimple {Id = 1};
+        var vs1 = new VerySimple { Id = 1 };
         context.VerySimples.Add(vs1);
 
-        var vs2 = new VerySimple {Id = 2};
+        var vs2 = new VerySimple { Id = 2 };
         context.VerySimples.Add(vs2);
 
-        var vse1 = new VerySimpleEager {Id = 1};
+        var vse1 = new VerySimpleEager { Id = 1 };
         context.VerySimpleEagers.Add(vse1);
 
-        var dt1 = new WithDateTimeKey {Id = new DateTime(634835232000000000L).Date};
+        var dt1 = new WithDateTimeKey { Id = new DateTime(634835232000000000L).Date };
         context.WithDateTimeKeys.Add(dt1);
 
-        var rdo1 = new RedirectedObject {Id = 1, ServerName = "RedirectedToServer", Oid = "RedirectedToOid"};
+        var rdo1 = new RedirectedObject { Id = 1, ServerName = "RedirectedToServer", Oid = "RedirectedToOid" };
         context.RedirectedObjects.Add(rdo1);
 
-        var wat1 = new WithAttachments {Id = 1};
+        var wat1 = new WithAttachments { Id = 1 };
         context.WithAttachments.Add(wat1);
 
-        var g1 = new WithGuidKey {Id = new Guid("CA761232-ED42-11CE-BACD-00AA0057B223")};
+        var g1 = new WithGuidKey { Id = new Guid("CA761232-ED42-11CE-BACD-00AA0057B223") };
         context.WithGuidKeys.Add(g1);
 
         context.SaveChanges();

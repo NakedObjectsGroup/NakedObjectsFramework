@@ -16,7 +16,7 @@ using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies; 
+namespace NakedFramework.Rest.Snapshot.Strategies;
 
 public abstract class AbstractCollectionRepresentationStrategy : MemberRepresentationStrategy {
     private readonly IFrameworkFacade frameworkFacade;

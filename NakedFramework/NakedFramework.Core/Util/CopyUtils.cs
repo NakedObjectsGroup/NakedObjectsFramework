@@ -13,7 +13,7 @@ using NakedFramework.Core.Error;
 
 // ReSharper disable UnusedType.Global
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 // used by reflection 
 public static class CopyUtils {
@@ -41,13 +41,13 @@ public static class CopyUtils {
     private static void ShallowCopyCollection(object fromCollection, object toCollection) {
         var cm = typeof(CopyUtils).GetMethod("ShallowCopyCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
         var gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
-        gcm.Invoke(null, new[] {fromCollection, toCollection});
+        gcm.Invoke(null, new[] { fromCollection, toCollection });
     }
 
     private static void ShallowUpdateCollection(object fromCollection, object toCollection) {
         var cm = typeof(CopyUtils).GetMethod("ShallowUpdateCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
         var gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
-        gcm.Invoke(null, new[] {fromCollection, toCollection});
+        gcm.Invoke(null, new[] { fromCollection, toCollection });
     }
 
     public static object CloneObjectTest(object domainObject) {

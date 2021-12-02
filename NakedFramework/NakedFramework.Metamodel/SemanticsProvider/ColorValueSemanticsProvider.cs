@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.SemanticsProvider; 
+namespace NakedFramework.Metamodel.SemanticsProvider;
 
 [Serializable]
 public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
@@ -35,7 +35,7 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
     public int ColorValue(INakedObjectAdapter nakedObjectAdapter) =>
         nakedObjectAdapter switch {
             null => 0,
-            _ => ((Color) nakedObjectAdapter.Object).ToArgb()
+            _ => ((Color)nakedObjectAdapter.Object).ToArgb()
         };
 
     #endregion

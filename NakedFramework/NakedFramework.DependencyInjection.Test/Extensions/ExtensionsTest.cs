@@ -13,7 +13,7 @@ using NakedFramework.Rest.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Reflector.Extensions;
 
-namespace NakedObjects.DependencyInjection.Test.Extensions; 
+namespace NakedObjects.DependencyInjection.Test.Extensions;
 
 [TestClass]
 public class ExtensionsTest {

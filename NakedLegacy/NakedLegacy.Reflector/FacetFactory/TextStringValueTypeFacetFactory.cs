@@ -19,7 +19,7 @@ using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.SemanticsProvider;
 using NakedObjects;
 
-namespace NakedLegacy.Reflector.FacetFactory; 
+namespace NakedLegacy.Reflector.FacetFactory;
 
 public sealed class TextStringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public TextStringValueTypeFacetFactory(IFacetFactoryOrder<TextStringValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }

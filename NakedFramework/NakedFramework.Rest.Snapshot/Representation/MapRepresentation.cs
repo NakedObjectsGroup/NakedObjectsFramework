@@ -10,7 +10,7 @@ using System.Linq;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 public class MapRepresentation : Representation {
     private MediaTypeHeaderValue mediaType;

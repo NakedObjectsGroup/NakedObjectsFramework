@@ -18,7 +18,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
@@ -50,7 +50,7 @@ public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, I
             return null;
         }
 
-        var isHidden = (bool) methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        var isHidden = (bool)methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
         return isHidden ? Resources.NakedObjects.Hidden : null;
     }
 

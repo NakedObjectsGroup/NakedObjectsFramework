@@ -18,7 +18,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
@@ -45,7 +45,7 @@ public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFa
 
     public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-    public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+    public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (string)methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
 
     #endregion
 

@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Profile;
 
-namespace NakedFramework.Metamodel.Profile; 
+namespace NakedFramework.Metamodel.Profile;
 
 public class ProfileConfiguration<T> : IProfileConfiguration where T : IProfiler {
     public ProfileConfiguration() => Profiler = typeof(T);

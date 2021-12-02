@@ -15,7 +15,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Enum; 
+namespace NakedObjects.SystemTest.Enum;
 
 [TestFixture]
 public class EnumTest : AbstractSystemTest<EnumDbContext> {
@@ -40,9 +40,9 @@ public class EnumTest : AbstractSystemTest<EnumDbContext> {
         EnumDbContext.Delete();
     }
 
-    protected override Type[] ObjectTypes => new[] {typeof(Foo), typeof(Sexes), typeof(HairColours)};
+    protected override Type[] ObjectTypes => new[] { typeof(Foo), typeof(Sexes), typeof(HairColours) };
 
-    protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
+    protected override Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
 
     [Test]
     public virtual void EnumParameter() {
@@ -192,7 +192,7 @@ public class Foo {
     public virtual Sexes Sex3 { get; set; }
 
     public Sexes[] ChoicesSex3() {
-        return new[] {Sexes.Male, Sexes.Female};
+        return new[] { Sexes.Male, Sexes.Female };
     }
 
     #endregion
@@ -202,7 +202,7 @@ public class Foo {
     public virtual Sexes Sex4 { get; set; }
 
     public Sexes[] ChoicesSex4() {
-        return new[] {Sexes.Male, Sexes.Female};
+        return new[] { Sexes.Male, Sexes.Female };
     }
 
     public Sexes DefaultSex4() => Sexes.Male;

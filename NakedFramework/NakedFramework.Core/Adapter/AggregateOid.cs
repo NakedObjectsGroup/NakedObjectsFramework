@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {
     private readonly IMetamodelManager metamodel;
@@ -30,7 +30,7 @@ public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {
         typeName = helper.GetNextString();
         FieldName = helper.GetNextString();
         if (helper.HasNext) {
-            ParentOid = (IOid) helper.GetNextEncodedToStrings();
+            ParentOid = (IOid)helper.GetNextEncodedToStrings();
         }
     }
 

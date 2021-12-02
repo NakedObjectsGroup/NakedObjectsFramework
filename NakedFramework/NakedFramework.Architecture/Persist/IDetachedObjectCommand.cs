@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Architecture.Persist; 
+namespace NakedFramework.Architecture.Persist;
 
 public interface IDetachedObjectCommand {
     IList<(object original, object updated)> Execute();

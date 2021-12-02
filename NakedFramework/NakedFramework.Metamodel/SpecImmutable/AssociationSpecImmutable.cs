@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.SpecImmutable; 
+namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {

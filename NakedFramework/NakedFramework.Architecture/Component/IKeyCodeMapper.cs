@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 /// <summary>
 ///     Defines a service that can convert between a key and a string code

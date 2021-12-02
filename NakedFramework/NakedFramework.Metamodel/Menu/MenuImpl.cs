@@ -19,7 +19,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.Menu; 
+namespace NakedFramework.Metamodel.Menu;
 
 [Serializable]
 public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCallback {
@@ -108,7 +108,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
         if (subMenuName != null) {
             var id = facet.IdWhenContributedTo(spec);
             var subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);
-            AddOrderableElementsToMenu(new List<IActionSpecImmutable> {ca}, subMenu);
+            AddOrderableElementsToMenu(new List<IActionSpecImmutable> { ca }, subMenu);
         }
         else {
             //i.e. no sub-menu

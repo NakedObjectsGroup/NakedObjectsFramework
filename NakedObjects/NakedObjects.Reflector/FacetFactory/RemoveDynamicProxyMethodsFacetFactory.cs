@@ -20,10 +20,10 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class RemoveDynamicProxyMethodsFacetFactory : ObjectFacetFactoryProcessor {
-    private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
+    private static readonly string[] MethodsToRemove = { "GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker" };
 
     public RemoveDynamicProxyMethodsFacetFactory(IFacetFactoryOrder<RemoveDynamicProxyMethodsFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }

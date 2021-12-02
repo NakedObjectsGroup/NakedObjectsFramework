@@ -19,13 +19,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class OptionalDefaultFacetFactoryTest : AbstractFacetFactoryTest {
     private OptionalDefaultFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IMandatoryFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IMandatoryFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -43,7 +43,7 @@ public class OptionalDefaultFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOptionalDefaultIgnoredForPrimitiveOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
+        var method = FindMethod(typeof(Customer4), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IMandatoryFacet));
         Assert.IsNotNull(facet);
@@ -67,7 +67,7 @@ public class OptionalDefaultFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOptionalDefaultPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IMandatoryFacet));
         Assert.IsNotNull(facet);

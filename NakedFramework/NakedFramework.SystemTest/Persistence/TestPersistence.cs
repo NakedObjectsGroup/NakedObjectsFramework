@@ -15,7 +15,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.Persistence; 
+namespace NakedObjects.SystemTest.Persistence;
 
 [TestFixture]
 public class TestPersistence : AbstractSystemTest<PersistenceDbContext> {
@@ -129,7 +129,7 @@ public class MyDbInitialiser {
     }
 
     private static Qux1 NewQux(string name, PersistenceDbContext context) {
-        var q = new Qux1 {Name = name};
+        var q = new Qux1 { Name = name };
         context.Quxes.Add(q);
         return q;
     }

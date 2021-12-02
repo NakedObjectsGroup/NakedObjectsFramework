@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Facade.Error; 
+namespace NakedFramework.Facade.Error;
 
 public class GeneralErrorNOSException : NakedObjectsFacadeException {
     public GeneralErrorNOSException(Exception e) : base(e.Message, e) { }

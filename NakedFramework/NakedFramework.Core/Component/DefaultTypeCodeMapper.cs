@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public class DefaultTypeCodeMapper : ITypeCodeMapper {
     #region ITypeCodeMapper Members

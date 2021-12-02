@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 public class InvokeException : NakedObjectApplicationException {
     public InvokeException(string message, Exception exception) : base(message, exception) { }

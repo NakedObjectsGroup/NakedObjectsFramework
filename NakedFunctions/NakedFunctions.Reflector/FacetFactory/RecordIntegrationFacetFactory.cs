@@ -18,7 +18,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProcessor {
     public RecordIntegrationFacetFactory(IFacetFactoryOrder<RecordIntegrationFacetFactory> order, ILoggerFactory loggerFactory)
@@ -46,7 +46,7 @@ public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProces
         }).ToList();
 
         if (objectContribActions.Any()) {
-            FacetUtils.ErrorOnDuplicates(objectContribActions.Select(a => new FacetUtils.ActionHolder(a)).ToList());
+            objectContribActions.Select(a => new FacetUtils.ActionHolder(a)).ToList().ErrorOnDuplicates();
             spec.AddContributedFunctions(objectContribActions);
         }
 
@@ -65,7 +65,7 @@ public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProces
         }).ToList();
 
         if (collectionContribActions.Any()) {
-            FacetUtils.ErrorOnDuplicates(collectionContribActions.Select(a => new FacetUtils.ActionHolder(a)).ToList());
+            collectionContribActions.Select(a => new FacetUtils.ActionHolder(a)).ToList().ErrorOnDuplicates();
             spec.AddCollectionContributedActions(collectionContribActions);
         }
     }

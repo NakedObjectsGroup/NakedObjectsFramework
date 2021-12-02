@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class UIntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<uint> {
@@ -101,7 +101,7 @@ public class UIntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
 
     [TestMethod]
     public void TestValue() {
-        var facet = (IUnsignedIntegerValueFacet) GetValue();
+        var facet = (IUnsignedIntegerValueFacet)GetValue();
         const uint testValue = 121;
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);

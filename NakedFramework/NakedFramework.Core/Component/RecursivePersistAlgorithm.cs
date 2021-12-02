@@ -15,7 +15,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using static NakedFramework.Core.Util.ToStringHelpers;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 /// <summary>
 ///     Recursively walk the object's fields and collections persisting them.
@@ -35,7 +35,7 @@ public sealed class RecursivePersistAlgorithm : IPersistAlgorithm {
 
     private void Persist(INakedObjectAdapter nakedObjectAdapter) {
         if (nakedObjectAdapter.ResolveState.IsAggregated() || nakedObjectAdapter.ResolveState.IsTransient() && nakedObjectAdapter.Spec.Persistable != PersistableType.Transient) {
-            var fields = ((IObjectSpec) nakedObjectAdapter.Spec).Properties;
+            var fields = ((IObjectSpec)nakedObjectAdapter.Spec).Properties;
             if (!nakedObjectAdapter.Spec.IsEncodeable && fields.Length > 0) {
                 nakedObjectAdapter.Persisting();
                 if (!nakedObjectAdapter.Spec.ContainsFacet(typeof(IComplexTypeFacet))) {

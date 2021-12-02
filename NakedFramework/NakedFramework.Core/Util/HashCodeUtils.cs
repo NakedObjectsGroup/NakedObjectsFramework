@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 /// <summary>
 ///     Collected methods which allow easy implementation of <see cref="object.GetHashCode" />,
@@ -71,7 +71,7 @@ public static class HashCodeUtils {
     /// <summary>
     ///     <see cref="long" />
     /// </summary>
-    public static int Hash(int aSeed, long aLong) => FirstTerm(aSeed) + (int) (aLong ^ URShift(aLong, 32));
+    public static int Hash(int aSeed, long aLong) => FirstTerm(aSeed) + (int)(aLong ^ URShift(aLong, 32));
 
     /// <summary>
     ///     <see cref="float" />
@@ -98,7 +98,7 @@ public static class HashCodeUtils {
             result = Hash(result, aObject.GetHashCode());
         }
         else {
-            result = ((Array) aObject).Cast<object>().Aggregate(result, Hash);
+            result = ((Array)aObject).Cast<object>().Aggregate(result, Hash);
         }
 
         return result;

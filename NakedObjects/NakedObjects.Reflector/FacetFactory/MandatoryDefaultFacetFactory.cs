@@ -18,7 +18,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 /// <summary>
 ///     Simply installs a <see cref="MandatoryFacetDefault" /> onto all properties and parameters.

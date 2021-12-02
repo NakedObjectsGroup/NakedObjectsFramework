@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NakedFramework.Architecture.Persist; 
+namespace NakedFramework.Architecture.Persist;
 
 public interface IDetachedObjects {
     public object[] ToSave { get; }

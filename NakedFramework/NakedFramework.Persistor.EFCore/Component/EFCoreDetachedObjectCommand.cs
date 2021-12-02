@@ -15,7 +15,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Util;
 
-namespace NakedFramework.Persistor.EFCore.Component; 
+namespace NakedFramework.Persistor.EFCore.Component;
 
 public class EFCoreDetachedObjectCommand : IDetachedObjectCommand {
     private readonly IDetachedObjects detachedObjects;

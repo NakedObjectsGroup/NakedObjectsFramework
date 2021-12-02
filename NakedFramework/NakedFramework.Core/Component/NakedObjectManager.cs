@@ -19,7 +19,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public sealed class NakedObjectManager : INakedObjectManager {
     private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
@@ -47,7 +47,7 @@ public sealed class NakedObjectManager : INakedObjectManager {
         this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
     }
 
-    private IOid GetOidForService(string typeName) => oidGenerator.CreateOid(typeName, new object[] {0});
+    private IOid GetOidForService(string typeName) => oidGenerator.CreateOid(typeName, new object[] { 0 });
 
     private INakedObjectAdapter AdapterForNoIdentityObject(object domainObject) {
         var adapter = adapterCache.GetAdapter(domainObject);
@@ -81,7 +81,7 @@ public sealed class NakedObjectManager : INakedObjectManager {
 
     private INakedObjectAdapter NewAdapterForViewModel(object domainObject, ITypeSpec spec) {
         if (spec.IsViewModel) {
-            var adapter = CreateAdapterForViewModel(domainObject, (IObjectSpec) spec);
+            var adapter = CreateAdapterForViewModel(domainObject, (IObjectSpec)spec);
             adapter.ResolveState.Handle(Events.InitializePersistentEvent);
             return adapter;
         }

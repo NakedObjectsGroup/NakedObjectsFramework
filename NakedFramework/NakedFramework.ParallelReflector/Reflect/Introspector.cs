@@ -21,7 +21,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.SpecImmutable;
 
-namespace NakedFramework.ParallelReflector.Reflect; 
+namespace NakedFramework.ParallelReflector.Reflect;
 
 public abstract class Introspector : IIntrospector {
     private readonly ILogger logger;

@@ -20,7 +20,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class HiddenAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public HiddenAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
@@ -35,7 +35,7 @@ public sealed class HiddenAnnotationFacetFactory : ObjectFacetFactoryProcessor, 
 
     private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
         var attribute = getHidden();
-        FacetUtils.AddFacet(attribute is not null ? Create((HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
+        FacetUtils.AddFacet(attribute is not null ? Create((HiddenAttribute)attribute, specification) : Create((ScaffoldColumnAttribute)getScaffold(), specification));
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

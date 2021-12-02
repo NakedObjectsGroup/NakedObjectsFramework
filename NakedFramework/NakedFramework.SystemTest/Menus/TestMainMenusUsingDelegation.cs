@@ -15,7 +15,7 @@ using TestObjectMenu;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Menus.Service; 
+namespace NakedObjects.SystemTest.Menus.Service;
 
 [TestFixture]
 public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
@@ -73,9 +73,9 @@ public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
 public class LocalMainMenus {
     public static IMenu[] MainMenus(IMenuFactory factory) {
         var menuDefs = new Dictionary<Type, Action<IMenu>> {
-            {typeof(FooService), FooService.Menu},
-            {typeof(BarService), BarService.Menu},
-            {typeof(ServiceWithSubMenus), ServiceWithSubMenus.Menu}
+            { typeof(FooService), FooService.Menu },
+            { typeof(BarService), BarService.Menu },
+            { typeof(ServiceWithSubMenus), ServiceWithSubMenus.Menu }
         };
 
         var menus = new List<IMenu>();

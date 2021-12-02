@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 
-namespace TestData; 
+namespace TestData;
 
 public class Order : TestHelper {
     [Key]

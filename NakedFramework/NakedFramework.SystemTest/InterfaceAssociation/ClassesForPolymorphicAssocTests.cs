@@ -14,7 +14,7 @@ using NakedFramework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.PolymorphicAssociations; 
+namespace NakedObjects.SystemTest.PolymorphicAssociations;
 
 #region Classes used by test
 

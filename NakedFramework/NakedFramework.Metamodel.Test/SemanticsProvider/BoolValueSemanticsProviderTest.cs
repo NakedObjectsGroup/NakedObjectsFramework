@@ -18,7 +18,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
@@ -63,9 +63,9 @@ public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
 
     [TestMethod]
     public void TestToggle() {
-        Assert.IsTrue((bool) booleanNO1.Object);
+        Assert.IsTrue((bool)booleanNO1.Object);
         valueFacet.Toggle(booleanNO1);
-        Assert.IsFalse((bool) booleanNO1.Object);
+        Assert.IsFalse((bool)booleanNO1.Object);
     }
 
     [TestMethod]
@@ -98,7 +98,7 @@ public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
 
     [TestMethod]
     public void TestParseInvariant() {
-        new[] {true, false}.ForEach(b => {
+        new[] { true, false }.ForEach(b => {
             var b1 = b.ToString(CultureInfo.InvariantCulture);
             var b2 = value.ParseInvariant(b1);
             Assert.AreEqual(b, b2);

@@ -13,7 +13,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Menu;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MenuFacetDefault : MenuFacetAbstract {
@@ -44,7 +44,7 @@ public sealed class MenuFacetDefault : MenuFacetAbstract {
     }
 
     public void CreateDefaultMenu(IMetamodelBuilder metamodel, Type type, string menuName, string id) {
-        var menu = new MenuImpl(metamodel, type, false, menuName) {Id = id};
+        var menu = new MenuImpl(metamodel, type, false, menuName) { Id = id };
         menu.AddRemainingNativeActions();
         menu.AddContributedActions();
         Menu = menu;

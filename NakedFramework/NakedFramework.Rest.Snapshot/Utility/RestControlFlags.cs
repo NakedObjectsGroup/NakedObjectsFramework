@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Rest.Snapshot.Constants;
 
-namespace NakedFramework.Rest.Snapshot.Utility; 
+namespace NakedFramework.Rest.Snapshot.Utility;
 
 public class RestControlFlags {
     #region DomainModelType enum

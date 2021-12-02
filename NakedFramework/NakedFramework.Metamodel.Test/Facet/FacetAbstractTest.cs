@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Meta.Test.Facet; 
+namespace NakedObjects.Meta.Test.Facet;
 
 [TestClass]
 public class FacetAbstractTest {

@@ -15,7 +15,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.ObjectFinderSingleKey; 
+namespace NakedObjects.SystemTest.ObjectFinderSingleKey;
 
 [TestFixture]
 public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext> {
@@ -175,8 +175,8 @@ public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
         context.Customers.Add(new Customer());
         context.Customers.Add(new Customer());
         context.Suppliers.Add(new Supplier());
-        context.Employees.Add(new Employee {Id = "foo"});
-        context.Employees.Add(new Employee {Id = "bar"});
+        context.Employees.Add(new Employee { Id = "foo" });
+        context.Employees.Add(new Employee { Id = "bar" });
         context.SaveChanges();
     }
 }

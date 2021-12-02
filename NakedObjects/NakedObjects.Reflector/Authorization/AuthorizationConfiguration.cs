@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Security;
 
-namespace NakedObjects.Reflector.Authorization; 
+namespace NakedObjects.Reflector.Authorization;
 
 public class AuthorizationConfiguration<TDefault>
     : IAuthorizationConfiguration

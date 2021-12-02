@@ -14,7 +14,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class UserRepresentation : Representation {
@@ -46,7 +46,7 @@ public class UserRepresentation : Representation {
 
     private void SetHeader() => Caching = CacheType.UserInfo;
 
-    private void SetLinks(HomePageRelType homePageRelType) => Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
+    private void SetLinks(HomePageRelType homePageRelType) => Links = new[] { LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags) };
 
     private void SetExtensions() => Extensions = new MapRepresentation();
 

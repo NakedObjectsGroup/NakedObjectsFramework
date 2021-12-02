@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Menu;
 
-namespace NakedFramework.Metamodel.Menu; 
+namespace NakedFramework.Metamodel.Menu;
 
 [Serializable]
 public class MenuFactory : IMenuFactory {

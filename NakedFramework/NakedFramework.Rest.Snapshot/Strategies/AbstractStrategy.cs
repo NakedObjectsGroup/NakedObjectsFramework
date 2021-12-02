@@ -11,7 +11,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies; 
+namespace NakedFramework.Rest.Snapshot.Strategies;
 
 public abstract class AbstractStrategy {
     protected AbstractStrategy(IOidStrategy oidStrategy, RestControlFlags flags) {

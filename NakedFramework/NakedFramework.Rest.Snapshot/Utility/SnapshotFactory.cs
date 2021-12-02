@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Http;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Rest.Snapshot.Utility; 
+namespace NakedFramework.Rest.Snapshot.Utility;
 
 public static class SnapshotFactory {
     public static Func<RestSnapshot> ServicesSnapshot(IFrameworkFacade frameworkFacade, Func<ListContextFacade> listContext, HttpRequest req, RestControlFlags flags)

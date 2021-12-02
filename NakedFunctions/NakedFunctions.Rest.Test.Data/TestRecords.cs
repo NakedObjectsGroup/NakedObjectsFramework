@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace NakedFunctions.Rest.Test.Data; 
+namespace NakedFunctions.Rest.Test.Data;
 
 [PresentationHint("Hint1")]
 public record SimpleRecord {
@@ -57,7 +57,7 @@ public record DateRecord {
     public int Id { get; init; }
 
     public string Name { get; init; }
-    public DateTime? EndDate { get; init; } 
+    public DateTime? EndDate { get; init; }
     public DateTime? StartDate { get; init; } = DateTime.Now;
     public virtual bool Equals(DateRecord other) => ReferenceEquals(this, other);
 
@@ -95,7 +95,7 @@ public record ReferenceRecord {
 
     public virtual DateRecord DateRecord { get; init; }
     public virtual UpdatedRecord UpdatedRecord { get; init; }
-        
+
     public virtual bool Equals(ReferenceRecord other) => ReferenceEquals(this, other);
 
     public override string ToString() => $"{Name}-{Id}-{UpdatedRecord?.Id}-{DateRecord?.Id}";
@@ -125,8 +125,7 @@ public record GuidRecord {
     public override string ToString() => Name.ToString();
 }
 
-public record ByteArrayRecord
-{
+public record ByteArrayRecord {
     [Key]
     public int Id { get; init; }
 

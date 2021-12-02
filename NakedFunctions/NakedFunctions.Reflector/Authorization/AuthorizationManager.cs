@@ -22,7 +22,7 @@ using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Utils;
 using NakedFunctions.Security;
 
-namespace NakedFunctions.Reflector.Authorization; 
+namespace NakedFunctions.Reflector.Authorization;
 
 [Serializable]
 public sealed class AuthorizationManager : AbstractAuthorizationManager {

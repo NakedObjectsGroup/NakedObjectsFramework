@@ -8,7 +8,7 @@
 using System.Runtime.Serialization;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class NullRepresentation : Representation {

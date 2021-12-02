@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NakedFramework.DependencyInjection.FacetFactory; 
+namespace NakedFramework.DependencyInjection.FacetFactory;
 
 public class FacetFactoryTypesProvider {
     private static List<Type> FacetFactoryTypesList { get; } = new();

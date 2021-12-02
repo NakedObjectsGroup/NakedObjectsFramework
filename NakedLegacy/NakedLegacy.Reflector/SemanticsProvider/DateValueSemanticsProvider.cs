@@ -16,7 +16,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.SemanticsProvider; 
+namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
 public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<Date>, IDateValueFacet {
@@ -37,17 +37,13 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #region IDateValueFacet Members
 
-    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) {
-        return nakedObjectAdapter.GetDomainObject<Date>().DateTime;
-    }
+    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<Date>().DateTime;
 
     #endregion
 
     public static bool IsAdaptedType(Type type) => type == typeof(Date);
 
-    protected override string DoEncode(Date date) {
-        return date.DateTime.ToString(CultureInfo.InvariantCulture);
-    }
+    protected override string DoEncode(Date date) => date.DateTime.ToString(CultureInfo.InvariantCulture);
 
     protected override Date DoParse(string entry) {
         var dateString = entry.Trim();
@@ -63,9 +59,7 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override string GetInvariantString(Date date) => date.DateTime.ToString(CultureInfo.InvariantCulture);
 
-    protected override Date DoRestore(string data) {
-        return new Date(DateTime.Parse(data, CultureInfo.InvariantCulture));
-    }
+    protected override Date DoRestore(string data) => new Date(DateTime.Parse(data, CultureInfo.InvariantCulture));
 
     protected override string TitleStringWithMask(string mask, Date value) => value.DateTime.ToString(mask);
 

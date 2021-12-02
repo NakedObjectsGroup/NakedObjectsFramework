@@ -27,7 +27,7 @@ using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Facet;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 /// <summary>
 ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
@@ -119,8 +119,8 @@ public sealed class ActionMethodsFacetFactory : ObjectFacetFactoryProcessor, IMe
                 MethodType.Object,
                 $"{RecognisedMethodsAndPrefixes.ParameterDefaultPrefix}{capitalizedName}",
                 paramType,
-                new[] {paramType},
-                new[] {paramName});
+                new[] { paramType },
+                new[] { paramName });
 
             if (methodUsingIndex is not null && methodUsingName != null) {
                 logger.LogWarning($"Duplicate defaults parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");
@@ -171,8 +171,8 @@ public sealed class ActionMethodsFacetFactory : ObjectFacetFactoryProcessor, IMe
                 MethodType.Object,
                 $"{RecognisedMethodsAndPrefixes.ParameterChoicesPrefix}{capitalizedName}",
                 returnType,
-                new[] {paramType},
-                new[] {paramName});
+                new[] { paramType },
+                new[] { paramName });
 
             if (methodUsingIndex is not null && methodUsingName != null) {
                 logger.LogWarning($"Duplicate choices parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");
@@ -236,7 +236,7 @@ public sealed class ActionMethodsFacetFactory : ObjectFacetFactoryProcessor, IMe
 
                 if (method is not null) {
                     var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
-                    var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
+                    var minLengthAttr = (MinLengthAttribute)Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
                     var pageSize = pageSizeAttr?.Value ?? 0; // default to 0 ie system default
                     var minLength = minLengthAttr?.Length ?? 0;
@@ -257,7 +257,7 @@ public sealed class ActionMethodsFacetFactory : ObjectFacetFactoryProcessor, IMe
                                  MethodType.Object,
                                  $"{RecognisedMethodsAndPrefixes.AutoCompletePrefix}{i}{capitalizedName}",
                                  returnType,
-                                 new[] {typeof(string)});
+                                 new[] { typeof(string) });
 
     private void FindAndRemoveParametersValidateMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
         for (var i = 0; i < paramTypes.Length; i++) {
@@ -266,15 +266,15 @@ public sealed class ActionMethodsFacetFactory : ObjectFacetFactoryProcessor, IMe
                                                             MethodType.Object,
                                                             $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{i}{capitalizedName}",
                                                             typeof(string),
-                                                            new[] {paramTypes[i]});
+                                                            new[] { paramTypes[i] });
 
             var methodUsingName = MethodHelpers.FindMethod(reflector,
                                                            type,
                                                            MethodType.Object,
                                                            $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{capitalizedName}",
                                                            typeof(string),
-                                                           new[] {paramTypes[i]},
-                                                           new[] {paramNames[i]});
+                                                           new[] { paramTypes[i] },
+                                                           new[] { paramNames[i] });
 
             if (methodUsingIndex is not null && methodUsingName is not null) {
                 logger.LogWarning($"Duplicate validate parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");

@@ -18,7 +18,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<byte[]> {
@@ -41,7 +41,7 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
 
     [TestMethod]
     public void TestEncodeDecode() {
-        RunTestEncodeDecode(new byte[] {1, 2, 100});
+        RunTestEncodeDecode(new byte[] { 1, 2, 100 });
     }
 
     [TestMethod]
@@ -78,11 +78,11 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
 
     [TestMethod]
     public void TestParseInvariant() {
-        var b1 = new byte[] {1, 2, 3, 4};
+        var b1 = new byte[] { 1, 2, 3, 4 };
         var s1 = b1.Aggregate("", (s, t) => s + ' ' + t.ToString(CultureInfo.InvariantCulture));
         var b2 = value.ParseInvariant(s1);
 
-        Assert.IsTrue(b1.SequenceEqual((byte[]) b2));
+        Assert.IsTrue(b1.SequenceEqual((byte[])b2));
     }
 
     [TestMethod]
@@ -98,13 +98,13 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
 
     [TestMethod]
     public void TestParseString() {
-        var parsed = (byte[]) value.ParseTextEntry("0 0 1 100 255");
-        Assert.IsTrue(parsed.SequenceEqual(new byte[] {0, 0, 1, 100, 255}));
+        var parsed = (byte[])value.ParseTextEntry("0 0 1 100 255");
+        Assert.IsTrue(parsed.SequenceEqual(new byte[] { 0, 0, 1, 100, 255 }));
     }
 
     [TestMethod]
     public void TestTitle() {
-        Assert.AreEqual("1 2 100", value.DisplayTitleOf(new byte[] {1, 2, 100}));
+        Assert.AreEqual("1 2 100", value.DisplayTitleOf(new byte[] { 1, 2, 100 }));
     }
 
     [TestMethod]
@@ -129,7 +129,7 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
 
     [TestMethod]
     public void TestArrayValue() {
-        var testArray = new byte[] {1, 2, 101};
+        var testArray = new byte[] { 1, 2, 101 };
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testArray);
         IArrayValueFacet<byte> valueFacet = value;
@@ -141,14 +141,14 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
     public void TestAsParserInvariant() {
         var mgr = MockNakedObjectManager();
         IParseableFacet parser = new ParseableFacetUsingParser<byte[]>(value, null);
-        var parsed = (byte[]) parser.ParseInvariant("0 0 1 100 255", mgr.Object).Object;
-        Assert.IsTrue(parsed.SequenceEqual(new byte[] {0, 0, 1, 100, 255}));
+        var parsed = (byte[])parser.ParseInvariant("0 0 1 100 255", mgr.Object).Object;
+        Assert.IsTrue(parsed.SequenceEqual(new byte[] { 0, 0, 1, 100, 255 }));
     }
 
     [TestMethod]
     public void TestAsParserTitle() {
         IParseableFacet parser = new ParseableFacetUsingParser<byte[]>(value, null);
-        var mockAdapter = MockAdapter(new byte[] {1, 2, 100});
+        var mockAdapter = MockAdapter(new byte[] { 1, 2, 100 });
         Assert.AreEqual("1 2 100", parser.ParseableTitle(mockAdapter));
     }
 

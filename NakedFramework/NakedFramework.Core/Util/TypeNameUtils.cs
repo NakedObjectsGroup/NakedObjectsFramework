@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class TypeNameUtils {
     public static string DecodeTypeName(string typeName, string separator = "-") {

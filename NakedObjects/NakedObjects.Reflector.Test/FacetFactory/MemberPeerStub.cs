@@ -17,7 +17,7 @@ using NakedFramework.Metamodel.Spec;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 internal class MemberPeerStub : Specification, IMemberSpecImmutable {
     public MemberPeerStub(string name)

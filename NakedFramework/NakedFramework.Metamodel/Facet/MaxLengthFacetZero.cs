@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MaxLengthFacetZero : MaxLengthFacetAbstract {

@@ -7,7 +7,7 @@
 
 using System.Linq;
 
-namespace NakedObjects.SystemTest.PolymorphicAssociations; 
+namespace NakedObjects.SystemTest.PolymorphicAssociations;
 
 public abstract class FixtureLinks {
     #region Injected Services

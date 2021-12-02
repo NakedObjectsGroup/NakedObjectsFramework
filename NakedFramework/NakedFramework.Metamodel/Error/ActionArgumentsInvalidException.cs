@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Error; 
+namespace NakedFramework.Metamodel.Error;
 
 public class ActionArgumentsInvalidException : InvalidException {
     public ActionArgumentsInvalidException(IInteractionContext ic, string message)

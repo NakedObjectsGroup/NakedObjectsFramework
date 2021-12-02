@@ -17,7 +17,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Configuration;
 using NakedFramework.Persistor.EFCore.Util;
 
-namespace NakedFramework.Persistor.EFCore.Component; 
+namespace NakedFramework.Persistor.EFCore.Component;
 
 public class EFCoreLocalContext : IDisposable {
     private readonly List<object> added = new();

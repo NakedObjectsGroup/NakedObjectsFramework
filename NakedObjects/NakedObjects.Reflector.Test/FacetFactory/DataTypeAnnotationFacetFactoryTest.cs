@@ -18,13 +18,13 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class DataTypeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private DataTypeAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IDataTypeFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IDataTypeFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -81,7 +81,7 @@ public class DataTypeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestNoFacetOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Test), nameof(Test.NoAnnotationMethod), new[] {typeof(string)});
+        var method = FindMethod(typeof(Test), nameof(Test.NoAnnotationMethod), new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
         Assert.IsNull(facet);
@@ -92,7 +92,7 @@ public class DataTypeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestAnnotatedDataTypeOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Test), nameof(Test.DataTypeAnnotationMethod), new[] {typeof(string)});
+        var method = FindMethod(typeof(Test), nameof(Test.DataTypeAnnotationMethod), new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
         Assert.IsNotNull(facet);
@@ -106,7 +106,7 @@ public class DataTypeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestAnnotatedCustomDataTypeOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Test), nameof(Test.CustomDataTypeMethod), new[] {typeof(string)});
+        var method = FindMethod(typeof(Test), nameof(Test.CustomDataTypeMethod), new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
         Assert.IsNotNull(facet);

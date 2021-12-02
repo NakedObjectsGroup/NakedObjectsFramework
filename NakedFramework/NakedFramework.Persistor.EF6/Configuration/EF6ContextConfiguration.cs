@@ -9,7 +9,7 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 
-namespace NakedFramework.Persistor.EF6.Configuration; 
+namespace NakedFramework.Persistor.EF6.Configuration;
 
 public class EF6ContextConfiguration {
     internal bool Validated { get; set; }

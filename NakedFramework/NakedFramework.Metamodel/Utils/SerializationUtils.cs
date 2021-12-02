@@ -10,19 +10,19 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace NakedFramework.Metamodel.Utils; 
+namespace NakedFramework.Metamodel.Utils;
 
 public static class SerializationUtils {
     public static void AddValue<T>(this SerializationInfo info, string id, T value) {
         info.AddValue(id, value, typeof(T));
     }
 
-    public static T GetValue<T>(this SerializationInfo info, string id) => (T) info.GetValue(id, typeof(T));
+    public static T GetValue<T>(this SerializationInfo info, string id) => (T)info.GetValue(id, typeof(T));
 
     public static void AddValue<TKey, TValue>(this SerializationInfo info, string id, IImmutableDictionary<TKey, TValue> immutableDict) {
         var dict = immutableDict.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         info.AddValue(id, dict, typeof(Dictionary<TKey, TValue>));
     }
 
-    public static Dictionary<TKey, TValue> GetValue<TKey, TValue>(this SerializationInfo info, string id) => (Dictionary<TKey, TValue>) info.GetValue(id, typeof(Dictionary<TKey, TValue>));
+    public static Dictionary<TKey, TValue> GetValue<TKey, TValue>(this SerializationInfo info, string id) => (Dictionary<TKey, TValue>)info.GetValue(id, typeof(Dictionary<TKey, TValue>));
 }

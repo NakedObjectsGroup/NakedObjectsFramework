@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 public class DataUpdateException : ObjectPersistenceException {
     public DataUpdateException(string message, Exception cause)

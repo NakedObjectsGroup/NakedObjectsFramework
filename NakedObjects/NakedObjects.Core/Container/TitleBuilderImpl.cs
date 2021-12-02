@@ -8,7 +8,7 @@
 using System;
 using System.Text;
 
-namespace NakedObjects.Core.Container; 
+namespace NakedObjects.Core.Container;
 
 public sealed class TitleBuilderImpl : ITitleBuilder {
     private const string Space = " ";
@@ -240,7 +240,7 @@ public sealed class TitleBuilderImpl : ITitleBuilder {
             throw new ArgumentException("Truncation must be to one or more words");
         }
 
-        var words = Title.ToString().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+        var words = Title.ToString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         if (noWords >= words.Length) {
             return this;
         }

@@ -24,7 +24,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {
@@ -51,7 +51,7 @@ public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryP
         var capitalizedName = property.Name;
         var type = property.DeclaringType;
 
-        var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property, collection) };
 
         AddSetFacet(facets, property, collection);
 

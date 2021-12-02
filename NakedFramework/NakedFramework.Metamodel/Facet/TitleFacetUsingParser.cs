@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
@@ -26,9 +26,9 @@ public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
 
     #region ITitleFacet Members
 
-    public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T) nakedObjectAdapter.Object);
+    public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T)nakedObjectAdapter.Object);
 
-    public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T) nakedObjectAdapter.Object);
+    public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T)nakedObjectAdapter.Object);
 
     #endregion
 }

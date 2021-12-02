@@ -16,7 +16,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class VersionRepresentation : Representation {
@@ -78,7 +78,7 @@ public class VersionRepresentation : Representation {
 
     private void SetExtensions() => Extensions = new MapRepresentation();
 
-    private void SetLinks(HomePageRelType homePageRelType) => Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
+    private void SetLinks(HomePageRelType homePageRelType) => Links = new[] { LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags) };
 
     public static VersionRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, IDictionary<string, string> capabilities, RestControlFlags flags) => new(frameworkFacade, req, capabilities, flags);
 }

@@ -16,7 +16,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 /// <summary>
 ///     Simply installs a <see cref="MandatoryFacetDefault" /> onto all properties and parameters.

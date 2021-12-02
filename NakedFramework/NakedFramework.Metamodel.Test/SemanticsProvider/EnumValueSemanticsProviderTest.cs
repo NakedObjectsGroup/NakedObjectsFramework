@@ -19,7 +19,7 @@ using NakedFramework.Metamodel.SemanticsProvider;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 public enum TestEnum {
     London,
@@ -167,14 +167,14 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         Assert.AreEqual(ulong.MinValue.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumUl>().IntegralValue(MockNakedObject(ulong.MinValue)));
         Assert.AreEqual(long.MinValue.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumL>().IntegralValue(MockNakedObject(long.MinValue)));
 
-        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumSb>().IntegralValue(MockNakedObject((sbyte) 2)));
-        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumB>().IntegralValue(MockNakedObject((byte) 2)));
-        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumUs>().IntegralValue(MockNakedObject((ushort) 2)));
-        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumS>().IntegralValue(MockNakedObject((short) 2)));
-        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumUi>().IntegralValue(MockNakedObject((uint) 2)));
+        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumSb>().IntegralValue(MockNakedObject((sbyte)2)));
+        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumB>().IntegralValue(MockNakedObject((byte)2)));
+        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumUs>().IntegralValue(MockNakedObject((ushort)2)));
+        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumS>().IntegralValue(MockNakedObject((short)2)));
+        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumUi>().IntegralValue(MockNakedObject((uint)2)));
         Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumI>().IntegralValue(MockNakedObject(2)));
-        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumUl>().IntegralValue(MockNakedObject((ulong) 2)));
-        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumL>().IntegralValue(MockNakedObject((long) 2)));
+        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumUl>().IntegralValue(MockNakedObject((ulong)2)));
+        Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumL>().IntegralValue(MockNakedObject((long)2)));
     }
 
     [TestMethod]

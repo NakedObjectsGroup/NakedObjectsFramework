@@ -9,7 +9,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace NakedFramework.Persistor.EFCore.Extensions; 
+namespace NakedFramework.Persistor.EFCore.Extensions;
 
 public class EFCorePersistorOptions {
     public int MaximumCommitCycles { get; } = 10;

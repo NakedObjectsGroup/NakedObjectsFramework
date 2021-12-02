@@ -9,7 +9,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public sealed class BatchRunner : IBatchRunner {
     private readonly INakedFramework framework;

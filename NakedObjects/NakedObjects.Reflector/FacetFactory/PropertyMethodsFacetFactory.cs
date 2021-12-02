@@ -27,7 +27,7 @@ using NakedFramework.ParallelReflector.Utils;
 using NakedObjects.Reflector.Facet;
 using NakedObjects.Reflector.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {
@@ -54,9 +54,9 @@ public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, I
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var capitalizedName = property.Name;
-        var paramTypes = new[] {property.PropertyType};
+        var paramTypes = new[] { property.PropertyType };
 
-        var facets = new List<IFacet> {new PropertyAccessorFacet(property, specification)};
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property, specification) };
 
         if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
             facets.Add(new NullableFacetAlways(specification));
@@ -191,7 +191,7 @@ public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, I
 
             if (method is not null) {
                 var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
-                var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
+                var minLengthAttr = (MinLengthAttribute)Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
                 var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
                 var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
@@ -208,5 +208,5 @@ public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, I
                                  MethodType.Object,
                                  $"{RecognisedMethodsAndPrefixes.AutoCompletePrefix}{capitalizedName}",
                                  returnType,
-                                 new[] {typeof(string)});
+                                 new[] { typeof(string) });
 }

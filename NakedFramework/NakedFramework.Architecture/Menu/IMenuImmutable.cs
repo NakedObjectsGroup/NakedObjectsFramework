@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Architecture.Menu; 
+namespace NakedFramework.Architecture.Menu;
 
 /// <summary>
 ///     The run-time metamodel representing a menu constructed at reflection time.

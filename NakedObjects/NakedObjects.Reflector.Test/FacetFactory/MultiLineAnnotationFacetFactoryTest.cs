@@ -19,13 +19,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private MultiLineAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IMultiLineFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IMultiLineFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -46,7 +46,7 @@ public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var property = FindProperty(typeof(Customer3), "FirstName");
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IMultiLineFacet));
-        var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
+        var multiLineFacetAnnotation = (MultiLineFacetAnnotation)facet;
         Assert.AreEqual(6, multiLineFacetAnnotation.NumberOfLines);
         Assert.AreEqual(0, multiLineFacetAnnotation.Width);
         Assert.IsNotNull(metamodel);
@@ -56,7 +56,7 @@ public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestMultiLineAnnotationIgnoredForNonStringActionParameters() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(int)});
+        var method = FindMethod(typeof(Customer6), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         Assert.IsNull(Specification.GetFacet(typeof(IMultiLineFacet)));
         Assert.IsNotNull(metamodel);
@@ -77,12 +77,12 @@ public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestMultiLineAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IMultiLineFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is MultiLineFacetAnnotation);
-        var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
+        var multiLineFacetAnnotation = (MultiLineFacetAnnotation)facet;
         Assert.AreEqual(8, multiLineFacetAnnotation.NumberOfLines);
         Assert.AreEqual(24, multiLineFacetAnnotation.Width);
         Assert.IsNotNull(metamodel);
@@ -97,7 +97,7 @@ public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IMultiLineFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is MultiLineFacetAnnotation);
-        var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
+        var multiLineFacetAnnotation = (MultiLineFacetAnnotation)facet;
         Assert.AreEqual(12, multiLineFacetAnnotation.NumberOfLines);
         Assert.AreEqual(36, multiLineFacetAnnotation.Width);
         Assert.IsNotNull(metamodel);
@@ -112,7 +112,7 @@ public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IMultiLineFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is MultiLineFacetAnnotation);
-        var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
+        var multiLineFacetAnnotation = (MultiLineFacetAnnotation)facet;
         Assert.AreEqual(1, multiLineFacetAnnotation.NumberOfLines);
         Assert.IsNotNull(metamodel);
     }
@@ -130,8 +130,7 @@ public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
 
     private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-        public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
-                               string foo) { }
+        public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] string foo) { }
     }
 
     #endregion
@@ -158,8 +157,7 @@ public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
 
     private class Customer6 {
 // ReSharper disable once UnusedParameter.Local
-        public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
-                               int foo) { }
+        public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] int foo) { }
     }
 
     #endregion

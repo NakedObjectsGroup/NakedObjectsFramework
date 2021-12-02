@@ -16,7 +16,7 @@ using NakedObjects.Security;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 [PresentationHint("class1 class2")]
 public class WithValue {
@@ -66,10 +66,10 @@ public class WithValue {
     public virtual int AConditionalChoicesValue { get; set; }
 
     public virtual int[] ChoicesAChoicesValue() {
-        return new[] {1, 2, 3};
+        return new[] { 1, 2, 3 };
     }
 
     public virtual string Validate(int aValue, int aChoicesValue) => aValue == 101 && aChoicesValue == 3 ? "Cross validation failed" : "";
 
-    public virtual int[] ChoicesAConditionalChoicesValue(int aValue, string aStringValue) => new[] {aValue, aStringValue == null ? 0 : int.Parse(aStringValue)};
+    public virtual int[] ChoicesAConditionalChoicesValue(int aValue, string aStringValue) => new[] { aValue, aStringValue == null ? 0 : int.Parse(aStringValue) };
 }

@@ -12,18 +12,18 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
 using NUnit.Framework;
 
-namespace NakedFramework.Core.Test.Adapter; 
+namespace NakedFramework.Core.Test.Adapter;
 
 [TestFixture]
 public class ViewModelOidTest {
-    private readonly Mock<IMetamodelManager> mockMetamodel = new();
-    private readonly Mock<IObjectSpec> mockObjectSpec = new();
-
     [SetUp]
     public void SetUp() {
         mockObjectSpec.Setup(f => f.FullName).Returns("System.Object");
         mockMetamodel.Setup(f => f.GetSpecification(It.IsAny<string>())).Returns(mockObjectSpec.Object);
     }
+
+    private readonly Mock<IMetamodelManager> mockMetamodel = new();
+    private readonly Mock<IObjectSpec> mockObjectSpec = new();
 
     [Test]
     public void TestDefaultIsFinal() {
@@ -34,7 +34,7 @@ public class ViewModelOidTest {
     [Test]
     public void TestUpdateIsFinal() {
         IViewModelOid testOid = new ViewModelOid(mockMetamodel.Object, mockObjectSpec.Object);
-        var testkeys = new[] {"key1", "key2"};
+        var testkeys = new[] { "key1", "key2" };
 
         testOid.UpdateKeys(testkeys, true);
 

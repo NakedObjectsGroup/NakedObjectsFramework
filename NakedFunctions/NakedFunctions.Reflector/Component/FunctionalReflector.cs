@@ -17,7 +17,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
 using NakedFunctions.Reflector.Reflect;
 
-namespace NakedFunctions.Reflector.Component; 
+namespace NakedFunctions.Reflector.Component;
 
 public sealed class FunctionalReflector : AbstractParallelReflector {
     private readonly IFunctionalReflectorConfiguration functionalReflectorConfiguration;
@@ -28,7 +28,7 @@ public sealed class FunctionalReflector : AbstractParallelReflector {
                                IEnumerable<IFacetDecorator> facetDecorators,
                                IReflectorOrder<FunctionalReflector> reflectorOrder,
                                ILoggerFactory loggerFactory,
-                               ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder,  loggerFactory, logger) {
+                               ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
         this.functionalReflectorConfiguration = functionalReflectorConfiguration;
         ClassStrategy = functionClassStrategy;
         FacetFactorySet = functionalFacetFactorySet;

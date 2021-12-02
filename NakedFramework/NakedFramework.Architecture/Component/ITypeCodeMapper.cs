@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 /// <summary>
 ///     Defines a service that can convert between a Type and a string code where you don't wish to use the fully-qualified

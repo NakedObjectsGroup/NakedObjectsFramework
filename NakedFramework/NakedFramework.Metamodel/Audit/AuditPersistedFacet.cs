@@ -11,21 +11,20 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Audit; 
+namespace NakedFramework.Metamodel.Audit;
 
 [Serializable]
-public sealed class AuditPersistedFacet : CallbackFacetAbstract, IPersistedCallbackFacet
-{
+public sealed class AuditPersistedFacet : CallbackFacetAbstract, IPersistedCallbackFacet {
     private readonly IAuditManager manager;
     private readonly IPersistedCallbackFacet underlyingFacet;
-
-    public static Type Type => typeof(IPersistedCallbackFacet);
 
     public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet, IAuditManager auditManager)
         : base(Type, underlyingFacet.Specification) {
         this.underlyingFacet = underlyingFacet;
         manager = auditManager;
     }
+
+    public static Type Type => typeof(IPersistedCallbackFacet);
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         manager.Persisted(nakedObjectAdapter, framework);

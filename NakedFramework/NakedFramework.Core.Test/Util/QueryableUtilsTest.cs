@@ -10,14 +10,14 @@ using NakedFramework.Core.Util;
 using NUnit.Framework;
 using NAssert = NUnit.Framework.Assert;
 
-namespace NakedFramework.Core.Test.Util; 
+namespace NakedFramework.Core.Test.Util;
 
 [TestFixture]
 public class QueryableUtilsTest {
     [Test]
     public void TestCount() {
         var list = Enumerable.Range(0, 100);
-        var queryable = (IQueryable) list.AsQueryable();
+        var queryable = (IQueryable)list.AsQueryable();
 
         NAssert.AreEqual(100, queryable.Count());
     }
@@ -25,7 +25,7 @@ public class QueryableUtilsTest {
     [Test]
     public void TestFirst() {
         var list = Enumerable.Range(0, 100);
-        var queryable = (IQueryable) list.AsQueryable();
+        var queryable = (IQueryable)list.AsQueryable();
 
         NAssert.AreEqual(0, queryable.First());
     }
@@ -33,7 +33,7 @@ public class QueryableUtilsTest {
     [Test]
     public void TestTake() {
         var list = Enumerable.Range(0, 100);
-        var queryable = (IQueryable) list.AsQueryable();
+        var queryable = (IQueryable)list.AsQueryable();
 
         NAssert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(QueryableUtils.ToArray(queryable.Take(9).Cast<object>())));
         NAssert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(QueryableUtils.ToList(queryable.Take(9).Cast<object>()).Cast<object>()));
@@ -42,7 +42,7 @@ public class QueryableUtilsTest {
     [Test]
     public void TestSkip() {
         var list = Enumerable.Range(10, 100);
-        var queryable = (IQueryable) list.AsQueryable();
+        var queryable = (IQueryable)list.AsQueryable();
 
         NAssert.AreEqual(47, queryable.Skip(37).First());
     }
@@ -50,7 +50,7 @@ public class QueryableUtilsTest {
     [Test]
     public void TestContains() {
         var list = Enumerable.Range(10, 100);
-        var queryable = (IQueryable) list.AsQueryable();
+        var queryable = (IQueryable)list.AsQueryable();
 
         NAssert.IsTrue(queryable.Contains(49));
         NAssert.IsFalse(queryable.Contains(201));

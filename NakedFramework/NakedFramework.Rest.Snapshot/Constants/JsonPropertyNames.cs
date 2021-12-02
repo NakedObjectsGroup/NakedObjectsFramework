@@ -7,7 +7,7 @@
 
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Constants; 
+namespace NakedFramework.Rest.Snapshot.Constants;
 
 public class JsonPropertyNames {
     public const string Arguments = "arguments";

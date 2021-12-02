@@ -8,7 +8,7 @@
 using NakedFramework;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.Util; 
+namespace NakedObjects.SystemTest.Util;
 
 [TestFixture]
 public class GetTypeFromLoadedAssembliesInternalTest : GetTypeFromLoadedAssembliesTestAbstract {

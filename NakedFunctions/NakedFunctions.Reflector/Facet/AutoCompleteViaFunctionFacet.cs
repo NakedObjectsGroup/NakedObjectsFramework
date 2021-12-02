@@ -20,7 +20,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.Facet; 
+namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
@@ -70,7 +70,7 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
                 default: {
                     //return type is a single object
                     if (!CollectionUtils.IsCollection(autoComplete.GetType())) {
-                        return new[] {autoComplete};
+                        return new[] { autoComplete };
                     }
 
                     throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {method.Name}");

@@ -16,7 +16,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Representation; 
+namespace NakedFramework.Rest.Snapshot.Representation;
 
 public class ArgumentsRepresentation : MapRepresentation {
     #region Format enum
@@ -39,7 +39,7 @@ public class ArgumentsRepresentation : MapRepresentation {
         MapRepresentation value;
 
         // All reasons why we cannot create a link representation
-        if (context.Specification.IsCollection && context.ElementSpecification is {IsParseable: false}) {
+        if (context.Specification.IsCollection && context.ElementSpecification is { IsParseable: false }) {
             var proposedObjectFacade = frameworkFacade.GetObject(context.ProposedValue);
             var coll = proposedObjectFacade.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();
             value = CreateMap(context, coll);
@@ -58,7 +58,7 @@ public class ArgumentsRepresentation : MapRepresentation {
     }
 
     private static MapRepresentation CreateMap(ContextFacade context, object obj) {
-        var opts = new List<OptionalProperty> {new(JsonPropertyNames.Value, obj)};
+        var opts = new List<OptionalProperty> { new(JsonPropertyNames.Value, obj) };
         if (!string.IsNullOrEmpty(context.Reason)) {
             opts.Add(new OptionalProperty(JsonPropertyNames.InvalidReason, context.Reason));
         }

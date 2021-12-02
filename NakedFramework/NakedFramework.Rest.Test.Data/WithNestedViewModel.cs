@@ -15,7 +15,7 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class WithNestedViewModel : IViewModel {
     private int deriveCheck;
@@ -46,7 +46,7 @@ public class WithNestedViewModel : IViewModel {
             throw new Exception("Derive called multiple times");
         }
 
-        var keys = new List<string> {AReference.Id.ToString()};
+        var keys = new List<string> { AReference.Id.ToString() };
         keys.AddRange(AViewModelReference.TestDeriveKeys());
         return keys.ToArray();
     }

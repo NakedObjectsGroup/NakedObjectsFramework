@@ -26,7 +26,7 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -69,9 +69,9 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ICreatedCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is CreatedCallbackFacetViaMethod);
-        var createdCallbackFacetViaMethod = (CreatedCallbackFacetViaMethod) facet;
+        var createdCallbackFacetViaMethod = (CreatedCallbackFacetViaMethod)facet;
         Assert.AreEqual(method, createdCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method});
+        AssertMethodsRemoved(new[] { method });
         Assert.IsNotNull(metamodel);
     }
 
@@ -84,9 +84,9 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDeletedCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DeletedCallbackFacetViaMethod);
-        var deletedCallbackFacetViaMethod = (DeletedCallbackFacetViaMethod) facet;
+        var deletedCallbackFacetViaMethod = (DeletedCallbackFacetViaMethod)facet;
         Assert.AreEqual(method, deletedCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method});
+        AssertMethodsRemoved(new[] { method });
         Assert.IsNotNull(metamodel);
     }
 
@@ -99,9 +99,9 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDeletingCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DeletingCallbackFacetViaMethod);
-        var deletingCallbackFacetViaMethod = (DeletingCallbackFacetViaMethod) facet;
+        var deletingCallbackFacetViaMethod = (DeletingCallbackFacetViaMethod)facet;
         Assert.AreEqual(method, deletingCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method});
+        AssertMethodsRemoved(new[] { method });
         Assert.IsNotNull(metamodel);
     }
 
@@ -124,9 +124,9 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ILoadedCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is LoadedCallbackFacetViaMethod);
-        var loadedCallbackFacetViaMethod = (LoadedCallbackFacetViaMethod) facet;
+        var loadedCallbackFacetViaMethod = (LoadedCallbackFacetViaMethod)facet;
         Assert.AreEqual(method, loadedCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method});
+        AssertMethodsRemoved(new[] { method });
         Assert.IsNotNull(metamodel);
     }
 
@@ -139,9 +139,9 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(ILoadingCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is LoadingCallbackFacetViaMethod);
-        var loadingCallbackFacetViaMethod = (LoadingCallbackFacetViaMethod) facet;
+        var loadingCallbackFacetViaMethod = (LoadingCallbackFacetViaMethod)facet;
         Assert.AreEqual(method, loadingCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method});
+        AssertMethodsRemoved(new[] { method });
         Assert.IsNotNull(metamodel);
     }
 
@@ -149,7 +149,7 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOnPersistingErrorLifecycleMethodNullFacet() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer10), "OnPersistingError", new[] {typeof(Exception)});
+        var method = FindMethod(typeof(Customer10), "OnPersistingError", new[] { typeof(Exception) });
         Assert.IsNull(method);
         metamodel = facetFactory.Process(Reflector, typeof(Customer10), MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IOnPersistingErrorCallbackFacet));
@@ -162,15 +162,15 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOnPersistingErrorLifecycleMethodPickedUpOn() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method1 = FindMethod(typeof(Customer11), "OnUpdatingError", new[] {typeof(Exception)});
-        var method2 = FindMethod(typeof(Customer11), "OnPersistingError", new[] {typeof(Exception)});
+        var method1 = FindMethod(typeof(Customer11), "OnUpdatingError", new[] { typeof(Exception) });
+        var method2 = FindMethod(typeof(Customer11), "OnPersistingError", new[] { typeof(Exception) });
         metamodel = facetFactory.Process(Reflector, typeof(Customer11), MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IOnPersistingErrorCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is OnPersistingErrorCallbackFacetViaMethod);
-        var onPersistingErrorCallbackFacetViaMethod = (OnPersistingErrorCallbackFacetViaMethod) facet;
+        var onPersistingErrorCallbackFacetViaMethod = (OnPersistingErrorCallbackFacetViaMethod)facet;
         Assert.AreEqual(method2, onPersistingErrorCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method1, method2});
+        AssertMethodsRemoved(new[] { method1, method2 });
         // and test exception is passed through (assert in Customer11)
         var adapter = AdapterFor(new Customer11());
         onPersistingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
@@ -181,15 +181,15 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOnUpdatingErrorLifecycleMethodPickedUpOn() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method1 = FindMethod(typeof(Customer11), "OnUpdatingError", new[] {typeof(Exception)});
-        var method2 = FindMethod(typeof(Customer11), "OnPersistingError", new[] {typeof(Exception)});
+        var method1 = FindMethod(typeof(Customer11), "OnUpdatingError", new[] { typeof(Exception) });
+        var method2 = FindMethod(typeof(Customer11), "OnPersistingError", new[] { typeof(Exception) });
         metamodel = facetFactory.Process(Reflector, typeof(Customer11), MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IOnUpdatingErrorCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is OnUpdatingErrorCallbackFacetViaMethod);
-        var onUpdatingErrorCallbackFacetViaMethod = (OnUpdatingErrorCallbackFacetViaMethod) facet;
+        var onUpdatingErrorCallbackFacetViaMethod = (OnUpdatingErrorCallbackFacetViaMethod)facet;
         Assert.AreEqual(method1, onUpdatingErrorCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method1, method2});
+        AssertMethodsRemoved(new[] { method1, method2 });
         // and test exception is passed through (assert in Customer11)
         var adapter = AdapterFor(new Customer11());
         onUpdatingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
@@ -200,7 +200,7 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOnUpdatingErrorLifecycleNullFacet() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer10), "OnUpdatingError", new[] {typeof(Exception)});
+        var method = FindMethod(typeof(Customer10), "OnUpdatingError", new[] { typeof(Exception) });
         Assert.IsNull(method);
         metamodel = facetFactory.Process(Reflector, typeof(Customer10), MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IOnUpdatingErrorCallbackFacet));
@@ -218,9 +218,9 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPersistedCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PersistedCallbackFacetViaMethod);
-        var persistedCallbackFacetViaMethod = (PersistedCallbackFacetViaMethod) facet;
+        var persistedCallbackFacetViaMethod = (PersistedCallbackFacetViaMethod)facet;
         Assert.AreEqual(method, persistedCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method});
+        AssertMethodsRemoved(new[] { method });
         Assert.IsNotNull(metamodel);
     }
 
@@ -233,9 +233,9 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPersistingCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PersistingCallbackFacetViaMethod);
-        var persistingCallbackFacetViaMethod = (PersistingCallbackFacetViaMethod) facet;
+        var persistingCallbackFacetViaMethod = (PersistingCallbackFacetViaMethod)facet;
         Assert.AreEqual(method, persistingCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method});
+        AssertMethodsRemoved(new[] { method });
         Assert.IsNotNull(metamodel);
     }
 
@@ -270,9 +270,9 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IUpdatedCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is UpdatedCallbackFacetViaMethod);
-        var updatedCallbackFacetViaMethod = (UpdatedCallbackFacetViaMethod) facet;
+        var updatedCallbackFacetViaMethod = (UpdatedCallbackFacetViaMethod)facet;
         Assert.AreEqual(method, updatedCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method});
+        AssertMethodsRemoved(new[] { method });
         Assert.IsNotNull(metamodel);
     }
 
@@ -285,9 +285,9 @@ public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IUpdatingCallbackFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is UpdatingCallbackFacetViaMethod);
-        var updatingCallbackFacetViaMethod = (UpdatingCallbackFacetViaMethod) facet;
+        var updatingCallbackFacetViaMethod = (UpdatingCallbackFacetViaMethod)facet;
         Assert.AreEqual(method, updatingCallbackFacetViaMethod.GetMethod());
-        AssertMethodsRemoved(new[] {method});
+        AssertMethodsRemoved(new[] { method });
         Assert.IsNotNull(metamodel);
     }
 

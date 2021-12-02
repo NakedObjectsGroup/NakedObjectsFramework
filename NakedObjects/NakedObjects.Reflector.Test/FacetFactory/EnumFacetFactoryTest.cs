@@ -21,13 +21,13 @@ using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class EnumFacetFactoryTest : AbstractFacetFactoryTest {
     private EnumFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IEnumFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IEnumFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -39,8 +39,8 @@ public class EnumFacetFactoryTest : AbstractFacetFactoryTest {
         Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null)[1]);
         Assert.AreEqual(Cities.Paris, facetAsEnumFacet.GetChoices(null)[2]);
 
-        Assert.AreEqual(1, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork}).Length);
-        Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork})[0]);
+        Assert.AreEqual(1, facetAsEnumFacet.GetChoices(null, new object[] { Cities.NewYork }).Length);
+        Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null, new object[] { Cities.NewYork })[0]);
 
         var mock = new Mock<INakedObjectAdapter>();
         var nakedObjectAdapter = mock.Object;
@@ -114,7 +114,7 @@ public class EnumFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestEnumAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IEnumFacet));
         Assert.IsNotNull(facet);
@@ -140,7 +140,7 @@ public class EnumFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestEnumTypePickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(Cities)});
+        var method = FindMethod(typeof(Customer4), "SomeAction", new[] { typeof(Cities) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IEnumFacet));
         Assert.IsNotNull(facet);
@@ -153,7 +153,7 @@ public class EnumFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestEnumTypePickedUpOnNullableActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(Cities?)});
+        var method = FindMethod(typeof(Customer6), "SomeAction", new[] { typeof(Cities?) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IEnumFacet));
         Assert.IsNotNull(facet);

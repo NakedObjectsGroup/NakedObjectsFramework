@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<Color> {
@@ -28,7 +28,7 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     [TestMethod]
     public void TestParseValidString() {
         var str = Color.Beige.ToArgb().ToString();
-        var parsed = (Color) value.ParseTextEntry(str);
+        var parsed = (Color)value.ParseTextEntry(str);
         Assert.AreEqual(Color.Beige.ToArgb(), parsed.ToArgb());
     }
 
@@ -99,7 +99,7 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         var mgr = MockNakedObjectManager();
         var str = Color.Beige.ToArgb().ToString();
         IParseableFacet parser = new ParseableFacetUsingParser<Color>(value, null);
-        var parsed = (Color) parser.ParseInvariant(str, mgr.Object).Object;
+        var parsed = (Color)parser.ParseInvariant(str, mgr.Object).Object;
         Assert.AreEqual(Color.Beige.ToArgb(), parsed.ToArgb());
     }
 

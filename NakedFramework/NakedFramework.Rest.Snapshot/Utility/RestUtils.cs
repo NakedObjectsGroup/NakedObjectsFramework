@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -22,48 +21,48 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
 
-namespace NakedFramework.Rest.Snapshot.Utility; 
+namespace NakedFramework.Rest.Snapshot.Utility;
 
 public static class RestUtils {
+    private const string DateFormat = "yyyy-MM-dd";
+
     private static readonly Dictionary<Type, PredefinedJsonType> SimpleTypeMap = new() {
-        {typeof(sbyte), PredefinedJsonType.Number},
-        {typeof(byte), PredefinedJsonType.Number},
-        {typeof(short), PredefinedJsonType.Number},
-        {typeof(ushort), PredefinedJsonType.Number},
-        {typeof(int), PredefinedJsonType.Number},
-        {typeof(uint), PredefinedJsonType.Number},
-        {typeof(long), PredefinedJsonType.Number},
-        {typeof(ulong), PredefinedJsonType.Number},
-        {typeof(char), PredefinedJsonType.String},
-        {typeof(bool), PredefinedJsonType.Boolean},
-        {typeof(string), PredefinedJsonType.String},
-        {typeof(float), PredefinedJsonType.Number},
-        {typeof(double), PredefinedJsonType.Number},
-        {typeof(decimal), PredefinedJsonType.Number},
-        {typeof(void), PredefinedJsonType.Void}
+        { typeof(sbyte), PredefinedJsonType.Number },
+        { typeof(byte), PredefinedJsonType.Number },
+        { typeof(short), PredefinedJsonType.Number },
+        { typeof(ushort), PredefinedJsonType.Number },
+        { typeof(int), PredefinedJsonType.Number },
+        { typeof(uint), PredefinedJsonType.Number },
+        { typeof(long), PredefinedJsonType.Number },
+        { typeof(ulong), PredefinedJsonType.Number },
+        { typeof(char), PredefinedJsonType.String },
+        { typeof(bool), PredefinedJsonType.Boolean },
+        { typeof(string), PredefinedJsonType.String },
+        { typeof(float), PredefinedJsonType.Number },
+        { typeof(double), PredefinedJsonType.Number },
+        { typeof(decimal), PredefinedJsonType.Number },
+        { typeof(void), PredefinedJsonType.Void }
     };
 
     private static readonly Dictionary<Type, PredefinedFormatType?> SimpleFormatMap = new() {
-        {typeof(sbyte), PredefinedFormatType.Int},
-        {typeof(byte), PredefinedFormatType.Int},
-        {typeof(short), PredefinedFormatType.Int},
-        {typeof(ushort), PredefinedFormatType.Int},
-        {typeof(int), PredefinedFormatType.Int},
-        {typeof(uint), PredefinedFormatType.Int},
-        {typeof(long), PredefinedFormatType.Int},
-        {typeof(ulong), PredefinedFormatType.Int},
-        {typeof(char), PredefinedFormatType.String},
-        {typeof(bool), null},
-        {typeof(string), PredefinedFormatType.String},
-        {typeof(float), PredefinedFormatType.Decimal},
-        {typeof(double), PredefinedFormatType.Decimal},
-        {typeof(decimal), PredefinedFormatType.Decimal},
-        {typeof(byte[]), PredefinedFormatType.Blob},
-        {typeof(sbyte[]), PredefinedFormatType.Blob},
-        {typeof(char[]), PredefinedFormatType.Clob}
+        { typeof(sbyte), PredefinedFormatType.Int },
+        { typeof(byte), PredefinedFormatType.Int },
+        { typeof(short), PredefinedFormatType.Int },
+        { typeof(ushort), PredefinedFormatType.Int },
+        { typeof(int), PredefinedFormatType.Int },
+        { typeof(uint), PredefinedFormatType.Int },
+        { typeof(long), PredefinedFormatType.Int },
+        { typeof(ulong), PredefinedFormatType.Int },
+        { typeof(char), PredefinedFormatType.String },
+        { typeof(bool), null },
+        { typeof(string), PredefinedFormatType.String },
+        { typeof(float), PredefinedFormatType.Decimal },
+        { typeof(double), PredefinedFormatType.Decimal },
+        { typeof(decimal), PredefinedFormatType.Decimal },
+        { typeof(byte[]), PredefinedFormatType.Blob },
+        { typeof(sbyte[]), PredefinedFormatType.Blob },
+        { typeof(char[]), PredefinedFormatType.Clob }
     };
-
-    private const string DateFormat = "yyyy-MM-dd";
 
     public static MapRepresentation GetExtensions(string friendlyname,
                                                   string description,
@@ -83,8 +82,8 @@ public static class RestUtils {
                                                   IOidStrategy oidStrategy,
                                                   bool useDateOverDateTime) {
         var exts = new Dictionary<string, object> {
-            {JsonPropertyNames.FriendlyName, friendlyname},
-            {JsonPropertyNames.Description, description}
+            { JsonPropertyNames.FriendlyName, friendlyname },
+            { JsonPropertyNames.Description, description }
         };
 
         if (pluralName != null) {
@@ -198,7 +197,7 @@ public static class RestUtils {
             return PredefinedJsonType.Set;
         }
 
-        if (typeFacade.IsCollection || typeFacade.IsQueryable ) {
+        if (typeFacade.IsCollection || typeFacade.IsQueryable) {
             return PredefinedJsonType.List;
         }
 
@@ -357,8 +356,8 @@ public static class RestUtils {
             object max;
 
             if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?)) {
-                var minDays = (double) minRange.ToType(typeof(double), null);
-                var maxDays = (double) maxRange.ToType(typeof(double), null);
+                var minDays = (double)minRange.ToType(typeof(double), null);
+                var maxDays = (double)maxRange.ToType(typeof(double), null);
 
                 var earliest = DateTime.Today.AddDays(minDays);
                 var latest = DateTime.Today.AddDays(maxDays);
@@ -371,7 +370,7 @@ public static class RestUtils {
                 max = maxRange.ToType(propertyType, null);
             }
 
-            OptionalProperty[] op = {new("min", min), new("max", max)};
+            OptionalProperty[] op = { new("min", min), new("max", max) };
             var map = MapRepresentation.Create(op);
             customExtensions[JsonPropertyNames.CustomRange] = map;
         }
@@ -385,14 +384,14 @@ public static class RestUtils {
                                                               IFrameworkFacade frameworkFacade,
                                                               HttpRequest req,
                                                               RestControlFlags flags) {
-        var optionals = new List<OptionalProperty> {new(JsonPropertyNames.Title, SafeGetTitle(no))};
+        var optionals = new List<OptionalProperty> { new(JsonPropertyNames.Title, SafeGetTitle(no)) };
 
         columns ??= no.Specification.Properties.Select(p => p.Id).ToArray();
 
-        var properties = columns.Select(c => no.Specification.Properties.SingleOrDefault(p => p.Id == c)).Where(p => p != null && p.IsVisible(no)).Select(p => new PropertyContextFacade {Property = p, Target = no});
+        var properties = columns.Select(c => no.Specification.Properties.SingleOrDefault(p => p.Id == c)).Where(p => p != null && p.IsVisible(no)).Select(p => new PropertyContextFacade { Property = p, Target = no });
 
         var propertyReps = properties.Select(p => InlineMemberAbstractRepresentation.Create(frameworkFacade, req, p, flags, true)).ToArray();
-        var members = CreateMap(propertyReps.ToDictionary(m => m.Id, m => (object) m));
+        var members = CreateMap(propertyReps.ToDictionary(m => m.Id, m => (object)m));
 
         optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
 

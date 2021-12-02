@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Framework;
 using NakedObjects.Snapshot.Xml.utility;
 
-namespace NakedObjects.Snapshot.Xml.service; 
+namespace NakedObjects.Snapshot.Xml.service;
 
 [Named("XML Snapshot")]
 public class XmlSnapshotService : IXmlSnapshotService {

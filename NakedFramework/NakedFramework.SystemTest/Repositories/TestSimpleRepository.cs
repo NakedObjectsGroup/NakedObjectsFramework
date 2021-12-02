@@ -10,7 +10,7 @@ using System.Data.Entity;
 using NakedObjects.Services;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.Repositories; 
+namespace NakedObjects.SystemTest.Repositories;
 
 [TestFixture]
 public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext> {
@@ -18,12 +18,12 @@ public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext
     public void SetUp() {
         StartTest();
         var cust1To = NewTestObject<Customer>();
-        cust1 = (Customer) cust1To.GetDomainObject();
+        cust1 = (Customer)cust1To.GetDomainObject();
         cust1.Id = 1;
         cust1To.Save();
 
         var cust2To = NewTestObject<Customer>();
-        cust2 = (Customer) cust2To.GetDomainObject();
+        cust2 = (Customer)cust2To.GetDomainObject();
         cust2.Id = 2;
         cust2To.Save();
     }

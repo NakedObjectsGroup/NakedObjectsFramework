@@ -18,14 +18,13 @@ using NakedFramework.Metamodel.Facet;
 
 #pragma warning disable 612
 
-namespace NakedFramework.ParallelReflector.Utils; 
+namespace NakedFramework.ParallelReflector.Utils;
 
 public static class MethodHelpers {
     public static MethodInfo FindMethodWithOrWithoutParameters(IReflector reflector, Type type, MethodType methodType, string name, Type returnType, Type[] parms) =>
         FindMethod(reflector, type, methodType, name, returnType, parms) ??
         FindMethod(reflector, type, methodType, name, returnType, Type.EmptyTypes);
 
-      
     /// <summary>
     ///     Returns  specific public methods that: have the specified prefix; have the specified return Type, or
     ///     void, and has the specified number of parameters. If the returnType is specified as null then the return
@@ -98,12 +97,9 @@ public static class MethodHelpers {
         }
     }
 
-       
-
     public static void AddHideForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new HideForSessionFacetNone(specification));
 
     public static void AddDisableForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisableForSessionFacetNone(specification));
 
     public static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisabledFacetAlways(specification));
-
 }

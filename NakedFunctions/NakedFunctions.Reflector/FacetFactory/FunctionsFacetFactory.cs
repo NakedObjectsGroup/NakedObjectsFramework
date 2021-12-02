@@ -26,7 +26,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Facet;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 /// <summary>
 ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
@@ -102,7 +102,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
         if (!actionMethod.IsStatic) {
             throw new ReflectionException($"{actionMethod.DeclaringType}.{actionMethod.Name} must be static");
         }
-            
+
         var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
         var type = actionMethod.DeclaringType;
@@ -128,7 +128,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
             }
         }
 
-        var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod, onType, (IObjectSpecImmutable) returnSpec, (IObjectSpecImmutable) elementSpec,
+        var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod, onType, (IObjectSpecImmutable)returnSpec, (IObjectSpecImmutable)elementSpec,
                                                                    action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>());
 
         facets.Add(invokeFacet);
@@ -168,7 +168,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
                 throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
             }
 
-            facets.Add(new ElementTypeFacet(holder, elementType, (IObjectSpecImmutable) elementSpec));
+            facets.Add(new ElementTypeFacet(holder, elementType, (IObjectSpecImmutable)elementSpec));
         }
 
         FacetUtils.AddFacets(facets);

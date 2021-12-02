@@ -21,14 +21,14 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Util; 
+namespace NakedObjects.SystemTest.Util;
 
 public class GetTypeFromLoadedAssembliesTestAbstract {
     private static readonly IList<string> MasterTypeList = new List<string>();
     private static readonly IDictionary<string, Runs> Results = new Dictionary<string, Runs>();
 
     private static ModuleBuilder CreateModuleBuilder(string name) {
-        var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName {Name = name}, AssemblyBuilderAccess.Run);
+        var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName { Name = name }, AssemblyBuilderAccess.Run);
         return assemblyBuilder.DefineDynamicModule($"{name}Module");
     }
 
@@ -169,7 +169,7 @@ public class GetTypeFromLoadedAssembliesTestAbstract {
             indRuns.Add(elapsed);
         }
 
-        return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = totalElapsed};
+        return new Runs { IndividualRuns = indRuns.ToArray(), TotalRun = totalElapsed };
     }
 
     private static Task<long> CreateTask(Func<string, Type> funcUnderTest, IList<string> typeList, BlockingCollection<long> indRuns) {
@@ -191,7 +191,7 @@ public class GetTypeFromLoadedAssembliesTestAbstract {
         Task.WaitAll(tasks);
         sw.Stop();
 
-        return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = sw.ElapsedMilliseconds};
+        return new Runs { IndividualRuns = indRuns.ToArray(), TotalRun = sw.ElapsedMilliseconds };
     }
 
     private static Runs[] FindTypeFromLoadedAssembliesInParallelTenTimes(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
@@ -227,21 +227,21 @@ public class GetTypeFromLoadedAssembliesTestAbstract {
     public void TestHarnessFindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest) {
         // find each type in order
         var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, MasterTypeList);
-        CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
+        CollateResults(GetCurrentMethod(), new Runs { IndividualRuns = new[] { elapsed }, TotalRun = elapsed });
     }
 
     public void TestHarnessFindTypeFromLoadedAssembliesOnceRandomOrder(Func<string, Type> funcUnderTest) {
         // find each type in random order
         var randomList = Shuffle(MasterTypeList);
         var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, randomList);
-        CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
+        CollateResults(GetCurrentMethod(), new Runs { IndividualRuns = new[] { elapsed }, TotalRun = elapsed });
     }
 
     public void TestHarnessFindTypeFromLoadedAssembliesOnceRandomSelection(Func<string, Type> funcUnderTest) {
         // find a random selection of types 
         var randomList = RandomSelection(MasterTypeList);
         var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, randomList);
-        CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
+        CollateResults(GetCurrentMethod(), new Runs { IndividualRuns = new[] { elapsed }, TotalRun = elapsed });
     }
 
     public void TestHarnessFindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest) {

@@ -25,7 +25,7 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -316,7 +316,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IAutoCompleteFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is AutoCompleteFacet);
-        var propertyAutoCompleteFacet = (AutoCompleteFacet) facet;
+        var propertyAutoCompleteFacet = (AutoCompleteFacet)facet;
         Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
         AssertMethodRemoved(propertyAutoCompleteMethod);
         Assert.AreEqual(33, propertyAutoCompleteFacet.PageSize);
@@ -334,7 +334,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IAutoCompleteFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is AutoCompleteFacet);
-        var propertyAutoCompleteFacet = (AutoCompleteFacet) facet;
+        var propertyAutoCompleteFacet = (AutoCompleteFacet)facet;
         Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
         AssertMethodRemoved(propertyAutoCompleteMethod);
         Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
@@ -352,7 +352,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IAutoCompleteFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is AutoCompleteFacet);
-        var propertyAutoCompleteFacet = (AutoCompleteFacet) facet;
+        var propertyAutoCompleteFacet = (AutoCompleteFacet)facet;
         Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
         AssertMethodRemoved(propertyAutoCompleteMethod);
         Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
@@ -370,7 +370,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IAutoCompleteFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is AutoCompleteFacet);
-        var propertyAutoCompleteFacet = (AutoCompleteFacet) facet;
+        var propertyAutoCompleteFacet = (AutoCompleteFacet)facet;
         Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
         AssertMethodRemoved(propertyAutoCompleteMethod);
         Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
@@ -406,7 +406,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertyChoicesFacet);
-        var propertyChoicesFacet = (PropertyChoicesFacet) facet;
+        var propertyChoicesFacet = (PropertyChoicesFacet)facet;
         Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
         AssertMethodRemoved(propertyChoicesMethod);
         Assert.IsNotNull(metamodel);
@@ -418,12 +418,12 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
 
         var property = FindProperty(typeof(Customer18), "FirstName");
         var propertyChoicesMethod1 = FindMethod(typeof(Customer18), "ChoicesFirstName", Array.Empty<Type>());
-        var propertyChoicesMethod2 = FindMethod(typeof(Customer18), "ChoicesFirstName", new[] {typeof(string)});
+        var propertyChoicesMethod2 = FindMethod(typeof(Customer18), "ChoicesFirstName", new[] { typeof(string) });
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertyChoicesFacet);
-        var propertyChoicesFacet = (PropertyChoicesFacet) facet;
+        var propertyChoicesFacet = (PropertyChoicesFacet)facet;
         Assert.AreEqual(propertyChoicesMethod1, propertyChoicesFacet.GetMethod());
         AssertMethodRemoved(propertyChoicesMethod1);
         AssertMethodNotRemoved(propertyChoicesMethod2);
@@ -440,7 +440,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertyChoicesFacet);
-        var propertyChoicesFacet = (PropertyChoicesFacet) facet;
+        var propertyChoicesFacet = (PropertyChoicesFacet)facet;
         Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
         AssertMethodRemoved(propertyChoicesMethod);
         Assert.IsNotNull(metamodel);
@@ -456,7 +456,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertyChoicesFacet);
-        var propertyChoicesFacet = (PropertyChoicesFacet) facet;
+        var propertyChoicesFacet = (PropertyChoicesFacet)facet;
         Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
         AssertMethodRemoved(propertyChoicesMethod);
         Assert.IsNotNull(metamodel);
@@ -467,7 +467,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var property = FindProperty(typeof(Customer17), "FirstName");
-        var propertyChoicesMethod = FindMethod(typeof(Customer17), "ChoicesFirstName", new[] {typeof(string)});
+        var propertyChoicesMethod = FindMethod(typeof(Customer17), "ChoicesFirstName", new[] { typeof(string) });
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IPropertyChoicesFacet));
         Assert.IsNotNull(facet);
@@ -486,7 +486,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
-        var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
+        var propertyDefaultFacet = (PropertyDefaultFacetViaMethod)facet;
         Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
         AssertMethodRemoved(propertyDefaultMethod);
         Assert.IsNotNull(metamodel);
@@ -502,7 +502,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
-        var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
+        var propertyDefaultFacet = (PropertyDefaultFacetViaMethod)facet;
         Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
         AssertMethodRemoved(propertyDefaultMethod);
         Assert.IsNotNull(metamodel);
@@ -518,7 +518,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
-        var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
+        var propertyDefaultFacet = (PropertyDefaultFacetViaMethod)facet;
         Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
         AssertMethodRemoved(propertyDefaultMethod);
         Assert.IsNotNull(metamodel);
@@ -534,7 +534,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DisableForContextFacet);
-        var disableFacet = (DisableForContextFacet) facet;
+        var disableFacet = (DisableForContextFacet)facet;
         Assert.AreEqual(hideMethod, disableFacet.GetMethod());
         AssertMethodNotRemoved(hideMethod);
         Assert.IsNotNull(metamodel);
@@ -550,7 +550,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DisableForContextFacet);
-        var disableFacet = (DisableForContextFacet) facet;
+        var disableFacet = (DisableForContextFacet)facet;
         Assert.AreEqual(hideMethod, disableFacet.GetMethod());
         AssertMethodRemoved(hideMethod);
         Assert.IsNotNull(metamodel);
@@ -577,7 +577,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is DisableForContextFacet);
-        var propertyValidateFacet = (DisableForContextFacet) facet;
+        var propertyValidateFacet = (DisableForContextFacet)facet;
         Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
         AssertMethodRemoved(hideMethod);
         Assert.IsNotNull(metamodel);
@@ -603,7 +603,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IHideForContextFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is HideForContextFacet);
-        var propertyValidateFacet = (HideForContextFacet) facet;
+        var propertyValidateFacet = (HideForContextFacet)facet;
         Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
         AssertMethodNotRemoved(hideMethod);
         Assert.IsNotNull(metamodel);
@@ -619,7 +619,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IHideForContextFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is HideForContextFacet);
-        var propertyValidateFacet = (HideForContextFacet) facet;
+        var propertyValidateFacet = (HideForContextFacet)facet;
         Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
         Assert.IsNotNull(metamodel);
     }
@@ -634,7 +634,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IHideForContextFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is HideForContextFacet);
-        var propertyValidateFacet = (HideForContextFacet) facet;
+        var propertyValidateFacet = (HideForContextFacet)facet;
         Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
         AssertMethodRemoved(hideMethod);
         Assert.IsNotNull(metamodel);
@@ -650,7 +650,7 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IHideForContextFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is HideForContextFacet);
-        var propertyValidateFacet = (HideForContextFacet) facet;
+        var propertyValidateFacet = (HideForContextFacet)facet;
         Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
         AssertMethodRemoved(hideMethod);
         Assert.IsNotNull(metamodel);
@@ -661,12 +661,12 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var property = FindProperty(typeof(Customer7), "FirstName");
-        var propertyModifyMethod = FindMethod(typeof(Customer7), "ModifyFirstName", new[] {typeof(string)});
+        var propertyModifyMethod = FindMethod(typeof(Customer7), "ModifyFirstName", new[] { typeof(string) });
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IPropertySetterFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertySetterFacetViaModifyMethod);
-        var propertySetterFacet = (PropertySetterFacetViaModifyMethod) facet;
+        var propertySetterFacet = (PropertySetterFacetViaModifyMethod)facet;
         Assert.AreEqual(propertyModifyMethod, propertySetterFacet.GetMethod());
         AssertMethodRemoved(propertyModifyMethod);
         Assert.IsNotNull(metamodel);
@@ -740,12 +740,12 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var property = FindProperty(typeof(Customer4), "FirstName");
-        var propertyModifyMethod = FindMethod(typeof(Customer4), "ModifyFirstName", new[] {typeof(string)});
+        var propertyModifyMethod = FindMethod(typeof(Customer4), "ModifyFirstName", new[] { typeof(string) });
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IPropertySetterFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertySetterFacetViaModifyMethod);
-        var propertySetterFacet = (PropertySetterFacetViaModifyMethod) facet;
+        var propertySetterFacet = (PropertySetterFacetViaModifyMethod)facet;
         Assert.AreEqual(propertyModifyMethod, propertySetterFacet.GetMethod());
         AssertMethodRemoved(propertyModifyMethod);
         Assert.IsNotNull(metamodel);
@@ -779,12 +779,12 @@ public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var property = FindProperty(typeof(Customer12), "FirstName");
-        var propertyValidateMethod = FindMethod(typeof(Customer12), "ValidateFirstName", new[] {typeof(string)});
+        var propertyValidateMethod = FindMethod(typeof(Customer12), "ValidateFirstName", new[] { typeof(string) });
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IPropertyValidateFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is PropertyValidateFacetViaMethod);
-        var propertyValidateFacet = (PropertyValidateFacetViaMethod) facet;
+        var propertyValidateFacet = (PropertyValidateFacetViaMethod)facet;
         Assert.AreEqual(propertyValidateMethod, propertyValidateFacet.GetMethod());
         AssertMethodRemoved(propertyValidateMethod);
         Assert.IsNotNull(metamodel);

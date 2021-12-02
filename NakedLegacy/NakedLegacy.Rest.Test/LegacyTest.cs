@@ -8,9 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net;
-using NakedLegacy.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,11 +25,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace NakedLegacy.Rest.Test; 
+namespace NakedLegacy.Rest.Test;
 
 [Ignore("until project restarted")]
 public class LegacyTest : AcceptanceTestCase {
-    protected  Type[] LegacyTypes { get; } = {
+    protected Type[] LegacyTypes { get; } = {
         typeof(ClassWithTextString),
         typeof(ClassWithInternalCollection),
         typeof(ClassWithActionAbout),
@@ -46,7 +44,7 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithWholeNumber)
     };
 
-    protected Type[] LegacyServices { get; } = { typeof(SimpleService)};
+    protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
 
     protected override Type[] ObjectTypes { get; } = {
         typeof(ClassWithString),
@@ -75,7 +73,7 @@ public class LegacyTest : AcceptanceTestCase {
             AddLegacy(builder);
         };
 
-    protected new Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
+    protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
         config => {
             var context = new EFCoreObjectDbContext();
             context.Create();
@@ -255,7 +253,6 @@ public class LegacyTest : AcceptanceTestCase {
     //    //Assert.IsNotNull(parsedResult["members"]["Id"]);
     //}
 
-
     [Test]
     public void TestGetObjectWithField() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
@@ -287,8 +284,6 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestNOFToLegacy() {
-         
-
         var api = Api();
         var result = api.GetObject(FullName<ClassWithString>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -304,8 +299,6 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestNOFToLegacyCollection() {
-
-
         var api = Api();
         var result = api.GetObject(FullName<ClassWithString>(), "2");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -321,8 +314,6 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestLegacyToNOF() {
-          
-
         var api = Api();
         var result = api.GetObject(FullName<ClassWithLinkToNOFClass>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -337,8 +328,6 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestLegacyToNOFCollection() {
-
-
         var api = Api();
         var result = api.GetObject(FullName<ClassWithNOFInternalCollection>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -363,7 +352,6 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNotNull(parsedResult["members"]["Id"]);
-           
     }
 
     [Test]
@@ -380,7 +368,6 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("True", parsedResult["value"].ToString());
     }
 
-
     [Test]
     public void TestGetLegacyObjectWithInterface() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
@@ -393,7 +380,6 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
-          
     }
 
     [Test]
@@ -408,9 +394,7 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNotNull(parsedResult["members"]["ContributedAction"]);
-
     }
-
 
     [Test]
     public void TestGetLegacyObjectWithInterfaceConfirmSubtype() {
@@ -428,8 +412,6 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetLegacyObjectWithMenu() {
-
-
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -553,8 +535,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithWholeNumber()
-    {
+    public void TestGetObjectWithWholeNumber() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithWholeNumber>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -570,8 +551,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetWholeNumberProperty()
-    {
+    public void TestGetWholeNumberProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.WholeNumber));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -585,8 +565,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeUpdateAndPersistObjectWithWholeNumber()
-    {
+    public void TestInvokeUpdateAndPersistObjectWithWholeNumber() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newWholeNumber", new ScalarValue(66) } } };
 

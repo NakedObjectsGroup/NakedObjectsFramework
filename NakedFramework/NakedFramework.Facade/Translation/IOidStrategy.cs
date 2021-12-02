@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Translation; 
+namespace NakedFramework.Facade.Translation;
 
 public interface IOidStrategy {
     IFrameworkFacade FrameworkFacade { set; }

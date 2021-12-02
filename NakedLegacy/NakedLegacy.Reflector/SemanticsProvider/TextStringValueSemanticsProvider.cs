@@ -14,7 +14,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.SemanticsProvider; 
+namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
 public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbstract<TextString>, IStringValueFacet {
@@ -46,9 +46,7 @@ public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbs
 
     protected override string DoEncode(TextString textString) => textString.Text;
 
-    protected override TextString DoRestore(string data) {
-        return new TextString(data);
-    }
+    protected override TextString DoRestore(string data) => new TextString(data);
 
     private static bool IsEscaped(string text) => text.StartsWith("/");
 

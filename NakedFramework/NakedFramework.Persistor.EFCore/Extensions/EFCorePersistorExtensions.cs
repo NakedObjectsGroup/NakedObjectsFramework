@@ -7,7 +7,6 @@
 
 using System;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +17,7 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Component;
 using NakedFramework.Persistor.EFCore.Configuration;
 
-namespace NakedFramework.Persistor.EFCore.Extensions; 
+namespace NakedFramework.Persistor.EFCore.Extensions;
 
 public static class EFCorePersistorExtensions {
     private static EFCorePersistorConfiguration EF6ObjectStoreConfiguration(IConfiguration configuration, EFCorePersistorOptions options) {
@@ -26,7 +25,7 @@ public static class EFCorePersistorExtensions {
             MaximumCommitCycles = options.MaximumCommitCycles
         };
 
-        var contexts = options.ContextCreators.Select(ci => (Func<DbContext>) (() => ci(configuration))).ToArray();
+        var contexts = options.ContextCreators.Select(ci => () => ci(configuration)).ToArray();
         config.Contexts = contexts;
         return config;
     }

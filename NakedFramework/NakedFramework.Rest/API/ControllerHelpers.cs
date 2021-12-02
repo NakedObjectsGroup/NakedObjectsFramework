@@ -22,7 +22,7 @@ using NakedFramework.Rest.Snapshot.Error;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.API; 
+namespace NakedFramework.Rest.API;
 
 public static class ControllerHelpers {
     public static string DebugFilter(Func<string> msgFunc) => RestSnapshot.DebugFilter(msgFunc);
@@ -244,11 +244,11 @@ public static class ControllerHelpers {
         };
 
         if (cacheTime == 0) {
-            responseHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true, MaxAge = new TimeSpan(0, 0, 0, cacheTime)};
+            responseHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, MaxAge = new TimeSpan(0, 0, 0, cacheTime) };
             responseHeaders.Append(HeaderNames.Pragma, "no-cache");
         }
         else {
-            responseHeaders.CacheControl = new CacheControlHeaderValue {MaxAge = new TimeSpan(0, 0, 0, cacheTime)};
+            responseHeaders.CacheControl = new CacheControlHeaderValue { MaxAge = new TimeSpan(0, 0, 0, cacheTime) };
         }
 
         var now = DateTime.UtcNow;
@@ -265,12 +265,12 @@ public static class ControllerHelpers {
 
     public static IDictionary<string, string> GetOptionalCapabilities(IRestfulObjectsConfiguration config) =>
         new Dictionary<string, string> {
-            {"protoPersistentObjects", config.ProtoPersistentObjects ? "yes" : "no"},
-            {"deleteObjects", config.DeleteObjects ? "yes" : "no"},
-            {"validateOnly", config.ValidateOnly ? "yes" : "no"},
-            {"domainModel", config.DomainModel},
-            {"blobsClobs", config.BlobsClobs ? "yes" : "no"},
-            {"inlinedMemberRepresentations", config.InlinedMemberRepresentations ? "yes" : "no"}
+            { "protoPersistentObjects", config.ProtoPersistentObjects ? "yes" : "no" },
+            { "deleteObjects", config.DeleteObjects ? "yes" : "no" },
+            { "validateOnly", config.ValidateOnly ? "yes" : "no" },
+            { "domainModel", config.DomainModel },
+            { "blobsClobs", config.BlobsClobs ? "yes" : "no" },
+            { "inlinedMemberRepresentations", config.InlinedMemberRepresentations ? "yes" : "no" }
         };
 
     public static T HandleMalformed<T>(Func<T> f) {
@@ -291,7 +291,7 @@ public static class ControllerHelpers {
     public static void ValidateDomainModel(string domainModel) {
         if (domainModel != null && domainModel != RestControlFlags.DomainModelType.Simple.ToString().ToLower() && domainModel != RestControlFlags.DomainModelType.Formal.ToString().ToLower()) {
             var msg = $"Invalid domainModel: {domainModel}";
-            throw new ValidationException((int) HttpStatusCode.BadRequest, msg);
+            throw new ValidationException((int)HttpStatusCode.BadRequest, msg);
         }
     }
 
@@ -304,7 +304,7 @@ public static class ControllerHelpers {
     public static void RejectRequestIfReadOnly(RestfulObjectsControllerBase controller) {
         if (controller.IsReadOnly) {
             var msg = DebugFilter(() => "In readonly mode");
-            throw new ValidationException((int) HttpStatusCode.Forbidden, msg);
+            throw new ValidationException((int)HttpStatusCode.Forbidden, msg);
         }
     }
 

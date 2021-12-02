@@ -8,7 +8,7 @@
 using System;
 using System.Reflection;
 
-namespace NakedFramework.Architecture.Component; 
+namespace NakedFramework.Architecture.Component;
 
 /// <summary>
 ///     Strategy used to determine facts about classes, such as whether an an obj of a particular class can be

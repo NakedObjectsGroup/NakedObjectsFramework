@@ -17,7 +17,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Authorization; 
+namespace NakedFramework.Metamodel.Authorization;
 
 [Serializable]
 public abstract class AbstractAuthorizationManager : IAuthorizationManager, IFacetDecorator {

@@ -7,7 +7,7 @@
 
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Error; 
+namespace NakedFramework.Facade.Error;
 
 public class PreconditionMissingNOSException : NakedObjectsFacadeException {
     public IObjectFacade SourceNakedObject { get; set; }

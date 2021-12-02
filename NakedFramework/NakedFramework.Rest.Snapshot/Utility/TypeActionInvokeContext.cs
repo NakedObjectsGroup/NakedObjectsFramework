@@ -9,18 +9,9 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Error;
 
-namespace NakedFramework.Rest.Snapshot.Utility; 
+namespace NakedFramework.Rest.Snapshot.Utility;
 
 public class TypeActionInvokeContext {
-    #region ActionType enum
-
-    private enum ActionType {
-        IsSubtypeOf,
-        IsSupertypeOf
-    }
-
-    #endregion
-
     private readonly ActionType aType;
 
     public TypeActionInvokeContext(string actionName, string typeName) {
@@ -42,4 +33,13 @@ public class TypeActionInvokeContext {
 
     public ITypeFacade ThisSpecification { get; set; }
     public ITypeFacade OtherSpecification { get; set; }
+
+    #region ActionType enum
+
+    private enum ActionType {
+        IsSubtypeOf,
+        IsSupertypeOf
+    }
+
+    #endregion
 }

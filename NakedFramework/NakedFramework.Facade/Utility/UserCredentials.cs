@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedFramework.Facade.Utility; 
+namespace NakedFramework.Facade.Utility;
 
 public class UserCredentials {
     public UserCredentials(string user, string password, List<string> roles) {

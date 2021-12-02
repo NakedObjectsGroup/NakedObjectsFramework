@@ -9,7 +9,7 @@ using System;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedFramework.Architecture.Reflect; 
+namespace NakedFramework.Architecture.Reflect;
 
 /// <summary>
 ///     Enumerates the features that a particular annotation can be applied to.

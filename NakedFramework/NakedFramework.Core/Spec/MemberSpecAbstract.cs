@@ -19,7 +19,7 @@ using NakedFramework.Core.Interactions;
 using NakedFramework.Core.Reflect;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Spec; 
+namespace NakedFramework.Core.Spec;
 
 public abstract class MemberSpecAbstract : IMemberSpec {
     private readonly IMemberSpecImmutable memberSpecImmutable;

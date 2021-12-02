@@ -27,7 +27,7 @@ using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.FacetFactory; 
+namespace NakedLegacy.Reflector.FacetFactory;
 
 public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;
@@ -41,8 +41,7 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
 
     public string[] Prefixes => FixedPrefixes;
 
-    private static string GetMenuName(ITypeSpecImmutable spec) =>  spec.GetFacet<INamedFacet>().NaturalName;
-
+    private static string GetMenuName(ITypeSpecImmutable spec) => spec.GetFacet<INamedFacet>().NaturalName;
 
     private static string MatchMethod(string legacyName, Type declaringType) {
         var name = $"action{legacyName}";
@@ -50,7 +49,6 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
 
         return action?.Name ?? legacyName;
     }
-
 
     private static IMenuImmutable ConvertLegacyToNOFMenu(MainMenu legacyMenu, Type type, IMetamodelBuilder metamodel) {
         var spec = metamodel.GetSpecification(type);
@@ -60,7 +58,7 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
                 case SubMenu sm:
                     var nsm = mi.CreateSubMenu(sm.Name);
                     // temp hack
-                    nsm.AddAction(MatchMethod(sm.Menus.Cast<IMenu>().First().Name, type));
+                    nsm.AddAction(MatchMethod(sm.Menus.First().Name, type));
                     break;
                 case Menu m:
                     mi.AddAction(MatchMethod(m.Name, type));
@@ -70,7 +68,6 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
 
         return mi;
     }
-
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         // instance

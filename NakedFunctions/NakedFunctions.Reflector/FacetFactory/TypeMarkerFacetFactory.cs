@@ -19,7 +19,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using static NakedFunctions.Reflector.Utils.FactoryUtils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class TypeMarkerFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)

@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -22,12 +21,14 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Interactions;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Spec; 
+namespace NakedFramework.Core.Spec;
 
 public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
     private readonly IActionSpecImmutable actionSpecImmutable;
     private readonly ILogger<ActionSpec> logger;
     private readonly ILoggerFactory loggerFactory;
+
+    private string asString;
 
     private IObjectSpec elementSpec;
     private bool? hasReturn;
@@ -73,10 +74,7 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
         return Parameters[position];
     }
 
-    private string asString;
-
     public override string ToString() => asString ??= $"Action[{base.ToString()},returns={ReturnSpec},parameters={{{string.Join(",", Parameters.Select(p => p.Spec.ShortName))}}}]";
-
 
     #region IActionSpec Members
 
@@ -109,7 +107,7 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
         var target = RealTarget(nakedObjectAdapter);
         var result = ActionInvocationFacet.Invoke(target, parms, Framework);
 
-        if (result is {Oid: null}) {
+        if (result is { Oid: null }) {
             result.SetATransientOid(new CollectionMemento(Framework, loggerFactory.CreateLogger<CollectionMemento>(), nakedObjectAdapter, this, parameterSet));
         }
 
@@ -165,7 +163,7 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
     }
 
     public override IConsent IsUsable(INakedObjectAdapter target) {
-        IInteractionContext ic = InteractionContext.InvokingAction(Framework, false, RealTarget(target), Identifier, new[] {target});
+        IInteractionContext ic = InteractionContext.InvokingAction(Framework, false, RealTarget(target), Identifier, new[] { target });
         return InteractionUtils.IsUsable(this, ic);
     }
 
@@ -174,7 +172,7 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
     public override bool IsVisibleWhenPersistent(INakedObjectAdapter target) => base.IsVisibleWhenPersistent(RealTarget(target));
 
     public INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) =>
-        parameterSet ?? (IsContributedMethod ? new[] {target} : Array.Empty<INakedObjectAdapter>());
+        parameterSet ?? (IsContributedMethod ? new[] { target } : Array.Empty<INakedObjectAdapter>());
 
     public bool IsLocallyContributedTo(ITypeSpec typeSpec, string id) =>
         Framework.MetamodelManager.Metamodel.GetSpecification(typeSpec.FullName) is IObjectSpecImmutable spec &&

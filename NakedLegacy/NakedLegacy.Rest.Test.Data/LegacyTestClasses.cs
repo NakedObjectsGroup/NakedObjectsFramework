@@ -14,7 +14,7 @@ using NakedObjects;
 
 // ReSharper disable InconsistentNaming
 
-namespace NakedLegacy.Rest.Test.Data; 
+namespace NakedLegacy.Rest.Test.Data;
 
 public interface ILegacyRoleInterface { }
 
@@ -189,6 +189,8 @@ public class ClassWithWholeNumber {
 
     public WholeNumber WholeNumber => _wholeNumber ??= new WholeNumber(number, i => number = i);
 
+    public static bool TestVisible { get; set; } = true;
+
     public Title Title() => WholeNumber.Title();
 
     public ClassWithWholeNumber actionUpdateWholeNumber(WholeNumber newWholeNumber) {
@@ -205,6 +207,4 @@ public class ClassWithWholeNumber {
             actionAbout.Usable = true;
         }
     }
-
-    public static bool TestVisible { get; set; } = true;
 }

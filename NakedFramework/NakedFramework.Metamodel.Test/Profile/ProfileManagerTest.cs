@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Profile;
 using NakedFramework.Profile;
 
-namespace NakedObjects.Meta.Test.Profile; 
+namespace NakedObjects.Meta.Test.Profile;
 
 [TestClass]
 public class ProfileManagerTest {
@@ -66,7 +66,7 @@ public class ProfileManagerTest {
         var auditor = new Mock<IProfiler>();
 
         config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
-        config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent> {eventToTest});
+        config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent> { eventToTest });
 
         var manager = new ProfileManager(config.Object);
 

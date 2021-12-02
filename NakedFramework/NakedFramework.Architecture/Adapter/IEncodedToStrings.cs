@@ -5,7 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Architecture.Adapter; 
+namespace NakedFramework.Architecture.Adapter;
 
 /// <summary>
 ///     Indicates that the implementing class should be able to be encoded to an array of strings

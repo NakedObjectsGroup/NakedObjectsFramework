@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Metamodel.Error; 
+namespace NakedFramework.Metamodel.Error;
 
 /// <summary>
 ///     The interaction is invalid because the property or action parameter is mandatory

@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Core.Error; 
+namespace NakedFramework.Core.Error;
 
 public abstract class NakedObjectException : Exception {
     protected NakedObjectException() { }

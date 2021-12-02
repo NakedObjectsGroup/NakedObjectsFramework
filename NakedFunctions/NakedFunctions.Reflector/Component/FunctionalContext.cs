@@ -11,7 +11,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 
-namespace NakedFunctions.Reflector.Component; 
+namespace NakedFunctions.Reflector.Component;
 
 public record FunctionalContext : IContext {
     internal IDictionary<object, object> ProxyMap = new Dictionary<object, object>();
@@ -28,14 +28,14 @@ public record FunctionalContext : IContext {
 
     public T GetService<T>() => Provider.GetService<T>();
 
-    public IContext WithNew<T>(T newObj) where T : class  => this with {New = New.Append(newObj).ToArray()};
+    public IContext WithNew<T>(T newObj) where T : class => this with { New = New.Append(newObj).ToArray() };
 
-    public IContext WithUpdated<T>(T proxy, T updated) where T : class => this with {Updated = Updated.Append((proxy, updated)).ToArray()};
-    public IContext WithDeleted<T>(T deleteObj) where T : class => this with {Deleted = Deleted.Append(deleteObj).ToArray()};
+    public IContext WithUpdated<T>(T proxy, T updated) where T : class => this with { Updated = Updated.Append((proxy, updated)).ToArray() };
+    public IContext WithDeleted<T>(T deleteObj) where T : class => this with { Deleted = Deleted.Append(deleteObj).ToArray() };
 
-    public IContext WithDeferred(Func<IContext, IContext> function) => this with {PostSaveFunction = function};
+    public IContext WithDeferred(Func<IContext, IContext> function) => this with { PostSaveFunction = function };
 
-    public T Reload<T>(T unsaved) where T : class => ProxyMap.ContainsKey(unsaved) ? (T) ProxyMap[unsaved] : Persistor.ValidateProxy(unsaved);
+    public T Reload<T>(T unsaved) where T : class => ProxyMap.ContainsKey(unsaved) ? (T)ProxyMap[unsaved] : Persistor.ValidateProxy(unsaved);
 
-    public T Resolve<T>(T obj) where T : class => (T) Persistor.Resolve(obj);
+    public T Resolve<T>(T obj) where T : class => (T)Persistor.Resolve(obj);
 }

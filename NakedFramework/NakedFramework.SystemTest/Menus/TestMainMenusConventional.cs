@@ -15,7 +15,7 @@ using TestObjectMenu;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Menus.Service2; 
+namespace NakedObjects.SystemTest.Menus.Service2;
 
 [TestFixture]
 public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext> {
@@ -189,7 +189,7 @@ public class LocalMainMenus {
         var empty2 = factory.NewMenu<object>(false, "Empty2");
         empty2.CreateSubMenu("Sub");
 
-        return new[] {foos, bars, q, subs, hyb, empty, empty2};
+        return new[] { foos, bars, q, subs, hyb, empty, empty2 };
     }
 }
 

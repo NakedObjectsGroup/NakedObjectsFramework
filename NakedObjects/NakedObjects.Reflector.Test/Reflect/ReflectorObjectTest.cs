@@ -15,7 +15,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 
-namespace NakedObjects.Reflector.Test.Reflect; 
+namespace NakedObjects.Reflector.Test.Reflect;
 
 public class TestDomainObject {
     public void Action(DateTime? test) { }
@@ -27,7 +27,7 @@ public class ReflectorObjectTest : AbstractReflectorTest {
         var objectReflector = reflector as ObjectReflector;
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
         (_, metamodel) = reflector.LoadSpecification(typeof(TestDomainObject), metamodel);
-        return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(TestDomainObject), metamodel);
+        return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(TestDomainObject), metamodel);
     }
 
     [TestMethod]
@@ -66,7 +66,7 @@ public class ReflectorObjectTest : AbstractReflectorTest {
 
     [TestMethod]
     public void TestNoTypeOfFacet() {
-        var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
+        var facet = (ITypeOfFacet)Specification.GetFacet(typeof(ITypeOfFacet));
         Assert.IsNull(facet);
     }
 
@@ -83,7 +83,7 @@ public class ReflectorObjectTest : AbstractReflectorTest {
 
     [TestMethod]
     public void TestTypeOfFacet() {
-        var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
+        var facet = (ITypeOfFacet)Specification.GetFacet(typeof(ITypeOfFacet));
         Assert.IsNull(facet);
     }
 }

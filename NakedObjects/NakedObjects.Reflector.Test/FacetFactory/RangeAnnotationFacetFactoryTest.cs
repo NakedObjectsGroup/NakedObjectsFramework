@@ -20,13 +20,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class RangeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private RangeAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(IRangeFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(IRangeFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -44,12 +44,12 @@ public class RangeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestRangeAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IRangeFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is RangeFacet);
-        var rangeFacetAnnotation = (RangeFacet) facet;
+        var rangeFacetAnnotation = (RangeFacet)facet;
         Assert.AreEqual(1, rangeFacetAnnotation.Min);
         Assert.AreEqual(10, rangeFacetAnnotation.Max);
         Assert.IsNotNull(metamodel);
@@ -64,7 +64,7 @@ public class RangeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IRangeFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is RangeFacet);
-        var rangeFacetAnnotation = (RangeFacet) facet;
+        var rangeFacetAnnotation = (RangeFacet)facet;
         Assert.AreEqual(1, rangeFacetAnnotation.Min);
         Assert.AreEqual(10, rangeFacetAnnotation.Max);
         Assert.IsNotNull(metamodel);

@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Core.Error;
 using NakedFramework.Error;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class InvokeUtils {
     public static object InvokeStatic(MethodInfo method, object[] parameters) => Invoke(method, null, parameters);

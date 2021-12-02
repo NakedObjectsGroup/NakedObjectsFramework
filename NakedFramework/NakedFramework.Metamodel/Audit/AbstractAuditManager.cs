@@ -11,7 +11,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Metamodel.Audit; 
+namespace NakedFramework.Metamodel.Audit;
 
 [Serializable]
 public abstract class AbstractAuditManager {

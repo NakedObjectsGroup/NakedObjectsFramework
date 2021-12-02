@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
-namespace NakedFramework.DependencyInjection.Component; 
+namespace NakedFramework.DependencyInjection.Component;
 
 public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
     private readonly Type[] facetFactories;

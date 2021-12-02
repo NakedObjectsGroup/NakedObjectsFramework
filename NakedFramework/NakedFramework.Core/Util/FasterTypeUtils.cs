@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class FasterTypeUtils {
     private const string SystemTypePrefix = "System.";
@@ -42,9 +42,7 @@ public static class FasterTypeUtils {
 
     private static bool IsNakedFunctions(string typeName) => typeName.StartsWith(NakedFunctionsTypePrefix, StringComparison.Ordinal);
 
-    private static bool IsNaked(string fullName) {
-        return IsNakedFramework(fullName) || IsNakedObjects(fullName) || IsNakedFunctions(fullName);
-    }
+    private static bool IsNaked(string fullName) => IsNakedFramework(fullName) || IsNakedObjects(fullName) || IsNakedFunctions(fullName);
 
     private static bool IsNaked(Type type) {
         var fullName = type?.FullName ?? "";

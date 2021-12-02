@@ -2,7 +2,7 @@
 using System.Reflection;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.Facet; 
+namespace NakedLegacy.Reflector.Facet;
 
 public static class AboutHelpers {
     public enum AboutType {
@@ -16,8 +16,8 @@ public static class AboutHelpers {
         return aboutParam.Union(placeholders).ToArray();
     }
 
-    public static IAbout AboutFactory(this AboutType aboutType, AboutTypeCodes aboutTypeCode) => 
-        aboutType is AboutType.Action 
-            ? new ActionAboutImpl(aboutTypeCode) 
+    public static IAbout AboutFactory(this AboutType aboutType, AboutTypeCodes aboutTypeCode) =>
+        aboutType is AboutType.Action
+            ? new ActionAboutImpl(aboutTypeCode)
             : new FieldAboutImpl(aboutTypeCode);
 }

@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 public sealed class ViewModelOid : IEncodedToStrings, IViewModelOid {
     private readonly IMetamodelManager metamodel;
@@ -28,7 +28,7 @@ public sealed class ViewModelOid : IEncodedToStrings, IViewModelOid {
         this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
         IsTransient = false;
         TypeName = TypeNameUtils.EncodeTypeName(spec.FullName);
-        Keys = new[] {Guid.NewGuid().ToString()};
+        Keys = new[] { Guid.NewGuid().ToString() };
         CacheState();
     }
 
@@ -37,7 +37,7 @@ public sealed class ViewModelOid : IEncodedToStrings, IViewModelOid {
         var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
         TypeName = helper.GetNextString();
 
-        Keys = helper.HasNext ? helper.GetNextArray() : new[] {Guid.NewGuid().ToString()};
+        Keys = helper.HasNext ? helper.GetNextArray() : new[] { Guid.NewGuid().ToString() };
 
         IsTransient = false;
         CacheState();
@@ -86,7 +86,7 @@ public sealed class ViewModelOid : IEncodedToStrings, IViewModelOid {
     public ITypeSpec Spec => metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName));
 
     public void UpdateKeys(string[] newKeys, bool final) {
-        previous = new ViewModelOid(metamodel, (IObjectSpec) Spec) {Keys = Keys};
+        previous = new ViewModelOid(metamodel, (IObjectSpec)Spec) { Keys = Keys };
         Keys = newKeys; // after old key is saved ! 
         IsFinal = final;
         CacheState();

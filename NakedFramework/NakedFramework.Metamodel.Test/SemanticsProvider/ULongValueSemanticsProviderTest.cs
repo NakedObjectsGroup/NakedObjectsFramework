@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class ULongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<ulong> {
@@ -101,7 +101,7 @@ public class ULongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
 
     [TestMethod]
     public void TestValue() {
-        var facet = (IUnsignedLongValueFacet) GetValue();
+        var facet = (IUnsignedLongValueFacet)GetValue();
         const ulong testValue = 121L;
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);

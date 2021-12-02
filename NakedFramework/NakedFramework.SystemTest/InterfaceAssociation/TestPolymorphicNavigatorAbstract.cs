@@ -16,7 +16,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.PolymorphicNavigator; 
+namespace NakedObjects.SystemTest.PolymorphicNavigator;
 
 //[TestFixture]
 public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<PolymorphicNavigationContext> {

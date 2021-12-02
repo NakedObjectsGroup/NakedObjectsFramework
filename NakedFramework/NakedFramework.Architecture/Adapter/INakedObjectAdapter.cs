@@ -9,7 +9,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Resolve;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Adapter; 
+namespace NakedFramework.Architecture.Adapter;
 
 /// <summary>
 ///     An INakedObjectAdapter is an adapter to domain objects. The NOF always deals with domain objects via these

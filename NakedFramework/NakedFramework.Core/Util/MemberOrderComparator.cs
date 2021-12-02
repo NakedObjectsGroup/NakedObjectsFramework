@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 /// <summary>
 ///     Compares by <see cref="IMemberOrderFacet" /> obtained from each <see cref="IMemberSpecImmutable" />

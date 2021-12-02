@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Framework;
 using NakedObjects.Async;
 using NakedObjects.Core.Container;
 
-namespace NakedObjects.Core.Async; 
+namespace NakedObjects.Core.Async;
 
 /// <summary>
 ///     A service to be injected into domain code that allows multiple actions to be initiated

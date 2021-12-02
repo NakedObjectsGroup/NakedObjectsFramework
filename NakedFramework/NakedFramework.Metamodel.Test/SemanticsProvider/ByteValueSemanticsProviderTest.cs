@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class ByteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<byte> {
@@ -28,7 +28,7 @@ public class ByteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     [TestMethod]
     public void TestParseValidString() {
         var parsed = value.ParseTextEntry("21");
-        Assert.AreEqual((byte) 21, parsed);
+        Assert.AreEqual((byte)21, parsed);
     }
 
     [TestMethod]
@@ -55,7 +55,7 @@ public class ByteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     [TestMethod]
     public void TestDecode() {
         object parsed = value.FromEncodedString("91");
-        Assert.AreEqual((byte) 91, parsed);
+        Assert.AreEqual((byte)91, parsed);
     }
 
     [TestMethod]
@@ -105,13 +105,13 @@ public class ByteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     public void TestAsParserInvariant() {
         var mgr = MockNakedObjectManager();
         IParseableFacet parser = new ParseableFacetUsingParser<byte>(value, null);
-        Assert.AreEqual((byte) 91, parser.ParseInvariant("91", mgr.Object).Object);
+        Assert.AreEqual((byte)91, parser.ParseInvariant("91", mgr.Object).Object);
     }
 
     [TestMethod]
     public void TestAsParserTitle() {
         IParseableFacet parser = new ParseableFacetUsingParser<byte>(value, null);
-        var mockAdapter = MockAdapter((byte) 101);
+        var mockAdapter = MockAdapter((byte)101);
         Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
     }
 

@@ -21,7 +21,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 /// <summary>
 ///     This is generic portion of persistence logic, implemented as a composite wrapping the ObjectStore which is
@@ -51,7 +51,7 @@ public sealed class ObjectPersistor : IObjectPersistor {
             return spec.Subclasses.SelectMany(GetLeafNodes);
         }
 
-        return new[] {spec};
+        return new[] { spec };
     }
 
     #region IObjectPersistor Members
@@ -185,7 +185,7 @@ public sealed class ObjectPersistor : IObjectPersistor {
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 // LINQ needs cast - need to be careful with EF - safest to leave as loop
                 foreach (var subSpec in GetLeafNodes(spec)) {
-                    foreach (var instance in Instances((IObjectSpec) subSpec)) {
+                    foreach (var instance in Instances((IObjectSpec)subSpec)) {
                         instances.Add(instance);
                     }
                 }

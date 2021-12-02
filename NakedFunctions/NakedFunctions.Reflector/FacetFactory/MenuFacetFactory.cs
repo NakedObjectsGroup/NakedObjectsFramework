@@ -19,13 +19,13 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class MenuFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;
 
     static MenuFacetFactory() {
-        FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.MenuMethod};
+        FixedPrefixes = new[] { RecognisedMethodsAndPrefixes.MenuMethod };
     }
 
     public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)

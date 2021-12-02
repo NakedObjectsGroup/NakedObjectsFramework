@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet; 
+namespace NakedObjects.Metamodel.Test.Facet;
 
 [TestClass]
 public class ActionValidationFacetTest {
@@ -24,7 +24,7 @@ public class ActionValidationFacetTest {
 
     private static void DelegateFuncTest(MethodInfo method) {
         IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null, mockLogger);
-        var facet = (IActionValidationFacet) actionValidationFacet;
+        var facet = (IActionValidationFacet)actionValidationFacet;
         Assert.IsNotNull(actionValidationFacet.GetMethodDelegate(), method.Name);
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
         var target = MockParm(new TestDelegateClass());
@@ -33,7 +33,7 @@ public class ActionValidationFacetTest {
 
     private static void InvokeFuncTest(MethodInfo method) {
         IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null, mockLogger);
-        var facet = (IActionValidationFacet) actionValidationFacet;
+        var facet = (IActionValidationFacet)actionValidationFacet;
         Assert.IsNull(actionValidationFacet.GetMethodDelegate());
         Assert.IsNotNull(actionValidationFacet.GetMethod());
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
@@ -68,7 +68,7 @@ public class ActionValidationFacetTest {
         var target = Mock(new TestDelegateClass());
         var mockIc = new Mock<IInteractionContext>();
         mockIc.Setup(ic => ic.Target).Returns(target);
-        var parms = new[] {"a", "b"}.Select(MockParm).ToArray();
+        var parms = new[] { "a", "b" }.Select(MockParm).ToArray();
         mockIc.Setup(ic => ic.ProposedArguments).Returns(parms);
 
         var e = facet.CreateExceptionFor(mockIc.Object);

@@ -34,7 +34,7 @@ using NakedFramework.Persistor.EF6.Util;
 
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 
-namespace NakedFramework.Persistor.EF6.Component; 
+namespace NakedFramework.Persistor.EF6.Component;
 
 public sealed class EF6ObjectStore : IObjectStore, IDisposable {
     private readonly Func<object, INakedObjectAdapter> getAdapterFor;
@@ -67,7 +67,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
         CreateAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);
         ReplacePoco = (nakedObject, newDomainObject) => this.nakedObjectManager.ReplacePoco(nakedObject, newDomainObject);
         RemoveAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
-        CreateAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec) parent.Spec).GetProperty(property.Name).Id, obj);
+        CreateAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec)parent.Spec).GetProperty(property.Name).Id, obj);
 
         HandleLoaded = HandleLoadedDefault;
         savingChangesHandler = SavingChangesHandler;
@@ -110,7 +110,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
             ExecuteCommand(cmd);
         }
         catch (OptimisticConcurrencyException oce) {
-            throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObjectAdapter = cmd.OnObject()};
+            throw new ConcurrencyException(ConcatenateMessages(oce), oce) { SourceNakedObjectAdapter = cmd.OnObject() };
         }
         catch (UpdateException ue) {
             throw new DataUpdateException(ConcatenateMessages(ue), ue);
@@ -159,7 +159,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
         }
 
         return CollectionUtils.IsCollection(objectType)
-            ? GetTypeToUse(((IEnumerable) domainObject).Cast<object>().FirstOrDefault())
+            ? GetTypeToUse(((IEnumerable)domainObject).Cast<object>().FirstOrDefault())
             : objectType;
     }
 
@@ -253,7 +253,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
 
         switch (exception) {
             case ConcurrencyException concurrencyException:
-                throw new ConcurrencyException(newMessage, exception) {SourceNakedObjectAdapter = concurrencyException.SourceNakedObjectAdapter};
+                throw new ConcurrencyException(newMessage, exception) { SourceNakedObjectAdapter = concurrencyException.SourceNakedObjectAdapter };
             case DataUpdateException:
                 throw new DataUpdateException(newMessage, exception);
             default:
@@ -303,7 +303,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
     }
 
     internal void HandleAdded(INakedObjectAdapter nakedObjectAdapter) {
-        var oid = (IDatabaseOid) nakedObjectAdapter.Oid;
+        var oid = (IDatabaseOid)nakedObjectAdapter.Oid;
         var context = GetContext(nakedObjectAdapter);
         oid.MakePersistentAndUpdateKey(context.GetKey(nakedObjectAdapter));
 
@@ -333,7 +333,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
 
         foreach (var (key, value) in memberValueMap) {
             var query = string.Format("it.{0}=@{0}", key);
-            oq = oq.Invoke<object>("Where", query, new[] {new ObjectParameter(key, value)});
+            oq = oq.Invoke<object>("Where", query, new[] { new ObjectParameter(key, value) });
         }
 
         context.GetNavigationMembers(type).Where(m => !CollectionUtils.IsCollection(m.PropertyType)).ForEach(pi => oq = oq.Invoke<object>("Include", pi.Name));
@@ -429,7 +429,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
     }
 
     private void SavingChangesHandler(object sender, EventArgs e) {
-        var changedObjects = EF6Helpers.GetChangedObjectsInContext((ObjectContext) sender);
+        var changedObjects = EF6Helpers.GetChangedObjectsInContext((ObjectContext)sender);
         var adaptedObjects = changedObjects.Where(o => FasterTypeUtils.IsEF6Proxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
         adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
         adaptedObjects.ForEach(ValidateIfRequired);
@@ -445,7 +445,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
     }
 
     private static TransactionScope CreateTransactionScope() {
-        var transactionOptions = new TransactionOptions {IsolationLevel = IsolationLevel.ReadCommitted, Timeout = TimeSpan.MaxValue};
+        var transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted, Timeout = TimeSpan.MaxValue };
         return new TransactionScope(TransactionScopeOption.Required, transactionOptions);
     }
 
@@ -541,7 +541,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
             PostSaveWrapUp();
         }
         catch (OptimisticConcurrencyException oce) {
-            InvokeErrorFacet(new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObjectAdapter = GetSourceNakedObject(oce)});
+            InvokeErrorFacet(new ConcurrencyException(ConcatenateMessages(oce), oce) { SourceNakedObjectAdapter = GetSourceNakedObject(oce) });
         }
         catch (UpdateException ue) {
             InvokeErrorFacet(new DataUpdateException(ConcatenateMessages(ue), ue));
@@ -579,9 +579,9 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
     public INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint) {
         switch (oid) {
             case IAggregateOid aggregateOid: {
-                var parentOid = (IDatabaseOid) aggregateOid.ParentOid;
+                var parentOid = (IDatabaseOid)aggregateOid.ParentOid;
                 var parentType = parentOid.TypeName;
-                var parentSpec = (IObjectSpec) metamodelManager.GetSpecification(parentType);
+                var parentSpec = (IObjectSpec)metamodelManager.GetSpecification(parentType);
                 var parent = CreateAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
                 return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
@@ -605,12 +605,12 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
     public int CountField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec associationSpec) {
         var type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
         var countMethod = GetType().GetMethod("Count")?.GetGenericMethodDefinition().MakeGenericMethod(type);
-        return (int) (countMethod?.Invoke(this, new object[] {nakedObjectAdapter, associationSpec, nakedObjectManager}) ?? 0);
+        return (int)(countMethod?.Invoke(this, new object[] { nakedObjectAdapter, associationSpec, nakedObjectManager }) ?? 0);
     }
 
     public INakedObjectAdapter FindByKeys(Type type, object[] keys) {
         var eoid = oidGenerator.CreateOid(type.FullName, keys);
-        var hint = (IObjectSpec) loadSpecification(type);
+        var hint = (IObjectSpec)loadSpecification(type);
         return GetObject(eoid, hint);
     }
 
@@ -632,7 +632,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
             }
 
             var idmembers = currentContext.GetIdMembers(entityType);
-            var keyValues = ((IDatabaseOid) nakedObjectAdapter.Oid).Key;
+            var keyValues = ((IDatabaseOid)nakedObjectAdapter.Oid).Key;
 
             if (idmembers.Length != keyValues.Length) {
                 throw new NakedObjectSystemException("Member and value counts must match");
@@ -654,14 +654,14 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
         // do nothing 
     }
 
-    private static IQueryable<T> EagerLoad<T>(EF6LocalContext context, Type entityType, IQueryable queryable) => (IQueryable<T>) queryable.AsNoTracking();
+    private static IQueryable<T> EagerLoad<T>(EF6LocalContext context, Type entityType, IQueryable queryable) => (IQueryable<T>)queryable.AsNoTracking();
 
     public IQueryable<T> GetInstances<T>() where T : class {
         var context = GetContext(typeof(T));
-        return (IQueryable<T>) context.GetQueryableOfDerivedType<T>();
+        return (IQueryable<T>)context.GetQueryableOfDerivedType<T>();
     }
 
-    public IQueryable GetInstances(Type type) => (IQueryable) GetContext(type).GetQueryableOfDerivedType(type);
+    public IQueryable GetInstances(Type type) => (IQueryable)GetContext(type).GetQueryableOfDerivedType(type);
 
     public object CreateInstance(Type type) {
         if (type.IsArray) {
@@ -691,7 +691,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
 
     public void Reload(INakedObjectAdapter nakedObjectAdapter) => Refresh(nakedObjectAdapter);
 
-    public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => (T) CreateInstance(typeof(T));
+    public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class => (T)CreateInstance(typeof(T));
 
     public PropertyInfo[] GetKeys(Type type) => GetContext(type.GetProxiedType()).GetIdMembers(type.GetProxiedType());
 

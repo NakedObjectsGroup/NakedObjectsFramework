@@ -21,7 +21,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFunctions.Reflector.Utils;
 
-namespace NakedFunctions.Reflector.FacetFactory; 
+namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class EditAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<EditAnnotationFacetFactory> logger;
@@ -33,8 +33,6 @@ public sealed class EditAnnotationFacetFactory : FunctionalFacetFactoryProcessor
     private static bool IsContext(Type t) => t.IsAssignableTo(typeof(IContext));
 
     private static bool ReturnsContext(MethodInfo method) => IsContext(method.ReturnType) || FacetUtils.IsTuple(method.ReturnType);
-
-       
 
     private IImmutableDictionary<string, ITypeSpecBuilder> Process(MethodInfo method, Action<IDictionary<ParameterInfo, PropertyInfo>> addFacet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (IsEditMethod(method)) {

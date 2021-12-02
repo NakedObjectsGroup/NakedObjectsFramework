@@ -11,16 +11,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly; 
+namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 [Table("Production.ProductCostHistory")]
 public class ProductCostHistory {
-     
     [Column(Order = 0)]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int ProductID { get; set; }
 
-      
     [Column(Order = 1)]
     public DateTime StartDate { get; set; }
 

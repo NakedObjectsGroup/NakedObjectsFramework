@@ -15,7 +15,7 @@ using System.Web;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.Core.Adapter; 
+namespace NakedFramework.Core.Adapter;
 
 /// <summary>
 ///     Provide consistent string encoding strategy for <see cref="IEncodedToStrings" />

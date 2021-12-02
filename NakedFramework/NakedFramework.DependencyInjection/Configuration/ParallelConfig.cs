@@ -11,7 +11,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Authentication;
 using NakedFramework.Core.Component;
-using NakedFramework.Core.Framework;
 using NakedFramework.Core.Spec;
 using NakedFramework.DependencyInjection.Component;
 using NakedFramework.DependencyInjection.FacetFactory;
@@ -21,7 +20,7 @@ using NakedFramework.Metamodel.Component;
 using NakedFramework.Metamodel.Menu;
 using NakedFramework.ModelBuilding.Component;
 
-namespace NakedFramework.DependencyInjection.Configuration; 
+namespace NakedFramework.DependencyInjection.Configuration;
 
 public static class ParallelConfig {
     public static void RegisterCoreSingletonTypes(IServiceCollection services) {

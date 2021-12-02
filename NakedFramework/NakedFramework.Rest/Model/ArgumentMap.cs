@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NakedFramework.Rest.Model; 
+namespace NakedFramework.Rest.Model;
 
 [ModelBinder(BinderType = typeof(ArgumentMapBinder))]
 public class ArgumentMap : Arguments {

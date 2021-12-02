@@ -12,7 +12,7 @@ using TransformFull = Snapshot.Xml.Test.One.TransformFull;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace Snapshot.Xml.Test; 
+namespace Snapshot.Xml.Test;
 
 public class TransformRepository : AbstractFactoryAndRepository {
     public TransformFull TransformFull() {

@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class OnPersistingErrorCallbackFacetViaMethod : OnPersistingErrorCallbackFacetAbstract, IImperativeFacet {
@@ -31,7 +31,7 @@ public sealed class OnPersistingErrorCallbackFacetViaMethod : OnPersistingErrorC
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {exception});
+    public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => (string)methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { exception });
 
     protected override string ToStringValues() => $"method={method}";
 

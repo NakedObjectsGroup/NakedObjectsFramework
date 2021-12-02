@@ -19,7 +19,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet; 
+namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
@@ -48,12 +48,12 @@ public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFace
 
     public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArguments) {
         if (methodDelegate != null) {
-            return (string) methodDelegate(target.GetDomainObject(), proposedArguments.Select(no => no.GetDomainObject()).ToArray());
+            return (string)methodDelegate(target.GetDomainObject(), proposedArguments.Select(no => no.GetDomainObject()).ToArray());
         }
 
         //Fall back (e.g. if method has > 6 params) on reflection...
         logger.LogWarning($"Invoking validate method via reflection as no delegate {target}.{method}");
-        return (string) InvokeUtils.Invoke(method, target, proposedArguments);
+        return (string)InvokeUtils.Invoke(method, target, proposedArguments);
     }
 
     #endregion

@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<short> {
@@ -51,7 +51,7 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     [TestMethod]
     public void TestParse() {
         var newValue = value.ParseTextEntry("120");
-        Assert.AreEqual((short) 120, newValue);
+        Assert.AreEqual((short)120, newValue);
     }
 
     [TestMethod]
@@ -76,7 +76,7 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     [TestMethod]
     public void TestParseOddlyFormedEntry() {
         var newValue = value.ParseTextEntry("1,20.0");
-        Assert.AreEqual((short) 120, newValue);
+        Assert.AreEqual((short)120, newValue);
     }
 
     [TestMethod]
@@ -101,7 +101,7 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
 
     [TestMethod]
     public void TestValue() {
-        var facet = (IShortValueFacet) GetValue();
+        var facet = (IShortValueFacet)GetValue();
         const short testValue = 121;
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
@@ -112,13 +112,13 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     public void TestAsParserInvariant() {
         var mgr = MockNakedObjectManager();
         IParseableFacet parser = new ParseableFacetUsingParser<short>(value, null);
-        Assert.AreEqual((short) 91, parser.ParseInvariant("91", mgr.Object).Object);
+        Assert.AreEqual((short)91, parser.ParseInvariant("91", mgr.Object).Object);
     }
 
     [TestMethod]
     public void TestAsParserTitle() {
         IParseableFacet parser = new ParseableFacetUsingParser<short>(value, null);
-        var mockAdapter = MockAdapter((short) 101);
+        var mockAdapter = MockAdapter((short)101);
         Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
     }
 

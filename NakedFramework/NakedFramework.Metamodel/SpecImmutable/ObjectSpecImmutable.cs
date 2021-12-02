@@ -9,7 +9,7 @@ using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.SpecImmutable; 
+namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public sealed class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {

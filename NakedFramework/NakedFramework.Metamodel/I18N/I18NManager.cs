@@ -17,7 +17,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedObjects.Resources;
 
-namespace NakedFramework.Metamodel.I18N; 
+namespace NakedFramework.Metamodel.I18N;
 
 public class I18NManager : II18NManager, IFacetDecorator {
     private const string Action = "action";
@@ -117,7 +117,7 @@ public class I18NManager : II18NManager, IFacetDecorator {
         return facet;
     }
 
-    public virtual Type[] ForFacetTypes => new[] {typeof(INamedFacet), typeof(IDescribedAsFacet)};
+    public virtual Type[] ForFacetTypes => new[] { typeof(INamedFacet), typeof(IDescribedAsFacet) };
 
     #endregion
 }

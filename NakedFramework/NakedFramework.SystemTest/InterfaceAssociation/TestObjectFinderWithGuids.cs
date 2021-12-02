@@ -17,7 +17,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.ObjectFinderGuid; 
+namespace NakedObjects.SystemTest.ObjectFinderGuid;
 
 [TestFixture]
 public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext> {
@@ -143,9 +143,9 @@ public class PaymentContext : DbContext {
 public class DatabaseInitializer {
     public static void Seed(PaymentContext context) {
         context.Payments.Add(new Payment());
-        context.Customers.Add(new Customer {Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b")});
-        context.Customers.Add(new Customer {Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b")});
-        context.Suppliers.Add(new Supplier {Guid = new Guid("89bc90ec-7017-11e0-a08c-57564824019b")});
+        context.Customers.Add(new Customer { Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b") });
+        context.Customers.Add(new Customer { Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b") });
+        context.Suppliers.Add(new Supplier { Guid = new Guid("89bc90ec-7017-11e0-a08c-57564824019b") });
         context.SaveChanges();
     }
 }

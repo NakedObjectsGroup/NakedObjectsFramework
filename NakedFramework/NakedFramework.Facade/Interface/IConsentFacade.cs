@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Facade.Interface; 
+namespace NakedFramework.Facade.Interface;
 
 public interface IConsentFacade {
     bool IsAllowed { get; }

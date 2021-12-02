@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Interactions;
 using NakedFramework.Core.Reflect;
 
-namespace NakedFramework.Core.Util; 
+namespace NakedFramework.Core.Util;
 
 public static class InteractionUtils {
     public static bool IsVisible(ISpecification specification, IInteractionContext ic) {

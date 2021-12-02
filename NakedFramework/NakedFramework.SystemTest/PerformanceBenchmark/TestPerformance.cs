@@ -15,7 +15,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.Performance; 
+namespace NakedObjects.SystemTest.Performance;
 
 [TestFixture]
 public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
@@ -96,7 +96,7 @@ public class MyDbInitialiser {
     }
 
     private static Qux NewQux(string name, PerformanceDbContext context) {
-        var q = new Qux {Name = name};
+        var q = new Qux { Name = name };
         context.Quxes.Add(q);
         return q;
     }

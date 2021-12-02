@@ -19,13 +19,13 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class CreateNewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private CreateNewAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] {typeof(ICreateNewFacet)};
+    protected override Type[] SupportedTypes => new[] { typeof(ICreateNewFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -33,7 +33,7 @@ public class CreateNewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestCreateNewAnnotationPickedUpOnAction() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer), nameof(Customer.CreateNewTest), new[] {typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer), nameof(Customer.CreateNewTest), new[] { typeof(int) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(ICreateNewFacet));
         Assert.IsNotNull(facet);
@@ -46,7 +46,7 @@ public class CreateNewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestCreateNewAnnotationIgnoredOnAction1() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer1), nameof(Customer1.CreateNewTest), new[] {typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer1), nameof(Customer1.CreateNewTest), new[] { typeof(int) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(ICreateNewFacet));
         Assert.IsNull(facet);
@@ -58,7 +58,7 @@ public class CreateNewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestCreateNewAnnotationIgnoredOnAction2() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer2), nameof(Customer2.CreateNewTest), new[] {typeof(int)});
+        var actionMethod = FindMethod(typeof(Customer2), nameof(Customer2.CreateNewTest), new[] { typeof(int) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(ICreateNewFacet));
         Assert.IsNull(facet);
@@ -96,7 +96,7 @@ public class CreateNewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         public int AValue { get; set; }
 
         [CreateNew]
-        public IList<Customer2> CreateNewTest(int aValue) => new List<Customer2> {this};
+        public IList<Customer2> CreateNewTest(int aValue) => new List<Customer2> { this };
     }
 
     #endregion

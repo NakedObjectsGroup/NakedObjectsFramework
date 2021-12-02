@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFunctions.Services; 
+namespace NakedFunctions.Services;
 
 public class Clock : IClock {
     public DateTime Now() => DateTime.UtcNow;

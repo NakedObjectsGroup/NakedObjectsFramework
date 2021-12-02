@@ -17,7 +17,7 @@ using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EF6.Util;
 
-namespace NakedFramework.Persistor.EF6.Component; 
+namespace NakedFramework.Persistor.EF6.Component;
 
 public class EF6CreateObjectCommand : ICreateObjectCommand {
     private readonly EF6LocalContext context;
@@ -126,7 +126,7 @@ public class EF6CreateObjectCommand : ICreateObjectCommand {
 
         var colmembers = context.GetCollectionMembers(objectToProxy.GetType());
         foreach (var pi in colmembers) {
-            foreach (var item in (IEnumerable) pi.GetValue(objectToProxy, null)) {
+            foreach (var item in (IEnumerable)pi.GetValue(objectToProxy, null)) {
                 ProxyObjectIfAppropriate(item);
             }
         }
@@ -142,7 +142,7 @@ public class EF6CreateObjectCommand : ICreateObjectCommand {
         var colmembers = context.GetCollectionMembers(objectToProxy.GetType());
         foreach (var pi in colmembers) {
             var toCol = proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
-            var fromCol = (IEnumerable) pi.GetValue(objectToProxy, null);
+            var fromCol = (IEnumerable)pi.GetValue(objectToProxy, null);
             foreach (var item in fromCol) {
                 toCol.Invoke("Add", ProxyObjectIfAppropriate(item));
             }

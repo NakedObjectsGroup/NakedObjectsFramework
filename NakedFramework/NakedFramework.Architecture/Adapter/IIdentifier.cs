@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Architecture.Adapter; 
+namespace NakedFramework.Architecture.Adapter;
 
 public interface IIdentifier : IComparable {
     string ClassName { get; }

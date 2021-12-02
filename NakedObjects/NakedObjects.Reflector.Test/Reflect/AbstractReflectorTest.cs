@@ -46,7 +46,7 @@ using UIntValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.UIntVa
 using ULongValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.ULongValueTypeFacetFactory;
 using UShortValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.UShortValueTypeFacetFactory;
 
-namespace NakedObjects.Reflector.Test.Reflect; 
+namespace NakedObjects.Reflector.Test.Reflect;
 
 public abstract class AbstractReflectorTest {
     private static readonly ILoggerFactory LoggerFactory = new LoggerFactory();
@@ -132,20 +132,20 @@ public abstract class AbstractReflectorTest {
             NewFacetFactory<CollectionFacetFactory>()
         };
 
-    private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T) Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);
+    private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T)Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);
 
     protected static void AssertIsInstanceOfType<T>(object o) {
         Assert.IsInstanceOfType(o, typeof(T));
     }
 
     protected virtual IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
-        var config = new ObjectReflectorConfiguration(new[] {typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList)}, Array.Empty<Type>());
+        var config = new ObjectReflectorConfiguration(new[] { typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList) }, Array.Empty<Type>());
         var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
 
         ClassStrategy = new ObjectClassStrategy(config);
         var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
         var order = new ObjectReflectorOrder<ObjectReflector>();
-        return new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy) ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
+        return new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy)ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
     }
 
     [TestInitialize]

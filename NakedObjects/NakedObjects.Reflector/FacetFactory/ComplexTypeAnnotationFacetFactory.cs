@@ -19,7 +19,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedObjects.Reflector.FacetFactory; 
+namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class ComplexTypeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public ComplexTypeAnnotationFacetFactory(IFacetFactoryOrder<ComplexTypeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

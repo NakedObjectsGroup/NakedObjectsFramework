@@ -9,7 +9,7 @@ using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.Facet; 
+namespace NakedFramework.Metamodel.Facet;
 
 public class IntegrationFacet : AbstractIntegrationFacet {
     private Action<IMetamodelBuilder> toExecute;

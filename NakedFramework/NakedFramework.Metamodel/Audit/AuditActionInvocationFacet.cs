@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Audit; 
+namespace NakedFramework.Metamodel.Audit;
 
 [Serializable]
 public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {

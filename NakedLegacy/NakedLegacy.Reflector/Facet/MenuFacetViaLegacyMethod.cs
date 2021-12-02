@@ -15,7 +15,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Menu;
 using NakedLegacy.Types;
 
-namespace NakedLegacy.Reflector.Facet; 
+namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
 public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract {
@@ -24,8 +24,6 @@ public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract {
     public MenuFacetViaLegacyMethod(MethodInfo method, ISpecification holder)
         : base(holder) =>
         this.method = method;
-
-
 
     private string MatchMethod(string legacyName, Type declaringType) {
         var name = $"action{legacyName}";
@@ -41,7 +39,7 @@ public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract {
                 case SubMenu sm:
                     var nsm = mi.CreateSubMenu(sm.Name);
                     // temp hack
-                    nsm.AddAction(MatchMethod(sm.Menus.Cast<IMenu>().First().Name, method.DeclaringType));
+                    nsm.AddAction(MatchMethod(sm.Menus.First().Name, method.DeclaringType));
                     break;
                 case Menu m:
                     mi.AddAction(MatchMethod(m.Name, method.DeclaringType));
@@ -54,7 +52,7 @@ public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract {
 
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel) {
-        var legacyMenu = (MainMenu) InvokeUtils.InvokeStatic(method, new object[] {});
+        var legacyMenu = (MainMenu)InvokeUtils.InvokeStatic(method, new object[] { });
         Menu = ConvertLegacyToNOFMenu(legacyMenu, metamodel);
     }
 }

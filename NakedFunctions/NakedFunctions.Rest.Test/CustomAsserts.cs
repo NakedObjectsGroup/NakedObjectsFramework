@@ -9,7 +9,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace NakedFunctions.Rest.Test; 
+namespace NakedFunctions.Rest.Test;
 
 public static class CustomAsserts {
     public static void AssertMember(this JToken member, string memberType, string id) {

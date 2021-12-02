@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Error;
 
-namespace NakedFramework.Core.Component; 
+namespace NakedFramework.Core.Component;
 
 public sealed class NakedObjectFactory {
     private INakedFramework framework;

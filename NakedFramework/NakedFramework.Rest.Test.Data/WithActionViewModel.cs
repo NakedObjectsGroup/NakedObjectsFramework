@@ -17,7 +17,7 @@ using NakedObjects.Security;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data; 
+namespace RestfulObjects.Test.Data;
 
 public class WithActionViewModel : WithAction, IViewModel {
     private int deriveCheck;
@@ -43,8 +43,7 @@ public class WithActionViewModel : WithAction, IViewModel {
 
     public override MostSimpleViewModel AnActionReturnsNullViewModel() => null;
 
-    public override MostSimple AnActionWithOptionalParm([Optionally] [Named("Optional Parm")] [DescribedAs("an optional parm")] [MaxLength(101)] [RegEx(Validation = @"[A-Z]")]
-                                                        string parm) => ms1;
+    public override MostSimple AnActionWithOptionalParm([Optionally] [Named("Optional Parm")] [DescribedAs("an optional parm")] [MaxLength(101)] [RegEx(Validation = @"[A-Z]")] string parm) => ms1;
 
     [QueryOnly]
     public override MostSimple AnActionWithOptionalParmQueryOnly([Optionally] string parm) => ms1;
@@ -182,7 +181,7 @@ public class WithActionViewModel : WithAction, IViewModel {
     }
 
     public override IList<int> Choices0AnActionWithValueParameterWithChoices() {
-        return new[] {1, 2, 3};
+        return new[] { 1, 2, 3 };
     }
 
     public override int Default0AnActionWithValueParameterWithDefault() => 4;
@@ -208,7 +207,7 @@ public class WithActionViewModel : WithAction, IViewModel {
     public override MostSimple AnActionWithParametersWithChoicesWithDefaults(int parm1, int parm7, MostSimple parm2, MostSimple parm8) => Container.Instances<MostSimple>().First();
 
     public override IList<int> Choices1AnActionWithParametersWithChoicesWithDefaults() {
-        return new[] {1, 2, 3};
+        return new[] { 1, 2, 3 };
     }
 
     public override int Default1AnActionWithParametersWithChoicesWithDefaults() => 4;
@@ -225,17 +224,13 @@ public class WithActionViewModel : WithAction, IViewModel {
 
     public override ICollection<MostSimple> AnErrorCollection() => throw new DomainException("An error exception");
 
-    public virtual MostSimple AnOverloadedAction0()
-    {
+    public virtual MostSimple AnOverloadedAction0() {
         return Container.Instances<MostSimple>().Single(x => x.Id == 1);
     }
 
-    public virtual MostSimple AnOverloadedAction1(string parm)
-    {
+    public virtual MostSimple AnOverloadedAction1(string parm) {
         return Container.Instances<MostSimple>().Single(x => x.Id == 1);
     }
-
-
 
     #region IViewModel Members
 
@@ -247,7 +242,7 @@ public class WithActionViewModel : WithAction, IViewModel {
             throw new Exception("Derive called multiple times");
         }
 
-        return new[] {Id.ToString()};
+        return new[] { Id.ToString() };
     }
 
     [NakedObjectsIgnore]

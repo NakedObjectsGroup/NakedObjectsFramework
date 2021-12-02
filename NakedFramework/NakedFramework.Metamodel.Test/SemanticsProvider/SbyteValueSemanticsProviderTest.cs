@@ -17,7 +17,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider; 
+namespace NakedObjects.Meta.Test.SemanticsProvider;
 
 [TestClass]
 public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<sbyte> {
@@ -28,7 +28,7 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     [TestMethod]
     public void TestParseValidString() {
         var parsed = value.ParseTextEntry("21");
-        Assert.AreEqual((sbyte) 21, parsed);
+        Assert.AreEqual((sbyte)21, parsed);
     }
 
     [TestMethod]
@@ -55,7 +55,7 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     [TestMethod]
     public void TestDecode() {
         object parsed = value.FromEncodedString("-91");
-        Assert.AreEqual((sbyte) -91, parsed);
+        Assert.AreEqual((sbyte)-91, parsed);
     }
 
     [TestMethod]
@@ -105,13 +105,13 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     public void TestAsParserInvariant() {
         var mgr = MockNakedObjectManager();
         IParseableFacet parser = new ParseableFacetUsingParser<sbyte>(value, null);
-        Assert.AreEqual((sbyte) 91, parser.ParseInvariant("91", mgr.Object).Object);
+        Assert.AreEqual((sbyte)91, parser.ParseInvariant("91", mgr.Object).Object);
     }
 
     [TestMethod]
     public void TestAsParserTitle() {
         IParseableFacet parser = new ParseableFacetUsingParser<sbyte>(value, null);
-        var mockAdapter = MockAdapter((sbyte) 101);
+        var mockAdapter = MockAdapter((sbyte)101);
         Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
     }
 

@@ -17,7 +17,7 @@ using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Impl.Utility;
 using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Facade.Impl.Impl; 
+namespace NakedFramework.Facade.Impl.Impl;
 
 public class AssociationFacade : IAssociationFacade {
     private readonly INakedFramework framework;
@@ -66,7 +66,7 @@ public class AssociationFacade : IAssociationFacade {
 
     public int MemberOrder => WrappedSpec.GetMemberOrder();
 
-    public bool IsASet => WrappedSpec is IOneToManyAssociationSpec {IsASet: true};
+    public bool IsASet => WrappedSpec is IOneToManyAssociationSpec { IsASet: true };
 
     public bool IsInline => WrappedSpec.IsInline;
 
@@ -86,24 +86,24 @@ public class AssociationFacade : IAssociationFacade {
 
     public string Id => WrappedSpec.Id;
 
-    public Choices IsChoicesEnabled => WrappedSpec is IOneToOneFeatureSpec {IsChoicesEnabled: true} ? Choices.Single : Choices.NotEnabled;
+    public Choices IsChoicesEnabled => WrappedSpec is IOneToOneFeatureSpec { IsChoicesEnabled: true } ? Choices.Single : Choices.NotEnabled;
 
-    public bool IsAutoCompleteEnabled => WrappedSpec is IOneToOneFeatureSpec {IsAutoCompleteEnabled: true};
+    public bool IsAutoCompleteEnabled => WrappedSpec is IOneToOneFeatureSpec { IsAutoCompleteEnabled: true };
 
     public IConsentFacade IsUsable(IObjectFacade target) {
-        var consent = WrappedSpec.IsUsable(((ObjectFacade) target).WrappedNakedObject);
+        var consent = WrappedSpec.IsUsable(((ObjectFacade)target).WrappedNakedObject);
         return new ConsentFacade(consent);
     }
 
     public IObjectFacade GetValue(IObjectFacade target) {
-        var result = WrappedSpec.GetNakedObject(((ObjectFacade) target).WrappedNakedObject);
+        var result = WrappedSpec.GetNakedObject(((ObjectFacade)target).WrappedNakedObject);
         return ObjectFacade.Wrap(result, FrameworkFacade, framework);
     }
 
-    public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
+    public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade)objectFacade).WrappedNakedObject);
 
     public bool IsEager(IObjectFacade objectFacade) =>
-        ((TypeFacade) objectFacade.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
+        ((TypeFacade)objectFacade.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
         WrappedSpec.ContainsFacet<IEagerlyFacet>();
 
     public DataType? DataType => WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType() ?? WrappedSpec.GetFacet<IPasswordFacet>()?.DataType;
@@ -111,7 +111,7 @@ public class AssociationFacade : IAssociationFacade {
     public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
         var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
         var pnv = parameterNameValues?.ToDictionary(kvp => kvp.Key, kvp => framework.GetNakedObject(kvp.Value));
-        return oneToOneFeature?.GetChoices(((ObjectFacade) target).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+        return oneToOneFeature?.GetChoices(((ObjectFacade)target).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
     }
 
     public (string, ITypeFacade)[] GetChoicesParameters() =>
@@ -124,10 +124,10 @@ public class AssociationFacade : IAssociationFacade {
 
     public IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm) {
         var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
-        return oneToOneFeature?.GetCompletions(((ObjectFacade) target).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+        return oneToOneFeature?.GetCompletions(((ObjectFacade)target).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
     }
 
-    public int Count(IObjectFacade target) => IsCollection ? framework.Persistor.CountField(((ObjectFacade) target).WrappedNakedObject, Id) : 0;
+    public int Count(IObjectFacade target) => IsCollection ? framework.Persistor.CountField(((ObjectFacade)target).WrappedNakedObject, Id) : 0;
 
     public bool IsSetToImplicitDefault(IObjectFacade objectFacade) {
         // return true if it's scalar and and still set to its implicit default value (eg 0 for an int)
@@ -145,7 +145,7 @@ public class AssociationFacade : IAssociationFacade {
         var enumFacet = WrappedSpec.GetFacet<IEnumFacet>();
 
         if (enumFacet != null) {
-            return enumFacet.GetTitle(((ObjectFacade) objectFacade).WrappedNakedObject);
+            return enumFacet.GetTitle(((ObjectFacade)objectFacade).WrappedNakedObject);
         }
 
         var mask = WrappedSpec.GetFacet<IMaskFacet>();
@@ -153,8 +153,8 @@ public class AssociationFacade : IAssociationFacade {
             return objectFacade.TitleString;
         }
 
-        var titleFacet = ((TypeFacade) objectFacade.Specification).WrappedValue.GetFacet<ITitleFacet>();
-        return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade) objectFacade).WrappedNakedObject, framework);
+        var titleFacet = ((TypeFacade)objectFacade.Specification).WrappedValue.GetFacet<ITitleFacet>();
+        return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade)objectFacade).WrappedNakedObject, framework);
     }
 
     public IFrameworkFacade FrameworkFacade { get; set; }
@@ -165,7 +165,7 @@ public class AssociationFacade : IAssociationFacade {
 
     public bool IsEnum => WrappedSpec.ContainsFacet<IEnumFacet>();
 
-    public bool IsFindMenuEnabled => WrappedSpec is IOneToOneAssociationSpec {IsFindMenuEnabled: true};
+    public bool IsFindMenuEnabled => WrappedSpec is IOneToOneAssociationSpec { IsFindMenuEnabled: true };
 
     public (Regex, string)? RegEx => WrappedSpec.GetRegEx();
 
@@ -180,7 +180,7 @@ public class AssociationFacade : IAssociationFacade {
     public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework);
 
     public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
-        var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
+        var no = ((ObjectFacade)objectFacade).WrappedNakedObject;
         return WrappedSpec.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
     }
 

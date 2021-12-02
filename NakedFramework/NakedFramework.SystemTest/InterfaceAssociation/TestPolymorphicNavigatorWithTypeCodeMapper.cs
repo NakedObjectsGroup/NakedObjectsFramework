@@ -14,7 +14,7 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.PolymorphicNavigator; 
+namespace NakedObjects.SystemTest.PolymorphicNavigator;
 
 [TestFixture]
 public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
@@ -40,11 +40,11 @@ public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigat
     protected override bool EnforceProxies => false;
 
     protected override Func<IConfiguration, DbContext>[] ContextCreators =>
-        new Func<IConfiguration, DbContext>[] {config => new PolymorphicNavigationContext(DatabaseName)};
+        new Func<IConfiguration, DbContext>[] { config => new PolymorphicNavigationContext(DatabaseName) };
 
-    protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()};
+    protected override object[] Fixtures => new object[] { new FixtureEntities(), new FixtureLinksUsingTypeCode() };
 
-    protected override Type[] Services => base.Services.Union(new[] {typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper)}).ToArray();
+    protected override Type[] Services => base.Services.Union(new[] { typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper) }).ToArray();
 
     [Test]
     public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {

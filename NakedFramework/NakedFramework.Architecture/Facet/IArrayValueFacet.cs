@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Architecture.Facet; 
+namespace NakedFramework.Architecture.Facet;
 
 public interface IArrayValueFacet<out T> : IFacet {
     T[] ArrayValue(INakedObjectAdapter nakedObjectAdapter);

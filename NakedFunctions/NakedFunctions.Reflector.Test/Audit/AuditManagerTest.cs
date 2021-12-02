@@ -17,7 +17,7 @@ using NakedFramework.Audit;
 using NakedFramework.Metamodel.Audit;
 using NakedObjects.Reflector.Audit;
 
-namespace NakedFunctions.Reflector.Test.Audit; 
+namespace NakedFunctions.Reflector.Test.Audit;
 
 [TestClass]
 public class AuditManagerTest {
@@ -64,7 +64,7 @@ public class AuditManagerTest {
         var auditor = new Mock<IAuditor>();
 
         config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
-        config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", typeof(object)}});
+        config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> { { "", typeof(object) } });
 
         try {
             // ReSharper disable once UnusedVariable
@@ -83,7 +83,7 @@ public class AuditManagerTest {
         var auditor = new Mock<IAuditor>();
 
         config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
-        config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
+        config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> { { "", auditor.Object.GetType() } });
 
         var manager = new AuditManager(config.Object, mockLogger);
 
@@ -111,7 +111,7 @@ public class AuditManagerTest {
         var auditor = new Mock<IAuditor>();
 
         config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
-        config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
+        config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> { { "", auditor.Object.GetType() } });
 
         var manager = new AuditManager(config.Object, mockLogger);
 
@@ -139,7 +139,7 @@ public class AuditManagerTest {
         var auditor = new Mock<IAuditor>();
 
         config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
-        config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
+        config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> { { "", auditor.Object.GetType() } });
 
         var manager = new AuditManager(config.Object, mockLogger);
 

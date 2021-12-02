@@ -18,14 +18,14 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.Test.FacetFactory; 
+namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
 public class ActionDefaultAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private ActionDefaultAnnotationFacetFactory facetFactory;
 
     protected override Type[] SupportedTypes {
-        get { return new[] {typeof(IActionDefaultsFacet)}; }
+        get { return new[] { typeof(IActionDefaultsFacet) }; }
     }
 
     protected override IFacetFactory FacetFactory => facetFactory;
@@ -43,12 +43,12 @@ public class ActionDefaultAnnotationFacetFactoryTest : AbstractFacetFactoryTest 
     [TestMethod]
     public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-        var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+        var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionDefaultsFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is ActionDefaultsFacetAnnotation);
-        var actionDefaultFacetAnnotation = (ActionDefaultsFacetAnnotation) facet;
+        var actionDefaultFacetAnnotation = (ActionDefaultsFacetAnnotation)facet;
         Assert.AreEqual(1, actionDefaultFacetAnnotation.GetDefault(null, null).value);
         Assert.AreEqual(TypeOfDefaultValue.Explicit, actionDefaultFacetAnnotation.GetDefault(null, null).type);
         Assert.AreEqual(0, metamodel.Count);

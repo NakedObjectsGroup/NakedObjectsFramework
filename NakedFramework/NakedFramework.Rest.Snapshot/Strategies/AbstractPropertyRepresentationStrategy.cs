@@ -17,7 +17,7 @@ using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
 
-namespace NakedFramework.Rest.Snapshot.Strategies; 
+namespace NakedFramework.Rest.Snapshot.Strategies;
 
 [DataContract]
 public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentationStrategy {
@@ -75,13 +75,13 @@ public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentat
         else {
             var parms = PropertyContext.Property.GetChoicesParameters();
             var conditionalArguments = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy, Req, pnt, Flags));
-            var args = new List<OptionalProperty> {objectMembers};
+            var args = new List<OptionalProperty> { objectMembers };
             args.AddRange(conditionalArguments);
             var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray()));
             opts.Add(arguments);
         }
 
-        return LinkRepresentation.Create(OidStrategy, new PromptRelType(GetHelper()) {Method = RelMethod.Put}, Flags, opts.ToArray());
+        return LinkRepresentation.Create(OidStrategy, new PromptRelType(GetHelper()) { Method = RelMethod.Put }, Flags, opts.ToArray());
     }
 
     protected void AddMutatorLinks(List<LinkRepresentation> links) {
@@ -94,10 +94,10 @@ public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentat
         }
     }
 
-    private LinkRepresentation CreateClearLink() => LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Clear, GetHelper()) {Method = RelMethod.Delete}, Flags);
+    private LinkRepresentation CreateClearLink() => LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Clear, GetHelper()) { Method = RelMethod.Delete }, Flags);
 
     private LinkRepresentation CreateModifyLink() =>
-        LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Modify, GetHelper()) {Method = RelMethod.Put}, Flags,
+        LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Modify, GetHelper()) { Method = RelMethod.Put }, Flags,
                                   new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))));
 
     private void AddCustomExtension(string name, object value) {

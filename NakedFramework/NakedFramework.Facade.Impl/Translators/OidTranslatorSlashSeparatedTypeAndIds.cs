@@ -14,7 +14,7 @@ using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 
-namespace NakedFramework.Facade.Impl.Translators; 
+namespace NakedFramework.Facade.Impl.Translators;
 
 public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
     private readonly INakedFramework framework;
@@ -41,12 +41,12 @@ public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
             _ => obj
         };
 
-        return (string) Convert.ChangeType(key, typeof(string));
+        return (string)Convert.ChangeType(key, typeof(string));
     }
 
     protected string GetKeyValues(IObjectFacade nakedObjectForKey) {
         string[] keys;
-        var wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
+        var wrappedNakedObject = ((ObjectFacade)nakedObjectForKey).WrappedNakedObject;
 
         if (wrappedNakedObject.Oid is ViewModelOid vmOid) {
             vmOid.UpdateKeysIfNecessary(wrappedNakedObject, framework);
@@ -73,7 +73,7 @@ public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
 
     public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
         if (objectFacade.IsViewModel) {
-            var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
+            var vm = ((ObjectFacade)objectFacade).WrappedNakedObject;
             framework.LifecycleManager.PopulateViewModelKeys(vm, framework);
         }
 

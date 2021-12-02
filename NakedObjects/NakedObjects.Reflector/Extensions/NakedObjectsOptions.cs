@@ -8,7 +8,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace NakedObjects.Reflector.Extensions; 
+namespace NakedObjects.Reflector.Extensions;
 
 public class NakedObjectsOptions {
     public Type[] DomainModelTypes { get; set; } = Array.Empty<Type>();
