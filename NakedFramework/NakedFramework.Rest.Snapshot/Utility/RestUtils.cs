@@ -43,6 +43,7 @@ public static class RestUtils {
         { typeof(decimal), PredefinedJsonType.Number },
         { typeof(DateTime), PredefinedJsonType.String },
         { typeof(TimeSpan), PredefinedJsonType.String },
+        { typeof(Guid), PredefinedJsonType.String },
         { typeof(void), PredefinedJsonType.Void }
     };
 
@@ -62,6 +63,7 @@ public static class RestUtils {
         { typeof(double), PredefinedFormatType.Decimal },
         { typeof(decimal), PredefinedFormatType.Decimal },
         { typeof(TimeSpan), PredefinedFormatType.Time },
+        { typeof(Guid), PredefinedFormatType.String },
         { typeof(byte[]), PredefinedFormatType.Blob },
         { typeof(sbyte[]), PredefinedFormatType.Blob },
         { typeof(char[]), PredefinedFormatType.Clob }
@@ -195,11 +197,6 @@ public static class RestUtils {
             return PredefinedJsonType.List;
         }
 
-        // if parseable default to string
-        if (typeFacade.IsParseable) {
-            return PredefinedJsonType.String;
-        }
-
         return null;
     }
 
@@ -212,10 +209,6 @@ public static class RestUtils {
 
         if (typeSpec.IsDate) {
             return useDateOverDateTime ? PredefinedFormatType.Date : PredefinedFormatType.Date_time;
-        }
-
-        if (typeSpec.IsParseable) {
-            return PredefinedFormatType.String;
         }
 
         return null;
