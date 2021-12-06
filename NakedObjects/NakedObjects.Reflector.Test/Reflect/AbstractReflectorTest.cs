@@ -18,6 +18,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Component;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Component;
+using NakedFramework.ParallelReflector;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
@@ -25,26 +26,6 @@ using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
-using BooleanValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.BooleanValueTypeFacetFactory;
-using ByteValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.ByteValueTypeFacetFactory;
-using CharValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.CharValueTypeFacetFactory;
-using DateTimeValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.DateTimeValueTypeFacetFactory;
-using DecimalValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.DecimalValueTypeFacetFactory;
-using DoubleValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.DoubleValueTypeFacetFactory;
-using EnumValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.EnumValueTypeFacetFactory;
-using FileAttachmentValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.FileAttachmentValueTypeFacetFactory;
-using FloatValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.FloatValueTypeFacetFactory;
-using GuidValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.GuidValueTypeFacetFactory;
-using ImageValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.ImageValueTypeFacetFactory;
-using IntValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.IntValueTypeFacetFactory;
-using LongValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.LongValueTypeFacetFactory;
-using SbyteValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.SbyteValueTypeFacetFactory;
-using ShortValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.ShortValueTypeFacetFactory;
-using StringValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.StringValueTypeFacetFactory;
-using TimeValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.TimeValueTypeFacetFactory;
-using UIntValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.UIntValueTypeFacetFactory;
-using ULongValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.ULongValueTypeFacetFactory;
-using UShortValueTypeFacetFactory = NakedObjects.Reflector.TypeFacetFactory.UShortValueTypeFacetFactory;
 
 namespace NakedObjects.Reflector.Test.Reflect;
 
@@ -128,7 +109,7 @@ public abstract class AbstractReflectorTest {
             NewFacetFactory<EnumValueTypeFacetFactory>(),
             NewFacetFactory<FileAttachmentValueTypeFacetFactory>(),
             NewFacetFactory<ImageValueTypeFacetFactory>(),
-            NewFacetFactory<TypeFacetFactory.ArrayValueTypeFacetFactory<byte>>(),
+            NewFacetFactory<ArrayValueTypeFacetFactory<byte>>(),
             NewFacetFactory<CollectionFacetFactory>()
         };
 

@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public class TypeFacet : FacetAbstract, ITypeFacet {
-    protected TypeFacet(ISpecification holder, Type underlyingType)
+    public TypeFacet(ISpecification holder, Type underlyingType)
         : base(Type, holder) =>
         TypeOrUnderlyingType = underlyingType;
 
