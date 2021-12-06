@@ -62,6 +62,7 @@ public static class RestUtils {
         { typeof(float), PredefinedFormatType.Decimal },
         { typeof(double), PredefinedFormatType.Decimal },
         { typeof(decimal), PredefinedFormatType.Decimal },
+        { typeof(DateTime), PredefinedFormatType.Date_time },
         { typeof(TimeSpan), PredefinedFormatType.Time },
         { typeof(Guid), PredefinedFormatType.String },
         { typeof(byte[]), PredefinedFormatType.Blob },
@@ -204,11 +205,11 @@ public static class RestUtils {
         var underlyingType = typeSpec.GetUnderlyingType();
 
         if (SimpleFormatMap.ContainsKey(underlyingType)) {
-            return SimpleFormatMap[underlyingType];
-        }
-
-        if (typeSpec.IsDate) {
-            return useDateOverDateTime ? PredefinedFormatType.Date : PredefinedFormatType.Date_time;
+            var pft = SimpleFormatMap[underlyingType];
+            if (pft == PredefinedFormatType.Date_time && useDateOverDateTime) {
+                pft = PredefinedFormatType.Date;
+            }
+            return pft;
         }
 
         return null;
