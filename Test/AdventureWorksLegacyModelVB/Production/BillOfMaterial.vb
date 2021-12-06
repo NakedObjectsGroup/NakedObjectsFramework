@@ -2,32 +2,101 @@
 
 	Partial Public Class BillOfMaterial
 
-
-		<Hidden>
 		Public Property BillOfMaterialID() As Integer
 
-		Public Property StartDate() As DateTime
+#Region "StartDate"
+		Friend mappedStartDate As Date
+		Friend myStartDate As NODate
 
-		Public Property EndDate() As DateTime?
+		<MemberOrder(1)>
+		Public ReadOnly Property StartDate As NODate
+			Get
+				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
+			End Get
+		End Property
 
-		Public Property BOMLevel() As Short
+		Public Sub AboutStartDate(a As FieldAbout, StartDate As NODate)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
-		Public Property PerAssemblyQty() As Decimal
+#Region "PropName"
+		Friend mappedPropName As DateTime?
+		Friend myPropName As NODate
 
-		<Hidden>
-		Public Property ProductAssemblyID() As Integer?
+		<MemberOrder(1)>
+		Public ReadOnly Property PropName As NODate
+			Get
+				Return If(myPropName, New NODate(mappedPropName, Function(v) mappedPropName = v))
+			End Get
+		End Property
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual Product? Product {get;set;}
+		Public Sub AboutPropName(a As FieldAbout, PropName As NODate)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "BOMLevel"
+		Friend mappedBOMLevel As Short
+		Friend myBOMLevel As WholeNumber
+
+		<MemberOrder(1)>
+		Public ReadOnly Property BOMLevel As WholeNumber
+			Get
+				Return If(myBOMLevel, New WholeNumber(mappedBOMLevel, Function(v) mappedBOMLevel = v))
+			End Get
+		End Property
+
+		Public Sub AboutBOMLevel(a As FieldAbout, BOMLevel As WholeNumber)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "PerAssemblyQty"
+		Friend mappedPerAssemblyQty As Decimal
+		Friend myPerAssemblyQty As Money 'TODO: needs a new value type
+
+		<MemberOrder(1)>
+		Public ReadOnly Property PerAssemblyQty As Money
+			Get
+				Return If(myPerAssemblyQty, New Money(mappedPerAssemblyQty, Function(v) mappedPerAssemblyQty = v))
+			End Get
+		End Property
+
+		Public Sub AboutPerAssemblyQty(a As FieldAbout, PerAssemblyQty As Money)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+		Public Property ProductAssemblyID() As Integer? 'TODO: name does not match ?
+
 		Public Overridable Property Product() As Product
 
-		<Hidden>
-		Public Property ComponentID() As Integer
+		Public Property ComponentID() As Integer 'TODO: name does not match ?
 
 		Public Overridable Property Product1() As Product
 
-		<Hidden>
-		Public Property UnitMeasureCode() As String = ""
+		Public Property UnitMeasureCode() As String
 
 		Public Overridable Property UnitMeasure() As UnitMeasure
 
@@ -35,7 +104,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -50,8 +119,8 @@
 		End Sub
 #End Region
 
-		Public Overrides Function ToString() As String
-			Return $"BillOfMaterial: {BillOfMaterialID}"
+		Public Function Title() As Title
+			Return New Title($"BillOfMaterial: {BillOfMaterialID}")
 		End Function
 	End Class
 End Namespace
