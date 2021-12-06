@@ -1,11 +1,10 @@
 ﻿Namespace AW.Types
 
-	<Bounded>
-	Partial Public Class AddressType
-		Implements IHasModifiedDate, IHasRowGuid
+    <Bounded>
+    Partial Public Class AddressType
 
-		<Hidden>
-		Public Property AddressTypeID() As Integer
+        <Hidden>
+        Public Property AddressTypeID() As Integer
 
         <Hidden>
         Public Property Name() As String = ""
@@ -14,8 +13,8 @@
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(1)>
-        Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+        <MemberOrder(99)>
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get
@@ -29,10 +28,10 @@
         End Sub
 #End Region
         <Hidden>
-		Public Property rowguid() As Guid Implements IHasRowGuid.rowguid
+        Public Property RowGuid() As Guid
 
-		Public Overrides Function ToString() As String
-			Return Name
-		End Function
-	End Class
+        Public Overrides Function ToString() As String
+            Return Name
+        End Function
+    End Class
 End Namespace

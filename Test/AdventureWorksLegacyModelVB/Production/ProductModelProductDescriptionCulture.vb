@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class ProductModelProductDescriptionCulture
-		Implements IHasModifiedDate
+		
 
 		<Hidden>
 		Public Property ProductModelID() As Integer
@@ -24,7 +24,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(1)>
-		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

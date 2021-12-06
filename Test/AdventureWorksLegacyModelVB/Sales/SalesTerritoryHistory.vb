@@ -1,19 +1,6 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class SalesTerritoryHistory
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As SalesTerritoryHistory)
-			BusinessEntityID = cloneFrom.BusinessEntityID
-			StartDate = cloneFrom.StartDate
-			EndDate = cloneFrom.EndDate
-			SalesPerson = cloneFrom.SalesPerson
-			SalesTerritoryID = cloneFrom.SalesTerritoryID
-			SalesTerritory = cloneFrom.SalesTerritory
-			ModifiedDate = cloneFrom.ModifiedDate
-			rowguid = cloneFrom.rowguid
-		End Sub
 
 		<Hidden>
 		Public Property BusinessEntityID() As Integer

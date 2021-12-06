@@ -1,25 +1,56 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class JobCandidate
-		<Hidden>
+
 		Public Property JobCandidateID() As Integer
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? @Resume {get;set;}
-		Public Property [Resume]() As String
+#Region "Resume"
+		Friend mappedResume As String
+		Friend myResume As TextString
 
-		<Hidden>
+		<MemberOrder(1)>
+		Public ReadOnly Property Resumee As TextString
+			Get
+				Return If(myResume, New TextString(mappedResume, Function(v) mappedResume = v))
+			End Get
+		End Property
+
+		Public Sub AboutResume(a As FieldAbout, resumee As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+					a.Name = "Resume"
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
 		Public Property EmployeeID() As Integer?
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual Employee? Employee {get;set;}
 		Public Overridable Property Employee() As Employee
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
 
-		Public Overrides Function ToString() As String
-			Return "Job Candidate "
+		<MemberOrder(99)>
+		Public ReadOnly Property ModifiedDate As TimeStamp
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
+
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
+
+		Public Function Title() As Title
+			Return New Title("Job Candidate ")
 		End Function
 	End Class
 End Namespace

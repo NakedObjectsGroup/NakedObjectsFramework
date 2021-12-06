@@ -4,9 +4,6 @@ Namespace AW.Types
 
 	Partial Public Class ProductPhoto
 
-		Public Sub New()
-		End Sub
-
 		<Hidden>
 		Public Property ProductPhotoID() As Integer
 

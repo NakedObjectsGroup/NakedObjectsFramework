@@ -11,14 +11,14 @@ Namespace AW.Types
 		Public Property Male() As Integer
 
 		<MemberOrder(3)>
-		Public ReadOnly Property TotalStaff() As Integer
+		Public ReadOnly Property TotalStaff() As WholeNumber
 			Get
-				Return Female + Male
+				Return New WholeNumber(Male + Female)
 			End Get
 		End Property
 
-		Public Overrides Function ToString() As String
-			Return "Staff Summary"
+		Public Function Title() As Title
+			Return New Title("Staff Summary")
 		End Function
 	End Class
 End Namespace

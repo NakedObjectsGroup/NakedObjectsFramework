@@ -1,18 +1,7 @@
-﻿'====================================================================================================
-'The Free Edition of Instant VB limits conversion output to 100 lines per file.
-
-'To purchase the Premium Edition, visit our website:
-'https://www.tangiblesoftwaresolutions.com/order/order-instant-vb.html
-'====================================================================================================
-
-Namespace AW.Types
+﻿Namespace AW.Types
 
 	<Named("Sales Order")>
 	Partial Public Class SalesOrderHeader
-		Implements ICreditCardCreator
-
-		Public Sub New()
-		End Sub
 
 		<Hidden>
 		Public Property SalesOrderID() As Integer

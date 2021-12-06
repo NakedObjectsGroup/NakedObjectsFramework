@@ -1,22 +1,12 @@
-﻿'====================================================================================================
-'The Free Edition of Instant VB limits conversion output to 100 lines per file.
-
-'To purchase the Premium Edition, visit our website:
-'https://www.tangiblesoftwaresolutions.com/order/order-instant-vb.html
-'====================================================================================================
-
-
-Imports NakedFramework.Value
+﻿Imports NakedFramework.Value
 
 Namespace AW.Types
 
-
     Partial Public Class Product
-        Implements IProduct, IHasModifiedDate, IHasRowGuid
 
 #Region "Visible properties"
         <MemberOrder(1)>
-        Public Property Name() As String Implements IProduct.Name
+        Public Property Name() As String
 
         <MemberOrder(2)>
         Public Property ProductNumber() As String = ""
@@ -125,7 +115,7 @@ Namespace AW.Types
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(1)>
-        Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get
@@ -156,7 +146,7 @@ Namespace AW.Types
 #Region "Hidden Properties & Collections"
 
         <Hidden>
-        Public Property ProductID() As Integer Implements IProduct.ProductID
+        Public Property ProductID() As Integer
 
 #Region "Size"
         Friend mappedSize As String
@@ -216,7 +206,7 @@ Namespace AW.Types
         Public Property ProductSubcategoryID() As Integer?
 
         <Hidden>
-        Public Property rowguid() As Guid Implements IHasRowGuid.rowguid
+        Public Property RowGuid() As Guid
 
         Public Overridable Property ProductProductPhoto() As ICollection(Of ProductProductPhoto) = New List(Of ProductProductPhoto)()
 

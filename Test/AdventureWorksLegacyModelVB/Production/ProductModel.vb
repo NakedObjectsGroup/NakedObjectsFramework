@@ -3,7 +3,6 @@
 Namespace AW.Types
 
 	Partial Public Class ProductModel
-		Implements IHasRowGuid, IHasModifiedDate
 
 		<Hidden>
 		Public Property ProductModelID() As Integer
@@ -49,7 +48,7 @@ Namespace AW.Types
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(1)>
-		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get
@@ -64,7 +63,7 @@ Namespace AW.Types
 #End Region
 
 		<Hidden>
-		Public Property rowguid() As Guid Implements IHasRowGuid.rowguid
+		Public Property RowGuid() As Guid
 
 		Public Overrides Function ToString() As String
 			Return Name

@@ -1,24 +1,6 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class PurchaseOrderDetail
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As PurchaseOrderDetail)
-			PurchaseOrderID = cloneFrom.PurchaseOrderID
-			PurchaseOrderDetailID = cloneFrom.PurchaseOrderDetailID
-			DueDate = cloneFrom.DueDate
-			OrderQty = cloneFrom.OrderQty
-			UnitPrice = cloneFrom.UnitPrice
-			LineTotal = cloneFrom.LineTotal
-			ReceivedQty = cloneFrom.ReceivedQty
-			RejectedQty = cloneFrom.RejectedQty
-			StockedQty = cloneFrom.StockedQty
-			ModifiedDate = cloneFrom.ModifiedDate
-			ProductID = cloneFrom.ProductID
-			Product = cloneFrom.Product
-			PurchaseOrderHeader = cloneFrom.PurchaseOrderHeader
-		End Sub
 
 		<Hidden>
 		Public Property PurchaseOrderID() As Integer

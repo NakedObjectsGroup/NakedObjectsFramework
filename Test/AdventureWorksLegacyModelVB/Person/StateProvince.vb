@@ -2,7 +2,6 @@
 
 	<Bounded>
 	Partial Public Class StateProvince
-		Implements IHasRowGuid, IHasModifiedDate
 
 		<Hidden>
 		Public Property StateProvinceID() As Integer
@@ -28,7 +27,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(1)>
-		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get
@@ -43,7 +42,7 @@
 #End Region
 
 		<Hidden>
-		Public Property rowguid() As Guid Implements IHasRowGuid.rowguid
+		Public Property RowGuid() As Guid
 
 		Public Overrides Function ToString() As String
 			Return Name

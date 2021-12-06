@@ -1,7 +1,6 @@
 ﻿Namespace AW.Types
 
     Partial Public Class Vendor
-        Implements IBusinessEntity
 
         <MemberOrder(10)>
         Public Property AccountNumber() As String = ""
@@ -31,7 +30,7 @@
         Public Property ModifiedDate() As DateTime
 
         <Hidden>
-        Public Property BusinessEntityID() As Integer Implements IBusinessEntity.BusinessEntityID
+        Public Property BusinessEntityID() As Integer
 
         Public Overridable Function AutoCompletePurchasingWebServiceURL(<MinLength(2)> ByVal value As String) As IQueryable(Of String)
             Dim matchingNames = New List(Of String) From {"http://www.store1.com", "http://www.store2.com", "http://www.store3.com"}

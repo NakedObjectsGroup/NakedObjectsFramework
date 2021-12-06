@@ -2,26 +2,8 @@
 
     <Bounded>
     Partial Public Class Department
-        Implements IHasModifiedDate
 
-#Region "DepartmentID"
-        Friend mappedDepartmentID As Short
-        Friend myDepartmentID As WholeNumber
-
-        <MemberOrder(1)>
-        Public ReadOnly Property DepartmentID As WholeNumber
-            Get
-                Return If(myDepartmentID, New WholeNumber(mappedDepartmentID, Function(v) mappedDepartmentID = v))
-            End Get
-        End Property
-
-        Public Sub AboutDepartmentID(a As FieldAbout, DepartmentID As WholeNumber)
-            Select Case a.TypeCode
-                Case AboutTypeCodes.Visible
-                    a.Visible = False
-            End Select
-        End Sub
-#End Region
+        Public Property DepartmentID As Integer  'Not visible on UI
 
 #Region "Name"
         Friend mappedName As String
@@ -37,7 +19,6 @@
         Public Sub AboutName(a As FieldAbout, Name As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Parameters
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
                 Case AboutTypeCodes.Visible
@@ -61,8 +42,8 @@
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(1)>
-        Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+        <MemberOrder(99)>
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

@@ -1,7 +1,6 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class EmailAddress
-		Implements IHasRowGuid, IHasModifiedDate
 
 		<Hidden>
 		Public Property BusinessEntityID() As Integer
@@ -19,7 +18,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(1)>
-		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get
@@ -34,7 +33,7 @@
 #End Region
 
 		<Hidden>
-		Public Property rowguid() As Guid Implements IHasRowGuid.rowguid
+		Public Property RowGuid() As Guid
 
 		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
 		'ORIGINAL LINE: public override string? ToString()

@@ -1,29 +1,9 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class SalesPerson
-		Implements IBusinessEntity
-
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As SalesPerson)
-			BusinessEntityID = cloneFrom.BusinessEntityID
-			EmployeeDetails = cloneFrom.EmployeeDetails
-			SalesTerritoryID = cloneFrom.SalesTerritoryID
-			SalesTerritory = cloneFrom.SalesTerritory
-			SalesQuota = cloneFrom.SalesQuota
-			Bonus = cloneFrom.Bonus
-			CommissionPct = cloneFrom.CommissionPct
-			SalesYTD = cloneFrom.SalesYTD
-			SalesLastYear = cloneFrom.SalesLastYear
-			QuotaHistory = cloneFrom.QuotaHistory
-			TerritoryHistory = cloneFrom.TerritoryHistory
-			ModifiedDate = cloneFrom.ModifiedDate
-			rowguid = cloneFrom.rowguid
-		End Sub
 
 		<Hidden>
-		Public Property BusinessEntityID() As Integer Implements IBusinessEntity.BusinessEntityID
+		Public Property BusinessEntityID() As Integer
 
 		<MemberOrder(10)>
 		Public Overridable Property EmployeeDetails() As Employee

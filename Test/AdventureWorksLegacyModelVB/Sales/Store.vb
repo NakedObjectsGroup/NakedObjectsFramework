@@ -4,7 +4,6 @@ Namespace AW.Types
 
 	Partial Public Class Store
 		Inherits BusinessEntity
-		Implements IBusinessEntityWithContacts, IHasModifiedDate
 
 		<Named("Store Name")>
 		<MemberOrder(20)>
@@ -37,7 +36,7 @@ Namespace AW.Types
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(1)>
-		Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

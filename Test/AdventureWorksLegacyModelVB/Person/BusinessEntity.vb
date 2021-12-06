@@ -1,21 +1,9 @@
 ﻿Namespace AW.Types
 
 	Public MustInherit Class BusinessEntity
-		Implements IBusinessEntity
-
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As BusinessEntity)
-			BusinessEntityID = cloneFrom.BusinessEntityID
-			BusinessEntityRowguid = cloneFrom.BusinessEntityRowguid
-			BusinessEntityModifiedDate = cloneFrom.BusinessEntityModifiedDate
-			Addresses = cloneFrom.Addresses
-			Contacts = cloneFrom.Contacts
-		End Sub
 
 		<Hidden>
-		Public Property BusinessEntityID() As Integer Implements IBusinessEntity.BusinessEntityID
+		Public Property BusinessEntityID() As Integer
 
 		<Hidden>
 		Public Property BusinessEntityRowguid() As Guid

@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class ProductListPriceHistory
-		Implements IHasModifiedDate
+		
 
 		Public Property ProductID() As Integer
 		Public Property StartDate() As DateTime
@@ -15,7 +15,7 @@
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(1)>
-        Public ReadOnly Property ModifiedDate As TimeStamp Implements IHasModifiedDate.ModifiedDate
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

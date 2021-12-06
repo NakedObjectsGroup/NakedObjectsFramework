@@ -1,24 +1,6 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class SalesOrderDetail
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As SalesOrderDetail)
-			SalesOrderID = cloneFrom.SalesOrderID
-			SalesOrderDetailID = cloneFrom.SalesOrderDetailID
-			OrderQty = cloneFrom.OrderQty
-			UnitPrice = cloneFrom.UnitPrice
-			UnitPriceDiscount = cloneFrom.UnitPriceDiscount
-			LineTotal = cloneFrom.LineTotal
-			CarrierTrackingNumber = cloneFrom.CarrierTrackingNumber
-			SalesOrderHeader = cloneFrom.SalesOrderHeader
-			SpecialOfferID = cloneFrom.SpecialOfferID
-			ProductID = cloneFrom.ProductID
-			SpecialOfferProduct = cloneFrom.SpecialOfferProduct
-			ModifiedDate = cloneFrom.ModifiedDate
-			rowguid = cloneFrom.rowguid
-		End Sub
 
 		<Hidden>
 		Public Property SalesOrderID() As Integer

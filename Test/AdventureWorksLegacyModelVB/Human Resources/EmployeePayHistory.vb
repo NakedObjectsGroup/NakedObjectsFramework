@@ -1,26 +1,90 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class EmployeePayHistory
-		<Hidden>
+
 		Public Property EmployeeID() As Integer
 
-		<MemberOrder(1), Mask("d")>
-		Public Property RateChangeDate() As DateTime
+#Region "RateChangeDate"
+        Friend mappedRateChangeDate As Date
+        Friend myRateChangeDate As NODate
 
-		<MemberOrder(2), Mask("C")>
-		Public Property Rate() As Decimal
+        <MemberOrder(1)>
+        Public ReadOnly Property RateChangeDate As NODate
+            Get
+                Return If(myRateChangeDate, New NODate(mappedRateChangeDate, Function(v) mappedRateChangeDate = v))
+            End Get
+        End Property
 
-		<MemberOrder(3)>
-		Public Property PayFrequency() As Byte
+        Public Sub AboutRateChangeDate(a As FieldAbout, RateChangeDate As NODate)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
 
-		<MemberOrder(4)>
-		Public Overridable Property Employee() As Employee
+#Region "Rate"
+        Friend mappedRate As Decimal
+        Friend myRate As Money
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+        <MemberOrder(2)>
+        Public ReadOnly Property Rate As Money
+            Get
+                Return If(myRate, New Money(mappedRate, Function(v) mappedRate = v))
+            End Get
+        End Property
 
-		Public Overrides Function ToString() As String
-			Return $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}"
-		End Function
-	End Class
+        Public Sub AboutRate(a As FieldAbout, Rate As Money)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+#Region "PayFrequency"
+        Friend mappedPayFrequency As Byte
+        Friend myPayFrequency As WholeNumber
+
+        <MemberOrder(3)>
+        Public ReadOnly Property PayFrequency As WholeNumber
+            Get
+                Return If(myPayFrequency, New WholeNumber(mappedPayFrequency, Function(v) mappedPayFrequency = v))
+            End Get
+        End Property
+
+        Public Sub AboutPayFrequency(a As FieldAbout, PayFrequency As WholeNumber)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+        <MemberOrder(4)>
+        Public Overridable Property Employee() As Employee
+
+#Region "ModifiedDate"
+        Friend mappedModifiedDate As Date
+        Friend myModifiedDate As TimeStamp
+
+        <MemberOrder(99)>
+        Public ReadOnly Property ModifiedDate As TimeStamp
+            Get
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+            End Get
+        End Property
+
+        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+        Public Function Title() As Title
+            Return New Title($"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}")
+        End Function
+    End Class
 End Namespace

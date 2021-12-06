@@ -1,25 +1,6 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class WorkOrderRouting
-		Public Sub New()
-		End Sub
-
-		Public Sub New(ByVal cloneFrom As WorkOrderRouting)
-			WorkOrderID = cloneFrom.WorkOrderID
-			ProductID = cloneFrom.ProductID
-			OperationSequence = cloneFrom.OperationSequence
-			ScheduledStartDate = cloneFrom.ScheduledStartDate
-			ScheduledEndDate = cloneFrom.ScheduledEndDate
-			ActualStartDate = cloneFrom.ActualStartDate
-			ActualEndDate = cloneFrom.ActualEndDate
-			ActualResourceHrs = cloneFrom.ActualResourceHrs
-			PlannedCost = cloneFrom.PlannedCost
-			ActualCost = cloneFrom.ActualCost
-			WorkOrder = cloneFrom.WorkOrder
-			LocationID = cloneFrom.LocationID
-			Location = cloneFrom.Location
-			ModifiedDate = cloneFrom.ModifiedDate
-		End Sub
 
 		<Hidden>
 		Public Property WorkOrderID() As Integer
