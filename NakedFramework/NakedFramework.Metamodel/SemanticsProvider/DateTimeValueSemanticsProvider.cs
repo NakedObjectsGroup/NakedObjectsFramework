@@ -38,7 +38,7 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(DateTime);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override string DoEncode(DateTime obj) {
         var date = obj;

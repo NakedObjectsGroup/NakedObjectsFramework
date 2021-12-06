@@ -36,7 +36,7 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(long);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override long DoParse(string entry) {
         try {

@@ -36,7 +36,7 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(ushort);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override ushort DoParse(string entry) {
         try {

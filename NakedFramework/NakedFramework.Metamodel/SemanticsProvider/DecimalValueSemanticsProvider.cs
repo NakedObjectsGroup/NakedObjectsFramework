@@ -36,7 +36,7 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(decimal);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override decimal DoParse(string entry) {
         try {

@@ -36,7 +36,7 @@ public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(ulong);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override ulong DoParse(string entry) {
         try {

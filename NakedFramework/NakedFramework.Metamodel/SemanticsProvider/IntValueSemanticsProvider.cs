@@ -36,7 +36,7 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(int);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override int DoParse(string entry) {
         try {

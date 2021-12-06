@@ -36,7 +36,7 @@ public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(sbyte);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override sbyte DoParse(string entry) {
         try {

@@ -38,7 +38,7 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(WholeNumber);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override WholeNumber DoParse(string entry) {
         try {

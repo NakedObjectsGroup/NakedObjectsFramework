@@ -36,7 +36,7 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(float);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override float DoParse(string entry) {
         try {

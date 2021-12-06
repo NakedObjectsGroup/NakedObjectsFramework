@@ -36,7 +36,7 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(double);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override double DoParse(string entry) {
         try {

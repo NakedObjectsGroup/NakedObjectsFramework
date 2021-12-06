@@ -41,7 +41,7 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(TimeStamp);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override string DoEncode(TimeStamp timeStamp) => timeStamp.DateTime.ToString(CultureInfo.InvariantCulture);
 

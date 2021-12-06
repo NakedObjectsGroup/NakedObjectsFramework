@@ -41,7 +41,7 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(Date);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override string DoEncode(Date date) => date.DateTime.ToString(CultureInfo.InvariantCulture);
 

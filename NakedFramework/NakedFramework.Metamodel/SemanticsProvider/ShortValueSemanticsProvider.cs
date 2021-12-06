@@ -36,7 +36,7 @@ public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(short);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override short DoParse(string entry) {
         try {

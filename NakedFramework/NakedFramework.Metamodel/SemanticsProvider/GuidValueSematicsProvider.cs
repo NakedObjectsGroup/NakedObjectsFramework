@@ -35,7 +35,7 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(Guid);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override Guid DoParse(string entry) {
         try {

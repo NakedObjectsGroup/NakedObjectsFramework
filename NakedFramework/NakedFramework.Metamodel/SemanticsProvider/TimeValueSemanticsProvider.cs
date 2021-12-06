@@ -36,7 +36,7 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == typeof(TimeSpan);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override string DoEncode(TimeSpan time) => time.ToString();
 

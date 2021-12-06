@@ -56,7 +56,7 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
 
     public object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
-    public static bool IsAdaptedType(Type type) => type == typeof(T[]);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override T[] DoParse(string entry) {
         try {

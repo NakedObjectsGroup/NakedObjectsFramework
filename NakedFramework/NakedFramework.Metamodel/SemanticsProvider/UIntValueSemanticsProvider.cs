@@ -38,7 +38,7 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
-    public static bool IsAdaptedType(Type type) => type == typeof(uint);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override uint DoParse(string entry) {
         try {

@@ -42,7 +42,7 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
-    public static bool IsAdaptedType(Type type) => type == typeof(Color);
+    public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override Color DoParse(string entry) {
         try {
