@@ -51,5 +51,7 @@ public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeF
                 FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
             }
         }
+
+        FacetUtils.AddFacet(new TypeFacet(holder, typeof(T)));
     }
 }
