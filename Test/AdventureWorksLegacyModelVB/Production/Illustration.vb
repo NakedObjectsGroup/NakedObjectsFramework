@@ -2,17 +2,69 @@
 
 	Partial Public Class Illustration
 		Public Property IllustrationID() As Integer
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? Diagram {get;set;}
-		Public Property Diagram() As String
 
-		Public Overridable Property ProductModelIllustration() As ICollection(Of ProductModelIllustration) = New List(Of ProductModelIllustration)()
+#Region "Diagram"
+        Friend mappedDiagram As String
+        Friend myDiagram As TextString
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+        <MemberOrder(1)>
+        Public ReadOnly Property Diagram As TextString
+            Get
+                Return If(myDiagram, New TextString(mappedDiagram, Function(v) mappedDiagram = v))
+            End Get
+        End Property
 
-		Public Overrides Function ToString() As String
-			Return $"Illustration: {IllustrationID}"
-		End Function
-	End Class
+        Public Sub AboutDiagram(a As FieldAbout, Diagram As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
+#Region "ProductModelIllustration (Collection)"
+        Public Overridable Property mappedProductModelIllustration As ICollection(Of ProductModelIllustration) = New List(Of ProductModelIllustration)()
+
+        Private myProductModelIllustration As InternalCollection
+
+        <MemberOrder(1)>
+        Public ReadOnly Property ProductModelIllustration As InternalCollection
+            Get
+                Return If(myProductModelIllustration, New InternalCollection(Of ProductModelIllustration)(mappedProductModelIllustration))
+            End Get
+        End Property
+
+        Public Sub AboutProductModelIllustration(a As FieldAbout)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
+#Region "ModifiedDate"
+        Friend mappedModifiedDate As Date
+        Friend myModifiedDate As TimeStamp
+
+        <MemberOrder(99)>
+        Public ReadOnly Property ModifiedDate As TimeStamp
+            Get
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+            End Get
+        End Property
+
+        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+        Public Function Title() As Title
+            Return New Title($"Illustration: {IllustrationID}")
+        End Function
+    End Class
 End Namespace
