@@ -2,22 +2,37 @@
 
 	Partial Public Class EmailAddress
 
-		<Hidden>
 		Public Property BusinessEntityID() As Integer
 
-		<Hidden>
 		Public Property EmailAddressID() As Integer
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? EmailAddress1 {get;set;}
-		<Named("Email Address")>
-		Public Property EmailAddress1() As String
+#Region "EmailAddress1"
+		Friend mappedEmailAddress1 As String
+		Friend myEmailAddress1 As TextString
+
+		<MemberOrder(1)>
+		Public ReadOnly Property EmailAddress1 As TextString
+			Get
+				Return If(myEmailAddress1, New TextString(mappedEmailAddress1, Function(v) mappedEmailAddress1 = v))
+			End Get
+		End Property
+
+		Public Sub AboutEmailAddress1(a As FieldAbout, EmailAddress1 As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+					a.Name = "Email Address"
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -32,13 +47,10 @@
 		End Sub
 #End Region
 
-		<Hidden>
 		Public Property RowGuid() As Guid
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public override string? ToString()
-		Public Overrides Function ToString() As String
-			Return EmailAddress1
+		Public Function Title() As Title
+			Return New Title(EmailAddress1)
 		End Function
 	End Class
 End Namespace

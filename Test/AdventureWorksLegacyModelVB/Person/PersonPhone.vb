@@ -1,27 +1,39 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class PersonPhone
-		
 
-		<Hidden>
-		Public Property BusinessEntityID() As Integer
+        Public Property BusinessEntityID() As Integer
 
-'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-'ORIGINAL LINE: public string? PhoneNumber {get;set;}
-		Public Property PhoneNumber() As String
+#Region "PhoneNumber"
+        Friend mappedPhoneNumber As String
+        Friend myPhoneNumber As TextString
 
-		<Hidden>
-		Public Property PhoneNumberTypeID() As Integer
+        <MemberOrder(1)>
+        Public ReadOnly Property PhoneNumber As TextString
+            Get
+                Return If(myPhoneNumber, New TextString(mappedPhoneNumber, Function(v) mappedPhoneNumber = v))
+            End Get
+        End Property
 
-'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-'ORIGINAL LINE: public virtual PhoneNumberType? PhoneNumberType {get;set;}
-		Public Overridable Property PhoneNumberType() As PhoneNumberType
+        Public Sub AboutPhoneNumber(a As FieldAbout, PhoneNumber As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
+        Public Property PhoneNumberTypeID() As Integer
+
+        Public Overridable Property PhoneNumberType() As PhoneNumberType
 
 #Region "ModifiedDate"
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(1)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -36,8 +48,8 @@
         End Sub
 #End Region
 
-        Public Overrides Function ToString() As String
-			Return $"{PhoneNumberType}:{PhoneNumber}"
-		End Function
-	End Class
+        Public Function Title() As Title
+            Return New Title($"{PhoneNumberType}:{PhoneNumber}")
+        End Function
+    End Class
 End Namespace
