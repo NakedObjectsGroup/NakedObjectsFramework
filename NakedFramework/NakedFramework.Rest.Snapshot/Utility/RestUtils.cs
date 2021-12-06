@@ -41,6 +41,8 @@ public static class RestUtils {
         { typeof(float), PredefinedJsonType.Number },
         { typeof(double), PredefinedJsonType.Number },
         { typeof(decimal), PredefinedJsonType.Number },
+        { typeof(DateTime), PredefinedJsonType.String },
+        { typeof(TimeSpan), PredefinedJsonType.String },
         { typeof(void), PredefinedJsonType.Void }
     };
 
@@ -59,6 +61,7 @@ public static class RestUtils {
         { typeof(float), PredefinedFormatType.Decimal },
         { typeof(double), PredefinedFormatType.Decimal },
         { typeof(decimal), PredefinedFormatType.Decimal },
+        { typeof(TimeSpan), PredefinedFormatType.Time },
         { typeof(byte[]), PredefinedFormatType.Blob },
         { typeof(sbyte[]), PredefinedFormatType.Blob },
         { typeof(char[]), PredefinedFormatType.Clob }
@@ -184,25 +187,12 @@ public static class RestUtils {
             return SimpleTypeMap[toMapType];
         }
 
-        if (typeFacade.IsEnum) {
-            var underlyingType = Enum.GetUnderlyingType(toMapType);
-            return SimpleTypeMap[underlyingType];
-        }
-
-        if (typeFacade.IsDate || typeFacade.IsTime) {
-            return PredefinedJsonType.String;
-        }
-
         if (typeFacade.IsASet) {
             return PredefinedJsonType.Set;
         }
 
         if (typeFacade.IsCollection || typeFacade.IsQueryable) {
             return PredefinedJsonType.List;
-        }
-
-        if (typeFacade.IsNumber) {
-            return PredefinedJsonType.Number;
         }
 
         // if parseable default to string
@@ -220,21 +210,8 @@ public static class RestUtils {
             return SimpleFormatMap[underlyingType];
         }
 
-        if (typeSpec.IsEnum) {
-            var enumType = Enum.GetUnderlyingType(underlyingType);
-            return SimpleFormatMap[enumType];
-        }
-
         if (typeSpec.IsDate) {
             return useDateOverDateTime ? PredefinedFormatType.Date : PredefinedFormatType.Date_time;
-        }
-
-        if (typeSpec.IsTime) {
-            return PredefinedFormatType.Time;
-        }
-
-        if (typeSpec.IsNumber) {
-            return PredefinedFormatType.Int;
         }
 
         if (typeSpec.IsParseable) {
