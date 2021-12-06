@@ -140,7 +140,7 @@ public class TypeFacade : ITypeFacade {
 
     public bool IsOfType(ITypeFacade otherSpec) => WrappedValue.IsOfType(((TypeFacade)otherSpec).WrappedValue);
 
-    public Type GetUnderlyingType() =>  WrappedValue.GetFacet<ITypeFacet>()?.TypeOrUnderlyingType ?? TypeUtils.GetType(WrappedValue.FullName);
+    public Type GetUnderlyingType() =>  WrappedValue.GetFacet<ITypeFacet>().TypeOrUnderlyingType;
 
     public IActionFacade[] GetCollectionContributedActions() {
         if (WrappedValue is IObjectSpec objectSpec) {

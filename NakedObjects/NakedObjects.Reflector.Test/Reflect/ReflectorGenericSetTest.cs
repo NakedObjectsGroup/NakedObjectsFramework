@@ -55,7 +55,7 @@ public class ReflectorGenericSetTest : AbstractReflectorTest {
 
     [TestMethod]
     public void TestFacets() {
-        Assert.AreEqual(13, Specification.FacetTypes.Length);
+        Assert.AreEqual(14, Specification.FacetTypes.Length);
     }
 
     [TestMethod]

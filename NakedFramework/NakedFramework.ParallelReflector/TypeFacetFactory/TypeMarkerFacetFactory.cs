@@ -30,7 +30,8 @@ public sealed class TypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor {
             new TypeIsInterfaceFacet(specification, IsInterface(type)),
             new TypeIsSealedFacet(specification, IsSealed(type)),
             new TypeIsVoidFacet(specification, IsVoid(type)),
-            new TypeIsStaticFacet(specification, IsStatic(type))
+            new TypeIsStaticFacet(specification, IsStatic(type)),
+            new TypeFacet(specification, type),
         };
 
         FacetUtils.AddFacets(facets);
