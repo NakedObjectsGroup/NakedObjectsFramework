@@ -31,12 +31,6 @@ public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeF
             FacetUtils.AddFacet(new ImmutableFacetViaValueSemantics(holder));
         }
 
-        // EqualByContentFacet, if appropriate
-        var equalByContent = semanticsProvider == null || semanticsProvider.IsEqualByContent;
-        if (equalByContent) {
-            FacetUtils.AddFacet(new EqualByContentFacet(holder));
-        }
-
         if (semanticsProvider != null) {
             FacetUtils.AddFacet(new EncodeableFacetUsingEncoderDecoder<T>(semanticsProvider, holder));
             FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));

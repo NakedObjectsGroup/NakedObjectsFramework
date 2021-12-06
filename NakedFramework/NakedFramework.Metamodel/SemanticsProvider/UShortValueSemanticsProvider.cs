@@ -19,12 +19,11 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstract<ushort>, IUnsignedShortValueFacet {
     private const ushort DefaultValueConst = 0;
-    private const bool EqualByContent = true;
     private const bool Immutable = true;
     private const int TypicalLengthConst = 5;
 
     public UShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IUnsignedShortValueFacet);
 

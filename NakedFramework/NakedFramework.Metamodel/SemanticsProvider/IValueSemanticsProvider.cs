@@ -11,17 +11,6 @@ public interface IValueSemanticsProvider<T> {
     bool IsImmutable { get; }
 
     /// <summary>
-    ///     Whether the value has equal by content semantics
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         If so, then it must implement <c>Equals</c> and <c>GetHashCode</c>
-    ///         consistently.  Examples  that do this are <see cref="string" /> for example
-    ///     </para>
-    /// </remarks>
-    bool IsEqualByContent { get; }
-
-    /// <summary>
     ///     The typical length of objects that can be parsed
     /// </summary>
     int TypicalLength { get; }

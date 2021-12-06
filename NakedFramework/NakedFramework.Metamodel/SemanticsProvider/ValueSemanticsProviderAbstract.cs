@@ -26,14 +26,12 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
                                              Type adaptedType,
                                              int typicalLength,
                                              bool immutable,
-                                             bool equalByContent,
                                              T defaultValue,
                                              IObjectSpecImmutable specImmutable)
         : base(adapterFacetType, holder) {
         this.adaptedType = adaptedType;
         TypicalLength = typicalLength;
         IsImmutable = immutable;
-        IsEqualByContent = equalByContent;
         DefaultValue = defaultValue;
         SpecImmutable = specImmutable;
     }
@@ -96,8 +94,6 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     public T DefaultValue { get; }
 
     public int TypicalLength { get; }
-
-    public bool IsEqualByContent { get; }
 
     public bool IsImmutable { get; }
 

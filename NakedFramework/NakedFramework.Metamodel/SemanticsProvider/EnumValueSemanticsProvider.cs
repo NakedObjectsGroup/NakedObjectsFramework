@@ -16,12 +16,11 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 
 [Serializable]
 public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IEnumValueFacet {
-    private const bool EqualBycontent = true;
     private const bool Immutable = true;
     private const int TypicalLengthConst = 11;
 
     public EnumValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, GetDefault(), spec) { }
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, GetDefault(), spec) { }
 
     public static Type Type => typeof(IEnumValueFacet);
 

@@ -19,12 +19,11 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<int>, IIntegerValueFacet {
     private const int DefaultValueConst = 0;
-    private const bool EqualBycontent = true;
     private const bool Immutable = true;
     private const int TypicalLengthConst = 11;
 
     public IntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IIntegerValueFacet);
 

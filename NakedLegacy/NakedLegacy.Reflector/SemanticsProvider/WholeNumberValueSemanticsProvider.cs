@@ -20,13 +20,13 @@ namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
 public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAbstract<WholeNumber>, IIntegerValueFacet {
-    private const bool EqualBycontent = true;
+    
     private const bool Immutable = true;
     private const int TypicalLengthConst = 11;
     private static WholeNumber DefaultValueConst = new(0);
 
     public WholeNumberValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IIntegerValueFacet);
 

@@ -17,5 +17,4 @@ namespace NakedFramework.Architecture.Facet;
 ///     In the standard Naked Objects Programming Model, typically corresponds to applying the
 ///     <see cref="ImmutableAttribute" /> annotation at the class level
 /// </para>
-/// <seealso cref="IEqualByContentFacet" />
 public interface IImmutableFacet : ISingleWhenValueFacet, IDisablingInteractionAdvisor { }

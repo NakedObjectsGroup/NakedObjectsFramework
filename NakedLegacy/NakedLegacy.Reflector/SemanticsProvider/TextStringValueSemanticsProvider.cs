@@ -19,12 +19,11 @@ namespace NakedLegacy.Reflector.SemanticsProvider;
 [Serializable]
 public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbstract<TextString>, IStringValueFacet {
     private const TextString DefaultValueConst = null;
-    private const bool EqualByContent = true;
     private const bool Immutable = true;
     private const int TypicalLengthConst = 25;
 
     public TextStringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IStringValueFacet);
 

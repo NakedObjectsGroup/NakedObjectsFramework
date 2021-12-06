@@ -19,12 +19,11 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<uint>, IUnsignedIntegerValueFacet {
     private const uint DefaultValueConst = 0;
-    private const bool EqualByContent = true;
     private const bool Immutable = true;
     private const int TypicalLengthConst = 10;
 
     public UIntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IUnsignedIntegerValueFacet);
 

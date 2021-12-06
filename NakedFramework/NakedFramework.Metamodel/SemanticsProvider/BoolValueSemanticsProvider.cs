@@ -19,12 +19,11 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstract<bool>, IBooleanValueFacet {
     private const bool DefaultValueConst = false;
-    private const bool EqualByContent = true;
     private const bool Immutable = true;
     private const int TypicalLengthConst = 5;
 
     public BooleanValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
 
     private static Type Type => typeof(IBooleanValueFacet);
 

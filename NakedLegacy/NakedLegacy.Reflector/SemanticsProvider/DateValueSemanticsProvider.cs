@@ -20,13 +20,13 @@ namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
 public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<Date>, IDateValueFacet {
-    private const bool EqualByContent = false;
+    
     private const bool Immutable = false;
     private const int TypicalLengthConst = 18;
     private static readonly Date DefaultValueConst = new(new DateTime());
 
     public DateValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
 
     // inject for testing 
     public static DateTime? TestDateTime { get; set; }

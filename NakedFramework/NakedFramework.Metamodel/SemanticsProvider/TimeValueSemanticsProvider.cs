@@ -18,13 +18,12 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 
 [Serializable]
 public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeSpan>, ITimeValueFacet {
-    private const bool EqualByContent = false;
     private const bool Immutable = false;
     private const int TypicalLengthConst = 6;
     private static readonly TimeSpan DefaultValueConst = new();
 
     public TimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(ITimeValueFacet);
 
