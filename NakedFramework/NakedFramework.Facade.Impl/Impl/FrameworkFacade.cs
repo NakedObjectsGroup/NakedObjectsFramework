@@ -406,10 +406,9 @@ public class FrameworkFacade : IFrameworkFacade {
     }
 
     protected string GetTransientSecurityHash(ObjectContext target, out string rawValue) {
-        var spec = target.Specification as IObjectSpec;
         var propertiesValue = $"UserName:{Framework.Session.Principal.Identity?.Name ?? ""}";
 
-        if (spec != null) {
+        if (target.Specification is IObjectSpec spec) {
             var nakedObject = target.Target;
 
             var allProperties = spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => !p.IsInline && p.IsPersisted);
@@ -480,7 +479,7 @@ public class FrameworkFacade : IFrameworkFacade {
     private ObjectContextFacade SetObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments, bool save) {
         // this is for ProtoPersistents where the arguments must contain all values 
         // for standard transients the object may already have values set so no need to check  
-        if (((IObjectSpec)nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
+        if (((IObjectSpec)nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.ContainsKey(p.Id))) {
             throw new BadRequestNOSException("Malformed arguments");
         }
 

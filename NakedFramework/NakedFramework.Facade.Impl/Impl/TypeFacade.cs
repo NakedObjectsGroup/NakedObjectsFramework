@@ -31,7 +31,7 @@ public class TypeFacade : ITypeFacade {
     public override bool Equals(object obj) => obj is TypeFacade tf && Equals(tf);
 
     public bool Equals(TypeFacade other) {
-        if (ReferenceEquals(null, other)) {
+        if (other is null) {
             return false;
         }
 

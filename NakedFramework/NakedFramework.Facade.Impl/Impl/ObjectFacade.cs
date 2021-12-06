@@ -62,7 +62,7 @@ public class ObjectFacade : IObjectFacade {
     public override bool Equals(object obj) => obj is ObjectFacade of && Equals(of);
 
     public bool Equals(ObjectFacade other) {
-        if (ReferenceEquals(null, other)) {
+        if (other is null) {
             return false;
         }
 
@@ -111,10 +111,9 @@ public class ObjectFacade : IObjectFacade {
     public int Count() => WrappedNakedObject.GetAsQueryable().Count();
 
     public AttachmentContextFacade GetAttachment() {
-        var fa = WrappedNakedObject.Object as FileAttachment;
         var context = new AttachmentContextFacade();
 
-        if (fa != null) {
+        if (WrappedNakedObject.Object is FileAttachment fa) {
             context.Content = fa.GetResourceAsStream();
             context.MimeType = fa.MimeType;
             context.ContentDisposition = fa.DispositionType;
