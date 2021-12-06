@@ -244,11 +244,46 @@
         <Hidden>
         Public Overridable Property SalesPerson() As SalesPerson
 
-        <TableView(True, NameOf(EmployeeDepartmentHistory.StartDate), NameOf(EmployeeDepartmentHistory.EndDate), NameOf(EmployeeDepartmentHistory.Department), NameOf(EmployeeDepartmentHistory.Shift))>
-        Public Overridable Property DepartmentHistory() As ICollection(Of EmployeeDepartmentHistory) = New List(Of EmployeeDepartmentHistory)()
+#Region "DepartmentHistory (Collection)"
+        Public Overridable Property mappedDepartmentHistory As ICollection(Of EmployeeDepartmentHistory) = New List(Of EmployeeDepartmentHistory)()
 
-        <TableView(True, NameOf(EmployeePayHistory.RateChangeDate), NameOf(EmployeePayHistory.Rate))>
-        Public Overridable Property PayHistory() As ICollection(Of EmployeePayHistory) = New List(Of EmployeePayHistory)()
+        Private myDepartmentHistory As InternalCollection
+
+        <MemberOrder(1)>
+        Public ReadOnly Property DepartmentHistory As InternalCollection
+            Get
+                Return If(myDepartmentHistory, New InternalCollection(Of EmployeeDepartmentHistory)(mappedDepartmentHistory))
+            End Get
+        End Property
+
+        Public Sub AboutDepartmentHistory(a As FieldAbout)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
+#Region "PayHistory (Collection)"
+        Public Overridable Property mappedPayHistory As ICollection(Of EmployeePayHistory) = New List(Of EmployeePayHistory)()
+
+        Private myPayHistory As InternalCollection
+
+        <MemberOrder(1)>
+        Public ReadOnly Property PayHistory As InternalCollection
+            Get
+                Return If(myPayHistory, New InternalCollection(Of EmployeePayHistory)(mappedPayHistory))
+            End Get
+        End Property
+
+        Public Sub AboutPayHistory(a As FieldAbout)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
 
 #Region "ModifiedDate"
         Friend mappedModifiedDate As Date

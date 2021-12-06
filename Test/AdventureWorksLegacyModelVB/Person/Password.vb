@@ -2,17 +2,13 @@
 
 	Partial Public Class Password
 
-		<Hidden>
 		Public Property BusinessEntityID() As Integer
 
-		<Hidden>
 		Public Overridable Property Person() As Person
 
-		<Hidden>
-		Public Property PasswordHash() As String = ""
+		Public Property PasswordHash() As String 'Not visible on UI
 
-		<Hidden>
-		Public Property PasswordSalt() As String = ""
+		Public Property PasswordSalt() As String
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
@@ -31,11 +27,12 @@
 			End Select
 		End Sub
 #End Region
-		<Hidden>
+
 		Public Property RowGuid() As Guid
 
-		Public Overrides Function ToString() As String
-			Return "Password"
+		Public Function Title() As Title
+			Return New Title("Password")
 		End Function
+
 	End Class
 End Namespace

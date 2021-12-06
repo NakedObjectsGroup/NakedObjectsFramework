@@ -4,73 +4,250 @@
 		Inherits BusinessEntity
 
 #Region "Name fields"
+#Region "NameStyle"
+		Friend mappedNameStyle As Boolean
+		Friend myNameStyle As Logical
 
 		<MemberOrder(15)>
-		<Named("Reverse name order")>
-		Public Property NameStyle() As Boolean
+		Public ReadOnly Property NameStyle As Logical
+			Get
+				Return If(myNameStyle, New Logical(mappedNameStyle, Function(v) mappedNameStyle = v))
+			End Get
+		End Property
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? Title {get;set;}
-		<MemberOrder(11)>
-		Public Property Title() As String
-
-		<MemberOrder(12)>
-		Public Property FirstName() As String = ""
-
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? MiddleName {get;set;}
-		<MemberOrder(13)>
-		Public Property MiddleName() As String
-
-		<MemberOrder(14)>
-		Public Property LastName() As String = ""
-
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? Suffix {get;set;}
-		<MemberOrder(15)>
-		Public Property Suffix() As String
-
+		Public Sub AboutNameStyle(a As FieldAbout, NameStyle As Logical)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+					a.Name = "Reverse name order"
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
 #End Region
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? PersonType {get;set;}
-		<Hidden>
-		Public Property PersonType() As String
+#Region "Title"
+		Friend mappedTitle As String
+		Friend myTitle As TextString
 
+		<MemberOrder(1)>
+		Public ReadOnly Property NameTitle As TextString
+			Get
+				Return If(myTitle, New TextString(mappedTitle, Function(v) mappedTitle = v))
+			End Get
+		End Property
+
+		Public Sub AboutTitle(a As FieldAbout, Title As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+					a.Name = "Title"
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "FirstName"
+		Friend mappedFirstName As String
+		Friend myFirstName As TextString
+
+		<MemberOrder(12)>
+		Public ReadOnly Property FirstName As TextString
+			Get
+				Return If(myFirstName, New TextString(mappedFirstName, Function(v) mappedFirstName = v))
+			End Get
+		End Property
+
+		Public Sub AboutFirstName(a As FieldAbout, FirstName As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "MiddleName"
+		Friend mappedMiddleName As String
+		Friend myMiddleName As TextString
+
+		<MemberOrder(13)>
+		Public ReadOnly Property MiddleName As TextString
+			Get
+				Return If(myMiddleName, New TextString(mappedMiddleName, Function(v) mappedMiddleName = v))
+			End Get
+		End Property
+
+		Public Sub AboutMiddleName(a As FieldAbout, MiddleName As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "LastName"
+		Friend mappedLastName As String
+		Friend myLastName As TextString
+
+		<MemberOrder(14)>
+		Public ReadOnly Property LastName As TextString
+			Get
+				Return If(myLastName, New TextString(mappedLastName, Function(v) mappedLastName = v))
+			End Get
+		End Property
+
+		Public Sub AboutLastName(a As FieldAbout, LastName As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "Suffix"
+		Friend mappedSuffix As String
+		Friend mySuffix As TextString
+
+		<MemberOrder(15)>
+		Public ReadOnly Property Suffix As TextString
+			Get
+				Return If(mySuffix, New TextString(mappedSuffix, Function(v) mappedSuffix = v))
+			End Get
+		End Property
+
+		Public Sub AboutSuffix(a As FieldAbout, Suffix As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+#End Region
+
+#Region "PersonType"
+		Friend mappedPersonType As String
+		Friend myPersonType As TextString
+
+		<MemberOrder(1)>
+		Public ReadOnly Property PersonType As TextString
+			Get
+				Return If(myPersonType, New TextString(mappedPersonType, Function(v) mappedPersonType = v))
+			End Get
+		End Property
+
+		Public Sub AboutPersonType(a As FieldAbout, PersonType As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+					a.Visible = False
+			End Select
+		End Sub
+#End Region
+
+#Region "EmailPromotion"
 		<MemberOrder(21)>
-		<Hidden>
 		Public Overridable Property EmailPromotion() As EmailPromotion
+
+		Public Sub AboutEmailPromotion(a As FieldAbout, ep As EmailPromotion)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Visible
+					a.Visible = False
+			End Select
+		End Sub
+#End Region
 
 		'To test a null image
 		'[NotMapped]
 		'public virtual Image Photo { get { return null; } }
 
-		<TableView(False, NameOf(EmailAddress.EmailAddress1))>
-		Public Overridable Property EmailAddresses() As ICollection(Of EmailAddress) = New List(Of EmailAddress)()
+#Region "EmailAddresses (Collection)"
+		Public Overridable Property mappedEmailAddresses As ICollection(Of EmailAddress) = New List(Of EmailAddress)()
 
-		<AWNotCounted>
-		<TableView(False, NameOf(PersonPhone.PhoneNumberType), NameOf(PersonPhone.PhoneNumber))>
-		Public Overridable Property PhoneNumbers() As ICollection(Of PersonPhone) = New List(Of PersonPhone)()
+		Private myEmailAddresses As InternalCollection
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual Password? Password {get;set;}
+		'		<TableView(False, NameOf(EmailAddress.EmailAddress1))>
+		Public ReadOnly Property EmailAddresses As InternalCollection
+			Get
+				Return If(myEmailAddresses, New InternalCollection(Of EmailAddress)(mappedEmailAddresses))
+			End Get
+		End Property
+
+		Public Sub AboutEmailAddresses(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "PhoneNumbers (Collection)"
+		Public Overridable Property mappedPhoneNumbers As ICollection(Of PersonPhone) = New List(Of PersonPhone)()
+
+		Private myPhoneNumbers As InternalCollection
+
+		'<TableView(False, NameOf(PersonPhone.PhoneNumberType), NameOf(PersonPhone.PhoneNumber))>
+		Public ReadOnly Property PhoneNumbers As InternalCollection
+			Get
+				Return If(myPhoneNumbers, New InternalCollection(Of PersonPhone)(mappedPhoneNumbers))
+			End Get
+		End Property
+
+		Public Sub AboutPhoneNumbers(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
 		Public Overridable Property Password() As Password
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? AdditionalContactInfo {get;set;}
-		<MemberOrder(30)>
-		Public Property AdditionalContactInfo() As String
+#Region "AdditionalContactInfo"
+		Friend mappedAdditionalContactInfo As String
+		Friend myAdditionalContactInfo As TextString
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual Employee? Employee {get;set;}
-		<Hidden>
+		<MemberOrder(30)>
+		Public ReadOnly Property AdditionalContactInfo As TextString
+			Get
+				Return If(myAdditionalContactInfo, New TextString(mappedAdditionalContactInfo, Function(v) mappedAdditionalContactInfo = v))
+			End Get
+		End Property
+
+		Public Sub AboutAdditionalContactInfo(a As FieldAbout, AdditionalContactInfo As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
 		Public Overridable Property Employee() As Employee
+
+		Public Sub AboutEmployee(a As FieldAbout, e As Employee)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Visible
+					a.Visible = False
+			End Select
+		End Sub
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -85,11 +262,10 @@
 		End Sub
 #End Region
 
-		<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Overrides Function ToString() As String
-			Return If(NameStyle, $"{LastName} {FirstName}", $"{FirstName} {LastName}")
+		Public Function Title() As Title
+			Return New Title(If(mappedNameStyle, $"{LastName} {FirstName}", $"{FirstName} {LastName}"))
 		End Function
 	End Class
 End Namespace

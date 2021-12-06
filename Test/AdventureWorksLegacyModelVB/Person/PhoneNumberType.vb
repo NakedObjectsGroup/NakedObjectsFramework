@@ -2,21 +2,31 @@
 
 	<Bounded>
 	Partial Public Class PhoneNumberType
-		
 
-		<Hidden>
 		Public Property PhoneNumberTypeID() As Integer
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? Name {get;set;}
-		<Hidden>
-		Public Property Name() As String
+#Region "Name"
+		Friend mappedName As String
+		Friend myName As TextString
 
+		Public ReadOnly Property Name As TextString
+			Get
+				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+			End Get
+		End Property
+
+		Public Sub AboutName(a As FieldAbout, Name As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Visible
+					a.Visible = False
+			End Select
+		End Sub
+#End Region
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -31,10 +41,8 @@
 		End Sub
 #End Region
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public override string? ToString()
-		Public Overrides Function ToString() As String
-			Return Name
+		Public Function Title() As Title
+			Return New Title(Name)
 		End Function
 	End Class
 End Namespace

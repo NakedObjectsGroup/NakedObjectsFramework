@@ -2,27 +2,24 @@
 	<Named("Contact")>
 	Partial Public Class BusinessEntityContact
 
-		<Hidden>
 		Public Property BusinessEntityID() As Integer
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual BusinessEntity? BusinessEntity {get;set;}
-		<Hidden>
 		Public Overridable Property BusinessEntity() As BusinessEntity
 
-		<Hidden>
+		Public Sub AboutBusinessEntity(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Visible
+					a.Visible = False
+			End Select
+		End Sub
+
 		Public Property PersonID() As Integer
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual Person? Person {get;set;}
 		<MemberOrder(1)>
 		Public Overridable Property Person() As Person
 
-		<Hidden>
 		Public Property ContactTypeID() As Integer
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual ContactType? ContactType {get;set;}
 		<MemberOrder(2)>
 		Public Overridable Property ContactType() As ContactType
 
@@ -30,7 +27,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -45,11 +42,10 @@
 		End Sub
 #End Region
 
-		<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Overrides Function ToString() As String
-			Return $"{Person}"
+		Public Function Title() As Title
+			Return New Title(Person)
 		End Function
 	End Class
 End Namespace

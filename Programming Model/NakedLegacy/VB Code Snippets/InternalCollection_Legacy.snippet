@@ -20,14 +20,26 @@
           <Default>1</Default>
         </Literal> 
       </Declarations>
-      <Code Language="CSharp">
-        <![CDATA[#region $Name$ (Legacy Collection)
-public virtual ICollection<$DomainType$> mapped$Name$ { get; } = new List<$DomainType$>();
-private InternalCollection my$Name$;
+      <Code Language="VB">
+        <![CDATA[#Region "$Name$ (Collection)"
+        Public Overridable Property mapped$Name$ As ICollection(Of $DomainType$) = New List(Of $DomainType$)()
 
-[MemberOrder($MemberOrder$)]
-public InternalCollection $Name$ => my$Name$ ??= new InternalCollection<$DomainType$>(Mapped$Name$);
-#endregion]]>
+        Private my$Name$ As InternalCollection
+
+        <MemberOrder($MemberOrder$)>
+        Public ReadOnly Property $Name$ As InternalCollection
+            Get
+                Return If(my$Name$, New InternalCollection(Of $DomainType$)(mapped$Name$))
+            End Get
+        End Property
+
+        Public Sub About$Name$(a As FieldAbout)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region]]>
       </Code>
     </Snippet>
   </CodeSnippet>
