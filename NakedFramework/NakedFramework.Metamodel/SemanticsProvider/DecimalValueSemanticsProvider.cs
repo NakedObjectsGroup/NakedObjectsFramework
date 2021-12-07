@@ -34,8 +34,6 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override decimal DoParse(string entry) {
         try {
             return decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
@@ -49,6 +47,4 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
     }
 
     protected override string TitleStringWithMask(string mask, decimal value) => value.ToString(mask);
-
-    public override string ToString() => "DecimalAdapter: ";
 }

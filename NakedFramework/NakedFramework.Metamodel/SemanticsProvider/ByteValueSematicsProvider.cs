@@ -33,8 +33,6 @@ public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override byte DoParse(string entry) {
         try {
             return byte.Parse(entry);

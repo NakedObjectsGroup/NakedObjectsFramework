@@ -34,10 +34,6 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
-
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override uint DoParse(string entry) {
         try {
             return uint.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
@@ -51,6 +47,4 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
     }
 
     protected override string TitleStringWithMask(string mask, uint value) => value.ToString(mask);
-
-    public override string ToString() => "UIntAdapter: ";
 }

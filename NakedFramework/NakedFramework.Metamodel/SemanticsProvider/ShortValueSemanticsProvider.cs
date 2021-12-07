@@ -34,8 +34,6 @@ public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override short DoParse(string entry) {
         try {
             return short.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
@@ -49,6 +47,4 @@ public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract
     }
 
     protected override string TitleStringWithMask(string mask, short value) => value.ToString(mask);
-
-    public override string ToString() => "ShortAdapter: ";
 }

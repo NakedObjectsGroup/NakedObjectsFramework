@@ -54,8 +54,6 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
         return default;
     }
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override T DoParse(string entry) {
         try {
             return (T)Enum.Parse(typeof(T), entry);
@@ -71,6 +69,4 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
     protected override string TitleString(T obj) => NameUtils.NaturalName(obj.ToString());
 
     protected override string TitleStringWithMask(string mask, T value) => TitleString(value);
-
-    public override string ToString() => "EnumAdapter: ";
 }

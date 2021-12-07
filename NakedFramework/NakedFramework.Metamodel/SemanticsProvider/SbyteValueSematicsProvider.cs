@@ -33,8 +33,6 @@ public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override sbyte DoParse(string entry) {
         try {
             return sbyte.Parse(entry);
@@ -48,6 +46,4 @@ public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract
     }
 
     protected override string TitleStringWithMask(string mask, sbyte value) => value.ToString(mask);
-
-    public override string ToString() => "SByteAdapter: ";
 }

@@ -38,10 +38,6 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
-
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override Color DoParse(string entry) {
         try {
             int argb;
@@ -63,6 +59,4 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
     }
 
     protected override string TitleStringWithMask(string mask, Color value) => value.ToString();
-
-    public override string ToString() => "ColorAdapter: ";
 }

@@ -33,8 +33,6 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override TimeSpan DoParse(string entry) {
         var dateString = entry.Trim();
         try {

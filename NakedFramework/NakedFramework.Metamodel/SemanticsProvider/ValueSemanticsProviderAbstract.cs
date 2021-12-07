@@ -43,6 +43,8 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     /// </para>
     public override bool CanAlwaysReplace => false;
 
+    public void AddValueFacets() => ValueTypeHelpers.AddValueFacets(this, Specification);
+
     protected abstract T DoParse(string entry);
 
     protected virtual string TitleString(T obj) => obj.ToString();
@@ -76,8 +78,6 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     public string TitleWithMaskOf(string mask, T obj) => TitleStringWithMask(mask, obj);
 
     #endregion
-
-    public void AddValueFacets() => ValueTypeHelpers.AddValueFacets(this, Specification);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

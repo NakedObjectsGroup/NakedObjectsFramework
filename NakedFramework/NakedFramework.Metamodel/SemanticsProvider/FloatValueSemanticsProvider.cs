@@ -33,8 +33,6 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override float DoParse(string entry) {
         try {
             return float.Parse(entry);
@@ -48,6 +46,4 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
     }
 
     protected override string TitleStringWithMask(string mask, float value) => value.ToString(mask);
-
-    public override string ToString() => "FloatAdapter: ";
 }

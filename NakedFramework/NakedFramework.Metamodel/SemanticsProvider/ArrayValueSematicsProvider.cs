@@ -50,8 +50,6 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
 
     #endregion
 
-    public object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
-
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override T[] DoParse(string entry) {
@@ -78,8 +76,6 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
     protected override string TitleStringWithMask(string mask, T[] value) => TitleString(value);
 
     protected override string TitleString(T[] obj) {
-        return obj == null ? "" : obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : $"{s} ") + t);
+        return obj is null ? "" : obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : $"{s} ") + t);
     }
-
-    public override string ToString() => $"ArrayAdapter<{typeof(T)}>";
 }

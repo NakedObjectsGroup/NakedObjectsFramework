@@ -34,8 +34,6 @@ public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override ulong DoParse(string entry) {
         try {
             return ulong.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
@@ -49,6 +47,4 @@ public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract
     }
 
     protected override string TitleStringWithMask(string mask, ulong value) => value.ToString(mask);
-
-    public override string ToString() => "ULongAdapter: ";
 }

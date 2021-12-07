@@ -34,15 +34,6 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
-    public override object ParseTextEntry(string entry) =>
-        entry switch {
-            null => throw new ArgumentException(),
-            "" => null,
-            _ => DoParse(entry)
-        };
-
     protected override char DoParse(string entry) {
         try {
             return char.Parse(entry);
@@ -53,6 +44,4 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
     }
 
     protected override string TitleStringWithMask(string mask, char value) => value.ToString(Thread.CurrentThread.CurrentCulture);
-
-    public override string ToString() => "CharAdapter: ";
 }

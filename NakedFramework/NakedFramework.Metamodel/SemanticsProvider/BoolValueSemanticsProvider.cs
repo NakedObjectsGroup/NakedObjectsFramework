@@ -25,8 +25,6 @@ public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstra
 
     public static Type AdaptedType => typeof(bool);
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override bool DoParse(string entry) {
         if ("true".StartsWith(entry.ToLower())) {
             return true;

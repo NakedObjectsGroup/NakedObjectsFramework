@@ -33,8 +33,6 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override double DoParse(string entry) {
         try {
             return double.Parse(entry);
@@ -48,6 +46,4 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
     }
 
     protected override string TitleStringWithMask(string mask, double value) => value.ToString(mask);
-
-    public override string ToString() => "DoubleAdapter: ";
 }

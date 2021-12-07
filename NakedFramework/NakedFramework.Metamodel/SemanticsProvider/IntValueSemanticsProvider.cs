@@ -34,8 +34,6 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override int DoParse(string entry) {
         try {
             return int.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
@@ -49,6 +47,4 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
     }
 
     protected override string TitleStringWithMask(string mask, int value) => value.ToString(mask);
-
-    public override string ToString() => "IntAdapter: ";
 }

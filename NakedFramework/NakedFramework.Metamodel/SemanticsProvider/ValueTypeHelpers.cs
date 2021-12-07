@@ -9,10 +9,6 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
 public static class ValueTypeHelpers {
-
-  
-
-
     public static readonly Dictionary<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> TypeToSemanticProvider = new() {
         { BooleanValueSemanticsProvider.AdaptedType, (o, s) => new BooleanValueSemanticsProvider(o, s) },
         { ByteValueSemanticsProvider.AdaptedType, (o, s) => new ByteValueSemanticsProvider(o, s) },
@@ -21,7 +17,6 @@ public static class ValueTypeHelpers {
         { DateTimeValueSemanticsProvider.AdaptedType, (o, s) => new DateTimeValueSemanticsProvider(o, s) },
         { DecimalValueSemanticsProvider.AdaptedType, (o, s) => new DecimalValueSemanticsProvider(o, s) },
         { DoubleValueSemanticsProvider.AdaptedType, (o, s) => new DoubleValueSemanticsProvider(o, s) },
-        //{ EnumValueSemanticsProvider.AdaptedType, (o, s) => new EnumValueSemanticsProvider(o, s) },
         { FileAttachmentValueSemanticsProvider.AdaptedType, (o, s) => new FileAttachmentValueSemanticsProvider(o, s) },
         { FloatValueSemanticsProvider.AdaptedType, (o, s) => new FloatValueSemanticsProvider(o, s) },
         { GuidValueSemanticsProvider.AdaptedType, (o, s) => new GuidValueSemanticsProvider(o, s) },
@@ -34,7 +29,7 @@ public static class ValueTypeHelpers {
         { TimeValueSemanticsProvider.AdaptedType, (o, s) => new TimeValueSemanticsProvider(o, s) },
         { UIntValueSemanticsProvider.AdaptedType, (o, s) => new UIntValueSemanticsProvider(o, s) },
         { ULongValueSemanticsProvider.AdaptedType, (o, s) => new ULongValueSemanticsProvider(o, s) },
-        { UShortValueSemanticsProvider.AdaptedType, (o, s) => new UShortValueSemanticsProvider(o, s) },
+        { UShortValueSemanticsProvider.AdaptedType, (o, s) => new UShortValueSemanticsProvider(o, s) }
     };
 
     public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {

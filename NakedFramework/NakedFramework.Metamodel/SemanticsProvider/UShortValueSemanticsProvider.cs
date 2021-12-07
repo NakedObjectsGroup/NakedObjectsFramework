@@ -34,8 +34,6 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override ushort DoParse(string entry) {
         try {
             return ushort.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
@@ -49,6 +47,4 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
     }
 
     protected override string TitleStringWithMask(string mask, ushort value) => value.ToString(mask);
-
-    public override string ToString() => "UShortAdapter: ";
 }

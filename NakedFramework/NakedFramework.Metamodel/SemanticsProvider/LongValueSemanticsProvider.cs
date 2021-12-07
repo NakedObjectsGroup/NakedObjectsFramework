@@ -34,8 +34,6 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override long DoParse(string entry) {
         try {
             return long.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
@@ -49,6 +47,4 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
     }
 
     protected override string TitleStringWithMask(string mask, long value) => value.ToString(mask);
-
-    public override string ToString() => "LongAdapter: ";
 }

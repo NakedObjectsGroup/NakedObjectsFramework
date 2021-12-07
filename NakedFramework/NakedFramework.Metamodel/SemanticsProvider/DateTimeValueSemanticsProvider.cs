@@ -35,8 +35,6 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override DateTime DoParse(string entry) {
         var dateString = entry.Trim();
         try {

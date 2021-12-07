@@ -33,8 +33,6 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override Guid DoParse(string entry) {
         try {
             return new Guid(entry);
@@ -48,6 +46,4 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
     }
 
     protected override string TitleStringWithMask(string mask, Guid value) => value.ToString(mask);
-
-    public override string ToString() => "GuidAdapter: ";
 }

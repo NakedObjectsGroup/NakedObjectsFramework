@@ -32,7 +32,5 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override string DoParse(string entry) => entry.Trim().Equals("") ? null : entry;
 }

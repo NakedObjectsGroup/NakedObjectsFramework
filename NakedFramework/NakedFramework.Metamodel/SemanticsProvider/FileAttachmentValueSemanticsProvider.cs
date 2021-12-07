@@ -32,8 +32,6 @@ public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProvide
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override FileAttachment DoParse(string entry) => throw new NakedObjectSystemException($"FileAttachment cannot parse: {entry}");
 
     protected override string TitleString(FileAttachment obj) => obj.Name;

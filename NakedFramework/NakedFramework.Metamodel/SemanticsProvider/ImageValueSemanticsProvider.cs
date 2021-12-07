@@ -32,8 +32,6 @@ public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     #endregion
 
-    public static bool IsAdaptedType(Type type) => type == AdaptedType;
-
     protected override Image DoParse(string entry) => throw new NakedObjectSystemException($"Image cannot parse: {entry}");
 
     protected override string TitleString(Image obj) => obj.Name;
