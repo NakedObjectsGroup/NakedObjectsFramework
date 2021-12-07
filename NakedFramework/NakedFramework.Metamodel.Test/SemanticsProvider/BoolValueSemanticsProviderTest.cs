@@ -95,13 +95,6 @@ public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<bool>(value, null);
-        var mockAdapter = MockAdapter(true);
-        Assert.AreEqual("True", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

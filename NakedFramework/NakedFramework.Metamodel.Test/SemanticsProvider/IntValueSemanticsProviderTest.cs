@@ -80,13 +80,6 @@ public class IntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestC
         Assert.AreEqual(testValue, facet.IntegerValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<int>(value, null);
-        var mockAdapter = MockAdapter(101);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

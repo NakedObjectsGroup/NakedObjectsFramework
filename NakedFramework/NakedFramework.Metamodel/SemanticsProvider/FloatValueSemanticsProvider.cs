@@ -19,10 +19,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract<float>, IFloatingPointValueFacet {
     private const float DefaultValueConst = 0;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 12;
 
     public FloatValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IFloatingPointValueFacet);
 

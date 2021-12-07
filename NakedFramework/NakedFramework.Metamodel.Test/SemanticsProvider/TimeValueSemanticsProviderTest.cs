@@ -44,14 +44,6 @@ public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         Assert.AreEqual(testValue, facet.TimeValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<TimeSpan>(GetValue(), null);
-        var mockAdapter = MockAdapter(time);
-        var str = DateTime.Today.Add(time).ToShortTimeString();
-        Assert.AreEqual(str, parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

@@ -74,13 +74,6 @@ public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         Assert.AreEqual(testValue, facet.CharValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<char>(value, null);
-        var mockAdapter = MockAdapter('t');
-        Assert.AreEqual("t", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

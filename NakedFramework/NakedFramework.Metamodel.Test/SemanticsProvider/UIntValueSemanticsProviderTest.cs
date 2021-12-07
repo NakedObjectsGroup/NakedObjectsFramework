@@ -80,13 +80,6 @@ public class UIntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         Assert.AreEqual(testValue, facet.UnsignedIntegerValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<uint>(value, null);
-        var mockAdapter = MockAdapter(101u);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

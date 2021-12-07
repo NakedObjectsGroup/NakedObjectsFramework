@@ -23,7 +23,7 @@ public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbs
     private const int TypicalLengthConst = 25;
 
     public TextStringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IStringValueFacet);
 

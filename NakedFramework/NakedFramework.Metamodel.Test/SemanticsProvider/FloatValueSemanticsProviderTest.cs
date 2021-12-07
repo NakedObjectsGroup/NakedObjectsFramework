@@ -84,13 +84,6 @@ public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         Assert.AreEqual(testValue, facet.FloatValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<float>(GetValue(), null);
-        var mockAdapter = MockAdapter(101f);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

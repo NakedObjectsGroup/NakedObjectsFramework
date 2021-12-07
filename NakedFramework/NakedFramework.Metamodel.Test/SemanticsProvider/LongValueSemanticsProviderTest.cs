@@ -79,13 +79,6 @@ public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         Assert.AreEqual(testValue, facet.LongValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<long>(value, null);
-        var mockAdapter = MockAdapter(101L);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

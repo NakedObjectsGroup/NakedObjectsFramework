@@ -77,13 +77,6 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         Assert.AreEqual(testValue.ToArgb(), facet.ColorValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<Color>(value, null);
-        var mockAdapter = MockAdapter(Color.Beige);
-        Assert.AreEqual("Color [Beige]", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

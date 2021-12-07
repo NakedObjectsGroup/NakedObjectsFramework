@@ -85,13 +85,6 @@ public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
         Assert.AreEqual(testValue, facet.DoubleValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<double>(GetValue(), null);
-        var mockAdapter = MockAdapter(101d);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

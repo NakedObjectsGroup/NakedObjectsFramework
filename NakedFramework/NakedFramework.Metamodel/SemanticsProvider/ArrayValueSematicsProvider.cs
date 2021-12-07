@@ -22,10 +22,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T[]>, IArrayValueFacet<T>, IFromStream {
     private const T[] DefaultValueConst = null;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 20;
 
     public ArrayValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IArrayValueFacet<T>);
 

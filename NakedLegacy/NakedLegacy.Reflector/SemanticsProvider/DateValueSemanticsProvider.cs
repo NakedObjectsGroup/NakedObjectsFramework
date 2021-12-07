@@ -25,7 +25,7 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private static readonly Date DefaultValueConst = new(new DateTime());
 
     public DateValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     // inject for testing 
     public static DateTime? TestDateTime { get; set; }

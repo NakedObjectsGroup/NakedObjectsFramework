@@ -26,7 +26,7 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
     private static WholeNumber DefaultValueConst = new(0);
 
     public WholeNumberValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IIntegerValueFacet);
 

@@ -81,13 +81,6 @@ public class UShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
         Assert.AreEqual(testValue, facet.UnsignedShortValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<ushort>(value, null);
-        var mockAdapter = MockAdapter((ushort)101);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

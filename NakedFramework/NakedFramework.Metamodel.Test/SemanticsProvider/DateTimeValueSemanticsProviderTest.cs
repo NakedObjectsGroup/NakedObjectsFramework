@@ -82,15 +82,6 @@ public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstract
         Assert.AreEqual(testValue, facet.DateValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<DateTime>(GetValue(), null);
-        var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
-        var s1 = d1.ToString(CultureInfo.CurrentCulture);
-        var mockAdapter = MockAdapter(d1);
-        Assert.AreEqual(s1, parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

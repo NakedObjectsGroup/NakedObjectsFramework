@@ -10,7 +10,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -34,11 +33,6 @@ public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFace
 
         var parsed = parser.ParseTextEntry(entry);
         return manager.CreateAdapter(parsed, null, null);
-    }
-
-    public string ParseableTitle(INakedObjectAdapter nakedObjectAdapter) {
-        var context = nakedObjectAdapter.GetDomainObject<T>();
-        return parser.EditableTitleOf(context);
     }
 
     #endregion

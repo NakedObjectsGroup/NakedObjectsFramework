@@ -82,13 +82,6 @@ public class ULongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         Assert.AreEqual(testValue, facet.UnsignedLongValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<ulong>(value, null);
-        var mockAdapter = MockAdapter(101UL);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

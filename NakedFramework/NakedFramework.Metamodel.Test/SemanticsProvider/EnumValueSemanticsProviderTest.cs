@@ -215,13 +215,6 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<TestEnum>(value, null);
-        var mockAdapter = MockAdapter(TestEnum.NewYork);
-        Assert.AreEqual("New York", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

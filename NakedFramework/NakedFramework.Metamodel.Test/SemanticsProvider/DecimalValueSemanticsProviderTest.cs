@@ -80,13 +80,6 @@ public class DecimalValueSemanticsProviderTest : ValueSemanticsProviderAbstractT
         Assert.AreEqual(testValue, facet.DecimalValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<decimal>(value, null);
-        var mockAdapter = MockAdapter(101M);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]
