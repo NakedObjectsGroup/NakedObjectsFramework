@@ -49,7 +49,7 @@ public class ReflectorCollectionTest : AbstractReflectorTest {
 
     [TestMethod]
     public void TestFacets() {
-        Assert.AreEqual(25, Specification.FacetTypes.Length);
+        Assert.AreEqual(26, Specification.FacetTypes.Length);
     }
 
     [TestMethod]

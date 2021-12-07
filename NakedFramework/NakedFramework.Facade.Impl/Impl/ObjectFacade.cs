@@ -151,47 +151,7 @@ public class ObjectFacade : IObjectFacade {
         }
     }
 
-    public string ToString(string format = "") {
-        if (!string.IsNullOrWhiteSpace(format)) {
-            var spec = WrappedNakedObject.Spec;
-
-            if (spec.GetFacet<IDateValueFacet>() is { } df) {
-                var dt = df.DateValue(WrappedNakedObject);
-
-                if (format == "s") {
-                    return ToUniversalTime(dt).ToString(format);
-                }
-
-                return dt.Date.ToString(format);
-            }
-
-            if (spec.GetFacet<ITimeValueFacet>() is { } tf) {
-                return tf.TimeValue(WrappedNakedObject).ToString(format);
-            }
-        }
-
-        return WrappedNakedObject.Object.ToString();
-    }
-
-    public object ToValue() {
-        var spec = WrappedNakedObject.Spec;
-
-        if (spec.GetFacet<IDateValueFacet>() is { } df) {
-            var dt = df.DateValue(WrappedNakedObject);
-            return ToUniversalTime(dt);
-        }
-
-        if (spec.GetFacet<IIntegerValueFacet>() is { } intf) {
-            return intf.IntegerValue(WrappedNakedObject);
-        }
-
-        return WrappedNakedObject.Object;
-    }
-
-    private static DateTime ToUniversalTime(DateTime dt) =>
-        dt.Kind == DateTimeKind.Unspecified
-            ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
-            : dt.ToUniversalTime();
+    public object ToValue(string format = null) => WrappedNakedObject.Spec.GetFacet<IValueFacet>().Value(WrappedNakedObject, format);
 
     #endregion
 }

@@ -49,6 +49,8 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
     protected override string TitleString(TimeSpan obj) => DateTime.Today.Add(obj).ToShortTimeString();
 
     protected override string TitleStringWithMask(string mask, TimeSpan obj) => DateTime.Today.Add(obj).ToString(mask);
+
+    public override object Value(INakedObjectAdapter adapter, string format = null) => TimeValue(adapter).ToString(format);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

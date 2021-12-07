@@ -37,5 +37,5 @@ public interface IValueSemanticsProvider<T> : IValueSemanticsProvider {
     /// </summary>
     string TitleWithMaskOf(string mask, T obj);
 
-    T Value(INakedObjectAdapter adapter, string format = null);
+    object Value(INakedObjectAdapter adapter, string format = null);
 }

@@ -9,14 +9,17 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class ValueFacet : FacetAbstract, IValueFacet {
-    public ValueFacet(ISpecification holder)
-        : base(typeof(IValueFacet), holder) { }
+public sealed class ValueFacetFromSemanticProvider<T> : FacetAbstract, IValueFacet {
+    private readonly IValueSemanticsProvider<T> semanticsProvider;
 
-    public object Value(INakedObjectAdapter nakedObjectAdapter, string format = null) => nakedObjectAdapter.GetDomainObject();
+    public ValueFacetFromSemanticProvider(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder)
+        : base(typeof(IValueFacet), holder) =>
+        this.semanticsProvider = semanticsProvider;
+
+    public object Value(INakedObjectAdapter nakedObjectAdapter, string format = null) => semanticsProvider.Value(nakedObjectAdapter, format);
 }

@@ -33,7 +33,8 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
             new IFacet[] {
                 new DescribedAsFacetNone(specification),
                 new ImmutableFacetNever(specification),
-                new TitleFacetNone(specification)
+                new TitleFacetNone(specification),
+                new ValueFacet(specification)
             });
         return metamodel;
     }

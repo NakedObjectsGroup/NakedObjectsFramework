@@ -78,7 +78,7 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     public string DisplayTitleOf(T obj) => TitleString(obj);
 
     public string TitleWithMaskOf(string mask, T obj) => TitleStringWithMask(mask, obj);
-    public virtual T Value(INakedObjectAdapter adapter, string format = null) => adapter.GetDomainObject<T>();
+    public virtual object Value(INakedObjectAdapter adapter, string format = null) => adapter.GetDomainObject<T>();
 
     #endregion
 }

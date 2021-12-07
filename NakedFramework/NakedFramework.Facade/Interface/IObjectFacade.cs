@@ -35,6 +35,5 @@ public interface IObjectFacade : IFacadeHolder {
     int Count();
     AttachmentContextFacade GetAttachment();
     void SetIsNotQueryableState(bool state);
-    string ToString(string format = "");
-    object ToValue();
+    object ToValue(string format = null);
 }

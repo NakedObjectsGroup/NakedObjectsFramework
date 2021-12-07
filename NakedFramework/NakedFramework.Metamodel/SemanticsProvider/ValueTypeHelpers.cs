@@ -47,7 +47,7 @@ public static class ValueTypeHelpers {
 
         FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
         FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
-        FacetUtils.AddFacet(new ValueFacet<T>(semanticsProvider, holder));
+        FacetUtils.AddFacet(new ValueFacetFromSemanticProvider<T>(semanticsProvider, holder));
 
         if (semanticsProvider is IFromStream fromStream) {
             FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));

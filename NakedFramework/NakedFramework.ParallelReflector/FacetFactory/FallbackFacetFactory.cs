@@ -40,7 +40,8 @@ public sealed class FallbackFacetFactory : SystemTypeFacetFactoryProcessor {
                 new ImmutableFacetNever(specification),
                 new TitleFacetNone(specification),
                 namedFacet,
-                pluralFacet
+                pluralFacet,
+                new ValueFacet(specification)
             });
         return metamodel;
     }

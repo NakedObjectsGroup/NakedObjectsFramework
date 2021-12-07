@@ -51,6 +51,18 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
     protected override string TitleStringWithMask(string mask, DateTime value) => value.ToString(mask);
 
     private static DateTime Now() => TestDateTime ?? DateTime.Now;
+
+    public override object Value(INakedObjectAdapter adapter, string format = null) =>
+        format switch {
+            null => ToUniversalTime(DateValue(adapter)),
+            "s" => ToUniversalTime(DateValue(adapter)).ToString(format),
+            _ => DateValue(adapter).Date.ToString(format)
+        };
+
+    private static DateTime ToUniversalTime(DateTime dt) =>
+        dt.Kind == DateTimeKind.Unspecified
+            ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
+            : dt.ToUniversalTime();
 }
 
 // Copyright (c) Naked Objects Group Ltd.

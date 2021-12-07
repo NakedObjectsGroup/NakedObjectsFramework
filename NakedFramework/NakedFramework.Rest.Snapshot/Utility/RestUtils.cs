@@ -25,6 +25,7 @@ namespace NakedFramework.Rest.Snapshot.Utility;
 
 public static class RestUtils {
     private const string DateFormat = "yyyy-MM-dd";
+    private const string TimeFormat = @"hh\:mm\:ss";
 
     private static readonly Dictionary<Type, PredefinedJsonType> SimpleTypeMap = new() {
         { typeof(sbyte), PredefinedJsonType.Number },
@@ -236,12 +237,9 @@ public static class RestUtils {
 
     public static object ObjectToPredefinedType(IObjectFacade toMap, bool useDateOverDateTime) =>
         TypeToPredefinedFormatType(toMap.Specification, useDateOverDateTime) switch {
-            PredefinedFormatType.Date_time => toMap.ToValue(),
-            PredefinedFormatType.Date => toMap.ToString(DateFormat),
-            PredefinedFormatType.Time => toMap.ToString(@"hh\:mm\:ss"),
-            PredefinedFormatType.Int => toMap.ToValue(),
-            PredefinedFormatType.String => toMap.ToString(),
-            _ => toMap.Object
+            PredefinedFormatType.Date => toMap.ToValue(DateFormat),
+            PredefinedFormatType.Time => toMap.ToValue(TimeFormat),
+            _ => toMap.ToValue()
         };
 
     private static (PredefinedJsonType pdt, PredefinedFormatType? pft)? SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime) {
