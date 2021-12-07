@@ -13,6 +13,7 @@ namespace NakedFrameworkClient.TestFramework
 
         public Dialog Open()
         {
+            helper.wait.Until(el => element.GetAttribute("value") != null);
             var actionName = element.GetAttribute("value");
             helper.Click(element);
             helper.wait.Until(dr => enclosingView.element.FindElement(By.CssSelector(".dialog .title")).Text == actionName);

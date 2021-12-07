@@ -35,8 +35,6 @@ namespace NakedFrameworkClient.TestFramework
             helper.WaitForChildElement(element, "nof-properties");
             var prop = helper.wait.Until(e => element.FindElements(By.CssSelector("nof-view-property"))
                 .Single(el => el.FindElement(By.CssSelector(".name")).Text == propertyName + ":"));
-            //var prop = element.FindElements(By.CssSelector("nof-view-property"))
-            //    .Single(el => el.FindElement(By.CssSelector(".name")).Text == propertyName + ":");
             return new Property(prop, helper, this);
         }
 
