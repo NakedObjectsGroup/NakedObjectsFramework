@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -32,8 +33,10 @@ namespace NakedFrameworkClient.TestFramework
         public Property GetProperty(string propertyName)
         {
             helper.WaitForChildElement(element, "nof-properties");
-            var prop = element.FindElements(By.CssSelector("nof-view-property"))
-                .Single(el => el.FindElement(By.CssSelector(".name")).Text == propertyName + ":");
+            var prop = helper.wait.Until(e => element.FindElements(By.CssSelector("nof-view-property"))
+                .Single(el => el.FindElement(By.CssSelector(".name")).Text == propertyName + ":"));
+            //var prop = element.FindElements(By.CssSelector("nof-view-property"))
+            //    .Single(el => el.FindElement(By.CssSelector(".name")).Text == propertyName + ":");
             return new Property(prop, helper, this);
         }
 
