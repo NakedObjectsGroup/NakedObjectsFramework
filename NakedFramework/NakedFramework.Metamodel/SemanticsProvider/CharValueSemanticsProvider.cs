@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using System.Threading;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -55,8 +54,6 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
     }
 
     protected override char DoParseInvariant(string entry) => char.Parse(entry);
-
-    protected override string GetInvariantString(char obj) => obj.ToString(CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, char value) => value.ToString(Thread.CurrentThread.CurrentCulture);
 

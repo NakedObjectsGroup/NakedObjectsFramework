@@ -36,6 +36,4 @@ public interface IParseableFacet : IFacet {
     ///     form might be <b>20070502</b>.
     /// </para>
     string ParseableTitle(INakedObjectAdapter nakedObjectAdapter);
-
-    string InvariantString(INakedObjectAdapter nakedObjectAdapter);
 }

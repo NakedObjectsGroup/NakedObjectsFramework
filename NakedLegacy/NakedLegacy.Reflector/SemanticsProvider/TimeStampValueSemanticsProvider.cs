@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -54,8 +53,6 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
     }
 
     protected override TimeStamp DoParseInvariant(string entry) => DoParse(entry);
-
-    protected override string GetInvariantString(TimeStamp timeStamp) => timeStamp.DateTime.ToString(CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, TimeStamp value) => value.DateTime.ToString(mask);
 

@@ -85,8 +85,6 @@ public interface ITypeSpec : ISpecification {
     /// </summary>
     string GetTitle(INakedObjectAdapter nakedObjectAdapter);
 
-    string GetInvariantString(INakedObjectAdapter nakedObjectAdapter);
-
     #region Name & Description
 
     /// <summary>

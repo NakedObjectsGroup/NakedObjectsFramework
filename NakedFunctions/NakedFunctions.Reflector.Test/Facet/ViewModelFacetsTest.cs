@@ -43,7 +43,6 @@ public class ViewModelFacetsTest {
         public IVersion Version { get; }
         public IVersion OptimisticLock { get; set; }
         public string TitleString() => throw new NotImplementedException();
-        public string InvariantString() => throw new NotImplementedException();
         public void CheckLock(IVersion otherVersion) => throw new NotImplementedException();
         public void ReplacePoco(object poco) => Object = poco;
         public string ValidToPersist() => throw new NotImplementedException();

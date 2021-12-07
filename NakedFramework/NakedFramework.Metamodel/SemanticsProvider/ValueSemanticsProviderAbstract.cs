@@ -50,7 +50,6 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
 
     protected abstract T DoParse(string entry);
     protected abstract T DoParseInvariant(string entry);
-    protected abstract string GetInvariantString(T obj);
 
     protected virtual string TitleString(T obj) => obj.ToString();
 
@@ -107,8 +106,6 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     }
 
     public object ParseInvariant(string entry) => DoParseInvariant(entry);
-
-    public string InvariantString(T obj) => GetInvariantString(obj);
 
     public string EditableTitleOf(T existing) => DisplayTitleOf(existing);
 

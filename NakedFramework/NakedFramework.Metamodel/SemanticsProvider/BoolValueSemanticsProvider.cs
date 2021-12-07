@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -44,9 +43,6 @@ public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstra
     }
 
     protected override bool DoParseInvariant(string entry) => bool.Parse(entry);
-
-    protected override string GetInvariantString(bool obj) => obj.ToString(CultureInfo.InvariantCulture);
-
 
     #region IBooleanValueFacet Members
 

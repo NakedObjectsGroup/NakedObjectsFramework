@@ -130,8 +130,6 @@ public sealed class NakedObjectAdapter : INakedObjectAdapter {
         }
     }
 
-    public string InvariantString() => Spec.GetInvariantString(this);
-
     /// <summary>
     ///     Sometimes it is necessary to manage the replacement of the underlying domain object (by another
     ///     component such as an object store). This method allows the adapter to be kept while the domain object

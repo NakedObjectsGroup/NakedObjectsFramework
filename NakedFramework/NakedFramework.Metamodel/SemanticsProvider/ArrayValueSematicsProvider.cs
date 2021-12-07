@@ -81,8 +81,6 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
     protected override T[] DoParseInvariant(string entry) =>
         entry.Split(' ').Where(s => s.Trim().Length > 0).Select(s => (T)Convert.ChangeType(s, typeof(T), CultureInfo.InvariantCulture)).ToArray();
 
-    protected override string GetInvariantString(T[] obj) => obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : $"{s} ") + t);
-
     protected override string TitleStringWithMask(string mask, T[] value) => TitleString(value);
 
     protected override string TitleString(T[] obj) {

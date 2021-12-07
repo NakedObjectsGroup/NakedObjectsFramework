@@ -273,11 +273,6 @@ public abstract class TypeSpec : ITypeSpec {
         return title ?? DefaultTitle();
     }
 
-    public string GetInvariantString(INakedObjectAdapter nakedObjectAdapter) {
-        var parser = GetFacet<IParseableFacet>();
-        return parser?.InvariantString(nakedObjectAdapter);
-    }
-
     #endregion
 }
 

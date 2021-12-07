@@ -49,8 +49,6 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override TimeSpan DoParseInvariant(string entry) => TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
 
-    protected override string GetInvariantString(TimeSpan obj) => obj.ToString(null, CultureInfo.InvariantCulture);
-
     protected override string TitleString(TimeSpan obj) => DateTime.Today.Add(obj).ToShortTimeString();
 
     protected override string TitleStringWithMask(string mask, TimeSpan obj) => DateTime.Today.Add(obj).ToString(mask);

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -39,7 +38,4 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
     protected override string DoParse(string entry) => entry.Trim().Equals("") ? null : entry;
 
     protected override string DoParseInvariant(string entry) => entry;
-
-    protected override string GetInvariantString(string obj) => obj.ToString(CultureInfo.InvariantCulture);
-
 }

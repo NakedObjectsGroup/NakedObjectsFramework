@@ -51,8 +51,6 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
 
     protected override DateTime DoParseInvariant(string entry) => DateTime.Parse(entry, CultureInfo.InvariantCulture);
 
-    protected override string GetInvariantString(DateTime obj) => obj.ToString(CultureInfo.InvariantCulture);
-
     protected override string TitleStringWithMask(string mask, DateTime value) => value.ToString(mask);
 
     private static DateTime Now() => TestDateTime ?? DateTime.Now;

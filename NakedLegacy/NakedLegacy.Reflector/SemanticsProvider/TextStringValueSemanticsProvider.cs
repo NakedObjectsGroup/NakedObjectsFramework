@@ -40,6 +40,4 @@ public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbs
     protected override TextString DoParse(string entry) => entry.Trim().Equals("") ? null : new TextString(entry);
 
     protected override TextString DoParseInvariant(string entry) => new(entry);
-
-    protected override string GetInvariantString(TextString textString) => textString.Text;
 }

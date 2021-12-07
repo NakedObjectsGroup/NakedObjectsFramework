@@ -51,8 +51,6 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     protected override double DoParseInvariant(string entry) => double.Parse(entry, CultureInfo.InvariantCulture);
 
-    protected override string GetInvariantString(double obj) => obj.ToString(CultureInfo.InvariantCulture);
-
     protected override string TitleStringWithMask(string mask, double value) => value.ToString(mask);
 
     public override string ToString() => "DoubleAdapter: ";

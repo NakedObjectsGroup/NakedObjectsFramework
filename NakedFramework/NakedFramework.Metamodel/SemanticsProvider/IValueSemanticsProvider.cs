@@ -36,11 +36,6 @@ public interface IValueSemanticsProvider<T> {
     object ParseInvariant(string entry);
 
     /// <summary>
-    ///     The opposite of ParseInvariant
-    /// </summary>
-    string InvariantString(T obj);
-
-    /// <summary>
     ///     The title of the object
     /// </summary>
     string DisplayTitleOf(T obj);

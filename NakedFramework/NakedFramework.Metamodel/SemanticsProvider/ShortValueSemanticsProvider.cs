@@ -51,8 +51,6 @@ public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     protected override short DoParseInvariant(string entry) => short.Parse(entry, CultureInfo.InvariantCulture);
 
-    protected override string GetInvariantString(short obj) => obj.ToString(CultureInfo.InvariantCulture);
-
     protected override string TitleStringWithMask(string mask, short value) => value.ToString(mask);
 
 

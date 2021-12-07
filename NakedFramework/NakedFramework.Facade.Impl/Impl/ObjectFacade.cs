@@ -140,8 +140,6 @@ public class ObjectFacade : IObjectFacade {
 
     public bool IsDestroyed => WrappedNakedObject.ResolveState.IsDestroyed();
 
-    public string InvariantString => WrappedNakedObject.InvariantString();
-
     public bool IsUserPersistable => WrappedNakedObject.Spec.Persistable == PersistableType.UserPersistable;
 
     public bool IsNotPersistent => WrappedNakedObject.IsNotPersistent();

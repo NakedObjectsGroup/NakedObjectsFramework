@@ -51,8 +51,6 @@ public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override byte DoParseInvariant(string entry) => byte.Parse(entry, CultureInfo.InvariantCulture);
 
-    protected override string GetInvariantString(byte obj) => obj.ToString(CultureInfo.InvariantCulture);
-
     protected override string TitleStringWithMask(string mask, byte value) => value.ToString(mask);
 
     public override string ToString() => "ByteAdapter: ";

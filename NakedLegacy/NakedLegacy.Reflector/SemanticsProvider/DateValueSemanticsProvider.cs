@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -54,8 +53,6 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
     }
 
     protected override Date DoParseInvariant(string entry) => DoParse(entry);
-
-    protected override string GetInvariantString(Date date) => date.DateTime.ToString(CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, Date value) => value.DateTime.ToString(mask);
 

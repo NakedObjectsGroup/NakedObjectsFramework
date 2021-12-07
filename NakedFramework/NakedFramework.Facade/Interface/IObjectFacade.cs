@@ -23,7 +23,6 @@ public interface IObjectFacade : IFacadeHolder {
     bool IsUserPersistable { get; }
     bool IsNotPersistent { get; }
     string TitleString { get; }
-    string InvariantString { get; }
     bool IsViewModelEditView { get; }
     bool IsViewModel { get; }
     IEnumerable<IObjectFacade> ToEnumerable();

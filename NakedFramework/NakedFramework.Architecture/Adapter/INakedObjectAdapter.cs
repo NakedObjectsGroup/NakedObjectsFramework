@@ -57,11 +57,6 @@ public interface INakedObjectAdapter {
     string TitleString();
 
     /// <summary>
-    ///     Returns a local independent string for this object
-    /// </summary>
-    string InvariantString();
-
-    /// <summary>
     ///     Checks the version of this adapter to make sure that it does not differ from the specified
     ///     version
     /// </summary>

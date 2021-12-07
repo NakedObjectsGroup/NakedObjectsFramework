@@ -51,8 +51,6 @@ public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     protected override sbyte DoParseInvariant(string entry) => sbyte.Parse(entry, CultureInfo.InvariantCulture);
 
-    protected override string GetInvariantString(sbyte obj) => obj.ToString(CultureInfo.InvariantCulture);
-
     protected override string TitleStringWithMask(string mask, sbyte value) => value.ToString(mask);
 
     public override string ToString() => "SByteAdapter: ";

@@ -50,8 +50,6 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override Guid DoParseInvariant(string entry) => Guid.Parse(entry);
 
-    protected override string GetInvariantString(Guid obj) => obj.ToString();
-
     protected override string TitleStringWithMask(string mask, Guid value) => value.ToString(mask);
 
     public override string ToString() => "GuidAdapter: ";

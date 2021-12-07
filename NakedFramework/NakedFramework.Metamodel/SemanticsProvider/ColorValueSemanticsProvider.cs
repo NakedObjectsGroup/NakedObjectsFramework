@@ -65,8 +65,6 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     protected override Color DoParseInvariant(string entry) => Color.FromArgb(int.Parse(entry, CultureInfo.InvariantCulture));
 
-    protected override string GetInvariantString(Color obj) => obj.ToArgb().ToString(CultureInfo.InvariantCulture);
-
     protected override string TitleStringWithMask(string mask, Color value) => value.ToString();
 
     public override string ToString() => "ColorAdapter: ";
