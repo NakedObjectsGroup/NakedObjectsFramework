@@ -71,6 +71,18 @@ public static class RestUtils {
         { typeof(char[]), PredefinedFormatType.Clob }
     };
 
+    private static void AddIfNotNull(this IDictionary<string, object> exts, string name, object value) {
+        if (value is not null) {
+            exts.Add(name, value);
+        }
+    }
+
+    private static void AddIfNotNullOrEmpty(this IDictionary<string, object> exts, string name, string value) {
+        if (!string.IsNullOrEmpty(value)) {
+            exts.Add(name, value);
+        }
+    }
+
     public static MapRepresentation GetExtensions(string friendlyname,
                                                   string description,
                                                   string pluralName,
@@ -93,46 +105,20 @@ public static class RestUtils {
             { JsonPropertyNames.Description, description }
         };
 
-        if (pluralName != null) {
-            exts.Add(JsonPropertyNames.PluralName, pluralName);
-        }
+        exts.AddIfNotNull(JsonPropertyNames.PluralName, pluralName);
+        exts.AddIfNotNull(JsonPropertyNames.DomainType, domainType);
+        exts.AddIfNotNull(JsonPropertyNames.HasParams, hasParams);
+        exts.AddIfNotNull(JsonPropertyNames.IsService, isService);
+        exts.AddIfNotNull(JsonPropertyNames.Optional, optional);
+        exts.AddIfNotNull(JsonPropertyNames.MemberOrder, memberOrder);
+        exts.AddIfNotNull(JsonPropertyNames.CustomDataType, dataType?.ToString().ToLower());
+        exts.AddIfNotNullOrEmpty(JsonPropertyNames.PresentationHint, presentationHint);
 
-        if (domainType != null) {
-            exts.Add(JsonPropertyNames.DomainType, domainType);
-        }
-
-        if (hasParams != null) {
-            exts.Add(JsonPropertyNames.HasParams, hasParams);
-        }
-
-        if (isService != null) {
-            exts.Add(JsonPropertyNames.IsService, isService);
-        }
-
-        if (optional != null) {
-            exts.Add(JsonPropertyNames.Optional, optional);
-        }
-
-        if (memberOrder != null) {
-            exts.Add(JsonPropertyNames.MemberOrder, memberOrder);
-        }
-
-        if (dataType != null) {
-            exts.Add(JsonPropertyNames.CustomDataType, dataType.ToString().ToLower());
-        }
-
-        if (!string.IsNullOrEmpty(presentationHint)) {
-            exts.Add(JsonPropertyNames.PresentationHint, presentationHint);
-        }
-
-        if (returnType != null && !returnType.IsVoid) {
+        if (returnType is { IsVoid: false }) {
             var (typeString, formatString) = SpecToTypeAndFormatString(returnType, oidStrategy, useDateOverDateTime);
             exts.Add(JsonPropertyNames.ReturnType, typeString);
-
-            if (formatString != null) {
-                exts.Add(JsonPropertyNames.Format, formatString);
-            }
-
+            exts.AddIfNotNull(JsonPropertyNames.Format, formatString);
+            
             if (typeString == PredefinedJsonType.String.ToRoString()) {
                 exts.Add(JsonPropertyNames.MaxLength, maxLength ?? 0);
                 exts.Add(JsonPropertyNames.Pattern, pattern ?? "");
@@ -144,7 +130,7 @@ public static class RestUtils {
             }
         }
 
-        if (customExtensions != null) {
+        if (customExtensions is not null) {
             foreach (var (key, value) in customExtensions) {
                 exts.Add(key, value);
             }
@@ -210,6 +196,7 @@ public static class RestUtils {
             if (pft == PredefinedFormatType.Date_time && useDateOverDateTime) {
                 pft = PredefinedFormatType.Date;
             }
+
             return pft;
         }
 
@@ -255,18 +242,18 @@ public static class RestUtils {
     }
 
     public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy) {
-        if (!spec.IsVoid) {
-            var types = SpecToPredefinedTypes(spec, false);
-            return types != null ? types.Value.pdt.ToRoString() : spec.DomainTypeName(oidStrategy);
+        if (spec.IsVoid) {
+            return null;
         }
 
-        return null;
+        var types = SpecToPredefinedTypes(spec, false);
+        return types != null ? types.Value.pdt.ToRoString() : spec.DomainTypeName(oidStrategy);
     }
 
     public static (string typeString, string formatString) SpecToTypeAndFormatString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime) {
         var types = SpecToPredefinedTypes(spec, useDateOverDateTime);
 
-        if (types != null) {
+        if (types is not null) {
             var (pdt, pft) = types.Value;
             var pdtString = pdt.ToRoString();
             var pftString = pft?.ToRoString();
@@ -315,7 +302,7 @@ public static class RestUtils {
     public static IDictionary<string, object> AddRangeExtension(IFieldFacade field, IDictionary<string, object> customExtensions) {
         var range = field.Range;
 
-        if (range != null) {
+        if (range is not null) {
             var (minRange, maxRange, _) = range.Value;
             customExtensions ??= new Dictionary<string, object>();
 
