@@ -6,26 +6,31 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
+using NakedFramework.Metamodel.Utils;
+using static NakedFramework.Metamodel.SemanticsProvider.ValueTypeHelpers;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory;
 
-public sealed class BooleanValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-    public BooleanValueTypeFacetFactory(IFacetFactoryOrder<BooleanValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+public sealed class ValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public ValueTypeFacetFactory(IFacetFactoryOrder<ValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        if (!BooleanValueSemanticsProvider.IsAdaptedType(type)) {
-            return metamodel;
+        if (TypeToSemanticProvider.ContainsKey(type)) {
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
+            TypeToSemanticProvider[type](oSpec, specification).AddValueFacets();
+            return mm;
         }
 
-        var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(BooleanValueSemanticsProvider.AdaptedType, metamodel);
-        AddValueFacets(new BooleanValueSemanticsProvider(oSpec, specification), specification);
-        return mm;
+        return metamodel;
     }
 }

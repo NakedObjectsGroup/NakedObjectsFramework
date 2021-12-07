@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.IO;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
@@ -77,6 +76,8 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     public string TitleWithMaskOf(string mask, T obj) => TitleStringWithMask(mask, obj);
 
     #endregion
+
+    public void AddValueFacets() => ValueTypeHelpers.AddValueFacets(this, Specification);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -50,6 +50,5 @@ public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     protected override string TitleStringWithMask(string mask, short value) => value.ToString(mask);
 
-
     public override string ToString() => "ShortAdapter: ";
 }

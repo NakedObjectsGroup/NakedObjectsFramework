@@ -26,23 +26,20 @@ public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeF
         FacetUtils.AddFacet(new AggregatedFacetAlways(holder));
 
         // ImmutableFacet, if appropriate
-        var immutable = semanticsProvider == null || semanticsProvider.IsImmutable;
-        if (immutable) {
+        if (semanticsProvider.IsImmutable) {
             FacetUtils.AddFacet(new ImmutableFacetViaValueSemantics(holder));
         }
 
-        if (semanticsProvider != null) {
-            FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
-            FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
+        FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
+        FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
 
-            if (semanticsProvider is IFromStream fromStream) {
-                FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
-            }
+        if (semanticsProvider is IFromStream fromStream) {
+            FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
+        }
 
 // ReSharper disable once CompareNonConstrainedGenericWithNull
-            if (semanticsProvider.DefaultValue != null) {
-                FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
-            }
+        if (semanticsProvider.DefaultValue is not null) {
+            FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
         }
     }
 }

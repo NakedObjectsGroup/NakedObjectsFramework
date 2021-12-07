@@ -72,6 +72,5 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
 
     protected override string TitleStringWithMask(string mask, T value) => TitleString(value);
 
-
     public override string ToString() => "EnumAdapter: ";
 }

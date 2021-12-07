@@ -89,7 +89,7 @@ public abstract class AbstractReflectorTest {
             NewFacetFactory<TableViewAnnotationFacetFactory>(),
             NewFacetFactory<EagerlyAnnotationFacetFactory>(),
             NewFacetFactory<PresentationHintAnnotationFacetFactory>(),
-            NewFacetFactory<BooleanValueTypeFacetFactory>(),
+            NewFacetFactory<ValueTypeFacetFactory>(),
             NewFacetFactory<ByteValueTypeFacetFactory>(),
             NewFacetFactory<SbyteValueTypeFacetFactory>(),
             NewFacetFactory<ShortValueTypeFacetFactory>(),

@@ -8,7 +8,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;

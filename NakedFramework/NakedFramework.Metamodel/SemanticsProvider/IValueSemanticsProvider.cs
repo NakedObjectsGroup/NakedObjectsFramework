@@ -7,9 +7,13 @@
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
-public interface IValueSemanticsProvider<T> {
+public interface IValueSemanticsProvider {
     bool IsImmutable { get; }
 
+    void AddValueFacets();
+}
+public interface IValueSemanticsProvider<T> : IValueSemanticsProvider
+{
     T DefaultValue { get; }
 
     /// <summary>

@@ -48,6 +48,4 @@ public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<
     }
 
     protected override string TitleStringWithMask(string mask, byte value) => value.ToString(mask);
-
-    public override string ToString() => "ByteAdapter: ";
 }

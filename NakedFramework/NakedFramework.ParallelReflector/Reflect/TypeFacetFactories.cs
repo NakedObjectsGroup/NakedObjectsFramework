@@ -19,7 +19,7 @@ public static class TypeFacetFactories {
             typeof(RemoveSuperclassMethodsFacetFactory),
             typeof(TypeMarkerFacetFactory),
             typeof(FallbackFacetFactory),
-            typeof(BooleanValueTypeFacetFactory),
+            typeof(ValueTypeFacetFactory),
             typeof(ByteValueTypeFacetFactory),
             typeof(SbyteValueTypeFacetFactory),
             typeof(ShortValueTypeFacetFactory),

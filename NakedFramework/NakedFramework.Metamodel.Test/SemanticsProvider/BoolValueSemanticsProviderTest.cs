@@ -30,23 +30,6 @@ public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     private IBooleanValueFacet valueFacet;
 
     [TestMethod]
-    public void TestIsNotSet() {
-        Assert.AreEqual(false, valueFacet.IsSet(CreateAdapter(false)));
-    }
-
-    [TestMethod]
-    public void TestIsSet() {
-        Assert.AreEqual(true, valueFacet.IsSet(booleanNO));
-    }
-
-    [TestMethod]
-    public void TestToggle() {
-        Assert.IsTrue((bool)booleanNO1.Object);
-        valueFacet.Toggle(booleanNO1);
-        Assert.IsFalse((bool)booleanNO1.Object);
-    }
-
-    [TestMethod]
     public override void TestParseEmptyString() {
         try {
             var newValue = value.ParseTextEntry("");
