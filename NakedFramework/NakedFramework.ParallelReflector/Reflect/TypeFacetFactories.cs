@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
 namespace NakedFramework.ParallelReflector.Reflect;
@@ -20,25 +21,7 @@ public static class TypeFacetFactories {
             typeof(TypeMarkerFacetFactory),
             typeof(FallbackFacetFactory),
             typeof(ValueTypeFacetFactory),
-            typeof(ByteValueTypeFacetFactory),
-            typeof(SbyteValueTypeFacetFactory),
-            typeof(ShortValueTypeFacetFactory),
-            typeof(IntValueTypeFacetFactory),
-            typeof(LongValueTypeFacetFactory),
-            typeof(UShortValueTypeFacetFactory),
-            typeof(UIntValueTypeFacetFactory),
-            typeof(ULongValueTypeFacetFactory),
-            typeof(FloatValueTypeFacetFactory),
-            typeof(DoubleValueTypeFacetFactory),
-            typeof(DecimalValueTypeFacetFactory),
-            typeof(CharValueTypeFacetFactory),
-            typeof(DateTimeValueTypeFacetFactory),
-            typeof(TimeValueTypeFacetFactory),
-            typeof(StringValueTypeFacetFactory),
-            typeof(GuidValueTypeFacetFactory),
             typeof(EnumValueTypeFacetFactory),
-            typeof(FileAttachmentValueTypeFacetFactory),
-            typeof(ImageValueTypeFacetFactory),
             typeof(ArrayValueTypeFacetFactory<byte>),
             typeof(CollectionFacetFactory)
         };

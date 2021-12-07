@@ -12,8 +12,8 @@ public interface IValueSemanticsProvider {
 
     void AddValueFacets();
 }
-public interface IValueSemanticsProvider<T> : IValueSemanticsProvider
-{
+
+public interface IValueSemanticsProvider<T> : IValueSemanticsProvider {
     T DefaultValue { get; }
 
     /// <summary>

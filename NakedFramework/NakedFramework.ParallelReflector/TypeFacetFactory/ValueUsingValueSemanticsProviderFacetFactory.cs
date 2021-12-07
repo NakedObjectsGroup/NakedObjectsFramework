@@ -12,34 +12,11 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
+using NakedFramework.ParallelReflector.FacetFactory;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory;
 
 public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeFacetFactoryProcessor {
     protected ValueUsingValueSemanticsProviderFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
         : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
-
-    protected static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
-        FacetUtils.AddFacet(semanticsProvider as IFacet);
-
-        // value implies aggregated
-        FacetUtils.AddFacet(new AggregatedFacetAlways(holder));
-
-        // ImmutableFacet, if appropriate
-        if (semanticsProvider.IsImmutable) {
-            FacetUtils.AddFacet(new ImmutableFacetViaValueSemantics(holder));
-        }
-
-        FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
-        FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
-
-        if (semanticsProvider is IFromStream fromStream) {
-            FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
-        }
-
-// ReSharper disable once CompareNonConstrainedGenericWithNull
-        if (semanticsProvider.DefaultValue is not null) {
-            FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
-        }
-    }
 }

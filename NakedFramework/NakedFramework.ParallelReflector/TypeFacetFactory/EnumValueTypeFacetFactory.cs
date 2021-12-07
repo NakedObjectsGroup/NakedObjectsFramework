@@ -7,12 +7,12 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory;
@@ -27,9 +27,13 @@ public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProvider
 
         var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
         var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
-        var semanticsProvider = Activator.CreateInstance(semanticsProviderType, oSpec, specification);
-        var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.NonPublic).MakeGenericMethod(type);
-        method.Invoke(null, new[] { semanticsProvider, specification });
+        if (Activator.CreateInstance(semanticsProviderType, oSpec, specification) is IValueSemanticsProvider semanticsProvider) {
+            semanticsProvider.AddValueFacets();
+        }
+        else {
+            throw new UnknownTypeException($"Created type {semanticsProviderType} is not IValueSemanticsProvider");
+        }
+
         return mm;
     }
 }

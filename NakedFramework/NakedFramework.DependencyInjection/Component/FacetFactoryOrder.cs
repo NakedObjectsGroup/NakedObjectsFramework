@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.FacetFactory;
+using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
 namespace NakedFramework.DependencyInjection.Component;

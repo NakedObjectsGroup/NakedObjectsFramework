@@ -9,8 +9,32 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
 public static class ValueTypeHelpers {
+
+  
+
+
     public static readonly Dictionary<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> TypeToSemanticProvider = new() {
-        { typeof(bool), (o, s) => new BooleanValueSemanticsProvider(o, s) }
+        { BooleanValueSemanticsProvider.AdaptedType, (o, s) => new BooleanValueSemanticsProvider(o, s) },
+        { ByteValueSemanticsProvider.AdaptedType, (o, s) => new ByteValueSemanticsProvider(o, s) },
+        { CharValueSemanticsProvider.AdaptedType, (o, s) => new CharValueSemanticsProvider(o, s) },
+        { ColorValueSemanticsProvider.AdaptedType, (o, s) => new ColorValueSemanticsProvider(o, s) },
+        { DateTimeValueSemanticsProvider.AdaptedType, (o, s) => new DateTimeValueSemanticsProvider(o, s) },
+        { DecimalValueSemanticsProvider.AdaptedType, (o, s) => new DecimalValueSemanticsProvider(o, s) },
+        { DoubleValueSemanticsProvider.AdaptedType, (o, s) => new DoubleValueSemanticsProvider(o, s) },
+        //{ EnumValueSemanticsProvider.AdaptedType, (o, s) => new EnumValueSemanticsProvider(o, s) },
+        { FileAttachmentValueSemanticsProvider.AdaptedType, (o, s) => new FileAttachmentValueSemanticsProvider(o, s) },
+        { FloatValueSemanticsProvider.AdaptedType, (o, s) => new FloatValueSemanticsProvider(o, s) },
+        { GuidValueSemanticsProvider.AdaptedType, (o, s) => new GuidValueSemanticsProvider(o, s) },
+        { ImageValueSemanticsProvider.AdaptedType, (o, s) => new ImageValueSemanticsProvider(o, s) },
+        { IntValueSemanticsProvider.AdaptedType, (o, s) => new IntValueSemanticsProvider(o, s) },
+        { LongValueSemanticsProvider.AdaptedType, (o, s) => new LongValueSemanticsProvider(o, s) },
+        { SbyteValueSemanticsProvider.AdaptedType, (o, s) => new SbyteValueSemanticsProvider(o, s) },
+        { ShortValueSemanticsProvider.AdaptedType, (o, s) => new ShortValueSemanticsProvider(o, s) },
+        { StringValueSemanticsProvider.AdaptedType, (o, s) => new StringValueSemanticsProvider(o, s) },
+        { TimeValueSemanticsProvider.AdaptedType, (o, s) => new TimeValueSemanticsProvider(o, s) },
+        { UIntValueSemanticsProvider.AdaptedType, (o, s) => new UIntValueSemanticsProvider(o, s) },
+        { ULongValueSemanticsProvider.AdaptedType, (o, s) => new ULongValueSemanticsProvider(o, s) },
+        { UShortValueSemanticsProvider.AdaptedType, (o, s) => new UShortValueSemanticsProvider(o, s) },
     };
 
     public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {

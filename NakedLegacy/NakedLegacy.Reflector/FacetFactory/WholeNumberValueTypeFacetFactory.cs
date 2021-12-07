@@ -18,7 +18,7 @@ using NakedLegacy.Reflector.SemanticsProvider;
 namespace NakedLegacy.Reflector.FacetFactory;
 
 public sealed class WholeNumberValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-    public WholeNumberValueTypeFacetFactory(IFacetFactoryOrder<IntValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
+    public WholeNumberValueTypeFacetFactory(IFacetFactoryOrder<WholeNumberValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (!WholeNumberValueSemanticsProvider.IsAdaptedType(type)) {
@@ -26,7 +26,7 @@ public sealed class WholeNumberValueTypeFacetFactory : ValueUsingValueSemanticsP
         }
 
         var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(WholeNumberValueSemanticsProvider.AdaptedType, metamodel);
-        AddValueFacets(new WholeNumberValueSemanticsProvider(oSpec, specification), specification);
+        new WholeNumberValueSemanticsProvider(oSpec, specification).AddValueFacets();
         return mm;
     }
 }

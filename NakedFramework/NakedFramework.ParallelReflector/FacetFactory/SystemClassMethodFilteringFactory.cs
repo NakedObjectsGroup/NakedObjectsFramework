@@ -12,19 +12,19 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Core.Util;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory;
+namespace NakedFramework.ParallelReflector.FacetFactory;
 
 /// <summary>
-///     This factory filters out properties on system types. So for example 'Length' will not show up when displaying a
+///     This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a
 ///     string.
 /// </summary>
-public sealed class SystemClassPropertyFilteringFactory : SystemTypeFacetFactoryProcessor, IPropertyFilteringFacetFactory {
-    public SystemClassPropertyFilteringFactory(IFacetFactoryOrder<SystemClassPropertyFilteringFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.Properties) { }
+public sealed class SystemClassMethodFilteringFactory : SystemTypeFacetFactoryProcessor, IMethodFilteringFacetFactory {
+    public SystemClassMethodFilteringFactory(IFacetFactoryOrder<SystemClassMethodFilteringFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
-    #region IPropertyFilteringFacetFactory Members
+    #region IMethodFilteringFacetFactory Members
 
-    public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(property.DeclaringType);
+    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(method.DeclaringType);
 
     #endregion
 }

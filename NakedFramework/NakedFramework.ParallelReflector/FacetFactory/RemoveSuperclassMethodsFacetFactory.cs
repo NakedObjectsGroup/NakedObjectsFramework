@@ -18,7 +18,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory;
+namespace NakedFramework.ParallelReflector.FacetFactory;
 
 /// <summary>
 ///     Removes all methods inherited from <see cref="object" />

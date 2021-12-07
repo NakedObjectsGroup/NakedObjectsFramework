@@ -28,7 +28,7 @@ public sealed class DateValueTypeFacetFactory : ValueUsingValueSemanticsProvider
         methodRemover.RemoveMethods(type.GetMethods());
 
         var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(DateValueSemanticsProvider.AdaptedType, metamodel);
-        AddValueFacets(new DateValueSemanticsProvider(oSpec, specification), specification);
+        new DateValueSemanticsProvider(oSpec, specification).AddValueFacets();
         return mm;
     }
 }

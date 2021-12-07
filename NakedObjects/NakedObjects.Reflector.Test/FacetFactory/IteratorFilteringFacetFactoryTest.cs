@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 
 // ReSharper disable UnusedMember.Global

@@ -19,7 +19,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory;
+namespace NakedFramework.ParallelReflector.FacetFactory;
 
 /// <summary>
 ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects

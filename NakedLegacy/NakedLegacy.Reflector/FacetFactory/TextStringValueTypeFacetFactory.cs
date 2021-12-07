@@ -38,7 +38,7 @@ public sealed class TextStringValueTypeFacetFactory : ValueUsingValueSemanticsPr
         RemoveExplicitlyIgnoredMembers(type, methodRemover);
 
         var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(TextStringValueSemanticsProvider.AdaptedType, metamodel);
-        AddValueFacets(new TextStringValueSemanticsProvider(oSpec, specification), specification);
+        new TextStringValueSemanticsProvider(oSpec, specification).AddValueFacets();
         return mm;
     }
 }

@@ -28,7 +28,7 @@ public sealed class TimeStampValueTypeFacetFactory : ValueUsingValueSemanticsPro
         methodRemover.RemoveMethods(type.GetMethods());
 
         var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(TimeStampValueSemanticsProvider.AdaptedType, metamodel);
-        AddValueFacets(new TimeStampValueSemanticsProvider(oSpec, specification), specification);
+        new TimeStampValueSemanticsProvider(oSpec, specification).AddValueFacets();
         return mm;
     }
 }

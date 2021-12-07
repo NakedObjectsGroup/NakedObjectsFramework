@@ -16,10 +16,9 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
-using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedFramework.ParallelReflector.TypeFacetFactory;
+namespace NakedFramework.ParallelReflector.FacetFactory;
 
 /// <summary>
 ///     Designed to simply filter out <see cref="IEnumerable.GetEnumerator" /> method if it exists.
