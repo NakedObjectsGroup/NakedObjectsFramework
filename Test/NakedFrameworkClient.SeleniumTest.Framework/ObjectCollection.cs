@@ -30,7 +30,7 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectCollection ClickListView()
         {
-            element.FindElement(By.CssSelector(".icon.list")).Click();
+            helper.WaitForCss(".icon.list").Click();
             Thread.Sleep(500);
             helper.WaitForChildElement(element, "tbody tr");
             return this;
