@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -26,6 +27,8 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
     public static Type Type => typeof(IFloatingPointValueFacet);
 
     public static Type AdaptedType => typeof(float);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FloatValueSemanticsProvider(o, s));
 
     #region IFloatingPointValueFacet Members
 

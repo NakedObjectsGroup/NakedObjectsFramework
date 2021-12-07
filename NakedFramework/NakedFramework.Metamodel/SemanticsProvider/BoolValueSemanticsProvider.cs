@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
@@ -24,6 +25,8 @@ public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstra
     private static Type Type => typeof(IBooleanValueFacet);
 
     public static Type AdaptedType => typeof(bool);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new BooleanValueSemanticsProvider(o, s));
 
     protected override bool DoParse(string entry) {
         if ("true".StartsWith(entry.ToLower())) {

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -26,6 +27,8 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
     private static Type Type => typeof(IDoubleFloatingPointValueFacet);
 
     public static Type AdaptedType => typeof(double);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DoubleValueSemanticsProvider(o, s));
 
     #region IDoubleFloatingPointValueFacet Members
 

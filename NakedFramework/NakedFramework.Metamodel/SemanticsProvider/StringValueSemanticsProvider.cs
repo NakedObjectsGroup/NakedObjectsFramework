@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -25,6 +26,8 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
     public static Type Type => typeof(IStringValueFacet);
 
     public static Type AdaptedType => typeof(string);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new StringValueSemanticsProvider(o, s));
 
     #region IStringValueFacet Members
 

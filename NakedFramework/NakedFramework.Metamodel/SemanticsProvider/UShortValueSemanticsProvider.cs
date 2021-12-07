@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -27,6 +28,8 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
     public static Type Type => typeof(IUnsignedShortValueFacet);
 
     public static Type AdaptedType => typeof(ushort);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new UShortValueSemanticsProvider(o, s));
 
     #region IUnsignedShortValueFacet Members
 

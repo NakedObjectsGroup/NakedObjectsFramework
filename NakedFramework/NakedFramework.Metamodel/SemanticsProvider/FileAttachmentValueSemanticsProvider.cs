@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -25,6 +26,8 @@ public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProvide
     public static Type Type => typeof(IFileAttachmentValueFacet);
 
     public static Type AdaptedType => typeof(FileAttachment);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FileAttachmentValueSemanticsProvider(o, s));
 
     #region IFromStream Members
 

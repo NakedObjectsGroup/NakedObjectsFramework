@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using NakedFramework.Architecture.Adapter;
@@ -27,6 +28,8 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
     public static Type Type => typeof(IColorValueFacet);
 
     public static Type AdaptedType => typeof(Color);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ColorValueSemanticsProvider(o, s));
 
     #region IColorValueFacet Members
 
