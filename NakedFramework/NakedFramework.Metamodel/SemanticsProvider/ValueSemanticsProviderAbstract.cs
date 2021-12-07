@@ -6,9 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -76,6 +78,7 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     public string DisplayTitleOf(T obj) => TitleString(obj);
 
     public string TitleWithMaskOf(string mask, T obj) => TitleStringWithMask(mask, obj);
+    public virtual T Value(INakedObjectAdapter adapter, string format = null) => adapter.GetDomainObject<T>();
 
     #endregion
 }

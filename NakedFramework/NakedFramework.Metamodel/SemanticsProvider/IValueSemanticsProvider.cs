@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework.Architecture.Adapter;
+
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
 public interface IValueSemanticsProvider {
@@ -34,4 +36,6 @@ public interface IValueSemanticsProvider<T> : IValueSemanticsProvider {
     ///     The title of the object, with mask applied
     /// </summary>
     string TitleWithMaskOf(string mask, T obj);
+
+    T Value(INakedObjectAdapter adapter, string format = null);
 }
