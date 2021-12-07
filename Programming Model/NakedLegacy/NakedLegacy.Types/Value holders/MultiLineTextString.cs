@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NakedLegacy.Types.Value_holders
+namespace NakedLegacy.Types
 {
     public class MultiLineTextString : TextString
     {

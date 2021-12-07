@@ -2,20 +2,72 @@
 
 	Partial Public Class ProductInventory
 
-		<Hidden>
 		Public Property ProductID() As Integer
 
-		<Hidden>
 		Public Property LocationID() As Short
 
+#Region "Shelf"
+		Friend mappedShelf As String
+		Friend myShelf As TextString
+
 		<MemberOrder(40)>
-		Public Property Shelf() As String = ""
+		Public ReadOnly Property Shelf As TextString
+			Get
+				Return If(myShelf, New TextString(mappedShelf, Function(v) mappedShelf = v))
+			End Get
+		End Property
+
+		Public Sub AboutShelf(a As FieldAbout, Shelf As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "Bin"
+		Friend mappedBin As Byte
+		Friend myBin As WholeNumber
 
 		<MemberOrder(50)>
-		Public Property Bin() As Byte
+		Public ReadOnly Property Bin As WholeNumber
+			Get
+				Return If(myBin, New WholeNumber(mappedBin, Function(v) mappedBin = v))
+			End Get
+		End Property
+
+		Public Sub AboutBin(a As FieldAbout, Bin As WholeNumber)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "Quantity"
+		Friend mappedQuantity As Short
+		Friend myQuantity As WholeNumber
 
 		<MemberOrder(10)>
-		Public Property Quantity() As Short
+		Public ReadOnly Property Quantity As WholeNumber
+			Get
+				Return If(myQuantity, New WholeNumber(mappedQuantity, Function(v) mappedQuantity = v))
+			End Get
+		End Property
+
+		Public Sub AboutQuantity(a As FieldAbout, Quantity As WholeNumber)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 		<MemberOrder(30)>
 		Public Overridable Property Location() As Location
@@ -27,7 +79,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -42,11 +94,10 @@
 		End Sub
 #End Region
 
-		<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Overrides Function ToString() As String
-			Return $"{Quantity} in {Location} - {Shelf}"
+		Public Function Title() As Title
+			Return New Title($"{Quantity} in {Location} - {Shelf}")
 		End Function
 	End Class
 End Namespace

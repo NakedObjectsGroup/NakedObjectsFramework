@@ -3,12 +3,29 @@
 	<Bounded>
 	Partial Public Class ProductSubcategory
 
-		<Hidden>
 		Public Property ProductSubcategoryID() As Integer
 
-		Public Property Name() As String = ""
+#Region "Name"
+		Friend mappedName As String
+		Friend myName As TextString
 
-		<Hidden>
+		<MemberOrder(1)>
+		Public ReadOnly Property Name As TextString
+			Get
+				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+			End Get
+		End Property
+
+		Public Sub AboutName(a As FieldAbout, Name As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
 		Public Property ProductCategoryID() As Integer
 
 		Public Overridable Property ProductCategory() As ProductCategory
@@ -17,7 +34,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -32,11 +49,10 @@
 		End Sub
 #End Region
 
-		<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Overrides Function ToString() As String
-			Return Name
+		Public Function Title() As Title
+			Return New Title(Name)
 		End Function
 	End Class
 End Namespace

@@ -3,16 +3,50 @@
 	<Bounded>
 	Partial Public Class ScrapReason
 
-		<Hidden>
 		Public Property ScrapReasonID() As Short
 
-		Public Property Name() As String = ""
+#Region "Name"
+        Friend mappedName As String
+        Friend myName As TextString
+
+        <MemberOrder(1)>
+        Public ReadOnly Property Name As TextString
+            Get
+                Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+            End Get
+        End Property
+
+        Public Sub AboutName(a As FieldAbout, Name As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+		Public ReadOnly Property ModifiedDate As TimeStamp
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
 
-		Public Overrides Function ToString() As String
-			Return Name
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
+
+		Public Function Title() As Title
+			Return New Title(Name)
 		End Function
 	End Class
 End Namespace

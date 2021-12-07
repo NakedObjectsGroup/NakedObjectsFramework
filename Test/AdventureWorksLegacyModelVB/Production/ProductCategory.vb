@@ -3,20 +3,55 @@
 	<Bounded>
 	Partial Public Class ProductCategory
 
-		<Hidden>
 		Public Property ProductCategoryID() As Integer
 
-		Public Property Name() As String = ""
+#Region "Name"
+		Friend mappedName As String
+		Friend myName As TextString
 
-		<Named("Subcategories")>
-		<TableView(True)>
-		Public Overridable Property ProductSubcategory() As ICollection(Of ProductSubcategory) = New List(Of ProductSubcategory)()
+		<MemberOrder(1)>
+		Public ReadOnly Property Name As TextString
+			Get
+				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+			End Get
+		End Property
+
+		Public Sub AboutName(a As FieldAbout, Name As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "ProductSubcategory (Collection)"
+		Public Overridable Property mappedProductSubcategory As ICollection(Of ProductSubcategory) = New List(Of ProductSubcategory)()
+
+		Private myProductSubcategory As InternalCollection
+
+		'<TableView(True)>
+		Public ReadOnly Property ProductSubcategory As InternalCollection
+			Get
+				Return If(myProductSubcategory, New InternalCollection(Of ProductSubcategory)(mappedProductSubcategory))
+			End Get
+		End Property
+
+		Public Sub AboutProductSubcategory(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+					a.Name = "Subcategories"
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -31,11 +66,10 @@
 		End Sub
 #End Region
 
-		<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Overrides Function ToString() As String
-			Return Name
+		Public Function Title() As Title
+			Return New Title(Name)
 		End Function
 	End Class
 End Namespace
