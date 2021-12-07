@@ -19,11 +19,10 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 4;
     private static readonly Color DefaultValueConst = Color.Black;
 
     public ColorValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IColorValueFacet);
 
@@ -62,8 +61,6 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
             throw new InvalidEntryException(string.Format(NakedObjects.Resources.NakedObjects.OutOfRange, entry, int.MinValue, int.MaxValue));
         }
     }
-
-    protected override Color DoParseInvariant(string entry) => Color.FromArgb(int.Parse(entry, CultureInfo.InvariantCulture));
 
     protected override string TitleStringWithMask(string mask, Color value) => value.ToString();
 

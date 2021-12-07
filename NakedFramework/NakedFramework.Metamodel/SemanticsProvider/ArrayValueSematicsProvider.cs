@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -23,10 +22,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T[]>, IArrayValueFacet<T>, IFromStream {
     private const T[] DefaultValueConst = null;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 20;
 
     public ArrayValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IArrayValueFacet<T>);
 
@@ -77,9 +75,6 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
             throw new InvalidEntryException(OutOfRangeMessage(entry, Array.Empty<T>(), Array.Empty<T>()));
         }
     }
-
-    protected override T[] DoParseInvariant(string entry) =>
-        entry.Split(' ').Where(s => s.Trim().Length > 0).Select(s => (T)Convert.ChangeType(s, typeof(T), CultureInfo.InvariantCulture)).ToArray();
 
     protected override string TitleStringWithMask(string mask, T[] value) => TitleString(value);
 

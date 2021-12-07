@@ -18,10 +18,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstract<string>, IStringValueFacet {
     private const string DefaultValueConst = null;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 25;
 
     public StringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IStringValueFacet);
 
@@ -36,6 +35,4 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override string DoParse(string entry) => entry.Trim().Equals("") ? null : entry;
-
-    protected override string DoParseInvariant(string entry) => entry;
 }

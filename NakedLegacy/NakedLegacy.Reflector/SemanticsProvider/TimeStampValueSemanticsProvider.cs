@@ -25,7 +25,7 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
     private static readonly TimeStamp DefaultValueConst = new(new DateTime());
 
     public TimeStampValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     // inject for testing 
     public static DateTime? TestDateTime { get; set; }
@@ -51,8 +51,6 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
             throw new InvalidEntryException(FormatMessage(dateString));
         }
     }
-
-    protected override TimeStamp DoParseInvariant(string entry) => DoParse(entry);
 
     protected override string TitleStringWithMask(string mask, TimeStamp value) => value.DateTime.ToString(mask);
 

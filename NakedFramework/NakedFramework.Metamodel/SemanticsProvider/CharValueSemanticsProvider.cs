@@ -20,10 +20,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<char>, ICharValueFacet {
     private const char DefaultValueConst = ' ';
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 2;
 
     public CharValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(ICharValueFacet);
 
@@ -52,8 +51,6 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
             throw new InvalidEntryException(FormatMessage(entry));
         }
     }
-
-    protected override char DoParseInvariant(string entry) => char.Parse(entry);
 
     protected override string TitleStringWithMask(string mask, char value) => value.ToString(Thread.CurrentThread.CurrentCulture);
 

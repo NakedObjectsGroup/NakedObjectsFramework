@@ -20,10 +20,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<int>, IIntegerValueFacet {
     private const int DefaultValueConst = 0;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 11;
 
     public IntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IIntegerValueFacet);
 
@@ -48,8 +47,6 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
             throw new InvalidEntryException(OutOfRangeMessage(entry, int.MinValue, int.MaxValue));
         }
     }
-
-    protected override int DoParseInvariant(string entry) => int.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, int value) => value.ToString(mask);
 

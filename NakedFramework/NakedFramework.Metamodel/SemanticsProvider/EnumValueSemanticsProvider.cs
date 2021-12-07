@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IEnumValueFacet {
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 11;
 
     public EnumValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, GetDefault(), spec) { }
+        : base(Type, holder, AdaptedType, Immutable, GetDefault(), spec) { }
 
     public static Type Type => typeof(IEnumValueFacet);
 
@@ -68,8 +67,6 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
             throw new InvalidEntryException(oe.Message);
         }
     }
-
-    protected override T DoParseInvariant(string entry) => (T)Enum.Parse(typeof(T), entry);
 
     protected override string TitleString(T obj) => NameUtils.NaturalName(obj.ToString());
 

@@ -75,15 +75,6 @@ public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        new[] { true, false }.ForEach(b => {
-            var b1 = b.ToString(CultureInfo.InvariantCulture);
-            var b2 = value.ParseInvariant(b1);
-            Assert.AreEqual(b, b2);
-        });
-    }
-
-    [TestMethod]
     public void TestParseTrueString() {
         var parsed = value.ParseTextEntry("TRue");
         Assert.AreEqual(true, parsed);
@@ -102,23 +93,6 @@ public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     [TestMethod]
     public override void TestParseNull() {
         base.TestParseNull();
-    }
-
-   
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<bool>(value, null);
-        Assert.AreEqual(true, parser.ParseInvariant("true", mgr.Object).Object);
-        Assert.AreEqual(false, parser.ParseInvariant("false", mgr.Object).Object);
-    }
-
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<bool>(value, null);
-        var mockAdapter = MockAdapter(true);
-        Assert.AreEqual("True", parser.ParseableTitle(mockAdapter));
     }
 
     #region Setup/Teardown

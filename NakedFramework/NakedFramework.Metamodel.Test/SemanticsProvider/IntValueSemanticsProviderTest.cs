@@ -54,14 +54,6 @@ public class IntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestC
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const int c1 = 123;
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = GetValue().ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public void TestParseOddlyFormedEntry() {
         var newValue = value.ParseTextEntry("1,20.0");
         Assert.AreEqual(120, newValue);
@@ -86,20 +78,6 @@ public class IntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestC
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.IntegerValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<int>(value, null);
-        Assert.AreEqual(91, parser.ParseInvariant("91", mgr.Object).Object);
-    }
-
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<int>(value, null);
-        var mockAdapter = MockAdapter(101);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
     }
 
     #region Setup/Teardown

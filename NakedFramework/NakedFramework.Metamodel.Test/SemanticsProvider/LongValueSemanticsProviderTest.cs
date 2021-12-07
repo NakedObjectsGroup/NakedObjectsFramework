@@ -55,14 +55,6 @@ public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const long c1 = 123456L;
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = GetValue().ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public void TestParseOddlyFormedEntry() {
         var newValue = value.ParseTextEntry("1,20.0");
         Assert.AreEqual(120L, newValue);
@@ -85,20 +77,6 @@ public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.LongValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<long>(value, null);
-        Assert.AreEqual(91L, parser.ParseInvariant("91", mgr.Object).Object);
-    }
-
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<long>(value, null);
-        var mockAdapter = MockAdapter(101L);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
     }
 
     #region Setup/Teardown

@@ -60,14 +60,6 @@ public class ByteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const byte c1 = 11;
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = GetValue().ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public override void TestParseNull() {
         base.TestParseNull();
     }
@@ -80,20 +72,6 @@ public class ByteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.ByteValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<byte>(value, null);
-        Assert.AreEqual((byte)91, parser.ParseInvariant("91", mgr.Object).Object);
-    }
-
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<byte>(value, null);
-        var mockAdapter = MockAdapter((byte)101);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
     }
 
     #region Setup/Teardown

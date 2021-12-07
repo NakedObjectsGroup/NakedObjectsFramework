@@ -59,14 +59,6 @@ public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const float c1 = 123.456F;
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = GetValue().ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public void TestTitleOf() {
         Assert.AreEqual("3500000", GetValue().DisplayTitleOf(3500000.0F));
     }
@@ -90,20 +82,6 @@ public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.FloatValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<float>(GetValue(), null);
-        Assert.AreEqual(91f, parser.ParseInvariant("91", mgr.Object).Object);
-    }
-
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<float>(GetValue(), null);
-        var mockAdapter = MockAdapter(101f);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
     }
 
     #region Setup/Teardown

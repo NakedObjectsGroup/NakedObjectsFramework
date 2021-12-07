@@ -20,10 +20,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstract<ushort>, IUnsignedShortValueFacet {
     private const ushort DefaultValueConst = 0;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 5;
 
     public UShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IUnsignedShortValueFacet);
 
@@ -48,8 +47,6 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
             throw new InvalidEntryException(OutOfRangeMessage(entry, ushort.MinValue, ushort.MaxValue));
         }
     }
-
-    protected override ushort DoParseInvariant(string entry) => ushort.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, ushort value) => value.ToString(mask);
 

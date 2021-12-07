@@ -26,7 +26,7 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
     private static WholeNumber DefaultValueConst = new(0);
 
     public WholeNumberValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IIntegerValueFacet);
 
@@ -51,8 +51,6 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
             throw new InvalidEntryException(OutOfRangeMessage(entry, new WholeNumber(int.MinValue), new WholeNumber(int.MaxValue)));
         }
     }
-
-    protected override WholeNumber DoParseInvariant(string entry) => new(int.Parse(entry, CultureInfo.InvariantCulture));
 
     protected override string TitleStringWithMask(string mask, WholeNumber value) => value.Number.ToString(mask);
 

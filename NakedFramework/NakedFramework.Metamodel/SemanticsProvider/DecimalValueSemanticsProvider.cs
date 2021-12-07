@@ -20,10 +20,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstract<decimal>, IDecimalValueFacet {
     private const decimal DefaultValueConst = 0;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 18;
 
     public DecimalValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IDecimalValueFacet);
 
@@ -48,8 +47,6 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
             throw new InvalidEntryException(OutOfRangeMessage(entry, decimal.MinValue, decimal.MaxValue));
         }
     }
-
-    protected override decimal DoParseInvariant(string entry) => decimal.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, decimal value) => value.ToString(mask);
 

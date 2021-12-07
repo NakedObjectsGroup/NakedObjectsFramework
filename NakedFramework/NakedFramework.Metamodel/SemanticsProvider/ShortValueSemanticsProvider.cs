@@ -20,10 +20,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract<short>, IShortValueFacet {
     private const short DefaultValueConst = 0;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 6;
 
     public ShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IShortValueFacet);
 
@@ -48,8 +47,6 @@ public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract
             throw new InvalidEntryException(OutOfRangeMessage(entry, short.MinValue, short.MaxValue));
         }
     }
-
-    protected override short DoParseInvariant(string entry) => short.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, short value) => value.ToString(mask);
 

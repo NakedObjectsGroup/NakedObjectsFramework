@@ -18,10 +18,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IImageValueFacet, IFromStream {
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 0;
 
     public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, null, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, null, spec) { }
 
     private static Type Type => typeof(IImageValueFacet);
 
@@ -36,8 +35,6 @@ public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override Image DoParse(string entry) => throw new NakedObjectSystemException($"Image cannot parse: {entry}");
-
-    protected override Image DoParseInvariant(string entry) => throw new NakedObjectSystemException($"Image cannot parse invariant: {entry}");
 
     protected override string TitleString(Image obj) => obj.Name;
 

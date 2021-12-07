@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -20,10 +19,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<byte>, IByteValueFacet {
     private const byte DefaultValueConst = 0;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 3;
 
     public ByteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IByteValueFacet);
 
@@ -48,8 +46,6 @@ public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<
             throw new InvalidEntryException(OutOfRangeMessage(entry, byte.MinValue, byte.MaxValue));
         }
     }
-
-    protected override byte DoParseInvariant(string entry) => byte.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, byte value) => value.ToString(mask);
 

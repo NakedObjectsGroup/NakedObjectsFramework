@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -20,10 +19,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract<float>, IFloatingPointValueFacet {
     private const float DefaultValueConst = 0;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 12;
 
     public FloatValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IFloatingPointValueFacet);
 
@@ -48,8 +46,6 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
             throw new InvalidEntryException(OutOfRangeMessage(entry, float.MinValue, float.MaxValue));
         }
     }
-
-    protected override float DoParseInvariant(string entry) => float.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, float value) => value.ToString(mask);
 

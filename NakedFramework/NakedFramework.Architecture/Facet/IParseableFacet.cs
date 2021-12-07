@@ -18,22 +18,4 @@ public interface IParseableFacet : IFacet {
     ///     Parses a text entry made by a user and sets the domain object's value.
     /// </summary>
     INakedObjectAdapter ParseTextEntry(string text, INakedObjectManager manager);
-
-    /// <summary>
-    ///     Parses an invariant value and sets the domain objects value
-    /// </summary>
-    INakedObjectAdapter ParseInvariant(string text, INakedObjectManager manager);
-
-    /// <summary>
-    ///     A title for the object that is valid but which may be easier to
-    ///     edit than the title provided by a <see cref="ITitleFacet" />
-    /// </summary>
-    /// <para>
-    ///     The idea here is that the viewer can display a parseable title
-    ///     for an existing object when, for example, the user initially
-    ///     clicks in the field.  So, a date might be rendered via a
-    ///     <see cref="ITitleFacet" /> as <b>May 2, 2007</b>, but its parseable
-    ///     form might be <b>20070502</b>.
-    /// </para>
-    string ParseableTitle(INakedObjectAdapter nakedObjectAdapter);
 }

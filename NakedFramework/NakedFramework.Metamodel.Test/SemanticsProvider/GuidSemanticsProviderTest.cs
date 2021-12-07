@@ -77,22 +77,6 @@ public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         Assert.AreEqual(testValue, facet.GuidValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        var testValue = Guid.NewGuid();
-        IParseableFacet parser = new ParseableFacetUsingParser<Guid>(value, null);
-        Assert.AreEqual(testValue, parser.ParseInvariant(testValue.ToString(), mgr.Object).Object);
-    }
-
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<Guid>(value, null);
-        var testValue = Guid.NewGuid();
-        var mockAdapter = MockAdapter(testValue);
-        Assert.AreEqual(testValue.ToString(), parser.ParseableTitle(mockAdapter));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

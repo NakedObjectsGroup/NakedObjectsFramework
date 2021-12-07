@@ -54,14 +54,6 @@ public class DecimalValueSemanticsProviderTest : ValueSemanticsProviderAbstractT
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const decimal c1 = 123;
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = GetValue().ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public void TestParseOddlyFormedEntry() {
         var newValue = value.ParseTextEntry("1,20.0");
         Assert.AreEqual(120.0M, newValue);
@@ -86,20 +78,6 @@ public class DecimalValueSemanticsProviderTest : ValueSemanticsProviderAbstractT
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.DecimalValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<decimal>(value, null);
-        Assert.AreEqual(91M, parser.ParseInvariant("91", mgr.Object).Object);
-    }
-
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<decimal>(value, null);
-        var mockAdapter = MockAdapter(101M);
-        Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
     }
 
     #region Setup/Teardown

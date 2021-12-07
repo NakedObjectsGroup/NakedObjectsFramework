@@ -50,15 +50,6 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        var b1 = new byte[] { 1, 2, 3, 4 };
-        var s1 = b1.Aggregate("", (s, t) => s + ' ' + t.ToString(CultureInfo.InvariantCulture));
-        var b2 = value.ParseInvariant(s1);
-
-        Assert.IsTrue(b1.SequenceEqual((byte[])b2));
-    }
-
-    [TestMethod]
     public void TestParseOutOfRangeString() {
         try {
             value.ParseTextEntry("1 2 1000");
@@ -98,21 +89,6 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
         IArrayValueFacet<byte> valueFacet = value;
 
         Assert.AreEqual(testArray, valueFacet.ArrayValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<byte[]>(value, null);
-        var parsed = (byte[])parser.ParseInvariant("0 0 1 100 255", mgr.Object).Object;
-        Assert.IsTrue(parsed.SequenceEqual(new byte[] { 0, 0, 1, 100, 255 }));
-    }
-
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<byte[]>(value, null);
-        var mockAdapter = MockAdapter(new byte[] { 1, 2, 100 });
-        Assert.AreEqual("1 2 100", parser.ParseableTitle(mockAdapter));
     }
 
     #region Setup/Teardown

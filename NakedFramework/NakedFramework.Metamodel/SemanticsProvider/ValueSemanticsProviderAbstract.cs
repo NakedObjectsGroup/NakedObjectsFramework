@@ -24,13 +24,11 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     protected ValueSemanticsProviderAbstract(Type adapterFacetType,
                                              ISpecification holder,
                                              Type adaptedType,
-                                             int typicalLength,
                                              bool immutable,
                                              T defaultValue,
                                              IObjectSpecImmutable specImmutable)
         : base(adapterFacetType, holder) {
         this.adaptedType = adaptedType;
-        TypicalLength = typicalLength;
         IsImmutable = immutable;
         DefaultValue = defaultValue;
         SpecImmutable = specImmutable;
@@ -46,10 +44,7 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     /// </para>
     public override bool CanAlwaysReplace => false;
 
-    public Type GetAdaptedClass() => adaptedType;
-
     protected abstract T DoParse(string entry);
-    protected abstract T DoParseInvariant(string entry);
 
     protected virtual string TitleString(T obj) => obj.ToString();
 
@@ -59,37 +54,9 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
 
     protected static string FormatMessage(string entry) => string.Format(NakedObjects.Resources.NakedObjects.CannotFormat, entry, typeof(T).Name);
 
-    /// <summary>
-    ///     http://jonskeet.uk/csharp/readbinary.html
-    ///     Reads data into a complete array, throwing an EndOfStreamException
-    ///     if the stream runs out of data first, or if an IOException
-    ///     naturally occurs.
-    /// </summary>
-    /// <param name="stream">The stream to read data from</param>
-    /// <param name="data">
-    ///     The array to read bytes into. The array
-    ///     will be completely filled from the stream, so an appropriate
-    ///     size must be given.
-    /// </param>
-    protected static void ReadWholeArray(Stream stream, byte[] data) {
-        var offset = 0;
-        var remaining = data.Length;
-        while (remaining > 0) {
-            var read = stream.Read(data, offset, remaining);
-            if (read <= 0) {
-                throw new EndOfStreamException($"End of stream reached with {remaining} bytes left to read");
-            }
-
-            remaining -= read;
-            offset += read;
-        }
-    }
-
     #region IValueSemanticsProvider<T> Members
 
     public T DefaultValue { get; }
-
-    public int TypicalLength { get; }
 
     public bool IsImmutable { get; }
 
@@ -104,10 +71,6 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
 
         return DoParse(entry);
     }
-
-    public object ParseInvariant(string entry) => DoParseInvariant(entry);
-
-    public string EditableTitleOf(T existing) => DisplayTitleOf(existing);
 
     public string DisplayTitleOf(T obj) => TitleString(obj);
 

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -19,11 +18,10 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeSpan>, ITimeValueFacet {
     private const bool Immutable = false;
-    private const int TypicalLengthConst = 6;
     private static readonly TimeSpan DefaultValueConst = new();
 
     public TimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(ITimeValueFacet);
 
@@ -46,8 +44,6 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
             throw new InvalidEntryException(FormatMessage(dateString));
         }
     }
-
-    protected override TimeSpan DoParseInvariant(string entry) => TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleString(TimeSpan obj) => DateTime.Today.Add(obj).ToShortTimeString();
 

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -20,10 +19,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstract<double>, IDoubleFloatingPointValueFacet {
     private const double DefaultValueConst = 0;
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 22;
 
     public DoubleValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     private static Type Type => typeof(IDoubleFloatingPointValueFacet);
 
@@ -48,8 +46,6 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
             throw new InvalidEntryException(OutOfRangeMessage(entry, double.MinValue, double.MaxValue));
         }
     }
-
-    protected override double DoParseInvariant(string entry) => double.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, double value) => value.ToString(mask);
 

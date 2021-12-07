@@ -19,11 +19,10 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, ILongValueFacet {
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 20;
     private const long DefaultValueConst = 0;
 
     public LongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(ILongValueFacet);
 
@@ -48,8 +47,6 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
             throw new InvalidEntryException(OutOfRangeMessage(entry, long.MinValue, long.MaxValue));
         }
     }
-
-    protected override long DoParseInvariant(string entry) => long.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, long value) => value.ToString(mask);
 

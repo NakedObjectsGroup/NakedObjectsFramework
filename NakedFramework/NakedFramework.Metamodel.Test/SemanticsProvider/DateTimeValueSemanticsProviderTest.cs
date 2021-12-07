@@ -64,14 +64,6 @@ public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstract
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
-        var s1 = d1.ToString(CultureInfo.InvariantCulture);
-        var d2 = adapter.ParseInvariant(s1);
-        Assert.AreEqual(d1, d2);
-    }
-
-    [TestMethod]
     public override void TestParseNull() {
         base.TestParseNull();
     }
@@ -88,25 +80,6 @@ public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstract
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.DateValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
-        var s1 = d1.ToString(CultureInfo.InvariantCulture);
-        IParseableFacet parser = new ParseableFacetUsingParser<DateTime>(GetValue(), null);
-        var parsed = parser.ParseInvariant(s1, mgr.Object).Object;
-        Assert.AreEqual(d1, parsed);
-    }
-
-    [TestMethod]
-    public void TestAsParserTitle() {
-        IParseableFacet parser = new ParseableFacetUsingParser<DateTime>(GetValue(), null);
-        var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
-        var s1 = d1.ToString(CultureInfo.CurrentCulture);
-        var mockAdapter = MockAdapter(d1);
-        Assert.AreEqual(s1, parser.ParseableTitle(mockAdapter));
     }
 
     #region Setup/Teardown

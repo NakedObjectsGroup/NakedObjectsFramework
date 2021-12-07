@@ -23,7 +23,7 @@ public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbs
     private const int TypicalLengthConst = 25;
 
     public TextStringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IStringValueFacet);
 
@@ -38,6 +38,4 @@ public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbs
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override TextString DoParse(string entry) => entry.Trim().Equals("") ? null : new TextString(entry);
-
-    protected override TextString DoParseInvariant(string entry) => new(entry);
 }
