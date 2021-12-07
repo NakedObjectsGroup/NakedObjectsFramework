@@ -3,26 +3,94 @@
 	<Bounded>
 	Partial Public Class ShipMethod
 
-		<Hidden>
 		Public Property ShipMethodID() As Integer
 
-		<MemberOrder(1)>
-		Public Property Name() As String = ""
+#Region "Name"
+        Friend mappedName As String
+        Friend myName As TextString
 
-		<MemberOrder(2)>
-		Public Property ShipBase() As Decimal
+        <MemberOrder(1)>
+        Public ReadOnly Property Name As TextString
+            Get
+                Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+            End Get
+        End Property
 
-		<MemberOrder(3)>
-		Public Property ShipRate() As Decimal
+        Public Sub AboutName(a As FieldAbout, Name As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+#Region "ShipBase"
+        Friend mappedShipBase As Decimal
+        Friend myShipBase As Money
 
-		<Hidden>
-		Public Property rowguid() As Guid
+        <MemberOrder(2)>
+        Public ReadOnly Property ShipBase As Money
+            Get
+                Return If(myShipBase, New Money(mappedShipBase, Function(v) mappedShipBase = v))
+            End Get
+        End Property
 
-		Public Overrides Function ToString() As String
-			Return Name
-		End Function
-	End Class
+        Public Sub AboutShipBase(a As FieldAbout, ShipBase As Money)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
+#Region "ShipRate"
+        Friend mappedShipRate As Decimal
+        Friend myShipRate As Money
+
+        <MemberOrder(3)>
+        Public ReadOnly Property ShipRate As Money
+            Get
+                Return If(myShipRate, New Money(mappedShipRate, Function(v) mappedShipRate = v))
+            End Get
+        End Property
+
+        Public Sub AboutShipRate(a As FieldAbout, ShipRate As Money)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
+#Region "ModifiedDate"
+        Friend mappedModifiedDate As Date
+        Friend myModifiedDate As TimeStamp
+
+        <MemberOrder(99)>
+        Public ReadOnly Property ModifiedDate As TimeStamp
+            Get
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+            End Get
+        End Property
+
+        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+        Public Property rowguid() As Guid
+
+        Public Function Title() As Title
+            Return New Title(Name)
+        End Function
+    End Class
 End Namespace
