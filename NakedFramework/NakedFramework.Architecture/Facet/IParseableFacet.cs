@@ -20,11 +20,6 @@ public interface IParseableFacet : IFacet {
     INakedObjectAdapter ParseTextEntry(string text, INakedObjectManager manager);
 
     /// <summary>
-    ///     Parses an invariant value and sets the domain objects value
-    /// </summary>
-    INakedObjectAdapter ParseInvariant(string text, INakedObjectManager manager);
-
-    /// <summary>
     ///     A title for the object that is valid but which may be easier to
     ///     edit than the title provided by a <see cref="ITitleFacet" />
     /// </summary>

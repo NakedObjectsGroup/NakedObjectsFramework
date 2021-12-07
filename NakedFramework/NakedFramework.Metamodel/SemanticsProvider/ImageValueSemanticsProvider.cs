@@ -37,8 +37,6 @@ public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     protected override Image DoParse(string entry) => throw new NakedObjectSystemException($"Image cannot parse: {entry}");
 
-    protected override Image DoParseInvariant(string entry) => throw new NakedObjectSystemException($"Image cannot parse invariant: {entry}");
-
     protected override string TitleString(Image obj) => obj.Name;
 
     protected override string TitleStringWithMask(string mask, Image obj) => obj.Name;

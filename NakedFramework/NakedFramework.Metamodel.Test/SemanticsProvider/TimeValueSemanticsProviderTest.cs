@@ -25,14 +25,6 @@ public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     private TimeSpan time;
 
     [TestMethod]
-    public void TestParseInvariant() {
-        var d1 = new TimeSpan(1, 5, 1, 25);
-        var s1 = d1.ToString(null, CultureInfo.InvariantCulture);
-        var d2 = adapter.ParseInvariant(s1);
-        Assert.AreEqual(d1, d2);
-    }
-
-    [TestMethod]
     public override void TestParseNull() {
         base.TestParseNull();
     }
@@ -50,14 +42,6 @@ public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.TimeValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<TimeSpan>(GetValue(), null);
-        var parsed = parser.ParseInvariant("08:13:00", mgr.Object).Object;
-        Assert.AreEqual(time, parsed);
     }
 
     [TestMethod]

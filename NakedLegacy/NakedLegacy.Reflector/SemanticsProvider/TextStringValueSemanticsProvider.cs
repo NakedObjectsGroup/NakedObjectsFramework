@@ -38,6 +38,4 @@ public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbs
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override TextString DoParse(string entry) => entry.Trim().Equals("") ? null : new TextString(entry);
-
-    protected override TextString DoParseInvariant(string entry) => new(entry);
 }

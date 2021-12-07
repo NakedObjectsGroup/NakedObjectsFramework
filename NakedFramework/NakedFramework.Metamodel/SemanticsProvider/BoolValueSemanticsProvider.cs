@@ -42,8 +42,6 @@ public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstra
         throw new InvalidEntryException(string.Format(NakedObjects.Resources.NakedObjects.NotALogical, entry));
     }
 
-    protected override bool DoParseInvariant(string entry) => bool.Parse(entry);
-
     #region IBooleanValueFacet Members
 
     public bool IsSet(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Exists() && nakedObjectAdapter.GetDomainObject<bool>();

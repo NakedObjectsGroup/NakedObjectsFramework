@@ -51,8 +51,6 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
         }
     }
 
-    protected override uint DoParseInvariant(string entry) => uint.Parse(entry, CultureInfo.InvariantCulture);
-
     protected override string TitleStringWithMask(string mask, uint value) => value.ToString(mask);
 
     public override string ToString() => "UIntAdapter: ";

@@ -37,8 +37,6 @@ public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProvide
 
     protected override FileAttachment DoParse(string entry) => throw new NakedObjectSystemException($"FileAttachment cannot parse: {entry}");
 
-    protected override FileAttachment DoParseInvariant(string entry) => throw new NakedObjectSystemException($"FileAttachment cannot parse invariant: {entry}");
-
     protected override string TitleString(FileAttachment obj) => obj.Name;
 
     protected override string TitleStringWithMask(string mask, FileAttachment obj) => obj.Name;

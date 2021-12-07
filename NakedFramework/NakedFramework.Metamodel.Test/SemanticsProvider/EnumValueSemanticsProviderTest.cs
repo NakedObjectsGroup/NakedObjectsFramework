@@ -194,14 +194,6 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const TestEnum c1 = TestEnum.London;
-        var s1 = c1.ToString();
-        var c2 = value.ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public void TestParseOverflow() {
         try {
             // ReSharper disable once UnusedVariable
@@ -221,14 +213,6 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     [TestMethod]
     public override void TestParseNull() {
         base.TestParseNull();
-    }
-
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<TestEnum>(value, null);
-        Assert.AreEqual(TestEnum.Paris, parser.ParseInvariant("Paris", mgr.Object).Object);
     }
 
     [TestMethod]

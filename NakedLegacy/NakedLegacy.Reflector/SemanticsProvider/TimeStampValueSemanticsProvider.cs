@@ -52,8 +52,6 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
         }
     }
 
-    protected override TimeStamp DoParseInvariant(string entry) => DoParse(entry);
-
     protected override string TitleStringWithMask(string mask, TimeStamp value) => value.DateTime.ToString(mask);
 
 }

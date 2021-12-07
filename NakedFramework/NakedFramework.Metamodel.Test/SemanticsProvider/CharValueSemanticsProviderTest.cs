@@ -37,14 +37,6 @@ public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const char c1 = 'z';
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = value.ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public void TestParseLongString() {
         try {
             value.ParseTextEntry("one");
@@ -80,13 +72,6 @@ public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.CharValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<char>(value, null);
-        Assert.AreEqual('t', parser.ParseInvariant("t", mgr.Object).Object);
     }
 
     [TestMethod]

@@ -60,14 +60,6 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const sbyte c1 = 11;
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = GetValue().ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public override void TestParseNull() {
         base.TestParseNull();
     }
@@ -83,12 +75,6 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         Assert.AreEqual(testValue, facet.SByteValue(mockNo.Object));
     }
 
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<sbyte>(value, null);
-        Assert.AreEqual((sbyte)91, parser.ParseInvariant("91", mgr.Object).Object);
-    }
 
     [TestMethod]
     public void TestAsParserTitle() {

@@ -49,8 +49,6 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
         }
     }
 
-    protected override long DoParseInvariant(string entry) => long.Parse(entry, CultureInfo.InvariantCulture);
-
     protected override string TitleStringWithMask(string mask, long value) => value.ToString(mask);
 
     public override string ToString() => "LongAdapter: ";

@@ -56,14 +56,6 @@ public class ULongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const ulong c1 = 123456L;
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = GetValue().ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public void TestParseOddlyFormedEntry() {
         var newValue = value.ParseTextEntry("1,20.0");
         Assert.AreEqual(120UL, newValue);
@@ -88,13 +80,6 @@ public class ULongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.UnsignedLongValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<ulong>(value, null);
-        Assert.AreEqual(91UL, parser.ParseInvariant("91", mgr.Object).Object);
     }
 
     [TestMethod]

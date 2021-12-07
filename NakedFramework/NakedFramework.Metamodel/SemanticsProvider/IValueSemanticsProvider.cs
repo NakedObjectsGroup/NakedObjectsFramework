@@ -27,15 +27,6 @@ public interface IValueSemanticsProvider<T> {
     object ParseTextEntry(string entry);
 
     /// <summary>
-    ///     Parses a string to an instance of the object
-    /// </summary>
-    /// <para>
-    ///     Here the implementing class is acting as a factory for itself
-    /// </para>
-    /// <param name="entry"></param>
-    object ParseInvariant(string entry);
-
-    /// <summary>
     ///     The title of the object
     /// </summary>
     string DisplayTitleOf(T obj);

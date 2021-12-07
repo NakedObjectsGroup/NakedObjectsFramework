@@ -55,14 +55,6 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const short c1 = 12346;
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = GetValue().ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public void TestParseOddlyFormedEntry() {
         var newValue = value.ParseTextEntry("1,20.0");
         Assert.AreEqual((short)120, newValue);
@@ -87,13 +79,6 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.ShortValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<short>(value, null);
-        Assert.AreEqual((short)91, parser.ParseInvariant("91", mgr.Object).Object);
     }
 
     [TestMethod]

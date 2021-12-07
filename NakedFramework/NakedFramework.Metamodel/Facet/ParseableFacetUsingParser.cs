@@ -36,11 +36,6 @@ public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFace
         return manager.CreateAdapter(parsed, null, null);
     }
 
-    public INakedObjectAdapter ParseInvariant(string text, INakedObjectManager manager) {
-        var parsed = parser.ParseInvariant(text);
-        return manager.CreateAdapter(parsed, null, null);
-    }
-
     public string ParseableTitle(INakedObjectAdapter nakedObjectAdapter) {
         var context = nakedObjectAdapter.GetDomainObject<T>();
         return parser.EditableTitleOf(context);

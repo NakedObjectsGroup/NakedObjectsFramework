@@ -69,8 +69,6 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
         }
     }
 
-    protected override T DoParseInvariant(string entry) => (T)Enum.Parse(typeof(T), entry);
-
     protected override string TitleString(T obj) => NameUtils.NaturalName(obj.ToString());
 
     protected override string TitleStringWithMask(string mask, T value) => TitleString(value);

@@ -52,8 +52,6 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
         }
     }
 
-    protected override WholeNumber DoParseInvariant(string entry) => new(int.Parse(entry, CultureInfo.InvariantCulture));
-
     protected override string TitleStringWithMask(string mask, WholeNumber value) => value.Number.ToString(mask);
 
 

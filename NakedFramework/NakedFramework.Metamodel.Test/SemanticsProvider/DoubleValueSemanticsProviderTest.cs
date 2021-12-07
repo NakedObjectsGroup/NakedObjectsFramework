@@ -60,14 +60,6 @@ public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
     }
 
     [TestMethod]
-    public void TestParseInvariant() {
-        const double c1 = 123.456;
-        var s1 = c1.ToString(CultureInfo.InvariantCulture);
-        var c2 = GetValue().ParseInvariant(s1);
-        Assert.AreEqual(c1, c2);
-    }
-
-    [TestMethod]
     public void TestTitleOf() {
         Assert.AreEqual("35000000", GetValue().DisplayTitleOf(35000000.0));
     }
@@ -91,13 +83,6 @@ public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
         var mockNo = new Mock<INakedObjectAdapter>();
         mockNo.Setup(no => no.Object).Returns(testValue);
         Assert.AreEqual(testValue, facet.DoubleValue(mockNo.Object));
-    }
-
-    [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        IParseableFacet parser = new ParseableFacetUsingParser<double>(GetValue(), null);
-        Assert.AreEqual(91d, parser.ParseInvariant("91", mgr.Object).Object);
     }
 
     [TestMethod]

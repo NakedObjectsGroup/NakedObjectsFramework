@@ -52,8 +52,6 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
         }
     }
 
-    protected override Date DoParseInvariant(string entry) => DoParse(entry);
-
     protected override string TitleStringWithMask(string mask, Date value) => value.DateTime.ToString(mask);
 
 }

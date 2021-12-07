@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -48,8 +47,6 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
             throw new InvalidEntryException(OutOfRangeMessage(entry, double.MinValue, double.MaxValue));
         }
     }
-
-    protected override double DoParseInvariant(string entry) => double.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleStringWithMask(string mask, double value) => value.ToString(mask);
 

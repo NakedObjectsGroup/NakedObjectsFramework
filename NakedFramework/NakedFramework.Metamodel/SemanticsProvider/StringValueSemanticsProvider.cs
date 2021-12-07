@@ -36,6 +36,4 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
     protected override string DoParse(string entry) => entry.Trim().Equals("") ? null : entry;
-
-    protected override string DoParseInvariant(string entry) => entry;
 }

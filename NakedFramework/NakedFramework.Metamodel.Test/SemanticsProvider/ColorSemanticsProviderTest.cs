@@ -78,15 +78,6 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     }
 
     [TestMethod]
-    public void TestAsParserInvariant() {
-        var mgr = MockNakedObjectManager();
-        var str = Color.Beige.ToArgb().ToString();
-        IParseableFacet parser = new ParseableFacetUsingParser<Color>(value, null);
-        var parsed = (Color)parser.ParseInvariant(str, mgr.Object).Object;
-        Assert.AreEqual(Color.Beige.ToArgb(), parsed.ToArgb());
-    }
-
-    [TestMethod]
     public void TestAsParserTitle() {
         IParseableFacet parser = new ParseableFacetUsingParser<Color>(value, null);
         var mockAdapter = MockAdapter(Color.Beige);

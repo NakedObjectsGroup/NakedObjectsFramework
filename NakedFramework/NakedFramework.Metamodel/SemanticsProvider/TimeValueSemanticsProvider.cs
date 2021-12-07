@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -46,8 +45,6 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
             throw new InvalidEntryException(FormatMessage(dateString));
         }
     }
-
-    protected override TimeSpan DoParseInvariant(string entry) => TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string TitleString(TimeSpan obj) => DateTime.Today.Add(obj).ToShortTimeString();
 
