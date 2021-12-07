@@ -1,13 +1,10 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class ProductModelIllustration
-		
 
-		<Hidden>
-		Public Property ProductModelID() As Integer
+        Public Property ProductModelID() As Integer
 
-		<Hidden>
-		Public Property IllustrationID() As Integer
+        Public Property IllustrationID() As Integer
 
 		Public Overridable Property Illustration() As Illustration
 
@@ -17,7 +14,7 @@
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(1)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -32,8 +29,8 @@
         End Sub
 #End Region
 
-        Public Overrides Function ToString() As String
-			Return $"ProductModelIllustration: {ProductModelID}-{IllustrationID}"
-		End Function
-	End Class
+        Public Function Title() As Title
+            Return New Title($"ProductModelIllustration: {ProductModelID}-{IllustrationID}")
+        End Function
+    End Class
 End Namespace

@@ -516,8 +516,6 @@ Namespace AW.Types
         <Hidden>
         Public Property Weight() As Decimal?
 
-        'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-        'ORIGINAL LINE: public string? WeightUnitMeasureCode {get;set;}
         <Hidden>
         Public Property WeightUnitMeasureCode() As String
 

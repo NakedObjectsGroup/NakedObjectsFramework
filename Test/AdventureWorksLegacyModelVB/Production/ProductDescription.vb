@@ -1,19 +1,37 @@
-﻿Namespace AW.Types
+﻿Imports NakedLegacy.Types.Value_holders 'TODO last bit of the namespace should go
+
+Namespace AW.Types
 
     Partial Public Class ProductDescription
 
-        <Hidden>
         Public Property ProductDescriptionID() As Integer
 
-        <MultiLine(10)>
+#Region "Description"
+        Friend mappedDescription As String
+        Friend myDescription As MultiLineTextString
+
         <MemberOrder(2)>
-        Public Property Description() As String = ""
+        Public ReadOnly Property Description As TextString
+            Get
+                Return If(myDescription, New MultiLineTextString(mappedDescription, Function(v) mappedDescription = v))
+            End Get
+        End Property
+
+        Public Sub AboutDescription(a As FieldAbout, Description As MultiLineTextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
 
 #Region "ModifiedDate"
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(1)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -28,11 +46,10 @@
         End Sub
 #End Region
 
-        <Hidden>
         Public Property RowGuid() As Guid
 
-        Public Overrides Function ToString() As String
-            Return Description
+        Public Function Title() As Title
+            Return New Title(Description)
         End Function
     End Class
 End Namespace

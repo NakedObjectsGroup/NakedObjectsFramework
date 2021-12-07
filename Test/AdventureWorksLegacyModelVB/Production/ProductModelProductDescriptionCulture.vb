@@ -1,29 +1,31 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class ProductModelProductDescriptionCulture
-		
 
-		<Hidden>
 		Public Property ProductModelID() As Integer
 
-		<Hidden>
 		Public Property ProductDescriptionID() As Integer
 
-		<Hidden>
-		Public Property CultureID() As String = ""
+		Public Property CultureID() As String
 
 		Public Overridable Property Culture() As Culture
 
 		Public Overridable Property ProductDescription() As ProductDescription
 
-		<Hidden>
 		Public Overridable Property ProductModel() As ProductModel
+
+		Public Sub AboutProductModel(a As FieldAbout, pm As ProductModel)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Visible
+					a.Visible = False
+			End Select
+		End Sub
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -38,8 +40,8 @@
 		End Sub
 #End Region
 
-		Public Overrides Function ToString() As String
-			Return $"ProductModelProductDescriptionCulture: {ProductModelID}-{ProductDescriptionID}-{CultureID}"
+		Public Function Title() As Title
+			Return New Title($"ProductModelProductDescriptionCulture: {ProductModelID}-{ProductDescriptionID}-{CultureID}")
 		End Function
 	End Class
 End Namespace

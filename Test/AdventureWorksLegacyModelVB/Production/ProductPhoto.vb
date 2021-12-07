@@ -4,19 +4,53 @@ Namespace AW.Types
 
 	Partial Public Class ProductPhoto
 
-		<Hidden>
-		Public Property ProductPhotoID() As Integer
+		Public Property ProductPhotoID As Integer
 
-		Public Property ThumbNailPhoto() As Byte()
+		Public Property ThumbNailPhoto As Byte()
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public string? ThumbnailPhotoFileName {get;set;}
-		Public Property ThumbnailPhotoFileName() As String
+#Region "ThumbnailPhotoFileName"
+		Friend mappedThumbnailPhotoFileName As String
+		Friend myThumbnailPhotoFileName As TextString
 
-		Public Property LargePhoto() As Byte()
+		<MemberOrder(1)>
+		Public ReadOnly Property ThumbnailPhotoFileName As TextString
+			Get
+				Return If(myThumbnailPhotoFileName, New TextString(mappedThumbnailPhotoFileName, Function(v) mappedThumbnailPhotoFileName = v))
+			End Get
+		End Property
 
-		'public string? LargePhotoFileName {get;set;}
-		Public Property LargePhotoFileName() As String
+		Public Sub AboutThumbnailPhotoFileName(a As FieldAbout, ThumbnailPhotoFileName As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+		Public Property LargePhoto As Byte()
+
+#Region "LargePhotoFileName"
+		Friend mappedLargePhotoFileName As String
+		Friend myLargePhotoFileName As TextString
+
+		<MemberOrder(1)>
+		Public ReadOnly Property LargePhotoFileName As TextString
+			Get
+				Return If(myLargePhotoFileName, New TextString(mappedLargePhotoFileName, Function(v) mappedLargePhotoFileName = v))
+			End Get
+		End Property
+
+		Public Sub AboutLargePhotoFileName(a As FieldAbout, LargePhotoFileName As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 		Public Overridable ReadOnly Property LargePhotoAsAttachment() As FileAttachment
 			Get
@@ -25,16 +59,30 @@ Namespace AW.Types
 		End Property
 		'DispositionType = "inline" ' fake mimetype
 
-		<Hidden>
+		'<Hidden>
 		Public Property ProductProductPhoto As ICollection(Of ProductProductPhoto) = New List(Of ProductProductPhoto)()
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate As DateTime
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
 
-		'INSTANT VB TODO TASK: Local functions are not converted by Instant VB:
-		'		public override string ToString()
-		'		{
-		'			Return string.Format("Product Photo: {0}", ProductPhotoID, TangibleStringInterpolationMarker);
-		'		}
+		<MemberOrder(99)>
+		Public ReadOnly Property ModifiedDate As TimeStamp
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
+
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
+
+		Public Function Title() As Title
+			Return New Title("Product Photo: {ProductPhotoID}")
+		End Function
 	End Class
 End Namespace
