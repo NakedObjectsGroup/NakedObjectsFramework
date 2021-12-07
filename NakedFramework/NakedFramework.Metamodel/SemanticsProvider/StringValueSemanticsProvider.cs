@@ -42,14 +42,4 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     protected override string GetInvariantString(string obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-    protected override string DoEncode(string obj) {
-        var text = obj;
-        return text.Equals("NULL") || IsEscaped(text) ? EscapeText(text) : text;
-    }
-
-    protected override string DoRestore(string data) => IsEscaped(data) ? data[1..] : data;
-
-    private static bool IsEscaped(string text) => text.StartsWith("/");
-
-    private static string EscapeText(string text) => $"/{text}";
 }

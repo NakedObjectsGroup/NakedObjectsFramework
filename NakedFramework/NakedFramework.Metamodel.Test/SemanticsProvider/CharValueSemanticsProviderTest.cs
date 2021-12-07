@@ -26,17 +26,6 @@ public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     private CharValueSemanticsProvider value;
 
     [TestMethod]
-    public void TestDecode() {
-        object restore = value.FromEncodedString("Y");
-        Assert.AreEqual('Y', restore);
-    }
-
-    [TestMethod]
-    public void TestEncode() {
-        Assert.AreEqual("r", value.ToEncodedString(character));
-    }
-
-    [TestMethod]
     public override void TestParseEmptyString() {
         try {
             var newValue = value.ParseTextEntry("");
@@ -82,15 +71,7 @@ public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
+   
 
     [TestMethod]
     public void TestValue() {

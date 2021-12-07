@@ -41,27 +41,6 @@ public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProvide
 
     protected override string GetInvariantString(FileAttachment obj) => throw new NakedObjectSystemException("FileAttachment cannot get invariant string");
 
-    protected override string DoEncode(FileAttachment fileAttachment) {
-        var stream = fileAttachment.GetResourceAsStream();
-
-        if (stream.Length > int.MaxValue) {
-            throw new ModelException($"Attachment is too large size: {stream.Length} max: {int.MaxValue} name: {fileAttachment.Name}");
-        }
-
-        var len = Convert.ToInt32(stream.Length);
-        var buffer = new byte[len];
-        ReadWholeArray(stream, buffer);
-        var encoded = Convert.ToBase64String(buffer);
-        return $"{fileAttachment.MimeType} {encoded}";
-    }
-
-    protected override FileAttachment DoRestore(string data) {
-        var offset = data.IndexOf(' ');
-        var mime = data.Substring(0, offset);
-        var buffer = Convert.FromBase64String(data[offset..]);
-        var stream = new MemoryStream(buffer);
-        return new FileAttachment(stream);
-    }
 
     protected override string TitleString(FileAttachment obj) => obj.Name;
 

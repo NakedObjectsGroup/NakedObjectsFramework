@@ -33,26 +33,6 @@ public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     }
 
     [TestMethod]
-    public void TestRestoreOfInvalidDatal() {
-        try {
-            adapter.FromEncodedString("two ten");
-            Assert.Fail();
-        }
-        catch (FormatException /*expected*/) { }
-    }
-
-    [TestMethod]
-    public void TestRestoreTime() {
-        object parsed = adapter.FromEncodedString("21:30:00");
-        Assert.AreEqual(new TimeSpan(21, 30, 0), parsed);
-    }
-
-    [TestMethod]
-    public void TestTimeAsEncodedString() {
-        Assert.AreEqual("08:13:00", adapter.ToEncodedString(time));
-    }
-
-    [TestMethod]
     public override void TestParseNull() {
         base.TestParseNull();
     }
@@ -62,15 +42,6 @@ public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseEmptyString();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
 
     [TestMethod]
     public void TestValue() {

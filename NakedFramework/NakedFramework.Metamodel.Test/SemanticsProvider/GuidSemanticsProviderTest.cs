@@ -51,17 +51,6 @@ public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     }
 
     [TestMethod]
-    public void TestEncode() {
-        Assert.AreEqual(guidObj.ToString(), value.ToEncodedString(guidObj));
-    }
-
-    [TestMethod]
-    public void TestDecode() {
-        var parsed = value.FromEncodedString(guidObj.ToString());
-        Assert.AreEqual(guidObj, parsed);
-    }
-
-    [TestMethod]
     public override void TestParseEmptyString() {
         try {
             var newValue = value.ParseTextEntry("");
@@ -77,15 +66,7 @@ public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
+   
 
     [TestMethod]
     public void TestValue() {

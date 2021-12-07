@@ -55,9 +55,5 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override string TitleStringWithMask(string mask, long value) => value.ToString(mask);
 
-    protected override string DoEncode(long obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-    protected override long DoRestore(string data) => long.Parse(data, CultureInfo.InvariantCulture);
-
     public override string ToString() => "LongAdapter: ";
 }

@@ -77,12 +77,6 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
 
     protected override string TitleStringWithMask(string mask, T value) => TitleString(value);
 
-    protected override string DoEncode(T obj) => $"{obj.GetType().FullName}:{obj}";
-
-    protected override T DoRestore(string data) {
-        var typeAndValue = data.Split(':');
-        return (T)Enum.Parse(TypeUtils.GetType(typeAndValue[0]), typeAndValue[1]);
-    }
 
     public override string ToString() => "EnumAdapter: ";
 }

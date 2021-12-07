@@ -55,9 +55,5 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
 
     protected override string TitleStringWithMask(string mask, decimal value) => value.ToString(mask);
 
-    protected override string DoEncode(decimal obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-    protected override decimal DoRestore(string data) => decimal.Parse(data, CultureInfo.InvariantCulture);
-
     public override string ToString() => "DecimalAdapter: ";
 }

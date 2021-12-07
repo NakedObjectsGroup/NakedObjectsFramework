@@ -26,18 +26,6 @@ public class IntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestC
     private IntValueSemanticsProvider value;
 
     [TestMethod]
-    public void TestDecode() {
-        var decoded = GetValue().FromEncodedString("304211223");
-        Assert.AreEqual(304211223, decoded);
-    }
-
-    [TestMethod]
-    public void TestEncode() {
-        var encoded = GetValue().ToEncodedString(213434790);
-        Assert.AreEqual("213434790", encoded);
-    }
-
-    [TestMethod]
     public void TestInvalidParse() {
         try {
             value.ParseTextEntry("one");
@@ -89,15 +77,7 @@ public class IntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestC
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
+    
 
     [TestMethod]
     public void TestValue() {

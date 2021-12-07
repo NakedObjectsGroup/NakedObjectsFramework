@@ -47,16 +47,6 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         Assert.AreEqual("102", value.DisplayTitleOf(byteObj));
     }
 
-    [TestMethod]
-    public void TestEncode() {
-        Assert.AreEqual("102", value.ToEncodedString(byteObj));
-    }
-
-    [TestMethod]
-    public void TestDecode() {
-        object parsed = value.FromEncodedString("-91");
-        Assert.AreEqual((sbyte)-91, parsed);
-    }
 
     [TestMethod]
     public override void TestParseEmptyString() {
@@ -82,15 +72,7 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
+   
 
     [TestMethod]
     public void TestValue() {

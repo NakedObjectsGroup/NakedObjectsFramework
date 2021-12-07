@@ -54,9 +54,5 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override string TitleStringWithMask(string mask, Guid value) => value.ToString(mask);
 
-    protected override string DoEncode(Guid obj) => obj.ToString();
-
-    protected override Guid DoRestore(string data) => new(data);
-
     public override string ToString() => "GuidAdapter: ";
 }

@@ -29,7 +29,6 @@ public abstract class TypeSpec : ITypeSpec {
     private bool? isAggregated;
     private bool? isASet;
     private bool? isCollection;
-    private bool? isEncodeable;
     private bool? isInterface;
     private bool? isParseable;
     private bool? isQueryable;
@@ -114,14 +113,6 @@ public abstract class TypeSpec : ITypeSpec {
             isParseable ??= InnerSpec.ContainsFacet(typeof(IParseableFacet));
 
             return isParseable.Value;
-        }
-    }
-
-    public virtual bool IsEncodeable {
-        get {
-            isEncodeable ??= InnerSpec.ContainsFacet(typeof(IEncodeableFacet));
-
-            return isEncodeable.Value;
         }
     }
 

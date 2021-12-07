@@ -56,9 +56,6 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
 
     protected virtual string TitleStringWithMask(string mask, T obj) => obj.ToString();
 
-    protected abstract string DoEncode(T obj);
-    protected abstract T DoRestore(string data);
-
     protected string OutOfRangeMessage(string entry, T minValue, T maxValue) => string.Format(NakedObjects.Resources.NakedObjects.OutOfRange, entry, minValue, maxValue);
 
     protected static string FormatMessage(string entry) => string.Format(NakedObjects.Resources.NakedObjects.CannotFormat, entry, typeof(T).Name);
@@ -96,10 +93,6 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     public int TypicalLength { get; }
 
     public bool IsImmutable { get; }
-
-    public string ToEncodedString(T obj) => DoEncode(obj);
-
-    public T FromEncodedString(string data) => DoRestore(data);
 
     public virtual object ParseTextEntry(string entry) {
         if (entry == null) {

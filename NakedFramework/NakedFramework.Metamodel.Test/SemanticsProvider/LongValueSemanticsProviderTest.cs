@@ -25,17 +25,6 @@ public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     private long l;
     private LongValueSemanticsProvider value;
 
-    [TestMethod]
-    public void TestDecode() {
-        var decoded = GetValue().FromEncodedString("304211223");
-        Assert.AreEqual(304211223L, decoded);
-    }
-
-    [TestMethod]
-    public void TestEncode() {
-        var encoded = GetValue().ToEncodedString(213434790L);
-        Assert.AreEqual("213434790", encoded);
-    }
 
     [TestMethod]
     public void TestInvalidParse() {
@@ -87,16 +76,6 @@ public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     [TestMethod]
     public override void TestParseNull() {
         base.TestParseNull();
-    }
-
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
     }
 
     [TestMethod]

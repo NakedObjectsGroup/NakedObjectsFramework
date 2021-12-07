@@ -43,8 +43,6 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
 
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-    protected override string DoEncode(TimeStamp timeStamp) => timeStamp.DateTime.ToString(CultureInfo.InvariantCulture);
-
     protected override TimeStamp DoParse(string entry) {
         var dateString = entry.Trim();
         try {
@@ -59,11 +57,8 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
 
     protected override string GetInvariantString(TimeStamp timeStamp) => timeStamp.DateTime.ToString(CultureInfo.InvariantCulture);
 
-    protected override TimeStamp DoRestore(string data) => new TimeStamp(DateTime.Parse(data, CultureInfo.InvariantCulture));
-
     protected override string TitleStringWithMask(string mask, TimeStamp value) => value.DateTime.ToString(mask);
 
-    private static DateTime Now() => TestDateTime ?? DateTime.Now;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

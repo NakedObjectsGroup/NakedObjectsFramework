@@ -60,9 +60,5 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override string TitleStringWithMask(string mask, char value) => value.ToString(Thread.CurrentThread.CurrentCulture);
 
-    protected override string DoEncode(char obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-    protected override char DoRestore(string data) => char.Parse(data);
-
     public override string ToString() => "CharAdapter: ";
 }

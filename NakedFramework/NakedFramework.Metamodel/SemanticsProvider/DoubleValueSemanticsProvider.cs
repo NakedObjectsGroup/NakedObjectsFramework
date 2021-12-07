@@ -55,9 +55,5 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     protected override string TitleStringWithMask(string mask, double value) => value.ToString(mask);
 
-    protected override string DoEncode(double obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-    protected override double DoRestore(string data) => double.Parse(data, CultureInfo.InvariantCulture);
-
     public override string ToString() => "DoubleAdapter: ";
 }

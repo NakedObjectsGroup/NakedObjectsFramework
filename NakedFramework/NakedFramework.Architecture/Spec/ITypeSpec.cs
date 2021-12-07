@@ -29,14 +29,6 @@ public interface ITypeSpec : ISpecification {
     bool IsParseable { get; }
 
     /// <summary>
-    ///     Determines if objects of this type can be converted to a data-stream
-    /// </summary>
-    /// <para>
-    ///     In effect, means has got <see cref="IEncodeableFacet" />
-    /// </para>
-    bool IsEncodeable { get; }
-
-    /// <summary>
     ///     Determines if objects of this type are aggregated
     /// </summary>
     bool IsAggregated { get; }

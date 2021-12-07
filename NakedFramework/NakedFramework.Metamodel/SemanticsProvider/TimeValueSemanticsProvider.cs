@@ -37,8 +37,6 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-    protected override string DoEncode(TimeSpan time) => time.ToString();
-
     protected override TimeSpan DoParse(string entry) {
         var dateString = entry.Trim();
         try {
@@ -52,8 +50,6 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
     protected override TimeSpan DoParseInvariant(string entry) => TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string GetInvariantString(TimeSpan obj) => obj.ToString(null, CultureInfo.InvariantCulture);
-
-    protected override TimeSpan DoRestore(string data) => TimeSpan.Parse(data);
 
     protected override string TitleString(TimeSpan obj) => DateTime.Today.Add(obj).ToShortTimeString();
 

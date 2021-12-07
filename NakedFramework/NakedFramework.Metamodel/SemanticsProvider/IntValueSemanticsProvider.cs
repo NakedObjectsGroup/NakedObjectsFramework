@@ -55,9 +55,5 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
 
     protected override string TitleStringWithMask(string mask, int value) => value.ToString(mask);
 
-    protected override string DoEncode(int obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-    protected override int DoRestore(string data) => int.Parse(data, CultureInfo.InvariantCulture);
-
     public override string ToString() => "IntAdapter: ";
 }

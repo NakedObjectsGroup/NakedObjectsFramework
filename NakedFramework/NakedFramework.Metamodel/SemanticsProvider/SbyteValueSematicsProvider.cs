@@ -55,9 +55,5 @@ public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     protected override string TitleStringWithMask(string mask, sbyte value) => value.ToString(mask);
 
-    protected override string DoEncode(sbyte obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-    protected override sbyte DoRestore(string data) => sbyte.Parse(data, CultureInfo.InvariantCulture);
-
     public override string ToString() => "SByteAdapter: ";
 }

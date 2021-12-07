@@ -18,27 +18,6 @@ public interface IValueSemanticsProvider<T> {
     T DefaultValue { get; }
 
     /// <summary>
-    ///     Returns the provided object as an encoded string.
-    /// </summary>
-    /// <para>
-    ///     Even if the class is self-encodeable, this method
-    ///     is always called on a new instance of the object created via the
-    ///     no-arg constructor.  That is, the object shouldn't encode itself,
-    ///     it should encode the object provided to it.
-    /// </para>
-    /// <seealso cref="FromEncodedString" />
-    string ToEncodedString(T toEncode);
-
-    /// <summary>
-    ///     Converts an encoded string to an instance of the object.
-    /// </summary>
-    /// <para>
-    ///     Here the implementing class is acting as a factory for itself
-    /// </para>
-    /// <seealso cref="ToEncodedString" />
-    T FromEncodedString(string encodedString);
-
-    /// <summary>
     ///     Parses a string to an instance of the object
     /// </summary>
     /// <para>

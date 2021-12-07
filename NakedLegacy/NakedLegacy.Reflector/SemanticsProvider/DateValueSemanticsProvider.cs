@@ -43,8 +43,6 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-    protected override string DoEncode(Date date) => date.DateTime.ToString(CultureInfo.InvariantCulture);
-
     protected override Date DoParse(string entry) {
         var dateString = entry.Trim();
         try {
@@ -59,11 +57,8 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override string GetInvariantString(Date date) => date.DateTime.ToString(CultureInfo.InvariantCulture);
 
-    protected override Date DoRestore(string data) => new Date(DateTime.Parse(data, CultureInfo.InvariantCulture));
-
     protected override string TitleStringWithMask(string mask, Date value) => value.DateTime.ToString(mask);
 
-    private static DateTime Now() => TestDateTime ?? DateTime.Now;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

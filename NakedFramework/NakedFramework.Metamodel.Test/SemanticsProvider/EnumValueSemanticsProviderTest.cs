@@ -119,21 +119,9 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     }
 
     [TestMethod]
-    public void TestDecode() {
-        var decoded = GetValue().FromEncodedString("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris");
-        Assert.AreEqual(TestEnum.Paris, decoded);
-    }
-
-    [TestMethod]
     public void TestDefault() {
         object def = value.DefaultValue;
         Assert.AreEqual(TestEnum.London, def);
-    }
-
-    [TestMethod]
-    public void TestEncode() {
-        var encoded = GetValue().ToEncodedString(TestEnum.Paris);
-        Assert.AreEqual("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris", encoded);
     }
 
     private static IEnumValueFacet GetEnumFacet<T>() => new EnumValueSemanticsProvider<T>(null, null);
@@ -235,15 +223,6 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
 
     [TestMethod]
     public void TestAsParserInvariant() {

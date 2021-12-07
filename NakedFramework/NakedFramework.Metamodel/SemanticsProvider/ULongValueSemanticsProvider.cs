@@ -55,9 +55,5 @@ public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     protected override string TitleStringWithMask(string mask, ulong value) => value.ToString(mask);
 
-    protected override string DoEncode(ulong obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-    protected override ulong DoRestore(string data) => ulong.Parse(data, CultureInfo.InvariantCulture);
-
     public override string ToString() => "ULongAdapter: ";
 }

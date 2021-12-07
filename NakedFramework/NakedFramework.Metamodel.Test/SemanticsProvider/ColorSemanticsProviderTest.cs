@@ -48,16 +48,7 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         Assert.AreEqual("Color [White]", value.DisplayTitleOf(colorObj));
     }
 
-    [TestMethod]
-    public void TestEncode() {
-        Assert.AreEqual("-983041", value.ToEncodedString(Color.Azure));
-    }
-
-    [TestMethod]
-    public void TestDecode() {
-        var parsed = value.FromEncodedString("-983041");
-        Assert.AreEqual(Color.Azure.ToArgb(), parsed.ToArgb());
-    }
+   
 
     [TestMethod]
     public override void TestParseEmptyString() {
@@ -75,15 +66,7 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
+   
 
     [TestMethod]
     public void TestValue() {

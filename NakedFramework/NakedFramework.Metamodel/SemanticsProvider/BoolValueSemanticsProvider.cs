@@ -47,19 +47,6 @@ public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstra
 
     protected override string GetInvariantString(bool obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-    protected override string DoEncode(bool obj) => obj ? "T" : "F";
-
-    protected override bool DoRestore(string data) {
-        if (data.Length != 1) {
-            throw new InvalidDataException(string.Format(NakedObjects.Resources.NakedObjects.InvalidLogicalLength, data.Length));
-        }
-
-        return data[0] switch {
-            'T' => true,
-            'F' => false,
-            _ => throw new InvalidDataException(string.Format(NakedObjects.Resources.NakedObjects.InvalidLogicalType, data[0]))
-        };
-    }
 
     #region IBooleanValueFacet Members
 

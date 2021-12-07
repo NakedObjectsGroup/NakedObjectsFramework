@@ -57,9 +57,5 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override string TitleStringWithMask(string mask, uint value) => value.ToString(mask);
 
-    protected override string DoEncode(uint obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-    protected override uint DoRestore(string data) => uint.Parse(data, CultureInfo.InvariantCulture);
-
     public override string ToString() => "UIntAdapter: ";
 }

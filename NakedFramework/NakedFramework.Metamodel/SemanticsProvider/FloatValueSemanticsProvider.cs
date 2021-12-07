@@ -55,9 +55,5 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     protected override string TitleStringWithMask(string mask, float value) => value.ToString(mask);
 
-    protected override string DoEncode(float obj) => obj.ToString("G", CultureInfo.InvariantCulture);
-
-    protected override float DoRestore(string data) => float.Parse(data, CultureInfo.InvariantCulture);
-
     public override string ToString() => "FloatAdapter: ";
 }

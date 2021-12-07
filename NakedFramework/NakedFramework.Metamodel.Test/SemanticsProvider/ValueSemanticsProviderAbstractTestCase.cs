@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider;
 public abstract class ValueSemanticsProviderAbstractTestCase<T> {
     private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
     private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
-    private IEncodeableFacet encodeableFacet;
 
     protected INakedFramework Framework = new Mock<INakedFramework>().Object;
     protected ILifecycleManager LifecycleManager = new Mock<ILifecycleManager>().Object;
@@ -34,7 +33,6 @@ public abstract class ValueSemanticsProviderAbstractTestCase<T> {
 
     protected void SetValue(IValueSemanticsProvider<T> newValue) {
         value = newValue;
-        encodeableFacet = new EncodeableFacetUsingEncoderDecoder<T>(newValue, null);
     }
 
     protected IValueSemanticsProvider<T> GetValue() => value;
@@ -43,7 +41,6 @@ public abstract class ValueSemanticsProviderAbstractTestCase<T> {
 
     public virtual void TearDown() {
         value = null;
-        encodeableFacet = null;
     }
 
     protected INakedObjectAdapter CreateAdapter(object obj) {
@@ -64,14 +61,6 @@ public abstract class ValueSemanticsProviderAbstractTestCase<T> {
         Assert.IsNull(newValue);
     }
 
-    public virtual void TestDecodeNull() {
-        object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, Manager);
-        Assert.IsNull(newValue);
-    }
-
-    public virtual void TestEmptyEncoding() {
-        Assert.AreEqual(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, encodeableFacet.ToEncodedString(null));
-    }
 
     protected static INakedObjectAdapter MockAdapter(object obj) {
         var mockParm = new Mock<INakedObjectAdapter>();

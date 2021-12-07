@@ -25,17 +25,6 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     private short s;
     private ShortValueSemanticsProvider value;
 
-    [TestMethod]
-    public void TestDecode() {
-        long decoded = GetValue().FromEncodedString("30421");
-        Assert.AreEqual(30421, decoded);
-    }
-
-    [TestMethod]
-    public void TestEncode() {
-        var encoded = GetValue().ToEncodedString(21343);
-        Assert.AreEqual("21343", encoded);
-    }
 
     [TestMethod]
     public void TestInvalidParse() {
@@ -89,15 +78,7 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
+   
 
     [TestMethod]
     public void TestValue() {

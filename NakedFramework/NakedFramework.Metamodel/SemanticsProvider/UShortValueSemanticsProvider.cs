@@ -55,9 +55,5 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     protected override string TitleStringWithMask(string mask, ushort value) => value.ToString(mask);
 
-    protected override string DoEncode(ushort obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-    protected override ushort DoRestore(string data) => ushort.Parse(data, CultureInfo.InvariantCulture);
-
     public override string ToString() => "UShortAdapter: ";
 }

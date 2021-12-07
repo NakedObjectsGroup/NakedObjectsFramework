@@ -42,12 +42,4 @@ public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbs
     protected override TextString DoParseInvariant(string entry) => new(entry);
 
     protected override string GetInvariantString(TextString textString) => textString.Text;
-
-    protected override string DoEncode(TextString textString) => textString.Text;
-
-    protected override TextString DoRestore(string data) => new TextString(data);
-
-    private static bool IsEscaped(string text) => text.StartsWith("/");
-
-    private static string EscapeText(string text) => $"/{text}";
 }

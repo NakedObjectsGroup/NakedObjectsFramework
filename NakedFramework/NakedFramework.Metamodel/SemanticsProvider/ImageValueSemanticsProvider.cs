@@ -41,27 +41,6 @@ public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     protected override string GetInvariantString(Image obj) => throw new NakedObjectSystemException("Image cannot get invariant string");
 
-    protected override string DoEncode(Image image) {
-        var stream = image.GetResourceAsStream();
-
-        if (stream.Length > int.MaxValue) {
-            throw new ModelException($"Image is too large size: {stream.Length} max: {int.MaxValue} name: {image.Name}");
-        }
-
-        var len = Convert.ToInt32(stream.Length);
-        var buffer = new byte[len];
-        ReadWholeArray(stream, buffer);
-        var encoded = Convert.ToBase64String(buffer);
-        return $"{image.MimeType} {encoded}";
-    }
-
-    protected override Image DoRestore(string data) {
-        var offset = data.IndexOf(' ');
-        var mime = data.Substring(0, offset);
-        var buffer = Convert.FromBase64String(data[offset..]);
-        var stream = new MemoryStream(buffer);
-        return new Image(stream);
-    }
 
     protected override string TitleString(Image obj) => obj.Name;
 

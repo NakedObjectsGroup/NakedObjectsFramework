@@ -26,33 +26,6 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
     private ISpecification specification;
     private ArrayValueSemanticsProvider<byte> value;
 
-    public void RunTestEncodeDecode(byte[] toTest) {
-        var originalValue = toTest;
-        var encodedValue = value.ToEncodedString(originalValue);
-        var decodedValue = value.FromEncodedString(encodedValue);
-
-        if (originalValue == null) {
-            Assert.IsNull(decodedValue);
-        }
-        else {
-            Assert.IsTrue(decodedValue.SequenceEqual(originalValue));
-        }
-    }
-
-    [TestMethod]
-    public void TestEncodeDecode() {
-        RunTestEncodeDecode(new byte[] { 1, 2, 100 });
-    }
-
-    [TestMethod]
-    public void TestEncodeDecodeEmpty() {
-        RunTestEncodeDecode(new byte[] { });
-    }
-
-    [TestMethod]
-    public void TestEncodeDecodeNull() {
-        RunTestEncodeDecode(null);
-    }
 
     [TestMethod]
     public override void TestParseEmptyString() {
@@ -115,16 +88,6 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
     [TestMethod]
     public override void TestParseNull() {
         base.TestParseNull();
-    }
-
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
     }
 
     [TestMethod]

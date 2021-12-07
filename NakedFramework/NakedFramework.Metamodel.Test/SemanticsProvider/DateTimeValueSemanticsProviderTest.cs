@@ -28,21 +28,11 @@ public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstract
         Assert.AreEqual(new DateTime(year, month, day, hour, minute, second), obj);
     }
 
-    [TestMethod]
-    public void TestDecode() {
-        var decoded = adapter.FromEncodedString("2003-08-17T21:30:25");
-        Assert.AreEqual(new DateTime(TestClock.GetTicks()), decoded);
-    }
+  
 
     [TestMethod]
     public void TestEmptyClears() {
         Assert.IsNull(adapter.ParseTextEntry(""));
-    }
-
-    [TestMethod]
-    public void TestEncode() {
-        var encoded = adapter.ToEncodedString(new DateTime(TestClock.GetTicks()));
-        Assert.AreEqual("2003-08-17T21:30:25", encoded);
     }
 
     [TestMethod]
@@ -89,16 +79,6 @@ public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstract
     [TestMethod]
     public override void TestParseEmptyString() {
         base.TestParseEmptyString();
-    }
-
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
     }
 
     [TestMethod]

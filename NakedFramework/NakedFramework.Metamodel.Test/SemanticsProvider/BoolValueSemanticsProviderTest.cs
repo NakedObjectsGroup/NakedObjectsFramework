@@ -30,28 +30,6 @@ public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     private IBooleanValueFacet valueFacet;
 
     [TestMethod]
-    public void TestDecodeFalse() {
-        object parsed = value.FromEncodedString("F");
-        Assert.AreEqual(false, parsed);
-    }
-
-    [TestMethod]
-    public void TestDecodeTrue() {
-        object parsed = value.FromEncodedString("T");
-        Assert.AreEqual(true, parsed);
-    }
-
-    [TestMethod]
-    public void TestEncodeFalse() {
-        Assert.AreEqual("F", value.ToEncodedString(false));
-    }
-
-    [TestMethod]
-    public void TestEncodeTrue() {
-        Assert.AreEqual("T", value.ToEncodedString(true));
-    }
-
-    [TestMethod]
     public void TestIsNotSet() {
         Assert.AreEqual(false, valueFacet.IsSet(CreateAdapter(false)));
     }
@@ -126,15 +104,7 @@ public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
+   
 
     [TestMethod]
     public void TestAsParserInvariant() {

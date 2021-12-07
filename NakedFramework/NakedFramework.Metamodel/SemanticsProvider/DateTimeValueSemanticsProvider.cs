@@ -39,11 +39,6 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
 
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-    protected override string DoEncode(DateTime obj) {
-        var date = obj;
-        return date.ToString("s");
-    }
-
     protected override DateTime DoParse(string entry) {
         var dateString = entry.Trim();
         try {
@@ -57,8 +52,6 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
     protected override DateTime DoParseInvariant(string entry) => DateTime.Parse(entry, CultureInfo.InvariantCulture);
 
     protected override string GetInvariantString(DateTime obj) => obj.ToString(CultureInfo.InvariantCulture);
-
-    protected override DateTime DoRestore(string data) => DateTime.Parse(data);
 
     protected override string TitleStringWithMask(string mask, DateTime value) => value.ToString(mask);
 

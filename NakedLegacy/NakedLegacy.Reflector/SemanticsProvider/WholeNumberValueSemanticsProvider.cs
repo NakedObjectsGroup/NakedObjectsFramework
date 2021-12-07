@@ -58,9 +58,6 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
 
     protected override string TitleStringWithMask(string mask, WholeNumber value) => value.Number.ToString(mask);
 
-    protected override string DoEncode(WholeNumber obj) => obj.Number.ToString("G", CultureInfo.InvariantCulture);
-
-    protected override WholeNumber DoRestore(string data) => new(int.Parse(data, CultureInfo.InvariantCulture));
 
     public override string ToString() => "WholeNumberAdapter: ";
 }

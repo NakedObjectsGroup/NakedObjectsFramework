@@ -89,23 +89,5 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
         return obj == null ? "" : obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : $"{s} ") + t);
     }
 
-    protected override string DoEncode(T[] obj) {
-        var serializer = new DataContractSerializer(typeof(T[]));
-        var stream = new MemoryStream();
-        serializer.WriteObject(stream, obj);
-        stream.Position = 0;
-        return new StreamReader(stream).ReadToEnd();
-    }
-
-    protected override T[] DoRestore(string data) {
-        var serializer = new DataContractSerializer(typeof(T[]));
-        var stream = new MemoryStream();
-        var writer = new StreamWriter(stream);
-        writer.Write(data);
-        writer.Flush();
-        stream.Position = 0;
-        return (T[])serializer.ReadObject(stream);
-    }
-
     public override string ToString() => $"ArrayAdapter<{typeof(T)}>";
 }

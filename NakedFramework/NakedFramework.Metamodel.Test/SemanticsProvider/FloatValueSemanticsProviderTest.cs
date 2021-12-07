@@ -25,18 +25,6 @@ public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     private ISpecification holder;
 
     [TestMethod]
-    public void TestDecode() {
-        var decoded = GetValue().FromEncodedString("3.042112234E6");
-        Assert.AreEqual(3042112.234f, decoded);
-    }
-
-    [TestMethod]
-    public void TestEncode() {
-        var encoded = GetValue().ToEncodedString(0.0000454566f);
-        Assert.AreEqual("4.54566E-05", encoded);
-    }
-
-    [TestMethod]
     public void TestInvalidParse() {
         try {
             GetValue().ParseTextEntry("one");
@@ -93,15 +81,7 @@ public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public override void TestDecodeNull() {
-        base.TestDecodeNull();
-    }
-
-    [TestMethod]
-    public override void TestEmptyEncoding() {
-        base.TestEmptyEncoding();
-    }
+   
 
     [TestMethod]
     public void TestValue() {

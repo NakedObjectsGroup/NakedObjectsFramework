@@ -32,7 +32,6 @@ public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeF
         }
 
         if (semanticsProvider != null) {
-            FacetUtils.AddFacet(new EncodeableFacetUsingEncoderDecoder<T>(semanticsProvider, holder));
             FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
             FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
 
