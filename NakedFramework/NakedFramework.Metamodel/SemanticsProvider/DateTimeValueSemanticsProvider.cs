@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -28,6 +29,8 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
     public static Type Type => typeof(IDateValueFacet);
 
     public static Type AdaptedType => typeof(DateTime);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DateTimeValueSemanticsProvider(o, s));
 
     #region IDateValueFacet Members
 

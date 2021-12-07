@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -27,6 +28,8 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
     public static Type Type => typeof(IIntegerValueFacet);
 
     public static Type AdaptedType => typeof(int);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new IntValueSemanticsProvider(o, s));
 
     #region IIntegerValueFacet Members
 

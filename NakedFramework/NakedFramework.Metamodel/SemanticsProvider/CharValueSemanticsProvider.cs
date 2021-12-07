@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -27,6 +28,8 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
     public static Type Type => typeof(ICharValueFacet);
 
     public static Type AdaptedType => typeof(char);
+
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new CharValueSemanticsProvider(o, s));
 
     #region ICharValueFacet Members
 

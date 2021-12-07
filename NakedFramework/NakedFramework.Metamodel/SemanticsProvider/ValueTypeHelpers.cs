@@ -9,28 +9,30 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
 public static class ValueTypeHelpers {
-    public static readonly Dictionary<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> TypeToSemanticProvider = new() {
-        { BooleanValueSemanticsProvider.AdaptedType, (o, s) => new BooleanValueSemanticsProvider(o, s) },
-        { ByteValueSemanticsProvider.AdaptedType, (o, s) => new ByteValueSemanticsProvider(o, s) },
-        { CharValueSemanticsProvider.AdaptedType, (o, s) => new CharValueSemanticsProvider(o, s) },
-        { ColorValueSemanticsProvider.AdaptedType, (o, s) => new ColorValueSemanticsProvider(o, s) },
-        { DateTimeValueSemanticsProvider.AdaptedType, (o, s) => new DateTimeValueSemanticsProvider(o, s) },
-        { DecimalValueSemanticsProvider.AdaptedType, (o, s) => new DecimalValueSemanticsProvider(o, s) },
-        { DoubleValueSemanticsProvider.AdaptedType, (o, s) => new DoubleValueSemanticsProvider(o, s) },
-        { FileAttachmentValueSemanticsProvider.AdaptedType, (o, s) => new FileAttachmentValueSemanticsProvider(o, s) },
-        { FloatValueSemanticsProvider.AdaptedType, (o, s) => new FloatValueSemanticsProvider(o, s) },
-        { GuidValueSemanticsProvider.AdaptedType, (o, s) => new GuidValueSemanticsProvider(o, s) },
-        { ImageValueSemanticsProvider.AdaptedType, (o, s) => new ImageValueSemanticsProvider(o, s) },
-        { IntValueSemanticsProvider.AdaptedType, (o, s) => new IntValueSemanticsProvider(o, s) },
-        { LongValueSemanticsProvider.AdaptedType, (o, s) => new LongValueSemanticsProvider(o, s) },
-        { SbyteValueSemanticsProvider.AdaptedType, (o, s) => new SbyteValueSemanticsProvider(o, s) },
-        { ShortValueSemanticsProvider.AdaptedType, (o, s) => new ShortValueSemanticsProvider(o, s) },
-        { StringValueSemanticsProvider.AdaptedType, (o, s) => new StringValueSemanticsProvider(o, s) },
-        { TimeValueSemanticsProvider.AdaptedType, (o, s) => new TimeValueSemanticsProvider(o, s) },
-        { UIntValueSemanticsProvider.AdaptedType, (o, s) => new UIntValueSemanticsProvider(o, s) },
-        { ULongValueSemanticsProvider.AdaptedType, (o, s) => new ULongValueSemanticsProvider(o, s) },
-        { UShortValueSemanticsProvider.AdaptedType, (o, s) => new UShortValueSemanticsProvider(o, s) }
+    private static readonly List<KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>>> Factories = new() {
+        BooleanValueSemanticsProvider.Factory,
+        ByteValueSemanticsProvider.Factory,
+        CharValueSemanticsProvider.Factory,
+        ColorValueSemanticsProvider.Factory,
+        DateTimeValueSemanticsProvider.Factory,
+        DecimalValueSemanticsProvider.Factory,
+        DoubleValueSemanticsProvider.Factory,
+        FileAttachmentValueSemanticsProvider.Factory,
+        FloatValueSemanticsProvider.Factory,
+        GuidValueSemanticsProvider.Factory,
+        ImageValueSemanticsProvider.Factory,
+        IntValueSemanticsProvider.Factory,
+        LongValueSemanticsProvider.Factory,
+        SbyteValueSemanticsProvider.Factory,
+        ShortValueSemanticsProvider.Factory,
+        StringValueSemanticsProvider.Factory,
+        TimeValueSemanticsProvider.Factory,
+        UIntValueSemanticsProvider.Factory,
+        ULongValueSemanticsProvider.Factory,
+        UShortValueSemanticsProvider.Factory
     };
+
+    public static readonly Dictionary<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> TypeToSemanticProvider = new(Factories);
 
     public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
         FacetUtils.AddFacet(semanticsProvider as IFacet);
