@@ -206,9 +206,7 @@ public abstract class Introspector : IIntrospector {
             var propertyType = property.PropertyType;
 
             if (IsUnsupportedSystemType(propertyType, metamodel)) {
-                if (!FasterTypeUtils.IsSystemOrNaked(property.DeclaringType)) {
-                    logger.LogWarning($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {propertyType}");
-                }
+                logger.LogWarning($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {propertyType}");
             }
             else {
                 // create a reference property spec

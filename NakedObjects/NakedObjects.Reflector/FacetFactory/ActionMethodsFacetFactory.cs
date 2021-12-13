@@ -76,11 +76,7 @@ public sealed class ActionMethodsFacetFactory : ObjectFacetFactoryProcessor, IMe
     private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
         foreach (var parameterInfo in method.GetParameters()) {
             if (classStrategy.IsIgnored(parameterInfo.ParameterType)) {
-                // log if not a System or NOF type
-                if (!FasterTypeUtils.IsSystemOrNaked(method.DeclaringType)) {
-                    logger.LogWarning($"Ignoring method: {method.DeclaringType}.{method.Name} because parameter '{parameterInfo.Name}' is of type {parameterInfo.ParameterType}");
-                }
-
+                logger.LogWarning($"Ignoring method: {method.DeclaringType}.{method.Name} because parameter '{parameterInfo.Name}' is of type {parameterInfo.ParameterType}");
                 return false;
             }
         }

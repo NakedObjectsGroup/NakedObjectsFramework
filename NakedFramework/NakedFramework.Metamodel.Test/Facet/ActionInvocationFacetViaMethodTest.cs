@@ -7,7 +7,9 @@
 
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Meta.Test.Facet;
@@ -38,7 +40,7 @@ public class ActionInvocationFacetViaMethodTest {
     }
 
     private static void InvokeActionTest(MethodInfo method) {
-        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, null);
+        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, new Mock<ILogger<ActionInvocationFacetViaMethod>>().Object);
         Assert.IsNull(facet.ActionDelegate);
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
         Assert.IsNotNull(facet.GetMethod());
@@ -48,7 +50,7 @@ public class ActionInvocationFacetViaMethodTest {
     }
 
     private static void InvokeFuncTest(MethodInfo method) {
-        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, null);
+        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, new Mock<ILogger<ActionInvocationFacetViaMethod>>().Object);
         Assert.IsNull(facet.ActionDelegate);
         Assert.IsNotNull(facet.GetMethod());
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();

@@ -21,10 +21,7 @@ public static class DelegateUtils {
     private const int MaxParameters = 6;
 
     private static string CreationFailed(string reason, MethodInfo method) =>
-        // don't log system or NOF types
-        FasterTypeUtils.IsSystemOrNaked(method.DeclaringType)
-            ? ""
-            : $"Not creating delegate for method {method.DeclaringType}.{method}. It will be called using reflection rather than a delegate. This is because {reason}";
+        $"Not creating delegate for method {method.DeclaringType}.{method}. It will be called using reflection rather than a delegate. This is because {reason}";
 
     public static (Func<object, object[], object>, string) CreateDelegate(MethodInfo method) {
         try {

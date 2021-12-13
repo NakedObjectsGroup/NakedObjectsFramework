@@ -57,10 +57,6 @@ public class I18NManager : II18NManager, IFacetDecorator {
     }
 
     private string GetText(string key) {
-        if (FasterTypeUtils.IsSystemOrNaked(key)) {
-            return null;
-        }
-
         var keyWithUnderscore = CreateKey(key);
 
         try {

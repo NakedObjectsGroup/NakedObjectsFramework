@@ -16,15 +16,12 @@ public static class FasterTypeUtils {
     private const string NakedFrameworkTypePrefix = "NakedFramework.";
     private const string NakedObjectsTypePrefix = "NakedObjects.";
     private const string NakedFunctionsTypePrefix = "NakedFunctions.";
-    private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";
     private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
     private const string CastleProxyPrefix = "Castle.Proxies.";
 
-    private static bool IsNakedObjectsProxy(string typeName) => typeName.StartsWith(NakedObjectsProxyPrefix, StringComparison.Ordinal);
-
     private static bool IsCastleProxy(string typeName) => typeName.StartsWith(CastleProxyPrefix, StringComparison.Ordinal);
 
-    private static bool IsAnyProxy(string typeName) => IsEFCoreProxy(typeName) || IsEF6Proxy(typeName) || IsNakedObjectsProxy(typeName);
+    private static bool IsAnyProxy(string typeName) => IsEFCoreProxy(typeName) || IsEF6Proxy(typeName);
 
     private static bool IsEF6Proxy(string typeName) => typeName.StartsWith(EntityProxyPrefix, StringComparison.Ordinal);
 

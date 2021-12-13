@@ -184,9 +184,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
                                                      !IsStatic(methodInfo.DeclaringType)).ToArray();
 
         foreach (var method in ignored.Where(m => m.ReturnType == typeof(void))) {
-            if (!FasterTypeUtils.IsSystemOrNaked(method.DeclaringType)) {
-                logger.LogWarning($"Ignored as returns void {method.DeclaringType}.{method.Name}");
-            }
+            logger.LogWarning($"Ignored as returns void {method.DeclaringType}.{method.Name}");
         }
 
         return candidates.Except(ignored).ToArray();
