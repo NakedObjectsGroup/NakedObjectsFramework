@@ -11,7 +11,7 @@ using System.Data.Entity;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data;
+namespace RestfulObjects.Test.Data.Context;
 
 public class CodeFirstContextLocal : DbContext {
     public CodeFirstContextLocal(string cs) : base(cs) { }

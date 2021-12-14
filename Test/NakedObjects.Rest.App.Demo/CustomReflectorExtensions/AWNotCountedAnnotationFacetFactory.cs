@@ -8,6 +8,7 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using AdventureWorksModel;
+using AdventureWorksModel.Attr;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace RestfulObjects.Test.Data;
+namespace RestfulObjects.Test.Data.Context;
 
 public class EFCoreCodeFirstContextLocal : DbContext {
     private readonly string cs;

@@ -14,6 +14,7 @@ using System.Text;
 using NakedObjects;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using AdventureWorksModel.Attr;
 using NakedFramework;
 using NakedFramework.Value;
 

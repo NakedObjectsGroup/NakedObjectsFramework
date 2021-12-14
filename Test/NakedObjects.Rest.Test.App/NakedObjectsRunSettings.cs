@@ -11,6 +11,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RestfulObjects.Test.Data;
+using RestfulObjects.Test.Data.Context;
 
 namespace NakedObjects.Rest.Test.App {
     public class NakedObjectsRunSettings {

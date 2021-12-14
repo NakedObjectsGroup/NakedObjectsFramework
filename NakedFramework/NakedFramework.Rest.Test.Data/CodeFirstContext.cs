@@ -10,7 +10,7 @@
 
 using System.Data.Entity;
 
-namespace RestfulObjects.Test.Data;
+namespace RestfulObjects.Test.Data.Context;
 
 public class CodeFirstContext : DbContext {
     public CodeFirstContext(string cs) : base(cs) { }
