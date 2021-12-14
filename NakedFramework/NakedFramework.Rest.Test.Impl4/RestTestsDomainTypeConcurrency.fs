@@ -10,6 +10,7 @@ open NUnit.Framework
 open NakedObjects.Rest.Test
 open System
 open RestfulObjects.Test.Data
+open RestfulObjects.Test.Data.Context
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
 open Microsoft.Extensions.Configuration

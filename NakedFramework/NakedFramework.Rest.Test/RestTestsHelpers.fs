@@ -7,6 +7,7 @@
 module NakedObjects.Rest.Test.Helpers
 
 open RestfulObjects.Test.Data
+open RestfulObjects.Test.Data.Context
 open Microsoft.Extensions.Logging
 open NakedFramework.Rest.Configuration
 open NakedFramework.Rest.API
