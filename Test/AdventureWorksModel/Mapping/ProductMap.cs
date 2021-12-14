@@ -1,9 +1,8 @@
 using System.Data.Entity.ModelConfiguration;
-using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksModel
+namespace AdventureWorksModel.Mapping
 {
     public class ProductMap : EntityTypeConfiguration<Product>
     {

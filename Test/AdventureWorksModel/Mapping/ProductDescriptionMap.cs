@@ -2,7 +2,7 @@ using System.Data.Entity.ModelConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksModel
+namespace AdventureWorksModel.Mapping
 {
     public class ProductDescriptionMap : EntityTypeConfiguration<ProductDescription>
     {

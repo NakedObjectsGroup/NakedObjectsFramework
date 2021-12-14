@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using AdventureWorksModel;
+using AdventureWorksModel.Context;
 using AdventureWorksModel.Sales;
 using Microsoft.Extensions.Configuration;
 using NakedFramework.Menu;

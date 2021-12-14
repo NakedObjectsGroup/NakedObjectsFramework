@@ -1,6 +1,7 @@
 using System.Data.Entity;
+using AdventureWorksModel.Mapping;
 
-namespace AdventureWorksModel
+namespace AdventureWorksModel.Context
 {
     public class AdventureWorksContext : DbContext
     {

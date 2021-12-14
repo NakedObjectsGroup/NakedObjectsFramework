@@ -21,7 +21,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.Rest.App.Demo.AWCustom {
-    public sealed class AWNotCountedAnnotationFacetFactoryParallel : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public sealed class AWNotCountedAnnotationFacetFactoryParallel : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public AWNotCountedAnnotationFacetFactoryParallel(AppendFacetFactoryOrder<AWNotCountedAnnotationFacetFactoryParallel> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Collections) { }
 

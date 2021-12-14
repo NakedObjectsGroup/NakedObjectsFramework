@@ -1,8 +1,9 @@
 
 
+using AdventureWorksModel.Mapping;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdventureWorksModel
+namespace AdventureWorksModel.Context
 {
     public class AdventureWorksEFCoreContext : DbContext
     {

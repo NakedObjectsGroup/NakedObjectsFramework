@@ -20,7 +20,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.Rest.App.Demo.AWCustom {
-    public sealed class AWNotNavigableFacetFactoryParallel : ObjectFacetFactoryProcessor {
+    public sealed class AWNotNavigableFacetFactoryParallel : DomainObjectFacetFactoryProcessor {
         public AWNotNavigableFacetFactoryParallel(AppendFacetFactoryOrder<AWNotNavigableFacetFactoryParallel> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
