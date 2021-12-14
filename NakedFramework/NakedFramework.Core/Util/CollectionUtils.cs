@@ -108,7 +108,9 @@ public static class CollectionUtils {
     }
 
     public static bool IsGenericType(Type type, Type toMatch) {
-        return type.IsGenericType && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
+        return type.IsGenericType 
+               && type.GetGenericArguments().Length == 1
+               && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
     }
 
     private static Type GetGenericEnumerableType(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable) : null;

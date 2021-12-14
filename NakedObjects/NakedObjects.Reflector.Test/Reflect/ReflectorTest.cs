@@ -47,6 +47,17 @@ namespace TestData {
         public virtual void Duplicate(int parm) { }
     }
 
+    public class WithIgnored
+    {
+        [Key]
+        [Title]
+        public virtual int Id { get; set; }
+
+        public virtual void TestIsIgnored(Dictionary<string, string> ignored) { }
+
+        public virtual void TestIsIgnored1(IDictionary<string, string> ignored) { }
+    }
+
     public class WithDuplicatesService {
         public virtual WithDuplicates Duplicate([ContributedAction] WithDuplicates parm) => parm;
     }
@@ -397,6 +408,29 @@ namespace NakedObjects.Reflector.Test.Reflect {
                     Assert.AreEqual("Name clash between user actions defined on TestData.WithDuplicates.Duplicate and TestData.WithDuplicates.Duplicate and TestData.WithDuplicatesService.Duplicate: actions on and/or contributed to a menu or object must have unique names.", e.Message);
                     throw;
                 }
+            }
+        }
+
+        [TestMethod]
+        //[ExpectedException(typeof(ReflectionException), "string")]
+        public void ReflectIgnoredMethods()
+        {
+            static void Setup(NakedFrameworkOptions coreOptions)
+            {
+                coreOptions.AddNakedObjects(options => {
+                    options.DomainModelTypes = new[] { typeof(WithIgnored) };
+                    options.DomainModelServices = new[] { typeof(WithDuplicatesService) };
+                });
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                //Assert.AreEqual(1, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(WithIgnored), specs);
             }
         }
 
