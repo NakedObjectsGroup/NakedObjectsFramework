@@ -18,6 +18,12 @@ namespace NakedFramework.ParallelReflector.Component;
 /// </summary>
 [Serializable]
 public abstract class AbstractClassStrategy : IClassStrategy {
+    private readonly IAllTypeList allTypeList;
+
+    protected AbstractClassStrategy(IAllTypeList allTypeList) {
+        this.allTypeList = allTypeList;
+    }
+
     protected abstract bool IsTypeIgnored(Type type);
 
     private bool IsTypeWhiteListed(Type type) => IsTypeExplicitlyRequested(type);
@@ -42,12 +48,23 @@ public abstract class AbstractClassStrategy : IClassStrategy {
                FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().Any(IsIgnored);
     }
 
-    public bool IsTypeRecognized(Type type) {
+    public virtual bool IsTypeRecognizedByReflector(Type type) {
         var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
         return !IsTypeIgnored(returnType) &&
                !IsTypeUnsupportedByReflector(returnType) &&
                IsTypeWhiteListed(returnType) &&
-               (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeRecognized));
+               (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeRecognizedByReflector));
+    }
+
+    private bool TypeIsRegistered(Type type) => allTypeList.Types.Contains(TypeKeyUtils.FilterNullableAndProxies(type));
+
+    public virtual bool IsTypeRecognizedBySystem(Type type)
+    {
+        var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
+        return !IsTypeIgnored(returnType) &&
+               !IsTypeUnsupportedByReflector(returnType) &&
+               (TypeIsRegistered(returnType) ||
+               (FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().All(TypeIsRegistered)));
     }
 
     public abstract bool IsIgnored(MemberInfo member);

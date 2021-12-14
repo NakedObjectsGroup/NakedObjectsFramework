@@ -20,7 +20,7 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class PasswordAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class PasswordAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public PasswordAnnotationFacetFactory(IFacetFactoryOrder<PasswordAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 

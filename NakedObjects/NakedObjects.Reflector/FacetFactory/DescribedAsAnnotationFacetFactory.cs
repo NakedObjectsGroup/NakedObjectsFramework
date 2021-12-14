@@ -22,7 +22,7 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class DescribedAsAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class DescribedAsAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<DescribedAsAnnotationFacetFactory> logger;
 
     public DescribedAsAnnotationFacetFactory(IFacetFactoryOrder<DescribedAsAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

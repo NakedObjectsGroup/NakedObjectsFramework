@@ -20,7 +20,7 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class PresentationHintAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class PresentationHintAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public PresentationHintAnnotationFacetFactory(IFacetFactoryOrder<PresentationHintAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Everything) { }
 

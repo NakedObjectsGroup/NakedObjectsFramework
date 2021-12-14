@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 /// <summary>
 ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
 /// </summary>
-public sealed class ActionMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory {
+public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {
         RecognisedMethodsAndPrefixes.AutoCompletePrefix,
         RecognisedMethodsAndPrefixes.ParameterDefaultPrefix,

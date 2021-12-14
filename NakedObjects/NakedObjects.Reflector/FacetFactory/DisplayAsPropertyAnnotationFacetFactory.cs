@@ -24,7 +24,7 @@ using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class DisplayAsPropertyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public DisplayAsPropertyAnnotationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Actions) =>
         loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();

@@ -63,4 +63,6 @@ public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
     public Type[] ObjectTypes => Services.Union(GetObjectTypesToIntrospect()).ToArray();
 
     #endregion
+
+    public Type[] Types => ObjectTypes;
 }

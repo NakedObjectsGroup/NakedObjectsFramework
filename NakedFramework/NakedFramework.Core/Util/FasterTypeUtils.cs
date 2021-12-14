@@ -11,11 +11,6 @@ using System.Collections.Generic;
 namespace NakedFramework.Core.Util;
 
 public static class FasterTypeUtils {
-    private const string SystemTypePrefix = "System.";
-    private const string MicrosoftTypePrefix = "Microsoft.";
-    private const string NakedFrameworkTypePrefix = "NakedFramework.";
-    private const string NakedObjectsTypePrefix = "NakedObjects.";
-    private const string NakedFunctionsTypePrefix = "NakedFunctions.";
     private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
     private const string CastleProxyPrefix = "Castle.Proxies.";
 
@@ -28,32 +23,6 @@ public static class FasterTypeUtils {
     public static bool IsEF6OrCoreProxy(Type type) => IsEFCoreProxy(type) || IsEF6Proxy(type);
 
     public static bool IsAnyProxy(Type type) => IsAnyProxy(type?.FullName ?? "");
-
-    public static bool IsSystem(string typeName) => typeName.StartsWith(SystemTypePrefix, StringComparison.Ordinal) && !IsEF6Proxy(typeName);
-
-    private static bool IsMicrosoft(string typeName) => typeName.StartsWith(MicrosoftTypePrefix, StringComparison.Ordinal);
-
-    private static bool IsNakedFramework(string typeName) => typeName.StartsWith(NakedFrameworkTypePrefix, StringComparison.Ordinal);
-
-    public static bool IsNakedObjects(string typeName) => typeName.StartsWith(NakedObjectsTypePrefix, StringComparison.Ordinal);
-
-    private static bool IsNakedFunctions(string typeName) => typeName.StartsWith(NakedFunctionsTypePrefix, StringComparison.Ordinal);
-
-    private static bool IsNaked(string fullName) => IsNakedFramework(fullName) || IsNakedObjects(fullName) || IsNakedFunctions(fullName);
-
-    private static bool IsNaked(Type type) {
-        var fullName = type?.FullName ?? "";
-        return IsNaked(fullName);
-    }
-
-    public static bool IsSystemOrNaked(Type type) => IsSystem(type) || IsNaked(type);
-
-    public static bool IsSystemOrNaked(string typeName) => IsSystem(typeName) || IsNaked(typeName);
-
-    public static bool IsSystem(Type type) {
-        var fullName = type?.FullName ?? "";
-        return IsSystem(fullName) || IsMicrosoft(fullName);
-    }
 
     public static bool IsEFCoreProxy(Type type) => IsCastleProxy(type?.FullName ?? "");
 

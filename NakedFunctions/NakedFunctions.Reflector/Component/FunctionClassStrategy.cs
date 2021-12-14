@@ -8,6 +8,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.ParallelReflector.Component;
 
@@ -20,7 +22,7 @@ namespace NakedFunctions.Reflector.Component;
 public class FunctionClassStrategy : AbstractClassStrategy {
     private readonly IFunctionalReflectorConfiguration config;
 
-    public FunctionClassStrategy(IFunctionalReflectorConfiguration config) => this.config = config;
+    public FunctionClassStrategy(IFunctionalReflectorConfiguration config, IAllTypeList allTypeList) : base(allTypeList) => this.config = config;
 
     protected override bool IsTypeIgnored(Type type) => false;
 
@@ -29,6 +31,13 @@ public class FunctionClassStrategy : AbstractClassStrategy {
         return types.Any(t => t == type) ||
                type.IsGenericType && types.Any(t => t == type.GetGenericTypeDefinition());
     }
+
+    private static bool IsTuple(Type type) => type.GetInterfaces().Any(i => i == typeof(ITuple));
+
+    public override bool IsTypeRecognizedBySystem(Type type) =>
+        IsTuple(type)
+            ? type.GetGenericArguments().All(base.IsTypeRecognizedBySystem)
+            : base.IsTypeRecognizedBySystem(type);
 
     #region IClassStrategy Members
 

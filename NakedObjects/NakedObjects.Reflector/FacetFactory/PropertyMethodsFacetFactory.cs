@@ -29,7 +29,7 @@ using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
+public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {
         RecognisedMethodsAndPrefixes.ModifyPrefix
     };

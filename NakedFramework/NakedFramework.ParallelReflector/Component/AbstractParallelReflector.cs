@@ -87,8 +87,9 @@ public abstract class AbstractParallelReflector : IReflector {
     private ITypeSpecBuilder ThrowNullSpecificationError(Type type) => throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
 
     private ITypeSpecBuilder CreateSpecification(Type type) {
+        var fn = type.FullName;
         TypeUtils.GetType(type.FullName); // This should ensure type is cached
-        var spec = ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type), ClassStrategy.IsTypeRecognized(type));
+        var spec = ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type), ClassStrategy.IsTypeRecognizedByReflector(type));
         return spec ?? ThrowNullSpecificationError(type);
     }
 

@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 ///     Creates an <see cref="IContributedActionFacet" /> based on the presence of an
 ///     <see cref="ContributedActionAttribute" /> annotation
 /// </summary>
-public sealed class ContributedActionAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<ContributedActionAnnotationFacetFactory> logger;
 
     public ContributedActionAnnotationFacetFactory(IFacetFactoryOrder<ContributedActionAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

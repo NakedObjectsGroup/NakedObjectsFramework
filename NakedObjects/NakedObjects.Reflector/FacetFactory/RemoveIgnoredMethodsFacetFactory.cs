@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 ///     Does not add any facets, but removes members that should be ignored - before they are introspected upon
 ///     by other factories.  This factory thus needs to be registered earlier than most other factories.
 /// </summary>
-public class RemoveIgnoredMethodsFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public class RemoveIgnoredMethodsFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public RemoveIgnoredMethodsFacetFactory(IFacetFactoryOrder<RemoveIgnoredMethodsFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 

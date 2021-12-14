@@ -25,8 +25,6 @@ public static class TypeKeyUtils {
         return FasterTypeUtils.IsAnyProxy(type) ? type.BaseType : type;
     }
 
-    public static bool IsSystemClass(Type introspectedType) => introspectedType.FullName?.StartsWith("System.", StringComparison.Ordinal) == true;
-
     public static string GetKeyForType(Type type) =>
         FasterTypeUtils.IsGenericCollection(type)
             ? $"{type.Namespace}.{type.Name}"

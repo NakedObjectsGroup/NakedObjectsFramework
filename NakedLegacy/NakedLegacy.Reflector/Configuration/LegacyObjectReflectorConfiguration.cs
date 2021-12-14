@@ -63,4 +63,6 @@ public class LegacyObjectReflectorConfiguration : ILegacyObjectReflectorConfigur
     public Type[] ObjectTypes => Services.Union(GetObjectTypesToIntrospect()).ToArray();
 
     #endregion
+
+    public Type[] Types => ObjectTypes;
 }

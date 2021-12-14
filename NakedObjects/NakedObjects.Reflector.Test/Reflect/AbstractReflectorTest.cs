@@ -14,14 +14,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Component;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Component;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Component;
 using NakedFramework.ParallelReflector;
 using NakedFramework.ParallelReflector.Component;
-using NakedFramework.ParallelReflector.FacetFactory;
-using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
@@ -37,12 +36,11 @@ public abstract class AbstractReflectorTest {
 
     protected IFacetFactory[] FacetFactories =>
         new[] {
-            NewFacetFactory<FallbackFacetFactory>(),
-            NewFacetFactory<IteratorFilteringFacetFactory>(),
-            NewFacetFactory<SystemClassMethodFilteringFactory>(),
-            NewFacetFactory<RemoveSuperclassMethodsFacetFactory>(),
             NewFacetFactory<RemoveDynamicProxyMethodsFacetFactory>(),
             NewFacetFactory<RemoveEventHandlerMethodsFacetFactory>(),
+            NewFacetFactory<DomainObjectMethodFilteringFactory>(),
+            NewFacetFactory<DomainObjectPropertyFilteringFactory>(),
+            NewFacetFactory<FallbackFacetFactory>(),
             NewFacetFactory<TypeMarkerFacetFactory>(),
             NewFacetFactory<MandatoryDefaultFacetFactory>(),
             NewFacetFactory<PropertyValidateDefaultFacetFactory>(),
@@ -88,12 +86,7 @@ public abstract class AbstractReflectorTest {
             NewFacetFactory<TypeOfAnnotationFacetFactory>(),
             NewFacetFactory<TableViewAnnotationFacetFactory>(),
             NewFacetFactory<EagerlyAnnotationFacetFactory>(),
-            NewFacetFactory<PresentationHintAnnotationFacetFactory>(),
-            NewFacetFactory<ValueTypeFacetFactory>(),
-           
-            NewFacetFactory<EnumValueTypeFacetFactory>(),
-            NewFacetFactory<ArrayValueTypeFacetFactory<byte>>(),
-            NewFacetFactory<CollectionFacetFactory>()
+            NewFacetFactory<PresentationHintAnnotationFacetFactory>()
         };
 
     private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T)Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);
@@ -104,9 +97,10 @@ public abstract class AbstractReflectorTest {
 
     protected virtual IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
         var config = new ObjectReflectorConfiguration(new[] { typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList) }, Array.Empty<Type>());
-        var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
+        var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IDomainObjectFacetFactoryProcessor>().ToArray());
+        var allTypeList = new AllTypeList(new[] { config });
 
-        ClassStrategy = new ObjectClassStrategy(config);
+        ClassStrategy = new ObjectClassStrategy(config, allTypeList);
         var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
         var order = new ObjectReflectorOrder<ObjectReflector>();
         return new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy)ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);

@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 ///     which don't require mandatory semantics will potentially replace these where the
 ///     property or parameter is annotated or otherwise indicated as being optional.
 /// </para>
-public sealed class MandatoryDefaultFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class MandatoryDefaultFacetFactory : DomainObjectFacetFactoryProcessor {
     public MandatoryDefaultFacetFactory(IFacetFactoryOrder<MandatoryDefaultFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 

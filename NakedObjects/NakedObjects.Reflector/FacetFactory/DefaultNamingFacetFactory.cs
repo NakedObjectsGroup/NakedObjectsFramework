@@ -21,7 +21,7 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class DefaultNamingFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class DefaultNamingFacetFactory : DomainObjectFacetFactoryProcessor {
     private ILogger<DefaultNamingFacetFactory> logger;
 
     public DefaultNamingFacetFactory(IFacetFactoryOrder<DefaultNamingFacetFactory> order, ILoggerFactory loggerFactory)

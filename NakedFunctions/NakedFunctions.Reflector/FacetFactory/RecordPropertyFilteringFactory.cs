@@ -5,12 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
-using NakedFramework.Core.Util;
 
 namespace NakedFunctions.Reflector.FacetFactory;
 
@@ -18,16 +18,17 @@ namespace NakedFunctions.Reflector.FacetFactory;
 ///     This factory filters out properties on system types. So for example 'Length' will not show up when displaying a
 ///     string.
 /// </summary>
-public sealed class SystemClassPropertyFilteringFactory : FunctionalFacetFactoryProcessor, IPropertyFilteringFacetFactory {
-    private readonly ILogger<SystemClassPropertyFilteringFactory> logger;
-
-    public SystemClassPropertyFilteringFactory(IFacetFactoryOrder<SystemClassPropertyFilteringFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.Properties) =>
-        logger = loggerFactory.CreateLogger<SystemClassPropertyFilteringFactory>();
+public sealed class RecordPropertyFilteringFactory : FunctionalFacetFactoryProcessor, IPropertyFilteringFacetFactory {
+    public RecordPropertyFilteringFactory(IFacetFactoryOrder<RecordPropertyFilteringFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
     #region IPropertyFilteringFacetFactory Members
 
-    public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(property.DeclaringType);
+    private static bool IsAllowedPropertyType(Type type, IClassStrategy classStrategy) => classStrategy.IsTypeRecognizedBySystem(type);
+
+    private static bool IsAllowedProperty(PropertyInfo property) => property.DeclaringType != typeof(object);
+
+    public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => !(IsAllowedProperty(property) && IsAllowedPropertyType(property.PropertyType, classStrategy));
 
     #endregion
 }

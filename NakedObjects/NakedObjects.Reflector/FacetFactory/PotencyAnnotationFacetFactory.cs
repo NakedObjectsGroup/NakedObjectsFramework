@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 ///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
 ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
 /// </summary>
-public sealed class PotencyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class PotencyAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public PotencyAnnotationFacetFactory(IFacetFactoryOrder<PotencyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Actions) { }
 

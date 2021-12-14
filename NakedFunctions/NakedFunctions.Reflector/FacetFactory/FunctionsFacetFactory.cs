@@ -66,8 +66,6 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
 
     #region IMethodIdentifyingFacetFactory Members
 
-    private static bool IsUnsupportedSystemType(IReflector reflector, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => FasterTypeUtils.IsSystem(type) && !reflector.FindSpecification(type, metamodel);
-
     private static (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector, MethodInfo actionMethod) {
         ITypeSpecBuilder onType = null;
 
@@ -87,11 +85,8 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
         else if (returnType.IsAssignableTo(typeof(IContext))) {
             (onType, metamodel) = reflector.LoadSpecification(typeof(void), metamodel);
         }
-        else if (!IsUnsupportedSystemType(reflector, returnType, metamodel)) {
-            (onType, metamodel) = reflector.LoadSpecification(returnType, metamodel);
-        }
         else {
-            throw new ReflectionException($"Cannot reflect return type {returnType} on {actionMethod.DeclaringType}.{actionMethod.Name}");
+            (onType, metamodel) = reflector.LoadSpecification(returnType, metamodel);
         }
 
         return (onType, returnType, metamodel);

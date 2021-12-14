@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
+using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.Reflector.Reflect;
 
@@ -51,7 +52,7 @@ public sealed class ObjectFacetFactorySet : IFacetFactorySet {
     /// </para>
     private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-    public ObjectFacetFactorySet(IEnumerable<IObjectFacetFactoryProcessor> factories) {
+    public ObjectFacetFactorySet(IEnumerable<IDomainObjectFacetFactoryProcessor> factories) {
         var allFactories = factories.ToList();
         allFactories.Sort();
 

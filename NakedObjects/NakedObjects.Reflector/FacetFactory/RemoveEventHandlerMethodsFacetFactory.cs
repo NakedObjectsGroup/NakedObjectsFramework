@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 /// <summary>
 ///     Removes any methods on a type that handle events.
 /// </summary>
-public sealed class RemoveEventHandlerMethodsFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class RemoveEventHandlerMethodsFacetFactory : DomainObjectFacetFactoryProcessor {
     public RemoveEventHandlerMethodsFacetFactory(IFacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 

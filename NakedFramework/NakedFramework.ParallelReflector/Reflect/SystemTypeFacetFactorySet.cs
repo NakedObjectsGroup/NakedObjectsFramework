@@ -20,8 +20,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 namespace NakedFramework.ParallelReflector.Reflect;
 
 public sealed class SystemTypeFacetFactorySet : IFacetFactorySet {
-    private readonly IList<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
-    private readonly IDictionary<FeatureType, IList<IObjectFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<IObjectFacetFactoryProcessor>>();
+    private readonly IDictionary<FeatureType, IList<ISystemTypeFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<ISystemTypeFacetFactoryProcessor>>();
 
     /// <summary>
     ///     All registered <see cref="IFacetFactory" />s that implement
@@ -41,17 +40,7 @@ public sealed class SystemTypeFacetFactorySet : IFacetFactorySet {
     /// </para>
     private readonly IList<IPropertyFilteringFacetFactory> propertyFilteringFactories;
 
-    /// <summary>
-    ///     All registered <see cref="IFacetFactory" />s that implement
-    ///     <see
-    ///         cref="IPropertyOrCollectionIdentifyingFacetFactory" />
-    /// </summary>
-    /// <para>
-    ///     Used within <see cref="IFacetFactorySet.Recognizes" />
-    /// </para>
-    private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
-
-    public SystemTypeFacetFactorySet(IEnumerable<IObjectFacetFactoryProcessor> factories) {
+    public SystemTypeFacetFactorySet(IEnumerable<ISystemTypeFacetFactoryProcessor> factories) {
         var allFactories = factories.ToList();
         allFactories.Sort();
 
@@ -59,12 +48,10 @@ public sealed class SystemTypeFacetFactorySet : IFacetFactorySet {
 
         methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToArray();
         propertyFilteringFactories = allFactories.OfType<IPropertyFilteringFacetFactory>().ToArray();
-        propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToArray();
-        actionIdentifyingFactories = allFactories.OfType<IMethodIdentifyingFacetFactory>().ToArray();
 
         // no annotations for system types so remove annotation based factories
 
-        allFactories = allFactories.Except(allFactories.OfType<IAnnotationBasedFacetFactory>().Cast<IObjectFacetFactoryProcessor>()).ToList();
+        allFactories = allFactories.Except(allFactories.OfType<IAnnotationBasedFacetFactory>().Cast<ISystemTypeFacetFactoryProcessor>()).ToList();
 
         foreach (FeatureType featureType in Enum.GetValues(typeof(FeatureType))) {
             factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToArray();
@@ -73,15 +60,9 @@ public sealed class SystemTypeFacetFactorySet : IFacetFactorySet {
 
     private string[] Prefixes { get; }
 
-    private IList<IObjectFacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
+    private IList<ISystemTypeFacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
 
     #region IFacetFactorySet Members
-
-    public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates, classStrategy)).ToArray();
-
-    public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates, classStrategy)).ToArray();
-
-    public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) => actionIdentifyingFactories.SelectMany(fact => fact.FindActions(candidates, classStrategy)).ToArray();
 
     /// <summary>
     ///     Whether this method is recognized (and should be ignored) by
@@ -108,6 +89,12 @@ public sealed class SystemTypeFacetFactorySet : IFacetFactorySet {
 
     public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => propertyFilteringFactories.Any(factory => factory.Filters(property, classStrategy));
 
+    public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => Array.Empty<PropertyInfo>();
+
+    public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => Array.Empty<PropertyInfo>();
+
+    public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) => Array.Empty<MethodInfo>();
+
     public bool Recognizes(MethodInfo method) => Prefixes.Any(prefix => method.Name.StartsWith(prefix, StringComparison.Ordinal));
 
     public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -120,30 +107,6 @@ public sealed class SystemTypeFacetFactorySet : IFacetFactorySet {
             foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
                 metamodel = facetFactory.Process(reflector, type, methodRemover, specification, metamodel);
             }
-        }
-
-        return metamodel;
-    }
-
-    public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        foreach (var facetFactory in GetFactoryByFeatureType(featureType)) {
-            metamodel = facetFactory.Process(reflector, method, methodRemover, specification, metamodel);
-        }
-
-        return metamodel;
-    }
-
-    public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        foreach (var facetFactory in GetFactoryByFeatureType(featureType)) {
-            metamodel = facetFactory.Process(reflector, property, methodRemover, specification, metamodel);
-        }
-
-        return metamodel;
-    }
-
-    public IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameters)) {
-            metamodel = facetFactory.ProcessParams(reflector, method, paramNum, specification, metamodel);
         }
 
         return metamodel;

@@ -13,6 +13,8 @@ namespace NakedFunctions.Reflector.Reflect;
 public static class FunctionalFacetFactories {
     public static Type[] StandardFacetFactories() =>
         new[] {
+            typeof(RecordPropertyFilteringFactory),
+            typeof(FunctionFilteringFactory),
             typeof(FallbackFacetFactory),
             typeof(FunctionsFacetFactory),
             typeof(RecordIntegrationFacetFactory),
@@ -58,8 +60,6 @@ public static class FunctionalFacetFactories {
             typeof(OptionalAnnotationFacetFactory),
             typeof(RegExAnnotationFacetFactory),
             typeof(CreateNewAnnotationFacetFactory),
-            typeof(SystemClassMethodFilteringFactory),
-            typeof(SystemClassPropertyFilteringFactory),
             typeof(DefaultNamingFacetFactory), // must come after Named and Plural factories
             // must come after any facets that install titles
             typeof(MaskAnnotationFacetFactory),

@@ -19,7 +19,7 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class PropertyValidateDefaultFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class PropertyValidateDefaultFacetFactory : DomainObjectFacetFactoryProcessor {
     public PropertyValidateDefaultFacetFactory(IFacetFactoryOrder<PropertyValidateDefaultFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Properties) { }
 

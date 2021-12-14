@@ -152,7 +152,7 @@ public class ReflectorTest {
     public void ReflectUnsupportedTuple() {
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedFunctions(options => {
-                    options.DomainTypes = new[] { typeof(UnsupportedTupleFunctions) };
+                    options.DomainTypes = new[] { typeof(UnsupportedTupleFunctions), typeof(SimpleClass) };
                     options.DomainFunctions = Array.Empty<Type>();
                 }
             );

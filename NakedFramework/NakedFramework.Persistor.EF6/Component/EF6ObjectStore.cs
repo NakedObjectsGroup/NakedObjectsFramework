@@ -379,9 +379,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
 
     internal void CheckProxies(object objectToCheck) {
         var objectType = objectToCheck.GetType();
-        if (!EnforceProxies || FasterTypeUtils.IsSystem(objectType)) {
-            // may be using types provided by System or Microsoft (eg Authentication User). 
-            // No point enforcing proxying on them. 
+        if (!EnforceProxies) {
             return;
         }
 

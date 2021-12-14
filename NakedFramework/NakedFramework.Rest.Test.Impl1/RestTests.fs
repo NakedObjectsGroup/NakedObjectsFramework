@@ -9,6 +9,7 @@ module NakedObjects.Rest.Test
 open NUnit.Framework
 open NakedObjects.Rest.Test
 open System
+open System.Linq;
 open RestfulObjects.Test.Data
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
@@ -64,9 +65,7 @@ type Tests() =
                 typeof<MostSimpleViewModel>
                 typeof<WithValue>
                 typeof<TestEnum>
-                //typeof<MostSimple []>
-                typeof<FormViewModel>
-                typeof<SetWrapper<MostSimple>> |]
+                typeof<FormViewModel> |]
 
         override x.Services = 
              [| typeof<RestDataRepository>
@@ -82,6 +81,8 @@ type Tests() =
         override x.EnforceProxies = false
 
         override x.NotPersistedTypes = Func<Type[]> (fun () -> [| typeof<WithAction> |])
+
+        override x.SupportedSystemTypes = Func<Type[], Type[]> (fun (t) -> t.Union([| (typeof<SetWrapper<MostSimple>>.GetGenericTypeDefinition()) |]).ToArray())
 
         override x.ContextCreators = 
             [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new CodeFirstContextLocal(csRTA) :> Data.Entity.DbContext) |]

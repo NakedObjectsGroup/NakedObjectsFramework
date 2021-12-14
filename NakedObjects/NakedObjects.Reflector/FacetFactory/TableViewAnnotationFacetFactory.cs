@@ -23,7 +23,7 @@ using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class TableViewAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class TableViewAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<TableViewAnnotationFacetFactory> logger;
 
     public TableViewAnnotationFacetFactory(IFacetFactoryOrder<TableViewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

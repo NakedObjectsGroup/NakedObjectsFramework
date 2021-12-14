@@ -37,7 +37,7 @@ public sealed class IteratorFilteringFacetFactory : SystemTypeFacetFactoryProces
     public string[] Prefixes => FixedPrefixes;
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        if (typeof(IEnumerable).IsAssignableFrom(type) && !FasterTypeUtils.IsSystem(type)) {
+        if (typeof(IEnumerable).IsAssignableFrom(type)) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes);
             methodRemover.SafeRemoveMethod(method);
         }

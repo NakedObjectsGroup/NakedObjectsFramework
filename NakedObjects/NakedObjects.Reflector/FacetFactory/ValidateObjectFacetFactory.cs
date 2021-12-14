@@ -27,7 +27,7 @@ using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class ValidateObjectFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+public sealed class ValidateObjectFacetFactory : DomainObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes = {
         RecognisedMethodsAndPrefixes.ValidatePrefix
     };

@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 /// <summary>
 ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
 /// </summary>
-public sealed class ComplementaryMethodsFilteringFacetFactory : ObjectFacetFactoryProcessor, IMethodFilteringFacetFactory {
+public sealed class ComplementaryMethodsFilteringFacetFactory : DomainObjectFacetFactoryProcessor, IMethodFilteringFacetFactory {
     private static readonly string[] PropertyPrefixes = {
         RecognisedMethodsAndPrefixes.AutoCompletePrefix,
         RecognisedMethodsAndPrefixes.ModifyPrefix,

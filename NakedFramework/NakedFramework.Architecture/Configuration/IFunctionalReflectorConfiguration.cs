@@ -6,11 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Component;
 
 namespace NakedFramework.Architecture.Configuration;
 
-public interface IFunctionalReflectorConfiguration {
-    Type[] Types { get; }
+public interface IFunctionalReflectorConfiguration : ITypeList {
+    //Type[] Types { get; }
     Type[] Functions { get; }
     bool ConcurrencyChecking { get; }
     bool IgnoreCase { get; }

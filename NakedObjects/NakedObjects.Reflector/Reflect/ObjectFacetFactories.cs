@@ -16,6 +16,10 @@ public static class ObjectFacetFactories {
             typeof(RemoveDynamicProxyMethodsFacetFactory),
             typeof(RemoveEventHandlerMethodsFacetFactory),
             typeof(RemoveIgnoredMethodsFacetFactory),
+            typeof(DomainObjectMethodFilteringFactory),
+            typeof(DomainObjectPropertyFilteringFactory),
+            typeof(FallbackFacetFactory),
+            typeof(TypeMarkerFacetFactory),
             // must be before any other FacetFactories that install MandatoryFacet.class facets
             typeof(MandatoryDefaultFacetFactory),
             typeof(PropertyValidateDefaultFacetFactory),

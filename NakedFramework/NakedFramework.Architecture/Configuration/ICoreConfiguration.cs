@@ -7,11 +7,12 @@
 
 using System;
 using System.Collections.Generic;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Menu;
 
 namespace NakedFramework.Architecture.Configuration;
 
-public interface ICoreConfiguration {
+public interface ICoreConfiguration : ITypeList {
     /// <summary>
     ///     Specify a function that can create the array of main menus, having been passed-in an
     ///     implementation of IMenuFactory.

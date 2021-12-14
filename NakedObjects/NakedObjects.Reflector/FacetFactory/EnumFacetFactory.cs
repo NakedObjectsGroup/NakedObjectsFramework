@@ -24,7 +24,7 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class EnumFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class EnumFacetFactory : DomainObjectFacetFactoryProcessor {
     public EnumFacetFactory(IFacetFactoryOrder<EnumFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 

@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 ///     Creates an <see cref="IDataTypeFacet" /> based on the presence of an
 ///     <see cref="DataTypeAttribute" /> annotation
 /// </summary>
-public sealed class DataTypeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class DataTypeAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public DataTypeAnnotationFacetFactory(IFacetFactoryOrder<DataTypeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 

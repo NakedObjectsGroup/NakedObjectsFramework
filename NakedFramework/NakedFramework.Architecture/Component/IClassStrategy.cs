@@ -17,7 +17,9 @@ namespace NakedFramework.Architecture.Component;
 public interface IClassStrategy {
     bool IsIgnored(Type type);
 
-    bool IsTypeRecognized(Type type);
+    bool IsTypeRecognizedByReflector(Type type);
+
+    bool IsTypeRecognizedBySystem(Type type);
 
     bool IsIgnored(MemberInfo member);
 

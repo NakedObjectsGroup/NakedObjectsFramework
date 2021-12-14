@@ -22,7 +22,7 @@ using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class MenuFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+public sealed class MenuFacetFactory : DomainObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;
 
     static MenuFacetFactory() {

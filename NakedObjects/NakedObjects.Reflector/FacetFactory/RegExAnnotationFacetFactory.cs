@@ -24,7 +24,7 @@ using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class RegExAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class RegExAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<RegExAnnotationFacetFactory> logger;
 
     public RegExAnnotationFacetFactory(IFacetFactoryOrder<RegExAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

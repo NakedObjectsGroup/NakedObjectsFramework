@@ -39,7 +39,9 @@ public static class LegacyExtensions {
 
         frameworkOptions.Services.AddSingleton(typeof(IReflectorOrder<>), typeof(LegacyObjectReflectorOrder<>));
         frameworkOptions.Services.AddSingleton<IReflector, LegacyObjectReflector>();
-        frameworkOptions.Services.AddSingleton<ILegacyObjectReflectorConfiguration>(p => LegacyObjectReflectorConfig(options));
+        var legacyObjectReflectorConfiguration = LegacyObjectReflectorConfig(options);
+        frameworkOptions.Services.AddSingleton<ILegacyObjectReflectorConfiguration>(p => legacyObjectReflectorConfiguration);
+        frameworkOptions.Services.AddSingleton<ITypeList>(p => legacyObjectReflectorConfiguration);
         frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 
         frameworkOptions.Services.AddDefaultScoped<LegacyAboutCache, LegacyAboutCache>();

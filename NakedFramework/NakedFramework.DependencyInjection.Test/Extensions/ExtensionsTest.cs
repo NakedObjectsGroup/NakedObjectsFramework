@@ -26,7 +26,12 @@ public class ExtensionsTest {
     [TestMethod]
     public void TestNakedObjects() {
         IServiceCollection services = new ServiceCollection();
-        services.AddNakedFramework(options => { options.AddNakedObjects(options => { options.DomainModelTypes = Array.Empty<Type>(); }); });
+        services.AddNakedFramework(options => {
+            options.AddNakedObjects(options => {
+                options.NoValidate = true;
+                options.DomainModelTypes = Array.Empty<Type>();
+            });
+        });
     }
 
     [TestMethod]
@@ -45,7 +50,10 @@ public class ExtensionsTest {
     public void TestAll() {
         IServiceCollection services = new ServiceCollection();
         services.AddNakedFramework(options => {
-            options.AddNakedObjects(options => { options.DomainModelTypes = Array.Empty<Type>(); });
+            options.AddNakedObjects(options => {
+                options.NoValidate = true;
+                options.DomainModelTypes = Array.Empty<Type>();
+            });
             options.AddNakedFunctions(options => { options.DomainFunctions = Array.Empty<Type>(); });
             options.AddRestfulObjects(options => { options.AcceptHeaderStrict = true; });
         });

@@ -22,7 +22,7 @@ using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class RemoveDynamicProxyMethodsFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class RemoveDynamicProxyMethodsFacetFactory : DomainObjectFacetFactoryProcessor {
     private static readonly string[] MethodsToRemove = { "GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker" };
 
     public RemoveDynamicProxyMethodsFacetFactory(IFacetFactoryOrder<RemoveDynamicProxyMethodsFacetFactory> order, ILoggerFactory loggerFactory)

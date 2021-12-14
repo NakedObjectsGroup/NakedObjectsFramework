@@ -13,6 +13,7 @@ using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Profile;
 
+[assembly: InternalsVisibleTo("NakedObjects.Reflector")]
 [assembly: InternalsVisibleTo("NakedFunctions.Reflector")]
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.EF6")]
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.EFCore")]

@@ -47,7 +47,7 @@ public sealed class RemoveSuperclassMethodsFacetFactory : SystemTypeFacetFactory
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var currentType = type;
         while (currentType is not null) {
-            if (FasterTypeUtils.IsSystem(currentType)) {
+            if (reflector.ClassStrategy.IsIgnored(currentType)) {
                 ProcessSystemType(currentType, methodRemover, specification);
             }
 

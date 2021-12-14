@@ -204,7 +204,7 @@ public abstract class TypeSpec : ITypeSpec {
             if (shortName is null) {
                 var postfix = "";
                 if (Type.IsGenericType && !IsCollection) {
-                    postfix = Type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + "-" + Framework.MetamodelManager.GetSpecification(y).ShortName);
+                    postfix = Type.GetGenericArguments().Aggregate(string.Empty, (x, y) => $"{x}-{Framework.MetamodelManager.GetSpecification(y).ShortName}");
                 }
 
                 shortName = InnerSpec.ShortName + postfix;

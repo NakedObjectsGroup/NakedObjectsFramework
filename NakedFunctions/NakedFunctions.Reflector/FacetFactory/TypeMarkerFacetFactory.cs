@@ -17,7 +17,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using static NakedFunctions.Reflector.Utils.FactoryUtils;
+using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
 namespace NakedFunctions.Reflector.FacetFactory;
 

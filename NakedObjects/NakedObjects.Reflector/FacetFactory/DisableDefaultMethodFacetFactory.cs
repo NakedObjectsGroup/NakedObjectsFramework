@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 ///     Note - this factory simply removes the class level attribute from the list of methods.  The action and properties
 ///     look up this attribute directly
 /// </summary>
-public sealed class DisableDefaultMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+public sealed class DisableDefaultMethodFacetFactory : DomainObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;
     private readonly ILogger<DisableDefaultMethodFacetFactory> logger;
 

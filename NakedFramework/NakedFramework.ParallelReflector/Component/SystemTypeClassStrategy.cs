@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Core.Util;
 
@@ -20,11 +21,9 @@ namespace NakedFramework.ParallelReflector.Component;
 public class SystemTypeClassStrategy : AbstractClassStrategy {
     private readonly Type[] supportedSystemTypes;
 
-    public SystemTypeClassStrategy(ICoreConfiguration coreConfiguration) => supportedSystemTypes = coreConfiguration.SupportedSystemTypes.ToArray();
+    public SystemTypeClassStrategy(ICoreConfiguration coreConfiguration, IAllTypeList allTypeList) : base(allTypeList) => supportedSystemTypes = coreConfiguration.SupportedSystemTypes.ToArray();
 
-    protected bool IsUnSupportedSystemType(Type type) => FasterTypeUtils.IsSystem(type) && !IsTypeSupportedSystemType(type);
-
-    protected override bool IsTypeIgnored(Type type) => IsUnSupportedSystemType(type);
+    protected override bool IsTypeIgnored(Type type) => !IsTypeSupportedSystemType(type);
 
     protected override bool IsTypeExplicitlyRequested(Type type) => IsTypeSupportedSystemType(type);
 

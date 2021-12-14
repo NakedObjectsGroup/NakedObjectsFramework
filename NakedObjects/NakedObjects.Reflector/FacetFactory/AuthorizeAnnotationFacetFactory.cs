@@ -20,7 +20,7 @@ using NakedObjects.Security;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class AuthorizeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class AuthorizeAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<AuthorizeAnnotationFacetFactory> logger;
 
     public AuthorizeAnnotationFacetFactory(IFacetFactoryOrder<AuthorizeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

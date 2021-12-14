@@ -19,7 +19,7 @@ using NakedObjects.Redirect;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class RedirectedObjectFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class RedirectedObjectFacetFactory : DomainObjectFacetFactoryProcessor {
     public RedirectedObjectFacetFactory(IFacetFactoryOrder<RedirectedObjectFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory, FeatureType.Objects) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

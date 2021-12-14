@@ -22,7 +22,7 @@ using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class ViewModelFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class ViewModelFacetFactory : DomainObjectFacetFactoryProcessor {
     public ViewModelFacetFactory(IFacetFactoryOrder<ViewModelFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory, FeatureType.Objects) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

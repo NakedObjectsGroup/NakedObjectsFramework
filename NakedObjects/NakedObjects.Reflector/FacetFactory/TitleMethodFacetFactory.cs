@@ -27,7 +27,7 @@ using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class TitleMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
+public sealed class TitleMethodFacetFactory : DomainObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
     private static readonly string[] FixedPrefixes = {
         RecognisedMethodsAndPrefixes.ToStringMethod,
         RecognisedMethodsAndPrefixes.TitleMethod

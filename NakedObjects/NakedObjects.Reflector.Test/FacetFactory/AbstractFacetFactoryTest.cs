@@ -23,7 +23,7 @@ using NakedObjects.Reflector.Reflect;
 namespace NakedObjects.Reflector.Test.FacetFactory;
 
 public abstract class AbstractFacetFactoryTest {
-    protected IClassStrategy ClassStrategy = new ObjectClassStrategy(null);
+    protected IClassStrategy ClassStrategy = new ObjectClassStrategy(null, null);
     private ILogger<AbstractFacetFactoryTest> logger;
     protected ILoggerFactory LoggerFactory;
     protected IMetamodelManager Metamodel;

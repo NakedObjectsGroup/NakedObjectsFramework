@@ -18,8 +18,8 @@ using NakedFramework.ParallelReflector.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public abstract class ObjectFacetFactoryProcessor : FacetFactoryAbstract, IObjectFacetFactoryProcessor {
-    protected ObjectFacetFactoryProcessor(int numericOrder,
+public abstract class DomainObjectFacetFactoryProcessor : FacetFactoryAbstract, IDomainObjectFacetFactoryProcessor {
+    protected DomainObjectFacetFactoryProcessor(int numericOrder,
                                           ILoggerFactory loggerFactory,
                                           FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
 

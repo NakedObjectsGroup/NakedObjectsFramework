@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Component;
 using NakedFramework.Metamodel.Component;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
@@ -106,8 +107,9 @@ public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTes
 
         facetFactory = new RemoveEventHandlerMethodsFacetFactory(GetOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);
         var menuFactory = new NullMenuFactory();
-        var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] { facetFactory });
-        var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
+        var objectFactFactorySet = new ObjectFacetFactorySet(new IDomainObjectFacetFactoryProcessor[] { facetFactory });
+        var allTypeList = new AllTypeList(new[] { reflectorConfiguration });
+        var classStrategy = new ObjectClassStrategy(reflectorConfiguration, allTypeList);
         var metamodel = new MetamodelHolder(cache, null);
         var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
         var mockLoggerFactory = new Mock<ILoggerFactory>().Object;

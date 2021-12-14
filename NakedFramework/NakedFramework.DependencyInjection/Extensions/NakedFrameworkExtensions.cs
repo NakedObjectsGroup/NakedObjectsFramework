@@ -52,12 +52,15 @@ public static class NakedFrameworkExtensions {
             services.AddDefaultSingleton<IFacetDecorator, I18NManager>();
         }
 
-        services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));
+        var coreConfiguration = CoreConfig(options);
+        services.AddSingleton<ICoreConfiguration>(p => coreConfiguration);
+        services.AddSingleton<ITypeList>(p => coreConfiguration);
 
-        services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(TypeFacetFactories.FacetFactories());
+        services.RegisterFacetFactories<ISystemTypeFacetFactoryProcessor>(TypeFacetFactories.FacetFactories());
         services.AddDefaultSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
         services.AddDefaultSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
         services.AddSingleton<IReflector, SystemTypeReflector>();
+        services.AddSingleton<IAllTypeList, AllTypeList>();
 
         // frameworkFacade
         services.AddDefaultTransient<ITypeCodeMapper, DefaultTypeCodeMapper>();

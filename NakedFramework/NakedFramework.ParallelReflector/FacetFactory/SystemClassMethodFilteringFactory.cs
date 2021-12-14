@@ -24,7 +24,7 @@ public sealed class SystemClassMethodFilteringFactory : SystemTypeFacetFactoryPr
 
     #region IMethodFilteringFacetFactory Members
 
-    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(method.DeclaringType);
+    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => true;
 
     #endregion
 }

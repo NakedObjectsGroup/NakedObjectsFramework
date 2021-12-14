@@ -22,7 +22,7 @@ using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class TypeOfAnnotationFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class TypeOfAnnotationFacetFactory : DomainObjectFacetFactoryProcessor {
     public TypeOfAnnotationFacetFactory(IFacetFactoryOrder<TypeOfAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) { }
 

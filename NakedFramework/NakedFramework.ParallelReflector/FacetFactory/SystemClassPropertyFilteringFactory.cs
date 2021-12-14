@@ -24,7 +24,7 @@ public sealed class SystemClassPropertyFilteringFactory : SystemTypeFacetFactory
 
     #region IPropertyFilteringFacetFactory Members
 
-    public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(property.DeclaringType);
+    public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => true;
 
     #endregion
 }

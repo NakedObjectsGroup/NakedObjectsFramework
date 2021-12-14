@@ -25,7 +25,7 @@ using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class CallbackMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes = {
         RecognisedMethodsAndPrefixes.DeletedMethod,
         RecognisedMethodsAndPrefixes.DeletingMethod,

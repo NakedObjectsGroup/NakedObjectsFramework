@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
@@ -18,6 +19,7 @@ using NakedObjects.Reflector.Audit;
 using NakedObjects.Reflector.Authorization;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Extensions;
@@ -32,13 +34,25 @@ public static class NakedObjectsExtensions {
         var options = new NakedObjectsOptions();
         setupAction(options);
 
-        frameworkOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
+        if (options.DomainModelTypes.Any())
+        {
+            // filter enums and add to SystemTypes 
+            var enums = options.DomainModelTypes.Where(t => t.IsEnum).ToArray();
+           
+            options.DomainModelTypes = options.DomainModelTypes.Except(enums).ToArray();
+            frameworkOptions.SupportedSystemTypes ??= t => t;
+            frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(enums).ToArray();
+        }
+
+        frameworkOptions.Services.RegisterFacetFactories<IDomainObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
         frameworkOptions.Services.AddDefaultSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
         frameworkOptions.Services.AddDefaultSingleton<ObjectClassStrategy, ObjectClassStrategy>();
 
         frameworkOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(ObjectReflectorOrder<>));
         frameworkOptions.Services.AddSingleton<IReflector, ObjectReflector>();
-        frameworkOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
+        var objectReflectorConfiguration = ObjectReflectorConfig(options);
+        frameworkOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => objectReflectorConfiguration);
+        frameworkOptions.Services.AddSingleton<ITypeList>(p => objectReflectorConfiguration);
         frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 
         frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, DomainObjectContainerInjector>();

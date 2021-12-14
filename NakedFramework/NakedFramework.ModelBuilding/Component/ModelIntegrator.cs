@@ -94,14 +94,6 @@ public class ModelIntegrator : IModelIntegrator {
             logger.LogWarning($"Specification with id : {id} has null or empty name");
         }
 
-        if (FasterTypeUtils.IsSystem(spec.FullName) && !spec.IsCollection) {
-            return;
-        }
-
-        if (FasterTypeUtils.IsNakedObjects(spec.FullName)) {
-            return;
-        }
-
         PopulateContributedActions(spec, services, metamodel);
     }
 

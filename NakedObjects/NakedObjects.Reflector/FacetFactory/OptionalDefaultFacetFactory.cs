@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 ///     This is an alternative to <see cref="MandatoryDefaultFacetFactory" />. Which works the same way but
 ///     makes everything optional by default. Requiring the use of annotations to indicate mandatoryness.
 /// </para>
-public sealed class OptionalDefaultFacetFactory : ObjectFacetFactoryProcessor {
+public sealed class OptionalDefaultFacetFactory : DomainObjectFacetFactoryProcessor {
     public OptionalDefaultFacetFactory(IFacetFactoryOrder<OptionalDefaultFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 

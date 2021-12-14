@@ -6,10 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Component;
 
 namespace NakedObjects.Reflector.Configuration;
 
-public interface IObjectReflectorConfiguration {
+public interface IObjectReflectorConfiguration  : ITypeList{
     /// <summary>
     ///     This is expected to contain any domain types that are not directly accessible by navigating the actions on the
     ///     services. Eg an implementation

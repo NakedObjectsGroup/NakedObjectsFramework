@@ -48,7 +48,9 @@ public static class NakedFunctionsExtensions {
         frameworkOptions.Services.AddDefaultSingleton<FunctionClassStrategy, FunctionClassStrategy>();
         frameworkOptions.Services.AddDefaultSingleton(typeof(IReflectorOrder<>), typeof(FunctionalReflectorOrder<>));
         frameworkOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
-        frameworkOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
+        var functionalReflectorConfiguration = FunctionalReflectorConfig(options);
+        frameworkOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => functionalReflectorConfiguration);
+        frameworkOptions.Services.AddSingleton<ITypeList>(p => functionalReflectorConfiguration);
         frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
 
         frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();

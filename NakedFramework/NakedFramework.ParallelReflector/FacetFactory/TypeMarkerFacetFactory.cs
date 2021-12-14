@@ -17,6 +17,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
 namespace NakedFramework.ParallelReflector.FacetFactory;
 
@@ -37,14 +38,4 @@ public sealed class TypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor {
         FacetUtils.AddFacets(facets);
         return metamodel;
     }
-
-    private static bool IsVoid(Type type) => type == typeof(void);
-
-    private static bool IsSealed(Type type) => type.IsSealed;
-
-    private static bool IsInterface(Type type) => type.IsInterface;
-
-    private static bool IsAbstract(Type type) => type.IsAbstract;
-
-    private static bool IsStatic(Type type) => IsAbstract(type) && IsSealed(type);
 }

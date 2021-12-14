@@ -55,8 +55,7 @@ public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
         typeof(Qux),
         typeof(MyDefaultAuditor),
         typeof(FooAuditor),
-        typeof(QuxAuditor),
-        typeof(QueryableList<Foo>)
+        typeof(QuxAuditor)
     };
 
     protected override Type[] Services => new[] {
@@ -67,6 +66,8 @@ public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
         typeof(BarService),
         typeof(QuxService)
     };
+
+    protected override Func<Type[], Type[]> SupportedSystemTypes => t => t.Append(typeof(QueryableList<>)).ToArray();
 
     protected override IAuditConfiguration AuditConfiguration {
         get {

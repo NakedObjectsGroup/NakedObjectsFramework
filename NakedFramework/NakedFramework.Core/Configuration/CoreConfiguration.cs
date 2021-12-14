@@ -30,4 +30,5 @@ public class CoreConfiguration : ICoreConfiguration {
     public List<Type> SupportedSystemTypes { get; set; } = ReflectorDefaults.DefaultSystemTypes.ToList();
 
     public int HashMapCapacity { get; set; }
+    public Type[] Types => SupportedSystemTypes.ToArray();
 }

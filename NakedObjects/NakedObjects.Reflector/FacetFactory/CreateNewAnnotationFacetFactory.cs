@@ -22,7 +22,7 @@ using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public sealed class CreateNewAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class CreateNewAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<CreateNewAnnotationFacetFactory> logger;
 
     public CreateNewAnnotationFacetFactory(IFacetFactoryOrder<CreateNewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
