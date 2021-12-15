@@ -19,6 +19,7 @@ using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Rest.App.Demo.AWCustom;
 using Newtonsoft.Json;
 
@@ -52,8 +53,8 @@ namespace NakedObjects.Rest.App.Demo {
                     options.DomainModelServices = NakedObjectsRunSettings.Services;
                     options.RegisterCustomTypes = services => {
                         services.AddSingleton(typeof(AppendFacetFactoryOrder<>), typeof(AppendFacetFactoryOrder<>));
-                        services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AWNotCountedAnnotationFacetFactoryParallel));
-                        services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AWNotNavigableFacetFactoryParallel));
+                        services.AddSingleton(typeof(IDomainObjectFacetFactoryProcessor), typeof(AWNotCountedAnnotationFacetFactoryParallel));
+                        services.AddSingleton(typeof(IDomainObjectFacetFactoryProcessor), typeof(AWNotNavigableFacetFactoryParallel));
                     };
                 });
             });
