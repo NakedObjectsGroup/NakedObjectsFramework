@@ -1,6 +1,6 @@
 ﻿Namespace AW.Types
 
-	<Bounded>
+	'<Bounded>
 	Partial Public Class ProductCategory
 
 		Public Property ProductCategoryID() As Integer
@@ -9,7 +9,7 @@
 		Friend mappedName As String
 		Friend myName As TextString
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property Name As TextString
 			Get
 				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -31,7 +31,7 @@
 
 		Private myProductSubcategory As InternalCollection
 
-		'<TableView(True)>
+		''<TableView(True)>
 		Public ReadOnly Property ProductSubcategory As InternalCollection
 			Get
 				Return If(myProductSubcategory, New InternalCollection(Of ProductSubcategory)(mappedProductSubcategory))
@@ -51,7 +51,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

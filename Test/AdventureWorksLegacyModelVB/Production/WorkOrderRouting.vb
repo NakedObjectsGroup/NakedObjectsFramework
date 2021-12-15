@@ -10,7 +10,7 @@
 		Friend mappedOperationSequence As Short
 		Friend myOperationSequence As WholeNumber
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property OperationSequence As WholeNumber
 			Get
 				Return If(myOperationSequence, New WholeNumber(mappedOperationSequence, Function(v) mappedOperationSequence = v))
@@ -31,7 +31,7 @@
 		Friend mappedScheduledStartDate As DateTime?
 		Friend myScheduledStartDate As NODate
 
-		<MemberOrder(20)>
+		'<MemberOrder(20)>
 		Public ReadOnly Property ScheduledStartDate As NODate
 			Get
 				Return If(myScheduledStartDate, New NODate(mappedScheduledStartDate, Function(v) mappedScheduledStartDate = v))
@@ -52,7 +52,7 @@
 		Friend mappedScheduledEndDate As DateTime?
 		Friend myScheduledEndDate As NODate
 
-		<MemberOrder(22)>
+		'<MemberOrder(22)>
 		Public ReadOnly Property ScheduledEndDate As NODate
 			Get
 				Return If(myScheduledEndDate, New NODate(mappedScheduledEndDate, Function(v) mappedScheduledEndDate = v))
@@ -73,7 +73,7 @@
 		Friend mappedActualStartDate As DateTime?
 		Friend myActualStartDate As NODate
 
-		<MemberOrder(21)>
+		'<MemberOrder(21)>
 		Public ReadOnly Property ActualStartDate As NODate
 			Get
 				Return If(myActualStartDate, New NODate(mappedActualStartDate, Function(v) mappedActualStartDate = v))
@@ -94,7 +94,7 @@
 		Friend mappedActualEndDate As DateTime?
 		Friend myActualEndDate As NODate
 
-		<MemberOrder(23)>
+		'<MemberOrder(23)>
 		Public ReadOnly Property ActualEndDate As NODate
 			Get
 				Return If(myActualEndDate, New NODate(mappedActualEndDate, Function(v) mappedActualEndDate = v))
@@ -110,14 +110,14 @@
 			End Select
 		End Sub
 #End Region
-		<MemberOrder(31)>
+		'<MemberOrder(31)>
 		Public Property ActualResourceHrs() As Decimal? 'TODO  need new value type
 
 #Region "PlannedCost"
 		Friend mappedPlannedCost As Decimal
 		Friend myPlannedCost As Money
 
-		<MemberOrder(40)>
+		'<MemberOrder(40)>
 		Public ReadOnly Property PlannedCost As Money
 			Get
 				Return If(myPlannedCost, New Money(mappedPlannedCost, Function(v) mappedPlannedCost = v))
@@ -138,7 +138,7 @@
 		Friend mappedActualCost As Decimal?
 		Friend myActualCost As Money
 
-		<MemberOrder(41)>
+		'<MemberOrder(41)>
 		Public ReadOnly Property ActualCost As Money
 			Get
 				Return If(myActualCost, New Money(mappedActualCost, Function(v) mappedActualCost = v))
@@ -168,14 +168,14 @@
 
 		Public Property LocationID() As Short
 
-		<MemberOrder(10)>
+		'<MemberOrder(10)>
 		Public Overridable Property Location() As Location
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

@@ -8,7 +8,7 @@
         Friend mappedRateChangeDate As Date
         Friend myRateChangeDate As NODate
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property RateChangeDate As NODate
             Get
                 Return If(myRateChangeDate, New NODate(mappedRateChangeDate, Function(v) mappedRateChangeDate = v))
@@ -27,7 +27,7 @@
         Friend mappedRate As Decimal
         Friend myRate As Money
 
-        <MemberOrder(2)>
+        '<MemberOrder(2)>
         Public ReadOnly Property Rate As Money
             Get
                 Return If(myRate, New Money(mappedRate, Function(v) mappedRate = v))
@@ -46,7 +46,7 @@
         Friend mappedPayFrequency As Byte
         Friend myPayFrequency As WholeNumber
 
-        <MemberOrder(3)>
+        '<MemberOrder(3)>
         Public ReadOnly Property PayFrequency As WholeNumber
             Get
                 Return If(myPayFrequency, New WholeNumber(mappedPayFrequency, Function(v) mappedPayFrequency = v))
@@ -61,14 +61,14 @@
         End Sub
 #End Region
 
-        <MemberOrder(4)>
+        '<MemberOrder(4)>
         Public Overridable Property Employee() As Employee
 
 #Region "ModifiedDate"
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

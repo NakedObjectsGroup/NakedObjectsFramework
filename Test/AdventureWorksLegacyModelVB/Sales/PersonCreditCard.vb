@@ -1,21 +1,21 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class PersonCreditCard
-		<Hidden>
-		Public Property PersonID() As Integer
+        '<Hidden>
+        Public Property PersonID() As Integer
 
-		<Hidden>
-		Public Property CreditCardID() As Integer
+        '<Hidden>
+        Public Property CreditCardID() As Integer
 
-		Public Overridable Property Person() As Person
+        Public Overridable Property Person() As Person
 
-		Public Overridable Property CreditCard() As CreditCard
+        Public Overridable Property CreditCard() As CreditCard
 
 #Region "ModifiedDate"
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

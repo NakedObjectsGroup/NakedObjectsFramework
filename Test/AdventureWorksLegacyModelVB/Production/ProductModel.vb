@@ -12,7 +12,7 @@ Namespace AW.Types
         Friend mappedName As String
         Friend myName As TextString
 
-        <MemberOrder(10)>
+        '<MemberOrder(10)>
         Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -29,11 +29,11 @@ Namespace AW.Types
         End Sub
 #End Region
 
-        '<Hidden>
+        ''<Hidden>
         Public Property CatalogDescription() As String
 
 
-        <Named("CatalogDescription"), MemberOrder(20), MultiLine(10)>
+        '<Named("CatalogDescription"), MemberOrder(20), MultiLine(10)>
         Public ReadOnly Property FormattedCatalogDescription() As MultiLineTextString
             Get
                 Return New MultiLineTextString(CatalogDescription)
@@ -41,7 +41,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        <MemberOrder(22)>
+        '<MemberOrder(22)>
         Public ReadOnly Property LocalCultureDescription() As ProductDescription
             Get
                 Return Nothing
@@ -53,7 +53,7 @@ Namespace AW.Types
         Friend mappedInstructions As String
         Friend myInstructions As TextString
 
-        <MemberOrder(30)>
+        '<MemberOrder(30)>
         Public ReadOnly Property Instructions As TextString
             Get
                 Return If(myInstructions, New TextString(mappedInstructions, Function(v) mappedInstructions = v))
@@ -75,8 +75,8 @@ Namespace AW.Types
 
         Private myProductVariants As InternalCollection
 
-        '<TableView(True, "Name", "Number", "Color", "ProductInventory")>
-        <MemberOrder(1)>
+        ''<TableView(True, "Name", "Number", "Color", "ProductInventory")>
+        '<MemberOrder(1)>
         Public ReadOnly Property ProductVariants As InternalCollection
             Get
                 Return If(myProductVariants, New InternalCollection(Of Product)(mappedProductVariants))
@@ -91,17 +91,17 @@ Namespace AW.Types
         End Sub
 #End Region
 
-        '<Hidden>
+        ''<Hidden>
         Public Overridable Property ProductModelIllustration() As ICollection(Of ProductModelIllustration) = New List(Of ProductModelIllustration)()
 
-        '<Hidden>
+        ''<Hidden>
         Public Overridable Property ProductModelProductDescriptionCulture() As ICollection(Of ProductModelProductDescriptionCulture) = New List(Of ProductModelProductDescriptionCulture)()
 
 #Region "ModifiedDate"
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

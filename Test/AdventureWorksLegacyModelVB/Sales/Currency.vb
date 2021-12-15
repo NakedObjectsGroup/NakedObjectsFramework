@@ -1,14 +1,14 @@
 ﻿Namespace AW.Types
 
-	<Bounded>
+	'<Bounded>
 	Partial Public Class Currency
-		<Hidden>
+		'<Hidden>
 		Public Property CurrencyCode() As String = ""
 
-		<Hidden>
+		'<Hidden>
 		Public Property Name() As String = ""
 
-		<Hidden>
+		'<Hidden>
 		Public Property ModifiedDate() As DateTime
 
 		Public Function Title() As Title

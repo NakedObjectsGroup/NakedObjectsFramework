@@ -8,7 +8,7 @@
 		Friend mappedStartDate As Date
 		Friend myStartDate As NODate
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property StartDate As NODate
 			Get
 				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
@@ -29,7 +29,7 @@
 		Friend mappedPropName As DateTime?
 		Friend myPropName As NODate
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property PropName As NODate
 			Get
 				Return If(myPropName, New NODate(mappedPropName, Function(v) mappedPropName = v))
@@ -50,7 +50,7 @@
 		Friend mappedBOMLevel As Short
 		Friend myBOMLevel As WholeNumber
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property BOMLevel As WholeNumber
 			Get
 				Return If(myBOMLevel, New WholeNumber(mappedBOMLevel, Function(v) mappedBOMLevel = v))
@@ -71,7 +71,7 @@
 		Friend mappedPerAssemblyQty As Decimal
 		Friend myPerAssemblyQty As Money 'TODO: needs a new value type
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property PerAssemblyQty As Money
 			Get
 				Return If(myPerAssemblyQty, New Money(mappedPerAssemblyQty, Function(v) mappedPerAssemblyQty = v))
@@ -104,7 +104,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

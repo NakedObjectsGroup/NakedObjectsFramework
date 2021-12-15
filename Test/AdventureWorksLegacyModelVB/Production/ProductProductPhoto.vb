@@ -9,7 +9,7 @@
         Friend mappedPrimary As Boolean
         Friend myPrimary As Logical
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property Primary As Logical
             Get
                 Return If(myPrimary, New Logical(mappedPrimary, Function(v) mappedPrimary = v))
@@ -34,7 +34,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

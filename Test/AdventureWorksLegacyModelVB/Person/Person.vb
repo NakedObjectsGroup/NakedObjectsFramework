@@ -8,7 +8,7 @@
 		Friend mappedNameStyle As Boolean
 		Friend myNameStyle As Logical
 
-		<MemberOrder(15)>
+		'<MemberOrder(15)>
 		Public ReadOnly Property NameStyle As Logical
 			Get
 				Return If(myNameStyle, New Logical(mappedNameStyle, Function(v) mappedNameStyle = v))
@@ -30,7 +30,7 @@
 		Friend mappedTitle As String
 		Friend myTitle As TextString
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property NameTitle As TextString
 			Get
 				Return If(myTitle, New TextString(mappedTitle, Function(v) mappedTitle = v))
@@ -52,7 +52,7 @@
 		Friend mappedFirstName As String
 		Friend myFirstName As TextString
 
-		<MemberOrder(12)>
+		'<MemberOrder(12)>
 		Public ReadOnly Property FirstName As TextString
 			Get
 				Return If(myFirstName, New TextString(mappedFirstName, Function(v) mappedFirstName = v))
@@ -73,7 +73,7 @@
 		Friend mappedMiddleName As String
 		Friend myMiddleName As TextString
 
-		<MemberOrder(13)>
+		'<MemberOrder(13)>
 		Public ReadOnly Property MiddleName As TextString
 			Get
 				Return If(myMiddleName, New TextString(mappedMiddleName, Function(v) mappedMiddleName = v))
@@ -94,7 +94,7 @@
 		Friend mappedLastName As String
 		Friend myLastName As TextString
 
-		<MemberOrder(14)>
+		'<MemberOrder(14)>
 		Public ReadOnly Property LastName As TextString
 			Get
 				Return If(myLastName, New TextString(mappedLastName, Function(v) mappedLastName = v))
@@ -115,7 +115,7 @@
 		Friend mappedSuffix As String
 		Friend mySuffix As TextString
 
-		<MemberOrder(15)>
+		'<MemberOrder(15)>
 		Public ReadOnly Property Suffix As TextString
 			Get
 				Return If(mySuffix, New TextString(mappedSuffix, Function(v) mappedSuffix = v))
@@ -137,7 +137,7 @@
 		Friend mappedPersonType As String
 		Friend myPersonType As TextString
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property PersonType As TextString
 			Get
 				Return If(myPersonType, New TextString(mappedPersonType, Function(v) mappedPersonType = v))
@@ -156,7 +156,7 @@
 #End Region
 
 #Region "EmailPromotion"
-		<MemberOrder(21)>
+		'<MemberOrder(21)>
 		Public Overridable Property EmailPromotion() As EmailPromotion
 
 		Public Sub AboutEmailPromotion(a As FieldAbout, ep As EmailPromotion)
@@ -176,7 +176,7 @@
 
 		Private myEmailAddresses As InternalCollection
 
-		'		<TableView(False, NameOf(EmailAddress.EmailAddress1))>
+		'		'<TableView(False, NameOf(EmailAddress.EmailAddress1))>
 		Public ReadOnly Property EmailAddresses As InternalCollection
 			Get
 				Return If(myEmailAddresses, New InternalCollection(Of EmailAddress)(mappedEmailAddresses))
@@ -196,7 +196,7 @@
 
 		Private myPhoneNumbers As InternalCollection
 
-		'<TableView(False, NameOf(PersonPhone.PhoneNumberType), NameOf(PersonPhone.PhoneNumber))>
+		''<TableView(False, NameOf(PersonPhone.PhoneNumberType), NameOf(PersonPhone.PhoneNumber))>
 		Public ReadOnly Property PhoneNumbers As InternalCollection
 			Get
 				Return If(myPhoneNumbers, New InternalCollection(Of PersonPhone)(mappedPhoneNumbers))
@@ -217,7 +217,7 @@
 		Friend mappedAdditionalContactInfo As String
 		Friend myAdditionalContactInfo As TextString
 
-		<MemberOrder(30)>
+		'<MemberOrder(30)>
 		Public ReadOnly Property AdditionalContactInfo As TextString
 			Get
 				Return If(myAdditionalContactInfo, New TextString(mappedAdditionalContactInfo, Function(v) mappedAdditionalContactInfo = v))
@@ -247,7 +247,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

@@ -12,7 +12,7 @@ Namespace AW.Types
 		Friend mappedThumbnailPhotoFileName As String
 		Friend myThumbnailPhotoFileName As TextString
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property ThumbnailPhotoFileName As TextString
 			Get
 				Return If(myThumbnailPhotoFileName, New TextString(mappedThumbnailPhotoFileName, Function(v) mappedThumbnailPhotoFileName = v))
@@ -35,7 +35,7 @@ Namespace AW.Types
 		Friend mappedLargePhotoFileName As String
 		Friend myLargePhotoFileName As TextString
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property LargePhotoFileName As TextString
 			Get
 				Return If(myLargePhotoFileName, New TextString(mappedLargePhotoFileName, Function(v) mappedLargePhotoFileName = v))
@@ -59,14 +59,14 @@ Namespace AW.Types
 		End Property
 		'DispositionType = "inline" ' fake mimetype
 
-		'<Hidden>
+		''<Hidden>
 		Public Property ProductProductPhoto As ICollection(Of ProductProductPhoto) = New List(Of ProductProductPhoto)()
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

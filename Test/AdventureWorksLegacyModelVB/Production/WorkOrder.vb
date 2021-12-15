@@ -9,7 +9,7 @@
 		Friend mappedStockedQty As Integer
 		Friend myStockedQty As WholeNumber
 
-		<MemberOrder(22)>
+		'<MemberOrder(22)>
 		Public ReadOnly Property StockedQty As WholeNumber
 			Get
 				Return If(myStockedQty, New WholeNumber(mappedStockedQty, Function(v) mappedStockedQty = v))
@@ -30,7 +30,7 @@
 		Friend mappedScrappedQty As Short
 		Friend myScrappedQty As WholeNumber
 
-		<MemberOrder(24)>
+		'<MemberOrder(24)>
 		Public ReadOnly Property ScrappedQty As WholeNumber
 			Get
 				Return If(myScrappedQty, New WholeNumber(mappedScrappedQty, Function(v) mappedScrappedQty = v))
@@ -51,7 +51,7 @@
 		Friend mappedEndDate As Date?
 		Friend myEndDate As NODate
 
-		<MemberOrder(32)>
+		'<MemberOrder(32)>
 		Public ReadOnly Property EndDate As NODate
 			Get
 				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
@@ -70,14 +70,14 @@
 
 		Public Property ScrapReasonID() As Short?
 
-		<MemberOrder(26)>
+		'<MemberOrder(26)>
 		Public Overridable Property ScrapReason() As ScrapReason
 
 #Region "OrderQty"
 		Friend mappedOrderQty As Integer
 		Friend myOrderQty As WholeNumber
 
-		<MemberOrder(20)>
+		'<MemberOrder(20)>
 		Public ReadOnly Property OrderQty As WholeNumber
 			Get
 				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
@@ -98,7 +98,7 @@
 		Friend mappedStartDate As Date
 		Friend myStartDate As NODate
 
-		<MemberOrder(30)>
+		'<MemberOrder(30)>
 		Public ReadOnly Property StartDate As NODate
 			Get
 				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
@@ -119,7 +119,7 @@
 		Friend mappedDueDate As Date
 		Friend myDueDate As NODate
 
-		<MemberOrder(34)>
+		'<MemberOrder(34)>
 		Public ReadOnly Property DueDate As NODate
 			Get
 				Return If(myDueDate, New NODate(mappedDueDate, Function(v) mappedDueDate = v))
@@ -138,7 +138,7 @@
 
 		Public Property ProductID() As Integer
 
-		<MemberOrder(10)>
+		'<MemberOrder(10)>
 		Public Overridable Property Product() As Product
 
 #Region "WorkOrderRoutings (Collection)"
@@ -146,7 +146,7 @@
 
 		Private myWorkOrderRoutings As InternalCollection
 
-		'<TableView(True, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")>
+		''<TableView(True, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")>
 		Public ReadOnly Property WorkOrderRoutings As InternalCollection
 			Get
 				Return If(myWorkOrderRoutings, New InternalCollection(Of WorkOrderRouting)(mappedWorkOrderRoutings))
@@ -160,7 +160,7 @@
 			End Select
 		End Sub
 #End Region
-		<Hidden>
+		'<Hidden>
 		Public ReadOnly Property AnAlwaysHiddenReadOnlyProperty() As String
 			Get
 				Return ""
@@ -171,7 +171,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

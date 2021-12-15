@@ -1,6 +1,6 @@
 ﻿Namespace AW.Types
 
-	<Bounded>
+	'<Bounded>
 	Partial Public Class StateProvince
 
 		Public Property StateProvinceID() As Integer
@@ -9,7 +9,7 @@
 		Friend mappedStateProvinceCode As String
 		Friend myStateProvinceCode As TextString
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property StateProvinceCode As TextString
 			Get
 				Return If(myStateProvinceCode, New TextString(mappedStateProvinceCode, Function(v) mappedStateProvinceCode = v))
@@ -30,7 +30,7 @@
 		Friend mappedIsOnlyStateProvinceFlag As Boolean
 		Friend myIsOnlyStateProvinceFlag As Logical
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property IsOnlyStateProvinceFlag As Logical
 			Get
 				Return If(myIsOnlyStateProvinceFlag, New Logical(mappedIsOnlyStateProvinceFlag, Function(v) mappedIsOnlyStateProvinceFlag = v))
@@ -51,7 +51,7 @@
 		Friend mappedName As String
 		Friend myName As TextString
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property Name As TextString
 			Get
 				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -80,7 +80,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

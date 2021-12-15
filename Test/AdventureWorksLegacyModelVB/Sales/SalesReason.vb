@@ -1,15 +1,15 @@
 ﻿Namespace AW.Types
 
-	<Bounded>
-	Partial Public Class SalesReason
-        '<Hidden>
+    '<Bounded>
+    Partial Public Class SalesReason
+        ''<Hidden>
         Public Property SalesReasonID() As Integer
 
 #Region "Name"
         Friend mappedName As String
         Friend myName As TextString
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -30,7 +30,7 @@
         Friend mappedReasonType As String
         Friend myReasonType As TextString
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property ReasonType As TextString
             Get
                 Return If(myReasonType, New TextString(mappedReasonType, Function(v) mappedReasonType = v))
@@ -51,7 +51,7 @@
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

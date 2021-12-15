@@ -3,29 +3,48 @@
 Namespace AW.Types
 
 	Partial Public Class CreditCard
-		'<Hidden>
+		''<Hidden>
 		Public Property CreditCardID() As Integer
 
-		'<Hidden>
+		''<Hidden>
 		Public Property CardType() As String = ""
 
-		'<Hidden>
+		''<Hidden>
 		Public Property CardNumber() As String = ""
 
-		'<Hidden>
+		''<Hidden>
 		Public Property ExpMonth() As Byte
 
-		'<Hidden>
+		''<Hidden>
 		Public Property ExpYear() As Short
 
-		<Named("Persons"), MemberOrder(5), TableView(False, NameOf(PersonCreditCard.Person))>
-		Public Overridable Property PersonLinks() As ICollection(Of PersonCreditCard) = New List(Of PersonCreditCard)()
+#Region "PersonLinks (Collection)"
+		Public Overridable Property mappedPersonLinks As ICollection(Of PersonCreditCard) = New List(Of PersonCreditCard)()
+
+		Private myPersonLinks As InternalCollection
+
+		'<TableView(False, NameOf(PersonCreditCard.Person))>
+		'<MemberOrder(5)>
+		Public ReadOnly Property PersonLinks As InternalCollection
+			Get
+				Return If(myPersonLinks, New InternalCollection(Of PersonCreditCard)(mappedPersonLinks))
+			End Get
+		End Property
+
+		Public Sub AboutPersonLinks(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+					a.Name = "Persons"
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

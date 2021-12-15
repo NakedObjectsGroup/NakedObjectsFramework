@@ -7,7 +7,7 @@
         Friend mappedDiagram As String
         Friend myDiagram As TextString
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property Diagram As TextString
             Get
                 Return If(myDiagram, New TextString(mappedDiagram, Function(v) mappedDiagram = v))
@@ -29,7 +29,7 @@
 
         Private myProductModelIllustration As InternalCollection
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property ProductModelIllustration As InternalCollection
             Get
                 Return If(myProductModelIllustration, New InternalCollection(Of ProductModelIllustration)(mappedProductModelIllustration))
@@ -48,7 +48,7 @@
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

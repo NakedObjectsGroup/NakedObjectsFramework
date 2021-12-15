@@ -1,16 +1,16 @@
 ﻿Namespace AW.Types
 
-	<Named("Sales Order")>
+	'<Named("Sales Order")>
 	Partial Public Class SalesOrderHeader
 
-		'<Hidden>
+		''<Hidden>
 		Public Property SalesOrderID() As Integer
 
 #Region "SalesOrderNumber"
 		Friend mappedSalesOrderNumber As String
 		Friend mySalesOrderNumber As TextString
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property SalesOrderNumber As TextString
 			Get
 				Return If(mySalesOrderNumber, New TextString(mappedSalesOrderNumber, Function(v) mappedSalesOrderNumber = v))
@@ -31,7 +31,7 @@
 		Friend mappedAddItemsFromCart As Boolean
 		Friend myAddItemsFromCart As Logical
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property AddItemsFromCart As Logical
 			Get
 				Return If(myAddItemsFromCart, New Logical(mappedAddItemsFromCart, Function(v) mappedAddItemsFromCart = v))
@@ -48,33 +48,33 @@
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property StatusByte() As Byte
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public Overridable ReadOnly Property Status() As TextString
 			Get
 				Return New TextString([Enum].GetName(GetType(OrderStatus), StatusByte))
 			End Get
 		End Property
 
-		'<Hidden>
+		''<Hidden>
 		Public Property CustomerID() As Integer
 
-		<MemberOrder(2)>
+		'<MemberOrder(2)>
 		Public Overridable Property Customer() As Customer
 
-		'<Hidden>
+		''<Hidden>
 		Public Property BillingAddressID() As Integer
 
-		<MemberOrder(4)>
+		'<MemberOrder(4)>
 		Public Overridable Property BillingAddress() As Address
 
 #Region "PurchaseOrderNumber"
 		Friend mappedPurchaseOrderNumber As String
 		Friend myPurchaseOrderNumber As TextString
 
-		<MemberOrder(5)>
+		'<MemberOrder(5)>
 		Public ReadOnly Property PurchaseOrderNumber As TextString
 			Get
 				Return If(myPurchaseOrderNumber, New TextString(mappedPurchaseOrderNumber, Function(v) mappedPurchaseOrderNumber = v))
@@ -91,23 +91,23 @@
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property ShippingAddressID() As Integer
 
-		<MemberOrder(10)>
+		'<MemberOrder(10)>
 		Public Overridable Property ShippingAddress() As Address
 
-		'<Hidden>
+		''<Hidden>
 		Public Property ShipMethodID() As Integer
 
-		<MemberOrder(11)>
+		'<MemberOrder(11)>
 		Public Overridable Property ShipMethod() As ShipMethod
 
 #Region "AccountNumber"
 		Friend mappedAccountNumber As String
 		Friend myAccountNumber As TextString
 
-		<MemberOrder(12)>
+		'<MemberOrder(12)>
 		Public ReadOnly Property AccountNumber As TextString
 			Get
 				Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
@@ -128,7 +128,7 @@
 		Friend mappedOrderDate As Date
 		Friend myOrderDate As NODate
 
-		<MemberOrder(20)>
+		'<MemberOrder(20)>
 		Public ReadOnly Property OrderDate As NODate
 			Get
 				Return If(myOrderDate, New NODate(mappedOrderDate, Function(v) mappedOrderDate = v))
@@ -149,7 +149,7 @@
 		Friend mappedDueDate As Date
 		Friend myDueDate As NODate
 
-		<MemberOrder(21)>
+		'<MemberOrder(21)>
 		Public ReadOnly Property DueDate As NODate
 			Get
 				Return If(myDueDate, New NODate(mappedDueDate, Function(v) mappedDueDate = v))
@@ -170,7 +170,7 @@
 		Friend mappedShipDate As Date?
 		Friend myShipDate As NODate
 
-		<MemberOrder(22)>
+		'<MemberOrder(22)>
 		Public ReadOnly Property ShipDate As NODate
 			Get
 				Return If(myShipDate, New NODate(mappedShipDate, Function(v) mappedShipDate = v))
@@ -191,7 +191,7 @@
 		Friend mappedSubTotal As Decimal
 		Friend mySubTotal As Money
 
-		<MemberOrder(31)>
+		'<MemberOrder(31)>
 		Public ReadOnly Property SubTotal As Money
 			Get
 				Return If(mySubTotal, New Money(mappedSubTotal, Function(v) mappedSubTotal = v))
@@ -212,7 +212,7 @@
 		Friend mappedTaxAmt As Decimal
 		Friend myTaxAmt As Money
 
-		<MemberOrder(32)>
+		'<MemberOrder(32)>
 		Public ReadOnly Property TaxAmt As Money
 			Get
 				Return If(myTaxAmt, New Money(mappedTaxAmt, Function(v) mappedTaxAmt = v))
@@ -233,7 +233,7 @@
 		Friend mappedFreight As Decimal
 		Friend myFreight As Money
 
-		<MemberOrder(33)>
+		'<MemberOrder(33)>
 		Public ReadOnly Property Freight As Money
 			Get
 				Return If(myFreight, New Money(mappedFreight, Function(v) mappedFreight = v))
@@ -254,7 +254,7 @@
 		Friend mappedTotalDue As Decimal
 		Friend myTotalDue As Money
 
-		<MemberOrder(34)>
+		'<MemberOrder(34)>
 		Public ReadOnly Property TotalDue As Money
 			Get
 				Return If(myTotalDue, New Money(mappedTotalDue, Function(v) mappedTotalDue = v))
@@ -271,17 +271,17 @@
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property CurrencyRateID() As Integer?
 
-		<MemberOrder(35)>
+		'<MemberOrder(35)>
 		Public Overridable Property CurrencyRate() As CurrencyRate
 
 #Region "OnlineOrder"
 		Friend mappedOnlineOrder As Boolean
 		Friend myOnlineOrder As Logical
 
-		<MemberOrder(41)>
+		'<MemberOrder(41)>
 		Public ReadOnly Property OnlineOrder As Logical
 			Get
 				Return If(myOnlineOrder, New Logical(mappedOnlineOrder, Function(v) mappedOnlineOrder = v))

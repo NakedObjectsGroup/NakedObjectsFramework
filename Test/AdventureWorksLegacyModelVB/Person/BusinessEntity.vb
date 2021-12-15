@@ -20,7 +20,7 @@
 
         Private myAddresses As InternalCollection
 
-        '<TableView(False, NameOf(BusinessEntityAddress.AddressType), NameOf(BusinessEntityAddress.Address))>
+        ''<TableView(False, NameOf(BusinessEntityAddress.AddressType), NameOf(BusinessEntityAddress.Address))>
         Public ReadOnly Property Addresses As InternalCollection
             Get
                 Return If(myAddresses, New InternalCollection(Of BusinessEntityAddress)(mappedAddresses))
@@ -39,7 +39,7 @@
 
         Private myContacts As InternalCollection
 
-        '<TableView(False, NameOf(BusinessEntityContact.ContactType), NameOf(BusinessEntityContact.Person))>
+        ''<TableView(False, NameOf(BusinessEntityContact.ContactType), NameOf(BusinessEntityContact.Person))>
         Public ReadOnly Property Contacts As InternalCollection
             Get
                 Return If(myContacts, New InternalCollection(Of BusinessEntityContact)(mappedContacts))

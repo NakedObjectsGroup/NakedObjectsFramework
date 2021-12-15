@@ -9,7 +9,7 @@ Namespace AW.Types
 		Friend mappedName As String
 		Friend myName As TextString
 
-		<MemberOrder(20)>
+		'<MemberOrder(20)>
 		Public ReadOnly Property Name As TextString
 			Get
 				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -27,11 +27,11 @@ Namespace AW.Types
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property Demographics() As String
 
 		'TODO: <MultiLine(10)>
-		<MemberOrder(30)>
+		'<MemberOrder(30)>
 		Public ReadOnly Property FormattedDemographics() As TextString
 			Get
 				Return New TextString("TODO") 'TODO Utilities.FormatXML(Demographics)
@@ -48,17 +48,17 @@ Namespace AW.Types
 			End Select
 		End Sub
 
-		'<Hidden>
+		''<Hidden>
 		Public Property SalesPersonID() As Integer?
 
-		<MemberOrder(40)>
+		'<MemberOrder(40)>
 		Public Overridable Property SalesPerson() As SalesPerson
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -73,7 +73,7 @@ Namespace AW.Types
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property rowguid() As Guid
 
 		Public Function Title() As Title

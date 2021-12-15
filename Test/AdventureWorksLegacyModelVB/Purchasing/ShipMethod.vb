@@ -1,6 +1,6 @@
 ﻿Namespace AW.Types
 
-	<Bounded>
+	'<Bounded>
 	Partial Public Class ShipMethod
 
 		Public Property ShipMethodID() As Integer
@@ -9,7 +9,7 @@
         Friend mappedName As String
         Friend myName As TextString
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -30,7 +30,7 @@
         Friend mappedShipBase As Decimal
         Friend myShipBase As Money
 
-        <MemberOrder(2)>
+        '<MemberOrder(2)>
         Public ReadOnly Property ShipBase As Money
             Get
                 Return If(myShipBase, New Money(mappedShipBase, Function(v) mappedShipBase = v))
@@ -51,7 +51,7 @@
         Friend mappedShipRate As Decimal
         Friend myShipRate As Money
 
-        <MemberOrder(3)>
+        '<MemberOrder(3)>
         Public ReadOnly Property ShipRate As Money
             Get
                 Return If(myShipRate, New Money(mappedShipRate, Function(v) mappedShipRate = v))
@@ -72,7 +72,7 @@
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

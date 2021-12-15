@@ -2,14 +2,14 @@
 
 	Partial Public Class SalesTerritoryHistory
 		'
-		<Hidden>
+		'<Hidden>
 		Public Property BusinessEntityID() As Integer
 
 #Region "StartDate"
 		Friend mappedStartDate As Date
 		Friend myStartDate As NODate
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public ReadOnly Property StartDate As NODate
 			Get
 				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
@@ -30,7 +30,7 @@
 		Friend mappedEndDate As Date?
 		Friend myEndDate As NODate
 
-		<MemberOrder(2)>
+		'<MemberOrder(2)>
 		Public ReadOnly Property EndDate As NODate
 			Get
 				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
@@ -47,20 +47,20 @@
 		End Sub
 #End Region
 
-		<MemberOrder(3)>
+		'<MemberOrder(3)>
 		Public Overridable Property SalesPerson() As SalesPerson
 
-		'<Hidden>
+		''<Hidden>
 		Public Property SalesTerritoryID() As Integer
 
-		<MemberOrder(4)>
+		'<MemberOrder(4)>
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -75,7 +75,7 @@
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property rowguid() As Guid
 
 		Public Function Title() As Title

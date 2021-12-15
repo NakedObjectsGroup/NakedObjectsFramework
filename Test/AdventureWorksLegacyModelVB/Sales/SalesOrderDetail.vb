@@ -2,17 +2,17 @@
 
 	Partial Public Class SalesOrderDetail
 
-		<Hidden>
+		'<Hidden>
 		Public Property SalesOrderID() As Integer
 
-		<Hidden>
+		'<Hidden>
 		Public Property SalesOrderDetailID() As Integer
 
 #Region "OrderQty"
 		Friend mappedOrderQty As Short
 		Friend myOrderQty As WholeNumber
 
-		<MemberOrder(15)>
+		'<MemberOrder(15)>
 		Public ReadOnly Property OrderQty As WholeNumber
 			Get
 				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
@@ -33,7 +33,7 @@
 		Friend mappedUnitPrice As Decimal
 		Friend myUnitPrice As Money
 
-		<MemberOrder(20)>
+		'<MemberOrder(20)>
 		Public ReadOnly Property UnitPrice As Money
 			Get
 				Return If(myUnitPrice, New Money(mappedUnitPrice, Function(v) mappedUnitPrice = v))
@@ -51,14 +51,14 @@
 #End Region
 
 		'TODO: Add Percentage valueholder
-		<Named("Discount %"), MemberOrder(30), Mask("P")>
+		'<Named("Discount %"), MemberOrder(30), Mask("P")>
 		Public Property UnitPriceDiscount() As Decimal
 
 #Region "LineTotal"
 		Friend mappedLineTotal As Decimal
 		Friend myLineTotal As Money
 
-		<MemberOrder(40)>
+		'<MemberOrder(40)>
 		Public ReadOnly Property LineTotal As Money
 			Get
 				Return If(myLineTotal, New Money(mappedLineTotal, Function(v) mappedLineTotal = v))
@@ -79,7 +79,7 @@
 		Friend mappedCarrierTrackingNumber As String
 		Friend myCarrierTrackingNumber As TextString
 
-		<MemberOrder(50)>
+		'<MemberOrder(50)>
 		Public ReadOnly Property CarrierTrackingNumber As TextString
 			Get
 				Return If(myCarrierTrackingNumber, New TextString(mappedCarrierTrackingNumber, Function(v) mappedCarrierTrackingNumber = v))
@@ -96,26 +96,26 @@
 		End Sub
 #End Region
 
-		<Hidden>
+		'<Hidden>
 		Public Overridable Property SalesOrderHeader() As SalesOrderHeader
 
-		<Hidden>
+		'<Hidden>
 		Public Property SpecialOfferID() As Integer
 
-		<Hidden>
+		'<Hidden>
 		Public Property ProductID() As Integer
 
-		<Hidden>
+		'<Hidden>
 		Public Overridable Property SpecialOfferProduct() As SpecialOfferProduct
 
-		<MemberOrder(11)>
+		'<MemberOrder(11)>
 		Public Overridable ReadOnly Property Product() As Product
 			Get
 				Return SpecialOfferProduct.Product
 			End Get
 		End Property
 
-		<MemberOrder(12)>
+		'<MemberOrder(12)>
 		Public Overridable ReadOnly Property SpecialOffer() As SpecialOffer
 			Get
 				Return SpecialOfferProduct.SpecialOffer
@@ -127,7 +127,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -142,7 +142,7 @@
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property rowguid() As Guid
 
 		Public Function Title() As Title

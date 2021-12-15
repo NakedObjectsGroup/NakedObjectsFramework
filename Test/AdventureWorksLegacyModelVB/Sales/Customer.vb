@@ -3,10 +3,10 @@
 Namespace AW.Types
 
 	Partial Public Class Customer
-		'<Hidden>
+		''<Hidden>
 		Public Property CustomerID() As Integer
 
-		<MemberOrder(15)>
+		'<MemberOrder(15)>
 		Public ReadOnly Property CustomerType() As TextString
 			Get
 				Return New TextString("TODO") 'TODO If(Me.IsIndividual(), "Individual", "Store")
@@ -17,7 +17,7 @@ Namespace AW.Types
 		Friend mappedAccountNumber As String
 		Friend myAccountNumber As TextString
 
-		<MemberOrder(10)>
+		'<MemberOrder(10)>
 		Public ReadOnly Property AccountNumber As TextString
 			Get
 				Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
@@ -34,10 +34,10 @@ Namespace AW.Types
 		End Sub
 #End Region
 
-		<Hidden>
+		'<Hidden>
 		Public Property CustomerModifiedDate() As DateTime
 
-		<Hidden>
+		'<Hidden>
 		Public Property CustomerRowguid() As Guid
 
 		Public Function Title() As Title
@@ -46,26 +46,26 @@ Namespace AW.Types
 
 #Region "Store & Personal customers"
 
-		'<Hidden>
+		''<Hidden>
 		Public Property StoreID() As Integer?
 
-		<MemberOrder(20)>
+		'<MemberOrder(20)>
 		Public Overridable Property Store() As Store
 
-		'<Hidden>
+		''<Hidden>
 		Public Property PersonID() As Integer?
 
-		<MemberOrder(20)>
+		'<MemberOrder(20)>
 		Public Overridable Property Person() As Person
 
 #End Region
 
 #Region "Sales Territory"
 
-		'<Hidden>
+		''<Hidden>
 		Public Property SalesTerritoryID() As Integer?
 
-		<MemberOrder(30)>
+		'<MemberOrder(30)>
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
 #End Region

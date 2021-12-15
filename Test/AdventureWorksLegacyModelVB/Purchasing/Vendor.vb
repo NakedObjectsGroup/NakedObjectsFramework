@@ -6,7 +6,7 @@
         Friend mappedAccountNumber As String
         Friend myAccountNumber As TextString
 
-        <MemberOrder(10)>
+        '<MemberOrder(10)>
         Public ReadOnly Property AccountNumber As TextString
             Get
                 Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
@@ -27,7 +27,7 @@
         Friend mappedName As String
         Friend myName As TextString
 
-        <MemberOrder(20)>
+        '<MemberOrder(20)>
         Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -48,7 +48,7 @@
         Friend mappedCreditRating As Byte
         Friend myCreditRating As WholeNumber
 
-        <MemberOrder(30)>
+        '<MemberOrder(30)>
         Public ReadOnly Property CreditRating As WholeNumber
             Get
                 Return If(myCreditRating, New WholeNumber(mappedCreditRating, Function(v) mappedCreditRating = v))
@@ -69,7 +69,7 @@
         Friend mappedPreferredVendorStatus As Boolean
         Friend myPreferredVendorStatus As Logical
 
-        <MemberOrder(40)>
+        '<MemberOrder(40)>
         Public ReadOnly Property PreferredVendorStatus As Logical
             Get
                 Return If(myPreferredVendorStatus, New Logical(mappedPreferredVendorStatus, Function(v) mappedPreferredVendorStatus = v))
@@ -90,7 +90,7 @@
         Friend mappedActiveFlag As Boolean
         Friend myActiveFlag As Logical
 
-        <MemberOrder(50)>
+        '<MemberOrder(50)>
         Public ReadOnly Property ActiveFlag As Logical
             Get
                 Return If(myActiveFlag, New Logical(mappedActiveFlag, Function(v) mappedActiveFlag = v))
@@ -111,7 +111,7 @@
         Friend mappedPurchasingWebServiceURL As String
         Friend myPurchasingWebServiceURL As TextString
 
-        <MemberOrder(60)>
+        '<MemberOrder(60)>
         Public ReadOnly Property PurchasingWebServiceURL As TextString
             Get
                 Return If(myPurchasingWebServiceURL, New TextString(mappedPurchasingWebServiceURL, Function(v) mappedPurchasingWebServiceURL = v))
@@ -133,7 +133,7 @@
 
         Private myProducts As InternalCollection
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property Products As InternalCollection
             Get
                 Return If(myProducts, New InternalCollection(Of ProductVendor)(mappedProducts))
@@ -152,7 +152,7 @@
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -167,7 +167,7 @@
         End Sub
 #End Region
 
-        <Hidden>
+        '<Hidden>
         Public Property BusinessEntityID() As Integer
 
 

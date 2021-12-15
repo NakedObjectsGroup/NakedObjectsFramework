@@ -9,7 +9,7 @@ Namespace AW.Types
 			Me.Customers = customers
 		End Sub
 
-		<Hidden>
+		'<Hidden>
 		Public Property Customers() As IList(Of Customer)
 	End Class
 End Namespace

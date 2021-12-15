@@ -1,22 +1,22 @@
 ﻿Namespace AW.Types
 
-	<Named("Reason")>
-	Partial Public Class SalesOrderHeaderSalesReason
-		'<Hidden>
-		Public Property SalesOrderID() As Integer
+    '<Named("Reason")>
+    Partial Public Class SalesOrderHeaderSalesReason
+        ''<Hidden>
+        Public Property SalesOrderID() As Integer
 
-		'<Hidden>
-		Public Property SalesReasonID() As Integer
+        ''<Hidden>
+        Public Property SalesReasonID() As Integer
 
-		Public Overridable Property SalesOrderHeader() As SalesOrderHeader
+        Public Overridable Property SalesOrderHeader() As SalesOrderHeader
 
-		Public Overridable Property SalesReason() As SalesReason
+        Public Overridable Property SalesReason() As SalesReason
 
 #Region "ModifiedDate"
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

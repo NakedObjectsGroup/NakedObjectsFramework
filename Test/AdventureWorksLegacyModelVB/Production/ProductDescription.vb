@@ -10,7 +10,7 @@ Namespace AW.Types
         Friend mappedDescription As String
         Friend myDescription As MultiLineTextString
 
-        <MemberOrder(2)>
+        '<MemberOrder(2)>
         Public ReadOnly Property Description As TextString
             Get
                 Return If(myDescription, New MultiLineTextString(mappedDescription, Function(v) mappedDescription = v))
@@ -31,7 +31,7 @@ Namespace AW.Types
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

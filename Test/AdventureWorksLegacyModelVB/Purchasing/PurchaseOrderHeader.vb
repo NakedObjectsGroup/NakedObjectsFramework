@@ -2,14 +2,14 @@
 
 	Partial Public Class PurchaseOrderHeader
 
-		'<Hidden>
+		''<Hidden>
 		Public Property PurchaseOrderID() As Integer
 
 #Region "RevisionNumber"
 		Friend mappedRevisionNumber As Byte
 		Friend myRevisionNumber As WholeNumber
 
-		<MemberOrder(90)>
+		'<MemberOrder(90)>
 		Public ReadOnly Property RevisionNumber As WholeNumber
 			Get
 				Return If(myRevisionNumber, New WholeNumber(mappedRevisionNumber, Function(v) mappedRevisionNumber = v))
@@ -26,10 +26,10 @@
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property ShipMethodID() As Integer
 
-		<MemberOrder(22)>
+		'<MemberOrder(22)>
 		Public Overridable Property ShipMethod() As ShipMethod
 
 #Region "Details (Collection)"
@@ -37,8 +37,8 @@
 
 		Private myDetails As InternalCollection
 
-		<TableView(True, "OrderQty", "Product", "UnitPrice", "LineTotal")>
-		<MemberOrder(1)>
+		'''<TableView(True, "OrderQty", "Product", "UnitPrice", "LineTotal")>
+		'<MemberOrder(1)>
 		Public ReadOnly Property Details As InternalCollection
 			Get
 				Return If(myDetails, New InternalCollection(Of PurchaseOrderDetail)(mappedDetails))
@@ -53,13 +53,13 @@
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property VendorID() As Integer
 
-		<MemberOrder(1)>
+		'<MemberOrder(1)>
 		Public Overridable Property Vendor() As Vendor
 
-		'<Hidden>
+		''<Hidden>
 		Public Property Status() As Byte
 
 		Public ReadOnly Property StatusAsEnum As TextString
@@ -79,7 +79,7 @@
 		Friend mappedOrderDate As DateTime
 		Friend myOrderDate As NODate
 
-		<MemberOrder(11)>
+		'<MemberOrder(11)>
 		Public ReadOnly Property OrderDate As TextString
 			Get
 				Return If(myOrderDate, New TextString(mappedOrderDate, Function(v) mappedOrderDate = v))
@@ -100,7 +100,7 @@
 		Friend mappedShipDate As DateTime?
 		Friend myShipDate As NODate
 
-		<MemberOrder(20)>
+		'<MemberOrder(20)>
 		Public ReadOnly Property ShipDate As NODate
 			Get
 				Return If(myShipDate, New NODate(mappedShipDate, Function(v) mappedShipDate = v))
@@ -121,7 +121,7 @@
 		Friend mappedSubTotal As Decimal
 		Friend mySubTotal As Money
 
-		<MemberOrder(31)>
+		'<MemberOrder(31)>
 		Public ReadOnly Property SubTotal As Money
 			Get
 				Return If(mySubTotal, New Money(mappedSubTotal, Function(v) mappedSubTotal = v))
@@ -142,7 +142,7 @@
 		Friend mappedTaxAmt As Decimal
 		Friend myTaxAmt As Money
 
-		<MemberOrder(32)>
+		'<MemberOrder(32)>
 		Public ReadOnly Property TaxAmt As Money
 			Get
 				Return If(myTaxAmt, New Money(mappedTaxAmt, Function(v) mappedTaxAmt = v))
@@ -163,7 +163,7 @@
 		Friend mappedFreight As Decimal
 		Friend myFreight As Money
 
-		<MemberOrder(33)>
+		'<MemberOrder(33)>
 		Public ReadOnly Property Freight As Money
 			Get
 				Return If(myFreight, New Money(mappedFreight, Function(v) mappedFreight = v))
@@ -184,7 +184,7 @@
 		Friend mappedTotalDue As Decimal
 		Friend myTotalDue As Money
 
-		<MemberOrder(34)>
+		'<MemberOrder(34)>
 		Public ReadOnly Property TotalDue As Money
 			Get
 				Return If(myTotalDue, New Money(mappedTotalDue, Function(v) mappedTotalDue = v))
@@ -201,17 +201,17 @@
 		End Sub
 #End Region
 
-		'<Hidden>
+		''<Hidden>
 		Public Property OrderPlacedByID() As Integer
 
-		<MemberOrder(12)>
+		'<MemberOrder(12)>
 		Public Overridable Property OrderPlacedBy() As Employee
 
 #Region "ModifiedDate"
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		'<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

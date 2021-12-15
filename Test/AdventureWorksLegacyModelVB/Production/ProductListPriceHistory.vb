@@ -8,7 +8,7 @@
         Friend mappedStartDate As Date
         Friend myStartDate As NODate
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property StartDate As NODate
             Get
                 Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
@@ -29,7 +29,7 @@
         Friend mappedEndDate As Date?
         Friend myEndDate As NODate
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property EndDate As NODate
             Get
                 Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
@@ -50,7 +50,7 @@
         Friend mappedListPrice As Decimal
         Friend myListPrice As Money
 
-        <MemberOrder(1)>
+        '<MemberOrder(1)>
         Public ReadOnly Property ListPrice As Money
             Get
                 Return If(myListPrice, New Money(mappedListPrice, Function(v) mappedListPrice = v))
@@ -73,7 +73,7 @@
         Friend mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        '<MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
