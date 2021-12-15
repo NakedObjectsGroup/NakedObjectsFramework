@@ -2,7 +2,7 @@
 
 	Partial Public Class SalesPerson
 
-		<Hidden>
+		'<Hidden>
 		Public Property BusinessEntityID() As Integer
 
 		<MemberOrder(10)>
@@ -15,44 +15,165 @@
 			End Get
 		End Property
 
-		<Hidden>
+		'<Hidden>
 		Public Property SalesTerritoryID() As Integer?
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual SalesTerritory? SalesTerritory {get;set;}
 		<MemberOrder(20)>
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
-		<MemberOrder(30), Mask("C")>
-		Public Property SalesQuota() As Decimal?
+#Region "SalesQuota"
+		Friend mappedSalesQuota As Decimal?
+		Friend mySalesQuota As Money
 
-		<MemberOrder(40), Mask("C")>
-		Public Property Bonus() As Decimal
+		<MemberOrder(30)>
+		Public ReadOnly Property SalesQuota As Money
+			Get
+				Return If(mySalesQuota, New Money(mappedSalesQuota, Function(v) mappedSalesQuota = v))
+			End Get
+		End Property
+
+		Public Sub AboutSalesQuota(a As FieldAbout, SalesQuota As Money)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "Bonus"
+		Friend mappedBonus As Decimal
+		Friend myBonus As Money
+
+		<MemberOrder(40)>
+		Public ReadOnly Property Bonus As Money
+			Get
+				Return If(myBonus, New Money(mappedBonus, Function(v) mappedBonus = v))
+			End Get
+		End Property
+
+		Public Sub AboutBonus(a As FieldAbout, Bonus As Money)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 		<MemberOrder(50)>
-		<Mask("P")>
-		Public Property CommissionPct() As Decimal
+		Public Property CommissionPct() As Decimal 'TODO: add Percentage type
 
-		<MemberOrder(60), Mask("C")>
-		Public Property SalesYTD() As Decimal
+#Region "SalesYTD"
+		Friend mappedSalesYTD As Decimal
+		Friend mySalesYTD As Money
 
-		<MemberOrder(70), Mask("C")>
-		Public Property SalesLastYear() As Decimal
+		<MemberOrder(60)>
+		Public ReadOnly Property SalesYTD As Money
+			Get
+				Return If(mySalesYTD, New Money(mappedSalesYTD, Function(v) mappedSalesYTD = v))
+			End Get
+		End Property
 
-		<TableView(False, "QuotaDate", "SalesQuota")>
-		Public Overridable Property QuotaHistory() As ICollection(Of SalesPersonQuotaHistory) = New List(Of SalesPersonQuotaHistory)()
+		Public Sub AboutSalesYTD(a As FieldAbout, SalesYTD As Money)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
-		<TableView(False, "StartDate", "EndDate", "SalesTerritory")>
-		Public Overridable Property TerritoryHistory() As ICollection(Of SalesTerritoryHistory) = New List(Of SalesTerritoryHistory)()
+#Region "SalesLastYear"
+		Friend mappedSalesLastYear As Decimal
+		Friend mySalesLastYear As Money
+
+		<MemberOrder(70)>
+		Public ReadOnly Property SalesLastYear As Money
+			Get
+				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Function(v) mappedSalesLastYear = v))
+			End Get
+		End Property
+
+		Public Sub AboutSalesLastYear(a As FieldAbout, SalesLastYear As Money)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "QuotaHistory (Collection)"
+		Public Overridable Property mappedQuotaHistory As ICollection(Of SalesPersonQuotaHistory) = New List(Of SalesPersonQuotaHistory)()
+
+		Private myQuotaHistory As InternalCollection
+
+		'<TableView(False, "QuotaDate", "SalesQuota")>
+		<MemberOrder(1)>
+		Public ReadOnly Property QuotaHistory As InternalCollection
+			Get
+				Return If(myQuotaHistory, New InternalCollection(Of SalesPersonQuotaHistory)(mappedQuotaHistory))
+			End Get
+		End Property
+
+		Public Sub AboutQuotaHistory(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "TerritoryHistory (Collection)"
+		Public Overridable Property mappedTerritoryHistory As ICollection(Of SalesTerritoryHistory) = New List(Of SalesTerritoryHistory)()
+
+		Private myTerritoryHistory As InternalCollection
+
+		'		<TableView(False, "StartDate", "EndDate", "SalesTerritory")>
+		<MemberOrder(1)>
+		Public ReadOnly Property TerritoryHistory As InternalCollection
+			Get
+				Return If(myTerritoryHistory, New InternalCollection(Of SalesTerritoryHistory)(mappedTerritoryHistory))
+			End Get
+		End Property
+
+		Public Sub AboutTerritoryHistory(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+		Public ReadOnly Property ModifiedDate As TimeStamp
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
 
-		<Hidden>
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
+
+		'<Hidden>
 		Public Property rowguid() As Guid
 
-		Public Overrides Function ToString() As String
-			Return $"{EmployeeDetails}"
+		Public Function Title() As Title
+			Return New Title(EmployeeDetails)
 		End Function
 	End Class
 End Namespace

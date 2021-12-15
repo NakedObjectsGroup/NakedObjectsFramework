@@ -4,24 +4,78 @@
 		<Hidden>
 		Public Property SalesTaxRateID() As Integer
 
-		Public Property TaxType() As Byte
+#Region "TaxType"
+        Friend mappedTaxType As Byte
+        Friend myTaxType As WholeNumber
 
-		Public Property TaxRate() As Decimal
+        <MemberOrder(1)>
+        Public ReadOnly Property TaxType As WholeNumber
+            Get
+                Return If(myTaxType, New WholeNumber(mappedTaxType, Function(v) mappedTaxType = v))
+            End Get
+        End Property
 
-		Public Property Name() As String = ""
+        Public Sub AboutTaxType(a As FieldAbout, TaxType As WholeNumber)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
 
-		<Hidden>
-		Public Property StateProvinceID() As Integer
+        Public Property TaxRate() As Decimal 'TODO: New valueholder
+
+#Region "Name"
+        Friend mappedName As String
+        Friend myName As TextString
+
+        <MemberOrder(1)>
+        Public ReadOnly Property Name As TextString
+            Get
+                Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+            End Get
+        End Property
+
+        Public Sub AboutName(a As FieldAbout, Name As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
+        '<Hidden>
+        Public Property StateProvinceID() As Integer
 
 		Public Overridable Property StateProvince() As StateProvince
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+#Region "ModifiedDate"
+        Friend mappedModifiedDate As Date
+        Friend myModifiedDate As TimeStamp
 
-		Public Property rowguid() As Guid
+        <MemberOrder(99)>
+        Public ReadOnly Property ModifiedDate As TimeStamp
+            Get
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+            End Get
+        End Property
 
-		Public Overrides Function ToString() As String
-			Return $"Sales Tax Rate for {StateProvince}"
-		End Function
-	End Class
+        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+        Public Property rowguid() As Guid
+
+        Public Function Title() As Title
+            Return New Title($"Sales Tax Rate for {StateProvince}")
+        End Function
+    End Class
 End Namespace

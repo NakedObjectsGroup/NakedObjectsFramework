@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
-	<Bounded, PresentationHint("Topaz")>
-	Partial Public Class Location
+    <Bounded>
+    Partial Public Class Location
 		<Hidden>
 		Public Property LocationID() As Short
 

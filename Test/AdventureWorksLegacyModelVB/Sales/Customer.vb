@@ -3,19 +3,36 @@
 Namespace AW.Types
 
 	Partial Public Class Customer
-		<Hidden>
+		'<Hidden>
 		Public Property CustomerID() As Integer
 
 		<MemberOrder(15)>
-		Public ReadOnly Property CustomerType() As String
+		Public ReadOnly Property CustomerType() As TextString
 			Get
-				Return Nothing 'If(Me.IsIndividual(), "Individual", "Store")
+				Return New TextString("TODO") 'TODO If(Me.IsIndividual(), "Individual", "Store")
 			End Get
 		End Property
 
-		<DescribedAs("xxx")>
+#Region "AccountNumber"
+		Friend mappedAccountNumber As String
+		Friend myAccountNumber As TextString
+
 		<MemberOrder(10)>
-		Public Property AccountNumber() As String = ""
+		Public ReadOnly Property AccountNumber As TextString
+			Get
+				Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
+			End Get
+		End Property
+
+		Public Sub AboutAccountNumber(a As FieldAbout, AccountNumber As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 		<Hidden>
 		Public Property CustomerModifiedDate() As DateTime
@@ -23,25 +40,21 @@ Namespace AW.Types
 		<Hidden>
 		Public Property CustomerRowguid() As Guid
 
-		Public Overrides Function ToString() As String
-			Return $"{AccountNumber} {(If(Store Is Nothing, Person, Store))}"
+		Public Function Title() As Title
+			Return New Title($"{AccountNumber} {(If(Store Is Nothing, Person, Store))}")
 		End Function
 
 #Region "Store & Personal customers"
 
-		<Hidden>
+		'<Hidden>
 		Public Property StoreID() As Integer?
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual Store? Store {get;set;}
 		<MemberOrder(20)>
 		Public Overridable Property Store() As Store
 
-		<Hidden>
+		'<Hidden>
 		Public Property PersonID() As Integer?
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual Person? Person {get;set;}
 		<MemberOrder(20)>
 		Public Overridable Property Person() As Person
 
@@ -49,11 +62,9 @@ Namespace AW.Types
 
 #Region "Sales Territory"
 
-		<Hidden>
+		'<Hidden>
 		Public Property SalesTerritoryID() As Integer?
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public virtual SalesTerritory? SalesTerritory {get;set;}
 		<MemberOrder(30)>
 		Public Overridable Property SalesTerritory() As SalesTerritory
 

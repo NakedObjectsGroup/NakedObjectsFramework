@@ -3,31 +3,45 @@
 Namespace AW.Types
 
 	Partial Public Class CreditCard
-		<Hidden>
+		'<Hidden>
 		Public Property CreditCardID() As Integer
 
-		<Hidden>
+		'<Hidden>
 		Public Property CardType() As String = ""
 
-		<Hidden>
+		'<Hidden>
 		Public Property CardNumber() As String = ""
 
-		<Hidden>
+		'<Hidden>
 		Public Property ExpMonth() As Byte
 
-		<Hidden>
+		'<Hidden>
 		Public Property ExpYear() As Short
 
 		<Named("Persons"), MemberOrder(5), TableView(False, NameOf(PersonCreditCard.Person))>
 		Public Overridable Property PersonLinks() As ICollection(Of PersonCreditCard) = New List(Of PersonCreditCard)()
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+#Region "ModifiedDate"
+		Friend mappedModifiedDate As Date
+		Friend myModifiedDate As TimeStamp
 
-		'INSTANT VB WARNING: Nullable reference types have no equivalent in VB:
-		'ORIGINAL LINE: public override string? ToString()
-		Public Overrides Function ToString() As String
-			Return "" 'CreditCard_Functions.ObfuscatedNumber(Me)
+		<MemberOrder(99)>
+		Public ReadOnly Property ModifiedDate As TimeStamp
+			Get
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+			End Get
+		End Property
+
+		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Usable
+					a.Usable = False
+			End Select
+		End Sub
+#End Region
+
+		Public Function Title() As Title
+			Return New Title("TODO - Title") 'CreditCard_Functions.ObfuscatedNumber(Me)
 		End Function
 	End Class
 End Namespace

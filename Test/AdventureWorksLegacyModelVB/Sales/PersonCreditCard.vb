@@ -11,11 +11,27 @@
 
 		Public Overridable Property CreditCard() As CreditCard
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+#Region "ModifiedDate"
+        Friend mappedModifiedDate As Date
+        Friend myModifiedDate As TimeStamp
 
-		Public Overrides Function ToString() As String
-			Return $"PersonCreditCard: {PersonID}-{CreditCardID}"
-		End Function
-	End Class
+        <MemberOrder(99)>
+        Public ReadOnly Property ModifiedDate As TimeStamp
+            Get
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+            End Get
+        End Property
+
+        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+        Public Function Title() As Title
+            Return New Title($"PersonCreditCard: {PersonID}-{CreditCardID}")
+        End Function
+    End Class
 End Namespace

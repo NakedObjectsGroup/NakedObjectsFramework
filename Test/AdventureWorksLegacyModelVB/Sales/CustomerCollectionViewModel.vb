@@ -2,6 +2,7 @@
 
 Namespace AW.Types
 
+	'TODO
 	'<ViewModel(GetType(CustomerCollectionViewModel_Functions))>
 	Partial Public Class CustomerCollectionViewModel
 		Public Sub New(ByVal customers As IList(Of Customer))

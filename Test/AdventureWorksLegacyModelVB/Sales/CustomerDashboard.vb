@@ -2,6 +2,7 @@
 
 Namespace AW.Types
 
+	'TODO
 	'<ViewModel(GetType(CustomerDashboard_Functions))>
 	Partial Public Class CustomerDashboard
 		<Hidden>

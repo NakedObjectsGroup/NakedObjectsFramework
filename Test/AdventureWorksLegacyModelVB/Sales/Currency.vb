@@ -11,8 +11,8 @@
 		<Hidden>
 		Public Property ModifiedDate() As DateTime
 
-		Public Overrides Function ToString() As String
-			Return $"{CurrencyCode} - {Name}"
+		Public Function Title() As Title
+			Return New Title($"{CurrencyCode} - {Name}")
 		End Function
 	End Class
 End Namespace

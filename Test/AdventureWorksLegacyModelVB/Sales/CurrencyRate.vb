@@ -1,30 +1,103 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class CurrencyRate
-		<Hidden>
+		'<Hidden>
 		Public Property CurrencyRateID() As Integer
 
-		Public Property CurrencyRateDate() As DateTime
+#Region "CurrencyRateDate"
+        Friend mappedCurrencyRateDate As Date
+        Friend myCurrencyRateDate As NODate
 
-		Public Property AverageRate() As Decimal
+        <MemberOrder(1)>
+        Public ReadOnly Property CurrencyRateDate As NODate
+            Get
+                Return If(myCurrencyRateDate, New NODate(mappedCurrencyRateDate, Function(v) mappedCurrencyRateDate = v))
+            End Get
+        End Property
 
-		Public Property EndOfDayRate() As Decimal
+        Public Sub AboutCurrencyRateDate(a As FieldAbout, CurrencyRateDate As NODate)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
 
-		<Hidden>
-		Public Property FromCurrencyCode() As String = ""
+#Region "AverageRate"
+        Friend mappedAverageRate As Decimal
+        Friend myAverageRate As Money
 
-		Public Overridable Property Currency() As Currency
+        <MemberOrder(1)>
+        Public ReadOnly Property AverageRate As Money
+            Get
+                Return If(myAverageRate, New Money(mappedAverageRate, Function(v) mappedAverageRate = v))
+            End Get
+        End Property
 
-		<Hidden>
-		Public Property ToCurrencyCode() As String = ""
+        Public Sub AboutAverageRate(a As FieldAbout, AverageRate As Money)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
 
-		Public Overridable Property Currency1() As Currency
+#Region "EndOfDayRate"
+        Friend mappedEndOfDayRate As Decimal
+        Friend myEndOfDayRate As Money
 
-		<MemberOrder(99)>
-		Public Property ModifiedDate() As DateTime
+        <MemberOrder(1)>
+        Public ReadOnly Property EndOfDayRate As Money
+            Get
+                Return If(myEndOfDayRate, New Money(mappedEndOfDayRate, Function(v) mappedEndOfDayRate = v))
+            End Get
+        End Property
 
-		Public Overrides Function ToString() As String
-			Return $"{AverageRate}"
-		End Function
-	End Class
+        Public Sub AboutEndOfDayRate(a As FieldAbout, EndOfDayRate As Money)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
+        '<Hidden>
+        Public Property FromCurrencyCode() As String
+
+        Public Overridable Property Currency() As Currency
+
+        '<Hidden>
+        Public Property ToCurrencyCode() As String
+
+        Public Overridable Property Currency1() As Currency
+
+#Region "ModifiedDate"
+        Friend mappedModifiedDate As Date
+        Friend myModifiedDate As TimeStamp
+
+        <MemberOrder(99)>
+        Public ReadOnly Property ModifiedDate As TimeStamp
+            Get
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+            End Get
+        End Property
+
+        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+        Public Function Title() As Title
+            Return New Title(AverageRate)
+        End Function
+    End Class
 End Namespace

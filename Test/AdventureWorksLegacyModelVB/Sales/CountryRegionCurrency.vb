@@ -9,11 +9,28 @@
 
 		Public Overridable Property Currency() As Currency
 
-		
-		Public Property ModifiedDate() As DateTime
 
-		Public Overrides Function ToString() As String
-			Return $"CountryRegionCurrency: {CountryRegion} {Currency}"
-		End Function
-	End Class
+#Region "ModifiedDate"
+        Friend mappedModifiedDate As Date
+        Friend myModifiedDate As TimeStamp
+
+        <MemberOrder(99)>
+        Public ReadOnly Property ModifiedDate As TimeStamp
+            Get
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+            End Get
+        End Property
+
+        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Usable
+                    a.Usable = False
+            End Select
+        End Sub
+#End Region
+
+        Public Function Title() As Title
+            Return New Title($"CountryRegionCurrency: {CountryRegion} {Currency}")
+        End Function
+    End Class
 End Namespace
