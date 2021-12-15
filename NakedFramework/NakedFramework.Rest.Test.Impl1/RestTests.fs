@@ -12,6 +12,7 @@ open System
 open System.Linq;
 open RestfulObjects.Test.Data
 open RestfulObjects.Test.Data.Context
+open RestfulObjects.Test.Data.Wrapper
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
 open Microsoft.Extensions.Configuration

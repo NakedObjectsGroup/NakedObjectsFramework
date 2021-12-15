@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using NakedFramework;
 using NakedObjects;
+using RestfulObjects.Test.Data.Wrapper;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

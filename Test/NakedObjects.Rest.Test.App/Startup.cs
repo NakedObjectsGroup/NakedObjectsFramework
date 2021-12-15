@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -13,11 +14,12 @@ using Microsoft.Extensions.Hosting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EF6.Extensions;
-using NakedFramework.Persistor.EFCore.Extensions;
+//using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using RestfulObjects.Test.Data;
+using RestfulObjects.Test.Data.Wrapper;
 
 namespace NakedObjects.Rest.Test.App {
     public class Startup {
@@ -55,6 +57,7 @@ namespace NakedObjects.Rest.Test.App {
                     options.NoValidate = true;
                 });
                 builder.Services.AddTransient<ITypeCodeMapper, TestTypeCodeMapper>();
+                builder.SupportedSystemTypes = t => t.Append(typeof(SetWrapper<>)).ToArray();
             });
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
