@@ -1,58 +1,207 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class PurchaseOrderHeader
-		
 
-		<Hidden>
+		'<Hidden>
 		Public Property PurchaseOrderID() As Integer
 
-		<MemberOrder(90)>
-		Public Property RevisionNumber() As Byte
+#Region "RevisionNumber"
+		Friend mappedRevisionNumber As Byte
+		Friend myRevisionNumber As WholeNumber
 
-		<Hidden>
+		<MemberOrder(90)>
+		Public ReadOnly Property RevisionNumber As WholeNumber
+			Get
+				Return If(myRevisionNumber, New WholeNumber(mappedRevisionNumber, Function(v) mappedRevisionNumber = v))
+			End Get
+		End Property
+
+		Public Sub AboutRevisionNumber(a As FieldAbout, RevisionNumber As WholeNumber)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+		'<Hidden>
 		Public Property ShipMethodID() As Integer
 
 		<MemberOrder(22)>
 		Public Overridable Property ShipMethod() As ShipMethod
 
-		<TableView(True, "OrderQty", "Product", "UnitPrice", "LineTotal")>
-		Public Overridable Property Details() As ICollection(Of PurchaseOrderDetail)
+#Region "Details (Collection)"
+		Public Overridable Property mappedDetails As ICollection(Of PurchaseOrderDetail) = New List(Of PurchaseOrderDetail)()
 
-		<Hidden>
+		Private myDetails As InternalCollection
+
+		<TableView(True, "OrderQty", "Product", "UnitPrice", "LineTotal")>
+		<MemberOrder(1)>
+		Public ReadOnly Property Details As InternalCollection
+			Get
+				Return If(myDetails, New InternalCollection(Of PurchaseOrderDetail)(mappedDetails))
+			End Get
+		End Property
+
+		Public Sub AboutDetails(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+		'<Hidden>
 		Public Property VendorID() As Integer
 
 		<MemberOrder(1)>
 		Public Overridable Property Vendor() As Vendor
 
-		<Hidden>
+		'<Hidden>
 		Public Property Status() As Byte
 
-		<Named("Status"), MemberOrder(1)>
-		Public Overridable ReadOnly Property StatusAsEnum() As POStatus
+		Public ReadOnly Property StatusAsEnum As TextString
 			Get
-				Return CType(Status, POStatus)
+				Return New TextString([Enum].GetName(GetType(POStatus), Status))
 			End Get
 		End Property
 
-		<MemberOrder(11), Mask("d")>
-		Public Property OrderDate() As DateTime
+		Public Sub AboutStatusAsEnum(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+					a.Name = "Status"
+			End Select
+		End Sub
 
-		<MemberOrder(20), Mask("d")>
-		Public Property ShipDate() As DateTime?
+#Region "OrderDate"
+		Friend mappedOrderDate As DateTime
+		Friend myOrderDate As NODate
 
-		<MemberOrder(31), Mask("C")>
-		Public Property SubTotal() As Decimal
+		<MemberOrder(11)>
+		Public ReadOnly Property OrderDate As TextString
+			Get
+				Return If(myOrderDate, New TextString(mappedOrderDate, Function(v) mappedOrderDate = v))
+			End Get
+		End Property
 
-		<MemberOrder(32), Mask("C")>
-		Public Property TaxAmt() As Decimal
+		Public Sub AboutOrderDate(a As FieldAbout, OrderDate As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
-		<MemberOrder(33), Mask("C")>
-		Public Property Freight() As Decimal
+#Region "ShipDate"
+		Friend mappedShipDate As DateTime?
+		Friend myShipDate As NODate
 
-		<MemberOrder(34), Mask("C")>
-		Public Property TotalDue() As Decimal
+		<MemberOrder(20)>
+		Public ReadOnly Property ShipDate As NODate
+			Get
+				Return If(myShipDate, New NODate(mappedShipDate, Function(v) mappedShipDate = v))
+			End Get
+		End Property
 
-		<Hidden>
+		Public Sub AboutShipDate(a As FieldAbout, ShipDate As NODate)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "SubTotal"
+		Friend mappedSubTotal As Decimal
+		Friend mySubTotal As Money
+
+		<MemberOrder(31)>
+		Public ReadOnly Property SubTotal As Money
+			Get
+				Return If(mySubTotal, New Money(mappedSubTotal, Function(v) mappedSubTotal = v))
+			End Get
+		End Property
+
+		Public Sub AboutSubTotal(a As FieldAbout, SubTotal As Money)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "TaxAmt"
+		Friend mappedTaxAmt As Decimal
+		Friend myTaxAmt As Money
+
+		<MemberOrder(32)>
+		Public ReadOnly Property TaxAmt As Money
+			Get
+				Return If(myTaxAmt, New Money(mappedTaxAmt, Function(v) mappedTaxAmt = v))
+			End Get
+		End Property
+
+		Public Sub AboutTaxAmt(a As FieldAbout, TaxAmt As Money)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "Freight"
+		Friend mappedFreight As Decimal
+		Friend myFreight As Money
+
+		<MemberOrder(33)>
+		Public ReadOnly Property Freight As Money
+			Get
+				Return If(myFreight, New Money(mappedFreight, Function(v) mappedFreight = v))
+			End Get
+		End Property
+
+		Public Sub AboutFreight(a As FieldAbout, Freight As Money)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "TotalDue"
+		Friend mappedTotalDue As Decimal
+		Friend myTotalDue As Money
+
+		<MemberOrder(34)>
+		Public ReadOnly Property TotalDue As Money
+			Get
+				Return If(myTotalDue, New Money(mappedTotalDue, Function(v) mappedTotalDue = v))
+			End Get
+		End Property
+
+		Public Sub AboutTotalDue(a As FieldAbout, TotalDue As Money)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+		'<Hidden>
 		Public Property OrderPlacedByID() As Integer
 
 		<MemberOrder(12)>
@@ -62,7 +211,7 @@
 		Friend mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(1)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
@@ -77,9 +226,10 @@
 		End Sub
 #End Region
 
-		Public Overrides Function ToString() As String
-			Return $"PO from {Vendor}, {OrderDate}"
+		Public Function Title() As Title
+			Return New Title($"PO from {Vendor}, {OrderDate}")
 		End Function
+
 	End Class
 
 	Public Enum POStatus
