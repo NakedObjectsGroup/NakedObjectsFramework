@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects {
+namespace NakedLegacy {
     /// <summary>
     ///     For specifying the order in which fields and/or actions are presented to
     ///     the user.
