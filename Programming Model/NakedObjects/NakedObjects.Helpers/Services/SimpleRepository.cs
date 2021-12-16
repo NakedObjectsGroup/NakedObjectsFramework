@@ -52,7 +52,7 @@ namespace NakedObjects.Services {
         /// <summary>
         ///     Returns a new transient instance of T
         /// </summary>
-        [MemberOrder(Sequence = "1")]
+        //[MemberOrder(Sequence = "1")]
         public virtual T NewInstance() => NewTransientInstance<T>();
 
         #endregion
@@ -62,13 +62,13 @@ namespace NakedObjects.Services {
         /// <summary>
         ///     All Instances of T
         /// </summary>
-        [MemberOrder(Sequence = "2")]
+        //[MemberOrder(Sequence = "2")]
         public virtual IQueryable<T> AllInstances() => Container.Instances<T>();
 
-        [MemberOrder(Sequence = "3")]
+        //[MemberOrder(Sequence = "3")]
         public virtual T GetRandom() => Random<T>();
 
-        [MemberOrder(Sequence = "4")]
+        //[MemberOrder(Sequence = "4")]
         public virtual T FindByKey(int key) {
             var keyProperty = Container.GetSingleKey(typeof(T));
             if (keyProperty.PropertyType != typeof(int)) {
