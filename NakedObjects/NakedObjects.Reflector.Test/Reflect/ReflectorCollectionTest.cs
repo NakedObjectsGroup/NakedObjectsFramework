@@ -14,16 +14,12 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Component;
-using NakedObjects.Reflector.Component;
 
 namespace NakedObjects.Reflector.Test.Reflect;
 
-
-[Ignore("Needs reworking after reflector work")]
 [TestClass]
-public class ReflectorCollectionTest : AbstractReflectorTest {
+public class SystemTypeReflectorCollectionTest : SystemTypeReflectorTest {
     protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
-        var objectReflector = (ObjectReflector)reflector;
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
         (_, metamodel) = reflector.LoadSpecification(typeof(ArrayList), metamodel);
         return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(ArrayList), metamodel);
@@ -37,13 +33,6 @@ public class ReflectorCollectionTest : AbstractReflectorTest {
     }
 
     [TestMethod]
-    public void TestDescriptionFaced() {
-        var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
-        Assert.IsNotNull(facet);
-        AssertIsInstanceOfType<DescribedAsFacetNone>(facet);
-    }
-
-    [TestMethod]
     public void TestElementTypeFacet() {
         var facet = (IElementTypeFacet)Specification.GetFacet(typeof(IElementTypeFacet));
         Assert.IsNull(facet);
@@ -51,26 +40,7 @@ public class ReflectorCollectionTest : AbstractReflectorTest {
 
     [TestMethod]
     public void TestFacets() {
-        Assert.AreEqual(26, Specification.FacetTypes.Length);
-    }
-
-    [TestMethod]
-    public void TestName() {
-        Assert.AreEqual(typeof(ArrayList).FullName, Specification.FullName);
-    }
-
-    [TestMethod]
-    public void TestNamedFaced() {
-        var facet = Specification.GetFacet(typeof(INamedFacet));
-        Assert.IsNotNull(facet);
-        AssertIsInstanceOfType<NamedFacetInferred>(facet);
-    }
-
-    [TestMethod]
-    public void TestPluralFaced() {
-        var facet = Specification.GetFacet(typeof(IPluralFacet));
-        Assert.IsNotNull(facet);
-        AssertIsInstanceOfType<PluralFacetInferred>(facet);
+        Assert.AreEqual(2, Specification.FacetTypes.Length);
     }
 
     [TestMethod]

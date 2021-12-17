@@ -5,38 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Configuration;
-using NakedFramework.Metamodel.Component;
 using NakedFramework.ParallelReflector.Component;
-using NakedFramework.ParallelReflector.FacetFactory;
-using NakedFramework.ParallelReflector.Reflect;
-using NakedObjects.Reflector.Component;
 
 namespace NakedObjects.Reflector.Test.Reflect;
 
 [TestClass]
-
-[Ignore("Needs reworking after reflector work")]
-public class ReflectorValueTest : AbstractReflectorTest {
-    protected override IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
-        var config = new CoreConfiguration();
-        ClassStrategy = new SystemTypeClassStrategy(config, null);
-        var systemTypeFacetFactorySet = new SystemTypeFacetFactorySet(FacetFactories.OfType<ISystemTypeFacetFactoryProcessor>());
-        var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
-        var order = new ObjectReflectorOrder<SystemTypeReflector>();
-        return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy)ClassStrategy, config, Array.Empty<IFacetDecorator>(), order, lf, mockLogger1);
-    }
-
+public class ReflectorValueTest : SystemTypeReflectorTest {
     protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
         (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), metamodel);
@@ -53,14 +33,8 @@ public class ReflectorValueTest : AbstractReflectorTest {
     }
 
     [TestMethod]
-    public void TestDescriptionFaced() {
-        var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
-        Assert.IsNotNull(facet);
-    }
-
-    [TestMethod]
     public void TestFacets() {
-        Assert.AreEqual(27, Specification.FacetTypes.Length);
+        Assert.AreEqual(6, Specification.FacetTypes.Length);
     }
 
     [TestMethod]
@@ -71,18 +45,6 @@ public class ReflectorValueTest : AbstractReflectorTest {
     [TestMethod]
     public void TestName() {
         Assert.AreEqual(typeof(string).FullName, Specification.FullName);
-    }
-
-    [TestMethod]
-    public void TestNamedFaced() {
-        var facet = Specification.GetFacet(typeof(INamedFacet));
-        Assert.IsNotNull(facet);
-    }
-
-    [TestMethod]
-    public void TestPluralFaced() {
-        var facet = Specification.GetFacet(typeof(IPluralFacet));
-        Assert.IsNotNull(facet);
     }
 
     [TestMethod]

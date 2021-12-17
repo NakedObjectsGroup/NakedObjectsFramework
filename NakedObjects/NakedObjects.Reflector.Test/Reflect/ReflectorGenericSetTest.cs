@@ -18,21 +18,12 @@ using NakedObjects.Reflector.Component;
 namespace NakedObjects.Reflector.Test.Reflect;
 
 [TestClass]
-
-[Ignore("Needs reworking after reflector work")]
-public class ReflectorGenericSetTest : AbstractReflectorTest {
+public class ReflectorGenericSetTest : ObjectReflectorTest {
     protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
         var objectReflector = (ObjectReflector)reflector;
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
         (_, metamodel) = reflector.LoadSpecification(typeof(ISet<TestPoco>), metamodel);
         return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(ISet<TestPoco>), metamodel);
-    }
-
-    [TestMethod]
-    public void TestCollectionFacet() {
-        var facet = Specification.GetFacet(typeof(ICollectionFacet));
-        Assert.IsNotNull(facet);
-        AssertIsInstanceOfType<GenericCollectionFacet>(facet);
     }
 
     [TestMethod]
@@ -49,15 +40,8 @@ public class ReflectorGenericSetTest : AbstractReflectorTest {
     }
 
     [TestMethod]
-    public void TestTypeOfFacet() {
-        var facet = (ITypeOfFacet)Specification.GetFacet(typeof(ITypeOfFacet));
-        Assert.IsNotNull(facet);
-        AssertIsInstanceOfType<TypeOfFacetInferredFromGenerics>(facet);
-    }
-
-    [TestMethod]
     public void TestFacets() {
-        Assert.AreEqual(15, Specification.FacetTypes.Length);
+        Assert.AreEqual(13, Specification.FacetTypes.Length);
     }
 
     [TestMethod]
@@ -78,10 +62,44 @@ public class ReflectorGenericSetTest : AbstractReflectorTest {
         Assert.IsNotNull(facet);
         AssertIsInstanceOfType<PluralFacetInferred>(facet);
     }
+}
+
+[TestClass]
+public class SystemTypeReflectorGenericSetTest : SystemTypeReflectorTest {
+    protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        (_, metamodel) = reflector.LoadSpecification(typeof(ISet<>), metamodel);
+        return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(ISet<>), metamodel);
+    }
+
+    [TestMethod]
+    public void TestCollectionFacet() {
+        var facet = Specification.GetFacet(typeof(ICollectionFacet));
+        Assert.IsNotNull(facet);
+        AssertIsInstanceOfType<GenericCollectionFacet>(facet);
+    }
+
+    [TestMethod]
+    public void TestElementTypeFacet() {
+        var facet = (IElementTypeFacet)Specification.GetFacet(typeof(IElementTypeFacet));
+        Assert.IsNull(facet);
+    }
+
+    [TestMethod]
+    public void TestFacets() {
+        Assert.AreEqual(2, Specification.FacetTypes.Length);
+    }
 
     [TestMethod]
     public void TestType() {
         Assert.IsTrue(Specification.IsCollection);
+    }
+
+    [TestMethod]
+    public void TestTypeOfFacet() {
+        var facet = (ITypeOfFacet)Specification.GetFacet(typeof(ITypeOfFacet));
+        Assert.IsNotNull(facet);
+        AssertIsInstanceOfType<TypeOfFacetInferredFromGenerics>(facet);
     }
 }
 

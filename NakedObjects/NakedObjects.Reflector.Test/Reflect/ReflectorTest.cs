@@ -27,7 +27,6 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
-using NakedFramework.ParallelReflector.FacetFactory;
 using NakedObjects;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.FacetFactory;
@@ -47,8 +46,7 @@ namespace TestData {
         public virtual void Duplicate(int parm) { }
     }
 
-    public class WithIgnored
-    {
+    public class WithIgnored {
         [Key]
         [Title]
         public virtual int Id { get; set; }
@@ -81,8 +79,6 @@ namespace NakedObjects.Reflector.Test.Reflect {
     }
 
     [TestClass]
-
-    [Ignore("Needs reworking after reflector work")]
     public class ReflectorTest {
         #region TestEnum enum
 
@@ -183,7 +179,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         [TestMethod]
         public void ReflectSetTypes() {
             static void Setup(NakedFrameworkOptions coreOptions) {
-                coreOptions.SupportedSystemTypes = t => new[] {  typeof(object), typeof(SetWrapper<>) };
+                coreOptions.SupportedSystemTypes = t => new[] { typeof(object), typeof(SetWrapper<>) };
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
                     options.DomainModelServices = Array.Empty<Type>();
@@ -349,7 +345,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         [TestMethod]
         public void ReflectWithScalars() {
             static void Setup(NakedFrameworkOptions coreOptions) {
-                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.SupportedSystemTypes = t => new[] { typeof(ICollection<>), typeof(object) };
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(WithScalars) };
                     options.DomainModelServices = Array.Empty<Type>();
@@ -362,7 +358,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(1, specs.Length);
+                Assert.AreEqual(3, specs.Length);
                 AbstractReflectorTest.AssertSpecsContain(typeof(WithScalars), specs);
             }
         }
@@ -370,7 +366,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         [TestMethod]
         public void ReflectSimpleDomainObject() {
             static void Setup(NakedFrameworkOptions coreOptions) {
-                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.SupportedSystemTypes = t => new[] { typeof(void) };
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(SimpleDomainObject) };
                     options.DomainModelServices = Array.Empty<Type>();
@@ -383,7 +379,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(1, specs.Length);
+                Assert.AreEqual(2, specs.Length);
                 AbstractReflectorTest.AssertSpec(typeof(SimpleDomainObject), specs);
             }
         }
@@ -413,10 +409,8 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         //[ExpectedException(typeof(ReflectionException), "string")]
-        public void ReflectIgnoredMethods()
-        {
-            static void Setup(NakedFrameworkOptions coreOptions)
-            {
+        public void ReflectIgnoredMethods() {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(WithIgnored) };
                     options.DomainModelServices = new[] { typeof(WithDuplicatesService) };
@@ -425,8 +419,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 //Assert.AreEqual(1, specs.Length);
@@ -436,7 +429,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReplaceFacetFactory() {
-            TestHook = services => ConfigHelpers.RegisterReplacementFacetFactory<IObjectFacetFactoryProcessor, ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
+            TestHook = services => ConfigHelpers.RegisterReplacementFacetFactory<IDomainObjectFacetFactoryProcessor, ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
@@ -460,7 +453,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReplaceDelegatingFacetFactory() {
-            TestHook = services => ConfigHelpers.RegisterReplacementFacetFactoryDelegatingToOriginal<IObjectFacetFactoryProcessor, ReplacementDelegatingBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
+            TestHook = services => ConfigHelpers.RegisterReplacementFacetFactoryDelegatingToOriginal<IDomainObjectFacetFactoryProcessor, ReplacementDelegatingBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();

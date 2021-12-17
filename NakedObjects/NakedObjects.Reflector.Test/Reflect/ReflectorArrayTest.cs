@@ -19,20 +19,12 @@ namespace NakedObjects.Reflector.Test.Reflect;
 
 public class TestPoco { }
 
-[Ignore("Needs reworking after reflector work")]
 [TestClass]
-public class ReflectorArrayTest : AbstractReflectorTest {
+public class ObjectReflectorArrayTest : ObjectReflectorTest {
     protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
         (_, metamodel) = reflector.LoadSpecification(typeof(TestPoco[]), metamodel);
         return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(TestPoco[]), metamodel);
-    }
-
-    [TestMethod]
-    public void TestCollectionFacet() {
-        var facet = Specification.GetFacet(typeof(ICollectionFacet));
-        Assert.IsNotNull(facet);
-        AssertIsInstanceOfType<ArrayFacet>(facet);
     }
 
     [TestMethod]
@@ -50,7 +42,7 @@ public class ReflectorArrayTest : AbstractReflectorTest {
 
     [TestMethod]
     public void TestFacets() {
-        Assert.AreEqual(26, Specification.FacetTypes.Length);
+        Assert.AreEqual(24, Specification.FacetTypes.Length);
     }
 
     [TestMethod]
@@ -70,6 +62,33 @@ public class ReflectorArrayTest : AbstractReflectorTest {
         var facet = Specification.GetFacet(typeof(IPluralFacet));
         Assert.IsNotNull(facet);
         AssertIsInstanceOfType<PluralFacetInferred>(facet);
+    }
+}
+
+[TestClass]
+public class SystemTypeReflectorArrayTest : SystemTypeReflectorTest {
+    protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        (_, metamodel) = reflector.LoadSpecification(typeof(byte[]), metamodel);
+        return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(byte[]), metamodel);
+    }
+
+    [TestMethod]
+    public void TestCollectionFacet() {
+        var facet = Specification.GetFacet(typeof(ICollectionFacet));
+        Assert.IsNotNull(facet);
+        AssertIsInstanceOfType<ArrayFacet>(facet);
+    }
+
+    [TestMethod]
+    public void TestElementTypeFacet() {
+        var facet = (IElementTypeFacet)Specification.GetFacet(typeof(IElementTypeFacet));
+        Assert.IsNull(facet);
+    }
+
+    [TestMethod]
+    public void TestFacets() {
+        Assert.AreEqual(9, Specification.FacetTypes.Length);
     }
 
     [TestMethod]

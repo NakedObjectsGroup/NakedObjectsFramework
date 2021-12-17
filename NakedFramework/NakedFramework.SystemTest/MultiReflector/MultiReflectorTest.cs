@@ -76,10 +76,10 @@ public class MultiReflectorTest : AbstractSystemTest<FooContext> {
 
     [Test]
 
-    [Ignore("Needs reworking after reflector work")]
+    
     public virtual void AllSpecs() {
         var allSpecs = NakedFramework.MetamodelManager.AllSpecs;
-        Assert.AreEqual(10, allSpecs.Length);
+        Assert.AreEqual(11, allSpecs.Length);
     }
 }
 

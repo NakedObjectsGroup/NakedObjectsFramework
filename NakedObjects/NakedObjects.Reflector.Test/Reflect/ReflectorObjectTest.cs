@@ -22,7 +22,7 @@ public class TestDomainObject {
 }
 
 [TestClass]
-public class ReflectorObjectTest : AbstractReflectorTest {
+public class ReflectorObjectTest : ObjectReflectorTest {
     protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
         var objectReflector = reflector as ObjectReflector;
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
