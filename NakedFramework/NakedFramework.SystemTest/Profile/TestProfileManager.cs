@@ -106,8 +106,6 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
     }
 
     [Test]
-
-    [Ignore("Needs reworking after reflector work")]
     public void TestCallbacks() {
         var beginCalledCount = 0;
         var endCalledCount = 0;
@@ -120,33 +118,17 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
             ProfileEvent.Loaded,
             ProfileEvent.Loaded,
             ProfileEvent.ActionInvocation,
-            ProfileEvent.Loading,
-            ProfileEvent.Loading,
-            ProfileEvent.Loaded,
-            ProfileEvent.Loaded,
             ProfileEvent.Created,
             ProfileEvent.Created,
             ProfileEvent.ActionInvocation,
-            ProfileEvent.Loading,
-            ProfileEvent.Loading,
-            ProfileEvent.Loaded,
-            ProfileEvent.Loaded,
             ProfileEvent.PropertySet,
             ProfileEvent.PropertySet,
-            ProfileEvent.Loading,
-            ProfileEvent.Loading,
-            ProfileEvent.Loaded,
-            ProfileEvent.Loaded,
             ProfileEvent.PropertySet,
             ProfileEvent.PropertySet,
             ProfileEvent.Persisting,
             ProfileEvent.Persisting,
             ProfileEvent.Persisted,
             ProfileEvent.Persisted,
-            ProfileEvent.Loaded,
-            ProfileEvent.Loaded,
-            ProfileEvent.Loading,
-            ProfileEvent.Loading,
             ProfileEvent.Loaded,
             ProfileEvent.Loaded,
             ProfileEvent.PropertySet,
@@ -163,23 +145,9 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
             typeof(SimpleRepository<Foo>),
             typeof(SimpleRepository<Foo>),
             typeof(SimpleRepository<Foo>),
-            typeof(int),
-            typeof(int),
-            typeof(int),
-            typeof(int),
             typeof(Foo),
             typeof(Foo),
             typeof(SimpleRepository<Foo>),
-            typeof(int),
-            typeof(int),
-            typeof(int),
-            typeof(int),
-            typeof(Foo),
-            typeof(Foo),
-            typeof(string),
-            typeof(string),
-            typeof(string),
-            typeof(string),
             typeof(Foo),
             typeof(Foo),
             typeof(Foo),
@@ -188,10 +156,8 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
             typeof(Foo),
             typeof(Foo),
             typeof(Foo),
-            typeof(string),
-            typeof(string),
-            typeof(string),
-            typeof(string),
+            typeof(Foo),
+            typeof(Foo),
             typeof(Foo),
             typeof(Foo),
             typeof(Foo),
@@ -208,30 +174,14 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
             "NewInstance",
             "",
             "",
-            "",
-            "",
-            "",
-            "", // 10
             "NewInstance",
-            "",
-            "",
-            "",
-            "",
             "Id",
             "Id",
-            "",
-            "",
-            "", // 20
-            "",
             "TestProperty",
             "TestProperty",
             "",
             "",
             "",
-            "",
-            "",
-            "",
-            "", // 30
             "",
             "",
             "",
@@ -277,17 +227,15 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
 
         NakedFramework.TransactionManager.EndTransaction();
 
-        Assert.AreEqual(20, beginCalledCount);
-        Assert.AreEqual(20, endCalledCount);
+        Assert.AreEqual(12, beginCalledCount);
+        Assert.AreEqual(12, endCalledCount);
 
-        for (var i = 0; i < 40; i++) {
+        for (var i = 0; i < 24; i++) {
             CreateTestFunc(i)(callbackData[i]);
         }
     }
 
     [Test]
-
-    [Ignore("Needs reworking after reflector work")]
     public void TestPropertySet() {
         var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 
@@ -296,21 +244,7 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
 
         var callbackData = new List<CallbackData>();
 
-        void TestCallback0(CallbackData cbd) {
-            Assert.AreEqual("sven", cbd.Principal.Identity.Name);
-            Assert.AreEqual(ProfileEvent.Loading, cbd.ProfileEvent);
-            Assert.AreEqual(typeof(string), cbd.Type);
-            Assert.AreEqual("", cbd.Member);
-        }
-
-        void TestCallback1(CallbackData cbd) {
-            Assert.AreEqual("sven", cbd.Principal.Identity.Name);
-            Assert.AreEqual(ProfileEvent.Loaded, cbd.ProfileEvent);
-            Assert.AreEqual(typeof(string), cbd.Type);
-            Assert.AreEqual("", cbd.Member);
-        }
-
-        void TestCallback2(CallbackData cbd) {
+        void TestCallback(CallbackData cbd) {
             Assert.AreEqual("sven", cbd.Principal.Identity.Name);
             Assert.AreEqual(ProfileEvent.PropertySet, cbd.ProfileEvent);
             Assert.AreEqual(typeof(Foo), cbd.Type);
@@ -329,15 +263,11 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
 
         foo.Properties.Last().SetValue("avalue");
 
-        Assert.AreEqual(3, beginCalledCount);
-        Assert.AreEqual(3, endCalledCount);
+        Assert.AreEqual(1, beginCalledCount);
+        Assert.AreEqual(1, endCalledCount);
 
-        TestCallback0(callbackData[0]);
-        TestCallback0(callbackData[1]);
-        TestCallback1(callbackData[2]);
-        TestCallback1(callbackData[3]);
-        TestCallback2(callbackData[4]);
-        TestCallback2(callbackData[5]);
+        TestCallback(callbackData[0]);
+        TestCallback(callbackData[1]);
     }
 
     private class CallbackData {
