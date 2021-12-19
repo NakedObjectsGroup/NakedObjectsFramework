@@ -75,8 +75,6 @@ public class MultiReflectorTest : AbstractSystemTest<FooContext> {
     protected override Func<Type[], Type[]> SupportedSystemTypes => t => new[] { typeof(string), typeof(int) };
 
     [Test]
-
-    
     public virtual void AllSpecs() {
         var allSpecs = NakedFramework.MetamodelManager.AllSpecs;
         Assert.AreEqual(11, allSpecs.Length);

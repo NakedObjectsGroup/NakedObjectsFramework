@@ -108,7 +108,7 @@ public static class CollectionUtils {
     }
 
     public static bool IsGenericType(Type type, Type toMatch) {
-        return type.IsGenericType 
+        return type.IsGenericType
                && type.GetGenericArguments().Length == 1
                && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
     }

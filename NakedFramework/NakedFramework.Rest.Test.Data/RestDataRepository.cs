@@ -40,7 +40,7 @@ public class RestDataRepository : AbstractFactoryAndRepository {
     }
 
     [CreateNew]
-    public WithValue AzContributedActionWithCreateNewAnnotation([ContributedAction] WithActionObject withAction, int aValue) => new WithValue();
+    public WithValue AzContributedActionWithCreateNewAnnotation([ContributedAction] WithActionObject withAction, int aValue) => new();
 
     [DisplayAsProperty]
     public MostSimple AzContributedDisplayAsPropertyAction([ContributedAction] WithActionObject withAction) {

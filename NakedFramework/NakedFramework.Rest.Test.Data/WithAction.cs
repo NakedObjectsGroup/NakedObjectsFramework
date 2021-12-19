@@ -336,7 +336,7 @@ public abstract class WithAction {
     }
 
     [CreateNew]
-    public WithValue AnActionWithCreateNewAnnotation(int aValue) => new WithValue();
+    public WithValue AnActionWithCreateNewAnnotation(int aValue) => new();
 
     [FinderAction]
     public WithValue FinderAction1(int aValue) => new();

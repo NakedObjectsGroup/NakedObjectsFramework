@@ -11,10 +11,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
-using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider;
@@ -60,7 +58,6 @@ public abstract class ValueSemanticsProviderAbstractTestCase<T> {
         var newValue = value.ParseTextEntry("");
         Assert.IsNull(newValue);
     }
-
 
     protected static INakedObjectAdapter MockAdapter(object obj) {
         var mockParm = new Mock<INakedObjectAdapter>();

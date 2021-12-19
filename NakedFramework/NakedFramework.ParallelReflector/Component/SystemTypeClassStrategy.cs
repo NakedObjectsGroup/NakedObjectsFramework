@@ -10,7 +10,6 @@ using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
-using NakedFramework.Core.Util;
 
 namespace NakedFramework.ParallelReflector.Component;
 

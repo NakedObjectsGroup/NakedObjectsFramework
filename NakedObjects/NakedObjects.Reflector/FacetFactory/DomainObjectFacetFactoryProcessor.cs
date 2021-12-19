@@ -20,8 +20,8 @@ namespace NakedObjects.Reflector.FacetFactory;
 
 public abstract class DomainObjectFacetFactoryProcessor : FacetFactoryAbstract, IDomainObjectFacetFactoryProcessor {
     protected DomainObjectFacetFactoryProcessor(int numericOrder,
-                                          ILoggerFactory loggerFactory,
-                                          FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
+                                                ILoggerFactory loggerFactory,
+                                                FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
 
     public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 

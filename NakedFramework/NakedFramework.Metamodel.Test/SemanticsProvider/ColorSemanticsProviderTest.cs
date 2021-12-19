@@ -14,7 +14,6 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider;
@@ -48,8 +47,6 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         Assert.AreEqual("Color [White]", value.DisplayTitleOf(colorObj));
     }
 
-   
-
     [TestMethod]
     public override void TestParseEmptyString() {
         try {
@@ -65,8 +62,6 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     public override void TestParseNull() {
         base.TestParseNull();
     }
-
-   
 
     [TestMethod]
     public void TestValue() {

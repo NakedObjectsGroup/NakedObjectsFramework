@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Component;
 
 namespace NakedObjects.Reflector.Configuration;
 
-public interface IObjectReflectorConfiguration  : ITypeList{
+public interface IObjectReflectorConfiguration : ITypeList {
     /// <summary>
     ///     This is expected to contain any domain types that are not directly accessible by navigating the actions on the
     ///     services. Eg an implementation

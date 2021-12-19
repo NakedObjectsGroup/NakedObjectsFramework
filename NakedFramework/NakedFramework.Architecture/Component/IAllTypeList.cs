@@ -10,6 +10,5 @@ using System;
 namespace NakedFramework.Architecture.Component;
 
 public interface IAllTypeList {
-
     Type[] Types { get; }
 }

@@ -20,7 +20,6 @@ namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
 public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAbstract<WholeNumber>, IIntegerValueFacet {
-    
     private const bool Immutable = true;
     private const int TypicalLengthConst = 11;
     private static WholeNumber DefaultValueConst = new(0);
@@ -53,7 +52,6 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
     }
 
     protected override string TitleStringWithMask(string mask, WholeNumber value) => value.Number.ToString(mask);
-
 
     public override string ToString() => "WholeNumberAdapter: ";
 }

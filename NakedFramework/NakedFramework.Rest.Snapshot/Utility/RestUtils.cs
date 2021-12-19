@@ -118,7 +118,7 @@ public static class RestUtils {
             var (typeString, formatString) = SpecToTypeAndFormatString(returnType, oidStrategy, useDateOverDateTime);
             exts.Add(JsonPropertyNames.ReturnType, typeString);
             exts.AddIfNotNull(JsonPropertyNames.Format, formatString);
-            
+
             if (typeString == PredefinedJsonType.String.ToRoString()) {
                 exts.Add(JsonPropertyNames.MaxLength, maxLength ?? 0);
                 exts.Add(JsonPropertyNames.Pattern, pattern ?? "");

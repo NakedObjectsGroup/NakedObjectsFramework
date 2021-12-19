@@ -13,7 +13,6 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider;
@@ -65,8 +64,6 @@ public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     public override void TestParseNull() {
         base.TestParseNull();
     }
-
-   
 
     [TestMethod]
     public void TestValue() {

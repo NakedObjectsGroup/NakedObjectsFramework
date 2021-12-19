@@ -12,6 +12,4 @@ public static class FactoryUtils {
     public static bool IsAbstract(Type type) => type.IsAbstract;
 
     public static bool IsStatic(Type type) => IsAbstract(type) && IsSealed(type);
-
-
 }

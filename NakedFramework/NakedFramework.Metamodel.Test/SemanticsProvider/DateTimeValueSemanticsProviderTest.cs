@@ -6,14 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider;
@@ -27,8 +25,6 @@ public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstract
         var obj = adapter.ParseTextEntry(entry);
         Assert.AreEqual(new DateTime(year, month, day, hour, minute, second), obj);
     }
-
-  
 
     [TestMethod]
     public void TestEmptyClears() {

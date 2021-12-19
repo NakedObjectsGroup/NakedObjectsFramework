@@ -20,9 +20,7 @@ namespace NakedFramework.ParallelReflector.Component;
 public abstract class AbstractClassStrategy : IClassStrategy {
     private readonly IAllTypeList allTypeList;
 
-    protected AbstractClassStrategy(IAllTypeList allTypeList) {
-        this.allTypeList = allTypeList;
-    }
+    protected AbstractClassStrategy(IAllTypeList allTypeList) => this.allTypeList = allTypeList;
 
     protected abstract bool IsTypeIgnored(Type type);
 
@@ -32,7 +30,7 @@ public abstract class AbstractClassStrategy : IClassStrategy {
 
     protected virtual Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 
-    private static bool IsTypeUnsupportedByReflector(Type type) =>
+    private static bool IsTypeUnsupportedBySystem(Type type) =>
         type.IsPointer ||
         type.IsByRef ||
         CollectionUtils.IsDictionary(type) ||
@@ -44,27 +42,26 @@ public abstract class AbstractClassStrategy : IClassStrategy {
     public virtual bool IsIgnored(Type type) {
         var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
         return IsTypeIgnored(returnType) ||
-               IsTypeUnsupportedByReflector(returnType) ||
+               IsTypeUnsupportedBySystem(returnType) ||
                FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().Any(IsIgnored);
     }
 
     public virtual bool IsTypeRecognizedByReflector(Type type) {
         var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
         return !IsTypeIgnored(returnType) &&
-               !IsTypeUnsupportedByReflector(returnType) &&
+               !IsTypeUnsupportedBySystem(returnType) &&
                IsTypeWhiteListed(returnType) &&
                (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeRecognizedByReflector));
     }
 
     private bool TypeIsRegistered(Type type) => allTypeList.Types.Contains(TypeKeyUtils.FilterNullableAndProxies(type));
 
-    public virtual bool IsTypeRecognizedBySystem(Type type)
-    {
+    public virtual bool IsTypeRecognizedBySystem(Type type) {
         var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
         return !IsTypeIgnored(returnType) &&
-               !IsTypeUnsupportedByReflector(returnType) &&
+               !IsTypeUnsupportedBySystem(returnType) &&
                (TypeIsRegistered(returnType) ||
-               (FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().All(TypeIsRegistered)));
+                FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().All(TypeIsRegistered));
     }
 
     public abstract bool IsIgnored(MemberInfo member);

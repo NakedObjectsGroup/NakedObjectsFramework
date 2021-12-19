@@ -28,6 +28,8 @@ public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
     // for testing
     public static bool NoValidate { get; set; }
 
+    public Type[] Types => ObjectTypes;
+
     private void ValidateConfig() {
         if (NoValidate) {
             return;
@@ -63,6 +65,4 @@ public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
     public Type[] ObjectTypes => Services.Union(GetObjectTypesToIntrospect()).ToArray();
 
     #endregion
-
-    public Type[] Types => ObjectTypes;
 }

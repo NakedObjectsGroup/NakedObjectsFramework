@@ -6,12 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.Extensions.Logging;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
-using NakedFramework.Architecture.Spec;
-using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.SemanticsProvider;
-using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory;

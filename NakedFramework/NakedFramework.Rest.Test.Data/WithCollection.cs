@@ -87,9 +87,7 @@ namespace RestfulObjects.Test.Data.Wrapper {
     }
 }
 
-
 namespace RestfulObjects.Test.Data {
- 
     public class WithCollection {
         private ICollection<MostSimpleViewModel> aCollectionViewModels = new List<MostSimpleViewModel>();
         private IDomainObjectContainer container;

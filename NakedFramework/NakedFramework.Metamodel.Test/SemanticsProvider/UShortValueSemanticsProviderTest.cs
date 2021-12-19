@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
@@ -14,7 +13,6 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider;
@@ -24,7 +22,6 @@ public class UShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
     private ISpecification holder;
     private ushort s;
     private UShortValueSemanticsProvider value;
-
 
     [TestMethod]
     public void TestInvalidParse() {
@@ -69,8 +66,6 @@ public class UShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
     public override void TestParseNull() {
         base.TestParseNull();
     }
-
-  
 
     [TestMethod]
     public void TestValue() {

@@ -17,7 +17,6 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.FacetFactory;
 using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
 namespace NakedObjects.Reflector.FacetFactory;
@@ -33,7 +32,7 @@ public sealed class TypeMarkerFacetFactory : DomainObjectFacetFactoryProcessor {
             new TypeIsSealedFacet(specification, IsSealed(type)),
             new TypeIsVoidFacet(specification, IsVoid(type)),
             new TypeIsStaticFacet(specification, IsStatic(type)),
-            new TypeFacet(specification, type),
+            new TypeFacet(specification, type)
         };
 
         FacetUtils.AddFacets(facets);

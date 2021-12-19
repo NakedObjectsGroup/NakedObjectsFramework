@@ -19,7 +19,6 @@ namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
 public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeStamp>, IDateValueFacet {
-    
     private const bool Immutable = false;
     private const int TypicalLengthConst = 18;
     private static readonly TimeStamp DefaultValueConst = new(new DateTime());
@@ -53,7 +52,6 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
     }
 
     protected override string TitleStringWithMask(string mask, TimeStamp value) => value.DateTime.ToString(mask);
-
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.Component;
 [Serializable]
 public class ObjectClassStrategy : AbstractClassStrategy {
     private readonly IObjectReflectorConfiguration config;
-    
+
     public ObjectClassStrategy(IObjectReflectorConfiguration config, IAllTypeList allTypeList) : base(allTypeList) => this.config = config;
 
     protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;

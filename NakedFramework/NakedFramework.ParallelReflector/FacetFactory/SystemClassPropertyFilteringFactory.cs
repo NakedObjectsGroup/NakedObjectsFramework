@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
-using NakedFramework.Core.Util;
 
 namespace NakedFramework.ParallelReflector.FacetFactory;
 

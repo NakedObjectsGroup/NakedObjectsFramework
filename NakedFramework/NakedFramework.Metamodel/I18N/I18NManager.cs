@@ -14,7 +14,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Util;
 using NakedObjects.Resources;
 
 namespace NakedFramework.Metamodel.I18N;

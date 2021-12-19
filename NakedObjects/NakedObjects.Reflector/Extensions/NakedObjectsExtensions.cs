@@ -13,7 +13,6 @@ using NakedFramework.Core.Component;
 using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
-using NakedFramework.ParallelReflector.FacetFactory;
 using NakedObjects.Core.Component;
 using NakedObjects.Reflector.Audit;
 using NakedObjects.Reflector.Authorization;
@@ -34,11 +33,10 @@ public static class NakedObjectsExtensions {
         var options = new NakedObjectsOptions();
         setupAction(options);
 
-        if (options.DomainModelTypes.Any())
-        {
+        if (options.DomainModelTypes.Any()) {
             // filter enums and add to SystemTypes 
             var enums = options.DomainModelTypes.Where(t => t.IsEnum).ToArray();
-           
+
             options.DomainModelTypes = options.DomainModelTypes.Except(enums).ToArray();
             frameworkOptions.SupportedSystemTypes ??= t => t;
             frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(enums).ToArray();
