@@ -10,8 +10,8 @@ namespace AdventureWorksModel
         {
             //builder.HasKey(t => t.BusinessEntityID);
 
-            builder.Property(t => t.Title)
-                .HasMaxLength(8);
+            //builder.Property(t => t.Title)
+            //    .HasMaxLength(8);
 
             builder.Property(t => t.mappedFirstName)
                 .IsRequired()
@@ -32,7 +32,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             //builder.Property(t => t.PersonType).HasColumnName("PersonType");
             builder.Property(t => t.mappedNameStyle).HasColumnName("NameStyle");
-            builder.Property(t => t.Title).HasColumnName("Title");
+            //builder.Property(t => t.Title).HasColumnName("Title");
             builder.Property(t => t.mappedFirstName).HasColumnName("FirstName");
             builder.Property(t => t.mappedMiddleName).HasColumnName("MiddleName");
             builder.Property(t => t.mappedLastName).HasColumnName("LastName");
