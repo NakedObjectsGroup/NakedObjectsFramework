@@ -5,11 +5,11 @@
         Public Property BusinessEntityID() As Integer
 
 #Region "PhoneNumber"
-        Friend mappedPhoneNumber As String
+        Public mappedPhoneNumber As String
         Friend myPhoneNumber As TextString
 
         '<MemberOrder(1)>
-        Public ReadOnly Property PhoneNumber As TextString
+        Private ReadOnly Property PhoneNumber As TextString
             Get
                 Return If(myPhoneNumber, New TextString(mappedPhoneNumber, Function(v) mappedPhoneNumber = v))
             End Get
@@ -30,11 +30,11 @@
         Public Overridable Property PhoneNumberType() As PhoneNumberType
 
 #Region "ModifiedDate"
-        Friend mappedModifiedDate As Date
+        Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Public ReadOnly Property ModifiedDate As TimeStamp
+        Private ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

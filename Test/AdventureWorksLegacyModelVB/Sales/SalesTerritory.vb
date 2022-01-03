@@ -6,11 +6,11 @@
 		Public Property TerritoryID() As Integer
 
 #Region "Name"
-		Friend mappedName As String
+		Public mappedName As String
 		Friend myName As TextString
 
 		'<MemberOrder(10)>
-		Public ReadOnly Property Name As TextString
+		Private ReadOnly Property Name As TextString
 			Get
 				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
 			End Get
@@ -27,11 +27,11 @@
 #End Region
 
 #Region "CountryRegionCode"
-		Friend mappedCountryRegionCode As String
+		Public mappedCountryRegionCode As String
 		Friend myCountryRegionCode As TextString
 
 		'<MemberOrder(20)>
-		Public ReadOnly Property CountryRegionCode As TextString
+		Private ReadOnly Property CountryRegionCode As TextString
 			Get
 				Return If(myCountryRegionCode, New TextString(mappedCountryRegionCode, Function(v) mappedCountryRegionCode = v))
 			End Get
@@ -48,11 +48,11 @@
 #End Region
 
 #Region "Group"
-		Friend mappedGroup As String
+		Public mappedGroup As String
 		Friend myGroup As TextString
 
 		'<MemberOrder(30)>
-		Public ReadOnly Property Group As TextString
+		Private ReadOnly Property Group As TextString
 			Get
 				Return If(myGroup, New TextString(mappedGroup, Function(v) mappedGroup = v))
 			End Get
@@ -69,11 +69,11 @@
 #End Region
 
 #Region "SalesYTD"
-		Friend mappedSalesYTD As Decimal
+		Public mappedSalesYTD As Decimal
 		Friend mySalesYTD As Money
 
 		'<MemberOrder(40)>
-		Public ReadOnly Property SalesYTD As Money
+		Private ReadOnly Property SalesYTD As Money
 			Get
 				Return If(mySalesYTD, New Money(mappedSalesYTD, Function(v) mappedSalesYTD = v))
 			End Get
@@ -90,11 +90,11 @@
 #End Region
 
 #Region "SalesLastYear"
-		Friend mappedSalesLastYear As Decimal
+		Public mappedSalesLastYear As Decimal
 		Friend mySalesLastYear As Money
 
 		'<MemberOrder(41)>
-		Public ReadOnly Property SalesLastYear As Money
+		Private ReadOnly Property SalesLastYear As Money
 			Get
 				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Function(v) mappedSalesLastYear = v))
 			End Get
@@ -111,11 +111,11 @@
 #End Region
 
 #Region "CostYTD"
-		Friend mappedCostYTD As Decimal
+		Public mappedCostYTD As Decimal
 		Friend myCostYTD As Money
 
 		'<MemberOrder(42)>
-		Public ReadOnly Property CostYTD As Money
+		Private ReadOnly Property CostYTD As Money
 			Get
 				Return If(myCostYTD, New Money(mappedCostYTD, Function(v) mappedCostYTD = v))
 			End Get
@@ -132,11 +132,11 @@
 #End Region
 
 #Region "CostLastYear"
-		Friend mappedCostLastYear As Decimal
+		Public mappedCostLastYear As Decimal
 		Friend myCostLastYear As Money
 
 		'<MemberOrder(43)>
-		Public ReadOnly Property CostLastYear As Money
+		Private ReadOnly Property CostLastYear As Money
 			Get
 				Return If(myCostLastYear, New Money(mappedCostLastYear, Function(v) mappedCostLastYear = v))
 			End Get
@@ -158,7 +158,7 @@
 		Private myStateProvince As InternalCollection
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property StateProvince As InternalCollection
+		Private ReadOnly Property StateProvince As InternalCollection
 			Get
 				Return If(myStateProvince, New InternalCollection(Of StateProvince)(mappedStateProvince))
 			End Get
@@ -174,14 +174,14 @@
 #End Region
 
 		''<Hidden>
-		Public Property rowguid() As Guid
+		Public Property RowGuid() As Guid
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

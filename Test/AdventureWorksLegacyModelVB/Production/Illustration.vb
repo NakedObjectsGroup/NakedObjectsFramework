@@ -4,11 +4,11 @@
 		Public Property IllustrationID() As Integer
 
 #Region "Diagram"
-        Friend mappedDiagram As String
+        Public mappedDiagram As String
         Friend myDiagram As TextString
 
         '<MemberOrder(1)>
-        Public ReadOnly Property Diagram As TextString
+        Private ReadOnly Property Diagram As TextString
             Get
                 Return If(myDiagram, New TextString(mappedDiagram, Function(v) mappedDiagram = v))
             End Get
@@ -30,7 +30,7 @@
         Private myProductModelIllustration As InternalCollection
 
         '<MemberOrder(1)>
-        Public ReadOnly Property ProductModelIllustration As InternalCollection
+        Private ReadOnly Property ProductModelIllustration As InternalCollection
             Get
                 Return If(myProductModelIllustration, New InternalCollection(Of ProductModelIllustration)(mappedProductModelIllustration))
             End Get
@@ -45,11 +45,11 @@
 #End Region
 
 #Region "ModifiedDate"
-        Friend mappedModifiedDate As Date
+        Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Public ReadOnly Property ModifiedDate As TimeStamp
+        Private ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

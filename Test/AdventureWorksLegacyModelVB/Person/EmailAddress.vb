@@ -7,11 +7,11 @@
 		Public Property EmailAddressID() As Integer
 
 #Region "EmailAddress1"
-		Friend mappedEmailAddress1 As String
+		Public mappedEmailAddress1 As String
 		Friend myEmailAddress1 As TextString
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property EmailAddress1 As TextString
+		Private ReadOnly Property EmailAddress1 As TextString
 			Get
 				Return If(myEmailAddress1, New TextString(mappedEmailAddress1, Function(v) mappedEmailAddress1 = v))
 			End Get
@@ -29,11 +29,11 @@
 #End Region
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

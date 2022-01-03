@@ -6,11 +6,11 @@
 		Public Property ShipMethodID() As Integer
 
 #Region "Name"
-        Friend mappedName As String
+        Public mappedName As String
         Friend myName As TextString
 
         '<MemberOrder(1)>
-        Public ReadOnly Property Name As TextString
+        Private ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
             End Get
@@ -27,11 +27,11 @@
 #End Region
 
 #Region "ShipBase"
-        Friend mappedShipBase As Decimal
+        Public mappedShipBase As Decimal
         Friend myShipBase As Money
 
         '<MemberOrder(2)>
-        Public ReadOnly Property ShipBase As Money
+        Private ReadOnly Property ShipBase As Money
             Get
                 Return If(myShipBase, New Money(mappedShipBase, Function(v) mappedShipBase = v))
             End Get
@@ -48,11 +48,11 @@
 #End Region
 
 #Region "ShipRate"
-        Friend mappedShipRate As Decimal
+        Public mappedShipRate As Decimal
         Friend myShipRate As Money
 
         '<MemberOrder(3)>
-        Public ReadOnly Property ShipRate As Money
+        Private ReadOnly Property ShipRate As Money
             Get
                 Return If(myShipRate, New Money(mappedShipRate, Function(v) mappedShipRate = v))
             End Get
@@ -69,11 +69,11 @@
 #End Region
 
 #Region "ModifiedDate"
-        Friend mappedModifiedDate As Date
+        Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Public ReadOnly Property ModifiedDate As TimeStamp
+        Private ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get
@@ -87,7 +87,7 @@
         End Sub
 #End Region
 
-        Public Property rowguid() As Guid
+        Public Property RowGuid() As Guid
 
         Public Function Title() As Title
             Return New Title(Name)

@@ -22,11 +22,11 @@
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
 #Region "SalesQuota"
-		Friend mappedSalesQuota As Decimal?
+		Public mappedSalesQuota As Decimal?
 		Friend mySalesQuota As Money
 
 		'<MemberOrder(30)>
-		Public ReadOnly Property SalesQuota As Money
+		Private ReadOnly Property SalesQuota As Money
 			Get
 				Return If(mySalesQuota, New Money(mappedSalesQuota, Function(v) mappedSalesQuota = v))
 			End Get
@@ -43,11 +43,11 @@
 #End Region
 
 #Region "Bonus"
-		Friend mappedBonus As Decimal
+		Public mappedBonus As Decimal
 		Friend myBonus As Money
 
 		'<MemberOrder(40)>
-		Public ReadOnly Property Bonus As Money
+		Private ReadOnly Property Bonus As Money
 			Get
 				Return If(myBonus, New Money(mappedBonus, Function(v) mappedBonus = v))
 			End Get
@@ -67,11 +67,11 @@
 		Public Property CommissionPct() As Decimal 'TODO: add Percentage type
 
 #Region "SalesYTD"
-		Friend mappedSalesYTD As Decimal
+		Public mappedSalesYTD As Decimal
 		Friend mySalesYTD As Money
 
 		'<MemberOrder(60)>
-		Public ReadOnly Property SalesYTD As Money
+		Private ReadOnly Property SalesYTD As Money
 			Get
 				Return If(mySalesYTD, New Money(mappedSalesYTD, Function(v) mappedSalesYTD = v))
 			End Get
@@ -88,11 +88,11 @@
 #End Region
 
 #Region "SalesLastYear"
-		Friend mappedSalesLastYear As Decimal
+		Public mappedSalesLastYear As Decimal
 		Friend mySalesLastYear As Money
 
 		'<MemberOrder(70)>
-		Public ReadOnly Property SalesLastYear As Money
+		Private ReadOnly Property SalesLastYear As Money
 			Get
 				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Function(v) mappedSalesLastYear = v))
 			End Get
@@ -115,7 +115,7 @@
 
 		''<TableView(False, "QuotaDate", "SalesQuota")>
 		'<MemberOrder(1)>
-		Public ReadOnly Property QuotaHistory As InternalCollection
+		Private ReadOnly Property QuotaHistory As InternalCollection
 			Get
 				Return If(myQuotaHistory, New InternalCollection(Of SalesPersonQuotaHistory)(mappedQuotaHistory))
 			End Get
@@ -136,7 +136,7 @@
 
 		'		'<TableView(False, "StartDate", "EndDate", "SalesTerritory")>
 		'<MemberOrder(1)>
-		Public ReadOnly Property TerritoryHistory As InternalCollection
+		Private ReadOnly Property TerritoryHistory As InternalCollection
 			Get
 				Return If(myTerritoryHistory, New InternalCollection(Of SalesTerritoryHistory)(mappedTerritoryHistory))
 			End Get
@@ -151,11 +151,11 @@
 #End Region
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get
@@ -170,7 +170,7 @@
 #End Region
 
 		''<Hidden>
-		Public Property rowguid() As Guid
+		Public Property RowGuid() As Guid
 
 		Public Function Title() As Title
 			Return New Title(EmployeeDetails)

@@ -8,11 +8,11 @@
 		Public Property ShoppingCartID() As String = ""
 
 #Region "Quantity"
-		Friend mappedQuantity As Integer
+		Public mappedQuantity As Integer
 		Friend myQuantity As WholeNumber
 
 		'<MemberOrder(20)>
-		Public ReadOnly Property Quantity As WholeNumber
+		Private ReadOnly Property Quantity As WholeNumber
 			Get
 				Return If(myQuantity, New WholeNumber(mappedQuantity, Function(v) mappedQuantity = v))
 			End Get
@@ -38,11 +38,11 @@
 		Public Property DateCreated() As DateTime
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

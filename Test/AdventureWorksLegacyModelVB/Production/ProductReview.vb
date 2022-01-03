@@ -5,11 +5,11 @@
 		Public Property ProductReviewID() As Integer
 
 #Region "ReviewerName"
-		Friend mappedReviewerName As String
+		Public mappedReviewerName As String
 		Friend myReviewerName As TextString
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property ReviewerName As TextString
+		Private ReadOnly Property ReviewerName As TextString
 			Get
 				Return If(myReviewerName, New TextString(mappedReviewerName, Function(v) mappedReviewerName = v))
 			End Get
@@ -26,11 +26,11 @@
 #End Region
 
 #Region "ReviewDate"
-		Friend mappedReviewDate As Date
+		Public mappedReviewDate As Date
 		Friend myReviewDate As NODate
 
 		'<MemberOrder(2)>
-		Public ReadOnly Property ReviewDate As NODate
+		Private ReadOnly Property ReviewDate As NODate
 			Get
 				Return If(myReviewDate, New NODate(mappedReviewDate, Function(v) mappedReviewDate = v))
 			End Get
@@ -47,11 +47,11 @@
 #End Region
 
 #Region "EmailAddress"
-		Friend mappedEmailAddress As String
+		Public mappedEmailAddress As String
 		Friend myEmailAddress As TextString
 
 		'<MemberOrder(3)>
-		Public ReadOnly Property EmailAddress As TextString
+		Private ReadOnly Property EmailAddress As TextString
 			Get
 				Return If(myEmailAddress, New TextString(mappedEmailAddress, Function(v) mappedEmailAddress = v))
 			End Get
@@ -68,11 +68,11 @@
 #End Region
 
 #Region "Rating"
-		Friend mappedRating As Integer
+		Public mappedRating As Integer
 		Friend myRating As WholeNumber
 
 		'<MemberOrder(4)>
-		Public ReadOnly Property Rating As WholeNumber
+		Private ReadOnly Property Rating As WholeNumber
 			Get
 				Return If(myRating, New WholeNumber(mappedRating, Function(v) mappedRating = v))
 			End Get
@@ -89,11 +89,11 @@
 #End Region
 
 #Region "Comments"
-		Friend mappedComments As String
+		Public mappedComments As String
 		Friend myComments As TextString
 
 		'<MemberOrder(5)>
-		Public ReadOnly Property Comments As TextString
+		Private ReadOnly Property Comments As TextString
 			Get
 				Return If(myComments, New TextString(mappedComments, Function(v) mappedComments = v))
 			End Get
@@ -121,11 +121,11 @@
 		End Sub
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

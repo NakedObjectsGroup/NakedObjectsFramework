@@ -6,11 +6,11 @@ Namespace AW.Types
 
 #Region "Visible properties"
 #Region "Name"
-        Friend mappedName As String
+        Public mappedName As String
         Friend myName As TextString
 
         '<MemberOrder(1)>
-        Public ReadOnly Property Name As TextString
+        Private ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
             End Get
@@ -27,11 +27,11 @@ Namespace AW.Types
 #End Region
 
 #Region "ProductNumber"
-        Friend mappedProductNumber As String
+        Public mappedProductNumber As String
         Friend myProductNumber As TextString
 
         '<MemberOrder(2)>
-        Public ReadOnly Property ProductNumber As TextString
+        Private ReadOnly Property ProductNumber As TextString
             Get
                 Return If(myProductNumber, New TextString(mappedProductNumber, Function(v) mappedProductNumber = v))
             End Get
@@ -48,11 +48,11 @@ Namespace AW.Types
 #End Region
 
 #Region "Color"
-        Friend mappedColor As String
+        Public mappedColor As String
         Friend myColor As TextString
 
         '<MemberOrder(3)>
-        Public ReadOnly Property Color As TextString
+        Private ReadOnly Property Color As TextString
             Get
                 Return If(myColor, New TextString(mappedColor, Function(v) mappedColor = v))
             End Get
@@ -79,11 +79,11 @@ Namespace AW.Types
         Public Overridable Property ProductModel() As ProductModel
 
 #Region "ListPrice"
-        Friend mappedListPrice As Decimal
+        Public mappedListPrice As Decimal
         Friend myListPrice As Money
 
         '<MemberOrder(12)>
-        Public ReadOnly Property ListPrice As Money
+        Private ReadOnly Property ListPrice As Money
             Get
                 Return If(myListPrice, New Money(mappedListPrice, Function(v) mappedListPrice = v))
             End Get
@@ -110,11 +110,11 @@ Namespace AW.Types
         Public Overridable Property ProductSubcategory() As ProductSubcategory
 
 #Region "ProductLine"
-        Friend mappedProductLine As String
+        Public mappedProductLine As String
         Friend myProductLine As TextString
 
         '<MemberOrder(15)>
-        Public ReadOnly Property ProductLine As TextString
+        Private ReadOnly Property ProductLine As TextString
             Get
                 Return If(myProductLine, New TextString(mappedProductLine, Function(v) mappedProductLine = v))
             End Get
@@ -131,11 +131,11 @@ Namespace AW.Types
 #End Region
 
 #Region "SizeWithUnit"
-        Friend mappedSizeWithUnit As String
+        Public mappedSizeWithUnit As String
         Friend mySizeWithUnit As TextString
 
         '<MemberOrder(16)>
-        Public ReadOnly Property SizeWithUnit As TextString
+        Private ReadOnly Property SizeWithUnit As TextString
             Get
                 Return If(mySizeWithUnit, New TextString(mappedSizeWithUnit, Function(v) mappedSizeWithUnit = v))
             End Get
@@ -153,11 +153,11 @@ Namespace AW.Types
 #End Region
 
 #Region "WeightWithUnit"
-        Friend mappedWeightWithUnit As String
+        Public mappedWeightWithUnit As String
         Friend myWeightWithUnit As TextString
 
         '<MemberOrder(17)>
-        Public ReadOnly Property WeightWithUnit As TextString
+        Private ReadOnly Property WeightWithUnit As TextString
             Get
                 Return If(myWeightWithUnit, New TextString(mappedWeightWithUnit, Function(v) mappedWeightWithUnit = v))
             End Get
@@ -175,11 +175,11 @@ Namespace AW.Types
 #End Region
 
 #Region "Style"
-        Friend mappedStyle As String
+        Public mappedStyle As String
         Friend myStyle As TextString
 
         '<MemberOrder(18)>
-        Public ReadOnly Property Style As TextString
+        Private ReadOnly Property Style As TextString
             Get
                 Return If(myStyle, New TextString(mappedStyle, Function(v) mappedStyle = v))
             End Get
@@ -196,11 +196,11 @@ Namespace AW.Types
 #End Region
 
 #Region "Class"
-        Friend mappedClass As String
+        Public mappedClass As String
         Friend My_Class As TextString
 
         '<MemberOrder(19)>
-        Public ReadOnly Property [Class] As TextString
+        Private ReadOnly Property [Class] As TextString
             Get
                 Return If(My_Class, New TextString(mappedClass, Function(v) mappedClass = v))
             End Get
@@ -217,11 +217,11 @@ Namespace AW.Types
 #End Region
 
 #Region "Make"
-        Friend mappedMake As Boolean
+        Public mappedMake As Boolean
         Friend myMake As Logical
 
         '<MemberOrder(20)>
-        Public ReadOnly Property Make As Logical
+        Private ReadOnly Property Make As Logical
             Get
                 Return If(myMake, New Logical(mappedMake, Function(v) mappedMake = v))
             End Get
@@ -238,11 +238,11 @@ Namespace AW.Types
 #End Region
 
 #Region "FinishedGoods"
-        Friend mappedFinishedGoods As Boolean
+        Public mappedFinishedGoods As Boolean
         Friend myFinishedGoods As Logical
 
         '<MemberOrder(21)>
-        Public ReadOnly Property FinishedGoods As Logical
+        Private ReadOnly Property FinishedGoods As Logical
             Get
                 Return If(myFinishedGoods, New Logical(mappedFinishedGoods, Function(v) mappedFinishedGoods = v))
             End Get
@@ -259,11 +259,11 @@ Namespace AW.Types
 #End Region
 
 #Region "SafetyStockLevel"
-        Friend mappedSafetyStockLevel As Short
+        Public mappedSafetyStockLevel As Short
         Friend mySafetyStockLevel As WholeNumber
 
         '<MemberOrder(22)>
-        Public ReadOnly Property SafetyStockLevel As WholeNumber
+        Private ReadOnly Property SafetyStockLevel As WholeNumber
             Get
                 Return If(mySafetyStockLevel, New WholeNumber(mappedSafetyStockLevel, Function(v) mappedSafetyStockLevel = v))
             End Get
@@ -280,11 +280,11 @@ Namespace AW.Types
 #End Region
 
 #Region "ReorderPoint"
-        Friend mappedReorderPoint As Short
+        Public mappedReorderPoint As Short
         Friend myReorderPoint As WholeNumber
 
         '<MemberOrder(23)>
-        Public ReadOnly Property ReorderPoint As WholeNumber
+        Private ReadOnly Property ReorderPoint As WholeNumber
             Get
                 Return If(myReorderPoint, New WholeNumber(mappedReorderPoint, Function(v) mappedReorderPoint = v))
             End Get
@@ -301,11 +301,11 @@ Namespace AW.Types
 #End Region
 
 #Region "DaysToManufacture"
-        Friend mappedDaysToManufacture As Integer
+        Public mappedDaysToManufacture As Integer
         Friend myDaysToManufacture As WholeNumber
 
         '<MemberOrder(24)>
-        Public ReadOnly Property DaysToManufacture As WholeNumber
+        Private ReadOnly Property DaysToManufacture As WholeNumber
             Get
                 Return If(myDaysToManufacture, New WholeNumber(mappedDaysToManufacture, Function(v) mappedDaysToManufacture = v))
             End Get
@@ -322,11 +322,11 @@ Namespace AW.Types
 #End Region
 
 #Region "SellStartDate"
-        Friend mappedSellStartDate As Date
+        Public mappedSellStartDate As Date
         Friend mySellStartDate As NODate
 
         '<MemberOrder(81)>
-        Public ReadOnly Property SellStartDate As NODate
+        Private ReadOnly Property SellStartDate As NODate
             Get
                 Return If(mySellStartDate, New NODate(mappedSellStartDate, Function(v) mappedSellStartDate = v))
             End Get
@@ -342,12 +342,33 @@ Namespace AW.Types
         End Sub
 #End Region
 
+#Region "SellEndDate"
+        Public mappedSellEndDate As String
+        Friend mySellEndDate As TextString
+
+        '<MemberOrder(1)>
+        Public ReadOnly Property SellEndDate As TextString
+            Get
+                Return If(mySellEndDate, New TextString(mappedSellEndDate, Function(v) mappedSellEndDate = v))
+            End Get
+        End Property
+
+        Public Sub AboutSellEndDate(a As FieldAbout, SellEndDate As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
 #Region "PropName"
-        Friend mappedPropName As Date
+        Public mappedPropName As Date
         Friend myPropName As NODate
 
         '<MemberOrder(82)>
-        Public ReadOnly Property PropName As NODate
+        Private ReadOnly Property PropName As NODate
             Get
                 Return If(myPropName, New NODate(mappedPropName, Function(v) mappedPropName = v))
             End Get
@@ -364,11 +385,11 @@ Namespace AW.Types
 #End Region
 
 #Region "DiscontinuedDate"
-        Friend mappedDiscontinuedDate As Date
+        Public mappedDiscontinuedDate As Date
         Friend myDiscontinuedDate As NODate
 
         '<MemberOrder(83)>
-        Public ReadOnly Property DiscontinuedDate As NODate
+        Private ReadOnly Property DiscontinuedDate As NODate
             Get
                 Return If(myDiscontinuedDate, New NODate(mappedDiscontinuedDate, Function(v) mappedDiscontinuedDate = v))
             End Get
@@ -385,11 +406,11 @@ Namespace AW.Types
 #End Region
 
 #Region "StandardCost"
-        Friend mappedStandardCost As Decimal
+        Public mappedStandardCost As Decimal
         Friend myStandardCost As Money
 
         '<MemberOrder(90)>
-        Public ReadOnly Property StandardCost As Money
+        Private ReadOnly Property StandardCost As Money
             Get
                 Return If(myStandardCost, New Money(mappedStandardCost, Function(v) mappedStandardCost = v))
             End Get
@@ -406,11 +427,11 @@ Namespace AW.Types
 #End Region
 
 #Region "ModifiedDate"
-        Friend mappedModifiedDate As Date
+        Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Public ReadOnly Property ModifiedDate As TimeStamp
+        Private ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get
@@ -434,7 +455,7 @@ Namespace AW.Types
         Private myProductReviews As InternalCollection
 
         '<MemberOrder(100)>
-        Public ReadOnly Property ProductReviews As InternalCollection
+        Private ReadOnly Property ProductReviews As InternalCollection
             Get
                 Return If(myProductReviews, New InternalCollection(Of ProductReview)(mappedProductReviews))
             End Get
@@ -454,7 +475,7 @@ Namespace AW.Types
         Private myProductInventory As InternalCollection
 
         '<MemberOrder(120)>
-        Public ReadOnly Property ProductInventory As InternalCollection
+        Private ReadOnly Property ProductInventory As InternalCollection
             Get
                 Return If(myProductInventory, New InternalCollection(Of ProductInventory)(mappedProductInventory))
             End Get
@@ -474,10 +495,10 @@ Namespace AW.Types
         Public Property ProductID() As Integer
 
 #Region "Size"
-        Friend mappedSize As String
+        Public mappedSize As String
         Friend mySize As TextString
 
-        Public ReadOnly Property Size As TextString
+        Private ReadOnly Property Size As TextString
             Get
                 Return If(mySize, New TextString(mappedSize, Function(v) mappedSize = v))
             End Get
@@ -492,11 +513,11 @@ Namespace AW.Types
 #End Region
 
 #Region "SizeUnitMeasureCode"
-        Friend mappedSizeUnitMeasureCode As String
+        Public mappedSizeUnitMeasureCode As String
         Friend mySizeUnitMeasureCode As TextString
 
         '<MemberOrder(1)>
-        Public ReadOnly Property SizeUnitMeasureCode As TextString
+        Private ReadOnly Property SizeUnitMeasureCode As TextString
             Get
                 Return If(mySizeUnitMeasureCode, New TextString(mappedSizeUnitMeasureCode, Function(v) mappedSizeUnitMeasureCode = v))
             End Get

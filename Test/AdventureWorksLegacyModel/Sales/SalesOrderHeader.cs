@@ -507,7 +507,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region Collections
+            #region Collections
 
         #region Details
 
