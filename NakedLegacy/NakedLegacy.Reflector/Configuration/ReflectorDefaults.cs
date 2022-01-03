@@ -17,7 +17,7 @@ public static class ReflectorDefaults {
         typeof(InternalCollection<>),
         typeof(Date),
         typeof(TimeStamp),
-        typeof(TitledObject),
+        typeof(ITitledObject),
         typeof(ActionAbout),
         typeof(FieldAbout),
         typeof(Title),

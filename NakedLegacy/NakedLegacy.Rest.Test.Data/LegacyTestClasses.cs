@@ -34,7 +34,7 @@ public class ClassWithTextString {
     public Title Title() => Name.Title();
 
     public ClassWithTextString ActionUpdateName(TextString newName) {
-        Name.Text = newName.Text;
+        Name.Value = newName.Text;
         return this;
     }
 }
@@ -157,7 +157,7 @@ public class ClassWithDate {
     public Title Title() => Date.Title();
 
     public ClassWithDate ActionUpdateDate(Date newDate) {
-        Date.DateTime = newDate.DateTime;
+        Date.Value = newDate.DateTime;
         return this;
     }
 }
@@ -175,7 +175,7 @@ public class ClassWithTimeStamp {
     public Title Title() => TimeStamp.Title();
 
     public ClassWithTimeStamp ActionUpdateTimeStamp(TimeStamp newTimeStamp) {
-        TimeStamp.DateTime = newTimeStamp.DateTime;
+        TimeStamp.Value = newTimeStamp.DateTime;
         return this;
     }
 }
@@ -194,7 +194,7 @@ public class ClassWithWholeNumber {
     public Title Title() => WholeNumber.Title();
 
     public ClassWithWholeNumber actionUpdateWholeNumber(WholeNumber newWholeNumber) {
-        WholeNumber.Number = newWholeNumber.Number;
+        WholeNumber.Value = newWholeNumber.Number;
         return this;
     }
 

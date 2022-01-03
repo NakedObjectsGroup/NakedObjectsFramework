@@ -3,8 +3,7 @@ using System.Globalization;
 
 namespace NakedLegacy.Types;
 
-public class NODate : ValueHolder<DateTime>
-{
+public class NODate : ValueHolder<DateTime> {
     public NODate(DateTime value) : base(value) { }
 
     public NODate(DateTime value, Action<DateTime> callback) : base(value, callback) { }

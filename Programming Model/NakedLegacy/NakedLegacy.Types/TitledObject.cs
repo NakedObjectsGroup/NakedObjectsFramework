@@ -1,14 +1,5 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace NakedLegacy.Types; 
 
-namespace NakedLegacy.Types
-{
-    public interface TitledObject
-    {
-        Title Title();
-    }
+public interface ITitledObject {
+    Title Title();
 }

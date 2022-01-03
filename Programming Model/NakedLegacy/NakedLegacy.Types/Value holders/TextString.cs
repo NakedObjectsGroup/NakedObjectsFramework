@@ -1,28 +1,14 @@
-﻿
-using System;
+﻿using System;
 
-namespace NakedLegacy.Types {
-    public class TextString : TitledObject {
-        private string text;
+namespace NakedLegacy.Types; 
 
-        // necessary for when used as a parameter
-        public TextString(string text) => Text = text;
+public class TextString : ValueHolder<string> {
+    // necessary for when used as a parameter
+    public TextString(string text) : base(text) { }
 
-        public TextString(string text, Action<string> callback) : this(text) => UpdateBackingField = callback;
+    public TextString(string text, Action<string> callback) : base(text, callback) { }
 
-        public string Text {
-            get => text;
-            set {
-                text = value;
-                UpdateBackingField(text);
-            }
-        }
+    public string Text => Value;
 
-        protected Action<string> UpdateBackingField { get; } = _ => { };
-
-        public override string ToString() => Text;
-
-        public Title Title() => new Title(ToString());
-
-    }
+    public override string ToString() => Text;
 }

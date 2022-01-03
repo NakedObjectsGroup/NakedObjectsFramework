@@ -1,37 +1,26 @@
-﻿using NakedLegacy.Types;
-using NakedObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
-namespace NakedLegacy.Types
-{
-    public class Title
-    {
-        private readonly StringBuilder stringBuilder;
+namespace NakedLegacy.Types; 
 
-        public Title() => stringBuilder = new StringBuilder();
+public class Title {
+    private readonly StringBuilder stringBuilder;
 
-        public Title(object text) : this() => stringBuilder.Append(text);
+    public Title() => stringBuilder = new StringBuilder();
 
-        public Title(TitledObject obj) : this() => stringBuilder.Append(TitleString(obj));
+    public Title(object text) : this() => stringBuilder.Append(text);
 
-        public Title(TitledObject obj, string defaultValue) : this()
-        {
-            if (TitleString(obj).Length is 0)
-            {
-                stringBuilder.Append(defaultValue);
-            }
-            else
-            {
-                stringBuilder.Append(obj.Title());
-            }
+    public Title(ITitledObject obj) : this() => stringBuilder.Append(TitleString(obj));
+
+    public Title(ITitledObject obj, string defaultValue) : this() {
+        if (TitleString(obj).Length is 0) {
+            stringBuilder.Append(defaultValue);
         }
-
-        public override string ToString() => stringBuilder.ToString();
-
-        public static string TitleString(TitledObject obj) => obj?.ToString() ?? "";
+        else {
+            stringBuilder.Append(obj.Title());
+        }
     }
+
+    public override string ToString() => stringBuilder.ToString();
+
+    public static string TitleString(ITitledObject obj) => obj?.ToString() ?? "";
 }

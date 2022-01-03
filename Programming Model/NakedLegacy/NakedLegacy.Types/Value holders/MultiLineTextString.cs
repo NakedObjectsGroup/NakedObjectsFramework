@@ -1,11 +1,9 @@
 ﻿using System;
 
-namespace NakedLegacy.Types
-{
-    public class MultiLineTextString : TextString
-    {
-        public MultiLineTextString(string text) : base(text) { }
+namespace NakedLegacy.Types; 
 
-        public MultiLineTextString(string text, Action<string> callback) : base(text, callback) { }
-    }
+public class MultiLineTextString : TextString {
+    public MultiLineTextString(string text) : base(text) { }
+
+    public MultiLineTextString(string text, Action<string> callback) : base(text, callback) { }
 }

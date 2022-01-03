@@ -1,27 +1,14 @@
-﻿
-using System;
+﻿using System;
 
-namespace NakedLegacy.Types {
-    public class WholeNumber : TitledObject {
-        private int number;
+namespace NakedLegacy.Types;
 
-        // necessary for when used as a parameter
-        public WholeNumber(int number) => Number = number;
+public class WholeNumber : ValueHolder<int> {
+    // necessary for when used as a parameter
+    public WholeNumber(int number) : base(number) { }
 
-        public WholeNumber(int number, Action<int> callback) : this(number) => UpdateBackingField = callback;
+    public WholeNumber(int number, Action<int> callback) : base(number, callback) { }
 
-        public int Number {
-            get => number;
-            set {
-                number = value;
-                UpdateBackingField(number);
-            }
-        }
+    public int Number => Value;
 
-        private Action<int> UpdateBackingField { get; } = _ => { };
-
-        public override string ToString() => number.ToString();
-
-        public Title Title() => new Title(this);
-    }
+    public override string ToString() => Number.ToString();
 }

@@ -1,14 +1,11 @@
-﻿
-using System;
+﻿using System;
 
-namespace NakedLegacy.Types {
+namespace NakedLegacy.Types; 
 
-    public class Money : ValueHolder<decimal>
-    {
-        public Money(decimal value) : base(value) { }
+public class Money : ValueHolder<decimal> {
+    public Money(decimal value) : base(value) { }
 
-        public Money(decimal value, Action<decimal> callback) : base(value, callback) { }
+    public Money(decimal value, Action<decimal> callback) : base(value, callback) { }
 
-        public override string ToString() => "€ " + Value;
-    }
+    public override string ToString() => "€ " + Value;
 }
