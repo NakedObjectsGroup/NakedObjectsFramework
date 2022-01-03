@@ -7,11 +7,11 @@
 		Public Property LocationID() As Short
 
 #Region "Shelf"
-		Friend mappedShelf As String
+		Public mappedShelf As String
 		Friend myShelf As TextString
 
 		'<MemberOrder(40)>
-		Public ReadOnly Property Shelf As TextString
+		Private ReadOnly Property Shelf As TextString
 			Get
 				Return If(myShelf, New TextString(mappedShelf, Function(v) mappedShelf = v))
 			End Get
@@ -28,11 +28,11 @@
 #End Region
 
 #Region "Bin"
-		Friend mappedBin As Byte
+		Public mappedBin As Byte
 		Friend myBin As WholeNumber
 
 		'<MemberOrder(50)>
-		Public ReadOnly Property Bin As WholeNumber
+		Private ReadOnly Property Bin As WholeNumber
 			Get
 				Return If(myBin, New WholeNumber(mappedBin, Function(v) mappedBin = v))
 			End Get
@@ -49,11 +49,11 @@
 #End Region
 
 #Region "Quantity"
-		Friend mappedQuantity As Short
+		Public mappedQuantity As Short
 		Friend myQuantity As WholeNumber
 
 		'<MemberOrder(10)>
-		Public ReadOnly Property Quantity As WholeNumber
+		Private ReadOnly Property Quantity As WholeNumber
 			Get
 				Return If(myQuantity, New WholeNumber(mappedQuantity, Function(v) mappedQuantity = v))
 			End Get
@@ -76,11 +76,11 @@
 		Public Overridable Property Product() As Product
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

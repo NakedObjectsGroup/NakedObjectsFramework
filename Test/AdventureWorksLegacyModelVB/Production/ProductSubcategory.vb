@@ -6,11 +6,11 @@
 		Public Property ProductSubcategoryID() As Integer
 
 #Region "Name"
-		Friend mappedName As String
+		Public mappedName As String
 		Friend myName As TextString
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property Name As TextString
+		Private ReadOnly Property Name As TextString
 			Get
 				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
 			End Get
@@ -31,11 +31,11 @@
 		Public Overridable Property ProductCategory() As ProductCategory
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

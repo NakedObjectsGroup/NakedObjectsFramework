@@ -11,7 +11,7 @@ Namespace AW.Types
 		Public Property Male() As Integer
 
 		'<MemberOrder(3)>
-		Public ReadOnly Property TotalStaff() As WholeNumber
+		Private ReadOnly Property TotalStaff() As WholeNumber
 			Get
 				Return New WholeNumber(Male + Female)
 			End Get

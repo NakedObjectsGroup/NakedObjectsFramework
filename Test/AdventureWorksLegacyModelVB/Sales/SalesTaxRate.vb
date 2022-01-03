@@ -5,11 +5,11 @@
         Public Property SalesTaxRateID() As Integer
 
 #Region "TaxType"
-        Friend mappedTaxType As Byte
+        Public mappedTaxType As Byte
         Friend myTaxType As WholeNumber
 
         '<MemberOrder(1)>
-        Public ReadOnly Property TaxType As WholeNumber
+        Private ReadOnly Property TaxType As WholeNumber
             Get
                 Return If(myTaxType, New WholeNumber(mappedTaxType, Function(v) mappedTaxType = v))
             End Get
@@ -28,11 +28,11 @@
         Public Property TaxRate() As Decimal 'TODO: New valueholder
 
 #Region "Name"
-        Friend mappedName As String
+        Public mappedName As String
         Friend myName As TextString
 
         '<MemberOrder(1)>
-        Public ReadOnly Property Name As TextString
+        Private ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
             End Get
@@ -54,11 +54,11 @@
         Public Overridable Property StateProvince() As StateProvince
 
 #Region "ModifiedDate"
-        Friend mappedModifiedDate As Date
+        Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Public ReadOnly Property ModifiedDate As TimeStamp
+        Private ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get
@@ -72,7 +72,7 @@
         End Sub
 #End Region
 
-        Public Property rowguid() As Guid
+        Public Property RowGuid() As Guid
 
         Public Function Title() As Title
             Return New Title($"Sales Tax Rate for {StateProvince}")

@@ -7,11 +7,11 @@ Namespace AW.Types
         Public Property ProductDescriptionID() As Integer
 
 #Region "Description"
-        Friend mappedDescription As String
+        Public mappedDescription As String
         Friend myDescription As MultiLineTextString
 
         '<MemberOrder(2)>
-        Public ReadOnly Property Description As TextString
+        Private ReadOnly Property Description As TextString
             Get
                 Return If(myDescription, New MultiLineTextString(mappedDescription, Function(v) mappedDescription = v))
             End Get
@@ -28,11 +28,11 @@ Namespace AW.Types
 #End Region
 
 #Region "ModifiedDate"
-        Friend mappedModifiedDate As Date
+        Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Public ReadOnly Property ModifiedDate As TimeStamp
+        Private ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

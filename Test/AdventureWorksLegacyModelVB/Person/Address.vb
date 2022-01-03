@@ -3,11 +3,11 @@
 		Public Property AddressID() As Integer
 
 #Region "AddressLine1"
-		Friend mappedAddressLine1 As String
+		Public mappedAddressLine1 As String
 		Friend myAddressLine1 As TextString
 
 		'<MemberOrder(11)>
-		Public ReadOnly Property AddressLine1 As TextString
+		Private ReadOnly Property AddressLine1 As TextString
 			Get
 				Return If(myAddressLine1, New TextString(mappedAddressLine1, Function(v) mappedAddressLine1 = v))
 			End Get
@@ -24,11 +24,11 @@
 #End Region
 
 #Region "AddressLine2"
-		Friend mappedAddressLine2 As String
+		Public mappedAddressLine2 As String
 		Friend myAddressLine2 As TextString
 
 		'<MemberOrder(12)>
-		Public ReadOnly Property AddressLine2 As TextString
+		Private ReadOnly Property AddressLine2 As TextString
 			Get
 				Return If(myAddressLine2, New TextString(mappedAddressLine2, Function(v) mappedAddressLine2 = v))
 			End Get
@@ -45,11 +45,11 @@
 #End Region
 
 #Region "City"
-		Friend mappedCity As String
+		Public mappedCity As String
 		Friend myCity As TextString
 
 		'<MemberOrder(13)>
-		Public ReadOnly Property City As TextString
+		Private ReadOnly Property City As TextString
 			Get
 				Return If(myCity, New TextString(mappedCity, Function(v) mappedCity = v))
 			End Get
@@ -66,11 +66,11 @@
 #End Region
 
 #Region "PostalCode"
-		Friend mappedPostalCode As String
+		Public mappedPostalCode As String
 		Friend myPostalCode As TextString
 
 		'<MemberOrder(14)>
-		Public ReadOnly Property PostalCode As TextString
+		Private ReadOnly Property PostalCode As TextString
 			Get
 				Return If(myPostalCode, New TextString(mappedPostalCode, Function(v) mappedPostalCode = v))
 			End Get
@@ -92,11 +92,11 @@
 		Public Overridable Property StateProvince() As StateProvince
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

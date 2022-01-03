@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="AdventureWorksContext.cs" />
+    <Compile Remove="Mapping\DocumentMap.cs" />
+    <Compile Remove="Mapping\EmployeeAddressMap.cs" />
+    <Compile Remove="Mapping\ProductDocumentMap.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
+    <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta01" />
+	<PackageReference Include="NakedLegacy.ProgrammingModel" Version="1.0.0-alpha01" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdventureWorksLegacyModelVB\AdventureWorksLegacyModelVB.vbproj" />
+  </ItemGroup>
+
+</Project>

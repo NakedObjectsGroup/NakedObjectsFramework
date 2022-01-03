@@ -5,11 +5,11 @@
 		Public Property JobCandidateID() As Integer
 
 #Region "Resume"
-		Friend mappedResume As String
+		Public mappedResume As String
 		Friend myResume As TextString
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property Resumee As TextString
+		Private ReadOnly Property Resumee As TextString
 			Get
 				Return If(myResume, New TextString(mappedResume, Function(v) mappedResume = v))
 			End Get
@@ -31,11 +31,11 @@
 		Public Overridable Property Employee() As Employee
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

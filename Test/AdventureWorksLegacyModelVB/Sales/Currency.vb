@@ -9,7 +9,7 @@
 		Public Property Name() As String = ""
 
 		'<Hidden>
-		Public Property ModifiedDate() As DateTime
+		Public Property ModifiedDate() As Date
 
 		Public Function Title() As Title
 			Return New Title($"{CurrencyCode} - {Name}")

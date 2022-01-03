@@ -6,11 +6,11 @@
         Public Property LocationID() As Short
 
 #Region "Name"
-        Friend mappedName As String
+        Public mappedName As String
         Friend myName As TextString
 
         '<MemberOrder(1)>
-        Public ReadOnly Property Name As TextString
+        Private ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
             End Get
@@ -27,11 +27,11 @@
 #End Region
 
 #Region "CostRate"
-        Friend mappedCostRate As Decimal
+        Public mappedCostRate As Decimal
         Friend myCostRate As Money
 
         '<MemberOrder(1)>
-        Public ReadOnly Property CostRate As Money
+        Private ReadOnly Property CostRate As Money
             Get
                 Return If(myCostRate, New Money(mappedCostRate, Function(v) mappedCostRate = v))
             End Get
@@ -48,11 +48,11 @@
 #End Region
 
 #Region "Availability"
-        Friend mappedAvailability As Decimal
+        Public mappedAvailability As Decimal
         Friend myAvailability As Money
 
         '<MemberOrder(1)>
-        Public ReadOnly Property Availability As Money
+        Private ReadOnly Property Availability As Money
             Get
                 Return If(myAvailability, New Money(mappedAvailability, Function(v) mappedAvailability = v))
             End Get
@@ -69,11 +69,11 @@
 #End Region
 
 #Region "ModifiedDate"
-        Friend mappedModifiedDate As Date
+        Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Public ReadOnly Property ModifiedDate As TimeStamp
+        Private ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

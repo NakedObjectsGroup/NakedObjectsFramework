@@ -6,11 +6,11 @@
 		Public Property ProductPhotoID() As Integer
 
 #Region "Primary"
-        Friend mappedPrimary As Boolean
+        Public mappedPrimary As Boolean
         Friend myPrimary As Logical
 
         '<MemberOrder(1)>
-        Public ReadOnly Property Primary As Logical
+        Private ReadOnly Property Primary As Logical
             Get
                 Return If(myPrimary, New Logical(mappedPrimary, Function(v) mappedPrimary = v))
             End Get
@@ -31,11 +31,11 @@
         Public Overridable Property ProductPhoto() As ProductPhoto
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

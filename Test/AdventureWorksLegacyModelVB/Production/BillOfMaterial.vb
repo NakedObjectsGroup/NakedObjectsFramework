@@ -5,11 +5,11 @@
 		Public Property BillOfMaterialID() As Integer
 
 #Region "StartDate"
-		Friend mappedStartDate As Date
+		Public mappedStartDate As Date
 		Friend myStartDate As NODate
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property StartDate As NODate
+		Private ReadOnly Property StartDate As NODate
 			Get
 				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
 			End Get
@@ -25,12 +25,33 @@
 		End Sub
 #End Region
 
+#Region "EndDate"
+		Public mappedEndDate As Date
+		Friend myEndDate As NODate
+
+		'<MemberOrder(1)>
+		Private ReadOnly Property EndDate As NODate
+			Get
+				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
+			End Get
+		End Property
+
+		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODate)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
 #Region "PropName"
-		Friend mappedPropName As DateTime?
+		Public mappedPropName As DateTime?
 		Friend myPropName As NODate
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property PropName As NODate
+		Private ReadOnly Property PropName As NODate
 			Get
 				Return If(myPropName, New NODate(mappedPropName, Function(v) mappedPropName = v))
 			End Get
@@ -47,11 +68,11 @@
 #End Region
 
 #Region "BOMLevel"
-		Friend mappedBOMLevel As Short
+		Public mappedBOMLevel As Short
 		Friend myBOMLevel As WholeNumber
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property BOMLevel As WholeNumber
+		Private ReadOnly Property BOMLevel As WholeNumber
 			Get
 				Return If(myBOMLevel, New WholeNumber(mappedBOMLevel, Function(v) mappedBOMLevel = v))
 			End Get
@@ -68,11 +89,11 @@
 #End Region
 
 #Region "PerAssemblyQty"
-		Friend mappedPerAssemblyQty As Decimal
+		Public mappedPerAssemblyQty As Decimal
 		Friend myPerAssemblyQty As Money 'TODO: needs a new value type
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property PerAssemblyQty As Money
+		Private ReadOnly Property PerAssemblyQty As Money
 			Get
 				Return If(myPerAssemblyQty, New Money(mappedPerAssemblyQty, Function(v) mappedPerAssemblyQty = v))
 			End Get
@@ -101,11 +122,11 @@
 		Public Overridable Property UnitMeasure() As UnitMeasure
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

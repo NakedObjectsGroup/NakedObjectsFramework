@@ -9,11 +9,11 @@
 		Public Property SalesOrderDetailID() As Integer
 
 #Region "OrderQty"
-		Friend mappedOrderQty As Short
+		Public mappedOrderQty As Short
 		Friend myOrderQty As WholeNumber
 
 		'<MemberOrder(15)>
-		Public ReadOnly Property OrderQty As WholeNumber
+		Private ReadOnly Property OrderQty As WholeNumber
 			Get
 				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
 			End Get
@@ -30,11 +30,11 @@
 #End Region
 
 #Region "UnitPrice"
-		Friend mappedUnitPrice As Decimal
+		Public mappedUnitPrice As Decimal
 		Friend myUnitPrice As Money
 
 		'<MemberOrder(20)>
-		Public ReadOnly Property UnitPrice As Money
+		Private ReadOnly Property UnitPrice As Money
 			Get
 				Return If(myUnitPrice, New Money(mappedUnitPrice, Function(v) mappedUnitPrice = v))
 			End Get
@@ -55,11 +55,11 @@
 		Public Property UnitPriceDiscount() As Decimal
 
 #Region "LineTotal"
-		Friend mappedLineTotal As Decimal
+		Public mappedLineTotal As Decimal
 		Friend myLineTotal As Money
 
 		'<MemberOrder(40)>
-		Public ReadOnly Property LineTotal As Money
+		Private ReadOnly Property LineTotal As Money
 			Get
 				Return If(myLineTotal, New Money(mappedLineTotal, Function(v) mappedLineTotal = v))
 			End Get
@@ -76,11 +76,11 @@
 #End Region
 
 #Region "CarrierTrackingNumber"
-		Friend mappedCarrierTrackingNumber As String
+		Public mappedCarrierTrackingNumber As String
 		Friend myCarrierTrackingNumber As TextString
 
 		'<MemberOrder(50)>
-		Public ReadOnly Property CarrierTrackingNumber As TextString
+		Private ReadOnly Property CarrierTrackingNumber As TextString
 			Get
 				Return If(myCarrierTrackingNumber, New TextString(mappedCarrierTrackingNumber, Function(v) mappedCarrierTrackingNumber = v))
 			End Get
@@ -124,11 +124,11 @@
 
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get
@@ -143,7 +143,7 @@
 #End Region
 
 		''<Hidden>
-		Public Property rowguid() As Guid
+		Public Property RowGuid() As Guid
 
 		Public Function Title() As Title
 			Return New Title($"{OrderQty} x {Product}")

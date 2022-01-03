@@ -9,11 +9,11 @@
 		Public Property PurchaseOrderDetailID() As Integer
 
 #Region "DueDate"
-		Friend mappedDueDate As Date
+		Public mappedDueDate As Date
 		Friend myDueDate As NODate
 
 		'<MemberOrder(26)>
-		Public ReadOnly Property DueDate As NODate
+		Private ReadOnly Property DueDate As NODate
 			Get
 				Return If(myDueDate, New NODate(mappedDueDate, Function(v) mappedDueDate = v))
 			End Get
@@ -30,11 +30,11 @@
 #End Region
 
 #Region "OrderQty"
-		Friend mappedOrderQty As Short
+		Public mappedOrderQty As Short
 		Friend myOrderQty As WholeNumber
 
 		'<MemberOrder(20)>
-		Public ReadOnly Property OrderQty As WholeNumber
+		Private ReadOnly Property OrderQty As WholeNumber
 			Get
 				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
 			End Get
@@ -51,11 +51,11 @@
 #End Region
 
 #Region "UnitPrice"
-		Friend mappedUnitPrice As Decimal
+		Public mappedUnitPrice As Decimal
 		Friend myUnitPrice As Money
 
 		'<MemberOrder(22)>
-		Public ReadOnly Property UnitPrice As Money
+		Private ReadOnly Property UnitPrice As Money
 			Get
 				Return If(myUnitPrice, New Money(mappedUnitPrice, Function(v) mappedUnitPrice = v))
 			End Get
@@ -72,11 +72,11 @@
 #End Region
 
 #Region "LineTotal"
-		Friend mappedLineTotal As Decimal
+		Public mappedLineTotal As Decimal
 		Friend myLineTotal As Money
 
 		'<MemberOrder(24)>
-		Public ReadOnly Property LineTotal As Money
+		Private ReadOnly Property LineTotal As Money
 			Get
 				Return If(myLineTotal, New Money(mappedLineTotal, Function(v) mappedLineTotal = v))
 			End Get
@@ -94,11 +94,11 @@
 
 		'TODO: Need a new decimal valueholder - not Money - 3 fields
 #Region "ReceivedQty"
-		Friend mappedReceivedQty As Decimal
+		Public mappedReceivedQty As Decimal
 		Friend myReceivedQty As Money
 
 		'<MemberOrder(30)>
-		Public ReadOnly Property ReceivedQty As Money
+		Private ReadOnly Property ReceivedQty As Money
 			Get
 				Return If(myReceivedQty, New Money(mappedReceivedQty, Function(v) mappedReceivedQty = v))
 			End Get
@@ -121,11 +121,11 @@
 		Public Property StockedQty() As Decimal
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

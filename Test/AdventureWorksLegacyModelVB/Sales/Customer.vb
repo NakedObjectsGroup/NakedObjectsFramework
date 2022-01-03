@@ -7,18 +7,18 @@ Namespace AW.Types
 		Public Property CustomerID() As Integer
 
 		'<MemberOrder(15)>
-		Public ReadOnly Property CustomerType() As TextString
+		Private ReadOnly Property CustomerType() As TextString
 			Get
 				Return New TextString("TODO") 'TODO If(Me.IsIndividual(), "Individual", "Store")
 			End Get
 		End Property
 
 #Region "AccountNumber"
-		Friend mappedAccountNumber As String
+		Public mappedAccountNumber As String
 		Friend myAccountNumber As TextString
 
 		'<MemberOrder(10)>
-		Public ReadOnly Property AccountNumber As TextString
+		Private ReadOnly Property AccountNumber As TextString
 			Get
 				Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
 			End Get

@@ -7,11 +7,11 @@
 		Public Property ProductID() As Integer
 
 #Region "OperationSequence"
-		Friend mappedOperationSequence As Short
+		Public mappedOperationSequence As Short
 		Friend myOperationSequence As WholeNumber
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property OperationSequence As WholeNumber
+		Private ReadOnly Property OperationSequence As WholeNumber
 			Get
 				Return If(myOperationSequence, New WholeNumber(mappedOperationSequence, Function(v) mappedOperationSequence = v))
 			End Get
@@ -28,11 +28,11 @@
 #End Region
 
 #Region "ScheduledStartDate"
-		Friend mappedScheduledStartDate As DateTime?
+		Public mappedScheduledStartDate As DateTime?
 		Friend myScheduledStartDate As NODate
 
 		'<MemberOrder(20)>
-		Public ReadOnly Property ScheduledStartDate As NODate
+		Private ReadOnly Property ScheduledStartDate As NODate
 			Get
 				Return If(myScheduledStartDate, New NODate(mappedScheduledStartDate, Function(v) mappedScheduledStartDate = v))
 			End Get
@@ -49,11 +49,11 @@
 #End Region
 
 #Region "ScheduledEndDate"
-		Friend mappedScheduledEndDate As DateTime?
+		Public mappedScheduledEndDate As DateTime?
 		Friend myScheduledEndDate As NODate
 
 		'<MemberOrder(22)>
-		Public ReadOnly Property ScheduledEndDate As NODate
+		Private ReadOnly Property ScheduledEndDate As NODate
 			Get
 				Return If(myScheduledEndDate, New NODate(mappedScheduledEndDate, Function(v) mappedScheduledEndDate = v))
 			End Get
@@ -70,11 +70,11 @@
 #End Region
 
 #Region "ActualStartDate"
-		Friend mappedActualStartDate As DateTime?
+		Public mappedActualStartDate As DateTime?
 		Friend myActualStartDate As NODate
 
 		'<MemberOrder(21)>
-		Public ReadOnly Property ActualStartDate As NODate
+		Private ReadOnly Property ActualStartDate As NODate
 			Get
 				Return If(myActualStartDate, New NODate(mappedActualStartDate, Function(v) mappedActualStartDate = v))
 			End Get
@@ -91,11 +91,11 @@
 #End Region
 
 #Region "ActualEndDate"
-		Friend mappedActualEndDate As DateTime?
+		Public mappedActualEndDate As DateTime?
 		Friend myActualEndDate As NODate
 
 		'<MemberOrder(23)>
-		Public ReadOnly Property ActualEndDate As NODate
+		Private ReadOnly Property ActualEndDate As NODate
 			Get
 				Return If(myActualEndDate, New NODate(mappedActualEndDate, Function(v) mappedActualEndDate = v))
 			End Get
@@ -114,11 +114,11 @@
 		Public Property ActualResourceHrs() As Decimal? 'TODO  need new value type
 
 #Region "PlannedCost"
-		Friend mappedPlannedCost As Decimal
+		Public mappedPlannedCost As Decimal
 		Friend myPlannedCost As Money
 
 		'<MemberOrder(40)>
-		Public ReadOnly Property PlannedCost As Money
+		Private ReadOnly Property PlannedCost As Money
 			Get
 				Return If(myPlannedCost, New Money(mappedPlannedCost, Function(v) mappedPlannedCost = v))
 			End Get
@@ -135,11 +135,11 @@
 #End Region
 
 #Region "ActualCost"
-		Friend mappedActualCost As Decimal?
+		Public mappedActualCost As Decimal?
 		Friend myActualCost As Money
 
 		'<MemberOrder(41)>
-		Public ReadOnly Property ActualCost As Money
+		Private ReadOnly Property ActualCost As Money
 			Get
 				Return If(myActualCost, New Money(mappedActualCost, Function(v) mappedActualCost = v))
 			End Get
@@ -172,11 +172,11 @@
 		Public Overridable Property Location() As Location
 
 #Region "ModifiedDate"
-		Friend mappedModifiedDate As Date
+		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Public ReadOnly Property ModifiedDate As TimeStamp
+		Private ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

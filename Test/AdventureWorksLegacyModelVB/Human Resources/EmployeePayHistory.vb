@@ -5,11 +5,11 @@
 		Public Property EmployeeID() As Integer
 
 #Region "RateChangeDate"
-        Friend mappedRateChangeDate As Date
+        Public mappedRateChangeDate As Date
         Friend myRateChangeDate As NODate
 
         '<MemberOrder(1)>
-        Public ReadOnly Property RateChangeDate As NODate
+        Private ReadOnly Property RateChangeDate As NODate
             Get
                 Return If(myRateChangeDate, New NODate(mappedRateChangeDate, Function(v) mappedRateChangeDate = v))
             End Get
@@ -24,11 +24,11 @@
 #End Region
 
 #Region "Rate"
-        Friend mappedRate As Decimal
+        Public mappedRate As Decimal
         Friend myRate As Money
 
         '<MemberOrder(2)>
-        Public ReadOnly Property Rate As Money
+        Private ReadOnly Property Rate As Money
             Get
                 Return If(myRate, New Money(mappedRate, Function(v) mappedRate = v))
             End Get
@@ -43,11 +43,11 @@
 #End Region
 
 #Region "PayFrequency"
-        Friend mappedPayFrequency As Byte
+        Public mappedPayFrequency As Byte
         Friend myPayFrequency As WholeNumber
 
         '<MemberOrder(3)>
-        Public ReadOnly Property PayFrequency As WholeNumber
+        Private ReadOnly Property PayFrequency As WholeNumber
             Get
                 Return If(myPayFrequency, New WholeNumber(mappedPayFrequency, Function(v) mappedPayFrequency = v))
             End Get
@@ -65,11 +65,11 @@
         Public Overridable Property Employee() As Employee
 
 #Region "ModifiedDate"
-        Friend mappedModifiedDate As Date
+        Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Public ReadOnly Property ModifiedDate As TimeStamp
+        Private ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get
