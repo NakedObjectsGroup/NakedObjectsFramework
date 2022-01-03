@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +26,7 @@ public static class EFCorePersistorExtensions {
             MaximumCommitCycles = options.MaximumCommitCycles
         };
 
-        var contexts = options.ContextCreators.Select(ci => () => ci(configuration)).ToArray();
+        var contexts = options.ContextCreators.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(ci => () => ci(configuration)).ToArray();
         config.Contexts = contexts;
         return config;
     }

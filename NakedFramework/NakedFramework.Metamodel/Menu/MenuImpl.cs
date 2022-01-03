@@ -48,6 +48,23 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
 
     private IList<IActionSpecImmutable> ActionsForObject => ObjectSpec.OrderedObjectActions.ToList();
 
+    private IActionSpecImmutable GetAction(string actionName) {
+        // TODO revisit this would prefer not to have to check both collections. 
+        IList<IActionSpecImmutable> actions;
+        if (ObjectSpec.OrderedObjectActions is not null && ObjectSpec.OrderedObjectActions.Any()) {
+            actions = ObjectSpec.OrderedObjectActions.ToList();
+        }
+        else if (ObjectSpec is ITypeSpecBuilder spec) {
+            actions = spec.UnorderedObjectActions;
+        }
+        else {
+            actions = Array.Empty<IActionSpecImmutable>();
+        }
+
+        return actions.FirstOrDefault(a => a.Identifier.MemberName == actionName);
+    }
+
+
     private IList<IActionSpecImmutable> ActionsForType(Type type) => Metamodel.GetSpecification(type).OrderedObjectActions.ToList();
 
     private MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id = null) {
@@ -131,12 +148,12 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
     }
 
     public IMenu AddAction(string actionName) {
-        if (Type == null) {
+        if (Type is null) {
             throw new Exception($"No type has been specified for the action: {actionName}");
         }
 
-        var actionSpec = ActionsForObject.FirstOrDefault(a => a.Identifier.MemberName == actionName);
-        if (actionSpec == null) {
+        var actionSpec = GetAction(actionName);
+        if (actionSpec is null) {
             throw new ReflectionException($"No such action: {actionName} on {Type}");
         }
 
