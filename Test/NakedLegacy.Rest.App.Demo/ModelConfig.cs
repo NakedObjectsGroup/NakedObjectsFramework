@@ -20,10 +20,8 @@ namespace Legacy.Rest.App.Demo {
        // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
 
         private static Type[] AllAdventureWorksTypes => 
-            Assembly.GetAssembly(typeof(AdventureWorksLegacyModelVB.AW.Types.Department)).GetTypes().
+            Assembly.GetAssembly(typeof(AW.Types.Department)).GetTypes().
                      Where(t => t.IsPublic).
-                     Where(t => t.Namespace.EndsWith("AW.Types")).
-                     Where(t => !t.Name.EndsWith("Map")).
                      ToArray();
 
 
@@ -50,7 +48,7 @@ namespace Legacy.Rest.App.Demo {
         //    }
         //}
 
-        public static Type[] LegacyTypes => AllAdventureWorksTypes.Where(t => !t.Namespace.EndsWith("AW.Types")).ToArray();
+        public static Type[] LegacyTypes => AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Types")).ToArray();
 
         public static Type[] LegacyServices => new Type[] { };
 

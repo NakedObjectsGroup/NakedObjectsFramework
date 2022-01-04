@@ -1,6 +1,6 @@
 
 
-global using AdventureWorksLegacyModelVB.AW.Types;
+global using AW.Types;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdventureWorksModel

@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>AdventureWorksLegacyModelVB</RootNamespace>
     <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Import Include="AdventureWorksLegacyModelVB.AW.Types" />
+    <Import Include="AW.Types" />
     <Import Include="NakedLegacy.Types" />
     <Import Include="NakedObjects" />
     <Import Include="System.ComponentModel.DataAnnotations" />
