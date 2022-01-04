@@ -1,8 +1,10 @@
 ﻿using System;
 
-namespace NakedLegacy.Types; 
+namespace NakedLegacy.Types;
 
 public class TextString : ValueHolder<string> {
+    public TextString() { }
+
     // necessary for when used as a parameter
     public TextString(string text) : base(text) { }
 
@@ -11,4 +13,5 @@ public class TextString : ValueHolder<string> {
     public string Text => Value;
 
     public override string ToString() => Text;
+    public override string Parse(string fromString) => throw new NotImplementedException();
 }

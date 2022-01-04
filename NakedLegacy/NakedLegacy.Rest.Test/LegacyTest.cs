@@ -131,7 +131,6 @@ public class LegacyTest : AcceptanceTestCase {
     private static string FullName<T>() => typeof(T).FullName;
 
     [Test]
-    [Ignore("pending Valueholder rework")]
     public void TestGetObjectWithTextString() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithTextString>(), "1");
@@ -148,7 +147,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+
     public void TestGetTextStringProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithTextString>(), "1", nameof(ClassWithTextString.Name));
@@ -163,7 +163,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+
     public void TestInvokeUpdateAndPersistObjectWithTextString() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Ted") } } };
@@ -196,7 +197,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+
     public void TestInvokeUpdateAndPersistObjectWithInternalCollection() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Bill") } } };
@@ -257,7 +259,7 @@ public class LegacyTest : AcceptanceTestCase {
     //}
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    
     public void TestGetObjectWithField() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
 
@@ -287,7 +289,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+
     public void TestNOFToLegacy() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithString>(), "1");
@@ -416,7 +419,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    
     public void TestGetLegacyObjectWithMenu() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");
@@ -462,7 +465,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+    
     public void TestGetDateProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.Date));
@@ -477,7 +481,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+
     public void TestInvokeUpdateAndPersistObjectWithDate() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newDate", new ScalarValue(new DateTime(1998, 7, 6)) } } };
@@ -495,7 +500,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    
     public void TestGetObjectWithTimeStamp() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithTimeStamp>(), "1");
@@ -512,7 +517,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+
     public void TestGetTimeStampProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithTimeStamp>(), "1", nameof(ClassWithTimeStamp.TimeStamp));
@@ -527,7 +533,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+
     public void TestInvokeUpdateAndPersistObjectWithTimestamp() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newTimeStamp", new ScalarValue(new DateTime(1998, 7, 6)) } } };
@@ -546,7 +553,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
     public void TestGetObjectWithWholeNumber() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithWholeNumber>(), "1");
@@ -563,7 +569,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+
     public void TestGetWholeNumberProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.WholeNumber));
@@ -578,7 +585,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending Valueholder rework")]
+    [Ignore("")]
+
     public void TestInvokeUpdateAndPersistObjectWithWholeNumber() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newWholeNumber", new ScalarValue(66) } } };

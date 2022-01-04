@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Globalization;
 
 namespace NakedLegacy.Types;
 
 public class WholeNumber : ValueHolder<int> {
+    public WholeNumber() { }
+
     // necessary for when used as a parameter
     public WholeNumber(int number) : base(number) { }
 
@@ -11,4 +14,18 @@ public class WholeNumber : ValueHolder<int> {
     public int Number => Value;
 
     public override string ToString() => Number.ToString();
+
+    public override object Parse(string fromString) {
+        try {
+            return new WholeNumber(int.Parse(fromString, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
+        }
+        catch (FormatException) {
+            //throw new ValueHolderException(FormatMessage(fromString));
+            throw new ValueHolderException(fromString);
+        }
+        catch (OverflowException) {
+            //throw new ValueHolderException(OutOfRangeMessage(fromString, new WholeNumber(int.MinValue), new WholeNumber(int.MaxValue)));
+            throw new ValueHolderException(fromString);
+        }
+    }
 }

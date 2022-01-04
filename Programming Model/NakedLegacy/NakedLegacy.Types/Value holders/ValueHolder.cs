@@ -1,9 +1,11 @@
 ﻿using System;
 
-namespace NakedLegacy.Types; 
+namespace NakedLegacy.Types;
 
 public abstract class ValueHolder<T> : ITitledObject {
     private T value;
+
+    protected ValueHolder() { }
 
     protected ValueHolder(T value) => this.value = value;
 
@@ -22,4 +24,6 @@ public abstract class ValueHolder<T> : ITitledObject {
     public Title Title() => new(ToString());
 
     public override string ToString() => Value.ToString();
+
+    public abstract object Parse(string fromString);
 }

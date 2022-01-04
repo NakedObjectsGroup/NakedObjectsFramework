@@ -26,9 +26,9 @@ public static class LegacyObjectFacetFactories {
 
     public static Type[] TypeFacetFactories() =>
         new[] {
-            typeof(TextStringValueTypeFacetFactory),
-            typeof(DateValueTypeFacetFactory),
-            typeof(TimeStampValueTypeFacetFactory),
-            typeof(WholeNumberValueTypeFacetFactory)
+            //typeof(TextStringValueTypeFacetFactory),
+            //typeof(DateValueTypeFacetFactory),
+            //typeof(TimeStampValueTypeFacetFactory),
+            typeof(ValueHolderFacetFactory)
         };
 }

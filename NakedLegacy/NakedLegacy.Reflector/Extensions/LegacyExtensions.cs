@@ -33,7 +33,7 @@ public static class LegacyExtensions {
         setupAction(options);
 
         frameworkOptions.Services.RegisterFacetFactories<ILegacyFacetFactoryProcessor>(LegacyObjectFacetFactories.StandardFacetFactories());
-        frameworkOptions.Services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(LegacyObjectFacetFactories.TypeFacetFactories());
+        frameworkOptions.Services.RegisterFacetFactories<ISystemTypeFacetFactoryProcessor>(LegacyObjectFacetFactories.TypeFacetFactories());
 
         frameworkOptions.Services.AddDefaultSingleton<LegacyObjectFacetFactorySet, LegacyObjectFacetFactorySet>();
         frameworkOptions.Services.AddDefaultSingleton<LegacyObjectClassStrategy, LegacyObjectClassStrategy>();
