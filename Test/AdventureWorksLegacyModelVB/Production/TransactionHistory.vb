@@ -13,7 +13,7 @@
         Friend myTransactionDate As NODate
 
         '<MemberOrder(1)>
-        Private ReadOnly Property TransactionDate As NODate
+        Public ReadOnly Property TransactionDate As NODate
             Get
                 Return If(myTransactionDate, New NODate(mappedTransactionDate, Function(v) mappedTransactionDate = v))
             End Get
@@ -34,7 +34,7 @@
         Friend myTransactionType As TextString
 
         '<MemberOrder(1)>
-        Private ReadOnly Property TransactionType As TextString
+        Public ReadOnly Property TransactionType As TextString
             Get
                 Return If(myTransactionType, New TextString(mappedTransactionType, Function(v) mappedTransactionType = v))
             End Get
@@ -55,7 +55,7 @@
         Friend myQuantity As WholeNumber
 
         '<MemberOrder(1)>
-        Private ReadOnly Property Quantity As WholeNumber
+        Public ReadOnly Property Quantity As WholeNumber
             Get
                 Return If(myQuantity, New WholeNumber(mappedQuantity, Function(v) mappedQuantity = v))
             End Get
@@ -76,7 +76,7 @@
         Friend myActualCost As Money
 
         '<MemberOrder(1)>
-        Private ReadOnly Property ActualCost As Money
+        Public ReadOnly Property ActualCost As Money
             Get
                 Return If(myActualCost, New Money(mappedActualCost, Function(v) mappedActualCost = v))
             End Get
@@ -101,7 +101,7 @@
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

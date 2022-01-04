@@ -12,7 +12,7 @@
 		Friend myQuantity As WholeNumber
 
 		'<MemberOrder(20)>
-		Private ReadOnly Property Quantity As WholeNumber
+		Public ReadOnly Property Quantity As WholeNumber
 			Get
 				Return If(myQuantity, New WholeNumber(mappedQuantity, Function(v) mappedQuantity = v))
 			End Get
@@ -42,7 +42,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

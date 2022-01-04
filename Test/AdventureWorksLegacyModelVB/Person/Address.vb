@@ -7,7 +7,7 @@
 		Friend myAddressLine1 As TextString
 
 		'<MemberOrder(11)>
-		Private ReadOnly Property AddressLine1 As TextString
+		Public ReadOnly Property AddressLine1 As TextString
 			Get
 				Return If(myAddressLine1, New TextString(mappedAddressLine1, Function(v) mappedAddressLine1 = v))
 			End Get
@@ -28,7 +28,7 @@
 		Friend myAddressLine2 As TextString
 
 		'<MemberOrder(12)>
-		Private ReadOnly Property AddressLine2 As TextString
+		Public ReadOnly Property AddressLine2 As TextString
 			Get
 				Return If(myAddressLine2, New TextString(mappedAddressLine2, Function(v) mappedAddressLine2 = v))
 			End Get
@@ -49,7 +49,7 @@
 		Friend myCity As TextString
 
 		'<MemberOrder(13)>
-		Private ReadOnly Property City As TextString
+		Public ReadOnly Property City As TextString
 			Get
 				Return If(myCity, New TextString(mappedCity, Function(v) mappedCity = v))
 			End Get
@@ -70,7 +70,7 @@
 		Friend myPostalCode As TextString
 
 		'<MemberOrder(14)>
-		Private ReadOnly Property PostalCode As TextString
+		Public ReadOnly Property PostalCode As TextString
 			Get
 				Return If(myPostalCode, New TextString(mappedPostalCode, Function(v) mappedPostalCode = v))
 			End Get
@@ -96,7 +96,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

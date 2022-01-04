@@ -13,7 +13,7 @@
 		Friend myOrderQty As WholeNumber
 
 		'<MemberOrder(15)>
-		Private ReadOnly Property OrderQty As WholeNumber
+		Public ReadOnly Property OrderQty As WholeNumber
 			Get
 				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
 			End Get
@@ -34,7 +34,7 @@
 		Friend myUnitPrice As Money
 
 		'<MemberOrder(20)>
-		Private ReadOnly Property UnitPrice As Money
+		Public ReadOnly Property UnitPrice As Money
 			Get
 				Return If(myUnitPrice, New Money(mappedUnitPrice, Function(v) mappedUnitPrice = v))
 			End Get
@@ -59,7 +59,7 @@
 		Friend myLineTotal As Money
 
 		'<MemberOrder(40)>
-		Private ReadOnly Property LineTotal As Money
+		Public ReadOnly Property LineTotal As Money
 			Get
 				Return If(myLineTotal, New Money(mappedLineTotal, Function(v) mappedLineTotal = v))
 			End Get
@@ -80,7 +80,7 @@
 		Friend myCarrierTrackingNumber As TextString
 
 		'<MemberOrder(50)>
-		Private ReadOnly Property CarrierTrackingNumber As TextString
+		Public ReadOnly Property CarrierTrackingNumber As TextString
 			Get
 				Return If(myCarrierTrackingNumber, New TextString(mappedCarrierTrackingNumber, Function(v) mappedCarrierTrackingNumber = v))
 			End Get
@@ -128,7 +128,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

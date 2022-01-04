@@ -10,7 +10,7 @@
 		Friend myDescription As TextString
 
 		'<MemberOrder(10)>
-		Private ReadOnly Property Description As TextString
+		Public ReadOnly Property Description As TextString
 			Get
 				Return If(myDescription, New TextString(mappedDescription, Function(v) mappedDescription = v))
 			End Get
@@ -34,7 +34,7 @@
 		Friend myType As TextString
 
 		'<MemberOrder(30)>
-		Private ReadOnly Property Type As TextString
+		Public ReadOnly Property Type As TextString
 			Get
 				Return If(myType, New TextString(mappedType, Function(v) mappedType = v))
 			End Get
@@ -55,7 +55,7 @@
 		Friend myCategory As TextString
 
 		'<MemberOrder(40)>
-		Private ReadOnly Property Category As TextString
+		Public ReadOnly Property Category As TextString
 			Get
 				Return If(myCategory, New TextString(mappedCategory, Function(v) mappedCategory = v))
 			End Get
@@ -76,7 +76,7 @@
 		Friend myStartDate As NODate
 
 		'<MemberOrder(51)>
-		Private ReadOnly Property StartDate As NODate
+		Public ReadOnly Property StartDate As NODate
 			Get
 				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
 			End Get
@@ -97,7 +97,7 @@
 		Friend myEndDate As NODate
 
 		'<MemberOrder(52)>
-		Private ReadOnly Property EndDate As NODate
+		Public ReadOnly Property EndDate As NODate
 			Get
 				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
 			End Get
@@ -118,7 +118,7 @@
 		Friend myMinQty As WholeNumber
 
 		'<MemberOrder(61)>
-		Private ReadOnly Property MinQty As WholeNumber
+		Public ReadOnly Property MinQty As WholeNumber
 			Get
 				Return If(myMinQty, New WholeNumber(mappedMinQty, Function(v) mappedMinQty = v))
 			End Get
@@ -139,7 +139,7 @@
 		Friend myMaxQty As WholeNumber
 
 		'<MemberOrder(62)>
-		Private ReadOnly Property MaxQty As WholeNumber
+		Public ReadOnly Property MaxQty As WholeNumber
 			Get
 				Return If(myMaxQty, New WholeNumber(mappedMaxQty, Function(v) mappedMaxQty = v))
 			End Get
@@ -160,7 +160,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

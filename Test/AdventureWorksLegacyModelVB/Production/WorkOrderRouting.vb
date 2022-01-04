@@ -11,7 +11,7 @@
 		Friend myOperationSequence As WholeNumber
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property OperationSequence As WholeNumber
+		Public ReadOnly Property OperationSequence As WholeNumber
 			Get
 				Return If(myOperationSequence, New WholeNumber(mappedOperationSequence, Function(v) mappedOperationSequence = v))
 			End Get
@@ -32,7 +32,7 @@
 		Friend myScheduledStartDate As NODate
 
 		'<MemberOrder(20)>
-		Private ReadOnly Property ScheduledStartDate As NODate
+		Public ReadOnly Property ScheduledStartDate As NODate
 			Get
 				Return If(myScheduledStartDate, New NODate(mappedScheduledStartDate, Function(v) mappedScheduledStartDate = v))
 			End Get
@@ -53,7 +53,7 @@
 		Friend myScheduledEndDate As NODate
 
 		'<MemberOrder(22)>
-		Private ReadOnly Property ScheduledEndDate As NODate
+		Public ReadOnly Property ScheduledEndDate As NODate
 			Get
 				Return If(myScheduledEndDate, New NODate(mappedScheduledEndDate, Function(v) mappedScheduledEndDate = v))
 			End Get
@@ -74,7 +74,7 @@
 		Friend myActualStartDate As NODate
 
 		'<MemberOrder(21)>
-		Private ReadOnly Property ActualStartDate As NODate
+		Public ReadOnly Property ActualStartDate As NODate
 			Get
 				Return If(myActualStartDate, New NODate(mappedActualStartDate, Function(v) mappedActualStartDate = v))
 			End Get
@@ -95,7 +95,7 @@
 		Friend myActualEndDate As NODate
 
 		'<MemberOrder(23)>
-		Private ReadOnly Property ActualEndDate As NODate
+		Public ReadOnly Property ActualEndDate As NODate
 			Get
 				Return If(myActualEndDate, New NODate(mappedActualEndDate, Function(v) mappedActualEndDate = v))
 			End Get
@@ -118,7 +118,7 @@
 		Friend myPlannedCost As Money
 
 		'<MemberOrder(40)>
-		Private ReadOnly Property PlannedCost As Money
+		Public ReadOnly Property PlannedCost As Money
 			Get
 				Return If(myPlannedCost, New Money(mappedPlannedCost, Function(v) mappedPlannedCost = v))
 			End Get
@@ -139,7 +139,7 @@
 		Friend myActualCost As Money
 
 		'<MemberOrder(41)>
-		Private ReadOnly Property ActualCost As Money
+		Public ReadOnly Property ActualCost As Money
 			Get
 				Return If(myActualCost, New Money(mappedActualCost, Function(v) mappedActualCost = v))
 			End Get
@@ -176,7 +176,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

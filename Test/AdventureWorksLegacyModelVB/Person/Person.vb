@@ -9,7 +9,7 @@
 		Friend myNameStyle As Logical
 
 		'<MemberOrder(15)>
-		Private ReadOnly Property NameStyle As Logical
+		Public ReadOnly Property NameStyle As Logical
 			Get
 				Return If(myNameStyle, New Logical(mappedNameStyle, Function(v) mappedNameStyle = v))
 			End Get
@@ -31,7 +31,7 @@
 		Friend myTitle As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property NameTitle As TextString
+		Public ReadOnly Property NameTitle As TextString
 			Get
 				Return If(myTitle, New TextString(mappedTitle, Function(v) mappedTitle = v))
 			End Get
@@ -53,7 +53,7 @@
 		Friend myFirstName As TextString
 
 		'<MemberOrder(12)>
-		Private ReadOnly Property FirstName As TextString
+		Public ReadOnly Property FirstName As TextString
 			Get
 				Return If(myFirstName, New TextString(mappedFirstName, Function(v) mappedFirstName = v))
 			End Get
@@ -74,7 +74,7 @@
 		Friend myMiddleName As TextString
 
 		'<MemberOrder(13)>
-		Private ReadOnly Property MiddleName As TextString
+		Public ReadOnly Property MiddleName As TextString
 			Get
 				Return If(myMiddleName, New TextString(mappedMiddleName, Function(v) mappedMiddleName = v))
 			End Get
@@ -95,7 +95,7 @@
 		Friend myLastName As TextString
 
 		'<MemberOrder(14)>
-		Private ReadOnly Property LastName As TextString
+		Public ReadOnly Property LastName As TextString
 			Get
 				Return If(myLastName, New TextString(mappedLastName, Function(v) mappedLastName = v))
 			End Get
@@ -116,7 +116,7 @@
 		Friend mySuffix As TextString
 
 		'<MemberOrder(15)>
-		Private ReadOnly Property Suffix As TextString
+		Public ReadOnly Property Suffix As TextString
 			Get
 				Return If(mySuffix, New TextString(mappedSuffix, Function(v) mappedSuffix = v))
 			End Get
@@ -138,7 +138,7 @@
 		Friend myPersonType As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property PersonType As TextString
+		Public ReadOnly Property PersonType As TextString
 			Get
 				Return If(myPersonType, New TextString(mappedPersonType, Function(v) mappedPersonType = v))
 			End Get
@@ -177,7 +177,7 @@
 		Private myEmailAddresses As InternalCollection
 
 		'		'<TableView(False, NameOf(EmailAddress.EmailAddress1))>
-		Private ReadOnly Property EmailAddresses As InternalCollection
+		Public ReadOnly Property EmailAddresses As InternalCollection
 			Get
 				Return If(myEmailAddresses, New InternalCollection(Of EmailAddress)(mappedEmailAddresses))
 			End Get
@@ -197,7 +197,7 @@
 		Private myPhoneNumbers As InternalCollection
 
 		''<TableView(False, NameOf(PersonPhone.PhoneNumberType), NameOf(PersonPhone.PhoneNumber))>
-		Private ReadOnly Property PhoneNumbers As InternalCollection
+		Public ReadOnly Property PhoneNumbers As InternalCollection
 			Get
 				Return If(myPhoneNumbers, New InternalCollection(Of PersonPhone)(mappedPhoneNumbers))
 			End Get
@@ -218,7 +218,7 @@
 		Friend myAdditionalContactInfo As TextString
 
 		'<MemberOrder(30)>
-		Private ReadOnly Property AdditionalContactInfo As TextString
+		Public ReadOnly Property AdditionalContactInfo As TextString
 			Get
 				Return If(myAdditionalContactInfo, New TextString(mappedAdditionalContactInfo, Function(v) mappedAdditionalContactInfo = v))
 			End Get
@@ -248,7 +248,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

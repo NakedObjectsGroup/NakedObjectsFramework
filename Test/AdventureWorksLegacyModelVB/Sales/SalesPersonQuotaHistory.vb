@@ -9,7 +9,7 @@
         Friend myQuotaDate As NODate
 
         '<MemberOrder(1)>
-        Private ReadOnly Property QuotaDate As NODate
+        Public ReadOnly Property QuotaDate As NODate
             Get
                 Return If(myQuotaDate, New NODate(mappedQuotaDate, Function(v) mappedQuotaDate = v))
             End Get
@@ -30,7 +30,7 @@
         Friend mySalesQuota As Money
 
         '<MemberOrder(2)>
-        Private ReadOnly Property SalesQuota As Money
+        Public ReadOnly Property SalesQuota As Money
             Get
                 Return If(mySalesQuota, New Money(mappedSalesQuota, Function(v) mappedSalesQuota = v))
             End Get
@@ -54,7 +54,7 @@
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

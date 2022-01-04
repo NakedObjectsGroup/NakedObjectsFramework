@@ -10,7 +10,7 @@
 		Friend myStockedQty As WholeNumber
 
 		'<MemberOrder(22)>
-		Private ReadOnly Property StockedQty As WholeNumber
+		Public ReadOnly Property StockedQty As WholeNumber
 			Get
 				Return If(myStockedQty, New WholeNumber(mappedStockedQty, Function(v) mappedStockedQty = v))
 			End Get
@@ -31,7 +31,7 @@
 		Friend myScrappedQty As WholeNumber
 
 		'<MemberOrder(24)>
-		Private ReadOnly Property ScrappedQty As WholeNumber
+		Public ReadOnly Property ScrappedQty As WholeNumber
 			Get
 				Return If(myScrappedQty, New WholeNumber(mappedScrappedQty, Function(v) mappedScrappedQty = v))
 			End Get
@@ -52,7 +52,7 @@
 		Friend myEndDate As NODate
 
 		'<MemberOrder(32)>
-		Private ReadOnly Property EndDate As NODate
+		Public ReadOnly Property EndDate As NODate
 			Get
 				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
 			End Get
@@ -78,7 +78,7 @@
 		Friend myOrderQty As WholeNumber
 
 		'<MemberOrder(20)>
-		Private ReadOnly Property OrderQty As WholeNumber
+		Public ReadOnly Property OrderQty As WholeNumber
 			Get
 				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
 			End Get
@@ -99,7 +99,7 @@
 		Friend myStartDate As NODate
 
 		'<MemberOrder(30)>
-		Private ReadOnly Property StartDate As NODate
+		Public ReadOnly Property StartDate As NODate
 			Get
 				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
 			End Get
@@ -120,7 +120,7 @@
 		Friend myDueDate As NODate
 
 		'<MemberOrder(34)>
-		Private ReadOnly Property DueDate As NODate
+		Public ReadOnly Property DueDate As NODate
 			Get
 				Return If(myDueDate, New NODate(mappedDueDate, Function(v) mappedDueDate = v))
 			End Get
@@ -147,7 +147,7 @@
 		Private myWorkOrderRoutings As InternalCollection
 
 		''<TableView(True, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")>
-		Private ReadOnly Property WorkOrderRoutings As InternalCollection
+		Public ReadOnly Property WorkOrderRoutings As InternalCollection
 			Get
 				Return If(myWorkOrderRoutings, New InternalCollection(Of WorkOrderRouting)(mappedWorkOrderRoutings))
 			End Get
@@ -161,7 +161,7 @@
 		End Sub
 #End Region
 		'<Hidden>
-		Private ReadOnly Property AnAlwaysHiddenReadOnlyProperty() As String
+		Public ReadOnly Property AnAlwaysHiddenReadOnlyProperty() As String
 			Get
 				Return ""
 			End Get
@@ -172,7 +172,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

@@ -1,5 +1,4 @@
-﻿Imports NakedLegacy.Types.Value_holders 'TODO last bit of the namespace should go
-
+﻿
 Namespace AW.Types
 
     Partial Public Class ProductDescription
@@ -11,7 +10,7 @@ Namespace AW.Types
         Friend myDescription As MultiLineTextString
 
         '<MemberOrder(2)>
-        Private ReadOnly Property Description As TextString
+        Public ReadOnly Property Description As TextString
             Get
                 Return If(myDescription, New MultiLineTextString(mappedDescription, Function(v) mappedDescription = v))
             End Get
@@ -32,7 +31,7 @@ Namespace AW.Types
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

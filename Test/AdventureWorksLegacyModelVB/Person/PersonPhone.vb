@@ -9,7 +9,7 @@
         Friend myPhoneNumber As TextString
 
         '<MemberOrder(1)>
-        Private ReadOnly Property PhoneNumber As TextString
+        Public ReadOnly Property PhoneNumber As TextString
             Get
                 Return If(myPhoneNumber, New TextString(mappedPhoneNumber, Function(v) mappedPhoneNumber = v))
             End Get
@@ -34,7 +34,7 @@
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

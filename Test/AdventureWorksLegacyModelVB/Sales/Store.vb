@@ -10,7 +10,7 @@ Namespace AW.Types
 		Friend myName As TextString
 
 		'<MemberOrder(20)>
-		Private ReadOnly Property Name As TextString
+		Public ReadOnly Property Name As TextString
 			Get
 				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
 			End Get
@@ -32,7 +32,7 @@ Namespace AW.Types
 
 		'TODO: <MultiLine(10)>
 		'<MemberOrder(30)>
-		Private ReadOnly Property FormattedDemographics() As TextString
+		Public ReadOnly Property FormattedDemographics() As TextString
 			Get
 				Return New TextString("TODO") 'TODO Utilities.FormatXML(Demographics)
 			End Get
@@ -59,7 +59,7 @@ Namespace AW.Types
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

@@ -11,7 +11,7 @@
 		Friend myAverageLeadTime As WholeNumber
 
 		'<MemberOrder(30)>
-		Private ReadOnly Property AverageLeadTime As WholeNumber
+		Public ReadOnly Property AverageLeadTime As WholeNumber
 			Get
 				Return If(myAverageLeadTime, New WholeNumber(mappedAverageLeadTime, Function(v) mappedAverageLeadTime = v))
 			End Get
@@ -32,7 +32,7 @@
 		Friend myStandardPrice As Money
 
 		'<MemberOrder(40)>
-		Private ReadOnly Property StandardPrice As Money
+		Public ReadOnly Property StandardPrice As Money
 			Get
 				Return If(myStandardPrice, New Money(mappedStandardPrice, Function(v) mappedStandardPrice = v))
 			End Get
@@ -53,7 +53,7 @@
 		Friend myLastReceiptCost As Money
 
 		'<MemberOrder(41)>
-		Private ReadOnly Property LastReceiptCost As Money
+		Public ReadOnly Property LastReceiptCost As Money
 			Get
 				Return If(myLastReceiptCost, New Money(mappedLastReceiptCost, Function(v) mappedLastReceiptCost = v))
 			End Get
@@ -74,7 +74,7 @@
 		Friend myLastReceiptDate As NODate
 
 		'<MemberOrder(50)>
-		Private ReadOnly Property LastReceiptDate As NODate
+		Public ReadOnly Property LastReceiptDate As NODate
 			Get
 				Return If(myLastReceiptDate, New NODate(mappedLastReceiptDate, Function(v) mappedLastReceiptDate = v))
 			End Get
@@ -95,7 +95,7 @@
 		Friend myMinOrderQty As WholeNumber
 
 		'<MemberOrder(60)>
-		Private ReadOnly Property MinOrderQty As WholeNumber
+		Public ReadOnly Property MinOrderQty As WholeNumber
 			Get
 				Return If(myMinOrderQty, New WholeNumber(mappedMinOrderQty, Function(v) mappedMinOrderQty = v))
 			End Get
@@ -116,7 +116,7 @@
 		Friend myMaxOrderQty As WholeNumber
 
 		'<MemberOrder(61)>
-		Private ReadOnly Property MaxOrderQty As WholeNumber
+		Public ReadOnly Property MaxOrderQty As WholeNumber
 			Get
 				Return If(myMaxOrderQty, New WholeNumber(mappedMaxOrderQty, Function(v) mappedMaxOrderQty = v))
 			End Get
@@ -137,7 +137,7 @@
 		Friend myOnOrderQty As WholeNumber
 
 		'<MemberOrder(62)>
-		Private ReadOnly Property OnOrderQty As WholeNumber
+		Public ReadOnly Property OnOrderQty As WholeNumber
 			Get
 				Return If(myOnOrderQty, New WholeNumber(mappedOnOrderQty, Function(v) mappedOnOrderQty = v))
 			End Get
@@ -168,7 +168,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

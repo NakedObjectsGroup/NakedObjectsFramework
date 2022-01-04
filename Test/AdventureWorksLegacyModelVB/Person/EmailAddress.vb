@@ -11,7 +11,7 @@
 		Friend myEmailAddress1 As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property EmailAddress1 As TextString
+		Public ReadOnly Property EmailAddress1 As TextString
 			Get
 				Return If(myEmailAddress1, New TextString(mappedEmailAddress1, Function(v) mappedEmailAddress1 = v))
 			End Get
@@ -33,7 +33,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

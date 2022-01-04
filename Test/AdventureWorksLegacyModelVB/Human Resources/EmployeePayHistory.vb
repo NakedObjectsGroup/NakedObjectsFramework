@@ -9,7 +9,7 @@
         Friend myRateChangeDate As NODate
 
         '<MemberOrder(1)>
-        Private ReadOnly Property RateChangeDate As NODate
+        Public ReadOnly Property RateChangeDate As NODate
             Get
                 Return If(myRateChangeDate, New NODate(mappedRateChangeDate, Function(v) mappedRateChangeDate = v))
             End Get
@@ -28,7 +28,7 @@
         Friend myRate As Money
 
         '<MemberOrder(2)>
-        Private ReadOnly Property Rate As Money
+        Public ReadOnly Property Rate As Money
             Get
                 Return If(myRate, New Money(mappedRate, Function(v) mappedRate = v))
             End Get
@@ -47,7 +47,7 @@
         Friend myPayFrequency As WholeNumber
 
         '<MemberOrder(3)>
-        Private ReadOnly Property PayFrequency As WholeNumber
+        Public ReadOnly Property PayFrequency As WholeNumber
             Get
                 Return If(myPayFrequency, New WholeNumber(mappedPayFrequency, Function(v) mappedPayFrequency = v))
             End Get
@@ -69,7 +69,7 @@
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

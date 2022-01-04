@@ -12,7 +12,7 @@
         Friend myNationalIDNumber As TextString
 
         '<MemberOrder(10)>
-        Private ReadOnly Property NationalIDNumber As TextString
+        Public ReadOnly Property NationalIDNumber As TextString
             Get
                 Return If(myNationalIDNumber, New TextString(mappedNationalIDNumber, Function(v) mappedNationalIDNumber = v))
             End Get
@@ -33,7 +33,7 @@
         Friend myJobTitle As TextString
 
         '<MemberOrder(12)>
-        Private ReadOnly Property JobTitle As TextString
+        Public ReadOnly Property JobTitle As TextString
             Get
                 Return If(myJobTitle, New TextString(mappedJobTitle, Function(v) mappedJobTitle = v))
             End Get
@@ -54,7 +54,7 @@
         Friend myDateOfBirth As NODate
 
         '<MemberOrder(13)>
-        Private ReadOnly Property DateOfBirth As NODate
+        Public ReadOnly Property DateOfBirth As NODate
             Get
                 Return If(myDateOfBirth, New NODate(mappedDateOfBirth, Function(v) mappedDateOfBirth = v))
             End Get
@@ -75,7 +75,7 @@
         Friend myMaritalStatus As TextString
 
         '<MemberOrder(14)>
-        Private ReadOnly Property MaritalStatus As TextString
+        Public ReadOnly Property MaritalStatus As TextString
             Get
                 Return If(myMaritalStatus, New TextString(mappedMaritalStatus, Function(v) mappedMaritalStatus = v))
             End Get
@@ -96,7 +96,7 @@
         Friend myGender As TextString
 
         '<MemberOrder(15)>
-        Private ReadOnly Property Gender As TextString
+        Public ReadOnly Property Gender As TextString
             Get
                 Return If(myGender, New TextString(mappedGender, Function(v) mappedGender = v))
             End Get
@@ -117,7 +117,7 @@
         Friend myHireDate As NODate
 
         '<MemberOrder(16)>
-        Private ReadOnly Property HireDate As NODate
+        Public ReadOnly Property HireDate As NODate
             Get
                 Return If(myHireDate, New NODate(mappedHireDate, Function(v) mappedHireDate = v))
             End Get
@@ -138,7 +138,7 @@
         Friend mySalaried As Logical
 
         '<MemberOrder(17)>
-        Private ReadOnly Property Salaried As Logical
+        Public ReadOnly Property Salaried As Logical
             Get
                 Return If(mySalaried, New Logical(mappedSalaried, Function(v) mappedSalaried = v))
             End Get
@@ -159,7 +159,7 @@
         Friend myVacationHours As WholeNumber
 
         '<MemberOrder(18)>
-        Private ReadOnly Property VacationHours As WholeNumber
+        Public ReadOnly Property VacationHours As WholeNumber
             Get
                 Return If(myVacationHours, New WholeNumber(mappedVacationHours, Function(v) mappedVacationHours = v))
             End Get
@@ -180,7 +180,7 @@
         Friend mySickLeaveHours As WholeNumber
 
         '<MemberOrder(19)>
-        Private ReadOnly Property SickLeaveHours As WholeNumber
+        Public ReadOnly Property SickLeaveHours As WholeNumber
             Get
                 Return If(mySickLeaveHours, New WholeNumber(mappedSickLeaveHours, Function(v) mappedSickLeaveHours = v))
             End Get
@@ -201,7 +201,7 @@
         Friend myCurrent As Logical
 
         '<MemberOrder(20)>
-        Private ReadOnly Property Current As Logical
+        Public ReadOnly Property Current As Logical
             Get
                 Return If(myCurrent, New Logical(mappedCurrent, Function(v) mappedCurrent = v))
             End Get
@@ -225,7 +225,7 @@
         Friend myLoginID As TextString
 
         '<MemberOrder(11)>
-        Private ReadOnly Property LoginID As TextString
+        Public ReadOnly Property LoginID As TextString
             Get
                 Return If(myLoginID, New TextString(mappedLoginID, Function(v) mappedLoginID = v))
             End Get
@@ -250,7 +250,7 @@
         Private myDepartmentHistory As InternalCollection
 
         '<MemberOrder(1)>
-        Private ReadOnly Property DepartmentHistory As InternalCollection
+        Public ReadOnly Property DepartmentHistory As InternalCollection
             Get
                 Return If(myDepartmentHistory, New InternalCollection(Of EmployeeDepartmentHistory)(mappedDepartmentHistory))
             End Get
@@ -270,7 +270,7 @@
         Private myPayHistory As InternalCollection
 
         '<MemberOrder(1)>
-        Private ReadOnly Property PayHistory As InternalCollection
+        Public ReadOnly Property PayHistory As InternalCollection
             Get
                 Return If(myPayHistory, New InternalCollection(Of EmployeePayHistory)(mappedPayHistory))
             End Get
@@ -290,7 +290,7 @@
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get
