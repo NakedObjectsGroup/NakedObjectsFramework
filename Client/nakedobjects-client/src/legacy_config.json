@@ -1,0 +1,68 @@
+﻿{
+    "authenticate": false,
+    "authClientId" : "bB8ln8mh8hVb5kxnpTowceMb0t25Owl9",
+    "authDomain" : "nakedobjects.eu.auth0.com",
+    "appPath": "https://nakedlegacydemo.azurewebsites.net/",
+    "logoffUrl": "",
+    "urlShortCuts": [ "https://nakedlegacydemo.azurewebsites.net", "AW.Types" ],
+    "doUrlValidation": true,
+    "applicationName" : "Adventureworks Legacy Demo",
+    "clearCacheOnChange": true,
+    "colors": {
+        "typeMap": {
+            "AW.Types.Customer": 1,
+            "AW.Types.Product": 4,
+            "AW.Types.Employee": 5,
+            "AW.Types.SalesPerson": 6,
+            "AW.Types.SpecialOffer": 7,
+            "AW.Types.Vendor": 9,
+            "AW.Types.WorkOrder": 12
+        },
+        "regexArray": [
+            {
+                "regex": ".*SalesOrder.*",
+                "color": 2
+            },
+            {
+                "regex": ".*PurchaseOrder.*",
+                "color": 10
+            }
+        ],
+        "subtypeMap": {
+            "AW.Types.BusinessEntity": 8
+        },
+        "default": 0,
+        "randomMaxIndex" : 12
+    },
+    "masks": {
+        "currencyMasks": {
+            "C": {
+                "format": "decimal",
+                "symbol": "GBP",
+                "digits": "1.2-2"
+            },
+            "c": {
+                "format": "decimal",
+                "symbol": "GBP",
+                "digits": "1.2-2"
+            }
+        },
+        "dateMasks": {
+            "d": {
+                "format": "date-time",
+                "mask": "D MMM YYYY",
+                "tz": "+0000"
+            },
+            "D": {
+                "format": "date",
+                "mask": "D MMM YYYY hh:mm:ss"
+            },
+            "T": {
+                "format": "time",
+                "mask": "HH:mm",
+                "tz": "+0000"
+            }
+        }
+    },
+    "logLevel": "debug"
+}
