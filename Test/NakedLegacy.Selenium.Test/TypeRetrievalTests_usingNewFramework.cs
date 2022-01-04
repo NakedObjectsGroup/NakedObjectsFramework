@@ -18,7 +18,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
     public class TypeRetrievalTests_UsingNewFramework
     {
         #region Overhead
-        private string baseUrl = "http://nakedlegacydemo.azurewebsites.net/";
+        private string baseUrl = "https://nakedlegacytest.azurewebsites.net/";
         private Helper helper;
 
         [ClassInitialize]
