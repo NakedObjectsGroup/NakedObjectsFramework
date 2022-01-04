@@ -9,7 +9,7 @@
 		Friend myResume As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property Resumee As TextString
+		Public ReadOnly Property Resumee As TextString
 			Get
 				Return If(myResume, New TextString(mappedResume, Function(v) mappedResume = v))
 			End Get
@@ -35,7 +35,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

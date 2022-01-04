@@ -10,7 +10,7 @@
 		Friend myName As TextString
 
 		'<MemberOrder(10)>
-		Private ReadOnly Property Name As TextString
+		Public ReadOnly Property Name As TextString
 			Get
 				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
 			End Get
@@ -31,7 +31,7 @@
 		Friend myCountryRegionCode As TextString
 
 		'<MemberOrder(20)>
-		Private ReadOnly Property CountryRegionCode As TextString
+		Public ReadOnly Property CountryRegionCode As TextString
 			Get
 				Return If(myCountryRegionCode, New TextString(mappedCountryRegionCode, Function(v) mappedCountryRegionCode = v))
 			End Get
@@ -52,7 +52,7 @@
 		Friend myGroup As TextString
 
 		'<MemberOrder(30)>
-		Private ReadOnly Property Group As TextString
+		Public ReadOnly Property Group As TextString
 			Get
 				Return If(myGroup, New TextString(mappedGroup, Function(v) mappedGroup = v))
 			End Get
@@ -73,7 +73,7 @@
 		Friend mySalesYTD As Money
 
 		'<MemberOrder(40)>
-		Private ReadOnly Property SalesYTD As Money
+		Public ReadOnly Property SalesYTD As Money
 			Get
 				Return If(mySalesYTD, New Money(mappedSalesYTD, Function(v) mappedSalesYTD = v))
 			End Get
@@ -94,7 +94,7 @@
 		Friend mySalesLastYear As Money
 
 		'<MemberOrder(41)>
-		Private ReadOnly Property SalesLastYear As Money
+		Public ReadOnly Property SalesLastYear As Money
 			Get
 				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Function(v) mappedSalesLastYear = v))
 			End Get
@@ -115,7 +115,7 @@
 		Friend myCostYTD As Money
 
 		'<MemberOrder(42)>
-		Private ReadOnly Property CostYTD As Money
+		Public ReadOnly Property CostYTD As Money
 			Get
 				Return If(myCostYTD, New Money(mappedCostYTD, Function(v) mappedCostYTD = v))
 			End Get
@@ -136,7 +136,7 @@
 		Friend myCostLastYear As Money
 
 		'<MemberOrder(43)>
-		Private ReadOnly Property CostLastYear As Money
+		Public ReadOnly Property CostLastYear As Money
 			Get
 				Return If(myCostLastYear, New Money(mappedCostLastYear, Function(v) mappedCostLastYear = v))
 			End Get
@@ -158,7 +158,7 @@
 		Private myStateProvince As InternalCollection
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property StateProvince As InternalCollection
+		Public ReadOnly Property StateProvince As InternalCollection
 			Get
 				Return If(myStateProvince, New InternalCollection(Of StateProvince)(mappedStateProvince))
 			End Get
@@ -181,7 +181,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

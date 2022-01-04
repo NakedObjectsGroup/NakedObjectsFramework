@@ -9,7 +9,7 @@
 		Friend myReviewerName As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property ReviewerName As TextString
+		Public ReadOnly Property ReviewerName As TextString
 			Get
 				Return If(myReviewerName, New TextString(mappedReviewerName, Function(v) mappedReviewerName = v))
 			End Get
@@ -30,7 +30,7 @@
 		Friend myReviewDate As NODate
 
 		'<MemberOrder(2)>
-		Private ReadOnly Property ReviewDate As NODate
+		Public ReadOnly Property ReviewDate As NODate
 			Get
 				Return If(myReviewDate, New NODate(mappedReviewDate, Function(v) mappedReviewDate = v))
 			End Get
@@ -51,7 +51,7 @@
 		Friend myEmailAddress As TextString
 
 		'<MemberOrder(3)>
-		Private ReadOnly Property EmailAddress As TextString
+		Public ReadOnly Property EmailAddress As TextString
 			Get
 				Return If(myEmailAddress, New TextString(mappedEmailAddress, Function(v) mappedEmailAddress = v))
 			End Get
@@ -72,7 +72,7 @@
 		Friend myRating As WholeNumber
 
 		'<MemberOrder(4)>
-		Private ReadOnly Property Rating As WholeNumber
+		Public ReadOnly Property Rating As WholeNumber
 			Get
 				Return If(myRating, New WholeNumber(mappedRating, Function(v) mappedRating = v))
 			End Get
@@ -93,7 +93,7 @@
 		Friend myComments As TextString
 
 		'<MemberOrder(5)>
-		Private ReadOnly Property Comments As TextString
+		Public ReadOnly Property Comments As TextString
 			Get
 				Return If(myComments, New TextString(mappedComments, Function(v) mappedComments = v))
 			End Get
@@ -125,7 +125,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

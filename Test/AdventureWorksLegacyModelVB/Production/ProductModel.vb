@@ -1,8 +1,4 @@
-﻿
-
-Imports NakedLegacy.Types.Value_holders
-
-Namespace AW.Types
+﻿Namespace AW.Types
 
     Partial Public Class ProductModel
 
@@ -13,7 +9,7 @@ Namespace AW.Types
         Friend myName As TextString
 
         '<MemberOrder(10)>
-        Private ReadOnly Property Name As TextString
+        Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
             End Get
@@ -34,7 +30,7 @@ Namespace AW.Types
 
 
         '<Named("CatalogDescription"), MemberOrder(20), MultiLine(10)>
-        Private ReadOnly Property FormattedCatalogDescription() As MultiLineTextString
+        Public ReadOnly Property FormattedCatalogDescription() As MultiLineTextString
             Get
                 Return New MultiLineTextString(CatalogDescription)
                 'TODO: ProductModel_Functions.CatalogDescription(Me)
@@ -42,7 +38,7 @@ Namespace AW.Types
         End Property
 
         '<MemberOrder(22)>
-        Private ReadOnly Property LocalCultureDescription() As ProductDescription
+        Public ReadOnly Property LocalCultureDescription() As ProductDescription
             Get
                 Return Nothing
                 'TODO: ProductModel_Functions.LocalCultureDescription(Me)
@@ -54,7 +50,7 @@ Namespace AW.Types
         Friend myInstructions As TextString
 
         '<MemberOrder(30)>
-        Private ReadOnly Property Instructions As TextString
+        Public ReadOnly Property Instructions As TextString
             Get
                 Return If(myInstructions, New TextString(mappedInstructions, Function(v) mappedInstructions = v))
             End Get
@@ -77,7 +73,7 @@ Namespace AW.Types
 
         ''<TableView(True, "Name", "Number", "Color", "ProductInventory")>
         '<MemberOrder(1)>
-        Private ReadOnly Property ProductVariants As InternalCollection
+        Public ReadOnly Property ProductVariants As InternalCollection
             Get
                 Return If(myProductVariants, New InternalCollection(Of Product)(mappedProductVariants))
             End Get
@@ -102,7 +98,7 @@ Namespace AW.Types
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

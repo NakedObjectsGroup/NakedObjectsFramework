@@ -11,7 +11,7 @@
 		Friend myShelf As TextString
 
 		'<MemberOrder(40)>
-		Private ReadOnly Property Shelf As TextString
+		Public ReadOnly Property Shelf As TextString
 			Get
 				Return If(myShelf, New TextString(mappedShelf, Function(v) mappedShelf = v))
 			End Get
@@ -32,7 +32,7 @@
 		Friend myBin As WholeNumber
 
 		'<MemberOrder(50)>
-		Private ReadOnly Property Bin As WholeNumber
+		Public ReadOnly Property Bin As WholeNumber
 			Get
 				Return If(myBin, New WholeNumber(mappedBin, Function(v) mappedBin = v))
 			End Get
@@ -53,7 +53,7 @@
 		Friend myQuantity As WholeNumber
 
 		'<MemberOrder(10)>
-		Private ReadOnly Property Quantity As WholeNumber
+		Public ReadOnly Property Quantity As WholeNumber
 			Get
 				Return If(myQuantity, New WholeNumber(mappedQuantity, Function(v) mappedQuantity = v))
 			End Get
@@ -80,7 +80,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

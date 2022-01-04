@@ -13,7 +13,7 @@
 		Friend myDueDate As NODate
 
 		'<MemberOrder(26)>
-		Private ReadOnly Property DueDate As NODate
+		Public ReadOnly Property DueDate As NODate
 			Get
 				Return If(myDueDate, New NODate(mappedDueDate, Function(v) mappedDueDate = v))
 			End Get
@@ -34,7 +34,7 @@
 		Friend myOrderQty As WholeNumber
 
 		'<MemberOrder(20)>
-		Private ReadOnly Property OrderQty As WholeNumber
+		Public ReadOnly Property OrderQty As WholeNumber
 			Get
 				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
 			End Get
@@ -55,7 +55,7 @@
 		Friend myUnitPrice As Money
 
 		'<MemberOrder(22)>
-		Private ReadOnly Property UnitPrice As Money
+		Public ReadOnly Property UnitPrice As Money
 			Get
 				Return If(myUnitPrice, New Money(mappedUnitPrice, Function(v) mappedUnitPrice = v))
 			End Get
@@ -76,7 +76,7 @@
 		Friend myLineTotal As Money
 
 		'<MemberOrder(24)>
-		Private ReadOnly Property LineTotal As Money
+		Public ReadOnly Property LineTotal As Money
 			Get
 				Return If(myLineTotal, New Money(mappedLineTotal, Function(v) mappedLineTotal = v))
 			End Get
@@ -98,7 +98,7 @@
 		Friend myReceivedQty As Money
 
 		'<MemberOrder(30)>
-		Private ReadOnly Property ReceivedQty As Money
+		Public ReadOnly Property ReceivedQty As Money
 			Get
 				Return If(myReceivedQty, New Money(mappedReceivedQty, Function(v) mappedReceivedQty = v))
 			End Get
@@ -125,7 +125,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

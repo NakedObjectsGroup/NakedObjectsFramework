@@ -8,7 +8,7 @@
         Friend myName As TextString
 
         '<MemberOrder(1)>
-        Private ReadOnly Property Name As TextString
+        Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
             End Get
@@ -29,7 +29,7 @@
         Friend myCountryRegionCode As TextString
 
         '<MemberOrder(2)>
-        Private ReadOnly Property CountryRegionCode As TextString
+        Public ReadOnly Property CountryRegionCode As TextString
             Get
                 Return If(myCountryRegionCode, New TextString(mappedCountryRegionCode, Function(v) mappedCountryRegionCode = v))
             End Get
@@ -50,7 +50,7 @@
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

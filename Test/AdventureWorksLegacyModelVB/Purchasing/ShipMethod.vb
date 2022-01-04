@@ -10,7 +10,7 @@
         Friend myName As TextString
 
         '<MemberOrder(1)>
-        Private ReadOnly Property Name As TextString
+        Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
             End Get
@@ -31,7 +31,7 @@
         Friend myShipBase As Money
 
         '<MemberOrder(2)>
-        Private ReadOnly Property ShipBase As Money
+        Public ReadOnly Property ShipBase As Money
             Get
                 Return If(myShipBase, New Money(mappedShipBase, Function(v) mappedShipBase = v))
             End Get
@@ -52,7 +52,7 @@
         Friend myShipRate As Money
 
         '<MemberOrder(3)>
-        Private ReadOnly Property ShipRate As Money
+        Public ReadOnly Property ShipRate As Money
             Get
                 Return If(myShipRate, New Money(mappedShipRate, Function(v) mappedShipRate = v))
             End Get
@@ -73,7 +73,7 @@
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

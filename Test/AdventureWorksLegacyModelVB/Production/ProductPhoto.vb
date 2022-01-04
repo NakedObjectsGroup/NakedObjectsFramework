@@ -13,7 +13,7 @@ Namespace AW.Types
 		Friend myThumbnailPhotoFileName As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property ThumbnailPhotoFileName As TextString
+		Public ReadOnly Property ThumbnailPhotoFileName As TextString
 			Get
 				Return If(myThumbnailPhotoFileName, New TextString(mappedThumbnailPhotoFileName, Function(v) mappedThumbnailPhotoFileName = v))
 			End Get
@@ -36,7 +36,7 @@ Namespace AW.Types
 		Friend myLargePhotoFileName As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property LargePhotoFileName As TextString
+		Public ReadOnly Property LargePhotoFileName As TextString
 			Get
 				Return If(myLargePhotoFileName, New TextString(mappedLargePhotoFileName, Function(v) mappedLargePhotoFileName = v))
 			End Get
@@ -67,7 +67,7 @@ Namespace AW.Types
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

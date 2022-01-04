@@ -8,7 +8,7 @@ Namespace AW.Types
 		'<Hidden>
 		Public Overridable Property Root() As Customer
 
-		Private ReadOnly Property Name() As String
+		Public ReadOnly Property Name() As String
 			Get
 				Return Nothing '$"{(If(Root.IsIndividual(), Root.Person, Root.Store?.Name))}"
 			End Get

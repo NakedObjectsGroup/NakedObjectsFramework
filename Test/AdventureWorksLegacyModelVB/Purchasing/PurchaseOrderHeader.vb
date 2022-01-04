@@ -10,7 +10,7 @@
 		Friend myRevisionNumber As WholeNumber
 
 		'<MemberOrder(90)>
-		Private ReadOnly Property RevisionNumber As WholeNumber
+		Public ReadOnly Property RevisionNumber As WholeNumber
 			Get
 				Return If(myRevisionNumber, New WholeNumber(mappedRevisionNumber, Function(v) mappedRevisionNumber = v))
 			End Get
@@ -39,7 +39,7 @@
 
 		'''<TableView(True, "OrderQty", "Product", "UnitPrice", "LineTotal")>
 		'<MemberOrder(1)>
-		Private ReadOnly Property Details As InternalCollection
+		Public ReadOnly Property Details As InternalCollection
 			Get
 				Return If(myDetails, New InternalCollection(Of PurchaseOrderDetail)(mappedDetails))
 			End Get
@@ -62,7 +62,7 @@
 		''<Hidden>
 		Public Property Status() As Byte
 
-		Private ReadOnly Property StatusAsEnum As TextString
+		Public ReadOnly Property StatusAsEnum As TextString
 			Get
 				Return New TextString([Enum].GetName(GetType(POStatus), Status))
 			End Get
@@ -80,7 +80,7 @@
 		Friend myOrderDate As NODate
 
 		'<MemberOrder(11)>
-		Private ReadOnly Property OrderDate As TextString
+		Public ReadOnly Property OrderDate As TextString
 			Get
 				Return If(myOrderDate, New TextString(mappedOrderDate, Function(v) mappedOrderDate = v))
 			End Get
@@ -101,7 +101,7 @@
 		Friend myShipDate As NODate
 
 		'<MemberOrder(20)>
-		Private ReadOnly Property ShipDate As NODate
+		Public ReadOnly Property ShipDate As NODate
 			Get
 				Return If(myShipDate, New NODate(mappedShipDate, Function(v) mappedShipDate = v))
 			End Get
@@ -122,7 +122,7 @@
 		Friend mySubTotal As Money
 
 		'<MemberOrder(31)>
-		Private ReadOnly Property SubTotal As Money
+		Public ReadOnly Property SubTotal As Money
 			Get
 				Return If(mySubTotal, New Money(mappedSubTotal, Function(v) mappedSubTotal = v))
 			End Get
@@ -143,7 +143,7 @@
 		Friend myTaxAmt As Money
 
 		'<MemberOrder(32)>
-		Private ReadOnly Property TaxAmt As Money
+		Public ReadOnly Property TaxAmt As Money
 			Get
 				Return If(myTaxAmt, New Money(mappedTaxAmt, Function(v) mappedTaxAmt = v))
 			End Get
@@ -164,7 +164,7 @@
 		Friend myFreight As Money
 
 		'<MemberOrder(33)>
-		Private ReadOnly Property Freight As Money
+		Public ReadOnly Property Freight As Money
 			Get
 				Return If(myFreight, New Money(mappedFreight, Function(v) mappedFreight = v))
 			End Get
@@ -185,7 +185,7 @@
 		Friend myTotalDue As Money
 
 		'<MemberOrder(34)>
-		Private ReadOnly Property TotalDue As Money
+		Public ReadOnly Property TotalDue As Money
 			Get
 				Return If(myTotalDue, New Money(mappedTotalDue, Function(v) mappedTotalDue = v))
 			End Get
@@ -212,7 +212,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

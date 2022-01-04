@@ -10,7 +10,7 @@
 		Friend myStateProvinceCode As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property StateProvinceCode As TextString
+		Public ReadOnly Property StateProvinceCode As TextString
 			Get
 				Return If(myStateProvinceCode, New TextString(mappedStateProvinceCode, Function(v) mappedStateProvinceCode = v))
 			End Get
@@ -31,7 +31,7 @@
 		Friend myIsOnlyStateProvinceFlag As Logical
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property IsOnlyStateProvinceFlag As Logical
+		Public ReadOnly Property IsOnlyStateProvinceFlag As Logical
 			Get
 				Return If(myIsOnlyStateProvinceFlag, New Logical(mappedIsOnlyStateProvinceFlag, Function(v) mappedIsOnlyStateProvinceFlag = v))
 			End Get
@@ -52,7 +52,7 @@
 		Friend myName As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property Name As TextString
+		Public ReadOnly Property Name As TextString
 			Get
 				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
 			End Get
@@ -81,7 +81,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

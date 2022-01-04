@@ -26,7 +26,7 @@
 		Friend mySalesQuota As Money
 
 		'<MemberOrder(30)>
-		Private ReadOnly Property SalesQuota As Money
+		Public ReadOnly Property SalesQuota As Money
 			Get
 				Return If(mySalesQuota, New Money(mappedSalesQuota, Function(v) mappedSalesQuota = v))
 			End Get
@@ -47,7 +47,7 @@
 		Friend myBonus As Money
 
 		'<MemberOrder(40)>
-		Private ReadOnly Property Bonus As Money
+		Public ReadOnly Property Bonus As Money
 			Get
 				Return If(myBonus, New Money(mappedBonus, Function(v) mappedBonus = v))
 			End Get
@@ -71,7 +71,7 @@
 		Friend mySalesYTD As Money
 
 		'<MemberOrder(60)>
-		Private ReadOnly Property SalesYTD As Money
+		Public ReadOnly Property SalesYTD As Money
 			Get
 				Return If(mySalesYTD, New Money(mappedSalesYTD, Function(v) mappedSalesYTD = v))
 			End Get
@@ -92,7 +92,7 @@
 		Friend mySalesLastYear As Money
 
 		'<MemberOrder(70)>
-		Private ReadOnly Property SalesLastYear As Money
+		Public ReadOnly Property SalesLastYear As Money
 			Get
 				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Function(v) mappedSalesLastYear = v))
 			End Get
@@ -115,7 +115,7 @@
 
 		''<TableView(False, "QuotaDate", "SalesQuota")>
 		'<MemberOrder(1)>
-		Private ReadOnly Property QuotaHistory As InternalCollection
+		Public ReadOnly Property QuotaHistory As InternalCollection
 			Get
 				Return If(myQuotaHistory, New InternalCollection(Of SalesPersonQuotaHistory)(mappedQuotaHistory))
 			End Get
@@ -136,7 +136,7 @@
 
 		'		'<TableView(False, "StartDate", "EndDate", "SalesTerritory")>
 		'<MemberOrder(1)>
-		Private ReadOnly Property TerritoryHistory As InternalCollection
+		Public ReadOnly Property TerritoryHistory As InternalCollection
 			Get
 				Return If(myTerritoryHistory, New InternalCollection(Of SalesTerritoryHistory)(mappedTerritoryHistory))
 			End Get
@@ -155,7 +155,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

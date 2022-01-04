@@ -9,7 +9,7 @@
         Friend myCurrencyRateDate As NODate
 
         '<MemberOrder(1)>
-        Private ReadOnly Property CurrencyRateDate As NODate
+        Public ReadOnly Property CurrencyRateDate As NODate
             Get
                 Return If(myCurrencyRateDate, New NODate(mappedCurrencyRateDate, Function(v) mappedCurrencyRateDate = v))
             End Get
@@ -30,7 +30,7 @@
         Friend myAverageRate As Money
 
         '<MemberOrder(1)>
-        Private ReadOnly Property AverageRate As Money
+        Public ReadOnly Property AverageRate As Money
             Get
                 Return If(myAverageRate, New Money(mappedAverageRate, Function(v) mappedAverageRate = v))
             End Get
@@ -51,7 +51,7 @@
         Friend myEndOfDayRate As Money
 
         '<MemberOrder(1)>
-        Private ReadOnly Property EndOfDayRate As Money
+        Public ReadOnly Property EndOfDayRate As Money
             Get
                 Return If(myEndOfDayRate, New Money(mappedEndOfDayRate, Function(v) mappedEndOfDayRate = v))
             End Get
@@ -82,7 +82,7 @@
         Friend myModifiedDate As TimeStamp
 
         '<MemberOrder(99)>
-        Private ReadOnly Property ModifiedDate As TimeStamp
+        Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
             End Get

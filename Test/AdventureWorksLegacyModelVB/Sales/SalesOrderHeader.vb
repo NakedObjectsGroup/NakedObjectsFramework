@@ -11,7 +11,7 @@
 		Friend mySalesOrderNumber As TextString
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property SalesOrderNumber As TextString
+		Public ReadOnly Property SalesOrderNumber As TextString
 			Get
 				Return If(mySalesOrderNumber, New TextString(mappedSalesOrderNumber, Function(v) mappedSalesOrderNumber = v))
 			End Get
@@ -32,7 +32,7 @@
 		Friend myAddItemsFromCart As Logical
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property AddItemsFromCart As Logical
+		Public ReadOnly Property AddItemsFromCart As Logical
 			Get
 				Return If(myAddItemsFromCart, New Logical(mappedAddItemsFromCart, Function(v) mappedAddItemsFromCart = v))
 			End Get
@@ -75,7 +75,7 @@
 		Friend myPurchaseOrderNumber As TextString
 
 		'<MemberOrder(5)>
-		Private ReadOnly Property PurchaseOrderNumber As TextString
+		Public ReadOnly Property PurchaseOrderNumber As TextString
 			Get
 				Return If(myPurchaseOrderNumber, New TextString(mappedPurchaseOrderNumber, Function(v) mappedPurchaseOrderNumber = v))
 			End Get
@@ -108,7 +108,7 @@
 		Friend myAccountNumber As TextString
 
 		'<MemberOrder(12)>
-		Private ReadOnly Property AccountNumber As TextString
+		Public ReadOnly Property AccountNumber As TextString
 			Get
 				Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
 			End Get
@@ -129,7 +129,7 @@
 		Friend myOrderDate As NODate
 
 		'<MemberOrder(20)>
-		Private ReadOnly Property OrderDate As NODate
+		Public ReadOnly Property OrderDate As NODate
 			Get
 				Return If(myOrderDate, New NODate(mappedOrderDate, Function(v) mappedOrderDate = v))
 			End Get
@@ -150,7 +150,7 @@
 		Friend myDueDate As NODate
 
 		'<MemberOrder(21)>
-		Private ReadOnly Property DueDate As NODate
+		Public ReadOnly Property DueDate As NODate
 			Get
 				Return If(myDueDate, New NODate(mappedDueDate, Function(v) mappedDueDate = v))
 			End Get
@@ -171,7 +171,7 @@
 		Friend myShipDate As NODate
 
 		'<MemberOrder(22)>
-		Private ReadOnly Property ShipDate As NODate
+		Public ReadOnly Property ShipDate As NODate
 			Get
 				Return If(myShipDate, New NODate(mappedShipDate, Function(v) mappedShipDate = v))
 			End Get
@@ -192,7 +192,7 @@
 		Friend mySubTotal As Money
 
 		'<MemberOrder(31)>
-		Private ReadOnly Property SubTotal As Money
+		Public ReadOnly Property SubTotal As Money
 			Get
 				Return If(mySubTotal, New Money(mappedSubTotal, Function(v) mappedSubTotal = v))
 			End Get
@@ -213,7 +213,7 @@
 		Friend myTaxAmt As Money
 
 		'<MemberOrder(32)>
-		Private ReadOnly Property TaxAmt As Money
+		Public ReadOnly Property TaxAmt As Money
 			Get
 				Return If(myTaxAmt, New Money(mappedTaxAmt, Function(v) mappedTaxAmt = v))
 			End Get
@@ -234,7 +234,7 @@
 		Friend myFreight As Money
 
 		'<MemberOrder(33)>
-		Private ReadOnly Property Freight As Money
+		Public ReadOnly Property Freight As Money
 			Get
 				Return If(myFreight, New Money(mappedFreight, Function(v) mappedFreight = v))
 			End Get
@@ -255,7 +255,7 @@
 		Friend myTotalDue As Money
 
 		'<MemberOrder(34)>
-		Private ReadOnly Property TotalDue As Money
+		Public ReadOnly Property TotalDue As Money
 			Get
 				Return If(myTotalDue, New Money(mappedTotalDue, Function(v) mappedTotalDue = v))
 			End Get
@@ -282,7 +282,7 @@
 		Friend myOnlineOrder As Logical
 
 		'<MemberOrder(41)>
-		Private ReadOnly Property OnlineOrder As Logical
+		Public ReadOnly Property OnlineOrder As Logical
 			Get
 				Return If(myOnlineOrder, New Logical(mappedOnlineOrder, Function(v) mappedOnlineOrder = v))
 			End Get
@@ -398,7 +398,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get

@@ -9,7 +9,7 @@
 		Friend myStartDate As NODate
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property StartDate As NODate
+		Public ReadOnly Property StartDate As NODate
 			Get
 				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
 			End Get
@@ -30,7 +30,7 @@
 		Friend myEndDate As NODate
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property EndDate As NODate
+		Public ReadOnly Property EndDate As NODate
 			Get
 				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
 			End Get
@@ -51,7 +51,7 @@
 		Friend myPropName As NODate
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property PropName As NODate
+		Public ReadOnly Property PropName As NODate
 			Get
 				Return If(myPropName, New NODate(mappedPropName, Function(v) mappedPropName = v))
 			End Get
@@ -72,7 +72,7 @@
 		Friend myBOMLevel As WholeNumber
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property BOMLevel As WholeNumber
+		Public ReadOnly Property BOMLevel As WholeNumber
 			Get
 				Return If(myBOMLevel, New WholeNumber(mappedBOMLevel, Function(v) mappedBOMLevel = v))
 			End Get
@@ -93,7 +93,7 @@
 		Friend myPerAssemblyQty As Money 'TODO: needs a new value type
 
 		'<MemberOrder(1)>
-		Private ReadOnly Property PerAssemblyQty As Money
+		Public ReadOnly Property PerAssemblyQty As Money
 			Get
 				Return If(myPerAssemblyQty, New Money(mappedPerAssemblyQty, Function(v) mappedPerAssemblyQty = v))
 			End Get
@@ -126,7 +126,7 @@
 		Friend myModifiedDate As TimeStamp
 
 		'<MemberOrder(99)>
-		Private ReadOnly Property ModifiedDate As TimeStamp
+		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
 			End Get
