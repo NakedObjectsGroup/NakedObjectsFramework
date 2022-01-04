@@ -11,9 +11,7 @@ public class WholeNumber : ValueHolder<int> {
 
     public WholeNumber(int number, Action<int> callback) : base(number, callback) { }
 
-    public int Number => Value;
-
-    public override string ToString() => Number.ToString();
+    public override string ToString() => Value.ToString();
 
     public override object Parse(string fromString) {
         try {
@@ -28,4 +26,6 @@ public class WholeNumber : ValueHolder<int> {
             throw new ValueHolderException(fromString);
         }
     }
+
+    public override object Display(string mask = null) => Value;
 }

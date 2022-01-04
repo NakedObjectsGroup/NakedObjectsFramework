@@ -10,8 +10,7 @@ public class TextString : ValueHolder<string> {
 
     public TextString(string text, Action<string> callback) : base(text, callback) { }
 
-    public string Text => Value;
-
-    public override string ToString() => Text;
+    public override string ToString() => Value;
     public override string Parse(string fromString) => throw new NotImplementedException();
+    public override object Display(string mask = null) => Value;
 }

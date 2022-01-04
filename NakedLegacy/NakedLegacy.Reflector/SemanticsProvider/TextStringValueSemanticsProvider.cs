@@ -31,7 +31,7 @@ public sealed class TextStringValueSemanticsProvider : ValueSemanticsProviderAbs
 
     #region IStringValueFacet Members
 
-    public string StringValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TextString>().Text;
+    public string StringValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TextString>().Value;
 
     #endregion
 

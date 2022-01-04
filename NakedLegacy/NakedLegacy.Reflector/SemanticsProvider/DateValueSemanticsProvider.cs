@@ -35,7 +35,7 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     #region IDateValueFacet Members
 
-    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<Date>().DateTime;
+    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<Date>().Value;
 
     #endregion
 
@@ -51,7 +51,7 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
         }
     }
 
-    protected override string TitleStringWithMask(string mask, Date value) => value.DateTime.ToString(mask);
+    protected override string TitleStringWithMask(string mask, Date value) => value.Value.ToString(mask);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

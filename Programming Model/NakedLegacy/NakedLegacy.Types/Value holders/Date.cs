@@ -11,8 +11,7 @@ public class Date : ValueHolder<DateTime> {
 
     public Date(DateTime dateTime, Action<DateTime> callback) : base(dateTime, callback) { }
 
-    public DateTime DateTime => Value;
-
-    public override string ToString() => DateTime.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture); //TODO: match original format.
+    public override string ToString() => Value.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture); //TODO: match original format.
     public override object Parse(string fromString) => throw new NotImplementedException();
+    public override object Display(string mask = null) => Value;
 }

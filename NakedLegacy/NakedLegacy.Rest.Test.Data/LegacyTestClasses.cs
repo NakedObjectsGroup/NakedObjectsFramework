@@ -34,7 +34,7 @@ public class ClassWithTextString {
     public Title Title() => Name.Title();
 
     public ClassWithTextString ActionUpdateName(TextString newName) {
-        Name.Value = newName.Text;
+        Name.Value = newName.Value;
         return this;
     }
 }
@@ -52,7 +52,7 @@ public class ClassWithInternalCollection {
     public InternalCollection TestCollection => _testCollection ??= new InternalCollection<ClassWithTextString>(_TestCollection);
 
     public ClassWithInternalCollection ActionUpdateTestCollection(TextString newName) {
-        var name = newName.Text;
+        var name = newName.Value;
         var bill = Container.Instances<ClassWithTextString>().Single(c => c.name == name);
         _TestCollection.Add(bill);
 
@@ -157,7 +157,7 @@ public class ClassWithDate {
     public Title Title() => Date.Title();
 
     public ClassWithDate ActionUpdateDate(Date newDate) {
-        Date.Value = newDate.DateTime;
+        Date.Value = newDate.Value;
         return this;
     }
 }
@@ -175,7 +175,7 @@ public class ClassWithTimeStamp {
     public Title Title() => TimeStamp.Title();
 
     public ClassWithTimeStamp ActionUpdateTimeStamp(TimeStamp newTimeStamp) {
-        TimeStamp.Value = newTimeStamp.DateTime;
+        TimeStamp.Value = newTimeStamp.Value;
         return this;
     }
 }
@@ -194,7 +194,7 @@ public class ClassWithWholeNumber {
     public Title Title() => WholeNumber.Title();
 
     public ClassWithWholeNumber actionUpdateWholeNumber(WholeNumber newWholeNumber) {
-        WholeNumber.Value = newWholeNumber.Number;
+        WholeNumber.Value = newWholeNumber.Value;
         return this;
     }
 

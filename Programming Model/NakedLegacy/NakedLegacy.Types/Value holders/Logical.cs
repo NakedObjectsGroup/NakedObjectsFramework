@@ -9,4 +9,5 @@ public class Logical : ValueHolder<bool> {
 
     public Logical(bool value, Action<bool> callback) : base(value, callback) { }
     public override object Parse(string fromString) => throw new NotImplementedException();
+    public override object Display(string mask = null) => Value;
 }

@@ -33,7 +33,7 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
 
     #region IIntegerValueFacet Members
 
-    public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<WholeNumber>().Number;
+    public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<WholeNumber>().Value;
 
     #endregion
 
@@ -51,7 +51,7 @@ public sealed class WholeNumberValueSemanticsProvider : ValueSemanticsProviderAb
         }
     }
 
-    protected override string TitleStringWithMask(string mask, WholeNumber value) => value.Number.ToString(mask);
+    protected override string TitleStringWithMask(string mask, WholeNumber value) => value.Value.ToString(mask);
 
     public override string ToString() => "WholeNumberAdapter: ";
 }

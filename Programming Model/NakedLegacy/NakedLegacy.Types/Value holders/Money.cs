@@ -11,4 +11,5 @@ public class Money : ValueHolder<decimal> {
 
     public override string ToString() => "€ " + Value;
     public override object Parse(string fromString) => throw new NotImplementedException();
+    public override object Display(string mask = null) => Value;
 }

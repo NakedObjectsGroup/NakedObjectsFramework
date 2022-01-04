@@ -26,4 +26,6 @@ public abstract class ValueHolder<T> : ITitledObject {
     public override string ToString() => Value.ToString();
 
     public abstract object Parse(string fromString);
+
+    public abstract object Display(string mask = null);
 }

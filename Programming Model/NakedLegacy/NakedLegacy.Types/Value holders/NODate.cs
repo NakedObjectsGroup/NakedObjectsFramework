@@ -12,4 +12,5 @@ public class NODate : ValueHolder<DateTime> {
 
     public override string ToString() => Value.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
     public override object Parse(string fromString) => throw new NotImplementedException();
+    public override object Display(string mask = null) => Value;
 }

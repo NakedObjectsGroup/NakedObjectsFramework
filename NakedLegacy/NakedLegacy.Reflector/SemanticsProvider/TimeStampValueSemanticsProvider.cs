@@ -35,7 +35,7 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
 
     #region IDateValueFacet Members
 
-    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TimeStamp>().DateTime;
+    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TimeStamp>().Value;
 
     #endregion
 
@@ -51,7 +51,7 @@ public sealed class TimeStampValueSemanticsProvider : ValueSemanticsProviderAbst
         }
     }
 
-    protected override string TitleStringWithMask(string mask, TimeStamp value) => value.DateTime.ToString(mask);
+    protected override string TitleStringWithMask(string mask, TimeStamp value) => value.Value.ToString(mask);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

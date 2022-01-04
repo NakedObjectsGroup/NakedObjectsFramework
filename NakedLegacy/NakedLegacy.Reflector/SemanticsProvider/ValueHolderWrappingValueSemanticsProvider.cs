@@ -6,9 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
@@ -22,9 +20,7 @@ namespace NakedLegacy.Reflector.SemanticsProvider;
 public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSemanticsProviderAbstract<T> where T : ValueHolder<TU>, new() {
     private const bool Immutable = true;
     private const int TypicalLengthConst = 11;
-    private static T DefaultValueConst = default(T);
-
-    public static bool IsAdaptedType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ValueHolder<>);
+    private static T DefaultValueConst = default;
 
     public ValueHolderWrappingValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
         : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
@@ -33,11 +29,21 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
 
     public static Type AdaptedType => typeof(T);
 
+    public static bool IsAdaptedType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ValueHolder<>);
+
     protected override T DoParse(string entry) {
-       return new T().Parse(entry) as T;
+        try {
+            return new T().Parse(entry) as T;
+        }
+        catch (ValueHolderException e) {
+            throw new InvalidEntryException(e.Message);
+        }
     }
 
-    protected override string TitleStringWithMask(string mask, T value) => "";//value.Number.ToString(mask);
+    public override object Value(INakedObjectAdapter adapter, string format = null) {
+        return adapter.GetDomainObject<T>().Display(format);
+    }
 
+    protected override string TitleStringWithMask(string mask, T value) => ""; //value.Number.ToString(mask);
     public override string ToString() => "WholeNumberAdapter: ";
 }
