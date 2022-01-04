@@ -58,7 +58,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.mappedTaxAmt).HasColumnName("TaxAmt");
             builder.Property(t => t.mappedFreight).HasColumnName("Freight");
             builder.Property(t => t.mappedTotalDue).HasColumnName("TotalDue").ValueGeneratedOnAddOrUpdate();
-            builder.Property(t => t.Comment).HasColumnName("Comment");
+            builder.Property(t => t.mappedComment).HasColumnName("Comment");
             builder.Property(t => t.RowGuid).HasColumnName("rowguid");
             builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 

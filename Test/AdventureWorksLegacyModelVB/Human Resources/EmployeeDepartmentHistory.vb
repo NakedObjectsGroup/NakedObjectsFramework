@@ -4,7 +4,7 @@
 
 		Public Property EmployeeID() As Integer
 
-		Public Property DepartmentID() As Short
+		Public Property DepartmentID() As Integer
 
 		Public Property ShiftID() As Byte
 

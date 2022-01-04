@@ -304,7 +304,7 @@
 		Public Property CreditCardID As Integer?
 
 		'<MemberOrder(42)>
-		Public Property CreditCard As CreditCard
+		Public Overridable Property CreditCard As CreditCard
 
 #End Region
 
@@ -380,7 +380,7 @@
 		Public Property SalesPersonID As Integer?
 
 		'<MemberOrder(62)>
-		Public Property SalesPerson As SalesTerritory
+		Public Overridable Property SalesPerson As SalesTerritory
 
 #End Region
 
@@ -389,7 +389,7 @@
 		Public Property SalesTerritoryID As Integer?
 
 		'<MemberOrder(62)>
-		Public Property SalesTerritory As SalesTerritory
+		Public Overridable Property SalesTerritory As SalesTerritory
 
 #End Region
 

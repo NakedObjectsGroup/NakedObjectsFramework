@@ -60,7 +60,7 @@ Namespace AW.Types
 		'DispositionType = "inline" ' fake mimetype
 
 		''<Hidden>
-		Public Property ProductProductPhoto As ICollection(Of ProductProductPhoto) = New List(Of ProductProductPhoto)()
+		Public Overridable Property ProductProductPhoto As ICollection(Of ProductProductPhoto) = New List(Of ProductProductPhoto)()
 
 #Region "ModifiedDate"
 		Public mappedModifiedDate As Date
