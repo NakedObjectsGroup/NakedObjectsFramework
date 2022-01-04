@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 
-namespace NakedFunctions.Reflector.Component;
+namespace NakedFramework.ParallelReflector.Component;
 
 public class NoOpDomainObjectInjector : IDomainObjectInjector {
     public INakedFramework Framework { get; set; }

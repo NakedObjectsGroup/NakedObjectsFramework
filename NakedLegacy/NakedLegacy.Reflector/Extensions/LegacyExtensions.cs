@@ -13,6 +13,7 @@ using NakedFramework.Core.Component;
 using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
+using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedLegacy.Reflector.Component;
 using NakedLegacy.Reflector.Configuration;
@@ -45,6 +46,7 @@ public static class LegacyExtensions {
         frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 
         frameworkOptions.Services.AddDefaultScoped<LegacyAboutCache, LegacyAboutCache>();
+        frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
 
         frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(ReflectorDefaults.DefaultLegacyTypes).ToArray();
     }

@@ -14,6 +14,7 @@ using NakedFramework.Core.Component;
 using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
+using NakedFramework.ParallelReflector.Component;
 using NakedFunctions.Reflector.Authorization;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
