@@ -18,10 +18,10 @@ using NakedLegacy.Types;
 namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
-public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<Date>, IDateValueFacet {
+public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<NODate>, IDateValueFacet {
     private const bool Immutable = false;
     private const int TypicalLengthConst = 18;
-    private static readonly Date DefaultValueConst = new(new DateTime());
+    private static readonly NODate DefaultValueConst = new(new DateTime());
 
     public DateValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
         : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
@@ -31,27 +31,27 @@ public sealed class DateValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static Type Type => typeof(IDateValueFacet);
 
-    public static Type AdaptedType => typeof(Date);
+    public static Type AdaptedType => typeof(NODate);
 
     #region IDateValueFacet Members
 
-    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<Date>().Value;
+    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<NODate>().Value;
 
     #endregion
 
     public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-    protected override Date DoParse(string entry) {
+    protected override NODate DoParse(string entry) {
         var dateString = entry.Trim();
         try {
-            return new Date(DateTime.Parse(entry));
+            return new NODate(DateTime.Parse(entry));
         }
         catch (FormatException) {
             throw new InvalidEntryException(FormatMessage(dateString));
         }
     }
 
-    protected override string TitleStringWithMask(string mask, Date value) => value.Value.ToString(mask);
+    protected override string TitleStringWithMask(string mask, NODate value) => value.Value.ToString(mask);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

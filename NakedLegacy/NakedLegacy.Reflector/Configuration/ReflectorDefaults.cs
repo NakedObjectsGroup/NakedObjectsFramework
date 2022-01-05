@@ -15,7 +15,7 @@ public static class ReflectorDefaults {
         typeof(TextString),
         typeof(InternalCollection),
         typeof(InternalCollection<>),
-        typeof(Date),
+        typeof(NODate),
         typeof(TimeStamp),
         typeof(ITitledObject),
         typeof(ActionAbout),

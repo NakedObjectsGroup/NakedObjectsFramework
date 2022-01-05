@@ -146,17 +146,17 @@ public class ClassWithMenu {
 }
 
 public class ClassWithDate {
-    private Date _date;
+    private NODate _date;
     public DateTime date;
 
     [Key]
     public int Id { get; init; }
 
-    public Date Date => _date ??= new Date(date, d => date = d);
+    public NODate Date => _date ??= new NODate(date, d => date = d);
 
     public Title Title() => Date.Title();
 
-    public ClassWithDate ActionUpdateDate(Date newDate) {
+    public ClassWithDate ActionUpdateDate(NODate newDate) {
         Date.Value = newDate.Value;
         return this;
     }
