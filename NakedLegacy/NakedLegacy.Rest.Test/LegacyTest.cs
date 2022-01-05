@@ -168,7 +168,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
 
-    [Ignore("")]
+    
     public void TestInvokeUpdateAndPersistObjectWithTextString() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Ted") } } };
@@ -202,7 +202,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
 
-    [Ignore("")]
+    
     public void TestInvokeUpdateAndPersistObjectWithInternalCollection() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Bill") } } };
@@ -294,7 +294,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
 
-    [Ignore("")]
+    
     public void TestNOFToLegacy() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithString>(), "1");
@@ -451,8 +451,9 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
     }
 
-    [Ignore("fix locale")]
+    
     [Test]
+    [Ignore("fix locale")]
     public void TestGetObjectWithDate() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithDate>(), "1");
@@ -470,7 +471,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
 
-    [Ignore("")]
+    
     public void TestGetDateProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.Date));
@@ -486,7 +487,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     
-    [Ignore("")]
+    
     public void TestInvokeUpdateAndPersistObjectWithDate() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newDate", new ScalarValue(new DateTime(1998, 7, 6)) } } };
@@ -538,7 +539,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
 
-    [Ignore("")]
+    
     public void TestInvokeUpdateAndPersistObjectWithTimestamp() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newTimeStamp", new ScalarValue(new DateTime(1998, 7, 6)) } } };
