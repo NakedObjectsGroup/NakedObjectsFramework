@@ -26,16 +26,7 @@ public sealed class TypeMarkerFacetFactory : FunctionalFacetFactoryProcessor, IA
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var facets = new List<IFacet> {
-            new TypeIsAbstractFacet(specification, IsAbstract(type)),
-            new TypeIsInterfaceFacet(specification, IsInterface(type)),
-            new TypeIsSealedFacet(specification, IsSealed(type)),
-            new TypeIsVoidFacet(specification, IsVoid(type)),
-            new TypeIsStaticFacet(specification, IsStatic(type)),
-            new TypeFacet(specification, type)
-        };
-
-        FacetUtils.AddFacets(facets);
+        AddTypeFacets(specification, type);
         return metamodel;
     }
 }

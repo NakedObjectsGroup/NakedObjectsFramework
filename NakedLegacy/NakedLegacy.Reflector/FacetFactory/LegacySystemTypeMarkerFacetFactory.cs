@@ -30,19 +30,8 @@ public sealed class LegacySystemTypeMarkerFacetFactory : SystemTypeFacetFactoryP
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-
         var valueType = LegacyHelpers.IsOrImplementsValueHolder(type) ?? type;
-        
-        var facets = new List<IFacet> {
-            new TypeIsAbstractFacet(specification, IsAbstract(valueType)),
-            new TypeIsInterfaceFacet(specification, IsInterface(valueType)),
-            new TypeIsSealedFacet(specification, IsSealed(valueType)),
-            new TypeIsVoidFacet(specification, IsVoid(valueType)),
-            new TypeIsStaticFacet(specification, IsStatic(valueType)),
-            new TypeFacet(specification, valueType)
-        };
-
-        FacetUtils.AddFacets(facets);
+        AddTypeFacets(specification, valueType);
         return metamodel;
     }
 }
