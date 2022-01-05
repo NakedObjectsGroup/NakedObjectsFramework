@@ -15,24 +15,31 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.DependencyInjection.Component;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using NakedFramework.ParallelReflector.FacetFactory;
+using NakedLegacy.Reflector.Helpers;
 using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
-public sealed class TypeMarkerFacetFactory : LegacyFacetFactoryProcessor {
-    public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
+public sealed class LegacySystemTypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor
+{
+    public LegacySystemTypeMarkerFacetFactory(AppendFacetFactoryOrder<LegacySystemTypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+
+        var valueType = LegacyHelpers.IsOrImplementsValueHolder(type) ?? type;
+        
         var facets = new List<IFacet> {
-            new TypeIsAbstractFacet(specification, IsAbstract(type)),
-            new TypeIsInterfaceFacet(specification, IsInterface(type)),
-            new TypeIsSealedFacet(specification, IsSealed(type)),
-            new TypeIsVoidFacet(specification, IsVoid(type)),
-            new TypeIsStaticFacet(specification, IsStatic(type)),
-            new TypeFacet(specification, type)
+            new TypeIsAbstractFacet(specification, IsAbstract(valueType)),
+            new TypeIsInterfaceFacet(specification, IsInterface(valueType)),
+            new TypeIsSealedFacet(specification, IsSealed(valueType)),
+            new TypeIsVoidFacet(specification, IsVoid(valueType)),
+            new TypeIsStaticFacet(specification, IsStatic(valueType)),
+            new TypeFacet(specification, valueType)
         };
 
         FacetUtils.AddFacets(facets);

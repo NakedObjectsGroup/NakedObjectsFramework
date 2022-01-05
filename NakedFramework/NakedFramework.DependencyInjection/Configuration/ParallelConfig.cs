@@ -32,6 +32,7 @@ public static class ParallelConfig {
         services.AddDefaultSingleton<IModelBuilder, ModelBuilder>();
         services.AddDefaultSingleton<FacetFactoryTypesProvider, FacetFactoryTypesProvider>();
         services.AddDefaultSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
+        services.AddDefaultSingleton(typeof(AppendFacetFactoryOrder<>), typeof(AppendFacetFactoryOrder<>));
         services.AddDefaultSingleton<IAllServiceList, AllServiceList>();
     }
 

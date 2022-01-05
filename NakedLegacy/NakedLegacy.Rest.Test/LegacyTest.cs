@@ -68,7 +68,11 @@ public class LegacyTest : AcceptanceTestCase {
 
     protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
         builder => {
-            base.NakedFrameworkOptions(builder);
+            AddCoreOptions(builder);
+            AddPersistor(builder);
+            AddNakedObjects(builder);
+            AddNakedFunctions(builder);
+            AddRestfulObjects(builder);
             AddLegacy(builder);
         };
 
@@ -147,7 +151,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("")]
+    
 
     public void TestGetTextStringProperty() {
         var api = Api();
@@ -163,8 +167,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("")]
 
+    [Ignore("")]
     public void TestInvokeUpdateAndPersistObjectWithTextString() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Ted") } } };
@@ -197,8 +201,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("")]
 
+    [Ignore("")]
     public void TestInvokeUpdateAndPersistObjectWithInternalCollection() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Bill") } } };
@@ -289,8 +293,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("")]
 
+    [Ignore("")]
     public void TestNOFToLegacy() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithString>(), "1");
@@ -465,8 +469,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
+
     [Ignore("")]
-    
     public void TestGetDateProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.Date));
@@ -481,8 +485,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
+    
     [Ignore("")]
-
     public void TestInvokeUpdateAndPersistObjectWithDate() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newDate", new ScalarValue(new DateTime(1998, 7, 6)) } } };
@@ -517,7 +521,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("")]
+    
 
     public void TestGetTimeStampProperty() {
         var api = Api();
@@ -533,8 +537,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("")]
 
+    [Ignore("")]
     public void TestInvokeUpdateAndPersistObjectWithTimestamp() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newTimeStamp", new ScalarValue(new DateTime(1998, 7, 6)) } } };
@@ -569,7 +573,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("")]
+    
 
     public void TestGetWholeNumberProperty() {
         var api = Api();
@@ -585,7 +589,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("")]
+    
 
     public void TestInvokeUpdateAndPersistObjectWithWholeNumber() {
         var api = Api().AsPost();

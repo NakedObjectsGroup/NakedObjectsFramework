@@ -22,6 +22,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
+using NakedLegacy.Reflector.Helpers;
 using NakedLegacy.Reflector.SemanticsProvider;
 using NakedLegacy.Types;
 
@@ -49,17 +50,12 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
         foreach (var facet in GetFacets(type, semanticsProvider, holder)) {
             FacetUtils.AddFacet(facet);
         }
+
+        FacetUtils.AddFacet(new TypeFacet(holder, valueType));
     }
 
-    private static Type IsOrImplementsValueHolder(Type type) =>
-        type switch {
-            null => null,
-            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ValueHolder<>) => type.GetGenericArguments().Single(),
-            _ => IsOrImplementsValueHolder(type.BaseType)
-        };
-
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var valueType = IsOrImplementsValueHolder(type);
+        var valueType = LegacyHelpers.IsOrImplementsValueHolder(type);
         
         if (valueType is not null) {
             var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);

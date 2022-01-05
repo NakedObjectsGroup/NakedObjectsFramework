@@ -62,7 +62,7 @@ public static class ConfigHelpers {
         }
     }
 
-    public static void RegisterReplacementFacetFactory<TInterface, TReplacement, TOriginal>(IServiceCollection services)
+    public static void RegisterReplacementFacetFactory<TInterface, TReplacement, TOriginal>(this IServiceCollection services)
         where TReplacement : IFacetFactory
         where TOriginal : IFacetFactory {
         // remove the original and register replacement.

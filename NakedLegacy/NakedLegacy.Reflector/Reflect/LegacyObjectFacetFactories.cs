@@ -29,6 +29,7 @@ public static class LegacyObjectFacetFactories {
             //typeof(TextStringValueTypeFacetFactory),
             //typeof(DateValueTypeFacetFactory),
             //typeof(TimeStampValueTypeFacetFactory),
+            typeof(LegacySystemTypeMarkerFacetFactory),
             typeof(ValueHolderFacetFactory)
         };
 }

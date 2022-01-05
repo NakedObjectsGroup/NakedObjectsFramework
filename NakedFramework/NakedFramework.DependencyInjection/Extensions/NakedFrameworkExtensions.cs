@@ -74,7 +74,6 @@ public static class NakedFrameworkExtensions {
     public static void AddNakedFramework(this IServiceCollection services, Action<NakedFrameworkOptions> setupAction) {
         var options = new NakedFrameworkOptions(services);
         setupAction(options);
-
         services.AddNakedCoreFramework(options);
     }
 }
