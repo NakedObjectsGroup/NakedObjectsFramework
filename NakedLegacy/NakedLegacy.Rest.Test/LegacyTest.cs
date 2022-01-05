@@ -40,7 +40,9 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithMenu),
         typeof(ClassWithDate),
         typeof(ClassWithTimeStamp),
-        typeof(ClassWithWholeNumber)
+        typeof(ClassWithWholeNumber),
+        typeof(ClassWithLogical),
+        typeof(ClassWithMoney)
     };
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
@@ -605,4 +607,109 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("66", resultObj["members"]["WholeNumber"]["value"].ToString());
     }
+
+    [Test]
+    public void TestGetObjectWithLogical()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithLogical>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["Logical"]);
+        Assert.IsNotNull(parsedResult["members"]["actionUpdateLogical"]);
+
+        Assert.AreEqual("True", parsedResult["title"].ToString());
+    }
+
+    [Test]
+
+
+    public void TestGetLogicalProperty()
+    {
+        var api = Api();
+        var result = api.GetProperty(FullName<ClassWithLogical>(), "1", nameof(ClassWithLogical.Logical));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(nameof(ClassWithLogical.Logical), parsedResult["id"].ToString());
+        Assert.AreEqual("True", parsedResult["value"].ToString());
+        Assert.AreEqual("boolean", parsedResult["extensions"]["returnType"].ToString());
+        Assert.IsNull(parsedResult["extensions"]["format"]);
+    }
+
+    [Test]
+
+
+    public void TestInvokeUpdateAndPersistObjectWithLogical()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newLogical", new ScalarValue(false) } } };
+
+        var result = api.PostInvoke(FullName<ClassWithLogical>(), "1", nameof(ClassWithLogical.actionUpdateLogical), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("False", resultObj["members"]["Logical"]["value"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectWithMoney()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithMoney>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["Money"]);
+        Assert.IsNotNull(parsedResult["members"]["actionUpdateMoney"]);
+
+        Assert.AreEqual("€ 10.00", parsedResult["title"].ToString());
+    }
+
+    [Test]
+
+
+    public void TestGetMoneyProperty()
+    {
+        var api = Api();
+        var result = api.GetProperty(FullName<ClassWithMoney>(), "1", nameof(ClassWithMoney.Money));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(nameof(ClassWithMoney.Money), parsedResult["id"].ToString());
+        Assert.AreEqual("10", parsedResult["value"].ToString());
+        Assert.AreEqual("number", parsedResult["extensions"]["returnType"].ToString());
+        Assert.AreEqual("decimal", parsedResult["extensions"]["format"].ToString());
+    }
+
+    [Test]
+
+
+    public void TestInvokeUpdateAndPersistObjectWithMoney()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newMoney", new ScalarValue(66) } } };
+
+        var result = api.PostInvoke(FullName<ClassWithMoney>(), "1", nameof(ClassWithMoney.actionUpdateMoney), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("66", resultObj["members"]["Money"]["value"].ToString());
+    }
+
 }

@@ -208,3 +208,61 @@ public class ClassWithWholeNumber {
         }
     }
 }
+
+public class ClassWithLogical {
+    private Logical _logical;
+    public bool boolean;
+
+    [Key]
+    public int Id { get; init; }
+
+    public Logical Logical => _logical ??= new Logical(boolean, i => boolean = i);
+
+    public static bool TestVisible { get; set; } = true;
+
+    public Title Title() => Logical.Title();
+
+    public ClassWithLogical actionUpdateLogical(Logical newLogical) {
+        Logical.Value = newLogical.Value;
+        return this;
+    }
+
+    public void AboutActionUpdateLogical(ActionAbout actionAbout, Logical newLogical) {
+        if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
+            actionAbout.Visible = TestVisible;
+        }
+
+        if (actionAbout.TypeCode is AboutTypeCodes.Usable) {
+            actionAbout.Usable = true;
+        }
+    }
+}
+
+public class ClassWithMoney {
+    private Money _money;
+    public decimal amount;
+
+    [Key]
+    public int Id { get; init; }
+
+    public Money Money => _money ??= new Money(amount, i => amount = i);
+
+    public static bool TestVisible { get; set; } = true;
+
+    public Title Title() => Money.Title();
+
+    public ClassWithMoney actionUpdateMoney(Money newMoney) {
+        Money.Value = newMoney.Value;
+        return this;
+    }
+
+    public void AboutActionUpdateMoney(ActionAbout actionAbout, Money newMoney) {
+        if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
+            actionAbout.Visible = TestVisible;
+        }
+
+        if (actionAbout.TypeCode is AboutTypeCodes.Usable) {
+            actionAbout.Usable = true;
+        }
+    }
+}
