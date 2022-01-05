@@ -47,7 +47,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         #region Story 1: ViewPersistentObjectsAndProperties
-        //[TestMethod]s
+        //[TestMethod]
         private void ViewPersistentObjectsAndProperties()
         {
             ViewInstanceDirectlyByUrl();
@@ -133,6 +133,55 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
         #endregion
 
+        #region Story2: ObjectPresentation & Control
+        //[TestMethod]
+        public void ObjectPresentationAndControl()
+        {
+            PropertyHiddenUsingFieldAbout();
+            PropertyRenamedUsingFieldAbout();
+            FieldOrderSpecifiedByAttribute();
+            FieldOrderSpecifiedByMethod();
+
+        }
+
+        //[TestMethod]
+        public void PropertyHiddenUsingFieldAbout()
+        {
+            var obj = AccessInstanceWithTitle("PhoneNumberType--1", "Cell");
+            obj.AssertPropertiesAre(); //Because all properties have been hidden individually using FieldAbout
+        }
+
+        //[TestMethod]
+        public void PropertyRenamedUsingFieldAbout()
+        {
+            var obj = AccessInstanceWithTitle("PhoneNumberType--1", "Cell");
+            obj.GetProperty(1).AssertNameIs("Resumé");
+        }
+
+        //[TestMethod]
+        public void FieldOrderSpecifiedByAttribute() //Also tests that system value properties are not displayed
+        {
+            var obj = AccessInstanceWithTitle("Address--24082", "4669 Berry Dr....");
+            obj.AssertPropertiesAre("Address Line1", "Address Line2", "City", "Postal Code", "State Province", "Modified Date");
+        }
+
+        //[TestMethod]
+        public void FieldOrderSpecifiedByMethod()
+        {
+            var obj = AccessInstanceWithTitle("Vendor--1674", "Varsity Sport Co.");
+            obj.AssertPropertiesAre("Account Number","Name","Credit Rating", "Preferred Vendor Status", 
+                "Active Flag", "Purchasing Web Service URL", "Modified Date","Product - Order Info");
+        }
+
+        #endregion
+
+        #region "EditingObjects"
+        //[TestMethod]
+        public void PropertyGivenDescriptionUsingFieldAbout()
+        {
+            
+        }
+        #endregion
 
         #region Old Stories - for reference
         //[TestMethod]
