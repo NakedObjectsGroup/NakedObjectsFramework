@@ -11,6 +11,6 @@ public class TextString : ValueHolder<string> {
     public TextString(string text, Action<string> callback) : base(text, callback) { }
 
     public override string ToString() => Value;
-    public override string Parse(string fromString) => throw new NotImplementedException();
+    public override object Parse(string fromString) => new TextString(fromString);
     public override object Display(string mask = null) => Value;
 }

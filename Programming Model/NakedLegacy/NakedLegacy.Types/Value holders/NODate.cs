@@ -11,6 +11,16 @@ public class NODate : ValueHolder<DateTime> {
     public NODate(DateTime value, Action<DateTime> callback) : base(value, callback) { }
 
     public override string ToString() => Value.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-    public override object Parse(string fromString) => throw new NotImplementedException();
+
+    public override object Parse(string entry) {
+        var dateString = entry.Trim();
+        try {
+            return new NODate(DateTime.Parse(entry));
+        }
+        catch (FormatException) {
+            throw new ValueHolderException(dateString);
+        }
+    }
+
     public override object Display(string mask = null) => Value;
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace NakedLegacy.Types;
 
@@ -10,6 +11,18 @@ public class Money : ValueHolder<decimal> {
     public Money(decimal value, Action<decimal> callback) : base(value, callback) { }
 
     public override string ToString() => "€ " + Value;
-    public override object Parse(string fromString) => throw new NotImplementedException();
+
+    public override object Parse(string entry) {
+        try {
+            return new Money(decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
+        }
+        catch (FormatException) {
+            throw new ValueHolderException(entry);
+        }
+        catch (OverflowException) {
+            throw new ValueHolderException(entry);
+        }
+    }
+
     public override object Display(string mask = null) => Value;
 }
