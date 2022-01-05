@@ -217,6 +217,7 @@
         End Sub
 #End Region
 
+        Public Property ManagerID As Integer?
         '<MemberOrder(30)>
         Public Overridable Property Manager() As Employee
 
