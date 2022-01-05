@@ -40,7 +40,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.mappedOrderDate).HasColumnName("OrderDate");
             builder.Property(t => t.mappedDueDate).HasColumnName("DueDate");
             builder.Property(t => t.mappedShipDate).HasColumnName("ShipDate");
-            //builder.Property(t => t.StatusByte).HasColumnName("Status");
+            builder.Property(t => t.Status).HasColumnName("Status");
             builder.Property(t => t.mappedOnlineOrder).HasColumnName("OnlineOrderFlag");
             builder.Property(t => t.mappedSalesOrderNumber).HasColumnName("SalesOrderNumber");
             builder.Property(t => t.mappedPurchaseOrderNumber).HasColumnName("PurchaseOrderNumber");

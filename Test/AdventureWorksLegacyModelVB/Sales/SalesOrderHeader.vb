@@ -48,28 +48,39 @@
 		End Sub
 #End Region
 
-		''<Hidden>
-		Public Property StatusByte() As Byte
+#Region "Status"
+		Public Property Status() As Byte
 
 		'<MemberOrder(1)>
-		Public Overridable ReadOnly Property Status() As TextString
+		Public Overridable ReadOnly Property StatusByte() As TextString
 			Get
-				Return New TextString([Enum].GetName(GetType(OrderStatus), StatusByte))
+				Return New TextString([Enum].GetName(GetType(OrderStatus), Status))
 			End Get
 		End Property
 
+		Public Sub AboutStatusByte(a As FieldAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+					a.Name = "Status"
+			End Select
+		End Sub
+#End Region
+
+#Region "Customer"
 		''<Hidden>
 		Public Property CustomerID() As Integer
 
 		'<MemberOrder(2)>
 		Public Overridable Property Customer() As Customer
+#End Region
 
+#Region "BillingAddress"
 		''<Hidden>
 		Public Property BillingAddressID() As Integer
 
 		'<MemberOrder(4)>
 		Public Overridable Property BillingAddress() As Address
-
+#End Region
 #Region "PurchaseOrderNumber"
 		Public mappedPurchaseOrderNumber As String
 		Friend myPurchaseOrderNumber As TextString
