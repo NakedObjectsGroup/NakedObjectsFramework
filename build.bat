@@ -30,6 +30,8 @@ dotnet build NakedFunctions.Server.sln -c Debug
 
 dotnet pack NakedObjects\NakedObjects.Server.Package\NakedObjects.Server.Package.csproj --include-symbols --include-source
 dotnet pack NakedFunctions\NakedFunctions.Server.Package\NakedFunctions.Server.Package.csproj --include-symbols --include-source
+dotnet pack NakedLegacy\NakedLegacy.Server.Package\NakedLegacy.Server.Package.csproj --include-symbols --include-source
 
 XCOPY ".\NakedObjects\NakedObjects.Server.Package\bin\Debug\*.nupkg"  %nugetPackagePath% /y
 XCOPY ".\NakedFunctions\NakedFunctions.Server.Package\bin\Debug\*.nupkg"  %nugetPackagePath% /y
+XCOPY ".\NakedLegacy\NakedLegacy.Server.Package\bin\Debug\*.nupkg"  %nugetPackagePath% /y
