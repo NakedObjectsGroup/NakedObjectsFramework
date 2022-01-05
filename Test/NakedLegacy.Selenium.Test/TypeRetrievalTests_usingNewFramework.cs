@@ -37,7 +37,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         public virtual void CleanUpTest() => helper.CleanUp();
         #endregion
 
-        [TestMethod]
+        //[TestMethod]
         public  void RetrieveInstanceOfTypesDirectlyByURL()
         {
             AccessInstanceWithTitle( "Department--1 ", "Engineering");

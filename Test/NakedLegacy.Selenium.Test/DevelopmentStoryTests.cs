@@ -77,7 +77,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void TimeStampProperty()
         {
             helper.GotoUrlDirectly(prefix + "Address--13618");
-            helper.GetObjectView().GetProperty("Modified Date").AssertValueIs("31 Jul 2008 01:00:00");
+            var d = helper.GetObjectView().GetProperty("Modified Date").GetValue();
+            Assert.IsTrue(d.StartsWith("31 Jul 2008") && d.EndsWith(":00:00")); //Miss out the hours due to time zone issues
         }
 
         //[TestMethod]
