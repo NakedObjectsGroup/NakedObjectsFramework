@@ -43,10 +43,98 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         [TestMethod]
         public void AllWorkingStories()
         {
-            RetrieveObjectViaMenuAction();
+            ViewPersistentObjectsAndProperties();
         }
 
+        #region Story 1: ViewPersistentObjectsAndProperties
+        //[TestMethod]s
+        private void ViewPersistentObjectsAndProperties()
+        {
+            ViewInstanceDirectlyByUrl();
+            TextStringProperty();
+            WholeNumberProperty();
+            DateProperty();
+            TimeStampProperty();
+            BooleanProperty();
+            TitleConstructedFromValueFields();
+            ReferenceProperty();
+            TitleConstructedFromReferenceFields();
+            InternalCollection();
+        }
 
+        //[TestMethod]
+        public void ViewInstanceDirectlyByUrl()
+        {
+                helper.GotoUrlViaHome(prefix + "Employee--66");
+                helper.GetObjectView();
+        }
+
+        //[TestMethod]
+        public void TextStringProperty()
+        {
+            helper.GotoUrlViaHome(prefix + "Employee--66");
+            helper.GetObjectView().GetProperty("National ID Number").AssertValueIs("834186596");
+        }
+
+        //[TestMethod]
+        public void WholeNumberProperty()
+        {
+            helper.GotoUrlViaHome(prefix + "Employee--66");
+            helper.GetObjectView().GetProperty("Vacation House").AssertValueIs("28");
+        }
+
+        //[TestMethod]
+        public void DateProperty()
+        {
+            helper.GotoUrlViaHome(prefix + "Employee--66");
+            helper.GetObjectView().GetProperty("Date Of Birth").AssertValueIs("7 Apr 1964");
+        }
+
+        //[TestMethod]
+        public void TimeStampProperty()
+        {
+            helper.GotoUrlViaHome(prefix + "Employee--66");
+            helper.GetObjectView().GetProperty("Modified Date").AssertValueIs("31 Jul 2008 01:00:00");
+        }
+
+        //[TestMethod]
+        public void BooleanProperty()
+        {
+            helper.GotoUrlViaHome(prefix + "Employee--66");
+            helper.GetObjectView().GetProperty("Salaried").AssertValueIs("False");
+        }
+
+        //[TestMethod]
+        public void TitleConstructedFromValueFields()
+        {
+            AccessInstanceWithTitle("Person--2284", "Lynn Tsoflias");
+        }
+
+        //[TestMethod]
+        public void ReferenceProperty()
+        {
+            helper.GotoUrlViaHome(prefix + "Employee--66");
+            helper.GetObjectView().GetProperty("Person Details").GetReference().AssertTitleIs("Lynn Tsoflias");
+        }
+
+        //[TestMethod]
+        public void TitleConstructedFromReferenceFields()
+        {
+            AccessInstanceWithTitle("Employee--67", "Jay Adams");
+        }
+
+        //[TestMethod]
+        public void InternalCollection()
+        {
+            var obj = AccessInstanceWithTitle("SalesOrderHeader--52035", "SO52035");
+            var coll = obj.GetCollection("Details").AssertDetails("2 Items");
+            coll.AssertIsClosed().ClickListView().AssertIsOpenAsList().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
+            coll.ClickTableView().AssertIsOpenAsTable().GetRowFromTable(1).AssertColumnValueIs(3,"€32.60");
+        }
+        #endregion
+
+
+        #region Old Stories - for reference
         //[TestMethod]
         public void RetrieveObjectViaMenuAction()
         {
@@ -803,5 +891,16 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Assert.IsTrue(workOrder.GetTitle().StartsWith("Freewheel: "));
             workOrder.GetProperty("Order Qty").AssertValueIs("1");
         }
+        #endregion
+
+        #region Helpers
+
+        private const string prefix = "object?i1=View&o1=AW.Types.";
+        private ObjectView AccessInstanceWithTitle(string identifier, string title)
+        {
+            helper.GotoUrlViaHome(prefix + identifier);
+            return helper.GetObjectView().AssertTitleIs(title);
+        }
+        #endregion
     }
 }
