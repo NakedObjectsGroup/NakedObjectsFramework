@@ -3,7 +3,7 @@
     '<Bounded>
     Partial Public Class Department
 
-        Public Property DepartmentID As Integer  'Not visible on UI
+        Public Property DepartmentID As Short  'Not visible on UI
 
 #Region "Name"
         Public mappedName As String

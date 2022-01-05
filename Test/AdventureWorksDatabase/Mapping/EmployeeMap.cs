@@ -12,20 +12,20 @@ namespace AdventureWorksModel
             builder.HasKey(t => t.BusinessEntityID);
 
             // Ignores
-            //builder.Ignore(t => t.mappedNationalIDNumber)
-            //    .Ignore(t => t.ManagerID)
-            //    .Ignore(t => t.Manager)
-            //    .Ignore(t => t.LoginID)
-            //    .Ignore(t => t.JobTitle)
-            //    .Ignore(t => t.DateOfBirth)
-            //    .Ignore(t => t.MaritalStatus)
-            //    .Ignore(t => t.Gender)
-            //    .Ignore(t => t.HireDate)               
-            //    .Ignore(t => t.VacationHours)
-            //    .Ignore(t => t.SickLeaveHours)
-            //    .Ignore(t => t.mappedModifiedDate);
-                           // .Ignore(t => t.Current) //TODO uncomment when Logical supported
-            //.Ignore(t => t.Salaried)  //TODO uncomment when Logical supported
+            builder.Ignore(t => t.mappedNationalIDNumber)
+                .Ignore(t => t.ManagerID)
+                .Ignore(t => t.Manager)
+                .Ignore(t => t.LoginID)
+                .Ignore(t => t.JobTitle)
+                .Ignore(t => t.DateOfBirth)
+                .Ignore(t => t.MaritalStatus)
+                .Ignore(t => t.Gender)
+                .Ignore(t => t.HireDate)
+                .Ignore(t => t.VacationHours)
+                .Ignore(t => t.SickLeaveHours)
+                .Ignore(t => t.mappedModifiedDate)
+                .Ignore(t => t.Current)
+                .Ignore(t => t.Salaried); 
 
             // Table & Column Mappings
             builder.ToTable("Employee", "HumanResources");
