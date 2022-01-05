@@ -22,5 +22,5 @@ public class NODate : ValueHolder<DateTime> {
         }
     }
 
-    public override object Display(string mask = null) => Value;
+    public override object Display(string mask = null) => Value.ToString(mask, CultureInfo.InvariantCulture);
 }
