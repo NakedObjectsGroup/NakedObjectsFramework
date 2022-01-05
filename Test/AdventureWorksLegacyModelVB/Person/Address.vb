@@ -2,6 +2,48 @@
 	Partial Public Class Address
 		Public Property AddressID() As Integer
 
+#Region "City"
+		Public mappedCity As String
+		Friend myCity As TextString
+
+		'<MemberOrder(13)>
+		Public ReadOnly Property City As TextString
+			Get
+				Return If(myCity, New TextString(mappedCity, Function(v) mappedCity = v))
+			End Get
+		End Property
+
+		Public Sub AboutCity(a As FieldAbout, City As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
+#Region "PostalCode"
+		Public mappedPostalCode As String
+		Friend myPostalCode As TextString
+
+		'<MemberOrder(14)>
+		Public ReadOnly Property PostalCode As TextString
+			Get
+				Return If(myPostalCode, New TextString(mappedPostalCode, Function(v) mappedPostalCode = v))
+			End Get
+		End Property
+
+		Public Sub AboutPostalCode(a As FieldAbout, PostalCode As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+
 #Region "AddressLine1"
 		Public mappedAddressLine1 As String
 		Friend myAddressLine1 As TextString
@@ -44,47 +86,6 @@
 		End Sub
 #End Region
 
-#Region "City"
-		Public mappedCity As String
-		Friend myCity As TextString
-
-		'<MemberOrder(13)>
-		Public ReadOnly Property City As TextString
-			Get
-				Return If(myCity, New TextString(mappedCity, Function(v) mappedCity = v))
-			End Get
-		End Property
-
-		Public Sub AboutCity(a As FieldAbout, City As TextString)
-			Select Case a.TypeCode
-				Case AboutTypeCodes.Name
-				Case AboutTypeCodes.Usable
-				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
-			End Select
-		End Sub
-#End Region
-
-#Region "PostalCode"
-		Public mappedPostalCode As String
-		Friend myPostalCode As TextString
-
-		'<MemberOrder(14)>
-		Public ReadOnly Property PostalCode As TextString
-			Get
-				Return If(myPostalCode, New TextString(mappedPostalCode, Function(v) mappedPostalCode = v))
-			End Get
-		End Property
-
-		Public Sub AboutPostalCode(a As FieldAbout, PostalCode As TextString)
-			Select Case a.TypeCode
-				Case AboutTypeCodes.Name
-				Case AboutTypeCodes.Usable
-				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
-			End Select
-		End Sub
-#End Region
 
 		Public Property StateProvinceID() As Integer
 

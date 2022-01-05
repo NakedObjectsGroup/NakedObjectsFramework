@@ -2,32 +2,16 @@
 
     Partial Public Class Vendor
 
-#Region "AccountNumber"
-        Public mappedAccountNumber As String
-        Friend myAccountNumber As TextString
-
-        '<MemberOrder(10)>
-        Public ReadOnly Property AccountNumber As TextString
-            Get
-                Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
-            End Get
-        End Property
-
-        Public Sub AboutAccountNumber(a As FieldAbout, AccountNumber As TextString)
-            Select Case a.TypeCode
-                Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Usable
-                Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
-            End Select
-        End Sub
-#End Region
+        Public Shared Function FieldOrder() As String
+            Return "AccountNumber, Name, CreditRating, PreferredVendorStatus, " +
+            "ActiveFlag, PurchasingWebServiceURL, ModifiedDate, Products"
+        End Function
 
 #Region "Name"
         Public mappedName As String
         Friend myName As TextString
 
-        '<MemberOrder(20)>
+
         Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -44,11 +28,32 @@
         End Sub
 #End Region
 
+#Region "AccountNumber"
+        Public mappedAccountNumber As String
+        Friend myAccountNumber As TextString
+
+
+        Public ReadOnly Property AccountNumber As TextString
+            Get
+                Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
+            End Get
+        End Property
+
+        Public Sub AboutAccountNumber(a As FieldAbout, AccountNumber As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
+
 #Region "CreditRating"
         Public mappedCreditRating As Byte
         Friend myCreditRating As WholeNumber
 
-        '<MemberOrder(30)>
+
         Public ReadOnly Property CreditRating As WholeNumber
             Get
                 Return If(myCreditRating, New WholeNumber(mappedCreditRating, Function(v) mappedCreditRating = v))
@@ -69,7 +74,7 @@
         Public mappedPreferredVendorStatus As Boolean
         Friend myPreferredVendorStatus As Logical
 
-        '<MemberOrder(40)>
+
         Public ReadOnly Property PreferredVendorStatus As Logical
             Get
                 Return If(myPreferredVendorStatus, New Logical(mappedPreferredVendorStatus, Function(v) mappedPreferredVendorStatus = v))
@@ -90,7 +95,7 @@
         Public mappedActiveFlag As Boolean
         Friend myActiveFlag As Logical
 
-        '<MemberOrder(50)>
+
         Public ReadOnly Property ActiveFlag As Logical
             Get
                 Return If(myActiveFlag, New Logical(mappedActiveFlag, Function(v) mappedActiveFlag = v))
@@ -111,7 +116,7 @@
         Public mappedPurchasingWebServiceURL As String
         Friend myPurchasingWebServiceURL As TextString
 
-        '<MemberOrder(60)>
+
         Public ReadOnly Property PurchasingWebServiceURL As TextString
             Get
                 Return If(myPurchasingWebServiceURL, New TextString(mappedPurchasingWebServiceURL, Function(v) mappedPurchasingWebServiceURL = v))
@@ -133,7 +138,7 @@
 
         Private myProducts As InternalCollection
 
-        '<MemberOrder(1)>
+
         Public ReadOnly Property Products As InternalCollection
             Get
                 Return If(myProducts, New InternalCollection(Of ProductVendor)(mappedProducts))
@@ -152,7 +157,7 @@
         Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        '<MemberOrder(99)>
+
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

@@ -18,7 +18,7 @@
 		Public Sub AboutResume(a As FieldAbout, resumee As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
-					a.Name = "Resume"
+					a.Name = "Resumé"
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
 				Case AboutTypeCodes.Visible
