@@ -47,7 +47,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         #region Story 1: ViewPersistentObjectsAndProperties
-        //[TestMethod]
+        [TestMethod]
         private void ViewPersistentObjectsAndProperties()
         {
             ViewInstanceDirectlyByUrl();
@@ -57,57 +57,67 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             TimeStampProperty();
             BooleanProperty();
             TitleConstructedFromValueFields();
-            ReferenceProperty();
-            TitleConstructedFromReferenceFields();
-            InternalCollection();
         }
 
         //[TestMethod]
         public void ViewInstanceDirectlyByUrl()
         {
-                helper.GotoUrlViaHome(prefix + "Employee--66");
+                helper.GotoUrlDirectly(prefix + "Address--13618");
                 helper.GetObjectView();
         }
 
         //[TestMethod]
         public void TextStringProperty()
         {
-            helper.GotoUrlViaHome(prefix + "Employee--66");
-            helper.GetObjectView().GetProperty("National ID Number").AssertValueIs("834186596");
+            helper.GotoUrlDirectly(prefix + "Address--13618");
+            helper.GetObjectView().GetProperty("Address Line1").AssertValueIs("Waldstr 91");
         }
 
-        //[TestMethod]
-        public void WholeNumberProperty()
+       //[TestMethod]
+        public void TimeStampProperty()
         {
-            helper.GotoUrlViaHome(prefix + "Employee--66");
-            helper.GetObjectView().GetProperty("Vacation House").AssertValueIs("28");
+            helper.GotoUrlDirectly(prefix + "Address--13618");
+            helper.GetObjectView().GetProperty("Modified Date").AssertValueIs("31 Jul 2008 01:00:00");
         }
 
         //[TestMethod]
         public void DateProperty()
         {
-            helper.GotoUrlViaHome(prefix + "Employee--66");
-            helper.GetObjectView().GetProperty("Date Of Birth").AssertValueIs("7 Apr 1964");
+            helper.GotoUrlDirectly(prefix + "SpecialOffer--3");
+            helper.GetObjectView().GetProperty("Start Date").AssertValueIs("1 Jul 2005");
         }
 
+
         //[TestMethod]
-        public void TimeStampProperty()
+        public void WholeNumberProperty()
         {
-            helper.GotoUrlViaHome(prefix + "Employee--66");
-            helper.GetObjectView().GetProperty("Modified Date").AssertValueIs("31 Jul 2008 01:00:00");
+            helper.GotoUrlDirectly(prefix + "SpecialOffer--3");
+            helper.GetObjectView().GetProperty("Min Qty").AssertValueIs("15");
         }
+
 
         //[TestMethod]
         public void BooleanProperty()
         {
-            helper.GotoUrlViaHome(prefix + "Employee--66");
-            helper.GetObjectView().GetProperty("Salaried").AssertValueIs("False");
+            helper.GotoUrlDirectly(prefix + "StateProvince--14");
+            helper.GetObjectView().GetProperty("Is Only State Province Flag");
         }
 
         //[TestMethod]
         public void TitleConstructedFromValueFields()
         {
-            AccessInstanceWithTitle("Person--2284", "Lynn Tsoflias");
+            helper.GotoUrlDirectly(prefix + "Person--2284");
+            helper.GetObjectView().AssertTitleIs("Lynn Tsoflias");
+        }
+        #endregion
+
+        #region Story 2: Reference properties and collections
+        //[TestMethod]
+        public void ReferencePropertiesAndCollections()
+        {
+            ReferenceProperty();
+            TitleConstructedFromReferenceFields();
+            InternalCollection();
         }
 
         //[TestMethod]
@@ -133,7 +143,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
         #endregion
 
-        #region Story2: ObjectPresentation & Control
+        #region Story 3: ObjectPresentation & Control
         //[TestMethod]
         public void ObjectPresentationAndControl()
         {
