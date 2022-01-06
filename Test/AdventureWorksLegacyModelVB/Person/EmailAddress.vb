@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class EmailAddress
- Implements ITitledObject
+	Partial Public Class EmailAddress
+
+		Implements ITitledObject
 
 		Public Property BusinessEntityID() As Integer
 
@@ -51,7 +52,11 @@
 		Public Property RowGuid() As Guid
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title(EmailAddress1)
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return mappedEmailAddress1
 		End Function
 	End Class
 End Namespace

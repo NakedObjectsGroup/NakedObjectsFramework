@@ -117,7 +117,11 @@
 #End Region
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"TransactionHistory: {TransactionID}")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"TransactionHistory: {TransactionID}"
         End Function
     End Class
 End Namespace

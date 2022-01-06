@@ -80,7 +80,11 @@
 #End Region
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"{Department} {StartDate.ToString("d")}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"{Department} {StartDate.ToString("d")}"
 		End Function
 	End Class
 

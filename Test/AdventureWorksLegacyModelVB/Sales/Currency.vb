@@ -13,7 +13,11 @@
 		Public Property ModifiedDate() As Date
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"{CurrencyCode} - {Name}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"{CurrencyCode} - {Name}"
 		End Function
 	End Class
 End Namespace

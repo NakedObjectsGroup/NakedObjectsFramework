@@ -73,7 +73,11 @@
         Public Property RowGuid() As Guid
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"{QuotaDate.ToString("d")} {SalesQuota.ToString("C")}")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"{QuotaDate.ToString("d")} {SalesQuota.ToString("C")}"
         End Function
     End Class
 End Namespace

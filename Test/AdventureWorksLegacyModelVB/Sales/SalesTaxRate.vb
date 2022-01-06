@@ -76,7 +76,11 @@
         Public Property RowGuid() As Guid
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"Sales Tax Rate for {StateProvince}")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"Sales Tax Rate for {StateProvince}"
         End Function
     End Class
 End Namespace

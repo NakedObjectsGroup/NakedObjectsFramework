@@ -32,7 +32,11 @@
 		Public Property RowGuid() As Guid
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title("Password")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return "Password"
 		End Function
 
 	End Class

@@ -80,7 +80,11 @@
 		Public Property RowGuid() As Guid
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"{SalesPerson} {SalesTerritory}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"{SalesPerson} {SalesTerritory}"
 		End Function
 	End Class
 End Namespace

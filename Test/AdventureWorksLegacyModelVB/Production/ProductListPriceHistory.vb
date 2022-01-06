@@ -90,7 +90,11 @@
 #End Region
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"ProductListPriceHistory: {ProductID}")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"ProductListPriceHistory: {ProductID}"
         End Function
     End Class
 End Namespace

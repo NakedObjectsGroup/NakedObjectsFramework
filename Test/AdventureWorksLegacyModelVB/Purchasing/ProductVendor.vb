@@ -184,7 +184,11 @@
 #End Region
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"ProductVendor: {ProductID}-{VendorID}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"ProductVendor: {ProductID}-{VendorID}"
 		End Function
 	End Class
 End Namespace

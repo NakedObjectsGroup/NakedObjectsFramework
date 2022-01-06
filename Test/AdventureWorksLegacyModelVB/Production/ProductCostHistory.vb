@@ -96,7 +96,11 @@
 #End Region
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"{StandardCost} {StartDate}~")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"{StandardCost} {StartDate}~"
         End Function
     End Class
 End Namespace

@@ -141,7 +141,11 @@
 #End Region
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title("*****".Substring(0, mappedRating))
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return "*****".Substring(0, mappedRating)
 		End Function
 	End Class
 End Namespace

@@ -32,7 +32,11 @@
 #End Region
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"PersonCreditCard: {PersonID}-{CreditCardID}")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"PersonCreditCard: {PersonID}-{CreditCardID}"
         End Function
     End Class
 End Namespace

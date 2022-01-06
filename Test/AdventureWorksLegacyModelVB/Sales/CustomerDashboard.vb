@@ -20,7 +20,11 @@ Namespace AW.Types
 		Public Property Comments() As String = ""
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"{Name} - Dashboard")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"{Name} - Dashboard"
 		End Function
 	End Class
 End Namespace

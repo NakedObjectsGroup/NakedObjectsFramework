@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SalesPerson
- Implements ITitledObject
+	Partial Public Class SalesPerson
+
+		Implements ITitledObject
 
 		''<Hidden>
 		Public Property BusinessEntityID() As Integer
@@ -174,7 +175,11 @@
 		Public Property RowGuid() As Guid
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title(EmployeeDetails)
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"{EmployeeDetails}"
 		End Function
 	End Class
 End Namespace

@@ -42,7 +42,11 @@ Namespace AW.Types
 		Public Property CustomerRowguid() As Guid
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"{AccountNumber} {(If(Store Is Nothing, Person, Store))}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"{AccountNumber} {(If(Store Is Nothing, Person, Store))}"
 		End Function
 
 #Region "Store & Personal customers"

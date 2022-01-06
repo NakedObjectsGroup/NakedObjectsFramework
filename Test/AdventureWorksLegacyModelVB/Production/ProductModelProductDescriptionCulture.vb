@@ -42,7 +42,11 @@
 #End Region
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"ProductModelProductDescriptionCulture: {ProductModelID}-{ProductDescriptionID}-{CultureID}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"ProductModelProductDescriptionCulture: {ProductModelID}-{ProductDescriptionID}-{CultureID}"
 		End Function
 	End Class
 End Namespace

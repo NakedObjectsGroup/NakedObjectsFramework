@@ -31,7 +31,11 @@
 #End Region
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"CountryRegionCurrency: {CountryRegion} {Currency}")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"CountryRegionCurrency: {CountryRegion} {Currency}"
         End Function
     End Class
 End Namespace
