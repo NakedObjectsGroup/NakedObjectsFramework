@@ -17,7 +17,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 {
 
     [TestClass]
-    public class DevelopmentStoryTests_usingNewFramework
+    public class DevelopmentStoryTests
     {
         #region Overhead
         private string baseUrl = "http://nakedlegacytest.azurewebsites.net/";
@@ -49,8 +49,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         #region Story 1: ViewPersistentObjectsAndProperties
-        [TestMethod]
-        private void ViewPersistentObjectsAndProperties()
+        //[TestMethod]
+        public void ViewPersistentObjectsAndProperties()
         {
             ViewInstanceDirectlyByUrl();
             TextStringProperty();

@@ -53,6 +53,7 @@ namespace Legacy.Rest.App.Demo {
                     options.NoValidate = true;
                     options.DomainModelTypes = ModelConfig.LegacyTypes;
                     options.DomainModelServices = ModelConfig.LegacyServices;
+                    options.ValueHolderTypes = LegacyValueHolders;
                 });
             });
             services.AddCors(options => {
@@ -70,6 +71,16 @@ namespace Legacy.Rest.App.Demo {
                 });
             });
         }
+
+        protected Type[] LegacyValueHolders { get; } = {
+            typeof(TextString),
+            typeof(Money),
+            typeof(Logical),
+            typeof(MultiLineTextString),
+            typeof(WholeNumber),
+            typeof(NODate),
+            typeof(TimeStamp)
+            };
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder modelBuilder, ILoggerFactory loggerFactory) {
