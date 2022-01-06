@@ -42,7 +42,11 @@
 		Public Property RowGuid() As Guid
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"{AddressType}: {Address}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"{AddressType}: {Address}"
 		End Function
 	End Class
 End Namespace

@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 	'<Named("Contact")>
-	Partial Public Class BusinessEntityContact
- Implements ITitledObject
+	Partial Public Class BusinessEntityContact
+
+		Implements ITitledObject
 
 		Public Property BusinessEntityID() As Integer
 
@@ -46,7 +47,11 @@
 		Public Property RowGuid() As Guid
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title(Person)
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return Person.ToString()
 		End Function
 	End Class
 End Namespace

@@ -48,7 +48,11 @@
         Public Property RowGuid() As Guid
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title(Name)
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return mappedName
         End Function
     End Class
 End Namespace

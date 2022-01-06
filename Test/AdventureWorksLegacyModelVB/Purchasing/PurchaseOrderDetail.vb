@@ -156,7 +156,11 @@
 		End Sub
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"{OrderQty} x {Product}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"{OrderQty} x {Product}"
 		End Function
 	End Class
 End Namespace

@@ -83,7 +83,11 @@ Namespace AW.Types
 #End Region
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title("Product Photo: {ProductPhotoID}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return "Product Photo: {ProductPhotoID}"
 		End Function
 	End Class
 End Namespace

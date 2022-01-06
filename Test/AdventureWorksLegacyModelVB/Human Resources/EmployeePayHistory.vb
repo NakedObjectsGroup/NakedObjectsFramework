@@ -85,7 +85,11 @@
 #End Region
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}"
         End Function
     End Class
 End Namespace

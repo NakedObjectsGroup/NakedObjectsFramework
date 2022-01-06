@@ -142,7 +142,11 @@
 #End Region
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"BillOfMaterial: {BillOfMaterialID}")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"BillOfMaterial: {BillOfMaterialID}"
 		End Function
 	End Class
 End Namespace

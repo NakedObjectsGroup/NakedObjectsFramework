@@ -118,7 +118,11 @@
         Public Property RowGuid() As Guid
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"{AddressLine1}...")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"{AddressLine1}..."
         End Function
 
     End Class

@@ -310,7 +310,11 @@
         Public Property RowGuid() As Guid 'Not visible on UI
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title(PersonDetails)
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return PersonDetails.ToString()
         End Function
 
     End Class

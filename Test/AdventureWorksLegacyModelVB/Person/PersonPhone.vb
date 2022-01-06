@@ -50,7 +50,11 @@
 #End Region
 
         Public Function Title() As Title Implements ITitledObject.Title
-            Return New Title($"{PhoneNumberType}:{PhoneNumber}")
+            Return New Title(ToString())
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return $"{PhoneNumberType}:{PhoneNumber}"
         End Function
     End Class
 End Namespace

@@ -1,30 +1,31 @@
 ﻿Namespace AW.Types
 
 	'<Bounded>
-	Partial Public Class ScrapReason
- Implements ITitledObject
+	Partial Public Class ScrapReason
+
+		Implements ITitledObject
 
 		Public Property ScrapReasonID() As Short
 
 #Region "Name"
-        Public mappedName As String
-        Friend myName As TextString
+		Public mappedName As String
+		Friend myName As TextString
 
-        '<MemberOrder(1)>
-        Public ReadOnly Property Name As TextString
-            Get
-                Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
-            End Get
-        End Property
+		'<MemberOrder(1)>
+		Public ReadOnly Property Name As TextString
+			Get
+				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+			End Get
+		End Property
 
-        Public Sub AboutName(a As FieldAbout, Name As TextString)
-            Select Case a.TypeCode
-                Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Usable
-                Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
-            End Select
-        End Sub
+		Public Sub AboutName(a As FieldAbout, Name As TextString)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
 #End Region
 
 #Region "ModifiedDate"
@@ -47,7 +48,11 @@
 #End Region
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title(Name)
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return mappedName
 		End Function
 	End Class
 End Namespace

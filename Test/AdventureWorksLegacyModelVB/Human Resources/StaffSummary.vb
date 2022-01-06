@@ -19,7 +19,11 @@ Namespace AW.Types
 		End Property
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title("Staff Summary")
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return "Staff Summary"
 		End Function
 	End Class
 End Namespace

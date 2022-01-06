@@ -15,7 +15,13 @@ Namespace AW.Types
 		Public Property Customers() As IList(Of Customer)
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title($"{Customers().Count} Customers")
+			Return New Title(ToString())
 		End Function
+
+		Public Overrides Function ToString() As String
+			Return $"{Customers().Count} Customers"
+		End Function
+
+
 	End Class
 End Namespace

@@ -266,7 +266,11 @@
 		Public Property RowGuid() As Guid
 
 		Public Function Title() As Title Implements ITitledObject.Title
-			Return New Title(If(mappedNameStyle, $"{LastName} {FirstName}", $"{FirstName} {LastName}"))
+			Return New Title(ToString())
+		End Function
+
+		Public Overrides Function ToString() As String
+			Return If(mappedNameStyle, $"{LastName} {FirstName}", $"{FirstName} {LastName}")
 		End Function
 	End Class
 End Namespace
