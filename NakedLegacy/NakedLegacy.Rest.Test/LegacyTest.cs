@@ -18,6 +18,7 @@ using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
+using NakedLegacy.Reflector.Component;
 using NakedLegacy.Reflector.Extensions;
 using NakedLegacy.Rest.Test.Data;
 using NakedLegacy.Types;
@@ -105,7 +106,10 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        StartTest();
+        ContainerLocator.Initialize(RootServiceProvider);
+    }
 
     [TearDown]
     public void TearDown() => EndTest();
@@ -545,5 +549,23 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Fred", parsedResult["value"]["title"].ToString());
         Assert.AreEqual(@"http://localhost/objects/NakedLegacy.Rest.Test.Data.ClassWithTextString/1", parsedResult["value"]["href"].ToString());
         Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", parsedResult["extensions"]["returnType"].ToString());
+    }
+
+    [Test]
+    public void TestInvokeMenuActionWithContainer()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { } };
+
+        var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("Fred", resultObj["title"].ToString());
+        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+
     }
 }

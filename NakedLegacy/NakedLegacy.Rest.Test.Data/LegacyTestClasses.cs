@@ -9,7 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedFramework.Core.Util;
+using NakedLegacy.Reflector.Component;
 using NakedLegacy.Types;
+using NakedLegacy.Types.Container;
 using NakedObjects;
 
 // ReSharper disable InconsistentNaming
@@ -150,7 +153,9 @@ public class ClassWithMenu {
     public ClassWithMenu ActionMethod1() => this;
     public ClassWithMenu actionMethod2() => this;
 
-    public static ClassWithMenu ActionMenuAction() => null;
+    private static IContainer Container => ContainerLocator.GetContainer();
+
+    public static ClassWithTextString ActionMenuAction() => (ClassWithTextString) Container.AllInstances(typeof(ClassWithTextString)).First();
 
     public static MainMenu menuOrder() {
         var menu = new MainMenu();

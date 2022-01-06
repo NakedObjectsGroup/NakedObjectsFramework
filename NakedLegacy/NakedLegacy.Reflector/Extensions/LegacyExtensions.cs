@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
@@ -52,5 +53,9 @@ public static class LegacyExtensions {
         var additionalTypes = ReflectorDefaults.DefaultLegacyTypes.Union(options.ValueHolderTypes);
 
         frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(additionalTypes).ToArray();
+    }
+
+    public static void UseLegacy(this IApplicationBuilder app) {
+        ContainerLocator.Initialize(app.ApplicationServices);
     }
 }

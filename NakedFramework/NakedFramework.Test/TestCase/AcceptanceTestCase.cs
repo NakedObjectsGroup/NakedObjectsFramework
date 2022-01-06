@@ -41,7 +41,7 @@ namespace NakedFramework.Test.TestCase;
 public abstract class AcceptanceTestCase {
     private static IHost host;
 
-    private IServiceProvider RootServiceProvider;
+    protected IServiceProvider RootServiceProvider;
     private IServiceProvider scopeServiceProvider;
     private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
     private ITestObjectFactory testObjectFactory;
