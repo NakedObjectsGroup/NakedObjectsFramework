@@ -112,11 +112,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        //ignore non Legacy properties 
-        if (property.PropertyType.Namespace?.StartsWith("NakedLegacy") is false or null) {
-            return metamodel;
-        }
-
+        
         var capitalizedName = property.Name;
         var paramTypes = new[] { property.PropertyType };
 
