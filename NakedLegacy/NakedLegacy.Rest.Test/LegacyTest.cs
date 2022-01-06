@@ -20,6 +20,7 @@ using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
 using NakedLegacy.Reflector.Extensions;
 using NakedLegacy.Rest.Test.Data;
+using NakedLegacy.Types;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -45,6 +46,16 @@ public class LegacyTest : AcceptanceTestCase {
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
 
+    protected Type[] LegacyValueHolders { get; } = {
+        typeof(TextString),
+        typeof(Money),
+        typeof(Logical),
+        typeof(MultiLineTextString),
+        typeof(WholeNumber),
+        typeof(NODate),
+        typeof(TimeStamp)
+    };
+
     protected override bool EnforceProxies => false;
 
     protected override Action<NakedFrameworkOptions> AddNakedFunctions => _ => { };
@@ -55,6 +66,7 @@ public class LegacyTest : AcceptanceTestCase {
         options => {
             options.DomainModelTypes = LegacyTypes;
             options.DomainModelServices = LegacyServices;
+            options.ValueHolderTypes = LegacyValueHolders;
             options.NoValidate = true;
         };
 

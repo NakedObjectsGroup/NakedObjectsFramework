@@ -26,7 +26,7 @@ namespace NakedLegacy.Reflector.Extensions;
 public static class LegacyExtensions {
     private static LegacyObjectReflectorConfiguration LegacyObjectReflectorConfig(NakedLegacyOptions options) {
         LegacyObjectReflectorConfiguration.NoValidate = options.NoValidate;
-        return new LegacyObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ConcurrencyCheck);
+        return new LegacyObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ValueHolderTypes, options.ConcurrencyCheck);
     }
 
     public static void AddNakedLegacy(this NakedFrameworkOptions frameworkOptions, Action<NakedLegacyOptions> setupAction) {
@@ -49,6 +49,8 @@ public static class LegacyExtensions {
         frameworkOptions.Services.AddDefaultScoped<LegacyAboutCache, LegacyAboutCache>();
         frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
 
-        frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(ReflectorDefaults.DefaultLegacyTypes).ToArray();
+        var additionalTypes = ReflectorDefaults.DefaultLegacyTypes.Union(options.ValueHolderTypes);
+
+        frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(additionalTypes).ToArray();
     }
 }

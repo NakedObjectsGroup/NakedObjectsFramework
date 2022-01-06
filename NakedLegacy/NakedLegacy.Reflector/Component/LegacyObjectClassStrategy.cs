@@ -29,6 +29,7 @@ public class LegacyObjectClassStrategy : AbstractClassStrategy {
     protected override bool IsTypeExplicitlyRequested(Type type) {
         var services = config.Services.ToArray();
         return ReflectorDefaults.DefaultLegacyTypes.Contains(type) ||
+               config.ValueHolderTypes.Any(t => t == type) ||
                config.TypesToIntrospect.Any(t => t == type) ||
                services.Any(t => t == type);
     }
