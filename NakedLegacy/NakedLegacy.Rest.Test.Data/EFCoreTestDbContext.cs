@@ -32,11 +32,11 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<ClassWithInternalCollection> ClassesWithInternalCollection { get; set; }
     public DbSet<ClassWithActionAbout> ClassesWithActionAbout { get; set; }
     public DbSet<ClassWithFieldAbout> ClassesWithFieldAbout { get; set; }
-    //public DbSet<ClassWithString> ClassesWithString { get; set; }
-    //public DbSet<ClassWithLinkToNOFClass> ClassesWithLinkToNOFClass { get; set; }
-    //public DbSet<ClassWithNOFInternalCollection> ClassesWithNOFInternalCollection { get; set; }
-    //public DbSet<LegacyClassWithInterface> LegacyClassWithInterfaces { get; set; }
-    //public DbSet<ClassWithLegacyInterface> ClassWithLegacyInterfaces { get; set; }
+    public DbSet<ClassWithString> ClassesWithString { get; set; }
+    public DbSet<ClassWithLinkToNOFClass> ClassesWithLinkToNOFClass { get; set; }
+    public DbSet<ClassWithNOFInternalCollection> ClassesWithNOFInternalCollection { get; set; }
+    public DbSet<LegacyClassWithInterface> LegacyClassWithInterfaces { get; set; }
+    public DbSet<ClassWithLegacyInterface> ClassWithLegacyInterfaces { get; set; }
     public DbSet<ClassWithMenu> ClassWithMenus { get; set; }
     public DbSet<ClassWithDate> ClassWithDates { get; set; }
     public DbSet<ClassWithDate> ClassWithTimeStamps { get; set; }
@@ -110,9 +110,9 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithInternalCollection>().HasData(new ClassWithInternalCollection { Id = 1 });
         modelBuilder.Entity<ClassWithInternalCollection>().HasData(new ClassWithInternalCollection { Id = 2 });
 
-        //modelBuilder.Entity<ClassWithNOFInternalCollection>().HasData(new { Id = 1 });
+        modelBuilder.Entity<ClassWithNOFInternalCollection>().HasData(new { Id = 1 });
 
-        //modelBuilder.Entity<ClassWithString>().HasData(new { Id = 2, Name = "Ted", ClassWithNOFInternalCollectionId = 1 });
+        modelBuilder.Entity<ClassWithString>().HasData(new { Id = 2, Name = "Ted", ClassWithNOFInternalCollectionId = 1 });
 
         modelBuilder.Entity<ClassWithTextString>().HasData(fred);
         modelBuilder.Entity<ClassWithTextString>().HasData(bill);
@@ -122,12 +122,12 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithMenu>().HasData(new { Id = 1 });
         modelBuilder.Entity<ClassWithDate>().HasData(jane);
 
-        //modelBuilder.Entity<LegacyClassWithInterface>().HasData(new { Id = 10 });
-        //modelBuilder.Entity<ClassWithLegacyInterface>().HasData(new { Id = 10 });
+        modelBuilder.Entity<LegacyClassWithInterface>().HasData(new { Id = 10 });
+        modelBuilder.Entity<ClassWithLegacyInterface>().HasData(new { Id = 10 });
 
-        //modelBuilder.Entity<ClassWithString>().HasData(new { Id = 1, Name = "Jill", LinkToLegacyClassId = 1, ClassWithNOFInternalCollectionId = 1 });
+        modelBuilder.Entity<ClassWithString>().HasData(new { Id = 1, Name = "Jill", LinkToLegacyClassId = 1, ClassWithNOFInternalCollectionId = 1 });
 
-        //modelBuilder.Entity<ClassWithLinkToNOFClass>().HasData(new { Id = 1, Name = "Jack", LinkToNOFClassId = 1 });
+        modelBuilder.Entity<ClassWithLinkToNOFClass>().HasData(new { Id = 1, Name = "Jack", LinkToNOFClassId = 1 });
 
         modelBuilder.Entity<ClassWithWholeNumber>().HasData(new ClassWithWholeNumber { Id = 1, number = 10 });
         modelBuilder.Entity<ClassWithLogical>().HasData(new ClassWithLogical { Id = 1, boolean = true });
