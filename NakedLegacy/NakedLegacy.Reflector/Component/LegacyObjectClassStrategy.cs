@@ -28,10 +28,12 @@ public class LegacyObjectClassStrategy : AbstractClassStrategy {
 
     protected override bool IsTypeExplicitlyRequested(Type type) {
         var services = config.Services.ToArray();
-        return config.TypesToIntrospect.Any(t => t == type) ||
-               services.Any(t => t == type) ||
-               type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
+        return ReflectorDefaults.DefaultLegacyTypes.Contains(type) ||
+               config.TypesToIntrospect.Any(t => t == type) ||
+               services.Any(t => t == type);
     }
+
+    public override bool IsTypeRecognizedByReflector(Type type) => IsTypeExplicitlyRequested(type);
 
     #region IClassStrategy Members
 

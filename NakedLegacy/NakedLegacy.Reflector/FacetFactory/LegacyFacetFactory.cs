@@ -58,8 +58,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
 
     private static IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
         candidates.Where(property => property.HasPublicGetter() &&
-                                     property.PropertyType.Namespace.StartsWith("NakedLegacy") &&
-                                     !classStrategy.IsIgnored(property.PropertyType) &&
+                                     classStrategy.IsTypeRecognizedByReflector(property.PropertyType) &&
                                      !classStrategy.IsIgnored(property)).ToList();
 
     #region IMethodIdentifyingFacetFactory Members
