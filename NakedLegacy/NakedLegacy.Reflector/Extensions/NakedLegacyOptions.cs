@@ -13,6 +13,7 @@ namespace NakedLegacy.Reflector.Extensions;
 public class NakedLegacyOptions {
     public Type[] DomainModelTypes { get; set; } = Array.Empty<Type>();
     public Type[] DomainModelServices { get; set; } = Array.Empty<Type>();
+    public Type[] ValueHolderTypes { get; set; } = Array.Empty<Type>();
     public bool ConcurrencyCheck { get; set; } = true;
     public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
     public bool NoValidate { get; set; }

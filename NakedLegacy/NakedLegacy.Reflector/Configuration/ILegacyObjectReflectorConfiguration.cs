@@ -23,6 +23,8 @@ public interface ILegacyObjectReflectorConfiguration : ITypeList {
 
     Type[] Services { get; }
 
+    Type[] ValueHolderTypes { get; }
+
     /// <summary>
     ///     Instructs the reflector to ignore case on method names i.e. not to enforce the
     ///     documented case conventions.

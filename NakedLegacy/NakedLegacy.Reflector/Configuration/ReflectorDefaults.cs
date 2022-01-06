@@ -12,18 +12,7 @@ namespace NakedLegacy.Reflector.Configuration;
 
 public static class ReflectorDefaults {
     public static readonly Type[] DefaultLegacyTypes = {
-        typeof(TextString),
-        typeof(Logical),
-        typeof(Money),
-        typeof(MultiLineTextString),
         typeof(InternalCollection),
         typeof(InternalCollection<>),
-        typeof(NODate),
-        typeof(TimeStamp),
-        typeof(ITitledObject),
-        typeof(ActionAbout),
-        typeof(FieldAbout),
-        typeof(Title),
-        typeof(WholeNumber)
     };
 }

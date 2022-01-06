@@ -16,9 +16,11 @@ namespace NakedLegacy.Reflector.Configuration;
 public class LegacyObjectReflectorConfiguration : ILegacyObjectReflectorConfiguration {
     public LegacyObjectReflectorConfiguration(Type[] typesToIntrospect,
                                               Type[] services,
+                                              Type[] valueHolderTypes,
                                               bool concurrencyChecking = true) {
         TypesToIntrospect = typesToIntrospect;
         Services = services;
+        ValueHolderTypes = valueHolderTypes;
         IgnoreCase = true;
         ConcurrencyChecking = concurrencyChecking;
 
@@ -56,6 +58,7 @@ public class LegacyObjectReflectorConfiguration : ILegacyObjectReflectorConfigur
     #region ILegacyObjectReflectorConfiguration Members
 
     public Type[] TypesToIntrospect { get; }
+    public Type[] ValueHolderTypes { get; }
     public bool IgnoreCase { get; }
     public bool ConcurrencyChecking { get; }
     public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();

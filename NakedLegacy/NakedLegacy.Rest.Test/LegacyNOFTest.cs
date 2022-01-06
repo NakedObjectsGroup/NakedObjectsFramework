@@ -19,6 +19,7 @@ using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
 using NakedLegacy.Reflector.Extensions;
 using NakedLegacy.Rest.Test.Data;
+using NakedLegacy.Types;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -47,6 +48,17 @@ public class LegacyNOFTest : AcceptanceTestCase {
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
 
+
+    protected Type[] LegacyValueHolders { get; } = {
+        typeof(TextString),
+        typeof(Money),
+        typeof(Logical),
+        typeof(MultiLineTextString),
+        typeof(WholeNumber),
+        typeof(NODate),
+        typeof(TimeStamp)
+    };
+
     protected override Type[] ObjectTypes { get; } = {
         typeof(ClassWithString),
         typeof(ClassWithLegacyInterface),
@@ -63,6 +75,7 @@ public class LegacyNOFTest : AcceptanceTestCase {
         options => {
             options.DomainModelTypes = LegacyTypes;
             options.DomainModelServices = LegacyServices;
+            options.ValueHolderTypes = LegacyValueHolders;
             options.NoValidate = true;
         };
 
