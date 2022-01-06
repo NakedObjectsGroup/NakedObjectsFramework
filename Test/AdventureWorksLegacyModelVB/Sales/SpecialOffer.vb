@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SpecialOffer
+	Partial Public Class SpecialOffer
+ Implements ITitledObject
 
 		''<Hidden>
 		Public Property SpecialOfferID() As Integer
@@ -177,7 +178,7 @@
 		''<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(Description)
 		End Function
 	End Class

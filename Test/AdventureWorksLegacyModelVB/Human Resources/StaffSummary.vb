@@ -3,7 +3,8 @@
 Namespace AW.Types
 
 	'<ViewModel(GetType(StaffSummary_Functions))>
-	Partial Public Class StaffSummary
+	Partial Public Class StaffSummary
+ Implements ITitledObject
 		'<MemberOrder(1)>
 		Public Property Female() As Integer
 
@@ -17,7 +18,7 @@ Namespace AW.Types
 			End Get
 		End Property
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title("Staff Summary")
 		End Function
 	End Class

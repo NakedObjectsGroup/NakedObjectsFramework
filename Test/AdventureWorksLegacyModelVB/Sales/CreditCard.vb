@@ -2,7 +2,8 @@
 
 Namespace AW.Types
 
-	Partial Public Class CreditCard
+	Partial Public Class CreditCard
+ Implements ITitledObject
 		''<Hidden>
 		Public Property CreditCardID() As Integer
 
@@ -59,7 +60,7 @@ Namespace AW.Types
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title("TODO - Title") 'CreditCard_Functions.ObfuscatedNumber(Me)
 		End Function
 	End Class

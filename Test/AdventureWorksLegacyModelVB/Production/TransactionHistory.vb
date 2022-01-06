@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class TransactionHistory
+	Partial Public Class TransactionHistory
+ Implements ITitledObject
 
 		Public Property TransactionID() As Integer
 
@@ -115,7 +116,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title($"TransactionHistory: {TransactionID}")
         End Function
     End Class

@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class PurchaseOrderHeader
+	Partial Public Class PurchaseOrderHeader
+ Implements ITitledObject
 
 		''<Hidden>
 		Public Property PurchaseOrderID() As Integer
@@ -226,7 +227,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"PO from {Vendor}, {OrderDate}")
 		End Function
 

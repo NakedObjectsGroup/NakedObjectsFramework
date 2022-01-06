@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SalesTerritoryHistory
+	Partial Public Class SalesTerritoryHistory
+ Implements ITitledObject
 		'
 		'<Hidden>
 		Public Property BusinessEntityID() As Integer
@@ -78,7 +79,7 @@
 		''<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"{SalesPerson} {SalesTerritory}")
 		End Function
 	End Class

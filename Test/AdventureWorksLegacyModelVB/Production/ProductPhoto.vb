@@ -2,7 +2,8 @@
 
 Namespace AW.Types
 
-	Partial Public Class ProductPhoto
+	Partial Public Class ProductPhoto
+ Implements ITitledObject
 
 		Public Property ProductPhotoID As Integer
 
@@ -81,7 +82,7 @@ Namespace AW.Types
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title("Product Photo: {ProductPhotoID}")
 		End Function
 	End Class

@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class ProductModelProductDescriptionCulture
+	Partial Public Class ProductModelProductDescriptionCulture
+ Implements ITitledObject
 
 		Public Property ProductModelID() As Integer
 
@@ -40,7 +41,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"ProductModelProductDescriptionCulture: {ProductModelID}-{ProductDescriptionID}-{CultureID}")
 		End Function
 	End Class

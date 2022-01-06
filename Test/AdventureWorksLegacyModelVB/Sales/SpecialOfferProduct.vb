@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SpecialOfferProduct
+	Partial Public Class SpecialOfferProduct
+ Implements ITitledObject
 		''<Hidden>
 		Public Property SpecialOfferID() As Integer
 
@@ -38,7 +39,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"SpecialOfferProduct: {SpecialOfferID}-{ProductID}")
 		End Function
 	End Class

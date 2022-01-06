@@ -2,7 +2,8 @@
 
 Namespace AW.Types
 
-	Partial Public Class Customer
+	Partial Public Class Customer
+ Implements ITitledObject
 		''<Hidden>
 		Public Property CustomerID() As Integer
 
@@ -40,7 +41,7 @@ Namespace AW.Types
 		'<Hidden>
 		Public Property CustomerRowguid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"{AccountNumber} {(If(Store Is Nothing, Person, Store))}")
 		End Function
 

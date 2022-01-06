@@ -2,6 +2,7 @@
 
 	Partial Public Class Person
 		Inherits BusinessEntity
+		Implements ITitledObject
 
 #Region "Name fields"
 #Region "NameStyle"
@@ -264,7 +265,7 @@
 
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(If(mappedNameStyle, $"{LastName} {FirstName}", $"{FirstName} {LastName}"))
 		End Function
 	End Class

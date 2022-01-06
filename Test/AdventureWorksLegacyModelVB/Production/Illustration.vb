@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class Illustration
+	Partial Public Class Illustration
+ Implements ITitledObject
 		Public Property IllustrationID() As Integer
 
 #Region "Diagram"
@@ -63,7 +64,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title($"Illustration: {IllustrationID}")
         End Function
     End Class

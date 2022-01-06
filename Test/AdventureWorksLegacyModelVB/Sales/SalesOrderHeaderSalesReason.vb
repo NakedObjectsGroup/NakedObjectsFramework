@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
     '<Named("Reason")>
-    Partial Public Class SalesOrderHeaderSalesReason
+    Partial Public Class SalesOrderHeaderSalesReason
+ Implements ITitledObject
         ''<Hidden>
         Public Property SalesOrderID() As Integer
 
@@ -31,7 +32,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title($"SalesOrderHeaderSalesReason: {SalesOrderID}-{SalesReasonID}")
         End Function
     End Class

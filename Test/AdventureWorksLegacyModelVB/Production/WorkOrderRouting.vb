@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class WorkOrderRouting
+	Partial Public Class WorkOrderRouting
+ Implements ITitledObject
 
 		Public Property WorkOrderID() As Integer
 
@@ -190,7 +191,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(Location)
 		End Function
 	End Class

@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class BillOfMaterial
+	Partial Public Class BillOfMaterial
+ Implements ITitledObject
 
 		Public Property BillOfMaterialID() As Integer
 
@@ -140,7 +141,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"BillOfMaterial: {BillOfMaterialID}")
 		End Function
 	End Class

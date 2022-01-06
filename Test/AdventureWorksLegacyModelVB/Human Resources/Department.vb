@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
     '<Bounded>
-    Partial Public Class Department
+    Partial Public Class Department
+ Implements ITitledObject
 
         Public Property DepartmentID As Short  'Not visible on UI
 
@@ -57,7 +58,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title(Name)
         End Function
     End Class

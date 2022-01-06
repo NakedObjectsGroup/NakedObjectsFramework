@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class ProductListPriceHistory
+	Partial Public Class ProductListPriceHistory
+ Implements ITitledObject
 
         Public Property ProductID() As Integer
 
@@ -88,7 +89,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title($"ProductListPriceHistory: {ProductID}")
         End Function
     End Class

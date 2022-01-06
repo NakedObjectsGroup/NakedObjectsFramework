@@ -2,7 +2,8 @@
 
 Namespace AW.Types
 
-    Partial Public Class Product
+    Partial Public Class Product
+ Implements ITitledObject
 
 #Region "Visible properties"
 #Region "Name"
@@ -559,7 +560,7 @@ Namespace AW.Types
 
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title(Name)
         End Function
 

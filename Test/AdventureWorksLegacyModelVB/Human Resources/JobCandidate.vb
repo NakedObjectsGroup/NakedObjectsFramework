@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class JobCandidate
+	Partial Public Class JobCandidate
+ Implements ITitledObject
 
 		Public Property JobCandidateID() As Integer
 
@@ -49,7 +50,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title("Job Candidate ")
 		End Function
 	End Class

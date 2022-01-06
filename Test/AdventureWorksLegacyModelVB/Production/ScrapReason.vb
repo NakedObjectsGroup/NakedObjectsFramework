@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
 	'<Bounded>
-	Partial Public Class ScrapReason
+	Partial Public Class ScrapReason
+ Implements ITitledObject
 
 		Public Property ScrapReasonID() As Short
 
@@ -45,7 +46,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(Name)
 		End Function
 	End Class

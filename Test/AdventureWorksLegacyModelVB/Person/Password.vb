@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class Password
+	Partial Public Class Password
+ Implements ITitledObject
 
 		Public Property BusinessEntityID() As Integer
 
@@ -30,7 +31,7 @@
 
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title("Password")
 		End Function
 

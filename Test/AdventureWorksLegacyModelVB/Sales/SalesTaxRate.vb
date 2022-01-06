@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SalesTaxRate
+	Partial Public Class SalesTaxRate
+ Implements ITitledObject
         '<Hidden>
         Public Property SalesTaxRateID() As Integer
 
@@ -74,7 +75,7 @@
 
         Public Property RowGuid() As Guid
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title($"Sales Tax Rate for {StateProvince}")
         End Function
     End Class
