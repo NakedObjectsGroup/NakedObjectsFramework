@@ -42,7 +42,8 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithTimeStamp),
         typeof(ClassWithWholeNumber),
         typeof(ClassWithLogical),
-        typeof(ClassWithMoney)
+        typeof(ClassWithMoney),
+        typeof(ClassWithReferenceProperty)
     };
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
@@ -153,8 +154,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    
-
     public void TestGetTextStringProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithTextString>(), "1", nameof(ClassWithTextString.Name));
@@ -169,8 +168,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-
-    
     public void TestInvokeUpdateAndPersistObjectWithTextString() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Ted") } } };
@@ -203,8 +200,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-
-    
     public void TestInvokeUpdateAndPersistObjectWithInternalCollection() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Bill") } } };
@@ -265,7 +260,6 @@ public class LegacyTest : AcceptanceTestCase {
     //}
 
     [Test]
-    
     public void TestGetObjectWithField() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
 
@@ -295,8 +289,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-
-    
     public void TestNOFToLegacy() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithString>(), "1");
@@ -425,7 +417,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    
     public void TestGetLegacyObjectWithMenu() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");
@@ -453,7 +444,6 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
     }
 
-    
     [Test]
     [Ignore("fix locale")]
     public void TestGetObjectWithDate() {
@@ -472,8 +462,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-
-    
     public void TestGetDateProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.Date));
@@ -488,8 +476,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    
-    
     public void TestInvokeUpdateAndPersistObjectWithDate() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newDate", new ScalarValue(new DateTime(1998, 7, 6)) } } };
@@ -507,7 +493,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    
     public void TestGetObjectWithTimeStamp() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithTimeStamp>(), "1");
@@ -524,8 +509,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    
-
     public void TestGetTimeStampProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithTimeStamp>(), "1", nameof(ClassWithTimeStamp.TimeStamp));
@@ -540,8 +523,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-
-    
     public void TestInvokeUpdateAndPersistObjectWithTimestamp() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newTimeStamp", new ScalarValue(new DateTime(1998, 7, 6)) } } };
@@ -576,8 +557,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    
-
     public void TestGetWholeNumberProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.WholeNumber));
@@ -592,8 +571,6 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    
-
     public void TestInvokeUpdateAndPersistObjectWithWholeNumber() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newWholeNumber", new ScalarValue(66) } } };
@@ -609,8 +586,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithLogical()
-    {
+    public void TestGetObjectWithLogical() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithLogical>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -626,10 +602,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-
-
-    public void TestGetLogicalProperty()
-    {
+    public void TestGetLogicalProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithLogical>(), "1", nameof(ClassWithLogical.Logical));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -643,10 +616,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-
-
-    public void TestInvokeUpdateAndPersistObjectWithLogical()
-    {
+    public void TestInvokeUpdateAndPersistObjectWithLogical() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newLogical", new ScalarValue(false) } } };
 
@@ -661,8 +631,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithMoney()
-    {
+    public void TestGetObjectWithMoney() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMoney>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -678,10 +647,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-
-
-    public void TestGetMoneyProperty()
-    {
+    public void TestGetMoneyProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithMoney>(), "1", nameof(ClassWithMoney.Money));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -695,10 +661,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-
-
-    public void TestInvokeUpdateAndPersistObjectWithMoney()
-    {
+    public void TestInvokeUpdateAndPersistObjectWithMoney() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newMoney", new ScalarValue(66) } } };
 
@@ -712,4 +675,33 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("66", resultObj["members"]["Money"]["value"].ToString());
     }
 
+    [Test]
+    public void TestGetObjectWithReferenceProperty() {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithReferenceProperty>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["ReferenceProperty"]);
+        Assert.IsNotNull(parsedResult["members"]["actionUpdateReferenceProperty"]);
+
+        Assert.AreEqual("Untitled Class With Reference Property", parsedResult["title"].ToString());
+    }
+
+    [Test]
+    public void TestGetReferencePropertyProperty() {
+        var api = Api();
+        var result = api.GetProperty(FullName<ClassWithReferenceProperty>(), "1", nameof(ClassWithReferenceProperty.ReferenceProperty));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(nameof(ClassWithReferenceProperty.ReferenceProperty), parsedResult["id"].ToString());
+        Assert.AreEqual("Fred", parsedResult["value"]["title"].ToString());
+        Assert.AreEqual(@"http://localhost/objects/NakedLegacy.Rest.Test.Data.ClassWithTextString/1", parsedResult["value"]["href"].ToString());
+        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", parsedResult["extensions"]["returnType"].ToString());
+    }
 }

@@ -110,6 +110,28 @@ public class ClassWithLinkToNOFClass {
     public virtual ClassWithString LinkToNOFClass { get; set; }
 }
 
+public class ClassWithReferenceProperty {
+    [Key]
+    public int Id { get; init; }
+
+    public virtual ClassWithTextString ReferenceProperty { get; set; }
+
+    public ClassWithReferenceProperty actionUpdateReferenceProperty(ClassWithTextString newReferenceProperty) {
+        ReferenceProperty = newReferenceProperty;
+        return this;
+    }
+
+    public void AboutActionUpdateReferenceProperty(ActionAbout actionAbout, ClassWithTextString newReferenceProperty) {
+        if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
+            actionAbout.Visible = true;
+        }
+
+        if (actionAbout.TypeCode is AboutTypeCodes.Usable) {
+            actionAbout.Usable = true;
+        }
+    }
+}
+
 public class LegacyClassWithInterface : IRoleInterface {
     [Key]
     public int Id { get; init; }

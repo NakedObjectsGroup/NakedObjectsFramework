@@ -41,9 +41,10 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<ClassWithDate> ClassWithDates { get; set; }
     public DbSet<ClassWithDate> ClassWithTimeStamps { get; set; }
     public DbSet<ClassWithWholeNumber> ClassWithWholeNumbers { get; set; }
-
     public DbSet<ClassWithLogical> ClassWithLogicals { get; set; }
     public DbSet<ClassWithMoney> ClassWithMoneys { get; set; }
+
+    public DbSet<ClassWithReferenceProperty> ClassWithReferenceProperties { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
@@ -69,14 +70,13 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithWholeNumber>().Ignore(t => t.WholeNumber);
         modelBuilder.Entity<ClassWithWholeNumber>().Property("number").HasColumnName("Number");
     }
-    private static void MapClassWithLogical(ModelBuilder modelBuilder)
-    {
+
+    private static void MapClassWithLogical(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithLogical>().Ignore(t => t.Logical);
         modelBuilder.Entity<ClassWithLogical>().Property("boolean").HasColumnName("Boolean");
     }
 
-    private static void MapClassWithMoney(ModelBuilder modelBuilder)
-    {
+    private static void MapClassWithMoney(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithMoney>().Ignore(t => t.Money);
         modelBuilder.Entity<ClassWithMoney>().Property("amount").HasColumnName("Amount");
     }
@@ -132,6 +132,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithWholeNumber>().HasData(new ClassWithWholeNumber { Id = 1, number = 10 });
         modelBuilder.Entity<ClassWithLogical>().HasData(new ClassWithLogical { Id = 1, boolean = true });
         modelBuilder.Entity<ClassWithMoney>().HasData(new ClassWithMoney { Id = 1, amount = 10.00M });
+        modelBuilder.Entity<ClassWithReferenceProperty>().HasData(new { Id = 1, ReferencePropertyId = 1 });
     }
 }
 
