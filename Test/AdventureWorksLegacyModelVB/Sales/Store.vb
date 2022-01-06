@@ -4,6 +4,7 @@ Namespace AW.Types
 
 	Partial Public Class Store
 		Inherits BusinessEntity
+		Implements ITitledObject
 
 #Region "Name"
 		Public mappedName As String
@@ -76,7 +77,7 @@ Namespace AW.Types
 		''<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(Name)
 		End Function
 	End Class

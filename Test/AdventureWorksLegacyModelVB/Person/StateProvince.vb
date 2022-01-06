@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
 	'<Bounded>
-	Partial Public Class StateProvince
+	Partial Public Class StateProvince
+ Implements ITitledObject
 
 		Public Property StateProvinceID() As Integer
 
@@ -97,7 +98,7 @@
 
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(Name)
 		End Function
 	End Class

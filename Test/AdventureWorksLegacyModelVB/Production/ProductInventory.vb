@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class ProductInventory
+	Partial Public Class ProductInventory
+ Implements ITitledObject
 
 		Public Property ProductID() As Integer
 
@@ -96,7 +97,7 @@
 
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"{Quantity} in {Location} - {Shelf}")
 		End Function
 	End Class

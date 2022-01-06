@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
 	'<Named("Address")>
-	Partial Public Class BusinessEntityAddress
+	Partial Public Class BusinessEntityAddress
+ Implements ITitledObject
 
 		Public Property BusinessEntityID() As Integer
 
@@ -40,7 +41,7 @@
 
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"{AddressType}: {Address}")
 		End Function
 	End Class

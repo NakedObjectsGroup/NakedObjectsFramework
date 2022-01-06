@@ -1,7 +1,8 @@
 ﻿
 Namespace AW.Types
 
-    Partial Public Class ProductDescription
+    Partial Public Class ProductDescription
+ Implements ITitledObject
 
         Public Property ProductDescriptionID() As Integer
 
@@ -47,7 +48,7 @@ Namespace AW.Types
 
         Public Property RowGuid() As Guid
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title(Description)
         End Function
     End Class

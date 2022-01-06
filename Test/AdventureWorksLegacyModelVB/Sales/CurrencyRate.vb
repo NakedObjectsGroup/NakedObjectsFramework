@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class CurrencyRate
+	Partial Public Class CurrencyRate
+ Implements ITitledObject
         ''<Hidden>
         Public Property CurrencyRateID() As Integer
 
@@ -96,7 +97,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title(AverageRate)
         End Function
     End Class

@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class WorkOrder
+	Partial Public Class WorkOrder
+ Implements ITitledObject
 
 
 		Public Property WorkOrderID() As Integer
@@ -186,7 +187,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"{Product}: {StartDate}")
 		End Function
 	End Class

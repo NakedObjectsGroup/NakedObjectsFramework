@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class CountryRegionCurrency
+	Partial Public Class CountryRegionCurrency
+ Implements ITitledObject
 		Public Property CountryRegionCode() As String = ""
 
 		Public Property CurrencyCode() As String = ""
@@ -29,7 +30,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title($"CountryRegionCurrency: {CountryRegion} {Currency}")
         End Function
     End Class

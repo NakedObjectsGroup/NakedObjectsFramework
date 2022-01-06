@@ -2,6 +2,8 @@
 
     Partial Public Class Employee
 
+        Implements ITitledObject
+
         Public Property BusinessEntityID As Integer 'Not visible on UI
 
         '<MemberOrder(1)>
@@ -307,7 +309,7 @@
 
         Public Property RowGuid() As Guid 'Not visible on UI
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title(PersonDetails)
         End Function
 

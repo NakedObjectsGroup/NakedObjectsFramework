@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class ShoppingCartItem
+	Partial Public Class ShoppingCartItem
+ Implements ITitledObject
 		''<Hidden>
 		Public Property ShoppingCartItemID() As Integer
 
@@ -56,7 +57,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"{Quantity}  x {Product}")
 		End Function
 	End Class

@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SalesOrderDetail
+	Partial Public Class SalesOrderDetail
+ Implements ITitledObject
 
 		'<Hidden>
 		Public Property SalesOrderID() As Integer
@@ -145,7 +146,7 @@
 		''<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"{OrderQty} x {Product}")
 		End Function
 	End Class

@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class EmployeeDepartmentHistory
+	Partial Public Class EmployeeDepartmentHistory
+ Implements ITitledObject
 
 		Public Property EmployeeID() As Integer
 
@@ -78,7 +79,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title($"{Department} {StartDate.ToString("d")}")
 		End Function
 	End Class

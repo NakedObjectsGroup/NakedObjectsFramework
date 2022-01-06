@@ -5,6 +5,8 @@ Namespace AW.Types
 	'TODO
 	'<ViewModel(GetType(CustomerDashboard_Functions))>
 	Partial Public Class CustomerDashboard
+		Implements ITitledObject
+
 		'<Hidden>
 		Public Overridable Property Root() As Customer
 
@@ -17,8 +19,8 @@ Namespace AW.Types
 		'Empty field, not - to test that fields are not editable in a VM
 		Public Property Comments() As String = ""
 
-		Public Overrides Function ToString() As String
-			Return $"{Name} - Dashboard"
+		Public Function Title() As Title Implements ITitledObject.Title
+			Return New Title($"{Name} - Dashboard")
 		End Function
 	End Class
 End Namespace

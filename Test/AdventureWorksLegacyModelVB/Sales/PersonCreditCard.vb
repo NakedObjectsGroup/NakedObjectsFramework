@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class PersonCreditCard
+	Partial Public Class PersonCreditCard
+ Implements ITitledObject
         '<Hidden>
         Public Property PersonID() As Integer
 
@@ -30,7 +31,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title($"PersonCreditCard: {PersonID}-{CreditCardID}")
         End Function
     End Class

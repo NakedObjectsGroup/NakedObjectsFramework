@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class ProductModelIllustration
+	Partial Public Class ProductModelIllustration
+ Implements ITitledObject
 
         Public Property ProductModelID() As Integer
 
@@ -29,7 +30,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title($"ProductModelIllustration: {ProductModelID}-{IllustrationID}")
         End Function
     End Class

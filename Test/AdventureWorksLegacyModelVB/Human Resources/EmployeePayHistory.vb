@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class EmployeePayHistory
+	Partial Public Class EmployeePayHistory
+ Implements ITitledObject
 
 		Public Property EmployeeID() As Integer
 
@@ -83,7 +84,7 @@
         End Sub
 #End Region
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title($"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}")
         End Function
     End Class

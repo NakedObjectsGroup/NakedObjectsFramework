@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-    Partial Public Class Vendor
+    Partial Public Class Vendor
+ Implements ITitledObject
 
         Public Shared Function FieldOrder() As String
             Return "AccountNumber, Name, CreditRating, PreferredVendorStatus, " +
@@ -176,7 +177,7 @@
         Public Property BusinessEntityID() As Integer
 
 
-        Public Function Title() As Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title(Name)
         End Function
     End Class

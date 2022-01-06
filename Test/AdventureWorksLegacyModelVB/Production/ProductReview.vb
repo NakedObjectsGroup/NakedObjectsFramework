@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class ProductReview
+	Partial Public Class ProductReview
+ Implements ITitledObject
 
 		Public Property ProductReviewID() As Integer
 
@@ -139,7 +140,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title("*****".Substring(0, mappedRating))
 		End Function
 	End Class

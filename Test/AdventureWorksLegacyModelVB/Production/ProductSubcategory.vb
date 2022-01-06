@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
 	'<Bounded>
-	Partial Public Class ProductSubcategory
+	Partial Public Class ProductSubcategory
+ Implements ITitledObject
 
 		Public Property ProductSubcategoryID() As Integer
 
@@ -51,7 +52,7 @@
 
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(Name)
 		End Function
 	End Class

@@ -1,6 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SalesPerson
+	Partial Public Class SalesPerson
+ Implements ITitledObject
 
 		''<Hidden>
 		Public Property BusinessEntityID() As Integer
@@ -172,7 +173,7 @@
 		''<Hidden>
 		Public Property RowGuid() As Guid
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(EmployeeDetails)
 		End Function
 	End Class

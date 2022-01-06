@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
 	'<Bounded>
-	Partial Public Class Shift
+	Partial Public Class Shift
+ Implements ITitledObject
 
 		Public Property ShiftID() As Byte
 
@@ -51,7 +52,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(Name)
 		End Function
 	End Class
