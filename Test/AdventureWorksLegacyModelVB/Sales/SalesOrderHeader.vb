@@ -1,8 +1,9 @@
 ﻿Namespace AW.Types
 
 	'<Named("Sales Order")>
-	Partial Public Class SalesOrderHeader
- Implements ITitledObject
+	Partial Public Class SalesOrderHeader
+
+		Implements ITitledObject
 
 		''<Hidden>
 		Public Property SalesOrderID() As Integer
@@ -472,7 +473,7 @@
 		End Function
 
 		Public Overrides Function ToString() As String
-			Return "Title TODO"
+			Return mappedSalesOrderNumber
 		End Function
 
 	End Class

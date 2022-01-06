@@ -59,6 +59,14 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
+        public Property AssertCheckboxHasValue(bool val)
+        {
+            var box = element.FindElement(By.CssSelector("input"));
+            Assert.AreEqual("checkbox", box.GetAttribute("type"));
+            Assert.AreEqual(val? "x" : "", box.Text);
+            return this;
+       }
+
         public Dialog ClickOnEditIcon()
         {
             var editIcon = element.FindElement(By.CssSelector(".icon.edit"));

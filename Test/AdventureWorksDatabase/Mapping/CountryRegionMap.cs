@@ -10,7 +10,7 @@ namespace AdventureWorksModel
         {
             builder.HasKey(t => t.mappedCountryRegionCode);
 
-            //builder.Ignore(t => t.CountryRegionCode).Ignore(t => t.Name);
+            builder.Ignore(t => t.CountryRegionCode).Ignore(t => t.Name);
                   
 
             // Table & Column Mappings
