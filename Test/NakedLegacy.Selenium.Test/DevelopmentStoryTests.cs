@@ -44,6 +44,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void AllWorkingStories()
         {
             ViewPersistentObjectsAndProperties();
+            ReferencePropertiesAndCollections();
+            Titles();
         }
 
         #region Story 1: ViewPersistentObjectsAndProperties
@@ -100,15 +102,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void BooleanProperty()
         {
-            helper.GotoUrlDirectly(prefix + "StateProvince--14");
-            helper.GetObjectView().GetProperty("Is Only State Province Flag");
-        }
-
-        //[TestMethod]
-        public void TitleConstructedFromValueFields()
-        {
-            helper.GotoUrlDirectly(prefix + "Person--2284");
-            helper.GetObjectView().AssertTitleIs("Lynn Tsoflias");
+            helper.GotoUrlDirectly(prefix + "Person--14284");
+            var flag = helper.GetObjectView().GetProperty("Name Style");
+            flag.AssertCheckboxHasValue(false);
         }
         #endregion
 
@@ -124,27 +120,47 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void ReferenceProperty()
         {
-            helper.GotoUrlViaHome(prefix + "Employee--66");
-            helper.GetObjectView().GetProperty("Person Details").GetReference().AssertTitleIs("Lynn Tsoflias");
-        }
-
-        //[TestMethod]
-        public void TitleConstructedFromReferenceFields()
-        {
-            AccessInstanceWithTitle("Employee--67", "Jay Adams");
+            helper.GotoUrlDirectly(prefix + "Employee--66");
+            helper.GetObjectView().GetProperty("Person Details").GetReference().AssertTitleIs("Karan Khanna");
         }
 
         //[TestMethod]
         public void InternalCollection()
         {
-            var obj = AccessInstanceWithTitle("SalesOrderHeader--52035", "SO52035");
+            helper.GotoUrlDirectly(prefix + "SalesOrderHeader--52035");
+            var obj = helper.GetObjectView().AssertTitleIs("SO52035");
             var coll = obj.GetCollection("Details").AssertDetails("2 Items");
             coll.AssertIsClosed().ClickListView().AssertIsOpenAsList().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
             coll.ClickTableView().AssertIsOpenAsTable().GetRowFromTable(1).AssertColumnValueIs(3,"€32.60");
         }
         #endregion
 
-        #region Story 3: ObjectPresentation & Control
+        #region Story 4: Titles
+        //[TestMethod]
+        public void Titles()
+        {
+            TitleConstructedFromReferenceFields();
+            TitleConstructedFromValueFields();
+        }
+
+        //[TestMethod]
+        public void TitleConstructedFromReferenceFields()
+        {
+            helper.GotoUrlDirectly(prefix + "Employee--67");
+            helper.GetObjectView().AssertTitleIs("Jay Adams");
+        }
+
+        //[TestMethod]
+        public void TitleConstructedFromValueFields()
+        {
+            helper.GotoUrlDirectly(prefix + "Person--2284");
+            helper.GetObjectView().AssertTitleIs("Lynn Tsoflias");
+        }
+        #endregion
+
+
+
+        #region Story x: ObjectPresentation & Control
         //[TestMethod]
         public void ObjectPresentationAndControl()
         {
