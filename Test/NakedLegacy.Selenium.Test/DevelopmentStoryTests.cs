@@ -130,8 +130,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             helper.GotoUrlDirectly(prefix + "SalesOrderHeader--52035");
             var obj = helper.GetObjectView().AssertTitleIs("SO52035");
             var coll = obj.GetCollection("Details").AssertDetails("2 Items");
-            coll.AssertIsClosed().ClickListView().AssertIsOpenAsList().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
-            coll.ClickTableView().AssertIsOpenAsTable().GetRowFromTable(1).AssertColumnValueIs(3,"€32.60");
+            coll.ClickListView().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
+            coll.ClickTableView().GetRowFromTable(1).AssertColumnValueIs(3,"€32.60");
         }
         #endregion
 
