@@ -33,9 +33,9 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithInternalCollection),
         typeof(ClassWithActionAbout),
         typeof(ClassWithFieldAbout),
-        typeof(ClassWithLinkToNOFClass),
-        typeof(ClassWithNOFInternalCollection),
-        typeof(LegacyClassWithInterface),
+        //typeof(ClassWithLinkToNOFClass),
+        //typeof(ClassWithNOFInternalCollection),
+        //typeof(LegacyClassWithInterface),
         typeof(ILegacyRoleInterface),
         typeof(ClassWithMenu),
         typeof(ClassWithDate),
@@ -48,17 +48,19 @@ public class LegacyTest : AcceptanceTestCase {
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
 
-    protected override Type[] ObjectTypes { get; } = {
-        typeof(ClassWithString),
-        typeof(ClassWithLegacyInterface),
-        typeof(IRoleInterface)
-    };
+    //protected override Type[] ObjectTypes { get; } = {
+    //    typeof(ClassWithString),
+    //    typeof(ClassWithLegacyInterface),
+    //    typeof(IRoleInterface)
+    //};
 
-    protected override Type[] Services { get; } = { typeof(SimpleNOService) };
+    //protected override Type[] Services { get; } = { typeof(SimpleNOService) };
 
     protected override bool EnforceProxies => false;
 
     protected override Action<NakedFrameworkOptions> AddNakedFunctions => _ => { };
+
+    protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
 
     protected Action<NakedLegacyOptions> LegacyOptions =>
         options => {
@@ -73,8 +75,8 @@ public class LegacyTest : AcceptanceTestCase {
         builder => {
             AddCoreOptions(builder);
             AddPersistor(builder);
-            AddNakedObjects(builder);
-            AddNakedFunctions(builder);
+            //AddNakedObjects(builder);
+            //AddNakedFunctions(builder);
             AddRestfulObjects(builder);
             AddLegacy(builder);
         };
@@ -199,21 +201,21 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("collection", parsedResult["members"]["TestCollection"]["memberType"].ToString());
     }
 
-    [Test]
-    public void TestInvokeUpdateAndPersistObjectWithInternalCollection() {
-        var api = Api().AsPost();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Bill") } } };
+    //[Test]
+    //public void TestInvokeUpdateAndPersistObjectWithInternalCollection() {
+    //    var api = Api().AsPost();
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Bill") } } };
 
-        var result = api.PostInvoke(FullName<ClassWithInternalCollection>(), "2", nameof(ClassWithInternalCollection.ActionUpdateTestCollection), map);
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //    var result = api.PostInvoke(FullName<ClassWithInternalCollection>(), "2", nameof(ClassWithInternalCollection.ActionUpdateTestCollection), map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        var resultObj = parsedResult["result"];
+    //    var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("1", resultObj["members"]["TestCollection"]["size"].ToString());
-        Assert.AreEqual("collection", resultObj["members"]["TestCollection"]["memberType"].ToString());
-    }
+    //    Assert.AreEqual("1", resultObj["members"]["TestCollection"]["size"].ToString());
+    //    Assert.AreEqual("collection", resultObj["members"]["TestCollection"]["memberType"].ToString());
+    //}
 
     [Test]
     public void TestGetObjectWithAction() {
@@ -288,133 +290,133 @@ public class LegacyTest : AcceptanceTestCase {
         //Assert.IsNotNull(parsedResult["members"]["Id"]);
     }
 
-    [Test]
-    public void TestNOFToLegacy() {
-        var api = Api();
-        var result = api.GetObject(FullName<ClassWithString>(), "1");
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //[Test]
+    //public void TestNOFToLegacy() {
+    //    var api = Api();
+    //    var result = api.GetObject(FullName<ClassWithString>(), "1");
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
-        Assert.IsNotNull(parsedResult["members"]["CollectionOfLegacyClass"]);
+    //    Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
+    //    Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
+    //    Assert.IsNotNull(parsedResult["members"]["CollectionOfLegacyClass"]);
 
-        Assert.AreEqual("Ted", parsedResult["members"]["LinkToLegacyClass"]["value"]["title"].ToString());
-    }
+    //    Assert.AreEqual("Ted", parsedResult["members"]["LinkToLegacyClass"]["value"]["title"].ToString());
+    //}
 
-    [Test]
-    public void TestNOFToLegacyCollection() {
-        var api = Api();
-        var result = api.GetObject(FullName<ClassWithString>(), "2");
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //[Test]
+    //public void TestNOFToLegacyCollection() {
+    //    var api = Api();
+    //    var result = api.GetObject(FullName<ClassWithString>(), "2");
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
-        Assert.IsNotNull(parsedResult["members"]["CollectionOfLegacyClass"]);
+    //    Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
+    //    Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
+    //    Assert.IsNotNull(parsedResult["members"]["CollectionOfLegacyClass"]);
 
-        Assert.AreEqual("2", parsedResult["members"]["CollectionOfLegacyClass"]["size"].ToString());
-    }
+    //    Assert.AreEqual("2", parsedResult["members"]["CollectionOfLegacyClass"]["size"].ToString());
+    //}
 
-    [Test]
-    public void TestLegacyToNOF() {
-        var api = Api();
-        var result = api.GetObject(FullName<ClassWithLinkToNOFClass>(), "1");
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //[Test]
+    //public void TestLegacyToNOF() {
+    //    var api = Api();
+    //    var result = api.GetObject(FullName<ClassWithLinkToNOFClass>(), "1");
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["LinkToNOFClass"]);
+    //    Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+    //    Assert.IsNotNull(parsedResult["members"]["LinkToNOFClass"]);
 
-        Assert.AreEqual("Untitled Class With String", parsedResult["members"]["LinkToNOFClass"]["value"]["title"].ToString());
-    }
+    //    Assert.AreEqual("Untitled Class With String", parsedResult["members"]["LinkToNOFClass"]["value"]["title"].ToString());
+    //}
 
-    [Test]
-    public void TestLegacyToNOFCollection() {
-        var api = Api();
-        var result = api.GetObject(FullName<ClassWithNOFInternalCollection>(), "1");
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //[Test]
+    //public void TestLegacyToNOFCollection() {
+    //    var api = Api();
+    //    var result = api.GetObject(FullName<ClassWithNOFInternalCollection>(), "1");
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["CollectionOfNOFClass"]);
+    //    Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+    //    Assert.IsNotNull(parsedResult["members"]["CollectionOfNOFClass"]);
 
-        Assert.AreEqual("2", parsedResult["members"]["CollectionOfNOFClass"]["size"].ToString());
-    }
+    //    Assert.AreEqual("2", parsedResult["members"]["CollectionOfNOFClass"]["size"].ToString());
+    //}
 
-    [Test]
-    public void TestGetObjectWithLegacyInterface() {
-        ClassWithFieldAbout.TestInvisibleFlag = false;
+    //[Test]
+    //public void TestGetObjectWithLegacyInterface() {
+    //    ClassWithFieldAbout.TestInvisibleFlag = false;
 
-        var api = Api();
-        var result = api.GetObject(FullName<ClassWithLegacyInterface>(), "10");
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //    var api = Api();
+    //    var result = api.GetObject(FullName<ClassWithLegacyInterface>(), "10");
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["Id"]);
-    }
+    //    Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+    //    Assert.IsNotNull(parsedResult["members"]["Id"]);
+    //}
 
-    [Test]
-    public void TestGetObjectWithLegacyInterfaceConfirmSubtype() {
-        ClassWithFieldAbout.TestInvisibleFlag = false;
+    //[Test]
+    //public void TestGetObjectWithLegacyInterfaceConfirmSubtype() {
+    //    ClassWithFieldAbout.TestInvisibleFlag = false;
 
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "supertype", new ScalarValue(FullName<ILegacyRoleInterface>()) } } };
-        var api = Api();
-        var result = api.GetInvokeTypeActions(FullName<ClassWithLegacyInterface>(), "isSubtypeOf", map);
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "supertype", new ScalarValue(FullName<ILegacyRoleInterface>()) } } };
+    //    var api = Api();
+    //    var result = api.GetInvokeTypeActions(FullName<ClassWithLegacyInterface>(), "isSubtypeOf", map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("True", parsedResult["value"].ToString());
-    }
+    //    Assert.AreEqual("True", parsedResult["value"].ToString());
+    //}
 
-    [Test]
-    public void TestGetLegacyObjectWithInterface() {
-        ClassWithFieldAbout.TestInvisibleFlag = false;
+    //[Test]
+    //public void TestGetLegacyObjectWithInterface() {
+    //    ClassWithFieldAbout.TestInvisibleFlag = false;
 
-        var api = Api();
-        var result = api.GetObject(FullName<LegacyClassWithInterface>(), "10");
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //    var api = Api();
+    //    var result = api.GetObject(FullName<LegacyClassWithInterface>(), "10");
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-    }
+    //    Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+    //    Assert.IsNull(parsedResult["members"]["Id"]);
+    //}
 
-    [Test]
-    public void TestGetLegacyObjectWithContributedAction() {
-        ClassWithFieldAbout.TestInvisibleFlag = false;
+    //[Test]
+    //public void TestGetLegacyObjectWithContributedAction() {
+    //    ClassWithFieldAbout.TestInvisibleFlag = false;
 
-        var api = Api();
-        var result = api.GetObject(FullName<LegacyClassWithInterface>(), "10");
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //    var api = Api();
+    //    var result = api.GetObject(FullName<LegacyClassWithInterface>(), "10");
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["ContributedAction"]);
-    }
+    //    Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+    //    Assert.IsNotNull(parsedResult["members"]["ContributedAction"]);
+    //}
 
-    [Test]
-    public void TestGetLegacyObjectWithInterfaceConfirmSubtype() {
-        ClassWithFieldAbout.TestInvisibleFlag = false;
+    //[Test]
+    //public void TestGetLegacyObjectWithInterfaceConfirmSubtype() {
+    //    ClassWithFieldAbout.TestInvisibleFlag = false;
 
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "supertype", new ScalarValue(FullName<IRoleInterface>()) } } };
-        var api = Api();
-        var result = api.GetInvokeTypeActions(FullName<LegacyClassWithInterface>(), "isSubtypeOf", map);
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "supertype", new ScalarValue(FullName<IRoleInterface>()) } } };
+    //    var api = Api();
+    //    var result = api.GetInvokeTypeActions(FullName<LegacyClassWithInterface>(), "isSubtypeOf", map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("True", parsedResult["value"].ToString());
-    }
+    //    Assert.AreEqual("True", parsedResult["value"].ToString());
+    //}
 
     [Test]
     public void TestGetLegacyObjectWithMenu() {

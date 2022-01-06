@@ -60,16 +60,16 @@ public class ClassWithInternalCollection {
     }
 }
 
-public class ClassWithNOFInternalCollection {
-    private InternalCollection _testCollection;
+//public class ClassWithNOFInternalCollection {
+//    private InternalCollection _testCollection;
 
-    public virtual ICollection<ClassWithString> _TestCollection { get; } = new List<ClassWithString>();
+//    public virtual ICollection<ClassWithString> _TestCollection { get; } = new List<ClassWithString>();
 
-    [Key]
-    public int Id { get; init; }
+//    [Key]
+//    public int Id { get; init; }
 
-    public InternalCollection CollectionOfNOFClass => _testCollection ??= new InternalCollection<ClassWithString>(_TestCollection);
-}
+//    public InternalCollection CollectionOfNOFClass => _testCollection ??= new InternalCollection<ClassWithString>(_TestCollection);
+//}
 
 public class ClassWithActionAbout {
     public static bool TestInvisibleFlag = false;
@@ -103,12 +103,12 @@ public class ClassWithFieldAbout {
     }
 }
 
-public class ClassWithLinkToNOFClass {
-    [Key]
-    public int Id { get; init; }
+//public class ClassWithLinkToNOFClass {
+//    [Key]
+//    public int Id { get; init; }
 
-    public virtual ClassWithString LinkToNOFClass { get; set; }
-}
+//    public virtual ClassWithString LinkToNOFClass { get; set; }
+//}
 
 public class ClassWithReferenceProperty {
     [Key]
@@ -132,10 +132,10 @@ public class ClassWithReferenceProperty {
     }
 }
 
-public class LegacyClassWithInterface : IRoleInterface {
-    [Key]
-    public int Id { get; init; }
-}
+//public class LegacyClassWithInterface : IRoleInterface {
+//    [Key]
+//    public int Id { get; init; }
+//}
 
 public class ClassWithMenu {
     [Key]
