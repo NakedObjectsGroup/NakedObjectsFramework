@@ -3,24 +3,18 @@
 namespace NakedLegacy.Types; 
 
 public class Title {
-    private readonly StringBuilder stringBuilder;
+    private readonly string text = "";
 
-    public Title() => stringBuilder = new StringBuilder();
+    public Title() { }
 
-    public Title(object text) : this() => stringBuilder.Append(text);
+    public Title(object obj) : this() => text += obj;
 
-    public Title(ITitledObject obj) : this() => stringBuilder.Append(TitleString(obj));
+    public Title(ITitledObject obj) : this() => text += obj.Title().TitleString();
 
-    public Title(ITitledObject obj, string defaultValue) : this() {
-        if (TitleString(obj).Length is 0) {
-            stringBuilder.Append(defaultValue);
-        }
-        else {
-            stringBuilder.Append(obj.Title());
-        }
-    }
+    public Title(ITitledObject obj, string defaultValue) : this() =>
+        text += TitleString().Length is 0 ? defaultValue : obj.Title().ToString();
 
-    public override string ToString() => stringBuilder.ToString();
+    public override string ToString() => text;
 
-    public static string TitleString(ITitledObject obj) => obj?.ToString() ?? "";
+    public string TitleString() => text;
 }
