@@ -19,8 +19,8 @@ namespace AdventureWorksModel
             // Table & Column Mappings
             builder.ToTable("BillOfMaterials", "Production");
             builder.Property(t => t.BillOfMaterialID).HasColumnName("BillOfMaterialsID");
-            builder.Property(t => t.ProductAssemblyID).HasColumnName("ProductAssemblyID");
-            builder.Property(t => t.ComponentID).HasColumnName("ComponentID");
+            builder.Property(t => t.ProductID).HasColumnName("ProductAssemblyID");
+            builder.Property(t => t.Product1ID).HasColumnName("ComponentID");
             builder.Property(t => t.mappedStartDate).HasColumnName("StartDate");
             builder.Property(t => t.mappedEndDate).HasColumnName("EndDate");
             builder.Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
@@ -29,8 +29,8 @@ namespace AdventureWorksModel
             builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
-            builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductAssemblyID);
-            builder.HasOne(t => t.Product1).WithMany().HasForeignKey(t => t.ComponentID);
+            builder.HasOne(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
+            builder.HasOne(t => t.Product1).WithMany().HasForeignKey(t => t.Product1ID);
             builder.HasOne(t => t.UnitMeasure).WithMany().HasForeignKey(t => t.UnitMeasureCode);
         }
     }

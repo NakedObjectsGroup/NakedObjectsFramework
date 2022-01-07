@@ -112,8 +112,27 @@
 			End Select
 		End Sub
 #End Region
+
+#Region "ActualResourceHrs"
+		Friend mappedActualResourceHrs As Decimal?
+		Friend myActualResourceHrs As FloatingPointNumber
+
 		'<MemberOrder(31)>
-		Public Property ActualResourceHrs() As Decimal? 'TODO  need new value type
+		Public ReadOnly Property ActualResourceHrs As FloatingPointNumber
+			Get
+				Return If(myActualResourceHrs, New FloatingPointNumber(mappedActualResourceHrs, Function(v) mappedActualResourceHrs = v))
+			End Get
+		End Property
+
+		Public Sub AboutActualResourceHrs(a As FieldAbout, ActualResourceHrs As FloatingPointNumber)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 #Region "PlannedCost"
 		Public mappedPlannedCost As Decimal

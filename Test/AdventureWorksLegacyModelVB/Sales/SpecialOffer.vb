@@ -28,8 +28,26 @@
 		End Sub
 #End Region
 
+#Region "DiscountPct"
+		Friend mappedDiscountPct As Decimal
+		Friend myDiscountPct As Percentage
+
 		'<MemberOrder(20)>
-		Public Property DiscountPct() As Decimal 'TODO: Percentage ValueHolder
+		Public ReadOnly Property DiscountPct As Percentage
+			Get
+				Return If(myDiscountPct, New Percentage(mappedDiscountPct, Function(v) mappedDiscountPct = v))
+			End Get
+		End Property
+
+		Public Sub AboutDiscountPct(a As FieldAbout, DiscountPct As Percentage)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 #Region "Type"
 		Public mappedType As String

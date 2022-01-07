@@ -65,8 +65,26 @@
 		End Sub
 #End Region
 
+#Region "CommissionPct"
+		Friend mappedCommissionPct As Decimal
+		Friend myCommissionPct As Percentage
+
 		'<MemberOrder(50)>
-		Public Property CommissionPct() As Decimal 'TODO: add Percentage type
+		Public ReadOnly Property CommissionPct As Percentage
+			Get
+				Return If(myCommissionPct, New Percentage(mappedCommissionPct, Function(v) mappedCommissionPct = v))
+			End Get
+		End Property
+
+		Public Sub AboutCommissionPct(a As FieldAbout, CommissionPct As Percentage)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 #Region "SalesYTD"
 		Public mappedSalesYTD As Decimal

@@ -83,7 +83,9 @@ namespace Legacy.Rest.App.Demo {
             typeof(MultiLineTextString),
             typeof(WholeNumber),
             typeof(NODate),
-            typeof(TimeStamp)
+            typeof(TimeStamp),
+            typeof(FloatingPointNumber),
+            typeof(Percentage)
             };
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

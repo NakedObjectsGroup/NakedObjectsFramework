@@ -10,7 +10,7 @@ Namespace AW.Types
 		'<MemberOrder(15)>
 		Public ReadOnly Property CustomerType() As TextString
 			Get
-				Return New TextString("TODO") 'TODO If(Me.IsIndividual(), "Individual", "Store")
+				Return New TextString(If(StoreID, "Store", "Individual"))
 			End Get
 		End Property
 

@@ -51,9 +51,27 @@
 		End Sub
 #End Region
 
-		'TODO: Add Percentage valueholder
-		'<Named("Discount %"), MemberOrder(30), Mask("P")>
-		Public Property UnitPriceDiscount() As Decimal
+#Region "UnitPriceDiscount"
+		Friend mappedUnitPriceDiscount As Decimal
+		Friend myUnitPriceDiscount As Percentage
+
+		'<MemberOrder(30)>
+		Public ReadOnly Property UnitPriceDiscount As Percentage
+			Get
+				Return If(myUnitPriceDiscount, New Percentage(mappedUnitPriceDiscount, Function(v) mappedUnitPriceDiscount = v))
+			End Get
+		End Property
+
+		Public Sub AboutUnitPriceDiscount(a As FieldAbout, UnitPriceDiscount As Percentage)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+					a.Name = "Discount %"
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 #Region "LineTotal"
 		Public mappedLineTotal As Decimal

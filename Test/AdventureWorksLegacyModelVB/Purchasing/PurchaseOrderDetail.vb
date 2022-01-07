@@ -93,19 +93,18 @@
 		End Sub
 #End Region
 
-		'TODO: Need a new decimal valueholder - not Money - 3 fields
 #Region "ReceivedQty"
 		Public mappedReceivedQty As Decimal
-		Friend myReceivedQty As Money
+		Friend myReceivedQty As FloatingPointNumber
 
 		'<MemberOrder(30)>
-		Public ReadOnly Property ReceivedQty As Money
+		Public ReadOnly Property ReceivedQty As FloatingPointNumber
 			Get
-				Return If(myReceivedQty, New Money(mappedReceivedQty, Function(v) mappedReceivedQty = v))
+				Return If(myReceivedQty, New FloatingPointNumber(mappedReceivedQty, Function(v) mappedReceivedQty = v))
 			End Get
 		End Property
 
-		Public Sub AboutReceivedQty(a As FieldAbout, ReceivedQty As Money)
+		Public Sub AboutReceivedQty(a As FieldAbout, ReceivedQty As FloatingPointNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -114,12 +113,46 @@
 			End Select
 		End Sub
 #End Region
+#Region "RejectedQty"
+		Public mappedRejectedQty As Decimal
+		Friend myRejectedQty As FloatingPointNumber
 
-		''<MemberOrder(32), Mask("#")>
-		Public Property RejectedQty() As Decimal
+		'<MemberOrder(32)>
+		Public ReadOnly Property RejectedQty As FloatingPointNumber
+			Get
+				Return If(myRejectedQty, New FloatingPointNumber(mappedRejectedQty, Function(v) mappedRejectedQty = v))
+			End Get
+		End Property
 
-		''<MemberOrder(34), Mask("#")>
-		Public Property StockedQty() As Decimal
+		Public Sub AboutRejectedQty(a As FieldAbout, RejectedQty As FloatingPointNumber)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
+#Region "StockedQty"
+		Public mappedStockedQty As Decimal
+		Friend myStockedQty As FloatingPointNumber
+
+		'<MemberOrder(34)>
+		Public ReadOnly Property StockedQty As FloatingPointNumber
+			Get
+				Return If(myStockedQty, New FloatingPointNumber(mappedStockedQty, Function(v) mappedStockedQty = v))
+			End Get
+		End Property
+
+		Public Sub AboutStockedQty(a As FieldAbout, StockedQty As FloatingPointNumber)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Name
+				Case AboutTypeCodes.Usable
+				Case AboutTypeCodes.Valid
+				Case AboutTypeCodes.Visible
+			End Select
+		End Sub
+#End Region
 
 #Region "ModifiedDate"
 		Public mappedModifiedDate As Date

@@ -26,7 +26,26 @@
         End Sub
 #End Region
 
-        Public Property TaxRate() As Decimal 'TODO: New valueholder
+#Region "TaxRate"
+        Friend mappedTaxRate As Decimal
+        Friend myTaxRate As WholeNumber
+
+        '<MemberOrder(1)>
+        Public ReadOnly Property TaxRate As WholeNumber
+            Get
+                Return If(myTaxRate, New WholeNumber(mappedTaxRate, Function(v) mappedTaxRate = v))
+            End Get
+        End Property
+
+        Public Sub AboutTaxRate(a As FieldAbout, TaxRate As WholeNumber)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+#End Region
 
 #Region "Name"
         Public mappedName As String

@@ -91,16 +91,16 @@
 
 #Region "PerAssemblyQty"
 		Public mappedPerAssemblyQty As Decimal
-		Friend myPerAssemblyQty As Money 'TODO: needs a new value type
+		Friend myPerAssemblyQty As FloatingPointNumber
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property PerAssemblyQty As Money
+		Public ReadOnly Property PerAssemblyQty As FloatingPointNumber
 			Get
-				Return If(myPerAssemblyQty, New Money(mappedPerAssemblyQty, Function(v) mappedPerAssemblyQty = v))
+				Return If(myPerAssemblyQty, New FloatingPointNumber(mappedPerAssemblyQty, Function(v) mappedPerAssemblyQty = v))
 			End Get
 		End Property
 
-		Public Sub AboutPerAssemblyQty(a As FieldAbout, PerAssemblyQty As Money)
+		Public Sub AboutPerAssemblyQty(a As FieldAbout, PerAssemblyQty As FloatingPointNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -110,11 +110,11 @@
 		End Sub
 #End Region
 
-		Public Property ProductAssemblyID() As Integer? 'TODO: name does not match ?
+		Public Property ProductID() As Integer? 'TODO: name does not match ?
 
 		Public Overridable Property Product() As Product
 
-		Public Property ComponentID() As Integer 'TODO: name does not match ?
+		Public Property Product1ID() As Integer 'TODO: name does not match ?
 
 		Public Overridable Property Product1() As Product
 
