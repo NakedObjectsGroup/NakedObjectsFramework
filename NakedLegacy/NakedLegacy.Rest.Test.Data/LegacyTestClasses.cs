@@ -153,7 +153,7 @@ public class ClassWithMenu {
     public ClassWithMenu ActionMethod1() => this;
     public ClassWithMenu actionMethod2() => this;
 
-    private static IContainer Container => ContainerLocator.GetContainer();
+    private static IContainer Container => ThreadLocals.Container;
 
     public static ClassWithTextString ActionMenuAction() => (ClassWithTextString) Container.AllInstances(typeof(ClassWithTextString)).First();
 

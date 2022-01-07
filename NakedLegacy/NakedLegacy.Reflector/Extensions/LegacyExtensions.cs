@@ -56,6 +56,6 @@ public static class LegacyExtensions {
     }
 
     public static void UseLegacy(this IApplicationBuilder app) {
-        ContainerLocator.Initialize(app.ApplicationServices);
+        ThreadLocals.Initialize(app.ApplicationServices);
     }
 }

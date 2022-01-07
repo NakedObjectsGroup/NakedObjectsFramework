@@ -108,7 +108,7 @@ public class LegacyTest : AcceptanceTestCase {
     [SetUp]
     public void SetUp() {
         StartTest();
-        ContainerLocator.Initialize(RootServiceProvider);
+        ThreadLocals.Initialize(RootServiceProvider);
     }
 
     [TearDown]
