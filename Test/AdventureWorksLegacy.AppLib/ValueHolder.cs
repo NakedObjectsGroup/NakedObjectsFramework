@@ -3,7 +3,7 @@ using System;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public abstract class ValueHolder<T> : ITitledObject {
+public abstract class ValueHolder<T> : IValueHolder<T> {
     private T value;
 
     protected ValueHolder() { }
