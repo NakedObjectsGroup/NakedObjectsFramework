@@ -16,13 +16,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.DependencyInjection.Component;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
+using NakedLegacy.Reflector.Component;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
+using NakedLegacy.Types.Container;
+using AdventureWorksLegacy.AppLib;
 
 namespace Legacy.Rest.App.Demo {
     public class Startup {
@@ -96,6 +100,7 @@ namespace Legacy.Rest.App.Demo {
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
+            ThreadLocals.Initialize(app.ApplicationServices, sp => new Container(sp.GetService<INakedFramework>()));
         }
     }
 }

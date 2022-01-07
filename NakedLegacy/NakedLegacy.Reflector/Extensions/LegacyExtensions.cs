@@ -54,8 +54,4 @@ public static class LegacyExtensions {
 
         frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(additionalTypes).ToArray();
     }
-
-    public static void UseLegacy(this IApplicationBuilder app) {
-        ThreadLocals.Initialize(app.ApplicationServices);
-    }
 }
