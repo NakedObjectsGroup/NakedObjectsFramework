@@ -21,7 +21,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
             builder.Property(t => t.mappedSalesQuota).HasColumnName("SalesQuota");
             builder.Property(t => t.mappedBonus).HasColumnName("Bonus");
-            builder.Property(t => t.CommissionPct).HasColumnName("CommissionPct");
+            builder.Property(t => t.mappedCommissionPct).HasColumnName("CommissionPct");
             builder.Property(t => t.mappedSalesYTD).HasColumnName("SalesYTD");
             builder.Property(t => t.mappedSalesLastYear).HasColumnName("SalesLastYear");
             builder.Property(t => t.RowGuid).HasColumnName("rowguid");

@@ -34,7 +34,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.ProductID).HasColumnName("ProductID");
             builder.Property(t => t.SpecialOfferID).HasColumnName("SpecialOfferID");
             builder.Property(t => t.mappedUnitPrice).HasColumnName("UnitPrice");
-            builder.Property(t => t.UnitPriceDiscount).HasColumnName("UnitPriceDiscount");
+            builder.Property(t => t.mappedUnitPriceDiscount).HasColumnName("UnitPriceDiscount");
             builder.Property(t => t.mappedLineTotal).HasColumnName("LineTotal").ValueGeneratedOnAddOrUpdate();
             builder.Property(t => t.RowGuid).HasColumnName("rowguid");
             builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false); 

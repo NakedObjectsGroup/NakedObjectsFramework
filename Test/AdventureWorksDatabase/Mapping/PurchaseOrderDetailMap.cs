@@ -24,8 +24,8 @@ namespace AdventureWorksModel
             builder.Property(t => t.mappedUnitPrice).HasColumnName("UnitPrice");
             builder.Property(t => t.mappedLineTotal).HasColumnName("LineTotal").ValueGeneratedOnAddOrUpdate();
             builder.Property(t => t.mappedReceivedQty).HasColumnName("ReceivedQty");
-            builder.Property(t => t.RejectedQty).HasColumnName("RejectedQty");
-            builder.Property(t => t.StockedQty).HasColumnName("StockedQty").ValueGeneratedOnAddOrUpdate();
+            builder.Property(t => t.mappedRejectedQty).HasColumnName("RejectedQty");
+            builder.Property(t => t.mappedStockedQty).HasColumnName("StockedQty").ValueGeneratedOnAddOrUpdate();
             builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships

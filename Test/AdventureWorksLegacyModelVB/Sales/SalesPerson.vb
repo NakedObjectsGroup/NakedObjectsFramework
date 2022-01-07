@@ -66,7 +66,7 @@
 #End Region
 
 #Region "CommissionPct"
-		Friend mappedCommissionPct As Decimal
+		Public mappedCommissionPct As Decimal
 		Friend myCommissionPct As Percentage
 
 		'<MemberOrder(50)>

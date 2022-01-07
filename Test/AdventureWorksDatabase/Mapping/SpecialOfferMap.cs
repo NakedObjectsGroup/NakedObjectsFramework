@@ -17,7 +17,7 @@ namespace AdventureWorksModel
             builder.ToTable("SpecialOffer", "Sales");
             builder.Property(t => t.SpecialOfferID).HasColumnName("SpecialOfferID");
             builder.Property(t => t.mappedDescription).HasColumnName("Description").IsRequired().HasMaxLength(255);
-            builder.Property(t => t.DiscountPct).HasColumnName("DiscountPct");
+            builder.Property(t => t.mappedDiscountPct).HasColumnName("DiscountPct");
             builder.Property(t => t.mappedType).HasColumnName("Type").IsRequired().HasMaxLength(50);
             builder.Property(t => t.mappedCategory).HasColumnName("Category").IsRequired().HasMaxLength(50); ;
             builder.Property(t => t.mappedStartDate).HasColumnName("StartDate");

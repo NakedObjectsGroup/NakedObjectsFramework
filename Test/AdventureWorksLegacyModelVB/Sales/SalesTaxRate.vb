@@ -27,7 +27,7 @@
 #End Region
 
 #Region "TaxRate"
-        Friend mappedTaxRate As Decimal
+        Public mappedTaxRate As Decimal
         Friend myTaxRate As WholeNumber
 
         '<MemberOrder(1)>

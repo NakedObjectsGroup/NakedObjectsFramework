@@ -52,7 +52,7 @@
 #End Region
 
 #Region "UnitPriceDiscount"
-		Friend mappedUnitPriceDiscount As Decimal
+		Public mappedUnitPriceDiscount As Decimal
 		Friend myUnitPriceDiscount As Percentage
 
 		'<MemberOrder(30)>

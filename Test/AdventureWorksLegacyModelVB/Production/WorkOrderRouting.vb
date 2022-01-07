@@ -114,7 +114,7 @@
 #End Region
 
 #Region "ActualResourceHrs"
-		Friend mappedActualResourceHrs As Decimal?
+		Public mappedActualResourceHrs As Decimal?
 		Friend myActualResourceHrs As FloatingPointNumber
 
 		'<MemberOrder(31)>

@@ -20,7 +20,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.SalesTaxRateID).HasColumnName("SalesTaxRateID");
             builder.Property(t => t.StateProvinceID).HasColumnName("StateProvinceID");
             builder.Property(t => t.mappedTaxType).HasColumnName("TaxType");
-            builder.Property(t => t.TaxRate).HasColumnName("TaxRate");
+            builder.Property(t => t.mappedTaxRate).HasColumnName("TaxRate");
             builder.Property(t => t.mappedName).HasColumnName("Name");
             builder.Property(t => t.RowGuid).HasColumnName("rowguid");
             builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);

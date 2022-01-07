@@ -29,7 +29,7 @@
 #End Region
 
 #Region "DiscountPct"
-		Friend mappedDiscountPct As Decimal
+		Public mappedDiscountPct As Decimal
 		Friend myDiscountPct As Percentage
 
 		'<MemberOrder(20)>

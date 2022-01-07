@@ -31,7 +31,7 @@ namespace AdventureWorksModel
             builder.Property(t => t.mappedScheduledEndDate).HasColumnName("ScheduledEndDate");
             builder.Property(t => t.mappedActualStartDate).HasColumnName("ActualStartDate");
             builder.Property(t => t.mappedActualEndDate).HasColumnName("ActualEndDate");
-            builder.Property(t => t.ActualResourceHrs).HasColumnName("ActualResourceHrs");
+            builder.Property(t => t.mappedActualResourceHrs).HasColumnName("ActualResourceHrs");
             builder.Property(t => t.mappedPlannedCost).HasColumnName("PlannedCost");
             builder.Property(t => t.mappedActualCost).HasColumnName("ActualCost");
             builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
