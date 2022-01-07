@@ -14,7 +14,7 @@ public class Title : ITitle {
     public Title(ITitledObject obj, string defaultValue) : this() =>
         text += TitleString().Length is 0 ? defaultValue : obj.Title().ToString();
 
-    public override string ToString() => text;
-
     public string TitleString() => text;
+
+    public override string ToString() => text;
 }
