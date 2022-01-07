@@ -124,12 +124,13 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             helper.GetObjectView().GetProperty("Person Details").GetReference().AssertTitleIs("Karan Khanna");
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void InternalCollection()
         {
             helper.GotoUrlDirectly(prefix + "SalesOrderHeader--52035");
             var obj = helper.GetObjectView().AssertTitleIs("SO52035");
             var coll = obj.GetCollection("Details").AssertDetails("2 Items");
+            //TODO:
             //coll.ClickListView().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
             //coll.ClickTableView().GetRowFromTable(1).AssertColumnValueIs(3,"€32.60");
         }
