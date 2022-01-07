@@ -86,25 +86,25 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void DateProperty()
         {
-            helper.GotoUrlDirectly(prefix + "SpecialOffer--3");
-            helper.GetObjectView().GetProperty("Start Date").AssertValueIs("1 Jul 2005");
+            helper.GotoUrlDirectly(prefix + "Employee--2");
+            helper.GetObjectView().GetProperty("Hire Date").AssertValueIs("3 Mar 2002");
         }
 
 
         //[TestMethod]
         public void WholeNumberProperty()
         {
-            helper.GotoUrlDirectly(prefix + "SpecialOffer--3");
-            helper.GetObjectView().GetProperty("Min Qty").AssertValueIs("15");
+            helper.GotoUrlDirectly(prefix + "Employee--2");
+            helper.GetObjectView().GetProperty("Sick Leave Hours").AssertValueIs("20");
         }
 
 
         //[TestMethod]
         public void BooleanProperty()
         {
-            helper.GotoUrlDirectly(prefix + "Person--14284");
-            var flag = helper.GetObjectView().GetProperty("Name Style");
-            flag.AssertCheckboxHasValue(false);
+            helper.GotoUrlDirectly(prefix + "Employee--2");
+            var flag = helper.GetObjectView().GetProperty("Salaried");
+            flag.AssertIsCheckbox();
         }
         #endregion
 
