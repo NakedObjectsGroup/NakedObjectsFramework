@@ -12,6 +12,11 @@ namespace AdventureWorksModel {
 
             // Table & Column Mappings
             builder.ToTable("PhoneNumberType", "Person");
+
+
+            builder.Property(t => t.PhoneNumberTypeID).HasColumnName("PhoneNumberTypeID");
+            builder.Property(t => t.mappedName).HasColumnName("Name");
+            builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

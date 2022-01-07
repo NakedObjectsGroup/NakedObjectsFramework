@@ -20,7 +20,7 @@
 		Public Sub AboutName(a As FieldAbout, Name As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Visible
-					a.Visible = False
+					'a.Visible = False
 			End Select
 		End Sub
 #End Region
