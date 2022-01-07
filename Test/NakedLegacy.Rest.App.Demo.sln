@@ -9,6 +9,8 @@ Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "AdventureWorksLegacyModelVB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksDatabase", "AdventureWorksDatabase\AdventureWorksDatabase.csproj", "{1BA66D42-0D14-432D-86AD-7154C44F7752}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksLegacy.AppLib", "AdventureWorksLegacy.AppLib\AdventureWorksLegacy.AppLib.csproj", "{409E2021-3296-496E-A150-0FEF7F2571DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1BA66D42-0D14-432D-86AD-7154C44F7752}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BA66D42-0D14-432D-86AD-7154C44F7752}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BA66D42-0D14-432D-86AD-7154C44F7752}.Release|Any CPU.Build.0 = Release|Any CPU
+		{409E2021-3296-496E-A150-0FEF7F2571DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{409E2021-3296-496E-A150-0FEF7F2571DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{409E2021-3296-496E-A150-0FEF7F2571DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{409E2021-3296-496E-A150-0FEF7F2571DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

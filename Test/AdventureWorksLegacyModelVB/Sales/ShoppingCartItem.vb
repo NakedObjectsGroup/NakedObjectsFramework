@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class ShoppingCartItem
- Implements ITitledObject
+	Partial Public Class ShoppingCartItem
+
+		Implements ITitledObject
 		''<Hidden>
 		Public Property ShoppingCartItemID() As Integer
 
