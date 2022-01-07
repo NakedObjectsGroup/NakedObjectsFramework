@@ -100,7 +100,7 @@ namespace Legacy.Rest.App.Demo {
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
-            ThreadLocals.Initialize(app.ApplicationServices, sp => new Container(sp.GetService<INakedFramework>()));
+            AdventureWorksLegacy.AppLib.ThreadLocals.Initialize(app.ApplicationServices, sp => new Container(sp.GetService<INakedFramework>()));
         }
     }
 }

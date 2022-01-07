@@ -6,7 +6,7 @@
         Public Property BusinessEntityID() As Integer
 
 #Region "QuotaDate"
-        Public mappedQuotaDate As Date
+        Public Property mappedQuotaDate As Date
         Friend myQuotaDate As NODate
 
         '<MemberOrder(1)>

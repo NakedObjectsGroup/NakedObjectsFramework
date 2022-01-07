@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class EmployeeDepartmentHistory
- Implements ITitledObject
+	Partial Public Class EmployeeDepartmentHistory
+
+		Implements ITitledObject
 
 		Public Property EmployeeID() As Integer
 
@@ -10,7 +11,7 @@
 		Public Property ShiftID() As Byte
 
 #Region "StartDate"
-		Public mappedStartDate As Date
+		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
 		'<MemberOrder(4)>

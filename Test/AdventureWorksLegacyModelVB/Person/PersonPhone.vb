@@ -6,7 +6,7 @@
         Public Property BusinessEntityID() As Integer
 
 #Region "PhoneNumber"
-        Public mappedPhoneNumber As String
+        Public Property mappedPhoneNumber As String
         Friend myPhoneNumber As TextString
 
         '<MemberOrder(1)>

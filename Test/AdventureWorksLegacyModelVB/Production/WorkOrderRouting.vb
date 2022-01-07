@@ -9,7 +9,7 @@
 		Public Property ProductID() As Integer
 
 #Region "OperationSequence"
-		Public mappedOperationSequence As Short
+		Public Property mappedOperationSequence As Short
 		Friend myOperationSequence As WholeNumber
 
 		'<MemberOrder(1)>

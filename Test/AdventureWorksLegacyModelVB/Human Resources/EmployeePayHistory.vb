@@ -6,7 +6,7 @@
 		Public Property EmployeeID() As Integer
 
 #Region "RateChangeDate"
-        Public mappedRateChangeDate As Date
+        Public Property mappedRateChangeDate As Date
         Friend myRateChangeDate As NODate
 
         '<MemberOrder(1)>

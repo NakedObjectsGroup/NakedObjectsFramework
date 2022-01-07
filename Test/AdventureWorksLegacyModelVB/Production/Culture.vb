@@ -5,7 +5,7 @@
 
         Implements ITitledObject
 
-        Public Property CultureID() As String = ""
+        Public Property CultureID() As String
 
 #Region "Name"
         Public mappedName As String

@@ -7,7 +7,7 @@
 		Public Property BusinessEntityID() As Integer
 
 #Region "StartDate"
-		Public mappedStartDate As Date
+		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
 		'<MemberOrder(1)>

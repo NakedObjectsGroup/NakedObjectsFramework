@@ -27,7 +27,7 @@
 #End Region
 
 #Region "CountryRegionCode"
-        Public mappedCountryRegionCode As String
+        Public Property mappedCountryRegionCode As String
         Friend myCountryRegionCode As TextString
 
         '<MemberOrder(2)>
