@@ -25,16 +25,16 @@
 
 #Region "SalesQuota"
 		Public mappedSalesQuota As Decimal?
-		Friend mySalesQuota As Money
+		Friend mySalesQuota As MoneyNullable
 
 		'<MemberOrder(30)>
-		Public ReadOnly Property SalesQuota As Money
+		Public ReadOnly Property SalesQuota As MoneyNullable
 			Get
-				Return If(mySalesQuota, New Money(mappedSalesQuota, Function(v) mappedSalesQuota = v))
+				Return If(mySalesQuota, New MoneyNullable(mappedSalesQuota, Function(v) mappedSalesQuota = v))
 			End Get
 		End Property
 
-		Public Sub AboutSalesQuota(a As FieldAbout, SalesQuota As Money)
+		Public Sub AboutSalesQuota(a As FieldAbout, SalesQuota As MoneyNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable

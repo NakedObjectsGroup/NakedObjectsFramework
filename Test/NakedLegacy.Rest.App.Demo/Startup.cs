@@ -78,10 +78,10 @@ namespace Legacy.Rest.App.Demo {
 
         protected Type[] LegacyValueHolders { get; } = {
             typeof(TextString),
-            typeof(Money),
+            typeof(Money),typeof(MoneyNullable),
             typeof(Logical),
             typeof(MultiLineTextString),
-            typeof(WholeNumber),
+            typeof(WholeNumber),typeof(WholeNumberNullable),
             typeof(NODate),
             typeof(TimeStamp),
             typeof(FloatingPointNumber),

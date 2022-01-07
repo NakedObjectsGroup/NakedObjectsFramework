@@ -156,16 +156,16 @@
 
 #Region "MaxQty"
 		Public mappedMaxQty As Integer?
-		Friend myMaxQty As WholeNumber
+		Friend myMaxQty As WholeNumberNullable
 
 		'<MemberOrder(62)>
-		Public ReadOnly Property MaxQty As WholeNumber
+		Public ReadOnly Property MaxQty As WholeNumberNullable
 			Get
-				Return If(myMaxQty, New WholeNumber(mappedMaxQty, Function(v) mappedMaxQty = v))
+				Return If(myMaxQty, New WholeNumberNullable(mappedMaxQty, Function(v) mappedMaxQty = v))
 			End Get
 		End Property
 
-		Public Sub AboutMaxQty(a As FieldAbout, MaxQty As WholeNumber)
+		Public Sub AboutMaxQty(a As FieldAbout, MaxQty As WholeNumberNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable

@@ -99,7 +99,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //AccessInstanceWithTitle("SalesOrderDetail--43659--1", "1 x Mountain-100 Black, 42");
             AccessInstanceWithTitle("SalesOrderHeader--43659", "SO43659");
             AccessInstanceWithTitle("SalesOrderHeaderSalesReason--43697--5", "SalesOrderHeaderSalesReason: 43697-5");
-            //Model code error            AccessInstanceWithTitle("SalesPerson--274", "Stephen Jiang");
+            AccessInstanceWithTitle("SalesPerson--274", "Stephen Jiang");
             AccessInstanceWithTitle("SalesReason--1", "Price");
             AccessInstanceWithTitle("SalesTaxRate--1", "Sales Tax Rate for Alberta");
             AccessInstanceWithTitle("SalesTerritory--1", "Northwest");
@@ -107,7 +107,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //AccessInstanceWithTitle("SalesTerritoryHistory--275--2--632557728000000000", "Michael Blythe Northeast");
             //EF 6: AccessInstanceWithTitle("SalesTerritoryHistory--632557728000000000--275--2", "Michael Blythe Northeast");
             //AccessInstanceWithTitle("ShoppingCartItem--2", "3 x Full-Finger Gloves, M");
-            //Model code error            AccessInstanceWithTitle("SpecialOffer--1", "No Discount");
+            AccessInstanceWithTitle("SpecialOffer--1", "No Discount");
             //AccessInstanceWithTitle("SpecialOfferProduct--1--680", "SpecialOfferProduct: 1-680");
             AccessInstanceWithTitle("Store--292", "Next-Door Bike Store");
         }
