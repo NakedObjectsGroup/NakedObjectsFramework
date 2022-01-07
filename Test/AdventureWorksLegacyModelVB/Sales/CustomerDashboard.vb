@@ -19,7 +19,7 @@ Namespace AW.Types
 		'Empty field, not - to test that fields are not editable in a VM
 		Public Property Comments() As String = ""
 
-		Public Function Title() As Title Implements ITitledObject.Title
+		Public Function Title() As ITitle Implements ITitledObject.Title
 			Return New Title(ToString())
 		End Function
 

@@ -309,7 +309,7 @@
 
         Public Property RowGuid() As Guid 'Not visible on UI
 
-        Public Function Title() As Title Implements ITitledObject.Title
+        Public Function Title() As ITitle Implements ITitledObject.Title
             Return New Title(ToString())
         End Function
 

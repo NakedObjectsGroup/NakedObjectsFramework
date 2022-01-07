@@ -33,4 +33,8 @@
     <Import Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AdventureWorksLegacy.AppLib\AdventureWorksLegacy.AppLib.csproj" />
+  </ItemGroup>
+
 </Project>
