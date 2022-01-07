@@ -1,9 +1,9 @@
-﻿using System;
-using NakedLegacy.Types;
+﻿using NakedLegacy.Types;
+using System;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public abstract class ValueHolder<T> { // : IValueHolder<T> {
+public abstract class ValueHolder<T> : ITitledObject {
     private T value;
 
     protected ValueHolder() { }

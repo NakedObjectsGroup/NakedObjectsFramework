@@ -8,7 +8,6 @@
 
 	<ItemGroup>
 	  <Compile Remove="Title.cs" />
-	  <Compile Remove="ValueHolder.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
