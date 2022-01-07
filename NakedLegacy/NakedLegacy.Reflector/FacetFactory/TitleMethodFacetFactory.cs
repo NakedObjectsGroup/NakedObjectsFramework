@@ -41,7 +41,7 @@ public sealed class TitleMethodFacetFactory : LegacyFacetFactoryProcessor, IMeth
     /// </summary>
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         try {
-            var titleMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(Title), Type.EmptyTypes);
+            var titleMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(ITitle), Type.EmptyTypes);
 
             methodRemover.SafeRemoveMethod(titleMethod);
             if (titleMethod is not null) {

@@ -34,7 +34,7 @@ public class ClassWithTextString {
 
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
-    public Title Title() => Name.Title();
+    public ITitle Title() => Name.Title();
 
     public ClassWithTextString ActionUpdateName(TextString newName) {
         Name.Value = newName.Value;
@@ -100,7 +100,7 @@ public class ClassWithFieldAbout {
 
     public TextString Name => new("");
 
-    public Title Title() => Name.Title();
+    public ITitle Title() => Name.Title();
 
     public void aboutName(FieldAbout fieldAbout, TextString name) {
         fieldAbout.Visible = !TestInvisibleFlag;
@@ -148,7 +148,7 @@ public class ClassWithMenu {
 
     public TextString Name => new($"{nameof(GetType)}/{Id}");
 
-    public Title Title() => new(Name);
+    public ITitle Title() => Name.Title();
 
     public ClassWithMenu ActionMethod1() => this;
     public ClassWithMenu actionMethod2() => this;
@@ -183,7 +183,7 @@ public class ClassWithDate {
 
     public NODate Date => _date ??= new NODate(date, d => date = d);
 
-    public Title Title() => Date.Title();
+    public ITitle Title() => Date.Title();
 
     public ClassWithDate ActionUpdateDate(NODate newDate) {
         Date.Value = newDate.Value;
@@ -201,7 +201,7 @@ public class ClassWithTimeStamp {
     [ConcurrencyCheck]
     public TimeStamp TimeStamp => _timestamp ??= new TimeStamp(date, d => date = d);
 
-    public Title Title() => TimeStamp.Title();
+    public ITitle Title() => TimeStamp.Title();
 
     public ClassWithTimeStamp ActionUpdateTimeStamp(TimeStamp newTimeStamp) {
         TimeStamp.Value = newTimeStamp.Value;
@@ -220,7 +220,7 @@ public class ClassWithWholeNumber {
 
     public static bool TestVisible { get; set; } = true;
 
-    public Title Title() => WholeNumber.Title();
+    public ITitle Title() => WholeNumber.Title();
 
     public ClassWithWholeNumber actionUpdateWholeNumber(WholeNumber newWholeNumber) {
         WholeNumber.Value = newWholeNumber.Value;
@@ -249,7 +249,7 @@ public class ClassWithLogical {
 
     public static bool TestVisible { get; set; } = true;
 
-    public Title Title() => Logical.Title();
+    public ITitle Title() => Logical.Title();
 
     public ClassWithLogical actionUpdateLogical(Logical newLogical) {
         Logical.Value = newLogical.Value;
@@ -278,7 +278,7 @@ public class ClassWithMoney {
 
     public static bool TestVisible { get; set; } = true;
 
-    public Title Title() => Money.Title();
+    public ITitle Title() => Money.Title();
 
     public ClassWithMoney actionUpdateMoney(Money newMoney) {
         Money.Value = newMoney.Value;
