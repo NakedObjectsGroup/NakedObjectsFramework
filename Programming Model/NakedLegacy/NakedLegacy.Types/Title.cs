@@ -2,7 +2,7 @@
 
 namespace NakedLegacy.Types; 
 
-public class Title {
+public class Title : ITitle {
     private readonly string text = "";
 
     public Title() { }

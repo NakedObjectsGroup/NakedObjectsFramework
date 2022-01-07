@@ -21,7 +21,7 @@ public abstract class ValueHolder<T> : ITitledObject {
 
     private Action<T> UpdateBackingField { get; } = _ => { };
 
-    public Title Title() => new(ToString());
+    public abstract ITitle Title();
 
     public override string ToString() => Value.ToString();
 
