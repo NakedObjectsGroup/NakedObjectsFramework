@@ -19,6 +19,7 @@ using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
 using NakedLegacy.Reflector.Extensions;
 using NakedLegacy.Rest.Test.Data;
+using NakedLegacy.Rest.Test.Data.AppLib;
 using NakedLegacy.Types;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -156,6 +157,8 @@ public class ClassWithMenu {
     private static IContainer Container => ThreadLocals.Container;
 
     public static ClassWithTextString ActionMenuAction() => (ClassWithTextString) Container.AllInstances(typeof(ClassWithTextString)).First();
+
+    public static ArrayList ActionMenuAction1() => new (Container.AllInstances(typeof(ClassWithTextString)).ToList());
 
     public static MainMenu menuOrder() {
         var menu = new MainMenu();

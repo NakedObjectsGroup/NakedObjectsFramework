@@ -33,7 +33,7 @@ public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor, IAnnotat
         FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
     }
 
-    private static bool IsDate(Type type) => LegacyHelpers.IsOrImplementsValueHolder(type) == typeof(DateTime);
+    private static bool IsDate(Type type) => LegacyHelpers.IsOrImplementsValueHolder(type) == typeof(DateTime) && type.GetCustomAttribute<DateOnlyAttribute>() is not null;
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (IsDate(property.PropertyType)) {

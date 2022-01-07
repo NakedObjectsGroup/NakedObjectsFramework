@@ -6,6 +6,7 @@
 // // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using NakedLegacy.Types;
 
 namespace NakedLegacy.Reflector.Configuration;
@@ -14,5 +15,6 @@ public static class ReflectorDefaults {
     public static readonly Type[] DefaultLegacyTypes = {
         typeof(InternalCollection),
         typeof(InternalCollection<>),
+        typeof(ArrayList)
     };
 }

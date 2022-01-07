@@ -4,6 +4,7 @@ using NakedLegacy.Types;
 
 namespace NakedLegacy.Rest.Test.Data.AppLib;
 
+[DateOnly]
 public class NODate : ValueHolder<DateTime> {
     public NODate() { }
 

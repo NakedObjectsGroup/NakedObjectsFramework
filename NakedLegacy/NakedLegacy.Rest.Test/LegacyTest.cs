@@ -553,7 +553,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionWithContainer()
+    public void TestInvokeMenuActionWithContainerReturnObject()
     {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { } };
@@ -569,4 +569,22 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
 
     }
+
+    //[Test]
+    //public void TestInvokeMenuActionWithContainerReturnArrayList()
+    //{
+    //    var api = Api().AsPost();
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { } };
+
+    //    var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction1), map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
+
+    //    var resultObj = parsedResult["result"];
+
+    //    Assert.AreEqual("Fred", resultObj["title"].ToString());
+    //    Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+
+    //}
 }

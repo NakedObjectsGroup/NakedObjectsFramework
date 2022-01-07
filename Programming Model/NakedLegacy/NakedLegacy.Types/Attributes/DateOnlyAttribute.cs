@@ -7,21 +7,9 @@
 
 using System;
 
-namespace NakedLegacy; 
+namespace NakedLegacy;
 
 /// <summary>
-///     For specifying the order in which fields and/or actions are presented to
-///     the user.
 /// </summary>
-[AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
-public class MemberOrderAttribute : Attribute {
-    public MemberOrderAttribute() => Sequence = "";
-
-    public MemberOrderAttribute(string sequence) => Sequence = sequence;
-
-    public MemberOrderAttribute(double sequence) => Sequence = "" + sequence;
-
-    public string Sequence { get; set; }
-
-    public string Name { get; set; }
-}
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+public class DateOnlyAttribute : Attribute { }
