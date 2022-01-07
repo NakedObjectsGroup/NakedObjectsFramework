@@ -15,6 +15,7 @@ public static class ReflectorDefaults {
     public static readonly Type[] DefaultLegacyTypes = {
         typeof(InternalCollection),
         typeof(InternalCollection<>),
+        typeof(IEnumerable),
         typeof(ArrayList)
     };
 }
