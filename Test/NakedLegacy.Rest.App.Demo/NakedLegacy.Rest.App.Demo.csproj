@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AdventureWorksDatabase\AdventureWorksDatabase.csproj" />
+    <ProjectReference Include="..\AdventureWorksLegacy.AppLib\AdventureWorksLegacy.AppLib.csproj" />
     <ProjectReference Include="..\AdventureWorksLegacyModelVB\AdventureWorksLegacyModelVB.vbproj" />
   </ItemGroup>
 

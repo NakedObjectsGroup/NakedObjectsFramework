@@ -1,20 +1,21 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Framework;
 using NakedLegacy.Types.Container;
 
-namespace NakedLegacy.Reflector.Component;
+namespace AdventureWorksLegacy.AppLib;
 
 public static class ThreadLocals {
     private static IServiceProvider serviceProvider;
+    private static Func<IServiceProvider, IContainer> containerFactory;
 
-    public static void Initialize(IServiceProvider sp) => serviceProvider = sp;
+    public static void Initialize(IServiceProvider sp, Func<IServiceProvider, IContainer> cf) {
+        serviceProvider = sp;
+        containerFactory = cf;
+    }
 
     private static IContainer GetContainer() {
         var scopeSp = serviceProvider.CreateScope().ServiceProvider;
-        var framework = scopeSp.GetService<INakedFramework>();
-        return new Container(framework);
+        return containerFactory(scopeSp);
     }
 
     public static IContainer Container => GetContainer();

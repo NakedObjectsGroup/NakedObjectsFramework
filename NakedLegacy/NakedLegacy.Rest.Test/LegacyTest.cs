@@ -12,6 +12,7 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
@@ -108,7 +109,7 @@ public class LegacyTest : AcceptanceTestCase {
     [SetUp]
     public void SetUp() {
         StartTest();
-        ThreadLocals.Initialize(RootServiceProvider);
+        ThreadLocals.Initialize(RootServiceProvider, sp => new Container(sp.GetService<INakedFramework>()));
     }
 
     [TearDown]
