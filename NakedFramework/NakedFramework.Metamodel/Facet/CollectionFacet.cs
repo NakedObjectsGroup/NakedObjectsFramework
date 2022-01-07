@@ -26,7 +26,7 @@ public class CollectionFacet : CollectionFacetAbstract {
 
     public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => AsCollection(collection).Cast<object>().Select(domainObject => manager.CreateAdapter(domainObject, null, null));
 
-    public override IQueryable AsQueryable(INakedObjectAdapter collection) => AsCollection(collection).AsQueryable();
+    public override IQueryable AsQueryable(INakedObjectAdapter collection) => AsCollection(collection).Cast<object>().AsQueryable();
 
     public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
         var wrappedCollection = AsCollection(collection);
@@ -40,18 +40,13 @@ public class CollectionFacet : CollectionFacetAbstract {
 
     public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) => AsCollection(collection).Contains(element.Object);
 
-    private IEnumerable PageInternal(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager) {
-        var firstIndex = (page - 1) * size;
-        for (var index = firstIndex; index < firstIndex + size; index++) {
-            if (index >= AsEnumerable(collection, manager).Count()) {
-                yield break;
-            }
-
-            yield return AsCollection(collection)[index];
-        }
+    private INakedObjectAdapter PageInternal(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager) {
+        // page = 0 causes empty collection to be returned
+        var newCollection = page == 0 ? AsCollection(collection).Cast<object>().Take(0) : AsCollection(collection).Cast<object>().Skip((page - 1) * size).Take(size);
+        return manager.CreateAdapter(newCollection.ToList(), null, null);
     }
 
-    public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => manager.CreateAdapter(PageInternal(page, size, collection, manager), null, null);
+    public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => PageInternal(page, size, collection, manager);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

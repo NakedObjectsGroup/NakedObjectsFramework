@@ -173,6 +173,7 @@ public class ClassWithMenu {
     public static MainMenu sharedMenuOrder() {
         var menu = new MainMenu();
         menu.Menus.Add(new Menu("MenuAction"));
+        menu.Menus.Add(new Menu("MenuAction1"));
         return menu;
     }
 }

@@ -286,9 +286,10 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
 
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
+        Assert.IsNotNull(parsedResult["members"]["ActionMenuAction1"]);
     }
 
     [Test]
@@ -570,21 +571,23 @@ public class LegacyTest : AcceptanceTestCase {
 
     }
 
-    //[Test]
-    //public void TestInvokeMenuActionWithContainerReturnArrayList()
-    //{
-    //    var api = Api().AsPost();
-    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { } };
+    [Test]
+    public void TestInvokeMenuActionWithContainerReturnArrayList()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { } };
 
-    //    var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction1), map);
-    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-    //    var parsedResult = JObject.Parse(json);
+        var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction1), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
 
-    //    var resultObj = parsedResult["result"];
+        Assert.AreEqual("list", parsedResult["resultType"].ToString());
 
-    //    Assert.AreEqual("Fred", resultObj["title"].ToString());
-    //    Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        var resultObj = parsedResult["result"];
 
-    //}
+        Assert.AreEqual(2, ((JContainer) resultObj["value"]).Count);
+        Assert.AreEqual("Fred", resultObj["value"][0]["title"].ToString());
+        Assert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
+    }
 }
