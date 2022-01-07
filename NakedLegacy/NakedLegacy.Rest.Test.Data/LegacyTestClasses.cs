@@ -26,17 +26,17 @@ public class SimpleService {
 }
 
 public class ClassWithTextString {
-    private TextString _name;
+    private AppLib.TextString _name;
     public string name;
 
     [Key]
     public int Id { get; init; }
 
-    public TextString Name => _name ??= new TextString(name, s => name = s);
+    public AppLib.TextString Name => _name ??= new AppLib.TextString(name, s => name = s);
 
     public ITitle Title() => Name.Title();
 
-    public ClassWithTextString ActionUpdateName(TextString newName) {
+    public ClassWithTextString ActionUpdateName(AppLib.TextString newName) {
         Name.Value = newName.Value;
         return this;
     }
@@ -54,7 +54,7 @@ public class ClassWithInternalCollection {
 
     public InternalCollection TestCollection => _testCollection ??= new InternalCollection<ClassWithTextString>(_TestCollection);
 
-    public ClassWithInternalCollection ActionUpdateTestCollection(TextString newName) {
+    public ClassWithInternalCollection ActionUpdateTestCollection(AppLib.TextString newName) {
         var name = newName.Value;
         var bill = Container.Instances<ClassWithTextString>().Single(c => c.name == name);
         _TestCollection.Add(bill);
@@ -98,11 +98,11 @@ public class ClassWithFieldAbout {
     [Key]
     public int Id { get; init; }
 
-    public TextString Name => new("");
+    public AppLib.TextString Name => new("");
 
     public ITitle Title() => Name.Title();
 
-    public void aboutName(FieldAbout fieldAbout, TextString name) {
+    public void aboutName(FieldAbout fieldAbout, AppLib.TextString name) {
         fieldAbout.Visible = !TestInvisibleFlag;
     }
 }
@@ -146,7 +146,7 @@ public class ClassWithMenu {
     [Key]
     public int Id { get; init; }
 
-    public TextString Name => new($"{nameof(GetType)}/{Id}");
+    public AppLib.TextString Name => new($"{nameof(GetType)}/{Id}");
 
     public ITitle Title() => Name.Title();
 
@@ -175,59 +175,59 @@ public class ClassWithMenu {
 }
 
 public class ClassWithDate {
-    private NODate _date;
+    private AppLib.NODate _date;
     public DateTime date;
 
     [Key]
     public int Id { get; init; }
 
-    public NODate Date => _date ??= new NODate(date, d => date = d);
+    public AppLib.NODate Date => _date ??= new AppLib.NODate(date, d => date = d);
 
     public ITitle Title() => Date.Title();
 
-    public ClassWithDate ActionUpdateDate(NODate newDate) {
+    public ClassWithDate ActionUpdateDate(AppLib.NODate newDate) {
         Date.Value = newDate.Value;
         return this;
     }
 }
 
 public class ClassWithTimeStamp {
-    private TimeStamp _timestamp;
+    private AppLib.TimeStamp _timestamp;
     public DateTime date;
 
     [Key]
     public int Id { get; init; }
 
     [ConcurrencyCheck]
-    public TimeStamp TimeStamp => _timestamp ??= new TimeStamp(date, d => date = d);
+    public AppLib.TimeStamp TimeStamp => _timestamp ??= new AppLib.TimeStamp(date, d => date = d);
 
     public ITitle Title() => TimeStamp.Title();
 
-    public ClassWithTimeStamp ActionUpdateTimeStamp(TimeStamp newTimeStamp) {
+    public ClassWithTimeStamp ActionUpdateTimeStamp(AppLib.TimeStamp newTimeStamp) {
         TimeStamp.Value = newTimeStamp.Value;
         return this;
     }
 }
 
 public class ClassWithWholeNumber {
-    private WholeNumber _wholeNumber;
+    private AppLib.WholeNumber _wholeNumber;
     public int number;
 
     [Key]
     public int Id { get; init; }
 
-    public WholeNumber WholeNumber => _wholeNumber ??= new WholeNumber(number, i => number = i);
+    public AppLib.WholeNumber WholeNumber => _wholeNumber ??= new AppLib.WholeNumber(number, i => number = i);
 
     public static bool TestVisible { get; set; } = true;
 
     public ITitle Title() => WholeNumber.Title();
 
-    public ClassWithWholeNumber actionUpdateWholeNumber(WholeNumber newWholeNumber) {
+    public ClassWithWholeNumber actionUpdateWholeNumber(AppLib.WholeNumber newWholeNumber) {
         WholeNumber.Value = newWholeNumber.Value;
         return this;
     }
 
-    public void AboutActionUpdateWholeNumber(ActionAbout actionAbout, WholeNumber newWholeNumber) {
+    public void AboutActionUpdateWholeNumber(ActionAbout actionAbout, AppLib.WholeNumber newWholeNumber) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }
@@ -239,24 +239,24 @@ public class ClassWithWholeNumber {
 }
 
 public class ClassWithLogical {
-    private Logical _logical;
+    private AppLib.Logical _logical;
     public bool boolean;
 
     [Key]
     public int Id { get; init; }
 
-    public Logical Logical => _logical ??= new Logical(boolean, i => boolean = i);
+    public AppLib.Logical Logical => _logical ??= new AppLib.Logical(boolean, i => boolean = i);
 
     public static bool TestVisible { get; set; } = true;
 
     public ITitle Title() => Logical.Title();
 
-    public ClassWithLogical actionUpdateLogical(Logical newLogical) {
+    public ClassWithLogical actionUpdateLogical(AppLib.Logical newLogical) {
         Logical.Value = newLogical.Value;
         return this;
     }
 
-    public void AboutActionUpdateLogical(ActionAbout actionAbout, Logical newLogical) {
+    public void AboutActionUpdateLogical(ActionAbout actionAbout, AppLib.Logical newLogical) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }
@@ -268,24 +268,24 @@ public class ClassWithLogical {
 }
 
 public class ClassWithMoney {
-    private Money _money;
+    private AppLib.Money _money;
     public decimal amount;
 
     [Key]
     public int Id { get; init; }
 
-    public Money Money => _money ??= new Money(amount, i => amount = i);
+    public AppLib.Money Money => _money ??= new AppLib.Money(amount, i => amount = i);
 
     public static bool TestVisible { get; set; } = true;
 
     public ITitle Title() => Money.Title();
 
-    public ClassWithMoney actionUpdateMoney(Money newMoney) {
+    public ClassWithMoney actionUpdateMoney(AppLib.Money newMoney) {
         Money.Value = newMoney.Value;
         return this;
     }
 
-    public void AboutActionUpdateMoney(ActionAbout actionAbout, Money newMoney) {
+    public void AboutActionUpdateMoney(ActionAbout actionAbout, AppLib.Money newMoney) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }

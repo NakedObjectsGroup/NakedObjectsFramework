@@ -48,13 +48,13 @@ public class LegacyTest : AcceptanceTestCase {
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
 
     protected Type[] LegacyValueHolders { get; } = {
-        typeof(TextString),
-        typeof(Money),
-        typeof(Logical),
-        typeof(MultiLineTextString),
-        typeof(WholeNumber),
-        typeof(NODate),
-        typeof(TimeStamp)
+        typeof(Data.AppLib.TextString),
+        typeof(Data.AppLib.Money),
+        typeof(Data.AppLib.Logical),
+        typeof(Data.AppLib.MultiLineTextString),
+        typeof(Data.AppLib.WholeNumber),
+        typeof(Data.AppLib.NODate),
+        typeof(Data.AppLib.TimeStamp)
     };
 
     protected override bool EnforceProxies => false;
