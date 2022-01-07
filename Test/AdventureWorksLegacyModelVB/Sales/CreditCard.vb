@@ -61,12 +61,16 @@ Namespace AW.Types
 		End Sub
 #End Region
 
+
 		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(ToString())
 		End Function
 
 		Public Overrides Function ToString() As String
-			Return "TODO - Title" 'CreditCard_Functions.ObfuscatedNumber(Me
+			Return If(CardNumber.Length > 4,
+				CardNumber.Substring(CardNumber.Length - 4).PadLeft(CardNumber.Length, "*"),
+				Nothing)
 		End Function
+
 	End Class
 End Namespace

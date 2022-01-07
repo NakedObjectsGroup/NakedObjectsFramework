@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class PurchaseOrderHeader
- Implements ITitledObject
+	Partial Public Class PurchaseOrderHeader
+
+		Implements ITitledObject
 
 		''<Hidden>
 		Public Property PurchaseOrderID() As Integer
@@ -77,7 +78,7 @@
 		End Sub
 
 #Region "OrderDate"
-		Public mappedOrderDate As DateTime
+		Public mappedOrderDate As Date
 		Friend myOrderDate As NODate
 
 		'<MemberOrder(11)>

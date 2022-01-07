@@ -87,7 +87,7 @@ Namespace AW.Types
 		End Function
 
 		Public Overrides Function ToString() As String
-			Return "Product Photo: {ProductPhotoID}"
+			Return $"Product Photo: {ProductPhotoID}"
 		End Function
 	End Class
 End Namespace
