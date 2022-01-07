@@ -17,7 +17,7 @@ using NakedLegacy.Types;
 namespace NakedLegacy.Reflector.SemanticsProvider;
 
 [Serializable]
-public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSemanticsProviderAbstract<T> where T : ValueHolder<TU>, new() {
+public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSemanticsProviderAbstract<T> where T : class, IValueHolder<TU>, new() {
     private const bool Immutable = true;
     private const int TypicalLengthConst = 11;
     private static T DefaultValueConst = default;
@@ -29,7 +29,7 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
 
     public static Type AdaptedType => typeof(T);
 
-    public static bool IsAdaptedType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ValueHolder<>);
+    public static bool IsAdaptedType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IValueHolder<>);
 
     protected override T DoParse(string entry) {
         try {

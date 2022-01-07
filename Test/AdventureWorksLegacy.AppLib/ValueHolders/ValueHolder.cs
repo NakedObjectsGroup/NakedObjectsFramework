@@ -2,7 +2,7 @@
 
 namespace NakedLegacy.Types;
 
-public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
+public abstract class ValueHolder<T> : ITitledObject {
     private T value;
 
     protected ValueHolder() { }
