@@ -149,21 +149,21 @@ public class LegacyNOFTest : AcceptanceTestCase {
 
     private static string FullName<T>() => typeof(T).FullName;
 
-    [Test]
-    public void TestInvokeUpdateAndPersistObjectWithInternalCollection() {
-        var api = Api().AsPost();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Bill") } } };
+    //[Test]
+    //public void TestInvokeUpdateAndPersistObjectWithInternalCollection() {
+    //    var api = Api().AsPost();
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "newName", new ScalarValue("Bill") } } };
 
-        var result = api.PostInvoke(FullName<ClassWithInternalCollection>(), "2", nameof(ClassWithInternalCollection.ActionUpdateTestCollection), map);
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //    var result = api.PostInvoke(FullName<ClassWithInternalCollection>(), "2", nameof(ClassWithInternalCollection.ActionUpdateTestCollection), map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        var resultObj = parsedResult["result"];
+    //    var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("1", resultObj["members"]["TestCollection"]["size"].ToString());
-        Assert.AreEqual("collection", resultObj["members"]["TestCollection"]["memberType"].ToString());
-    }
+    //    Assert.AreEqual("1", resultObj["members"]["TestCollection"]["size"].ToString());
+    //    Assert.AreEqual("collection", resultObj["members"]["TestCollection"]["memberType"].ToString());
+    //}
 
     //[Test]
     //public void TestAboutCaching() {
