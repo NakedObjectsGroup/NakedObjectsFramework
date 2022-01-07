@@ -42,6 +42,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         {
             AccessInstanceWithTitle( "Department--1 ", "Engineering");
             AccessInstanceWithTitle("Employee--2", "Terri Duffy");
+//Doesn't like the date keys ?
             //AccessInstanceWithTitle("EmployeeDepartmentHistory--1--16--1--631808640000000000", "Executive 2/15/2003");
             //AccessInstanceWithTitle("EmployeePayHistory--1--631808640000000000", "$125.50 from 2/15/2003");
             AccessInstanceWithTitle("JobCandidate--1", "Job Candidate"); 
@@ -54,20 +55,20 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             //AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Gustavo Achong");
             //EF 6: AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Untitled object");
             AccessInstanceWithTitle("ContactType--1", "Accounting Manager");
-            //AccessInstanceWithTitle("CountryRegion--AD", "Andorra");
+            AccessInstanceWithTitle("CountryRegion--AD", "Andorra");
             //AccessInstanceWithTitle("EmailAddress--1--1", "ken0@adventure-works.com");
             //AccessInstanceWithTitle("Password--1", "Password");
             AccessInstanceWithTitle("Person--2", "Terri Duffy");
-            //AccessInstanceWithTitle("PersonPhone--1--697-555-0142--1", "Cell:697-555-0142");
-//Fixed in model: AccessInstanceWithTitle("PhoneNumberType--1", "Cell");
+            AccessInstanceWithTitle("PersonPhone--1--697-555-0142--1", "Cell:697-555-0142");
+            AccessInstanceWithTitle("PhoneNumberType--1", "Cell");
             //AccessInstanceWithTitle("StateProvince--1", "Alberta");
             //AccessInstanceWithTitle("BillOfMaterial--893", "BillOfMaterial: 893"); 
-            //AccessInstanceWithTitle("Culture--ar", "Arabic"); 
+            AccessInstanceWithTitle("Culture--ar", "Arabic"); 
             AccessInstanceWithTitle("Illustration--3", "Illustration: 3"); 
             AccessInstanceWithTitle("Location--1", "Tool Crib");
             //AccessInstanceWithTitle("Product--1", "Adjustable Race");
             AccessInstanceWithTitle("ProductCategory--1", "Bikes");
-            //AccessInstanceWithTitle("ProductCostHistory--707--632557728000000000", "12.0278 7/1/2005 12:00:00 AM~");
+            //AccessInstanceWithTitle("ProductCostHistory--707--632557728000000000", "€ 12.0278 7/1/2005 12:00:00 AM~");
             AccessInstanceWithTitle("ProductDescription--3", "Chromoly steel.");
             //AccessInstanceWithTitle("ProductInventory--1--1", "408 in Tool Crib - A");
             //AccessInstanceWithTitle("ProductListPriceHistory--707--632557728000000000", "ProductListPriceHistory: 707"); 
@@ -82,7 +83,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             //AccessInstanceWithTitle("TransactionHistory--100000", "TransactionHistory: 100000"); 
             //AccessInstanceWithTitle("UnitMeasure--BOX", "Boxes");
             //AccessInstanceWithTitle("WorkOrder--1", "LL Road Frame - Black, 58: 7/4/2005 12:00:00 AM");
-            //AccessInstanceWithTitle("WorkOrderRouting--13--747--1", "Frame Forming");
+            AccessInstanceWithTitle("WorkOrderRouting--13--747--1", "Frame Forming");
             //AccessInstanceWithTitle("ProductVendor--1--1580", "ProductVendor: 1-1580");
             //AccessInstanceWithTitle("PurchaseOrderDetail--1--1", "4 x Adjustable Race");
 //Pending #345            AccessInstanceWithTitle("PurchaseOrderHeader--1", "PO from Litware, Inc., 5/17/2005 12:00:00 AM");
@@ -98,8 +99,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AccessInstanceWithTitle("SalesOrderHeader--43659", "SO43659");
             //AccessInstanceWithTitle("SalesOrderHeaderSalesReason--43697--5", "SalesOrderHeaderSalesReason: 43697-5");
 //Model code error            AccessInstanceWithTitle("SalesPerson--274", "Stephen Jiang");
-            //AccessInstanceWithTitle("SalesPersonQuotaHistory--274--632557728000000000", "7/1/2005 $28,000.00");
-            AccessInstanceWithTitle("SalesReason--1", "Price");
+            // AccessInstanceWithTitle("SalesReason--1", "Price");
             AccessInstanceWithTitle("SalesTaxRate--1", "Sales Tax Rate for Alberta");
             AccessInstanceWithTitle("SalesTerritory--1", "Northwest");
             //EF Core:
