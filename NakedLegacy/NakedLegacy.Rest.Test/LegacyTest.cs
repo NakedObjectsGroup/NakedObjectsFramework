@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Persistor.EFCore.Extensions;
@@ -45,7 +46,9 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithWholeNumber),
         typeof(ClassWithLogical),
         typeof(ClassWithMoney),
-        typeof(ClassWithReferenceProperty)
+        typeof(ClassWithReferenceProperty),
+        typeof(ClassWithOrderedProperties),
+        typeof(ClassWithOrderedActions)
     };
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
@@ -608,5 +611,54 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual(2, ((JContainer) resultObj["value"]).Count);
         Assert.AreEqual("Fred", resultObj["value"][0]["title"].ToString());
         Assert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
+    }
+
+
+    [Test]
+    public void TestGetObjectWithOrderedProperties()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithOrderedProperties>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.AreEqual("Name2", ((JProperty)parsedResult["members"].First).Name);
+        Assert.AreEqual("0", parsedResult["members"]["Name2"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("Name3", ((JProperty)parsedResult["members"].First.Next).Name);
+        Assert.AreEqual("1", parsedResult["members"]["Name3"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("Name1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
+        Assert.AreEqual("2", parsedResult["members"]["Name1"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("Name4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
+        Assert.AreEqual("4", parsedResult["members"]["Name4"]["extensions"]["memberOrder"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectWithOrderedActions()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithOrderedActions>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.AreEqual("actionAction2", ((JProperty)parsedResult["members"].First).Name);
+        Assert.AreEqual("0", parsedResult["members"]["actionAction2"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("actionAction3", ((JProperty)parsedResult["members"].First.Next).Name);
+        Assert.AreEqual("1", parsedResult["members"]["actionAction3"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("actionAction1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
+        Assert.AreEqual("2", parsedResult["members"]["actionAction1"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("actionAction4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
+        Assert.AreEqual("4", parsedResult["members"]["actionAction4"]["extensions"]["memberOrder"].ToString());
     }
 }
