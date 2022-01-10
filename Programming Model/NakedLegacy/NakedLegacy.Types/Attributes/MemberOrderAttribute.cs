@@ -17,5 +17,5 @@ namespace NakedLegacy;
 public class MemberOrderAttribute : Attribute {
     public MemberOrderAttribute(int order) => Order = order;
 
-    public int Order { get; set; }
+    public int Order { get; init; }
 }
