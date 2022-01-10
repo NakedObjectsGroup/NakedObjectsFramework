@@ -50,12 +50,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AccessInstanceWithTitle("Address--1", "1970 Napa Ct....");
             AccessInstanceWithTitle("AddressType--1", "Billing");
             AccessInstanceWithTitle("BusinessEntity--2", "Terri Duffy");
-//            AccessInstanceWithTitle("BusinessEntityAddress--1--2--249", "Home: 4350 Minute Dr....");
+ //          AccessInstanceWithTitle("BusinessEntityAddress--1--2--249", "Home: 4350 Minute Dr....");
  //           AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Gustavo Achong");
             AccessInstanceWithTitle("ContactType--1", "Accounting Manager");
             AccessInstanceWithTitle("CountryRegion--AD", "Andorra");
             AccessInstanceWithTitle("EmailAddress--1--1", "ken0@adventure-works.com");
- //           AccessInstanceWithTitle("Password--1", "Password");
+//'Invalid column name 'PersonBusinessEntityID'.'  AccessInstanceWithTitle("Password--1", "Password");
             AccessInstanceWithTitle("Person--2", "Terri Duffy");
             AccessInstanceWithTitle("PersonPhone--1--697-555-0142--1", "Cell:697-555-0142");
             AccessInstanceWithTitle("PhoneNumberType--1", "Cell");
