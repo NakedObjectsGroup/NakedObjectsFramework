@@ -6,37 +6,23 @@
             Return SimpleRepository.Random(Of Product)()
         End Function
 
-        Public Shared Function ActionRandomProductCostHistory() As ProductCostHistory
-            Return SimpleRepository.Random(Of ProductCostHistory)()
+        Public Shared Function ActionRandomBillOfMaterial() As BillOfMaterial
+            Return SimpleRepository.Random(Of BillOfMaterial)()
         End Function
 
-        Public Shared Function ActionRandomProductInventory() As ProductInventory
-            Return SimpleRepository.Random(Of ProductInventory)()
+
+        Public Shared Function ActionRandomPassword() As Password
+            Return SimpleRepository.Random(Of Password)()
         End Function
 
-        Public Shared Function ActionRandomProductListPriceHistory() As ProductListPriceHistory
-            Return SimpleRepository.Random(Of ProductListPriceHistory)()
+        Public Shared Function ActionRandomBusinessEntityAddress() As BusinessEntityAddress
+            Return SimpleRepository.Random(Of BusinessEntityAddress)()
         End Function
 
-        Public Shared Function ActionRandomProductModel() As ProductModel
-            Return SimpleRepository.Random(Of ProductModel)()
+        Public Shared Function ActionRandomBusinessEntityContact() As BusinessEntityContact
+            Return SimpleRepository.Random(Of BusinessEntityContact)()
         End Function
 
-        Public Shared Function ActionRandomProductModelIllustration() As ProductModelIllustration
-            Return SimpleRepository.Random(Of ProductModelIllustration)()
-        End Function
-
-        Public Shared Function ActionRandomProductModelProductDescriptionCulture() As ProductModelProductDescriptionCulture
-            Return SimpleRepository.Random(Of ProductModelProductDescriptionCulture)()
-        End Function
-
-        Public Shared Function ActionRandomProductProductPhoto() As ProductProductPhoto
-            Return SimpleRepository.Random(Of ProductProductPhoto)()
-        End Function
-
-        Public Shared Function ActionRandomProductVendor() As ProductVendor
-            Return SimpleRepository.Random(Of ProductVendor)()
-        End Function
 
     End Class
 End Namespace
