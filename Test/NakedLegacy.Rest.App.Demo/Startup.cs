@@ -84,9 +84,9 @@ namespace Legacy.Rest.App.Demo {
             typeof(Logical),
             typeof(MultiLineTextString),
             typeof(WholeNumber),typeof(WholeNumberNullable),
-            typeof(NODate),
+            typeof(NODate),typeof(NODateNullable),
             typeof(TimeStamp),
-            typeof(FloatingPointNumber),
+            typeof(FloatingPointNumber),typeof(FloatingPointNumberNullable),
             typeof(Percentage)
             };
 
