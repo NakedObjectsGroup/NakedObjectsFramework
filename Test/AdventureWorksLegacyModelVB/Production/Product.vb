@@ -572,7 +572,7 @@ Namespace AW.Types
 #Region "Main Menu actions"
 
         Public Shared Function ActionAProduct() As Product
-            Return ThreadLocals.Container.AllInstances(GetType(Product)).OfType(Of Product).First
+            Return ThreadLocals.Container.Instances(Of Product).First
         End Function
 
 #End Region

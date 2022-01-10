@@ -319,19 +319,5 @@ Namespace AW.Types
             Return PersonDetails.ToString()
         End Function
 
-#Region "Main Menu actions"
-        Public Shared Function ActionAllDepartments() As ArrayList
-            Return ThreadLocals.Container.AllInstances(GetType(Department)).ToArrayList()
-        End Function
-
-        Public Shared Function ActionADepartment() As Department
-            Return CType(ThreadLocals.Container.AllInstances(GetType(Department)).First, Department)
-        End Function
-
-        Public Shared Function ActionAShift() As Shift
-            Return CType(ThreadLocals.Container.AllInstances(GetType(Shift)).First, Shift)
-        End Function
-#End Region
-
     End Class
 End Namespace

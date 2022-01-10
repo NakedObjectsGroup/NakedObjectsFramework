@@ -30,7 +30,7 @@ namespace Legacy.Rest.App.Demo
 
         public static Type[] DomainTypes => AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Types")).ToArray();
 
-        public static Type[] DomainServices => new Type[] { };
+        public static Type[] DomainServices => AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Services")).ToArray();
 
         public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
 
@@ -72,8 +72,8 @@ namespace Legacy.Rest.App.Demo
 
         public static NakedFramework.Menu.IMenu[] MainMenus(IMenuFactory factory) =>
             new[] {
-                    MakeMenu<Employee>(factory),
-                    MakeMenu<Product>(factory)
+                    MakeMenu<Employee_Menu>(factory),
+                    MakeMenu<Test_Menu>(factory),
             };
     }
 }
