@@ -180,10 +180,15 @@ public class ClassWithDate {
     private NODate _date;
     public DateTime date;
 
+    private NODateNullable _date1;
+    public DateTime? date1;
+
     [Key]
     public int Id { get; init; }
 
     public NODate Date => _date ??= new NODate(date, d => date = d);
+
+    public NODateNullable DateNullable => _date1 ??= new NODateNullable(date1, d => date1 = d);
 
     public ITitle Title() => Date.Title();
 

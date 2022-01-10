@@ -63,6 +63,8 @@ public abstract class EFCoreTestDbContext : DbContext {
     private static void MapClassWithDate(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithDate>().Ignore(t => t.Date);
         modelBuilder.Entity<ClassWithDate>().Property("date").HasColumnName("Date");
+        modelBuilder.Entity<ClassWithDate>().Ignore(t => t.DateNullable);
+        modelBuilder.Entity<ClassWithDate>().Property("date1").HasColumnName("Date1");
     }
 
     private static void MapClassWithTimeStamp(ModelBuilder modelBuilder) {
@@ -117,7 +119,7 @@ public abstract class EFCoreTestDbContext : DbContext {
     private static void Seed(ModelBuilder modelBuilder) {
         var fred = new { Id = 1, name = "Fred", ClassWithInternalCollectionId = 1, ClassWithStringId = 2 };
         var bill = new { Id = 2, name = "Bill", ClassWithStringId = 2 };
-        var jane = new { Id = 1, date = new DateTime(2021, 11, 1) };
+        var jane = new { Id = 1, date = new DateTime(2021, 11, 1), date1 = new DateTime(2021, 11, 1) };
 
         modelBuilder.Entity<ClassWithTimeStamp>().HasData(jane);
 

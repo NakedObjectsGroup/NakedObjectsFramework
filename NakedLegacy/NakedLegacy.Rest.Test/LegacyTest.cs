@@ -60,6 +60,7 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(Data.AppLib.MultiLineTextString),
         typeof(Data.AppLib.WholeNumber),
         typeof(Data.AppLib.NODate),
+        typeof(Data.AppLib.NODateNullable),
         typeof(Data.AppLib.TimeStamp)
     };
 
@@ -340,6 +341,21 @@ public class LegacyTest : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(nameof(ClassWithDate.Date), parsedResult["id"].ToString());
+        Assert.AreEqual("2021-11-01", parsedResult["value"].ToString());
+        Assert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
+        Assert.AreEqual("date", parsedResult["extensions"]["format"].ToString());
+    }
+
+    [Test]
+    public void TestGetNullableDateProperty()
+    {
+        var api = Api();
+        var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.DateNullable));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(nameof(ClassWithDate.DateNullable), parsedResult["id"].ToString());
         Assert.AreEqual("2021-11-01", parsedResult["value"].ToString());
         Assert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
         Assert.AreEqual("date", parsedResult["extensions"]["format"].ToString());

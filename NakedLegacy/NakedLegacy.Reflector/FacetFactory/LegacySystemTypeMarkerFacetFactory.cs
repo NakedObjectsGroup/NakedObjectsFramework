@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
@@ -31,6 +32,12 @@ public sealed class LegacySystemTypeMarkerFacetFactory : SystemTypeFacetFactoryP
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var valueType = LegacyHelpers.IsOrImplementsValueHolder(type) ?? type;
+
+        if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+            valueType = valueType.GetGenericArguments().First();
+            FacetUtils.AddFacet(new NullableFacetAlways(specification));
+        }
+
         AddTypeFacets(specification, valueType);
         return metamodel;
     }
