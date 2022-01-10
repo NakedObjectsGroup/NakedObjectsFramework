@@ -11,7 +11,7 @@ public class Money : ValueHolder<decimal> {
 
     public Money(decimal value, Action<decimal> callback) : base(value, callback) { }
 
-    public override string ToString() => "€" + Value.ToString("#.##");
+    public override string ToString() => "€" + Value.ToString("0.00");
 
     public override object Parse(string entry) {
         try {
