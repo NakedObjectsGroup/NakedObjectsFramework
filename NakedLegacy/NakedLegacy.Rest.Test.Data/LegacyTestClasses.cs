@@ -312,9 +312,11 @@ public class ClassWithOrderedProperties {
     private TextString _name1;
     private TextString _name2;
     private TextString _name3;
+    private TextString _name4;
     public string name1;
     public string name2;
     public string name3;
+    public string name4;
 
     [Key]
     public int Id { get; init; }
@@ -322,6 +324,9 @@ public class ClassWithOrderedProperties {
     public TextString Name1 => _name1 ??= new TextString(name1, s => name1 = s);
     public TextString Name2 => _name2 ??= new TextString(name2, s => name2 = s);
     public TextString Name3 => _name3 ??= new TextString(name3, s => name3 = s);
+    
+    [MemberOrder(4)]
+    public TextString Name4 => _name4 ??= new TextString(name4, s => name4 = s);
 
     public static string FieldOrder() => $"{nameof(Name2)}, {nameof(Name3)}, {nameof(Name1)}";
 
@@ -337,6 +342,9 @@ public class ClassWithOrderedActions
     public void actionAction1() { }
     public void actionAction2() { }
     public void actionAction3() { }
+
+    [MemberOrder(4)]
+    public void actionAction4() { }
 
     public static string ActionOrder() => $"{nameof(actionAction2)}, {nameof(actionAction3)}, {nameof(actionAction1)}";
 }

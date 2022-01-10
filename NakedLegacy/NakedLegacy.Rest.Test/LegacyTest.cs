@@ -623,7 +623,7 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.AreEqual("Name2", ((JProperty)parsedResult["members"].First).Name);
         Assert.AreEqual("0", parsedResult["members"]["Name2"]["extensions"]["memberOrder"].ToString());
@@ -633,6 +633,9 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("Name1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
         Assert.AreEqual("2", parsedResult["members"]["Name1"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("Name4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
+        Assert.AreEqual("4", parsedResult["members"]["Name4"]["extensions"]["memberOrder"].ToString());
     }
 
     [Test]
@@ -644,7 +647,7 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.AreEqual("actionAction2", ((JProperty)parsedResult["members"].First).Name);
         Assert.AreEqual("0", parsedResult["members"]["actionAction2"]["extensions"]["memberOrder"].ToString());
@@ -654,5 +657,8 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("actionAction1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
         Assert.AreEqual("2", parsedResult["members"]["actionAction1"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("actionAction4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
+        Assert.AreEqual("4", parsedResult["members"]["actionAction4"]["extensions"]["memberOrder"].ToString());
     }
 }
