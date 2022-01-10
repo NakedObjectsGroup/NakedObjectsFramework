@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Compile Remove="TestAttributes.cs" />
-    <Compile Remove="TypeRetrievalTests.cs" />
   </ItemGroup>
 
   <ItemGroup>

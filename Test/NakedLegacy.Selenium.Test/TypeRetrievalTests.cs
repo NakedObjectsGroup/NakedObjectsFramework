@@ -16,7 +16,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 {
 
     [TestClass]
-    public class TypeRetrievalTests_UsingNewFramework
+    public class TypeRetrievalTests
     {
         #region Overhead
         private string baseUrl = "https://nakedlegacytest.azurewebsites.net/";
@@ -54,7 +54,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //AccessInstanceWithTitle("BusinessEntityAddress--1--2--249", "Home: 4350 Minute Dr....");
             //EF Core:
             //AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Gustavo Achong");
-            //EF 6: AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Untitled object");
             AccessInstanceWithTitle("ContactType--1", "Accounting Manager");
             AccessInstanceWithTitle("CountryRegion--AD", "Andorra");
             AccessInstanceWithTitle("EmailAddress--1--1", "ken0@adventure-works.com");
@@ -84,7 +83,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //AccessInstanceWithTitle("TransactionHistory--100000", "TransactionHistory: 100000"); 
             AccessInstanceWithTitle("UnitMeasure--BOX", "Boxes");
             //AccessInstanceWithTitle("WorkOrder--1", "LL Road Frame - Black, 58: 7/4/2005 12:00:00 AM");
-            AccessInstanceWithTitle("WorkOrderRouting--13--747--1", "Frame Forming");
+            //AccessInstanceWithTitle("WorkOrderRouting--13--747--1", "Frame Forming");
             //AccessInstanceWithTitle("ProductVendor--1--1580", "ProductVendor: 1-1580");
             //AccessInstanceWithTitle("PurchaseOrderDetail--1--1", "4 x Adjustable Race");
             AccessInstanceWithTitle("PurchaseOrderHeader--1", "PO from Litware, Inc., 5/17/2005");
@@ -103,9 +102,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AccessInstanceWithTitle("SalesReason--1", "Price");
             AccessInstanceWithTitle("SalesTaxRate--1", "Sales Tax Rate for Alberta");
             AccessInstanceWithTitle("SalesTerritory--1", "Northwest");
-            //EF Core:
             //AccessInstanceWithTitle("SalesTerritoryHistory--275--2--632557728000000000", "Michael Blythe Northeast");
-            //EF 6: AccessInstanceWithTitle("SalesTerritoryHistory--632557728000000000--275--2", "Michael Blythe Northeast");
             //AccessInstanceWithTitle("ShoppingCartItem--2", "3 x Full-Finger Gloves, M");
             AccessInstanceWithTitle("SpecialOffer--1", "No Discount");
             //AccessInstanceWithTitle("SpecialOfferProduct--1--680", "SpecialOfferProduct: 1-680");
