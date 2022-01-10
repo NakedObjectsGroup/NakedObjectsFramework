@@ -68,7 +68,7 @@ Namespace AW.Types
 
 		Public Overrides Function ToString() As String
 			Return If(CardNumber.Length > 4,
-				CardNumber.Substring(CardNumber.Length - 4).PadLeft(CardNumber.Length, "*"),
+				CardNumber.Substring(CardNumber.Length - 4).PadLeft(CardNumber.Length, "*"c),
 				Nothing)
 		End Function
 

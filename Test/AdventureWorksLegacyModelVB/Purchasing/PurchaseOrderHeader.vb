@@ -82,13 +82,13 @@
 		Friend myOrderDate As NODate
 
 		'<MemberOrder(11)>
-		Public ReadOnly Property OrderDate As TextString
+		Public ReadOnly Property OrderDate As NODate
 			Get
-				Return If(myOrderDate, New TextString(mappedOrderDate, Function(v) mappedOrderDate = v))
+				Return If(myOrderDate, New NODate(mappedOrderDate, Function(v) mappedOrderDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutOrderDate(a As FieldAbout, OrderDate As TextString)
+		Public Sub AboutOrderDate(a As FieldAbout, OrderDate As NODate)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -100,16 +100,16 @@
 
 #Region "ShipDate"
 		Public mappedShipDate As DateTime?
-		Friend myShipDate As NODate
+		Friend myShipDate As NODateNullable
 
 		'<MemberOrder(20)>
-		Public ReadOnly Property ShipDate As NODate
+		Public ReadOnly Property ShipDate As NODateNullable
 			Get
-				Return If(myShipDate, New NODate(mappedShipDate, Function(v) mappedShipDate = v))
+				Return If(myShipDate, New NODateNullable(mappedShipDate, Function(v) mappedShipDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutShipDate(a As FieldAbout, ShipDate As NODate)
+		Public Sub AboutShipDate(a As FieldAbout, ShipDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable

@@ -2,15 +2,16 @@
 
 Namespace AW.Types
 
-	Partial Public Class Customer
- Implements ITitledObject
+	Partial Public Class Customer
+
+		Implements ITitledObject
 		''<Hidden>
 		Public Property CustomerID() As Integer
 
 		'<MemberOrder(15)>
 		Public ReadOnly Property CustomerType() As TextString
 			Get
-				Return New TextString(If(StoreID, "Store", "Individual"))
+				Return New TextString(If(StoreID Is Nothing, "Individual", "Store"))
 			End Get
 		End Property
 
@@ -46,7 +47,7 @@ Namespace AW.Types
 		End Function
 
 		Public Overrides Function ToString() As String
-			Return $"{AccountNumber} {(If(Store Is Nothing, Person, Store))}"
+			Return $"{AccountNumber} {If(Store Is Nothing, Person.ToString(), Store.ToString)}"
 		End Function
 
 #Region "Store & Personal customers"

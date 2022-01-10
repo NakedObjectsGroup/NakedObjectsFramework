@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SalesTaxRate
- Implements ITitledObject
+    Partial Public Class SalesTaxRate
+
+        Implements ITitledObject
         '<Hidden>
         Public Property SalesTaxRateID() As Integer
 
@@ -28,16 +29,16 @@
 
 #Region "TaxRate"
         Public mappedTaxRate As Decimal
-        Friend myTaxRate As WholeNumber
+        Friend myTaxRate As FloatingPointNumber
 
         '<MemberOrder(1)>
-        Public ReadOnly Property TaxRate As WholeNumber
+        Public ReadOnly Property TaxRate As FloatingPointNumber
             Get
-                Return If(myTaxRate, New WholeNumber(mappedTaxRate, Function(v) mappedTaxRate = v))
+                Return If(myTaxRate, New FloatingPointNumber(mappedTaxRate, Function(v) mappedTaxRate = v))
             End Get
         End Property
 
-        Public Sub AboutTaxRate(a As FieldAbout, TaxRate As WholeNumber)
+        Public Sub AboutTaxRate(a As FieldAbout, TaxRate As FloatingPointNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable

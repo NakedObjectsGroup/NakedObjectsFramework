@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class WorkOrder
- Implements ITitledObject
+	Partial Public Class WorkOrder
+
+		Implements ITitledObject
 
 
 		Public Property WorkOrderID() As Integer
@@ -50,16 +51,16 @@
 
 #Region "EndDate"
 		Public mappedEndDate As Date?
-		Friend myEndDate As NODate
+		Friend myEndDate As NODateNullable
 
 		'<MemberOrder(32)>
-		Public ReadOnly Property EndDate As NODate
+		Public ReadOnly Property EndDate As NODateNullable
 			Get
-				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
+				Return If(myEndDate, New NODateNullable(mappedEndDate, Function(v) mappedEndDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODate)
+		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable

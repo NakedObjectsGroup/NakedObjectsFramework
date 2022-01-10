@@ -181,16 +181,16 @@
 
 #Region "ShipDate"
 		Public mappedShipDate As Date?
-		Friend myShipDate As NODate
+		Friend myShipDate As NODateNullable
 
 		'<MemberOrder(22)>
-		Public ReadOnly Property ShipDate As NODate
+		Public ReadOnly Property ShipDate As NODateNullable
 			Get
-				Return If(myShipDate, New NODate(mappedShipDate, Function(v) mappedShipDate = v))
+				Return If(myShipDate, New NODateNullable(mappedShipDate, Function(v) mappedShipDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutShipDate(a As FieldAbout, ShipDate As NODate)
+		Public Sub AboutShipDate(a As FieldAbout, ShipDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable

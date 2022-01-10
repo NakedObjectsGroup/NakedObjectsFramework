@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SalesPersonQuotaHistory
- Implements ITitledObject
+    Partial Public Class SalesPersonQuotaHistory
+
+        Implements ITitledObject
         '<Hidden>
         Public Property BusinessEntityID() As Integer
 
@@ -77,7 +78,7 @@
         End Function
 
         Public Overrides Function ToString() As String
-            Return $"{QuotaDate.ToString("d")} {SalesQuota.ToString("C")}"
+            Return $"{QuotaDate} {SalesQuota}"
         End Function
     End Class
 End Namespace

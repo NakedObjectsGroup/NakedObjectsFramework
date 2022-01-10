@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class BillOfMaterial
- Implements ITitledObject
+	Partial Public Class BillOfMaterial
+
+		Implements ITitledObject
 
 		Public Property BillOfMaterialID() As Integer
 
@@ -49,16 +50,16 @@
 
 #Region "PropName"
 		Public mappedPropName As DateTime?
-		Friend myPropName As NODate
+		Friend myPropName As NODateNullable
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property PropName As NODate
+		Public ReadOnly Property PropName As NODateNullable
 			Get
-				Return If(myPropName, New NODate(mappedPropName, Function(v) mappedPropName = v))
+				Return If(myPropName, New NODateNullable(mappedPropName, Function(v) mappedPropName = v))
 			End Get
 		End Property
 
-		Public Sub AboutPropName(a As FieldAbout, PropName As NODate)
+		Public Sub AboutPropName(a As FieldAbout, PropName As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable

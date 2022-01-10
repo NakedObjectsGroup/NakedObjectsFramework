@@ -569,6 +569,14 @@ Namespace AW.Types
             Return mappedName
         End Function
 
+#Region "Main Menu actions"
+
+        Public Shared Function ActionAProduct() As Product
+            Return ThreadLocals.Container.AllInstances(GetType(Product)).OfType(Of Product).First
+        End Function
+
+#End Region
+
     End Class
 
 End Namespace
