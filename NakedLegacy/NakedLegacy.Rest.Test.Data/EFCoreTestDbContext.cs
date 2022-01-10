@@ -44,6 +44,8 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<ClassWithLogical> ClassWithLogicals { get; set; }
     public DbSet<ClassWithMoney> ClassWithMoneys { get; set; }
 
+    public DbSet<ClassWithOrderedProperties> ClassesWithOrderedProperties { get; set; }
+
     public DbSet<ClassWithReferenceProperty> ClassWithReferenceProperties { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
@@ -86,6 +88,16 @@ public abstract class EFCoreTestDbContext : DbContext {
 
         modelBuilder.Entity<ClassWithInternalCollection>()
                     .HasMany(c => c._TestCollection);
+    }
+
+    private static void MapClassWithOrderedProperties(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ClassWithOrderedProperties>().Ignore(t => t.Name1);
+        modelBuilder.Entity<ClassWithOrderedProperties>().Ignore(t => t.Name2);
+        modelBuilder.Entity<ClassWithOrderedProperties>().Ignore(t => t.Name3);
+        modelBuilder.Entity<ClassWithOrderedProperties>().Property("name1").HasColumnName("Name1");
+        modelBuilder.Entity<ClassWithOrderedProperties>().Property("name2").HasColumnName("Name2");
+        modelBuilder.Entity<ClassWithOrderedProperties>().Property("name3").HasColumnName("Name3");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -133,6 +145,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithLogical>().HasData(new ClassWithLogical { Id = 1, boolean = true });
         modelBuilder.Entity<ClassWithMoney>().HasData(new ClassWithMoney { Id = 1, amount = 10.00M });
         modelBuilder.Entity<ClassWithReferenceProperty>().HasData(new { Id = 1, ReferencePropertyId = 1 });
+        modelBuilder.Entity<ClassWithOrderedProperties>().HasData(new { Id = 1 });
     }
 }
 

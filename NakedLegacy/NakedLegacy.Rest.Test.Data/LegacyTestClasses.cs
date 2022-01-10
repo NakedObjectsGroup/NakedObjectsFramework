@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework.Core.Util;
-using NakedLegacy.Reflector.Component;
+using NakedLegacy.Rest.Test.Data.AppLib;
 using NakedLegacy.Types;
 using NakedLegacy.Types.Container;
 using NakedObjects;
@@ -27,17 +27,17 @@ public class SimpleService {
 }
 
 public class ClassWithTextString {
-    private AppLib.TextString _name;
+    private TextString _name;
     public string name;
 
     [Key]
     public int Id { get; init; }
 
-    public AppLib.TextString Name => _name ??= new AppLib.TextString(name, s => name = s);
+    public TextString Name => _name ??= new TextString(name, s => name = s);
 
     public ITitle Title() => Name.Title();
 
-    public ClassWithTextString ActionUpdateName(AppLib.TextString newName) {
+    public ClassWithTextString ActionUpdateName(TextString newName) {
         Name.Value = newName.Value;
         return this;
     }
@@ -55,7 +55,7 @@ public class ClassWithInternalCollection {
 
     public InternalCollection TestCollection => _testCollection ??= new InternalCollection<ClassWithTextString>(_TestCollection);
 
-    public ClassWithInternalCollection ActionUpdateTestCollection(AppLib.TextString newName) {
+    public ClassWithInternalCollection ActionUpdateTestCollection(TextString newName) {
         var name = newName.Value;
         var bill = Container.Instances<ClassWithTextString>().Single(c => c.name == name);
         _TestCollection.Add(bill);
@@ -64,8 +64,7 @@ public class ClassWithInternalCollection {
     }
 }
 
-public class ClassWithNOFInternalCollection
-{
+public class ClassWithNOFInternalCollection {
     private InternalCollection _testCollection;
 
     public virtual ICollection<ClassWithString> _TestCollection { get; } = new List<ClassWithString>();
@@ -99,17 +98,16 @@ public class ClassWithFieldAbout {
     [Key]
     public int Id { get; init; }
 
-    public AppLib.TextString Name => new("");
+    public TextString Name => new("");
 
     public ITitle Title() => Name.Title();
 
-    public void aboutName(FieldAbout fieldAbout, AppLib.TextString name) {
+    public void aboutName(FieldAbout fieldAbout, TextString name) {
         fieldAbout.Visible = !TestInvisibleFlag;
     }
 }
 
-public class ClassWithLinkToNOFClass
-{
+public class ClassWithLinkToNOFClass {
     [Key]
     public int Id { get; init; }
 
@@ -147,18 +145,18 @@ public class ClassWithMenu {
     [Key]
     public int Id { get; init; }
 
-    public AppLib.TextString Name => new($"{nameof(GetType)}/{Id}");
+    public TextString Name => new($"{nameof(GetType)}/{Id}");
+
+    private static IContainer Container => ThreadLocals.Container;
 
     public ITitle Title() => Name.Title();
 
     public ClassWithMenu ActionMethod1() => this;
     public ClassWithMenu actionMethod2() => this;
 
-    private static IContainer Container => ThreadLocals.Container;
+    public static ClassWithTextString ActionMenuAction() => (ClassWithTextString)Container.AllInstances(typeof(ClassWithTextString)).First();
 
-    public static ClassWithTextString ActionMenuAction() => (ClassWithTextString) Container.AllInstances(typeof(ClassWithTextString)).First();
-
-    public static ArrayList ActionMenuAction1() => new (Container.AllInstances(typeof(ClassWithTextString)).ToList());
+    public static ArrayList ActionMenuAction1() => new(Container.AllInstances(typeof(ClassWithTextString)).ToList());
 
     //public static MainMenu menuOrder() {
     //    var menu = new MainMenu();
@@ -179,59 +177,59 @@ public class ClassWithMenu {
 }
 
 public class ClassWithDate {
-    private AppLib.NODate _date;
+    private NODate _date;
     public DateTime date;
 
     [Key]
     public int Id { get; init; }
 
-    public AppLib.NODate Date => _date ??= new AppLib.NODate(date, d => date = d);
+    public NODate Date => _date ??= new NODate(date, d => date = d);
 
     public ITitle Title() => Date.Title();
 
-    public ClassWithDate ActionUpdateDate(AppLib.NODate newDate) {
+    public ClassWithDate ActionUpdateDate(NODate newDate) {
         Date.Value = newDate.Value;
         return this;
     }
 }
 
 public class ClassWithTimeStamp {
-    private AppLib.TimeStamp _timestamp;
+    private TimeStamp _timestamp;
     public DateTime date;
 
     [Key]
     public int Id { get; init; }
 
     [ConcurrencyCheck]
-    public AppLib.TimeStamp TimeStamp => _timestamp ??= new AppLib.TimeStamp(date, d => date = d);
+    public TimeStamp TimeStamp => _timestamp ??= new TimeStamp(date, d => date = d);
 
     public ITitle Title() => TimeStamp.Title();
 
-    public ClassWithTimeStamp ActionUpdateTimeStamp(AppLib.TimeStamp newTimeStamp) {
+    public ClassWithTimeStamp ActionUpdateTimeStamp(TimeStamp newTimeStamp) {
         TimeStamp.Value = newTimeStamp.Value;
         return this;
     }
 }
 
 public class ClassWithWholeNumber {
-    private AppLib.WholeNumber _wholeNumber;
+    private WholeNumber _wholeNumber;
     public int number;
 
     [Key]
     public int Id { get; init; }
 
-    public AppLib.WholeNumber WholeNumber => _wholeNumber ??= new AppLib.WholeNumber(number, i => number = i);
+    public WholeNumber WholeNumber => _wholeNumber ??= new WholeNumber(number, i => number = i);
 
     public static bool TestVisible { get; set; } = true;
 
     public ITitle Title() => WholeNumber.Title();
 
-    public ClassWithWholeNumber actionUpdateWholeNumber(AppLib.WholeNumber newWholeNumber) {
+    public ClassWithWholeNumber actionUpdateWholeNumber(WholeNumber newWholeNumber) {
         WholeNumber.Value = newWholeNumber.Value;
         return this;
     }
 
-    public void AboutActionUpdateWholeNumber(ActionAbout actionAbout, AppLib.WholeNumber newWholeNumber) {
+    public void AboutActionUpdateWholeNumber(ActionAbout actionAbout, WholeNumber newWholeNumber) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }
@@ -243,24 +241,24 @@ public class ClassWithWholeNumber {
 }
 
 public class ClassWithLogical {
-    private AppLib.Logical _logical;
+    private Logical _logical;
     public bool boolean;
 
     [Key]
     public int Id { get; init; }
 
-    public AppLib.Logical Logical => _logical ??= new AppLib.Logical(boolean, i => boolean = i);
+    public Logical Logical => _logical ??= new Logical(boolean, i => boolean = i);
 
     public static bool TestVisible { get; set; } = true;
 
     public ITitle Title() => Logical.Title();
 
-    public ClassWithLogical actionUpdateLogical(AppLib.Logical newLogical) {
+    public ClassWithLogical actionUpdateLogical(Logical newLogical) {
         Logical.Value = newLogical.Value;
         return this;
     }
 
-    public void AboutActionUpdateLogical(ActionAbout actionAbout, AppLib.Logical newLogical) {
+    public void AboutActionUpdateLogical(ActionAbout actionAbout, Logical newLogical) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }
@@ -272,24 +270,24 @@ public class ClassWithLogical {
 }
 
 public class ClassWithMoney {
-    private AppLib.Money _money;
+    private Money _money;
     public decimal amount;
 
     [Key]
     public int Id { get; init; }
 
-    public AppLib.Money Money => _money ??= new AppLib.Money(amount, i => amount = i);
+    public Money Money => _money ??= new Money(amount, i => amount = i);
 
     public static bool TestVisible { get; set; } = true;
 
     public ITitle Title() => Money.Title();
 
-    public ClassWithMoney actionUpdateMoney(AppLib.Money newMoney) {
+    public ClassWithMoney actionUpdateMoney(Money newMoney) {
         Money.Value = newMoney.Value;
         return this;
     }
 
-    public void AboutActionUpdateMoney(ActionAbout actionAbout, AppLib.Money newMoney) {
+    public void AboutActionUpdateMoney(ActionAbout actionAbout, Money newMoney) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }
@@ -300,13 +298,31 @@ public class ClassWithMoney {
     }
 }
 
-public class ClassWithDateTimeKey
-{
-    private AppLib.TextString _name;
+public class ClassWithDateTimeKey {
+    private TextString _name;
     public string name;
 
     [Key]
     public DateTime Id { get; init; }
 
-    public AppLib.TextString Name => _name ??= new AppLib.TextString(name, s => name = s);
+    public TextString Name => _name ??= new TextString(name, s => name = s);
+}
+
+public class ClassWithOrderedProperties {
+    private TextString _name1;
+    private TextString _name2;
+    private TextString _name3;
+    public string name1;
+    public string name2;
+    public string name3;
+
+    [Key]
+    public int Id { get; init; }
+
+    public TextString Name1 => _name1 ??= new TextString(name1, s => name1 = s);
+    public TextString Name2 => _name2 ??= new TextString(name2, s => name2 = s);
+    public TextString Name3 => _name3 ??= new TextString(name3, s => name3 = s);
+
+    public static string FieldOrder() => $"{nameof(Name2)}, {nameof(Name3)}, {nameof(Name1)}";
+
 }
