@@ -47,7 +47,8 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithLogical),
         typeof(ClassWithMoney),
         typeof(ClassWithReferenceProperty),
-        typeof(ClassWithOrderedProperties)
+        typeof(ClassWithOrderedProperties),
+        typeof(ClassWithOrderedActions)
     };
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
@@ -632,5 +633,26 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("Name1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
         Assert.AreEqual("2", parsedResult["members"]["Name1"]["extensions"]["memberOrder"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectWithOrderedActions()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithOrderedActions>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.AreEqual("actionAction2", ((JProperty)parsedResult["members"].First).Name);
+        Assert.AreEqual("0", parsedResult["members"]["actionAction2"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("actionAction3", ((JProperty)parsedResult["members"].First.Next).Name);
+        Assert.AreEqual("1", parsedResult["members"]["actionAction3"]["extensions"]["memberOrder"].ToString());
+
+        Assert.AreEqual("actionAction1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
+        Assert.AreEqual("2", parsedResult["members"]["actionAction1"]["extensions"]["memberOrder"].ToString());
     }
 }

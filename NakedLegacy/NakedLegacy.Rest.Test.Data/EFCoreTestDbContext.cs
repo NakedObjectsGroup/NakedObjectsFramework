@@ -46,6 +46,8 @@ public abstract class EFCoreTestDbContext : DbContext {
 
     public DbSet<ClassWithOrderedProperties> ClassesWithOrderedProperties { get; set; }
 
+    public DbSet<ClassWithOrderedActions> ClassesWithOrderedActions { get; set; }
+
     public DbSet<ClassWithReferenceProperty> ClassWithReferenceProperties { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
@@ -146,6 +148,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithMoney>().HasData(new ClassWithMoney { Id = 1, amount = 10.00M });
         modelBuilder.Entity<ClassWithReferenceProperty>().HasData(new { Id = 1, ReferencePropertyId = 1 });
         modelBuilder.Entity<ClassWithOrderedProperties>().HasData(new { Id = 1 });
+        modelBuilder.Entity<ClassWithOrderedActions>().HasData(new { Id = 1 });
     }
 }
 

@@ -326,3 +326,17 @@ public class ClassWithOrderedProperties {
     public static string FieldOrder() => $"{nameof(Name2)}, {nameof(Name3)}, {nameof(Name1)}";
 
 }
+
+public class ClassWithOrderedActions
+{
+   
+
+    [Key]
+    public int Id { get; init; }
+
+    public void actionAction1() { }
+    public void actionAction2() { }
+    public void actionAction3() { }
+
+    public static string ActionOrder() => $"{nameof(actionAction2)}, {nameof(actionAction3)}, {nameof(actionAction1)}";
+}
