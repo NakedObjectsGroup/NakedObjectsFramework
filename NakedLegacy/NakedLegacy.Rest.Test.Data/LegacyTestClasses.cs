@@ -160,22 +160,22 @@ public class ClassWithMenu {
 
     public static ArrayList ActionMenuAction1() => new (Container.AllInstances(typeof(ClassWithTextString)).ToList());
 
-    public static MainMenu menuOrder() {
-        var menu = new MainMenu();
-        menu.Menus.Add(new Menu("Method1"));
+    //public static MainMenu menuOrder() {
+    //    var menu = new MainMenu();
+    //    menu.Menus.Add(new Menu("Method1"));
 
-        var newSubMenu = new SubMenu("Submenu1");
-        menu.Menus.Add(newSubMenu);
-        newSubMenu.Menus.Add(new Menu("Method2"));
-        return menu;
-    }
+    //    var newSubMenu = new SubMenu("Submenu1");
+    //    menu.Menus.Add(newSubMenu);
+    //    newSubMenu.Menus.Add(new Menu("Method2"));
+    //    return menu;
+    //}
 
-    public static MainMenu sharedMenuOrder() {
-        var menu = new MainMenu();
-        menu.Menus.Add(new Menu("MenuAction"));
-        menu.Menus.Add(new Menu("MenuAction1"));
-        return menu;
-    }
+    //public static MainMenu sharedMenuOrder() {
+    //    var menu = new MainMenu();
+    //    menu.Menus.Add(new Menu("MenuAction"));
+    //    menu.Menus.Add(new Menu("MenuAction1"));
+    //    return menu;
+    //}
 }
 
 public class ClassWithDate {
@@ -298,4 +298,15 @@ public class ClassWithMoney {
             actionAbout.Usable = true;
         }
     }
+}
+
+public class ClassWithDateTimeKey
+{
+    private AppLib.TextString _name;
+    public string name;
+
+    [Key]
+    public DateTime Id { get; init; }
+
+    public AppLib.TextString Name => _name ??= new AppLib.TextString(name, s => name = s);
 }

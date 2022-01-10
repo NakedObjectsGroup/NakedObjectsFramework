@@ -9,11 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Menu;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
@@ -22,11 +24,11 @@ using NakedFunctions.Rest.Test;
 using NakedLegacy.Reflector.Component;
 using NakedLegacy.Reflector.Extensions;
 using NakedLegacy.Rest.Test.Data;
-using NakedLegacy.Types;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using IMenu = NakedLegacy.Types.IMenu;
 
 namespace NakedLegacy.Rest.Test;
 
@@ -105,6 +107,23 @@ public class LegacyTest : AcceptanceTestCase {
         services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
     }
+
+    private static NakedFramework.Menu.IMenu MakeMenu<T>(IMenuFactory factory) {
+        var t = typeof(T);
+        var m = factory.NewMenu(t, false, t.Name);
+        var actions = t.GetMethods(BindingFlags.Public | BindingFlags.Static);
+        foreach (var action in actions) {
+            m.AddAction(action.Name);
+        }
+
+        return m;
+    }
+
+    protected override NakedFramework.Menu.IMenu[] MainMenus(IMenuFactory factory) =>
+        new[] {
+            MakeMenu<ClassWithMenu>(factory)
+        };
+
 
     [SetUp]
     public void SetUp() {
@@ -263,20 +282,20 @@ public class LegacyTest : AcceptanceTestCase {
         //Assert.IsNotNull(parsedResult["members"]["Id"]);
     }
 
-    [Test]
-    public void TestGetLegacyObjectWithMenu() {
-        var api = Api();
-        var result = api.GetObject(FullName<ClassWithMenu>(), "1");
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //[Test]
+    //public void TestGetLegacyObjectWithMenu() {
+    //    var api = Api();
+    //    var result = api.GetObject(FullName<ClassWithMenu>(), "1");
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+    //    Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
 
-        Assert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
-        Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
-        Assert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
-    }
+    //    Assert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
+    //    Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
+    //    Assert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
+    //}
 
     [Test]
     public void TestGetLegacyMainMenu() {
