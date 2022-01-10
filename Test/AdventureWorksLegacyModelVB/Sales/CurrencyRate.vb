@@ -103,7 +103,7 @@
         End Function
 
         Public Overrides Function ToString() As String
-            Return mappedAverageRate
+            Return mappedAverageRate.ToString()
         End Function
     End Class
 End Namespace

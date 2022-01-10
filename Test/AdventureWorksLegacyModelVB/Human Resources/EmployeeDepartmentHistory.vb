@@ -33,16 +33,16 @@
 
 #Region "EndDate"
 		Public mappedEndDate As Date?
-		Friend myEndDate As NODate
+		Friend myEndDate As NODateNullable
 
 		'<MemberOrder(5)>
-		Public ReadOnly Property EndDate As NODate
+		Public ReadOnly Property EndDate As NODateNullable
 			Get
-				Return If(myEndDate, New NODate(If(mappedEndDate, Nothing), Function(v) mappedEndDate = v))
+				Return If(myEndDate, New NODateNullable(mappedEndDate, Function(v) mappedEndDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutEndDate(a As FieldAbout, EndDate As DateTime)
+		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -85,7 +85,7 @@
 		End Function
 
 		Public Overrides Function ToString() As String
-			Return $"{Department} {StartDate.ToString("d")}"
+			Return $"{Department} {StartDate}"
 		End Function
 	End Class
 

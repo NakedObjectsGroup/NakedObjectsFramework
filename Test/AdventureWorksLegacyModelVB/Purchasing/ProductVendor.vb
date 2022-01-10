@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class ProductVendor
- Implements ITitledObject
+	Partial Public Class ProductVendor
+
+		Implements ITitledObject
 
 		Public Property ProductID() As Integer
 
@@ -51,16 +52,16 @@
 
 #Region "LastReceiptCost"
 		Public mappedLastReceiptCost As Decimal?
-		Friend myLastReceiptCost As Money
+		Friend myLastReceiptCost As MoneyNullable
 
 		'<MemberOrder(41)>
-		Public ReadOnly Property LastReceiptCost As Money
+		Public ReadOnly Property LastReceiptCost As MoneyNullable
 			Get
-				Return If(myLastReceiptCost, New Money(mappedLastReceiptCost, Function(v) mappedLastReceiptCost = v))
+				Return If(myLastReceiptCost, New MoneyNullable(mappedLastReceiptCost, Function(v) mappedLastReceiptCost = v))
 			End Get
 		End Property
 
-		Public Sub AboutLastReceiptCost(a As FieldAbout, LastReceiptCost As Money)
+		Public Sub AboutLastReceiptCost(a As FieldAbout, LastReceiptCost As MoneyNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -72,16 +73,16 @@
 
 #Region "LastReceiptDate"
 		Public mappedLastReceiptDate As DateTime?
-		Friend myLastReceiptDate As NODate
+		Friend myLastReceiptDate As NODateNullable
 
 		'<MemberOrder(50)>
-		Public ReadOnly Property LastReceiptDate As NODate
+		Public ReadOnly Property LastReceiptDate As NODateNullable
 			Get
-				Return If(myLastReceiptDate, New NODate(mappedLastReceiptDate, Function(v) mappedLastReceiptDate = v))
+				Return If(myLastReceiptDate, New NODateNullable(mappedLastReceiptDate, Function(v) mappedLastReceiptDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutLastReceiptDate(a As FieldAbout, LastReceiptDate As NODate)
+		Public Sub AboutLastReceiptDate(a As FieldAbout, LastReceiptDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -135,16 +136,16 @@
 
 #Region "OnOrderQty"
 		Public mappedOnOrderQty As Integer?
-		Friend myOnOrderQty As WholeNumber
+		Friend myOnOrderQty As WholeNumberNullable
 
 		'<MemberOrder(62)>
-		Public ReadOnly Property OnOrderQty As WholeNumber
+		Public ReadOnly Property OnOrderQty As WholeNumberNullable
 			Get
-				Return If(myOnOrderQty, New WholeNumber(mappedOnOrderQty, Function(v) mappedOnOrderQty = v))
+				Return If(myOnOrderQty, New WholeNumberNullable(mappedOnOrderQty, Function(v) mappedOnOrderQty = v))
 			End Get
 		End Property
 
-		Public Sub AboutOnOrderQty(a As FieldAbout, OnOrderQty As WholeNumber)
+		Public Sub AboutOnOrderQty(a As FieldAbout, OnOrderQty As WholeNumberNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable

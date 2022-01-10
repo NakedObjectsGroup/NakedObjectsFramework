@@ -27,6 +27,8 @@ using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NakedLegacy.Types.Container;
 using AdventureWorksLegacy.AppLib;
+using NakedFramework.Menu;
+using System.Reflection;
 
 namespace Legacy.Rest.App.Demo {
     public class Startup {
@@ -42,7 +44,7 @@ namespace Legacy.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                //builder.MainMenus = ModelConfig.MainMenus;
+                builder.MainMenus = ModelConfig.MainMenus;
                 //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
                 builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { ModelConfig.EFDbContextCreator }; });
                 builder.AddRestfulObjects(options => {
@@ -55,8 +57,8 @@ namespace Legacy.Rest.App.Demo {
                 });
                 builder.AddNakedLegacy(options => {
                     options.NoValidate = true;
-                    options.DomainModelTypes = ModelConfig.LegacyTypes;
-                    options.DomainModelServices = ModelConfig.LegacyServices;
+                    options.DomainModelTypes = ModelConfig.DomainTypes;
+                    options.DomainModelServices = ModelConfig.DomainServices;
                     options.ValueHolderTypes = LegacyValueHolders;
                 });
             });
@@ -82,9 +84,9 @@ namespace Legacy.Rest.App.Demo {
             typeof(Logical),
             typeof(MultiLineTextString),
             typeof(WholeNumber),typeof(WholeNumberNullable),
-            typeof(NODate),
+            typeof(NODate),typeof(NODateNullable),
             typeof(TimeStamp),
-            typeof(FloatingPointNumber),
+            typeof(FloatingPointNumber),typeof(FloatingPointNumberNullable),
             typeof(Percentage)
             };
 
@@ -104,5 +106,7 @@ namespace Legacy.Rest.App.Demo {
             app.UseRestfulObjects();
             AdventureWorksLegacy.AppLib.ThreadLocals.Initialize(app.ApplicationServices, sp => new Container(sp.GetService<INakedFramework>()));
         }
+
+
     }
 }

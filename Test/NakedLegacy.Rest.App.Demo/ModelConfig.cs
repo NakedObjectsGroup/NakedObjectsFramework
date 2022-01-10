@@ -13,44 +13,24 @@ using NakedLegacy.Types;
 using Microsoft.Extensions.Configuration;
 using NakedFramework.Menu;
 using AdventureWorksModel;
+using AW.Types;
 
-namespace Legacy.Rest.App.Demo {
-    public static class ModelConfig {
+namespace Legacy.Rest.App.Demo
+{
+    public static class ModelConfig
+    {
 
-       // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
+        // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
 
-        private static Type[] AllAdventureWorksTypes => 
+        private static Type[] AllAdventureWorksTypes =>
             Assembly.GetAssembly(typeof(AW.Types.Department)).GetTypes().
                      Where(t => t.IsPublic).
                      ToArray();
 
 
-        //public static Type[] NOTypes => new Ty;
+        public static Type[] DomainTypes => AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Types")).ToArray();
 
-        //public static Type[] NOServices {
-        //    get {
-        //        return new System.Type[] {
-        //            typeof(CustomerRepository),
-        //            typeof(OrderRepository),
-        //            typeof(ProductRepository),
-        //            typeof(EmployeeRepository),
-        //            typeof(SalesRepository),
-        //            typeof(SpecialOfferRepository),
-        //            typeof(PersonRepository),
-        //            typeof(VendorRepository),
-        //            typeof(PurchaseOrderRepository),
-        //            typeof(WorkOrderRepository),
-        //            typeof(OrderContributedActions),
-        //            typeof(CustomerContributedActions),
-        //            typeof(SpecialOfferContributedActions),
-        //            typeof(ServiceWithNoVisibleActions)
-        //        };
-        //    }
-        //}
-
-        public static Type[] LegacyTypes => AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Types")).ToArray();
-
-        public static Type[] LegacyServices => new Type[] { };
+        public static Type[] DomainServices => new Type[] { };
 
         public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
 
@@ -75,5 +55,25 @@ namespace Legacy.Rest.App.Demo {
         //        factory.NewMenu<ServiceWithNoVisibleActions>(true, "Empty")
         //    };
         //}
+
+        //For testing purposes only
+        private static NakedFramework.Menu.IMenu MakeMenu<T>(IMenuFactory factory)
+        {
+            var t = typeof(T);
+            var m = factory.NewMenu(t, false, t.Name);
+            var actions = t.GetMethods(BindingFlags.Public | BindingFlags.Static);
+            foreach (var action in actions)
+            {
+                m.AddAction(action.Name);
+            }
+
+            return m;
+        }
+
+        public static NakedFramework.Menu.IMenu[] MainMenus(IMenuFactory factory) =>
+            new[] {
+                    MakeMenu<Employee>(factory),
+                    MakeMenu<Product>(factory)
+            };
     }
 }

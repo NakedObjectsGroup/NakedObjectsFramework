@@ -6,16 +6,16 @@ using NakedLegacy.Types;
 namespace AdventureWorksLegacy.AppLib;
 
 [DateOnly] //This is needed to tell framework not to render the time portion
-public class NODate : ValueHolder<DateTime> {
-    public NODate() { }
+public class NODateNullable : ValueHolder<DateTime?> {
+    public NODateNullable() { }
 
-    public NODate(DateTime value) : base(value) { }
+    public NODateNullable(DateTime? value) : base(value) { }
 
-    public NODate(DateTime value, Action<DateTime> callback) : base(value, callback) { }
+    public NODateNullable(DateTime? value, Action<DateTime?> callback) : base(value, callback) { }
 
     private const string DATE_FORMAT = "dd/MM/yyyy";
 
-    public override string ToString() => Value.ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
+    public override string ToString() => Value == null ? "" : Value.Value.ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
 
     public override object Parse(string entry) {
         var dateString = entry.Trim();
@@ -27,7 +27,7 @@ public class NODate : ValueHolder<DateTime> {
         }
     }
 
-    public override object Display(string mask) => Value.ToString(mask == null? DATE_FORMAT : mask, CultureInfo.InvariantCulture);
+    public override object Display(string mask = DATE_FORMAT) => Value == null ? "" : Value.Value.ToString(mask == null ? DATE_FORMAT : mask, CultureInfo.InvariantCulture);
 
     public override ITitle Title() => new Title(ToString());
 }

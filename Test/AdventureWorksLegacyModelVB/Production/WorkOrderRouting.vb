@@ -31,16 +31,16 @@
 
 #Region "ScheduledStartDate"
 		Public mappedScheduledStartDate As DateTime?
-		Friend myScheduledStartDate As NODate
+		Friend myScheduledStartDate As NODateNullable
 
 		'<MemberOrder(20)>
-		Public ReadOnly Property ScheduledStartDate As NODate
+		Public ReadOnly Property ScheduledStartDate As NODateNullable
 			Get
-				Return If(myScheduledStartDate, New NODate(mappedScheduledStartDate, Function(v) mappedScheduledStartDate = v))
+				Return If(myScheduledStartDate, New NODateNullable(mappedScheduledStartDate, Function(v) mappedScheduledStartDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutScheduledStartDate(a As FieldAbout, ScheduledStartDate As NODate)
+		Public Sub AboutScheduledStartDate(a As FieldAbout, ScheduledStartDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -52,16 +52,16 @@
 
 #Region "ScheduledEndDate"
 		Public mappedScheduledEndDate As DateTime?
-		Friend myScheduledEndDate As NODate
+		Friend myScheduledEndDate As NODateNullable
 
 		'<MemberOrder(22)>
-		Public ReadOnly Property ScheduledEndDate As NODate
+		Public ReadOnly Property ScheduledEndDate As NODateNullable
 			Get
-				Return If(myScheduledEndDate, New NODate(mappedScheduledEndDate, Function(v) mappedScheduledEndDate = v))
+				Return If(myScheduledEndDate, New NODateNullable(mappedScheduledEndDate, Function(v) mappedScheduledEndDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutScheduledEndDate(a As FieldAbout, ScheduledEndDate As NODate)
+		Public Sub AboutScheduledEndDate(a As FieldAbout, ScheduledEndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -73,16 +73,16 @@
 
 #Region "ActualStartDate"
 		Public mappedActualStartDate As DateTime?
-		Friend myActualStartDate As NODate
+		Friend myActualStartDate As NODateNullable
 
 		'<MemberOrder(21)>
-		Public ReadOnly Property ActualStartDate As NODate
+		Public ReadOnly Property ActualStartDate As NODateNullable
 			Get
-				Return If(myActualStartDate, New NODate(mappedActualStartDate, Function(v) mappedActualStartDate = v))
+				Return If(myActualStartDate, New NODateNullable(mappedActualStartDate, Function(v) mappedActualStartDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutActualStartDate(a As FieldAbout, ActualStartDate As NODate)
+		Public Sub AboutActualStartDate(a As FieldAbout, ActualStartDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -94,16 +94,16 @@
 
 #Region "ActualEndDate"
 		Public mappedActualEndDate As DateTime?
-		Friend myActualEndDate As NODate
+		Friend myActualEndDate As NODateNullable
 
 		'<MemberOrder(23)>
-		Public ReadOnly Property ActualEndDate As NODate
+		Public ReadOnly Property ActualEndDate As NODateNullable
 			Get
-				Return If(myActualEndDate, New NODate(mappedActualEndDate, Function(v) mappedActualEndDate = v))
+				Return If(myActualEndDate, New NODateNullable(mappedActualEndDate, Function(v) mappedActualEndDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutActualEndDate(a As FieldAbout, ActualEndDate As NODate)
+		Public Sub AboutActualEndDate(a As FieldAbout, ActualEndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -115,16 +115,16 @@
 
 #Region "ActualResourceHrs"
 		Public mappedActualResourceHrs As Decimal?
-		Friend myActualResourceHrs As FloatingPointNumber
+		Friend myActualResourceHrs As FloatingPointNumberNullable
 
 		'<MemberOrder(31)>
-		Public ReadOnly Property ActualResourceHrs As FloatingPointNumber
+		Public ReadOnly Property ActualResourceHrs As FloatingPointNumberNullable
 			Get
-				Return If(myActualResourceHrs, New FloatingPointNumber(mappedActualResourceHrs, Function(v) mappedActualResourceHrs = v))
+				Return If(myActualResourceHrs, New FloatingPointNumberNullable(mappedActualResourceHrs, Function(v) mappedActualResourceHrs = v))
 			End Get
 		End Property
 
-		Public Sub AboutActualResourceHrs(a As FieldAbout, ActualResourceHrs As FloatingPointNumber)
+		Public Sub AboutActualResourceHrs(a As FieldAbout, ActualResourceHrs As FloatingPointNumberNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -157,16 +157,16 @@
 
 #Region "ActualCost"
 		Public mappedActualCost As Decimal?
-		Friend myActualCost As Money
+		Friend myActualCost As MoneyNullable
 
 		'<MemberOrder(41)>
-		Public ReadOnly Property ActualCost As Money
+		Public ReadOnly Property ActualCost As MoneyNullable
 			Get
-				Return If(myActualCost, New Money(mappedActualCost, Function(v) mappedActualCost = v))
+				Return If(myActualCost, New MoneyNullable(mappedActualCost, Function(v) mappedActualCost = v))
 			End Get
 		End Property
 
-		Public Sub AboutActualCost(a As FieldAbout, ActualCost As Money)
+		Public Sub AboutActualCost(a As FieldAbout, ActualCost As MoneyNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable

@@ -1,9 +1,10 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class EmployeePayHistory
- Implements ITitledObject
+    Partial Public Class EmployeePayHistory
 
-		Public Property EmployeeID() As Integer
+        Implements ITitledObject
+
+        Public Property EmployeeID() As Integer
 
 #Region "RateChangeDate"
         Public Property mappedRateChangeDate As Date
@@ -89,7 +90,7 @@
         End Function
 
         Public Overrides Function ToString() As String
-            Return $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}"
+            Return $"{Rate} from {RateChangeDate}"
         End Function
     End Class
 End Namespace

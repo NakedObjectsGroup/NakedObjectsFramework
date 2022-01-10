@@ -1,4 +1,6 @@
-﻿Namespace AW.Types
+﻿Imports System.Linq
+
+Namespace AW.Types
 
     Partial Public Class Employee
 
@@ -53,16 +55,16 @@
 
 #Region "DateOfBirth"
         Public mappedDateOfBirth As DateTime?
-        Friend myDateOfBirth As NODate
+        Friend myDateOfBirth As NODateNullable
 
         '<MemberOrder(13)>
-        Public ReadOnly Property DateOfBirth As NODate
+        Public ReadOnly Property DateOfBirth As NODateNullable
             Get
-                Return If(myDateOfBirth, New NODate(mappedDateOfBirth, Function(v) mappedDateOfBirth = v))
+                Return If(myDateOfBirth, New NODateNullable(mappedDateOfBirth, Function(v) mappedDateOfBirth = v))
             End Get
         End Property
 
-        Public Sub AboutDateOfBirth(a As FieldAbout, DateOfBirth As NODate)
+        Public Sub AboutDateOfBirth(a As FieldAbout, DateOfBirth As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -116,16 +118,16 @@
 
 #Region "HireDate"
         Public mappedHireDate As DateTime?
-        Friend myHireDate As NODate
+        Friend myHireDate As NODateNullable
 
         '<MemberOrder(16)>
-        Public ReadOnly Property HireDate As NODate
+        Public ReadOnly Property HireDate As NODateNullable
             Get
-                Return If(myHireDate, New NODate(mappedHireDate, Function(v) mappedHireDate = v))
+                Return If(myHireDate, New NODateNullable(mappedHireDate, Function(v) mappedHireDate = v))
             End Get
         End Property
 
-        Public Sub AboutHireDate(a As FieldAbout, HireDate As NODate)
+        Public Sub AboutHireDate(a As FieldAbout, HireDate As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -316,6 +318,20 @@
         Public Overrides Function ToString() As String
             Return PersonDetails.ToString()
         End Function
+
+#Region "Main Menu actions"
+        Public Shared Function ActionAllDepartments() As ArrayList
+            Return ThreadLocals.Container.AllInstances(GetType(Department)).ToArrayList()
+        End Function
+
+        Public Shared Function ActionADepartment() As Department
+            Return CType(ThreadLocals.Container.AllInstances(GetType(Department)).First, Department)
+        End Function
+
+        Public Shared Function ActionAShift() As Shift
+            Return CType(ThreadLocals.Container.AllInstances(GetType(Shift)).First, Shift)
+        End Function
+#End Region
 
     End Class
 End Namespace
