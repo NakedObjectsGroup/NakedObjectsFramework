@@ -13,7 +13,9 @@ public class NODateNullable : ValueHolder<DateTime?> {
 
     public NODateNullable(DateTime? value, Action<DateTime?> callback) : base(value, callback) { }
 
-    public override string ToString() => Value == null ? "" : Value.Value.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+    private const string DATE_FORMAT = "dd/MM/yyyy";
+
+    public override string ToString() => Value == null ? "" : Value.Value.ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
 
     public override object Parse(string entry) {
         var dateString = entry.Trim();
@@ -25,7 +27,7 @@ public class NODateNullable : ValueHolder<DateTime?> {
         }
     }
 
-    public override object Display(string mask = null) => Value == null ? "" : Value.Value.ToString(mask, CultureInfo.InvariantCulture);
+    public override object Display(string mask = DATE_FORMAT) => Value == null ? "" : Value.Value.ToString(mask == null ? DATE_FORMAT : mask, CultureInfo.InvariantCulture);
 
     public override ITitle Title() => new Title(ToString());
 }

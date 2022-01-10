@@ -13,7 +13,9 @@ public class NODate : ValueHolder<DateTime> {
 
     public NODate(DateTime value, Action<DateTime> callback) : base(value, callback) { }
 
-    public override string ToString() => Value.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+    private const string DATE_FORMAT = "dd/MM/yyyy";
+
+    public override string ToString() => Value.ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
 
     public override object Parse(string entry) {
         var dateString = entry.Trim();
@@ -25,7 +27,7 @@ public class NODate : ValueHolder<DateTime> {
         }
     }
 
-    public override object Display(string mask = null) => Value.ToString(mask, CultureInfo.InvariantCulture);
+    public override object Display(string mask) => Value.ToString(mask == null? DATE_FORMAT : mask, CultureInfo.InvariantCulture);
 
     public override ITitle Title() => new Title(ToString());
 }
