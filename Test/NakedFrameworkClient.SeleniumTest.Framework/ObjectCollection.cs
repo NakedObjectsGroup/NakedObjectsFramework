@@ -38,7 +38,13 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectCollection AssertIsOpenAsTable() => throw new NotImplementedException();
 
-        public ObjectCollection ClickTableView() => throw new NotImplementedException();
+        public ObjectCollection ClickTableView()
+        {
+            helper.WaitForCss(".icon.table").Click();
+            Thread.Sleep(500);
+            helper.WaitForChildElement(element, "thead tr th");
+            return this;
+        }
 
         public ObjectCollection AssertTableHeaderHasColumns(params string[] columns) => throw new NotImplementedException();
 

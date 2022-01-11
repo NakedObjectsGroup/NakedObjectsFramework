@@ -10,7 +10,7 @@
         Public mappedTaxType As Byte
         Friend myTaxType As WholeNumber
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property TaxType As WholeNumber
             Get
                 Return If(myTaxType, New WholeNumber(mappedTaxType, Function(v) mappedTaxType = v))
@@ -31,7 +31,7 @@
         Public mappedTaxRate As Decimal
         Friend myTaxRate As FloatingPointNumber
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property TaxRate As FloatingPointNumber
             Get
                 Return If(myTaxRate, New FloatingPointNumber(mappedTaxRate, Function(v) mappedTaxRate = v))
@@ -52,7 +52,7 @@
         Public mappedName As String
         Friend myName As TextString
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -78,7 +78,7 @@
         Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        '<MemberOrder(99)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

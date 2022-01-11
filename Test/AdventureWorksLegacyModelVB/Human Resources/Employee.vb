@@ -8,14 +8,14 @@ Namespace AW.Types
 
         Public Property BusinessEntityID As Integer 'Not visible on UI
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public Overridable Property PersonDetails() As Person
 
 #Region "NationalIDNumber"
         Public mappedNationalIDNumber As String
         Friend myNationalIDNumber As TextString
 
-        '<MemberOrder(10)>
+        <MemberOrder(10)>
         Public ReadOnly Property NationalIDNumber As TextString
             Get
                 Return If(myNationalIDNumber, New TextString(mappedNationalIDNumber, Function(v) mappedNationalIDNumber = v))
@@ -36,7 +36,7 @@ Namespace AW.Types
         Public mappedJobTitle As String
         Friend myJobTitle As TextString
 
-        '<MemberOrder(12)>
+        <MemberOrder(12)>
         Public ReadOnly Property JobTitle As TextString
             Get
                 Return If(myJobTitle, New TextString(mappedJobTitle, Function(v) mappedJobTitle = v))
@@ -57,7 +57,7 @@ Namespace AW.Types
         Public mappedDateOfBirth As DateTime?
         Friend myDateOfBirth As NODateNullable
 
-        '<MemberOrder(13)>
+        <MemberOrder(13)>
         Public ReadOnly Property DateOfBirth As NODateNullable
             Get
                 Return If(myDateOfBirth, New NODateNullable(mappedDateOfBirth, Function(v) mappedDateOfBirth = v))
@@ -78,7 +78,7 @@ Namespace AW.Types
         Public mappedMaritalStatus As String
         Friend myMaritalStatus As TextString
 
-        '<MemberOrder(14)>
+        <MemberOrder(14)>
         Public ReadOnly Property MaritalStatus As TextString
             Get
                 Return If(myMaritalStatus, New TextString(mappedMaritalStatus, Function(v) mappedMaritalStatus = v))
@@ -99,7 +99,7 @@ Namespace AW.Types
         Public mappedGender As String
         Friend myGender As TextString
 
-        '<MemberOrder(15)>
+        <MemberOrder(15)>
         Public ReadOnly Property Gender As TextString
             Get
                 Return If(myGender, New TextString(mappedGender, Function(v) mappedGender = v))
@@ -120,7 +120,7 @@ Namespace AW.Types
         Public mappedHireDate As DateTime?
         Friend myHireDate As NODateNullable
 
-        '<MemberOrder(16)>
+        <MemberOrder(16)>
         Public ReadOnly Property HireDate As NODateNullable
             Get
                 Return If(myHireDate, New NODateNullable(mappedHireDate, Function(v) mappedHireDate = v))
@@ -141,7 +141,7 @@ Namespace AW.Types
         Public mappedSalaried As Boolean
         Friend mySalaried As Logical
 
-        '<MemberOrder(17)>
+        <MemberOrder(17)>
         Public ReadOnly Property Salaried As Logical
             Get
                 Return If(mySalaried, New Logical(mappedSalaried, Function(v) mappedSalaried = v))
@@ -162,7 +162,7 @@ Namespace AW.Types
         Public mappedVacationHours As Short
         Friend myVacationHours As WholeNumber
 
-        '<MemberOrder(18)>
+        <MemberOrder(18)>
         Public ReadOnly Property VacationHours As WholeNumber
             Get
                 Return If(myVacationHours, New WholeNumber(mappedVacationHours, Function(v) mappedVacationHours = v))
@@ -183,7 +183,7 @@ Namespace AW.Types
         Public mappedSickLeaveHours As Short
         Friend mySickLeaveHours As WholeNumber
 
-        '<MemberOrder(19)>
+        <MemberOrder(19)>
         Public ReadOnly Property SickLeaveHours As WholeNumber
             Get
                 Return If(mySickLeaveHours, New WholeNumber(mappedSickLeaveHours, Function(v) mappedSickLeaveHours = v))
@@ -204,7 +204,7 @@ Namespace AW.Types
         Public mappedCurrent As Boolean
         Friend myCurrent As Logical
 
-        '<MemberOrder(20)>
+        <MemberOrder(20)>
         Public ReadOnly Property Current As Logical
             Get
                 Return If(myCurrent, New Logical(mappedCurrent, Function(v) mappedCurrent = v))
@@ -222,14 +222,14 @@ Namespace AW.Types
 #End Region
 
         Public Property ManagerID As Integer?
-        '<MemberOrder(30)>
+        <MemberOrder(30)>
         Public Overridable Property Manager() As Employee
 
 #Region "LoginID"
         Public mappedLoginID As String
         Friend myLoginID As TextString
 
-        '<MemberOrder(11)>
+        <MemberOrder(11)>
         Public ReadOnly Property LoginID As TextString
             Get
                 Return If(myLoginID, New TextString(mappedLoginID, Function(v) mappedLoginID = v))
@@ -254,7 +254,7 @@ Namespace AW.Types
 
         Private myDepartmentHistory As InternalCollection
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property DepartmentHistory As InternalCollection
             Get
                 Return If(myDepartmentHistory, New InternalCollection(Of EmployeeDepartmentHistory)(mappedDepartmentHistory))
@@ -274,7 +274,7 @@ Namespace AW.Types
 
         Private myPayHistory As InternalCollection
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property PayHistory As InternalCollection
             Get
                 Return If(myPayHistory, New InternalCollection(Of EmployeePayHistory)(mappedPayHistory))
@@ -294,7 +294,7 @@ Namespace AW.Types
         Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        '<MemberOrder(99)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
