@@ -55,7 +55,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AccessInstanceWithTitle("ContactType--1", "Accounting Manager");
             AccessInstanceWithTitle("CountryRegion--AD", "Andorra");
             AccessInstanceWithTitle("EmailAddress--1--1", "ken0@adventure-works.com");
-//'Invalid column name 'PersonBusinessEntityID'.'  AccessInstanceWithTitle("Password--1", "Password");
+            AccessInstanceWithTitle("Password--1", "Password");
             AccessInstanceWithTitle("Person--2", "Terri Duffy");
             AccessInstanceWithTitle("PersonPhone--1--697-555-0142--1", "Cell:697-555-0142");
             AccessInstanceWithTitle("PhoneNumberType--1", "Cell");

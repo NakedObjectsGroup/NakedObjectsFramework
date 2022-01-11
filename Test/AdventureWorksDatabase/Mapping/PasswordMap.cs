@@ -17,7 +17,9 @@ namespace AdventureWorksModel {
             builder.Property(t => t.PasswordSalt).HasColumnName("PasswordSalt");
             builder.Property(t => t.RowGuid).HasColumnName("rowguid");
             builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
-            //builder.HasOne(pw => pw.Person).WithOne(p => p.Password);
+            builder.HasOne(pw => pw.Person).WithOne(p => p.Password);
+
+
         }
     }
 }

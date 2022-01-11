@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class Password
- Implements ITitledObject
+	Partial Public Class Password
+		Implements ITitledObject
 
 		Public Property BusinessEntityID() As Integer
 
