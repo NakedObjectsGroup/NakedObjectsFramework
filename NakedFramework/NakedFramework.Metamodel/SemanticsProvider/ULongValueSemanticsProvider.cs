@@ -31,11 +31,7 @@ public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ULongValueSemanticsProvider(o, s));
 
-    #region IUnsignedLongValueFacet Members
-
-    public ulong UnsignedLongValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<ulong>();
-
-    #endregion
+   
 
     protected override ulong DoParse(string entry) {
         try {

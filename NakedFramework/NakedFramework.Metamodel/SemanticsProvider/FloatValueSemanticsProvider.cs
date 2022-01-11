@@ -30,11 +30,7 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FloatValueSemanticsProvider(o, s));
 
-    #region IFloatingPointValueFacet Members
-
-    public float FloatValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<float>();
-
-    #endregion
+    
 
     protected override float DoParse(string entry) {
         try {

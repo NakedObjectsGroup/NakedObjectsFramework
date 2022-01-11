@@ -31,11 +31,7 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DecimalValueSemanticsProvider(o, s));
 
-    #region IDecimalValueFacet Members
-
-    public decimal DecimalValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<decimal>();
-
-    #endregion
+   
 
     protected override decimal DoParse(string entry) {
         try {

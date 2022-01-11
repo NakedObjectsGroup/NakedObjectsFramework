@@ -67,14 +67,7 @@ public class DecimalValueSemanticsProviderTest : ValueSemanticsProviderAbstractT
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (IDecimalValueFacet)GetValue();
-        const decimal testValue = 121M;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.DecimalValue(mockNo.Object));
-    }
+   
 
     #region Setup/Teardown
 

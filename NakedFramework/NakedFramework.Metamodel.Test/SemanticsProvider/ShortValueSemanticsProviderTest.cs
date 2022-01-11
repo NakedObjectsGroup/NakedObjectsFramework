@@ -67,15 +67,6 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (IShortValueFacet)GetValue();
-        const short testValue = 121;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.ShortValue(mockNo.Object));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

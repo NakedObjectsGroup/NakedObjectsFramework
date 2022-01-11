@@ -32,11 +32,7 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DateTimeValueSemanticsProvider(o, s));
 
-    #region IDateValueFacet Members
-
-    public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => (DateTime?)nakedObjectAdapter?.Object ?? Now();
-
-    #endregion
+    private DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => (DateTime?)nakedObjectAdapter?.Object ?? Now();
 
     protected override DateTime DoParse(string entry) {
         var dateString = entry.Trim();

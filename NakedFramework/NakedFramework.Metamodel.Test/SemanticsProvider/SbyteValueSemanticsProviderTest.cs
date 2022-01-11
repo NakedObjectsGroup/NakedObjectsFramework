@@ -61,14 +61,7 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        ISbyteValueFacet facet = value;
-        const sbyte testValue = 101;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.SByteValue(mockNo.Object));
-    }
+  
 
     #region Setup/Teardown
 

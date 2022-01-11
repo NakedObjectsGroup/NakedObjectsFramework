@@ -29,11 +29,6 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new StringValueSemanticsProvider(o, s));
 
-    #region IStringValueFacet Members
-
-    public string StringValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<string>();
-
-    #endregion
-
+   
     protected override string DoParse(string entry) => entry.Trim().Equals("") ? null : entry;
 }

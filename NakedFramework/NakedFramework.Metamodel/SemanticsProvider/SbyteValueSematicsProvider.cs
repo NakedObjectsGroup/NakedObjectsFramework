@@ -30,11 +30,7 @@ public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new SbyteValueSemanticsProvider(o, s));
 
-    #region ISbyteValueFacet Members
-
-    public sbyte SByteValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<sbyte>();
-
-    #endregion
+    
 
     protected override sbyte DoParse(string entry) {
         try {

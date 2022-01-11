@@ -5,12 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework.Architecture.Adapter;
-
 namespace NakedFramework.Architecture.Facet;
 
-public interface ISbyteValueFacet : IFacet {
-    sbyte SByteValue(INakedObjectAdapter nakedObjectAdapter);
-}
+public interface ISbyteValueFacet : IFacet { }
 
 // Copyright (c) Naked Objects Group Ltd.

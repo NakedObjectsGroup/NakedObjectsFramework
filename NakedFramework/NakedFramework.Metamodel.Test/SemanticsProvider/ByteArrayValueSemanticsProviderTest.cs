@@ -78,15 +78,7 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestArrayValue() {
-        var testArray = new byte[] { 1, 2, 101 };
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testArray);
-        IArrayValueFacet<byte> valueFacet = value;
-
-        Assert.AreEqual(testArray, valueFacet.ArrayValue(mockNo.Object));
-    }
+   
 
     #region Setup/Teardown
 

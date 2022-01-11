@@ -63,14 +63,6 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        IColorValueFacet facet = value;
-        var testValue = Color.Blue;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue.ToArgb(), facet.ColorValue(mockNo.Object));
-    }
 
     #region Setup/Teardown
 

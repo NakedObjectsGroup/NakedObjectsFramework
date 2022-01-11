@@ -71,15 +71,6 @@ public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (IFloatingPointValueFacet)GetValue();
-        const float testValue = 100.100f;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.FloatValue(mockNo.Object));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

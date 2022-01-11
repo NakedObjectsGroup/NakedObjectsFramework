@@ -31,11 +31,7 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new IntValueSemanticsProvider(o, s));
 
-    #region IIntegerValueFacet Members
-
-    public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<int>();
-
-    #endregion
+    
 
     protected override int DoParse(string entry) {
         try {

@@ -31,11 +31,7 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new UIntValueSemanticsProvider(o, s));
 
-    #region IUnsignedIntegerValueFacet Members
-
-    public uint UnsignedIntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<uint>();
-
-    #endregion
+   
 
     protected override uint DoParse(string entry) {
         try {

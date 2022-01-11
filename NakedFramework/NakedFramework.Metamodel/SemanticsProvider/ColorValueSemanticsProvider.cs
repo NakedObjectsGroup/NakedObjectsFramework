@@ -31,16 +31,6 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ColorValueSemanticsProvider(o, s));
 
-    #region IColorValueFacet Members
-
-    public int ColorValue(INakedObjectAdapter nakedObjectAdapter) =>
-        nakedObjectAdapter switch {
-            null => 0,
-            _ => ((Color)nakedObjectAdapter.Object).ToArgb()
-        };
-
-    #endregion
-
     protected override Color DoParse(string entry) {
         try {
             int argb;

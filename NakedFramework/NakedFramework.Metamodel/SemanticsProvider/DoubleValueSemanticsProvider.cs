@@ -30,11 +30,7 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DoubleValueSemanticsProvider(o, s));
 
-    #region IDoubleFloatingPointValueFacet Members
-
-    public double DoubleValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<double>();
-
-    #endregion
+    
 
     protected override double DoParse(string entry) {
         try {

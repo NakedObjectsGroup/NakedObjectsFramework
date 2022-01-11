@@ -67,14 +67,7 @@ public class ULongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (IUnsignedLongValueFacet)GetValue();
-        const ulong testValue = 121L;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.UnsignedLongValue(mockNo.Object));
-    }
+  
 
     #region Setup/Teardown
 

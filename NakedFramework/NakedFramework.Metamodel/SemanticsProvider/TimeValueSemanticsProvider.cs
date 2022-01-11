@@ -30,11 +30,7 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new TimeValueSemanticsProvider(o, s));
 
-    #region ITimeValueFacet Members
-
-    public TimeSpan TimeValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TimeSpan>();
-
-    #endregion
+   
 
     protected override TimeSpan DoParse(string entry) {
         var dateString = entry.Trim();
@@ -50,7 +46,7 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     protected override string TitleStringWithMask(string mask, TimeSpan obj) => DateTime.Today.Add(obj).ToString(mask);
 
-    public override object Value(INakedObjectAdapter adapter, string format = null) => TimeValue(adapter).ToString(format);
+    public override object Value(INakedObjectAdapter adapter, string format = null) => adapter.GetDomainObject<TimeSpan>().ToString(format);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

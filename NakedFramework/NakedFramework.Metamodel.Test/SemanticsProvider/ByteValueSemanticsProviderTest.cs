@@ -61,14 +61,6 @@ public class ByteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        IByteValueFacet facet = value;
-        const byte testValue = 101;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.ByteValue(mockNo.Object));
-    }
 
     #region Setup/Teardown
 

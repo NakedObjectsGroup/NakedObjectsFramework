@@ -5,12 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework.Architecture.Adapter;
-
 namespace NakedFramework.Architecture.Facet;
 
-public interface IFloatingPointValueFacet : IFacet {
-    float FloatValue(INakedObjectAdapter nakedObjectAdapter);
-}
+public interface IFloatingPointValueFacet : IFacet { }
 
 // Copyright (c) Naked Objects Group Ltd.

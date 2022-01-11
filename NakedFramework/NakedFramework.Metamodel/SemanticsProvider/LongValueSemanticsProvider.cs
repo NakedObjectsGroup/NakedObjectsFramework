@@ -31,11 +31,7 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new LongValueSemanticsProvider(o, s));
 
-    #region ILongValueFacet Members
-
-    public long LongValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<long>();
-
-    #endregion
+   
 
     protected override long DoParse(string entry) {
         try {

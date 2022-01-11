@@ -31,11 +31,7 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new UShortValueSemanticsProvider(o, s));
 
-    #region IUnsignedShortValueFacet Members
-
-    public ushort UnsignedShortValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<ushort>();
-
-    #endregion
+   
 
     protected override ushort DoParse(string entry) {
         try {

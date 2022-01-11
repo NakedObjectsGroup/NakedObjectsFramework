@@ -71,14 +71,7 @@ public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (IDoubleFloatingPointValueFacet)GetValue();
-        const double testValue = 100.100d;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.DoubleValue(mockNo.Object));
-    }
+  
 
     #region Setup/Teardown
 

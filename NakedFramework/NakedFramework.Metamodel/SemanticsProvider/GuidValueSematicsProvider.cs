@@ -30,11 +30,7 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new GuidValueSemanticsProvider(o, s));
 
-    #region IGuidValueFacet Members
-
-    public Guid GuidValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<Guid>();
-
-    #endregion
+  
 
     protected override Guid DoParse(string entry) {
         try {
