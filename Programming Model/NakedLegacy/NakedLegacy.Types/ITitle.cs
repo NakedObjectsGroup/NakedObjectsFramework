@@ -1,8 +1,5 @@
-﻿
-namespace NakedLegacy.Types
-{
-    public interface ITitle
-    {
-        string TitleString();
-    }
+﻿namespace NakedLegacy.Types; 
+
+public interface ITitle {
+    string TitleString();
 }

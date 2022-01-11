@@ -25,6 +25,7 @@ using NakedFunctions.Rest.Test;
 using NakedLegacy.Reflector.Component;
 using NakedLegacy.Reflector.Extensions;
 using NakedLegacy.Rest.Test.Data;
+using NakedLegacy.Rest.Test.Data.AppLib;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -132,11 +133,14 @@ public class LegacyTest : AcceptanceTestCase {
     [SetUp]
     public void SetUp() {
         StartTest();
-        ThreadLocals.Initialize(RootServiceProvider, sp => new Container(sp.GetService<INakedFramework>()));
+        ThreadLocals.Initialize(GetConfiguredContainer(), sp => new Container(sp.GetService<INakedFramework>()));
     }
 
     [TearDown]
-    public void TearDown() => EndTest();
+    public void TearDown() {
+        EndTest();
+        ThreadLocals.Reset();
+    }
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
