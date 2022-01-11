@@ -61,15 +61,6 @@ public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        ICharValueFacet facet = value;
-        const char testValue = (char)101;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.CharValue(mockNo.Object));
-    }
-
     #region Setup/Teardown
 
     [TestInitialize]

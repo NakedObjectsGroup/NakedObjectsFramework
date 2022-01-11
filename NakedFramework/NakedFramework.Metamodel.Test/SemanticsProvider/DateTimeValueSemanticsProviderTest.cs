@@ -69,14 +69,7 @@ public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstract
         base.TestParseEmptyString();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (IDateValueFacet)GetValue();
-        var testValue = DateTime.Now;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.DateValue(mockNo.Object));
-    }
+    
 
     #region Setup/Teardown
 

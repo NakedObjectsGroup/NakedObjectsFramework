@@ -65,14 +65,7 @@ public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        IGuidValueFacet facet = value;
-        var testValue = Guid.NewGuid();
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.GuidValue(mockNo.Object));
-    }
+   
 
     #region Setup/Teardown
 

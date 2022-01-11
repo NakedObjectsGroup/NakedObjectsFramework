@@ -67,14 +67,7 @@ public class UIntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (IUnsignedIntegerValueFacet)GetValue();
-        const uint testValue = 121;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.UnsignedIntegerValue(mockNo.Object));
-    }
+  
 
     #region Setup/Teardown
 

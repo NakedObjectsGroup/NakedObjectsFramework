@@ -29,12 +29,6 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
 
     public static Type AdaptedType => typeof(T[]);
 
-    #region IArrayValueFacet<T> Members
-
-    public T[] ArrayValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<T[]>();
-
-    #endregion
-
     #region IFromStream Members
 
     public object ParseFromStream(Stream stream, string mimeType = null, string name = null) {

@@ -5,12 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework.Architecture.Adapter;
-
 namespace NakedFramework.Architecture.Facet;
 
-public interface IColorValueFacet : IFacet {
-    int ColorValue(INakedObjectAdapter nakedObjectAdapter);
-}
+public interface IColorValueFacet : IFacet { }
 
 // Copyright (c) Naked Objects Group Ltd.

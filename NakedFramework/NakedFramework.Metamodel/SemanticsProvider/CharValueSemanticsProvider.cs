@@ -31,11 +31,7 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new CharValueSemanticsProvider(o, s));
 
-    #region ICharValueFacet Members
-
-    public char CharValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<char>();
-
-    #endregion
+    
 
     protected override char DoParse(string entry) {
         try {

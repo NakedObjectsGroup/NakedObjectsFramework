@@ -32,14 +32,7 @@ public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseEmptyString();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (ITimeValueFacet)GetValue();
-        var testValue = TimeSpan.FromHours(22);
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.TimeValue(mockNo.Object));
-    }
+   
 
     #region Setup/Teardown
 

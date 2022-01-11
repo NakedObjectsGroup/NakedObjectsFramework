@@ -67,14 +67,7 @@ public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (ILongValueFacet)GetValue();
-        const long testValue = 121L;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.LongValue(mockNo.Object));
-    }
+  
 
     #region Setup/Teardown
 

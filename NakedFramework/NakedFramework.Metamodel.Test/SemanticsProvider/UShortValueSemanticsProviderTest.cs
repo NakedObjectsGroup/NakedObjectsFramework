@@ -67,14 +67,7 @@ public class UShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
         base.TestParseNull();
     }
 
-    [TestMethod]
-    public void TestValue() {
-        var facet = (IUnsignedShortValueFacet)GetValue();
-        const ushort testValue = 121;
-        var mockNo = new Mock<INakedObjectAdapter>();
-        mockNo.Setup(no => no.Object).Returns(testValue);
-        Assert.AreEqual(testValue, facet.UnsignedShortValue(mockNo.Object));
-    }
+   
 
     #region Setup/Teardown
 
