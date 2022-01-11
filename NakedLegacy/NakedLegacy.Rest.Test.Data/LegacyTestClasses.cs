@@ -190,6 +190,8 @@ public class ClassWithMenu {
 
     public static ArrayList ActionMenuAction1() => new(Container.AllInstances(typeof(ClassWithTextString)).ToList());
 
+    public static IQueryable<ClassWithTextString> ActionMenuAction2() => Container.Instances<ClassWithTextString>();
+
     //public static MainMenu menuOrder() {
     //    var menu = new MainMenu();
     //    menu.Menus.Add(new Menu("Method1"));

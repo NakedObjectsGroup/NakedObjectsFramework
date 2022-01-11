@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Linq;
 using NakedLegacy.Types;
 
 namespace NakedLegacy.Reflector.Configuration;
@@ -16,6 +17,7 @@ public static class ReflectorDefaults {
         typeof(InternalCollection),
         typeof(InternalCollection<>),
         typeof(IEnumerable),
-        typeof(ArrayList)
+        typeof(ArrayList),
+        typeof(IQueryable<>)
     };
 }

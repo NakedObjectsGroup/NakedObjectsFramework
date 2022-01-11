@@ -74,7 +74,16 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
         (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType, metamodel);
 
         IObjectSpecBuilder elementSpec;
-        (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(typeof(object), metamodel);
+        if (actionMethod.ReturnType.IsGenericType) {
+            var elementType = actionMethod.ReturnType.GetGenericArguments().First();
+
+            (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+            facets.Add(new ElementTypeFacet(action, elementType, elementSpec));
+            facets.Add(new TypeOfFacetInferredFromGenerics(action));
+        }
+        else {
+            (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(typeof(object), metamodel);
+        }
 
         methodRemover.SafeRemoveMethod(actionMethod);
 
