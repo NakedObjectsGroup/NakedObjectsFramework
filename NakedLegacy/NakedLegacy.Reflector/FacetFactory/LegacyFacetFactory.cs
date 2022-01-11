@@ -127,6 +127,8 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
             facets.Add(new DisabledFacetAlways(specification));
         }
 
+        facets.Add(new NamedFacetInferred(specification.Identifier.MemberName, specification));
+
         var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{"about"}{capitalizedName}", null, null);
         methodRemover.SafeRemoveMethod(method);
 

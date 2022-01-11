@@ -266,6 +266,7 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
