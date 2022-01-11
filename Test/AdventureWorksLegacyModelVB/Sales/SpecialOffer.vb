@@ -11,7 +11,7 @@
 		Public mappedDescription As String
 		Friend myDescription As TextString
 
-		'<MemberOrder(10)>
+		<MemberOrder(10)>
 		Public ReadOnly Property Description As TextString
 			Get
 				Return If(myDescription, New TextString(mappedDescription, Function(v) mappedDescription = v))
@@ -32,7 +32,7 @@
 		Public mappedDiscountPct As Decimal
 		Friend myDiscountPct As Percentage
 
-		'<MemberOrder(20)>
+		<MemberOrder(20)>
 		Public ReadOnly Property DiscountPct As Percentage
 			Get
 				Return If(myDiscountPct, New Percentage(mappedDiscountPct, Function(v) mappedDiscountPct = v))
@@ -53,7 +53,7 @@
 		Public mappedType As String
 		Friend myType As TextString
 
-		'<MemberOrder(30)>
+		<MemberOrder(30)>
 		Public ReadOnly Property Type As TextString
 			Get
 				Return If(myType, New TextString(mappedType, Function(v) mappedType = v))
@@ -74,7 +74,7 @@
 		Public mappedCategory As String
 		Friend myCategory As TextString
 
-		'<MemberOrder(40)>
+		<MemberOrder(40)>
 		Public ReadOnly Property Category As TextString
 			Get
 				Return If(myCategory, New TextString(mappedCategory, Function(v) mappedCategory = v))
@@ -95,7 +95,7 @@
 		Public mappedStartDate As Date
 		Friend myStartDate As NODate
 
-		'<MemberOrder(51)>
+		<MemberOrder(51)>
 		Public ReadOnly Property StartDate As NODate
 			Get
 				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
@@ -116,7 +116,7 @@
 		Public mappedEndDate As Date
 		Friend myEndDate As NODate
 
-		'<MemberOrder(52)>
+		<MemberOrder(52)>
 		Public ReadOnly Property EndDate As NODate
 			Get
 				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
@@ -137,7 +137,7 @@
 		Public mappedMinQty As Integer
 		Friend myMinQty As WholeNumber
 
-		'<MemberOrder(61)>
+		<MemberOrder(61)>
 		Public ReadOnly Property MinQty As WholeNumber
 			Get
 				Return If(myMinQty, New WholeNumber(mappedMinQty, Function(v) mappedMinQty = v))
@@ -158,7 +158,7 @@
 		Public mappedMaxQty As Integer?
 		Friend myMaxQty As WholeNumberNullable
 
-		'<MemberOrder(62)>
+		<MemberOrder(62)>
 		Public ReadOnly Property MaxQty As WholeNumberNullable
 			Get
 				Return If(myMaxQty, New WholeNumberNullable(mappedMaxQty, Function(v) mappedMaxQty = v))
@@ -179,7 +179,7 @@
 		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		'<MemberOrder(1)>
+		<MemberOrder(1)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

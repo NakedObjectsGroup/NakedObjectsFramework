@@ -10,7 +10,7 @@
         Public mappedName As String
         Friend myName As TextString
 
-        '<MemberOrder(10)>
+        <MemberOrder(10)>
         Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -31,7 +31,7 @@
         Public Property CatalogDescription() As String
 
 
-        '<Named("CatalogDescription"), MemberOrder(20), MultiLine(10)>
+        <MemberOrder(20)> '<Named("CatalogDescription"), , MultiLine(10)>
         Public ReadOnly Property FormattedCatalogDescription() As MultiLineTextString
             Get
                 Return New MultiLineTextString(CatalogDescription)
@@ -39,7 +39,7 @@
             End Get
         End Property
 
-        '<MemberOrder(22)>
+        <MemberOrder(22)>
         Public ReadOnly Property LocalCultureDescription() As ProductDescription
             Get
                 Return Nothing
@@ -51,7 +51,7 @@
         Public mappedInstructions As String
         Friend myInstructions As TextString
 
-        '<MemberOrder(30)>
+        <MemberOrder(30)>
         Public ReadOnly Property Instructions As TextString
             Get
                 Return If(myInstructions, New TextString(mappedInstructions, Function(v) mappedInstructions = v))
@@ -74,7 +74,7 @@
         Private myProductVariants As InternalCollection
 
         ''<TableView(True, "Name", "Number", "Color", "ProductInventory")>
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property ProductVariants As InternalCollection
             Get
                 Return If(myProductVariants, New InternalCollection(Of Product)(mappedProductVariants))
@@ -99,7 +99,7 @@
         Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        '<MemberOrder(99)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

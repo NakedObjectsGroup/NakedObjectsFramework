@@ -10,7 +10,7 @@
         Public Property mappedQuotaDate As Date
         Friend myQuotaDate As NODate
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property QuotaDate As NODate
             Get
                 Return If(myQuotaDate, New NODate(mappedQuotaDate, Function(v) mappedQuotaDate = v))
@@ -31,7 +31,7 @@
         Public mappedSalesQuota As Decimal
         Friend mySalesQuota As Money
 
-        '<MemberOrder(2)>
+        <MemberOrder(2)>
         Public ReadOnly Property SalesQuota As Money
             Get
                 Return If(mySalesQuota, New Money(mappedSalesQuota, Function(v) mappedSalesQuota = v))
@@ -48,14 +48,14 @@
         End Sub
 #End Region
 
-        '<MemberOrder(3)>
+        <MemberOrder(3)>
         Public Overridable Property SalesPerson() As SalesPerson
 
 #Region "ModifiedDate"
         Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        '<MemberOrder(99)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

@@ -13,7 +13,7 @@
         Public mappedTransactionDate As Date
         Friend myTransactionDate As NODate
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property TransactionDate As NODate
             Get
                 Return If(myTransactionDate, New NODate(mappedTransactionDate, Function(v) mappedTransactionDate = v))
@@ -34,7 +34,7 @@
         Public mappedTransactionType As String
         Friend myTransactionType As TextString
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property TransactionType As TextString
             Get
                 Return If(myTransactionType, New TextString(mappedTransactionType, Function(v) mappedTransactionType = v))
@@ -55,7 +55,7 @@
         Public mappedQuantity As Integer
         Friend myQuantity As WholeNumber
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property Quantity As WholeNumber
             Get
                 Return If(myQuantity, New WholeNumber(mappedQuantity, Function(v) mappedQuantity = v))
@@ -76,7 +76,7 @@
         Public mappedActualCost As Decimal
         Friend myActualCost As Money
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property ActualCost As Money
             Get
                 Return If(myActualCost, New Money(mappedActualCost, Function(v) mappedActualCost = v))
@@ -101,7 +101,7 @@
         Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        '<MemberOrder(99)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

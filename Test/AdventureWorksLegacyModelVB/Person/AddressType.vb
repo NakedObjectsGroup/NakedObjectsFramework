@@ -10,7 +10,7 @@
         Public mappedName As String
         Friend myName As TextString
 
-        '<MemberOrder(1)>
+        <MemberOrder(1)>
         Public ReadOnly Property Name As TextString
             Get
                 Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
@@ -29,7 +29,7 @@
         Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        '<MemberOrder(99)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

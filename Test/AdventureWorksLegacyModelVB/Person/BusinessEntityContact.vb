@@ -17,19 +17,19 @@
 
 		Public Property PersonID() As Integer
 
-		'<MemberOrder(1)>
+		<MemberOrder(1)>
 		Public Overridable Property Person() As Person
 
 		Public Property ContactTypeID() As Integer
 
-		'<MemberOrder(2)>
+		<MemberOrder(2)>
 		Public Overridable Property ContactType() As ContactType
 
 #Region "ModifiedDate"
 		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		'<MemberOrder(99)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))

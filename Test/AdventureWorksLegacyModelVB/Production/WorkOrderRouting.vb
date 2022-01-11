@@ -12,7 +12,7 @@
 		Public Property mappedOperationSequence As Short
 		Friend myOperationSequence As WholeNumber
 
-		'<MemberOrder(1)>
+		<MemberOrder(1)>
 		Public ReadOnly Property OperationSequence As WholeNumber
 			Get
 				Return If(myOperationSequence, New WholeNumber(mappedOperationSequence, Function(v) mappedOperationSequence = v))
@@ -33,7 +33,7 @@
 		Public mappedScheduledStartDate As DateTime?
 		Friend myScheduledStartDate As NODateNullable
 
-		'<MemberOrder(20)>
+		<MemberOrder(20)>
 		Public ReadOnly Property ScheduledStartDate As NODateNullable
 			Get
 				Return If(myScheduledStartDate, New NODateNullable(mappedScheduledStartDate, Function(v) mappedScheduledStartDate = v))
@@ -54,7 +54,7 @@
 		Public mappedScheduledEndDate As DateTime?
 		Friend myScheduledEndDate As NODateNullable
 
-		'<MemberOrder(22)>
+		<MemberOrder(22)>
 		Public ReadOnly Property ScheduledEndDate As NODateNullable
 			Get
 				Return If(myScheduledEndDate, New NODateNullable(mappedScheduledEndDate, Function(v) mappedScheduledEndDate = v))
@@ -75,7 +75,7 @@
 		Public mappedActualStartDate As DateTime?
 		Friend myActualStartDate As NODateNullable
 
-		'<MemberOrder(21)>
+		<MemberOrder(21)>
 		Public ReadOnly Property ActualStartDate As NODateNullable
 			Get
 				Return If(myActualStartDate, New NODateNullable(mappedActualStartDate, Function(v) mappedActualStartDate = v))
@@ -96,7 +96,7 @@
 		Public mappedActualEndDate As DateTime?
 		Friend myActualEndDate As NODateNullable
 
-		'<MemberOrder(23)>
+		<MemberOrder(23)>
 		Public ReadOnly Property ActualEndDate As NODateNullable
 			Get
 				Return If(myActualEndDate, New NODateNullable(mappedActualEndDate, Function(v) mappedActualEndDate = v))
@@ -117,7 +117,7 @@
 		Public mappedActualResourceHrs As Decimal?
 		Friend myActualResourceHrs As FloatingPointNumberNullable
 
-		'<MemberOrder(31)>
+		<MemberOrder(31)>
 		Public ReadOnly Property ActualResourceHrs As FloatingPointNumberNullable
 			Get
 				Return If(myActualResourceHrs, New FloatingPointNumberNullable(mappedActualResourceHrs, Function(v) mappedActualResourceHrs = v))
@@ -138,7 +138,7 @@
 		Public mappedPlannedCost As Decimal
 		Friend myPlannedCost As Money
 
-		'<MemberOrder(40)>
+		<MemberOrder(40)>
 		Public ReadOnly Property PlannedCost As Money
 			Get
 				Return If(myPlannedCost, New Money(mappedPlannedCost, Function(v) mappedPlannedCost = v))
@@ -159,7 +159,7 @@
 		Public mappedActualCost As Decimal?
 		Friend myActualCost As MoneyNullable
 
-		'<MemberOrder(41)>
+		<MemberOrder(41)>
 		Public ReadOnly Property ActualCost As MoneyNullable
 			Get
 				Return If(myActualCost, New MoneyNullable(mappedActualCost, Function(v) mappedActualCost = v))
@@ -189,14 +189,14 @@
 
 		Public Property LocationID() As Short
 
-		'<MemberOrder(10)>
+		<MemberOrder(10)>
 		Public Overridable Property Location() As Location
 
 #Region "ModifiedDate"
 		Public mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		'<MemberOrder(99)>
+		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
