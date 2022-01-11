@@ -60,7 +60,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AccessInstanceWithTitle("PersonPhone--1--697-555-0142--1", "Cell:697-555-0142");
             AccessInstanceWithTitle("PhoneNumberType--1", "Cell");
             AccessInstanceWithTitle("StateProvince--1", "Alberta");
-//            AccessInstanceWithTitle("BillOfMaterial--893", "BillOfMaterial: 893"); 
+            AccessInstanceWithTitle("BillOfMaterial--893", "BillOfMaterial: 893"); 
             AccessInstanceWithTitle("Culture--ar", "Arabic");
             AccessInstanceWithTitle("Illustration--3", "Illustration: 3");
             AccessInstanceWithTitle("Location--1", "Tool Crib");

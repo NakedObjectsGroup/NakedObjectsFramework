@@ -1,8 +1,9 @@
 ﻿Namespace AW.Types
 
 	'<Named("Address")>
-	Partial Public Class BusinessEntityAddress
- Implements ITitledObject
+	Partial Public Class BusinessEntityAddress
+
+		Implements ITitledObject
 
 		Public Property BusinessEntityID() As Integer
 
