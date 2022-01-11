@@ -62,7 +62,7 @@ namespace Legacy.Rest.App.Demo
             var t = typeof(T);
             var m = factory.NewMenu(t, false, t.Name);
             var actions = t.GetMethods(BindingFlags.Public | BindingFlags.Static);
-            foreach (var action in actions.Where(a => a.Name != "ActionOrder"))
+            foreach (var action in actions)
             {
                 m.AddAction(action.Name);
             }

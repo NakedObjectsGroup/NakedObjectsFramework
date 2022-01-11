@@ -571,7 +571,7 @@ Namespace AW.Types
 
 #Region "Actions"
         Public Shared Function ActionOrder() As String
-            Return "BestSpecialOffer, AssociatewithspecialOffer,  CurrentWorkOrders,CreateNewWorkOrder"
+            Return "ActionBestSpecialOffer, ActionAssociatewithspecialOffer,  actionCurrentWorkOrders,ActionCreateNewWorkOrder"
         End Function
 
         Public Sub ActionAssociateWithSpecialOffer()

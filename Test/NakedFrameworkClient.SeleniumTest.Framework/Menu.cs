@@ -12,9 +12,10 @@ namespace NakedFrameworkClient.TestFramework
         /// <summary>
         /// Members means action names and submenu names, and should be specified in presented order
         /// </summary>
-        public Menu AssertHasActions(params string[] actionNames)
+        public Menu AssertHasActions(params string[] expectedNames)
         {
-            CollectionAssert.AreEqual(actionNames, ActionNames());
+            var actualNames = ActionNames();
+            CollectionAssert.AreEqual(expectedNames, actualNames);
             return this;
         }
 

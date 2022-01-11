@@ -46,6 +46,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ViewPersistentObjectsAndProperties();
             ReferencePropertiesAndCollections();
             Titles();
+            MemberOrder();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -160,13 +161,13 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         #region Member Order
 
-        [TestMethod]
+        //[TestMethod]
         public void MemberOrder()
         {
             FieldOrderSpecifiedByAttribute();
             FieldOrderSpecifiedByMethod();
-            //ActionOrderSpecifiedByAttribute();
-            //ActionOrderSpecifiedByMethod();
+            ActionOrderSpecifiedByAttribute();
+            ActionOrderSpecifiedByMethod();
         }
 
         //[TestMethod]
@@ -181,19 +182,29 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             var obj = AccessInstanceWithTitle("Vendor--1674", "Varsity Sport Co.");
             obj.AssertPropertiesAre("Account Number", "Name", "Credit Rating", "Preferred Vendor Status",
-                "Active Flag", "Purchasing Web Service URL", "Modified Date", "Product - Order Info");
+                "Active Flag", "Purchasing Web Service URL", "Modified Date");
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ActionOrderSpecifiedByAttribute()
         {
-            Assert.Fail();
+            var obj = AccessInstanceWithTitle("SalesOrderHeader--54119", "SO54119");
+            obj.OpenActions().AssertHasActions(
+                "Action Add New Detail",
+                "Action Remove Detail",
+                "Action Append Comment",
+                "Action Clear Comments");
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ActionOrderSpecifiedByMethod()
         {
-            Assert.Fail();
+            var obj = AccessInstanceWithTitle("Product--834", "ML Road Frame-W - Yellow, 42");
+            obj.OpenActions().AssertHasActions(
+                "Action Best Special Offer",
+                "Action Associate With Special Offer",
+                "Action Current Work Orders",
+                "Action Create New Work Order");
         }
 
         #endregion
