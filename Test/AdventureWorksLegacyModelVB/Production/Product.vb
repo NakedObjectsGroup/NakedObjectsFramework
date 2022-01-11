@@ -104,7 +104,7 @@ Namespace AW.Types
         '<MemberOrder(13)>
         Public Overridable ReadOnly Property ProductCategory() As ProductCategory
             Get
-                Return ProductSubcategory.ProductCategory
+                Return Nothing 'TODO: ProductSubcategory.ProductCategory
             End Get
         End Property
 
@@ -345,17 +345,17 @@ Namespace AW.Types
 #End Region
 
 #Region "SellEndDate"
-        Public mappedSellEndDate As String
-        Friend mySellEndDate As TextString
+        Public mappedSellEndDate As Date?
+        Friend mySellEndDate As NODateNullable
 
         '<MemberOrder(1)>
-        Public ReadOnly Property SellEndDate As TextString
+        Public ReadOnly Property SellEndDate As NODateNullable
             Get
-                Return If(mySellEndDate, New TextString(mappedSellEndDate, Function(v) mappedSellEndDate = v))
+                Return If(mySellEndDate, New NODateNullable(mappedSellEndDate, Function(v) mappedSellEndDate = v))
             End Get
         End Property
 
-        Public Sub AboutSellEndDate(a As FieldAbout, SellEndDate As TextString)
+        Public Sub AboutSellEndDate(a As FieldAbout, SellEndDate As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -387,17 +387,17 @@ Namespace AW.Types
 #End Region
 
 #Region "DiscontinuedDate"
-        Public mappedDiscontinuedDate As Date
-        Friend myDiscontinuedDate As NODate
+        Public mappedDiscontinuedDate As Date?
+        Friend myDiscontinuedDate As NODateNullable
 
-        '<MemberOrder(83)>
-        Public ReadOnly Property DiscontinuedDate As NODate
+        '<MemberOrder(1)>
+        Public ReadOnly Property DiscontinuedDate As NODateNullable
             Get
-                Return If(myDiscontinuedDate, New NODate(mappedDiscontinuedDate, Function(v) mappedDiscontinuedDate = v))
+                Return If(myDiscontinuedDate, New NODateNullable(mappedDiscontinuedDate, Function(v) mappedDiscontinuedDate = v))
             End Get
         End Property
 
-        Public Sub AboutDiscontinuedDate(a As FieldAbout, DiscontinuedDate As NODate)
+        Public Sub AboutDiscontinuedDate(a As FieldAbout, DiscontinuedDate As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable

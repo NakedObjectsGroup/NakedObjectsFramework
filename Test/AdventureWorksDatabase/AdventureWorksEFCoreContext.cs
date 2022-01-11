@@ -2,6 +2,8 @@
 
 global using AW.Types;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace AdventureWorksModel
 {
@@ -86,7 +88,7 @@ namespace AdventureWorksModel
         {
             optionsBuilder.UseSqlServer(_cs);
             optionsBuilder.UseLazyLoadingProxies();
-            //optionsBuilder.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
+            optionsBuilder.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
         }
 
 

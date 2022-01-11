@@ -28,38 +28,17 @@
 #End Region
 
 #Region "EndDate"
-		Public mappedEndDate As Date
-		Friend myEndDate As NODate
+		Public mappedEndDate As Date?
+		Friend myEndDate As NODateNullable
 
 		'<MemberOrder(1)>
-		Public ReadOnly Property EndDate As NODate
+		Public ReadOnly Property EndDate As NODateNullable
 			Get
-				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
+				Return If(myEndDate, New NODateNullable(mappedEndDate, Function(v) mappedEndDate = v))
 			End Get
 		End Property
 
-		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODate)
-			Select Case a.TypeCode
-				Case AboutTypeCodes.Name
-				Case AboutTypeCodes.Usable
-				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
-			End Select
-		End Sub
-#End Region
-
-#Region "PropName"
-		Public mappedPropName As DateTime?
-		Friend myPropName As NODateNullable
-
-		'<MemberOrder(1)>
-		Public ReadOnly Property PropName As NODateNullable
-			Get
-				Return If(myPropName, New NODateNullable(mappedPropName, Function(v) mappedPropName = v))
-			End Get
-		End Property
-
-		Public Sub AboutPropName(a As FieldAbout, PropName As NODateNullable)
+		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
