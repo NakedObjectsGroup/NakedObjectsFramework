@@ -2,9 +2,9 @@
 
     Public Class Vendors
 
-        Public Shared Function ActionOrder() As String
-            Return "FindVendorByName,FindVendorByAccountNumber,  Randomvendor"
-        End Function
+        'Public Shared Function ActionOrder() As String
+        '    Return "FindVendorByName,FindVendorByAccountNumber,  Randomvendor"
+        'End Function
 
         Public Shared Function ActionRandomVendor() As Vendor
             Return SimpleRepository.Random(Of Vendor)()
