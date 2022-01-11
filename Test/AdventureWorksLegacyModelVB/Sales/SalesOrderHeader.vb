@@ -476,6 +476,28 @@
 			Return mappedSalesOrderNumber
 		End Function
 
+#Region "Actions"
+		<MemberOrder(4)>
+		Public Sub ActionClearComments()
+			Throw New NotImplementedException
+		End Sub
+
+		<MemberOrder(3)>
+		Public Sub ActionAppendComment()
+			Throw New NotImplementedException
+		End Sub
+
+		<MemberOrder(1)>
+		Public Sub ActionAddNewDetail()
+			Throw New NotImplementedException
+		End Sub
+
+		<MemberOrder(2)>
+		Public Sub ActionRemoveDetail()
+			Throw New NotImplementedException
+		End Sub
+#End Region
+
 	End Class
 
 	Public Enum OrderStatus As Byte

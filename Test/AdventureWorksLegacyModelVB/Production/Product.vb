@@ -569,10 +569,25 @@ Namespace AW.Types
             Return mappedName
         End Function
 
-#Region "Main Menu actions"
+#Region "Actions"
+        Public Shared Function ActionOrder() As String
+            Return "BestSpecialOffer, AssociatewithspecialOffer,  CurrentWorkOrders,CreateNewWorkOrder"
+        End Function
 
-        Public Shared Function ActionAProduct() As Product
-            Return ThreadLocals.Container.Instances(Of Product).First
+        Public Sub ActionAssociateWithSpecialOffer()
+            Throw New NotImplementedException()
+        End Sub
+
+        Public Function ActionBestSpecialOffer() As SpecialOffer
+            Throw New NotImplementedException()
+        End Function
+
+        Public Function ActionCreateNewWorkOrder() As WorkOrder
+            Throw New NotImplementedException()
+        End Function
+
+        Public Function ActionCurrentWorkOrders() As ArrayList
+            Throw New NotImplementedException()
         End Function
 
 #End Region
