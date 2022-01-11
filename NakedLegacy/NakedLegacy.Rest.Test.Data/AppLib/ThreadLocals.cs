@@ -1,11 +1,12 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
 using NakedLegacy.Types.Container;
 
-namespace NakedLegacy.Rest.Test.Data;
+namespace NakedLegacy.Rest.Test.Data.AppLib;
 
 public static class ThreadLocals {
+    [ThreadStatic]
     private static IServiceProvider serviceProvider;
+
     private static Func<IServiceProvider, IContainer> containerFactory;
 
     public static IContainer Container => GetContainer();
@@ -15,8 +16,10 @@ public static class ThreadLocals {
         containerFactory = cf;
     }
 
-    private static IContainer GetContainer() {
-        var scopeSp = serviceProvider.CreateScope().ServiceProvider;
-        return containerFactory(scopeSp);
+    public static void Reset() {
+        serviceProvider = null;
+        containerFactory = null;
     }
+
+    private static IContainer GetContainer() => containerFactory(serviceProvider);
 }
