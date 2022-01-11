@@ -56,13 +56,13 @@ namespace Legacy.Rest.App.Demo
         //    };
         //}
 
-        //For testing purposes only
+        //For testing purposes only - not an elegant solution - TODO replace with proper menu creation
         private static NakedFramework.Menu.IMenu MakeMenu<T>(IMenuFactory factory)
         {
             var t = typeof(T);
             var m = factory.NewMenu(t, false, t.Name);
             var actions = t.GetMethods(BindingFlags.Public | BindingFlags.Static);
-            foreach (var action in actions)
+            foreach (var action in actions.Where(a => a.Name != "ActionOrder"))
             {
                 m.AddAction(action.Name);
             }
