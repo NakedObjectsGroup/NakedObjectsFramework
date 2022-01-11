@@ -43,6 +43,22 @@ public class ClassWithTextString {
     }
 }
 
+public class ClassWithBounded : IBounded
+{
+    private TextString _name;
+    public string name;
+
+    [Key]
+    public int Id { get; init; }
+
+    public TextString Name => _name ??= new TextString(name, s => name = s);
+
+    public ClassWithBounded ChoicesProperty => this;
+
+    public ITitle Title() => Name.Title();
+}
+
+
 public class ClassWithInternalCollection {
     private InternalCollection _testCollection;
 

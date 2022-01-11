@@ -19,6 +19,7 @@ public static class LegacyObjectFacetFactories {
             typeof(LegacyCollectionFieldMethodsFacetFactory),
             typeof(InternalCollectionFacetFactory),
             typeof(DateOnlyFacetFactory),
+            typeof(BoundedFacetFactory),
             typeof(LegacyFacetFactory),
             typeof(TitleMethodFacetFactory),
             typeof(LegacyMenuFacetFactory),

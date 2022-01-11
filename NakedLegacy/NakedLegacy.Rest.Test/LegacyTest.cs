@@ -49,7 +49,8 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithMoney),
         typeof(ClassWithReferenceProperty),
         typeof(ClassWithOrderedProperties),
-        typeof(ClassWithOrderedActions)
+        typeof(ClassWithOrderedActions),
+        typeof(ClassWithBounded)
     };
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
@@ -184,6 +185,26 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNotNull(parsedResult["members"]["ActionUpdateName"]);
 
         Assert.AreEqual("Fred", parsedResult["title"].ToString());
+    }
+
+    [Test]
+    public void TestGetBounded()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithBounded>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.IsNotNull(parsedResult["members"]["ChoicesProperty"]);
+        Assert.AreEqual("True", parsedResult["members"]["ChoicesProperty"]["hasChoices"].ToString());
+        Assert.AreEqual("data1", parsedResult["members"]["ChoicesProperty"]["choices"][0]["title"].ToString());
+        Assert.AreEqual("data2", parsedResult["members"]["ChoicesProperty"]["choices"][1]["title"].ToString());
+
+        Assert.AreEqual("data1", parsedResult["title"].ToString());
     }
 
     [Test]

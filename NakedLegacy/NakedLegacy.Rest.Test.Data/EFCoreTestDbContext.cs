@@ -50,6 +50,8 @@ public abstract class EFCoreTestDbContext : DbContext {
 
     public DbSet<ClassWithReferenceProperty> ClassWithReferenceProperties { get; set; }
 
+    public DbSet<ClassWithBounded> ClassWithBoundeds { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
         optionsBuilder.UseLazyLoadingProxies();
@@ -58,6 +60,13 @@ public abstract class EFCoreTestDbContext : DbContext {
     private static void MapClassWithTextString(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithTextString>().Ignore(t => t.Name);
         modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
+    }
+
+    private static void MapClassWithBounded(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ClassWithBounded>().Ignore(t => t.Name);
+        modelBuilder.Entity<ClassWithBounded>().Ignore(t => t.ChoicesProperty);
+        modelBuilder.Entity<ClassWithBounded>().Property("name").HasColumnName("Name");
     }
 
     private static void MapClassWithDate(ModelBuilder modelBuilder) {
@@ -112,6 +121,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         MapClassWithWholeNumber(modelBuilder);
         MapClassWithLogical(modelBuilder);
         MapClassWithMoney(modelBuilder);
+        MapClassWithBounded(modelBuilder);
 
         Seed(modelBuilder);
     }
@@ -151,6 +161,9 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithReferenceProperty>().HasData(new { Id = 1, ReferencePropertyId = 1 });
         modelBuilder.Entity<ClassWithOrderedProperties>().HasData(new { Id = 1 });
         modelBuilder.Entity<ClassWithOrderedActions>().HasData(new { Id = 1 });
+
+        modelBuilder.Entity<ClassWithBounded>().HasData(new ClassWithBounded { Id = 1, name = "data1"});
+        modelBuilder.Entity<ClassWithBounded>().HasData(new ClassWithBounded { Id = 2, name = "data2" });
     }
 }
 
