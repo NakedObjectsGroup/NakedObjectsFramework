@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Security.Principal;
 using NakedFramework.Facade.Contexts;
 using NakedFramework.Facade.Translation;
@@ -50,4 +51,7 @@ public interface IFrameworkFacade {
     (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "");
 
     ActionContextFacade[] GetLocallyContributedActions(PropertyContextFacade propertyContext);
+
+
+    IServiceProvider GetScopedServiceProvider { get; } 
 }

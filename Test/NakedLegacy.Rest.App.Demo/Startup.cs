@@ -23,7 +23,6 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedLegacy.Reflector.Component;
-using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NakedLegacy.Types.Container;
 using AdventureWorksLegacy.AppLib;
@@ -104,9 +103,6 @@ namespace Legacy.Rest.App.Demo {
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
-            AdventureWorksLegacy.AppLib.ThreadLocals.Initialize(app.ApplicationServices, sp => new Container(sp.GetService<INakedFramework>()));
         }
-
-
     }
 }

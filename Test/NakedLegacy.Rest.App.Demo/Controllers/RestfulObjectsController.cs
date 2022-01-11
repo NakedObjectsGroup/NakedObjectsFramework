@@ -5,20 +5,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using AdventureWorksLegacy.AppLib;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 using NakedFramework.Rest.Model;
+using NakedLegacy.Reflector.Component;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Legacy.Rest.App.Demo.Controllers {
     //[Authorize]
-    public class RestfulObjectsController : RestfulObjectsControllerBase {
+    public class RestfulObjectsController : RestfulObjectsControllerBase, IDisposable {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade,
                                         ILogger<RestfulObjectsController> logger,
                                         ILoggerFactory loggerFactory,
-                                        IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) { }
+                                        IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) =>
+            ThreadLocals.Initialize(frameworkFacade.GetScopedServiceProvider, sp => new Container(sp.GetService<INakedFramework>()));
+
+        public void Dispose() => ThreadLocals.Reset();
 
         [HttpGet]
         public override ActionResult GetHome() => base.GetHome();
@@ -112,5 +120,7 @@ namespace Legacy.Rest.App.Demo.Controllers {
 
         [HttpGet]
         public override ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) => base.GetCollectionValue(domainType, instanceId, propertyName);
+
+     
     }
 }
