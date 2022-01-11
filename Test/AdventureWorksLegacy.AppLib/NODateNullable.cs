@@ -27,7 +27,7 @@ public class NODateNullable : ValueHolder<DateTime?> {
         }
     }
 
-    public override object Display(string mask = NODate.DATE_FORMAT) => ToString(mask);
+    public override object Display(string mask) => ToString(mask == null ? NODate.DATE_FORMAT : mask);
 
     public override ITitle Title() => new Title(ToString());
 }

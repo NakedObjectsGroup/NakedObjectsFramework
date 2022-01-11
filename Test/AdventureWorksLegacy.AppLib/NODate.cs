@@ -29,7 +29,7 @@ public class NODate : ValueHolder<DateTime> {
         }
     }
 
-    public override object Display(string mask) => ToString(DATE_FORMAT);
+    public override object Display(string mask) => ToString(mask == null ? DATE_FORMAT : mask);
 
     public override ITitle Title() => new Title(ToString());
 }
