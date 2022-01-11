@@ -29,7 +29,7 @@ public class Money : ValueHolder<decimal> {
     }
     internal const string CURRENCY = "€0.00";
 
-    public override object Display(string mask = CURRENCY) => ToString(mask);
+    public override object Display(string mask) => ToString(mask == null? CURRENCY : mask);
 
     public override ITitle Title() => new Title(ToString());
 }
