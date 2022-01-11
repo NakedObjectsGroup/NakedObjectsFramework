@@ -5,8 +5,9 @@
         Implements ITitledObject
 
         Public Shared Function FieldOrder() As String
-            Return "AccountNumber, Name, CreditRating, PreferredVendorStatus, " +
-            "ActiveFlag, PurchasingWebServiceURL, ModifiedDate, Products"
+            Return "Accountnumber, NAME,  CreditRating, PreferredVendorStatus, " +
+            "ActiveFlag,purchasingWebServiceURL, ModifiedDate, Products"
+            'spacing and casing for testing
         End Function
 
 #Region "Name"

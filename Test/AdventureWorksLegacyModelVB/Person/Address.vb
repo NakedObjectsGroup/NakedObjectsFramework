@@ -10,7 +10,7 @@
         Public mappedCity As String
         Friend myCity As TextString
 
-        '<MemberOrder(13)>
+        <MemberOrder(13)>
         Public ReadOnly Property City As TextString
             Get
                 Return If(myCity, New TextString(mappedCity, Function(v) mappedCity = v))
@@ -31,7 +31,7 @@
         Public mappedPostalCode As String
         Friend myPostalCode As TextString
 
-        '<MemberOrder(14)>
+        <MemberOrder(14)>
         Public ReadOnly Property PostalCode As TextString
             Get
                 Return If(myPostalCode, New TextString(mappedPostalCode, Function(v) mappedPostalCode = v))
@@ -52,7 +52,7 @@
         Public mappedAddressLine1 As String
         Friend myAddressLine1 As TextString
 
-        '<MemberOrder(11)>
+        <MemberOrder(11)>
         Public ReadOnly Property AddressLine1 As TextString
             Get
                 Return If(myAddressLine1, New TextString(mappedAddressLine1, Function(v) mappedAddressLine1 = v))
@@ -73,7 +73,7 @@
         Public mappedAddressLine2 As String
         Friend myAddressLine2 As TextString
 
-        '<MemberOrder(12)>
+        <MemberOrder(12)>
         Public ReadOnly Property AddressLine2 As TextString
             Get
                 Return If(myAddressLine2, New TextString(mappedAddressLine2, Function(v) mappedAddressLine2 = v))
@@ -93,14 +93,14 @@
 
         Public Property StateProvinceID() As Integer
 
-        '<MemberOrder(15)>
+        <MemberOrder(15)>
         Public Overridable Property StateProvince() As StateProvince
 
 #Region "ModifiedDate"
         Public mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        '<MemberOrder(99)>
+        <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
