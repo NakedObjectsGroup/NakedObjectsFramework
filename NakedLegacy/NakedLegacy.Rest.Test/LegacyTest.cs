@@ -425,6 +425,27 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Bill", resultObj["title"].ToString());
     }
 
+    [Test]
+    public void TestInvokeActionThatUsesRepository()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Bill") } } };
+
+        var result = api.PostInvoke(FullName<ClassWithReferenceProperty>(), "1", nameof(ClassWithReferenceProperty.actionGetObject1), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual(2, ((JContainer)resultObj["members"]).Count);
+        Assert.IsNull(resultObj["members"]["Id"]);
+        Assert.IsNotNull(resultObj["members"]["Name"]);
+        Assert.IsNotNull(resultObj["members"]["ActionUpdateName"]);
+
+        Assert.AreEqual("Fred", resultObj["title"].ToString());
+    }
+
 
     [Test]
     public void TestGetObjectWithTimeStamp() {
@@ -617,11 +638,12 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["ReferenceProperty"]);
         Assert.IsNotNull(parsedResult["members"]["actionUpdateReferenceProperty"]);
         Assert.IsNotNull(parsedResult["members"]["actionGetObject"]);
+        Assert.IsNotNull(parsedResult["members"]["actionGetObject1"]);
 
         Assert.AreEqual("Untitled Class With Reference Property", parsedResult["title"].ToString());
     }

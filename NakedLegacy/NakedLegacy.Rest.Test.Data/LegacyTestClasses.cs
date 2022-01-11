@@ -22,8 +22,9 @@ namespace NakedLegacy.Rest.Test.Data;
 
 public interface ILegacyRoleInterface { }
 
-public class SimpleService {
-    public ClassWithTextString GetClassWithTextString() => null;
+public class SimpleService : IContainerAware {
+    public ClassWithTextString GetClassWithTextString() => Container.Instances<ClassWithTextString>().FirstOrDefault();
+    public IContainer Container { get; set; }
 }
 
 public class ClassWithTextString {
@@ -145,6 +146,14 @@ public class ClassWithReferenceProperty : IContainerAware {
         var ofName = name.Value;
         return Container.Instances<ClassWithTextString>().SingleOrDefault(c => c.name == ofName);
     }
+
+    public ClassWithTextString actionGetObject1(TextString name)
+    {
+        var ofName = name.Value;
+        var simpleService = (SimpleService)Container.Repository(typeof(SimpleService));
+        return simpleService.GetClassWithTextString();
+    }
+
 
     public void AboutActionUpdateReferenceProperty(ActionAbout actionAbout, ClassWithTextString newReferenceProperty) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
