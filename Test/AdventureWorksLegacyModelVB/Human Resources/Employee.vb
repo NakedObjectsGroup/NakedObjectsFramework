@@ -311,6 +311,7 @@ Namespace AW.Types
 
         Public Property RowGuid() As Guid 'Not visible on UI
 
+#Region "Title"
         Public Function Title() As ITitle Implements ITitledObject.Title
             Return New Title(ToString())
         End Function
@@ -318,6 +319,14 @@ Namespace AW.Types
         Public Overrides Function ToString() As String
             Return PersonDetails.ToString()
         End Function
+#End Region
+
+#Region "Actions"
+        Public Sub ActionChangeDepartmentOrShift(department As Department, shift As Shift)
+            Throw New NotImplementedException
+        End Sub
+#End Region
+
 
     End Class
 End Namespace

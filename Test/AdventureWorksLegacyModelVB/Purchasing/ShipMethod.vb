@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-    '<Bounded>
-    Partial Public Class ShipMethod
 
-        Implements ITitledObject
+    Partial Public Class ShipMethod
+        Implements ITitledObject, IBounded
 
         Public Property ShipMethodID() As Integer
 

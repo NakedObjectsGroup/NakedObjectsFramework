@@ -1,9 +1,9 @@
 ﻿Namespace AW.Types
 
-    '<Bounded>
-    Partial Public Class Location
 
-        Implements ITitledObject
+    Partial Public Class Location
+        Implements ITitledObject, IBounded
+
         '<Hidden>
         Public Property LocationID() As Short
 

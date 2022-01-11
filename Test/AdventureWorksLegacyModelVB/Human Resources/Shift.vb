@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-	'<Bounded>
-	Partial Public Class Shift
 
-		Implements ITitledObject
+	Partial Public Class Shift
+		Implements ITitledObject, IBounded
 
 		Public Property ShiftID() As Byte
 

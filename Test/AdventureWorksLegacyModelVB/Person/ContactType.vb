@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-    '<Bounded>
-    Partial Public Class ContactType
 
-        Implements ITitledObject
+    Partial Public Class ContactType
+        Implements ITitledObject, IBounded
 
         Public Property ContactTypeID() As Integer
 

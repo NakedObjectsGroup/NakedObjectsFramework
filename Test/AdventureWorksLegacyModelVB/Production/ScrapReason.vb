@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-	'<Bounded>
-	Partial Public Class ScrapReason
 
-		Implements ITitledObject
+	Partial Public Class ScrapReason
+		Implements ITitledObject, IBounded
 
 		Public Property ScrapReasonID() As Short
 

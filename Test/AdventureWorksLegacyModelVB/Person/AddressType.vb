@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-    '<Bounded>
-    Partial Public Class AddressType
 
-        Implements ITitledObject
+    Partial Public Class AddressType
+        Implements ITitledObject, IBounded
 
         Public Property AddressTypeID() As Integer
 

@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-    '<Bounded>
-    Partial Public Class Department
 
-        Implements ITitledObject
+    Partial Public Class Department
+        Implements ITitledObject, IBounded
 
         Public Property DepartmentID As Short  'Not visible on UI
 

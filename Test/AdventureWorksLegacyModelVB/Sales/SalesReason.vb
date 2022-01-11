@@ -1,9 +1,9 @@
 ﻿Namespace AW.Types
 
-    '<Bounded>
-    Partial Public Class SalesReason
 
-        Implements ITitledObject
+    Partial Public Class SalesReason
+        Implements ITitledObject, IBounded
+
         ''<Hidden>
         Public Property SalesReasonID() As Integer
 

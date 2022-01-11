@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-    '<Bounded>
-    Partial Public Class CountryRegion
 
-        Implements ITitledObject
+    Partial Public Class CountryRegion
+        Implements ITitledObject, IBounded
 
 #Region "Name"
         Public mappedName As String

@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-	'<Bounded>
-	Partial Public Class PhoneNumberType
 
-		Implements ITitledObject
+	Partial Public Class PhoneNumberType
+		Implements ITitledObject, IBounded
 
 		Public Property PhoneNumberTypeID() As Integer
 

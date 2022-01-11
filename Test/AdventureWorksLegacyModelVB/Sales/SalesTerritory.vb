@@ -1,9 +1,9 @@
 ﻿Namespace AW.Types
 
-	'<Bounded>
-	Partial Public Class SalesTerritory
 
-		Implements ITitledObject
+	Partial Public Class SalesTerritory
+		Implements ITitledObject, IBounded
+
 		'<Hidden>
 		Public Property TerritoryID() As Integer
 

@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-	'<Bounded>
-	Partial Public Class ProductSubcategory
 
-		Implements ITitledObject
+	Partial Public Class ProductSubcategory
+		Implements ITitledObject, IBounded
 
 		Public Property ProductSubcategoryID() As Integer
 

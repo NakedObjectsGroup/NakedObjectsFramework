@@ -1,8 +1,8 @@
 ﻿Namespace AW.Types
 
-	'<Bounded>
+
 	Partial Public Class Currency
-		Implements ITitledObject
+		Implements ITitledObject, IBounded
 
 		'<Hidden>
 		Public Property CurrencyCode() As String = ""

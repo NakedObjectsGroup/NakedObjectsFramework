@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-	'<Bounded>
-	Partial Public Class StateProvince
 
-		Implements ITitledObject
+	Partial Public Class StateProvince
+		Implements ITitledObject, IBounded
 
 		Public Property StateProvinceID() As Integer
 

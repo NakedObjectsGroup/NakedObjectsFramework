@@ -1,9 +1,8 @@
 ﻿Namespace AW.Types
 
-    '<Bounded>
-    Partial Public Class UnitMeasure
 
-        Implements ITitledObject
+    Partial Public Class UnitMeasure
+        Implements ITitledObject, IBounded
 
         Public Property UnitMeasureCode() As String
 
