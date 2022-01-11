@@ -130,7 +130,7 @@ public class ClassWithLinkToNOFClass {
     public virtual ClassWithString LinkToNOFClass { get; set; }
 }
 
-public class ClassWithReferenceProperty {
+public class ClassWithReferenceProperty : IContainerAware {
     [Key]
     public int Id { get; init; }
 
@@ -139,6 +139,11 @@ public class ClassWithReferenceProperty {
     public ClassWithReferenceProperty actionUpdateReferenceProperty(ClassWithTextString newReferenceProperty) {
         ReferenceProperty = newReferenceProperty;
         return this;
+    }
+
+    public ClassWithTextString actionGetObject(TextString name) {
+        var ofName = name.Value;
+        return Container.Instances<ClassWithTextString>().SingleOrDefault(c => c.name == ofName);
     }
 
     public void AboutActionUpdateReferenceProperty(ActionAbout actionAbout, ClassWithTextString newReferenceProperty) {
@@ -150,6 +155,8 @@ public class ClassWithReferenceProperty {
             actionAbout.Usable = true;
         }
     }
+
+    public IContainer Container { get; set; }
 }
 
 public class LegacyClassWithInterface : IRoleInterface {
