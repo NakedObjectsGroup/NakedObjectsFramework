@@ -27,7 +27,7 @@ public class MoneyNullable : ValueHolder<decimal?> {
         }
     }
 
-    public override object Display(string mask) => ToString(mask == null ? Money.CURRENCY : mask);
+    public override object Display(string mask = null) => Value;
 
     public override ITitle Title() => new Title(ToString());
 }

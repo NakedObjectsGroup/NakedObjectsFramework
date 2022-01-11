@@ -29,7 +29,7 @@ public class NODate : ValueHolder<DateTime> {
         }
     }
 
-    public override object Display(string mask) => ToString(mask == null ? DATE_FORMAT : mask);
+    public override object Display(string mask) => Value.ToString(mask, CultureInfo.InvariantCulture);
 
     public override ITitle Title() => new Title(ToString());
 }

@@ -11,10 +11,11 @@ public class Money : ValueHolder<decimal> {
 
     public Money(decimal value, Action<decimal> callback) : base(value, callback) { }
 
+    internal const string CURRENCY = "€0.00";
+
     public override string ToString() => ToString(CURRENCY);
 
     internal string ToString(string mask) => Value.ToString(mask, CultureInfo.InvariantCulture);
-
 
     public override object Parse(string entry) {
         try {
@@ -27,9 +28,8 @@ public class Money : ValueHolder<decimal> {
             throw new ValueHolderException(entry);
         }
     }
-    internal const string CURRENCY = "€0.00";
 
-    public override object Display(string mask) => ToString(mask == null? CURRENCY : mask);
+    public override object Display(string mask = null) => Value;
 
     public override ITitle Title() => new Title(ToString());
 }
