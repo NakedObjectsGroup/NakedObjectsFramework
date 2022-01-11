@@ -1,6 +1,6 @@
 ﻿Namespace AW.Types
 
-    Public Class Employee_Menu
+    Public Class Employees
 
         Public Shared Function ActionListAllDepartments() As ArrayList
             Return SimpleRepository.ListAll(Of Department).ToArrayList()

@@ -10,11 +10,6 @@
             Return SimpleRepository.Random(Of BillOfMaterial)()
         End Function
 
-
-        Public Shared Function ActionRandomPassword() As Password
-            Return SimpleRepository.Random(Of Password)()
-        End Function
-
         Public Shared Function ActionRandomBusinessEntityAddress() As BusinessEntityAddress
             Return SimpleRepository.Random(Of BusinessEntityAddress)()
         End Function

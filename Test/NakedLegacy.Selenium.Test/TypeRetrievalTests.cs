@@ -50,8 +50,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AccessInstanceWithTitle("Address--1", "1970 Napa Ct....");
             AccessInstanceWithTitle("AddressType--1", "Billing");
             AccessInstanceWithTitle("BusinessEntity--2", "Terri Duffy");
- //          AccessInstanceWithTitle("BusinessEntityAddress--1--2--249", "Home: 4350 Minute Dr....");
- //           AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Gustavo Achong");
+            AccessInstanceWithTitle("BusinessEntityAddress--1--2--249", "Home: 4350 Minute Dr....");
+            AccessInstanceWithTitle("BusinessEntityContact--292--291--11", "Gustavo Achong");
             AccessInstanceWithTitle("ContactType--1", "Accounting Manager");
             AccessInstanceWithTitle("CountryRegion--AD", "Andorra");
             AccessInstanceWithTitle("EmailAddress--1--1", "ken0@adventure-works.com");

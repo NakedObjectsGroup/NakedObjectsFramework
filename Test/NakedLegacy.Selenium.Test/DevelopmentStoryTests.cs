@@ -48,7 +48,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Titles();
         }
 
-        #region Story 1: ViewPersistentObjectsAndProperties
+        #region ViewPersistentObjectsAndProperties
         //[TestMethod]
         public void ViewPersistentObjectsAndProperties()
         {
@@ -108,7 +108,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
         #endregion
 
-        #region Story 2: Reference properties and collections
+        #region Reference properties and collections
         //[TestMethod]
         public void ReferencePropertiesAndCollections()
         {
@@ -130,13 +130,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             helper.GotoUrlDirectly(prefix + "SalesOrderHeader--52035");
             var obj = helper.GetObjectView().AssertTitleIs("SO52035");
             var coll = obj.GetCollection("Details").AssertDetails("2 Items");
-            //TODO:
-            //coll.ClickListView().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
-            //coll.ClickTableView().GetRowFromTable(1).AssertColumnValueIs(3,"€32.60");
+            coll.ClickListView().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
+            coll.ClickTableView().GetRowFromTable(1).AssertColumnValueIs(3,"€32.60");
         }
         #endregion
 
-        #region Story 4: Titles
+        #region Titles
         //[TestMethod]
         public void Titles()
         {
@@ -159,7 +158,45 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
         #endregion
 
+        #region Member Order
 
+        [TestMethod]
+        public void MemberOrder()
+        {
+            FieldOrderSpecifiedByAttribute();
+            FieldOrderSpecifiedByMethod();
+            //ActionOrderSpecifiedByAttribute();
+            //ActionOrderSpecifiedByMethod();
+        }
+
+        //[TestMethod]
+        public void FieldOrderSpecifiedByAttribute() //Also tests that system value properties are not displayed
+        {
+            var obj = AccessInstanceWithTitle("Address--24082", "4669 Berry Dr....");
+            obj.AssertPropertiesAre("Address Line1", "Address Line2", "City", "Postal Code", "State Province", "Modified Date");
+        }
+
+        //[TestMethod]
+        public void FieldOrderSpecifiedByMethod()
+        {
+            var obj = AccessInstanceWithTitle("Vendor--1674", "Varsity Sport Co.");
+            obj.AssertPropertiesAre("Account Number", "Name", "Credit Rating", "Preferred Vendor Status",
+                "Active Flag", "Purchasing Web Service URL", "Modified Date", "Product - Order Info");
+        }
+
+        [TestMethod]
+        public void ActionOrderSpecifiedByAttribute()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void ActionOrderSpecifiedByMethod()
+        {
+            Assert.Fail();
+        }
+
+        #endregion
 
         #region Story x: ObjectPresentation & Control
         //[TestMethod]
@@ -186,30 +223,10 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             obj.GetProperty(1).AssertNameIs("Resumé");
         }
 
-        //[TestMethod]
-        public void FieldOrderSpecifiedByAttribute() //Also tests that system value properties are not displayed
-        {
-            var obj = AccessInstanceWithTitle("Address--24082", "4669 Berry Dr....");
-            obj.AssertPropertiesAre("Address Line1", "Address Line2", "City", "Postal Code", "State Province", "Modified Date");
-        }
 
-        //[TestMethod]
-        public void FieldOrderSpecifiedByMethod()
-        {
-            var obj = AccessInstanceWithTitle("Vendor--1674", "Varsity Sport Co.");
-            obj.AssertPropertiesAre("Account Number","Name","Credit Rating", "Preferred Vendor Status", 
-                "Active Flag", "Purchasing Web Service URL", "Modified Date","Product - Order Info");
-        }
 
         #endregion
 
-        #region "EditingObjects"
-        //[TestMethod]
-        public void PropertyGivenDescriptionUsingFieldAbout()
-        {
-            
-        }
-        #endregion
 
         #region Old Stories - for reference
         //[TestMethod]

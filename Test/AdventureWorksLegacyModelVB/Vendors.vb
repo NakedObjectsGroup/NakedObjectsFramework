@@ -3,7 +3,7 @@
     Public Class Vendors
 
 
-        Public Shared Function ActionRandomtVendor() As Vendor
+        Public Shared Function ActionRandomVendor() As Vendor
             Return SimpleRepository.Random(Of Vendor)()
         End Function
 

@@ -72,7 +72,8 @@ namespace Legacy.Rest.App.Demo
 
         public static NakedFramework.Menu.IMenu[] MainMenus(IMenuFactory factory) =>
             new[] {
-                    MakeMenu<Employee_Menu>(factory),
+                    MakeMenu<Employees>(factory),
+                    MakeMenu<Addresses>(factory),
                     MakeMenu<Products>(factory),
                     MakeMenu<Vendors>(factory),
                     MakeMenu<SalesOrders>(factory),
