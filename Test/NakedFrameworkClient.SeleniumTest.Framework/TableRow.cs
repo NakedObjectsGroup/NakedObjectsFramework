@@ -28,7 +28,7 @@ namespace NakedFrameworkClient.TestFramework
         }
 
         public string GetColumnValue(int col) =>
-            element.FindElements(By.CssSelector("td")).ElementAt(col + 1).Text;
+            element.FindElements(By.CssSelector("td")).ElementAt(col).Text;
 
     }
 }

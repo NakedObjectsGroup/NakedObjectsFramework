@@ -47,6 +47,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ReferencePropertiesAndCollections();
             Titles();
             MemberOrder();
+            //BoundedTypes();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -132,7 +133,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var obj = helper.GetObjectView().AssertTitleIs("SO52035");
             var coll = obj.GetCollection("Details").AssertDetails("2 Items");
             coll.ClickListView().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
-            coll.ClickTableView().GetRowFromTable(1).AssertColumnValueIs(3,"€32.60");
+            coll.ClickTableView().GetRowFromTable(1).AssertColumnValueIs(3,"32.6"); //TODO should become €32.60
         }
         #endregion
 
@@ -190,10 +191,10 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             var obj = AccessInstanceWithTitle("SalesOrderHeader--54119", "SO54119");
             obj.OpenActions().AssertHasActions(
-                "Action Add New Detail",
-                "Action Remove Detail",
-                "Action Append Comment",
-                "Action Clear Comments");
+                "Add New Detail",
+                "Remove Detail",
+                "Append Comment",
+                "Clear Comments");
         }
 
         //[TestMethod]
@@ -205,6 +206,16 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 "Action Associate With Special Offer",
                 "Action Current Work Orders",
                 "Action Create New Work Order");
+        }
+
+        #endregion
+
+        #region Bounded Types
+        //[TestMethod]
+        public void BoundedTypes()
+        {
+            var obj = AccessInstanceWithTitle(".Employee--33", "Annik Stahl");
+            obj.OpenActions().GetActionWithDialog("");
         }
 
         #endregion
@@ -237,7 +248,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
 
         #endregion
-
 
         #region Old Stories - for reference
         //[TestMethod]
