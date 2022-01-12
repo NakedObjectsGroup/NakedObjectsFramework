@@ -1,5 +1,7 @@
 ﻿
 
+using System.Globalization;
+
 namespace AdventureWorksLegacy.AppLib;
 
 public abstract class ValueHolder<T> : IValueHolder<T> {
@@ -30,4 +32,6 @@ public abstract class ValueHolder<T> : IValueHolder<T> {
     public abstract object Parse(string fromString);
 
     public abstract object Display(string mask = null);
+
+    protected CultureInfo Culture = new CultureInfo("en-GB");
 }

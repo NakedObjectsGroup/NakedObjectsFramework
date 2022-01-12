@@ -13,7 +13,7 @@ public class Money : ValueHolder<decimal> {
 
     internal const string CURRENCY = "C";
 
-    public override string ToString() => Value.ToString(CURRENCY, CultureInfo.InvariantCulture);
+    public override string ToString() => Value.ToString(CURRENCY, Culture);
 
     public override string Mask => CURRENCY;
 
