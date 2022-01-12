@@ -4,7 +4,7 @@
 
 
         Public Shared Function ActionRandomVendor() As Vendor
-            Return SimpleRepository.Random(Of Vendor)()
+            Return GenericMenuFunctions.Random(Of Vendor)()
         End Function
 
         Public Shared Function ActionFindVendorByName() As ArrayList

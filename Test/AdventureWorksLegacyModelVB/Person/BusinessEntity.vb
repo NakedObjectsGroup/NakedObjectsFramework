@@ -1,6 +1,13 @@
-﻿Namespace AW.Types
+﻿Imports NakedLegacy.Types.Container
+
+Namespace AW.Types
 
     Public MustInherit Class BusinessEntity
+        Implements IContainerAware
+
+#Region "Container"
+        Public Property Container As IContainer Implements IContainerAware.Container
+#End Region
 
         Public Property BusinessEntityID() As Integer
 

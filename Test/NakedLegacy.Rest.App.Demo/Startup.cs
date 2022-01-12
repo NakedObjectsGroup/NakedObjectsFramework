@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 using NakedLegacy.Reflector.Extensions;
-using NakedLegacy.Types;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +24,6 @@ using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedLegacy.Reflector.Component;
 using Newtonsoft.Json;
-using NakedLegacy.Types.Container;
 using AdventureWorksLegacy.AppLib;
 using NakedFramework.Menu;
 using System.Reflection;

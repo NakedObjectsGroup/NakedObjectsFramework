@@ -229,6 +229,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //MainMenuActionToRetrieveAnArrayList(); TODO: Unreliable
             ObjectActionToRetrieveAQueryable();
             ObjectActionToRetrieveASingleInstance();
+            ObjectActionThatDelegatesToARepositoryService();
         }
 
         //[TestMethod]
@@ -256,6 +257,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         GetActionWithDialog("Best Special Offer").Open();
             dialog.GetTextField("Quantity").Enter("10");
             dialog.ClickOKToViewObject().AssertTitleIs("No Discount");
+        }
+
+        //[TestMethod]
+        public void ObjectActionThatDelegatesToARepositoryService()
+        {
+            AccessInstanceWithTitle("Person--1", "Ken Sánchez").OpenActions()
+                .GetActionWithoutDialog("Others With Same Initials").ClickToViewList()
+                .AssertDetails("Page 1 of 8; viewing 20 of 142 items")
+                .GetRowFromList(0).AssertTitleIs("Kaitlin Sai");
         }
 
         #endregion

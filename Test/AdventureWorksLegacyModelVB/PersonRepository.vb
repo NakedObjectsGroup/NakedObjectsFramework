@@ -15,7 +15,7 @@ Namespace AW.Services
             Return From obj In Container.Instances(Of Person)()
                    Where (firstName Is Nothing OrElse obj.mappedFirstName.ToUpper().StartsWith(firstName.ToUpper())) AndAlso
                        obj.mappedLastName.ToUpper().StartsWith(lastName.ToUpper())
-                   Order By obj.LastName
+                   Order By obj.mappedLastName
         End Function
 
 #End Region
