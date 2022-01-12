@@ -588,11 +588,12 @@ Namespace AW.Types
         Public Function ActionBestSpecialOffer(quantity As WholeNumber) As SpecialOffer
             Dim pid = ProductID
             Dim today = Date.Today()
+            Dim qty = quantity.Value
             Return (From sop In Container.Instances(Of SpecialOfferProduct)
                     Where sop.Product.ProductID = pid AndAlso
-                           sop.SpecialOffer.StartDate.Value <= today AndAlso
-                           sop.SpecialOffer.MinQty.Value < quantity.Value
-                    Order By sop.SpecialOffer.DiscountPct Descending
+                           sop.SpecialOffer.mappedStartDate <= today AndAlso
+                           sop.SpecialOffer.mappedMinQty < qty
+                    Order By sop.SpecialOffer.mappedDiscountPct Descending
                     Select sop.SpecialOffer).FirstOrDefault()
         End Function
 
@@ -603,7 +604,8 @@ Namespace AW.Types
         Public Function ActionCurrentWorkOrders() As IQueryable(Of WorkOrder)
             Dim pid = Me.ProductID
             Return From w In Container.Instances(Of WorkOrder)
-                   Where w.ProductID = pid
+                   Where w.ProductID = pid AndAlso
+                       w.mappedEndDate Is Nothing
         End Function
 
 #End Region
