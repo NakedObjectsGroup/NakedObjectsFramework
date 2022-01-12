@@ -1,5 +1,3 @@
-﻿
+﻿namespace NakedLegacy;
 
-namespace NakedLegacy.Types {
-    public interface ISubMenu : IMainMenu { }
-}
+public interface ISubMenu : IMainMenu { }

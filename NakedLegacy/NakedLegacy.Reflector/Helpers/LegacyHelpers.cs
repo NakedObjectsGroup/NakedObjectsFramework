@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using NakedLegacy.Types;
+using NakedLegacy;
 
 namespace NakedLegacy.Reflector.Helpers;
 

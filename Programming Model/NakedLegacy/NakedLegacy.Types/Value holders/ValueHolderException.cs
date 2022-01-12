@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NakedLegacy.Types;
+namespace NakedLegacy;
 
 public class ValueHolderException : Exception {
     public ValueHolderException(string msg) : base(msg) { }

@@ -57,6 +57,11 @@
                 "symbol": "GBP",
                 "digits": "1.2-2"
             },
+            "": {
+                "format": "decimal",
+                "symbol": "EUR",
+                "digits": "1.2-2"
+            },
             "c": {
                 "format": "decimal",
                 "symbol": "GBP",

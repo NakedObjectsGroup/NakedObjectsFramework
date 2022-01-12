@@ -1,7 +1,5 @@
-﻿
+﻿namespace NakedLegacy;
 
-namespace NakedLegacy.Types {
-    public interface IMenu {
-        string Name { get; set; }
-    }
+public interface IMenu {
+    string Name { get; set; }
 }

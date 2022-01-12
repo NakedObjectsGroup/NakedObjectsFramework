@@ -1,10 +1,7 @@
-﻿
+﻿using System.Collections.Generic;
 
-using NakedFramework.Menu;
-using System.Collections.Generic;
+namespace NakedLegacy;
 
-namespace NakedLegacy.Types {
-    public interface IMainMenu {
-        IList<IMenu> Menus { get; set; }
-    }
+public interface IMainMenu {
+    IList<IMenu> Menus { get; set; }
 }

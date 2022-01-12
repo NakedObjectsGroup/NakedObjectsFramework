@@ -6,17 +6,17 @@
 
 using System.Collections.Generic;
 
-namespace NakedLegacy.Types {
-    public class SubMenu : MainMenu, ISubMenu {
-        private IList<IMenu> myMenus;
+namespace NakedLegacy;
 
-        public SubMenu(string menuName)
-            : base(menuName) =>
-            myMenus = new List<IMenu>();
+public class SubMenu : MainMenu, ISubMenu {
+    private IList<IMenu> myMenus;
 
-        public override IList<IMenu> Menus {
-            get => myMenus;
-            set => myMenus = value;
-        }
+    public SubMenu(string menuName)
+        : base(menuName) =>
+        myMenus = new List<IMenu>();
+
+    public override IList<IMenu> Menus {
+        get => myMenus;
+        set => myMenus = value;
     }
 }

@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Menu;
-using NakedLegacy.Types;
+using NakedLegacy;
 
 namespace NakedLegacy.Reflector.Facet;
 

@@ -1,4 +1,4 @@
-﻿using NakedLegacy.Types;
+﻿using NakedLegacy;
 
 namespace NakedLegacy.Rest.Test.Data.AppLib;
 

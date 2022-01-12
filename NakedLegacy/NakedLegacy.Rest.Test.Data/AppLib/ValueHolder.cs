@@ -1,5 +1,5 @@
 ﻿using System;
-using NakedLegacy.Types;
+using NakedLegacy;
 
 namespace NakedLegacy.Rest.Test.Data.AppLib;
 
@@ -21,6 +21,8 @@ public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
             UpdateBackingField(value);
         }
     }
+
+    public string Mask { get; }
 
     public abstract ITitle Title();
 
