@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 
-namespace NakedLegacy.Types.Container;
+namespace NakedLegacy;
 
 public interface IContainer {
     public IEnumerable AllInstances(Type ofType);
