@@ -9,6 +9,7 @@ namespace AdventureWorksModel {
         public static void Map(this EntityTypeBuilder<BusinessEntity> builder)
         {
             builder.HasKey(t => t.BusinessEntityID);
+            builder.Ignore(t => t.Container);
 
             // Table & Column Mappings
             builder.ToTable("BusinessEntity", "Person");

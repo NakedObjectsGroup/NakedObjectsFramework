@@ -3,7 +3,7 @@
     Public Class WorkOrders
 
         Public Shared Function ActionRandomWorkOrder() As WorkOrder
-            Return SimpleRepository.Random(Of WorkOrder)()
+            Return GenericMenuFunctions.Random(Of WorkOrder)()
         End Function
 
         Public Shared Function ActionCurrentWorkOrders() As IQueryable(Of WorkOrder)

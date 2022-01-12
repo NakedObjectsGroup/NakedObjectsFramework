@@ -3,7 +3,7 @@
     Public Class Addresses
 
         Public Shared Function ActionRandomAddress() As Address
-            Return SimpleRepository.Random(Of Address)()
+            Return GenericMenuFunctions.Random(Of Address)()
         End Function
 
     End Class

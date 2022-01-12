@@ -9,7 +9,6 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
-using NakedLegacy.Types;
 using Microsoft.Extensions.Configuration;
 using NakedFramework.Menu;
 using AdventureWorksModel;
@@ -29,7 +28,7 @@ namespace Legacy.Rest.App.Demo
                      ToArray();
 
 
-        public static Type[] DomainTypes => AllAdventureWorksTypes.Where(t => t.Namespace.StartsWith("AW.Types")).ToArray();
+        public static Type[] DomainTypes => AllAdventureWorksTypes.Where(t => t.Namespace.StartsWith("AW")).ToArray();
 
         public static Type[] DomainServices => new Type[] {typeof(PersonRepository) };//AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Services")).ToArray();
 

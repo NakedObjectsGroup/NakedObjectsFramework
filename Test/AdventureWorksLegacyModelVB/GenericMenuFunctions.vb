@@ -1,6 +1,6 @@
 ﻿Namespace AW.Types
 
-    Public Class SimpleRepository
+    Public Class GenericMenuFunctions
         Public Shared Function Random(Of T As Class)() As T
             Dim max = ThreadLocals.Container.Instances(Of T).Count
             Dim rnd = (New Random).Next(max)

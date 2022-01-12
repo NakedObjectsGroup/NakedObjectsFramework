@@ -1,4 +1,5 @@
-﻿Imports NakedFramework.Value
+﻿Imports AW.Services
+Imports NakedFramework.Value
 Imports NakedLegacy.Types.Container
 
 Namespace AW.Types
@@ -607,6 +608,7 @@ Namespace AW.Types
                    Where w.ProductID = pid AndAlso
                        w.mappedEndDate Is Nothing
         End Function
+
 
 #End Region
 

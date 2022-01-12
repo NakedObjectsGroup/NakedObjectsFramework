@@ -3,7 +3,7 @@
     Public Class Cart
 
         Public Shared Function ActionRandomShoppingCartItem() As ShoppingCartItem
-            Return SimpleRepository.Random(Of ShoppingCartItem)()
+            Return GenericMenuFunctions.Random(Of ShoppingCartItem)()
         End Function
 
     End Class

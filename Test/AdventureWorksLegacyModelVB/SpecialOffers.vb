@@ -3,7 +3,7 @@
     Public Class SpecialOffers
 
         Public Shared Function ActionRandomSpecialOffer() As SpecialOffer
-            Return SimpleRepository.Random(Of SpecialOffer)()
+            Return GenericMenuFunctions.Random(Of SpecialOffer)()
         End Function
 
     End Class
