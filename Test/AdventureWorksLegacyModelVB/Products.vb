@@ -6,18 +6,9 @@
             Return SimpleRepository.Random(Of Product)()
         End Function
 
-        Public Shared Function ActionRandomBillOfMaterial() As BillOfMaterial
-            Return SimpleRepository.Random(Of BillOfMaterial)()
+        Public Shared Function ActionAllProducts() As IQueryable(Of Product)
+            Return SimpleRepository.ListAll(Of Product)()
         End Function
-
-        Public Shared Function ActionRandomBusinessEntityAddress() As BusinessEntityAddress
-            Return SimpleRepository.Random(Of BusinessEntityAddress)()
-        End Function
-
-        Public Shared Function ActionRandomBusinessEntityContact() As BusinessEntityContact
-            Return SimpleRepository.Random(Of BusinessEntityContact)()
-        End Function
-
 
     End Class
 End Namespace
