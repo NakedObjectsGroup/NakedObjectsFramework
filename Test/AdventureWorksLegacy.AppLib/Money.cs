@@ -11,7 +11,7 @@ public class Money : ValueHolder<decimal> {
 
     public Money(decimal value, Action<decimal> callback) : base(value, callback) { }
 
-    internal const string CURRENCY = "€0.00";
+    internal const string CURRENCY = "C";
 
     public override string ToString() => Value.ToString(CURRENCY, CultureInfo.InvariantCulture);
 

@@ -11,9 +11,9 @@ public class MoneyNullable : ValueHolder<decimal?> {
 
     public MoneyNullable(decimal? value, Action<decimal?> callback) : base(value, callback) { }
 
-    public override string ToString() => ToString(Money.CURRENCY);
+    public override string ToString() => Value == null ? "" : Value.Value.ToString(Mask, CultureInfo.InvariantCulture);
 
-    private string ToString(string mask) => Value == null ? "" : Value.Value.ToString(mask, CultureInfo.InvariantCulture);
+    public override string Mask => Money.CURRENCY;
 
     public override object Parse(string entry) {
         try {

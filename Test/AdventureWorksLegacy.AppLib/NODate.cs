@@ -13,11 +13,11 @@ public class NODate : ValueHolder<DateTime> {
 
     public NODate(DateTime value, Action<DateTime> callback) : base(value, callback) { }
 
-    internal const string DATE_FORMAT = "dd/MM/yyyy";
+    public const string DATE_FORMAT = "d";
 
-    public override string ToString() => ToString(DATE_FORMAT);
+    public override string ToString() => Value.ToString(Mask, CultureInfo.InvariantCulture);
 
-    private string ToString(string mask) => Value.ToString(mask, CultureInfo.InvariantCulture);
+    public override string Mask => DATE_FORMAT;
 
     public override object Parse(string entry) {
         var dateString = entry.Trim();
