@@ -25,6 +25,8 @@ public class Money : ValueHolder<decimal> {
         }
     }
 
+    public override string Mask => "C";
+
     public override object Display(string mask = null) => Value;
 
     public override ITitle Title() => new Title(ToString());
