@@ -22,7 +22,7 @@ public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
         }
     }
 
-    public string Mask { get; }
+    public virtual string Mask => null;
 
     public abstract ITitle Title();
 

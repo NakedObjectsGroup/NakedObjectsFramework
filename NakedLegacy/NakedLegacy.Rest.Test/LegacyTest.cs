@@ -614,6 +614,7 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("10", parsedResult["value"].ToString());
         Assert.AreEqual("number", parsedResult["extensions"]["returnType"].ToString());
         Assert.AreEqual("decimal", parsedResult["extensions"]["format"].ToString());
+        Assert.AreEqual("C", parsedResult["extensions"]["x-ro-nof-mask"].ToString());
     }
 
     [Test]

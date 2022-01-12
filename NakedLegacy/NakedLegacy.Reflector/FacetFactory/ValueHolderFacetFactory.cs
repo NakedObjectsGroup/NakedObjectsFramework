@@ -37,11 +37,23 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
 
     private static  IFacet GetValueFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ValueFacetFromSemanticProvider<T>(sm, holder);
 
+    private static IFacet GetMaskFacet<T, TU>(ISpecificationBuilder holder) where T : class, IValueHolder<TU>, new() {
+        var vh = new T();
+        var mask = vh.Mask;
+        return mask is null ? null : new MaskFacet(mask, holder);
+    }
+
     private static IEnumerable<IFacet> GetFacets(Type type, object sm, ISpecificationBuilder holder) => 
         typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).
                                         Where(m => m.Name is "GetParserFacet" or "GetTitleFacet" or "GetValueFacet").
                                         Select(m => m.MakeGenericMethod(type)).
                                         Select(im => im.Invoke(null, new[] { sm, holder })).Cast<IFacet>();
+
+    private static IFacet GetMaskFacet(Type type, Type valueType, ISpecificationBuilder holder) =>
+        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).
+                                        Where(m => m.Name is "GetMaskFacet" && m.IsGenericMethod).
+                                        Select(m => m.MakeGenericMethod(type, valueType)).
+                                        Select(im => im.Invoke(null, new object[] { holder })).Cast<IFacet>().SingleOrDefault();
 
     private static void AddFacets(ISpecificationBuilder holder, Type type, Type valueType, IObjectSpecImmutable spec) {
         var semanticsProviderType = typeof(ValueHolderWrappingValueSemanticsProvider<,>).MakeGenericType(type, valueType);
@@ -50,6 +62,8 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
         foreach (var facet in GetFacets(type, semanticsProvider, holder)) {
             FacetUtils.AddFacet(facet);
         }
+
+        FacetUtils.AddFacet(GetMaskFacet(type, valueType, holder));
 
         FacetUtils.AddFacet(new TypeFacet(holder, valueType));
     }
