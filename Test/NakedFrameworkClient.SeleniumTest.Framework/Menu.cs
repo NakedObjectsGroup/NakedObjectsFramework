@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -61,8 +62,10 @@ namespace NakedFrameworkClient.TestFramework
         public ActionWithoutDialog GetActionWithoutDialog(string actionName)
         {
             string actionSelector = $"nof-action input[value=\"{actionName}\"]";
+
             var act = helper.wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
             //TODO: test that it does not generate a dialog - information not currently available in HTML see #292
+            Thread.Sleep(300);
             return new ActionWithoutDialog(act, helper, enclosingView);
         }
 
