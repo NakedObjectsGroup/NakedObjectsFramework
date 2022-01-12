@@ -44,7 +44,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AccessInstanceWithTitle("Department--1 ", "Engineering");
             AccessInstanceWithTitle("Employee--2", "Terri Duffy");
             AccessInstanceWithTitle("EmployeeDepartmentHistory--1--16--1--631808640000000000", "Executive 15/02/2003");
-            AccessInstanceWithTitle("EmployeePayHistory--1--631808640000000000", "€125.50 from 15/02/2003");
+            AccessInstanceWithTitle("EmployeePayHistory--1--631808640000000000", "£125.50 from 15/02/2003");
             AccessInstanceWithTitle("JobCandidate--1", "Job Candidate");
             AccessInstanceWithTitle("Shift--1", "Day");
             AccessInstanceWithTitle("Address--1", "1970 Napa Ct....");
@@ -66,7 +66,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AccessInstanceWithTitle("Location--1", "Tool Crib");
             AccessInstanceWithTitle("Product--1", "Adjustable Race");
             AccessInstanceWithTitle("ProductCategory--1", "Bikes");
-            AccessInstanceWithTitle("ProductCostHistory--707--632557728000000000", "€12.03 01/07/2005~");
+            AccessInstanceWithTitle("ProductCostHistory--707--632557728000000000", "£12.03 01/07/2005~");
             AccessInstanceWithTitle("ProductDescription--3", "Chromoly steel.");
             AccessInstanceWithTitle("ProductInventory--1--1", "408 in Tool Crib - A");
             AccessInstanceWithTitle("ProductListPriceHistory--707--632557728000000000", "ProductListPriceHistory: 707"); 

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using NakedFramework.Menu;
 using AdventureWorksModel;
 using AW.Types;
+using AW.Services;
 
 namespace Legacy.Rest.App.Demo
 {
@@ -28,9 +29,9 @@ namespace Legacy.Rest.App.Demo
                      ToArray();
 
 
-        public static Type[] DomainTypes => AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Types")).ToArray();
+        public static Type[] DomainTypes => AllAdventureWorksTypes.Where(t => t.Namespace.StartsWith("AW.Types")).ToArray();
 
-        public static Type[] DomainServices => AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Services")).ToArray();
+        public static Type[] DomainServices => new Type[] {typeof(PersonRepository) };//AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Services")).ToArray();
 
         public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
 
@@ -73,6 +74,7 @@ namespace Legacy.Rest.App.Demo
         public static NakedFramework.Menu.IMenu[] MainMenus(IMenuFactory factory) =>
             new[] {
                     MakeMenu<Employees>(factory),
+                    MakeMenu<Persons>(factory),
                     MakeMenu<Addresses>(factory),
                     MakeMenu<Products>(factory),
                     MakeMenu<Vendors>(factory),
