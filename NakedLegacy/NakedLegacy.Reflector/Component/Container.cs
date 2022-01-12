@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Framework;
-using NakedLegacy.Types.Container;
+using NakedLegacy;
 
 namespace NakedLegacy.Reflector.Component;
 

@@ -13,7 +13,6 @@ using System.Linq;
 using NakedFramework.Core.Util;
 using NakedLegacy.Rest.Test.Data.AppLib;
 using NakedLegacy;
-using NakedLegacy.Types.Container;
 using NakedObjects;
 
 // ReSharper disable InconsistentNaming

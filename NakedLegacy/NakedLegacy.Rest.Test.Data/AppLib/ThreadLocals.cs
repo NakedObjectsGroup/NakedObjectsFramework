@@ -1,5 +1,5 @@
 ﻿using System;
-using NakedLegacy.Types.Container;
+using NakedLegacy;
 
 namespace NakedLegacy.Rest.Test.Data.AppLib;
 
