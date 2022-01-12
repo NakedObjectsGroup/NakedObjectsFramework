@@ -226,7 +226,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void ActionsThatRetrieveObjects()
         {
-            MainMenuActionToRetrieveAnArrayList();
+            //MainMenuActionToRetrieveAnArrayList(); TODO: Unreliable
             ObjectActionToRetrieveAQueryable();
             ObjectActionToRetrieveASingleInstance();
         }
