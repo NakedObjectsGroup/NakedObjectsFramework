@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -24,10 +25,7 @@ public sealed class NamedViaAboutMethodFacet : AbstractViaAboutMethodFacet, INam
         this.logger = logger;
 
     public string Value => GetAbout().Name;
-    public string ShortName => GetAbout().Name;
-    public string SimpleName => GetAbout().Name;
-    public string NaturalName => GetAbout().Name;
-    public string CapitalizedName => GetAbout().Name;
+    public string FriendlyName => GetAbout().Name;
 
     public IAbout GetAbout() => InvokeAboutMethod(null, AboutTypeCodes.Name);
 }

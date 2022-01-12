@@ -29,7 +29,7 @@ public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable 
 
     public abstract IObjectSpecImmutable ReturnSpec { get; }
 
-    public string Name => GetFacet<INamedFacet>().NaturalName;
+    public string Name => GetFacet<INamedFacet>().FriendlyName;
 
     public string Description => GetFacet<IDescribedAsFacet>().Value;
 

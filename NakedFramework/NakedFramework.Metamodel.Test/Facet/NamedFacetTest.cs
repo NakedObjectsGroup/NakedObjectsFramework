@@ -17,19 +17,13 @@ public class NamedFacetTest {
     public void TestNamedFacetAnnotation() {
         const string testName = "a Name";
         INamedFacet facet = new NamedFacetAnnotation(testName, null);
-        Assert.AreEqual(testName, facet.CapitalizedName);
-        Assert.AreEqual(testName, facet.ShortName);
-        Assert.AreEqual(testName, facet.SimpleName);
-        Assert.AreEqual(testName, facet.NaturalName);
+        Assert.AreEqual(testName, facet.FriendlyName);
     }
 
     [TestMethod]
     public void TestNamedFacetInferred() {
         const string testName = "a nAme";
         INamedFacet facet = new NamedFacetInferred(testName, null);
-        Assert.AreEqual("A nAme", facet.CapitalizedName);
-        Assert.AreEqual("a nAme", facet.ShortName);
-        Assert.AreEqual("aname", facet.SimpleName);
-        Assert.AreEqual("A n Ame", facet.NaturalName);
+        Assert.AreEqual("A n Ame", facet.FriendlyName);
     }
 }

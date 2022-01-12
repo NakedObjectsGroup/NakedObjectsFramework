@@ -15,10 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class NamedFacetInferred : NamedFacetAbstract {
     public NamedFacetInferred(string value, ISpecification holder)
         : base(value, holder) {
-        ShortName = TypeNameUtils.GetShortName(value);
-        CapitalizedName = NameUtils.CapitalizeName(ShortName);
-        SimpleName = NameUtils.SimpleName(ShortName);
-        NaturalName = NameUtils.NaturalName(ShortName);
+        FriendlyName = NameUtils.NaturalName(value);
     }
 
     public override bool CanAlwaysReplace => false;

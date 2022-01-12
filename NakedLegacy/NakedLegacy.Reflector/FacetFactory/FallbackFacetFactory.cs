@@ -32,7 +32,7 @@ public sealed class FallbackFacetFactory : LegacyFacetFactoryProcessor {
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var namedFacet = new NamedFacetInferred(type.Name, specification);
-        var pluralName = NameUtils.PluralName(namedFacet.NaturalName);
+        var pluralName = NameUtils.PluralName(namedFacet.FriendlyName);
         var pluralFacet = new PluralFacetInferred(pluralName, specification);
 
         FacetUtils.AddFacets(

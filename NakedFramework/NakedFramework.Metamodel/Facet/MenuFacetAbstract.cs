@@ -26,7 +26,7 @@ public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
 
     protected MenuImpl Menu { get; set; }
 
-    protected static string GetMenuName(ITypeSpecImmutable spec) => spec is IServiceSpecImmutable ? spec.GetFacet<INamedFacet>().NaturalName : Model.ActionsMenuName;
+    protected static string GetMenuName(ITypeSpecImmutable spec) => spec is IServiceSpecImmutable ? spec.GetFacet<INamedFacet>().FriendlyName : Model.ActionsMenuName;
 
     #region IMenuFacet Members
 

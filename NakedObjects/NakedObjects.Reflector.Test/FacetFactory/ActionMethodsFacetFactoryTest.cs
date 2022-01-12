@@ -680,7 +680,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is INamedFacet);
         var namedFacet = (INamedFacet)facet;
-        Assert.AreEqual("An Action With Named Annotation", namedFacet.NaturalName);
+        Assert.AreEqual("An Action With Named Annotation", namedFacet.FriendlyName);
         Assert.AreEqual(0, metamodel.Count);
     }
 

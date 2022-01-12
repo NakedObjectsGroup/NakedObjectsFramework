@@ -16,6 +16,5 @@ namespace NakedFramework.Architecture.Facet;
 ///     If no plural name is provided, then the framework will attempt to guess the plural name (by adding an
 ///     <i>s</i> or <i>ies</i> suffix).
 /// </para>
-/// <seealso cref="IIconFacet" />
 /// <seealso cref="ITitleFacet" />
 public interface IPluralFacet : ISingleStringValueFacet { }

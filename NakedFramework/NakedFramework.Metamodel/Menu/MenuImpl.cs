@@ -26,7 +26,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
     public MenuImpl(IMetamodel metamodel, Type defaultType, bool addAllActions, string name, string id = null) {
         Metamodel = metamodel;
         Type = defaultType;
-        Name = name ?? ObjectSpec.GetFacet<INamedFacet>().NaturalName;
+        Name = name ?? ObjectSpec.GetFacet<INamedFacet>().FriendlyName;
         Id = id ?? defaultType.Name;
         if (addAllActions) {
             AddRemainingNativeActions();

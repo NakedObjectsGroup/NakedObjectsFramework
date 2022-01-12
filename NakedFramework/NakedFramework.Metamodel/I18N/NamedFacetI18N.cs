@@ -16,10 +16,9 @@ namespace NakedFramework.Metamodel.I18N;
 public sealed class NamedFacetI18N : NamedFacetAbstract {
     public NamedFacetI18N(string valueString, ISpecification holder)
         : base(valueString, holder) {
-        ShortName = TypeNameUtils.GetShortName(valueString);
-        CapitalizedName = NameUtils.CapitalizeName(ShortName);
-        SimpleName = NameUtils.SimpleName(ShortName);
-        NaturalName = NameUtils.NaturalName(ShortName);
+        var shortName = TypeNameUtils.GetShortName(valueString);
+
+        FriendlyName = NameUtils.NaturalName(shortName);
     }
 }
 

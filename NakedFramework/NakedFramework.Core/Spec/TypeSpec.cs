@@ -214,7 +214,7 @@ public abstract class TypeSpec : ITypeSpec {
         }
     }
 
-    public string SingularName => singularName ??= InnerSpec.GetFacet<INamedFacet>().NaturalName;
+    public string SingularName => singularName ??= InnerSpec.GetFacet<INamedFacet>().FriendlyName;
 
     public string UntitledName => untitledName ??= NakedObjects.Resources.NakedObjects.Untitled + SingularName;
 

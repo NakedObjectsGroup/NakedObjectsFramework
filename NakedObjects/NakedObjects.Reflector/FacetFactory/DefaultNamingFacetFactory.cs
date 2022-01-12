@@ -38,7 +38,7 @@ public sealed class DefaultNamingFacetFactory : DomainObjectFacetFactoryProcesso
 
         var pluralFacet = specification.GetFacet<IPluralFacet>();
         if (pluralFacet is null) {
-            var pluralName = NameUtils.PluralName(namedFacet.NaturalName);
+            var pluralName = NameUtils.PluralName(namedFacet.FriendlyName);
             pluralFacet = new PluralFacetInferred(pluralName, specification);
             facets.Add(pluralFacet);
         }

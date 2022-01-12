@@ -14,10 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class NamedFacetAnnotation : NamedFacetAbstract {
     public NamedFacetAnnotation(string value, ISpecification holder)
         : base(value, holder) {
-        ShortName = value;
-        CapitalizedName = value;
-        SimpleName = value;
-        NaturalName = value;
+        FriendlyName = value;
     }
 }
 

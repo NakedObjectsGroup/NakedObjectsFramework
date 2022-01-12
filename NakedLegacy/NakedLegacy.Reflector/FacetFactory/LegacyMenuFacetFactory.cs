@@ -41,7 +41,7 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
 
     public string[] Prefixes => FixedPrefixes;
 
-    private static string GetMenuName(ITypeSpecImmutable spec) => spec.GetFacet<INamedFacet>().NaturalName;
+    private static string GetMenuName(ITypeSpecImmutable spec) => spec.GetFacet<INamedFacet>().FriendlyName;
 
     private static string MatchMethod(string legacyName, Type declaringType) {
         var name = $"action{legacyName}";

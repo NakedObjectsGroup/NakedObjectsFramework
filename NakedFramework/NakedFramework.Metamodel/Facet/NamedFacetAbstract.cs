@@ -19,11 +19,7 @@ public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract, IName
     public static Type Type => typeof(INamedFacet);
 
     #region INamedFacet Members
-
-    public string CapitalizedName { get; protected set; }
-    public string ShortName { get; protected set; }
-    public string SimpleName { get; protected set; }
-    public string NaturalName { get; protected set; }
+    public string FriendlyName { get; protected set; }
 
     #endregion
 }

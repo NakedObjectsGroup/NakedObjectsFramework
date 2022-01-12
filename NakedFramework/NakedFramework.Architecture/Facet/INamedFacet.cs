@@ -15,8 +15,5 @@ namespace NakedFramework.Architecture.Facet;
 ///     annotating the member with <see cref="NamedAttribute" />
 /// </para>
 public interface INamedFacet : ISingleStringValueFacet {
-    string ShortName { get; }
-    string SimpleName { get; }
-    string NaturalName { get; }
-    string CapitalizedName { get; }
+    string FriendlyName { get; }
 }

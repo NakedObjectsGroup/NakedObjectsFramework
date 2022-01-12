@@ -120,7 +120,7 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
 
     public virtual IObjectSpec Spec => spec ??= Framework.MetamodelManager.GetSpecification(actionParameterSpecImmutable.Specification);
 
-    public string Name => name ??= GetFacet<INamedFacet>().NaturalName;
+    public string Name => name ??= GetFacet<INamedFacet>().FriendlyName;
 
     public virtual string Description => description ??= GetFacet<IDescribedAsFacet>().Value ?? "";
 
