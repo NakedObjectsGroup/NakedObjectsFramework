@@ -1,10 +1,16 @@
 ﻿Imports NakedFramework.Value
+Imports NakedLegacy.Types.Container
 
 Namespace AW.Types
 
     Partial Public Class Product
+        Implements ITitledObject, IContainerAware
 
-        Implements ITitledObject
+
+#Region "Container"
+
+        Public Property Container As IContainer Implements IContainerAware.Container
+#End Region
 
 #Region "Visible properties"
 #Region "Name"
@@ -559,6 +565,7 @@ Namespace AW.Types
         '<Hidden>
         Public Overridable Property SpecialOfferProduct() As ICollection(Of SpecialOfferProduct) = New List(Of SpecialOfferProduct)()
 
+
 #End Region
 
         Public Function Title() As ITitle Implements ITitledObject.Title
@@ -578,16 +585,27 @@ Namespace AW.Types
             Throw New NotImplementedException()
         End Sub
 
-        Public Function ActionBestSpecialOffer() As SpecialOffer
-            Throw New NotImplementedException()
+        Public Function ActionBestSpecialOffer(quantity As WholeNumber) As SpecialOffer
+            Dim pid = ProductID
+            Dim today = Date.Today()
+            Dim qty = quantity.Value
+            Return (From sop In Container.Instances(Of SpecialOfferProduct)
+                    Where sop.Product.ProductID = pid AndAlso
+                           sop.SpecialOffer.mappedStartDate <= today AndAlso
+                           sop.SpecialOffer.mappedMinQty < qty
+                    Order By sop.SpecialOffer.mappedDiscountPct Descending
+                    Select sop.SpecialOffer).FirstOrDefault()
         End Function
 
         Public Function ActionCreateNewWorkOrder() As WorkOrder
             Throw New NotImplementedException()
         End Function
 
-        Public Function ActionCurrentWorkOrders() As ArrayList
-            Throw New NotImplementedException()
+        Public Function ActionCurrentWorkOrders() As IQueryable(Of WorkOrder)
+            Dim pid = Me.ProductID
+            Return From w In Container.Instances(Of WorkOrder)
+                   Where w.ProductID = pid AndAlso
+                       w.mappedEndDate Is Nothing
         End Function
 
 #End Region

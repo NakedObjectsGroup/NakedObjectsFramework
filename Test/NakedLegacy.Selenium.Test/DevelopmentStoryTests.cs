@@ -47,7 +47,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ReferencePropertiesAndCollections();
             Titles();
             MemberOrder();
-            //BoundedTypes();
+            BoundedTypes();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -202,10 +202,10 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             var obj = AccessInstanceWithTitle("Product--834", "ML Road Frame-W - Yellow, 42");
             obj.OpenActions().AssertHasActions(
-                "Action Best Special Offer",
-                "Action Associate With Special Offer",
-                "Action Current Work Orders",
-                "Action Create New Work Order");
+                "Best Special Offer",
+                "Associate With Special Offer",
+                "Current Work Orders",
+                "Create New Work Order");
         }
 
         #endregion
@@ -214,8 +214,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void BoundedTypes()
         {
-            var obj = AccessInstanceWithTitle(".Employee--33", "Annik Stahl");
-            obj.OpenActions().GetActionWithDialog("");
+            AccessInstanceWithTitle("Employee--33", "Annik Stahl")
+                .OpenActions().GetActionWithDialog("Change Department Or Shift")
+                .Open().GetSelectionField("Department").AssertNoOfOptionsIs(16);
         }
 
         #endregion

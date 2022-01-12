@@ -13,6 +13,7 @@ namespace AdventureWorksModel
 
             builder.Ignore(t => t.ProductCategory);
             //builder.Ignore(t => t.mappedSpecialOffers);
+            builder.Ignore(t => t.Container);
 
 
             // Properties
