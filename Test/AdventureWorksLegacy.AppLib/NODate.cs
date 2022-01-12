@@ -15,7 +15,7 @@ public class NODate : ValueHolder<DateTime> {
 
     public const string DATE_FORMAT = "dd/MM/yyyy";
 
-    public override string ToString() => Value.ToString(Mask, CultureInfo.InvariantCulture);
+    public override string ToString() => Value.ToString(Mask, Culture);
 
     public override string Mask => DATE_FORMAT;
 

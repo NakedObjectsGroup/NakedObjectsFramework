@@ -13,7 +13,7 @@ public class NODateNullable : ValueHolder<DateTime?> {
 
     public NODateNullable(DateTime? value, Action<DateTime?> callback) : base(value, callback) { }
 
-    public override string ToString() => Value == null ? "" : Value.Value.ToString(Mask, CultureInfo.InvariantCulture);
+    public override string ToString() => Value == null ? "" : Value.Value.ToString(Mask, Culture);
 
     public override string Mask => NODate.DATE_FORMAT;
 
