@@ -24,7 +24,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedLegacy.Reflector.Helpers;
 using NakedLegacy.Reflector.SemanticsProvider;
-using NakedLegacy.Types;
+using NakedLegacy;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 

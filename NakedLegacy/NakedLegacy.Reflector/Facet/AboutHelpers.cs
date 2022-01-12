@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
-using NakedLegacy.Types;
+using NakedLegacy;
 
 namespace NakedLegacy.Reflector.Facet;
 

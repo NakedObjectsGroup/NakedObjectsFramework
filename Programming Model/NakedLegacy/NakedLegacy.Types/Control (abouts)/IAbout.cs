@@ -1,13 +1,13 @@
-﻿namespace NakedLegacy.Types {
-    public interface IAbout {
-        AboutTypeCodes TypeCode { get; }
+﻿namespace NakedLegacy;
 
-        string Name { get; set; }
-        string Description { get; set; }
+public interface IAbout {
+    AboutTypeCodes TypeCode { get; }
 
-        bool Visible { get; set; }
+    string Name { get; set; }
+    string Description { get; set; }
 
-        bool Usable { get; set; }
-        string UnusableReason { get; set; }
-    }
+    bool Visible { get; set; }
+
+    bool Usable { get; set; }
+    string UnusableReason { get; set; }
 }

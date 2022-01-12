@@ -30,7 +30,7 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using IMenu = NakedLegacy.Types.IMenu;
+using IMenu = NakedLegacy.IMenu;
 
 namespace NakedLegacy.Rest.Test;
 

@@ -1,4 +1,4 @@
-﻿namespace NakedLegacy.Types;
+﻿namespace NakedLegacy;
 
 public interface ITitledObject {
     ITitle Title();

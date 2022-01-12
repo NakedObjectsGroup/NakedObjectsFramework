@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 
-namespace NakedLegacy.Types {
-    public class MainMenu : Menu, IMainMenu {
-        private IList<IMenu> myMenuItems;
+namespace NakedLegacy;
 
-        public MainMenu() : this("") { }
+public class MainMenu : Menu, IMainMenu {
+    private IList<IMenu> myMenuItems;
 
-        public MainMenu(string menuName)
-            : base(menuName) =>
-            myMenuItems = new List<IMenu>();
+    public MainMenu() : this("") { }
 
-        public virtual IList<IMenu> Menus {
-            get => myMenuItems;
-            set => myMenuItems = value;
-        }
+    public MainMenu(string menuName)
+        : base(menuName) =>
+        myMenuItems = new List<IMenu>();
+
+    public virtual IList<IMenu> Menus {
+        get => myMenuItems;
+        set => myMenuItems = value;
     }
 }

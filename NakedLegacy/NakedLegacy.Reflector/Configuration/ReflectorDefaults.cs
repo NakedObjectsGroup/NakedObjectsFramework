@@ -8,7 +8,7 @@
 using System;
 using System.Collections;
 using System.Linq;
-using NakedLegacy.Types;
+using NakedLegacy;
 
 namespace NakedLegacy.Reflector.Configuration;
 

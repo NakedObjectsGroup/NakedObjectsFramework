@@ -20,7 +20,7 @@ using NakedFunctions.Rest.Test;
 using NakedLegacy.Reflector.Extensions;
 using NakedLegacy.Rest.Test.Data;
 using NakedLegacy.Rest.Test.Data.AppLib;
-using NakedLegacy.Types;
+using NakedLegacy;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
