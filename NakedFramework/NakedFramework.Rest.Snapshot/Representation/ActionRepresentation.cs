@@ -24,7 +24,7 @@ public class ActionRepresentation : Representation {
         Id = strategy.GetId();
         Parameters = strategy.GetParameters();
         Links = strategy.GetLinks();
-        Extensions = strategy.GetExtensions();
+        Extensions = strategy.GetExtensions(strategy.GetTarget());
         SetHeader(strategy.GetTarget());
     }
 

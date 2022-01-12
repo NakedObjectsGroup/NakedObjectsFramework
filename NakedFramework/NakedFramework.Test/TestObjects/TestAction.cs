@@ -184,7 +184,7 @@ internal class TestAction : ITestAction {
     }
 
     public ITestAction AssertIsDescribedAs(string expected) {
-        Assert.IsTrue(expected.Equals(actionSpec.Description), "Description expected: '" + expected + "' actual: '" + actionSpec.Description + "'");
+        Assert.IsTrue(expected.Equals(actionSpec.Description(null)), "Description expected: '" + expected + "' actual: '" + actionSpec.Description(null) + "'");
         return this;
     }
 

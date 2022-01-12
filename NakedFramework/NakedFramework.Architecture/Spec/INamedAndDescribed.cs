@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework.Architecture.Adapter;
+
 namespace NakedFramework.Architecture.Spec;
 
 /// <summary>
@@ -14,7 +16,7 @@ public interface INamedAndDescribed {
     /// <summary>
     ///     Returns a description of how the member is used - this complements the help text.
     /// </summary>
-    string Description { get; }
+    string Description(INakedObjectAdapter nakedObjectAdapter);
 
     /// <summary>
     ///     Return the name for this member - the field or action. This is based on the name of this member.

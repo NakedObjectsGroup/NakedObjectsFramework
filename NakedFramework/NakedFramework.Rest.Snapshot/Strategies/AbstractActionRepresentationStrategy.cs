@@ -83,10 +83,10 @@ public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
 
     protected virtual bool HasParams() => ActionContext.VisibleParameters.Any();
 
-    protected override MapRepresentation GetExtensionsForSimple() =>
+    protected override MapRepresentation GetExtensionsForSimple(IObjectFacade objectFacade) =>
         RestUtils.GetExtensions(
             ActionContext.Action.Name,
-            ActionContext.Action.Description,
+            ActionContext.Action.Description(objectFacade),
             null,
             null,
             null,

@@ -423,19 +423,19 @@ public class ReflectorTest {
 
             var facet = spec.GetFacet<IDescribedAsFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual("Class Description", facet.Value);
+            Assert.AreEqual("Class Description", facet.Description(null));
 
             var propertySpec = spec.OrderedFields.First();
 
             facet = propertySpec.GetFacet<IDescribedAsFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual("Property Description", facet.Value);
+            Assert.AreEqual("Property Description", facet.Description(null));
 
             var actionSpec = spec.OrderedContributedActions.First();
 
             facet = actionSpec.GetFacet<IDescribedAsFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual("Function Description", facet.Value);
+            Assert.AreEqual("Function Description", facet.Description(null));
         }
     }
 

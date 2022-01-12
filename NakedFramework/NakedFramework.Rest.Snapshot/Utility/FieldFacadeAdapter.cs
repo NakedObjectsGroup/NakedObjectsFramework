@@ -35,7 +35,7 @@ public class FieldFacadeAdapter {
     public string Mask => parameter?.Mask ?? association?.Mask;
     public int NumberOfLines => (parameter?.NumberOfLines ?? association?.NumberOfLines).GetValueOrDefault();
     public string Name => parameter?.Name ?? association?.Name;
-    public string Description => parameter?.Description ?? association?.Description;
+    public string Description(IObjectFacade objectFacade) => parameter?.Description(objectFacade) ?? association?.Description(objectFacade);
     public bool IsMandatory => (parameter?.IsMandatory ?? association?.IsMandatory).GetValueOrDefault();
     public int? MaxLength => parameter?.MaxLength ?? association?.MaxLength;
     public string Pattern => parameter?.Pattern ?? association?.Pattern;

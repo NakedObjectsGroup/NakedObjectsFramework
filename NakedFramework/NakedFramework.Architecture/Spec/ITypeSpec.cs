@@ -107,7 +107,7 @@ public interface ITypeSpec : ISpecification {
     /// <summary>
     ///     Returns the description, if any, of the specification
     /// </summary>
-    string Description { get; }
+    string Description(INakedObjectAdapter nakedObjectAdapter);
 
     /// <summary>
     ///     Returns the singular name for objects of this specification

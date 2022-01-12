@@ -173,7 +173,7 @@ public class ObjectRepresentation : Representation {
     private MapRepresentation GetExtensions(IObjectFacade objectFacade) =>
         RestUtils.GetExtensions(
             objectFacade.Specification.SingularName,
-            objectFacade.Specification.Description,
+            objectFacade.Specification.Description(objectFacade),
             objectFacade.Specification.PluralName,
             objectFacade.Specification.DomainTypeName(OidStrategy),
             objectFacade.Specification.IsService,

@@ -92,7 +92,7 @@ public class TypeFacade : ITypeFacade {
 
     public string PluralName => WrappedValue.PluralName;
 
-    public string Description => WrappedValue.Description;
+    public string Description(IObjectFacade objectFacade) => WrappedValue.Description(objectFacade.WrappedAdapter());
 
     public bool IsEnum => WrappedValue.ContainsFacet<IEnumValueFacet>();
 

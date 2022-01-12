@@ -84,7 +84,7 @@ public class ActionParameterFacade : IActionParameterFacade {
 
     public string Name => WrappedSpec.Name;
 
-    public string Description => WrappedSpec.Description;
+    public string Description(IObjectFacade objectFacade) => WrappedSpec.Description(objectFacade.WrappedAdapter());
 
     public bool IsMandatory => WrappedSpec.IsMandatory;
 

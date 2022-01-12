@@ -19,7 +19,7 @@ namespace NakedFramework.Rest.Snapshot.Representation;
 
 [DataContract]
 public class CollectionRepresentation : MemberAbstractRepresentation {
-    protected CollectionRepresentation(IFrameworkFacade frameworkFacade, AbstractCollectionRepresentationStrategy strategy) : base(frameworkFacade, strategy) => Extensions = strategy.GetExtensions();
+    protected CollectionRepresentation(IFrameworkFacade frameworkFacade, AbstractCollectionRepresentationStrategy strategy) : base(frameworkFacade, strategy) => Extensions = strategy.GetExtensions(strategy.GetTarget());
 
     public static CollectionRepresentation Create(IFrameworkFacade frameworkFacade, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
         var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, false, frameworkFacade, req, propertyContext, flags);

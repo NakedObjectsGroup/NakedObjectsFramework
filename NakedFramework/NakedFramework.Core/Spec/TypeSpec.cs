@@ -220,7 +220,7 @@ public abstract class TypeSpec : ITypeSpec {
 
     public string PluralName => pluralName ??= InnerSpec.GetFacet<IPluralFacet>().Value;
 
-    public string Description => description ??= InnerSpec.GetFacet<IDescribedAsFacet>().Value ?? "";
+    public string Description(INakedObjectAdapter nakedObjectAdapter) => description ??= InnerSpec.GetFacet<IDescribedAsFacet>().Description(nakedObjectAdapter) ?? "";
 
     public bool HasNoIdentity {
         get {

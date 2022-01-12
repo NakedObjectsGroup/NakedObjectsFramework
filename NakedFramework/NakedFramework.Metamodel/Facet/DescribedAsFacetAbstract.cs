@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
@@ -17,4 +18,5 @@ public abstract class DescribedAsFacetAbstract : SingleStringValueFacetAbstract,
         : base(Type, holder, valueString) { }
 
     public static Type Type => typeof(IDescribedAsFacet);
+    public string Description(INakedObjectAdapter adapter) => Value;
 }

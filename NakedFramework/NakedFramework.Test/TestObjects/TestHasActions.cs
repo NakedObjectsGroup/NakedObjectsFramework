@@ -44,7 +44,7 @@ internal abstract class TestHasActions : ITestHasActions {
     }
 
     public ITestObject AssertIsDescribedAs(string expected) {
-        var description = NakedObject.Spec.Description;
+        var description = NakedObject.Spec.Description(null);
         Assert.IsTrue(expected.Equals(description), $"Description expected: '{expected}' actual: '{description}'");
         return (ITestObject)this;
     }

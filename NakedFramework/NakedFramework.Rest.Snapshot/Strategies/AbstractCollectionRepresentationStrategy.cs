@@ -28,10 +28,10 @@ public abstract class AbstractCollectionRepresentationStrategy : MemberRepresent
 
     protected IObjectFacade Collection => collection ??= PropertyContext.Property.GetValue(PropertyContext.Target);
 
-    protected override MapRepresentation GetExtensionsForSimple() =>
+    protected override MapRepresentation GetExtensionsForSimple(IObjectFacade objectFacade) =>
         RestUtils.GetExtensions(
             PropertyContext.Property.Name,
-            PropertyContext.Property.Description,
+            PropertyContext.Property.Description(objectFacade),
             null,
             null,
             null,

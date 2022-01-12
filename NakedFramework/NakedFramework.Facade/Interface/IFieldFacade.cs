@@ -23,7 +23,7 @@ public interface IFieldFacade {
     int NumberOfLines { get; }
     int Width { get; }
     string Name { get; }
-    string Description { get; }
+    string Description(IObjectFacade objectFacade);
     bool IsMandatory { get; }
     int? MaxLength { get; }
     string Pattern { get; }

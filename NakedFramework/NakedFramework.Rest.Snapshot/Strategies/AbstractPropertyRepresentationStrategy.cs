@@ -143,10 +143,10 @@ public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentat
 
     public bool UseDateOverDateTime() => PropertyContext.Property.IsDateOnly;
 
-    protected override MapRepresentation GetExtensionsForSimple() =>
+    protected override MapRepresentation GetExtensionsForSimple(IObjectFacade objectFacade) =>
         RestUtils.GetExtensions(
             PropertyContext.Property.Name,
-            PropertyContext.Property.Description,
+            PropertyContext.Property.Description(objectFacade),
             null,
             null,
             null,

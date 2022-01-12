@@ -22,7 +22,7 @@ public class PropertyRepresentation : MemberAbstractRepresentation {
         : base(frameworkFacade, strategy) {
         HasChoices = strategy.GetHasChoices();
         Links = strategy.GetLinks();
-        Extensions = strategy.GetExtensions();
+        Extensions = strategy.GetExtensions(strategy.GetTarget());
     }
 
     [DataMember(Name = JsonPropertyNames.HasChoices)]

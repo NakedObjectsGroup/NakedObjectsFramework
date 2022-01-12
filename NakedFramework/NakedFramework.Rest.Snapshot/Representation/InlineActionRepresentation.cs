@@ -24,7 +24,7 @@ public class InlineActionRepresentation : InlineMemberAbstractRepresentation {
         MemberType = MemberTypes.Action;
         Id = strategy.GetId();
         Links = strategy.GetLinks();
-        Extensions = strategy.GetExtensions();
+        Extensions = strategy.GetExtensions(strategy.GetTarget());
         SetHeader(strategy.GetTarget());
     }
 

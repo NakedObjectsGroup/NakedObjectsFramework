@@ -53,7 +53,7 @@ internal class TestParameter : ITestParameter {
     }
 
     public ITestParameter AssertIsDescribedAs(string description) {
-        Assert.IsTrue(parameterSpec.Description == description, $"Parameter: {Name} description: {parameterSpec.Description} expected: {description}");
+        Assert.IsTrue(parameterSpec.Description(null) == description, $"Parameter: {Name} description: {parameterSpec.Description(null)} expected: {description}");
         return this;
     }
 

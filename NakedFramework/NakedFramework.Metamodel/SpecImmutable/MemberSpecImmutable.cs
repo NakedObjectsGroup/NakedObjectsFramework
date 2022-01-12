@@ -31,7 +31,7 @@ public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable 
 
     public string Name => GetFacet<INamedFacet>().FriendlyName;
 
-    public string Description => GetFacet<IDescribedAsFacet>().Value;
+    public string Description(INakedObjectAdapter nakedObjectAdapter) => GetFacet<IDescribedAsFacet>().Description(nakedObjectAdapter);
 
     #endregion
 

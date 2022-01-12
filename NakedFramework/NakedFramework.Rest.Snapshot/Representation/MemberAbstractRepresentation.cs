@@ -23,7 +23,7 @@ public abstract class MemberAbstractRepresentation : Representation {
         SelfRelType = strategy.GetSelf();
         Id = strategy.GetId();
         Links = strategy.GetLinks(false);
-        Extensions = strategy.GetExtensions();
+        Extensions = strategy.GetExtensions(strategy.GetTarget());
         SetHeader(strategy.GetTarget());
     }
 

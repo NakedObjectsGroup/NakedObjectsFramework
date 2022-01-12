@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
@@ -40,7 +41,7 @@ public class ActionFacade : IActionFacade {
 
     public string Name => WrappedSpec.Name;
 
-    public string Description => WrappedSpec.Description;
+    public string Description(IObjectFacade objectFacade) => WrappedSpec.Description(objectFacade.WrappedAdapter());
 
     public bool IsQueryOnly => WrappedSpec.ReturnSpec.IsQueryable || WrappedSpec.ContainsFacet<IQueryOnlyFacet>();
 

@@ -241,7 +241,7 @@ public class TestProperty : ITestProperty {
 
     public ITestProperty AssertIsDescribedAs(string expected) {
         AssertIsVisible();
-        Assert.IsTrue(expected.Equals(field.Description), "Description expected: '" + expected + "' actual: '" + field.Description + "'");
+        Assert.IsTrue(expected.Equals(field.Description(null)), "Description expected: '" + expected + "' actual: '" + field.Description(null) + "'");
         return this;
     }
 

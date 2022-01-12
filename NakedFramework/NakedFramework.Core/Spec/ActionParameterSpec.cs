@@ -122,7 +122,7 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
 
     public string Name => name ??= GetFacet<INamedFacet>().FriendlyName;
 
-    public virtual string Description => description ??= GetFacet<IDescribedAsFacet>().Value ?? "";
+    public virtual string Description(INakedObjectAdapter nakedObjectAdapter) => description ??= GetFacet<IDescribedAsFacet>().Description(nakedObjectAdapter) ?? "";
 
     public virtual bool IsMandatory {
         get {

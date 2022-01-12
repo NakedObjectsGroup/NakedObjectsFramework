@@ -20,12 +20,14 @@ using NakedFramework.Metamodel.Spec;
 namespace NakedObjects.Reflector.Test.FacetFactory;
 
 internal class MemberPeerStub : Specification, IMemberSpecImmutable {
+    private readonly string description;
+
     public MemberPeerStub(string name)
         : this(name, null) { }
 
     public MemberPeerStub(string name, string description) {
         Name = name;
-        Description = description;
+        this.description = description;
     }
 
     public MemberPeerStub Spec => this;
@@ -74,7 +76,7 @@ internal class MemberPeerStub : Specification, IMemberSpecImmutable {
 
     public string Name { get; }
 
-    public string Description { get; }
+    public string Description(INakedObjectAdapter nakedObjectAdapter) => description;
 
     #endregion
 

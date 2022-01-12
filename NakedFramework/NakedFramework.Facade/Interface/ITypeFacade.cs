@@ -31,7 +31,7 @@ public interface ITypeFacade : IFacadeHolder, IEquatable<ITypeFacade> {
     string ShortName { get; }
     string SingularName { get; }
     string PluralName { get; }
-    string Description { get; }
+    string Description(IObjectFacade objectFacade);
     bool IsASet { get; }
     bool IsAggregated { get; }
     bool IsImage { get; }

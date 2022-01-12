@@ -51,7 +51,7 @@ public abstract class MemberSpecAbstract : IMemberSpec {
     /// <seealso cref="Id()" />
     public virtual string Name => memberSpecImmutable.Name;
 
-    public virtual string Description => memberSpecImmutable.Description;
+    public virtual string Description(INakedObjectAdapter nakedObjectAdapter) => memberSpecImmutable.Description(nakedObjectAdapter);
 
     public abstract IObjectSpec ReturnSpec { get; }
 

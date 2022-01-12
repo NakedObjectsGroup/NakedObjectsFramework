@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using NakedFramework.Facade.Interface;
 using NakedFramework.Facade.Translation;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.Representation;
@@ -22,7 +23,7 @@ public abstract class AbstractStrategy {
     protected IOidStrategy OidStrategy { get; }
     protected RestControlFlags Flags { get; }
 
-    public MapRepresentation GetExtensions() => GetExtensionsForSimple();
+    public MapRepresentation GetExtensions(IObjectFacade objectFacade) => GetExtensionsForSimple(objectFacade);
 
     protected static IDictionary<string, object> GetTableViewCustomExtensions((bool, string[])? tableViewData) {
         if (tableViewData == null) {
@@ -37,5 +38,5 @@ public abstract class AbstractStrategy {
         };
     }
 
-    protected abstract MapRepresentation GetExtensionsForSimple();
+    protected abstract MapRepresentation GetExtensionsForSimple(IObjectFacade objectFacade);
 }

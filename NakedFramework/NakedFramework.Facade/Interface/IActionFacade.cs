@@ -16,7 +16,7 @@ public interface IActionFacade : IMemberFacade {
     string PresentationHint { get; }
     int PageSize { get; }
     string Name { get; }
-    string Description { get; }
+    string Description(IObjectFacade nakedObjectAdapter);
     bool IsQueryOnly { get; }
     bool IsIdempotent { get; }
     string[] CreateNewProperties { get; }

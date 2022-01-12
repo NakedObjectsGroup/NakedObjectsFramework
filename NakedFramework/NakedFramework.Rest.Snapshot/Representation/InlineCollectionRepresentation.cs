@@ -24,7 +24,7 @@ public class InlineCollectionRepresentation : InlineMemberAbstractRepresentation
         MemberType = MemberTypes.Collection;
         Id = strategy.GetId();
         Links = strategy.GetLinks(true);
-        Extensions = strategy.GetExtensions();
+        Extensions = strategy.GetExtensions(strategy.GetTarget());
         SetHeader(strategy.GetTarget());
     }
 
