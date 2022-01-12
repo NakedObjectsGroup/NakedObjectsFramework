@@ -14,27 +14,16 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
-using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Facet;
-using NakedLegacy;
 
 namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
-public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
-    private readonly AboutHelpers.AboutType aboutType;
+public sealed class HideForContextViaAboutMethodFacet : AbstractViaAboutMethodFacet, IHideForContextFacet {
+    private readonly ILogger<HideForContextViaAboutMethodFacet> logger;
 
-    private readonly ILogger<HideActionForContextViaAboutFacet> logger;
-    private readonly MethodInfo method;
-
-    public HideActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<HideActionForContextViaAboutFacet> logger)
-        : base(typeof(IHideForContextFacet), holder) {
-        this.method = method;
-        this.aboutType = aboutType;
+    public HideForContextViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<HideForContextViaAboutMethodFacet> logger)
+        : base(typeof(IHideForContextFacet), holder, method, aboutType) =>
         this.logger = logger;
-    }
-
-    protected override string ToStringValues() => $"method={method}";
 
     #region IHideForContextFacet Members
 
@@ -47,20 +36,9 @@ public sealed class HideActionForContextViaAboutFacet : FacetAbstract, IHideForC
             return null;
         }
 
-        var about = aboutType.AboutFactory(AboutTypeCodes.Visible);
-
-        method.Invoke(nakedObjectAdapter.GetDomainObject(), method.GetParameters(about));
-
+        var about = InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Visible);
         return about.Visible ? null : NakedObjects.Resources.NakedObjects.Hidden;
     }
-
-    #endregion
-
-    #region IImperativeFacet Members
-
-    public MethodInfo GetMethod() => method;
-
-    public Func<object, object[], object> GetMethodDelegate() => null;
 
     #endregion
 }

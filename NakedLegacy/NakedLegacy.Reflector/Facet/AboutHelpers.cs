@@ -10,9 +10,13 @@ public static class AboutHelpers {
         Field
     }
 
-    public static object[] GetParameters(this MethodInfo method, object about) {
+    public static object[] GetParameters(this MethodInfo method, object about, params object[] proposedValues) {
         var aboutParam = new[] { about };
         var placeholders = new object[method.GetParameters().Length - 1];
+        if (proposedValues?.Any() == true) {
+            placeholders = proposedValues;
+        }
+
         return aboutParam.Union(placeholders).ToArray();
     }
 
@@ -20,4 +24,5 @@ public static class AboutHelpers {
         aboutType is AboutType.Action
             ? new ActionAboutImpl(aboutTypeCode)
             : new FieldAboutImpl(aboutTypeCode);
+
 }

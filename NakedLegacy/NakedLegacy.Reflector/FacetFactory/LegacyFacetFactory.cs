@@ -108,8 +108,8 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {
-            facets.Add(new HideActionForContextViaAboutFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
-            facets.Add(new DisableActionForContextViaAboutFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<DisableActionForContextViaAboutFacet>()));
+            facets.Add(new HideForContextViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<HideForContextViaAboutMethodFacet>()));
+            facets.Add(new DisableForContextViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<DisableForContextViaAboutMethodFacet>()));
         }
 
         MethodHelpers.AddHideForSessionFacetNone(facets, action);
@@ -138,11 +138,18 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
 
         facets.Add(new NamedFacetInferred(specification.Identifier.MemberName, specification));
 
-        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{"about"}{capitalizedName}", null, null);
+        var aboutPrefix = "about";
+        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{aboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout) }) ??
+                     MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{aboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType });
+
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {
-            facets.Add(new HideActionForContextViaAboutFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<HideActionForContextViaAboutFacet>()));
+            facets.Add(new DescribedAsViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<DescribedAsViaAboutMethodFacet>()));
+            facets.Add(new DisableForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<DisableForContextViaAboutMethodFacet>()));
+            facets.Add(new HideForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<HideForContextViaAboutMethodFacet>()));
+            facets.Add(new NamedViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<NamedViaAboutMethodFacet>()));
+            facets.Add(new PropertyValidateViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<PropertyValidateViaAboutMethodFacet>()));
         }
 
         FacetUtils.AddFacets(facets);

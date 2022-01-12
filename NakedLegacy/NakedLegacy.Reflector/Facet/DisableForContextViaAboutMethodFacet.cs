@@ -14,25 +14,16 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
-using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Facet;
-using NakedLegacy;
 
 namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
-public sealed class DisableActionForContextViaAboutFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
-    private readonly AboutHelpers.AboutType aboutType;
+public sealed class DisableForContextViaAboutMethodFacet : AbstractViaAboutMethodFacet, IDisableForContextFacet {
+    private readonly ILogger<DisableForContextViaAboutMethodFacet> logger;
 
-    private readonly ILogger<DisableActionForContextViaAboutFacet> logger;
-    private readonly MethodInfo method;
-
-    public DisableActionForContextViaAboutFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DisableActionForContextViaAboutFacet> logger)
-        : base(typeof(IDisableForContextFacet), holder) {
-        this.method = method;
-        this.aboutType = aboutType;
+    public DisableForContextViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DisableForContextViaAboutMethodFacet> logger)
+        : base(typeof(IDisableForContextFacet), holder, method, aboutType) =>
         this.logger = logger;
-    }
 
     public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
 
@@ -43,22 +34,10 @@ public sealed class DisableActionForContextViaAboutFacet : FacetAbstract, IDisab
             return null;
         }
 
-        var about = aboutType.AboutFactory(AboutTypeCodes.Usable);
-
-        method.Invoke(nakedObjectAdapter.GetDomainObject(), method.GetParameters(about));
+        var about = InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Usable);
 
         return about.Usable ? null : NakedObjects.Resources.NakedObjects.Disabled;
     }
-
-    protected override string ToStringValues() => $"method={method}";
-
-    #region IImperativeFacet Members
-
-    public MethodInfo GetMethod() => method;
-
-    public Func<object, object[], object> GetMethodDelegate() => null;
-
-    #endregion
 }
 
 // Copyright (c) Naked Objects Group Ltd.
