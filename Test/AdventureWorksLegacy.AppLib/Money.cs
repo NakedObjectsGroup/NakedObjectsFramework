@@ -13,9 +13,9 @@ public class Money : ValueHolder<decimal> {
 
     internal const string CURRENCY = "€0.00";
 
-    public override string ToString() => ToString(CURRENCY);
+    public override string ToString() => Value.ToString(CURRENCY, CultureInfo.InvariantCulture);
 
-    internal string ToString(string mask) => Value.ToString(mask, CultureInfo.InvariantCulture);
+    public override string Mask => CURRENCY;
 
     public override object Parse(string entry) {
         try {

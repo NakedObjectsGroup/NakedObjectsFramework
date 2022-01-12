@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -42,7 +42,6 @@
     <Import Include="AdventureWorksLegacy.AppLib" />
     <Import Include="AW.Types" />
     <Import Include="NakedLegacy" />
-    <Import Include="NakedLegacy.Types" />
     <Import Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 

@@ -1,5 +1,4 @@
-﻿using NakedLegacy.Types;
-using System;
+﻿
 
 namespace AdventureWorksLegacy.AppLib;
 
@@ -21,6 +20,8 @@ public abstract class ValueHolder<T> : IValueHolder<T> {
     }
 
     private Action<T> UpdateBackingField { get; } = _ => { };
+
+    public virtual string Mask => null;
 
     public abstract ITitle Title();
 
