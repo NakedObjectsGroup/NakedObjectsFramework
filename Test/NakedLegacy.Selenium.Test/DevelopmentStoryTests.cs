@@ -48,6 +48,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Titles();
             MemberOrder();
             BoundedTypes();
+            ActionsThatRetrieveObjects();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -217,6 +218,44 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AccessInstanceWithTitle("Employee--33", "Annik Stahl")
                 .OpenActions().GetActionWithDialog("Change Department Or Shift")
                 .Open().GetSelectionField("Department").AssertNoOfOptionsIs(16);
+        }
+
+        #endregion
+
+        #region Actions that retrieve objects
+        //[TestMethod]
+        public void ActionsThatRetrieveObjects()
+        {
+            MainMenuActionToRetrieveAnArrayList();
+            ObjectActionToRetrieveAQueryable();
+            ObjectActionToRetrieveASingleInstance();
+        }
+
+        //[TestMethod]
+        public void MainMenuActionToRetrieveAnArrayList()
+        {
+            helper.GotoHome().OpenMainMenu("Employees")
+                .GetActionWithoutDialog("List All Departments").ClickToViewList()
+                .AssertTitleIs("List All Departments").AssertNoOfRowsIs(16).GetRowFromList(3)
+                .AssertTitleIs("Marketing");
+        }
+
+        //[TestMethod]
+        public void ObjectActionToRetrieveAQueryable()
+        {
+            helper.GotoHome().OpenMainMenu("Products")
+                 .GetActionWithoutDialog("All Products").ClickToViewList()
+                 .AssertDetails("Page 1 of 26; viewing 20 of 504 items")
+                 .GetRowFromList(0).AssertTitleIs("Adjustable Race");
+        }
+
+        //[TestMethod]
+        public void ObjectActionToRetrieveASingleInstance()
+        {
+            var dialog = AccessInstanceWithTitle("Product--829", "Touring Rear Wheel").OpenActions().
+        GetActionWithDialog("Best Special Offer").Open();
+            dialog.GetTextField("Quantity").Enter("10");
+            dialog.ClickOKToViewObject().AssertTitleIs("No Discount");
         }
 
         #endregion
