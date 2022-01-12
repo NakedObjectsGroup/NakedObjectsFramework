@@ -134,7 +134,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var obj = helper.GetObjectView().AssertTitleIs("SO52035");
             var coll = obj.GetCollection("Details").AssertDetails("2 Items");
             coll.ClickListView().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
-            coll.ClickTableView().GetRowFromTable(1).AssertColumnValueIs(3,"32.6"); //TODO should become €32.60
+            coll.ClickTableView().GetRowFromTable(1).AssertColumnValueIs(3,"£32.60"); //TODO should become €32.60
         }
         #endregion
 
