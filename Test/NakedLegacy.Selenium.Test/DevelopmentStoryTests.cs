@@ -49,6 +49,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             MemberOrder();
             BoundedTypes();
             ActionsThatRetrieveObjects();
+            EditingObjects();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -268,6 +269,39 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetRowFromList(0).AssertTitleIs("Kaitlin Sai");
         }
 
+        #endregion
+
+        #region Editing objects
+        //[TestMethod]
+        public void EditingObjects()
+        {
+            EditAndCancelWithoutModification();
+            EditAndSaveChange();
+        }
+
+        //[TestMethod]
+        public void EditAndCancelWithoutModification()
+        {
+            AccessInstanceWithTitle("WorkOrder--72592", "Hex Nut 8: 19/12/2021")
+                .Edit().AssertTitleIs("Editing - Hex Nut 8: 19/12/2021")
+                .Cancel().AssertTitleIs("Hex Nut 8: 19/12/2021");
+        }
+
+        //[TestMethod]
+        public void EditAndSaveChange()
+        {
+            var editView = AccessInstanceWithTitle("WorkOrder--72592", "Hex Nut 8: 19/12/2021")
+                .Edit();
+            editView.GetEditableSelectionProperty("Scrap Reason")
+            .AssertOptionIs(0, "").AssertOptionIs(3, "Gouge in metal").Select(3);
+            var updated = editView.Save();
+            updated.GetProperty("Scrap Reason").AssertValueIs("Gouge in metal");
+            editView = updated.Edit();
+            editView.GetEditableSelectionProperty("Scrap Reason")
+            .AssertOptionIs(0, "").Select(0);
+            updated = editView.Save();
+            updated.GetProperty("Scrap Reason").AssertValueIs("");
+        }
         #endregion
 
         #region Story x: ObjectPresentation & Control
