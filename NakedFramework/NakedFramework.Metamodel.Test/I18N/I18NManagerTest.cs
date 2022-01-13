@@ -262,7 +262,7 @@ public class I18NManagerTest {
 
         var facets = manager.ForFacetTypes;
 
-        Assert.IsTrue(facets.SequenceEqual(new[] { typeof(INamedFacet), typeof(IDescribedAsFacet) }));
+        Assert.IsTrue(facets.SequenceEqual(new[] { typeof(INamedFacet), typeof(IMemberNamedFacet), typeof(IDescribedAsFacet) }));
     }
 
     [TestMethod]

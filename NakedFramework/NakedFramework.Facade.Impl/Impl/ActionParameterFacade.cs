@@ -82,7 +82,7 @@ public class ActionParameterFacade : IActionParameterFacade {
 
     #region IActionParameterFacade Members
 
-    public string Name => WrappedSpec.Name;
+    public string Name(IObjectFacade objectFacade) => WrappedSpec.Name(objectFacade.WrappedAdapter());
 
     public string Description(IObjectFacade objectFacade) => WrappedSpec.Description(objectFacade.WrappedAdapter());
 

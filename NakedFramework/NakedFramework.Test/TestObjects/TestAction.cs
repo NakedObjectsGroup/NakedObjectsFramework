@@ -67,7 +67,7 @@ internal class TestAction : ITestAction {
 
     #region ITestAction Members
 
-    public string Name => actionSpec.Name;
+    public string Name => actionSpec.Name(null);
 
     public string SubMenu { get; }
     private string LastMessage { get; set; }

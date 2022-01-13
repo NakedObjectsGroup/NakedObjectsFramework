@@ -37,13 +37,13 @@ public sealed class NamedAnnotationFacetFactory : DomainObjectFacetFactoryProces
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)method.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(CreateForMember(attribute, specification));
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)property.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateProperty(attribute, specification));
+        FacetUtils.AddFacet(CreateForMember(attribute, specification));
         return metamodel;
     }
 
@@ -62,17 +62,12 @@ public sealed class NamedAnnotationFacetFactory : DomainObjectFacetFactoryProces
             _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
         };
 
-    private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) =>
-        attribute switch {
+    private IMemberNamedFacet CreateForMember(Attribute attribute, ISpecification holder) =>
+        attribute switch
+        {
             null => null,
-            NamedAttribute namedAttribute => Create(namedAttribute, holder),
-            DisplayNameAttribute nameAttribute => Create(nameAttribute, holder),
+            NamedAttribute namedAttribute => new MemberNamedFacetAnnotation(namedAttribute.Value, holder),
+            DisplayNameAttribute nameAttribute => new MemberNamedFacetAnnotation(nameAttribute.DisplayName, holder),
             _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
         };
-
-    private static INamedFacet Create(NamedAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.Value, holder);
-
-    private static INamedFacet Create(DisplayNameAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.DisplayName, holder);
-
-    private static INamedFacet CreateAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name, holder);
 }

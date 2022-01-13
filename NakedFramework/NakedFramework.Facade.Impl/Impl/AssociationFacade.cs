@@ -47,7 +47,7 @@ public class AssociationFacade : IAssociationFacade {
 
     #region IAssociationFacade Members
 
-    public string Name => WrappedSpec.Name;
+    public string Name(IObjectFacade objectFacade) => WrappedSpec.Name(objectFacade.WrappedAdapter());
 
     public string Description(IObjectFacade objectFacade) => WrappedSpec.Description(objectFacade.WrappedAdapter());
 

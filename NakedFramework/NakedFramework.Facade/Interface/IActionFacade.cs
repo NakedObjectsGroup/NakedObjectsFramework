@@ -15,11 +15,11 @@ public interface IActionFacade : IMemberFacade {
     ITypeFacade OnType { get; }
     string PresentationHint { get; }
     int PageSize { get; }
-    string Name { get; }
+    string Name(IObjectFacade nakedObjectAdapter);
     string Description(IObjectFacade nakedObjectAdapter);
     bool IsQueryOnly { get; }
     bool IsIdempotent { get; }
-    string[] CreateNewProperties { get; }
+    string[] CreateNewProperties(IObjectFacade objectFacade);
     bool IsContributed { get; }
     int MemberOrder { get; }
     (bool title, string[] columns)? TableViewData { get; }

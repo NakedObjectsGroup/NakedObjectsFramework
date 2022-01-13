@@ -55,7 +55,7 @@ internal abstract class TestHasActions : ITestHasActions {
         var order = new StringBuilder();
         for (var i = 0; i < actionsSpec.Length; i++) {
             var actionSpec = actionsSpec[i];
-            var name = actionSpec.Name;
+            var name = actionSpec.Name(null);
             order.Append(name);
             order.Append(i < actionsSpec.Length - 1 ? ", " : "");
         }

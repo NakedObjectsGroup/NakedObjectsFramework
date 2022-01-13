@@ -21,12 +21,13 @@ namespace NakedObjects.Reflector.Test.FacetFactory;
 
 internal class MemberPeerStub : Specification, IMemberSpecImmutable {
     private readonly string description;
+    private readonly string name;
 
     public MemberPeerStub(string name)
         : this(name, null) { }
 
     public MemberPeerStub(string name, string description) {
-        Name = name;
+        this.name = name;
         this.description = description;
     }
 
@@ -50,7 +51,7 @@ internal class MemberPeerStub : Specification, IMemberSpecImmutable {
 
     public bool IsVisible(INakedObjectAdapter target) => false;
 
-    public override string ToString() => Name;
+    public override string ToString() => name;
 
     #region Nested type: IdentifierNull
 
@@ -63,7 +64,7 @@ internal class MemberPeerStub : Specification, IMemberSpecImmutable {
             : base("", "") =>
             this.owner = owner;
 
-        public override string ToString() => owner.Name;
+        public override string ToString() => owner.Name(null);
     }
 
     #endregion
@@ -74,7 +75,7 @@ internal class MemberPeerStub : Specification, IMemberSpecImmutable {
 
     public override IIdentifier Identifier => new IdentifierNull(this);
 
-    public string Name { get; }
+    public string Name(INakedObjectAdapter nakedObjectAdapter) => name;
 
     public string Description(INakedObjectAdapter nakedObjectAdapter) => description;
 

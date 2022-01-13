@@ -595,19 +595,21 @@ public class ReflectorTest {
 
             var facet = spec.GetFacet<INamedFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual("Class Name", facet.Value);
+            Assert.AreEqual("Class Name", facet.FriendlyName);
 
             var propertySpec = spec.OrderedFields.First();
 
-            facet = propertySpec.GetFacet<INamedFacet>();
-            Assert.IsNotNull(facet);
-            Assert.AreEqual("Property Name", facet.Value);
+            var facet1 = propertySpec.GetFacet<IMemberNamedFacet>();
+            Assert.IsNotNull(facet1);
+            Assert.IsNull(propertySpec.GetFacet<INamedFacet>());
+            Assert.AreEqual("Property Name", facet1.FriendlyName(null));
 
             var actionSpec = spec.OrderedContributedActions.First();
 
-            facet = actionSpec.GetFacet<INamedFacet>();
-            Assert.IsNotNull(facet);
-            Assert.AreEqual("Function Name", facet.Value);
+            var facet2 = actionSpec.GetFacet<IMemberNamedFacet>();
+            Assert.IsNotNull(facet2);
+            Assert.IsNull(actionSpec.GetFacet<INamedFacet>());
+            Assert.AreEqual("Function Name", facet2.FriendlyName(null));
 
             var parmSpec = actionSpec.Parameters[1];
 
@@ -846,7 +848,7 @@ public class ReflectorTest {
             var specs = AllObjectSpecImmutables(container);
             var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
 
-            var facet = spec.OrderedFields.Single(f => f.Name == "Hidden Property").GetFacet<IHiddenFacet>();
+            var facet = spec.OrderedFields.Single(f => f.Name(null) == "Hidden Property").GetFacet<IHiddenFacet>();
             Assert.IsNotNull(facet);
             Assert.AreEqual(WhenTo.Always, facet.Value);
         }
@@ -868,7 +870,7 @@ public class ReflectorTest {
             container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
-            var facet = spec.OrderedFields.Single(f => f.Name == "Hidden Property Via Function").GetFacet<IHideForContextFacet>();
+            var facet = spec.OrderedFields.Single(f => f.Identifier.MemberName == "HiddenPropertyViaFunction").GetFacet<IHideForContextFacet>();
             Assert.IsNotNull(facet);
         }
     }

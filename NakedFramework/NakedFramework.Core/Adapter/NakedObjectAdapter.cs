@@ -144,13 +144,13 @@ public sealed class NakedObjectAdapter : INakedObjectAdapter {
             var referencedObjectAdapter = property.GetNakedObject(this);
             if (property.IsUsable(this).IsAllowed && property.IsVisible(this)) {
                 if (property.IsMandatory && property.IsEmpty(this)) {
-                    return string.Format(NakedObjects.Resources.NakedObjects.PropertyMandatory, objectSpec.ShortName, property.Name);
+                    return string.Format(NakedObjects.Resources.NakedObjects.PropertyMandatory, objectSpec.ShortName, property.Name(this));
                 }
 
                 if (property is IOneToOneAssociationSpec associationSpec) {
                     var valid = associationSpec.IsAssociationValid(this, referencedObjectAdapter);
                     if (valid.IsVetoed) {
-                        return string.Format(NakedObjects.Resources.NakedObjects.PropertyInvalid, objectSpec.ShortName, associationSpec.Name, valid.Reason);
+                        return string.Format(NakedObjects.Resources.NakedObjects.PropertyInvalid, objectSpec.ShortName, associationSpec.Name(this), valid.Reason);
                     }
                 }
             }

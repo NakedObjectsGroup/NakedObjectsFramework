@@ -85,7 +85,7 @@ public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
 
     protected override MapRepresentation GetExtensionsForSimple(IObjectFacade objectFacade) =>
         RestUtils.GetExtensions(
-            ActionContext.Action.Name,
+            ActionContext.Action.Name(objectFacade),
             ActionContext.Action.Description(objectFacade),
             null,
             null,
@@ -97,13 +97,13 @@ public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
             ActionContext.Action.MemberOrder,
             null,
             ActionContext.Action.PresentationHint,
-            GetCustomActionExtensions(),
+            GetCustomActionExtensions(objectFacade),
             ActionContext.Action.ReturnType,
             ActionContext.Action.ElementType,
             OidStrategy,
             false);
 
-    private IDictionary<string, object> GetCustomActionExtensions() {
+    private IDictionary<string, object> GetCustomActionExtensions(IObjectFacade objectFacade) {
         var ext = GetTableViewCustomExtensions(ActionContext.Action.TableViewData);
 
         if (!string.IsNullOrEmpty(ActionContext.MenuPath)) {
@@ -123,7 +123,7 @@ public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
             ext[JsonPropertyNames.CustomMultipleLines] = multipleLines.Value;
         }
 
-        var createNewProperties = ActionContext.Action.CreateNewProperties;
+        var createNewProperties = ActionContext.Action.CreateNewProperties(objectFacade);
 
         if (createNewProperties.Any()) {
             ext ??= new Dictionary<string, object>();

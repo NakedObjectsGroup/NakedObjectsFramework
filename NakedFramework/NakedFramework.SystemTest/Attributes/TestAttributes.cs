@@ -237,9 +237,9 @@ namespace NakedObjects.SystemTest.Attributes {
             var finderActions = ((IObjectSpec)adapter.Spec).GetFinderActions();
 
             Assert.AreEqual(3, finderActions.Length);
-            Assert.AreEqual("Finder Action1", finderActions[0].Name);
-            Assert.AreEqual("Finder Action2", finderActions[1].Name);
-            Assert.AreEqual("Finder Action3", finderActions[2].Name);
+            Assert.AreEqual("Finder Action1", finderActions[0].Name(null));
+            Assert.AreEqual("Finder Action2", finderActions[1].Name(null));
+            Assert.AreEqual("Finder Action3", finderActions[2].Name(null));
         }
 
         [Test]
@@ -272,9 +272,9 @@ namespace NakedObjects.SystemTest.Attributes {
 
             Assert.AreEqual(3, actions?.Length);
             Assert.IsTrue(actions[0] is IActionSpec);
-            Assert.AreEqual("Collection Contributed Action", actions[0].Name);
-            Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
-            Assert.AreEqual("Collection Contributed Action2", actions[2].Name);
+            Assert.AreEqual("Collection Contributed Action", actions[0].Name(null));
+            Assert.AreEqual("Collection Contributed Action1", actions[1].Name(null));
+            Assert.AreEqual("Collection Contributed Action2", actions[2].Name(null));
         }
 
         [Test]
@@ -294,9 +294,9 @@ namespace NakedObjects.SystemTest.Attributes {
 
             Assert.AreEqual(3, actions.Length);
             Assert.IsTrue(actions[0] is IActionSpec);
-            Assert.AreEqual("Collection Contributed Action", actions[0].Name);
-            Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
-            Assert.AreEqual("Collection Contributed Action2", actions[2].Name);
+            Assert.AreEqual("Collection Contributed Action", actions[0].Name(null));
+            Assert.AreEqual("Collection Contributed Action1", actions[1].Name(null));
+            Assert.AreEqual("Collection Contributed Action2", actions[2].Name(null));
         }
 
         [Test]
@@ -326,7 +326,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
             Assert.AreEqual(1, actions.Length);
             Assert.IsTrue(actions[0] is IActionSpec);
-            Assert.AreEqual("Contributed Action", actions[0].Name);
+            Assert.AreEqual("Contributed Action", actions[0].Name(null));
 
             //Test that the actions show up on the TestObject as test actions
             var testActions = NewTestObject<Contributee>().Actions;

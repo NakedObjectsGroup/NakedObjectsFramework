@@ -98,7 +98,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
 
         var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name[6..]); //remove 'action' from front 
 
-        facets.Add(new NamedFacetInferred(capitalizedName, action));
+        facets.Add(new MemberNamedFacetInferred(capitalizedName, action));
 
         var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
         var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType);
@@ -136,7 +136,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
             facets.Add(new DisabledFacetAlways(specification));
         }
 
-        facets.Add(new NamedFacetInferred(specification.Identifier.MemberName, specification));
+        facets.Add(new MemberNamedFacetInferred(specification.Identifier.MemberName, specification));
 
         var aboutPrefix = "about";
         var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{aboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout) }) ??

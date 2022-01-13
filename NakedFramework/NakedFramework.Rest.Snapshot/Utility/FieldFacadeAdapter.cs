@@ -34,7 +34,7 @@ public class FieldFacadeAdapter {
     public bool IsAutoCompleteEnabled => (parameter?.IsAutoCompleteEnabled ?? association?.IsAutoCompleteEnabled).GetValueOrDefault();
     public string Mask => parameter?.Mask ?? association?.Mask;
     public int NumberOfLines => (parameter?.NumberOfLines ?? association?.NumberOfLines).GetValueOrDefault();
-    public string Name => parameter?.Name ?? association?.Name;
+    public string Name(IObjectFacade objectFacade) => parameter?.Name(objectFacade) ?? association?.Name(objectFacade);
     public string Description(IObjectFacade objectFacade) => parameter?.Description(objectFacade) ?? association?.Description(objectFacade);
     public bool IsMandatory => (parameter?.IsMandatory ?? association?.IsMandatory).GetValueOrDefault();
     public int? MaxLength => parameter?.MaxLength ?? association?.MaxLength;

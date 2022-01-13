@@ -9,15 +9,17 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet;
+namespace NakedFramework.Metamodel.I18N;
 
 [Serializable]
-public sealed class MemberNamedFacetInferred : SingleStringValueFacetAbstract, IMemberNamedFacet {
-    public MemberNamedFacetInferred(string value, ISpecification holder)
-        : base(typeof(IMemberNamedFacet), holder, NameUtils.NaturalName(value)) { }
+public sealed class MemberNamedFacetI18N : SingleStringValueFacetAbstract, IMemberNamedFacet {
+    public MemberNamedFacetI18N(string valueString, ISpecification holder)
+        : base(typeof(IMemberNamedFacet), holder, NameUtils.NaturalName(TypeNameUtils.GetShortName(valueString))) {
+    }
 
-    public override bool CanAlwaysReplace => false;
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter) => Value;
 }
 

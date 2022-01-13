@@ -16,6 +16,6 @@ namespace NakedFramework.Architecture.Facet;
 ///     In the standard Naked Objects Programming Model, corresponds to
 ///     annotating the member with <see cref="NamedAttribute" />
 /// </para>
-public interface IMemberNamedFacet  {
+public interface IMemberNamedFacet : IFacet {
     string FriendlyName(INakedObjectAdapter nakedObjectAdapter);
 }

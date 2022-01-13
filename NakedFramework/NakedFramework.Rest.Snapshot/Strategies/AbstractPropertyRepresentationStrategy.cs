@@ -145,7 +145,7 @@ public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentat
 
     protected override MapRepresentation GetExtensionsForSimple(IObjectFacade objectFacade) =>
         RestUtils.GetExtensions(
-            PropertyContext.Property.Name,
+            PropertyContext.Property.Name(objectFacade),
             PropertyContext.Property.Description(objectFacade),
             null,
             null,

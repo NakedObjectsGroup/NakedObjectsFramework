@@ -676,11 +676,9 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
 
         var method = FindMethod(typeof(Customer1), "AnActionWithNamedAnnotation");
         metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(INamedFacet));
+        var facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is INamedFacet);
-        var namedFacet = (INamedFacet)facet;
-        Assert.AreEqual("An Action With Named Annotation", namedFacet.FriendlyName);
+        Assert.AreEqual("An Action With Named Annotation", facet.FriendlyName(null));
         Assert.AreEqual(0, metamodel.Count);
     }
 

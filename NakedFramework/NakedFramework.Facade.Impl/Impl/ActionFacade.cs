@@ -39,7 +39,7 @@ public class ActionFacade : IActionFacade {
 
     public bool IsContributed => WrappedSpec.IsContributedMethod;
 
-    public string Name => WrappedSpec.Name;
+    public string Name(IObjectFacade objectFacade) => WrappedSpec.Name(objectFacade.WrappedAdapter());
 
     public string Description(IObjectFacade objectFacade) => WrappedSpec.Description(objectFacade.WrappedAdapter());
 
@@ -51,7 +51,7 @@ public class ActionFacade : IActionFacade {
 
     public bool IsIdempotent => WrappedSpec.ContainsFacet<IIdempotentFacet>();
 
-    public string[] CreateNewProperties => WrappedSpec.GetFacet<ICreateNewFacet>()?.OrderedProperties(framework) ?? Array.Empty<string>();
+    public string[] CreateNewProperties(IObjectFacade objectFacade) => WrappedSpec.GetFacet<ICreateNewFacet>()?.OrderedProperties(objectFacade.WrappedAdapter(), framework) ?? Array.Empty<string>();
 
     public bool IsQueryContributedAction => WrappedSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
 

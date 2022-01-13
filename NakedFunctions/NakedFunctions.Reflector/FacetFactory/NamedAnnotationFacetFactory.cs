@@ -29,30 +29,34 @@ public sealed class NamedAnnotationFacetFactory : FunctionalFacetFactoryProcesso
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(CreateForType(attribute, specification));
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = method.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(CreateForMember(attribute, specification));
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(CreateForMember(attribute, specification));
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(CreateForType(attribute, holder));
         return metamodel;
     }
 
-    private static INamedFacet Create(NamedAttribute attribute, ISpecification holder) => attribute is null ? null : CreateAnnotation(attribute.Value, holder);
+    private static INamedFacet CreateForType(NamedAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTypeAnnotation(attribute.Value, holder);
 
-    private static INamedFacet CreateAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name, holder);
+    private static IMemberNamedFacet CreateForMember(NamedAttribute attribute, ISpecification holder) => attribute is null ? null : CreateMemberAnnotation(attribute.Value, holder);
+
+    private static INamedFacet CreateTypeAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name, holder);
+
+    private static IMemberNamedFacet CreateMemberAnnotation(string name, ISpecification holder) => new MemberNamedFacetAnnotation(name, holder);
 }

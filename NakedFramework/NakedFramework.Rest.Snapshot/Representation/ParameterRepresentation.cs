@@ -104,7 +104,7 @@ public class ParameterRepresentation : Representation {
 
         custom = RestUtils.AddRangeExtension(parameter.AsField, custom);
 
-        Extensions = RestUtils.GetExtensions(parameter.Name,
+        Extensions = RestUtils.GetExtensions(parameter.Name(objectFacade),
                                              parameter.Description(objectFacade),
                                              null,
                                              null,

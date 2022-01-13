@@ -27,7 +27,7 @@ internal class TestParameter : ITestParameter {
 
     #region ITestParameter Members
 
-    public string Name => parameterSpec.Name;
+    public string Name => parameterSpec.Name(null);
 
     public INakedObjectAdapter NakedObject => owningObject.NakedObject;
 

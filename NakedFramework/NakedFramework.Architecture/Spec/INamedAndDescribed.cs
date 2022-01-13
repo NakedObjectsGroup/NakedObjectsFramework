@@ -22,5 +22,5 @@ public interface INamedAndDescribed {
     ///     Return the name for this member - the field or action. This is based on the name of this member.
     /// </summary>
     /// <seealso cref="IMemberSpec.Id" />
-    string Name { get; }
+    string Name(INakedObjectAdapter nakedObjectAdapter);
 }

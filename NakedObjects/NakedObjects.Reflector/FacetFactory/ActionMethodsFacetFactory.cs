@@ -87,7 +87,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
     /// <summary>
     ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
     /// </summary>
-    private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new NamedFacetInferred(name, action));
+    private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new MemberNamedFacetInferred(name, action));
 
     private void FindAndRemoveValidMethod(IReflector reflector, ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
         var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{capitalizedName}", typeof(string), parms);

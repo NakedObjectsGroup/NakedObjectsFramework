@@ -6,16 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class MemberNamedFacetAnnotation : NamedFacetAbstract {
+public sealed class MemberNamedFacetAnnotation : SingleStringValueFacetAbstract, IMemberNamedFacet {
     public MemberNamedFacetAnnotation(string value, ISpecification holder)
-        : base(value, holder) {
-        FriendlyName = value;
-    }
+        : base(typeof(IMemberNamedFacet), holder, value) { }
+
+    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter) => Value;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

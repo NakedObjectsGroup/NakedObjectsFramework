@@ -44,7 +44,7 @@ public class TestProperty : ITestProperty {
 
     #region ITestProperty Members
 
-    public string Name => field.Name;
+    public string Name => field.Name(null);
 
     public string Id => field.Id;
 

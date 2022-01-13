@@ -62,7 +62,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
     /// <summary>
     ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
     /// </summary>
-    private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new NamedFacetInferred(name, action));
+    private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new MemberNamedFacetInferred(name, action));
 
     #region IMethodIdentifyingFacetFactory Members
 

@@ -75,7 +75,7 @@ public sealed class HideFunctionIntegrationFacetFactory : FunctionalFacetFactory
             action = m => {
                 if (m.GetSpecification(onType) is ITypeSpecBuilder spec) {
                     var propertyName = recognizedMethod.Name.Remove(0, 4);
-                    var property = spec.UnorderedFields.SingleOrDefault(f => f.Name == NameUtils.NaturalName(propertyName));
+                    var property = spec.UnorderedFields.SingleOrDefault(f => f.Identifier.MemberName == propertyName);
 
                     if (property is not null) {
                         var facet = new HideForContextViaFunctionFacet(recognizedMethod, property, LoggerFactory.CreateLogger<HideForContextViaFunctionFacet>());

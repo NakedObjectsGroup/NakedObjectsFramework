@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
@@ -21,9 +22,9 @@ public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
 
     public static Type Type => typeof(ICreateNewFacet);
 
-    public string[] OrderedProperties(INakedFramework framework) {
+    public string[] OrderedProperties(INakedObjectAdapter adapter, INakedFramework framework) {
         if (framework.MetamodelManager.GetSpecification(toCreate) is IObjectSpec spec) {
-            return spec.Properties.Where(IsNotHidden).Select(f => f.Name).ToArray();
+            return spec.Properties.Where(IsNotHidden).Select(f => f.Name(adapter)).ToArray();
         }
 
         return Array.Empty<string>();

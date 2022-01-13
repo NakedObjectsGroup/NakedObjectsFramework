@@ -22,7 +22,7 @@ public interface IFieldFacade {
     (IConvertible min, IConvertible max, bool isDateRange)? Range { get; }
     int NumberOfLines { get; }
     int Width { get; }
-    string Name { get; }
+    string Name(IObjectFacade objectFacade);
     string Description(IObjectFacade objectFacade);
     bool IsMandatory { get; }
     int? MaxLength { get; }

@@ -49,6 +49,11 @@ public class I18NManager : II18NManager, IFacetDecorator {
         return i18NName == null ? null : new NamedFacetI18N(i18NName, facet.Specification);
     }
 
+    private IFacet GetMemberNamedFacet(ISpecification holder, IMemberNamedFacet facet, IIdentifier identifier) {
+        var i18NName = GetName(identifier);
+        return i18NName == null ? null : new MemberNamedFacetI18N(i18NName, facet.Specification);
+    }
+
     private string GetText(IIdentifier identifier, string type) {
         var form = identifier.IsField ? Property : Action;
         var key = $"{identifier.ToIdentityString(IdentifierDepth.ClassNameParams)}:{form}/{type}";
@@ -105,6 +110,10 @@ public class I18NManager : II18NManager, IFacetDecorator {
             return GetNamedFacet(holder, facet as INamedFacet, identifier);
         }
 
+        if (facetType == typeof(IMemberNamedFacet)) {
+            return GetMemberNamedFacet(holder, facet as IMemberNamedFacet, identifier);
+        }
+
         if (facetType == typeof(IDescribedAsFacet)) {
             return GetDescriptionFacet(holder, facet as IDescribedAsFacet, identifier);
         }
@@ -112,7 +121,7 @@ public class I18NManager : II18NManager, IFacetDecorator {
         return facet;
     }
 
-    public virtual Type[] ForFacetTypes => new[] { typeof(INamedFacet), typeof(IDescribedAsFacet) };
+    public virtual Type[] ForFacetTypes => new[] { typeof(INamedFacet), typeof(IMemberNamedFacet), typeof(IDescribedAsFacet) };
 
     #endregion
 }

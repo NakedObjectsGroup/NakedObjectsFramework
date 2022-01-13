@@ -43,7 +43,7 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
         var facets = new List<IFacet>();
 
         if (holder is IMemberSpecImmutable specImmutable) {
-            facets.Add(new NamedFacetInferred(specImmutable.Identifier.MemberName, holder));
+            facets.Add(new MemberNamedFacetInferred(specImmutable.Identifier.MemberName, holder));
             facets.Add(new DescribedAsFacetNone(holder));
         }
 
