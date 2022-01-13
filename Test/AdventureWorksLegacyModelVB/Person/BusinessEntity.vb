@@ -1,5 +1,4 @@
-﻿Imports NakedLegacy.Types.Container
-
+﻿
 Namespace AW.Types
 
     Public MustInherit Class BusinessEntity

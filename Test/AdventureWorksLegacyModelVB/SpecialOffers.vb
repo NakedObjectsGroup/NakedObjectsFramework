@@ -6,5 +6,8 @@
             Return GenericMenuFunctions.Random(Of SpecialOffer)()
         End Function
 
+        Public Shared Function ActionAllSpecialOffers() As IQueryable(Of SpecialOffer)
+            Return GenericMenuFunctions.ListAll(Of SpecialOffer)()
+        End Function
     End Class
 End Namespace

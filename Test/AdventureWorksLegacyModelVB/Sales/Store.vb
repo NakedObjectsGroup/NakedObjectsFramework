@@ -1,7 +1,6 @@
 ﻿
 
 Imports AW.Services
-Imports NakedLegacy.Types.Container
 
 Namespace AW.Types
 

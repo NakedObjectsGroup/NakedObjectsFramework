@@ -1,6 +1,5 @@
 ﻿Imports AW.Services
 Imports NakedFramework.Value
-Imports NakedLegacy.Types.Container
 
 Namespace AW.Types
 

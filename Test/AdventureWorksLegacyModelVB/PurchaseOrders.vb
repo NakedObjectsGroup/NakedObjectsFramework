@@ -6,8 +6,8 @@
             Return GenericMenuFunctions.Random(Of PurchaseOrderHeader)()
         End Function
 
-        Public Shared Function ActionRandomPurchaseOrderDetail() As PurchaseOrderDetail
-            Return GenericMenuFunctions.Random(Of PurchaseOrderDetail)()
+        Public Shared Function ActionAllPurchaseOrders() As IQueryable(Of PurchaseOrderHeader)
+            Return GenericMenuFunctions.ListAll(Of PurchaseOrderHeader)()
         End Function
 
     End Class
