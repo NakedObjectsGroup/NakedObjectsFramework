@@ -850,7 +850,6 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectView GetObjectView(Pane pane = Pane.Single)
         {
-
             WaitForCss(CssSelectorFor(pane) + " .object .title");
             WaitForCss(CssSelectorFor(pane) + " .object .properties");
             WaitForCss(CssSelectorFor(pane) + " .object .collections");
@@ -858,9 +857,14 @@ namespace NakedFrameworkClient.TestFramework
             return new ObjectView(el, this, pane);
         }
 
+        public ObjectEdit GetObjectEdit(Pane pane = Pane.Single)
+        {
+            var el = WaitForCss(CssSelectorFor(pane) + " .object.edit");
+            return new ObjectEdit(el, this, pane);
+        }
+
         public CreateNewView GetCreateNewView(Pane pane = Pane.Single)
         {
-
             WaitForCss(CssSelectorFor(pane) + "nof-create-new-dialog .title");
             WaitForCss(CssSelectorFor(pane) + "nof-create-new-dialog .dialog");
             var el = WaitForCss(CssSelectorFor(pane) + "nof-create-new-dialog ");

@@ -7,5 +7,9 @@ Namespace AW.Types
             Return rep.FindContactByName(firstName.Value, lastName.Value)
         End Function
 
+        Public Shared Function ActionAllPersons() As IQueryable(Of Person)
+            Return GenericMenuFunctions.ListAll(Of Person)()
+        End Function
+
     End Class
 End Namespace

@@ -1,8 +1,4 @@
-﻿
-
-Imports NakedLegacy.Types.Container
-
-Namespace AW.Services
+﻿Namespace AW.Services
 
     Public Class PersonRepository
         Implements IContainerAware

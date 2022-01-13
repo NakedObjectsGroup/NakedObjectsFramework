@@ -63,18 +63,26 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public void AssertIsNotEditable()
+        public ObjectView AssertIsNotEditable()
         {
             helper.WaitForChildElement(element, "nof-action-bar nof-action");
             helper.wait.Until(dr => element.FindElement(By.CssSelector("nof-action-bar nof-action input")).GetAttribute("value") != "");
             var buttons = element.FindElements(By.CssSelector("nof-action-bar nof-action input")).Select(el => el.GetAttribute("value"));
             Assert.IsTrue(buttons.Contains("Actions"));
             Assert.IsFalse(IsEditable());
+            return this;
         }
 
-        public void AssertIsEditable()
+        public ObjectView AssertIsEditable()
         {
             Assert.IsTrue(IsEditable());
+            return this;
+        }
+
+        public ObjectEdit Edit()
+        {
+            helper.WaitForCss("nof-action-bar nof-action input[value=\"Edit\"]").Click();
+            return helper.GetObjectEdit();
         }
 
         private bool IsEditable()
@@ -83,6 +91,8 @@ namespace NakedFrameworkClient.TestFramework
             var buttons = element.FindElements(By.CssSelector("nof-action-bar nof-action")).Select(b => b.GetAttribute("value"));
             return buttons.Contains("Edit");
         }
+
+
 
         public ObjectView Reload()
         {

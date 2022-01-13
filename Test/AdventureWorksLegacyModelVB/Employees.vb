@@ -10,6 +10,10 @@
             Return GenericMenuFunctions.Random(Of Employee)()
         End Function
 
+        Public Shared Function ActionAllEmployees() As IQueryable(Of Employee)
+            Return GenericMenuFunctions.ListAll(Of Employee)()
+        End Function
+
         Public Shared Function ActionFindEmployeeByName() As ArrayList
             Throw New NotImplementedException()
         End Function
