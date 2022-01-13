@@ -211,9 +211,9 @@ namespace RestfulObjects.Test.EndToEnd {
                         Console.WriteLine("Expected :" + expected);
                         Console.WriteLine("Actual :" + actual);
 
-
+                        Assert.Fail("Results did not match file.");
                     }
-                    Assert.AreEqual(fileVersion, result, "Results did not match file.");
+                    // Assert.AreEqual(fileVersion, result, "Results did not match file.");
 
                     // Assert.Fail("Results did not match file.");
                 }

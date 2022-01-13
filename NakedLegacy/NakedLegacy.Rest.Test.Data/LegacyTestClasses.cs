@@ -110,6 +110,15 @@ public class ClassWithActionAbout {
 
 public class ClassWithFieldAbout {
     public static bool TestInvisibleFlag = false;
+    public static bool TestUsableFlag = false;
+    public static bool TestValidFlag = false;
+    public static string TestName = null;
+    public static string TestDescription = null;
+
+    public static void ResetTest() {
+        TestInvisibleFlag = TestUsableFlag = TestValidFlag = false;
+        TestName = TestDescription = null;
+    }
 
     [Key]
     public int Id { get; init; }
@@ -119,7 +128,35 @@ public class ClassWithFieldAbout {
     public ITitle Title() => Name.Title();
 
     public void aboutName(FieldAbout fieldAbout, TextString name) {
-        fieldAbout.Visible = !TestInvisibleFlag;
+        switch (fieldAbout.TypeCode) {
+            case AboutTypeCodes.Visible:
+                fieldAbout.Visible = !TestInvisibleFlag;
+                break;
+            case AboutTypeCodes.Usable:
+                fieldAbout.Usable = !TestUsableFlag;
+                if (!fieldAbout.Usable) {
+                    fieldAbout.UnusableReason = "Unusable by about";
+                }
+
+                break;
+            case AboutTypeCodes.Name:
+                if (TestName is not null) {
+                    fieldAbout.Name = TestName;
+                }
+
+                if (TestDescription is not null) {
+                    fieldAbout.Description = TestDescription;
+                }
+
+                break;
+            case AboutTypeCodes.Valid:
+                fieldAbout.IsValid = !TestValidFlag;
+                if (!fieldAbout.IsValid) {
+                    fieldAbout.InvalidReason = "invalid by about";
+                }
+
+                break;
+        }
     }
 }
 

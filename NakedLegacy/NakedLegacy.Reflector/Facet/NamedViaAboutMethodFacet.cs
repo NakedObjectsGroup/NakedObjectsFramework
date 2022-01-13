@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -16,13 +17,19 @@ namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
 public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet, IMemberNamedFacet {
+    private readonly string inferredName;
     private readonly ILogger<MemberNamedViaAboutMethodFacet> logger;
 
-    public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<MemberNamedViaAboutMethodFacet> logger)
-        : base(typeof(IDisableForContextFacet), holder, method, aboutType) =>
+    public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, string inferredName, ILogger<MemberNamedViaAboutMethodFacet> logger)
+        : base(typeof(IMemberNamedFacet), holder, method, aboutType) {
+        this.inferredName = NameUtils.NaturalName(inferredName);
         this.logger = logger;
+    }
 
-    string IMemberNamedFacet.FriendlyName(INakedObjectAdapter nakedObjectAdapter) => GetAbout(nakedObjectAdapter).Name;
+    string IMemberNamedFacet.FriendlyName(INakedObjectAdapter nakedObjectAdapter) {
+        var aboutName = GetAbout(nakedObjectAdapter).Name;
+        return string.IsNullOrEmpty(aboutName) ? inferredName : aboutName;
+    }
 
     public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) => InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Name);
 }

@@ -19,7 +19,7 @@ public sealed class DescribedAsViaAboutMethodFacet : AbstractViaAboutMethodFacet
     private readonly ILogger<DescribedAsViaAboutMethodFacet> logger;
 
     public DescribedAsViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DescribedAsViaAboutMethodFacet> logger)
-        : base(typeof(IDisableForContextFacet), holder, method, aboutType) =>
+        : base(typeof(IDescribedAsFacet), holder, method, aboutType) =>
         this.logger = logger;
 
     public string Description(INakedObjectAdapter adapter) => GetAbout(adapter.Object).Description;

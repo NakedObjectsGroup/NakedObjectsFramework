@@ -284,7 +284,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithField() {
+    public void TestGetObjectWithVisibleField() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
 
         var api = Api();
@@ -292,6 +292,8 @@ public class LegacyTest : AcceptanceTestCase {
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
+
+        ClassWithFieldAbout.ResetTest();
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
@@ -308,9 +310,47 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
+        ClassWithFieldAbout.ResetTest();
+
         Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
         //Assert.IsNotNull(parsedResult["members"]["Id"]);
     }
+
+    [Test]
+    public void TestGetObjectWithUnNamedField()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        ClassWithFieldAbout.ResetTest();
+
+        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectWithNamedField()
+    {
+        ClassWithFieldAbout.TestName = "Name from About";
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        ClassWithFieldAbout.ResetTest();
+
+        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.AreEqual("Name from About", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+    }
+
 
     //[Test]
     //public void TestGetLegacyObjectWithMenu() {
