@@ -6,17 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class NamedFacetAnnotation : NamedFacetAbstract, INamedFacet {
-    public NamedFacetAnnotation(string value, ISpecification holder)
+public sealed class MemberNamedFacetInferred : NamedFacetAbstract {
+    public MemberNamedFacetInferred(string value, ISpecification holder)
         : base(value, holder) {
-        FriendlyName = value;
+        FriendlyName = NameUtils.NaturalName(value);
     }
+
+    public override bool CanAlwaysReplace => false;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

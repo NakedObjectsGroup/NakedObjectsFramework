@@ -148,7 +148,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
             facets.Add(new DescribedAsViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<DescribedAsViaAboutMethodFacet>()));
             facets.Add(new DisableForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<DisableForContextViaAboutMethodFacet>()));
             facets.Add(new HideForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<HideForContextViaAboutMethodFacet>()));
-            facets.Add(new NamedViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<NamedViaAboutMethodFacet>()));
+            facets.Add(new MemberNamedViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<MemberNamedViaAboutMethodFacet>()));
             facets.Add(new PropertyValidateViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<PropertyValidateViaAboutMethodFacet>()));
         }
 

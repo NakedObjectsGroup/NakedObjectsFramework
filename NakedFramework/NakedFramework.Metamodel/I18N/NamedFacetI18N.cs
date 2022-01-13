@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -13,7 +14,7 @@ using NakedFramework.Metamodel.Facet;
 namespace NakedFramework.Metamodel.I18N;
 
 [Serializable]
-public sealed class NamedFacetI18N : NamedFacetAbstract {
+public sealed class NamedFacetI18N : NamedFacetAbstract, INamedFacet {
     public NamedFacetI18N(string valueString, ISpecification holder)
         : base(valueString, holder) {
         var shortName = TypeNameUtils.GetShortName(valueString);

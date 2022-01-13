@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Spec;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract, INamedFacet {
+public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract {
     protected NamedFacetAbstract(string valueString, ISpecification holder)
         : base(Type, holder, valueString) { }
 

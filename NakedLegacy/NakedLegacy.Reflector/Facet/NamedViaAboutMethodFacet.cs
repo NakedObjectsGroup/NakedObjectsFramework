@@ -8,26 +8,23 @@
 using System;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
-public sealed class NamedViaAboutMethodFacet : AbstractViaAboutMethodFacet, INamedFacet {
-    private readonly ILogger<NamedViaAboutMethodFacet> logger;
+public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet, IMemberNamedFacet {
+    private readonly ILogger<MemberNamedViaAboutMethodFacet> logger;
 
-    public NamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<NamedViaAboutMethodFacet> logger)
+    public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<MemberNamedViaAboutMethodFacet> logger)
         : base(typeof(IDisableForContextFacet), holder, method, aboutType) =>
         this.logger = logger;
 
-    public string Value => GetAbout().Name;
-    public string FriendlyName => GetAbout().Name;
+    string IMemberNamedFacet.FriendlyName(INakedObjectAdapter nakedObjectAdapter) => GetAbout(nakedObjectAdapter).Name;
 
-    public IAbout GetAbout() => InvokeAboutMethod(null, AboutTypeCodes.Name);
+    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) => InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Name);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

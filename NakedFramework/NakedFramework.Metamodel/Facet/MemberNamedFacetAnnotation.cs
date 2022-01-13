@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class NamedFacetAnnotation : NamedFacetAbstract, INamedFacet {
-    public NamedFacetAnnotation(string value, ISpecification holder)
+public sealed class MemberNamedFacetAnnotation : NamedFacetAbstract {
+    public MemberNamedFacetAnnotation(string value, ISpecification holder)
         : base(value, holder) {
         FriendlyName = value;
     }

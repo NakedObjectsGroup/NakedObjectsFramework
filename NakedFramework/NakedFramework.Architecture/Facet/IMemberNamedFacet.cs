@@ -5,18 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.Adapter;
 
-namespace NakedFramework.Metamodel.Facet;
+namespace NakedFramework.Architecture.Facet;
 
-[Serializable]
-public sealed class NamedFacetAnnotation : NamedFacetAbstract, INamedFacet {
-    public NamedFacetAnnotation(string value, ISpecification holder)
-        : base(value, holder) {
-        FriendlyName = value;
-    }
+/// <summary>
+///     The name of a class, a property, collection, an action  or a parameter
+/// </summary>
+/// <para>
+///     In the standard Naked Objects Programming Model, corresponds to
+///     annotating the member with <see cref="NamedAttribute" />
+/// </para>
+public interface IMemberNamedFacet  {
+    string FriendlyName(INakedObjectAdapter nakedObjectAdapter);
 }
-
-// Copyright (c) Naked Objects Group Ltd.

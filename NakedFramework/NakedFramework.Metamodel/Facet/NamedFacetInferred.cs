@@ -6,13 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class NamedFacetInferred : NamedFacetAbstract {
+public sealed class NamedFacetInferred : NamedFacetAbstract, INamedFacet {
     public NamedFacetInferred(string value, ISpecification holder)
         : base(value, holder) {
         FriendlyName = NameUtils.NaturalName(value);
