@@ -248,22 +248,26 @@ public class ClassWithMenu {
         return null;
     }
 
-    //public static MainMenu menuOrder() {
-    //    var menu = new MainMenu();
-    //    menu.Menus.Add(new Menu("Method1"));
+    public static IMenu menuOrder()
+    {
+        var menu = new Menu("ClassWithMenu Menu");
+        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMethod1)));
 
-    //    var newSubMenu = new SubMenu("Submenu1");
-    //    menu.Menus.Add(newSubMenu);
-    //    newSubMenu.Menus.Add(new Menu("Method2"));
-    //    return menu;
-    //}
+        var newSubMenu = new Menu("Submenu1");
+        menu.MenuItems().Add(newSubMenu);
+        newSubMenu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.actionMethod2)));
+        return menu;
+    }
 
-    //public static MainMenu sharedMenuOrder() {
-    //    var menu = new MainMenu();
-    //    menu.Menus.Add(new Menu("MenuAction"));
-    //    menu.Menus.Add(new Menu("MenuAction1"));
-    //    return menu;
-    //}
+    public static IMenu sharedMenuOrder()
+    {
+        var menu = new Menu("ClassWithMenu Main Menu");
+        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuAction)));
+        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuAction1)));
+        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuAction2)));
+        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuActionWithParm)));
+        return menu;
+    }
 }
 
 public class ClassWithDate {

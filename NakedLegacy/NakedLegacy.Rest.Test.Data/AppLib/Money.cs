@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using NakedLegacy;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NakedLegacy.Rest.Test.Data.AppLib; 
 
 public class Money : ValueHolder<decimal> {
     public Money() { }
@@ -10,6 +9,8 @@ public class Money : ValueHolder<decimal> {
     public Money(decimal value) : base(value) { }
 
     public Money(decimal value, Action<decimal> callback) : base(value, callback) { }
+
+    public override string Mask => "C";
 
     public override string ToString() => "€ " + Value;
 
@@ -24,8 +25,6 @@ public class Money : ValueHolder<decimal> {
             throw new ValueHolderException(entry);
         }
     }
-
-    public override string Mask => "C";
 
     public override object Display(string mask = null) => Value;
 

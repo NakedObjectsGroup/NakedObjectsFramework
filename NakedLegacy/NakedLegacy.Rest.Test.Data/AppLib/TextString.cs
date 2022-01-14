@@ -1,7 +1,6 @@
 ﻿using System;
-using NakedLegacy;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NakedLegacy.Rest.Test.Data.AppLib; 
 
 public class TextString : ValueHolder<string> {
     public TextString() { }

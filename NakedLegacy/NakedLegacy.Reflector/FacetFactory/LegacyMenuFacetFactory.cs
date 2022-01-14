@@ -7,25 +7,21 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
-using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
-using NakedLegacy;
+using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
@@ -41,50 +37,22 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
 
     public string[] Prefixes => FixedPrefixes;
 
-    private static string GetMenuName(ITypeSpecImmutable spec) => spec.GetFacet<INamedFacet>().FriendlyName;
-
-    private static string MatchMethod(string legacyName, Type declaringType) {
-        var name = $"action{legacyName}";
-        var action = declaringType.GetMethod(name, BindingFlags.IgnoreCase | BindingFlags.Static | BindingFlags.Public);
-
-        return action?.Name ?? legacyName;
-    }
-
-    //private static IMenuImmutable ConvertLegacyToNOFMenu(MainMenu legacyMenu, Type type, IMetamodelBuilder metamodel) {
-    //    var spec = metamodel.GetSpecification(type);
-    //    var mi = new MenuImpl(metamodel, type, false, GetMenuName(spec));
-    //    foreach (var menu in legacyMenu.Menus) {
-    //        switch (menu) {
-    //            case SubMenu sm:
-    //                var nsm = mi.CreateSubMenu(sm.Name);
-    //                // temp hack
-    //                nsm.AddAction(MatchMethod(sm.Menus.First().Name, type));
-    //                break;
-    //            case Menu m:
-    //                mi.AddAction(MatchMethod(m.Name, type));
-    //                break;
-    //        }
-    //    }
-
-    //    return mi;
-    //}
-
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         // instance
-        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "menuOrder", null, null);
-        methodRemover.SafeRemoveMethod(method);
-        var facet = method is not null ? (IFacet)new MenuFacetViaLegacyMethod(method, specification) : new MenuFacetDefault(specification);
+        var menuOrderMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "menuOrder", typeof(IMenu), null);
+        methodRemover.SafeRemoveMethod(menuOrderMethod);
+        var facet = menuOrderMethod is not null ? (IFacet)new MenuFacetViaLegacyMethod(menuOrderMethod, specification) : new MenuFacetDefault(specification);
         FacetUtils.AddFacet(facet);
 
         // mainMenu
-        var method1 = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "sharedMenuOrder", null, null);
-        methodRemover.SafeRemoveMethod(method1);
+        var sharedmenuOrderMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "sharedMenuOrder", typeof(IMenu), null);
+        methodRemover.SafeRemoveMethod(sharedmenuOrderMethod);
 
-        if (method1 is not null) {
+        if (sharedmenuOrderMethod is not null) {
             void Action(IMetamodelBuilder builder) {
-                //var legacyMenu = (MainMenu)InvokeUtils.InvokeStatic(method1, new object[] { });
-                ////var mainMenu = ConvertLegacyToNOFMenu(legacyMenu, method1.DeclaringType, builder);
-                //builder.AddMainMenu(mainMenu);
+                var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(sharedmenuOrderMethod, new object[] { });
+                var mainMenu = LegacyHelpers.ConvertLegacyToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType);
+                builder.AddMainMenu(mainMenu);
             }
 
             FacetUtils.AddFacet(new IntegrationFacet(specification, Action));

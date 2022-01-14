@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using NakedLegacy;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NakedLegacy.Rest.Test.Data.AppLib; 
 
 public class WholeNumber : ValueHolder<int> {
     public WholeNumber() { }
