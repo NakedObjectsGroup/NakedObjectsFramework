@@ -329,7 +329,7 @@ public class UriMtHelper {
     private Uri GetMemberUri(IMemberFacade member, string memberType) =>
         spec.IsService || member is IActionFacade { IsQueryContributedAction: true }
             ? GetServiceMemberUri(member, memberType)
-            : spec.IsStatic
+            : spec.IsStatic || member is IActionFacade { IsStaticObjectMenu: true }
                 ? GetMenuMemberUri(member, memberType)
                 : GetObjectMemberUri(member, memberType);
 
