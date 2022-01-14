@@ -23,7 +23,7 @@ using NakedLegacy;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
-public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor {
     public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
@@ -35,7 +35,7 @@ public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor, IAnnotat
 
     private static bool IsDate(Type type) {
         var valueHolderType = LegacyHelpers.IsOrImplementsValueHolder(type);
-        return (valueHolderType == typeof(DateTime) || valueHolderType == typeof(DateTime?)) && type.GetCustomAttribute<DateOnlyAttribute>() is not null;
+        return (valueHolderType == typeof(DateTime) || valueHolderType == typeof(DateTime?)) && type.IsAssignableTo(typeof(IDateOnly));
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

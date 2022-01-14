@@ -3,8 +3,7 @@ using System.Globalization;
 
 namespace NakedLegacy.Rest.Test.Data.AppLib; 
 
-[DateOnly]
-public class NODate : ValueHolder<DateTime> {
+public class NODate : ValueHolder<DateTime>, IDateOnly {
     public NODate() { }
 
     public NODate(DateTime value) : base(value) { }

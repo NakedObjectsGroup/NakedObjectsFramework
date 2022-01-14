@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib; 
+namespace NakedLegacy.Rest.Test.Data.AppLib;
 
-[DateOnly] //This is needed to tell framework not to render the time portion
-public class NODateNullable : ValueHolder<DateTime?> {
+public class NODateNullable : ValueHolder<DateTime?>, IDateOnly { //This is needed to tell framework not to render the time portion
+
     private const string DATE_FORMAT = "dd/MM/yyyy";
     public NODateNullable() { }
 
