@@ -9,14 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Menu;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
@@ -30,7 +27,6 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using IMenu = NakedLegacy.IMenu;
 
 namespace NakedLegacy.Rest.Test;
 
@@ -56,14 +52,14 @@ public class LegacyTest : AcceptanceTestCase {
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
 
     protected Type[] LegacyValueHolders { get; } = {
-        typeof(Data.AppLib.TextString),
-        typeof(Data.AppLib.Money),
-        typeof(Data.AppLib.Logical),
-        typeof(Data.AppLib.MultiLineTextString),
-        typeof(Data.AppLib.WholeNumber),
-        typeof(Data.AppLib.NODate),
-        typeof(Data.AppLib.NODateNullable),
-        typeof(Data.AppLib.TimeStamp)
+        typeof(TextString),
+        typeof(Money),
+        typeof(Logical),
+        typeof(MultiLineTextString),
+        typeof(WholeNumber),
+        typeof(NODate),
+        typeof(NODateNullable),
+        typeof(TimeStamp)
     };
 
     protected override bool EnforceProxies => false;
@@ -130,7 +126,6 @@ public class LegacyTest : AcceptanceTestCase {
     //        MakeMenu<ClassWithMenu>(factory)
     //    };
 
-
     [SetUp]
     public void SetUp() {
         StartTest();
@@ -188,8 +183,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetBounded()
-    {
+    public void TestGetBounded() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithBounded>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -317,8 +311,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithUnNamedField()
-    {
+    public void TestGetObjectWithUnNamedField() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -334,8 +327,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithNamedField()
-    {
+    public void TestGetObjectWithNamedField() {
         ClassWithFieldAbout.TestName = "Name from About";
 
         var api = Api();
@@ -351,11 +343,8 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Name from About", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
     }
 
-   
-
     [Test]
-    public void TestGetObjectWithUsableField()
-    {
+    public void TestGetObjectWithUsableField() {
         ClassWithFieldAbout.TestUsableFlag = true;
 
         var api = Api();
@@ -374,9 +363,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithUnUsableField()
-    {
-
+    public void TestGetObjectWithUnUsableField() {
         ClassWithFieldAbout.TestUsableFlag = false;
 
         var api = Api();
@@ -396,8 +383,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithDescribedField()
-    {
+    public void TestGetObjectWithDescribedField() {
         ClassWithFieldAbout.TestDescription = "Description from About";
 
         var api = Api();
@@ -414,10 +400,8 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Description from About", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
     }
 
-
     [Test]
-    public void TestGetObjectWithUnDescribedField()
-    {
+    public void TestGetObjectWithUnDescribedField() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -439,7 +423,7 @@ public class LegacyTest : AcceptanceTestCase {
         ClassWithFieldAbout.TestUsableFlag = true;
 
         var api = Api().AsPut();
-        var sva = new SingleValueArgument() {Value = new ScalarValue("invalid")};
+        var sva = new SingleValueArgument { Value = new ScalarValue("invalid") };
         var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
@@ -450,38 +434,35 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("invalid by about", parsedResult["invalidReason"].ToString());
     }
 
-    // not something we need to support ?
-    //[Test]
-    //public void TestPutValidProperty()
-    //{
-    //    ClassWithFieldAbout.TestValidFlag = true;
-    //    ClassWithFieldAbout.TestUsableFlag = true;
+    [Test]
+    public void TestPutValidProperty() {
+        ClassWithFieldAbout.TestValidFlag = true;
+        ClassWithFieldAbout.TestUsableFlag = true;
 
-    //    var api = Api().AsPut();
-    //    var sva = new SingleValueArgument() { Value = new ScalarValue("valid") };
-    //    var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
-    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-    //    var parsedResult = JObject.Parse(json);
+        var api = Api().AsPut();
+        var sva = new SingleValueArgument { Value = new ScalarValue("valid") };
+        var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
 
-    //    ClassWithFieldAbout.ResetTest();
-    //}
+        ClassWithFieldAbout.ResetTest();
+    }
 
+    [Test]
+    public void TestGetLegacyObjectWithMenu() {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithMenu>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
 
-    //[Test]
-    //public void TestGetLegacyObjectWithMenu() {
-    //    var api = Api();
-    //    var result = api.GetObject(FullName<ClassWithMenu>(), "1");
-    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-    //    var parsedResult = JObject.Parse(json);
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
 
-    //    Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-
-    //    Assert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
-    //    Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
-    //    Assert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
-    //}
+        Assert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
+        Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
+        Assert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
+    }
 
     [Test]
     public void TestGetLegacyMainMenu() {
@@ -531,8 +512,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetNullableDateProperty()
-    {
+    public void TestGetNullableDateProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.DateNullable));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -563,8 +543,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeActionThatUsesContainer()
-    {
+    public void TestInvokeActionThatUsesContainer() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Bill") } } };
 
@@ -584,8 +563,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeActionThatUsesRepository()
-    {
+    public void TestInvokeActionThatUsesRepository() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Bill") } } };
 
@@ -603,7 +581,6 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("Fred", resultObj["title"].ToString());
     }
-
 
     [Test]
     public void TestGetObjectWithTimeStamp() {
@@ -807,7 +784,6 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Untitled Class With Reference Property", parsedResult["title"].ToString());
     }
 
-
     [Test]
     public void TestGetReferencePropertyProperty() {
         var api = Api();
@@ -823,10 +799,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestMainMenus()
-    {
+    public void TestMainMenus() {
         var api = Api();
-       
 
         var result = api.GetMenus();
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -837,10 +811,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestMainMenu()
-    {
+    public void TestMainMenu() {
         var api = Api();
-
 
         var result = api.GetMenu("ClassWithMenu");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -854,8 +826,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestObjectMenu()
-    {
+    public void TestObjectMenu() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -870,10 +841,9 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionWithContainerReturnObject()
-    {
+    public void TestInvokeMenuActionWithContainerReturnObject() {
         var api = Api().AsPost();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { } };
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -884,14 +854,12 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("Fred", resultObj["title"].ToString());
         Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
-
     }
 
     [Test]
-    public void TestInvokeMenuActionWithParmReturnObject()
-    {
+    public void TestInvokeMenuActionWithParmReturnObject() {
         var api = Api().AsPost();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { {"ts", new ScalarValue("Fred") } }};
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("Fred") } } };
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -902,16 +870,12 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("Fred", resultObj["title"].ToString());
         Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
-
     }
 
-
-
     [Test]
-    public void TestInvokeMenuActionWithContainerReturnArrayList()
-    {
+    public void TestInvokeMenuActionWithContainerReturnArrayList() {
         var api = Api().AsPost();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { } };
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction1), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -922,16 +886,15 @@ public class LegacyTest : AcceptanceTestCase {
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual(2, ((JContainer) resultObj["value"]).Count);
+        Assert.AreEqual(2, ((JContainer)resultObj["value"]).Count);
         Assert.AreEqual("Fred", resultObj["value"][0]["title"].ToString());
         Assert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
     }
 
     [Test]
-    public void TestInvokeMenuActionWithContainerReturnQueryable()
-    {
+    public void TestInvokeMenuActionWithContainerReturnQueryable() {
         var api = Api().AsPost();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { } };
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction2), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -948,10 +911,8 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
     }
 
-
     [Test]
-    public void TestGetObjectWithOrderedProperties()
-    {
+    public void TestGetObjectWithOrderedProperties() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithOrderedProperties>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -974,8 +935,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithOrderedActions()
-    {
+    public void TestGetObjectWithOrderedActions() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithOrderedActions>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);

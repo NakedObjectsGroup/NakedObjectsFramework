@@ -127,13 +127,9 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
 
         var facets = new List<IFacet> { new PropertyAccessorFacet(property, specification) };
 
-        if (property.GetSetMethod() != null) {
+        if (property.GetSetMethod() is not null) {
             facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
             facets.Add(new PropertyInitializationFacet(property, specification));
-        }
-        else {
-            facets.Add(new NotPersistedFacet(specification));
-            facets.Add(new DisabledFacetAlways(specification));
         }
 
         facets.Add(new MemberNamedFacetInferred(specification.Identifier.MemberName, specification));

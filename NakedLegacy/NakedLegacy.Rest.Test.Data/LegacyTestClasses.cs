@@ -127,10 +127,7 @@ public class ClassWithFieldAbout {
     [Key]
     public int Id { get; init; }
 
-    public virtual TextString Name {
-        get => _name ??= new TextString(name, s => name = s);
-        set => name = Name.Value;
-    }
+    public virtual TextString Name => _name ??= new TextString(name, s => name = s);
 
     public ITitle Title() => Name.Title();
 
