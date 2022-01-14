@@ -433,6 +433,41 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
     }
 
+    [Test]
+    public void TestPutInvalidProperty() {
+        ClassWithFieldAbout.TestValidFlag = true;
+        ClassWithFieldAbout.TestUsableFlag = true;
+
+        var api = Api().AsPut();
+        var sva = new SingleValueArgument() {Value = new ScalarValue("invalid")};
+        var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        ClassWithFieldAbout.ResetTest();
+        Assert.AreEqual("invalid", parsedResult["value"].ToString());
+        Assert.AreEqual("invalid by about", parsedResult["invalidReason"].ToString());
+    }
+
+    // not something we need to support ?
+    //[Test]
+    //public void TestPutValidProperty()
+    //{
+    //    ClassWithFieldAbout.TestValidFlag = true;
+    //    ClassWithFieldAbout.TestUsableFlag = true;
+
+    //    var api = Api().AsPut();
+    //    var sva = new SingleValueArgument() { Value = new ScalarValue("valid") };
+    //    var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
+
+    //    ClassWithFieldAbout.ResetTest();
+    //}
+
+
     //[Test]
     //public void TestGetLegacyObjectWithMenu() {
     //    var api = Api();
@@ -456,11 +491,12 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
 
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction1"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
+        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
     }
 
     [Test]
@@ -803,6 +839,26 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
 
     }
+
+    [Test]
+    public void TestInvokeMenuActionWithParmReturnObject()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { {"ts", new ScalarValue("Fred") } }};
+
+        var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("Fred", resultObj["title"].ToString());
+        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+
+    }
+
+
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnArrayList()

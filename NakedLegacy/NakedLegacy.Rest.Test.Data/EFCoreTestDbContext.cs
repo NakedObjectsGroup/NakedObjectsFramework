@@ -65,7 +65,7 @@ public abstract class EFCoreTestDbContext : DbContext {
     private static void MapClassWithFieldAbout(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ClassWithFieldAbout>().Ignore(t => t.Name);
-        //modelBuilder.Entity<ClassWithFieldAbout>().Property("name").HasColumnName("Name");
+        modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
     }
 
     private static void MapClassWithReferenceProperty(ModelBuilder modelBuilder)

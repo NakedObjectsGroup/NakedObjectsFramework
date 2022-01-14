@@ -17,4 +17,8 @@
 		<PackageReference Include="NakedFramework.ProgrammingModel" Version="13.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Menu\" />
+	</ItemGroup>
+
 </Project>

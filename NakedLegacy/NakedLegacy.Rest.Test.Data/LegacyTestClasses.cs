@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using NakedFramework.Core.Util;
 using NakedLegacy.Rest.Test.Data.AppLib;
@@ -120,12 +121,15 @@ public class ClassWithFieldAbout {
         TestName = TestDescription = null;
     }
 
+    private TextString _name;
+    public string name;
+
     [Key]
     public int Id { get; init; }
 
     public virtual TextString Name {
-        get { return new TextString(""); }
-        set { }
+        get => _name ??= new TextString(name, s => name = s);
+        set => name = Name.Value;
     }
 
     public ITitle Title() => Name.Title();
@@ -153,9 +157,12 @@ public class ClassWithFieldAbout {
 
                 break;
             case AboutTypeCodes.Valid:
-                fieldAbout.IsValid = !TestValidFlag;
-                if (!fieldAbout.IsValid) {
+                if (TestValidFlag && name.Value != "valid") {
+                    fieldAbout.IsValid = false;
                     fieldAbout.InvalidReason = "invalid by about";
+                }
+                else {
+                    fieldAbout.IsValid = true;
                 }
 
                 break;
@@ -230,6 +237,16 @@ public class ClassWithMenu {
     public static ArrayList ActionMenuAction1() => new(Container.AllInstances(typeof(ClassWithTextString)).ToList());
 
     public static IQueryable<ClassWithTextString> ActionMenuAction2() => Container.Instances<ClassWithTextString>();
+
+    public static ClassWithTextString ActionMenuActionWithParm(TextString ts) {
+        foreach (ClassWithTextString cts in Container.AllInstances(typeof(ClassWithTextString))) {
+            if (cts.Name.Value == ts.Value) {
+                return cts;
+            }
+        }
+
+        return null;
+    }
 
     //public static MainMenu menuOrder() {
     //    var menu = new MainMenu();
