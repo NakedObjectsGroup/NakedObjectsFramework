@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Metamodel.Menu;
 
 namespace NakedLegacy.Reflector.Helpers;
@@ -30,8 +30,18 @@ public static class LegacyHelpers {
         }
     }
 
-    public static MenuImpl ConvertLegacyToNOFMenu(IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType) {
-        var mi = new MenuImpl(metamodel, declaringType, false, legacyMenu.Name);
+    private static string GetName(IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
+        if (!string.IsNullOrWhiteSpace(name)) {
+            return name;
+        }
+
+        var spec = metamodel.GetSpecification(declaringType);
+        return spec?.GetFacet<INamedFacet>()?.FriendlyName ?? "";
+    }
+
+    public static MenuImpl ConvertLegacyToNOFMenu(IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
+        var menuName = GetName(legacyMenu, metamodel, declaringType, name);
+        var mi = new MenuImpl(metamodel, declaringType, false, menuName);
         foreach (var menuComponent in legacyMenu.MenuItems()) {
             AddMenuComponent(mi, menuComponent, declaringType);
         }

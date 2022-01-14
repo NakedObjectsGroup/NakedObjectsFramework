@@ -29,7 +29,7 @@ public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract {
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel) {
         var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(method, new object[] { });
-        Menu = LegacyHelpers.ConvertLegacyToNOFMenu(legacyMenu, metamodel, method.DeclaringType);
+        Menu = LegacyHelpers.ConvertLegacyToNOFMenu(legacyMenu, metamodel, method.DeclaringType, "Actions");
     }
 }
 

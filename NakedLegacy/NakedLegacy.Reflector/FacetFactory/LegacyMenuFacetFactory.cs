@@ -51,7 +51,7 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
         if (sharedmenuOrderMethod is not null) {
             void Action(IMetamodelBuilder builder) {
                 var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(sharedmenuOrderMethod, new object[] { });
-                var mainMenu = LegacyHelpers.ConvertLegacyToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType);
+                var mainMenu = LegacyHelpers.ConvertLegacyToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name);
                 builder.AddMainMenu(mainMenu);
             }
 
