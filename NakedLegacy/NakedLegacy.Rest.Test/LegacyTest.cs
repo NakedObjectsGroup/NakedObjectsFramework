@@ -491,11 +491,12 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
 
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction1"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
+        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
     }
 
     [Test]
@@ -838,6 +839,26 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
 
     }
+
+    [Test]
+    public void TestInvokeMenuActionWithParmReturnObject()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { {"ts", new ScalarValue("Fred") } }};
+
+        var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("Fred", resultObj["title"].ToString());
+        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+
+    }
+
+
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnArrayList()

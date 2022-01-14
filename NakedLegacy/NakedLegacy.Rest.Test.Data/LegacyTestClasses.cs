@@ -238,6 +238,16 @@ public class ClassWithMenu {
 
     public static IQueryable<ClassWithTextString> ActionMenuAction2() => Container.Instances<ClassWithTextString>();
 
+    public static ClassWithTextString ActionMenuActionWithParm(TextString ts) {
+        foreach (ClassWithTextString cts in Container.AllInstances(typeof(ClassWithTextString))) {
+            if (cts.Name.Value == ts.Value) {
+                return cts;
+            }
+        }
+
+        return null;
+    }
+
     //public static MainMenu menuOrder() {
     //    var menu = new MainMenu();
     //    menu.Menus.Add(new Menu("Method1"));
