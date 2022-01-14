@@ -312,7 +312,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             PropertyRenamedUsingFieldAbout();
             FieldOrderSpecifiedByAttribute();
             FieldOrderSpecifiedByMethod();
-
         }
 
         //[TestMethod]
@@ -325,10 +324,24 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void PropertyRenamedUsingFieldAbout()
         {
-            var obj = AccessInstanceWithTitle("PhoneNumberType--1", "Cell");
+            var obj = AccessInstanceWithTitle("JobCandidate--1", "xx");
             obj.GetProperty(1).AssertNameIs("Resumé");
         }
 
+        //[TestMethod]
+        public void PropertyMadeUneditableUsingFieldAbout()
+        {
+            AccessInstanceWithTitle("Department--1", "xx").Edit()
+                .AssertPropertyIsDisabledForEdit("Modified Date");   
+        }
+
+        //[TestMethod]
+        public void PropertyEditValidation()
+        {
+            var edit = AccessInstanceWithTitle("xx", "xx").Edit()
+                .GetEditableTextInputProperty("xx").Clear().Enter("xx").
+
+        }
 
 
         #endregion
