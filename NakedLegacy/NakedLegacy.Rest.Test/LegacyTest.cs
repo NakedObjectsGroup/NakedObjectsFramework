@@ -433,6 +433,41 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
     }
 
+    [Test]
+    public void TestPutInvalidProperty() {
+        ClassWithFieldAbout.TestValidFlag = true;
+        ClassWithFieldAbout.TestUsableFlag = true;
+
+        var api = Api().AsPut();
+        var sva = new SingleValueArgument() {Value = new ScalarValue("invalid")};
+        var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        ClassWithFieldAbout.ResetTest();
+        Assert.AreEqual("invalid", parsedResult["value"].ToString());
+        Assert.AreEqual("invalid by about", parsedResult["invalidReason"].ToString());
+    }
+
+    // not something we need to support ?
+    //[Test]
+    //public void TestPutValidProperty()
+    //{
+    //    ClassWithFieldAbout.TestValidFlag = true;
+    //    ClassWithFieldAbout.TestUsableFlag = true;
+
+    //    var api = Api().AsPut();
+    //    var sva = new SingleValueArgument() { Value = new ScalarValue("valid") };
+    //    var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
+
+    //    ClassWithFieldAbout.ResetTest();
+    //}
+
+
     //[Test]
     //public void TestGetLegacyObjectWithMenu() {
     //    var api = Api();
