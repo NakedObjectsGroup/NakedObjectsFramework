@@ -430,8 +430,7 @@ public class ClassWithOrderedProperties {
 
 public class ClassWithOrderedActions
 {
-   
-
+    
     [Key]
     public int Id { get; init; }
 
@@ -439,8 +438,18 @@ public class ClassWithOrderedActions
     public void actionAction2() { }
     public void actionAction3() { }
 
-    [MemberOrder(4)]
+    //[MemberOrder(4)]
     public void actionAction4() { }
 
-    public static string ActionOrder() => $"{nameof(actionAction2)}, {nameof(actionAction3)}, {nameof(actionAction1)}";
+    //public static string ActionOrder() => $"{nameof(actionAction2)}, {nameof(actionAction3)}, {nameof(actionAction1)}";
+
+    public static IMenu menuOrder()
+    {
+        var menu = new Menu("Actions");
+        menu.MenuItems().Add(new MenuAction(nameof(actionAction2)));
+        menu.MenuItems().Add(new MenuAction(nameof(actionAction3)));
+        menu.MenuItems().Add(new MenuAction(nameof(actionAction1)));
+        menu.MenuItems().Add(new MenuAction(nameof(actionAction4)));
+        return menu;
+    }
 }

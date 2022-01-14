@@ -24,14 +24,13 @@ namespace NakedLegacy.Reflector.FacetFactory;
 
 public sealed class MemberOrderAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory, IMethodFilteringFacetFactory {
     private const string FieldOrder = "FieldOrder";
-    private const string ActionOrder = "ActionOrder";
     private readonly ILogger<MemberOrderAnnotationFacetFactory> logger;
 
     public MemberOrderAnnotationFacetFactory(IFacetFactoryOrder<MemberOrderAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) =>
+        : base(order.Order, loggerFactory, FeatureType.PropertiesAndCollections) =>
         logger = Logger<MemberOrderAnnotationFacetFactory>();
 
-    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.IsStatic && method.Name is FieldOrder or ActionOrder;
+    public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.IsStatic && method.Name is FieldOrder;
 
     private string[] GetOrderedMemberNames(MethodInfo method) {
         try {
@@ -81,5 +80,4 @@ public sealed class MemberOrderAnnotationFacetFactory : LegacyFacetFactoryProces
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => Process(reflector, property, FieldOrder, specification, metamodel);
 
-    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => Process(reflector, method, ActionOrder, specification, metamodel);
 }
