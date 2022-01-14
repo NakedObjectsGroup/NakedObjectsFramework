@@ -19,7 +19,14 @@
             Throw New NotImplementedException()
         End Function
 
-
+        Public Shared Function SharedMenuOrder() As Menu
+            Dim main = New Menu("Vendors")
+            main.AddAction(NameOf(ActionRandomVendor)) _
+            .AddAction(NameOf(ActionAllVendors)) _
+            .AddAction(NameOf(ActionFindVendorByAccountNumber)) _
+            .AddAction(NameOf(ActionFindVendorByName))
+            Return main
+        End Function
 
     End Class
 End Namespace

@@ -6,5 +6,10 @@
             Return GenericMenuFunctions.Random(Of ShoppingCartItem)()
         End Function
 
+        Public Shared Function SharedMenuOrder() As Menu
+            Dim main = New Menu()
+            main.AddAction(NameOf(ActionRandomShoppingCartItem))
+            Return main
+        End Function
     End Class
 End Namespace

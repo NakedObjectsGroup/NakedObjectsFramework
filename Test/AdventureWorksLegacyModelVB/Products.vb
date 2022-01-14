@@ -10,5 +10,12 @@
             Return GenericMenuFunctions.ListAll(Of Product)()
         End Function
 
+        Public Shared Function SharedMenuOrder() As Menu
+            Dim main = New Menu("Products")
+            main.AddAction(NameOf(ActionRandomProduct)) _
+            .AddAction(NameOf(ActionAllProducts))
+            Return main
+        End Function
+
     End Class
 End Namespace
