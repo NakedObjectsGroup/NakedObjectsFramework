@@ -50,24 +50,24 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
         return action?.Name ?? legacyName;
     }
 
-    private static IMenuImmutable ConvertLegacyToNOFMenu(MainMenu legacyMenu, Type type, IMetamodelBuilder metamodel) {
-        var spec = metamodel.GetSpecification(type);
-        var mi = new MenuImpl(metamodel, type, false, GetMenuName(spec));
-        foreach (var menu in legacyMenu.Menus) {
-            switch (menu) {
-                case SubMenu sm:
-                    var nsm = mi.CreateSubMenu(sm.Name);
-                    // temp hack
-                    nsm.AddAction(MatchMethod(sm.Menus.First().Name, type));
-                    break;
-                case Menu m:
-                    mi.AddAction(MatchMethod(m.Name, type));
-                    break;
-            }
-        }
+    //private static IMenuImmutable ConvertLegacyToNOFMenu(MainMenu legacyMenu, Type type, IMetamodelBuilder metamodel) {
+    //    var spec = metamodel.GetSpecification(type);
+    //    var mi = new MenuImpl(metamodel, type, false, GetMenuName(spec));
+    //    foreach (var menu in legacyMenu.Menus) {
+    //        switch (menu) {
+    //            case SubMenu sm:
+    //                var nsm = mi.CreateSubMenu(sm.Name);
+    //                // temp hack
+    //                nsm.AddAction(MatchMethod(sm.Menus.First().Name, type));
+    //                break;
+    //            case Menu m:
+    //                mi.AddAction(MatchMethod(m.Name, type));
+    //                break;
+    //        }
+    //    }
 
-        return mi;
-    }
+    //    return mi;
+    //}
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         // instance
@@ -82,9 +82,9 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
 
         if (method1 is not null) {
             void Action(IMetamodelBuilder builder) {
-                var legacyMenu = (MainMenu)InvokeUtils.InvokeStatic(method1, new object[] { });
-                var mainMenu = ConvertLegacyToNOFMenu(legacyMenu, method1.DeclaringType, builder);
-                builder.AddMainMenu(mainMenu);
+                //var legacyMenu = (MainMenu)InvokeUtils.InvokeStatic(method1, new object[] { });
+                ////var mainMenu = ConvertLegacyToNOFMenu(legacyMenu, method1.DeclaringType, builder);
+                //builder.AddMainMenu(mainMenu);
             }
 
             FacetUtils.AddFacet(new IntegrationFacet(specification, Action));

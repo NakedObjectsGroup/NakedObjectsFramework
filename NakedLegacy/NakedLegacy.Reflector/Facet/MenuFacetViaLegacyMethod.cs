@@ -32,28 +32,28 @@ public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract {
         return action?.Name ?? legacyName;
     }
 
-    private MenuImpl ConvertLegacyToNOFMenu(MainMenu legacyMenu, IMetamodelBuilder metamodel) {
-        var mi = new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(Spec));
-        foreach (var menu in legacyMenu.Menus) {
-            switch (menu) {
-                case SubMenu sm:
-                    var nsm = mi.CreateSubMenu(sm.Name);
-                    // temp hack
-                    nsm.AddAction(MatchMethod(sm.Menus.First().Name, method.DeclaringType));
-                    break;
-                case Menu m:
-                    mi.AddAction(MatchMethod(m.Name, method.DeclaringType));
-                    break;
-            }
-        }
+    //private MenuImpl ConvertLegacyToNOFMenu(MainMenu legacyMenu, IMetamodelBuilder metamodel) {
+    //    var mi = new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(Spec));
+    //    foreach (var menu in legacyMenu.Menus) {
+    //        switch (menu) {
+    //            case SubMenu sm:
+    //                var nsm = mi.CreateSubMenu(sm.Name);
+    //                // temp hack
+    //                nsm.AddAction(MatchMethod(sm.Menus.First().Name, method.DeclaringType));
+    //                break;
+    //            case Menu m:
+    //                mi.AddAction(MatchMethod(m.Name, method.DeclaringType));
+    //                break;
+    //        }
+    //    }
 
-        return mi;
-    }
+    //    return mi;
+    //}
 
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel) {
-        var legacyMenu = (MainMenu)InvokeUtils.InvokeStatic(method, new object[] { });
-        Menu = ConvertLegacyToNOFMenu(legacyMenu, metamodel);
+        //var legacyMenu = (MainMenu)InvokeUtils.InvokeStatic(method, new object[] { });
+        //Menu = ConvertLegacyToNOFMenu(legacyMenu, metamodel);
     }
 }
 
