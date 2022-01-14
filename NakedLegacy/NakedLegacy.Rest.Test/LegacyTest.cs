@@ -351,6 +351,87 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Name from About", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
     }
 
+   
+
+    [Test]
+    public void TestGetObjectWithUsableField()
+    {
+        ClassWithFieldAbout.TestUsableFlag = true;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        ClassWithFieldAbout.ResetTest();
+
+        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
+        Assert.IsNull(parsedResult["members"]["Name"]["disabledReason"]);
+    }
+
+    [Test]
+    public void TestGetObjectWithUnUsableField()
+    {
+
+        ClassWithFieldAbout.TestUsableFlag = false;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        ClassWithFieldAbout.ResetTest();
+
+        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
+        Assert.AreEqual("Unusable by about", parsedResult["members"]["Name"]["disabledReason"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectWithDescribedField()
+    {
+        ClassWithFieldAbout.TestDescription = "Description from About";
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        ClassWithFieldAbout.ResetTest();
+
+        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("Description from About", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
+    }
+
+
+    [Test]
+    public void TestGetObjectWithUnDescribedField()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        ClassWithFieldAbout.ResetTest();
+
+        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
+    }
 
     //[Test]
     //public void TestGetLegacyObjectWithMenu() {

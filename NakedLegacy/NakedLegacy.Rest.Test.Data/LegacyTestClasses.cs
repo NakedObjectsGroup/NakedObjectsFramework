@@ -123,7 +123,10 @@ public class ClassWithFieldAbout {
     [Key]
     public int Id { get; init; }
 
-    public TextString Name => new("");
+    public virtual TextString Name {
+        get { return new TextString(""); }
+        set { }
+    }
 
     public ITitle Title() => Name.Title();
 
@@ -133,7 +136,7 @@ public class ClassWithFieldAbout {
                 fieldAbout.Visible = !TestInvisibleFlag;
                 break;
             case AboutTypeCodes.Usable:
-                fieldAbout.Usable = !TestUsableFlag;
+                fieldAbout.Usable = TestUsableFlag;
                 if (!fieldAbout.Usable) {
                     fieldAbout.UnusableReason = "Unusable by about";
                 }

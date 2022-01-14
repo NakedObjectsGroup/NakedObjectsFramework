@@ -62,6 +62,12 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
     }
 
+    private static void MapClassWithFieldAbout(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ClassWithFieldAbout>().Ignore(t => t.Name);
+        //modelBuilder.Entity<ClassWithFieldAbout>().Property("name").HasColumnName("Name");
+    }
+
     private static void MapClassWithReferenceProperty(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ClassWithReferenceProperty>().Ignore(t => t.Container);
@@ -128,6 +134,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         MapClassWithMoney(modelBuilder);
         MapClassWithBounded(modelBuilder);
         MapClassWithReferenceProperty(modelBuilder);
+        MapClassWithFieldAbout(modelBuilder);
 
         Seed(modelBuilder);
     }
