@@ -19,7 +19,7 @@
 		Public Sub AboutName(a As FieldAbout, Name As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Visible
-					'a.Visible = False
+					a.Visible = False
 			End Select
 		End Sub
 #End Region
@@ -37,7 +37,7 @@
 		Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
-					a.Usable = False
+					a.Visible = False
 			End Select
 		End Sub
 #End Region

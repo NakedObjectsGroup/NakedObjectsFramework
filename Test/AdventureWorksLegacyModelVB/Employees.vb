@@ -14,7 +14,7 @@
             Return GenericMenuFunctions.ListAll(Of Employee)()
         End Function
 
-        Public Shared Function ActionFindEmployeeByName() As ArrayList
+        Public Shared Function ActionFindEmployeeByName(firstName As TextString, lastName As TextString) As ArrayList
             Throw New NotImplementedException()
         End Function
 
