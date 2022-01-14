@@ -577,9 +577,6 @@ Namespace AW.Types
         End Function
 
 #Region "Actions"
-        Public Shared Function ActionOrder() As String
-            Return "ActionBestSpecialOffer, ActionAssociatewithspecialOffer,  actionCurrentWorkOrders,ActionCreateNewWorkOrder"
-        End Function
 
         Public Sub ActionAssociateWithSpecialOffer()
             Throw New NotImplementedException()
@@ -608,8 +605,16 @@ Namespace AW.Types
                        w.mappedEndDate Is Nothing
         End Function
 
-
 #End Region
+
+        Public Shared Function MenuOrder() As Menu
+            Dim main = New Menu("FooBar") 'This should have no effect - the object menu is always labelled 'Actions'
+            main.AddAction(NameOf(ActionBestSpecialOffer)) _
+            .AddAction(NameOf(ActionAssociateWithSpecialOffer)) _
+            .AddAction(NameOf(ActionCurrentWorkOrders)) _
+            .AddAction(NameOf(ActionCreateNewWorkOrder))
+            Return main
+        End Function
 
     End Class
 

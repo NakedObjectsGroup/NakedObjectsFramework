@@ -10,5 +10,12 @@
             Return GenericMenuFunctions.ListAll(Of PurchaseOrderHeader)()
         End Function
 
+        Public Shared Function SharedMenuOrder() As Menu
+            Dim main = New Menu("Purchase Orders")
+            main.AddAction(NameOf(ActionRandomPurchaseOrderHeader)) _
+            .AddAction(NameOf(ActionAllPurchaseOrders))
+            Return main
+        End Function
+
     End Class
 End Namespace

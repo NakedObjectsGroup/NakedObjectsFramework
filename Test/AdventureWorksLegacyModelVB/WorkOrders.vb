@@ -15,5 +15,13 @@
                    Where w.mappedEndDate Is Nothing
         End Function
 
+        Public Shared Function SharedMenuOrder() As Menu
+            Dim main = New Menu("Work Orders")
+            main.AddAction(NameOf(ActionRandomWorkOrder)) _
+            .AddAction(NameOf(ActionAllWorkOrders)) _
+            .AddAction(NameOf(ActionCurrentWorkOrders))
+            Return main
+        End Function
+
     End Class
 End Namespace

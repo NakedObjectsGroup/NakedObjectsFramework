@@ -42,7 +42,7 @@ namespace Legacy.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                builder.MainMenus = ModelConfig.MainMenus;
+                //builder.MainMenus = ModelConfig.MainMenus;
                 //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
                 builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { ModelConfig.EFDbContextCreator }; });
                 builder.AddRestfulObjects(options => {

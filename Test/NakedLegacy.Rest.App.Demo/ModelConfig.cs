@@ -70,18 +70,18 @@ namespace Legacy.Rest.App.Demo
             return m;
         }
 
-        public static NakedFramework.Menu.IMenu[] MainMenus(IMenuFactory factory) =>
-            new[] {
-                    MakeMenu<Employees>(factory),
-                    MakeMenu<Persons>(factory),
-                    MakeMenu<Addresses>(factory),
-                    MakeMenu<Products>(factory),
-                    MakeMenu<Vendors>(factory),
-                    MakeMenu<SalesOrders>(factory),
-                    MakeMenu<PurchaseOrders>(factory),
-                    MakeMenu<SpecialOffers>(factory),
-                    MakeMenu<WorkOrders>(factory),
-                    MakeMenu<Cart>(factory),
-            };
+        //public static NakedFramework.Menu.IMenu[] MainMenus(IMenuFactory factory) =>
+        //    new[] {
+        //            MakeMenu<Employees>(factory),
+        //            MakeMenu<Persons>(factory),
+        //            MakeMenu<Addresses>(factory),
+        //            MakeMenu<Products>(factory),
+        //            MakeMenu<Vendors>(factory),
+        //            MakeMenu<SalesOrders>(factory),
+        //            MakeMenu<PurchaseOrders>(factory),
+        //            MakeMenu<SpecialOffers>(factory),
+        //            MakeMenu<WorkOrders>(factory),
+        //            MakeMenu<Cart>(factory),
+        //    };
     }
 }

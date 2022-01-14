@@ -11,5 +11,12 @@ Namespace AW.Types
             Return GenericMenuFunctions.ListAll(Of Person)()
         End Function
 
+        Public Shared Function SharedMenuOrder() As Menu
+            Dim main = New Menu("Contacts")
+            main.AddAction(NameOf(ActionFindPersonByName)) _
+            .AddAction(NameOf(ActionAllPersons))
+            Return main
+        End Function
+
     End Class
 End Namespace
