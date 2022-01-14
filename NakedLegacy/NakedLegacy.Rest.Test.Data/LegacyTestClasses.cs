@@ -223,7 +223,7 @@ public class ClassWithMenu {
     [Key]
     public int Id { get; init; }
 
-    public TextString Name => new($"{nameof(GetType)}/{Id}");
+    public TextString Name => new($"{nameof(ClassWithMenu)}/{Id}");
 
     private static IContainer Container => ThreadLocals.Container;
 

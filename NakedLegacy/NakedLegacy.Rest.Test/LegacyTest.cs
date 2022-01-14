@@ -853,6 +853,21 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
     }
 
+    [Test]
+    public void TestObjectMenu()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithMenu>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+
+        Assert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
+        Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
+        Assert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
+    }
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnObject()
