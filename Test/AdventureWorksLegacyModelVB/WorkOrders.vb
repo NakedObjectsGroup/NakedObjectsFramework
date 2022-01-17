@@ -19,7 +19,7 @@
             Dim main = New Menu("Work Orders")
             main.AddAction(NameOf(ActionRandomWorkOrder)) _
             .AddAction("AllWorkOrders") _ 'To test that Action prefix is added
-            .AddAction("actionAllWorkOrders") 'To test that Action prefix is not added if already there
+            .AddAction("ActionCurrentWorkOrders") 'To test that Action prefix is not added if already there
             Return main
         End Function
 
