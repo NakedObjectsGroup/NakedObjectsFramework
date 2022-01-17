@@ -2,4 +2,4 @@
 
 namespace NakedLegacy;
 
-public interface IDateOnly : IValueHolder<DateTime>{ }
+public interface IDateOnly { }

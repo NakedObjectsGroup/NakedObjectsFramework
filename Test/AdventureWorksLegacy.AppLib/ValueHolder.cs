@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public abstract class ValueHolder<T> : IValueHolder<T> {
+public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
     private T value;
 
     protected ValueHolder() { }

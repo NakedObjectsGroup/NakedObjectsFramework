@@ -324,7 +324,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void PropertyRenamedUsingFieldAbout()
         {
-            var obj = AccessInstanceWithTitle("JobCandidate--1", "xx");
+            var obj = AccessInstanceWithTitle("JobCandidate--1", "Job Candidate ");
             obj.GetProperty(1).AssertNameIs("Resumé");
         }
 
@@ -339,7 +339,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void PropertyEditValidation()
         {
             var edit = AccessInstanceWithTitle("xx", "xx").Edit()
-                .GetEditableTextInputProperty("xx").Clear().Enter("xx").
+                .GetEditableTextInputProperty("xx").Clear().Enter("xx");
 
         }
 
