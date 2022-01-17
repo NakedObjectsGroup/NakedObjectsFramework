@@ -31,7 +31,7 @@
             Dim main = New Menu("Employees")
             main.AddAction(NameOf(ActionRandomEmployee)) _
             .AddAction(NameOf(ActionAllEmployees)) _
-            .AddAction(NameOf(ActionFindEmployeeByName)) _
+            .AddAction(NameOf(ActionFindEmployeeByName).ToLower()) _ 'To test case insensitivity
             .AddAction(NameOf(ActionFindEmployeeByNationalIDNumber))
 
             main.AddSubMenu("Organisation").AddAction(NameOf(ActionListAllDepartments))
