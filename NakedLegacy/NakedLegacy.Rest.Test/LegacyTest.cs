@@ -353,6 +353,23 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
     }
 
+    //[Test]
+    //public void TestInvokeInvokeActionWithInvalidParameter()
+    //{
+    //    var api = Api().AsPost();
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("invalid") }, {"wn", new ScalarValue(0)} } };
+
+    //    var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
+
+    //    var resultObj = parsedResult["result"];
+
+    //    //Assert.AreEqual("1998-07-06", resultObj["members"]["Date"]["value"].ToString());
+    //    //Assert.AreEqual("string", resultObj["members"]["Date"]["extensions"]["returnType"].ToString());
+    //    //Assert.AreEqual("date", resultObj["members"]["Date"]["extensions"]["format"].ToString());
+    //}
 
 
     [Test]
@@ -506,6 +523,8 @@ public class LegacyTest : AcceptanceTestCase {
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("valid", parsedResult["value"].ToString());
 
         ClassWithFieldAbout.ResetTest();
     }

@@ -25,6 +25,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
 using NakedLegacy;
+using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
@@ -150,6 +151,14 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
             facets.Add(new HideForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<HideForContextViaAboutMethodFacet>()));
             facets.Add(new MemberNamedViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, property.Name, LoggerFactory.CreateLogger<MemberNamedViaAboutMethodFacet>()));
             facets.Add(new PropertyValidateViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<PropertyValidateViaAboutMethodFacet>()));
+        }
+
+        var valueType = LegacyHelpers.IsOrImplementsValueHolder(property.PropertyType);
+
+        if (valueType is not null) {
+            var setter = typeof(PropertySetterFacetViaValueHolder<,>).MakeGenericType(property.PropertyType, valueType);
+            var setterFacet = (IFacet)Activator.CreateInstance(setter, property, specification);
+            facets.Add(setterFacet);
         }
 
         FacetUtils.AddFacets(facets);

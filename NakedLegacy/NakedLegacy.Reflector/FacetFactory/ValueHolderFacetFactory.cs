@@ -67,6 +67,7 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
 
         FacetUtils.AddFacet(new TypeFacet(holder, valueType));
         FacetUtils.AddFacet(new NotPersistedFacet(holder));
+        FacetUtils.AddFacet(new AggregatedFacetAlways(holder));
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

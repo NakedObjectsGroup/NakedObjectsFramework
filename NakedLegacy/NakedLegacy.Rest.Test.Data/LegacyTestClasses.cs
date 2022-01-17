@@ -159,7 +159,43 @@ public class ClassWithActionAbout {
     public void aboutActionTestActionWithParms(ActionAbout actionAbout, TextString ts, WholeNumber wn)
     {
         AboutCount++;
-        actionAbout.Visible = !TestInvisibleFlag;
+        switch (actionAbout.TypeCode)
+        {
+            case AboutTypeCodes.Visible:
+                actionAbout.Visible = !TestInvisibleFlag;
+                break;
+            case AboutTypeCodes.Usable:
+                actionAbout.Usable = TestUsableFlag;
+                if (!actionAbout.Usable)
+                {
+                    actionAbout.UnusableReason = "Unusable by about";
+                }
+
+                break;
+            case AboutTypeCodes.Name:
+                if (TestName is not null)
+                {
+                    actionAbout.Name = TestName;
+                }
+
+                if (TestDescription is not null)
+                {
+                    actionAbout.Description = TestDescription;
+                }
+
+                break;
+            case AboutTypeCodes.Valid:
+                if (TestValidFlag && ts.Value != "valid")
+                {
+                   
+                }
+                else
+                {
+                   
+                }
+
+                break;
+        }
     }
 
 }
