@@ -64,9 +64,9 @@ public sealed class MemberOrderAnnotationFacetFactory : LegacyFacetFactoryProces
             }
         }
 
-        var attribute = member.GetCustomAttribute<MemberOrderAttribute>();
+        var attr = member.GetCustomAttributes().FirstOrDefault(a => a is IMemberOrderAttribute);
 
-        if (attribute is not null) {
+        if (attr is IMemberOrderAttribute attribute) {
             if (facet is not null) {
                 logger.LogWarning($"Member {memberName} on {declaringType} has MemberOrder annotation and is in {orderMethodName} annotation will take priority");
             }
