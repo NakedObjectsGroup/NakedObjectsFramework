@@ -422,7 +422,7 @@ public class ClassWithOrderedProperties {
     public TextString Name2 => _name2 ??= new TextString(name2, s => name2 = s);
     public TextString Name3 => _name3 ??= new TextString(name3, s => name3 = s);
 
-    [Legacy(Order = 4)]
+    [Legacy(Order = 4, MaxLength = 10)]
     public TextString Name4 => _name4 ??= new TextString(name4, s => name4 = s);
 
     public static string FieldOrder() => $"{nameof(Name2)}, {nameof(Name3)}, {nameof(Name1)}";
