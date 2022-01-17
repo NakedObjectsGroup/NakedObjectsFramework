@@ -12,6 +12,7 @@ using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using static NakedLegacy.Reflector.Facet.AboutHelpers;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -20,18 +21,22 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
     private readonly string inferredName;
     private readonly ILogger<MemberNamedViaAboutMethodFacet> logger;
 
-    public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, string inferredName, ILogger<MemberNamedViaAboutMethodFacet> logger)
+    private static string TrimActionPrefix(string name, AboutType aboutType) => aboutType is AboutType.Action && name.ToLower().StartsWith("action") ? name.Remove(0, 6) : name;
+    public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutType aboutType, string inferredName, ILogger<MemberNamedViaAboutMethodFacet> logger)
         : base(typeof(IMemberNamedFacet), holder, method, aboutType) {
-        this.inferredName = NameUtils.NaturalName(inferredName);
+        
+        this.inferredName = NameUtils.NaturalName(TrimActionPrefix(inferredName, aboutType));
         this.logger = logger;
     }
 
     string IMemberNamedFacet.FriendlyName(INakedObjectAdapter nakedObjectAdapter) {
-        var aboutName = GetAbout(nakedObjectAdapter).Name;
+        var aboutName = GetAbout(nakedObjectAdapter)?.Name ?? inferredName;
         return string.IsNullOrEmpty(aboutName) ? inferredName : aboutName;
     }
 
-    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) => InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Name);
+    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) {
+        return nakedObjectAdapter?.Object is null ? null : InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Name);
+    }
 }
 
 // Copyright (c) Naked Objects Group Ltd.
