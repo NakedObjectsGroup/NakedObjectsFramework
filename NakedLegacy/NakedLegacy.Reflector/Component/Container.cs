@@ -21,4 +21,11 @@ public class Container : IContainer {
     public object Repository(Type ofType) => Services.SingleOrDefault(o => o.GetType() == ofType);
 
     public IQueryable<T> Instances<T>() where T : class => framework.Persistor.Instances<T>();
+    public object CreateTransientInstance(Type ofType) => throw new NotImplementedException();
+
+    public T CreateTransientInstance<T>() => throw new NotImplementedException();
+
+    public void MakePersistent(object obj) {
+        throw new NotImplementedException();
+    }
 }
