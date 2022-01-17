@@ -9,6 +9,6 @@ public interface IContainer {
     public object Repository(Type ofType);
     public IQueryable<T> Instances<T>() where T : class;
     public object CreateTransientInstance(Type ofType);
-    public T CreateTransientInstance<T>();
-    public void MakePersistent(object obj);
+    public T CreateTransientInstance<T>() where T : new();
+    public void MakePersistent(ref object transientObject);
 }
