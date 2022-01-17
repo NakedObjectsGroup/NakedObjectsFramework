@@ -610,9 +610,12 @@ Namespace AW.Types
         Public Shared Function MenuOrder() As Menu
             Dim main = New Menu("FooBar") 'This should have no effect - the object menu is always labelled 'Actions'
             main.AddAction(NameOf(ActionBestSpecialOffer)) _
-            .AddAction(NameOf(ActionAssociateWithSpecialOffer)) _
+            .AddAction(NameOf(ActionAssociateWithSpecialOffer))
+
+            main.AddSubMenu("Work Orders") _
             .AddAction(NameOf(ActionCurrentWorkOrders)) _
             .AddAction(NameOf(ActionCreateNewWorkOrder))
+
             Return main
         End Function
 

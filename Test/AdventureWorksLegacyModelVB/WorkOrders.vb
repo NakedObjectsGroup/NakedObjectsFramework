@@ -18,8 +18,8 @@
         Public Shared Function SharedMenuOrder() As Menu
             Dim main = New Menu("Work Orders")
             main.AddAction(NameOf(ActionRandomWorkOrder)) _
-            .AddAction(NameOf(ActionAllWorkOrders)) _
-            .AddAction(NameOf(ActionCurrentWorkOrders))
+            .AddAction("AllWorkOrders") _ 'To test that Action prefix is added
+            .AddAction("actionAllWorkOrders") 'To test that Action prefix is not added if already there
             Return main
         End Function
 
