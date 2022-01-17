@@ -12,5 +12,7 @@ namespace NakedFrameworkClient.TestFramework
     {
         public ObjectPresentation(IWebElement element, Helper helper, Pane pane = Pane.Single) : base(element, helper, pane) { }
 
+
+
     }
 }

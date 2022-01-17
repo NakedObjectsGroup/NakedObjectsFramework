@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace NakedFrameworkClient.TestFramework
 {
-    public class ObjectView : ActionResult
+    public class ObjectView : ObjectPresentation
     {
         public ObjectView(IWebElement element, Helper helper, Pane pane = Pane.Single) : base(element, helper, pane) { }
 
