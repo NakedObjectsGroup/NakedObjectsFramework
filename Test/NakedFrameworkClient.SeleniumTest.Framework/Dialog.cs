@@ -46,18 +46,15 @@ namespace NakedFrameworkClient.TestFramework
         public ObjectView ClickOKToViewObject(MouseClick button = MouseClick.MainButton)
         {
             var pane = helper.GetNewPane(enclosingView.pane, button);
-            var oldTitle = "";
-            bool waitForNewTitle = false;
+            bool waitForNewContent = false;
             if (enclosingView is ObjectView && button == MouseClick.MainButton)
             {
-                 oldTitle = helper.GetObjectView().GetTitle();
-                waitForNewTitle = true;
+                waitForNewContent = true;
             }
-            helper.Click(GetEnabledOKButton());          
-            if (waitForNewTitle)
+            helper.Click(GetEnabledOKButton());    
+            if (waitForNewContent)
             {
-                Thread.Sleep(500);
-                helper.wait.Until(dr => helper.GetObjectView().GetTitle() != oldTitle);
+                Thread.Sleep(1000);
             }
             return helper.GetObjectView(pane);
         }

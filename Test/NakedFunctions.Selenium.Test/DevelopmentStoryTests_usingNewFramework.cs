@@ -516,7 +516,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                  .AssertTitleIs("All Special Offers")
                  .ClickTableView();
 
-            var original3 = offers.GetRowFromTable(3).GetColumnValue(5);
+            var original3 = offers.GetRowFromTable(3).GetColumnValue(6);
+
 
             int rand = (new Random()).Next(1000);
             var endDate = DateTime.Today.AddDays(rand).ToString("dd MMM yyyy");
@@ -533,12 +534,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
             var updated = dialog.ClickOKToViewUpdatedList();
 
-            updated.GetRowFromTable(0).AssertColumnValueIs(5, endDate);
-            updated.GetRowFromTable(1).AssertColumnValueIs(5, endDate);
-            updated.GetRowFromTable(2).AssertColumnValueIs(5, endDate);
+            updated.GetRowFromTable(0).AssertColumnValueIs(6, endDate);
+            updated.GetRowFromTable(1).AssertColumnValueIs(6, endDate);
+            updated.GetRowFromTable(2).AssertColumnValueIs(6, endDate);
 
             //Check that row3 was NOT updated:
-            updated.GetRowFromTable(3).AssertColumnValueIs(5, original3);
+            updated.GetRowFromTable(3).AssertColumnValueIs(6, original3);
         }
 
          //[TestMethod]
@@ -560,7 +561,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             var details = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=Table")
             .GetObjectView().AssertTitleIs("SO53535").GetCollection("Details");
-            var originalCtn0 = details.GetRowFromTable(0).GetColumnValue(6);
+            var originalCtn0 = details.GetRowFromTable(0).GetColumnValue(7);
 
             var dialog = details.GetActionWithDialog("Add Carrier Tracking Number").Open();
             var rnd = (new Random()).Next(100000).ToString();
@@ -570,12 +571,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             .SelectCheckBoxOnRow(3);
             var updated = dialog.ClickOKToViewObject().Reload();
             details = updated.GetCollection("Details");
-            details.GetRowFromTable(1).AssertColumnValueIs(6, rnd);
-                details.GetRowFromTable(2).AssertColumnValueIs(6, rnd);
-            details.GetRowFromTable(3).AssertColumnValueIs(6, rnd);
+            details.GetRowFromTable(1).AssertColumnValueIs(7, rnd);
+                details.GetRowFromTable(2).AssertColumnValueIs(7, rnd);
+            details.GetRowFromTable(3).AssertColumnValueIs(7, rnd);
 
             //Confirm that row 0 was not changed
-            details.GetRowFromTable(0).AssertColumnValueIs(6, originalCtn0);
+            details.GetRowFromTable(0).AssertColumnValueIs(7, originalCtn0);
         }
 
         // [TestMethod]
@@ -724,7 +725,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
             helper.GotoUrlDirectly("object?i1=View&o1=AW.Types.Product--2&c1_ProductReviews=Table")
                 .GetObjectView().GetCollection("Product Reviews")
-                .GetLastRowFromTable().AssertColumnValueIs(1, rand);
+                .GetLastRowFromTable().AssertColumnValueIs(2, rand);
             //TODO: column numbers wrong!
         }
 
