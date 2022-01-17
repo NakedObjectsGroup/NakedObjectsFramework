@@ -5,8 +5,8 @@ using NakedLegacy;
 
 namespace AdventureWorksLegacy.AppLib;
 
-[DateOnly] //This is needed to tell framework not to render the time portion
-public class NODateNullable : ValueHolder<DateTime?> {
+public class NODateNullable : ValueHolder<DateTime?>, IDateOnly
+{
     public NODateNullable() { }
 
     public NODateNullable(DateTime? value) : base(value) { }

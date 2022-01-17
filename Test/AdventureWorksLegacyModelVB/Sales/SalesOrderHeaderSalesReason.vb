@@ -24,7 +24,7 @@
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout, ModifiedDate As TimeStamp)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

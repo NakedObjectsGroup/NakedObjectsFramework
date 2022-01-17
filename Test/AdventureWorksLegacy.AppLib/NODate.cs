@@ -4,9 +4,8 @@ using NakedLegacy;
 
 
 namespace AdventureWorksLegacy.AppLib;
-
-[DateOnly] //This is needed to tell framework not to render the time portion
-public class NODate : ValueHolder<DateTime> {
+//This is needed to tell framework not to render the time portion
+public class NODate : ValueHolder<DateTime>, IDateOnly{
     public NODate() { }
 
     public NODate(DateTime value) : base(value) { }
