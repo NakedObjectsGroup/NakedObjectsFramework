@@ -30,7 +30,7 @@ public class SimpleService : IContainerAware {
 
 public class ClassWithTextString {
     private TextString _name;
-    public string name;
+    public string name { get; set; }
 
     [Key]
     public int Id { get; init; }
@@ -236,6 +236,15 @@ public class ClassWithMenu {
 
     public static IQueryable<ClassWithTextString> ActionMenuAction2() => Container.Instances<ClassWithTextString>();
 
+    public static ClassWithTextString ActionCreateTransient() => Container.CreateTransientInstance(typeof(ClassWithTextString)) as ClassWithTextString;
+
+    public static ClassWithTextString ActionPersistTransient() {
+        var o = Container.CreateTransientInstance(typeof(ClassWithTextString));
+        ((ClassWithTextString)o).Name.Value = "Jenny";
+        Container.MakePersistent(ref o);
+        return o as ClassWithTextString;
+    }
+
     public static ClassWithTextString ActionMenuActionWithParm(TextString ts) {
         foreach (ClassWithTextString cts in Container.AllInstances(typeof(ClassWithTextString))) {
             if (cts.Name.Value == ts.Value) {
@@ -264,6 +273,8 @@ public class ClassWithMenu {
         menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuAction1)));
         menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuAction2)));
         menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuActionWithParm)));
+        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionCreateTransient)));
+        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionPersistTransient)));
         return menu;
     }
 }
