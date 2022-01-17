@@ -14,7 +14,7 @@
     <tags></tags>
     <dependencies>
       <group targetFramework="net6.0">
-        <dependency id="NakedFramework.ProgrammingModel" version="[13.0.0, 14)" />
+        <dependency id="NakedFramework.ProgrammingModel" version="[13.0.1, 14)" />
       </group>
     </dependencies>
   </metadata>
