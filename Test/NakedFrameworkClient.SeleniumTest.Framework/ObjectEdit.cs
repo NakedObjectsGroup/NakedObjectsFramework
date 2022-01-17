@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System;
 using System.Linq;
 
 namespace NakedFrameworkClient.TestFramework
@@ -26,13 +27,40 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public SelectionInputField GetEditableSelectionProperty(string propertyName)
+        private IWebElement GetEditableProperty(string propertyName)
         {
             helper.WaitForChildElement(element, "nof-properties");
-            var prop = helper.wait.Until(e => element.FindElements(By.CssSelector("nof-edit-property"))
+            return helper.wait.Until(e => element.FindElements(By.CssSelector("nof-edit-property"))
                 .Single(el => el.FindElement(By.CssSelector(".name")).Text == propertyName + ":"));
+        }
+
+        public SelectionInputField GetEditableSelectionProperty(string propertyName)
+        {
+            var prop = GetEditableProperty(propertyName);
             Assert.IsTrue(prop.FindElement(By.TagName("select")) is not null);
             return new SelectionInputField(prop, helper, this);
+        }
+
+        public TextInputField GetEditableTextInputProperty(string propertyName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ReferenceInputField GetEditableReferenceProperty(string propertyName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AssertPropertyIsEnabledForEdit(string propertyName)
+        {
+            //1. In edit view are ALL the properties nof-edit-property even if disabled?
+            //If so, how do we find disabled?
+
+        }
+
+        public void AssertPropertyIsDisabledForEdit(string propertyName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
