@@ -1,6 +1,6 @@
 ﻿namespace NakedLegacy;
 
-public interface IValueHolder<T> : ITitledObject {
+public interface IValueHolder<T>  {
     public T Value { get; set; }
 
     public string Mask { get; }
