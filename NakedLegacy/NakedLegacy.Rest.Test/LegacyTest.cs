@@ -932,6 +932,7 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("Name4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
         Assert.AreEqual("4", parsedResult["members"]["Name4"]["extensions"]["memberOrder"].ToString());
+        Assert.AreEqual("10", parsedResult["members"]["Name4"]["extensions"]["maxLength"].ToString());
     }
 
     [Test]
