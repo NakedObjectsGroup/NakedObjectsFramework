@@ -9,7 +9,7 @@
 		Public Property SalesOrderID() As Integer
 
 #Region "SalesOrderNumber"
-		Public mappedSalesOrderNumber As String
+		Public Property mappedSalesOrderNumber As String
 		Friend mySalesOrderNumber As TextString
 
 		<MemberOrder(1)>
@@ -30,7 +30,7 @@
 #End Region
 
 #Region "AddItemsFromCart"
-		Public mappedAddItemsFromCart As Boolean
+		Public Property mappedAddItemsFromCart As Boolean
 		Friend myAddItemsFromCart As Logical
 
 		<MemberOrder(1)>
@@ -84,7 +84,7 @@
 		Public Overridable Property BillingAddress() As Address
 #End Region
 #Region "PurchaseOrderNumber"
-		Public mappedPurchaseOrderNumber As String
+		Public Property mappedPurchaseOrderNumber As String
 		Friend myPurchaseOrderNumber As TextString
 
 		<MemberOrder(5)>
@@ -117,7 +117,7 @@
 		Public Overridable Property ShipMethod() As ShipMethod
 
 #Region "AccountNumber"
-		Public mappedAccountNumber As String
+		Public Property mappedAccountNumber As String
 		Friend myAccountNumber As TextString
 
 		<MemberOrder(12)>
@@ -138,7 +138,7 @@
 #End Region
 
 #Region "OrderDate"
-		Public mappedOrderDate As Date
+		Public Property mappedOrderDate As Date
 		Friend myOrderDate As NODate
 
 		<MemberOrder(20)>
@@ -159,7 +159,7 @@
 #End Region
 
 #Region "DueDate"
-		Public mappedDueDate As Date
+		Public Property mappedDueDate As Date
 		Friend myDueDate As NODate
 
 		<MemberOrder(21)>
@@ -180,7 +180,7 @@
 #End Region
 
 #Region "ShipDate"
-		Public mappedShipDate As Date?
+		Public Property mappedShipDate As Date?
 		Friend myShipDate As NODateNullable
 
 		<MemberOrder(22)>
@@ -201,7 +201,7 @@
 #End Region
 
 #Region "SubTotal"
-		Public mappedSubTotal As Decimal
+		Public Property mappedSubTotal As Decimal
 		Friend mySubTotal As Money
 
 		<MemberOrder(31)>
@@ -222,7 +222,7 @@
 #End Region
 
 #Region "TaxAmt"
-		Public mappedTaxAmt As Decimal
+		Public Property mappedTaxAmt As Decimal
 		Friend myTaxAmt As Money
 
 		<MemberOrder(32)>
@@ -243,7 +243,7 @@
 #End Region
 
 #Region "Freight"
-		Public mappedFreight As Decimal
+		Public Property mappedFreight As Decimal
 		Friend myFreight As Money
 
 		<MemberOrder(33)>
@@ -264,7 +264,7 @@
 #End Region
 
 #Region "TotalDue"
-		Public mappedTotalDue As Decimal
+		Public Property mappedTotalDue As Decimal
 		Friend myTotalDue As Money
 
 		<MemberOrder(34)>
@@ -291,7 +291,7 @@
 		Public Overridable Property CurrencyRate() As CurrencyRate
 
 #Region "OnlineOrder"
-		Public mappedOnlineOrder As Boolean
+		Public Property mappedOnlineOrder As Boolean
 		Friend myOnlineOrder As Logical
 
 		<MemberOrder(41)>
@@ -322,7 +322,7 @@
 #End Region
 
 #Region "CreditCardApprovalCoad"
-		Public mappedCreditCardApprovalCode As String
+		Public Property mappedCreditCardApprovalCode As String
 		Friend myCreditCardApprovalCode As TextString
 
 		<MemberOrder(43)>
@@ -344,7 +344,7 @@
 #End Region
 
 #Region "RevisionNumber"
-		Public mappedRevisionNumber As Byte
+		Public Property mappedRevisionNumber As Byte
 		Friend myRevisionNumber As WholeNumber
 
 		<MemberOrder(51)>
@@ -365,7 +365,7 @@
 #End Region
 
 #Region "Comment"
-		Public mappedComment As String
+		Public Property mappedComment As String
 		Friend myComment As TextString
 		'[MultiLine(NumberOfLines = 3, Width = 50)]
 		<MemberOrder(52)>
@@ -407,7 +407,7 @@
 #End Region
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

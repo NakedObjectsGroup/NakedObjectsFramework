@@ -7,7 +7,8 @@
         Public Property DepartmentID As Short  'Not visible on UI
 
 #Region "Name"
-        Public mappedName As String
+        Public Property mappedName As String
+
         Friend myName As TextString
 
         <MemberOrder(1)>
@@ -28,7 +29,7 @@
 #End Region
 
 #Region "GroupName"
-        Public mappedGroupName As String
+        Public Property mappedGroupName As String
         Friend myGroupName As TextString
 
         <MemberOrder(2)>
@@ -40,7 +41,7 @@
 #End Region
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

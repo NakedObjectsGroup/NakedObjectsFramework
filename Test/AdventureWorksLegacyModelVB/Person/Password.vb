@@ -12,7 +12,7 @@
 		Public Property PasswordSalt() As String
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		Public ReadOnly Property ModifiedDate As TimeStamp

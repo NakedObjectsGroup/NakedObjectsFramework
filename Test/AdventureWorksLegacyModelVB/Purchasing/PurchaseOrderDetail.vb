@@ -10,7 +10,7 @@
 		Public Property PurchaseOrderDetailID() As Integer
 
 #Region "DueDate"
-		Public mappedDueDate As Date
+		Public Property mappedDueDate As Date
 		Friend myDueDate As NODate
 
 		<MemberOrder(26)>
@@ -31,7 +31,7 @@
 #End Region
 
 #Region "OrderQty"
-		Public mappedOrderQty As Short
+		Public Property mappedOrderQty As Short
 		Friend myOrderQty As WholeNumber
 
 		<MemberOrder(20)>
@@ -52,7 +52,7 @@
 #End Region
 
 #Region "UnitPrice"
-		Public mappedUnitPrice As Decimal
+		Public Property mappedUnitPrice As Decimal
 		Friend myUnitPrice As Money
 
 		<MemberOrder(22)>
@@ -73,7 +73,7 @@
 #End Region
 
 #Region "LineTotal"
-		Public mappedLineTotal As Decimal
+		Public Property mappedLineTotal As Decimal
 		Friend myLineTotal As Money
 
 		<MemberOrder(24)>
@@ -94,7 +94,7 @@
 #End Region
 
 #Region "ReceivedQty"
-		Public mappedReceivedQty As Decimal
+		Public Property mappedReceivedQty As Decimal
 		Friend myReceivedQty As FloatingPointNumber
 
 		<MemberOrder(30)>
@@ -114,7 +114,7 @@
 		End Sub
 #End Region
 #Region "RejectedQty"
-		Public mappedRejectedQty As Decimal
+		Public Property mappedRejectedQty As Decimal
 		Friend myRejectedQty As FloatingPointNumber
 
 		<MemberOrder(32)>
@@ -134,7 +134,7 @@
 		End Sub
 #End Region
 #Region "StockedQty"
-		Public mappedStockedQty As Decimal
+		Public Property mappedStockedQty As Decimal
 		Friend myStockedQty As FloatingPointNumber
 
 		<MemberOrder(34)>
@@ -155,7 +155,7 @@
 #End Region
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

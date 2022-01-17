@@ -7,7 +7,7 @@
         Public Property CurrencyRateID() As Integer
 
 #Region "CurrencyRateDate"
-        Public mappedCurrencyRateDate As Date
+        Public Property mappedCurrencyRateDate As Date
         Friend myCurrencyRateDate As NODate
 
         <MemberOrder(1)>
@@ -28,7 +28,7 @@
 #End Region
 
 #Region "AverageRate"
-        Public mappedAverageRate As Decimal
+        Public Property mappedAverageRate As Decimal
         Friend myAverageRate As Money
 
         <MemberOrder(1)>
@@ -49,7 +49,7 @@
 #End Region
 
 #Region "EndOfDayRate"
-        Public mappedEndOfDayRate As Decimal
+        Public Property mappedEndOfDayRate As Decimal
         Friend myEndOfDayRate As Money
 
         <MemberOrder(1)>
@@ -80,7 +80,7 @@
         Public Overridable Property Currency1() As Currency
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

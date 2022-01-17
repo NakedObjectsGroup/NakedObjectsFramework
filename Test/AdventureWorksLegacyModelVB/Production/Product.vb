@@ -14,7 +14,7 @@ Namespace AW.Types
 
 #Region "Visible properties"
 #Region "Name"
-        Public mappedName As String
+        Public Property mappedName As String
         Friend myName As TextString
 
         <MemberOrder(1)>
@@ -35,7 +35,7 @@ Namespace AW.Types
 #End Region
 
 #Region "ProductNumber"
-        Public mappedProductNumber As String
+        Public Property mappedProductNumber As String
         Friend myProductNumber As TextString
 
         <MemberOrder(2)>
@@ -56,7 +56,7 @@ Namespace AW.Types
 #End Region
 
 #Region "Color"
-        Public mappedColor As String
+        Public Property mappedColor As String
         Friend myColor As TextString
 
         <MemberOrder(3)>
@@ -87,7 +87,7 @@ Namespace AW.Types
         Public Overridable Property ProductModel() As ProductModel
 
 #Region "ListPrice"
-        Public mappedListPrice As Decimal
+        Public Property mappedListPrice As Decimal
         Friend myListPrice As Money
 
         <MemberOrder(12)>
@@ -118,7 +118,7 @@ Namespace AW.Types
         Public Overridable Property ProductSubcategory() As ProductSubcategory
 
 #Region "ProductLine"
-        Public mappedProductLine As String
+        Public Property mappedProductLine As String
         Friend myProductLine As TextString
 
         <MemberOrder(15)>
@@ -139,7 +139,7 @@ Namespace AW.Types
 #End Region
 
 #Region "SizeWithUnit"
-        Public mappedSizeWithUnit As String
+        Public Property mappedSizeWithUnit As String
         Friend mySizeWithUnit As TextString
 
         <MemberOrder(16)>
@@ -161,7 +161,7 @@ Namespace AW.Types
 #End Region
 
 #Region "WeightWithUnit"
-        Public mappedWeightWithUnit As String
+        Public Property mappedWeightWithUnit As String
         Friend myWeightWithUnit As TextString
 
         <MemberOrder(17)>
@@ -183,7 +183,7 @@ Namespace AW.Types
 #End Region
 
 #Region "Style"
-        Public mappedStyle As String
+        Public Property mappedStyle As String
         Friend myStyle As TextString
 
         <MemberOrder(18)>
@@ -204,7 +204,7 @@ Namespace AW.Types
 #End Region
 
 #Region "Class"
-        Public mappedClass As String
+        Public Property mappedClass As String
         Friend My_Class As TextString
 
         <MemberOrder(19)>
@@ -225,7 +225,7 @@ Namespace AW.Types
 #End Region
 
 #Region "Make"
-        Public mappedMake As Boolean
+        Public Property mappedMake As Boolean
         Friend myMake As Logical
 
         <MemberOrder(20)>
@@ -246,7 +246,7 @@ Namespace AW.Types
 #End Region
 
 #Region "FinishedGoods"
-        Public mappedFinishedGoods As Boolean
+        Public Property mappedFinishedGoods As Boolean
         Friend myFinishedGoods As Logical
 
         <MemberOrder(21)>
@@ -267,7 +267,7 @@ Namespace AW.Types
 #End Region
 
 #Region "SafetyStockLevel"
-        Public mappedSafetyStockLevel As Short
+        Public Property mappedSafetyStockLevel As Short
         Friend mySafetyStockLevel As WholeNumber
 
         <MemberOrder(22)>
@@ -288,7 +288,7 @@ Namespace AW.Types
 #End Region
 
 #Region "ReorderPoint"
-        Public mappedReorderPoint As Short
+        Public Property mappedReorderPoint As Short
         Friend myReorderPoint As WholeNumber
 
         <MemberOrder(23)>
@@ -309,7 +309,7 @@ Namespace AW.Types
 #End Region
 
 #Region "DaysToManufacture"
-        Public mappedDaysToManufacture As Integer
+        Public Property mappedDaysToManufacture As Integer
         Friend myDaysToManufacture As WholeNumber
 
         <MemberOrder(24)>
@@ -330,7 +330,7 @@ Namespace AW.Types
 #End Region
 
 #Region "SellStartDate"
-        Public mappedSellStartDate As Date
+        Public Property mappedSellStartDate As Date
         Friend mySellStartDate As NODate
 
         <MemberOrder(81)>
@@ -351,7 +351,7 @@ Namespace AW.Types
 #End Region
 
 #Region "SellEndDate"
-        Public mappedSellEndDate As Date?
+        Public Property mappedSellEndDate As Date?
         Friend mySellEndDate As NODateNullable
 
         <MemberOrder(1)>
@@ -372,7 +372,7 @@ Namespace AW.Types
 #End Region
 
 #Region "PropName"
-        Public mappedPropName As Date
+        Public Property mappedPropName As Date
         Friend myPropName As NODate
 
         <MemberOrder(82)>
@@ -393,7 +393,7 @@ Namespace AW.Types
 #End Region
 
 #Region "DiscontinuedDate"
-        Public mappedDiscontinuedDate As Date?
+        Public Property mappedDiscontinuedDate As Date?
         Friend myDiscontinuedDate As NODateNullable
 
         <MemberOrder(1)>
@@ -414,7 +414,7 @@ Namespace AW.Types
 #End Region
 
 #Region "StandardCost"
-        Public mappedStandardCost As Decimal
+        Public Property mappedStandardCost As Decimal
         Friend myStandardCost As Money
 
         <MemberOrder(90)>
@@ -435,7 +435,7 @@ Namespace AW.Types
 #End Region
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>
@@ -503,7 +503,7 @@ Namespace AW.Types
         Public Property ProductID() As Integer
 
 #Region "Size"
-        Public mappedSize As String
+        Public Property mappedSize As String
         Friend mySize As TextString
 
         Public ReadOnly Property Size As TextString
@@ -521,7 +521,7 @@ Namespace AW.Types
 #End Region
 
 #Region "SizeUnitMeasureCode"
-        Public mappedSizeUnitMeasureCode As String
+        Public Property mappedSizeUnitMeasureCode As String
         Friend mySizeUnitMeasureCode As TextString
 
         <MemberOrder(1)>

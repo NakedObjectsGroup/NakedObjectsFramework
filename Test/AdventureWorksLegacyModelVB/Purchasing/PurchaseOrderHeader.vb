@@ -8,7 +8,7 @@
 		Public Property PurchaseOrderID() As Integer
 
 #Region "RevisionNumber"
-		Public mappedRevisionNumber As Byte
+		Public Property mappedRevisionNumber As Byte
 		Friend myRevisionNumber As WholeNumber
 
 		<MemberOrder(90)>
@@ -78,7 +78,7 @@
 		End Sub
 
 #Region "OrderDate"
-		Public mappedOrderDate As Date
+		Public Property mappedOrderDate As Date
 		Friend myOrderDate As NODate
 
 		<MemberOrder(11)>
@@ -99,7 +99,7 @@
 #End Region
 
 #Region "ShipDate"
-		Public mappedShipDate As DateTime?
+		Public Property mappedShipDate As DateTime?
 		Friend myShipDate As NODateNullable
 
 		<MemberOrder(20)>
@@ -120,7 +120,7 @@
 #End Region
 
 #Region "SubTotal"
-		Public mappedSubTotal As Decimal
+		Public Property mappedSubTotal As Decimal
 		Friend mySubTotal As Money
 
 		<MemberOrder(31)>
@@ -141,7 +141,7 @@
 #End Region
 
 #Region "TaxAmt"
-		Public mappedTaxAmt As Decimal
+		Public Property mappedTaxAmt As Decimal
 		Friend myTaxAmt As Money
 
 		<MemberOrder(32)>
@@ -162,7 +162,7 @@
 #End Region
 
 #Region "Freight"
-		Public mappedFreight As Decimal
+		Public Property mappedFreight As Decimal
 		Friend myFreight As Money
 
 		<MemberOrder(33)>
@@ -183,7 +183,7 @@
 #End Region
 
 #Region "TotalDue"
-		Public mappedTotalDue As Decimal
+		Public Property mappedTotalDue As Decimal
 		Friend myTotalDue As Money
 
 		<MemberOrder(34)>
@@ -210,7 +210,7 @@
 		Public Overridable Property OrderPlacedBy() As Employee
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

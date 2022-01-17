@@ -8,7 +8,7 @@
         Public Property SalesReasonID() As Integer
 
 #Region "Name"
-        Public mappedName As String
+        Public Property mappedName As String
         Friend myName As TextString
 
         <MemberOrder(1)>
@@ -29,7 +29,7 @@
 #End Region
 
 #Region "ReasonType"
-        Public mappedReasonType As String
+        Public Property mappedReasonType As String
         Friend myReasonType As TextString
 
         <MemberOrder(1)>
@@ -50,7 +50,7 @@
 #End Region
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

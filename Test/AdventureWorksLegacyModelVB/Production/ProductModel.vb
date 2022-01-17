@@ -7,7 +7,7 @@
         Public Property ProductModelID() As Integer
 
 #Region "Name"
-        Public mappedName As String
+        Public Property mappedName As String
         Friend myName As TextString
 
         <MemberOrder(10)>
@@ -48,7 +48,7 @@
         End Property
 
 #Region "Instructions"
-        Public mappedInstructions As String
+        Public Property mappedInstructions As String
         Friend myInstructions As TextString
 
         <MemberOrder(30)>
@@ -96,7 +96,7 @@
         Public Overridable Property ProductModelProductDescriptionCulture() As ICollection(Of ProductModelProductDescriptionCulture) = New List(Of ProductModelProductDescriptionCulture)()
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

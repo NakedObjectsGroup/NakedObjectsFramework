@@ -7,7 +7,7 @@
 		Public Property PhoneNumberTypeID() As Integer
 
 #Region "Name"
-		Public mappedName As String
+		Public Property mappedName As String
 		Friend myName As TextString
 
 		Public ReadOnly Property Name As TextString
@@ -24,7 +24,7 @@
 		End Sub
 #End Region
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

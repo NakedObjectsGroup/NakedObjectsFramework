@@ -7,7 +7,7 @@
 		Public Property BillOfMaterialID() As Integer
 
 #Region "StartDate"
-		Public mappedStartDate As Date
+		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
 		<MemberOrder(1)>
@@ -28,7 +28,7 @@
 #End Region
 
 #Region "EndDate"
-		Public mappedEndDate As Date?
+		Public Property mappedEndDate As Date?
 		Friend myEndDate As NODateNullable
 
 		<MemberOrder(1)>
@@ -49,7 +49,7 @@
 #End Region
 
 #Region "BOMLevel"
-		Public mappedBOMLevel As Short
+		Public Property mappedBOMLevel As Short
 		Friend myBOMLevel As WholeNumber
 
 		<MemberOrder(1)>
@@ -70,7 +70,7 @@
 #End Region
 
 #Region "PerAssemblyQty"
-		Public mappedPerAssemblyQty As Decimal
+		Public Property mappedPerAssemblyQty As Decimal
 		Friend myPerAssemblyQty As FloatingPointNumber
 
 		<MemberOrder(1)>
@@ -103,7 +103,7 @@
 		Public Overridable Property UnitMeasure() As UnitMeasure
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

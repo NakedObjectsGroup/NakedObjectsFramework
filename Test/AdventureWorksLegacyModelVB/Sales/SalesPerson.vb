@@ -24,7 +24,7 @@
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
 #Region "SalesQuota"
-		Public mappedSalesQuota As Decimal?
+		Public Property mappedSalesQuota As Decimal?
 		Friend mySalesQuota As MoneyNullable
 
 		<MemberOrder(30)>
@@ -45,7 +45,7 @@
 #End Region
 
 #Region "Bonus"
-		Public mappedBonus As Decimal
+		Public Property mappedBonus As Decimal
 		Friend myBonus As Money
 
 		<MemberOrder(40)>
@@ -66,7 +66,7 @@
 #End Region
 
 #Region "CommissionPct"
-		Public mappedCommissionPct As Decimal
+		Public Property mappedCommissionPct As Decimal
 		Friend myCommissionPct As Percentage
 
 		<MemberOrder(50)>
@@ -87,7 +87,7 @@
 #End Region
 
 #Region "SalesYTD"
-		Public mappedSalesYTD As Decimal
+		Public Property mappedSalesYTD As Decimal
 		Friend mySalesYTD As Money
 
 		<MemberOrder(60)>
@@ -108,7 +108,7 @@
 #End Region
 
 #Region "SalesLastYear"
-		Public mappedSalesLastYear As Decimal
+		Public Property mappedSalesLastYear As Decimal
 		Friend mySalesLastYear As Money
 
 		<MemberOrder(70)>
@@ -171,7 +171,7 @@
 #End Region
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

@@ -8,7 +8,7 @@ Namespace AW.Types
         Public Property ProductDescriptionID() As Integer
 
 #Region "Description"
-        Public mappedDescription As String
+        Public Property mappedDescription As String
         Friend myDescription As MultiLineTextString
 
         <MemberOrder(2)>
@@ -29,7 +29,7 @@ Namespace AW.Types
 #End Region
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

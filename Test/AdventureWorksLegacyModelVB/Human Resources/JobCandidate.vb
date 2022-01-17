@@ -6,7 +6,7 @@
 		Public Property JobCandidateID() As Integer
 
 #Region "Resume"
-		Public mappedResume As String
+		Public Property mappedResume As String
 		Friend myResume As TextString
 
 		<MemberOrder(1)>
@@ -32,7 +32,7 @@
 		Public Overridable Property Employee() As Employee
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

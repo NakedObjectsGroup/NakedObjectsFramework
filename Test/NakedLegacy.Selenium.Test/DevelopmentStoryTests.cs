@@ -207,6 +207,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectActionToRetrieveAQueryable();
             ObjectActionToRetrieveASingleInstance();
             ObjectActionThatDelegatesToARepositoryService();
+            MenuActionThatTakesParameters();
+            MenuActionThatReturnsArrayList();
         }
 
         //[TestMethod]
@@ -245,6 +247,26 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetRowFromList(0).AssertTitleIs("Kaitlin Sai");
         }
 
+        //[TestMethod]
+        public void MenuActionThatTakesParameters()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Employees")
+                .GetActionWithDialog("Find Employee By National ID Number").Open();
+            dialog.GetTextField("National ID Number").Enter("416679555");
+            dialog.ClickOKToViewObject().AssertTitleIs("Hao Chen");
+        }
+
+        //[TestMethod]
+        public void MenuActionThatReturnsArrayList()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Employees")
+               .GetActionWithDialog("Find Employee By Name").Open();
+            dialog.GetTextField("First Name").Enter("a");
+            dialog.GetTextField("Last Name").Enter("b");
+            dialog.ClickOKToViewNewList().AssertNoOfRowsIs(3)
+                .GetRowFromList(0).AssertTitleIs("Angela Barbariol");
+        }
+
         #endregion
 
         #region Editing objects
@@ -278,6 +300,34 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             updated = editView.Save();
             updated.GetProperty("Scrap Reason").AssertValueIs("");
         }
+        #endregion
+
+        #region Menus
+        //[TestMethod]
+        public void Menus()
+        {
+            MainMenuWithSubMenus();
+            ObjectActionsMenu();
+        }
+
+        [TestMethod]
+        public void MainMenuWithSubMenus()
+        {
+            helper.GotoHome().OpenMainMenu("Employees").AssertHasActions("Random Employee",
+                "All Employees", "Find Employee By Name", "Find Employee By National ID Number")
+                .AssertHasSubMenus("Organisation").OpenSubMenu("Organisation").AssertHasAction("List All Departments");
+
+        }
+
+        [TestMethod]
+        public void ObjectActionsMenu()
+        {
+            AccessInstanceWithTitle("Product--897", "LL Touring Frame - Blue, 58")
+                .OpenActions().AssertHasActions("Best Special Offer", "Associate With Special Offer")
+                .AssertHasSubMenus("Work Orders").OpenSubMenu("Work Orders").AssertHasAction(
+                "Current Work Orders").AssertHasAction("Create New Work Order");
+        }
+
         #endregion
 
         #region Story x: ObjectPresentation & Control

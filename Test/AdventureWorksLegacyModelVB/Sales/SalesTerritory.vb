@@ -8,7 +8,7 @@
 		Public Property TerritoryID() As Integer
 
 #Region "Name"
-		Public mappedName As String
+		Public Property mappedName As String
 		Friend myName As TextString
 
 		<MemberOrder(10)>
@@ -29,7 +29,7 @@
 #End Region
 
 #Region "CountryRegionCode"
-		Public mappedCountryRegionCode As String
+		Public Property mappedCountryRegionCode As String
 		Friend myCountryRegionCode As TextString
 
 		<MemberOrder(20)>
@@ -50,7 +50,7 @@
 #End Region
 
 #Region "Group"
-		Public mappedGroup As String
+		Public Property mappedGroup As String
 		Friend myGroup As TextString
 
 		<MemberOrder(30)>
@@ -71,7 +71,7 @@
 #End Region
 
 #Region "SalesYTD"
-		Public mappedSalesYTD As Decimal
+		Public Property mappedSalesYTD As Decimal
 		Friend mySalesYTD As Money
 
 		<MemberOrder(40)>
@@ -92,7 +92,7 @@
 #End Region
 
 #Region "SalesLastYear"
-		Public mappedSalesLastYear As Decimal
+		Public Property mappedSalesLastYear As Decimal
 		Friend mySalesLastYear As Money
 
 		<MemberOrder(41)>
@@ -113,7 +113,7 @@
 #End Region
 
 #Region "CostYTD"
-		Public mappedCostYTD As Decimal
+		Public Property mappedCostYTD As Decimal
 		Friend myCostYTD As Money
 
 		<MemberOrder(42)>
@@ -134,7 +134,7 @@
 #End Region
 
 #Region "CostLastYear"
-		Public mappedCostLastYear As Decimal
+		Public Property mappedCostLastYear As Decimal
 		Friend myCostLastYear As Money
 
 		<MemberOrder(43)>
@@ -179,7 +179,7 @@
 		Public Property RowGuid() As Guid
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

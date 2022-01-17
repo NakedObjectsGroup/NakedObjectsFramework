@@ -7,7 +7,7 @@
         Public Property SalesTaxRateID() As Integer
 
 #Region "TaxType"
-        Public mappedTaxType As Byte
+        Public Property mappedTaxType As Byte
         Friend myTaxType As WholeNumber
 
         <MemberOrder(1)>
@@ -28,7 +28,7 @@
 #End Region
 
 #Region "TaxRate"
-        Public mappedTaxRate As Decimal
+        Public Property mappedTaxRate As Decimal
         Friend myTaxRate As FloatingPointNumber
 
         <MemberOrder(1)>
@@ -49,7 +49,7 @@
 #End Region
 
 #Region "Name"
-        Public mappedName As String
+        Public Property mappedName As String
         Friend myName As TextString
 
         <MemberOrder(1)>
@@ -75,7 +75,7 @@
         Public Overridable Property StateProvince() As StateProvince
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>
