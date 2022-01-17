@@ -10,6 +10,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
@@ -17,25 +18,25 @@ using NakedFramework.Core.Error;
 namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
-public sealed class PropertyValidateViaAboutMethodFacet : AbstractViaAboutMethodFacet, IPropertyValidateFacet {
-    private readonly ILogger<PropertyValidateViaAboutMethodFacet> logger;
+public sealed class ActionValidateViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionValidationFacet {
+    private readonly ILogger<ActionValidateViaAboutMethodFacet> logger;
 
-    public PropertyValidateViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<PropertyValidateViaAboutMethodFacet> logger)
+    public ActionValidateViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<ActionValidateViaAboutMethodFacet> logger)
         : base(typeof(IPropertyValidateFacet), holder, method, aboutType) =>
         this.logger = logger;
 
-    public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArgument);
+    public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);
 
     public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
-    public string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue) {
-        if (nakedObjectAdapter == null) {
+    public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArgument) {
+        if (target == null) {
             return null;
         }
 
-        if (InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Valid, proposedValue?.Object) is FieldAbout fa) {
-            return fa.IsValid ? null : fa.InvalidReason;
-        }
+        //if (InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Valid, proposedValue.Object) is ActionAbout fa) {
+        //    return fa.IsValid ? null : fa.InvalidReason;
+        //}
 
         return null;
     }
