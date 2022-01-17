@@ -95,6 +95,11 @@ public class ClassWithNOFInternalCollection {
 
 public class ClassWithActionAbout {
     public static bool TestInvisibleFlag = false;
+    public static bool TestUsableFlag = false;
+    public static bool TestValidFlag = false;
+    public static string TestName = null;
+    public static string TestDescription = null;
+
     public static int AboutCount;
 
     [Key]
@@ -106,8 +111,57 @@ public class ClassWithActionAbout {
 
     public void aboutActionTestAction(ActionAbout actionAbout) {
         AboutCount++;
+        switch (actionAbout.TypeCode)
+        {
+            case AboutTypeCodes.Visible:
+                actionAbout.Visible = !TestInvisibleFlag;
+                break;
+            case AboutTypeCodes.Usable:
+                actionAbout.Usable = TestUsableFlag;
+                if (!actionAbout.Usable)
+                {
+                    actionAbout.UnusableReason = "Unusable by about";
+                }
+
+                break;
+            case AboutTypeCodes.Name:
+                if (TestName is not null)
+                {
+                    actionAbout.Name = TestName;
+                }
+
+                if (TestDescription is not null)
+                {
+                    actionAbout.Description = TestDescription;
+                }
+
+                break;
+            case AboutTypeCodes.Valid:
+                //if (TestValidFlag && name.Value != "valid")
+                //{
+                //    actionAbout.IsValid = false;
+                //    actionAbout.InvalidReason = "invalid by about";
+                //}
+                //else
+                //{
+                //    actionAbout.IsValid = true;
+                //}
+
+                break;
+        }
+    }
+
+    public void actionTestActionWithParms(TextString ts, WholeNumber wn)
+    {
+        // do something
+    }
+
+    public void aboutActionTestActionWithParms(ActionAbout actionAbout, TextString ts, WholeNumber wn)
+    {
+        AboutCount++;
         actionAbout.Visible = !TestInvisibleFlag;
     }
+
 }
 
 public class ClassWithFieldAbout {

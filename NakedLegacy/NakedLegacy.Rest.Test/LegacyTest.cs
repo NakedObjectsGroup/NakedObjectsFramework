@@ -257,10 +257,11 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
         Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
     }
 
     [Test]
@@ -293,6 +294,66 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["Name"]);
     }
+
+    [Test]
+    public void TestGetObjectWithNameAction() {
+        ClassWithActionAbout.TestName = "Renamed Action";
+        ClassWithActionAbout.TestInvisibleFlag = false;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        Assert.AreEqual("Renamed Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+    }
+
+    [Test]
+    public void TestGetObjectWithDescribedAction()
+    {
+        ClassWithActionAbout.TestDescription = "Action With Description";
+        ClassWithActionAbout.TestInvisibleFlag = false;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("Action With Description", parsedResult["members"]["actionTestAction"]["extensions"]["description"].ToString());
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+    }
+
+    [Test]
+    public void TestGetObjectWithDisabledAction()
+    {
+        ClassWithActionAbout.TestInvisibleFlag = false;
+        ClassWithActionAbout.TestUsableFlag = false;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("Unusable by about", parsedResult["members"]["actionTestAction"]["disabledReason"].ToString());
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+    }
+
+
 
     [Test]
     public void TestGetObjectWithInvisibleField() {
