@@ -1,4 +1,4 @@
-﻿namespace NakedLegacy.Types.Attributes;
+﻿namespace NakedLegacy;
 
 public interface IMaxLengthAttribute {
     public int MaxLength { get; }
