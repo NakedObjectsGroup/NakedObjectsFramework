@@ -1,7 +1,9 @@
 ﻿Namespace AW.Types
 
     Public Class Employees
-
+        Private Shared Function Employees() As IQueryable(Of Employee)
+            Return ThreadLocals.Container.Instances(Of Employee)
+        End Function
         Public Shared Function ActionListAllDepartments() As ArrayList
             Return GenericMenuFunctions.ListAll(Of Department).ToArrayList()
         End Function
@@ -15,11 +17,14 @@
         End Function
 
         Public Shared Function ActionFindEmployeeByName(firstName As TextString, lastName As TextString) As ArrayList
-            Throw New NotImplementedException()
+            Return (From e In Employees()
+                    Where e.PersonDetails.mappedLastName.ToUpper().StartsWith(lastName.Value) AndAlso
+                       (firstName.Value Is "" OrElse e.PersonDetails.mappedFirstName.ToUpper().StartsWith(firstName.Value))).ToArrayList()
         End Function
 
-        Public Shared Function ActionFindEmployeeByNationalIDNumber() As ArrayList
-            Throw New NotImplementedException()
+        Public Shared Function ActionFindEmployeeByNationalIDNumber(nationalIDNumber As TextString) As Employee
+            Return (From e In Employees()
+                    Where e.mappedNationalIDNumber = nationalIDNumber.Value).FirstOrDefault()
         End Function
 
         Public Shared Function SharedMenuOrder() As Menu
