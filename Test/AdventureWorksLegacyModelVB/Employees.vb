@@ -16,10 +16,10 @@
             Return GenericMenuFunctions.ListAll(Of Employee)()
         End Function
 
-        Public Shared Function ActionFindEmployeeByName(firstName As TextString, lastName As TextString) As IQueryable(Of Employee)
-            Return From e In Employees()
-                   Where e.PersonDetails.mappedLastName.ToUpper().StartsWith(lastName.Value) AndAlso
-                       (firstName.Value Is "" OrElse e.PersonDetails.mappedFirstName.ToUpper().StartsWith(firstName.Value))
+        Public Shared Function ActionFindEmployeeByName(firstName As TextString, lastName As TextString) As ArrayList
+            Return (From e In Employees()
+                    Where e.PersonDetails.mappedLastName.ToUpper().StartsWith(lastName.Value) AndAlso
+                       (firstName.Value Is "" OrElse e.PersonDetails.mappedFirstName.ToUpper().StartsWith(firstName.Value))).ToArrayList()
         End Function
 
         Public Shared Function ActionFindEmployeeByNationalIDNumber(nationalIDNumber As TextString) As Employee
