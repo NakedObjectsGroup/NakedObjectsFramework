@@ -169,8 +169,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             FieldOrderSpecifiedByAttribute();
             FieldOrderSpecifiedByMethod();
-            ActionOrderSpecifiedByAttribute();
-            ActionOrderSpecifiedByMethod();
         }
 
         //[TestMethod]
@@ -186,28 +184,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var obj = AccessInstanceWithTitle("Vendor--1674", "Varsity Sport Co.");
             obj.AssertPropertiesAre("Account Number", "Name", "Credit Rating", "Preferred Vendor Status",
                 "Active Flag", "Purchasing Web Service URL", "Modified Date");
-        }
-
-        //[TestMethod]
-        public void ActionOrderSpecifiedByAttribute()
-        {
-            var obj = AccessInstanceWithTitle("SalesOrderHeader--54119", "SO54119");
-            obj.OpenActions().AssertHasActions(
-                "Add New Detail",
-                "Remove Detail",
-                "Append Comment",
-                "Clear Comments");
-        }
-
-        //[TestMethod]
-        public void ActionOrderSpecifiedByMethod()
-        {
-            var obj = AccessInstanceWithTitle("Product--834", "ML Road Frame-W - Yellow, 42");
-            obj.OpenActions().AssertHasActions(
-                "Best Special Offer",
-                "Associate With Special Offer",
-                "Current Work Orders",
-                "Create New Work Order");
         }
 
         #endregion
@@ -276,21 +252,21 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void EditingObjects()
         {
             EditAndCancelWithoutModification();
-            EditAndSaveChange();
+            //TODO EditAndSaveChange();
         }
 
         //[TestMethod]
         public void EditAndCancelWithoutModification()
         {
-            AccessInstanceWithTitle("WorkOrder--72592", "Hex Nut 8: 19/12/2021")
-                .Edit().AssertTitleIs("Editing - Hex Nut 8: 19/12/2021")
-                .Cancel().AssertTitleIs("Hex Nut 8: 19/12/2021");
+            AccessInstanceWithTitle("WorkOrder--16080", "LL Bottom Bracket: 04/07/2006")
+                .Edit().AssertTitleIs("Editing - LL Bottom Bracket: 04/07/2006")
+                .Cancel().AssertTitleIs("LL Bottom Bracket: 04/07/2006");
         }
 
-        //[TestMethod]
+       // [TestMethod]
         public void EditAndSaveChange()
         {
-            var editView = AccessInstanceWithTitle("WorkOrder--72592", "Hex Nut 8: 19/12/2021")
+            var editView = AccessInstanceWithTitle("WorkOrder--16080", "LL Bottom Bracket: 04/07/2006")
                 .Edit();
             editView.GetEditableSelectionProperty("Scrap Reason")
             .AssertOptionIs(0, "").AssertOptionIs(3, "Gouge in metal").Select(3);
