@@ -8,7 +8,7 @@ Namespace AW.Types
         Inherits BusinessEntity
         Implements ITitledObject
 #Region "Name"
-        Public mappedName As String
+        Public Property mappedName As String
         Friend myName As TextString
 
         <MemberOrder(20)>
@@ -57,7 +57,7 @@ Namespace AW.Types
         Public Overridable Property SalesPerson() As SalesPerson
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

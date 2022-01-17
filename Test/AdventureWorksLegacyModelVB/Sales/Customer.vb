@@ -16,7 +16,7 @@ Namespace AW.Types
 		End Property
 
 #Region "AccountNumber"
-		Public mappedAccountNumber As String
+		Public Property mappedAccountNumber As String
 		Friend myAccountNumber As TextString
 
 		<MemberOrder(10)>

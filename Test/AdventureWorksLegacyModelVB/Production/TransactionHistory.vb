@@ -10,7 +10,7 @@
 		Public Property ReferenceOrderLineID() As Integer
 
 #Region "TransactionDate"
-        Public mappedTransactionDate As Date
+        Public Property mappedTransactionDate As Date
         Friend myTransactionDate As NODate
 
         <MemberOrder(1)>
@@ -31,7 +31,7 @@
 #End Region
 
 #Region "TransactionType"
-        Public mappedTransactionType As String
+        Public Property mappedTransactionType As String
         Friend myTransactionType As TextString
 
         <MemberOrder(1)>
@@ -52,7 +52,7 @@
 #End Region
 
 #Region "Quantity"
-        Public mappedQuantity As Integer
+        Public Property mappedQuantity As Integer
         Friend myQuantity As WholeNumber
 
         <MemberOrder(1)>
@@ -73,7 +73,7 @@
 #End Region
 
 #Region "ActualCost"
-        Public mappedActualCost As Decimal
+        Public Property mappedActualCost As Decimal
         Friend myActualCost As Money
 
         <MemberOrder(1)>
@@ -98,7 +98,7 @@
         Public Overridable Property Product() As Product
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

@@ -7,7 +7,7 @@
 		Public Property ProductSubcategoryID() As Integer
 
 #Region "Name"
-		Public mappedName As String
+		Public Property mappedName As String
 		Friend myName As TextString
 
 		<MemberOrder(1)>
@@ -32,7 +32,7 @@
 		Public Overridable Property ProductCategory() As ProductCategory
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

@@ -12,7 +12,7 @@ Namespace AW.Types
         Public Overridable Property PersonDetails() As Person
 
 #Region "NationalIDNumber"
-        Public mappedNationalIDNumber As String
+        Public Property mappedNationalIDNumber As String
         Friend myNationalIDNumber As TextString
 
         <MemberOrder(10)>
@@ -33,7 +33,7 @@ Namespace AW.Types
 #End Region
 
 #Region "JobTitle"
-        Public mappedJobTitle As String
+        Public Property mappedJobTitle As String
         Friend myJobTitle As TextString
 
         <MemberOrder(12)>
@@ -54,7 +54,7 @@ Namespace AW.Types
 #End Region
 
 #Region "DateOfBirth"
-        Public mappedDateOfBirth As DateTime?
+        Public Property mappedDateOfBirth As DateTime?
         Friend myDateOfBirth As NODateNullable
 
         <MemberOrder(13)>
@@ -75,7 +75,7 @@ Namespace AW.Types
 #End Region
 
 #Region "MaritalStatus"
-        Public mappedMaritalStatus As String
+        Public Property mappedMaritalStatus As String
         Friend myMaritalStatus As TextString
 
         <MemberOrder(14)>
@@ -96,7 +96,7 @@ Namespace AW.Types
 #End Region
 
 #Region "Gender"
-        Public mappedGender As String
+        Public Property mappedGender As String
         Friend myGender As TextString
 
         <MemberOrder(15)>
@@ -117,7 +117,7 @@ Namespace AW.Types
 #End Region
 
 #Region "HireDate"
-        Public mappedHireDate As DateTime?
+        Public Property mappedHireDate As DateTime?
         Friend myHireDate As NODateNullable
 
         <MemberOrder(16)>
@@ -138,7 +138,7 @@ Namespace AW.Types
 #End Region
 
 #Region "Salaried"
-        Public mappedSalaried As Boolean
+        Public Property mappedSalaried As Boolean
         Friend mySalaried As Logical
 
         <MemberOrder(17)>
@@ -159,7 +159,7 @@ Namespace AW.Types
 #End Region
 
 #Region "VacationHours"
-        Public mappedVacationHours As Short
+        Public Property mappedVacationHours As Short
         Friend myVacationHours As WholeNumber
 
         <MemberOrder(18)>
@@ -180,7 +180,7 @@ Namespace AW.Types
 #End Region
 
 #Region "SickLeaveHours"
-        Public mappedSickLeaveHours As Short
+        Public Property mappedSickLeaveHours As Short
         Friend mySickLeaveHours As WholeNumber
 
         <MemberOrder(19)>
@@ -201,7 +201,7 @@ Namespace AW.Types
 #End Region
 
 #Region "Current"
-        Public mappedCurrent As Boolean
+        Public Property mappedCurrent As Boolean
         Friend myCurrent As Logical
 
         <MemberOrder(20)>
@@ -226,7 +226,7 @@ Namespace AW.Types
         Public Overridable Property Manager() As Employee
 
 #Region "LoginID"
-        Public mappedLoginID As String
+        Public Property mappedLoginID As String
         Friend myLoginID As TextString
 
         <MemberOrder(11)>
@@ -291,7 +291,7 @@ Namespace AW.Types
 
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

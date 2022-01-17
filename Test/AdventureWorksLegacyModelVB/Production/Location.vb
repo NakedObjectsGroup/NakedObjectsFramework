@@ -8,7 +8,7 @@
         Public Property LocationID() As Short
 
 #Region "Name"
-        Public mappedName As String
+        Public Property mappedName As String
         Friend myName As TextString
 
         <MemberOrder(1)>
@@ -29,7 +29,7 @@
 #End Region
 
 #Region "CostRate"
-        Public mappedCostRate As Decimal
+        Public Property mappedCostRate As Decimal
         Friend myCostRate As Money
 
         <MemberOrder(1)>
@@ -50,7 +50,7 @@
 #End Region
 
 #Region "Availability"
-        Public mappedAvailability As Decimal
+        Public Property mappedAvailability As Decimal
         Friend myAvailability As Money
 
         <MemberOrder(1)>
@@ -71,7 +71,7 @@
 #End Region
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

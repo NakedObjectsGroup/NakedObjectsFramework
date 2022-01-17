@@ -28,7 +28,7 @@
 #End Region
 
 #Region "SalesQuota"
-        Public mappedSalesQuota As Decimal
+        Public Property mappedSalesQuota As Decimal
         Friend mySalesQuota As Money
 
         <MemberOrder(2)>
@@ -52,7 +52,7 @@
         Public Overridable Property SalesPerson() As SalesPerson
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

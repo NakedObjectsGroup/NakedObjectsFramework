@@ -8,7 +8,7 @@
 		Public Property SpecialOfferID() As Integer
 
 #Region "Description"
-		Public mappedDescription As String
+		Public Property mappedDescription As String
 		Friend myDescription As TextString
 
 		<MemberOrder(10)>
@@ -29,7 +29,7 @@
 #End Region
 
 #Region "DiscountPct"
-		Public mappedDiscountPct As Decimal
+		Public Property mappedDiscountPct As Decimal
 		Friend myDiscountPct As Percentage
 
 		<MemberOrder(20)>
@@ -50,7 +50,7 @@
 #End Region
 
 #Region "Type"
-		Public mappedType As String
+		Public Property mappedType As String
 		Friend myType As TextString
 
 		<MemberOrder(30)>
@@ -71,7 +71,7 @@
 #End Region
 
 #Region "Category"
-		Public mappedCategory As String
+		Public Property mappedCategory As String
 		Friend myCategory As TextString
 
 		<MemberOrder(40)>
@@ -92,7 +92,7 @@
 #End Region
 
 #Region "StartDate"
-		Public mappedStartDate As Date
+		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
 		<MemberOrder(51)>
@@ -113,7 +113,7 @@
 #End Region
 
 #Region "EndDate"
-		Public mappedEndDate As Date
+		Public Property mappedEndDate As Date
 		Friend myEndDate As NODate
 
 		<MemberOrder(52)>
@@ -134,7 +134,7 @@
 #End Region
 
 #Region "MinQty"
-		Public mappedMinQty As Integer
+		Public Property mappedMinQty As Integer
 		Friend myMinQty As WholeNumber
 
 		<MemberOrder(61)>
@@ -155,7 +155,7 @@
 #End Region
 
 #Region "MaxQty"
-		Public mappedMaxQty As Integer?
+		Public Property mappedMaxQty As Integer?
 		Friend myMaxQty As WholeNumberNullable
 
 		<MemberOrder(62)>
@@ -176,7 +176,7 @@
 #End Region
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(1)>

@@ -7,7 +7,7 @@
 		Public Property ShiftID() As Byte
 
 #Region "Name"
-		Public mappedName As String
+		Public Property mappedName As String
 		Friend myName As TextString
 
 		<MemberOrder(1)>
@@ -34,7 +34,7 @@
 		Public Property EndTime() As TimeSpan 'TODO
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

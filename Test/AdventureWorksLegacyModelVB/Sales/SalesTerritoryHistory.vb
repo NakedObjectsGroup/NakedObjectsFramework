@@ -29,7 +29,7 @@
 #End Region
 
 #Region "EndDate"
-		Public mappedEndDate As Date?
+		Public Property mappedEndDate As Date?
 		Friend myEndDate As NODateNullable
 
 		<MemberOrder(2)>
@@ -59,7 +59,7 @@
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

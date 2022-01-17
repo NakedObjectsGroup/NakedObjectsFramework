@@ -10,7 +10,7 @@
 		Public Property ShoppingCartID() As String = ""
 
 #Region "Quantity"
-		Public mappedQuantity As Integer
+		Public Property mappedQuantity As Integer
 		Friend myQuantity As WholeNumber
 
 		<MemberOrder(20)>
@@ -40,7 +40,7 @@
 		Public Property DateCreated() As DateTime
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

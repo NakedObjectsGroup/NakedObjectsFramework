@@ -28,7 +28,7 @@
 #End Region
 
 #Region "EndDate"
-        Public mappedEndDate As Date?
+        Public Property mappedEndDate As Date?
         Friend myEndDate As NODateNullable
 
         <MemberOrder(1)>
@@ -49,7 +49,7 @@
 #End Region
 
 #Region "ListPrice"
-        Public mappedListPrice As Decimal
+        Public Property mappedListPrice As Decimal
         Friend myListPrice As Money
 
         <MemberOrder(1)>
@@ -72,7 +72,7 @@
         Public Overridable Property Product() As Product
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

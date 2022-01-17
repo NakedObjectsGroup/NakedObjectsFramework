@@ -8,7 +8,7 @@
 		Public Property WorkOrderID() As Integer
 
 #Region "StockedQty"
-		Public mappedStockedQty As Integer
+		Public Property mappedStockedQty As Integer
 		Friend myStockedQty As WholeNumber
 
 		<MemberOrder(22)>
@@ -29,7 +29,7 @@
 #End Region
 
 #Region "ScrappedQty"
-		Public mappedScrappedQty As Short
+		Public Property mappedScrappedQty As Short
 		Friend myScrappedQty As WholeNumber
 
 		<MemberOrder(24)>
@@ -50,7 +50,7 @@
 #End Region
 
 #Region "EndDate"
-		Public mappedEndDate As Date?
+		Public Property mappedEndDate As Date?
 		Friend myEndDate As NODateNullable
 
 		<MemberOrder(32)>
@@ -76,7 +76,7 @@
 		Public Overridable Property ScrapReason() As ScrapReason
 
 #Region "OrderQty"
-		Public mappedOrderQty As Integer
+		Public Property mappedOrderQty As Integer
 		Friend myOrderQty As WholeNumber
 
 		<MemberOrder(20)>
@@ -97,7 +97,7 @@
 #End Region
 
 #Region "StartDate"
-		Public mappedStartDate As Date
+		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
 		<MemberOrder(30)>
@@ -118,7 +118,7 @@
 #End Region
 
 #Region "DueDate"
-		Public mappedDueDate As Date
+		Public Property mappedDueDate As Date
 		Friend myDueDate As NODate
 
 		<MemberOrder(34)>
@@ -170,7 +170,7 @@
 		End Property
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

@@ -11,7 +11,7 @@
         End Function
 
 #Region "Name"
-        Public mappedName As String
+        Public Property mappedName As String
         Friend myName As TextString
 
 
@@ -32,7 +32,7 @@
 #End Region
 
 #Region "AccountNumber"
-        Public mappedAccountNumber As String
+        Public Property mappedAccountNumber As String
         Friend myAccountNumber As TextString
 
 
@@ -53,7 +53,7 @@
 #End Region
 
 #Region "CreditRating"
-        Public mappedCreditRating As Byte
+        Public Property mappedCreditRating As Byte
         Friend myCreditRating As WholeNumber
 
 
@@ -74,7 +74,7 @@
 #End Region
 
 #Region "PreferredVendorStatus"
-        Public mappedPreferredVendorStatus As Boolean
+        Public Property mappedPreferredVendorStatus As Boolean
         Friend myPreferredVendorStatus As Logical
 
 
@@ -95,7 +95,7 @@
 #End Region
 
 #Region "ActiveFlag"
-        Public mappedActiveFlag As Boolean
+        Public Property mappedActiveFlag As Boolean
         Friend myActiveFlag As Logical
 
 
@@ -116,7 +116,7 @@
 #End Region
 
 #Region "PurchasingWebServiceURL"
-        Public mappedPurchasingWebServiceURL As String
+        Public Property mappedPurchasingWebServiceURL As String
         Friend myPurchasingWebServiceURL As TextString
 
 
@@ -157,7 +157,7 @@
 #End Region
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
 

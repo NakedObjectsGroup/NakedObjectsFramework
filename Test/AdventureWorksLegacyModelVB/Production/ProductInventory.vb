@@ -8,7 +8,7 @@
 		Public Property LocationID() As Short
 
 #Region "Shelf"
-		Public mappedShelf As String
+		Public Property mappedShelf As String
 		Friend myShelf As TextString
 
 		<MemberOrder(40)>
@@ -29,7 +29,7 @@
 #End Region
 
 #Region "Bin"
-		Public mappedBin As Byte
+		Public Property mappedBin As Byte
 		Friend myBin As WholeNumber
 
 		<MemberOrder(50)>
@@ -50,7 +50,7 @@
 #End Region
 
 #Region "Quantity"
-		Public mappedQuantity As Short
+		Public Property mappedQuantity As Short
 		Friend myQuantity As WholeNumber
 
 		<MemberOrder(10)>
@@ -77,7 +77,7 @@
 		Public Overridable Property Product() As Product
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

@@ -7,7 +7,7 @@
         Public Property AddressID() As Integer
 
 #Region "City"
-        Public mappedCity As String
+        Public Property mappedCity As String
         Friend myCity As TextString
 
         <MemberOrder(13)>
@@ -28,7 +28,7 @@
 #End Region
 
 #Region "PostalCode"
-        Public mappedPostalCode As String
+        Public Property mappedPostalCode As String
         Friend myPostalCode As TextString
 
         <MemberOrder(14)>
@@ -49,7 +49,7 @@
 #End Region
 
 #Region "AddressLine1"
-        Public mappedAddressLine1 As String
+        Public Property mappedAddressLine1 As String
         Friend myAddressLine1 As TextString
 
         <MemberOrder(11)>
@@ -70,7 +70,7 @@
 #End Region
 
 #Region "AddressLine2"
-        Public mappedAddressLine2 As String
+        Public Property mappedAddressLine2 As String
         Friend myAddressLine2 As TextString
 
         <MemberOrder(12)>
@@ -97,7 +97,7 @@
         Public Overridable Property StateProvince() As StateProvince
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

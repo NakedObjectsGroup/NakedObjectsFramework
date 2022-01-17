@@ -26,7 +26,7 @@
 #End Region
 
 #Region "EndDate"
-        Public mappedEndDate As Date?
+        Public Property mappedEndDate As Date?
         Friend myEndDate As NODateNullable
 
         <MemberOrder(1)>
@@ -47,7 +47,7 @@
 #End Region
 
 #Region "StandardCost"
-        Public mappedStandardCost As Decimal
+        Public Property mappedStandardCost As Decimal
         Friend myStandardCost As Money
 
         <MemberOrder(1)>
@@ -78,7 +78,7 @@
         End Sub
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

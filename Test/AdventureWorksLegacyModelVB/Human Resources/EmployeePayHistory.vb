@@ -26,7 +26,7 @@
 #End Region
 
 #Region "Rate"
-        Public mappedRate As Decimal
+        Public Property mappedRate As Decimal
         Friend myRate As Money
 
         <MemberOrder(2)>
@@ -45,7 +45,7 @@
 #End Region
 
 #Region "PayFrequency"
-        Public mappedPayFrequency As Byte
+        Public Property mappedPayFrequency As Byte
         Friend myPayFrequency As WholeNumber
 
         <MemberOrder(3)>
@@ -67,7 +67,7 @@
         Public Overridable Property Employee() As Employee
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

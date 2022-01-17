@@ -11,7 +11,7 @@
 		Public Property SalesOrderDetailID() As Integer
 
 #Region "OrderQty"
-		Public mappedOrderQty As Short
+		Public Property mappedOrderQty As Short
 		Friend myOrderQty As WholeNumber
 
 		<MemberOrder(15)>
@@ -32,7 +32,7 @@
 #End Region
 
 #Region "UnitPrice"
-		Public mappedUnitPrice As Decimal
+		Public Property mappedUnitPrice As Decimal
 		Friend myUnitPrice As Money
 
 		<MemberOrder(20)>
@@ -53,7 +53,7 @@
 #End Region
 
 #Region "UnitPriceDiscount"
-		Public mappedUnitPriceDiscount As Decimal
+		Public Property mappedUnitPriceDiscount As Decimal
 		Friend myUnitPriceDiscount As Percentage
 
 		<MemberOrder(30)>
@@ -75,7 +75,7 @@
 #End Region
 
 #Region "LineTotal"
-		Public mappedLineTotal As Decimal
+		Public Property mappedLineTotal As Decimal
 		Friend myLineTotal As Money
 
 		<MemberOrder(40)>
@@ -96,7 +96,7 @@
 #End Region
 
 #Region "CarrierTrackingNumber"
-		Public mappedCarrierTrackingNumber As String
+		Public Property mappedCarrierTrackingNumber As String
 		Friend myCarrierTrackingNumber As TextString
 
 		<MemberOrder(50)>
@@ -144,7 +144,7 @@
 
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

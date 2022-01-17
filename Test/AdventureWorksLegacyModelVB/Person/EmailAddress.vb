@@ -9,7 +9,7 @@
 		Public Property EmailAddressID() As Integer
 
 #Region "EmailAddress1"
-		Public mappedEmailAddress1 As String
+		Public Property mappedEmailAddress1 As String
 		Friend myEmailAddress1 As TextString
 
 		<MemberOrder(1)>
@@ -31,7 +31,7 @@
 #End Region
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

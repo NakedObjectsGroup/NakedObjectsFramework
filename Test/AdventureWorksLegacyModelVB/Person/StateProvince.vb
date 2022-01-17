@@ -7,7 +7,7 @@
 		Public Property StateProvinceID() As Integer
 
 #Region "StateProvinceCode"
-		Public mappedStateProvinceCode As String
+		Public Property mappedStateProvinceCode As String
 		Friend myStateProvinceCode As TextString
 
 		<MemberOrder(1)>
@@ -28,7 +28,7 @@
 #End Region
 
 #Region "IsOnlyStateProvinceFlag"
-		Public mappedIsOnlyStateProvinceFlag As Boolean
+		Public Property mappedIsOnlyStateProvinceFlag As Boolean
 		Friend myIsOnlyStateProvinceFlag As Logical
 
 		<MemberOrder(1)>
@@ -49,7 +49,7 @@
 #End Region
 
 #Region "Name"
-		Public mappedName As String
+		Public Property mappedName As String
 		Friend myName As TextString
 
 		<MemberOrder(1)>
@@ -78,7 +78,7 @@
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

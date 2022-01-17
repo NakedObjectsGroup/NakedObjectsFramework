@@ -7,7 +7,7 @@
         Public Property ShipMethodID() As Integer
 
 #Region "Name"
-        Public mappedName As String
+        Public Property mappedName As String
         Friend myName As TextString
 
         <MemberOrder(1)>
@@ -28,7 +28,7 @@
 #End Region
 
 #Region "ShipBase"
-        Public mappedShipBase As Decimal
+        Public Property mappedShipBase As Decimal
         Friend myShipBase As Money
 
         <MemberOrder(2)>
@@ -49,7 +49,7 @@
 #End Region
 
 #Region "ShipRate"
-        Public mappedShipRate As Decimal
+        Public Property mappedShipRate As Decimal
         Friend myShipRate As Money
 
         <MemberOrder(3)>
@@ -70,7 +70,7 @@
 #End Region
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

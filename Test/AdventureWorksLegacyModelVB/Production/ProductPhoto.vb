@@ -10,7 +10,7 @@ Namespace AW.Types
 		Public Property ThumbNailPhoto As Byte()
 
 #Region "ThumbnailPhotoFileName"
-		Public mappedThumbnailPhotoFileName As String
+		Public Property mappedThumbnailPhotoFileName As String
 		Friend myThumbnailPhotoFileName As TextString
 
 		<MemberOrder(1)>
@@ -33,7 +33,7 @@ Namespace AW.Types
 		Public Property LargePhoto As Byte()
 
 #Region "LargePhotoFileName"
-		Public mappedLargePhotoFileName As String
+		Public Property mappedLargePhotoFileName As String
 		Friend myLargePhotoFileName As TextString
 
 		<MemberOrder(1)>
@@ -64,7 +64,7 @@ Namespace AW.Types
 		Public Overridable Property ProductProductPhoto As ICollection(Of ProductProductPhoto) = New List(Of ProductProductPhoto)()
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

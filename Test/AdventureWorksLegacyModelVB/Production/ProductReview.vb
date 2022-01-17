@@ -6,7 +6,7 @@
 		Public Property ProductReviewID() As Integer
 
 #Region "ReviewerName"
-		Public mappedReviewerName As String
+		Public Property mappedReviewerName As String
 		Friend myReviewerName As TextString
 
 		<MemberOrder(1)>
@@ -27,7 +27,7 @@
 #End Region
 
 #Region "ReviewDate"
-		Public mappedReviewDate As Date
+		Public Property mappedReviewDate As Date
 		Friend myReviewDate As NODate
 
 		<MemberOrder(2)>
@@ -48,7 +48,7 @@
 #End Region
 
 #Region "EmailAddress"
-		Public mappedEmailAddress As String
+		Public Property mappedEmailAddress As String
 		Friend myEmailAddress As TextString
 
 		<MemberOrder(3)>
@@ -69,7 +69,7 @@
 #End Region
 
 #Region "Rating"
-		Public mappedRating As Integer
+		Public Property mappedRating As Integer
 		Friend myRating As WholeNumber
 
 		<MemberOrder(4)>
@@ -90,7 +90,7 @@
 #End Region
 
 #Region "Comments"
-		Public mappedComments As String
+		Public Property mappedComments As String
 		Friend myComments As TextString
 
 		<MemberOrder(5)>
@@ -122,7 +122,7 @@
 		End Sub
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

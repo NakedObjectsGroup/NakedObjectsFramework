@@ -7,7 +7,7 @@
 		Public Property ProductPhotoID() As Integer
 
 #Region "Primary"
-        Public mappedPrimary As Boolean
+        Public Property mappedPrimary As Boolean
         Friend myPrimary As Logical
 
         <MemberOrder(1)>
@@ -32,7 +32,7 @@
         Public Overridable Property ProductPhoto() As ProductPhoto
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

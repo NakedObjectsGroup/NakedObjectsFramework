@@ -30,7 +30,7 @@
 #End Region
 
 #Region "ScheduledStartDate"
-		Public mappedScheduledStartDate As DateTime?
+		Public Property mappedScheduledStartDate As DateTime?
 		Friend myScheduledStartDate As NODateNullable
 
 		<MemberOrder(20)>
@@ -51,7 +51,7 @@
 #End Region
 
 #Region "ScheduledEndDate"
-		Public mappedScheduledEndDate As DateTime?
+		Public Property mappedScheduledEndDate As DateTime?
 		Friend myScheduledEndDate As NODateNullable
 
 		<MemberOrder(22)>
@@ -72,7 +72,7 @@
 #End Region
 
 #Region "ActualStartDate"
-		Public mappedActualStartDate As DateTime?
+		Public Property mappedActualStartDate As DateTime?
 		Friend myActualStartDate As NODateNullable
 
 		<MemberOrder(21)>
@@ -93,7 +93,7 @@
 #End Region
 
 #Region "ActualEndDate"
-		Public mappedActualEndDate As DateTime?
+		Public Property mappedActualEndDate As DateTime?
 		Friend myActualEndDate As NODateNullable
 
 		<MemberOrder(23)>
@@ -114,7 +114,7 @@
 #End Region
 
 #Region "ActualResourceHrs"
-		Public mappedActualResourceHrs As Decimal?
+		Public Property mappedActualResourceHrs As Decimal?
 		Friend myActualResourceHrs As FloatingPointNumberNullable
 
 		<MemberOrder(31)>
@@ -135,7 +135,7 @@
 #End Region
 
 #Region "PlannedCost"
-		Public mappedPlannedCost As Decimal
+		Public Property mappedPlannedCost As Decimal
 		Friend myPlannedCost As Money
 
 		<MemberOrder(40)>
@@ -156,7 +156,7 @@
 #End Region
 
 #Region "ActualCost"
-		Public mappedActualCost As Decimal?
+		Public Property mappedActualCost As Decimal?
 		Friend myActualCost As MoneyNullable
 
 		<MemberOrder(41)>
@@ -193,7 +193,7 @@
 		Public Overridable Property Location() As Location
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

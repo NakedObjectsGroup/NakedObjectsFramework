@@ -9,7 +9,7 @@
 		Public Property VendorID() As Integer
 
 #Region "AverageLeadTime"
-		Public mappedAverageLeadTime As Integer
+		Public Property mappedAverageLeadTime As Integer
 		Friend myAverageLeadTime As WholeNumber
 
 		<MemberOrder(30)>
@@ -30,7 +30,7 @@
 #End Region
 
 #Region "StandardPrice"
-		Public mappedStandardPrice As Decimal
+		Public Property mappedStandardPrice As Decimal
 		Friend myStandardPrice As Money
 
 		<MemberOrder(40)>
@@ -51,7 +51,7 @@
 #End Region
 
 #Region "LastReceiptCost"
-		Public mappedLastReceiptCost As Decimal?
+		Public Property mappedLastReceiptCost As Decimal?
 		Friend myLastReceiptCost As MoneyNullable
 
 		<MemberOrder(41)>
@@ -72,7 +72,7 @@
 #End Region
 
 #Region "LastReceiptDate"
-		Public mappedLastReceiptDate As DateTime?
+		Public Property mappedLastReceiptDate As DateTime?
 		Friend myLastReceiptDate As NODateNullable
 
 		<MemberOrder(50)>
@@ -93,7 +93,7 @@
 #End Region
 
 #Region "MinOrderQty"
-		Public mappedMinOrderQty As Integer
+		Public Property mappedMinOrderQty As Integer
 		Friend myMinOrderQty As WholeNumber
 
 		<MemberOrder(60)>
@@ -114,7 +114,7 @@
 #End Region
 
 #Region "MaxOrderQty"
-		Public mappedMaxOrderQty As Integer
+		Public Property mappedMaxOrderQty As Integer
 		Friend myMaxOrderQty As WholeNumber
 
 		<MemberOrder(61)>
@@ -135,7 +135,7 @@
 #End Region
 
 #Region "OnOrderQty"
-		Public mappedOnOrderQty As Integer?
+		Public Property mappedOnOrderQty As Integer?
 		Friend myOnOrderQty As WholeNumberNullable
 
 		<MemberOrder(62)>
@@ -166,7 +166,7 @@
 		Public Overridable Property Vendor() As Vendor
 
 #Region "ModifiedDate"
-		Public mappedModifiedDate As Date
+		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
 		<MemberOrder(99)>

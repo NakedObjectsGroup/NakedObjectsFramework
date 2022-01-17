@@ -5,7 +5,7 @@
 		Public Property IllustrationID() As Integer
 
 #Region "Diagram"
-        Public mappedDiagram As String
+        Public Property mappedDiagram As String
         Friend myDiagram As TextString
 
         <MemberOrder(1)>
@@ -46,7 +46,7 @@
 #End Region
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>

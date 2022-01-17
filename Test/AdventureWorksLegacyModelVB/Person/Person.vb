@@ -8,7 +8,7 @@ Namespace AW.Types
 
 #Region "Name fields"
 #Region "NameStyle"
-        Public mappedNameStyle As Boolean
+        Public Property mappedNameStyle As Boolean
         Friend myNameStyle As Logical
 
         <MemberOrder(15)>
@@ -30,7 +30,7 @@ Namespace AW.Types
 #End Region
 
 #Region "Title"
-        Public mappedTitle As String
+        Public Property mappedTitle As String
         Friend myTitle As TextString
 
         <MemberOrder(1)>
@@ -52,7 +52,7 @@ Namespace AW.Types
 #End Region
 
 #Region "FirstName"
-        Public mappedFirstName As String
+        Public Property mappedFirstName As String
         Friend myFirstName As TextString
 
         <MemberOrder(12)>
@@ -73,7 +73,7 @@ Namespace AW.Types
 #End Region
 
 #Region "MiddleName"
-        Public mappedMiddleName As String
+        Public Property mappedMiddleName As String
         Friend myMiddleName As TextString
 
         <MemberOrder(13)>
@@ -94,7 +94,7 @@ Namespace AW.Types
 #End Region
 
 #Region "LastName"
-        Public mappedLastName As String
+        Public Property mappedLastName As String
         Friend myLastName As TextString
 
         <MemberOrder(14)>
@@ -115,7 +115,7 @@ Namespace AW.Types
 #End Region
 
 #Region "Suffix"
-        Public mappedSuffix As String
+        Public Property mappedSuffix As String
         Friend mySuffix As TextString
 
         <MemberOrder(15)>
@@ -137,7 +137,7 @@ Namespace AW.Types
 #End Region
 
 #Region "PersonType"
-        Public mappedPersonType As String
+        Public Property mappedPersonType As String
         Friend myPersonType As TextString
 
         <MemberOrder(1)>
@@ -217,7 +217,7 @@ Namespace AW.Types
         Public Overridable Property Password() As Password
 
 #Region "AdditionalContactInfo"
-        Public mappedAdditionalContactInfo As String
+        Public Property mappedAdditionalContactInfo As String
         Friend myAdditionalContactInfo As TextString
 
         <MemberOrder(30)>
@@ -247,7 +247,7 @@ Namespace AW.Types
         End Sub
 
 #Region "ModifiedDate"
-        Public mappedModifiedDate As Date
+        Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
         <MemberOrder(99)>
