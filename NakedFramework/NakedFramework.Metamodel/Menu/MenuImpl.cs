@@ -48,7 +48,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
 
     private IList<IActionSpecImmutable> ActionsForObject => ObjectSpec.OrderedObjectActions.ToList();
 
-    private IActionSpecImmutable GetAction(string actionName) {
+    private IActionSpecImmutable GetAction(string actionName, bool ignoreCase) {
         // TODO revisit this would prefer not to have to check both collections. 
         IList<IActionSpecImmutable> actions;
         if (ObjectSpec.OrderedObjectActions is not null && ObjectSpec.OrderedObjectActions.Any()) {
@@ -61,9 +61,10 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
             actions = Array.Empty<IActionSpecImmutable>();
         }
 
-        return actions.FirstOrDefault(a => a.Identifier.MemberName == actionName);
-    }
+        var compare = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
 
+        return actions.FirstOrDefault(a => string.Equals(a.Identifier.MemberName, actionName, compare));
+    }
 
     private IList<IActionSpecImmutable> ActionsForType(Type type) => Metamodel.GetSpecification(type).OrderedObjectActions.ToList();
 
@@ -147,12 +148,12 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
         return this;
     }
 
-    public IMenu AddAction(string actionName) {
+    public IMenu AddAction(string actionName, bool ignoreCase = false) {
         if (Type is null) {
             throw new Exception($"No type has been specified for the action: {actionName}");
         }
 
-        var actionSpec = GetAction(actionName);
+        var actionSpec = GetAction(actionName, ignoreCase);
         if (actionSpec is null) {
             throw new ReflectionException($"No such action: {actionName} on {Type}");
         }
@@ -190,8 +191,9 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
         return this;
     }
 
-    public IMenu AddAction(Type fromType, string actionName) {
-        var actionSpec = ActionsForType(fromType).FirstOrDefault(a => a.Identifier.MemberName == actionName);
+    public IMenu AddAction(Type fromType, string actionName, bool ignoreCase = false) {
+        var compare = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
+        var actionSpec = ActionsForType(fromType).FirstOrDefault(a => string.Equals(a.Identifier.MemberName, actionName, compare));
         if (actionSpec == null) {
             throw new ReflectionException($"No such action: {actionName} on {fromType}");
         }

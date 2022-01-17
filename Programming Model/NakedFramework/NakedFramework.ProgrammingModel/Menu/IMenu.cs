@@ -26,7 +26,6 @@ namespace NakedFramework.Menu {
         /// <summary>
         ///     Allows the id for the menu to be specified or over-ridden.
         /// </summary>
-        /// <param name="name"></param>
         /// <returns>This menu (for fluent programming)</returns>
         IMenu WithId(string id);
 
@@ -34,9 +33,9 @@ namespace NakedFramework.Menu {
         ///     Add an action from the Type.
         /// </summary>
         /// <param name="actionName"></param>
-        /// <param name="renamedTo"></param>
+        /// <param name="ignoreCase"></param>
         /// <returns>This menu (for fluent programming)</returns>
-        IMenu AddAction(string actionName);
+        IMenu AddAction(string actionName, bool ignoreCase = false);
 
         /// <summary>
         /// </summary>
@@ -71,10 +70,11 @@ namespace NakedFramework.Menu {
         /// <summary>
         ///     Add an action from the specified Type.
         /// </summary>
+        /// <param name="fromType"></param>
         /// <param name="actionName"></param>
-        /// <param name="renamedTo"></param>
+        /// <param name="ignoreCase"></param>
         /// <returns>This menu (for fluent programming)</returns>
-        IMenu AddAction(Type fromType, string actionName);
+        IMenu AddAction(Type fromType, string actionName, bool ignoreCase = false);
 
         IMenu AddRemainingActions(Type fromType);
     }
