@@ -207,6 +207,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectActionToRetrieveAQueryable();
             ObjectActionToRetrieveASingleInstance();
             ObjectActionThatDelegatesToARepositoryService();
+            MenuActionThatTakesParameters();
+            MenuActionThatReturnsArrayList();
         }
 
         //[TestMethod]
@@ -243,6 +245,26 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetActionWithoutDialog("Others With Same Initials").ClickToViewList()
                 .AssertDetails("Page 1 of 8; viewing 20 of 142 items")
                 .GetRowFromList(0).AssertTitleIs("Kaitlin Sai");
+        }
+
+        //[TestMethod]
+        public void MenuActionThatTakesParameters()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Employees")
+                .GetActionWithDialog("Find Employee By National ID Number").Open();
+            dialog.GetTextField("National ID Number").Enter("416679555");
+            dialog.ClickOKToViewObject().AssertTitleIs("Hao Chen");
+        }
+
+        //[TestMethod]
+        public void MenuActionThatReturnsArrayList()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Employees")
+               .GetActionWithDialog("Find Employee By Name").Open();
+            dialog.GetTextField("First Name").Enter("a");
+            dialog.GetTextField("Last Name").Enter("b");
+            dialog.ClickOKToViewNewList().AssertNoOfRowsIs(3)
+                .GetRowFromList(0).AssertTitleIs("Angela Barbariol");
         }
 
         #endregion
