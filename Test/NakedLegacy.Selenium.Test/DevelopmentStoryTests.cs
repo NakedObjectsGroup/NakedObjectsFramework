@@ -302,6 +302,34 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
         #endregion
 
+        #region Menus
+        //[TestMethod]
+        public void Menus()
+        {
+            MainMenuWithSubMenus();
+            ObjectActionsMenu();
+        }
+
+        [TestMethod]
+        public void MainMenuWithSubMenus()
+        {
+            helper.GotoHome().OpenMainMenu("Employees").AssertHasActions("Random Employee",
+                "All Employees", "Find Employee By Name", "Find Employee By National ID Number")
+                .AssertHasSubMenus("Organisation").OpenSubMenu("Organisation").AssertHasAction("List All Departments");
+
+        }
+
+        [TestMethod]
+        public void ObjectActionsMenu()
+        {
+            AccessInstanceWithTitle("Product--897", "LL Touring Frame - Blue, 58")
+                .OpenActions().AssertHasActions("Best Special Offer", "Associate With Special Offer")
+                .AssertHasSubMenus("Work Orders").OpenSubMenu("Work Orders").AssertHasAction(
+                "Current Work Orders").AssertHasAction("Create New Work Order");
+        }
+
+        #endregion
+
         #region Story x: ObjectPresentation & Control
         //[TestMethod]
         public void ObjectPresentationAndControl()
