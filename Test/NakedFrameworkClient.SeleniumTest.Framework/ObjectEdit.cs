@@ -51,16 +51,10 @@ namespace NakedFrameworkClient.TestFramework
             throw new NotImplementedException();
         }
 
-        public void AssertPropertyIsEnabledForEdit(string propertyName)
+        public ObjectEdit AssertPropertyIsDisabledForEdit(string propertyName)
         {
-            //1. In edit view are ALL the properties nof-edit-property even if disabled?
-            //If so, how do we find disabled?
-
-        }
-
-        public void AssertPropertyIsDisabledForEdit(string propertyName)
-        {
-            throw new NotImplementedException();
+            GetEditableProperty(propertyName).FindElement(By.CssSelector(".value"));
+            return this;
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class JobCandidate
- Implements ITitledObject
+	Partial Public Class JobCandidate
+
+		Implements ITitledObject
 
 		Public Property JobCandidateID() As Integer
 
@@ -13,7 +14,7 @@
 		Public ReadOnly Property Resumee As TextString
 			Get
 				myResume = If(myResume, New TextString(mappedResume, Sub(v) mappedResume = v))
-Return myResume
+				Return myResume
 			End Get
 		End Property
 
@@ -40,7 +41,7 @@ Return myResume
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+				Return myModifiedDate
 			End Get
 		End Property
 

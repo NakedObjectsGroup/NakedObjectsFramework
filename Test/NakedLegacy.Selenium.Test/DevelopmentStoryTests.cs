@@ -51,6 +51,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ActionsThatRetrieveObjects();
             EditingObjects();
             Menus();
+            FieldAboutSpecifyingName_Description_Editability();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -331,14 +332,13 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         #endregion
 
-        #region Story x: ObjectPresentation & Control
+        #region FieldAboutSpecifyingName_Description_Editability
         //[TestMethod]
-        public void ObjectPresentationAndControl()
+        public void FieldAboutSpecifyingName_Description_Editability()
         {
             PropertyHiddenUsingFieldAbout();
             PropertyRenamedUsingFieldAbout();
-            FieldOrderSpecifiedByAttribute();
-            FieldOrderSpecifiedByMethod();
+            PropertyMadeUneditableUsingFieldAbout();
         }
 
         //[TestMethod]
@@ -351,25 +351,16 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void PropertyRenamedUsingFieldAbout()
         {
-            var obj = AccessInstanceWithTitle("JobCandidate--1", "Job Candidate ");
-            obj.GetProperty(1).AssertNameIs("Resumé");
+            var obj = AccessInstanceWithTitle("Person--115", "Angela Barbariol");
+            obj.GetProperty(4).AssertNameIs("Reverse name order");
         }
 
         //[TestMethod]
         public void PropertyMadeUneditableUsingFieldAbout()
         {
-            AccessInstanceWithTitle("Department--1", "xx").Edit()
+            AccessInstanceWithTitle("Department--1", "Engineering").Edit()
                 .AssertPropertyIsDisabledForEdit("Modified Date");   
         }
-
-        //[TestMethod]
-        public void PropertyEditValidation()
-        {
-            var edit = AccessInstanceWithTitle("xx", "xx").Edit()
-                .GetEditableTextInputProperty("xx").Clear().Enter("xx");
-
-        }
-
 
         #endregion
 
