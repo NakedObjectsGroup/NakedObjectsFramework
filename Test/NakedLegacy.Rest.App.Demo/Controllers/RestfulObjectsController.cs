@@ -26,7 +26,7 @@ namespace Legacy.Rest.App.Demo.Controllers {
                                         IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) =>
             ThreadLocals.Initialize(frameworkFacade.GetScopedServiceProvider, sp => new Container(sp.GetService<INakedFramework>()));
 
-        public void Dispose() => ThreadLocals.Reset();
+        //public void Dispose() => ThreadLocals.Reset();
 
         [HttpGet]
         public override ActionResult GetHome() => base.GetHome();
