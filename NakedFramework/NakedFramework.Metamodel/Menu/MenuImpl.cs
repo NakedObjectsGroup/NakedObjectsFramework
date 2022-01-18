@@ -148,7 +148,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
         return this;
     }
 
-    public IMenu AddAction(string actionName, bool ignoreCase = false) {
+    public IMenu AddAction(string actionName, string friendlyName = null, bool ignoreCase = false) {
         if (Type is null) {
             throw new Exception($"No type has been specified for the action: {actionName}");
         }
@@ -158,7 +158,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
             throw new ReflectionException($"No such action: {actionName} on {Type}");
         }
 
-        AddMenuItem(new MenuAction(actionSpec));
+        AddMenuItem(new MenuAction(actionSpec, friendlyName));
         return this;
     }
 
@@ -191,14 +191,14 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
         return this;
     }
 
-    public IMenu AddAction(Type fromType, string actionName, bool ignoreCase = false) {
+    public IMenu AddAction(Type fromType, string actionName, string friendlyName = null, bool ignoreCase = false) {
         var compare = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
         var actionSpec = ActionsForType(fromType).FirstOrDefault(a => string.Equals(a.Identifier.MemberName, actionName, compare));
         if (actionSpec == null) {
             throw new ReflectionException($"No such action: {actionName} on {fromType}");
         }
 
-        AddMenuItem(new MenuAction(actionSpec));
+        AddMenuItem(new MenuAction(actionSpec, friendlyName));
         return this;
     }
 
