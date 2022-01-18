@@ -32,6 +32,7 @@
             Dim d As Department = CType(container.CreateTransientInstance(GetType(Department)), Department)
             d.Name.Value = name.Value
             d.GroupName.Value = groupName.Value
+            d.mappedModifiedDate = Now
             container.MakePersistent(d)
             Return d
         End Function
