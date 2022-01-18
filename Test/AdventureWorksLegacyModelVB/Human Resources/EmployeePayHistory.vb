@@ -13,7 +13,7 @@
         <MemberOrder(1)>
         Public ReadOnly Property RateChangeDate As NODate
             Get
-                Return If(myRateChangeDate, New NODate(mappedRateChangeDate, Function(v) mappedRateChangeDate = v))
+                Return If(myRateChangeDate, New NODate(mappedRateChangeDate, Sub(v) mappedRateChangeDate = v))
             End Get
         End Property
 
@@ -32,7 +32,7 @@
         <MemberOrder(2)>
         Public ReadOnly Property Rate As Money
             Get
-                Return If(myRate, New Money(mappedRate, Function(v) mappedRate = v))
+                Return If(myRate, New Money(mappedRate, Sub(v) mappedRate = v))
             End Get
         End Property
 
@@ -51,7 +51,7 @@
         <MemberOrder(3)>
         Public ReadOnly Property PayFrequency As WholeNumber
             Get
-                Return If(myPayFrequency, New WholeNumber(mappedPayFrequency, Function(v) mappedPayFrequency = v))
+                Return If(myPayFrequency, New WholeNumber(mappedPayFrequency, Sub(v) mappedPayFrequency = CType(v, Byte)))
             End Get
         End Property
 
@@ -73,7 +73,7 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
             End Get
         End Property
 

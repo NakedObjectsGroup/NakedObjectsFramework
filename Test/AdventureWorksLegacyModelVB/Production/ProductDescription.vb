@@ -14,7 +14,7 @@ Namespace AW.Types
         <MemberOrder(2)>
         Public ReadOnly Property Description As TextString
             Get
-                Return If(myDescription, New MultiLineTextString(mappedDescription, Function(v) mappedDescription = v))
+                Return If(myDescription, New MultiLineTextString(mappedDescription, Sub(v) mappedDescription = v))
             End Get
         End Property
 
@@ -35,7 +35,7 @@ Namespace AW.Types
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
             End Get
         End Property
 

@@ -13,7 +13,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property StateProvinceCode As TextString
 			Get
-				Return If(myStateProvinceCode, New TextString(mappedStateProvinceCode, Function(v) mappedStateProvinceCode = v))
+				Return If(myStateProvinceCode, New TextString(mappedStateProvinceCode, Sub(v) mappedStateProvinceCode = v))
 			End Get
 		End Property
 
@@ -34,7 +34,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property IsOnlyStateProvinceFlag As Logical
 			Get
-				Return If(myIsOnlyStateProvinceFlag, New Logical(mappedIsOnlyStateProvinceFlag, Function(v) mappedIsOnlyStateProvinceFlag = v))
+				Return If(myIsOnlyStateProvinceFlag, New Logical(mappedIsOnlyStateProvinceFlag, Sub(v) mappedIsOnlyStateProvinceFlag = v))
 			End Get
 		End Property
 
@@ -55,7 +55,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property Name As TextString
 			Get
-				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+				Return If(myName, New TextString(mappedName, Sub(v) mappedName = v))
 			End Get
 		End Property
 
@@ -84,7 +84,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

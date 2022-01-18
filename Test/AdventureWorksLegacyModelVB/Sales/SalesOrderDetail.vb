@@ -17,7 +17,7 @@
 		<MemberOrder(15)>
 		Public ReadOnly Property OrderQty As WholeNumber
 			Get
-				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
+				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Sub(v) mappedOrderQty = CType(v, Short)))
 			End Get
 		End Property
 
@@ -38,7 +38,7 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property UnitPrice As Money
 			Get
-				Return If(myUnitPrice, New Money(mappedUnitPrice, Function(v) mappedUnitPrice = v))
+				Return If(myUnitPrice, New Money(mappedUnitPrice, Sub(v) mappedUnitPrice = v))
 			End Get
 		End Property
 
@@ -59,7 +59,7 @@
 		<MemberOrder(30)>
 		Public ReadOnly Property UnitPriceDiscount As Percentage
 			Get
-				Return If(myUnitPriceDiscount, New Percentage(mappedUnitPriceDiscount, Function(v) mappedUnitPriceDiscount = v))
+				Return If(myUnitPriceDiscount, New Percentage(mappedUnitPriceDiscount, Sub(v) mappedUnitPriceDiscount = v))
 			End Get
 		End Property
 
@@ -81,7 +81,7 @@
 		<MemberOrder(40)>
 		Public ReadOnly Property LineTotal As Money
 			Get
-				Return If(myLineTotal, New Money(mappedLineTotal, Function(v) mappedLineTotal = v))
+				Return If(myLineTotal, New Money(mappedLineTotal, Sub(v) mappedLineTotal = v))
 			End Get
 		End Property
 
@@ -102,7 +102,7 @@
 		<MemberOrder(50)>
 		Public ReadOnly Property CarrierTrackingNumber As TextString
 			Get
-				Return If(myCarrierTrackingNumber, New TextString(mappedCarrierTrackingNumber, Function(v) mappedCarrierTrackingNumber = v))
+				Return If(myCarrierTrackingNumber, New TextString(mappedCarrierTrackingNumber, Sub(v) mappedCarrierTrackingNumber = v))
 			End Get
 		End Property
 
@@ -150,7 +150,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

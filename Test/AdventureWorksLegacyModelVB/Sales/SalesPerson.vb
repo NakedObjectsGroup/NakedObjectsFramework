@@ -30,7 +30,7 @@
 		<MemberOrder(30)>
 		Public ReadOnly Property SalesQuota As MoneyNullable
 			Get
-				Return If(mySalesQuota, New MoneyNullable(mappedSalesQuota, Function(v) mappedSalesQuota = v))
+				Return If(mySalesQuota, New MoneyNullable(mappedSalesQuota, Sub(v) mappedSalesQuota = v))
 			End Get
 		End Property
 
@@ -51,7 +51,7 @@
 		<MemberOrder(40)>
 		Public ReadOnly Property Bonus As Money
 			Get
-				Return If(myBonus, New Money(mappedBonus, Function(v) mappedBonus = v))
+				Return If(myBonus, New Money(mappedBonus, Sub(v) mappedBonus = v))
 			End Get
 		End Property
 
@@ -72,7 +72,7 @@
 		<MemberOrder(50)>
 		Public ReadOnly Property CommissionPct As Percentage
 			Get
-				Return If(myCommissionPct, New Percentage(mappedCommissionPct, Function(v) mappedCommissionPct = v))
+				Return If(myCommissionPct, New Percentage(mappedCommissionPct, Sub(v) mappedCommissionPct = v))
 			End Get
 		End Property
 
@@ -93,7 +93,7 @@
 		<MemberOrder(60)>
 		Public ReadOnly Property SalesYTD As Money
 			Get
-				Return If(mySalesYTD, New Money(mappedSalesYTD, Function(v) mappedSalesYTD = v))
+				Return If(mySalesYTD, New Money(mappedSalesYTD, Sub(v) mappedSalesYTD = v))
 			End Get
 		End Property
 
@@ -114,7 +114,7 @@
 		<MemberOrder(70)>
 		Public ReadOnly Property SalesLastYear As Money
 			Get
-				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Function(v) mappedSalesLastYear = v))
+				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Sub(v) mappedSalesLastYear = v))
 			End Get
 		End Property
 
@@ -177,7 +177,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

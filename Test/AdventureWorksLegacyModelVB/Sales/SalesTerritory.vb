@@ -14,7 +14,7 @@
 		<MemberOrder(10)>
 		Public ReadOnly Property Name As TextString
 			Get
-				Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+				Return If(myName, New TextString(mappedName, Sub(v) mappedName = v))
 			End Get
 		End Property
 
@@ -35,7 +35,7 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property CountryRegionCode As TextString
 			Get
-				Return If(myCountryRegionCode, New TextString(mappedCountryRegionCode, Function(v) mappedCountryRegionCode = v))
+				Return If(myCountryRegionCode, New TextString(mappedCountryRegionCode, Sub(v) mappedCountryRegionCode = v))
 			End Get
 		End Property
 
@@ -56,7 +56,7 @@
 		<MemberOrder(30)>
 		Public ReadOnly Property Group As TextString
 			Get
-				Return If(myGroup, New TextString(mappedGroup, Function(v) mappedGroup = v))
+				Return If(myGroup, New TextString(mappedGroup, Sub(v) mappedGroup = v))
 			End Get
 		End Property
 
@@ -77,7 +77,7 @@
 		<MemberOrder(40)>
 		Public ReadOnly Property SalesYTD As Money
 			Get
-				Return If(mySalesYTD, New Money(mappedSalesYTD, Function(v) mappedSalesYTD = v))
+				Return If(mySalesYTD, New Money(mappedSalesYTD, Sub(v) mappedSalesYTD = v))
 			End Get
 		End Property
 
@@ -98,7 +98,7 @@
 		<MemberOrder(41)>
 		Public ReadOnly Property SalesLastYear As Money
 			Get
-				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Function(v) mappedSalesLastYear = v))
+				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Sub(v) mappedSalesLastYear = v))
 			End Get
 		End Property
 
@@ -119,7 +119,7 @@
 		<MemberOrder(42)>
 		Public ReadOnly Property CostYTD As Money
 			Get
-				Return If(myCostYTD, New Money(mappedCostYTD, Function(v) mappedCostYTD = v))
+				Return If(myCostYTD, New Money(mappedCostYTD, Sub(v) mappedCostYTD = v))
 			End Get
 		End Property
 
@@ -140,7 +140,7 @@
 		<MemberOrder(43)>
 		Public ReadOnly Property CostLastYear As Money
 			Get
-				Return If(myCostLastYear, New Money(mappedCostLastYear, Function(v) mappedCostLastYear = v))
+				Return If(myCostLastYear, New Money(mappedCostLastYear, Sub(v) mappedCostLastYear = v))
 			End Get
 		End Property
 
@@ -185,7 +185,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

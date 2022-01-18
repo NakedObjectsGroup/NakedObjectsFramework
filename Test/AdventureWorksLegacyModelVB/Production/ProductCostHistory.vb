@@ -13,7 +13,7 @@
         <MemberOrder(1)>
         Public ReadOnly Property StartDate As NODate
             Get
-                Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
+                Return If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
             End Get
         End Property
 
@@ -32,7 +32,7 @@
         <MemberOrder(1)>
         Public ReadOnly Property EndDate As NODateNullable
             Get
-                Return If(myEndDate, New NODateNullable(mappedEndDate, Function(v) mappedEndDate = v))
+                Return If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
             End Get
         End Property
 
@@ -53,7 +53,7 @@
         <MemberOrder(1)>
         Public ReadOnly Property StandardCost As Money
             Get
-                Return If(myStandardCost, New Money(mappedStandardCost, Function(v) mappedStandardCost = v))
+                Return If(myStandardCost, New Money(mappedStandardCost, Sub(v) mappedStandardCost = v))
             End Get
         End Property
 
@@ -84,7 +84,7 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
             End Get
         End Property
 

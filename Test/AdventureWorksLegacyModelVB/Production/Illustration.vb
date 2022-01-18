@@ -11,7 +11,7 @@
         <MemberOrder(1)>
         Public ReadOnly Property Diagram As TextString
             Get
-                Return If(myDiagram, New TextString(mappedDiagram, Function(v) mappedDiagram = v))
+                Return If(myDiagram, New TextString(mappedDiagram, Sub(v) mappedDiagram = v))
             End Get
         End Property
 
@@ -52,7 +52,7 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
             End Get
         End Property
 

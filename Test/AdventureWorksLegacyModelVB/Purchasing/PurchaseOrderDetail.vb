@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class PurchaseOrderDetail
- Implements ITitledObject
+	Partial Public Class PurchaseOrderDetail
+
+		Implements ITitledObject
 
 		''<Hidden>
 		Public Property PurchaseOrderID() As Integer
@@ -16,7 +17,7 @@
 		<MemberOrder(26)>
 		Public ReadOnly Property DueDate As NODate
 			Get
-				Return If(myDueDate, New NODate(mappedDueDate, Function(v) mappedDueDate = v))
+				Return If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
 			End Get
 		End Property
 
@@ -37,7 +38,7 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property OrderQty As WholeNumber
 			Get
-				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
+				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Sub(v) mappedOrderQty = CType(v, Short)))
 			End Get
 		End Property
 
@@ -58,7 +59,7 @@
 		<MemberOrder(22)>
 		Public ReadOnly Property UnitPrice As Money
 			Get
-				Return If(myUnitPrice, New Money(mappedUnitPrice, Function(v) mappedUnitPrice = v))
+				Return If(myUnitPrice, New Money(mappedUnitPrice, Sub(v) mappedUnitPrice = v))
 			End Get
 		End Property
 
@@ -79,7 +80,7 @@
 		<MemberOrder(24)>
 		Public ReadOnly Property LineTotal As Money
 			Get
-				Return If(myLineTotal, New Money(mappedLineTotal, Function(v) mappedLineTotal = v))
+				Return If(myLineTotal, New Money(mappedLineTotal, Sub(v) mappedLineTotal = v))
 			End Get
 		End Property
 
@@ -100,7 +101,7 @@
 		<MemberOrder(30)>
 		Public ReadOnly Property ReceivedQty As FloatingPointNumber
 			Get
-				Return If(myReceivedQty, New FloatingPointNumber(mappedReceivedQty, Function(v) mappedReceivedQty = v))
+				Return If(myReceivedQty, New FloatingPointNumber(mappedReceivedQty, Sub(v) mappedReceivedQty = v))
 			End Get
 		End Property
 
@@ -120,7 +121,7 @@
 		<MemberOrder(32)>
 		Public ReadOnly Property RejectedQty As FloatingPointNumber
 			Get
-				Return If(myRejectedQty, New FloatingPointNumber(mappedRejectedQty, Function(v) mappedRejectedQty = v))
+				Return If(myRejectedQty, New FloatingPointNumber(mappedRejectedQty, Sub(v) mappedRejectedQty = v))
 			End Get
 		End Property
 
@@ -140,7 +141,7 @@
 		<MemberOrder(34)>
 		Public ReadOnly Property StockedQty As FloatingPointNumber
 			Get
-				Return If(myStockedQty, New FloatingPointNumber(mappedStockedQty, Function(v) mappedStockedQty = v))
+				Return If(myStockedQty, New FloatingPointNumber(mappedStockedQty, Sub(v) mappedStockedQty = v))
 			End Get
 		End Property
 
@@ -161,7 +162,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

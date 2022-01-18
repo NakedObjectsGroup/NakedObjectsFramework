@@ -15,7 +15,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property OperationSequence As WholeNumber
 			Get
-				Return If(myOperationSequence, New WholeNumber(mappedOperationSequence, Function(v) mappedOperationSequence = v))
+				Return If(myOperationSequence, New WholeNumber(mappedOperationSequence, Sub(v) mappedOperationSequence = CType(v, Short)))
 			End Get
 		End Property
 
@@ -36,7 +36,7 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property ScheduledStartDate As NODateNullable
 			Get
-				Return If(myScheduledStartDate, New NODateNullable(mappedScheduledStartDate, Function(v) mappedScheduledStartDate = v))
+				Return If(myScheduledStartDate, New NODateNullable(mappedScheduledStartDate, Sub(v) mappedScheduledStartDate = v))
 			End Get
 		End Property
 
@@ -57,7 +57,7 @@
 		<MemberOrder(22)>
 		Public ReadOnly Property ScheduledEndDate As NODateNullable
 			Get
-				Return If(myScheduledEndDate, New NODateNullable(mappedScheduledEndDate, Function(v) mappedScheduledEndDate = v))
+				Return If(myScheduledEndDate, New NODateNullable(mappedScheduledEndDate, Sub(v) mappedScheduledEndDate = v))
 			End Get
 		End Property
 
@@ -78,7 +78,7 @@
 		<MemberOrder(21)>
 		Public ReadOnly Property ActualStartDate As NODateNullable
 			Get
-				Return If(myActualStartDate, New NODateNullable(mappedActualStartDate, Function(v) mappedActualStartDate = v))
+				Return If(myActualStartDate, New NODateNullable(mappedActualStartDate, Sub(v) mappedActualStartDate = v))
 			End Get
 		End Property
 
@@ -99,7 +99,7 @@
 		<MemberOrder(23)>
 		Public ReadOnly Property ActualEndDate As NODateNullable
 			Get
-				Return If(myActualEndDate, New NODateNullable(mappedActualEndDate, Function(v) mappedActualEndDate = v))
+				Return If(myActualEndDate, New NODateNullable(mappedActualEndDate, Sub(v) mappedActualEndDate = v))
 			End Get
 		End Property
 
@@ -120,7 +120,7 @@
 		<MemberOrder(31)>
 		Public ReadOnly Property ActualResourceHrs As FloatingPointNumberNullable
 			Get
-				Return If(myActualResourceHrs, New FloatingPointNumberNullable(mappedActualResourceHrs, Function(v) mappedActualResourceHrs = v))
+				Return If(myActualResourceHrs, New FloatingPointNumberNullable(mappedActualResourceHrs, Sub(v) mappedActualResourceHrs = v))
 			End Get
 		End Property
 
@@ -141,7 +141,7 @@
 		<MemberOrder(40)>
 		Public ReadOnly Property PlannedCost As Money
 			Get
-				Return If(myPlannedCost, New Money(mappedPlannedCost, Function(v) mappedPlannedCost = v))
+				Return If(myPlannedCost, New Money(mappedPlannedCost, Sub(v) mappedPlannedCost = v))
 			End Get
 		End Property
 
@@ -162,7 +162,7 @@
 		<MemberOrder(41)>
 		Public ReadOnly Property ActualCost As MoneyNullable
 			Get
-				Return If(myActualCost, New MoneyNullable(mappedActualCost, Function(v) mappedActualCost = v))
+				Return If(myActualCost, New MoneyNullable(mappedActualCost, Sub(v) mappedActualCost = v))
 			End Get
 		End Property
 
@@ -199,7 +199,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

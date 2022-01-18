@@ -13,7 +13,7 @@
         <MemberOrder(13)>
         Public ReadOnly Property City As TextString
             Get
-                Return If(myCity, New TextString(mappedCity, Function(v) mappedCity = v))
+                Return If(myCity, New TextString(mappedCity, Sub(v) mappedCity = v))
             End Get
         End Property
 
@@ -34,7 +34,7 @@
         <MemberOrder(14)>
         Public ReadOnly Property PostalCode As TextString
             Get
-                Return If(myPostalCode, New TextString(mappedPostalCode, Function(v) mappedPostalCode = v))
+                Return If(myPostalCode, New TextString(mappedPostalCode, Sub(v) mappedPostalCode = v))
             End Get
         End Property
 
@@ -55,7 +55,7 @@
         <MemberOrder(11)>
         Public ReadOnly Property AddressLine1 As TextString
             Get
-                Return If(myAddressLine1, New TextString(mappedAddressLine1, Function(v) mappedAddressLine1 = v))
+                Return If(myAddressLine1, New TextString(mappedAddressLine1, Sub(v) mappedAddressLine1 = v))
             End Get
         End Property
 
@@ -76,7 +76,7 @@
         <MemberOrder(12)>
         Public ReadOnly Property AddressLine2 As TextString
             Get
-                Return If(myAddressLine2, New TextString(mappedAddressLine2, Function(v) mappedAddressLine2 = v))
+                Return If(myAddressLine2, New TextString(mappedAddressLine2, Sub(v) mappedAddressLine2 = v))
             End Get
         End Property
 
@@ -103,7 +103,7 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
             End Get
         End Property
 

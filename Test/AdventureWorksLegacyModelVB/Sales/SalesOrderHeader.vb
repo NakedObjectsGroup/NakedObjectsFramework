@@ -15,7 +15,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property SalesOrderNumber As TextString
 			Get
-				Return If(mySalesOrderNumber, New TextString(mappedSalesOrderNumber, Function(v) mappedSalesOrderNumber = v))
+				Return If(mySalesOrderNumber, New TextString(mappedSalesOrderNumber, Sub(v) mappedSalesOrderNumber = v))
 			End Get
 		End Property
 
@@ -69,7 +69,7 @@
 		<MemberOrder(5)>
 		Public ReadOnly Property PurchaseOrderNumber As TextString
 			Get
-				Return If(myPurchaseOrderNumber, New TextString(mappedPurchaseOrderNumber, Function(v) mappedPurchaseOrderNumber = v))
+				Return If(myPurchaseOrderNumber, New TextString(mappedPurchaseOrderNumber, Sub(v) mappedPurchaseOrderNumber = v))
 			End Get
 		End Property
 
@@ -102,7 +102,7 @@
 		<MemberOrder(12)>
 		Public ReadOnly Property AccountNumber As TextString
 			Get
-				Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
+				Return If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
 			End Get
 		End Property
 
@@ -123,7 +123,7 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property OrderDate As NODate
 			Get
-				Return If(myOrderDate, New NODate(mappedOrderDate, Function(v) mappedOrderDate = v))
+				Return If(myOrderDate, New NODate(mappedOrderDate, Sub(v) mappedOrderDate = v))
 			End Get
 		End Property
 
@@ -144,7 +144,7 @@
 		<MemberOrder(21)>
 		Public ReadOnly Property DueDate As NODate
 			Get
-				Return If(myDueDate, New NODate(mappedDueDate, Function(v) mappedDueDate = v))
+				Return If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
 			End Get
 		End Property
 
@@ -165,7 +165,7 @@
 		<MemberOrder(22)>
 		Public ReadOnly Property ShipDate As NODateNullable
 			Get
-				Return If(myShipDate, New NODateNullable(mappedShipDate, Function(v) mappedShipDate = v))
+				Return If(myShipDate, New NODateNullable(mappedShipDate, Sub(v) mappedShipDate = v))
 			End Get
 		End Property
 
@@ -186,7 +186,7 @@
 		<MemberOrder(31)>
 		Public ReadOnly Property SubTotal As Money
 			Get
-				Return If(mySubTotal, New Money(mappedSubTotal, Function(v) mappedSubTotal = v))
+				Return If(mySubTotal, New Money(mappedSubTotal, Sub(v) mappedSubTotal = v))
 			End Get
 		End Property
 
@@ -207,7 +207,7 @@
 		<MemberOrder(32)>
 		Public ReadOnly Property TaxAmt As Money
 			Get
-				Return If(myTaxAmt, New Money(mappedTaxAmt, Function(v) mappedTaxAmt = v))
+				Return If(myTaxAmt, New Money(mappedTaxAmt, Sub(v) mappedTaxAmt = v))
 			End Get
 		End Property
 
@@ -228,7 +228,7 @@
 		<MemberOrder(33)>
 		Public ReadOnly Property Freight As Money
 			Get
-				Return If(myFreight, New Money(mappedFreight, Function(v) mappedFreight = v))
+				Return If(myFreight, New Money(mappedFreight, Sub(v) mappedFreight = v))
 			End Get
 		End Property
 
@@ -249,7 +249,7 @@
 		<MemberOrder(34)>
 		Public ReadOnly Property TotalDue As Money
 			Get
-				Return If(myTotalDue, New Money(mappedTotalDue, Function(v) mappedTotalDue = v))
+				Return If(myTotalDue, New Money(mappedTotalDue, Sub(v) mappedTotalDue = v))
 			End Get
 		End Property
 
@@ -276,7 +276,7 @@
 		<MemberOrder(41)>
 		Public ReadOnly Property OnlineOrder As Logical
 			Get
-				Return If(myOnlineOrder, New Logical(mappedOnlineOrder, Function(v) mappedOnlineOrder = v))
+				Return If(myOnlineOrder, New Logical(mappedOnlineOrder, Sub(v) mappedOnlineOrder = v))
 			End Get
 		End Property
 
@@ -307,7 +307,7 @@
 		<MemberOrder(43)>
 		Public ReadOnly Property CreditCardApprovalCode As TextString
 			Get
-				Return If(myCreditCardApprovalCode, New TextString(mappedCreditCardApprovalCode, Function(v) mappedCreditCardApprovalCode = v))
+				Return If(myCreditCardApprovalCode, New TextString(mappedCreditCardApprovalCode, Sub(v) mappedCreditCardApprovalCode = v))
 			End Get
 		End Property
 
@@ -329,9 +329,11 @@
 		<MemberOrder(51)>
 		Public ReadOnly Property RevisionNumber As WholeNumber
 			Get
-				Return If(myRevisionNumber, New WholeNumber(mappedRevisionNumber, Function(v) mappedRevisionNumber = v))
+				Return If(myRevisionNumber, New WholeNumber(mappedRevisionNumber, Sub(v) mappedRevisionNumber = CType(v, Byte)))
 			End Get
 		End Property
+
+
 
 		Public Sub AboutRevisionNumber(a As FieldAbout, RevisionNumber As WholeNumber)
 			Select Case a.TypeCode
@@ -350,7 +352,7 @@
 		<MemberOrder(52)>
 		Public ReadOnly Property Comment As TextString
 			Get
-				Return If(myComment, New TextString(mappedComment, Function(v) mappedComment = v))
+				Return If(myComment, New TextString(mappedComment, Sub(v) mappedComment = v))
 			End Get
 		End Property
 
@@ -392,7 +394,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

@@ -15,7 +15,7 @@
         <MemberOrder(1)>
         Public ReadOnly Property PhoneNumber As TextString
             Get
-                Return If(myPhoneNumber, New TextString(mappedPhoneNumber, Function(v) mappedPhoneNumber = v))
+                Return If(myPhoneNumber, New TextString(mappedPhoneNumber, Sub(v) mappedPhoneNumber = v))
             End Get
         End Property
 
@@ -40,7 +40,7 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
             End Get
         End Property
 

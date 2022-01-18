@@ -14,7 +14,7 @@
 		<MemberOrder(22)>
 		Public ReadOnly Property StockedQty As WholeNumber
 			Get
-				Return If(myStockedQty, New WholeNumber(mappedStockedQty, Function(v) mappedStockedQty = v))
+				Return If(myStockedQty, New WholeNumber(mappedStockedQty, Sub(v) mappedStockedQty = v))
 			End Get
 		End Property
 
@@ -35,7 +35,7 @@
 		<MemberOrder(24)>
 		Public ReadOnly Property ScrappedQty As WholeNumber
 			Get
-				Return If(myScrappedQty, New WholeNumber(mappedScrappedQty, Function(v) mappedScrappedQty = v))
+				Return If(myScrappedQty, New WholeNumber(mappedScrappedQty, Sub(v) mappedScrappedQty = CType(v, Short)))
 			End Get
 		End Property
 
@@ -56,7 +56,7 @@
 		<MemberOrder(32)>
 		Public ReadOnly Property EndDate As NODateNullable
 			Get
-				Return If(myEndDate, New NODateNullable(mappedEndDate, Function(v) mappedEndDate = v))
+				Return If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
 			End Get
 		End Property
 
@@ -82,7 +82,7 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property OrderQty As WholeNumber
 			Get
-				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Function(v) mappedOrderQty = v))
+				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Sub(v) mappedOrderQty = v))
 			End Get
 		End Property
 
@@ -103,7 +103,7 @@
 		<MemberOrder(30)>
 		Public ReadOnly Property StartDate As NODate
 			Get
-				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
+				Return If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
 			End Get
 		End Property
 
@@ -124,7 +124,7 @@
 		<MemberOrder(34)>
 		Public ReadOnly Property DueDate As NODate
 			Get
-				Return If(myDueDate, New NODate(mappedDueDate, Function(v) mappedDueDate = v))
+				Return If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
 			End Get
 		End Property
 
@@ -176,7 +176,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

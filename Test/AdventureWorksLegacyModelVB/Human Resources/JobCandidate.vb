@@ -12,7 +12,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property Resumee As TextString
 			Get
-				Return If(myResume, New TextString(mappedResume, Function(v) mappedResume = v))
+				Return If(myResume, New TextString(mappedResume, Sub(v) mappedResume = v))
 			End Get
 		End Property
 
@@ -38,7 +38,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

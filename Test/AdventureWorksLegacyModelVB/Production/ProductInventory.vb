@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class ProductInventory
- Implements ITitledObject
+	Partial Public Class ProductInventory
+
+		Implements ITitledObject
 
 		Public Property ProductID() As Integer
 
@@ -14,7 +15,7 @@
 		<MemberOrder(40)>
 		Public ReadOnly Property Shelf As TextString
 			Get
-				Return If(myShelf, New TextString(mappedShelf, Function(v) mappedShelf = v))
+				Return If(myShelf, New TextString(mappedShelf, Sub(v) mappedShelf = v))
 			End Get
 		End Property
 
@@ -35,7 +36,7 @@
 		<MemberOrder(50)>
 		Public ReadOnly Property Bin As WholeNumber
 			Get
-				Return If(myBin, New WholeNumber(mappedBin, Function(v) mappedBin = v))
+				Return If(myBin, New WholeNumber(mappedBin, Sub(v) mappedBin = CType(v, Byte)))
 			End Get
 		End Property
 
@@ -56,7 +57,7 @@
 		<MemberOrder(10)>
 		Public ReadOnly Property Quantity As WholeNumber
 			Get
-				Return If(myQuantity, New WholeNumber(mappedQuantity, Function(v) mappedQuantity = v))
+				Return If(myQuantity, New WholeNumber(mappedQuantity, Sub(v) mappedQuantity = CType(v, Short)))
 			End Get
 		End Property
 
@@ -83,7 +84,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

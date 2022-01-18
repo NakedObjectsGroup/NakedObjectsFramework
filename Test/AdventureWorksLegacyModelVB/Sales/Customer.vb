@@ -22,7 +22,7 @@ Namespace AW.Types
 		<MemberOrder(10)>
 		Public ReadOnly Property AccountNumber As TextString
 			Get
-				Return If(myAccountNumber, New TextString(mappedAccountNumber, Function(v) mappedAccountNumber = v))
+				Return If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
 			End Get
 		End Property
 

@@ -20,7 +20,7 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property Name As TextString
             Get
-                Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+                Return If(myName, New TextString(mappedName, Sub(v) mappedName = v))
             End Get
         End Property
 
@@ -41,7 +41,7 @@ Namespace AW.Types
         <MemberOrder(2)>
         Public ReadOnly Property ProductNumber As TextString
             Get
-                Return If(myProductNumber, New TextString(mappedProductNumber, Function(v) mappedProductNumber = v))
+                Return If(myProductNumber, New TextString(mappedProductNumber, Sub(v) mappedProductNumber = v))
             End Get
         End Property
 
@@ -62,7 +62,7 @@ Namespace AW.Types
         <MemberOrder(3)>
         Public ReadOnly Property Color As TextString
             Get
-                Return If(myColor, New TextString(mappedColor, Function(v) mappedColor = v))
+                Return If(myColor, New TextString(mappedColor, Sub(v) mappedColor = v))
             End Get
         End Property
 
@@ -93,7 +93,7 @@ Namespace AW.Types
         <MemberOrder(12)>
         Public ReadOnly Property ListPrice As Money
             Get
-                Return If(myListPrice, New Money(mappedListPrice, Function(v) mappedListPrice = v))
+                Return If(myListPrice, New Money(mappedListPrice, Sub(v) mappedListPrice = v))
             End Get
         End Property
 
@@ -124,7 +124,7 @@ Namespace AW.Types
         <MemberOrder(15)>
         Public ReadOnly Property ProductLine As TextString
             Get
-                Return If(myProductLine, New TextString(mappedProductLine, Function(v) mappedProductLine = v))
+                Return If(myProductLine, New TextString(mappedProductLine, Sub(v) mappedProductLine = v))
             End Get
         End Property
 
@@ -186,7 +186,7 @@ Namespace AW.Types
         <MemberOrder(18)>
         Public ReadOnly Property Style As TextString
             Get
-                Return If(myStyle, New TextString(mappedStyle, Function(v) mappedStyle = v))
+                Return If(myStyle, New TextString(mappedStyle, Sub(v) mappedStyle = v))
             End Get
         End Property
 
@@ -207,7 +207,7 @@ Namespace AW.Types
         <MemberOrder(19)>
         Public ReadOnly Property [Class] As TextString
             Get
-                Return If(My_Class, New TextString(mappedClass, Function(v) mappedClass = v))
+                Return If(My_Class, New TextString(mappedClass, Sub(v) mappedClass = v))
             End Get
         End Property
 
@@ -228,7 +228,7 @@ Namespace AW.Types
         <MemberOrder(20)>
         Public ReadOnly Property Make As Logical
             Get
-                Return If(myMake, New Logical(mappedMake, Function(v) mappedMake = v))
+                Return If(myMake, New Logical(mappedMake, Sub(v) mappedMake = v))
             End Get
         End Property
 
@@ -249,7 +249,7 @@ Namespace AW.Types
         <MemberOrder(21)>
         Public ReadOnly Property FinishedGoods As Logical
             Get
-                Return If(myFinishedGoods, New Logical(mappedFinishedGoods, Function(v) mappedFinishedGoods = v))
+                Return If(myFinishedGoods, New Logical(mappedFinishedGoods, Sub(v) mappedFinishedGoods = v))
             End Get
         End Property
 
@@ -270,7 +270,7 @@ Namespace AW.Types
         <MemberOrder(22)>
         Public ReadOnly Property SafetyStockLevel As WholeNumber
             Get
-                Return If(mySafetyStockLevel, New WholeNumber(mappedSafetyStockLevel, Function(v) mappedSafetyStockLevel = v))
+                Return If(mySafetyStockLevel, New WholeNumber(mappedSafetyStockLevel, Sub(v) mappedSafetyStockLevel = CType(v, Short)))
             End Get
         End Property
 
@@ -291,7 +291,7 @@ Namespace AW.Types
         <MemberOrder(23)>
         Public ReadOnly Property ReorderPoint As WholeNumber
             Get
-                Return If(myReorderPoint, New WholeNumber(mappedReorderPoint, Function(v) mappedReorderPoint = v))
+                Return If(myReorderPoint, New WholeNumber(mappedReorderPoint, Sub(v) mappedReorderPoint = CType(v, Short)))
             End Get
         End Property
 
@@ -312,7 +312,7 @@ Namespace AW.Types
         <MemberOrder(24)>
         Public ReadOnly Property DaysToManufacture As WholeNumber
             Get
-                Return If(myDaysToManufacture, New WholeNumber(mappedDaysToManufacture, Function(v) mappedDaysToManufacture = v))
+                Return If(myDaysToManufacture, New WholeNumber(mappedDaysToManufacture, Sub(v) mappedDaysToManufacture = v))
             End Get
         End Property
 
@@ -333,7 +333,7 @@ Namespace AW.Types
         <MemberOrder(81)>
         Public ReadOnly Property SellStartDate As NODate
             Get
-                Return If(mySellStartDate, New NODate(mappedSellStartDate, Function(v) mappedSellStartDate = v))
+                Return If(mySellStartDate, New NODate(mappedSellStartDate, Sub(v) mappedSellStartDate = v))
             End Get
         End Property
 
@@ -354,7 +354,7 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property SellEndDate As NODateNullable
             Get
-                Return If(mySellEndDate, New NODateNullable(mappedSellEndDate, Function(v) mappedSellEndDate = v))
+                Return If(mySellEndDate, New NODateNullable(mappedSellEndDate, Sub(v) mappedSellEndDate = v))
             End Get
         End Property
 
@@ -375,7 +375,7 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property DiscontinuedDate As NODateNullable
             Get
-                Return If(myDiscontinuedDate, New NODateNullable(mappedDiscontinuedDate, Function(v) mappedDiscontinuedDate = v))
+                Return If(myDiscontinuedDate, New NODateNullable(mappedDiscontinuedDate, Sub(v) mappedDiscontinuedDate = v))
             End Get
         End Property
 
@@ -417,7 +417,7 @@ Namespace AW.Types
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
             End Get
         End Property
 
@@ -484,7 +484,7 @@ Namespace AW.Types
 
         Public ReadOnly Property Size As TextString
             Get
-                Return If(mySize, New TextString(mappedSize, Function(v) mappedSize = v))
+                Return If(mySize, New TextString(mappedSize, Sub(v) mappedSize = v))
             End Get
         End Property
 
@@ -503,7 +503,7 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property SizeUnitMeasureCode As TextString
             Get
-                Return If(mySizeUnitMeasureCode, New TextString(mappedSizeUnitMeasureCode, Function(v) mappedSizeUnitMeasureCode = v))
+                Return If(mySizeUnitMeasureCode, New TextString(mappedSizeUnitMeasureCode, Sub(v) mappedSizeUnitMeasureCode = v))
             End Get
         End Property
 

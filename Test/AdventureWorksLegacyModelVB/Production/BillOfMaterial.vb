@@ -13,7 +13,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property StartDate As NODate
 			Get
-				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
+				Return If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
 			End Get
 		End Property
 
@@ -34,7 +34,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property EndDate As NODateNullable
 			Get
-				Return If(myEndDate, New NODateNullable(mappedEndDate, Function(v) mappedEndDate = v))
+				Return If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
 			End Get
 		End Property
 
@@ -55,7 +55,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property BOMLevel As WholeNumber
 			Get
-				Return If(myBOMLevel, New WholeNumber(mappedBOMLevel, Function(v) mappedBOMLevel = v))
+				Return If(myBOMLevel, New WholeNumber(mappedBOMLevel, Sub(v) mappedBOMLevel = CType(v, Short)))
 			End Get
 		End Property
 
@@ -76,7 +76,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property PerAssemblyQty As FloatingPointNumber
 			Get
-				Return If(myPerAssemblyQty, New FloatingPointNumber(mappedPerAssemblyQty, Function(v) mappedPerAssemblyQty = v))
+				Return If(myPerAssemblyQty, New FloatingPointNumber(mappedPerAssemblyQty, Sub(v) mappedPerAssemblyQty = v))
 			End Get
 		End Property
 
@@ -109,7 +109,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

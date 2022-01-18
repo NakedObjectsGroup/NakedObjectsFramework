@@ -14,7 +14,7 @@
 		<MemberOrder(10)>
 		Public ReadOnly Property Description As TextString
 			Get
-				Return If(myDescription, New TextString(mappedDescription, Function(v) mappedDescription = v))
+				Return If(myDescription, New TextString(mappedDescription, Sub(v) mappedDescription = v))
 			End Get
 		End Property
 
@@ -35,7 +35,7 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property DiscountPct As Percentage
 			Get
-				Return If(myDiscountPct, New Percentage(mappedDiscountPct, Function(v) mappedDiscountPct = v))
+				Return If(myDiscountPct, New Percentage(mappedDiscountPct, Sub(v) mappedDiscountPct = v))
 			End Get
 		End Property
 
@@ -56,7 +56,7 @@
 		<MemberOrder(30)>
 		Public ReadOnly Property Type As TextString
 			Get
-				Return If(myType, New TextString(mappedType, Function(v) mappedType = v))
+				Return If(myType, New TextString(mappedType, Sub(v) mappedType = v))
 			End Get
 		End Property
 
@@ -77,7 +77,7 @@
 		<MemberOrder(40)>
 		Public ReadOnly Property Category As TextString
 			Get
-				Return If(myCategory, New TextString(mappedCategory, Function(v) mappedCategory = v))
+				Return If(myCategory, New TextString(mappedCategory, Sub(v) mappedCategory = v))
 			End Get
 		End Property
 
@@ -98,7 +98,7 @@
 		<MemberOrder(51)>
 		Public ReadOnly Property StartDate As NODate
 			Get
-				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
+				Return If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
 			End Get
 		End Property
 
@@ -119,7 +119,7 @@
 		<MemberOrder(52)>
 		Public ReadOnly Property EndDate As NODate
 			Get
-				Return If(myEndDate, New NODate(mappedEndDate, Function(v) mappedEndDate = v))
+				Return If(myEndDate, New NODate(mappedEndDate, Sub(v) mappedEndDate = v))
 			End Get
 		End Property
 
@@ -140,7 +140,7 @@
 		<MemberOrder(61)>
 		Public ReadOnly Property MinQty As WholeNumber
 			Get
-				Return If(myMinQty, New WholeNumber(mappedMinQty, Function(v) mappedMinQty = v))
+				Return If(myMinQty, New WholeNumber(mappedMinQty, Sub(v) mappedMinQty = v))
 			End Get
 		End Property
 
@@ -161,7 +161,7 @@
 		<MemberOrder(62)>
 		Public ReadOnly Property MaxQty As WholeNumberNullable
 			Get
-				Return If(myMaxQty, New WholeNumberNullable(mappedMaxQty, Function(v) mappedMaxQty = v))
+				Return If(myMaxQty, New WholeNumberNullable(mappedMaxQty, Sub(v) mappedMaxQty = v))
 			End Get
 		End Property
 
@@ -182,7 +182,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

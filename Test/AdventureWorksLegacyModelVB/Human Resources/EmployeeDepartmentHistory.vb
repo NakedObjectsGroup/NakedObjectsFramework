@@ -17,7 +17,7 @@
 		<MemberOrder(4)>
 		Public ReadOnly Property StartDate As NODate
 			Get
-				Return If(myStartDate, New NODate(mappedStartDate, Function(v) mappedStartDate = v))
+				Return If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
 			End Get
 		End Property
 
@@ -38,7 +38,7 @@
 		<MemberOrder(5)>
 		Public ReadOnly Property EndDate As NODateNullable
 			Get
-				Return If(myEndDate, New NODateNullable(mappedEndDate, Function(v) mappedEndDate = v))
+				Return If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
 			End Get
 		End Property
 
@@ -68,7 +68,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 

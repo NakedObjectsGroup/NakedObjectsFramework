@@ -12,7 +12,7 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property ReviewerName As TextString
 			Get
-				Return If(myReviewerName, New TextString(mappedReviewerName, Function(v) mappedReviewerName = v))
+				Return If(myReviewerName, New TextString(mappedReviewerName, Sub(v) mappedReviewerName = v))
 			End Get
 		End Property
 
@@ -33,7 +33,7 @@
 		<MemberOrder(2)>
 		Public ReadOnly Property ReviewDate As NODate
 			Get
-				Return If(myReviewDate, New NODate(mappedReviewDate, Function(v) mappedReviewDate = v))
+				Return If(myReviewDate, New NODate(mappedReviewDate, Sub(v) mappedReviewDate = v))
 			End Get
 		End Property
 
@@ -54,7 +54,7 @@
 		<MemberOrder(3)>
 		Public ReadOnly Property EmailAddress As TextString
 			Get
-				Return If(myEmailAddress, New TextString(mappedEmailAddress, Function(v) mappedEmailAddress = v))
+				Return If(myEmailAddress, New TextString(mappedEmailAddress, Sub(v) mappedEmailAddress = v))
 			End Get
 		End Property
 
@@ -75,7 +75,7 @@
 		<MemberOrder(4)>
 		Public ReadOnly Property Rating As WholeNumber
 			Get
-				Return If(myRating, New WholeNumber(mappedRating, Function(v) mappedRating = v))
+				Return If(myRating, New WholeNumber(mappedRating, Sub(v) mappedRating = v))
 			End Get
 		End Property
 
@@ -96,7 +96,7 @@
 		<MemberOrder(5)>
 		Public ReadOnly Property Comments As TextString
 			Get
-				Return If(myComments, New TextString(mappedComments, Function(v) mappedComments = v))
+				Return If(myComments, New TextString(mappedComments, Sub(v) mappedComments = v))
 			End Get
 		End Property
 
@@ -128,7 +128,7 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
 			End Get
 		End Property
 
