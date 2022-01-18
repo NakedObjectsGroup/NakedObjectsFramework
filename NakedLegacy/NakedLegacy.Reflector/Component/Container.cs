@@ -43,6 +43,6 @@ public class Container : IContainer {
         }
 
         framework.LifecycleManager.MakePersistent(adapter);
-        transientObject = adapter.GetDomainObject();
+        transientObject = (T) adapter.GetDomainObject();
     }
 }
