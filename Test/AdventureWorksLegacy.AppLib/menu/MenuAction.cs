@@ -3,8 +3,14 @@ namespace AdventureWorksLegacy.AppLib;
 
 public class MenuAction : IMenuAction
 {
-    public MenuAction(string name) => Name = name.ToLower().StartsWith("action")  ? name : "Action" + name;
+    public MenuAction(string methodName, string displayName = null)
+    {
+        Name = methodName.ToLower().StartsWith("action") ? methodName : "Action" + methodName;
+        DisplayName = displayName;
+    }
 
     public string Name { get; init; }
+
+    public string DisplayName { get; init; }
 }
 
