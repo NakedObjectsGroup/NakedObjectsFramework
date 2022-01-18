@@ -29,7 +29,8 @@ Namespace AW.Types
         ''<TableView(False, NameOf(BusinessEntityAddress.AddressType), NameOf(BusinessEntityAddress.Address))>
         Public ReadOnly Property Addresses As InternalCollection
             Get
-                Return If(myAddresses, New InternalCollection(Of BusinessEntityAddress)(mappedAddresses))
+                myAddresses = If(myAddresses, New InternalCollection(Of BusinessEntityAddress)(mappedAddresses))
+                Return myAddresses
             End Get
         End Property
 
@@ -48,7 +49,8 @@ Namespace AW.Types
         ''<TableView(False, NameOf(BusinessEntityContact.ContactType), NameOf(BusinessEntityContact.Person))>
         Public ReadOnly Property Contacts As InternalCollection
             Get
-                Return If(myContacts, New InternalCollection(Of BusinessEntityContact)(mappedContacts))
+                myContacts = If(myContacts, New InternalCollection(Of BusinessEntityContact)(mappedContacts))
+                Return myContacts
             End Get
         End Property
 

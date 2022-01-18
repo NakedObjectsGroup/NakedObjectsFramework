@@ -13,7 +13,8 @@
         <MemberOrder(10)>
         Public ReadOnly Property Name As TextString
             Get
-                Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+                myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+Return myName
             End Get
         End Property
 
@@ -54,7 +55,8 @@
         <MemberOrder(30)>
         Public ReadOnly Property Instructions As TextString
             Get
-                Return If(myInstructions, New TextString(mappedInstructions, Function(v) mappedInstructions = v))
+                myInstructions = If(myInstructions, New TextString(mappedInstructions, Sub(v) mappedInstructions = v))
+Return myInstructions
             End Get
         End Property
 
@@ -77,7 +79,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property ProductVariants As InternalCollection
             Get
-                Return If(myProductVariants, New InternalCollection(Of Product)(mappedProductVariants))
+                myProductVariants = If(myProductVariants, New InternalCollection(Of Product)(mappedProductVariants))
+Return myProductVariants
             End Get
         End Property
 
@@ -102,7 +105,8 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
             End Get
         End Property
 

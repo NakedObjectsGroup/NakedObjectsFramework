@@ -12,7 +12,8 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property ReviewerName As TextString
 			Get
-				Return If(myReviewerName, New TextString(mappedReviewerName, Function(v) mappedReviewerName = v))
+				myReviewerName = If(myReviewerName, New TextString(mappedReviewerName, Sub(v) mappedReviewerName = v))
+Return myReviewerName
 			End Get
 		End Property
 
@@ -33,7 +34,8 @@
 		<MemberOrder(2)>
 		Public ReadOnly Property ReviewDate As NODate
 			Get
-				Return If(myReviewDate, New NODate(mappedReviewDate, Function(v) mappedReviewDate = v))
+				myReviewDate = If(myReviewDate, New NODate(mappedReviewDate, Sub(v) mappedReviewDate = v))
+Return myReviewDate
 			End Get
 		End Property
 
@@ -54,7 +56,8 @@
 		<MemberOrder(3)>
 		Public ReadOnly Property EmailAddress As TextString
 			Get
-				Return If(myEmailAddress, New TextString(mappedEmailAddress, Function(v) mappedEmailAddress = v))
+				myEmailAddress = If(myEmailAddress, New TextString(mappedEmailAddress, Sub(v) mappedEmailAddress = v))
+Return myEmailAddress
 			End Get
 		End Property
 
@@ -75,7 +78,8 @@
 		<MemberOrder(4)>
 		Public ReadOnly Property Rating As WholeNumber
 			Get
-				Return If(myRating, New WholeNumber(mappedRating, Function(v) mappedRating = v))
+				myRating = If(myRating, New WholeNumber(mappedRating, Sub(v) mappedRating = v))
+Return myRating
 			End Get
 		End Property
 
@@ -96,7 +100,8 @@
 		<MemberOrder(5)>
 		Public ReadOnly Property Comments As TextString
 			Get
-				Return If(myComments, New TextString(mappedComments, Function(v) mappedComments = v))
+				myComments = If(myComments, New TextString(mappedComments, Sub(v) mappedComments = v))
+Return myComments
 			End Get
 		End Property
 
@@ -128,7 +133,8 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
 			End Get
 		End Property
 

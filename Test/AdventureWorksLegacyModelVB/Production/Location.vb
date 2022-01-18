@@ -14,7 +14,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property Name As TextString
             Get
-                Return If(myName, New TextString(mappedName, Function(v) mappedName = v))
+                myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+Return myName
             End Get
         End Property
 
@@ -35,7 +36,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property CostRate As Money
             Get
-                Return If(myCostRate, New Money(mappedCostRate, Function(v) mappedCostRate = v))
+                myCostRate = If(myCostRate, New Money(mappedCostRate, Sub(v) mappedCostRate = v))
+Return myCostRate
             End Get
         End Property
 
@@ -56,7 +58,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property Availability As Money
             Get
-                Return If(myAvailability, New Money(mappedAvailability, Function(v) mappedAvailability = v))
+                myAvailability = If(myAvailability, New Money(mappedAvailability, Sub(v) mappedAvailability = v))
+Return myAvailability
             End Get
         End Property
 
@@ -77,7 +80,8 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
             End Get
         End Property
 

@@ -18,7 +18,8 @@ Namespace AW.Types
         <MemberOrder(10)>
         Public ReadOnly Property NationalIDNumber As TextString
             Get
-                Return If(myNationalIDNumber, New TextString(mappedNationalIDNumber, Function(v) mappedNationalIDNumber = v))
+                myNationalIDNumber = If(myNationalIDNumber, New TextString(mappedNationalIDNumber, Sub(v) mappedNationalIDNumber = v))
+                Return myNationalIDNumber
             End Get
         End Property
 
@@ -39,7 +40,8 @@ Namespace AW.Types
         <MemberOrder(12)>
         Public ReadOnly Property JobTitle As TextString
             Get
-                Return If(myJobTitle, New TextString(mappedJobTitle, Function(v) mappedJobTitle = v))
+                myJobTitle = If(myJobTitle, New TextString(mappedJobTitle, Sub(v) mappedJobTitle = v))
+                Return myJobTitle
             End Get
         End Property
 
@@ -60,7 +62,8 @@ Namespace AW.Types
         <MemberOrder(13)>
         Public ReadOnly Property DateOfBirth As NODateNullable
             Get
-                Return If(myDateOfBirth, New NODateNullable(mappedDateOfBirth, Function(v) mappedDateOfBirth = v))
+                myDateOfBirth = If(myDateOfBirth, New NODateNullable(mappedDateOfBirth, Sub(v) mappedDateOfBirth = v))
+                Return myDateOfBirth
             End Get
         End Property
 
@@ -81,7 +84,8 @@ Namespace AW.Types
         <MemberOrder(14)>
         Public ReadOnly Property MaritalStatus As TextString
             Get
-                Return If(myMaritalStatus, New TextString(mappedMaritalStatus, Function(v) mappedMaritalStatus = v))
+                myMaritalStatus = If(myMaritalStatus, New TextString(mappedMaritalStatus, Sub(v) mappedMaritalStatus = v))
+                Return myMaritalStatus
             End Get
         End Property
 
@@ -102,7 +106,8 @@ Namespace AW.Types
         <MemberOrder(15)>
         Public ReadOnly Property Gender As TextString
             Get
-                Return If(myGender, New TextString(mappedGender, Function(v) mappedGender = v))
+                myGender = If(myGender, New TextString(mappedGender, Sub(v) mappedGender = v))
+                Return myGender
             End Get
         End Property
 
@@ -123,7 +128,8 @@ Namespace AW.Types
         <MemberOrder(16)>
         Public ReadOnly Property HireDate As NODateNullable
             Get
-                Return If(myHireDate, New NODateNullable(mappedHireDate, Function(v) mappedHireDate = v))
+                myHireDate = If(myHireDate, New NODateNullable(mappedHireDate, Sub(v) mappedHireDate = v))
+                Return myHireDate
             End Get
         End Property
 
@@ -144,7 +150,8 @@ Namespace AW.Types
         <MemberOrder(17)>
         Public ReadOnly Property Salaried As Logical
             Get
-                Return If(mySalaried, New Logical(mappedSalaried, Function(v) mappedSalaried = v))
+                mySalaried = If(mySalaried, New Logical(mappedSalaried, Sub(v) mappedSalaried = v))
+                Return mySalaried
             End Get
         End Property
 
@@ -165,7 +172,8 @@ Namespace AW.Types
         <MemberOrder(18)>
         Public ReadOnly Property VacationHours As WholeNumber
             Get
-                Return If(myVacationHours, New WholeNumber(mappedVacationHours, Function(v) mappedVacationHours = v))
+                myVacationHours = If(myVacationHours, New WholeNumber(mappedVacationHours, Sub(v) mappedVacationHours = CType(v, Short)))
+                Return myVacationHours
             End Get
         End Property
 
@@ -186,7 +194,8 @@ Namespace AW.Types
         <MemberOrder(19)>
         Public ReadOnly Property SickLeaveHours As WholeNumber
             Get
-                Return If(mySickLeaveHours, New WholeNumber(mappedSickLeaveHours, Function(v) mappedSickLeaveHours = v))
+                mySickLeaveHours = If(mySickLeaveHours, New WholeNumber(mappedSickLeaveHours, Sub(v) mappedSickLeaveHours = CType(v, Short)))
+                Return mySickLeaveHours
             End Get
         End Property
 
@@ -207,7 +216,8 @@ Namespace AW.Types
         <MemberOrder(20)>
         Public ReadOnly Property Current As Logical
             Get
-                Return If(myCurrent, New Logical(mappedCurrent, Function(v) mappedCurrent = v))
+                myCurrent = If(myCurrent, New Logical(mappedCurrent, Sub(v) mappedCurrent = v))
+                Return myCurrent
             End Get
         End Property
 
@@ -232,7 +242,8 @@ Namespace AW.Types
         <MemberOrder(11)>
         Public ReadOnly Property LoginID As TextString
             Get
-                Return If(myLoginID, New TextString(mappedLoginID, Function(v) mappedLoginID = v))
+                myLoginID = If(myLoginID, New TextString(mappedLoginID, Sub(v) mappedLoginID = v))
+                Return myLoginID
             End Get
         End Property
 
@@ -257,7 +268,8 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property DepartmentHistory As InternalCollection
             Get
-                Return If(myDepartmentHistory, New InternalCollection(Of EmployeeDepartmentHistory)(mappedDepartmentHistory))
+                myDepartmentHistory = If(myDepartmentHistory, New InternalCollection(Of EmployeeDepartmentHistory)(mappedDepartmentHistory))
+                Return myDepartmentHistory
             End Get
         End Property
 
@@ -277,7 +289,8 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property PayHistory As InternalCollection
             Get
-                Return If(myPayHistory, New InternalCollection(Of EmployeePayHistory)(mappedPayHistory))
+                myPayHistory = If(myPayHistory, New InternalCollection(Of EmployeePayHistory)(mappedPayHistory))
+                Return myPayHistory
             End Get
         End Property
 
@@ -297,7 +310,8 @@ Namespace AW.Types
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                Return myModifiedDate
             End Get
         End Property
 

@@ -13,7 +13,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property CurrencyRateDate As NODate
             Get
-                Return If(myCurrencyRateDate, New NODate(mappedCurrencyRateDate, Function(v) mappedCurrencyRateDate = v))
+                myCurrencyRateDate = If(myCurrencyRateDate, New NODate(mappedCurrencyRateDate, Sub(v) mappedCurrencyRateDate = v))
+Return myCurrencyRateDate
             End Get
         End Property
 
@@ -34,7 +35,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property AverageRate As Money
             Get
-                Return If(myAverageRate, New Money(mappedAverageRate, Function(v) mappedAverageRate = v))
+                myAverageRate = If(myAverageRate, New Money(mappedAverageRate, Sub(v) mappedAverageRate = v))
+Return myAverageRate
             End Get
         End Property
 
@@ -55,7 +57,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property EndOfDayRate As Money
             Get
-                Return If(myEndOfDayRate, New Money(mappedEndOfDayRate, Function(v) mappedEndOfDayRate = v))
+                myEndOfDayRate = If(myEndOfDayRate, New Money(mappedEndOfDayRate, Sub(v) mappedEndOfDayRate = v))
+Return myEndOfDayRate
             End Get
         End Property
 
@@ -86,7 +89,8 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
             End Get
         End Property
 

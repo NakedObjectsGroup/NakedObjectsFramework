@@ -16,7 +16,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property TransactionDate As NODate
             Get
-                Return If(myTransactionDate, New NODate(mappedTransactionDate, Function(v) mappedTransactionDate = v))
+                myTransactionDate = If(myTransactionDate, New NODate(mappedTransactionDate, Sub(v) mappedTransactionDate = v))
+Return myTransactionDate
             End Get
         End Property
 
@@ -37,7 +38,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property TransactionType As TextString
             Get
-                Return If(myTransactionType, New TextString(mappedTransactionType, Function(v) mappedTransactionType = v))
+                myTransactionType = If(myTransactionType, New TextString(mappedTransactionType, Sub(v) mappedTransactionType = v))
+Return myTransactionType
             End Get
         End Property
 
@@ -58,7 +60,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property Quantity As WholeNumber
             Get
-                Return If(myQuantity, New WholeNumber(mappedQuantity, Function(v) mappedQuantity = v))
+                myQuantity = If(myQuantity, New WholeNumber(mappedQuantity, Sub(v) mappedQuantity = v))
+Return myQuantity
             End Get
         End Property
 
@@ -79,7 +82,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property ActualCost As Money
             Get
-                Return If(myActualCost, New Money(mappedActualCost, Function(v) mappedActualCost = v))
+                myActualCost = If(myActualCost, New Money(mappedActualCost, Sub(v) mappedActualCost = v))
+Return myActualCost
             End Get
         End Property
 
@@ -104,7 +108,8 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
             End Get
         End Property
 

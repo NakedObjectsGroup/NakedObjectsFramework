@@ -15,7 +15,8 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property EmailAddress1 As TextString
 			Get
-				Return If(myEmailAddress1, New TextString(mappedEmailAddress1, Function(v) mappedEmailAddress1 = v))
+				myEmailAddress1 = If(myEmailAddress1, New TextString(mappedEmailAddress1, Sub(v) mappedEmailAddress1 = v))
+Return myEmailAddress1
 			End Get
 		End Property
 
@@ -37,7 +38,8 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Function(v) mappedModifiedDate = v))
+				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
 			End Get
 		End Property
 
