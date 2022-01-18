@@ -36,7 +36,7 @@ public class Container : IContainer {
 
     private bool IsPersistent(object obj) => !AdapterFor(obj).Oid.IsTransient;
 
-    public void MakePersistent(ref object transientObject) {
+    public void MakePersistent<T>(ref T transientObject) {
         var adapter = framework.NakedObjectManager.GetAdapterFor(transientObject);
         if (IsPersistent(transientObject)) {
             throw new PersistFailedException($"Trying to persist an already persisted object: {adapter}");

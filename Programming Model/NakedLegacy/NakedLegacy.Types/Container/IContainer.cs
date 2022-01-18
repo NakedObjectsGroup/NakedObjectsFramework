@@ -10,5 +10,5 @@ public interface IContainer {
     public IQueryable<T> Instances<T>() where T : class;
     public object CreateTransientInstance(Type ofType);
     public T CreateTransientInstance<T>() where T : new();
-    public void MakePersistent(ref object transientObject);
+    public void MakePersistent<T>(ref T transientObject);
 }
