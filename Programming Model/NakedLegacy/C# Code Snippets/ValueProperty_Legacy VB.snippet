@@ -26,13 +26,14 @@
       </Declarations>
       <Code Language="VB">
         <![CDATA[#Region "$PropName$"
-Friend  mapped$PropName$ As $UnderlyingType$
-Friend my$PropName$ As $HolderType$
+Public Property mapped$PropName$ As $UnderlyingType$
+Private my$PropName$ As $HolderType$
 
 <MemberOrder($MemberOrder$)>
 Public ReadOnly Property $PropName$ As $HolderType$
   Get
-    Return If(my$PropName$, New $HolderType$(mapped$PropName$, Function(v) mapped$PropName$ = v))
+    my$PropName$ = If(my$PropName$, New $HolderType$(mapped$PropName$, Function(v) mapped$PropName$ = v))
+    Return my$PropName$
   End Get
 End Property
 

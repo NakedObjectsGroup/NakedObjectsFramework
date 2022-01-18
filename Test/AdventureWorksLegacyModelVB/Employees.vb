@@ -27,6 +27,16 @@
                     Where e.mappedNationalIDNumber = nationalIDNumber.Value).FirstOrDefault()
         End Function
 
+        Public Shared Function ActionCreateNewDepartment(name As TextString, groupName As TextString) As Department
+            Dim container = ThreadLocals.Container
+            Dim d As Department = CType(container.CreateTransientInstance(GetType(Department)), Department)
+            d.Name.Value = name.Value
+            d.GroupName.Value = groupName.Value
+            d.mappedModifiedDate = Now
+            container.MakePersistent(d)
+            Return d
+        End Function
+
         Public Shared Function SharedMenuOrder() As Menu
             Dim main = New Menu("Employees")
             main.AddAction(NameOf(ActionRandomEmployee)) _
@@ -34,7 +44,9 @@
             .AddAction(NameOf(ActionFindEmployeeByName).ToLower()) _ 'To test case insensitivity
             .AddAction(NameOf(ActionFindEmployeeByNationalIDNumber))
 
-            main.AddSubMenu("Organisation").AddAction(NameOf(ActionListAllDepartments))
+            main.AddSubMenu("Organisation") _
+            .AddAction(NameOf(ActionListAllDepartments)) _
+            .AddAction(NameOf(ActionCreateNewDepartment))
             Return main
         End Function
 
