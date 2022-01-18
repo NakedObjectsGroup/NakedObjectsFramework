@@ -139,13 +139,12 @@ Namespace AW.Types
 #End Region
 
 #Region "SizeWithUnit"
-        Public Property mappedSizeWithUnit As String
-        Friend mySizeWithUnit As TextString
+
 
         <MemberOrder(16)>
         Public ReadOnly Property SizeWithUnit As TextString
             Get
-                Return If(mySizeWithUnit, New TextString(mappedSizeWithUnit, Function(v) mappedSizeWithUnit = v))
+                Return New TextString($"{Size} {SizeUnit}")
             End Get
         End Property
 
@@ -161,13 +160,11 @@ Namespace AW.Types
 #End Region
 
 #Region "WeightWithUnit"
-        Public Property mappedWeightWithUnit As String
-        Friend myWeightWithUnit As TextString
 
         <MemberOrder(17)>
         Public ReadOnly Property WeightWithUnit As TextString
             Get
-                Return If(myWeightWithUnit, New TextString(mappedWeightWithUnit, Function(v) mappedWeightWithUnit = v))
+                Return New TextString($"{Weight} {WeightUnit}")
             End Get
         End Property
 
@@ -371,27 +368,6 @@ Namespace AW.Types
         End Sub
 #End Region
 
-#Region "PropName"
-        Public Property mappedPropName As Date
-        Friend myPropName As NODate
-
-        <MemberOrder(82)>
-        Public ReadOnly Property PropName As NODate
-            Get
-                Return If(myPropName, New NODate(mappedPropName, Function(v) mappedPropName = v))
-            End Get
-        End Property
-
-        Public Sub AboutPropName(a As FieldAbout, PropName As NODate)
-            Select Case a.TypeCode
-                Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Usable
-                Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
-            End Select
-        End Sub
-#End Region
-
 #Region "DiscontinuedDate"
         Public Property mappedDiscontinuedDate As Date?
         Friend myDiscontinuedDate As NODateNullable
@@ -420,7 +396,7 @@ Namespace AW.Types
         <MemberOrder(90)>
         Public ReadOnly Property StandardCost As Money
             Get
-                Return If(myStandardCost, New Money(mappedStandardCost, Function(v) mappedStandardCost = v))
+                Return If(myStandardCost, New Money(mappedStandardCost, Sub(v) mappedStandardCost = v))
             End Get
         End Property
 
@@ -589,7 +565,7 @@ Namespace AW.Types
             Return (From sop In Container.Instances(Of SpecialOfferProduct)
                     Where sop.Product.ProductID = pid AndAlso
                            sop.SpecialOffer.mappedStartDate <= today AndAlso
-                           sop.SpecialOffer.mappedMinQty < qty
+                           sop.SpecialOffer.mappedMinQty <qty
                     Order By sop.SpecialOffer.mappedDiscountPct Descending
                     Select sop.SpecialOffer).FirstOrDefault()
         End Function

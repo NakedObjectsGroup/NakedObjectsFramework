@@ -2,8 +2,9 @@
 
 Namespace AW.Types
 
-	Partial Public Class ProductPhoto
- Implements ITitledObject
+	Partial Public Class ProductPhoto
+
+		Implements ITitledObject
 
 		Public Property ProductPhotoID As Integer
 
