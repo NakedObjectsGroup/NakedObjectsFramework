@@ -530,6 +530,26 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestPutEmptyProperty()
+    {
+        ClassWithFieldAbout.TestValidFlag = false;
+        ClassWithFieldAbout.TestUsableFlag = false;
+
+        var api = Api().AsPut();
+        var sva = new SingleValueArgument { Value = new ScalarValue("") };
+        var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("valid", parsedResult["value"].ToString());
+
+        ClassWithFieldAbout.ResetTest();
+    }
+
+
+
+    [Test]
     public void TestGetLegacyObjectWithMenu() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");

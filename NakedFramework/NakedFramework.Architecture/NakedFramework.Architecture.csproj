@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NakedFramework.ProgrammingModel" Version="13.0.1" />
+    <PackageReference Include="NakedFramework.ProgrammingModel" Version="13.1.0-beta01" />
   </ItemGroup>
 
 </Project>
