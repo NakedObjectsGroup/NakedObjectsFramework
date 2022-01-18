@@ -74,6 +74,7 @@ namespace Legacy.Rest.App.Demo {
                         .AllowCredentials();
                 });
             });
+            // For ThreadLocals
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 

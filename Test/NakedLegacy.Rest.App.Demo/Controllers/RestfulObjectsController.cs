@@ -23,12 +23,8 @@ namespace Legacy.Rest.App.Demo.Controllers {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade,
                                         ILogger<RestfulObjectsController> logger,
                                         ILoggerFactory loggerFactory,
-                                        IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) {
-            //ThreadLocals.Initialize(frameworkFacade.GetScopedServiceProvider, sp => new Container(sp.GetService<INakedFramework>()));
+                                        IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) =>
             ThreadLocals.InitializeContainer(frameworkFacade.GetScopedServiceProvider);
-        }
-
-        //public void Dispose() => ThreadLocals.Reset();
 
         [HttpGet]
         public override ActionResult GetHome() => base.GetHome();
