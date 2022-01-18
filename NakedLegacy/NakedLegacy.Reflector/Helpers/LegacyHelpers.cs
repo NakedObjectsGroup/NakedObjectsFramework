@@ -25,7 +25,7 @@ public static class LegacyHelpers {
 
                 break;
             case IMenuAction menuAction:
-                topLevelMenu.AddAction(menuAction.Name, true);
+                topLevelMenu.AddAction(menuAction.Name, menuAction.DisplayName, true);
                 break;
         }
     }
