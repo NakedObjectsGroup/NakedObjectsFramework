@@ -139,13 +139,12 @@ Namespace AW.Types
 #End Region
 
 #Region "SizeWithUnit"
-        Public Property mappedSizeWithUnit As String
-        Friend mySizeWithUnit As TextString
+
 
         <MemberOrder(16)>
         Public ReadOnly Property SizeWithUnit As TextString
             Get
-                Return If(mySizeWithUnit, New TextString(mappedSizeWithUnit, Function(v) mappedSizeWithUnit = v))
+                Return New TextString($"{Size} {SizeUnit}")
             End Get
         End Property
 
@@ -161,13 +160,11 @@ Namespace AW.Types
 #End Region
 
 #Region "WeightWithUnit"
-        Public Property mappedWeightWithUnit As String
-        Friend myWeightWithUnit As TextString
 
         <MemberOrder(17)>
         Public ReadOnly Property WeightWithUnit As TextString
             Get
-                Return If(myWeightWithUnit, New TextString(mappedWeightWithUnit, Function(v) mappedWeightWithUnit = v))
+                Return New TextString($"{Weight} {WeightUnit}")
             End Get
         End Property
 
@@ -362,27 +359,6 @@ Namespace AW.Types
         End Property
 
         Public Sub AboutSellEndDate(a As FieldAbout, SellEndDate As NODateNullable)
-            Select Case a.TypeCode
-                Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Usable
-                Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
-            End Select
-        End Sub
-#End Region
-
-#Region "PropName"
-        Public Property mappedPropName As Date
-        Friend myPropName As NODate
-
-        <MemberOrder(82)>
-        Public ReadOnly Property PropName As NODate
-            Get
-                Return If(myPropName, New NODate(mappedPropName, Function(v) mappedPropName = v))
-            End Get
-        End Property
-
-        Public Sub AboutPropName(a As FieldAbout, PropName As NODate)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
