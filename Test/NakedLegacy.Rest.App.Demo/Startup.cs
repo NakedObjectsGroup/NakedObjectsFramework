@@ -27,6 +27,7 @@ using Newtonsoft.Json;
 using AdventureWorksLegacy.AppLib;
 using NakedFramework.Menu;
 using System.Reflection;
+using Microsoft.AspNetCore.Http;
 
 namespace Legacy.Rest.App.Demo {
     public class Startup {
@@ -73,6 +74,7 @@ namespace Legacy.Rest.App.Demo {
                         .AllowCredentials();
                 });
             });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         protected Type[] LegacyValueHolders { get; } = {
@@ -101,6 +103,7 @@ namespace Legacy.Rest.App.Demo {
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
+            ThreadLocals.Initialize(app.ApplicationServices, static sp => new Container(sp.GetService<INakedFramework>()));
         }
     }
 }

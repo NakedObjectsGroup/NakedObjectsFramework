@@ -8,10 +8,15 @@
 
 	<ItemGroup>
 
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+
 		<PackageReference Include="NakedLegacy.ProgrammingModel" Version="1.0.0-alpha01" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+	    <HintPath>..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.1\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+	  </Reference>
 	  <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 	    <HintPath>..\..\..\..\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.0\ref\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
 	  </Reference>
