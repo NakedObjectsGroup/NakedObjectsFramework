@@ -50,6 +50,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             BoundedTypes();
             ActionsThatRetrieveObjects();
             EditingObjects();
+            Menus();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -274,7 +275,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void EditingObjects()
         {
             EditAndCancelWithoutModification();
-            //TODO EditAndSaveChange();
+            EditAndSaveChange();
         }
 
         //[TestMethod]
@@ -310,7 +311,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectActionsMenu();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void MainMenuWithSubMenus()
         {
             helper.GotoHome().OpenMainMenu("Employees").AssertHasActions("Random Employee",
@@ -319,7 +320,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ObjectActionsMenu()
         {
             AccessInstanceWithTitle("Product--897", "LL Touring Frame - Blue, 58")
