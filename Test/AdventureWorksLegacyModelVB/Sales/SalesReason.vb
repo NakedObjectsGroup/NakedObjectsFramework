@@ -14,7 +14,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property Name As TextString
             Get
-                Return If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+                myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+Return myName
             End Get
         End Property
 
@@ -35,7 +36,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property ReasonType As TextString
             Get
-                Return If(myReasonType, New TextString(mappedReasonType, Sub(v) mappedReasonType = v))
+                myReasonType = If(myReasonType, New TextString(mappedReasonType, Sub(v) mappedReasonType = v))
+Return myReasonType
             End Get
         End Property
 
@@ -56,7 +58,8 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
             End Get
         End Property
 

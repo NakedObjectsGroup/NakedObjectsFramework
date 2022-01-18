@@ -13,7 +13,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property TaxType As WholeNumber
             Get
-                Return If(myTaxType, New WholeNumber(mappedTaxType, Sub(v) mappedTaxType = CType(v, Byte)))
+                myTaxType = If(myTaxType, New WholeNumber(mappedTaxType, Sub(v) mappedTaxType = CType(v, Byte)))
+                Return myTaxType 
             End Get
         End Property
 
@@ -34,7 +35,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property TaxRate As FloatingPointNumber
             Get
-                Return If(myTaxRate, New FloatingPointNumber(mappedTaxRate, Sub(v) mappedTaxRate = v))
+                myTaxRate = If(myTaxRate, New FloatingPointNumber(mappedTaxRate, Sub(v) mappedTaxRate = v))
+                Return myTaxRate
             End Get
         End Property
 
@@ -55,7 +57,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property Name As TextString
             Get
-                Return If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+                myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+                Return myName
             End Get
         End Property
 
@@ -81,7 +84,8 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                Return myModifiedDate
             End Get
         End Property
 

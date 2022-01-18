@@ -16,7 +16,8 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property Quantity As WholeNumber
 			Get
-				Return If(myQuantity, New WholeNumber(mappedQuantity, Sub(v) mappedQuantity = v))
+				myQuantity = If(myQuantity, New WholeNumber(mappedQuantity, Sub(v) mappedQuantity = v))
+Return myQuantity
 			End Get
 		End Property
 
@@ -46,7 +47,8 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
 			End Get
 		End Property
 

@@ -17,7 +17,8 @@ Namespace AW.Types
 		<MemberOrder(1)>
 		Public ReadOnly Property ThumbnailPhotoFileName As TextString
 			Get
-				Return If(myThumbnailPhotoFileName, New TextString(mappedThumbnailPhotoFileName, Sub(v) mappedThumbnailPhotoFileName = v))
+				myThumbnailPhotoFileName = If(myThumbnailPhotoFileName, New TextString(mappedThumbnailPhotoFileName, Sub(v) mappedThumbnailPhotoFileName = v))
+Return myThumbnailPhotoFileName
 			End Get
 		End Property
 
@@ -40,7 +41,8 @@ Namespace AW.Types
 		<MemberOrder(1)>
 		Public ReadOnly Property LargePhotoFileName As TextString
 			Get
-				Return If(myLargePhotoFileName, New TextString(mappedLargePhotoFileName, Sub(v) mappedLargePhotoFileName = v))
+				myLargePhotoFileName = If(myLargePhotoFileName, New TextString(mappedLargePhotoFileName, Sub(v) mappedLargePhotoFileName = v))
+Return myLargePhotoFileName
 			End Get
 		End Property
 
@@ -71,7 +73,8 @@ Namespace AW.Types
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
 			End Get
 		End Property
 

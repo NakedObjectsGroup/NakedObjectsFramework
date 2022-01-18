@@ -14,7 +14,8 @@ Namespace AW.Types
         <MemberOrder(15)>
         Public ReadOnly Property NameStyle As Logical
             Get
-                Return If(myNameStyle, New Logical(mappedNameStyle, Sub(v) mappedNameStyle = v))
+                myNameStyle = If(myNameStyle, New Logical(mappedNameStyle, Sub(v) mappedNameStyle = v))
+Return myNameStyle
             End Get
         End Property
 
@@ -36,7 +37,8 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property NameTitle As TextString
             Get
-                Return If(myTitle, New TextString(mappedTitle, Sub(v) mappedTitle = v))
+                myTitle = If(myTitle, New TextString(mappedTitle, Sub(v) mappedTitle = v))
+Return myTitle
             End Get
         End Property
 
@@ -58,7 +60,8 @@ Namespace AW.Types
         <MemberOrder(12)>
         Public ReadOnly Property FirstName As TextString
             Get
-                Return If(myFirstName, New TextString(mappedFirstName, Sub(v) mappedFirstName = v))
+                myFirstName = If(myFirstName, New TextString(mappedFirstName, Sub(v) mappedFirstName = v))
+Return myFirstName
             End Get
         End Property
 
@@ -79,7 +82,8 @@ Namespace AW.Types
         <MemberOrder(13)>
         Public ReadOnly Property MiddleName As TextString
             Get
-                Return If(myMiddleName, New TextString(mappedMiddleName, Sub(v) mappedMiddleName = v))
+                myMiddleName = If(myMiddleName, New TextString(mappedMiddleName, Sub(v) mappedMiddleName = v))
+Return myMiddleName
             End Get
         End Property
 
@@ -100,7 +104,8 @@ Namespace AW.Types
         <MemberOrder(14)>
         Public ReadOnly Property LastName As TextString
             Get
-                Return If(myLastName, New TextString(mappedLastName, Sub(v) mappedLastName = v))
+                myLastName = If(myLastName, New TextString(mappedLastName, Sub(v) mappedLastName = v))
+Return myLastName
             End Get
         End Property
 
@@ -121,7 +126,8 @@ Namespace AW.Types
         <MemberOrder(15)>
         Public ReadOnly Property Suffix As TextString
             Get
-                Return If(mySuffix, New TextString(mappedSuffix, Sub(v) mappedSuffix = v))
+                mySuffix = If(mySuffix, New TextString(mappedSuffix, Sub(v) mappedSuffix = v))
+Return mySuffix
             End Get
         End Property
 
@@ -143,7 +149,8 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property PersonType As TextString
             Get
-                Return If(myPersonType, New TextString(mappedPersonType, Sub(v) mappedPersonType = v))
+                myPersonType = If(myPersonType, New TextString(mappedPersonType, Sub(v) mappedPersonType = v))
+Return myPersonType
             End Get
         End Property
 
@@ -182,7 +189,8 @@ Namespace AW.Types
         '		'<TableView(False, NameOf(EmailAddress.EmailAddress1))>
         Public ReadOnly Property EmailAddresses As InternalCollection
             Get
-                Return If(myEmailAddresses, New InternalCollection(Of EmailAddress)(mappedEmailAddresses))
+                myEmailAddresses = If(myEmailAddresses, New InternalCollection(Of EmailAddress)(mappedEmailAddresses))
+Return myEmailAddresses
             End Get
         End Property
 
@@ -202,7 +210,8 @@ Namespace AW.Types
         ''<TableView(False, NameOf(PersonPhone.PhoneNumberType), NameOf(PersonPhone.PhoneNumber))>
         Public ReadOnly Property PhoneNumbers As InternalCollection
             Get
-                Return If(myPhoneNumbers, New InternalCollection(Of PersonPhone)(mappedPhoneNumbers))
+                myPhoneNumbers = If(myPhoneNumbers, New InternalCollection(Of PersonPhone)(mappedPhoneNumbers))
+Return myPhoneNumbers
             End Get
         End Property
 
@@ -223,7 +232,8 @@ Namespace AW.Types
         <MemberOrder(30)>
         Public ReadOnly Property AdditionalContactInfo As TextString
             Get
-                Return If(myAdditionalContactInfo, New TextString(mappedAdditionalContactInfo, Sub(v) mappedAdditionalContactInfo = v))
+                myAdditionalContactInfo = If(myAdditionalContactInfo, New TextString(mappedAdditionalContactInfo, Sub(v) mappedAdditionalContactInfo = v))
+Return myAdditionalContactInfo
             End Get
         End Property
 
@@ -253,7 +263,8 @@ Namespace AW.Types
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
             End Get
         End Property
 

@@ -13,7 +13,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property QuotaDate As NODate
             Get
-                Return If(myQuotaDate, New NODate(mappedQuotaDate, Sub(v) mappedQuotaDate = v))
+                myQuotaDate = If(myQuotaDate, New NODate(mappedQuotaDate, Sub(v) mappedQuotaDate = v))
+Return myQuotaDate
             End Get
         End Property
 
@@ -34,7 +35,8 @@
         <MemberOrder(2)>
         Public ReadOnly Property SalesQuota As Money
             Get
-                Return If(mySalesQuota, New Money(mappedSalesQuota, Sub(v) mappedSalesQuota = v))
+                mySalesQuota = If(mySalesQuota, New Money(mappedSalesQuota, Sub(v) mappedSalesQuota = v))
+Return mySalesQuota
             End Get
         End Property
 
@@ -58,7 +60,8 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
             End Get
         End Property
 

@@ -14,7 +14,8 @@
 		<MemberOrder(10)>
 		Public ReadOnly Property Name As TextString
 			Get
-				Return If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+				myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+Return myName
 			End Get
 		End Property
 
@@ -35,7 +36,8 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property CountryRegionCode As TextString
 			Get
-				Return If(myCountryRegionCode, New TextString(mappedCountryRegionCode, Sub(v) mappedCountryRegionCode = v))
+				myCountryRegionCode = If(myCountryRegionCode, New TextString(mappedCountryRegionCode, Sub(v) mappedCountryRegionCode = v))
+Return myCountryRegionCode
 			End Get
 		End Property
 
@@ -56,7 +58,8 @@
 		<MemberOrder(30)>
 		Public ReadOnly Property Group As TextString
 			Get
-				Return If(myGroup, New TextString(mappedGroup, Sub(v) mappedGroup = v))
+				myGroup = If(myGroup, New TextString(mappedGroup, Sub(v) mappedGroup = v))
+Return myGroup
 			End Get
 		End Property
 
@@ -77,7 +80,8 @@
 		<MemberOrder(40)>
 		Public ReadOnly Property SalesYTD As Money
 			Get
-				Return If(mySalesYTD, New Money(mappedSalesYTD, Sub(v) mappedSalesYTD = v))
+				mySalesYTD = If(mySalesYTD, New Money(mappedSalesYTD, Sub(v) mappedSalesYTD = v))
+Return mySalesYTD
 			End Get
 		End Property
 
@@ -98,7 +102,8 @@
 		<MemberOrder(41)>
 		Public ReadOnly Property SalesLastYear As Money
 			Get
-				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Sub(v) mappedSalesLastYear = v))
+				mySalesLastYear = If(mySalesLastYear, New Money(mappedSalesLastYear, Sub(v) mappedSalesLastYear = v))
+Return mySalesLastYear
 			End Get
 		End Property
 
@@ -119,7 +124,8 @@
 		<MemberOrder(42)>
 		Public ReadOnly Property CostYTD As Money
 			Get
-				Return If(myCostYTD, New Money(mappedCostYTD, Sub(v) mappedCostYTD = v))
+				myCostYTD = If(myCostYTD, New Money(mappedCostYTD, Sub(v) mappedCostYTD = v))
+Return myCostYTD
 			End Get
 		End Property
 
@@ -140,7 +146,8 @@
 		<MemberOrder(43)>
 		Public ReadOnly Property CostLastYear As Money
 			Get
-				Return If(myCostLastYear, New Money(mappedCostLastYear, Sub(v) mappedCostLastYear = v))
+				myCostLastYear = If(myCostLastYear, New Money(mappedCostLastYear, Sub(v) mappedCostLastYear = v))
+Return myCostLastYear
 			End Get
 		End Property
 
@@ -162,7 +169,8 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property StateProvince As InternalCollection
 			Get
-				Return If(myStateProvince, New InternalCollection(Of StateProvince)(mappedStateProvince))
+				myStateProvince = If(myStateProvince, New InternalCollection(Of StateProvince)(mappedStateProvince))
+Return myStateProvince
 			End Get
 		End Property
 
@@ -185,7 +193,8 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
 			End Get
 		End Property
 

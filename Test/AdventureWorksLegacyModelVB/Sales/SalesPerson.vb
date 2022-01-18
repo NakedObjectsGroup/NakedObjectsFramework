@@ -30,7 +30,8 @@
 		<MemberOrder(30)>
 		Public ReadOnly Property SalesQuota As MoneyNullable
 			Get
-				Return If(mySalesQuota, New MoneyNullable(mappedSalesQuota, Sub(v) mappedSalesQuota = v))
+				mySalesQuota = If(mySalesQuota, New MoneyNullable(mappedSalesQuota, Sub(v) mappedSalesQuota = v))
+Return mySalesQuota
 			End Get
 		End Property
 
@@ -51,7 +52,8 @@
 		<MemberOrder(40)>
 		Public ReadOnly Property Bonus As Money
 			Get
-				Return If(myBonus, New Money(mappedBonus, Sub(v) mappedBonus = v))
+				myBonus = If(myBonus, New Money(mappedBonus, Sub(v) mappedBonus = v))
+Return myBonus
 			End Get
 		End Property
 
@@ -72,7 +74,8 @@
 		<MemberOrder(50)>
 		Public ReadOnly Property CommissionPct As Percentage
 			Get
-				Return If(myCommissionPct, New Percentage(mappedCommissionPct, Sub(v) mappedCommissionPct = v))
+				myCommissionPct = If(myCommissionPct, New Percentage(mappedCommissionPct, Sub(v) mappedCommissionPct = v))
+Return myCommissionPct
 			End Get
 		End Property
 
@@ -93,7 +96,8 @@
 		<MemberOrder(60)>
 		Public ReadOnly Property SalesYTD As Money
 			Get
-				Return If(mySalesYTD, New Money(mappedSalesYTD, Sub(v) mappedSalesYTD = v))
+				mySalesYTD = If(mySalesYTD, New Money(mappedSalesYTD, Sub(v) mappedSalesYTD = v))
+Return mySalesYTD
 			End Get
 		End Property
 
@@ -114,7 +118,8 @@
 		<MemberOrder(70)>
 		Public ReadOnly Property SalesLastYear As Money
 			Get
-				Return If(mySalesLastYear, New Money(mappedSalesLastYear, Sub(v) mappedSalesLastYear = v))
+				mySalesLastYear = If(mySalesLastYear, New Money(mappedSalesLastYear, Sub(v) mappedSalesLastYear = v))
+Return mySalesLastYear
 			End Get
 		End Property
 
@@ -137,7 +142,8 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property QuotaHistory As InternalCollection
 			Get
-				Return If(myQuotaHistory, New InternalCollection(Of SalesPersonQuotaHistory)(mappedQuotaHistory))
+				myQuotaHistory = If(myQuotaHistory, New InternalCollection(Of SalesPersonQuotaHistory)(mappedQuotaHistory))
+Return myQuotaHistory
 			End Get
 		End Property
 
@@ -158,7 +164,8 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property TerritoryHistory As InternalCollection
 			Get
-				Return If(myTerritoryHistory, New InternalCollection(Of SalesTerritoryHistory)(mappedTerritoryHistory))
+				myTerritoryHistory = If(myTerritoryHistory, New InternalCollection(Of SalesTerritoryHistory)(mappedTerritoryHistory))
+Return myTerritoryHistory
 			End Get
 		End Property
 
@@ -177,7 +184,8 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
 			End Get
 		End Property
 

@@ -20,7 +20,8 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property Name As TextString
             Get
-                Return If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+                myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+                Return myName
             End Get
         End Property
 
@@ -41,7 +42,8 @@ Namespace AW.Types
         <MemberOrder(2)>
         Public ReadOnly Property ProductNumber As TextString
             Get
-                Return If(myProductNumber, New TextString(mappedProductNumber, Sub(v) mappedProductNumber = v))
+                myProductNumber = If(myProductNumber, New TextString(mappedProductNumber, Sub(v) mappedProductNumber = v))
+                Return myProductNumber
             End Get
         End Property
 
@@ -62,7 +64,8 @@ Namespace AW.Types
         <MemberOrder(3)>
         Public ReadOnly Property Color As TextString
             Get
-                Return If(myColor, New TextString(mappedColor, Sub(v) mappedColor = v))
+                myColor = If(myColor, New TextString(mappedColor, Sub(v) mappedColor = v))
+                Return myColor
             End Get
         End Property
 
@@ -93,7 +96,8 @@ Namespace AW.Types
         <MemberOrder(12)>
         Public ReadOnly Property ListPrice As Money
             Get
-                Return If(myListPrice, New Money(mappedListPrice, Sub(v) mappedListPrice = v))
+                myListPrice = If(myListPrice, New Money(mappedListPrice, Sub(v) mappedListPrice = v))
+                Return myListPrice
             End Get
         End Property
 
@@ -124,7 +128,8 @@ Namespace AW.Types
         <MemberOrder(15)>
         Public ReadOnly Property ProductLine As TextString
             Get
-                Return If(myProductLine, New TextString(mappedProductLine, Sub(v) mappedProductLine = v))
+                myProductLine = If(myProductLine, New TextString(mappedProductLine, Sub(v) mappedProductLine = v))
+                Return myProductLine
             End Get
         End Property
 
@@ -186,7 +191,8 @@ Namespace AW.Types
         <MemberOrder(18)>
         Public ReadOnly Property Style As TextString
             Get
-                Return If(myStyle, New TextString(mappedStyle, Sub(v) mappedStyle = v))
+                myStyle = If(myStyle, New TextString(mappedStyle, Sub(v) mappedStyle = v))
+                Return myStyle
             End Get
         End Property
 
@@ -207,7 +213,8 @@ Namespace AW.Types
         <MemberOrder(19)>
         Public ReadOnly Property [Class] As TextString
             Get
-                Return If(My_Class, New TextString(mappedClass, Sub(v) mappedClass = v))
+                My_Class = If(My_Class, New TextString(mappedClass, Sub(v) mappedClass = v))
+                Return My_Class
             End Get
         End Property
 
@@ -228,7 +235,8 @@ Namespace AW.Types
         <MemberOrder(20)>
         Public ReadOnly Property Make As Logical
             Get
-                Return If(myMake, New Logical(mappedMake, Sub(v) mappedMake = v))
+                myMake = If(myMake, New Logical(mappedMake, Sub(v) mappedMake = v))
+                Return myMake
             End Get
         End Property
 
@@ -249,7 +257,8 @@ Namespace AW.Types
         <MemberOrder(21)>
         Public ReadOnly Property FinishedGoods As Logical
             Get
-                Return If(myFinishedGoods, New Logical(mappedFinishedGoods, Sub(v) mappedFinishedGoods = v))
+                myFinishedGoods = If(myFinishedGoods, New Logical(mappedFinishedGoods, Sub(v) mappedFinishedGoods = v))
+                Return myFinishedGoods
             End Get
         End Property
 
@@ -270,7 +279,8 @@ Namespace AW.Types
         <MemberOrder(22)>
         Public ReadOnly Property SafetyStockLevel As WholeNumber
             Get
-                Return If(mySafetyStockLevel, New WholeNumber(mappedSafetyStockLevel, Sub(v) mappedSafetyStockLevel = CType(v, Short)))
+                mySafetyStockLevel = If(mySafetyStockLevel, New WholeNumber(mappedSafetyStockLevel, Sub(v) mappedSafetyStockLevel = CType(v, Short)))
+                Return mySafetyStockLevel
             End Get
         End Property
 
@@ -291,7 +301,8 @@ Namespace AW.Types
         <MemberOrder(23)>
         Public ReadOnly Property ReorderPoint As WholeNumber
             Get
-                Return If(myReorderPoint, New WholeNumber(mappedReorderPoint, Sub(v) mappedReorderPoint = CType(v, Short)))
+                myReorderPoint = If(myReorderPoint, New WholeNumber(mappedReorderPoint, Sub(v) mappedReorderPoint = CType(v, Short)))
+                Return myReorderPoint
             End Get
         End Property
 
@@ -312,7 +323,8 @@ Namespace AW.Types
         <MemberOrder(24)>
         Public ReadOnly Property DaysToManufacture As WholeNumber
             Get
-                Return If(myDaysToManufacture, New WholeNumber(mappedDaysToManufacture, Sub(v) mappedDaysToManufacture = v))
+                myDaysToManufacture = If(myDaysToManufacture, New WholeNumber(mappedDaysToManufacture, Sub(v) mappedDaysToManufacture = v))
+                Return myDaysToManufacture
             End Get
         End Property
 
@@ -333,7 +345,8 @@ Namespace AW.Types
         <MemberOrder(81)>
         Public ReadOnly Property SellStartDate As NODate
             Get
-                Return If(mySellStartDate, New NODate(mappedSellStartDate, Sub(v) mappedSellStartDate = v))
+                mySellStartDate = If(mySellStartDate, New NODate(mappedSellStartDate, Sub(v) mappedSellStartDate = v))
+                Return mySellStartDate
             End Get
         End Property
 
@@ -354,7 +367,8 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property SellEndDate As NODateNullable
             Get
-                Return If(mySellEndDate, New NODateNullable(mappedSellEndDate, Sub(v) mappedSellEndDate = v))
+                mySellEndDate = If(mySellEndDate, New NODateNullable(mappedSellEndDate, Sub(v) mappedSellEndDate = v))
+                Return mySellEndDate
             End Get
         End Property
 
@@ -375,7 +389,8 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property DiscontinuedDate As NODateNullable
             Get
-                Return If(myDiscontinuedDate, New NODateNullable(mappedDiscontinuedDate, Sub(v) mappedDiscontinuedDate = v))
+                myDiscontinuedDate = If(myDiscontinuedDate, New NODateNullable(mappedDiscontinuedDate, Sub(v) mappedDiscontinuedDate = v))
+                Return myDiscontinuedDate
             End Get
         End Property
 
@@ -396,7 +411,8 @@ Namespace AW.Types
         <MemberOrder(90)>
         Public ReadOnly Property StandardCost As Money
             Get
-                Return If(myStandardCost, New Money(mappedStandardCost, Sub(v) mappedStandardCost = v))
+                myStandardCost = If(myStandardCost, New Money(mappedStandardCost, Sub(v) mappedStandardCost = v))
+                Return myStandardCost
             End Get
         End Property
 
@@ -417,7 +433,8 @@ Namespace AW.Types
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                Return myModifiedDate
             End Get
         End Property
 
@@ -441,7 +458,8 @@ Namespace AW.Types
         <MemberOrder(100)>
         Public ReadOnly Property ProductReviews As InternalCollection
             Get
-                Return If(myProductReviews, New InternalCollection(Of ProductReview)(mappedProductReviews))
+                myProductReviews = If(myProductReviews, New InternalCollection(Of ProductReview)(mappedProductReviews))
+                Return myProductReviews
             End Get
         End Property
 
@@ -461,7 +479,8 @@ Namespace AW.Types
         <MemberOrder(120)>
         Public ReadOnly Property ProductInventory As InternalCollection
             Get
-                Return If(myProductInventory, New InternalCollection(Of ProductInventory)(mappedProductInventory))
+                myProductInventory = If(myProductInventory, New InternalCollection(Of ProductInventory)(mappedProductInventory))
+                Return myProductInventory
             End Get
         End Property
 
@@ -484,7 +503,8 @@ Namespace AW.Types
 
         Public ReadOnly Property Size As TextString
             Get
-                Return If(mySize, New TextString(mappedSize, Sub(v) mappedSize = v))
+                mySize = If(mySize, New TextString(mappedSize, Sub(v) mappedSize = v))
+                Return mySize
             End Get
         End Property
 
@@ -503,7 +523,8 @@ Namespace AW.Types
         <MemberOrder(1)>
         Public ReadOnly Property SizeUnitMeasureCode As TextString
             Get
-                Return If(mySizeUnitMeasureCode, New TextString(mappedSizeUnitMeasureCode, Sub(v) mappedSizeUnitMeasureCode = v))
+                mySizeUnitMeasureCode = If(mySizeUnitMeasureCode, New TextString(mappedSizeUnitMeasureCode, Sub(v) mappedSizeUnitMeasureCode = v))
+                Return mySizeUnitMeasureCode
             End Get
         End Property
 

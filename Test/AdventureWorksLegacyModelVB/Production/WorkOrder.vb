@@ -14,7 +14,8 @@
 		<MemberOrder(22)>
 		Public ReadOnly Property StockedQty As WholeNumber
 			Get
-				Return If(myStockedQty, New WholeNumber(mappedStockedQty, Sub(v) mappedStockedQty = v))
+				myStockedQty = If(myStockedQty, New WholeNumber(mappedStockedQty, Sub(v) mappedStockedQty = v))
+				Return myStockedQty
 			End Get
 		End Property
 
@@ -35,7 +36,8 @@
 		<MemberOrder(24)>
 		Public ReadOnly Property ScrappedQty As WholeNumber
 			Get
-				Return If(myScrappedQty, New WholeNumber(mappedScrappedQty, Sub(v) mappedScrappedQty = CType(v, Short)))
+				myScrappedQty = If(myScrappedQty, New WholeNumber(mappedScrappedQty, Sub(v) mappedScrappedQty = CType(v, Short)))
+				Return myScrappedQty
 			End Get
 		End Property
 
@@ -56,7 +58,8 @@
 		<MemberOrder(32)>
 		Public ReadOnly Property EndDate As NODateNullable
 			Get
-				Return If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
+				myEndDate = If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
+				Return myEndDate
 			End Get
 		End Property
 
@@ -82,7 +85,8 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property OrderQty As WholeNumber
 			Get
-				Return If(myOrderQty, New WholeNumber(mappedOrderQty, Sub(v) mappedOrderQty = v))
+				myOrderQty = If(myOrderQty, New WholeNumber(mappedOrderQty, Sub(v) mappedOrderQty = v))
+				Return myOrderQty
 			End Get
 		End Property
 
@@ -103,7 +107,8 @@
 		<MemberOrder(30)>
 		Public ReadOnly Property StartDate As NODate
 			Get
-				Return If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
+				myStartDate = If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
+				Return myStartDate
 			End Get
 		End Property
 
@@ -124,7 +129,8 @@
 		<MemberOrder(34)>
 		Public ReadOnly Property DueDate As NODate
 			Get
-				Return If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
+				myDueDate = If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
+				Return myDueDate
 			End Get
 		End Property
 
@@ -151,7 +157,8 @@
 		''<TableView(True, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")>
 		Public ReadOnly Property WorkOrderRoutings As InternalCollection
 			Get
-				Return If(myWorkOrderRoutings, New InternalCollection(Of WorkOrderRouting)(mappedWorkOrderRoutings))
+				myWorkOrderRoutings = If(myWorkOrderRoutings, New InternalCollection(Of WorkOrderRouting)(mappedWorkOrderRoutings))
+				Return myWorkOrderRoutings
 			End Get
 		End Property
 
@@ -176,7 +183,8 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+				Return myModifiedDate
 			End Get
 		End Property
 

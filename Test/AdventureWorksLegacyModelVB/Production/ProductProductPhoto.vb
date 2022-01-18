@@ -13,7 +13,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property Primary As Logical
             Get
-                Return If(myPrimary, New Logical(mappedPrimary, Sub(v) mappedPrimary = v))
+                myPrimary = If(myPrimary, New Logical(mappedPrimary, Sub(v) mappedPrimary = v))
+Return myPrimary
             End Get
         End Property
 
@@ -38,7 +39,8 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
 			End Get
 		End Property
 

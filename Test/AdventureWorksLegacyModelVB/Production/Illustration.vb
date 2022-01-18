@@ -11,7 +11,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property Diagram As TextString
             Get
-                Return If(myDiagram, New TextString(mappedDiagram, Sub(v) mappedDiagram = v))
+                myDiagram = If(myDiagram, New TextString(mappedDiagram, Sub(v) mappedDiagram = v))
+Return myDiagram
             End Get
         End Property
 
@@ -33,7 +34,8 @@
         <MemberOrder(1)>
         Public ReadOnly Property ProductModelIllustration As InternalCollection
             Get
-                Return If(myProductModelIllustration, New InternalCollection(Of ProductModelIllustration)(mappedProductModelIllustration))
+                myProductModelIllustration = If(myProductModelIllustration, New InternalCollection(Of ProductModelIllustration)(mappedProductModelIllustration))
+Return myProductModelIllustration
             End Get
         End Property
 
@@ -52,7 +54,8 @@
         <MemberOrder(99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+Return myModifiedDate
             End Get
         End Property
 

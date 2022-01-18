@@ -17,7 +17,8 @@
 
         Public ReadOnly Property Name As TextString
             Get
-                Return If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+                myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
+                Return myName
             End Get
         End Property
 
@@ -38,7 +39,8 @@
 
         Public ReadOnly Property AccountNumber As TextString
             Get
-                Return If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
+                myAccountNumber = If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
+                Return myAccountNumber
             End Get
         End Property
 
@@ -59,7 +61,8 @@
 
         Public ReadOnly Property CreditRating As WholeNumber
             Get
-                Return If(myCreditRating, New WholeNumber(mappedCreditRating, Sub(v) mappedCreditRating = CType(v, Byte)))
+                myCreditRating = If(myCreditRating, New WholeNumber(mappedCreditRating, Sub(v) mappedCreditRating = CType(v, Byte)))
+                Return myCreditRating
             End Get
         End Property
 
@@ -80,7 +83,8 @@
 
         Public ReadOnly Property PreferredVendorStatus As Logical
             Get
-                Return If(myPreferredVendorStatus, New Logical(mappedPreferredVendorStatus, Sub(v) mappedPreferredVendorStatus = v))
+                myPreferredVendorStatus = If(myPreferredVendorStatus, New Logical(mappedPreferredVendorStatus, Sub(v) mappedPreferredVendorStatus = v))
+                Return myPreferredVendorStatus
             End Get
         End Property
 
@@ -101,7 +105,8 @@
 
         Public ReadOnly Property ActiveFlag As Logical
             Get
-                Return If(myActiveFlag, New Logical(mappedActiveFlag, Sub(v) mappedActiveFlag = v))
+                myActiveFlag = If(myActiveFlag, New Logical(mappedActiveFlag, Sub(v) mappedActiveFlag = v))
+                Return myActiveFlag
             End Get
         End Property
 
@@ -122,7 +127,8 @@
 
         Public ReadOnly Property PurchasingWebServiceURL As TextString
             Get
-                Return If(myPurchasingWebServiceURL, New TextString(mappedPurchasingWebServiceURL, Sub(v) mappedPurchasingWebServiceURL = v))
+                myPurchasingWebServiceURL = If(myPurchasingWebServiceURL, New TextString(mappedPurchasingWebServiceURL, Sub(v) mappedPurchasingWebServiceURL = v))
+                Return myPurchasingWebServiceURL
             End Get
         End Property
 
@@ -144,7 +150,8 @@
 
         Public ReadOnly Property Products As InternalCollection
             Get
-                Return If(myProducts, New InternalCollection(Of ProductVendor)(mappedProducts))
+                myProducts = If(myProducts, New InternalCollection(Of ProductVendor)(mappedProducts))
+                Return myProducts
             End Get
         End Property
 
@@ -163,7 +170,8 @@
 
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
-                Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+                Return myModifiedDate
             End Get
         End Property
 

@@ -15,7 +15,8 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property SalesOrderNumber As TextString
 			Get
-				Return If(mySalesOrderNumber, New TextString(mappedSalesOrderNumber, Sub(v) mappedSalesOrderNumber = v))
+				mySalesOrderNumber = If(mySalesOrderNumber, New TextString(mappedSalesOrderNumber, Sub(v) mappedSalesOrderNumber = v))
+				Return mySalesOrderNumber
 			End Get
 		End Property
 
@@ -69,7 +70,8 @@
 		<MemberOrder(5)>
 		Public ReadOnly Property PurchaseOrderNumber As TextString
 			Get
-				Return If(myPurchaseOrderNumber, New TextString(mappedPurchaseOrderNumber, Sub(v) mappedPurchaseOrderNumber = v))
+				myPurchaseOrderNumber = If(myPurchaseOrderNumber, New TextString(mappedPurchaseOrderNumber, Sub(v) mappedPurchaseOrderNumber = v))
+				Return myPurchaseOrderNumber
 			End Get
 		End Property
 
@@ -102,7 +104,8 @@
 		<MemberOrder(12)>
 		Public ReadOnly Property AccountNumber As TextString
 			Get
-				Return If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
+				myAccountNumber = If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
+				Return myAccountNumber
 			End Get
 		End Property
 
@@ -123,7 +126,8 @@
 		<MemberOrder(20)>
 		Public ReadOnly Property OrderDate As NODate
 			Get
-				Return If(myOrderDate, New NODate(mappedOrderDate, Sub(v) mappedOrderDate = v))
+				myOrderDate = If(myOrderDate, New NODate(mappedOrderDate, Sub(v) mappedOrderDate = v))
+				Return myOrderDate
 			End Get
 		End Property
 
@@ -144,7 +148,8 @@
 		<MemberOrder(21)>
 		Public ReadOnly Property DueDate As NODate
 			Get
-				Return If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
+				myDueDate = If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
+				Return myDueDate
 			End Get
 		End Property
 
@@ -165,7 +170,8 @@
 		<MemberOrder(22)>
 		Public ReadOnly Property ShipDate As NODateNullable
 			Get
-				Return If(myShipDate, New NODateNullable(mappedShipDate, Sub(v) mappedShipDate = v))
+				myShipDate = If(myShipDate, New NODateNullable(mappedShipDate, Sub(v) mappedShipDate = v))
+				Return myShipDate
 			End Get
 		End Property
 
@@ -186,7 +192,8 @@
 		<MemberOrder(31)>
 		Public ReadOnly Property SubTotal As Money
 			Get
-				Return If(mySubTotal, New Money(mappedSubTotal, Sub(v) mappedSubTotal = v))
+				mySubTotal = If(mySubTotal, New Money(mappedSubTotal, Sub(v) mappedSubTotal = v))
+				Return mySubTotal
 			End Get
 		End Property
 
@@ -207,7 +214,8 @@
 		<MemberOrder(32)>
 		Public ReadOnly Property TaxAmt As Money
 			Get
-				Return If(myTaxAmt, New Money(mappedTaxAmt, Sub(v) mappedTaxAmt = v))
+				myTaxAmt = If(myTaxAmt, New Money(mappedTaxAmt, Sub(v) mappedTaxAmt = v))
+				Return myTaxAmt
 			End Get
 		End Property
 
@@ -228,7 +236,8 @@
 		<MemberOrder(33)>
 		Public ReadOnly Property Freight As Money
 			Get
-				Return If(myFreight, New Money(mappedFreight, Sub(v) mappedFreight = v))
+				myFreight = If(myFreight, New Money(mappedFreight, Sub(v) mappedFreight = v))
+				Return myFreight
 			End Get
 		End Property
 
@@ -249,7 +258,8 @@
 		<MemberOrder(34)>
 		Public ReadOnly Property TotalDue As Money
 			Get
-				Return If(myTotalDue, New Money(mappedTotalDue, Sub(v) mappedTotalDue = v))
+				myTotalDue = If(myTotalDue, New Money(mappedTotalDue, Sub(v) mappedTotalDue = v))
+				Return myTotalDue
 			End Get
 		End Property
 
@@ -276,7 +286,8 @@
 		<MemberOrder(41)>
 		Public ReadOnly Property OnlineOrder As Logical
 			Get
-				Return If(myOnlineOrder, New Logical(mappedOnlineOrder, Sub(v) mappedOnlineOrder = v))
+				myOnlineOrder = If(myOnlineOrder, New Logical(mappedOnlineOrder, Sub(v) mappedOnlineOrder = v))
+				Return myOnlineOrder
 			End Get
 		End Property
 
@@ -307,7 +318,8 @@
 		<MemberOrder(43)>
 		Public ReadOnly Property CreditCardApprovalCode As TextString
 			Get
-				Return If(myCreditCardApprovalCode, New TextString(mappedCreditCardApprovalCode, Sub(v) mappedCreditCardApprovalCode = v))
+				myCreditCardApprovalCode = If(myCreditCardApprovalCode, New TextString(mappedCreditCardApprovalCode, Sub(v) mappedCreditCardApprovalCode = v))
+				Return myCreditCardApprovalCode
 			End Get
 		End Property
 
@@ -329,7 +341,8 @@
 		<MemberOrder(51)>
 		Public ReadOnly Property RevisionNumber As WholeNumber
 			Get
-				Return If(myRevisionNumber, New WholeNumber(mappedRevisionNumber, Sub(v) mappedRevisionNumber = CType(v, Byte)))
+				myRevisionNumber = If(myRevisionNumber, New WholeNumber(mappedRevisionNumber, Sub(v) mappedRevisionNumber = CType(v, Byte)))
+				Return myRevisionNumber
 			End Get
 		End Property
 
@@ -352,7 +365,8 @@
 		<MemberOrder(52)>
 		Public ReadOnly Property Comment As TextString
 			Get
-				Return If(myComment, New TextString(mappedComment, Sub(v) mappedComment = v))
+				myComment = If(myComment, New TextString(mappedComment, Sub(v) mappedComment = v))
+				Return myComment
 			End Get
 		End Property
 
@@ -394,7 +408,8 @@
 		<MemberOrder(99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
-				Return If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
+				Return myModifiedDate
 			End Get
 		End Property
 
@@ -414,7 +429,8 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property Details As InternalCollection
 			Get
-				Return If(myDetails, New InternalCollection(Of SalesOrderDetail)(mappedDetails))
+				myDetails = If(myDetails, New InternalCollection(Of SalesOrderDetail)(mappedDetails))
+				Return myDetails
 			End Get
 		End Property
 
@@ -434,7 +450,8 @@
 		<MemberOrder(1)>
 		Public ReadOnly Property Reasons As InternalCollection
 			Get
-				Return If(myReasons, New InternalCollection(Of SalesOrderHeaderSalesReason)(mappedReasons))
+				myReasons = If(myReasons, New InternalCollection(Of SalesOrderHeaderSalesReason)(mappedReasons))
+				Return myReasons
 			End Get
 		End Property
 

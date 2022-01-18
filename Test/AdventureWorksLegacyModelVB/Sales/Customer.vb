@@ -22,7 +22,8 @@ Namespace AW.Types
 		<MemberOrder(10)>
 		Public ReadOnly Property AccountNumber As TextString
 			Get
-				Return If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
+				myAccountNumber = If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
+Return myAccountNumber
 			End Get
 		End Property
 
