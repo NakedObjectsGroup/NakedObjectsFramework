@@ -30,8 +30,11 @@ public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFac
 
     public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, INakedFramework framework) {
         try {
-            var vh = (T) property.GetValue(nakedObjectAdapter.Object);
-            vh.Value = value.GetDomainObject<T>().Value;
+            var valueHolder = (T)property.GetValue(nakedObjectAdapter.Object);
+            valueHolder.Value = value.GetDomainObject() is T obj ? obj.Value : default;
+        }
+        catch (NullReferenceException e) {
+            InvokeUtils.InvocationException($"Unexpected null valueholder on {property}", e);
         }
         catch (TargetInvocationException e) {
             InvokeUtils.InvocationException($"Exception executing {property}", e);
