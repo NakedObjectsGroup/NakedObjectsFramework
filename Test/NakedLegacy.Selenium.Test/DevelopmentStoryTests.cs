@@ -287,20 +287,24 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .Cancel().AssertTitleIs("LL Bottom Bracket: 04/07/2006");
         }
 
-       // [TestMethod]
+        //[TestMethod]
         public void EditAndSaveChange()
         {
             var editView = AccessInstanceWithTitle("WorkOrder--16080", "LL Bottom Bracket: 04/07/2006")
                 .Edit();
             editView.GetEditableSelectionProperty("Scrap Reason")
             .AssertOptionIs(0, "").AssertOptionIs(3, "Gouge in metal").Select(3);
+            editView.GetEditableTextInputProperty("Scrapped Qty").Clear().Enter("2");
             var updated = editView.Save();
             updated.GetProperty("Scrap Reason").AssertValueIs("Gouge in metal");
+            updated.GetProperty("Scrapped Qty").AssertValueIs("2");
             editView = updated.Edit();
             editView.GetEditableSelectionProperty("Scrap Reason")
             .AssertOptionIs(0, "").Select(0);
+            editView.GetEditableTextInputProperty("Scrapped Qty").Clear();
             updated = editView.Save();
             updated.GetProperty("Scrap Reason").AssertValueIs("");
+            updated.GetProperty("Scrapped Qty").AssertValueIs("0");
         }
         #endregion
 
@@ -339,6 +343,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             PropertyHiddenUsingFieldAbout();
             PropertyRenamedUsingFieldAbout();
             PropertyMadeUneditableUsingFieldAbout();
+            PropertyValidationUsingFieldAbout();
         }
 
         //[TestMethod]
@@ -360,6 +365,18 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             AccessInstanceWithTitle("Department--1", "Engineering").Edit()
                 .AssertPropertyIsDisabledForEdit("Modified Date");   
+        }
+
+        //[TestMethod]
+        public void PropertyValidationUsingFieldAbout()
+        {
+            var editView = AccessInstanceWithTitle("Department--10", "Finance").Edit();
+            editView.GetEditableTextInputProperty("Group Name").Clear()
+                .Enter("Now is the time for all good men to come to the aid of the party");
+            editView.AttemptUnsuccessfulSave()
+                .GetEditableTextInputProperty("Group Name")
+                .AssertHasValidationError("Cannot be > 50 chars");
+            editView.Cancel();
         }
 
         #endregion

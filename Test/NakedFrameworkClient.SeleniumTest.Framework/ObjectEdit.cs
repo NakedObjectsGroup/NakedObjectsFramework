@@ -21,6 +21,13 @@ namespace NakedFrameworkClient.TestFramework
             return helper.GetObjectView();
         }
 
+        public ObjectEdit AttemptUnsuccessfulSave()
+        {
+            helper.WaitForCss("nof-action-bar nof-action input[value=\"Save\"]").Click();
+            helper.wait.Until(e => e.FindElement(By.CssSelector(".messages")).Text != "");
+            return this;
+        }
+
         public override ObjectEdit AssertTitleIs(string expected)
         {
             Assert.AreEqual(expected, helper.WaitForChildElement(element, ".title").Text);
@@ -43,7 +50,9 @@ namespace NakedFrameworkClient.TestFramework
 
         public TextInputField GetEditableTextInputProperty(string propertyName)
         {
-            throw new NotImplementedException();
+            var prop = GetEditableProperty(propertyName);
+            Assert.IsTrue(prop.FindElement(By.TagName("input")) is not null);
+            return new TextInputField(prop, helper, this);
         }
 
         public ReferenceInputField GetEditableReferenceProperty(string propertyName)
