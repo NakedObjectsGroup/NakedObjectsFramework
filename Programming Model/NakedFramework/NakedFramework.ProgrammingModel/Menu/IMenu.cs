@@ -33,9 +33,10 @@ namespace NakedFramework.Menu {
         ///     Add an action from the Type.
         /// </summary>
         /// <param name="actionName"></param>
+        /// <param name="friendlyName"></param>
         /// <param name="ignoreCase"></param>
         /// <returns>This menu (for fluent programming)</returns>
-        IMenu AddAction(string actionName, bool ignoreCase = false);
+        IMenu AddAction(string actionName, string friendlyName = null,  bool ignoreCase = false);
 
         /// <summary>
         /// </summary>
@@ -72,9 +73,10 @@ namespace NakedFramework.Menu {
         /// </summary>
         /// <param name="fromType"></param>
         /// <param name="actionName"></param>
+        /// <param name="friendlyName"></param>
         /// <param name="ignoreCase"></param>
         /// <returns>This menu (for fluent programming)</returns>
-        IMenu AddAction(Type fromType, string actionName, bool ignoreCase = false);
+        IMenu AddAction(Type fromType, string actionName, string friendlyName = null, bool ignoreCase = false);
 
         IMenu AddRemainingActions(Type fromType);
     }
