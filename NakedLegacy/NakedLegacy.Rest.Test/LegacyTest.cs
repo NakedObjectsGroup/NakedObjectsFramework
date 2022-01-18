@@ -920,7 +920,9 @@ public class LegacyTest : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
 
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
+        Assert.AreEqual("Renamed menu Action", parsedResult["members"]["ActionMenuAction"]["extensions"]["friendlyName"].ToString());
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction1"]);
+        Assert.AreEqual("Menu Action1", parsedResult["members"]["ActionMenuAction1"]["extensions"]["friendlyName"].ToString());
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
     }

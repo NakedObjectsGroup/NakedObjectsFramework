@@ -356,15 +356,14 @@ public class ClassWithMenu {
         return menu;
     }
 
-    public static IMenu sharedMenuOrder()
-    {
+    public static IMenu sharedMenuOrder() {
         var menu = new Menu("ClassWithMenu Main Menu");
-        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuAction)));
-        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuAction1)));
-        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuAction2)));
-        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMenuActionWithParm)));
-        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionCreateTransient)));
-        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionPersistTransient)));
+        menu.MenuItems().Add(new MenuAction(nameof(ActionMenuAction)) { DisplayName = "Renamed menu Action" });
+        menu.MenuItems().Add(new MenuAction(nameof(ActionMenuAction1)));
+        menu.MenuItems().Add(new MenuAction(nameof(ActionMenuAction2)));
+        menu.MenuItems().Add(new MenuAction(nameof(ActionMenuActionWithParm)));
+        menu.MenuItems().Add(new MenuAction(nameof(ActionCreateTransient)));
+        menu.MenuItems().Add(new MenuAction(nameof(ActionPersistTransient)));
         return menu;
     }
 }

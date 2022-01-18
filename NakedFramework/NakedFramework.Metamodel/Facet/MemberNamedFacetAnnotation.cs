@@ -17,6 +17,7 @@ public sealed class MemberNamedFacetAnnotation : SingleStringValueFacetAbstract,
     public MemberNamedFacetAnnotation(string value, ISpecification holder)
         : base(typeof(IMemberNamedFacet), holder, value) { }
 
+    // Might be set from annotation or from display name on menu
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter) => Value;
 }
 

@@ -17,6 +17,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.Menu;
@@ -158,8 +159,17 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
             throw new ReflectionException($"No such action: {actionName} on {Type}");
         }
 
-        AddMenuItem(new MenuAction(actionSpec, friendlyName));
+        AddFriendlyName(friendlyName, actionSpec);
+
+        AddMenuItem(new MenuAction(actionSpec));
         return this;
+    }
+
+    private static void AddFriendlyName(string friendlyName, IActionSpecImmutable actionSpec) {
+        if (!string.IsNullOrWhiteSpace(friendlyName)) {
+            var facet = new MemberNamedFacetAnnotation(friendlyName, actionSpec);
+            FacetUtils.AddFacet(facet);
+        }
     }
 
     public IMenu CreateSubMenu(string subMenuName) => CreateMenuImmutableAsSubMenu(subMenuName);
@@ -198,7 +208,9 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
             throw new ReflectionException($"No such action: {actionName} on {fromType}");
         }
 
-        AddMenuItem(new MenuAction(actionSpec, friendlyName));
+        AddFriendlyName(friendlyName, actionSpec);
+
+        AddMenuItem(new MenuAction(actionSpec));
         return this;
     }
 
