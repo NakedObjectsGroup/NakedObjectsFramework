@@ -529,23 +529,23 @@ public class LegacyTest : AcceptanceTestCase {
         ClassWithFieldAbout.ResetTest();
     }
 
-    [Test]
-    public void TestPutEmptyProperty()
-    {
-        ClassWithFieldAbout.TestValidFlag = false;
-        ClassWithFieldAbout.TestUsableFlag = false;
+    //[Test]
+    //public void TestPutEmptyProperty()
+    //{
+    //    ClassWithFieldAbout.TestValidFlag = false;
+    //    ClassWithFieldAbout.TestUsableFlag = false;
 
-        var api = Api().AsPut();
-        var sva = new SingleValueArgument { Value = new ScalarValue("") };
-        var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //    var api = Api().AsPut();
+    //    var sva = new SingleValueArgument { Value = new ScalarValue("") };
+    //    var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("valid", parsedResult["value"].ToString());
+    //    Assert.AreEqual("valid", parsedResult["value"].ToString());
 
-        ClassWithFieldAbout.ResetTest();
-    }
+    //    ClassWithFieldAbout.ResetTest();
+    //}
 
 
 
