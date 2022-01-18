@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Legacy.Rest.App.Demo.Controllers {
     //[Authorize]
-    public class RestfulObjectsController : RestfulObjectsControllerBase, IDisposable {
+    public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade,
                                         ILogger<RestfulObjectsController> logger,
                                         ILoggerFactory loggerFactory,
