@@ -15,7 +15,7 @@
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
-Return myName
+                Return myName
             End Get
         End Property
 
@@ -37,9 +37,22 @@ Return myName
         Public ReadOnly Property GroupName As TextString
             Get
                 myGroupName = If(myGroupName, New TextString(mappedGroupName, Sub(v) mappedGroupName = v))
-Return myGroupName
+                Return myGroupName
             End Get
         End Property
+
+        Public Sub AboutGroupName(a As FieldAbout, groupName As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                    If (groupName.Value.Length > 50) Then
+                        a.IsValid = False
+                        a.InvalidReason = "Cannot be > 50 chars"
+                    End If
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
 #End Region
 
 #Region "ModifiedDate"
@@ -50,7 +63,7 @@ Return myGroupName
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+                Return myModifiedDate
             End Get
         End Property
 
