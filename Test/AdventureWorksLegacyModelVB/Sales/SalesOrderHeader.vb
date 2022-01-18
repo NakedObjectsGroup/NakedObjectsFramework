@@ -29,27 +29,6 @@
 		End Sub
 #End Region
 
-#Region "AddItemsFromCart"
-		Public Property mappedAddItemsFromCart As Boolean
-		Friend myAddItemsFromCart As Logical
-
-		<MemberOrder(1)>
-		Public ReadOnly Property AddItemsFromCart As Logical
-			Get
-				Return If(myAddItemsFromCart, New Logical(mappedAddItemsFromCart, Function(v) mappedAddItemsFromCart = v))
-			End Get
-		End Property
-
-		Public Sub AboutAddItemsFromCart(a As FieldAbout, AddItemsFromCart As Logical)
-			Select Case a.TypeCode
-				Case AboutTypeCodes.Name
-				Case AboutTypeCodes.Usable
-				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
-			End Select
-		End Sub
-#End Region
-
 #Region "Status"
 		Public Property Status() As Byte
 

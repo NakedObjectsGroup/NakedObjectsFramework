@@ -396,7 +396,7 @@ Namespace AW.Types
         <MemberOrder(90)>
         Public ReadOnly Property StandardCost As Money
             Get
-                Return If(myStandardCost, New Money(mappedStandardCost, Function(v) mappedStandardCost = v))
+                Return If(myStandardCost, New Money(mappedStandardCost, Sub(v) mappedStandardCost = v))
             End Get
         End Property
 
@@ -565,7 +565,7 @@ Namespace AW.Types
             Return (From sop In Container.Instances(Of SpecialOfferProduct)
                     Where sop.Product.ProductID = pid AndAlso
                            sop.SpecialOffer.mappedStartDate <= today AndAlso
-                           sop.SpecialOffer.mappedMinQty < qty
+                           sop.SpecialOffer.mappedMinQty <qty
                     Order By sop.SpecialOffer.mappedDiscountPct Descending
                     Select sop.SpecialOffer).FirstOrDefault()
         End Function
