@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class JobCandidate
- Implements ITitledObject
+	Partial Public Class JobCandidate
+
+		Implements ITitledObject
 
 		Public Property JobCandidateID() As Integer
 
@@ -13,14 +14,13 @@
 		Public ReadOnly Property Resumee As TextString
 			Get
 				myResume = If(myResume, New TextString(mappedResume, Sub(v) mappedResume = v))
-Return myResume
+				Return myResume
 			End Get
 		End Property
 
 		Public Sub AboutResume(a As FieldAbout, resumee As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
-					a.Name = "Resumé"
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
 				Case AboutTypeCodes.Visible
@@ -40,7 +40,7 @@ Return myResume
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+				Return myModifiedDate
 			End Get
 		End Property
 

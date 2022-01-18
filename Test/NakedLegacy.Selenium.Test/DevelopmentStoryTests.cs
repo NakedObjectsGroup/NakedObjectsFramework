@@ -50,6 +50,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             BoundedTypes();
             ActionsThatRetrieveObjects();
             EditingObjects();
+            Menus();
+            FieldAboutSpecifyingName_Description_Editability();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -274,7 +276,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void EditingObjects()
         {
             EditAndCancelWithoutModification();
-            //TODO EditAndSaveChange();
+            EditAndSaveChange();
         }
 
         //[TestMethod]
@@ -285,20 +287,24 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .Cancel().AssertTitleIs("LL Bottom Bracket: 04/07/2006");
         }
 
-       // [TestMethod]
+        //[TestMethod]
         public void EditAndSaveChange()
         {
             var editView = AccessInstanceWithTitle("WorkOrder--16080", "LL Bottom Bracket: 04/07/2006")
                 .Edit();
             editView.GetEditableSelectionProperty("Scrap Reason")
             .AssertOptionIs(0, "").AssertOptionIs(3, "Gouge in metal").Select(3);
+            editView.GetEditableTextInputProperty("Scrapped Qty").Clear().Enter("2");
             var updated = editView.Save();
             updated.GetProperty("Scrap Reason").AssertValueIs("Gouge in metal");
+            updated.GetProperty("Scrapped Qty").AssertValueIs("2");
             editView = updated.Edit();
             editView.GetEditableSelectionProperty("Scrap Reason")
             .AssertOptionIs(0, "").Select(0);
+            editView.GetEditableTextInputProperty("Scrapped Qty").Clear();
             updated = editView.Save();
             updated.GetProperty("Scrap Reason").AssertValueIs("");
+            updated.GetProperty("Scrapped Qty").AssertValueIs("0");
         }
         #endregion
 
@@ -310,7 +316,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectActionsMenu();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void MainMenuWithSubMenus()
         {
             helper.GotoHome().OpenMainMenu("Employees").AssertHasActions("Random Employee",
@@ -319,7 +325,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ObjectActionsMenu()
         {
             AccessInstanceWithTitle("Product--897", "LL Touring Frame - Blue, 58")
@@ -330,14 +336,14 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         #endregion
 
-        #region Story x: ObjectPresentation & Control
+        #region FieldAboutSpecifyingName_Description_Editability
         //[TestMethod]
-        public void ObjectPresentationAndControl()
+        public void FieldAboutSpecifyingName_Description_Editability()
         {
             PropertyHiddenUsingFieldAbout();
             PropertyRenamedUsingFieldAbout();
-            FieldOrderSpecifiedByAttribute();
-            FieldOrderSpecifiedByMethod();
+            PropertyMadeUneditableUsingFieldAbout();
+            PropertyValidationUsingFieldAbout();
         }
 
         //[TestMethod]
@@ -350,25 +356,28 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void PropertyRenamedUsingFieldAbout()
         {
-            var obj = AccessInstanceWithTitle("JobCandidate--1", "Job Candidate ");
-            obj.GetProperty(1).AssertNameIs("Resumé");
+            var obj = AccessInstanceWithTitle("Person--115", "Angela Barbariol");
+            obj.GetProperty(4).AssertNameIs("Reverse name order");
         }
 
         //[TestMethod]
         public void PropertyMadeUneditableUsingFieldAbout()
         {
-            AccessInstanceWithTitle("Department--1", "xx").Edit()
+            AccessInstanceWithTitle("Department--1", "Engineering").Edit()
                 .AssertPropertyIsDisabledForEdit("Modified Date");   
         }
 
         //[TestMethod]
-        public void PropertyEditValidation()
+        public void PropertyValidationUsingFieldAbout()
         {
-            var edit = AccessInstanceWithTitle("xx", "xx").Edit()
-                .GetEditableTextInputProperty("xx").Clear().Enter("xx");
-
+            var editView = AccessInstanceWithTitle("Department--10", "Finance").Edit();
+            editView.GetEditableTextInputProperty("Group Name").Clear()
+                .Enter("Now is the time for all good men to come to the aid of the party");
+            editView.AttemptUnsuccessfulSave()
+                .GetEditableTextInputProperty("Group Name")
+                .AssertHasValidationError("Cannot be > 50 chars");
+            editView.Cancel();
         }
-
 
         #endregion
 

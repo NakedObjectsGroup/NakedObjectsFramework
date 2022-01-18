@@ -21,6 +21,13 @@ namespace NakedFrameworkClient.TestFramework
             return helper.GetObjectView();
         }
 
+        public ObjectEdit AttemptUnsuccessfulSave()
+        {
+            helper.WaitForCss("nof-action-bar nof-action input[value=\"Save\"]").Click();
+            helper.wait.Until(e => e.FindElement(By.CssSelector(".messages")).Text != "");
+            return this;
+        }
+
         public override ObjectEdit AssertTitleIs(string expected)
         {
             Assert.AreEqual(expected, helper.WaitForChildElement(element, ".title").Text);
@@ -43,7 +50,9 @@ namespace NakedFrameworkClient.TestFramework
 
         public TextInputField GetEditableTextInputProperty(string propertyName)
         {
-            throw new NotImplementedException();
+            var prop = GetEditableProperty(propertyName);
+            Assert.IsTrue(prop.FindElement(By.TagName("input")) is not null);
+            return new TextInputField(prop, helper, this);
         }
 
         public ReferenceInputField GetEditableReferenceProperty(string propertyName)
@@ -51,16 +60,10 @@ namespace NakedFrameworkClient.TestFramework
             throw new NotImplementedException();
         }
 
-        public void AssertPropertyIsEnabledForEdit(string propertyName)
+        public ObjectEdit AssertPropertyIsDisabledForEdit(string propertyName)
         {
-            //1. In edit view are ALL the properties nof-edit-property even if disabled?
-            //If so, how do we find disabled?
-
-        }
-
-        public void AssertPropertyIsDisabledForEdit(string propertyName)
-        {
-            throw new NotImplementedException();
+            GetEditableProperty(propertyName).FindElement(By.CssSelector(".value"));
+            return this;
         }
     }
 }
