@@ -27,6 +27,15 @@
                     Where e.mappedNationalIDNumber = nationalIDNumber.Value).FirstOrDefault()
         End Function
 
+        Public Shared Function CreateNewDepartment(name As TextString, groupName As TextString) As Department
+            Dim container = ThreadLocals.Container
+            Dim d As Department = CType(container.CreateTransientInstance(GetType(Department)), Department)
+            d.Name.Value = name.Value
+            d.GroupName.Value = groupName.Value
+            container.MakePersistent(d)
+            Return d
+        End Function
+
         Public Shared Function SharedMenuOrder() As Menu
             Dim main = New Menu("Employees")
             main.AddAction(NameOf(ActionRandomEmployee)) _
