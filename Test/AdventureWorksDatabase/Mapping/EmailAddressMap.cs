@@ -12,6 +12,8 @@ namespace AdventureWorksModel {
             // Table & Column Mappings
             builder.ToTable("EmailAddress", "Person");
             builder.Property(t => t.mappedEmailAddress1).HasColumnName("EmailAddress");
+            builder.Property(t => t.RowGuid).HasColumnName("rowguid");
+            builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

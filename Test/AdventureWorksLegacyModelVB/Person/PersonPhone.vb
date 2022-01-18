@@ -1,9 +1,12 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class PersonPhone
- Implements ITitledObject
+    Partial Public Class PersonPhone
+
+        Implements ITitledObject
 
         Public Property BusinessEntityID() As Integer
+
+        Public Overridable Property Person As Person
 
 #Region "PhoneNumber"
         Public Property mappedPhoneNumber As String

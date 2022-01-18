@@ -18,8 +18,7 @@ namespace AdventureWorksModel {
             builder.Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             builder.Property(t => t.mappedModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
-            //builder.Ignore(t => t.mappedPerson);
-            //builder.HasOne(t => t.Person).WithMany().HasForeignKey(t => t.BusinessEntityID);
+           builder.HasOne(t => t.Person).WithMany(t => t.mappedPhoneNumbers).HasForeignKey(t => t.BusinessEntityID);
         }
     }
 }
