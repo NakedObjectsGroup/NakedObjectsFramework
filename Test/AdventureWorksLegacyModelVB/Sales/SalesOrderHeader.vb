@@ -495,7 +495,8 @@
                 Case AboutTypeCodes.Name
                     a.Description = "Delete all comments in Comment field"
                 Case AboutTypeCodes.Usable
-                    If Me.Comment.Value Is "" Then a.Usable = False
+                    Dim c = Me.Comment.Value
+                    If c Is Nothing OrElse c Is "" Then a.Usable = False
             End Select
         End Sub
 
@@ -511,9 +512,9 @@
                     a.Description = "Append new comment to any existing"
                 Case AboutTypeCodes.Parameters
                 Case AboutTypeCodes.Usable
-                    If Not c Is Nothing AndAlso c.Length > 50 Then
+                    If Not c Is Nothing AndAlso c.Length > 45 Then
                         a.Usable = False
-                        a.UnusableReason = "Existing comments exceed 50 chars. Clear first"
+                        a.UnusableReason = "Existing comments already near capacity. Clear first"
                     End If
                 Case AboutTypeCodes.Valid
                     If comment.Value Is Nothing OrElse comment.Value = "" Then
