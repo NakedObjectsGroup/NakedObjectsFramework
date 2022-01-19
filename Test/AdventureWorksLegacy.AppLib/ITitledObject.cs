@@ -8,6 +8,6 @@ namespace AdventureWorksLegacy.AppLib
 {
     public interface ITitledObject
     {
-        public ITitle Title();
+        public Title Title();
     }
 }

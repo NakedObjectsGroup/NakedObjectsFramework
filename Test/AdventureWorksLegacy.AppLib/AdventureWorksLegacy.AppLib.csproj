@@ -8,6 +8,8 @@
 
 	<ItemGroup>
 
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 
 		<PackageReference Include="NakedLegacy.ProgrammingModel" Version="1.0.0-alpha01" />

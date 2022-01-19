@@ -14,7 +14,7 @@
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
-Return myName
+                Return myName
             End Get
         End Property
 
@@ -36,7 +36,7 @@ Return myName
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+                Return myModifiedDate
             End Get
         End Property
 
@@ -48,7 +48,7 @@ Return myModifiedDate
         End Sub
 #End Region
 
-        Public Function Title() As ITitle Implements ITitledObject.Title
+        Public Function Title() As Title Implements ITitledObject.Title
             Return New Title(ToString())
         End Function
 

@@ -25,7 +25,7 @@ public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
 
     public virtual string Mask => null;
 
-    public abstract ITitle Title();
+    public abstract Title Title();
 
     public override string ToString() => Value.ToString();
 

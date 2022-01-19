@@ -126,7 +126,7 @@
 		End Sub
 #End Region
 
-		Public Function Title() As ITitle Implements ITitledObject.Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(ToString())
 		End Function
 

@@ -15,5 +15,5 @@ public class TextString : ValueHolder<string> {
     public override object Parse(string fromString) => new TextString(fromString);
     public override object Display(string mask = null) => Value;
 
-    public override ITitle Title() => new Title(ToString());
+    public override Title Title() => new Title(ToString());
 }
