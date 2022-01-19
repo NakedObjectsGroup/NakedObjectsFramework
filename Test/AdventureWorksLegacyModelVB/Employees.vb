@@ -22,6 +22,15 @@
                        (firstName.Value Is "" OrElse e.PersonDetails.mappedFirstName.ToUpper().StartsWith(firstName.Value))).ToArrayList()
         End Function
 
+        Public Shared Sub AboutActionFindEmployeeByName(a As ActionAbout, firstName As TextString, lastName As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                Case AboutTypeCodes.Usable
+                Case AboutTypeCodes.Valid
+                Case AboutTypeCodes.Visible
+            End Select
+        End Sub
+
         Public Shared Function ActionFindEmployeeByNationalIDNumber(nationalIDNumber As TextString) As Employee
             Return (From e In Employees()
                     Where e.mappedNationalIDNumber = nationalIDNumber.Value).FirstOrDefault()

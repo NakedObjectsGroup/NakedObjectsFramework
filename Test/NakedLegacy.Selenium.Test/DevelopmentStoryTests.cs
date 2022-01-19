@@ -53,6 +53,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Menus();
             FieldAboutSpecifyingName_Description_Editability();
             CreatingAndSavingObjects();
+            //ActionAboutControl();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -407,6 +408,59 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetActionWithoutDialog("List All Departments").ClickToViewList()
                 .GetLastRowFromList().AssertTitleIs(name);
         }
+        #endregion
+
+        #region ActionAbout control
+        //[TestMethod]
+        public void ActionAboutControl()
+        {
+            ActionName();
+            ActionDescription();
+            ActionVisibilityBasedOnObjectState();
+            ActionUsabilityBasedOnObjectState_WithoutParams();
+            ActionUsabilityBasedOnObjectState_WithParams();
+            ActionParameterValidation();
+        }
+
+        [TestMethod]
+        public void ActionName()
+        {
+            //Test invoked within Name mode
+        }
+
+        [TestMethod]
+        public void ActionDescription()
+        {
+            //Test invoked within Name mode
+        }
+
+        [TestMethod]
+        public void ActionVisibilityBasedOnObjectState()
+        {
+            //Test invoked within Visible mode
+        }
+
+        [TestMethod]
+        public void ActionUsabilityBasedOnObjectState_WithoutParams()
+        {
+            //Test invoked within Usable mode
+        }
+
+        [TestMethod]
+        public void ActionUsabilityBasedOnObjectState_WithParams()
+        {
+            //Test invoked within Usable mode
+        }
+
+
+        [TestMethod]
+        public void ActionParameterValidation()
+        {
+            //Test invoked within Valid mode
+
+        }
+
+
         #endregion
 
         #region Helpers
