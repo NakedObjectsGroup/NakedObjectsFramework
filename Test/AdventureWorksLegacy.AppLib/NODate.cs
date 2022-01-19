@@ -30,5 +30,5 @@ public class NODate : ValueHolder<DateTime>, IDateOnly{
 
     public override object Display(string mask) => Value.ToString(mask, CultureInfo.InvariantCulture);
 
-    public override ITitle Title() => new Title(ToString());
+    public override Title Title() => new Title(ToString());
 }

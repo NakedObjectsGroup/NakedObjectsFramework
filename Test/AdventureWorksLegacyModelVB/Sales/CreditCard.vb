@@ -30,7 +30,7 @@ Namespace AW.Types
 		Public ReadOnly Property PersonLinks As InternalCollection
 			Get
 				myPersonLinks = If(myPersonLinks, New InternalCollection(Of PersonCreditCard)(mappedPersonLinks))
-Return myPersonLinks
+				Return myPersonLinks
 			End Get
 		End Property
 
@@ -51,7 +51,7 @@ Return myPersonLinks
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+				Return myModifiedDate
 			End Get
 		End Property
 
@@ -64,7 +64,7 @@ Return myModifiedDate
 #End Region
 
 
-		Public Function Title() As ITitle Implements ITitledObject.Title
+		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(ToString())
 		End Function
 

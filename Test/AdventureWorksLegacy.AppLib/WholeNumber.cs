@@ -30,5 +30,5 @@ public class WholeNumber : ValueHolder<int> {
 
     public override object Display(string mask = null) => Value;
 
-    public override ITitle Title() => new Title(ToString());
+    public override Title Title() => new Title(ToString());
 }
