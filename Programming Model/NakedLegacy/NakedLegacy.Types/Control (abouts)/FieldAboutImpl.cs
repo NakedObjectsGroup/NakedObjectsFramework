@@ -17,6 +17,6 @@ public class FieldAboutImpl : FieldAbout {
     public string Description { get; set; }
     public string UnusableReason { get; set; }
 
-    public bool IsValid { get; set; }
+    public bool IsValid { get; set; } = true;
     public string InvalidReason { get; set; }
 }
