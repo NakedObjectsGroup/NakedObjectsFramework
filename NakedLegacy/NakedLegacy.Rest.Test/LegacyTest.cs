@@ -414,6 +414,23 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestInvokeInvokeActionWithEmptyParameter()
+    {
+        ClassWithActionAbout.TestInvisibleFlag = false;
+        ClassWithActionAbout.TestUsableFlag = true;
+        ClassWithActionAbout.TestValidFlag = true;
+
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("") }, { "wn", new ScalarValue(0) } } };
+
+        var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+       
+    }
+
+
+    [Test]
     public void TestGetObjectWithInvisibleField() {
         ClassWithFieldAbout.TestInvisibleFlag = true;
 

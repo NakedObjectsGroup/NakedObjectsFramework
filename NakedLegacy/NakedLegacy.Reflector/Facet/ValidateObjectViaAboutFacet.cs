@@ -7,31 +7,31 @@
 
 using System;
 using System.Reflection;
-using NakedFramework;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
-public sealed class SaveViaActionSaveFacet : FacetAbstract, ISaveFacet, IImperativeFacet {
-    private readonly MethodInfo saveMethod;
+public sealed class ValidateObjectViaAboutFacet : FacetAbstract, IValidateObjectFacet, IImperativeFacet {
+    private readonly ILogger<ValidateObjectViaAboutFacet> logger;
+    private readonly MethodInfo validateMethod;
 
-    public SaveViaActionSaveFacet(MethodInfo saveMethod, ISpecification holder)
+    public ValidateObjectViaAboutFacet(ISpecification holder, MethodInfo validateMethod, ILogger<ValidateObjectViaAboutFacet> logger)
         : base(Type, holder) {
-        this.saveMethod = saveMethod;
+        this.validateMethod = validateMethod;
+        this.logger = logger;
     }
 
-    public static Type Type => typeof(ISaveFacet);
-
-    public MethodInfo GetMethod() => saveMethod;
+    public static Type Type => typeof(IValidateObjectFacet);
+    public MethodInfo GetMethod() => validateMethod;
 
     public Func<object, object[], object> GetMethodDelegate() => throw new NotImplementedException();
-    public void Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
-        InvokeUtils.Invoke(saveMethod, nakedObject, null);
-    }
+
+    public string Validate(INakedObjectAdapter nakedObjectAdapter) => null;
+
+    public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string name, INakedObjectAdapter value)[] parms) => null;
 }

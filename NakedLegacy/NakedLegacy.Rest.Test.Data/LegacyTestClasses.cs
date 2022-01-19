@@ -181,11 +181,11 @@ public class ClassWithActionAbout {
                 break;
             case AboutTypeCodes.Valid:
                 switch (TestValidFlag) {
-                    case true when ts.Value != "valid":
+                    case true when ts?.Value != "valid":
                         actionAbout.Usable = false;
                         actionAbout.UnusableReason = "ts is invalid";
                         break;
-                    case true when wn.Value == 101:
+                    case true when wn?.Value == 101:
                         actionAbout.Usable = false;
                         actionAbout.UnusableReason = "wn is invalid";
                         break;

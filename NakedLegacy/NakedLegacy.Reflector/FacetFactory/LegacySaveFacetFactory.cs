@@ -44,6 +44,13 @@ public sealed class LegacySaveFacetFactory : LegacyFacetFactoryProcessor, IMetho
         var facet = saveMethod is not null ? (IFacet)new SaveViaActionSaveFacet(saveMethod, specification) : new SaveNullFacet(specification, Logger<SaveNullFacet>());
         FacetUtils.AddFacet(facet);
 
+        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, "aboutactionsave", typeof(void), null);
+
+        methodRemover.SafeRemoveMethod(saveMethod);
+        if (aboutSaveMethod is not null) {
+            FacetUtils.AddFacet(new ValidateObjectViaAboutFacet(specification, aboutSaveMethod, Logger<ValidateObjectViaAboutFacet>()));
+        } 
+        
         return metamodel;
     }
 }
