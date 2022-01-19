@@ -495,18 +495,23 @@
         End Sub
 
         Public Sub AboutActionAppendComment(a As ActionAbout, comment As TextString)
+            Dim c = Me.Comment.Value
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Add Comment"
                     a.Description = "Append new comment to any existing"
                 Case AboutTypeCodes.Parameters
                 Case AboutTypeCodes.Usable
-                    If Me.Comment.Value.Length > 50 Then
+                    If Not c Is Nothing AndAlso c.Length > 50 Then
                         a.Usable = False
                         a.UnusableReason = "Existing comments exceed 50 chars. Clear first"
                     End If
                 Case AboutTypeCodes.Valid
-                    If Me.Comment.Value.Length + comment.Value.Length > 50 Then
+                    If comment.Value Is Nothing OrElse comment.Value = "" Then
+                        a.Usable = False
+                        a.UnusableReason = "Comment cannot be empty"
+                    End If
+                    If If Not c Is Nothing AndAlso c.Length + comment.Value.Length > 50 Then
                         a.Usable = False
                         a.UnusableReason = "Total comment length would exceed 50 chars"
                     End If
