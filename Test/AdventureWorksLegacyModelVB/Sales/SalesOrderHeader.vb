@@ -475,18 +475,31 @@
         End Function
 
 #Region "Actions"
+        Public Sub ActionNoComment() 'Never visible
+            Throw New NotImplementedException()
+        End Sub
+
+        Public Sub AboutActionNoComment(a As ActionAbout)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Visible
+                    a.Visible = False
+            End Select
+        End Sub
+
         Public Sub ActionClearComments()
             Me.Comment.Value = ""
         End Sub
 
-        Public Sub AboutClearComments(a As FieldAbout)
+        Public Sub AboutActionClearComments(a As ActionAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Description = "Delete all comments in Comment field"
                 Case AboutTypeCodes.Usable
-                    If Me.Comment.Value Is "" Then a.Usable = False
-                Case AboutTypeCodes.Visible
-                    If Me.Status = OrderStatus.Shipped Then a.Visible = False
+                    Dim c = Me.Comment.Value
+                    If c Is Nothing OrElse c Is "" Then
+                        a.Usable = False
+                        a.UnusableReason = "Comment field is already clear"
+                    End If
             End Select
         End Sub
 
@@ -495,18 +508,23 @@
         End Sub
 
         Public Sub AboutActionAppendComment(a As ActionAbout, comment As TextString)
+            Dim c = Me.Comment.Value
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Add Comment"
                     a.Description = "Append new comment to any existing"
                 Case AboutTypeCodes.Parameters
                 Case AboutTypeCodes.Usable
-                    If Me.Comment.Value.Length > 50 Then
+                    If Not c Is Nothing AndAlso c.Length > 45 Then
                         a.Usable = False
-                        a.UnusableReason = "Existing comments exceed 50 chars. Clear first"
+                        a.UnusableReason = "Existing comments already near capacity. Clear first"
                     End If
                 Case AboutTypeCodes.Valid
-                    If Me.Comment.Value.Length + comment.Value.Length > 50 Then
+                    If comment.Value Is Nothing OrElse comment.Value = "" Then
+                        a.Usable = False
+                        a.UnusableReason = "Comment cannot be empty"
+                    End If
+                    If Not c Is Nothing AndAlso c.Length + comment.Value.Length > 50 Then
                         a.Usable = False
                         a.UnusableReason = "Total comment length would exceed 50 chars"
                     End If
