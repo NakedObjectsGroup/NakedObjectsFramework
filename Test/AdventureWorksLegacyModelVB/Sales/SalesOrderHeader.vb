@@ -496,7 +496,10 @@
                     a.Description = "Delete all comments in Comment field"
                 Case AboutTypeCodes.Usable
                     Dim c = Me.Comment.Value
-                    If c Is Nothing OrElse c Is "" Then a.Usable = False
+                    If c Is Nothing OrElse c Is "" Then
+                        a.Usable = False
+                        a.UnusableReason = "Comment field is already clear"
+                    End If
             End Select
         End Sub
 
