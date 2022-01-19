@@ -42,7 +42,7 @@ public class ObjectReflectorArrayTest : ObjectReflectorTest {
 
     [TestMethod]
     public void TestFacets() {
-        Assert.AreEqual(24, Specification.FacetTypes.Length);
+        Assert.AreEqual(25, Specification.FacetTypes.Length);
     }
 
     [TestMethod]

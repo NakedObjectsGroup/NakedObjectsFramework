@@ -501,7 +501,9 @@ public class FrameworkFacade : IFrameworkFacade {
 
                     if (save) {
                         if (nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
-                            Framework.LifecycleManager.MakePersistent(nakedObject);
+                            var saveFacet = nakedObject.Spec.GetFacet<ISaveFacet>();
+                            saveFacet.Save(Framework, nakedObject);
+                            //Framework.LifecycleManager.MakePersistent(nakedObject);
                         }
                         else {
                             Framework.Persistor.ObjectChanged(nakedObject, Framework.LifecycleManager, Framework.MetamodelManager);

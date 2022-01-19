@@ -42,7 +42,8 @@ public sealed class FallbackFacetFactory : DomainObjectFacetFactoryProcessor {
                 new TitleFacetNone(specification),
                 namedFacet,
                 pluralFacet,
-                new ValueFacet(specification)
+                new ValueFacet(specification),
+                new SaveFacet(specification)
             });
         return metamodel;
     }
