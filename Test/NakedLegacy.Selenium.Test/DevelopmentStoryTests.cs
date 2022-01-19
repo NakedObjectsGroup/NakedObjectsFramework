@@ -392,13 +392,14 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             CreateAndSaveObjectProgrammatically();
         }
+
         //[TestMethod]
         public void CreateAndSaveObjectProgrammatically()
         {
             var dialog = helper.GotoHome().OpenMainMenu("Employees").OpenSubMenu("Organisation")
                 .GetActionWithDialog("Create New Department").Open();
 
-            int rnd = (new Random()).Next(1, 1000);
+            int rnd = (new Random()).Next(1, 100000);
             string name = $"Dept. {rnd}";
             dialog.GetTextField("Name").Enter(name);
             dialog.GetTextField("Group Name").Enter("Testing");

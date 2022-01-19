@@ -475,18 +475,27 @@
         End Function
 
 #Region "Actions"
+        Public Sub ActionNoComment() 'Never visible
+            Throw New NotImplementedException()
+        End Sub
+
+        Public Sub AboutActionNoComment(a As ActionAbout)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Visible
+                    a.Visible = False
+            End Select
+        End Sub
+
         Public Sub ActionClearComments()
             Me.Comment.Value = ""
         End Sub
 
-        Public Sub AboutClearComments(a As FieldAbout)
+        Public Sub AboutActionClearComments(a As ActionAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Description = "Delete all comments in Comment field"
                 Case AboutTypeCodes.Usable
                     If Me.Comment.Value Is "" Then a.Usable = False
-                Case AboutTypeCodes.Visible
-                    If Me.Status = OrderStatus.Shipped Then a.Visible = False
             End Select
         End Sub
 
@@ -511,7 +520,7 @@
                         a.Usable = False
                         a.UnusableReason = "Comment cannot be empty"
                     End If
-                    If If Not c Is Nothing AndAlso c.Length + comment.Value.Length > 50 Then
+                    If Not c Is Nothing AndAlso c.Length + comment.Value.Length > 50 Then
                         a.Usable = False
                         a.UnusableReason = "Total comment length would exceed 50 chars"
                     End If
