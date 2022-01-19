@@ -35,7 +35,7 @@ public sealed class ActionValidateViaAboutMethodFacet : AbstractViaAboutMethodFa
             return null;
         }
 
-        if (InvokeAboutMethod(target.Object, AboutTypeCodes.Valid, proposedArgument.Select(no => no.Object).ToArray()) is ActionAbout fa) {
+        if (InvokeAboutMethod(target.Object, AboutTypeCodes.Valid, proposedArgument.Select(no => no?.Object).ToArray()) is ActionAbout fa) {
             return fa.Usable ? null : string.IsNullOrWhiteSpace(fa.UnusableReason) ? "Invalid Parameter" : fa.UnusableReason;
         }
 
