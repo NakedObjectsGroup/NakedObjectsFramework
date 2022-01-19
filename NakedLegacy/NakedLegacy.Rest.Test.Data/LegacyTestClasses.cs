@@ -156,48 +156,44 @@ public class ClassWithActionAbout {
         // do something
     }
 
-    public void aboutActionTestActionWithParms(ActionAbout actionAbout, TextString ts, WholeNumber wn)
-    {
+    public void aboutActionTestActionWithParms(ActionAbout actionAbout, TextString ts, WholeNumber wn) {
         AboutCount++;
-        switch (actionAbout.TypeCode)
-        {
+        switch (actionAbout.TypeCode) {
             case AboutTypeCodes.Visible:
                 actionAbout.Visible = !TestInvisibleFlag;
                 break;
             case AboutTypeCodes.Usable:
                 actionAbout.Usable = TestUsableFlag;
-                if (!actionAbout.Usable)
-                {
+                if (!actionAbout.Usable) {
                     actionAbout.UnusableReason = "Unusable by about";
                 }
 
                 break;
             case AboutTypeCodes.Name:
-                if (TestName is not null)
-                {
+                if (TestName is not null) {
                     actionAbout.Name = TestName;
                 }
 
-                if (TestDescription is not null)
-                {
+                if (TestDescription is not null) {
                     actionAbout.Description = TestDescription;
                 }
 
                 break;
             case AboutTypeCodes.Valid:
-                if (TestValidFlag && ts.Value != "valid")
-                {
-                   
-                }
-                else
-                {
-                   
+                switch (TestValidFlag) {
+                    case true when ts.Value != "valid":
+                        actionAbout.Usable = false;
+                        actionAbout.UnusableReason = "ts is invalid";
+                        break;
+                    case true when wn.Value == 101:
+                        actionAbout.Usable = false;
+                        actionAbout.UnusableReason = "wn is invalid";
+                        break;
                 }
 
                 break;
         }
     }
-
 }
 
 public class ClassWithFieldAbout {

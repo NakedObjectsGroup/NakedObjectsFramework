@@ -314,8 +314,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithDescribedAction()
-    {
+    public void TestGetObjectWithDescribedAction() {
         ClassWithActionAbout.TestDescription = "Action With Description";
         ClassWithActionAbout.TestInvisibleFlag = false;
 
@@ -334,8 +333,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithDisabledAction()
-    {
+    public void TestGetObjectWithDisabledAction() {
         ClassWithActionAbout.TestInvisibleFlag = false;
         ClassWithActionAbout.TestUsableFlag = false;
 
@@ -353,24 +351,67 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
     }
 
-    //[Test]
-    //public void TestInvokeInvokeActionWithInvalidParameter()
-    //{
-    //    var api = Api().AsPost();
-    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("invalid") }, {"wn", new ScalarValue(0)} } };
+    [Test]
+    public void TestInvokeInvokeActionWithInvalidParameter() {
+        ClassWithActionAbout.TestInvisibleFlag = false;
+        ClassWithActionAbout.TestUsableFlag = true;
+        ClassWithActionAbout.TestValidFlag = true;
 
-    //    var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
-    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-    //    var parsedResult = JObject.Parse(json);
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("invalid") }, { "wn", new ScalarValue(0) } } };
 
-    //    var resultObj = parsedResult["result"];
+        var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
 
-    //    //Assert.AreEqual("1998-07-06", resultObj["members"]["Date"]["value"].ToString());
-    //    //Assert.AreEqual("string", resultObj["members"]["Date"]["extensions"]["returnType"].ToString());
-    //    //Assert.AreEqual("date", resultObj["members"]["Date"]["extensions"]["format"].ToString());
-    //}
+        var resultObj = parsedResult["result"];
 
+        Assert.AreEqual("invalid", parsedResult["ts"]["value"].ToString());
+        Assert.AreEqual("0", parsedResult["wn"]["value"].ToString());
+        Assert.AreEqual("ts is invalid", parsedResult["x-ro-invalidReason"].ToString());
+    }
+
+    [Test]
+    public void TestInvokeInvokeActionWithInvalidParameter1() {
+        ClassWithActionAbout.TestInvisibleFlag = false;
+        ClassWithActionAbout.TestUsableFlag = true;
+        ClassWithActionAbout.TestValidFlag = true;
+
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("valid") }, { "wn", new ScalarValue(101) } } };
+
+        var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("valid", parsedResult["ts"]["value"].ToString());
+        Assert.AreEqual("101", parsedResult["wn"]["value"].ToString());
+        Assert.AreEqual("wn is invalid", parsedResult["x-ro-invalidReason"].ToString());
+    }
+
+    [Test]
+    public void TestInvokeInvokeActionWithValidParameter() {
+        ClassWithActionAbout.TestInvisibleFlag = false;
+        ClassWithActionAbout.TestUsableFlag = true;
+        ClassWithActionAbout.TestValidFlag = true;
+
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("valid") }, { "wn", new ScalarValue(0) } } };
+
+        var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("void", parsedResult["resultType"].ToString());
+        Assert.IsNull(parsedResult["x-ro-invalidReason"]);
+    }
 
     [Test]
     public void TestGetObjectWithInvisibleField() {
@@ -546,8 +587,6 @@ public class LegacyTest : AcceptanceTestCase {
 
     //    ClassWithFieldAbout.ResetTest();
     //}
-
-
 
     [Test]
     public void TestGetLegacyObjectWithMenu() {
@@ -959,8 +998,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionWithContainerReturnTransientObject()
-    {
+    public void TestInvokeMenuActionWithContainerReturnTransientObject() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
 
@@ -976,8 +1014,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionWithContainerReturnPersistedObject()
-    {
+    public void TestInvokeMenuActionWithContainerReturnPersistedObject() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
 
@@ -991,7 +1028,6 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Jenny", resultObj["title"].ToString());
         Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
     }
-
 
     [Test]
     public void TestInvokeMenuActionWithParmReturnObject() {

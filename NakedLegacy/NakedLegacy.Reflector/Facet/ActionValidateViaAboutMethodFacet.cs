@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
@@ -34,9 +35,9 @@ public sealed class ActionValidateViaAboutMethodFacet : AbstractViaAboutMethodFa
             return null;
         }
 
-        //if (InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Valid, proposedValue.Object) is ActionAbout fa) {
-        //    return fa.IsValid ? null : fa.InvalidReason;
-        //}
+        if (InvokeAboutMethod(target.Object, AboutTypeCodes.Valid, proposedArgument.Select(no => no.Object).ToArray()) is ActionAbout fa) {
+            return fa.Usable ? null : string.IsNullOrWhiteSpace(fa.UnusableReason) ? "Invalid Parameter" : fa.UnusableReason;
+        }
 
         return null;
     }
