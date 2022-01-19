@@ -12,16 +12,17 @@ public static class AboutHelpers {
     }
 
     public static object[] GetParameters(this MethodInfo method, object about, params object[] proposedValues) {
+        var parameterCount = method.GetParameters().Length;
         var parameters = new List<object> { about };
-        var placeholders = new object[method.GetParameters().Length - 1];
-        if (proposedValues?.Any() == true) {
-            placeholders = proposedValues;
-        }
 
-        parameters.AddRange(placeholders);
+        if (parameterCount > 1) {
+            var placeholders = proposedValues?.Any() == true ? proposedValues : new object[parameterCount - 1];
+            parameters.AddRange(placeholders);
+        }
 
         return parameters.ToArray();
     }
+
 
     public static IAbout AboutFactory(this AboutType aboutType, AboutTypeCodes aboutTypeCode) =>
         aboutType is AboutType.Action
