@@ -39,7 +39,7 @@
 
         Public Shared Function ActionListNewDepartments() As IQueryable(Of Department)
             Return From d In GenericMenuFunctions.ListAll(Of Department)
-                   Order By d.ModifiedDate Descending
+                   Order By d.mappedModifiedDate Descending
         End Function
 
         Public Shared Function ActionCreateNewDepartment(name As TextString, groupName As TextString) As Department
