@@ -37,7 +37,7 @@ public class ClassWithTextString {
 
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
-    public ITitle Title() => Name.Title();
+    public Title Title() => new Title(Name.Title());
 
     public ClassWithTextString ActionUpdateName(TextString newName) {
         Name.Value = newName.Value;
