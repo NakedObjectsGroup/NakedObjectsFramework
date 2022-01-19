@@ -61,6 +61,7 @@
 
             main.AddSubMenu("Organisation") _
             .AddAction(NameOf(ActionListAllDepartments)) _
+            .AddAction(NameOf(ActionListNewDepartments)) _
             .AddAction(NameOf(ActionCreateNewDepartment))
             Return main
         End Function
