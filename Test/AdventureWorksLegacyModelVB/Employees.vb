@@ -4,9 +4,6 @@
         Private Shared Function Employees() As IQueryable(Of Employee)
             Return ThreadLocals.Container.Instances(Of Employee)
         End Function
-        Public Shared Function ActionListAllDepartments() As ArrayList
-            Return GenericMenuFunctions.ListAll(Of Department).ToArrayList()
-        End Function
 
         Public Shared Function ActionRandomEmployee() As Employee
             Return GenericMenuFunctions.Random(Of Employee)()
@@ -34,6 +31,15 @@
         Public Shared Function ActionFindEmployeeByNationalIDNumber(nationalIDNumber As TextString) As Employee
             Return (From e In Employees()
                     Where e.mappedNationalIDNumber = nationalIDNumber.Value).FirstOrDefault()
+        End Function
+
+        Public Shared Function ActionListAllDepartments() As ArrayList
+            Return GenericMenuFunctions.ListAll(Of Department).ToArrayList()
+        End Function
+
+        Public Shared Function ActionListNewDepartments() As IQueryable(Of Department)
+            Return From d In GenericMenuFunctions.ListAll(Of Department)
+                   Order By d.ModifiedDate Descending
         End Function
 
         Public Shared Function ActionCreateNewDepartment(name As TextString, groupName As TextString) As Department

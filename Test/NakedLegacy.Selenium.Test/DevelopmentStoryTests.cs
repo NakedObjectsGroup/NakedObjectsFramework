@@ -405,8 +405,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             dialog.ClickOKToViewObject().AssertTitleIs($"Dept. {rnd}");
 
             helper.GotoHome().OpenMainMenu("Employees").OpenSubMenu("Organisation")
-                .GetActionWithoutDialog("List All Departments").ClickToViewList()
-                .GetLastRowFromList().AssertTitleIs(name);
+                .GetActionWithoutDialog("List New Departments").ClickToViewList()
+                .GetRowFromList(0).AssertTitleIs(name);
         }
         #endregion
 
