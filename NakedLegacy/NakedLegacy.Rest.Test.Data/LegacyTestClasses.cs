@@ -192,7 +192,9 @@ public class ClassWithActionAbout {
                 }
                 break;
             case AboutTypeCodes.Parameters:
-                actionAbout.ParamLabels = new[] { "renamed param1", "renamed param2" };
+                if (TestName is not null) {
+                    actionAbout.ParamLabels = new[] { "renamed param1", "renamed param2" };
+                }
                 break;
         }
     }
