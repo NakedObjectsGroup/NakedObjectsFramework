@@ -7,6 +7,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="abouts\ActionAbout.cs" />
+	  <Compile Remove="abouts\FieldAbout.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 
@@ -22,6 +27,10 @@
 	  <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 	    <HintPath>..\..\..\..\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.0\ref\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
 	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="abouts\" />
 	</ItemGroup>
 
 </Project>

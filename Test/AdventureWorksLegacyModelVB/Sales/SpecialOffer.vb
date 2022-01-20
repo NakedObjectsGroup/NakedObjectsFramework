@@ -1,9 +1,11 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class SpecialOffer
+		Implements ITitledObject, IContainerAware
 
-		Implements ITitledObject
-
+#Region "Container"
+		Public Property Container As IContainer Implements IContainerAware.Container
+#End Region
 		''<Hidden>
 		Public Property SpecialOfferID() As Integer
 
@@ -15,7 +17,7 @@
 		Public ReadOnly Property Description As TextString
 			Get
 				myDescription = If(myDescription, New TextString(mappedDescription, Sub(v) mappedDescription = v))
-Return myDescription
+				Return myDescription
 			End Get
 		End Property
 
@@ -37,7 +39,7 @@ Return myDescription
 		Public ReadOnly Property DiscountPct As Percentage
 			Get
 				myDiscountPct = If(myDiscountPct, New Percentage(mappedDiscountPct, Sub(v) mappedDiscountPct = v))
-Return myDiscountPct
+				Return myDiscountPct
 			End Get
 		End Property
 
@@ -59,7 +61,7 @@ Return myDiscountPct
 		Public ReadOnly Property Type As TextString
 			Get
 				myType = If(myType, New TextString(mappedType, Sub(v) mappedType = v))
-Return myType
+				Return myType
 			End Get
 		End Property
 
@@ -81,7 +83,7 @@ Return myType
 		Public ReadOnly Property Category As TextString
 			Get
 				myCategory = If(myCategory, New TextString(mappedCategory, Sub(v) mappedCategory = v))
-Return myCategory
+				Return myCategory
 			End Get
 		End Property
 
@@ -103,7 +105,7 @@ Return myCategory
 		Public ReadOnly Property StartDate As NODate
 			Get
 				myStartDate = If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
-Return myStartDate
+				Return myStartDate
 			End Get
 		End Property
 
@@ -125,7 +127,7 @@ Return myStartDate
 		Public ReadOnly Property EndDate As NODate
 			Get
 				myEndDate = If(myEndDate, New NODate(mappedEndDate, Sub(v) mappedEndDate = v))
-Return myEndDate
+				Return myEndDate
 			End Get
 		End Property
 
@@ -147,7 +149,7 @@ Return myEndDate
 		Public ReadOnly Property MinQty As WholeNumber
 			Get
 				myMinQty = If(myMinQty, New WholeNumber(mappedMinQty, Sub(v) mappedMinQty = v))
-Return myMinQty
+				Return myMinQty
 			End Get
 		End Property
 
@@ -169,7 +171,7 @@ Return myMinQty
 		Public ReadOnly Property MaxQty As WholeNumberNullable
 			Get
 				myMaxQty = If(myMaxQty, New WholeNumberNullable(mappedMaxQty, Sub(v) mappedMaxQty = v))
-Return myMaxQty
+				Return myMaxQty
 			End Get
 		End Property
 
@@ -191,7 +193,7 @@ Return myMaxQty
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+				Return myModifiedDate
 			End Get
 		End Property
 
@@ -213,5 +215,13 @@ Return myModifiedDate
 		Public Overrides Function ToString() As String
 			Return mappedDescription
 		End Function
+
+#Region "Actions"
+		Public Sub ActionSave()
+			mappedModifiedDate = Now
+			Container.MakePersistent(Me)
+		End Sub
+
+#End Region
 	End Class
 End Namespace

@@ -10,10 +10,15 @@
             Return GenericMenuFunctions.ListAll(Of SpecialOffer)()
         End Function
 
+        Public Shared Function ActionCreateNewSpecialOffer() As SpecialOffer
+            Return CType(ThreadLocals.Container.CreateTransientInstance(GetType(SpecialOffer)), SpecialOffer)
+        End Function
+
         Public Shared Function SharedMenuOrder() As Menu
             Dim main = New Menu("Special Offers")
             main.AddAction(NameOf(ActionRandomSpecialOffer)) _
-            .AddAction(NameOf(ActionAllSpecialOffers))
+            .AddAction(NameOf(ActionAllSpecialOffers)) _
+            .AddAction(NameOf(ActionCreateNewSpecialOffer))
             Return main
         End Function
 
