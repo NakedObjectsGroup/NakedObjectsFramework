@@ -249,11 +249,12 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithAction() {
-        ClassWithActionAbout.TestInvisibleFlag = false;
+        ClassWithActionAbout.ResetTest();
 
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
@@ -266,6 +267,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithInvisibleAction() {
+        ClassWithActionAbout.ResetTest();
         ClassWithActionAbout.TestInvisibleFlag = true;
 
         var api = Api();
@@ -280,15 +282,13 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithVisibleField() {
-        ClassWithFieldAbout.TestInvisibleFlag = false;
+        ClassWithFieldAbout.ResetTest();
 
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
-
-        ClassWithFieldAbout.ResetTest();
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
@@ -297,8 +297,8 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithNameAction() {
+        ClassWithActionAbout.ResetTest();
         ClassWithActionAbout.TestName = "Renamed Action";
-        ClassWithActionAbout.TestInvisibleFlag = false;
 
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
@@ -314,10 +314,9 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithNameActionParameter()
-    {
+    public void TestGetObjectWithNameActionParameter() {
+        ClassWithActionAbout.ResetTest();
         ClassWithActionAbout.TestName = "Renamed Action";
-        ClassWithActionAbout.TestInvisibleFlag = false;
 
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
@@ -335,10 +334,8 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithInferredNameActionParameter()
-    {
-        ClassWithActionAbout.TestName = null;
-        ClassWithActionAbout.TestInvisibleFlag = false;
+    public void TestGetObjectWithInferredNameActionParameter() {
+        ClassWithActionAbout.ResetTest();
 
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
@@ -355,11 +352,43 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("wn", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["extensions"]["friendlyName"].ToString());
     }
 
+    [Test]
+    public void TestGetObjectWithDefaultedActionParameter() {
+        ClassWithActionAbout.ResetTest();
+        ClassWithActionAbout.TestName = "Renamed Action";
+        ClassWithActionAbout.TestDefaults = true;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        Assert.AreEqual("def", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["default"].ToString());
+        Assert.AreEqual("66", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["default"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectWithNonDefaultedActionParameter() {
+        ClassWithActionAbout.ResetTest();
+        ClassWithActionAbout.TestName = "Renamed Action";
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        Assert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["default"]);
+        Assert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["default"]);
+    }
 
     [Test]
     public void TestGetObjectWithDescribedAction() {
+        ClassWithActionAbout.ResetTest();
         ClassWithActionAbout.TestDescription = "Action With Description";
-        ClassWithActionAbout.TestInvisibleFlag = false;
 
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
@@ -377,8 +406,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithDisabledAction() {
-        ClassWithActionAbout.TestInvisibleFlag = false;
-        ClassWithActionAbout.TestUsableFlag = false;
+        ClassWithActionAbout.ResetTest();
 
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
@@ -396,7 +424,8 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestInvokeActionWithInvalidParameter() {
-        ClassWithActionAbout.TestInvisibleFlag = false;
+        ClassWithActionAbout.ResetTest();
+
         ClassWithActionAbout.TestUsableFlag = true;
         ClassWithActionAbout.TestValidFlag = true;
 
@@ -417,7 +446,8 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestInvokeActionWithInvalidParameter1() {
-        ClassWithActionAbout.TestInvisibleFlag = false;
+        ClassWithActionAbout.ResetTest();
+
         ClassWithActionAbout.TestUsableFlag = true;
         ClassWithActionAbout.TestValidFlag = true;
 
@@ -438,7 +468,8 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestInvokeActionWithValidParameter() {
-        ClassWithActionAbout.TestInvisibleFlag = false;
+        ClassWithActionAbout.ResetTest();
+
         ClassWithActionAbout.TestUsableFlag = true;
         ClassWithActionAbout.TestValidFlag = true;
 
@@ -457,9 +488,9 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeAboutActionWithEmptyParameter()
-    {
-        ClassWithActionAbout.TestInvisibleFlag = false;
+    public void TestInvokeAboutActionWithEmptyParameter() {
+        ClassWithActionAbout.ResetTest();
+
         ClassWithActionAbout.TestUsableFlag = true;
         ClassWithActionAbout.TestValidFlag = true;
 
@@ -469,15 +500,13 @@ public class LegacyTest : AcceptanceTestCase {
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
-       
     }
 
     [Test]
-    public void TestInvokeActionWithEmptyParameter()
-    {
-        ClassWithActionAbout.TestInvisibleFlag = false;
+    public void TestInvokeActionWithEmptyParameter() {
+        ClassWithActionAbout.ResetTest();
+
         ClassWithActionAbout.TestUsableFlag = true;
-        ClassWithActionAbout.TestValidFlag = false;
 
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("") }, { "wn", new ScalarValue(0) } } };
@@ -485,13 +514,11 @@ public class LegacyTest : AcceptanceTestCase {
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
-
     }
-
-
 
     [Test]
     public void TestGetObjectWithInvisibleField() {
+        ClassWithFieldAbout.ResetTest();
         ClassWithFieldAbout.TestInvisibleFlag = true;
 
         var api = Api();
@@ -500,21 +527,19 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassWithFieldAbout.ResetTest();
-
         Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
         //Assert.IsNotNull(parsedResult["members"]["Id"]);
     }
 
     [Test]
     public void TestGetObjectWithUnNamedField() {
+        ClassWithFieldAbout.ResetTest();
+
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
-
-        ClassWithFieldAbout.ResetTest();
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
@@ -524,6 +549,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithNamedField() {
+        ClassWithFieldAbout.ResetTest();
         ClassWithFieldAbout.TestName = "Name from About";
 
         var api = Api();
@@ -532,8 +558,6 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassWithFieldAbout.ResetTest();
-
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNotNull(parsedResult["members"]["Name"]);
         Assert.AreEqual("Name from About", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
@@ -541,6 +565,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithUsableField() {
+        ClassWithFieldAbout.ResetTest();
         ClassWithFieldAbout.TestUsableFlag = true;
 
         var api = Api();
@@ -548,8 +573,6 @@ public class LegacyTest : AcceptanceTestCase {
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
-
-        ClassWithFieldAbout.ResetTest();
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNotNull(parsedResult["members"]["Name"]);
@@ -560,15 +583,13 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithUnUsableField() {
-        ClassWithFieldAbout.TestUsableFlag = false;
+        ClassWithFieldAbout.ResetTest();
 
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
-
-        ClassWithFieldAbout.ResetTest();
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
@@ -580,6 +601,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithDescribedField() {
+        ClassWithFieldAbout.ResetTest();
         ClassWithFieldAbout.TestDescription = "Description from About";
 
         var api = Api();
@@ -587,8 +609,6 @@ public class LegacyTest : AcceptanceTestCase {
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
-
-        ClassWithFieldAbout.ResetTest();
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNotNull(parsedResult["members"]["Name"]);
@@ -598,13 +618,13 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestGetObjectWithUnDescribedField() {
+        ClassWithFieldAbout.ResetTest();
+
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
-
-        ClassWithFieldAbout.ResetTest();
 
         Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
@@ -615,6 +635,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestPutInvalidProperty() {
+        ClassWithFieldAbout.ResetTest();
         ClassWithFieldAbout.TestValidFlag = true;
         ClassWithFieldAbout.TestUsableFlag = true;
 
@@ -625,13 +646,13 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassWithFieldAbout.ResetTest();
         Assert.AreEqual("invalid", parsedResult["value"].ToString());
         Assert.AreEqual("invalid by about", parsedResult["invalidReason"].ToString());
     }
 
     [Test]
     public void TestPutValidProperty() {
+        ClassWithFieldAbout.ResetTest();
         ClassWithFieldAbout.TestValidFlag = true;
         ClassWithFieldAbout.TestUsableFlag = true;
 
@@ -643,14 +664,12 @@ public class LegacyTest : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("valid", parsedResult["value"].ToString());
-
-        ClassWithFieldAbout.ResetTest();
     }
 
     [Test]
-    public void TestPutEmptyProperty()
-    {
-        ClassWithFieldAbout.TestValidFlag = false;
+    public void TestPutEmptyProperty() {
+        ClassWithFieldAbout.ResetTest();
+
         ClassWithFieldAbout.TestUsableFlag = true;
 
         var api = Api().AsPut();
@@ -661,28 +680,7 @@ public class LegacyTest : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("", parsedResult["value"].ToString());
-
-        ClassWithFieldAbout.ResetTest();
     }
-
-
-    //[Test]
-    //public void TestPutEmptyProperty()
-    //{
-    //    ClassWithFieldAbout.TestValidFlag = false;
-    //    ClassWithFieldAbout.TestUsableFlag = false;
-
-    //    var api = Api().AsPut();
-    //    var sva = new SingleValueArgument { Value = new ScalarValue("") };
-    //    var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
-    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-    //    var parsedResult = JObject.Parse(json);
-
-    //    Assert.AreEqual("valid", parsedResult["value"].ToString());
-
-    //    ClassWithFieldAbout.ResetTest();
-    //}
 
     [Test]
     public void TestGetLegacyObjectWithMenu() {

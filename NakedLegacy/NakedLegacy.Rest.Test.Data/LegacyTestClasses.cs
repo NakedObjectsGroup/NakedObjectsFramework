@@ -9,13 +9,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using NakedFramework.Core.Util;
 using NakedLegacy.Rest.Test.Data.AppLib;
-using NakedLegacy;
 using NakedObjects;
-using NUnit.Framework;
 
 // ReSharper disable InconsistentNaming
 
@@ -24,8 +21,8 @@ namespace NakedLegacy.Rest.Test.Data;
 public interface ILegacyRoleInterface { }
 
 public class SimpleService : IContainerAware {
-    public ClassWithTextString GetClassWithTextString() => Container.AllInstances<ClassWithTextString>().FirstOrDefault();
     public IContainer Container { get; set; }
+    public ClassWithTextString GetClassWithTextString() => Container.AllInstances<ClassWithTextString>().FirstOrDefault();
 }
 
 public class ClassWithTextString {
@@ -37,7 +34,7 @@ public class ClassWithTextString {
 
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
-    public Title Title() => new Title(Name.Title());
+    public Title Title() => new(Name.Title());
 
     public ClassWithTextString ActionUpdateName(TextString newName) {
         Name.Value = newName.Value;
@@ -45,8 +42,7 @@ public class ClassWithTextString {
     }
 }
 
-public class ClassWithBounded : IBounded
-{
+public class ClassWithBounded : IBounded {
     private TextString _name;
     public string name;
 
@@ -59,7 +55,6 @@ public class ClassWithBounded : IBounded
 
     public ITitle Title() => Name.Title();
 }
-
 
 public class ClassWithInternalCollection {
     private InternalCollection _testCollection;
@@ -94,16 +89,22 @@ public class ClassWithNOFInternalCollection {
 }
 
 public class ClassWithActionAbout {
-    public static bool TestInvisibleFlag = false;
-    public static bool TestUsableFlag = false;
-    public static bool TestValidFlag = false;
-    public static string TestName = null;
-    public static string TestDescription = null;
+    public static bool TestInvisibleFlag;
+    public static bool TestUsableFlag;
+    public static bool TestValidFlag;
+    public static string TestName;
+    public static string TestDescription;
+    public static bool TestDefaults;
 
     public static int AboutCount;
 
     [Key]
     public int Id { get; init; }
+
+    public static void ResetTest() {
+        TestInvisibleFlag = TestUsableFlag = TestValidFlag = TestDefaults = false;
+        TestName = TestDescription = null;
+    }
 
     public void actionTestAction() {
         // do something
@@ -111,48 +112,33 @@ public class ClassWithActionAbout {
 
     public void aboutActionTestAction(ActionAbout actionAbout) {
         AboutCount++;
-        switch (actionAbout.TypeCode)
-        {
+        switch (actionAbout.TypeCode) {
             case AboutTypeCodes.Visible:
                 actionAbout.Visible = !TestInvisibleFlag;
                 break;
             case AboutTypeCodes.Usable:
                 actionAbout.Usable = TestUsableFlag;
-                if (!actionAbout.Usable)
-                {
+                if (!actionAbout.Usable) {
                     actionAbout.UnusableReason = "Unusable by about";
                 }
 
                 break;
             case AboutTypeCodes.Name:
-                if (TestName is not null)
-                {
+                if (TestName is not null) {
                     actionAbout.Name = TestName;
                 }
 
-                if (TestDescription is not null)
-                {
+                if (TestDescription is not null) {
                     actionAbout.Description = TestDescription;
                 }
 
                 break;
             case AboutTypeCodes.Valid:
-                //if (TestValidFlag && name.Value != "valid")
-                //{
-                //    actionAbout.IsValid = false;
-                //    actionAbout.InvalidReason = "invalid by about";
-                //}
-                //else
-                //{
-                //    actionAbout.IsValid = true;
-                //}
-
                 break;
         }
     }
 
-    public void actionTestActionWithParms(TextString ts, WholeNumber wn)
-    {
+    public void actionTestActionWithParms(TextString ts, WholeNumber wn) {
         // values should not be null
         var t = ts.Value;
         var w = wn.Value;
@@ -192,27 +178,28 @@ public class ClassWithActionAbout {
                         actionAbout.UnusableReason = "wn is invalid";
                         break;
                 }
+
                 break;
             case AboutTypeCodes.Parameters:
                 if (TestName is not null) {
                     actionAbout.ParamLabels = new[] { "renamed param1", "renamed param2" };
                 }
+
+                if (TestDefaults) {
+                    actionAbout.ParamDefaultValues = new object[] { "def", 66 };
+                }
+
                 break;
         }
     }
 }
 
 public class ClassWithFieldAbout {
-    public static bool TestInvisibleFlag = false;
-    public static bool TestUsableFlag = false;
-    public static bool TestValidFlag = false;
-    public static string TestName = null;
-    public static string TestDescription = null;
-
-    public static void ResetTest() {
-        TestInvisibleFlag = TestUsableFlag = TestValidFlag = false;
-        TestName = TestDescription = null;
-    }
+    public static bool TestInvisibleFlag;
+    public static bool TestUsableFlag;
+    public static bool TestValidFlag;
+    public static string TestName;
+    public static string TestDescription;
 
     private TextString _name;
     public string name;
@@ -221,6 +208,11 @@ public class ClassWithFieldAbout {
     public int Id { get; init; }
 
     public virtual TextString Name => _name ??= new TextString(name, s => name = s);
+
+    public static void ResetTest() {
+        TestInvisibleFlag = TestUsableFlag = TestValidFlag = false;
+        TestName = TestDescription = null;
+    }
 
     public ITitle Title() => Name.Title();
 
@@ -273,6 +265,8 @@ public class ClassWithReferenceProperty : IContainerAware {
 
     public virtual ClassWithTextString ReferenceProperty { get; set; }
 
+    public IContainer Container { get; set; }
+
     public ClassWithReferenceProperty actionUpdateReferenceProperty(ClassWithTextString newReferenceProperty) {
         ReferenceProperty = newReferenceProperty;
         return this;
@@ -283,13 +277,11 @@ public class ClassWithReferenceProperty : IContainerAware {
         return Container.AllInstances<ClassWithTextString>().SingleOrDefault(c => c.name == ofName);
     }
 
-    public ClassWithTextString actionGetObject1(TextString name)
-    {
+    public ClassWithTextString actionGetObject1(TextString name) {
         var ofName = name.Value;
         var simpleService = (SimpleService)Container.Repository(typeof(SimpleService));
         return simpleService.GetClassWithTextString();
     }
-
 
     public void AboutActionUpdateReferenceProperty(ActionAbout actionAbout, ClassWithTextString newReferenceProperty) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
@@ -300,8 +292,6 @@ public class ClassWithReferenceProperty : IContainerAware {
             actionAbout.Usable = true;
         }
     }
-
-    public IContainer Container { get; set; }
 }
 
 public class LegacyClassWithInterface : IRoleInterface {
@@ -347,14 +337,13 @@ public class ClassWithMenu {
         return null;
     }
 
-    public static IMenu menuOrder()
-    {
+    public static IMenu menuOrder() {
         var menu = new Menu("ClassWithMenu Menu");
-        menu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.ActionMethod1)));
+        menu.MenuItems().Add(new MenuAction(nameof(ActionMethod1)));
 
         var newSubMenu = new Menu("Submenu1");
         menu.MenuItems().Add(newSubMenu);
-        newSubMenu.MenuItems().Add(new MenuAction(nameof(ClassWithMenu.actionMethod2)));
+        newSubMenu.MenuItems().Add(new MenuAction(nameof(actionMethod2)));
         return menu;
     }
 
@@ -372,9 +361,9 @@ public class ClassWithMenu {
 
 public class ClassWithDate {
     private NODate _date;
-    public DateTime date;
 
     private NODateNullable _date1;
+    public DateTime date;
     public DateTime? date1;
 
     [Key]
@@ -528,12 +517,9 @@ public class ClassWithOrderedProperties {
     public TextString Name4 => _name4 ??= new TextString(name4, s => name4 = s);
 
     public static string FieldOrder() => $"{nameof(Name2)}, {nameof(Name3)}, {nameof(Name1)}";
-
 }
 
-public class ClassWithOrderedActions
-{
-    
+public class ClassWithOrderedActions {
     [Key]
     public int Id { get; init; }
 
@@ -546,8 +532,7 @@ public class ClassWithOrderedActions
 
     //public static string ActionOrder() => $"{nameof(actionAction2)}, {nameof(actionAction3)}, {nameof(actionAction1)}";
 
-    public static IMenu menuOrder()
-    {
+    public static IMenu menuOrder() {
         var menu = new Menu("Actions");
         menu.MenuItems().Add(new MenuAction(nameof(actionAction2)));
         menu.MenuItems().Add(new MenuAction(nameof(actionAction3)));

@@ -111,19 +111,20 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {
-            facets.Add(new DescribedAsViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<DescribedAsViaAboutMethodFacet>()));
-            facets.Add(new DisableForContextViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<DisableForContextViaAboutMethodFacet>()));
-            facets.Add(new HideForContextViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<HideForContextViaAboutMethodFacet>()));
-            facets.Add(new MemberNamedViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, actionMethod.Name, LoggerFactory.CreateLogger<MemberNamedViaAboutMethodFacet>()));
-            facets.Add(new ActionValidateViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<ActionValidateViaAboutMethodFacet>()));
+            facets.Add(new DescribedAsViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, Logger<DescribedAsViaAboutMethodFacet>()));
+            facets.Add(new DisableForContextViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, Logger<DisableForContextViaAboutMethodFacet>()));
+            facets.Add(new HideForContextViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, Logger<HideForContextViaAboutMethodFacet>()));
+            facets.Add(new MemberNamedViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, actionMethod.Name, Logger<MemberNamedViaAboutMethodFacet>()));
+            facets.Add(new ActionValidateViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, Logger<ActionValidateViaAboutMethodFacet>()));
 
             var actionSpec = (IActionSpecImmutable)action;
             var parameterFacets = new List<IFacet>();
 
             var index = 0; // about is 0
             foreach (var parameterSpec in actionSpec.Parameters) {
-                parameterFacets.Add(new MemberNamedViaAboutMethodFacet(method, parameterSpec, AboutHelpers.AboutType.Action, parameterSpec.Identifier.MemberParameterNames, index, LoggerFactory.CreateLogger<MemberNamedViaAboutMethodFacet>()));
-                index++; 
+                parameterFacets.Add(new MemberNamedViaAboutMethodFacet(method, parameterSpec, AboutHelpers.AboutType.Action, parameterSpec.Identifier.MemberParameterNames, index, Logger<MemberNamedViaAboutMethodFacet>()));
+                parameterFacets.Add(new ActionDefaultsViaAboutMethodFacet(method, parameterSpec, index, Logger<ActionDefaultsViaAboutMethodFacet>()));
+                index++;
             }
 
             FacetUtils.AddFacets(parameterFacets);
