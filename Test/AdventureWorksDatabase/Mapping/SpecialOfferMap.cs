@@ -13,6 +13,7 @@ namespace AdventureWorksModel
             //builder.Ignore(t => t.mappedDescription).Ignore(t => t.mappedType).Ignore(t => t.mappedCategory).Ignore(t => t.mappedStartDate).Ignore(t => t.mappedEndDate)
             //    .Ignore(t => t.mappedMinQty).Ignore(t => t.mappedMaxQty).Ignore(t => t.mappedModifiedDate);
 
+            builder.Ignore(t => t.Container);
             // Table & Column Mappings
             builder.ToTable("SpecialOffer", "Sales");
             builder.Property(t => t.SpecialOfferID).HasColumnName("SpecialOfferID");
