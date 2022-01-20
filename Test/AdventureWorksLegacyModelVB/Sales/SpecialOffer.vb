@@ -26,6 +26,10 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
+					If Description Is Nothing OrElse Description.Value Is "" Then
+						a.Usable = False
+						a.UnusableReason = "Description cannot be empty"
+					End If
 				Case AboutTypeCodes.Visible
 			End Select
 		End Sub
@@ -48,6 +52,10 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
+					If Description Is Nothing OrElse DiscountPct.Value < 0 OrElse DiscountPct.Value > 1 Then
+						a.Usable = False
+						a.UnusableReason = "Discount percentage must be in range 0 - 1"
+					End If
 				Case AboutTypeCodes.Visible
 			End Select
 		End Sub
@@ -114,6 +122,10 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
+					If StartDate Is Nothing OrElse StartDate.Value < Today Then
+						a.Usable = False
+						a.UnusableReason = "Start Date cannot be before today"
+					End If
 				Case AboutTypeCodes.Visible
 			End Select
 		End Sub
@@ -136,6 +148,10 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
+					If EndDate Is Nothing OrElse StartDate.Value < Today Then
+						a.Usable = False
+						a.UnusableReason = "End Date cannot be before today"
+					End If
 				Case AboutTypeCodes.Visible
 			End Select
 		End Sub
@@ -158,6 +174,10 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
+					If MinQty Is Nothing OrElse MinQty.Value < 1 Then
+						a.Usable = False
+						a.UnusableReason = "Min Qty must be at least 1"
+					End If
 				Case AboutTypeCodes.Visible
 			End Select
 		End Sub
@@ -180,6 +200,10 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
+					If MaxQty Is Nothing OrElse MaxQty.Value < 1 Then
+						a.Usable = False
+						a.UnusableReason = "Min Qty must be at least 1"
+					End If
 				Case AboutTypeCodes.Visible
 			End Select
 		End Sub
