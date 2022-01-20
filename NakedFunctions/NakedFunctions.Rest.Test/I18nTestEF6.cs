@@ -109,9 +109,9 @@ public class I18nTestEF6 : AcceptanceTestCase {
 
         Assert.AreEqual("Changed Foo Name", parsedResult["extensions"]["friendlyName"].ToString());
         Assert.AreEqual("ChangedFooDescription", parsedResult["extensions"]["description"].ToString());
-        Assert.AreEqual("Changed Prop 1 Name", parsedResult["members"]["Prop1"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("ChangedProp1Name", parsedResult["members"]["Prop1"]["extensions"]["friendlyName"].ToString());
         Assert.AreEqual("ChangedProp1Description", parsedResult["members"]["Prop1"]["extensions"]["description"].ToString());
-        Assert.AreEqual("Changed Act 1 Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("ChangedAct1Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
         Assert.AreEqual("ChangedAct1Description", parsedResult["members"]["Act1"]["extensions"]["description"].ToString());
     }
 
@@ -125,7 +125,7 @@ public class I18nTestEF6 : AcceptanceTestCase {
 
         //Assert.AreEqual("Changed Foo Menu Functions Name", parsedResult["extensions"]["friendlyName"].ToString());
         //Assert.AreEqual("ChangedFooMenuFunctionsDescription", parsedResult["extensions"]["description"].ToString());
-        Assert.AreEqual("Changed Act 1 Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("ChangedAct1Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
         Assert.AreEqual("ChangedAct1Description", parsedResult["members"]["Act1"]["extensions"]["description"].ToString());
     }
 }
