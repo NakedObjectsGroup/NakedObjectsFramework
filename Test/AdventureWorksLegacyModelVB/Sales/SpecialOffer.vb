@@ -52,9 +52,9 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If Description Is Nothing OrElse DiscountPct.Value < 0 OrElse DiscountPct.Value > 1 Then
+					If Description Is Nothing OrElse DiscountPct.Value < 0 OrElse DiscountPct.Value > 100 Then
 						a.Usable = False
-						a.UnusableReason = "Discount percentage must be in range 0 - 1"
+						a.UnusableReason = "Discount percentage must be in range 0 - 100"
 					End If
 				Case AboutTypeCodes.Visible
 			End Select
@@ -251,7 +251,7 @@
 #Region "Actions"
 		Public Sub ActionSave()
 			mappedModifiedDate = Now
-			RowGuid = New Guid()
+			RowGuid = Guid.NewGuid()
 			Container.MakePersistent(Me)
 		End Sub
 
