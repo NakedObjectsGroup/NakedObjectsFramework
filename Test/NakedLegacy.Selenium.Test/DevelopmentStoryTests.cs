@@ -391,6 +391,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void CreatingAndSavingObjects()
         {
             CreateAndSaveObjectProgrammatically();
+            DisplayingAndSavingATransientObjectFromTheUI();
         }
 
         //[TestMethod]
@@ -408,6 +409,27 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             helper.GotoHome().OpenMainMenu("Employees").OpenSubMenu("Organisation")
                 .GetActionWithoutDialog("List New Departments").ClickToViewList()
                 .GetRowFromList(0).AssertTitleIs(name);
+        }
+
+        //[TestMethod]
+        public void DisplayingAndSavingATransientObjectFromTheUI()
+        {
+            var transient = helper.GotoHome().OpenMainMenu("Special Offers")
+              .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject();
+            transient.AssertTitleIs("Editing - Unsaved Special Offer");
+            var rnd = new Random().Next(1, 10000);
+            var desc = $"Sale {rnd}";
+            transient.GetEditableTextInputProperty("Description").Enter(desc);
+            transient.GetEditableTextInputProperty("Discount Pct").Clear().Enter("0.5");
+            transient.GetEditableTextInputProperty("Type").Enter("A");
+            transient.GetEditableTextInputProperty("Category").Enter("B");
+            transient.GetEditableTextInputProperty("Start Date").Clear().Enter(DateTime.Today.ToString("d"));
+            transient.GetEditableTextInputProperty("End Date").Clear().Enter(DateTime.Today.ToString("d"));
+            transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
+            transient.Save().AssertTitleIs(desc);
+            helper.GotoHome().OpenMainMenu("Special Offers")
+             .GetActionWithoutDialog("Recently Updated Special Offers").ClickToViewList()
+             .GetRowFromList(0).AssertTitleIs(desc);
         }
         #endregion
 
@@ -459,6 +481,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             dialog.AssertHasValidationError("Total comment length would exceed 50 chars");
         }
         #endregion
+
+
 
         #region Helpers
 
