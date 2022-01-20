@@ -519,11 +519,10 @@
                         a.UnusableReason = "Existing comments already near capacity. Clear first"
                     End If
                 Case AboutTypeCodes.Valid
-                    If comment.Value Is Nothing OrElse comment.Value = "" Then
+                    If comment.IsEmpty Then
                         a.Usable = False
                         a.UnusableReason = "Comment cannot be empty"
-                    End If
-                    If Not c Is Nothing AndAlso c.Length + comment.Value.Length > 50 Then
+                    ElseIf Not c Is Nothing AndAlso c.Length + comment.Value.Length > 50 Then
                         a.Usable = False
                         a.UnusableReason = "Total comment length would exceed 50 chars"
                     End If

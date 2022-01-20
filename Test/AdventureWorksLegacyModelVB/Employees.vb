@@ -20,12 +20,10 @@
         End Function
 
         Public Shared Sub AboutActionFindEmployeeByName(a As ActionAbout, firstName As TextString, lastName As TextString)
-            Throw New Exception($"{a.TypeCode} {firstName} {lastName}")
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-
                     If lastName.IsEmpty() Then
                         a.Usable = False
                         a.UnusableReason = $"Last Name cannot be empty {a.TypeCode}"
