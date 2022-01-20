@@ -2,7 +2,6 @@
 
     '<Named("Sales Order")>
     Partial Public Class SalesOrderHeader
-
         Implements ITitledObject
 
         ''<Hidden>

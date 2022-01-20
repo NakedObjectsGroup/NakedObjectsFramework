@@ -21,5 +21,5 @@ public class TextString : ValueHolder<string> {
 
     public override Title Title() => new Title(ToString());
 
-    public bool IsEmpty() => Value == "";
+    public bool IsEmpty() => Value is null || Value == "";
 }

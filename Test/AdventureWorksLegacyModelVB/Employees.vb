@@ -24,9 +24,9 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                    If lastName.Value Is Nothing Or lastName.Value = "" Then
+                    If lastName.IsEmpty Then
                         a.Usable = False
-                        a.UnusableReason = "Last Name cannot be empty"
+                        a.UnusableReason = $"Last Name cannot be empty {a.TypeCode}"
                     End If
                 Case AboutTypeCodes.Visible
             End Select
