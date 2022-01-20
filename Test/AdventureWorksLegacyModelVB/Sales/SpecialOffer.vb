@@ -104,7 +104,7 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If Category Is Nothing OrElse Type.Value Is "" Then
+					If Category Is Nothing OrElse Category.Value Is "" Then
 						a.Usable = False
 						a.UnusableReason = "Category cannot be empty"
 					End If
