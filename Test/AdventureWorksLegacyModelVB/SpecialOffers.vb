@@ -12,7 +12,7 @@
 
         Public Shared Function ActionRecentlyUpdatedSpecialOffers() As IQueryable(Of SpecialOffer)
             Return From s In ActionAllSpecialOffers()
-                   Order By s.ModifiedDate Descending
+                   Order By s.mappedModifiedDate Descending
         End Function
 
         Public Shared Function ActionCreateNewSpecialOffer() As SpecialOffer

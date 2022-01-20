@@ -21,6 +21,13 @@ namespace NakedFrameworkClient.TestFramework
             return helper.WaitForNewObjectView(enclosingView, button);
         }
 
+        public ObjectEdit ClickToViewTransientObject(MouseClick button = MouseClick.MainButton)
+        {
+            element.AssertIsEnabled();
+            helper.Click(element, button);
+            return helper.GetObjectEdit();
+        }
+
         public ListView ClickToViewList(MouseClick button = MouseClick.MainButton)
         {
             element.AssertIsEnabled();

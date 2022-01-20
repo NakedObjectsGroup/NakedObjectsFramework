@@ -2,7 +2,7 @@
 
     Public Class Employees
         Private Shared Function Employees() As IQueryable(Of Employee)
-            Return ThreadLocals.Container.Instances(Of Employee)
+            Return ThreadLocals.Container.AllInstances(Of Employee)
         End Function
 
         Public Shared Function ActionRandomEmployee() As Employee
@@ -24,6 +24,10 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
+                    If lastName.Value Is Nothing Or lastName.Value = "" Then
+                        a.Usable = False
+                        a.UnusableReason = "Last Name cannot be empty"
+                    End If
                 Case AboutTypeCodes.Visible
             End Select
         End Sub
