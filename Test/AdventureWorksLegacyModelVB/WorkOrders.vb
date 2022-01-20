@@ -11,7 +11,7 @@
         End Function
 
         Public Shared Function ActionCurrentWorkOrders() As IQueryable(Of WorkOrder)
-            Return From w In ThreadLocals.Container.Instances(Of WorkOrder)()
+            Return From w In ThreadLocals.Container.AllInstances(Of WorkOrder)()
                    Where w.mappedEndDate Is Nothing
         End Function
 
