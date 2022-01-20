@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.I18N;
 [Serializable]
 public sealed class MemberNamedFacetI18N : SingleStringValueFacetAbstract, IMemberNamedFacet {
     public MemberNamedFacetI18N(string valueString, ISpecification holder)
-        : base(typeof(IMemberNamedFacet), holder, NameUtils.NaturalName(TypeNameUtils.GetShortName(valueString))) {
+        : base(typeof(IMemberNamedFacet), holder, valueString) {
     }
 
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter) => Value;

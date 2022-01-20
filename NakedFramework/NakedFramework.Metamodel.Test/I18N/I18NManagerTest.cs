@@ -32,8 +32,8 @@ public class I18NManagerTest {
     public void TestDecoratePropertyName() {
         var manager = new I18NManager(mockLogger);
 
-        var testName = new Mock<INamedFacet>();
-        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+        var testName = new Mock<IMemberNamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(IMemberNamedFacet));
 
         var testHolder = new Mock<ISpecification>();
         var identifier = new Mock<IIdentifier>();
@@ -50,16 +50,16 @@ public class I18NManagerTest {
 
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-        Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-        Assert.AreEqual("I18N property name", ((NamedFacetI18N)facet).Value);
+        Assert.IsInstanceOfType(facet, typeof(MemberNamedFacetI18N));
+        Assert.AreEqual("I18N property name", ((MemberNamedFacetI18N)facet).FriendlyName(null));
     }
 
     [TestMethod]
     public void TestDecorateActionName() {
         var manager = new I18NManager(mockLogger);
 
-        var testName = new Mock<INamedFacet>();
-        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+        var testName = new Mock<IMemberNamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(IMemberNamedFacet));
 
         var testHolder = new Mock<ISpecification>();
         var identifier = new Mock<IIdentifier>();
@@ -76,16 +76,16 @@ public class I18NManagerTest {
 
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-        Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-        Assert.AreEqual("I18N action name", ((NamedFacetI18N)facet).Value);
+        Assert.IsInstanceOfType(facet, typeof(MemberNamedFacetI18N));
+        Assert.AreEqual("I18N action name", ((MemberNamedFacetI18N)facet).FriendlyName(null));
     }
 
     [TestMethod]
     public void TestDecorateParameterName() {
         var manager = new I18NManager(mockLogger);
 
-        var testName = new Mock<INamedFacet>();
-        testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
+        var testName = new Mock<IMemberNamedFacet>();
+        testName.Setup(n => n.FacetType).Returns(typeof(IMemberNamedFacet));
 
         var testHolder = new Mock<IActionParameterSpec>();
         var identifier = new Mock<IIdentifier>();
@@ -99,8 +99,8 @@ public class I18NManagerTest {
 
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-        Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
-        Assert.AreEqual("I18N parameter name", ((NamedFacetI18N)facet).Value);
+        Assert.IsInstanceOfType(facet, typeof(MemberNamedFacetI18N));
+        Assert.AreEqual("I18N parameter name", ((MemberNamedFacetI18N)facet).FriendlyName(null));
     }
 
     [TestMethod]

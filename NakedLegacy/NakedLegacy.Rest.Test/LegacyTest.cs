@@ -314,6 +314,49 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestGetObjectWithNameActionParameter()
+    {
+        ClassWithActionAbout.TestName = "Renamed Action";
+        ClassWithActionAbout.TestInvisibleFlag = false;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        Assert.AreEqual("Renamed Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        Assert.AreEqual("renamed param1", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("renamed param2", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["extensions"]["friendlyName"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectWithInferredNameActionParameter()
+    {
+        ClassWithActionAbout.TestName = null;
+        ClassWithActionAbout.TestInvisibleFlag = false;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        Assert.AreEqual("ts", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("wn", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["extensions"]["friendlyName"].ToString());
+    }
+
+
+    [Test]
     public void TestGetObjectWithDescribedAction() {
         ClassWithActionAbout.TestDescription = "Action With Description";
         ClassWithActionAbout.TestInvisibleFlag = false;

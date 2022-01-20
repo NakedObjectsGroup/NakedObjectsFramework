@@ -45,12 +45,12 @@ public class I18NManager : II18NManager, IFacetDecorator {
     }
 
     private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier) {
-        var i18NName = holder is IActionParameterSpec spec ? GetParameterName(identifier, spec.Number) : GetName(identifier);
+        var i18NName =  GetName(identifier);
         return i18NName == null ? null : new NamedFacetI18N(i18NName, facet.Specification);
     }
 
     private IFacet GetMemberNamedFacet(ISpecification holder, IMemberNamedFacet facet, IIdentifier identifier) {
-        var i18NName = GetName(identifier);
+        var i18NName = holder is IActionParameterSpec spec ? GetParameterName(identifier, spec.Number) : GetName(identifier);
         return i18NName == null ? null : new MemberNamedFacetI18N(i18NName, facet.Specification);
     }
 

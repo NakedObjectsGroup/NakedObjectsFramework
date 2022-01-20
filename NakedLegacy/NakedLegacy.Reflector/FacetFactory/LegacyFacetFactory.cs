@@ -116,6 +116,17 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
             facets.Add(new HideForContextViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<HideForContextViaAboutMethodFacet>()));
             facets.Add(new MemberNamedViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, actionMethod.Name, LoggerFactory.CreateLogger<MemberNamedViaAboutMethodFacet>()));
             facets.Add(new ActionValidateViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, LoggerFactory.CreateLogger<ActionValidateViaAboutMethodFacet>()));
+
+            var actionSpec = (IActionSpecImmutable)action;
+            var parameterFacets = new List<IFacet>();
+
+            var index = 0; // about is 0
+            foreach (var parameterSpec in actionSpec.Parameters) {
+                parameterFacets.Add(new MemberNamedViaAboutMethodFacet(method, parameterSpec, AboutHelpers.AboutType.Action, parameterSpec.Identifier.MemberParameterNames, index, LoggerFactory.CreateLogger<MemberNamedViaAboutMethodFacet>()));
+                index++; 
+            }
+
+            FacetUtils.AddFacets(parameterFacets);
         }
 
         MethodHelpers.AddHideForSessionFacetNone(facets, action);

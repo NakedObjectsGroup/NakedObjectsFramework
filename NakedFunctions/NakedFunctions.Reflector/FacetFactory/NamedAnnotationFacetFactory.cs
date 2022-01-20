@@ -48,7 +48,7 @@ public sealed class NamedAnnotationFacetFactory : FunctionalFacetFactoryProcesso
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForType(attribute, holder));
+        FacetUtils.AddFacet(CreateForMember(attribute, holder));
         return metamodel;
     }
 

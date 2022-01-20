@@ -6,8 +6,9 @@ namespace NakedLegacy;
 
 public interface IContainer {
     public IEnumerable AllInstances(Type ofType);
+    public IQueryable<T> AllInstances<T>() where T : class;
     public object Repository(Type ofType);
-    public IQueryable<T> Instances<T>() where T : class;
+    public T Repository<T>();
     public object CreateTransientInstance(Type ofType);
     public T CreateTransientInstance<T>() where T : new();
     public void MakePersistent<T>(ref T transientObject);

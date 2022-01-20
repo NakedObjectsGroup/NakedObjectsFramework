@@ -24,7 +24,7 @@ namespace NakedLegacy.Rest.Test.Data;
 public interface ILegacyRoleInterface { }
 
 public class SimpleService : IContainerAware {
-    public ClassWithTextString GetClassWithTextString() => Container.Instances<ClassWithTextString>().FirstOrDefault();
+    public ClassWithTextString GetClassWithTextString() => Container.AllInstances<ClassWithTextString>().FirstOrDefault();
     public IContainer Container { get; set; }
 }
 
@@ -190,7 +190,11 @@ public class ClassWithActionAbout {
                         actionAbout.UnusableReason = "wn is invalid";
                         break;
                 }
-
+                break;
+            case AboutTypeCodes.Parameters:
+                if (TestName is not null) {
+                    actionAbout.ParamLabels = new[] { "renamed param1", "renamed param2" };
+                }
                 break;
         }
     }
@@ -274,7 +278,7 @@ public class ClassWithReferenceProperty : IContainerAware {
 
     public ClassWithTextString actionGetObject(TextString name) {
         var ofName = name.Value;
-        return Container.Instances<ClassWithTextString>().SingleOrDefault(c => c.name == ofName);
+        return Container.AllInstances<ClassWithTextString>().SingleOrDefault(c => c.name == ofName);
     }
 
     public ClassWithTextString actionGetObject1(TextString name)
@@ -320,7 +324,7 @@ public class ClassWithMenu {
 
     public static ArrayList ActionMenuAction1() => new(Container.AllInstances(typeof(ClassWithTextString)).ToList());
 
-    public static IQueryable<ClassWithTextString> ActionMenuAction2() => Container.Instances<ClassWithTextString>();
+    public static IQueryable<ClassWithTextString> ActionMenuAction2() => Container.AllInstances<ClassWithTextString>();
 
     public static ClassWithTextString ActionCreateTransient() => Container.CreateTransientInstance(typeof(ClassWithTextString)) as ClassWithTextString;
 
