@@ -36,7 +36,7 @@ public sealed class HideForContextViaAboutMethodFacet : AbstractViaAboutMethodFa
             return null;
         }
 
-        var about = InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Visible);
+        var about = InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Visible, false);
         return about.Visible ? null : NakedObjects.Resources.NakedObjects.Hidden;
     }
 

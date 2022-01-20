@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Metamodel.Menu;
@@ -13,6 +14,17 @@ public static class LegacyHelpers {
             _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IValueHolder<>) => type.GetGenericArguments().Single(),
             _ => type.GetInterfaces().Select(IsOrImplementsValueHolder).FirstOrDefault(t => t is not null)
         };
+
+    public static object[] SubstituteNulls(object[] parameters, MethodInfo method) {
+        for (var index = 0; index < parameters.Length; index++) {
+            if (parameters[index] is null) {
+                var parmType = method.GetParameters()[index].ParameterType;
+                parameters[index] = Activator.CreateInstance(parmType);
+            }
+        }
+
+        return parameters;
+    }
 
     private static void AddMenuComponent(NakedFramework.Menu.IMenu topLevelMenu, IMenuComponent menuComponent, Type declaringType) {
         switch (menuComponent) {

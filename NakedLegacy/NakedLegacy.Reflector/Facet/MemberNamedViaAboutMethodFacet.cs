@@ -60,7 +60,7 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
     }
 
     public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) {
-        return nakedObjectAdapter?.Object is null ? null : InvokeAboutMethod(nakedObjectAdapter.Object, aboutCode);
+        return nakedObjectAdapter?.Object is null ? null : InvokeAboutMethod(nakedObjectAdapter.Object, aboutCode, false);
     }
 }
 

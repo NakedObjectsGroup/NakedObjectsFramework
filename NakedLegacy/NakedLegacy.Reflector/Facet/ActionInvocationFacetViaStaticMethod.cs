@@ -18,6 +18,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -77,8 +78,9 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
         }
 
         var rawParms = parameters.Select(p => p?.Object).ToArray();
+        var substituteParms = LegacyHelpers.SubstituteNulls(rawParms, ActionMethod);
 
-        return HandleInvokeResult(framework, Invoke<object>(methodDelegate, ActionMethod, rawParms));
+        return HandleInvokeResult(framework, Invoke<object>(methodDelegate, ActionMethod, substituteParms));
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,

@@ -18,6 +18,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedLegacy.Reflector.Helpers;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
@@ -60,12 +61,13 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
         }
 
         object result;
+        var substituteParms = LegacyHelpers.SubstituteNulls(parameters.Select(no => no.GetDomainObject()).ToArray(), ActionMethod);
         if (ActionDelegate != null) {
-            result = ActionDelegate(inObjectAdapter.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
+            result = ActionDelegate(inObjectAdapter.GetDomainObject(), substituteParms);
         }
         else {
             logger.LogWarning($"Invoking action via reflection as no delegate {OnType}.{ActionMethod}");
-            result = InvokeUtils.Invoke(ActionMethod, inObjectAdapter, parameters);
+            result = InvokeUtils.Invoke(ActionMethod, inObjectAdapter.GetDomainObject(), substituteParms);
         }
 
         return framework.NakedObjectManager.CreateAdapter(result, null, null);

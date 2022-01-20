@@ -23,9 +23,9 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
     protected AboutHelpers.AboutType AboutType { get; }
     public MethodInfo GetMethod() => Method;
 
-    protected IAbout InvokeAboutMethod(object target, AboutTypeCodes typeCode, params object[] proposedValues) {
+    protected IAbout InvokeAboutMethod(object target, AboutTypeCodes typeCode, bool substitute, params object[] proposedValues) {
         var about = AboutType.AboutFactory(typeCode);
-        Method.Invoke(target, Method.GetParameters(about, proposedValues));
+        Method.Invoke(target, Method.GetParameters(about, substitute, proposedValues));
         return about;
     }
 

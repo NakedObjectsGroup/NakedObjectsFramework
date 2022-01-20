@@ -35,7 +35,7 @@ public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFac
                 valueHolder.Value = obj.Value;
             }
             else {
-                valueHolder.Value = default;
+                valueHolder.Value = Activator.CreateInstance<T>().Value;
             }
         }
         catch (NullReferenceException e) {

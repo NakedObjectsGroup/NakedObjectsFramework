@@ -24,7 +24,7 @@ public sealed class DescribedAsViaAboutMethodFacet : AbstractViaAboutMethodFacet
 
     public string Description(INakedObjectAdapter adapter) => GetAbout(adapter.Object).Description;
 
-    public IAbout GetAbout(object target) => InvokeAboutMethod(target, AboutTypeCodes.Name);
+    public IAbout GetAbout(object target) => InvokeAboutMethod(target, AboutTypeCodes.Name, false);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

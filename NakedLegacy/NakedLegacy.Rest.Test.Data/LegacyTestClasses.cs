@@ -153,7 +153,9 @@ public class ClassWithActionAbout {
 
     public void actionTestActionWithParms(TextString ts, WholeNumber wn)
     {
-        // do something
+        // values should not be null
+        var t = ts.Value;
+        var w = wn.Value;
     }
 
     public void aboutActionTestActionWithParms(ActionAbout actionAbout, TextString ts, WholeNumber wn) {
@@ -181,11 +183,11 @@ public class ClassWithActionAbout {
                 break;
             case AboutTypeCodes.Valid:
                 switch (TestValidFlag) {
-                    case true when ts?.Value != "valid":
+                    case true when ts.Value != "valid":
                         actionAbout.Usable = false;
                         actionAbout.UnusableReason = "ts is invalid";
                         break;
-                    case true when wn?.Value == 101:
+                    case true when wn.Value == 101:
                         actionAbout.Usable = false;
                         actionAbout.UnusableReason = "wn is invalid";
                         break;

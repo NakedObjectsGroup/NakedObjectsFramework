@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NakedLegacy;
+using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -18,7 +18,7 @@ public static class AboutHelpers {
         Field
     }
 
-    public static object[] GetParameters(this MethodInfo method, object about, params object[] proposedValues) {
+    public static object[] GetParameters(this MethodInfo method, object about, bool substitute, params object[] proposedValues) {
         var parameterCount = method.GetParameters().Length;
         var parameters = new List<object> { about };
 
@@ -27,13 +27,13 @@ public static class AboutHelpers {
             parameters.AddRange(placeholders);
         }
 
-        return parameters.ToArray();
-    }
+        var rawParameters = parameters.ToArray();
 
+        return substitute ? LegacyHelpers.SubstituteNulls(rawParameters, method) : rawParameters;
+    }
 
     public static IAbout AboutFactory(this AboutType aboutType, AboutTypeCodes aboutTypeCode) =>
         aboutType is AboutType.Action
             ? new ActionAboutImpl(aboutTypeCode)
             : new FieldAboutImpl(aboutTypeCode);
-
 }

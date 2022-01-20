@@ -33,7 +33,7 @@ public sealed class PropertyValidateViaAboutMethodFacet : AbstractViaAboutMethod
             return null;
         }
 
-        if (InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Valid, proposedValue?.Object) is FieldAbout fa) {
+        if (InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Valid, true, proposedValue?.Object) is FieldAbout fa) {
             return fa.IsValid ? null : string.IsNullOrWhiteSpace(fa.InvalidReason) ? "Invalid Property" : fa.InvalidReason;
         }
 
