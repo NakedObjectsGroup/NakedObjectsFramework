@@ -53,7 +53,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Menus();
             FieldAboutSpecifyingName_Description_Editability();
             CreatingAndSavingObjects();
-            ActionAboutControl();
+            //ActionAboutControl();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -415,49 +415,53 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void ActionAboutControl()
         {
-            ActionVisibility();
-            ActionNameAndDescription();
-            ActionUsabilityBasedOnObjectState();
+            ActionName();
+            ActionDescription();
+            ActionVisibilityBasedOnObjectState();
+            ActionUsabilityBasedOnObjectState_WithoutParams();
+            ActionUsabilityBasedOnObjectState_WithParams();
             ActionParameterValidation();
         }
 
-        //[TestMethod]
-        public void ActionVisibility()
+        [TestMethod]
+        public void ActionName()
         {
-            AccessInstanceWithTitle("SalesOrderHeader--43660", "SO43660")
-                .OpenActions().AssertHasActions("Add New Detail", 
-                "Add Comment", "Clear Comments", "Remove Detail");
-                //i.e. no action called No Comment
+            //Test invoked within Name mode
         }
 
-        //[TestMethod]
-        public void ActionNameAndDescription()
+        [TestMethod]
+        public void ActionDescription()
         {
-            AccessInstanceWithTitle("SalesOrderHeader--43660", "SO43660")
-                .OpenActions().GetActionWithDialog("Add Comment")
-            //because actual method name is ActionAppendComment
-            .AssertHasTooltip("Append new comment to any existing");
+            //Test invoked within Name mode
         }
 
-        //[TestMethod]
-        public void ActionUsabilityBasedOnObjectState()
+        [TestMethod]
+        public void ActionVisibilityBasedOnObjectState()
         {
-            var order = AccessInstanceWithTitle("SalesOrderHeader--43660", "SO43660");
-            order.GetProperty("Comment").AssertValueIs("");
-            order.OpenActions().GetActionWithoutDialog("Clear Comments")
-               .AssertIsDisabled("Comment field is already clear");
+            //Test invoked within Visible mode
         }
 
-        //[TestMethod]
+        [TestMethod]
+        public void ActionUsabilityBasedOnObjectState_WithoutParams()
+        {
+            //Test invoked within Usable mode
+        }
+
+        [TestMethod]
+        public void ActionUsabilityBasedOnObjectState_WithParams()
+        {
+            //Test invoked within Usable mode
+        }
+
+
+        [TestMethod]
         public void ActionParameterValidation()
         {
-            var dialog = AccessInstanceWithTitle("SalesOrderHeader--43660", "SO43660").OpenActions()
-              .GetActionWithDialog("Add Comment").Open();
-            dialog.GetTextField("Comment")
-                .Enter("Now is the time for all good men to come to the aid of the party");
-            dialog.ClickOKWithNoResultExpected();
-            dialog.AssertHasValidationError("Total comment length would exceed 50 chars");
+            //Test invoked within Valid mode
+
         }
+
+
         #endregion
 
         #region Helpers
