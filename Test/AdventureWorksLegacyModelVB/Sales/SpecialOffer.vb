@@ -78,6 +78,10 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
+					If Type Is Nothing OrElse Type.Value Is "" Then
+						a.Usable = False
+						a.UnusableReason = "Type cannot be empty"
+					End If
 				Case AboutTypeCodes.Visible
 			End Select
 		End Sub
@@ -100,6 +104,10 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
+					If Category Is Nothing OrElse Category.Value Is "" Then
+						a.Usable = False
+						a.UnusableReason = "Category cannot be empty"
+					End If
 				Case AboutTypeCodes.Visible
 			End Select
 		End Sub
@@ -243,6 +251,7 @@
 #Region "Actions"
 		Public Sub ActionSave()
 			mappedModifiedDate = Now
+			RowGuid = New Guid()
 			Container.MakePersistent(Me)
 		End Sub
 

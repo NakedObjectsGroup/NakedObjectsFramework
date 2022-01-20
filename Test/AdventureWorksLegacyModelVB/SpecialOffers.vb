@@ -10,7 +10,7 @@
             Return GenericMenuFunctions.ListAll(Of SpecialOffer)()
         End Function
 
-        Public Shared Function ActionRecentlyUpdateSpecialOffers() As IQueryable(Of SpecialOffer)
+        Public Shared Function ActionRecentlyUpdatedSpecialOffers() As IQueryable(Of SpecialOffer)
             Return From s In ActionAllSpecialOffers()
                    Order By s.ModifiedDate Descending
         End Function
@@ -23,7 +23,7 @@
             Dim main = New Menu("Special Offers")
             main.AddAction(NameOf(ActionRandomSpecialOffer)) _
             .AddAction(NameOf(ActionAllSpecialOffers)) _
-            .AddAction(NameOf(ActionRecentlyUpdateSpecialOffers)) _
+            .AddAction(NameOf(ActionRecentlyUpdatedSpecialOffers)) _
             .AddAction(NameOf(ActionCreateNewSpecialOffer))
             Return main
         End Function
