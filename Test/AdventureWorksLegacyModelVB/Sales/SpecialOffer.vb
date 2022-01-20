@@ -251,6 +251,7 @@
 #Region "Actions"
 		Public Sub ActionSave()
 			mappedModifiedDate = Now
+			RowGuid = New Guid()
 			Container.MakePersistent(Me)
 		End Sub
 
