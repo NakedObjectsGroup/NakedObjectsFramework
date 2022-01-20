@@ -15,8 +15,8 @@
 
         Public Shared Function ActionFindEmployeeByName(firstName As TextString, lastName As TextString) As ArrayList
             Return (From e In Employees()
-                    Where e.PersonDetails.mappedLastName.ToUpper().StartsWith(lastName.Value) AndAlso
-                       (firstName.Value Is "" OrElse e.PersonDetails.mappedFirstName.ToUpper().StartsWith(firstName.Value))).ToArrayList()
+                    Where e.PersonDetails.mappedLastName.ToUpper().StartsWith(lastName.Value.ToUpper()) AndAlso
+                       (firstName.IsEmpty() OrElse e.PersonDetails.mappedFirstName.ToUpper().StartsWith(firstName.Value))).ToArrayList()
         End Function
 
         Public Shared Sub AboutActionFindEmployeeByName(a As ActionAbout, firstName As TextString, lastName As TextString)
