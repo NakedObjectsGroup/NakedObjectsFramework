@@ -91,8 +91,7 @@ public sealed class FallbackFacetFactory : DomainObjectFacetFactoryProcessor {
 
         if (holder is IActionParameterSpecImmutable param) {
             var name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
-            INamedFacet namedFacet = new NamedFacetInferred(name, holder);
-            facets.Add(namedFacet);
+            facets.Add(new MemberNamedFacetInferred(name, holder));
             facets.Add(new DescribedAsFacetNone(holder));
             facets.Add(new MultiLineFacetNone(holder));
             facets.Add(new MaxLengthFacetZero(holder));

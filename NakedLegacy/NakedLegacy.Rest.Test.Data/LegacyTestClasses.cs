@@ -190,7 +190,9 @@ public class ClassWithActionAbout {
                         actionAbout.UnusableReason = "wn is invalid";
                         break;
                 }
-
+                break;
+            case AboutTypeCodes.Parameters:
+                actionAbout.ParamLabels = new[] { "renamed param1", "renamed param2" };
                 break;
         }
     }

@@ -613,9 +613,9 @@ public class ReflectorTest {
 
             var parmSpec = actionSpec.Parameters[1];
 
-            facet = parmSpec.GetFacet<INamedFacet>();
-            Assert.IsNotNull(facet);
-            Assert.AreEqual("Parameter Name", facet.Value);
+            var facet3 = parmSpec.GetFacet<IMemberNamedFacet>();
+            Assert.IsNotNull(facet3);
+            Assert.AreEqual("Parameter Name", facet3.FriendlyName(null));
         }
     }
 

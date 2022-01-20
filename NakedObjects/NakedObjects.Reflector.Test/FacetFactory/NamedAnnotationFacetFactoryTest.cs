@@ -352,11 +352,9 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
 
         var actionMethod = FindMethod(typeof(Customer4), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification, metamodel);
-        var facet = Specification.GetFacet<INamedFacet>();
+        var facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
-        ;
-        Assert.AreEqual("some name", facet.FriendlyName);
+        Assert.AreEqual("some name", facet.FriendlyName(null));
         Assert.IsNotNull(metamodel);
     }
 
