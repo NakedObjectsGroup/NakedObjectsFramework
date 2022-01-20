@@ -24,7 +24,8 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                    If lastName.IsEmpty Then
+                    Throw New Exception($"{firstName.Value} {lastName.Value}")
+                    If lastName.IsEmpty() Then
                         a.Usable = False
                         a.UnusableReason = $"Last Name cannot be empty {a.TypeCode}"
                     End If
