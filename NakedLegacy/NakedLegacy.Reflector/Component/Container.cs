@@ -22,7 +22,7 @@ public class Container : IContainer {
 
     public object Repository(Type ofType) => Services.SingleOrDefault(o => o.GetType() == ofType);
 
-    public IQueryable<T> Instances<T>() where T : class => framework.Persistor.Instances<T>();
+    public IQueryable<T> AllInstances<T>() where T : class => framework.Persistor.Instances<T>();
 
     public object CreateTransientInstance(Type ofType) {
         var spec = (IObjectSpec)framework.MetamodelManager.GetSpecification(ofType);

@@ -1,4 +1,4 @@
-﻿namespace NakedLegacy;
+﻿namespace NakedLegacy.Reflector.Facet;
 
 public class ActionAboutImpl : ActionAbout {
     public ActionAboutImpl(AboutTypeCodes typeCode) => TypeCode = typeCode;
