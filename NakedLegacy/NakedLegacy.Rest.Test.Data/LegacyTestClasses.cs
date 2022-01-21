@@ -204,6 +204,7 @@ public class ClassWithFieldAbout {
     public static bool TestInvisibleFlag;
     public static bool TestUsableFlag;
     public static bool TestValidFlag;
+    public static bool TestChoices;
     public static string TestName;
     public static string TestDescription;
 
@@ -216,7 +217,7 @@ public class ClassWithFieldAbout {
     public virtual TextString Name => _name ??= new TextString(name, s => name = s);
 
     public static void ResetTest() {
-        TestInvisibleFlag = TestUsableFlag = TestValidFlag = false;
+        TestInvisibleFlag = TestUsableFlag = TestValidFlag = TestChoices = false;
         TestName = TestDescription = null;
     }
 
@@ -253,6 +254,11 @@ public class ClassWithFieldAbout {
                     fieldAbout.IsValid = true;
                 }
 
+                break;
+            case AboutTypeCodes.Parameters:
+                if (TestChoices) {
+                    fieldAbout.Options = new object[] { "fieldopt1", "fieldopt2" };
+                }
                 break;
         }
     }
