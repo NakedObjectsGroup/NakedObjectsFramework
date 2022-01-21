@@ -28,7 +28,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -50,7 +50,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -72,7 +72,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -94,7 +94,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -116,7 +116,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -138,7 +138,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -160,7 +160,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -182,7 +182,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -204,7 +204,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -226,7 +226,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -252,7 +252,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -276,7 +276,7 @@ Namespace AW.Types
         Public Sub AboutDepartmentHistory(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -297,7 +297,7 @@ Namespace AW.Types
         Public Sub AboutPayHistory(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -338,6 +338,27 @@ Namespace AW.Types
 #Region "Actions"
         Public Sub ActionChangeDepartmentOrShift(department As Department, shift As Shift)
             Throw New NotImplementedException
+        End Sub
+
+        Public Sub ActionChangeStatus(newStatus As TextString)
+
+        End Sub
+
+        Public Sub AboutActionChangeStatus(a As ActionAbout, status As TextString)
+            Select Case a.TypeCode
+                Case AboutTypeCodes.Name
+                    a.Name = "Change Marital Status"
+                Case AboutTypeCodes.Parameters
+                    a.ParamLabels()(0) = "New Marital Status"
+                    a.ParamDefaultValues()(0) = If(MaritalStatus.Value Is "S", "M", "S")
+                    a.ParamOptions()(0) = New TextString() {New TextString("S"), New TextString("M")}
+                Case AboutTypeCodes.Valid
+                    If status.Value Is MaritalStatus.Value Then
+                        a.Usable = False
+                        a.UnusableReason = "New Status cannot be the same as current"
+                    End If
+                Case Else
+            End Select
         End Sub
 #End Region
 

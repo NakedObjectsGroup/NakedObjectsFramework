@@ -43,7 +43,7 @@ Return myEndDate
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -65,7 +65,7 @@ Return myStandardCost
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -75,7 +75,7 @@ Return myStandardCost
 
         Public Sub AboutProduct(a As FieldAbout, p As Product)
             Select Case a.TypeCode
-                Case AboutTypeCodes.Visible
+                Case Else
                     a.Visible = False
             End Select
         End Sub

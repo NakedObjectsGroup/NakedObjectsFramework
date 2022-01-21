@@ -23,7 +23,7 @@ Return myName
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -45,7 +45,7 @@ Return myProductSubcategory
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 					a.Name = "Subcategories"
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region

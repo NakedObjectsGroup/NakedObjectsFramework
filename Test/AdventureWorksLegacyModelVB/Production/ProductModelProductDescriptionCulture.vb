@@ -17,7 +17,7 @@
 
 		Public Sub AboutProductModel(a As FieldAbout, pm As ProductModel)
 			Select Case a.TypeCode
-				Case AboutTypeCodes.Visible
+				Case Else
 					a.Visible = False
 			End Select
 		End Sub

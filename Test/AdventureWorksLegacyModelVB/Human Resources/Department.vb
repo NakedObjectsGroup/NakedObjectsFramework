@@ -24,7 +24,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -50,7 +50,7 @@
                         a.IsValid = False
                         a.InvalidReason = "Cannot be > 50 chars"
                     End If
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region

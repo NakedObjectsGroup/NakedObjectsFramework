@@ -30,7 +30,7 @@
 						a.Usable = False
 						a.UnusableReason = "Description cannot be empty"
 					End If
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -56,7 +56,7 @@
 						a.Usable = False
 						a.UnusableReason = "Discount percentage must be in range 0 - 100"
 					End If
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -82,7 +82,7 @@
 						a.Usable = False
 						a.UnusableReason = "Type cannot be empty"
 					End If
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -108,7 +108,7 @@
 						a.Usable = False
 						a.UnusableReason = "Category cannot be empty"
 					End If
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -134,7 +134,7 @@
 						a.Usable = False
 						a.UnusableReason = "Start Date cannot be before today"
 					End If
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -160,7 +160,7 @@
 						a.Usable = False
 						a.UnusableReason = "End Date cannot be before today"
 					End If
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -186,7 +186,7 @@
 						a.Usable = False
 						a.UnusableReason = "Min Qty must be at least 1"
 					End If
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -212,7 +212,7 @@
 						a.Usable = False
 						a.UnusableReason = "Min Qty must be at least 1"
 					End If
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -253,6 +253,23 @@
 			mappedModifiedDate = Now
 			RowGuid = Guid.NewGuid()
 			Container.MakePersistent(Me)
+		End Sub
+
+		Public Function ActionProductsCovered() As IQueryable(Of Product)
+			Return From sop In Container.AllInstances(Of SpecialOfferProduct)
+				   Where sop.SpecialOfferID = SpecialOfferID
+				   Order By sop.mappedModifiedDate Descending
+				   Select sop.Product
+		End Function
+
+		Public Sub ActionIncludeProduct(product As Product)
+			Dim pid = product.ProductID
+			Dim sop = Container.CreateTransientInstance(Of SpecialOfferProduct)()
+			sop.SpecialOfferID = SpecialOfferID
+			sop.ProductID = pid
+			sop.mappedModifiedDate = Now
+			sop.RowGuid = Guid.NewGuid()
+			Container.MakePersistent(sop)
 		End Sub
 
 #End Region
