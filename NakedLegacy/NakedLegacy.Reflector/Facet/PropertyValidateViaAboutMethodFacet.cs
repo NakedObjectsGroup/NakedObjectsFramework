@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Util;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -33,7 +34,7 @@ public sealed class PropertyValidateViaAboutMethodFacet : AbstractViaAboutMethod
             return null;
         }
 
-        if (InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Valid, true, proposedValue?.Object) is FieldAbout fa) {
+        if (InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, true, true, proposedValue?.Object) is FieldAbout fa) {
             return fa.IsValid ? null : string.IsNullOrWhiteSpace(fa.InvalidReason) ? "Invalid Property" : fa.InvalidReason;
         }
 

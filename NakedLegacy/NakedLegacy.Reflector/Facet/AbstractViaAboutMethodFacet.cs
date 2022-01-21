@@ -23,7 +23,15 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
     protected AboutHelpers.AboutType AboutType { get; }
     public MethodInfo GetMethod() => Method;
 
-    protected IAbout InvokeAboutMethod(object target, AboutTypeCodes typeCode, bool substitute, params object[] proposedValues) {
+    protected IAbout InvokeAboutMethod(object target, AboutTypeCodes typeCode, bool substitute, bool flagNull, params object[] proposedValues) {
+        if (target is null && !Method.IsStatic) {
+            if (flagNull) {
+                throw new InvalidOperationException("Unexpected null object on instance about method");
+            }
+
+            return null;
+        }
+
         var about = AboutType.AboutFactory(typeCode);
         Method.Invoke(target, Method.GetParameters(about, substitute, proposedValues));
         return about;

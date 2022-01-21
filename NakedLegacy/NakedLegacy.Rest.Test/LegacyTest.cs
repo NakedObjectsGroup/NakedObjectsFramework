@@ -1078,6 +1078,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestMainMenu() {
+        ClassWithMenu.ResetTest();
         var api = Api();
 
         var result = api.GetMenu("ClassWithMenu");
@@ -1092,9 +1093,96 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
     }
+    [Test]
+    public void TestMainMenuWithAboutName() {
+        ClassWithMenu.ResetTest();
+        ClassWithMenu.TestNameFlag = true;
+        ClassWithMenu.TestDescriptionFlag = true;
+        var api = Api();
+
+        var result = api.GetMenu(nameof(ClassWithMenu));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        Assert.AreEqual("Renamed Name", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("A Description", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public void TestMainMenuWithAboutUnusable()
+    {
+        ClassWithMenu.ResetTest();
+        ClassWithMenu.TestUsableFlag = true;
+        var api = Api();
+
+        var result = api.GetMenu(nameof(ClassWithMenu));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+    }
+
+    [Test]
+    public void TestMainMenuWithAboutHidden()
+    {
+        ClassWithMenu.ResetTest();
+        ClassWithMenu.TestInvisibleFlag = true;
+        var api = Api();
+
+        var result = api.GetMenu(nameof(ClassWithMenu));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+    }
+
+    [Test]
+    public void TestMainMenuWithAboutParameters()
+    {
+        ClassWithMenu.ResetTest();
+        ClassWithMenu.TestParametersFlag = true;
+        var api = Api();
+
+        var result = api.GetMenu(nameof(ClassWithMenu));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        Assert.AreEqual("def", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["default"].ToString());
+        Assert.AreEqual("opt1", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["choices"][0].ToString());
+        Assert.AreEqual("opt2", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["choices"][1].ToString());
+        Assert.AreEqual("renamed ts", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
+    }
+
+
+    [Test]
+    public void TestMainMenuWithoutAbout()
+    {
+        ClassWithMenu.ResetTest();
+        var api = Api();
+
+        var result = api.GetMenu(nameof(ClassWithMenu));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        Assert.AreEqual("Menu Action With Parm", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["description"].ToString());
+        Assert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["default"]);
+        Assert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["choices"]);
+        Assert.AreEqual("Ts", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
+    }
 
     [Test]
     public void TestObjectMenu() {
+        ClassWithMenu.ResetTest();
+
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -1110,6 +1198,8 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnObject() {
+        ClassWithMenu.ResetTest();
+
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
 
@@ -1126,6 +1216,8 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnTransientObject() {
+        ClassWithMenu.ResetTest();
+
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
 
@@ -1142,6 +1234,8 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnPersistedObject() {
+        ClassWithMenu.ResetTest();
+
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
 
@@ -1158,6 +1252,8 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestInvokeMenuActionWithParmReturnObject() {
+        ClassWithMenu.ResetTest();
+
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("Fred") } } };
 
@@ -1171,6 +1267,64 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Fred", resultObj["title"].ToString());
         Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
+
+    [Test]
+    public void TestInvokeMenuActionWithAboutValid()
+    {
+        ClassWithMenu.ResetTest();
+        ClassWithMenu.TestValidFlag = true;
+
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("Fred") } } };
+
+        var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("Fred", resultObj["title"].ToString());
+        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+    }
+
+    [Test]
+    public void TestInvokeMenuActionWithAboutInvalid()
+    {
+        ClassWithMenu.ResetTest();
+        ClassWithMenu.TestValidFlag = true;
+
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("invalid") } } };
+
+        var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("invalid", parsedResult["ts"]["value"].ToString());
+        Assert.AreEqual("ts invalid", parsedResult["x-ro-invalidReason"].ToString());
+    }
+
+    [Test]
+    public void TestInvokeMenuActionWithAboutEmpty()
+    {
+        ClassWithMenu.ResetTest();
+        ClassWithMenu.TestValidFlag = true;
+
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("") } } };
+
+        var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("", parsedResult["result"].ToString());
+    }
+
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnArrayList() {

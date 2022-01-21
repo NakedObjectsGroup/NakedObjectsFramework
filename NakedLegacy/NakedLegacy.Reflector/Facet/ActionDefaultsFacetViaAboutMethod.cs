@@ -12,6 +12,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -39,7 +40,7 @@ public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFa
         return (null, TypeOfDefaultValue.Implicit);
     }
 
-    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter?.Object is null ? null : InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Parameters, false);
+    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) => InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Parameters, false, true);
 }
 
 // Copyright (c) Naked Objects Group Ltd.
