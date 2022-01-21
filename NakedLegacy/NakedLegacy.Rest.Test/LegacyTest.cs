@@ -348,8 +348,8 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
         Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
         Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
-        Assert.AreEqual("ts", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("wn", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("Ts", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("Wn", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["extensions"]["friendlyName"].ToString());
     }
 
     [Test]

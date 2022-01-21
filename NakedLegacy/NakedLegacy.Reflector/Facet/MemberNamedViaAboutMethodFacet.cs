@@ -37,7 +37,7 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
 
     public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutType aboutType, string[] inferredNames, int index, ILogger<MemberNamedViaAboutMethodFacet> logger)
         : base(typeof(IMemberNamedFacet), holder, method, aboutType) {
-        this.inferredName = inferredNames[index];
+        this.inferredName = NameUtils.NaturalName(inferredNames[index]);
         this.aboutCode = AboutTypeCodes.Parameters;
         this.index = index;
         this.logger = logger;
