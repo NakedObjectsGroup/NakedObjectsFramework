@@ -20,7 +20,7 @@ namespace NakedFramework.Rest.Snapshot.Representation;
 public class PropertyRepresentation : MemberAbstractRepresentation {
     protected PropertyRepresentation(IFrameworkFacade frameworkFacade, AbstractPropertyRepresentationStrategy strategy)
         : base(frameworkFacade, strategy) {
-        HasChoices = strategy.GetHasChoices();
+        HasChoices = strategy.GetHasChoices(strategy.GetTarget());
         Links = strategy.GetLinks();
         Extensions = strategy.GetExtensions(strategy.GetTarget());
     }

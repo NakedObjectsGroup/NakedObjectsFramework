@@ -6,12 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Runtime.Serialization;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.SpecImmutable;
 
 public interface IActionParameterSpecImmutable : ISpecificationBuilder, ISerializable {
     IObjectSpecImmutable Specification { get; }
-    bool IsChoicesEnabled { get; }
+    bool IsChoicesEnabled(INakedObjectAdapter adapter);
+    bool IsChoicesDefined { get; }
     bool IsMultipleChoicesEnabled { get; }
 }

@@ -105,9 +105,9 @@ public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentat
         CustomExtensions[name] = value;
     }
 
-    private IDictionary<string, object> GetCustomPropertyExtensions() {
+    private IDictionary<string, object> GetCustomPropertyExtensions(IObjectFacade objectFacade) {
         if (CustomExtensions == null) {
-            AddChoicesCustomExtension();
+            AddChoicesCustomExtension(objectFacade);
 
             var mask = PropertyContext.Property.Mask;
 
@@ -157,13 +157,13 @@ public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentat
             PropertyContext.Property.MemberOrder,
             PropertyContext.Property.DataType,
             PropertyContext.Property.PresentationHint,
-            GetCustomPropertyExtensions(),
+            GetCustomPropertyExtensions(objectFacade),
             PropertyContext.Specification,
             PropertyContext.ElementSpecification,
             OidStrategy,
             UseDateOverDateTime());
 
-    public bool GetHasChoices() => PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !PropertyContext.Property.GetChoicesParameters().Any();
+    public bool GetHasChoices(IObjectFacade objectFacade) => PropertyContext.Property.IsChoicesEnabled(objectFacade) != Choices.NotEnabled && !PropertyContext.Property.GetChoicesParameters().Any();
 
     public abstract bool ShowChoices();
 
@@ -187,10 +187,10 @@ public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentat
 
     public abstract LinkRepresentation[] GetLinks();
 
-    protected abstract bool AddChoices();
+    protected abstract bool AddChoices(IObjectFacade objectFacade);
 
-    private void AddChoicesCustomExtension() {
-        if (AddChoices()) {
+    private void AddChoicesCustomExtension(IObjectFacade objectFacade) {
+        if (AddChoices(objectFacade)) {
             CustomExtensions ??= new Dictionary<string, object>();
 
             (object value, string title)[] choicesArray = PropertyContext.Property.GetChoicesAndTitles(PropertyContext.Target, null).Select(choice => (RestUtils.GetChoiceValue(OidStrategy, Req, choice.obj, PropertyContext.Property, Flags), choice.title)).ToArray();

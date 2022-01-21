@@ -43,7 +43,7 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
     public bool IsFinderMethod =>
         HasReturn() &&
         ContainsFacet(typeof(IFinderActionFacet)) &&
-        Parameters.All(p => p.Specification.IsParseable || p.IsChoicesEnabled || p.IsMultipleChoicesEnabled);
+        Parameters.All(p => p.Specification.IsParseable || p.IsChoicesDefined || p.IsMultipleChoicesEnabled);
 
     public bool IsFinderMethodFor(IObjectSpecImmutable spec) => IsFinderMethod && (ReturnSpec.IsOfType(spec) || ReturnSpec.IsCollection && ElementSpec.IsOfType(spec));
 

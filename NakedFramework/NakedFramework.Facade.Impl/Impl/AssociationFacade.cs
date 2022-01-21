@@ -87,7 +87,15 @@ public class AssociationFacade : IAssociationFacade {
 
     public string Id => WrappedSpec.Id;
 
-    public Choices IsChoicesEnabled => WrappedSpec is IOneToOneFeatureSpec { IsChoicesEnabled: true } ? Choices.Single : Choices.NotEnabled;
+    public Choices IsChoicesEnabled(IObjectFacade objectFacade) {
+        if (WrappedSpec is IOneToOneFeatureSpec fs) {
+            if (fs.IsChoicesEnabled(objectFacade.WrappedAdapter())) {
+                return Choices.Single;
+            }
+        }
+
+        return Choices.NotEnabled;
+    }
 
     public bool IsAutoCompleteEnabled => WrappedSpec is IOneToOneFeatureSpec { IsAutoCompleteEnabled: true };
 

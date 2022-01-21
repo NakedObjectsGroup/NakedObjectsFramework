@@ -29,7 +29,9 @@ public sealed class ActionParameterSpecImmutable : Specification, IActionParamet
 
     public override IIdentifier Identifier { get; }
 
-    public bool IsChoicesEnabled => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
+    public bool IsChoicesEnabled(INakedObjectAdapter adapter) => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || GetFacet<IActionChoicesFacet>()?.IsEnabled(adapter) == true || ContainsFacet<IEnumFacet>());
+
+    public bool IsChoicesDefined => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
 
     public bool IsMultipleChoicesEnabled => ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple;
 

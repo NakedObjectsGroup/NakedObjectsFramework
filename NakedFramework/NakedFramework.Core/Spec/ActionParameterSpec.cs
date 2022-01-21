@@ -95,12 +95,9 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
         }
     }
 
-    public bool IsChoicesEnabled {
-        get {
-            isChoicesEnabled ??= !IsMultipleChoicesEnabled && actionParameterSpecImmutable.IsChoicesEnabled;
-
-            return isChoicesEnabled.Value;
-        }
+    public bool IsChoicesEnabled(INakedObjectAdapter adapter) {
+        isChoicesEnabled ??= !IsMultipleChoicesEnabled && actionParameterSpecImmutable.IsChoicesEnabled(adapter);
+        return isChoicesEnabled.Value;
     }
 
     public bool IsMultipleChoicesEnabled {
@@ -197,11 +194,12 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
 
         if (choicesFacet is not null) {
             var options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), parameterNameValues, Framework);
-            if (enumFacet is null) {
-                return manager.GetCollectionOfAdaptedObjects(options).ToArray();
+
+            if (enumFacet is not null) {
+                options = enumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), options);
             }
 
-            return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), options)).ToArray();
+            return manager.GetCollectionOfAdaptedObjects(options).ToArray();
         }
 
         if (enumFacet is not null) {

@@ -92,9 +92,10 @@ public class ClassWithActionAbout {
     public static bool TestInvisibleFlag;
     public static bool TestUsableFlag;
     public static bool TestValidFlag;
+    public static bool TestDefaults;
+    public static bool TestOptions;
     public static string TestName;
     public static string TestDescription;
-    public static bool TestDefaults;
 
     public static int AboutCount;
 
@@ -102,7 +103,7 @@ public class ClassWithActionAbout {
     public int Id { get; init; }
 
     public static void ResetTest() {
-        TestInvisibleFlag = TestUsableFlag = TestValidFlag = TestDefaults = false;
+        TestInvisibleFlag = TestUsableFlag = TestValidFlag = TestDefaults = TestOptions = false;
         TestName = TestDescription = null;
     }
 
@@ -187,6 +188,10 @@ public class ClassWithActionAbout {
 
                 if (TestDefaults) {
                     actionAbout.ParamDefaultValues = new object[] { "def", 66 };
+                }
+
+                if (TestOptions) {
+                    actionAbout.ParamOptions = new[] { new object[] { "opt1", "opt2" }, new object[] { 1, 2, 3, 4, 5 } };
                 }
 
                 break;

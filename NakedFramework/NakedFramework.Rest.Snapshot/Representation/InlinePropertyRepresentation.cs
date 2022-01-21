@@ -38,7 +38,7 @@ public class InlinePropertyRepresentation : InlineMemberAbstractRepresentation {
 
         if (strategy.ShowChoices()) {
             RestUtils.AddChoices(frameworkFacade.OidStrategy, req, propertyContext, optionals, flags);
-            optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices()));
+            optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices(propertyContext.Target)));
         }
 
         return optionals.Any()

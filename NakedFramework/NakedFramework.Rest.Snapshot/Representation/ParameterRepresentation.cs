@@ -73,7 +73,7 @@ public class ParameterRepresentation : Representation {
     private void SetExtensions(HttpRequest req, IObjectFacade objectFacade, FieldFacadeAdapter parameter, RestControlFlags flags) {
         IDictionary<string, object> custom = null;
 
-        if (IsUnconditionalChoices(parameter)) {
+        if (IsUnconditionalChoices(parameter, objectFacade)) {
             custom = new Dictionary<string, object>();
 
             (object value, string title)[] choicesArray = parameter.GetChoicesAndTitles(objectFacade, null).Select(choice => (parameter.GetChoiceValue(OidStrategy, req, choice.obj, flags), choice.title)).ToArray();
@@ -123,8 +123,8 @@ public class ParameterRepresentation : Representation {
                                              true);
     }
 
-    private static bool IsUnconditionalChoices(FieldFacadeAdapter parameter) =>
-        parameter.IsChoicesEnabled != Choices.NotEnabled &&
+    private static bool IsUnconditionalChoices(FieldFacadeAdapter parameter, IObjectFacade objectFacade) =>
+        parameter.IsChoicesEnabled(objectFacade) != Choices.NotEnabled &&
         (parameter.Specification.IsParseable || parameter.Specification.IsCollection && parameter.ElementType.IsParseable) &&
         !parameter.GetChoicesParameters().Any();
 
@@ -147,7 +147,7 @@ public class ParameterRepresentation : Representation {
         var optionals = new List<OptionalProperty>();
         var parameter = parameterContext.Parameter;
 
-        if (parameter.IsChoicesEnabled != Choices.NotEnabled && !parameter.GetChoicesParameters().Any()) {
+        if (parameter.IsChoicesEnabled(objectFacade) != Choices.NotEnabled && !parameter.GetChoicesParameters().Any()) {
             var choices = parameter.GetChoices(objectFacade, null);
             var choicesArray = choices.Select(c => RestUtils.GetChoiceValue(oidStrategy, req, c, parameter, flags)).ToArray();
             optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
@@ -181,7 +181,7 @@ public class ParameterRepresentation : Representation {
     public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade, IAssociationFacade assoc, ActionContextFacade actionContext, RestControlFlags flags) {
         var optionals = new List<OptionalProperty>();
 
-        if (assoc.IsChoicesEnabled != Choices.NotEnabled && !assoc.GetChoicesParameters().Any()) {
+        if (assoc.IsChoicesEnabled(objectFacade) != Choices.NotEnabled && !assoc.GetChoicesParameters().Any()) {
             var choices = assoc.GetChoices(objectFacade, null);
             var choicesArray = choices.Select(c => RestUtils.GetChoiceValue(oidStrategy, req, c, assoc, flags)).ToArray();
             optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));

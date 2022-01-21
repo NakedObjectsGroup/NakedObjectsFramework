@@ -24,8 +24,8 @@ public class PropertyTableRowRepresentationStrategy : AbstractPropertyRepresenta
 
     public override LinkRepresentation[] GetLinks() => Array.Empty<LinkRepresentation>();
 
-    protected override bool AddChoices() =>
-        PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+    protected override bool AddChoices(IObjectFacade objectFacade) =>
+        PropertyContext.Property.IsChoicesEnabled(objectFacade) != Choices.NotEnabled &&
         (PropertyContext.Property.Specification.IsEnum ||
          PropertyContext.Property.Specification.IsParseable);
 

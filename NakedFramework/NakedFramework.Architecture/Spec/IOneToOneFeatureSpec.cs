@@ -17,7 +17,7 @@ public interface IOneToOneFeatureSpec : IFeatureSpec {
     /// <summary>
     ///     Whether there are any choices provided (eg <c>ChoicesXxx</c> supporting method) for the association
     /// </summary>
-    bool IsChoicesEnabled { get; }
+    bool IsChoicesEnabled(INakedObjectAdapter adapter);
 
     /// <summary>
     ///     Whether there are any autocompletions provided (eg <c>AutoCompleteXxx</c> supporting method) for the association

@@ -119,10 +119,10 @@ public class ActionParameterFacade : IActionParameterFacade {
 
     public string Id => WrappedSpec.Id;
 
-    public Choices IsChoicesEnabled =>
+    public Choices IsChoicesEnabled(IObjectFacade objectFacade) =>
         WrappedSpec.IsMultipleChoicesEnabled
             ? Choices.Multiple
-            : WrappedSpec.IsChoicesEnabled
+            : WrappedSpec.IsChoicesEnabled(objectFacade.WrappedAdapter())
                 ? Choices.Single
                 : Choices.NotEnabled;
 

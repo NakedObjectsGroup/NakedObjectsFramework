@@ -61,7 +61,7 @@ public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOne
 
     #region IOneToOneAssociationSpec Members
 
-    public bool IsChoicesEnabled => ReturnSpec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>();
+    public bool IsChoicesEnabled(INakedObjectAdapter adapter) => ReturnSpec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>();
 
     public override bool IsMandatory => GetFacet<IMandatoryFacet>().IsMandatory;
 

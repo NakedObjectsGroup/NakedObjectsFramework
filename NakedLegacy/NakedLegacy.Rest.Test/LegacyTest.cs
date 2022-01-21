@@ -386,6 +386,39 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestGetObjectWithChoicesActionParameter() {
+        ClassWithActionAbout.ResetTest();
+        ClassWithActionAbout.TestOptions = true;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        Assert.AreEqual("opt1", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["choices"][0].ToString());
+        Assert.AreEqual("opt2", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["choices"][1].ToString());
+        Assert.AreEqual("1", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["choices"][0].ToString());
+        Assert.AreEqual("5", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["choices"][4].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectWithNonChoicesActionParameter() {
+        ClassWithActionAbout.ResetTest();
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        Assert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["choices"]);
+        Assert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["choices"]);
+    }
+
+    [Test]
     public void TestGetObjectWithDescribedAction() {
         ClassWithActionAbout.ResetTest();
         ClassWithActionAbout.TestDescription = "Action With Description";

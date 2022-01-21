@@ -15,7 +15,7 @@ namespace NakedFramework.Facade.Interface;
 
 public interface IFieldFacade {
     ITypeFacade Specification { get; }
-    Choices IsChoicesEnabled { get; }
+    Choices IsChoicesEnabled(IObjectFacade objectFacade);
     bool IsAutoCompleteEnabled { get; }
     string PresentationHint { get; }
     (Regex, string)? RegEx { get; }

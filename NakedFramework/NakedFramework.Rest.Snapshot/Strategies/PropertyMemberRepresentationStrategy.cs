@@ -23,8 +23,8 @@ public class PropertyMemberRepresentationStrategy : AbstractPropertyRepresentati
 
     public override LinkRepresentation[] GetLinks() => GetLinks(true);
 
-    protected override bool AddChoices() =>
-        PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+    protected override bool AddChoices(IObjectFacade objectFacade) =>
+        PropertyContext.Property.IsChoicesEnabled(objectFacade) != Choices.NotEnabled &&
         (PropertyContext.Property.Specification.IsEnum ||
          PropertyContext.Property.Specification.IsParseable);
 }

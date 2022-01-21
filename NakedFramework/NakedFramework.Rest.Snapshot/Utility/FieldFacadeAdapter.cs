@@ -28,7 +28,7 @@ public class FieldFacadeAdapter {
 
     public string MenuId { get; init; }
 
-    public Choices IsChoicesEnabled => (parameter?.IsChoicesEnabled ?? association?.IsChoicesEnabled).GetValueOrDefault();
+    public Choices IsChoicesEnabled(IObjectFacade objectFacade) => (parameter?.IsChoicesEnabled(objectFacade) ?? association?.IsChoicesEnabled(objectFacade)).GetValueOrDefault();
     public ITypeFacade Specification => parameter?.Specification ?? association?.Specification;
     public ITypeFacade ElementType => parameter?.ElementType ?? association?.ElementSpecification;
     public bool IsAutoCompleteEnabled => (parameter?.IsAutoCompleteEnabled ?? association?.IsAutoCompleteEnabled).GetValueOrDefault();

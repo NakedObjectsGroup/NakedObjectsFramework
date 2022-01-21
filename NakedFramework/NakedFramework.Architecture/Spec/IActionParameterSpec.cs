@@ -46,7 +46,7 @@ public interface IActionParameterSpec : IFeatureSpec {
     /// <summary>
     ///     Whether the parameter has a bounded set associated or a set of options coded.
     /// </summary>
-    bool IsChoicesEnabled { get; }
+    bool IsChoicesEnabled(INakedObjectAdapter adapter);
 
     /// <summary>
     ///     Whether the parameter has a bounded set associated or a set of options coded.

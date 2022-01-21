@@ -124,6 +124,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
             foreach (var parameterSpec in actionSpec.Parameters) {
                 parameterFacets.Add(new MemberNamedViaAboutMethodFacet(method, parameterSpec, AboutHelpers.AboutType.Action, parameterSpec.Identifier.MemberParameterNames, index, Logger<MemberNamedViaAboutMethodFacet>()));
                 parameterFacets.Add(new ActionDefaultsViaAboutMethodFacet(method, parameterSpec, index, Logger<ActionDefaultsViaAboutMethodFacet>()));
+                parameterFacets.Add(new ActionChoicesViaAboutMethodFacet(method, parameterSpec, index, Logger<ActionChoicesViaAboutMethodFacet>()));
                 index++;
             }
 

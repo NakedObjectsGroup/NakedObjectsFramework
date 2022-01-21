@@ -145,7 +145,7 @@ public static class RestUtils {
     }
 
     public static void AddChoices(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-        if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !propertyContext.Property.GetChoicesParameters().Any()) {
+        if (propertyContext.Property.IsChoicesEnabled(propertyContext.Target) != Choices.NotEnabled && !propertyContext.Property.GetChoicesParameters().Any()) {
             var choices = propertyContext.Property.GetChoices(propertyContext.Target, null);
             var choicesArray = choices.Select(c => GetChoiceValue(oidStrategy, req, c, propertyContext.Property, flags)).ToArray();
             optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
