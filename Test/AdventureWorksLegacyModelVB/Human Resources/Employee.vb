@@ -341,17 +341,19 @@ Namespace AW.Types
         End Sub
 
         Public Sub ActionChangeStatus(newStatus As TextString)
-
+            Me.MaritalStatus.Value = newStatus.Value
         End Sub
 
         Public Sub AboutActionChangeStatus(a As ActionAbout, status As TextString)
+            Dim s = New TextString("S")
+            Dim m = New TextString("Me")
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Change Marital Status"
                 Case AboutTypeCodes.Parameters
                     a.ParamLabels() = New String() {"New Marital Status"}
-                    a.ParamDefaultValues() = New Object() {If(MaritalStatus.Value Is "S", "M", "S")}
-                    a.ParamOptions() = New Object()() {New TextString() {New TextString("S"), New TextString("M")}}
+                    a.ParamDefaultValues() = New Object() {If(MaritalStatus.Value = "S", m, s)}
+                    a.ParamOptions() = New Object()() {New TextString() {s, m}}
                 Case AboutTypeCodes.Valid
                     If status.Value Is MaritalStatus.Value Then
                         a.Usable = False
