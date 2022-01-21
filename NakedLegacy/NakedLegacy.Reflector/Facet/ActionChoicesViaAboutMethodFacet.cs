@@ -40,7 +40,7 @@ public sealed class ActionChoicesViaAboutMethodFacet : AbstractViaAboutMethodFac
 
     private object[] GetChoices(INakedObjectAdapter nakedObjectAdapter) {
         if (GetAbout(nakedObjectAdapter) is ActionAbout actionAbout) {
-            var parameterOptions = actionAbout.ParamOptions?[index] ?? Array.Empty<object>();
+            var parameterOptions = actionAbout.ParamOptions?.Any() == true ? actionAbout.ParamOptions[index] : Array.Empty<object>();
             if (parameterOptions.Any()) {
                 return parameterOptions;
             }
