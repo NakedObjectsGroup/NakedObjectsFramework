@@ -19,7 +19,7 @@
 
 		Public Sub AboutName(a As FieldAbout, Name As TextString)
 			Select Case a.TypeCode
-				Case AboutTypeCodes.Visible
+				Case Else
 					a.Visible = False
 			End Select
 		End Sub
@@ -38,7 +38,7 @@
 
 		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
-				Case AboutTypeCodes.Visible
+				Case Else
 					a.Visible = False
 			End Select
 		End Sub

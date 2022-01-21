@@ -26,7 +26,7 @@ Return myEmailAddress1
 					a.Name = "Email Address"
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region

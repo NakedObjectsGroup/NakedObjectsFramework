@@ -38,7 +38,7 @@ Namespace AW.Types
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 					a.Name = "Persons"
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region

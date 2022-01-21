@@ -40,7 +40,7 @@ Return mySalesQuota
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -62,7 +62,7 @@ Return myBonus
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -84,7 +84,7 @@ Return myCommissionPct
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -106,7 +106,7 @@ Return mySalesYTD
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -128,7 +128,7 @@ Return mySalesLastYear
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -150,7 +150,7 @@ Return myQuotaHistory
 		Public Sub AboutQuotaHistory(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -172,7 +172,7 @@ Return myTerritoryHistory
 		Public Sub AboutTerritoryHistory(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region

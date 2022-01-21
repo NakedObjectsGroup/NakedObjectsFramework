@@ -24,7 +24,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -79,7 +79,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -113,7 +113,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -135,7 +135,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -157,7 +157,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -179,7 +179,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -201,7 +201,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -223,7 +223,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -245,7 +245,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -267,7 +267,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -296,7 +296,7 @@
                     a.Name = "Online Order"
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -328,7 +328,7 @@
                 Case AboutTypeCodes.Usable
                     a.Usable = False
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -352,7 +352,7 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -375,7 +375,7 @@
                     a.Description = "Free-form text"
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
                     'comment is not null or empty
 
             End Select
@@ -436,7 +436,7 @@
         Public Sub AboutDetails(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -457,7 +457,7 @@
         Public Sub AboutReasons(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -480,7 +480,7 @@
 
         Public Sub AboutActionNoComment(a As ActionAbout)
             Select Case a.TypeCode
-                Case AboutTypeCodes.Visible
+                Case Else
                     a.Visible = False
             End Select
         End Sub
@@ -526,7 +526,7 @@
                         a.Usable = False
                         a.UnusableReason = "Total comment length would exceed 50 chars"
                     End If
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 

@@ -30,7 +30,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -52,7 +52,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -74,7 +74,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -106,7 +106,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -138,7 +138,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -159,7 +159,7 @@ Namespace AW.Types
                     a.Name = "Size"
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -179,7 +179,7 @@ Namespace AW.Types
                     a.Name = "Weight"
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -201,7 +201,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -223,7 +223,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -245,7 +245,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -267,7 +267,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -289,7 +289,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -311,7 +311,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -333,7 +333,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -355,7 +355,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -377,7 +377,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -399,7 +399,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -421,7 +421,7 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -466,7 +466,7 @@ Namespace AW.Types
         Public Sub AboutProductReviews(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -487,7 +487,7 @@ Namespace AW.Types
         Public Sub AboutProductInventory(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -510,7 +510,7 @@ Namespace AW.Types
 
         Public Sub AboutSize(a As FieldAbout, Size As TextString)
             Select Case a.TypeCode
-                Case AboutTypeCodes.Visible
+                Case Else
                     a.Visible = False
             End Select
         End Sub
@@ -530,7 +530,7 @@ Namespace AW.Types
 
         Public Sub AboutSizeUnitMeasureCode(a As FieldAbout, SizeUnitMeasureCode As TextString)
             Select Case a.TypeCode
-                Case AboutTypeCodes.Visible
+                Case Else
                     a.Visible = False
             End Select
         End Sub
@@ -576,12 +576,7 @@ Namespace AW.Types
 #Region "Actions"
 
         Public Sub ActionAssociateWithSpecialOffer(offer As SpecialOffer)
-            Dim sop = Container.CreateTransientInstance(Of SpecialOfferProduct)()
-            sop.SpecialOfferID = offer.SpecialOfferID
-            sop.ProductID = ProductID
-            sop.mappedModifiedDate = Now
-            sop.RowGuid = Guid.NewGuid()
-            Container.MakePersistent(sop)
+            offer.ActionIncludeProduct(Me)
         End Sub
 
         Public Function ActionBestSpecialOffer(quantity As WholeNumber) As SpecialOffer

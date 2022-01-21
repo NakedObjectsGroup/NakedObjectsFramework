@@ -25,7 +25,7 @@ Return myAverageLeadTime
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -47,7 +47,7 @@ Return myStandardPrice
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -69,7 +69,7 @@ Return myLastReceiptCost
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -91,7 +91,7 @@ Return myLastReceiptDate
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -113,7 +113,7 @@ Return myMinOrderQty
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -135,7 +135,7 @@ Return myMaxOrderQty
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -157,7 +157,7 @@ Return myOnOrderQty
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region

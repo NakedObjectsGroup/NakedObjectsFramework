@@ -23,7 +23,7 @@ Return myCity
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -45,7 +45,7 @@ Return myPostalCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -67,7 +67,7 @@ Return myAddressLine1
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -89,7 +89,7 @@ Return myAddressLine2
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region

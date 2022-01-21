@@ -24,7 +24,7 @@ Return myModifiedDate
 
 		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
-				Case AboutTypeCodes.Visible
+				Case Else
 					a.Visible = False
 			End Select
 		End Sub

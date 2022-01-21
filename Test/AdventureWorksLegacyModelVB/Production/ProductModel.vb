@@ -23,7 +23,7 @@ Return myName
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -65,7 +65,7 @@ Return myInstructions
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -87,7 +87,7 @@ Return myProductVariants
         Public Sub AboutProductVariants(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region

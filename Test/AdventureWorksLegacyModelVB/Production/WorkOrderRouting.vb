@@ -25,7 +25,7 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -47,7 +47,7 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -69,7 +69,7 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -91,7 +91,7 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -113,7 +113,7 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -135,7 +135,7 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -157,7 +157,7 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -179,7 +179,7 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -189,7 +189,7 @@
 
 		Public Sub AboutWorkOrder(a As FieldAbout, w As WorkOrder)
 			Select Case a.TypeCode
-				Case AboutTypeCodes.Visible
+				Case Else
 					a.Visible = False
 			End Select
 		End Sub

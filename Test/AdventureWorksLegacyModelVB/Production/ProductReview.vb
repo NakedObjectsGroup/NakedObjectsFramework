@@ -22,7 +22,7 @@ Return myReviewerName
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -44,7 +44,7 @@ Return myReviewDate
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -66,7 +66,7 @@ Return myEmailAddress
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -88,7 +88,7 @@ Return myRating
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -110,7 +110,7 @@ Return myComments
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-				Case AboutTypeCodes.Visible
+				Case Else
 			End Select
 		End Sub
 #End Region
@@ -121,7 +121,7 @@ Return myComments
 
 		Public Sub AboutProduct(a As FieldAbout, p As Product)
 			Select Case a.TypeCode
-				Case AboutTypeCodes.Visible
+				Case Else
 					a.Visible = False
 			End Select
 		End Sub

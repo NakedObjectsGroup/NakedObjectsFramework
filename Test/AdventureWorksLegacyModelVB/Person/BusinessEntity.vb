@@ -16,7 +16,7 @@ Namespace AW.Types
 
         Public Sub AboutBusinessEntityModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
-                Case AboutTypeCodes.Visible
+                Case Else
                     a.Visible = False
             End Select
         End Sub
@@ -37,7 +37,7 @@ Namespace AW.Types
         Public Sub AboutAddresses(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -57,7 +57,7 @@ Namespace AW.Types
         Public Sub AboutContacts(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region

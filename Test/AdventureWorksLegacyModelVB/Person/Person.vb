@@ -25,7 +25,7 @@ Return myNameStyle
                     a.Name = "Reverse name order"
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -48,7 +48,7 @@ Return myTitle
                     a.Name = "Title"
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -70,7 +70,7 @@ Return myFirstName
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -92,7 +92,7 @@ Return myMiddleName
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -114,7 +114,7 @@ Return myLastName
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -136,7 +136,7 @@ Return mySuffix
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -159,7 +159,7 @@ Return myPersonType
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
                     a.Visible = False
             End Select
         End Sub
@@ -171,7 +171,7 @@ Return myPersonType
 
         Public Sub AboutEmailPromotion(a As FieldAbout, ep As EmailPromotion)
             Select Case a.TypeCode
-                Case AboutTypeCodes.Visible
+                Case Else
                     a.Visible = False
             End Select
         End Sub
@@ -197,7 +197,7 @@ Return myEmailAddresses
         Public Sub AboutEmailAddresses(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -218,7 +218,7 @@ Return myPhoneNumbers
         Public Sub AboutPhoneNumbers(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -242,7 +242,7 @@ Return myAdditionalContactInfo
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 #End Region
@@ -251,7 +251,7 @@ Return myAdditionalContactInfo
 
         Public Sub AboutEmployee(a As FieldAbout, e As Employee)
             Select Case a.TypeCode
-                Case AboutTypeCodes.Visible
+                Case Else
                     a.Visible = False
             End Select
         End Sub

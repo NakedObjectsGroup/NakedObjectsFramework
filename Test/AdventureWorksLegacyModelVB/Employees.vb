@@ -28,7 +28,7 @@
                         a.Usable = False
                         a.UnusableReason = $"Last Name cannot be empty {a.TypeCode}"
                     End If
-                Case AboutTypeCodes.Visible
+                Case Else
             End Select
         End Sub
 
