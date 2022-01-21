@@ -355,10 +355,10 @@ Namespace AW.Types
                     a.ParamDefaultValues() = New Object() {If(MaritalStatus.Value = "S", m, s)}
                     a.ParamOptions() = New Object()() {New TextString() {s, m}}
                 Case AboutTypeCodes.Valid
-                    'If status.Value.Equals(MaritalStatus.Value) Then
-                    a.Usable = False
+                    If status.Value.Equals(MaritalStatus.Value) Then
+                        a.Usable = False
                         a.UnusableReason = "New Status cannot be the same as current"
-                    'End If
+                    End If
                 Case Else
             End Select
         End Sub
