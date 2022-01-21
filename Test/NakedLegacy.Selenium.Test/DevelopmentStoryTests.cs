@@ -54,6 +54,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             FieldAboutSpecifyingName_Description_Editability();
             CreatingAndSavingObjects();
             ActionAboutControl();
+            ParameterControl();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -422,7 +423,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             transient.GetEditableTextInputProperty("Description").Enter(desc);
             transient.GetEditableTextInputProperty("Discount Pct").Clear().Enter("0.5");
             transient.GetEditableTextInputProperty("Type").Enter("A");
-            transient.GetEditableTextInputProperty("Category").Enter("B");
+            transient.GetEditableSelectionProperty("Category").Select(1);
             transient.GetEditableTextInputProperty("Start Date").Clear().Enter(DateTime.Today.ToString("d"));
             transient.GetEditableTextInputProperty("End Date").Clear().Enter(DateTime.Today.ToString("d"));
             transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
@@ -441,6 +442,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ActionNameAndDescription();
             ActionUsabilityBasedOnObjectState();
             ActionParameterValidation();
+            EnforcingMandatoryParameters();
         }
 
         //[TestMethod]
@@ -477,12 +479,54 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
               .GetActionWithDialog("Add Comment").Open();
             dialog.GetTextField("Comment")
                 .Enter("Now is the time for all good men to come to the aid of the party");
-            dialog.ClickOKWithNoResultExpected();
-            dialog.AssertHasValidationError("Total comment length would exceed 50 chars");
+            dialog.ClickOKWithNoResultExpected()
+            .AssertHasValidationError("Total comment length would exceed 50 chars");
+        }
+
+        //[TestMethod]
+        public void EnforcingMandatoryParameters()
+        {
+            //Note that this is also testing #372
+            var dialog = helper.GotoHome().OpenMainMenu("Employees")
+                .GetActionWithDialog("Find Employee By Name").Open();
+            dialog.ClickOKWithNoResultExpected()
+                .AssertHasValidationError("Last Name cannot be empty");
+            dialog.GetTextField("Last Name").Enter("bradley");
+            dialog.ClickOKToViewNewList().GetRowFromList(0).AssertTitleIs("David Bradley");
         }
         #endregion
 
+        #region Parameter Control
+        //[TestMethod]
+        public void ParameterControl()
+        {
+            ParameterNaming_Options_Default();
+        }
 
+        //[TestMethod]
+        public void ParameterNaming_Options_Default()
+        {
+            var emp = AccessInstanceWithTitle("Employee--66", "Karan Khanna");
+            emp.GetProperty("Marital Status").AssertValueIs("S");
+            var dialog = emp.OpenActions().GetActionWithDialog("Change Marital Status").Open();
+            var field = dialog.GetSelectionField("New Marital Status"); //Param name in code is just 'status'
+            field.AssertDefaultValueIs("M")
+             .AssertNoOfOptionsIs(2)
+             .AssertOptionIs(0, "S")
+             .Select(0);
+            dialog.ClickOKWithNoResultExpected()
+                .AssertHasValidationError("New Status cannot be the same as current");
+            field.Select(1);
+            var updated = dialog.ClickOKToViewObject();
+            updated.GetProperty("Marital Status").AssertValueIs("M");
+            dialog = emp.OpenActions().GetActionWithDialog("Change Marital Status").Open();
+            field = dialog.GetSelectionField("New Marital Status");
+            field.AssertDefaultValueIs("S");
+            dialog.ClickOKToViewObject()
+            .GetProperty("Marital Status").AssertValueIs("S");
+        }
+
+        #endregion
 
         #region Helpers
 

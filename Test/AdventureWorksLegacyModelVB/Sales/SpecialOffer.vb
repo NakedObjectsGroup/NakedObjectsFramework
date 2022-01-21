@@ -261,8 +261,8 @@
 
 		Public Sub ActionIncludeProduct(product As Product)
 			Dim pid = product.ProductID
-			Dim sop = Container.CreateTransientInstance(Of SpecialOfferProduct)()
-			sop.SpecialOfferID = SpecialOfferID
+			Dim sop As SpecialOfferProduct = CType(Container.CreateTransientInstance(GetType(SpecialOfferProduct)), SpecialOfferProduct)
+			sop.SpecialOfferID = Me.SpecialOfferID
 			sop.ProductID = pid
 			sop.mappedModifiedDate = Now
 			sop.RowGuid = Guid.NewGuid()
