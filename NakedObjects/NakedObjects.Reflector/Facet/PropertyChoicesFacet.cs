@@ -60,6 +60,8 @@ public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet,
 
     public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
 
+    public bool IsEnabled(INakedObjectAdapter nakedObjectAdapter) => true;
+
     public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
         var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
         try {

@@ -667,6 +667,40 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestGetObjectWithOptionsField()
+    {
+        ClassWithFieldAbout.ResetTest();
+        ClassWithFieldAbout.TestChoices = true;
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.AreEqual("True", parsedResult["members"]["Name"]["hasChoices"].ToString());
+        Assert.AreEqual("fieldopt1", parsedResult["members"]["Name"]["choices"][0].ToString());
+        Assert.AreEqual("fieldopt2", parsedResult["members"]["Name"]["choices"][1].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectWithNoOptionsField()
+    {
+        ClassWithFieldAbout.ResetTest();
+        
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.AreEqual("False", parsedResult["members"]["Name"]["hasChoices"].ToString());
+        Assert.IsNull(parsedResult["members"]["Name"]["choices"]);
+    }
+
+    [Test]
     public void TestPutInvalidProperty() {
         ClassWithFieldAbout.ResetTest();
         ClassWithFieldAbout.TestValidFlag = true;

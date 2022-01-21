@@ -164,6 +164,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
             facets.Add(new HideForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<HideForContextViaAboutMethodFacet>()));
             facets.Add(new MemberNamedViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, property.Name, LoggerFactory.CreateLogger<MemberNamedViaAboutMethodFacet>()));
             facets.Add(new PropertyValidateViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<PropertyValidateViaAboutMethodFacet>()));
+            facets.Add(new PropertyChoicesViaAboutMethodFacet(method, specification, LoggerFactory.CreateLogger<PropertyChoicesViaAboutMethodFacet>()));
         }
 
         var valueType = LegacyHelpers.IsOrImplementsValueHolder(property.PropertyType);

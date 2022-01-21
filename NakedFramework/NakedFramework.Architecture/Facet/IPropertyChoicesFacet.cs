@@ -28,6 +28,8 @@ namespace NakedFramework.Architecture.Facet;
 public interface IPropertyChoicesFacet : IFacet {
     (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
 
+    bool IsEnabled(INakedObjectAdapter nakedObjectAdapter);
+
     /// <summary>
     ///     Gets the available choices for this property
     /// </summary>
