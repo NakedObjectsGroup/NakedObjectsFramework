@@ -37,10 +37,11 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public void ClickOKWithNoResultExpected(MouseClick button = MouseClick.MainButton)
+        public Dialog ClickOKWithNoResultExpected(MouseClick button = MouseClick.MainButton)
         {
             var ok = GetEnabledOKButton();
             helper.Click(ok, button);
+            return this;
         }
 
         public ObjectView ClickOKToViewObject(MouseClick button = MouseClick.MainButton)

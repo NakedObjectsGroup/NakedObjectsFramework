@@ -575,8 +575,13 @@ Namespace AW.Types
 
 #Region "Actions"
 
-        Public Sub ActionAssociateWithSpecialOffer()
-            Throw New NotImplementedException()
+        Public Sub ActionAssociateWithSpecialOffer(offer As SpecialOffer)
+            Dim sop = Container.CreateTransientInstance(Of SpecialOfferProduct)()
+            sop.SpecialOfferID = offer.SpecialOfferID
+            sop.ProductID = ProductID
+            sop.mappedModifiedDate = Now
+            sop.RowGuid = Guid.NewGuid()
+            Container.MakePersistent(sop)
         End Sub
 
         Public Function ActionBestSpecialOffer(quantity As WholeNumber) As SpecialOffer

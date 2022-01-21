@@ -255,6 +255,13 @@
 			Container.MakePersistent(Me)
 		End Sub
 
+		Public Function ProductsCovered() As IQueryable(Of Product)
+			Return From sop In Container.AllInstances(Of SpecialOfferProduct)
+				   Where sop.SpecialOfferID = SpecialOfferID
+				   Order By sop.ModifiedDate Descending
+				   Select sop.Product
+		End Function
+
 #End Region
 	End Class
 End Namespace
