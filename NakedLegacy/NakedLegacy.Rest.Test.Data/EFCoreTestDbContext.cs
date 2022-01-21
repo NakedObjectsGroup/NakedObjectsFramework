@@ -52,6 +52,8 @@ public abstract class EFCoreTestDbContext : DbContext {
 
     public DbSet<ClassWithBounded> ClassWithBoundeds { get; set; }
 
+    public DbSet<ClassToPersist> ClassesToPersist { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
         optionsBuilder.UseLazyLoadingProxies();
@@ -60,6 +62,12 @@ public abstract class EFCoreTestDbContext : DbContext {
     private static void MapClassWithTextString(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithTextString>().Ignore(t => t.Name);
         modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
+    }
+
+    private static void MapClassToPersist(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ClassToPersist>().Ignore(t => t.Name).Ignore(t => t.Container);
+        modelBuilder.Entity<ClassToPersist>().Property("name").HasColumnName("Name");
     }
 
     private static void MapClassWithFieldAbout(ModelBuilder modelBuilder)
@@ -135,6 +143,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         MapClassWithBounded(modelBuilder);
         MapClassWithReferenceProperty(modelBuilder);
         MapClassWithFieldAbout(modelBuilder);
+        MapClassToPersist(modelBuilder);
 
         Seed(modelBuilder);
     }

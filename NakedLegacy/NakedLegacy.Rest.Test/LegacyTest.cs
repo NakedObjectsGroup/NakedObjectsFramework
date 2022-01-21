@@ -12,8 +12,10 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Facade.Utility;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
@@ -29,6 +31,11 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace NakedLegacy.Rest.Test;
+
+public class NullStringHasher : IStringHasher {
+    public string GetHash(string toHash) => null;
+}
+
 
 public class LegacyTest : AcceptanceTestCase {
     protected Type[] LegacyTypes { get; } = {
@@ -46,7 +53,8 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithReferenceProperty),
         typeof(ClassWithOrderedProperties),
         typeof(ClassWithOrderedActions),
-        typeof(ClassWithBounded)
+        typeof(ClassWithBounded),
+        typeof(ClassToPersist)
     };
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
@@ -106,25 +114,10 @@ public class LegacyTest : AcceptanceTestCase {
     protected override void RegisterTypes(IServiceCollection services) {
         base.RegisterTypes(services);
         services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddTransient<IStringHasher, NullStringHasher>();
         services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
     }
-
-    //private static NakedFramework.Menu.IMenu MakeMenu<T>(IMenuFactory factory) {
-    //    var t = typeof(T);
-    //    var m = factory.NewMenu(t, false, t.Name);
-    //    var actions = t.GetMethods(BindingFlags.Public | BindingFlags.Static);
-    //    foreach (var action in actions) {
-    //        m.AddAction(action.Name);
-    //    }
-
-    //    return m;
-    //}
-
-    //protected override NakedFramework.Menu.IMenu[] MainMenus(IMenuFactory factory) =>
-    //    new[] {
-    //        MakeMenu<ClassWithMenu>(factory)
-    //    };
 
     [SetUp]
     public void SetUp() {
@@ -1444,5 +1437,23 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("actionAction4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
         //Assert.AreEqual("4", parsedResult["members"]["actionAction4"]["extensions"]["memberOrder"].ToString());
+    }
+
+    [Test]
+    public void TestPersistTransient() {
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
+        Assert.AreEqual("Jean", parsedResult["title"].ToString());
+        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
     }
 }

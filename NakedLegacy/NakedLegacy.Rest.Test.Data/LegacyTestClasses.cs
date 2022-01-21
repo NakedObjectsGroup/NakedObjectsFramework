@@ -43,6 +43,34 @@ public class ClassWithTextString {
     }
 }
 
+public class ClassToPersist : IContainerAware
+{
+    private TextString _name;
+    public string name { get; set; }
+
+    public IContainer Container { get; set; }
+
+    [Key]
+    public int Id { get; init; }
+
+    public TextString Name => _name ??= new TextString(name, s => name = s);
+
+    public Title Title() => new(Name.Title());
+
+    public ClassToPersist ActionUpdateName(TextString newName)
+    {
+        Name.Value = newName.Value;
+        return this;
+    }
+
+    public void ActionSave() {
+        var toSave = this;
+        Container.MakePersistent(ref toSave);
+    }
+}
+
+
+
 public class ClassWithBounded : IBounded {
     private TextString _name;
     public string name;
