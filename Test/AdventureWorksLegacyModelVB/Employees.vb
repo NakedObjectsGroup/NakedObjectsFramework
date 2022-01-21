@@ -24,10 +24,10 @@
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
-                    'If lastName.IsEmpty() Then
-                    a.Usable = False
-                        a.UnusableReason = $"{lastName} {lastName.IsEmpty} value:|{lastName.Value}|" ' $"Last Name cannot be empty {a.TypeCode}"
-                    'End If
+                    If lastName.IsEmpty() Then
+                        a.Usable = False
+                        a.UnusableReason = $"Last Name cannot be empty"
+                    End If
                 Case Else
             End Select
         End Sub
