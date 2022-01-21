@@ -103,11 +103,8 @@
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
-				Case AboutTypeCodes.Valid
-					If Category Is Nothing OrElse Category.Value Is "" Then
-						a.Usable = False
-						a.UnusableReason = "Category cannot be empty"
-					End If
+				Case AboutTypeCodes.Parameters
+					a.Options = New Object() {New TextString("Clearance"), New TextString("Promotion")}
 				Case Else
 			End Select
 		End Sub
