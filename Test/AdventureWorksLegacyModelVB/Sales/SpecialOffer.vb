@@ -258,7 +258,7 @@
 		Public Function ActionProductsCovered() As IQueryable(Of Product)
 			Return From sop In Container.AllInstances(Of SpecialOfferProduct)
 				   Where sop.SpecialOfferID = SpecialOfferID
-				   Order By sop.ModifiedDate Descending
+				   Order By sop.mappedModifiedDate Descending
 				   Select sop.Product
 		End Function
 
