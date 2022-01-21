@@ -13,7 +13,12 @@ namespace NakedFrameworkClient.TestFramework
 
         private SelectElement SelectElement;
 
-        public override SelectionInputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
+        public override SelectionInputField AssertDefaultValueIs(string value)
+        {
+            Assert.AreEqual(value, SelectElement.SelectedOption.Text);
+            return this;
+        }
+
 
         public override SelectionInputField AssertIsMandatory() => throw new NotImplementedException();
 
