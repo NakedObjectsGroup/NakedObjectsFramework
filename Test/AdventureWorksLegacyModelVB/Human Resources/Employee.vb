@@ -349,8 +349,8 @@ Namespace AW.Types
                 Case AboutTypeCodes.Name
                     a.Name = "Change Marital Status"
                 Case AboutTypeCodes.Parameters
-                    a.ParamLabels()(0) = "New Marital Status"
-                    a.ParamDefaultValues()(0) = If(MaritalStatus.Value Is "S", "M", "S")
+                    'a.ParamLabels()(0) = "New Marital Status"
+                    'a.ParamDefaultValues()(0) = If(MaritalStatus.Value Is "S", "M", "S")
                     a.ParamOptions()(0) = New TextString() {New TextString("S"), New TextString("M")}
                 Case AboutTypeCodes.Valid
                     If status.Value Is MaritalStatus.Value Then

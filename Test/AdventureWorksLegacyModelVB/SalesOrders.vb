@@ -26,8 +26,8 @@
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Parameters
-                    a.ParamDefaultValues()(0) = "SO"
-                    a.ParamLabels()(0) = "Order Number"
+                    'a.ParamDefaultValues()(0) = "SO"
+                    'a.ParamLabels()(0) = "Order Number"
                 Case AboutTypeCodes.Usable
                 Case AboutTypeCodes.Valid
                     If number.Value.Length < 3 OrElse
