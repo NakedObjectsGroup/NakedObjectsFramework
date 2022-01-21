@@ -98,15 +98,19 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
             facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, false, Logger<ActionInvocationFacetViaMethod>()));
         }
 
+        var aName = actionMethod.Name;
+
         var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name[6..]); //remove 'action' from front 
 
         facets.Add(new MemberNamedFacetInferred(capitalizedName, action));
 
         var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
         var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType);
-        var aboutParamTypes = new List<Type> { typeof(ActionAbout) }.Union(paramTypes).ToArray();
+        var aboutParamTypes = new List<Type> { typeof(ActionAbout) };
+        aboutParamTypes.AddRange(paramTypes);
+        var aboutParams = aboutParamTypes.ToArray();
 
-        var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{AboutPrefix}{actionMethod.Name}", typeof(void), aboutParamTypes) ?? 
+        var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ?? 
                      MethodHelpers.FindMethod(reflector, type, methodType, $"{AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(ActionAbout) });
         methodRemover.SafeRemoveMethod(method);
 
