@@ -346,7 +346,7 @@ Namespace AW.Types
 
         Public Sub AboutActionChangeStatus(a As ActionAbout, status As TextString)
             Dim s = New TextString("S")
-            Dim m = New TextString("Me")
+            Dim m = New TextString("M")
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Change Marital Status"
