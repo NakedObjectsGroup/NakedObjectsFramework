@@ -355,7 +355,7 @@ Namespace AW.Types
                     a.ParamDefaultValues() = New Object() {If(MaritalStatus.Value = "S", m, s)}
                     a.ParamOptions() = New Object()() {New TextString() {s, m}}
                 Case AboutTypeCodes.Valid
-                    Throw New Exception($"{MaritalStatus}, {status}")
+                    Throw New Exception($"{MaritalStatus}, {status}, {MaritalStatus.Value = status.Value}")
                     If status.Value = MaritalStatus.Value Then
                         a.Usable = False
                         a.UnusableReason = "New Status cannot be the same as current"
