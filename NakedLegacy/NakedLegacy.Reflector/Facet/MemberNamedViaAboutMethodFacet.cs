@@ -13,6 +13,7 @@ using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 using static NakedLegacy.Reflector.Facet.AboutHelpers;
 
 namespace NakedLegacy.Reflector.Facet;
@@ -46,10 +47,10 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter) {
         switch (aboutCode) {
             case AboutTypeCodes.Name: {
-                var aboutName = GetAbout(nakedObjectAdapter)?.Name ?? inferredName;
+                var aboutName = GetAbout(nakedObjectAdapter, false)?.Name ?? inferredName;
                 return string.IsNullOrEmpty(aboutName) ? inferredName : aboutName;
             }
-            case AboutTypeCodes.Parameters when GetAbout(nakedObjectAdapter) is ActionAbout actionAbout: {
+            case AboutTypeCodes.Parameters when GetAbout(nakedObjectAdapter, true) is ActionAbout actionAbout: {
                 var parameterNames = actionAbout.ParamLabels ?? Array.Empty<string>();
                 var aboutName = parameterNames.Length > index ? parameterNames[index] : inferredName;
                 return string.IsNullOrEmpty(aboutName) ? inferredName : aboutName;
@@ -59,8 +60,8 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
         }
     }
 
-    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) {
-        return nakedObjectAdapter?.Object is null ? null : InvokeAboutMethod(nakedObjectAdapter.Object, aboutCode, false);
+    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, bool flagNull) {
+        return InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), aboutCode, false, flagNull);
     }
 }
 

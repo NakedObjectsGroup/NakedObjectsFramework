@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -22,9 +23,9 @@ public sealed class DescribedAsViaAboutMethodFacet : AbstractViaAboutMethodFacet
         : base(typeof(IDescribedAsFacet), holder, method, aboutType) =>
         this.logger = logger;
 
-    public string Description(INakedObjectAdapter adapter) => GetAbout(adapter.Object).Description;
+    public string Description(INakedObjectAdapter adapter) => GetAbout(adapter.GetDomainObject()).Description;
 
-    public IAbout GetAbout(object target) => InvokeAboutMethod(target, AboutTypeCodes.Name, false);
+    public IAbout GetAbout(object target) => InvokeAboutMethod(target, AboutTypeCodes.Name, false, true);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

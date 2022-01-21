@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Util;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -30,11 +31,7 @@ public sealed class DisableForContextViaAboutMethodFacet : AbstractViaAboutMetho
     public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
     public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        if (nakedObjectAdapter == null) {
-            return null;
-        }
-
-        var about = InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Usable, false);
+        var about = InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Usable, false, true);
 
         return about.Usable ? null :  string.IsNullOrWhiteSpace(about.UnusableReason) ?  NakedObjects.Resources.NakedObjects.Disabled : about.UnusableReason;
     }

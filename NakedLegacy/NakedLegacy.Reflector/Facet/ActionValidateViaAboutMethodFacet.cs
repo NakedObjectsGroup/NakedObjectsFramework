@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Util;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -31,11 +32,7 @@ public sealed class ActionValidateViaAboutMethodFacet : AbstractViaAboutMethodFa
     public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
     public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArgument) {
-        if (target == null) {
-            return null;
-        }
-
-        if (InvokeAboutMethod(target.Object, AboutTypeCodes.Valid, true, proposedArgument.Select(no => no?.Object).ToArray()) is ActionAbout fa) {
+        if (InvokeAboutMethod(target.GetDomainObject(), AboutTypeCodes.Valid, true, true, proposedArgument.Select(no => no?.Object).ToArray()) is ActionAbout fa) {
             return fa.Usable ? null : string.IsNullOrWhiteSpace(fa.UnusableReason) ? "Invalid Parameter" : fa.UnusableReason;
         }
 

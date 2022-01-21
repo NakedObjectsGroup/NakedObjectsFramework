@@ -13,6 +13,7 @@ using System.Linq;
 using NakedFramework.Core.Util;
 using NakedLegacy.Rest.Test.Data.AppLib;
 using NakedObjects;
+using NUnit.Framework;
 
 // ReSharper disable InconsistentNaming
 
@@ -305,6 +306,19 @@ public class LegacyClassWithInterface : IRoleInterface {
 }
 
 public class ClassWithMenu {
+
+    public static bool TestInvisibleFlag;
+    public static bool TestUsableFlag;
+    public static bool TestValidFlag;
+    public static bool TestNameFlag;
+    public static bool TestDescriptionFlag;
+    public static bool TestParametersFlag;
+
+    public static void ResetTest()
+    {
+        TestInvisibleFlag = TestUsableFlag = TestValidFlag = TestNameFlag = TestDescriptionFlag = TestParametersFlag = false;
+    }
+
     [Key]
     public int Id { get; init; }
 
@@ -315,6 +329,7 @@ public class ClassWithMenu {
     public ITitle Title() => Name.Title();
 
     public ClassWithMenu ActionMethod1() => this;
+
     public ClassWithMenu actionMethod2() => this;
 
     public static ClassWithTextString ActionMenuAction() => (ClassWithTextString)Container.AllInstances(typeof(ClassWithTextString)).First();
@@ -340,6 +355,49 @@ public class ClassWithMenu {
         }
 
         return null;
+    }
+
+    public static void AboutActionMenuActionWithParm(ActionAbout actionAbout, TextString ts) {
+        switch (actionAbout.TypeCode) {
+            case AboutTypeCodes.Visible:
+                if (TestInvisibleFlag) {
+                    actionAbout.Visible = false;
+                }
+                break;
+            case AboutTypeCodes.Usable:
+                if (TestUsableFlag) {
+                    actionAbout.Usable = false;
+                    actionAbout.UnusableReason = "unusable by about";
+                }
+
+                break;
+            case AboutTypeCodes.Name:
+                if (TestNameFlag) {
+                    actionAbout.Name = "Renamed Name";
+                }
+
+                if (TestDescriptionFlag) {
+                    actionAbout.Description = "A Description";
+                }
+
+                break;
+            case AboutTypeCodes.Valid:
+                if (TestValidFlag) {
+                    if (ts.Value == "invalid") {
+                        actionAbout.Usable = false;
+                        actionAbout.UnusableReason = "ts invalid";
+                    }
+                }
+                break;
+            case AboutTypeCodes.Parameters:
+                if (TestParametersFlag) {
+                    actionAbout.ParamLabels = new[] { "renamed ts" };
+                    actionAbout.ParamDefaultValues = new object[] { "def" };
+                    actionAbout.ParamOptions = new[] { new object[] { "opt1", "opt2" } };
+                }
+
+                break;
+        }
     }
 
     public static IMenu menuOrder() {

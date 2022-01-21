@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Util;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -32,11 +33,7 @@ public sealed class HideForContextViaAboutMethodFacet : AbstractViaAboutMethodFa
     public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
     public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        if (nakedObjectAdapter == null) {
-            return null;
-        }
-
-        var about = InvokeAboutMethod(nakedObjectAdapter.Object, AboutTypeCodes.Visible, false);
+        var about = InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Visible, false, true);
         return about.Visible ? null : NakedObjects.Resources.NakedObjects.Hidden;
     }
 
