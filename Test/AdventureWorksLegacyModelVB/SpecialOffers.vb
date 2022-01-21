@@ -19,12 +19,18 @@
             Return CType(ThreadLocals.Container.CreateTransientInstance(GetType(SpecialOffer)), SpecialOffer)
         End Function
 
+        Public Shared Function ActionAllSpecialOfferProducts() As IQueryable(Of SpecialOfferProduct)
+            Return From sop In GenericMenuFunctions.ListAll(Of SpecialOfferProduct)()
+                   Order By sop.mappedModifiedDate Descending
+        End Function
+
         Public Shared Function SharedMenuOrder() As Menu
             Dim main = New Menu("Special Offers")
             main.AddAction(NameOf(ActionRandomSpecialOffer)) _
             .AddAction(NameOf(ActionAllSpecialOffers)) _
             .AddAction(NameOf(ActionRecentlyUpdatedSpecialOffers)) _
-            .AddAction(NameOf(ActionCreateNewSpecialOffer))
+            .AddAction(NameOf(ActionCreateNewSpecialOffer)) _
+            .AddAction(NameOf(ActionAllSpecialOfferProducts))
             Return main
         End Function
 
