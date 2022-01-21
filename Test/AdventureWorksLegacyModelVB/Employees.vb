@@ -20,6 +20,7 @@
         End Function
 
         Public Shared Sub AboutActionFindEmployeeByName(a As ActionAbout, firstName As TextString, lastName As TextString)
+            Throw New Exception($"{a.TypeCode}, {firstName}, {lastName}")
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
