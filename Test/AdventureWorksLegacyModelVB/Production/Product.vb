@@ -602,12 +602,18 @@ Namespace AW.Types
                        w.mappedEndDate Is Nothing
         End Function
 
+        Public Sub ActionChangeSubcategory(newSubcategory As ProductSubcategory)
+            ProductSubcategoryID = newSubcategory.ProductSubcategoryID
+            'Simpler to just set the ProductSubcategory property, but using Id here as a deliberate test
+        End Sub
+
 #End Region
 
         Public Shared Function MenuOrder() As Menu
             Dim main = New Menu("FooBar") 'This should have no effect - the object menu is always labelled 'Actions'
             main.AddAction(NameOf(ActionBestSpecialOffer)) _
-            .AddAction(NameOf(ActionAssociateWithSpecialOffer))
+            .AddAction(NameOf(ActionAssociateWithSpecialOffer)) _
+            .AddAction(NameOf(ActionChangeSubCategory))
 
             main.AddSubMenu("Work Orders") _
             .AddAction(NameOf(ActionCurrentWorkOrders)) _
@@ -615,6 +621,8 @@ Namespace AW.Types
 
             Return main
         End Function
+
+
 
     End Class
 

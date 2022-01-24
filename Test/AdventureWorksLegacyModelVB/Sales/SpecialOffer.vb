@@ -259,15 +259,16 @@
 				   Select sop.Product
 		End Function
 
-		Public Sub ActionIncludeProduct(product As Product)
+		Public Function ActionIncludeProduct(product As Product) As SpecialOfferProduct
 			Dim pid = product.ProductID
 			Dim sop As SpecialOfferProduct = CType(Container.CreateTransientInstance(GetType(SpecialOfferProduct)), SpecialOfferProduct)
 			sop.SpecialOfferID = Me.SpecialOfferID
 			sop.ProductID = pid
-			sop.mappedModifiedDate = Now
+			sop.mappedModifiedDate = DateTime.Now
 			sop.RowGuid = Guid.NewGuid()
 			Container.MakePersistent(sop)
-		End Sub
+			Return sop
+		End Function
 
 #End Region
 	End Class

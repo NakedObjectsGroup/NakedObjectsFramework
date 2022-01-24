@@ -12,20 +12,11 @@ namespace AdventureWorksModel
             builder.HasKey(t => t.BusinessEntityID);
 
             // Ignores
-            builder.Ignore(t => t.mappedNationalIDNumber)
+            builder
+                .Ignore(t => t.Container)
                 .Ignore(t => t.ManagerID)
-                .Ignore(t => t.Manager)
-                .Ignore(t => t.LoginID)
-                .Ignore(t => t.JobTitle)
-                .Ignore(t => t.DateOfBirth)
-                .Ignore(t => t.MaritalStatus)
-                .Ignore(t => t.Gender)
-                .Ignore(t => t.HireDate)
-                .Ignore(t => t.VacationHours)
-                .Ignore(t => t.SickLeaveHours)
-                .Ignore(t => t.mappedModifiedDate)
-                .Ignore(t => t.Current)
-                .Ignore(t => t.Salaried); 
+                .Ignore(t => t.Manager);
+                
 
             // Table & Column Mappings
             builder.ToTable("Employee", "HumanResources");

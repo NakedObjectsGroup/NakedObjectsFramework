@@ -35,5 +35,13 @@ namespace NakedFrameworkClient.TestFramework
             Thread.Sleep(100);
             return helper.WaitForNewListView(enclosingView, button);
         }
+
+        public ListView ClickToViewEmptyList(MouseClick button = MouseClick.MainButton)
+        {
+            element.AssertIsEnabled();
+            helper.Click(element, button);
+            Thread.Sleep(100);
+            return helper.WaitForNewEmptyListView(enclosingView, button);
+        }
     }
 }

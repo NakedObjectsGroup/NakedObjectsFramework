@@ -3,8 +3,11 @@
 Namespace AW.Types
 
     Partial Public Class Employee
+        Implements ITitledObject, IContainerAware
 
-        Implements ITitledObject
+#Region "Container"
+        Public Property Container As IContainer Implements IContainerAware.Container
+#End Region
 
         Public Property BusinessEntityID As Integer 'Not visible on UI
 
@@ -337,7 +340,15 @@ Namespace AW.Types
 
 #Region "Actions"
         Public Sub ActionChangeDepartmentOrShift(department As Department, shift As Shift)
-            Throw New NotImplementedException
+            Dim current = mappedDepartmentHistory.First()
+            current.EndDate.Value = DateTime.Now
+            Dim assign = Container.CreateTransientInstance(Of EmployeeDepartmentHistory)
+            assign.Employee = Me
+            assign.Department = department
+            assign.Shift = shift
+            assign.mappedStartDate = DateTime.Today
+            assign.mappedModifiedDate = DateTime.Now
+            Container.MakePersistent(assign)
         End Sub
 
         Public Sub ActionChangeStatus(newStatus As TextString)
