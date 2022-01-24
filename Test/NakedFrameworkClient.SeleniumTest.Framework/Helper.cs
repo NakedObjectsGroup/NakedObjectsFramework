@@ -922,6 +922,16 @@ namespace NakedFrameworkClient.TestFramework
             }
         }
 
+        internal ListView WaitForNewEmptyListView(View enclosingView, MouseClick button)
+        {
+            Pane pane = GetNewPane(enclosingView.pane, button);
+            var details = WaitForCss(CssSelectorFor(pane) + " .list .details");
+            Assert.AreEqual("No items found", details.Text);
+            var el = WaitForCss(CssSelectorFor(pane) + " .list");
+            return new ListView(el, this, pane);
+        }
+
+
         //Use this method only if the new list view is an updated version of the previous view
         //(this means that the list will need updating).
         internal ListView WaitForUpdatedListView(View enclosingView, MouseClick button)
