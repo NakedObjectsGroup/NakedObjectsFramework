@@ -49,9 +49,9 @@ public abstract class MemberSpecAbstract : IMemberSpec {
     ///     Return the default label for this member. This is based on the name of this member.
     /// </summary>
     /// <seealso cref="Id()" />
-    public virtual string Name(INakedObjectAdapter nakedObjectAdapter) => memberSpecImmutable.Name(nakedObjectAdapter);
+    public virtual string Name(INakedObjectAdapter nakedObjectAdapter) => memberSpecImmutable.Name(nakedObjectAdapter, Framework);
 
-    public virtual string Description(INakedObjectAdapter nakedObjectAdapter) => memberSpecImmutable.Description(nakedObjectAdapter);
+    public virtual string Description(INakedObjectAdapter nakedObjectAdapter) => memberSpecImmutable.Description(nakedObjectAdapter, Framework);
 
     public abstract IObjectSpec ReturnSpec { get; }
 

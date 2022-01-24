@@ -9,6 +9,7 @@ using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Spec;
 using NakedFramework.Metamodel.Utils;
@@ -29,9 +30,9 @@ public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable 
 
     public abstract IObjectSpecImmutable ReturnSpec { get; }
 
-    public string Name(INakedObjectAdapter nakedObjectAdapter) => GetFacet<IMemberNamedFacet>().FriendlyName(nakedObjectAdapter);
+    public string Name(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetFacet<IMemberNamedFacet>().FriendlyName(nakedObjectAdapter, framework);
 
-    public string Description(INakedObjectAdapter nakedObjectAdapter) => GetFacet<IDescribedAsFacet>().Description(nakedObjectAdapter);
+    public string Description(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetFacet<IDescribedAsFacet>().Description(nakedObjectAdapter, framework);
 
     #endregion
 

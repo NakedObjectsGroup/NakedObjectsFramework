@@ -765,12 +765,14 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(6, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(8, ((JContainer)parsedResult["members"]).Count);
 
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction1"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        Assert.IsNotNull(parsedResult["members"]["ActionMethodInjected"]);
+        Assert.IsNotNull(parsedResult["members"]["ActionMethodInjectedWithParm"]);
     }
 
     [Test]
@@ -1240,6 +1242,45 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Fred", resultObj["title"].ToString());
         Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
+
+    [Test]
+    public void TestInvokeMenuActionWithInjectedContainerReturnObject()
+    {
+        ClassWithMenu.ResetTest();
+
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+        var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMethodInjected), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("Fred", resultObj["title"].ToString());
+        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+    }
+
+    [Test]
+    public void TestInvokeMenuActionWithParmInjectedContainerReturnObject()
+    {
+        ClassWithMenu.ResetTest();
+
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue("Fred") } } };
+
+        var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMethodInjectedWithParm), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("Fred", resultObj["title"].ToString());
+        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+    }
+
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnTransientObject() {

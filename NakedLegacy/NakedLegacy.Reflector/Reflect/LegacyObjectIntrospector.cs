@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,8 @@ public class LegacyObjectIntrospector : Introspector {
     protected override IImmutableDictionary<string, ITypeSpecBuilder> ProcessAction(MethodInfo actionMethod, MethodInfo[] actions, IActionSpecImmutable action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => ((LegacyObjectFacetFactorySet)FacetFactorySet).Process(Reflector, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions, metamodel);
 
     protected override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParameter(MethodInfo actionMethod, int i, IActionParameterSpecImmutable param, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => ((LegacyObjectFacetFactorySet)FacetFactorySet).ProcessParams(Reflector, actionMethod, i, param, metamodel);
+
+    protected override bool KeepParameter(Type parameterType) => !parameterType.IsAssignableTo(typeof(IContainer));
 
     // Copyright (c) Naked Objects Group Ltd.
 }

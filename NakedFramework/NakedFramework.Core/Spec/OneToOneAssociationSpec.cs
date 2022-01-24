@@ -61,7 +61,7 @@ public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOne
 
     #region IOneToOneAssociationSpec Members
 
-    public bool IsChoicesEnabled(INakedObjectAdapter adapter) => ReturnSpec.IsBoundedSet() || GetFacet<IPropertyChoicesFacet>()?.IsEnabled(adapter) == true || ContainsFacet<IEnumFacet>();
+    public bool IsChoicesEnabled(INakedObjectAdapter adapter) => ReturnSpec.IsBoundedSet() || GetFacet<IPropertyChoicesFacet>()?.IsEnabled(adapter, Framework) == true || ContainsFacet<IEnumFacet>();
 
     public override bool IsMandatory => GetFacet<IMandatoryFacet>().IsMandatory;
 
@@ -88,7 +88,7 @@ public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOne
         var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
         var enumFacet = GetFacet<IEnumFacet>();
 
-        var objectOptions = propertyChoicesFacet?.GetChoices(target, parameterNameValues);
+        var objectOptions = propertyChoicesFacet?.GetChoices(target, parameterNameValues, Framework);
         if (objectOptions is not null) {
             if (enumFacet is null) {
                 return Framework.NakedObjectManager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();

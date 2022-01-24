@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
@@ -60,9 +61,9 @@ public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet,
 
     public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
 
-    public bool IsEnabled(INakedObjectAdapter nakedObjectAdapter) => true;
+    public bool IsEnabled(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => true;
 
-    public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
+    public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) {
         var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
         try {
             var options = methodDelegate(inObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray());

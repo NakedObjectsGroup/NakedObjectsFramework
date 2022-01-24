@@ -8,6 +8,7 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -18,7 +19,7 @@ public sealed class MemberNamedFacetInferred : SingleStringValueFacetAbstract, I
         : base(typeof(IMemberNamedFacet), holder, NameUtils.NaturalName(value)) { }
 
     public override bool CanAlwaysReplace => false;
-    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter) => Value;
+    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => Value;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

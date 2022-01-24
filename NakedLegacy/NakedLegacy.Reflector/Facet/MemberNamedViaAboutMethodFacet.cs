@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using static NakedLegacy.Reflector.Facet.AboutHelpers;
@@ -44,13 +45,13 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
         this.logger = logger;
     }
 
-    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter) {
+    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         switch (aboutCode) {
             case AboutTypeCodes.Name: {
-                var aboutName = GetAbout(nakedObjectAdapter, false)?.Name ?? inferredName;
+                var aboutName = GetAbout(nakedObjectAdapter, framework, false)?.Name ?? inferredName;
                 return string.IsNullOrEmpty(aboutName) ? inferredName : aboutName;
             }
-            case AboutTypeCodes.Parameters when GetAbout(nakedObjectAdapter, true) is ActionAbout actionAbout: {
+            case AboutTypeCodes.Parameters when GetAbout(nakedObjectAdapter, framework, true) is ActionAbout actionAbout: {
                 var parameterNames = actionAbout.ParamLabels ?? Array.Empty<string>();
                 var aboutName = parameterNames.Length > index ? parameterNames[index] : inferredName;
                 return string.IsNullOrEmpty(aboutName) ? inferredName : aboutName;
@@ -60,8 +61,8 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
         }
     }
 
-    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, bool flagNull) {
-        return InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), aboutCode, false, flagNull);
+    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework, bool flagNull) {
+        return InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), aboutCode, false, flagNull);
     }
 }
 

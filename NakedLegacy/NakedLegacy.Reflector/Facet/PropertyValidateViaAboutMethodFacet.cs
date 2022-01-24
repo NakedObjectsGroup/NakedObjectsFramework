@@ -10,6 +10,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
@@ -25,14 +26,13 @@ public sealed class PropertyValidateViaAboutMethodFacet : AbstractViaAboutMethod
         : base(typeof(IPropertyValidateFacet), holder, method, aboutType) =>
         this.logger = logger;
 
-    public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArgument);
+    public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArgument);
 
     public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
-    public string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue) {
-        if (InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, true, true, proposedValue?.Object) is FieldAbout fa) {
-            return fa.IsValid ? null : string.IsNullOrWhiteSpace(fa.InvalidReason) ? "Invalid Property" : fa.InvalidReason
-                ;
+    public string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework,  INakedObjectAdapter proposedValue) {
+        if (InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, true, true, proposedValue?.Object) is FieldAbout fa) {
+            return fa.IsValid ? null : string.IsNullOrWhiteSpace(fa.InvalidReason) ? "Invalid Property" : fa.InvalidReason;
         }
 
         return null;

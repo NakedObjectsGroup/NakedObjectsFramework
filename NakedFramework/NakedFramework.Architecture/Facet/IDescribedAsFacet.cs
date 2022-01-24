@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Architecture.Facet;
 
@@ -19,5 +20,5 @@ namespace NakedFramework.Architecture.Facet;
 /// </para>
 public interface IDescribedAsFacet  : IFacet {
 
-    string Description(INakedObjectAdapter adapter);
+    string Description(INakedObjectAdapter adapter, INakedFramework framework);
 }

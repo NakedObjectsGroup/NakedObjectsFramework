@@ -96,7 +96,7 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
     }
 
     public bool IsChoicesEnabled(INakedObjectAdapter adapter) {
-        isChoicesEnabled ??= !IsMultipleChoicesEnabled && actionParameterSpecImmutable.IsChoicesEnabled(adapter);
+        isChoicesEnabled ??= !IsMultipleChoicesEnabled && actionParameterSpecImmutable.IsChoicesEnabled(adapter, Framework);
         return isChoicesEnabled.Value;
     }
 
@@ -117,9 +117,9 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
 
     public virtual IObjectSpec Spec => spec ??= Framework.MetamodelManager.GetSpecification(actionParameterSpecImmutable.Specification);
 
-    public string Name(INakedObjectAdapter nakedObjectAdapter) => name ??= GetFacet<IMemberNamedFacet>().FriendlyName(nakedObjectAdapter);
+    public string Name(INakedObjectAdapter nakedObjectAdapter) => name ??= GetFacet<IMemberNamedFacet>().FriendlyName(nakedObjectAdapter, Framework);
 
-    public virtual string Description(INakedObjectAdapter nakedObjectAdapter) => description ??= GetFacet<IDescribedAsFacet>().Description(nakedObjectAdapter) ?? "";
+    public virtual string Description(INakedObjectAdapter nakedObjectAdapter) => description ??= GetFacet<IDescribedAsFacet>().Description(nakedObjectAdapter, Framework) ?? "";
 
     public virtual bool IsMandatory {
         get {

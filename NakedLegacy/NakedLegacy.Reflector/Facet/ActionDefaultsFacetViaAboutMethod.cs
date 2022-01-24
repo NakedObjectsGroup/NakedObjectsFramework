@@ -29,7 +29,7 @@ public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFa
 
     public (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
       
-        if (GetAbout(nakedObjectAdapter) is ActionAbout actionAbout) {
+        if (GetAbout(nakedObjectAdapter, framework) is ActionAbout actionAbout) {
             var parameterDefaults = actionAbout.ParamDefaultValues ?? Array.Empty<object>();
             var aboutDefault = parameterDefaults.Length > index ? parameterDefaults[index] : null;
             if (aboutDefault is not null) {
@@ -40,7 +40,7 @@ public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFa
         return (null, TypeOfDefaultValue.Implicit);
     }
 
-    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) => InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Parameters, false, true);
+    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Parameters, false, true);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

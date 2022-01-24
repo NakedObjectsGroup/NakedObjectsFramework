@@ -678,7 +678,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        Assert.AreEqual("An Action With Named Annotation", facet.FriendlyName(null));
+        Assert.AreEqual("An Action With Named Annotation", facet.FriendlyName(null, null));
         Assert.AreEqual(0, metamodel.Count);
     }
 

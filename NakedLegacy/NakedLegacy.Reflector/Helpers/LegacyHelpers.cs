@@ -3,7 +3,9 @@ using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Menu;
+using NakedLegacy.Reflector.Component;
 
 namespace NakedLegacy.Reflector.Helpers;
 
@@ -28,6 +30,24 @@ public static class LegacyHelpers {
 
         return parameters;
     }
+
+    public static object[] SubstituteNullsAndContainer(object[] parameters, MethodInfo method, INakedFramework framework) {
+        parameters = InjectContainer(parameters, method, framework);
+        return SubstituteNulls(parameters, method);
+    }
+
+    public static object[] InjectContainer(object[] parameters, MethodInfo method, INakedFramework framework) {
+        var lastIndex = parameters.Length - 1;
+
+        if (lastIndex >= 0 && parameters[lastIndex] is null) {
+            if (method.GetParameters()[lastIndex].ParameterType.IsAssignableTo(typeof(IContainer))) {
+                parameters[lastIndex] = new Container(framework);
+            }
+        }
+
+        return parameters;
+    }
+
 
     private static void AddMenuComponent(NakedFramework.Menu.IMenu topLevelMenu, IMenuComponent menuComponent, Type declaringType) {
         switch (menuComponent) {

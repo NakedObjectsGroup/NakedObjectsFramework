@@ -423,19 +423,19 @@ public class ReflectorTest {
 
             var facet = spec.GetFacet<IDescribedAsFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual("Class Description", facet.Description(null));
+            Assert.AreEqual("Class Description", facet.Description(null, null));
 
             var propertySpec = spec.OrderedFields.First();
 
             facet = propertySpec.GetFacet<IDescribedAsFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual("Property Description", facet.Description(null));
+            Assert.AreEqual("Property Description", facet.Description(null, null));
 
             var actionSpec = spec.OrderedContributedActions.First();
 
             facet = actionSpec.GetFacet<IDescribedAsFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual("Function Description", facet.Description(null));
+            Assert.AreEqual("Function Description", facet.Description(null, null));
         }
     }
 
@@ -602,20 +602,20 @@ public class ReflectorTest {
             var facet1 = propertySpec.GetFacet<IMemberNamedFacet>();
             Assert.IsNotNull(facet1);
             Assert.IsNull(propertySpec.GetFacet<INamedFacet>());
-            Assert.AreEqual("Property Name", facet1.FriendlyName(null));
+            Assert.AreEqual("Property Name", facet1.FriendlyName(null, null));
 
             var actionSpec = spec.OrderedContributedActions.First();
 
             var facet2 = actionSpec.GetFacet<IMemberNamedFacet>();
             Assert.IsNotNull(facet2);
             Assert.IsNull(actionSpec.GetFacet<INamedFacet>());
-            Assert.AreEqual("Function Name", facet2.FriendlyName(null));
+            Assert.AreEqual("Function Name", facet2.FriendlyName(null, null));
 
             var parmSpec = actionSpec.Parameters[1];
 
             var facet3 = parmSpec.GetFacet<IMemberNamedFacet>();
             Assert.IsNotNull(facet3);
-            Assert.AreEqual("Parameter Name", facet3.FriendlyName(null));
+            Assert.AreEqual("Parameter Name", facet3.FriendlyName(null, null));
         }
     }
 
@@ -848,7 +848,7 @@ public class ReflectorTest {
             var specs = AllObjectSpecImmutables(container);
             var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<HiddenClass>());
 
-            var facet = spec.OrderedFields.Single(f => f.Name(null) == "Hidden Property").GetFacet<IHiddenFacet>();
+            var facet = spec.OrderedFields.Single(f => f.Name(null, null) == "Hidden Property").GetFacet<IHiddenFacet>();
             Assert.IsNotNull(facet);
             Assert.AreEqual(WhenTo.Always, facet.Value);
         }

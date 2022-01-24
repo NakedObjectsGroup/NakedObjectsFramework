@@ -226,6 +226,9 @@ public abstract class Introspector : IIntrospector {
                 ? typeof(Array)
                 : TypeKeyUtils.FilterNullableAndProxies(type);
 
+    //TODO use this for NF Context ? 
+    protected virtual bool KeepParameter(Type parameterType) => true;
+
     private (IActionSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindActionMethods(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var actionSpecs = new List<IActionSpecImmutable>();
         var actions = FacetFactorySet.FindActions(Methods.Where(m => m != null).ToArray(), ClassStrategy).Where(a => !FacetFactorySet.Filters(a, ClassStrategy)).ToArray();
@@ -252,7 +255,7 @@ public abstract class Introspector : IIntrospector {
 
                 var actionParams = new List<IActionParameterSpecImmutable>();
 
-                foreach (var pt in parameterTypes) {
+                foreach (var pt in parameterTypes.Where(KeepParameter)) {
                     IObjectSpecBuilder oSpec;
                     (oSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecBuilder>(pt, metamodel);
                     var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(oSpec, identifier);

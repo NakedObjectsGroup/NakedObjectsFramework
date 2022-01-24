@@ -468,6 +468,22 @@ public class ClassWithMenu {
         }
     }
 
+    public static ClassWithTextString ActionMethodInjected(IContainer container) => container.AllInstances<ClassWithTextString>().First();
+
+    public static ClassWithTextString ActionMethodInjectedWithParm(TextString ts, IContainer container) => container.AllInstances<ClassWithTextString>().First();
+
+    public static void AboutActionMethodInjectedWithParm(ActionAbout actionAbout, TextString ts, IContainer container) {
+        if (actionAbout.TypeCode == AboutTypeCodes.Valid) {
+            // make sure container is not null
+            var a = container.AllInstances<ClassWithTextString>().First();
+            if (ts.Value != a.Name.Value) {
+                actionAbout.Usable = false;
+                actionAbout.UnusableReason = "test fail";
+            }
+        }
+    }
+
+
     public static IMenu menuOrder() {
         var menu = new Menu("ClassWithMenu Menu");
         menu.MenuItems().Add(new MenuAction(nameof(ActionMethod1)));
@@ -486,6 +502,8 @@ public class ClassWithMenu {
         menu.MenuItems().Add(new MenuAction(nameof(ActionMenuActionWithParm)));
         menu.MenuItems().Add(new MenuAction(nameof(ActionCreateTransient)));
         menu.MenuItems().Add(new MenuAction(nameof(ActionPersistTransient)));
+        menu.MenuItems().Add(new MenuAction(nameof(ActionMethodInjected)));
+        menu.MenuItems().Add(new MenuAction(nameof(ActionMethodInjectedWithParm)));
         return menu;
     }
 }

@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Reflect;
@@ -64,7 +65,7 @@ internal class MemberPeerStub : Specification, IMemberSpecImmutable {
             : base("", "") =>
             this.owner = owner;
 
-        public override string ToString() => owner.Name(null);
+        public override string ToString() => owner.Name(null, null);
     }
 
     #endregion
@@ -75,9 +76,9 @@ internal class MemberPeerStub : Specification, IMemberSpecImmutable {
 
     public override IIdentifier Identifier => new IdentifierNull(this);
 
-    public string Name(INakedObjectAdapter nakedObjectAdapter) => name;
+    public string Name(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => name;
 
-    public string Description(INakedObjectAdapter nakedObjectAdapter) => description;
+    public string Description(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => description;
 
     #endregion
 

@@ -26,7 +26,7 @@ public sealed class SaveViaActionSaveFacet : AbstractViaAboutMethodFacet, ISaveF
     public static Type Type => typeof(ISaveFacet);
 
     public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
-        var msg = Validate(nakedObject);
+        var msg = Validate(nakedObject, framework);
         if (msg is not null) {
             return msg;
         }
@@ -35,8 +35,8 @@ public sealed class SaveViaActionSaveFacet : AbstractViaAboutMethodFacet, ISaveF
         return null;
     }
 
-    public string Validate(INakedObjectAdapter nakedObjectAdapter) {
-        if (Method is not null && InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, false, true) is ActionAbout actionAbout) {
+    public string Validate(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        if (Method is not null && InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, false, true) is ActionAbout actionAbout) {
             return actionAbout.Usable ? null : string.IsNullOrWhiteSpace(actionAbout.UnusableReason) ? "Invalid Save" : actionAbout.UnusableReason;
         }
 

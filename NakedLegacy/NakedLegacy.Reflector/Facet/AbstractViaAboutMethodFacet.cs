@@ -7,7 +7,9 @@
 
 using System;
 using System.Reflection;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
@@ -23,7 +25,7 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
     protected AboutHelpers.AboutType AboutType { get; }
     public MethodInfo GetMethod() => Method;
 
-    protected IAbout InvokeAboutMethod(object target, AboutTypeCodes typeCode, bool substitute, bool flagNull, params object[] proposedValues) {
+    protected IAbout InvokeAboutMethod(INakedFramework framework, object target, AboutTypeCodes typeCode, bool substitute, bool flagNull, params object[] proposedValues) {
         if (target is null && !Method.IsStatic) {
             if (flagNull) {
                 throw new InvalidOperationException("Unexpected null object on instance about method");
@@ -33,7 +35,7 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
         }
 
         var about = AboutType.AboutFactory(typeCode);
-        Method.Invoke(target, Method.GetParameters(about, substitute, proposedValues));
+        Method.Invoke(target, Method.GetParameters(framework, about, substitute, proposedValues));
         return about;
     }
 

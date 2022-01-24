@@ -34,12 +34,12 @@ public sealed class ActionChoicesViaAboutMethodFacet : AbstractViaAboutMethodFac
 
     public bool IsMultiple => false;
 
-    public bool IsEnabled(INakedObjectAdapter nakedObjectAdapter) => GetChoices(nakedObjectAdapter).Any();
+    public bool IsEnabled(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetChoices(nakedObjectAdapter, framework).Any();
 
-    public object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) => GetChoices(nakedObjectAdapter);
+    public object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) => GetChoices(nakedObjectAdapter, framework);
 
-    private object[] GetChoices(INakedObjectAdapter nakedObjectAdapter) {
-        if (GetAbout(nakedObjectAdapter) is ActionAbout actionAbout) {
+    private object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        if (GetAbout(nakedObjectAdapter, framework) is ActionAbout actionAbout) {
             var parameterOptions = actionAbout.ParamOptions?.Any() == true ? actionAbout.ParamOptions[index] : Array.Empty<object>();
             if (parameterOptions.Any()) {
                 return parameterOptions;
@@ -49,7 +49,7 @@ public sealed class ActionChoicesViaAboutMethodFacet : AbstractViaAboutMethodFac
         return Array.Empty<object>();
     }
 
-    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) => InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Parameters, false, true);
+    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Parameters, false, true);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -7,13 +7,14 @@
 
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.SpecImmutable;
 
 public interface IActionParameterSpecImmutable : ISpecificationBuilder, ISerializable {
     IObjectSpecImmutable Specification { get; }
-    bool IsChoicesEnabled(INakedObjectAdapter adapter);
+    bool IsChoicesEnabled(INakedObjectAdapter adapter, INakedFramework framework);
     bool IsChoicesDefined { get; }
     bool IsMultipleChoicesEnabled { get; }
 }

@@ -51,7 +51,7 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(MemberNamedFacetI18N));
-        Assert.AreEqual("I18N property name", ((MemberNamedFacetI18N)facet).FriendlyName(null));
+        Assert.AreEqual("I18N property name", ((MemberNamedFacetI18N)facet).FriendlyName(null, null));
     }
 
     [TestMethod]
@@ -77,7 +77,7 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(MemberNamedFacetI18N));
-        Assert.AreEqual("I18N action name", ((MemberNamedFacetI18N)facet).FriendlyName(null));
+        Assert.AreEqual("I18N action name", ((MemberNamedFacetI18N)facet).FriendlyName(null, null));
     }
 
     [TestMethod]
@@ -100,7 +100,7 @@ public class I18NManagerTest {
         var facet = manager.Decorate(testName.Object, testHolder.Object);
 
         Assert.IsInstanceOfType(facet, typeof(MemberNamedFacetI18N));
-        Assert.AreEqual("I18N parameter name", ((MemberNamedFacetI18N)facet).FriendlyName(null));
+        Assert.AreEqual("I18N parameter name", ((MemberNamedFacetI18N)facet).FriendlyName(null, null));
     }
 
     [TestMethod]

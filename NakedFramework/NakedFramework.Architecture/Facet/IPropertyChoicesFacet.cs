@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Facet;
@@ -28,10 +29,10 @@ namespace NakedFramework.Architecture.Facet;
 public interface IPropertyChoicesFacet : IFacet {
     (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
 
-    bool IsEnabled(INakedObjectAdapter nakedObjectAdapter);
+    bool IsEnabled(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 
     /// <summary>
     ///     Gets the available choices for this property
     /// </summary>
-    object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
+    object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework);
 }

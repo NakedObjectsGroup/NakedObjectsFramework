@@ -8,6 +8,7 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -20,7 +21,7 @@ public sealed class MemberNamedFacetI18N : SingleStringValueFacetAbstract, IMemb
         : base(typeof(IMemberNamedFacet), holder, valueString) {
     }
 
-    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter) => Value;
+    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => Value;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

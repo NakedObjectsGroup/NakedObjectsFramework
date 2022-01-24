@@ -33,7 +33,7 @@ public sealed class HideForContextViaAboutMethodFacet : AbstractViaAboutMethodFa
     public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
     public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        var about = InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Visible, false, true);
+        var about = InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Visible, false, true);
         return about.Visible ? null : NakedObjects.Resources.NakedObjects.Hidden;
     }
 

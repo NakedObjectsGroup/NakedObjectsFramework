@@ -7,6 +7,7 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -24,7 +25,7 @@ public sealed class PropertyValidateFacetNone : PropertyValidateFacetAbstract {
     /// <para>
     ///     Subclasses should override as required.
     /// </para>
-    public override string InvalidReason(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter nakedParm) => null;
+    public override string InvalidReason(INakedObjectAdapter inObjectAdapter, INakedFramework framework, INakedObjectAdapter nakedParm) => null;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

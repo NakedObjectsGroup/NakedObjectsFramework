@@ -12,6 +12,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
@@ -27,19 +28,19 @@ public sealed class PropertyChoicesViaAboutMethodFacet : AbstractViaAboutMethodF
 
     public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();
 
-    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter) => InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Parameters, false, true);
+    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Parameters, false, true);
 
-    private object[] GetChoices(INakedObjectAdapter nakedObjectAdapter) {
-        if (GetAbout(nakedObjectAdapter) is FieldAbout fa) {
+    private object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        if (GetAbout(nakedObjectAdapter, framework) is FieldAbout fa) {
             return fa.Options?.Any() == true ? fa.Options : Array.Empty<object>();
         }
 
         return Array.Empty<object>();
     }
 
-    public bool IsEnabled(INakedObjectAdapter nakedObjectAdapter) => GetChoices(nakedObjectAdapter).Any();
+    public bool IsEnabled(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetChoices(nakedObjectAdapter, framework).Any();
 
-    public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) => GetChoices(inObjectAdapter);
+    public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) => GetChoices(inObjectAdapter, framework);
 
     #endregion
 }

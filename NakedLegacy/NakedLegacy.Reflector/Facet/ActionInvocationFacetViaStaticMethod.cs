@@ -28,6 +28,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
     private readonly Func<object, object[], object> methodDelegate;
 
     private readonly int paramCount;
+    private readonly bool injected;
 
     public ActionInvocationFacetViaStaticMethod(MethodInfo method,
                                                 ITypeSpecImmutable onType,
@@ -39,7 +40,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
         : base(holder) {
         ActionMethod = method;
         this.logger = logger;
-        paramCount = method.GetParameters().Length;
+        (injected, paramCount) = ParameterCount(method);
         OnType = onType;
         ReturnType = returnType;
         ElementType = elementType;
@@ -56,6 +57,16 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
     public override IObjectSpecImmutable ElementType { get; }
 
     public override bool IsQueryOnly { get; }
+
+    private static (bool, int) ParameterCount(MethodInfo method) {
+        var parameters = method.GetParameters();
+        var count = parameters.Length;
+        var injected = parameters.Count(p => p.ParameterType.IsAssignableTo(typeof(IContainer)));
+        if (injected > 1) {
+            throw new ReflectionException($"Cannot inject more than one container into {method}");
+        }
+        return (injected == 1, count - injected);
+    }
 
     private INakedObjectAdapter HandleInvokeResult(INakedFramework framework, object result) =>
         // if any changes made by invocation fail 
@@ -78,7 +89,11 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
         }
 
         var rawParms = parameters.Select(p => p?.Object).ToArray();
-        var substituteParms = LegacyHelpers.SubstituteNulls(rawParms, ActionMethod);
+        if (injected) {
+            rawParms = rawParms.Append(null).ToArray();
+        }
+
+        var substituteParms = LegacyHelpers.SubstituteNullsAndContainer(rawParms, ActionMethod, framework);
 
         return HandleInvokeResult(framework, Invoke<object>(methodDelegate, ActionMethod, substituteParms));
     }

@@ -9,6 +9,7 @@ using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Spec;
@@ -29,7 +30,7 @@ public sealed class ActionParameterSpecImmutable : Specification, IActionParamet
 
     public override IIdentifier Identifier { get; }
 
-    public bool IsChoicesEnabled(INakedObjectAdapter adapter) => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || GetFacet<IActionChoicesFacet>()?.IsEnabled(adapter) == true || ContainsFacet<IEnumFacet>());
+    public bool IsChoicesEnabled(INakedObjectAdapter adapter, INakedFramework framework) => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || GetFacet<IActionChoicesFacet>()?.IsEnabled(adapter, framework) == true || ContainsFacet<IEnumFacet>());
 
     public bool IsChoicesDefined => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
 

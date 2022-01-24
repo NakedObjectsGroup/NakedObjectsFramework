@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Architecture.Spec;
 
@@ -23,4 +24,18 @@ public interface INamedAndDescribed {
     /// </summary>
     /// <seealso cref="IMemberSpec.Id" />
     string Name(INakedObjectAdapter nakedObjectAdapter);
+}
+
+public interface INamedAndDescribedImmutable
+{
+    /// <summary>
+    ///     Returns a description of how the member is used - this complements the help text.
+    /// </summary>
+    string Description(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+
+    /// <summary>
+    ///     Return the name for this member - the field or action. This is based on the name of this member.
+    /// </summary>
+    /// <seealso cref="IMemberSpec.Id" />
+    string Name(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 }

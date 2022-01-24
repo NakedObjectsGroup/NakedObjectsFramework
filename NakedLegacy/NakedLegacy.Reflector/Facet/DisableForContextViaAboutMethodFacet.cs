@@ -31,7 +31,7 @@ public sealed class DisableForContextViaAboutMethodFacet : AbstractViaAboutMetho
     public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
     public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        var about = InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Usable, false, true);
+        var about = InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Usable, false, true);
 
         return about.Usable ? null :  string.IsNullOrWhiteSpace(about.UnusableReason) ?  NakedObjects.Resources.NakedObjects.Disabled : about.UnusableReason;
     }

@@ -11,6 +11,7 @@ using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -31,7 +32,7 @@ public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstra
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    public override string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) =>
+    public override string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter proposedValue) =>
         proposedValue != null
             ? (string)methodDelegate(target.GetDomainObject(), new[] { proposedValue.GetDomainObject() })
             : null;

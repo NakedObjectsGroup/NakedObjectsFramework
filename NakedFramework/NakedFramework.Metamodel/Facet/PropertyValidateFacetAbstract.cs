@@ -8,6 +8,7 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
@@ -23,11 +24,11 @@ public abstract class PropertyValidateFacetAbstract : FacetAbstract, IPropertyVa
 
     #region IPropertyValidateFacet Members
 
-    public virtual string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArgument);
+    public virtual string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArgument);
 
     public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
-    public abstract string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedParm);
+    public abstract string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework, INakedObjectAdapter nakedParm);
 
     #endregion
 }

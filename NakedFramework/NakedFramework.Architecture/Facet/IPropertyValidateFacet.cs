@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 
 namespace NakedFramework.Architecture.Facet;
@@ -26,5 +27,5 @@ public interface IPropertyValidateFacet : IFacet, IValidatingInteractionAdvisor 
     /// <para>
     ///     Should return <c>null</c> if the value is in fact valid.
     /// </para>
-    string InvalidReason(INakedObjectAdapter targetObjectAdapter, INakedObjectAdapter proposedValue);
+    string InvalidReason(INakedObjectAdapter targetObjectAdapter, INakedFramework framework, INakedObjectAdapter proposedValue);
 }

@@ -25,7 +25,7 @@ public class PropertyValidationFacetTest {
         Assert.IsNotNull(validationFacet.GetMethodDelegate(), method.Name);
         var target = MockParm(new TestDelegateClass());
         var value = MockParm("astring");
-        Assert.AreEqual("Validation", facet.InvalidReason(target, value));
+        Assert.AreEqual("Validation", facet.InvalidReason(target, null,  value));
     }
 
     [TestMethod]

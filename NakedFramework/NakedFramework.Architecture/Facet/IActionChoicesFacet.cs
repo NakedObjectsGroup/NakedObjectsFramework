@@ -24,7 +24,7 @@ public interface IActionChoicesFacet : IFacet {
     (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
     bool IsMultiple { get; }
 
-    bool IsEnabled(INakedObjectAdapter nakedObjectAdapter);
+    bool IsEnabled(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 
     object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework);
 }

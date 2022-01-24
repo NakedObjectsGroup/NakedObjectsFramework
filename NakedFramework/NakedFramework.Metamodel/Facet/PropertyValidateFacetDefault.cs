@@ -8,6 +8,7 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 
@@ -24,7 +25,7 @@ public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValid
 
     public string Invalidates(IInteractionContext ic) => null;
 
-    public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) => null;
+    public string InvalidReason(INakedObjectAdapter target, INakedFramework framework,  INakedObjectAdapter proposedValue) => null;
 
     #endregion
 }

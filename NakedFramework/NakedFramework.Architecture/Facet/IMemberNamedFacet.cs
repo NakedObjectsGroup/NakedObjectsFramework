@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Architecture.Facet;
 
@@ -17,5 +18,5 @@ namespace NakedFramework.Architecture.Facet;
 ///     annotating the member with <see cref="NamedAttribute" />
 /// </para>
 public interface IMemberNamedFacet : IFacet {
-    string FriendlyName(INakedObjectAdapter nakedObjectAdapter);
+    string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 }
