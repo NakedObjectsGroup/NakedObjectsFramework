@@ -8,6 +8,9 @@ using NakedFramework.Metamodel.Menu;
 namespace NakedLegacy.Reflector.Helpers;
 
 public static class LegacyHelpers {
+
+    public const string AboutPrefix = "about";
+
     public static Type IsOrImplementsValueHolder(Type type) =>
         type switch {
             null => null,

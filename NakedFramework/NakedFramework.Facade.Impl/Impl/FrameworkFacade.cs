@@ -501,9 +501,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
                     if (save) {
                         if (nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
-                            var saveFacet = nakedObject.Spec.GetFacet<ISaveFacet>();
-                            saveFacet.Save(Framework, nakedObject);
-                            //Framework.LifecycleManager.MakePersistent(nakedObject);
+                            Save(nakedObject, objectContext);
                         }
                         else {
                             Framework.Persistor.ObjectChanged(nakedObject, Framework.LifecycleManager, Framework.MetamodelManager);
@@ -524,6 +522,13 @@ public class FrameworkFacade : IFrameworkFacade {
         oc.Reason = objectContext.Reason;
         oc.VisibleProperties = propertiesToDisplay;
         return oc.ToObjectContextFacade(this, Framework);
+    }
+
+    private void Save(INakedObjectAdapter nakedObject,  ObjectContext objectContext) {
+        var saveFacet = nakedObject.Spec.GetFacet<ISaveFacet>();
+        var validate = saveFacet.Save(Framework, nakedObject);
+        IConsent consent =  validate is not null ? new Veto(validate) : new Allow();
+        ConsentHandler(consent, objectContext, Cause.Other);
     }
 
     private static void SetFirstParmFromTarget(ActionContext actionContext, IDictionary<string, object> rawParms) {

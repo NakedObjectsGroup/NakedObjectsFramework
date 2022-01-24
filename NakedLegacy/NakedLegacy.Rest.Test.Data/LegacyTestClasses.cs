@@ -13,7 +13,6 @@ using System.Linq;
 using NakedFramework.Core.Util;
 using NakedLegacy.Rest.Test.Data.AppLib;
 using NakedObjects;
-using NUnit.Framework;
 
 // ReSharper disable InconsistentNaming
 
@@ -43,22 +42,42 @@ public class ClassWithTextString {
     }
 }
 
-public class ClassToPersist : IContainerAware
-{
+public class ClassToPersist : IContainerAware {
+    public static bool TestSave;
+    public static bool TestProperty;
+
     private TextString _name;
     public string name { get; set; }
-
-    public IContainer Container { get; set; }
 
     [Key]
     public int Id { get; init; }
 
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
+    public IContainer Container { get; set; }
+
+    public static void ResetTest() {
+        TestSave = TestProperty = false;
+    }
+
+    public void AboutName(FieldAbout fieldAbout, TextString name) {
+        if (fieldAbout.TypeCode == AboutTypeCodes.Valid) {
+            if (TestProperty) {
+                if (name.Value == "invalid") {
+                    fieldAbout.Usable = false;
+                    fieldAbout.UnusableReason = "Property Name is invalid";
+                } else if (name.Value is null) {
+                    fieldAbout.Usable = false;
+                    fieldAbout.UnusableReason = "Property Name is null";
+                }
+
+            }
+        }
+    }
+
     public Title Title() => new(Name.Title());
 
-    public ClassToPersist ActionUpdateName(TextString newName)
-    {
+    public ClassToPersist ActionUpdateName(TextString newName) {
         Name.Value = newName.Value;
         return this;
     }
@@ -67,9 +86,23 @@ public class ClassToPersist : IContainerAware
         var toSave = this;
         Container.MakePersistent(ref toSave);
     }
+
+    public void AboutActionSave(ActionAbout actionAbout) {
+        if (actionAbout.TypeCode == AboutTypeCodes.Valid) {
+            if (TestSave) {
+                if (Name.Value == "invalid") {
+                    actionAbout.Usable = false;
+                    actionAbout.UnusableReason = "Object Name is invalid";
+                }
+                else if (Name.Value is null)
+                {
+                    actionAbout.Usable = false;
+                    actionAbout.UnusableReason = "Object Name is null";
+                }
+            }
+        }
+    }
 }
-
-
 
 public class ClassWithBounded : IBounded {
     private TextString _name;
@@ -275,8 +308,8 @@ public class ClassWithFieldAbout {
                 break;
             case AboutTypeCodes.Valid:
                 if (TestValidFlag && name.Value != "valid") {
-                    fieldAbout.IsValid = false;
-                    fieldAbout.InvalidReason = "invalid by about";
+                    fieldAbout.Usable = false;
+                    fieldAbout.UnusableReason = "invalid by about";
                 }
                 else {
                     fieldAbout.IsValid = true;
@@ -287,6 +320,7 @@ public class ClassWithFieldAbout {
                 if (TestChoices) {
                     fieldAbout.Options = new object[] { "fieldopt1", "fieldopt2" };
                 }
+
                 break;
         }
     }
@@ -340,7 +374,6 @@ public class LegacyClassWithInterface : IRoleInterface {
 }
 
 public class ClassWithMenu {
-
     public static bool TestInvisibleFlag;
     public static bool TestUsableFlag;
     public static bool TestValidFlag;
@@ -348,17 +381,16 @@ public class ClassWithMenu {
     public static bool TestDescriptionFlag;
     public static bool TestParametersFlag;
 
-    public static void ResetTest()
-    {
-        TestInvisibleFlag = TestUsableFlag = TestValidFlag = TestNameFlag = TestDescriptionFlag = TestParametersFlag = false;
-    }
-
     [Key]
     public int Id { get; init; }
 
     public TextString Name => new($"{nameof(ClassWithMenu)}/{Id}");
 
     private static IContainer Container => ThreadLocals.Container;
+
+    public static void ResetTest() {
+        TestInvisibleFlag = TestUsableFlag = TestValidFlag = TestNameFlag = TestDescriptionFlag = TestParametersFlag = false;
+    }
 
     public ITitle Title() => Name.Title();
 
@@ -397,6 +429,7 @@ public class ClassWithMenu {
                 if (TestInvisibleFlag) {
                     actionAbout.Visible = false;
                 }
+
                 break;
             case AboutTypeCodes.Usable:
                 if (TestUsableFlag) {
@@ -422,6 +455,7 @@ public class ClassWithMenu {
                         actionAbout.UnusableReason = "ts invalid";
                     }
                 }
+
                 break;
             case AboutTypeCodes.Parameters:
                 if (TestParametersFlag) {

@@ -11,5 +11,5 @@ using NakedFramework.Architecture.Framework;
 namespace NakedFramework.Architecture.Facet;
 
 public interface ISaveFacet : IFacet {
-    void Save(INakedFramework framework, INakedObjectAdapter nakedObject);
+    string Save(INakedFramework framework, INakedObjectAdapter nakedObject);
 }

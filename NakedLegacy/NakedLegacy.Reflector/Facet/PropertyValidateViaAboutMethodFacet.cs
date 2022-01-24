@@ -30,12 +30,8 @@ public sealed class PropertyValidateViaAboutMethodFacet : AbstractViaAboutMethod
     public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
     public string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue) {
-        if (nakedObjectAdapter == null) {
-            return null;
-        }
-
         if (InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, true, true, proposedValue?.Object) is FieldAbout fa) {
-            return fa.IsValid ? null : string.IsNullOrWhiteSpace(fa.InvalidReason) ? "Invalid Property" : fa.InvalidReason;
+            return fa.Usable ? null : string.IsNullOrWhiteSpace(fa.UnusableReason) ? "Invalid Property" : fa.UnusableReason;
         }
 
         return null;

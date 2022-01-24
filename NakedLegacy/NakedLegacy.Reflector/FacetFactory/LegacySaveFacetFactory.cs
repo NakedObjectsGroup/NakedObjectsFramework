@@ -22,6 +22,7 @@ using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
 using NakedLegacy.Reflector.Helpers;
+using NakedObjects;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
@@ -39,18 +40,16 @@ public sealed class LegacySaveFacetFactory : LegacyFacetFactoryProcessor, IMetho
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         // instance
-        var saveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, "actionsave", typeof(void), null);
+        const string name = "actionsave";
+        var saveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, name, typeof(void), null);
         methodRemover.SafeRemoveMethod(saveMethod);
-        var facet = saveMethod is not null ? (IFacet)new SaveViaActionSaveFacet(saveMethod, specification) : new SaveNullFacet(specification, Logger<SaveNullFacet>());
+        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{name}", typeof(void), new[] { typeof(ActionAbout) });
+
+        methodRemover.SafeRemoveMethod(aboutSaveMethod);
+
+        var facet = saveMethod is not null ? (IFacet)new SaveViaActionSaveFacet(saveMethod, aboutSaveMethod, specification) : new SaveNullFacet(specification, Logger<SaveNullFacet>());
         FacetUtils.AddFacet(facet);
 
-        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, "aboutactionsave", typeof(void), null);
-
-        methodRemover.SafeRemoveMethod(saveMethod);
-        if (aboutSaveMethod is not null) {
-            FacetUtils.AddFacet(new ValidateObjectViaAboutFacet(specification, aboutSaveMethod, Logger<ValidateObjectViaAboutFacet>()));
-        } 
-        
         return metamodel;
     }
 }

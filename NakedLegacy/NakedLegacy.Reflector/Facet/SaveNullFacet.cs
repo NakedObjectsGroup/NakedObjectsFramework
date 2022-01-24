@@ -25,9 +25,9 @@ public sealed class SaveNullFacet : FacetAbstract, ISaveFacet {
 
     public static Type Type => typeof(ISaveFacet);
 
-    public void Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
+    public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
         var msg = $"Attempt to save an object without a ActionSave: {nakedObject}";
         logger.LogWarning(msg);
-        throw new InvalidOperationException(msg);
+        return msg;
     }
 }

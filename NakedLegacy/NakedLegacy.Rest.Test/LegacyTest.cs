@@ -1441,6 +1441,8 @@ public class LegacyTest : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransient() {
+        ClassToPersist.ResetTest();
+
         var api = Api().AsPost();
 
         var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
@@ -1455,5 +1457,216 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
         Assert.AreEqual("Jean", parsedResult["title"].ToString());
         Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientPassSave()
+    {
+        ClassToPersist.ResetTest();
+        ClassToPersist.TestSave = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
+        Assert.AreEqual("Jean", parsedResult["title"].ToString());
+        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientPassProperty()
+    {
+        ClassToPersist.ResetTest();
+        ClassToPersist.TestProperty = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
+        Assert.AreEqual("Jean", parsedResult["title"].ToString());
+        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientPassBoth()
+    {
+        ClassToPersist.ResetTest();
+        ClassToPersist.TestSave = true;
+        ClassToPersist.TestProperty = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
+        Assert.AreEqual("Jean", parsedResult["title"].ToString());
+        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientFailSave()
+    {
+        ClassToPersist.ResetTest();
+        ClassToPersist.TestSave = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("invalid") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Object Name is invalid", parsedResult["x-ro-invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientEmptySave()
+    {
+        ClassToPersist.ResetTest();
+        ClassToPersist.TestSave = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Object Name is null", parsedResult["x-ro-invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+
+    [Test]
+    public void TestPersistTransientFailProperty()
+    {
+        ClassToPersist.ResetTest();
+        ClassToPersist.TestProperty = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("invalid") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Property Name is invalid", parsedResult["members"]["Name"]["invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientEmptyProperty()
+    {
+        ClassToPersist.ResetTest();
+        ClassToPersist.TestProperty = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+
+    [Test]
+    public void TestPersistTransientFailBoth()
+    {
+        ClassToPersist.ResetTest();
+        ClassToPersist.TestProperty = true;
+        ClassToPersist.TestSave = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("invalid") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Property Name is invalid", parsedResult["members"]["Name"]["invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientEmptyBoth()
+    {
+        ClassToPersist.ResetTest();
+        ClassToPersist.TestProperty = true;
+        ClassToPersist.TestSave = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 }

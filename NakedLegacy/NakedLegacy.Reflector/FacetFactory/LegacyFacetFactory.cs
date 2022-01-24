@@ -34,12 +34,11 @@ namespace NakedLegacy.Reflector.FacetFactory;
 /// </summary>
 public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {
-        "about"
+        LegacyHelpers.AboutPrefix
     };
 
     private readonly ILogger<LegacyFacetFactory> logger;
-    private const string AboutPrefix = "about";
-
+    
     public LegacyFacetFactory(IFacetFactoryOrder<LegacyFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.EverythingButActionParameters) =>
         logger = loggerFactory.CreateLogger<LegacyFacetFactory>();
@@ -110,8 +109,8 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
         aboutParamTypes.AddRange(paramTypes);
         var aboutParams = aboutParamTypes.ToArray();
 
-        var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ?? 
-                     MethodHelpers.FindMethod(reflector, type, methodType, $"{AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(ActionAbout) });
+        var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ?? 
+                     MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(ActionAbout) });
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {
@@ -157,8 +156,8 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
 
         facets.Add(new MemberNamedFacetInferred(specification.Identifier.MemberName, specification));
 
-        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType }) ?? 
-                     MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout) });
+        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType }) ?? 
+                     MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout) });
 
         methodRemover.SafeRemoveMethod(method);
 

@@ -32,8 +32,8 @@ public sealed class ActionValidateViaAboutMethodFacet : AbstractViaAboutMethodFa
     public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
     public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArgument) {
-        if (InvokeAboutMethod(target.GetDomainObject(), AboutTypeCodes.Valid, true, true, proposedArgument.Select(no => no?.Object).ToArray()) is ActionAbout fa) {
-            return fa.Usable ? null : string.IsNullOrWhiteSpace(fa.UnusableReason) ? "Invalid Parameter" : fa.UnusableReason;
+        if (InvokeAboutMethod(target.GetDomainObject(), AboutTypeCodes.Valid, true, true, proposedArgument.Select(no => no?.Object).ToArray()) is ActionAbout actionAbout) {
+            return actionAbout.Usable ? null : string.IsNullOrWhiteSpace(actionAbout.UnusableReason) ? "Invalid Parameter" : actionAbout.UnusableReason;
         }
 
         return null;

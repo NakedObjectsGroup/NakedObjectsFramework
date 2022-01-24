@@ -7,31 +7,39 @@
 
 using System;
 using System.Reflection;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Facet;
 
 namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
-public sealed class SaveViaActionSaveFacet : FacetAbstract, ISaveFacet, IImperativeFacet {
+public sealed class SaveViaActionSaveFacet : AbstractViaAboutMethodFacet, ISaveFacet, IImperativeFacet {
     private readonly MethodInfo saveMethod;
 
-    public SaveViaActionSaveFacet(MethodInfo saveMethod, ISpecification holder)
-        : base(Type, holder) {
+    public SaveViaActionSaveFacet(MethodInfo saveMethod, MethodInfo aboutmethod, ISpecification holder)
+        : base(Type, holder, aboutmethod, AboutHelpers.AboutType.Action) =>
         this.saveMethod = saveMethod;
-    }
 
     public static Type Type => typeof(ISaveFacet);
 
-    public MethodInfo GetMethod() => saveMethod;
+    public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
+        var msg = Validate(nakedObject);
+        if (msg is not null) {
+            return msg;
+        }
 
-    public Func<object, object[], object> GetMethodDelegate() => throw new NotImplementedException();
-    public void Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
         InvokeUtils.Invoke(saveMethod, nakedObject, null);
+        return null;
+    }
+
+    public string Validate(INakedObjectAdapter nakedObjectAdapter) {
+        if (Method is not null && InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, false, true) is ActionAbout actionAbout) {
+            return actionAbout.Usable ? null : string.IsNullOrWhiteSpace(actionAbout.UnusableReason) ? "Invalid Save" : actionAbout.UnusableReason;
+        }
+
+        return null;
     }
 }

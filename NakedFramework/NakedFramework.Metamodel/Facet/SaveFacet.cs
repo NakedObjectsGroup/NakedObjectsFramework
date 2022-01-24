@@ -20,5 +20,8 @@ public sealed class SaveFacet : FacetAbstract, ISaveFacet {
 
     public static Type Type => typeof(ISaveFacet);
 
-    public void Save(INakedFramework framework, INakedObjectAdapter nakedObject) => framework.LifecycleManager.MakePersistent(nakedObject);
+    public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
+        framework.LifecycleManager.MakePersistent(nakedObject);
+        return null;
+    }
 }
