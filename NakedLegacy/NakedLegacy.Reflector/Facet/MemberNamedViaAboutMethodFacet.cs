@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
@@ -21,26 +20,22 @@ namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
 public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet, IMemberNamedFacet {
-    private readonly string inferredName;
     private readonly AboutTypeCodes aboutCode;
     private readonly int index;
+    private readonly string inferredName;
     private readonly ILogger<MemberNamedViaAboutMethodFacet> logger;
 
-    private static string TrimActionPrefix(string name, AboutType aboutType, AboutTypeCodes aboutCode) => 
-        aboutType is AboutType.Action &&
-        aboutCode is AboutTypeCodes.Name &&
-        name.ToLower().StartsWith("action") ? name.Remove(0, 6) : name;
     public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutType aboutType, string inferredName, ILogger<MemberNamedViaAboutMethodFacet> logger)
         : base(typeof(IMemberNamedFacet), holder, method, aboutType) {
-        this.inferredName = NameUtils.NaturalName(TrimActionPrefix(inferredName, aboutType, this.aboutCode));
-        this.aboutCode = AboutTypeCodes.Name;
+        this.inferredName = NameUtils.NaturalName(TrimActionPrefix(inferredName, aboutType, aboutCode));
+        aboutCode = AboutTypeCodes.Name;
         this.logger = logger;
     }
 
     public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutType aboutType, string[] inferredNames, int index, ILogger<MemberNamedViaAboutMethodFacet> logger)
         : base(typeof(IMemberNamedFacet), holder, method, aboutType) {
-        this.inferredName = NameUtils.NaturalName(inferredNames[index]);
-        this.aboutCode = AboutTypeCodes.Parameters;
+        inferredName = NameUtils.NaturalName(inferredNames[index]);
+        aboutCode = AboutTypeCodes.Parameters;
         this.index = index;
         this.logger = logger;
     }
@@ -61,9 +56,14 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
         }
     }
 
-    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework, bool flagNull) {
-        return InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), aboutCode, false, flagNull);
-    }
+    private static string TrimActionPrefix(string name, AboutType aboutType, AboutTypeCodes aboutCode) =>
+        aboutType is AboutType.Action &&
+        aboutCode is AboutTypeCodes.Name &&
+        name.ToLower().StartsWith("action")
+            ? name.Remove(0, 6)
+            : name;
+
+    public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework, bool flagNull) => InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), aboutCode, false, flagNull);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

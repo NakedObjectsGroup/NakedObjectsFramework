@@ -173,8 +173,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
-        
+
         Assert.AreEqual("some name", facet.FriendlyName(null, null));
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -182,8 +181,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, actionMethod1, MethodRemover, facetHolder1, metamodel);
         facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
-        
+
         Assert.AreEqual("some name", facet.FriendlyName(null, null));
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -200,7 +198,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
+
         ;
         Assert.AreEqual("some name", facet.FriendlyName(null, null));
         AssertNoMethodsRemoved();
@@ -209,8 +207,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, actionMethod1, MethodRemover, facetHolder1, metamodel);
         facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
-        
+
         Assert.AreEqual("some name", facet.FriendlyName(null, null));
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -229,7 +226,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, property1, MethodRemover, facetHolder1, metamodel);
         var facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
+
         ;
         Assert.AreEqual("some name", facet.FriendlyName(null, null));
         AssertNoMethodsRemoved();
@@ -237,8 +234,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
 
         facet = facetHolder1.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
-        
+
         Assert.AreEqual("some name", facet.FriendlyName(null, null));
         AssertNoMethodsRemoved();
     }
@@ -251,7 +247,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
+
         Assert.AreEqual("some name", facet.FriendlyName(null, null));
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -264,7 +260,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, typeof(Customer5), MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet<INamedFacet>();
         Assert.IsNotNull(facet);
-        
+
         ;
         Assert.AreEqual("some name", facet.FriendlyName);
         AssertNoMethodsRemoved();
@@ -320,15 +316,14 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, property1, MethodRemover, facetHolder1, metamodel);
         var facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
+
         Assert.AreEqual("some name", facet.FriendlyName(null, null));
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
 
         facet = facetHolder1.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
-        
-        
+
         Assert.AreEqual("some name", facet.FriendlyName(null, null));
         AssertNoMethodsRemoved();
     }
@@ -365,7 +360,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet<INamedFacet>();
         Assert.IsNotNull(facet);
-        
+
         ;
         Assert.AreEqual("some name", facet.FriendlyName);
         AssertNoMethodsRemoved();

@@ -6,12 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
@@ -25,8 +23,7 @@ using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
-public sealed class LegacySystemTypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor
-{
+public sealed class LegacySystemTypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor {
     public LegacySystemTypeMarkerFacetFactory(AppendFacetFactoryOrder<LegacySystemTypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 

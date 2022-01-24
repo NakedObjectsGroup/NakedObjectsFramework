@@ -24,7 +24,6 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
-using NakedLegacy;
 using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.FacetFactory;
@@ -38,7 +37,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
     };
 
     private readonly ILogger<LegacyFacetFactory> logger;
-    
+
     public LegacyFacetFactory(IFacetFactoryOrder<LegacyFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.EverythingButActionParameters) =>
         logger = loggerFactory.CreateLogger<LegacyFacetFactory>();
@@ -109,7 +108,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
         aboutParamTypes.AddRange(paramTypes);
         var aboutParams = aboutParamTypes.ToArray();
 
-        var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ?? 
+        var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ??
                      MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(ActionAbout) });
         methodRemover.SafeRemoveMethod(method);
 
@@ -143,7 +142,6 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        
         var capitalizedName = property.Name;
         var paramTypes = new[] { property.PropertyType };
 
@@ -156,7 +154,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
 
         facets.Add(new MemberNamedFacetInferred(specification.Identifier.MemberName, specification));
 
-        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType }) ?? 
+        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType }) ??
                      MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout) });
 
         methodRemover.SafeRemoveMethod(method);

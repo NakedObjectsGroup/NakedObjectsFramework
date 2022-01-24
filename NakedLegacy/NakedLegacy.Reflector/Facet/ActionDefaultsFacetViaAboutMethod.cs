@@ -20,7 +20,7 @@ namespace NakedLegacy.Reflector.Facet;
 public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionDefaultsFacet, IImperativeFacet {
     private readonly int index;
     private readonly ILogger<ActionDefaultsViaAboutMethodFacet> logger;
-    
+
     public ActionDefaultsViaAboutMethodFacet(MethodInfo method, ISpecification holder, int index, ILogger<ActionDefaultsViaAboutMethodFacet> logger)
         : base(typeof(IActionDefaultsFacet), holder, method, AboutHelpers.AboutType.Action) {
         this.index = index;
@@ -28,7 +28,6 @@ public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFa
     }
 
     public (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-      
         if (GetAbout(nakedObjectAdapter, framework) is ActionAbout actionAbout) {
             var parameterDefaults = actionAbout.ParamDefaultValues ?? Array.Empty<object>();
             var aboutDefault = parameterDefaults.Length > index ? parameterDefaults[index] : null;

@@ -46,8 +46,7 @@ public static class FacetUtils {
         return facet?.Value;
     }
 
-    public static string GetMask(this IActionParameterSpec spec)
-    {
+    public static string GetMask(this IActionParameterSpec spec) {
         var facet = spec.GetFacet<IMaskFacet>() ?? spec.Spec?.GetFacet<IMaskFacet>();
         return facet?.Value;
     }

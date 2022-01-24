@@ -15,15 +15,12 @@ namespace NakedFramework.Facade.Interface;
 
 public interface IFieldFacade {
     ITypeFacade Specification { get; }
-    Choices IsChoicesEnabled(IObjectFacade objectFacade);
     bool IsAutoCompleteEnabled { get; }
     string PresentationHint { get; }
     (Regex, string)? RegEx { get; }
     (IConvertible min, IConvertible max, bool isDateRange)? Range { get; }
     int NumberOfLines { get; }
     int Width { get; }
-    string Name(IObjectFacade objectFacade);
-    string Description(IObjectFacade objectFacade);
     bool IsMandatory { get; }
     int? MaxLength { get; }
     string Pattern { get; }
@@ -37,6 +34,9 @@ public interface IFieldFacade {
     int AutoCompleteMinLength { get; }
 
     bool IsFindMenuEnabled { get; }
+    Choices IsChoicesEnabled(IObjectFacade objectFacade);
+    string Name(IObjectFacade objectFacade);
+    string Description(IObjectFacade objectFacade);
 
     IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
     (IObjectFacade obj, string title)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);

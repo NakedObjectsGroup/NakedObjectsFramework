@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
@@ -32,9 +31,6 @@ public class Container : IContainer {
     public T CreateTransientInstance<T>() where T : new() => (T)CreateTransientInstance(typeof(T));
 
     public T Repository<T>() => Services.OfType<T>().SingleOrDefault();
-    private INakedObjectAdapter AdapterFor(object obj) => framework.NakedObjectManager.CreateAdapter(obj, null, null);
-
-    private bool IsPersistent(object obj) => !AdapterFor(obj).Oid.IsTransient;
 
     public void MakePersistent<T>(ref T transientObject) {
         var adapter = framework.NakedObjectManager.GetAdapterFor(transientObject);
@@ -43,6 +39,10 @@ public class Container : IContainer {
         }
 
         framework.LifecycleManager.MakePersistent(adapter);
-        transientObject = (T) adapter.GetDomainObject();
+        transientObject = (T)adapter.GetDomainObject();
     }
+
+    private INakedObjectAdapter AdapterFor(object obj) => framework.NakedObjectManager.CreateAdapter(obj, null, null);
+
+    private bool IsPersistent(object obj) => !AdapterFor(obj).Oid.IsTransient;
 }

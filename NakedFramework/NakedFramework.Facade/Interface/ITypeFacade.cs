@@ -31,7 +31,6 @@ public interface ITypeFacade : IFacadeHolder, IEquatable<ITypeFacade> {
     string ShortName { get; }
     string SingularName { get; }
     string PluralName { get; }
-    string Description(IObjectFacade objectFacade);
     bool IsASet { get; }
     bool IsAggregated { get; }
     bool IsImage { get; }
@@ -40,6 +39,7 @@ public interface ITypeFacade : IFacadeHolder, IEquatable<ITypeFacade> {
     bool IsBoolean { get; }
     bool IsEnum { get; }
     bool IsNumber { get; }
+    string Description(IObjectFacade objectFacade);
     ITypeFacade GetElementType(IObjectFacade objectFacade);
     bool IsImmutable(IObjectFacade objectFacade);
     IActionFacade[] GetActionLeafNodes();

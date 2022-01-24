@@ -15,11 +15,8 @@ public interface IActionFacade : IMemberFacade {
     ITypeFacade OnType { get; }
     string PresentationHint { get; }
     int PageSize { get; }
-    string Name(IObjectFacade nakedObjectAdapter);
-    string Description(IObjectFacade nakedObjectAdapter);
     bool IsQueryOnly { get; }
     bool IsIdempotent { get; }
-    string[] CreateNewProperties(IObjectFacade objectFacade);
     bool IsContributed { get; }
     int MemberOrder { get; }
     (bool title, string[] columns)? TableViewData { get; }
@@ -32,6 +29,9 @@ public interface IActionFacade : IMemberFacade {
     string FinderMethodPrefix { get; }
 
     bool IsStaticObjectMenu { get; }
+    string Name(IObjectFacade nakedObjectAdapter);
+    string Description(IObjectFacade nakedObjectAdapter);
+    string[] CreateNewProperties(IObjectFacade objectFacade);
     bool IsVisible(IObjectFacade objectFacade);
     IConsentFacade IsUsable(IObjectFacade objectFacade);
 }

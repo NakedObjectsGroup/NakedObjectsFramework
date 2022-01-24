@@ -7,12 +7,10 @@
 
 using System;
 using System.Collections.Generic;
-using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
@@ -29,8 +27,6 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
     public static Type AdaptedType => typeof(float);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FloatValueSemanticsProvider(o, s));
-
-    
 
     protected override float DoParse(string entry) {
         try {

@@ -14,7 +14,7 @@ namespace NakedFramework.Architecture.SpecImmutable;
 
 public interface IActionParameterSpecImmutable : ISpecificationBuilder, ISerializable {
     IObjectSpecImmutable Specification { get; }
-    bool IsChoicesEnabled(INakedObjectAdapter adapter, INakedFramework framework);
     bool IsChoicesDefined { get; }
     bool IsMultipleChoicesEnabled { get; }
+    bool IsChoicesEnabled(INakedObjectAdapter adapter, INakedFramework framework);
 }

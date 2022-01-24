@@ -14,9 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class NamedFacetAnnotation : NamedFacetAbstract, INamedFacet {
     public NamedFacetAnnotation(string value, ISpecification holder)
-        : base(value, holder) {
+        : base(value, holder) =>
         FriendlyName = value;
-    }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

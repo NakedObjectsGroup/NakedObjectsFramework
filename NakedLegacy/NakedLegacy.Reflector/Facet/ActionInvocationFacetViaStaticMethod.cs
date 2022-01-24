@@ -24,11 +24,11 @@ namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
+    private readonly bool injected;
     private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
     private readonly Func<object, object[], object> methodDelegate;
 
     private readonly int paramCount;
-    private readonly bool injected;
 
     public ActionInvocationFacetViaStaticMethod(MethodInfo method,
                                                 ITypeSpecImmutable onType,
@@ -65,6 +65,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
         if (injected > 1) {
             throw new ReflectionException($"Cannot inject more than one container into {method}");
         }
+
         return (injected == 1, count - injected);
     }
 

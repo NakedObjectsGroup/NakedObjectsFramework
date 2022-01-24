@@ -16,7 +16,7 @@ using NakedFramework.Metamodel.Facet;
 namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
-public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFacetAbstract where T : class, IValueHolder<TU>  {
+public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFacetAbstract where T : class, IValueHolder<TU> {
     private readonly PropertyInfo property;
 
     public PropertySetterFacetViaValueHolder(PropertyInfo property, ISpecification holder)

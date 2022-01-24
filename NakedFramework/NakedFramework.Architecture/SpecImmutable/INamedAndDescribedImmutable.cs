@@ -6,21 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Architecture.Spec;
+namespace NakedFramework.Architecture.SpecImmutable;
 
-/// <summary>
-///     Anything in the metamodel (which also includes peers in the reflector) that has a name and description.
-/// </summary>
-public interface INamedAndDescribed {
+public interface INamedAndDescribedImmutable {
     /// <summary>
     ///     Returns a description of how the member is used - this complements the help text.
     /// </summary>
-    string Description(INakedObjectAdapter nakedObjectAdapter);
+    string Description(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 
     /// <summary>
     ///     Return the name for this member - the field or action. This is based on the name of this member.
     /// </summary>
     /// <seealso cref="IMemberSpec.Id" />
-    string Name(INakedObjectAdapter nakedObjectAdapter);
+    string Name(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
 }

@@ -17,6 +17,8 @@ public interface IFrameworkFacade {
     IOidStrategy OidStrategy { get; }
     IMessageBrokerFacade MessageBroker { get; }
     string[] ServerTypes { get; }
+
+    IServiceProvider GetScopedServiceProvider { get; }
     void Start();
     void End(bool success);
     IPrincipal GetUser();
@@ -51,7 +53,4 @@ public interface IFrameworkFacade {
     (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "");
 
     ActionContextFacade[] GetLocallyContributedActions(PropertyContextFacade propertyContext);
-
-
-    IServiceProvider GetScopedServiceProvider { get; } 
 }

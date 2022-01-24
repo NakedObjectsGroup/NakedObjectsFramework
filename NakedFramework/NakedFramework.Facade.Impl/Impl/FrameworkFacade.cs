@@ -524,10 +524,10 @@ public class FrameworkFacade : IFrameworkFacade {
         return oc.ToObjectContextFacade(this, Framework);
     }
 
-    private void Save(INakedObjectAdapter nakedObject,  ObjectContext objectContext) {
+    private void Save(INakedObjectAdapter nakedObject, ObjectContext objectContext) {
         var saveFacet = nakedObject.Spec.GetFacet<ISaveFacet>();
         var validate = saveFacet.Save(Framework, nakedObject);
-        IConsent consent =  validate is not null ? new Veto(validate) : new Allow();
+        IConsent consent = validate is not null ? new Veto(validate) : new Allow();
         ConsentHandler(consent, objectContext, Cause.Other);
     }
 

@@ -10,7 +10,6 @@ using NakedLegacy.Reflector.Component;
 namespace NakedLegacy.Reflector.Helpers;
 
 public static class LegacyHelpers {
-
     public const string AboutPrefix = "about";
 
     public static Type IsOrImplementsValueHolder(Type type) =>
@@ -47,7 +46,6 @@ public static class LegacyHelpers {
 
         return parameters;
     }
-
 
     private static void AddMenuComponent(NakedFramework.Menu.IMenu topLevelMenu, IMenuComponent menuComponent, Type declaringType) {
         switch (menuComponent) {

@@ -12,7 +12,6 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
-using NakedLegacy;
 
 namespace NakedLegacy.Reflector.SemanticsProvider;
 
@@ -40,9 +39,7 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
         }
     }
 
-    public override object Value(INakedObjectAdapter adapter, string format = null) {
-        return adapter.GetDomainObject<T>().Display(format);
-    }
+    public override object Value(INakedObjectAdapter adapter, string format = null) => adapter.GetDomainObject<T>().Display(format);
 
     protected override string TitleStringWithMask(string mask, T value) => ""; //value.Number.ToString(mask);
     public override string ToString() => "WholeNumberAdapter: ";

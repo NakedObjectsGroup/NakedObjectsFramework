@@ -66,11 +66,11 @@ public class ClassToPersist : IContainerAware {
                 if (name.Value == "invalid") {
                     fieldAbout.IsValid = false;
                     fieldAbout.InvalidReason = "Property Name is invalid";
-                } else if (name.Value is null) {
+                }
+                else if (name.Value is null) {
                     fieldAbout.IsValid = false;
                     fieldAbout.InvalidReason = "Property Name is null";
                 }
-
             }
         }
     }
@@ -94,8 +94,7 @@ public class ClassToPersist : IContainerAware {
                     actionAbout.Usable = false;
                     actionAbout.UnusableReason = "Object Name is invalid";
                 }
-                else if (Name.Value is null)
-                {
+                else if (Name.Value is null) {
                     actionAbout.Usable = false;
                     actionAbout.UnusableReason = "Object Name is null";
                 }
@@ -482,7 +481,6 @@ public class ClassWithMenu {
             }
         }
     }
-
 
     public static IMenu menuOrder() {
         var menu = new Menu("ClassWithMenu Menu");

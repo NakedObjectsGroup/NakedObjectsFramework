@@ -429,7 +429,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         [TestMethod]
         public void ReplaceFacetFactory() {
-            TestHook = services => ConfigHelpers.RegisterReplacementFacetFactory<IDomainObjectFacetFactoryProcessor, ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
+            TestHook = services => services.RegisterReplacementFacetFactory<IDomainObjectFacetFactoryProcessor, ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>();
 
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();

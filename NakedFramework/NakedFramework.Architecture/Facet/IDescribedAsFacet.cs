@@ -18,7 +18,6 @@ namespace NakedFramework.Architecture.Facet;
 ///     <see
 ///         cref="DescribedAsAttribute" />
 /// </para>
-public interface IDescribedAsFacet  : IFacet {
-
+public interface IDescribedAsFacet : IFacet {
     string Description(INakedObjectAdapter adapter, INakedFramework framework);
 }

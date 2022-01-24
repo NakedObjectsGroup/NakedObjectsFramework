@@ -27,15 +27,11 @@ public class FieldFacadeAdapter {
     public string Id => parameter?.Id ?? association?.Id;
 
     public string MenuId { get; init; }
-
-    public Choices IsChoicesEnabled(IObjectFacade objectFacade) => (parameter?.IsChoicesEnabled(objectFacade) ?? association?.IsChoicesEnabled(objectFacade)).GetValueOrDefault();
     public ITypeFacade Specification => parameter?.Specification ?? association?.Specification;
     public ITypeFacade ElementType => parameter?.ElementType ?? association?.ElementSpecification;
     public bool IsAutoCompleteEnabled => (parameter?.IsAutoCompleteEnabled ?? association?.IsAutoCompleteEnabled).GetValueOrDefault();
     public string Mask => parameter?.Mask ?? association?.Mask;
     public int NumberOfLines => (parameter?.NumberOfLines ?? association?.NumberOfLines).GetValueOrDefault();
-    public string Name(IObjectFacade objectFacade) => parameter?.Name(objectFacade) ?? association?.Name(objectFacade);
-    public string Description(IObjectFacade objectFacade) => parameter?.Description(objectFacade) ?? association?.Description(objectFacade);
     public bool IsMandatory => (parameter?.IsMandatory ?? association?.IsMandatory).GetValueOrDefault();
     public int? MaxLength => parameter?.MaxLength ?? association?.MaxLength;
     public string Pattern => parameter?.Pattern ?? association?.Pattern;
@@ -44,6 +40,10 @@ public class FieldFacadeAdapter {
     public string PresentationHint => parameter?.PresentationHint ?? association?.PresentationHint;
 
     public bool? IsFindMenuEnabled => parameter?.IsFindMenuEnabled ?? association?.IsFindMenuEnabled;
+
+    public Choices IsChoicesEnabled(IObjectFacade objectFacade) => (parameter?.IsChoicesEnabled(objectFacade) ?? association?.IsChoicesEnabled(objectFacade)).GetValueOrDefault();
+    public string Name(IObjectFacade objectFacade) => parameter?.Name(objectFacade) ?? association?.Name(objectFacade);
+    public string Description(IObjectFacade objectFacade) => parameter?.Description(objectFacade) ?? association?.Description(objectFacade);
 
     public (string, ITypeFacade)[] GetChoicesParameters() => parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
 

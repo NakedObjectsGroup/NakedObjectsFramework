@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Framework;
-using NakedLegacy.Reflector.Component;
 using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.Facet;

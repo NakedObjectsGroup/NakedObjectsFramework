@@ -10,21 +10,18 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NakedLegacy.Reflector.Helpers;
 using NakedLegacy.Reflector.SemanticsProvider;
-using NakedLegacy;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
@@ -35,7 +32,7 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
 
     private static IFacet GetTitleFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new TitleFacetUsingParser<T>(sm, holder);
 
-    private static  IFacet GetValueFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ValueFacetFromSemanticProvider<T>(sm, holder);
+    private static IFacet GetValueFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ValueFacetFromSemanticProvider<T>(sm, holder);
 
     private static IFacet GetMaskFacet<T, TU>(ISpecificationBuilder holder) where T : class, IValueHolder<TU>, new() {
         var vh = new T();
@@ -43,17 +40,11 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
         return mask is null ? null : new MaskFacet(mask, holder);
     }
 
-    private static IEnumerable<IFacet> GetFacets(Type type, object sm, ISpecificationBuilder holder) => 
-        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).
-                                        Where(m => m.Name is "GetParserFacet" or "GetTitleFacet" or "GetValueFacet").
-                                        Select(m => m.MakeGenericMethod(type)).
-                                        Select(im => im.Invoke(null, new[] { sm, holder })).Cast<IFacet>();
+    private static IEnumerable<IFacet> GetFacets(Type type, object sm, ISpecificationBuilder holder) =>
+        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetParserFacet" or "GetTitleFacet" or "GetValueFacet").Select(m => m.MakeGenericMethod(type)).Select(im => im.Invoke(null, new[] { sm, holder })).Cast<IFacet>();
 
     private static IFacet GetMaskFacet(Type type, Type valueType, ISpecificationBuilder holder) =>
-        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).
-                                        Where(m => m.Name is "GetMaskFacet" && m.IsGenericMethod).
-                                        Select(m => m.MakeGenericMethod(type, valueType)).
-                                        Select(im => im.Invoke(null, new object[] { holder })).Cast<IFacet>().SingleOrDefault();
+        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetMaskFacet" && m.IsGenericMethod).Select(m => m.MakeGenericMethod(type, valueType)).Select(im => im.Invoke(null, new object[] { holder })).Cast<IFacet>().SingleOrDefault();
 
     private static void AddFacets(ISpecificationBuilder holder, Type type, Type valueType, IObjectSpecImmutable spec) {
         var semanticsProviderType = typeof(ValueHolderWrappingValueSemanticsProvider<,>).MakeGenericType(type, valueType);
@@ -72,7 +63,7 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var valueType = LegacyHelpers.IsOrImplementsValueHolder(type);
-        
+
         if (valueType is not null) {
             var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
             AddFacets(specification, type, valueType, oSpec);

@@ -1,4 +1,4 @@
-﻿namespace NakedLegacy.Rest.Test.Data.AppLib; 
+﻿namespace NakedLegacy.Rest.Test.Data.AppLib;
 
 public class Title : ITitle {
     private readonly string text = "";

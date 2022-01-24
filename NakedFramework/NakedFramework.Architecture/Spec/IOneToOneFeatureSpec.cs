@@ -15,16 +15,16 @@ namespace NakedFramework.Architecture.Spec;
 /// </summary>
 public interface IOneToOneFeatureSpec : IFeatureSpec {
     /// <summary>
-    ///     Whether there are any choices provided (eg <c>ChoicesXxx</c> supporting method) for the association
-    /// </summary>
-    bool IsChoicesEnabled(INakedObjectAdapter adapter);
-
-    /// <summary>
     ///     Whether there are any autocompletions provided (eg <c>AutoCompleteXxx</c> supporting method) for the association
     /// </summary>
     bool IsAutoCompleteEnabled { get; }
 
     bool IsFindMenuEnabled { get; }
+
+    /// <summary>
+    ///     Whether there are any choices provided (eg <c>ChoicesXxx</c> supporting method) for the association
+    /// </summary>
+    bool IsChoicesEnabled(INakedObjectAdapter adapter);
 
     /// <summary>
     ///     Returns a list of possible references/values for this field, which the user can choose from

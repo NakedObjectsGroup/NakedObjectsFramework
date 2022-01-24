@@ -20,7 +20,6 @@ using NakedFunctions.Rest.Test;
 using NakedLegacy.Reflector.Extensions;
 using NakedLegacy.Rest.Test.Data;
 using NakedLegacy.Rest.Test.Data.AppLib;
-using NakedLegacy;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -48,7 +47,6 @@ public class LegacyNOFTest : AcceptanceTestCase {
     };
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
-
 
     protected Type[] LegacyValueHolders { get; } = {
         typeof(TextString),

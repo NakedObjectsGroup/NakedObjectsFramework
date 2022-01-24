@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib; 
+namespace NakedLegacy.Rest.Test.Data.AppLib;
 
 public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
     private T value;
@@ -13,6 +13,8 @@ public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
 
     private Action<T> UpdateBackingField { get; } = _ => { };
 
+    public abstract ITitle Title();
+
     public T Value {
         get => value;
         set {
@@ -22,8 +24,6 @@ public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
     }
 
     public virtual string Mask => null;
-
-    public abstract ITitle Title();
 
     public override string ToString() => Value.ToString();
 

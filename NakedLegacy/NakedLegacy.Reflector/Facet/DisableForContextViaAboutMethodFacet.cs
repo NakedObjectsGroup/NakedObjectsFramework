@@ -33,7 +33,7 @@ public sealed class DisableForContextViaAboutMethodFacet : AbstractViaAboutMetho
     public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         var about = InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Usable, false, true);
 
-        return about.Usable ? null :  string.IsNullOrWhiteSpace(about.UnusableReason) ?  NakedObjects.Resources.NakedObjects.Disabled : about.UnusableReason;
+        return about.Usable ? null : string.IsNullOrWhiteSpace(about.UnusableReason) ? NakedObjects.Resources.NakedObjects.Disabled : about.UnusableReason;
     }
 }
 

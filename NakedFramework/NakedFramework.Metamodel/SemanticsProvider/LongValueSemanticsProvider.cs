@@ -8,12 +8,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
@@ -30,8 +28,6 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
     public static Type AdaptedType => typeof(long);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new LongValueSemanticsProvider(o, s));
-
-   
 
     protected override long DoParse(string entry) {
         try {

@@ -12,7 +12,6 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Facade.Utility;
@@ -35,7 +34,6 @@ namespace NakedLegacy.Rest.Test;
 public class NullStringHasher : IStringHasher {
     public string GetHash(string toHash) => null;
 }
-
 
 public class LegacyTest : AcceptanceTestCase {
     protected Type[] LegacyTypes { get; } = {
@@ -660,8 +658,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithOptionsField()
-    {
+    public void TestGetObjectWithOptionsField() {
         ClassWithFieldAbout.ResetTest();
         ClassWithFieldAbout.TestChoices = true;
 
@@ -678,10 +675,9 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithNoOptionsField()
-    {
+    public void TestGetObjectWithNoOptionsField() {
         ClassWithFieldAbout.ResetTest();
-        
+
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -1122,6 +1118,7 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
         Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
     }
+
     [Test]
     public void TestMainMenuWithAboutName() {
         ClassWithMenu.ResetTest();
@@ -1140,8 +1137,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestMainMenuWithAboutUnusable()
-    {
+    public void TestMainMenuWithAboutUnusable() {
         ClassWithMenu.ResetTest();
         ClassWithMenu.TestUsableFlag = true;
         var api = Api();
@@ -1155,8 +1151,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestMainMenuWithAboutHidden()
-    {
+    public void TestMainMenuWithAboutHidden() {
         ClassWithMenu.ResetTest();
         ClassWithMenu.TestInvisibleFlag = true;
         var api = Api();
@@ -1170,8 +1165,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestMainMenuWithAboutParameters()
-    {
+    public void TestMainMenuWithAboutParameters() {
         ClassWithMenu.ResetTest();
         ClassWithMenu.TestParametersFlag = true;
         var api = Api();
@@ -1188,10 +1182,8 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("renamed ts", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
     }
 
-
     [Test]
-    public void TestMainMenuWithoutAbout()
-    {
+    public void TestMainMenuWithoutAbout() {
         ClassWithMenu.ResetTest();
         var api = Api();
 
@@ -1244,8 +1236,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionWithInjectedContainerReturnObject()
-    {
+    public void TestInvokeMenuActionWithInjectedContainerReturnObject() {
         ClassWithMenu.ResetTest();
 
         var api = Api().AsPost();
@@ -1263,8 +1254,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionWithParmInjectedContainerReturnObject()
-    {
+    public void TestInvokeMenuActionWithParmInjectedContainerReturnObject() {
         ClassWithMenu.ResetTest();
 
         var api = Api().AsPost();
@@ -1280,7 +1270,6 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Fred", resultObj["title"].ToString());
         Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
-
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnTransientObject() {
@@ -1337,8 +1326,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionWithAboutValid()
-    {
+    public void TestInvokeMenuActionWithAboutValid() {
         ClassWithMenu.ResetTest();
         ClassWithMenu.TestValidFlag = true;
 
@@ -1357,8 +1345,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionWithAboutInvalid()
-    {
+    public void TestInvokeMenuActionWithAboutInvalid() {
         ClassWithMenu.ResetTest();
         ClassWithMenu.TestValidFlag = true;
 
@@ -1377,8 +1364,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionWithAboutEmpty()
-    {
+    public void TestInvokeMenuActionWithAboutEmpty() {
         ClassWithMenu.ResetTest();
         ClassWithMenu.TestValidFlag = true;
 
@@ -1392,7 +1378,6 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual("", parsedResult["result"].ToString());
     }
-
 
     [Test]
     public void TestInvokeMenuActionWithContainerReturnArrayList() {
@@ -1503,8 +1488,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientPassSave()
-    {
+    public void TestPersistTransientPassSave() {
         ClassToPersist.ResetTest();
         ClassToPersist.TestSave = true;
 
@@ -1527,8 +1511,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientPassProperty()
-    {
+    public void TestPersistTransientPassProperty() {
         ClassToPersist.ResetTest();
         ClassToPersist.TestProperty = true;
 
@@ -1551,8 +1534,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientPassBoth()
-    {
+    public void TestPersistTransientPassBoth() {
         ClassToPersist.ResetTest();
         ClassToPersist.TestSave = true;
         ClassToPersist.TestProperty = true;
@@ -1576,8 +1558,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientFailSave()
-    {
+    public void TestPersistTransientFailSave() {
         ClassToPersist.ResetTest();
         ClassToPersist.TestSave = true;
 
@@ -1598,8 +1579,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientEmptySave()
-    {
+    public void TestPersistTransientEmptySave() {
         ClassToPersist.ResetTest();
         ClassToPersist.TestSave = true;
 
@@ -1619,10 +1599,8 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
-
     [Test]
-    public void TestPersistTransientFailProperty()
-    {
+    public void TestPersistTransientFailProperty() {
         ClassToPersist.ResetTest();
         ClassToPersist.TestProperty = true;
 
@@ -1643,8 +1621,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientEmptyProperty()
-    {
+    public void TestPersistTransientEmptyProperty() {
         ClassToPersist.ResetTest();
         ClassToPersist.TestProperty = true;
 
@@ -1664,10 +1641,8 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
-
     [Test]
-    public void TestPersistTransientFailBoth()
-    {
+    public void TestPersistTransientFailBoth() {
         ClassToPersist.ResetTest();
         ClassToPersist.TestProperty = true;
         ClassToPersist.TestSave = true;
@@ -1689,8 +1664,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientEmptyBoth()
-    {
+    public void TestPersistTransientEmptyBoth() {
         ClassToPersist.ResetTest();
         ClassToPersist.TestProperty = true;
         ClassToPersist.TestSave = true;

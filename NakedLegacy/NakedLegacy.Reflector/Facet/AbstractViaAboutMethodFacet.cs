@@ -7,7 +7,6 @@
 
 using System;
 using System.Reflection;
-using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
@@ -25,6 +24,8 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
     protected AboutHelpers.AboutType AboutType { get; }
     public MethodInfo GetMethod() => Method;
 
+    public Func<object, object[], object> GetMethodDelegate() => throw new NotImplementedException();
+
     protected IAbout InvokeAboutMethod(INakedFramework framework, object target, AboutTypeCodes typeCode, bool substitute, bool flagNull, params object[] proposedValues) {
         if (target is null && !Method.IsStatic) {
             if (flagNull) {
@@ -38,8 +39,6 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
         Method.Invoke(target, Method.GetParameters(framework, about, substitute, proposedValues));
         return about;
     }
-
-    public Func<object, object[], object> GetMethodDelegate() => throw new NotImplementedException();
 
     protected override string ToStringValues() => $"method={Method}";
 }

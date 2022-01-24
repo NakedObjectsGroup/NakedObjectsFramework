@@ -1,4 +1,4 @@
-﻿namespace NakedLegacy.Rest.Test.Data.AppLib; 
+﻿namespace NakedLegacy.Rest.Test.Data.AppLib;
 
 public class MenuAction : IMenuAction {
     public MenuAction(string name) => Name = name;

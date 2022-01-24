@@ -64,25 +64,21 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
     }
 
-    private static void MapClassToPersist(ModelBuilder modelBuilder)
-    {
+    private static void MapClassToPersist(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassToPersist>().Ignore(t => t.Name).Ignore(t => t.Container);
         modelBuilder.Entity<ClassToPersist>().Property("name").HasColumnName("Name");
     }
 
-    private static void MapClassWithFieldAbout(ModelBuilder modelBuilder)
-    {
+    private static void MapClassWithFieldAbout(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithFieldAbout>().Ignore(t => t.Name);
         modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
     }
 
-    private static void MapClassWithReferenceProperty(ModelBuilder modelBuilder)
-    {
+    private static void MapClassWithReferenceProperty(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithReferenceProperty>().Ignore(t => t.Container);
     }
 
-    private static void MapClassWithBounded(ModelBuilder modelBuilder)
-    {
+    private static void MapClassWithBounded(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithBounded>().Ignore(t => t.Name);
         modelBuilder.Entity<ClassWithBounded>().Ignore(t => t.ChoicesProperty);
         modelBuilder.Entity<ClassWithBounded>().Property("name").HasColumnName("Name");
@@ -122,8 +118,7 @@ public abstract class EFCoreTestDbContext : DbContext {
                     .HasMany(c => c._TestCollection);
     }
 
-    private static void MapClassWithOrderedProperties(ModelBuilder modelBuilder)
-    {
+    private static void MapClassWithOrderedProperties(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithOrderedProperties>().Ignore(t => t.Name1);
         modelBuilder.Entity<ClassWithOrderedProperties>().Ignore(t => t.Name2);
         modelBuilder.Entity<ClassWithOrderedProperties>().Ignore(t => t.Name3);
@@ -184,7 +179,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithOrderedProperties>().HasData(new { Id = 1 });
         modelBuilder.Entity<ClassWithOrderedActions>().HasData(new { Id = 1 });
 
-        modelBuilder.Entity<ClassWithBounded>().HasData(new ClassWithBounded { Id = 1, name = "data1"});
+        modelBuilder.Entity<ClassWithBounded>().HasData(new ClassWithBounded { Id = 1, name = "data1" });
         modelBuilder.Entity<ClassWithBounded>().HasData(new ClassWithBounded { Id = 2, name = "data2" });
     }
 }

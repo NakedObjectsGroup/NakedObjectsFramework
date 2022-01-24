@@ -8,8 +8,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
@@ -70,8 +68,6 @@ public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
     public override void TestParseNull() {
         base.TestParseNull();
     }
-
-  
 
     #region Setup/Teardown
 

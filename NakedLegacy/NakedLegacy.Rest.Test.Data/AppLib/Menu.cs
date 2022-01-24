@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib; 
+namespace NakedLegacy.Rest.Test.Data.AppLib;
 
 public class Menu : IMenu {
-    private IList<IMenuComponent> Items = new List<IMenuComponent>();
+    private readonly IList<IMenuComponent> Items = new List<IMenuComponent>();
 
     public Menu(string menuName) => Name = menuName;
 

@@ -30,8 +30,6 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new TimeValueSemanticsProvider(o, s));
 
-   
-
     protected override TimeSpan DoParse(string entry) {
         var dateString = entry.Trim();
         try {

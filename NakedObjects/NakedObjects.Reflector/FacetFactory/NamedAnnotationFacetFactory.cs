@@ -63,8 +63,7 @@ public sealed class NamedAnnotationFacetFactory : DomainObjectFacetFactoryProces
         };
 
     private IMemberNamedFacet CreateForMember(Attribute attribute, ISpecification holder) =>
-        attribute switch
-        {
+        attribute switch {
             null => null,
             NamedAttribute namedAttribute => new MemberNamedFacetAnnotation(namedAttribute.Value, holder),
             DisplayNameAttribute nameAttribute => new MemberNamedFacetAnnotation(nameAttribute.DisplayName, holder),

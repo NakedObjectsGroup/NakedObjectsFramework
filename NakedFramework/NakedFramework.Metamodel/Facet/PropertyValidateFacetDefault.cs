@@ -25,7 +25,7 @@ public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValid
 
     public string Invalidates(IInteractionContext ic) => null;
 
-    public string InvalidReason(INakedObjectAdapter target, INakedFramework framework,  INakedObjectAdapter proposedValue) => null;
+    public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter proposedValue) => null;
 
     #endregion
 }

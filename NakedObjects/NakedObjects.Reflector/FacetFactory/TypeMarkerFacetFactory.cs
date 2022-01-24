@@ -6,17 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
 using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
 namespace NakedObjects.Reflector.FacetFactory;
