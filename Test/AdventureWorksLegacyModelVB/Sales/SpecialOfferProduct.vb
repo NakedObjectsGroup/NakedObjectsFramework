@@ -1,7 +1,8 @@
 ﻿Namespace AW.Types
 
-	Partial Public Class SpecialOfferProduct
- Implements ITitledObject
+	Partial Public Class SpecialOfferProduct
+
+		Implements ITitledObject
 		''<Hidden>
 		Public Property SpecialOfferID() As Integer
 
@@ -28,7 +29,7 @@
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+				Return myModifiedDate
 			End Get
 		End Property
 
