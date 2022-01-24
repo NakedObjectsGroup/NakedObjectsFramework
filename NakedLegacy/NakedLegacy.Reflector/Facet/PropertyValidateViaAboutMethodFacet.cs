@@ -31,7 +31,8 @@ public sealed class PropertyValidateViaAboutMethodFacet : AbstractViaAboutMethod
 
     public string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue) {
         if (InvokeAboutMethod(nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, true, true, proposedValue?.Object) is FieldAbout fa) {
-            return fa.Usable ? null : string.IsNullOrWhiteSpace(fa.UnusableReason) ? "Invalid Property" : fa.UnusableReason;
+            return fa.IsValid ? null : string.IsNullOrWhiteSpace(fa.InvalidReason) ? "Invalid Property" : fa.InvalidReason
+                ;
         }
 
         return null;

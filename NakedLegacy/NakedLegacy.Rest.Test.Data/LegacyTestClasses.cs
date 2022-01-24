@@ -64,11 +64,11 @@ public class ClassToPersist : IContainerAware {
         if (fieldAbout.TypeCode == AboutTypeCodes.Valid) {
             if (TestProperty) {
                 if (name.Value == "invalid") {
-                    fieldAbout.Usable = false;
-                    fieldAbout.UnusableReason = "Property Name is invalid";
+                    fieldAbout.IsValid = false;
+                    fieldAbout.InvalidReason = "Property Name is invalid";
                 } else if (name.Value is null) {
-                    fieldAbout.Usable = false;
-                    fieldAbout.UnusableReason = "Property Name is null";
+                    fieldAbout.IsValid = false;
+                    fieldAbout.InvalidReason = "Property Name is null";
                 }
 
             }
@@ -308,8 +308,8 @@ public class ClassWithFieldAbout {
                 break;
             case AboutTypeCodes.Valid:
                 if (TestValidFlag && name.Value != "valid") {
-                    fieldAbout.Usable = false;
-                    fieldAbout.UnusableReason = "invalid by about";
+                    fieldAbout.IsValid = false;
+                    fieldAbout.InvalidReason = "invalid by about";
                 }
                 else {
                     fieldAbout.IsValid = true;
