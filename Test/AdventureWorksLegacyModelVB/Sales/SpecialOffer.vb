@@ -205,10 +205,6 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If MaxQty Is Nothing OrElse MaxQty.Value < 1 Then
-						a.Usable = False
-						a.UnusableReason = "Min Qty must be at least 1"
-					End If
 				Case Else
 			End Select
 		End Sub
@@ -250,6 +246,17 @@
 			mappedModifiedDate = Now
 			RowGuid = Guid.NewGuid()
 			Container.MakePersistent(Me)
+		End Sub
+
+		Public Sub AboutActionSave(a As ActionAbout)
+			Select Case a.TypeCode
+				Case AboutTypeCodes.Valid
+					If Not MaxQty.Value Is Nothing AndAlso MaxQty.Value < MinQty.Value Then
+						a.Usable = False
+						a.UnusableReason = "Max Qty cannot be less than Min Qty"
+					End If
+				Case Else
+			End Select
 		End Sub
 
 		Public Function ActionProductsCovered() As IQueryable(Of Product)
