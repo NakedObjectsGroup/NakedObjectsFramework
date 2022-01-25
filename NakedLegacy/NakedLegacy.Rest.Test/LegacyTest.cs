@@ -193,6 +193,23 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestGetImmutable()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithBounded>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.AreEqual("Field disabled as object cannot be changed", parsedResult["members"]["Name"]["disabledReason"].ToString());
+        Assert.IsNotNull(parsedResult["members"]["ChoicesProperty"]);
+        Assert.AreEqual("Field disabled as object cannot be changed", parsedResult["members"]["ChoicesProperty"]["disabledReason"].ToString());
+    }
+
+    [Test]
     public void TestGetTextStringProperty() {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithTextString>(), "1", nameof(ClassWithTextString.Name));
