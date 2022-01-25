@@ -23,7 +23,7 @@ namespace NakedFrameworkClient.TestFramework
             return new Dialog(we, helper, this);
         }
 
-        public void AssertMessageIs(string msg)
+        public void WaitForMessage(string msg)
         {
             var el = helper.wait.Until(e => e.FindElement(By.CssSelector(".header .messages")).Text == msg);
         }

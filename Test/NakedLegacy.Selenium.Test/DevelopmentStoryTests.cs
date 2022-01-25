@@ -217,6 +217,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectActionThatDelegatesToARepositoryService();
             MenuActionThatTakesParameters();
             MenuActionThatReturnsArrayList();
+            SharedActionWithContainerAsParamater();
         }
 
         //[TestMethod]
@@ -275,6 +276,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetRowFromList(0).AssertTitleIs("Angela Barbariol");
         }
 
+        //[TestMethod]
+        public void SharedActionWithContainerAsParamater()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Contacts")
+               .GetActionWithDialog("Find Person By Name").Open();
+            dialog.GetTextField("First Name").Enter("a");
+            dialog.GetTextField("Last Name").Enter("c");
+            dialog.ClickOKToViewNewList().GetRowFromList(0).AssertTitleIs("Albert Cabello");
+        }
         #endregion
 
         #region Editing objects
@@ -388,7 +398,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         #endregion
 
         #region Creating & Saving objects
-        [TestMethod]
+        //[TestMethod]
         public void CreatingAndSavingObjects()
         {
             CreateAndSaveObjectProgrammatically();
@@ -419,16 +429,17 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var transient = helper.GotoHome().OpenMainMenu("Special Offers")
               .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject();
             transient.AssertTitleIs("Editing - Unsaved Special Offer");
+            //Moved these 2 fields up to give more time
+            transient.GetEditableTextInputProperty("Start Date").Clear().Enter(DateTime.Today.ToString("d"));
+            transient.GetEditableTextInputProperty("End Date").Clear().Enter(DateTime.Today.ToString("d"));
             var rnd = new Random().Next(1, 10000);
             var desc = $"Sale {rnd}";
             transient.GetEditableTextInputProperty("Description").Enter(desc);
             transient.GetEditableTextInputProperty("Discount Pct").Clear().Enter("0.5");
             transient.GetEditableTextInputProperty("Type").Enter("A");
             transient.GetEditableSelectionProperty("Category").Select(1);
-            transient.GetEditableTextInputProperty("Start Date").Clear().Enter(DateTime.Today.ToString("d"));
-            transient.GetEditableTextInputProperty("End Date").Clear().Enter(DateTime.Today.ToString("d"));
-            transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
-            Thread.Sleep(2000);
+                transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
+            transient.WaitForMessage("");
             transient.Save().AssertTitleIs(desc);
             helper.GotoHome().OpenMainMenu("Special Offers")
              .GetActionWithoutDialog("Recently Updated Special Offers").ClickToViewList()
@@ -458,7 +469,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             Thread.Sleep(1000);
             //Test that vaidation rules implemente in AboutActionSave are applied next.
             transient.AttemptUnsuccessfulSave();
-                transient.AssertMessageIs("Max Qty cannot be less than Min Qty");
+                transient.WaitForMessage("Max Qty cannot be less than Min Qty");
             transient.GetEditableTextInputProperty("Max Qty").Clear().Enter("20");
            
             transient.Save().AssertTitleIs(desc);
