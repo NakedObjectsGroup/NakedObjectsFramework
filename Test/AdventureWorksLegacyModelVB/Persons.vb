@@ -2,8 +2,8 @@
 Namespace AW.Types
     Public Class Persons
 
-        Public Shared Function ActionFindPersonByName(firstName As TextString, lastName As TextString) As IQueryable(Of Person)
-            Dim rep = CType(ThreadLocals.Container.DomainService(GetType(PersonRepository)), PersonRepository)
+        Public Shared Function ActionFindPersonByName(firstName As TextString, lastName As TextString, container As IContainer) As IQueryable(Of Person)
+            Dim rep = container.DomainService(Of PersonRepository)()
             Return rep.FindContactByName(firstName.Value, lastName.Value)
         End Function
 
