@@ -339,7 +339,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .AssertHasSubMenus("Work Orders").OpenSubMenu("Work Orders").AssertHasAction(
                 "Current Work Orders").AssertHasAction("Create New Work Order");
         }
-
+        
         #endregion
 
         #region FieldAboutSpecifyingName_Description_Editability
@@ -388,7 +388,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         #endregion
 
         #region Creating & Saving objects
-        //[TestMethod]
+        [TestMethod]
         public void CreatingAndSavingObjects()
         {
             CreateAndSaveObjectProgrammatically();
@@ -428,7 +428,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             transient.GetEditableTextInputProperty("Start Date").Clear().Enter(DateTime.Today.ToString("d"));
             transient.GetEditableTextInputProperty("End Date").Clear().Enter(DateTime.Today.ToString("d"));
             transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             transient.Save().AssertTitleIs(desc);
             helper.GotoHome().OpenMainMenu("Special Offers")
              .GetActionWithoutDialog("Recently Updated Special Offers").ClickToViewList()
