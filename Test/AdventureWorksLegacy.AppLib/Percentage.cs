@@ -25,7 +25,5 @@ public class Percentage : ValueHolder<decimal> {
         }
     }
 
-    public override object Display(string mask = null) => Value;
-
-    public override Title Title() => new Title(ToString());
+    
 }

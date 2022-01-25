@@ -26,9 +26,9 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If Description Is Nothing OrElse Description.Value Is "" Then
-						a.Usable = False
-						a.UnusableReason = "Description cannot be empty"
+					If Description.IsEmpty() Then
+						a.IsValid = False
+						a.InvalidReason = "Cannot be empty"
 					End If
 				Case Else
 			End Select
@@ -52,9 +52,9 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If Description Is Nothing OrElse DiscountPct.Value < 0 OrElse DiscountPct.Value > 100 Then
-						a.Usable = False
-						a.UnusableReason = "Discount percentage must be in range 0 - 100"
+					If DiscountPct.IsEmpty OrElse DiscountPct.Value > 100 Then
+						a.IsValid = False
+						a.InvalidReason = "Must be in range 0 - 100"
 					End If
 				Case Else
 			End Select
@@ -78,9 +78,9 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If Type Is Nothing OrElse Type.Value Is "" Then
-						a.Usable = False
-						a.UnusableReason = "Type cannot be empty"
+					If Type.IsEmpty() Then
+						a.IsValid = False
+						a.InvalidReason = "Type cannot be empty"
 					End If
 				Case Else
 			End Select
@@ -105,6 +105,11 @@
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Parameters
 					a.Options = New Object() {New TextString("Clearance"), New TextString("Promotion")}
+				Case AboutTypeCodes.Valid
+					If Category.IsEmpty() Then
+						a.IsValid = False
+						a.InvalidReason = "Cannot be empty"
+					End If
 				Case Else
 			End Select
 		End Sub
@@ -127,9 +132,9 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If StartDate Is Nothing OrElse StartDate.Value < Today Then
-						a.Usable = False
-						a.UnusableReason = "Start Date cannot be before today"
+					If StartDate.IsEmpty() OrElse StartDate.Value < Today Then
+						a.IsValid = False
+						a.InvalidReason = "Must be today or later"
 					End If
 				Case Else
 			End Select
@@ -153,9 +158,9 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If EndDate Is Nothing OrElse StartDate.Value < Today Then
-						a.Usable = False
-						a.UnusableReason = "End Date cannot be before today"
+					If EndDate.IsEmpty OrElse StartDate.Value < Today Then
+						a.IsValid = False
+						a.InvalidReason = "Must be after today"
 					End If
 				Case Else
 			End Select
@@ -179,9 +184,9 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If MinQty Is Nothing OrElse MinQty.Value < 1 Then
-						a.Usable = False
-						a.UnusableReason = "Min Qty must be at least 1"
+					If MinQty.IsEmpty OrElse MinQty.Value < 1 Then
+						a.IsValid = False
+						a.InvalidReason = "Must be at least 1"
 					End If
 				Case Else
 			End Select
@@ -205,6 +210,10 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
+					If Not MaxQty.IsEmpty AndAlso MaxQty.Value < 1 Then
+						a.IsValid = False
+						a.InvalidReason = "Cannot be < 1"
+					End If
 				Case Else
 			End Select
 		End Sub

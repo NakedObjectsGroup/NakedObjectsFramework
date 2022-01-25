@@ -27,8 +27,5 @@ public class WholeNumberNullable : ValueHolder<int?> {
             throw new ValueHolderException(fromString);
         }
     }
-
-    public override object Display(string mask = null) => Value;
-
-    public override Title Title() => new Title(ToString());
+    
 }
