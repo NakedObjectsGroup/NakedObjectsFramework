@@ -8,7 +8,7 @@ public class ActionAboutImpl : ActionAbout {
     public bool Usable { get; set; } = true;
     public string UnusableReason { get; set; }
     public string[] ParamLabels { get; set; } = new string[] { };
-    public object[] ParamDefaultValues { get; set; } = new string[] { };
-    public object[][] ParamOptions { get; set; } = new string[][] { };
+    public object[] ParamDefaultValues { get; set; } = new object[] { };
+    public object[][] ParamOptions { get; set; } = new object[][] { };
     public AboutTypeCodes TypeCode { get; }
 }
