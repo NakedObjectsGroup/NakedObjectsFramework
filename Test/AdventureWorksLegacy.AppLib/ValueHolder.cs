@@ -7,13 +7,22 @@ namespace AdventureWorksLegacy.AppLib;
 public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
     private T value;
 
-    protected bool IsNull = true;
+    protected bool IsNull;
 
-    protected ValueHolder() { }
+    protected ValueHolder() {
+        IsNull = true;
+    }
 
-    protected ValueHolder(T value) => this.value = value;
+    protected ValueHolder(T value)
+    {
+        this.value = value;
+        IsNull = value == null;
+    }
 
     protected ValueHolder(T value, Action<T> callback) : this(value) => UpdateBackingField = callback;
+
+    //Used only for initialzing property on a transient object.
+    protected ValueHolder(Action<T> callback) : this() => UpdateBackingField = callback;
 
     public T Value {
         get => value;

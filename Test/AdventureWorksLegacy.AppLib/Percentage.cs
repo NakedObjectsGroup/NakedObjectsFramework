@@ -11,8 +11,6 @@ public class Percentage : ValueHolder<decimal> {
 
     public Percentage(decimal value, Action<decimal> callback) : base(value, callback) { }
 
-    public override string ToString() => $"{Value} %";
-
     public override object Parse(string entry) {
         try {
             return new Percentage(decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));

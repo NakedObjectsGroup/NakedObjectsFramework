@@ -8,9 +8,13 @@ namespace AdventureWorksLegacy.AppLib;
 public class NODate : ValueHolder<DateTime>, IDateOnly{
     public NODate() { }
 
-    public NODate(DateTime value) : base(value) { }
+    public NODate(DateTime value) : base(value) { 
+     if (value == new DateTime()) IsNull = true;
+    }
 
-    public NODate(DateTime value, Action<DateTime> callback) : base(value, callback) { }
+    public NODate(DateTime value, Action<DateTime> callback) : base(value, callback) {
+        if (value == new DateTime()) IsNull = true;
+    }
 
     public const string DATE_FORMAT = "dd/MM/yyyy";
 

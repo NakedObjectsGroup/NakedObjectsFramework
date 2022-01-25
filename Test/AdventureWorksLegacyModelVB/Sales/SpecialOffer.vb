@@ -80,7 +80,7 @@
 				Case AboutTypeCodes.Valid
 					If Type.IsEmpty() Then
 						a.IsValid = False
-						a.InvalidReason = "Type cannot be empty"
+						a.InvalidReason = "Cannot be empty"
 					End If
 				Case Else
 			End Select
@@ -158,9 +158,9 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If EndDate.IsEmpty OrElse StartDate.Value < Today Then
+					If EndDate.IsEmpty OrElse EndDate.Value < Today Then
 						a.IsValid = False
-						a.InvalidReason = "Must be after today"
+						a.InvalidReason = "Must be today or later"
 					End If
 				Case Else
 			End Select
@@ -174,7 +174,12 @@
 		<MemberOrder(61)>
 		Public ReadOnly Property MinQty As WholeNumber
 			Get
-				myMinQty = If(myMinQty, New WholeNumber(mappedMinQty, Sub(v) mappedMinQty = v))
+				'Test for transient:
+				If SpecialOfferID = 0 Then
+					myMinQty = If(myMinQty, New WholeNumber(Sub(v) mappedMinQty = v))
+				Else
+					myMinQty = If(myMinQty, New WholeNumber(mappedMinQty, Sub(v) mappedMinQty = v))
+				End If
 				Return myMinQty
 			End Get
 		End Property
@@ -233,6 +238,10 @@
 
 		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
+				Case AboutTypeCodes.Visible
+					If SpecialOfferID = 0 Then
+						a.Visible = False
+					End If
 				Case AboutTypeCodes.Usable
 					a.Usable = False
 			End Select

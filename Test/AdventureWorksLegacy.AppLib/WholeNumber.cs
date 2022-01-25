@@ -12,6 +12,9 @@ public class WholeNumber : ValueHolder<int> {
 
     public WholeNumber(int number, Action<int> callback) : base(number, callback) { }
 
+    //Used only for initialisation on a transient object
+    public WholeNumber(Action<int> callback) : base(callback) { }
+
     public override string ToString() => Value.ToString();
 
     public override object Parse(string fromString) {
