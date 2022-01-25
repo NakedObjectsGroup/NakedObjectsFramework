@@ -43,5 +43,11 @@ namespace NakedFrameworkClient.TestFramework
             Thread.Sleep(100);
             return helper.WaitForNewEmptyListView(enclosingView, button);
         }
+
+        public void ClickExpectingToStayOnHome()
+        {
+            element.AssertIsEnabled();
+            helper.Click(element);
+        }
     }
 }
