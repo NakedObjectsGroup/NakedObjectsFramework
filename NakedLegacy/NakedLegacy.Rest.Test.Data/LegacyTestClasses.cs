@@ -352,7 +352,7 @@ public class ClassWithReferenceProperty : IContainerAware {
 
     public ClassWithTextString actionGetObject1(TextString name) {
         var ofName = name.Value;
-        var simpleService = (SimpleService)Container.Repository(typeof(SimpleService));
+        var simpleService = (SimpleService)Container.DomainService(typeof(SimpleService));
         return simpleService.GetClassWithTextString();
     }
 
