@@ -19,7 +19,7 @@
             End Get
         End Property
 
-        Public Sub AboutName(a As FieldAbout, Name As TextString)
+        Public Sub AboutName(a As IFieldAbout, Name As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -41,7 +41,7 @@
             End Get
         End Property
 
-        Public Sub AboutGroupName(a As FieldAbout, groupName As TextString)
+        Public Sub AboutGroupName(a As IFieldAbout, groupName As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -67,7 +67,7 @@
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout)
+        Public Sub AboutModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

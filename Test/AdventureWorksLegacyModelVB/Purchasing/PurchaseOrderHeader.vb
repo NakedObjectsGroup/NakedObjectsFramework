@@ -19,7 +19,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutRevisionNumber(a As FieldAbout, RevisionNumber As WholeNumber)
+		Public Sub AboutRevisionNumber(a As IFieldAbout, RevisionNumber As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -49,7 +49,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutDetails(a As FieldAbout)
+		Public Sub AboutDetails(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case Else
@@ -72,7 +72,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutStatusAsEnum(a As FieldAbout)
+		Public Sub AboutStatusAsEnum(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 					a.Name = "Status"
@@ -91,7 +91,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutOrderDate(a As FieldAbout, OrderDate As NODate)
+		Public Sub AboutOrderDate(a As IFieldAbout, OrderDate As NODate)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -113,7 +113,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutShipDate(a As FieldAbout, ShipDate As NODateNullable)
+		Public Sub AboutShipDate(a As IFieldAbout, ShipDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -135,7 +135,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutSubTotal(a As FieldAbout, SubTotal As Money)
+		Public Sub AboutSubTotal(a As IFieldAbout, SubTotal As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -157,7 +157,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutTaxAmt(a As FieldAbout, TaxAmt As Money)
+		Public Sub AboutTaxAmt(a As IFieldAbout, TaxAmt As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -179,7 +179,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutFreight(a As FieldAbout, Freight As Money)
+		Public Sub AboutFreight(a As IFieldAbout, Freight As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -201,7 +201,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutTotalDue(a As FieldAbout, TotalDue As Money)
+		Public Sub AboutTotalDue(a As IFieldAbout, TotalDue As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -229,7 +229,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

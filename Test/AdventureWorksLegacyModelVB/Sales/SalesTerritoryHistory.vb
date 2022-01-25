@@ -19,7 +19,7 @@ Return myStartDate
 			End Get
 		End Property
 
-		Public Sub AboutStartDate(a As FieldAbout, StartDate As NODate)
+		Public Sub AboutStartDate(a As IFieldAbout, StartDate As NODate)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -41,7 +41,7 @@ Return myEndDate
 			End Get
 		End Property
 
-		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODateNullable)
+		Public Sub AboutEndDate(a As IFieldAbout, EndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -72,7 +72,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

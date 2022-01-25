@@ -20,7 +20,7 @@ Return myAverageLeadTime
 			End Get
 		End Property
 
-		Public Sub AboutAverageLeadTime(a As FieldAbout, AverageLeadTime As WholeNumber)
+		Public Sub AboutAverageLeadTime(a As IFieldAbout, AverageLeadTime As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -42,7 +42,7 @@ Return myStandardPrice
 			End Get
 		End Property
 
-		Public Sub AboutStandardPrice(a As FieldAbout, StandardPrice As Money)
+		Public Sub AboutStandardPrice(a As IFieldAbout, StandardPrice As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -64,7 +64,7 @@ Return myLastReceiptCost
 			End Get
 		End Property
 
-		Public Sub AboutLastReceiptCost(a As FieldAbout, LastReceiptCost As MoneyNullable)
+		Public Sub AboutLastReceiptCost(a As IFieldAbout, LastReceiptCost As MoneyNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -86,7 +86,7 @@ Return myLastReceiptDate
 			End Get
 		End Property
 
-		Public Sub AboutLastReceiptDate(a As FieldAbout, LastReceiptDate As NODateNullable)
+		Public Sub AboutLastReceiptDate(a As IFieldAbout, LastReceiptDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -108,7 +108,7 @@ Return myMinOrderQty
 			End Get
 		End Property
 
-		Public Sub AboutMinOrderQty(a As FieldAbout, MinOrderQty As WholeNumber)
+		Public Sub AboutMinOrderQty(a As IFieldAbout, MinOrderQty As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -130,7 +130,7 @@ Return myMaxOrderQty
 			End Get
 		End Property
 
-		Public Sub AboutMaxOrderQty(a As FieldAbout, MaxOrderQty As WholeNumber)
+		Public Sub AboutMaxOrderQty(a As IFieldAbout, MaxOrderQty As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -152,7 +152,7 @@ Return myOnOrderQty
 			End Get
 		End Property
 
-		Public Sub AboutOnOrderQty(a As FieldAbout, OnOrderQty As WholeNumberNullable)
+		Public Sub AboutOnOrderQty(a As IFieldAbout, OnOrderQty As WholeNumberNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -184,7 +184,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

@@ -20,7 +20,7 @@ Return myPhoneNumber
             End Get
         End Property
 
-        Public Sub AboutPhoneNumber(a As FieldAbout, PhoneNumber As TextString)
+        Public Sub AboutPhoneNumber(a As IFieldAbout, PhoneNumber As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -46,7 +46,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout)
+        Public Sub AboutModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

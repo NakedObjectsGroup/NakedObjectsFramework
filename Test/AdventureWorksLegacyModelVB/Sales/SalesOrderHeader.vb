@@ -19,7 +19,7 @@
             End Get
         End Property
 
-        Public Sub AboutSalesOrderNumber(a As FieldAbout, SalesOrderNumber As TextString)
+        Public Sub AboutSalesOrderNumber(a As IFieldAbout, SalesOrderNumber As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -39,7 +39,7 @@
             End Get
         End Property
 
-        Public Sub AboutStatusByte(a As FieldAbout)
+        Public Sub AboutStatusByte(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Status"
@@ -74,7 +74,7 @@
             End Get
         End Property
 
-        Public Sub AboutPurchaseOrderNumber(a As FieldAbout, PurchaseOrderNumber As TextString)
+        Public Sub AboutPurchaseOrderNumber(a As IFieldAbout, PurchaseOrderNumber As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -108,7 +108,7 @@
             End Get
         End Property
 
-        Public Sub AboutAccountNumber(a As FieldAbout, AccountNumber As TextString)
+        Public Sub AboutAccountNumber(a As IFieldAbout, AccountNumber As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -130,7 +130,7 @@
             End Get
         End Property
 
-        Public Sub AboutOrderDate(a As FieldAbout, OrderDate As NODate)
+        Public Sub AboutOrderDate(a As IFieldAbout, OrderDate As NODate)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -152,7 +152,7 @@
             End Get
         End Property
 
-        Public Sub AboutDueDate(a As FieldAbout, DueDate As NODate)
+        Public Sub AboutDueDate(a As IFieldAbout, DueDate As NODate)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -174,7 +174,7 @@
             End Get
         End Property
 
-        Public Sub AboutShipDate(a As FieldAbout, ShipDate As NODateNullable)
+        Public Sub AboutShipDate(a As IFieldAbout, ShipDate As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -196,7 +196,7 @@
             End Get
         End Property
 
-        Public Sub AboutSubTotal(a As FieldAbout, SubTotal As Money)
+        Public Sub AboutSubTotal(a As IFieldAbout, SubTotal As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -218,7 +218,7 @@
             End Get
         End Property
 
-        Public Sub AboutTaxAmt(a As FieldAbout, TaxAmt As Money)
+        Public Sub AboutTaxAmt(a As IFieldAbout, TaxAmt As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -240,7 +240,7 @@
             End Get
         End Property
 
-        Public Sub AboutFreight(a As FieldAbout, Freight As Money)
+        Public Sub AboutFreight(a As IFieldAbout, Freight As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -262,7 +262,7 @@
             End Get
         End Property
 
-        Public Sub AboutTotalDue(a As FieldAbout, TotalDue As Money)
+        Public Sub AboutTotalDue(a As IFieldAbout, TotalDue As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -290,7 +290,7 @@
             End Get
         End Property
 
-        Public Sub AboutOnlineOrder(a As FieldAbout, OnlineOrder As Logical)
+        Public Sub AboutOnlineOrder(a As IFieldAbout, OnlineOrder As Logical)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Online Order"
@@ -322,7 +322,7 @@
             End Get
         End Property
 
-        Public Sub AboutCreditCardApprovalCode(a As FieldAbout, CreditCardApprovalCode As TextString)
+        Public Sub AboutCreditCardApprovalCode(a As IFieldAbout, CreditCardApprovalCode As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -347,7 +347,7 @@
 
 
 
-        Public Sub AboutRevisionNumber(a As FieldAbout, RevisionNumber As WholeNumber)
+        Public Sub AboutRevisionNumber(a As IFieldAbout, RevisionNumber As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -369,7 +369,7 @@
             End Get
         End Property
 
-        Public Sub AboutComment(a As FieldAbout, Comment As TextString)
+        Public Sub AboutComment(a As IFieldAbout, Comment As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Description = "Free-form text"
@@ -412,7 +412,7 @@
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout)
+        Public Sub AboutModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False
@@ -433,7 +433,7 @@
             End Get
         End Property
 
-        Public Sub AboutDetails(a As FieldAbout)
+        Public Sub AboutDetails(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -454,7 +454,7 @@
             End Get
         End Property
 
-        Public Sub AboutReasons(a As FieldAbout)
+        Public Sub AboutReasons(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -478,7 +478,7 @@
             Throw New NotImplementedException()
         End Sub
 
-        Public Sub AboutActionNoComment(a As ActionAbout)
+        Public Sub AboutActionNoComment(a As IActionAbout)
             Select Case a.TypeCode
                 Case Else
                     a.Visible = False
@@ -489,7 +489,7 @@
             Me.Comment.Value = ""
         End Sub
 
-        Public Sub AboutActionClearComments(a As ActionAbout)
+        Public Sub AboutActionClearComments(a As IActionAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Description = "Delete all comments in Comment field"
@@ -506,7 +506,7 @@
             Me.Comment.Value += $"; {comment}"
         End Sub
 
-        Public Sub AboutActionAppendComment(a As ActionAbout, comment As TextString)
+        Public Sub AboutActionAppendComment(a As IActionAbout, comment As TextString)
             Dim c = Me.Comment.Value
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name

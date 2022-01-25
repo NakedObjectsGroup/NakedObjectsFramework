@@ -18,7 +18,7 @@ Return myStateProvinceCode
 			End Get
 		End Property
 
-		Public Sub AboutStateProvinceCode(a As FieldAbout, StateProvinceCode As TextString)
+		Public Sub AboutStateProvinceCode(a As IFieldAbout, StateProvinceCode As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -40,7 +40,7 @@ Return myIsOnlyStateProvinceFlag
 			End Get
 		End Property
 
-		Public Sub AboutIsOnlyStateProvinceFlag(a As FieldAbout, IsOnlyStateProvinceFlag As Logical)
+		Public Sub AboutIsOnlyStateProvinceFlag(a As IFieldAbout, IsOnlyStateProvinceFlag As Logical)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -62,7 +62,7 @@ Return myName
 			End Get
 		End Property
 
-		Public Sub AboutName(a As FieldAbout, Name As TextString)
+		Public Sub AboutName(a As IFieldAbout, Name As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -92,7 +92,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

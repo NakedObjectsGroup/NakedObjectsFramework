@@ -14,7 +14,7 @@ Namespace AW.Types
 
         Public Property BusinessEntityModifiedDate() As DateTime
 
-        Public Sub AboutBusinessEntityModifiedDate(a As FieldAbout)
+        Public Sub AboutBusinessEntityModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case Else
                     a.Visible = False
@@ -34,7 +34,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutAddresses(a As FieldAbout)
+        Public Sub AboutAddresses(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -54,7 +54,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutContacts(a As FieldAbout)
+        Public Sub AboutContacts(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else

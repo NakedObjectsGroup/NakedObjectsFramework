@@ -8,7 +8,7 @@
 
 		Public Overridable Property BusinessEntity() As BusinessEntity
 
-		Public Sub AboutBusinessEntity(a As FieldAbout)
+		Public Sub AboutBusinessEntity(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case Else
 					a.Visible = False
@@ -37,7 +37,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

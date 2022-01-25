@@ -19,7 +19,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutStockedQty(a As FieldAbout, StockedQty As WholeNumber)
+		Public Sub AboutStockedQty(a As IFieldAbout, StockedQty As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -41,7 +41,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutScrappedQty(a As FieldAbout, ScrappedQty As WholeNumber)
+		Public Sub AboutScrappedQty(a As IFieldAbout, ScrappedQty As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -63,7 +63,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODateNullable)
+		Public Sub AboutEndDate(a As IFieldAbout, EndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -90,7 +90,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutOrderQty(a As FieldAbout, OrderQty As WholeNumber)
+		Public Sub AboutOrderQty(a As IFieldAbout, OrderQty As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -112,7 +112,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutStartDate(a As FieldAbout, StartDate As NODate)
+		Public Sub AboutStartDate(a As IFieldAbout, StartDate As NODate)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -134,7 +134,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutDueDate(a As FieldAbout, DueDate As NODate)
+		Public Sub AboutDueDate(a As IFieldAbout, DueDate As NODate)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -162,7 +162,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutWorkOrderRoutings(a As FieldAbout)
+		Public Sub AboutWorkOrderRoutings(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case Else
@@ -188,7 +188,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

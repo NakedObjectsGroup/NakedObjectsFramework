@@ -18,7 +18,7 @@ Return myName
             End Get
         End Property
 
-        Public Sub AboutName(a As FieldAbout, Name As TextString)
+        Public Sub AboutName(a As IFieldAbout, Name As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -60,7 +60,7 @@ Return myInstructions
             End Get
         End Property
 
-        Public Sub AboutInstructions(a As FieldAbout, Instructions As TextString)
+        Public Sub AboutInstructions(a As IFieldAbout, Instructions As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -84,7 +84,7 @@ Return myProductVariants
             End Get
         End Property
 
-        Public Sub AboutProductVariants(a As FieldAbout)
+        Public Sub AboutProductVariants(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -110,7 +110,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout)
+        Public Sub AboutModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

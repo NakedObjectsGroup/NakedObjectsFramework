@@ -22,7 +22,7 @@
             End Get
         End Property
 
-        Public Sub AboutName(a As FieldAbout, Name As TextString)
+        Public Sub AboutName(a As IFieldAbout, Name As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -44,7 +44,7 @@
             End Get
         End Property
 
-        Public Sub AboutAccountNumber(a As FieldAbout, AccountNumber As TextString)
+        Public Sub AboutAccountNumber(a As IFieldAbout, AccountNumber As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -66,7 +66,7 @@
             End Get
         End Property
 
-        Public Sub AboutCreditRating(a As FieldAbout, CreditRating As WholeNumber)
+        Public Sub AboutCreditRating(a As IFieldAbout, CreditRating As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -88,7 +88,7 @@
             End Get
         End Property
 
-        Public Sub AboutPreferredVendorStatus(a As FieldAbout, PreferredVendorStatus As Logical)
+        Public Sub AboutPreferredVendorStatus(a As IFieldAbout, PreferredVendorStatus As Logical)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -110,7 +110,7 @@
             End Get
         End Property
 
-        Public Sub AboutActiveFlag(a As FieldAbout, ActiveFlag As Logical)
+        Public Sub AboutActiveFlag(a As IFieldAbout, ActiveFlag As Logical)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -132,7 +132,7 @@
             End Get
         End Property
 
-        Public Sub AboutPurchasingWebServiceURL(a As FieldAbout, PurchasingWebServiceURL As TextString)
+        Public Sub AboutPurchasingWebServiceURL(a As IFieldAbout, PurchasingWebServiceURL As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -155,7 +155,7 @@
             End Get
         End Property
 
-        Public Sub AboutProducts(a As FieldAbout)
+        Public Sub AboutProducts(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Product - Order Info"
@@ -175,7 +175,7 @@
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout)
+        Public Sub AboutModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

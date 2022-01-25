@@ -22,7 +22,7 @@
                     Where o.mappedAccountNumber = num).FirstOrDefault()
         End Function
 
-        Public Shared Sub AboutActionFindSalesOrder(a As ActionAbout, number As TextString)
+        Public Shared Sub AboutActionFindSalesOrder(a As IActionAbout, number As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Parameters

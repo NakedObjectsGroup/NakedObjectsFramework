@@ -19,7 +19,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutNameStyle(a As FieldAbout, NameStyle As Logical)
+        Public Sub AboutNameStyle(a As IFieldAbout, NameStyle As Logical)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Reverse name order"
@@ -42,7 +42,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutTitle(a As FieldAbout, Title As TextString)
+        Public Sub AboutTitle(a As IFieldAbout, Title As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Title"
@@ -65,7 +65,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutFirstName(a As FieldAbout, FirstName As TextString)
+        Public Sub AboutFirstName(a As IFieldAbout, FirstName As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -87,7 +87,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutMiddleName(a As FieldAbout, MiddleName As TextString)
+        Public Sub AboutMiddleName(a As IFieldAbout, MiddleName As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -109,7 +109,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutLastName(a As FieldAbout, LastName As TextString)
+        Public Sub AboutLastName(a As IFieldAbout, LastName As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -131,7 +131,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutSuffix(a As FieldAbout, Suffix As TextString)
+        Public Sub AboutSuffix(a As IFieldAbout, Suffix As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -154,7 +154,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutPersonType(a As FieldAbout, PersonType As TextString)
+        Public Sub AboutPersonType(a As IFieldAbout, PersonType As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -169,7 +169,7 @@ Namespace AW.Types
         <MemberOrder(21)>
         Public Overridable Property EmailPromotion() As EmailPromotion
 
-        Public Sub AboutEmailPromotion(a As FieldAbout, ep As EmailPromotion)
+        Public Sub AboutEmailPromotion(a As IFieldAbout, ep As EmailPromotion)
             Select Case a.TypeCode
                 Case Else
                     a.Visible = False
@@ -194,7 +194,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutEmailAddresses(a As FieldAbout)
+        Public Sub AboutEmailAddresses(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -215,7 +215,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutPhoneNumbers(a As FieldAbout)
+        Public Sub AboutPhoneNumbers(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -237,7 +237,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutAdditionalContactInfo(a As FieldAbout, AdditionalContactInfo As TextString)
+        Public Sub AboutAdditionalContactInfo(a As IFieldAbout, AdditionalContactInfo As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -249,7 +249,7 @@ Namespace AW.Types
 
         Public Overridable Property Employee() As Employee
 
-        Public Sub AboutEmployee(a As FieldAbout, e As Employee)
+        Public Sub AboutEmployee(a As IFieldAbout, e As Employee)
             Select Case a.TypeCode
                 Case Else
                     a.Visible = False
@@ -268,7 +268,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout)
+        Public Sub AboutModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

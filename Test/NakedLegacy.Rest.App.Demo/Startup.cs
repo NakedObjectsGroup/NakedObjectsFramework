@@ -27,7 +27,9 @@ using Newtonsoft.Json;
 using AdventureWorksLegacy.AppLib;
 using NakedFramework.Menu;
 using System.Reflection;
+using AdventureWorksLegacy.AppLib.abouts;
 using Microsoft.AspNetCore.Http;
+using NakedLegacy;
 
 namespace Legacy.Rest.App.Demo {
     public class Startup {
@@ -76,6 +78,7 @@ namespace Legacy.Rest.App.Demo {
             });
             // For ThreadLocals
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IAboutFactory, AboutFactory>();
         }
 
         protected Type[] LegacyValueHolders { get; } = {

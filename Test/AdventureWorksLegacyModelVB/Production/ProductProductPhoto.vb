@@ -18,7 +18,7 @@ Return myPrimary
             End Get
         End Property
 
-        Public Sub AboutPrimary(a As FieldAbout, Primary As Logical)
+        Public Sub AboutPrimary(a As IFieldAbout, Primary As Logical)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -44,7 +44,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

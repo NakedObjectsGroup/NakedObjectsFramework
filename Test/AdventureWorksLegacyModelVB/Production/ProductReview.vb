@@ -17,7 +17,7 @@ Return myReviewerName
 			End Get
 		End Property
 
-		Public Sub AboutReviewerName(a As FieldAbout, ReviewerName As TextString)
+		Public Sub AboutReviewerName(a As IFieldAbout, ReviewerName As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -39,7 +39,7 @@ Return myReviewDate
 			End Get
 		End Property
 
-		Public Sub AboutReviewDate(a As FieldAbout, ReviewDate As NODate)
+		Public Sub AboutReviewDate(a As IFieldAbout, ReviewDate As NODate)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -61,7 +61,7 @@ Return myEmailAddress
 			End Get
 		End Property
 
-		Public Sub AboutEmailAddress(a As FieldAbout, EmailAddress As TextString)
+		Public Sub AboutEmailAddress(a As IFieldAbout, EmailAddress As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -83,7 +83,7 @@ Return myRating
 			End Get
 		End Property
 
-		Public Sub AboutRating(a As FieldAbout, Rating As WholeNumber)
+		Public Sub AboutRating(a As IFieldAbout, Rating As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -105,7 +105,7 @@ Return myComments
 			End Get
 		End Property
 
-		Public Sub AboutComments(a As FieldAbout, Comments As TextString)
+		Public Sub AboutComments(a As IFieldAbout, Comments As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -119,7 +119,7 @@ Return myComments
 
 		Public Overridable Property Product() As Product
 
-		Public Sub AboutProduct(a As FieldAbout, p As Product)
+		Public Sub AboutProduct(a As IFieldAbout, p As Product)
 			Select Case a.TypeCode
 				Case Else
 					a.Visible = False
@@ -138,7 +138,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

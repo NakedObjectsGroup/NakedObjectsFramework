@@ -18,7 +18,7 @@ Return myQuotaDate
             End Get
         End Property
 
-        Public Sub AboutQuotaDate(a As FieldAbout, QuotaDate As NODate)
+        Public Sub AboutQuotaDate(a As IFieldAbout, QuotaDate As NODate)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -40,7 +40,7 @@ Return mySalesQuota
             End Get
         End Property
 
-        Public Sub AboutSalesQuota(a As FieldAbout, SalesQuota As Money)
+        Public Sub AboutSalesQuota(a As IFieldAbout, SalesQuota As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -65,7 +65,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout)
+        Public Sub AboutModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

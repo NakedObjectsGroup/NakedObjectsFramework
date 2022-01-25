@@ -27,7 +27,7 @@ Return myAccountNumber
 			End Get
 		End Property
 
-		Public Sub AboutAccountNumber(a As FieldAbout, AccountNumber As TextString)
+		Public Sub AboutAccountNumber(a As IFieldAbout, AccountNumber As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable

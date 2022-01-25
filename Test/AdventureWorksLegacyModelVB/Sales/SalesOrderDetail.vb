@@ -22,7 +22,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutOrderQty(a As FieldAbout, OrderQty As WholeNumber)
+		Public Sub AboutOrderQty(a As IFieldAbout, OrderQty As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -44,7 +44,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutUnitPrice(a As FieldAbout, UnitPrice As Money)
+		Public Sub AboutUnitPrice(a As IFieldAbout, UnitPrice As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -66,7 +66,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutUnitPriceDiscount(a As FieldAbout, UnitPriceDiscount As Percentage)
+		Public Sub AboutUnitPriceDiscount(a As IFieldAbout, UnitPriceDiscount As Percentage)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 					a.Name = "Discount %"
@@ -89,7 +89,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutLineTotal(a As FieldAbout, LineTotal As Money)
+		Public Sub AboutLineTotal(a As IFieldAbout, LineTotal As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -111,7 +111,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutCarrierTrackingNumber(a As FieldAbout, CarrierTrackingNumber As TextString)
+		Public Sub AboutCarrierTrackingNumber(a As IFieldAbout, CarrierTrackingNumber As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -160,7 +160,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

@@ -22,7 +22,7 @@ Return myThumbnailPhotoFileName
 			End Get
 		End Property
 
-		Public Sub AboutThumbnailPhotoFileName(a As FieldAbout, ThumbnailPhotoFileName As TextString)
+		Public Sub AboutThumbnailPhotoFileName(a As IFieldAbout, ThumbnailPhotoFileName As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -46,7 +46,7 @@ Return myLargePhotoFileName
 			End Get
 		End Property
 
-		Public Sub AboutLargePhotoFileName(a As FieldAbout, LargePhotoFileName As TextString)
+		Public Sub AboutLargePhotoFileName(a As IFieldAbout, LargePhotoFileName As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -78,7 +78,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

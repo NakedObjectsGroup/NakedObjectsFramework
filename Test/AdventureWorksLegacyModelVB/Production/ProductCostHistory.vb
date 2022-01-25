@@ -18,7 +18,7 @@ Return myStartDate
             End Get
         End Property
 
-        Public Sub AboutStartDate(a As FieldAbout, StartDate As NODate)
+        Public Sub AboutStartDate(a As IFieldAbout, StartDate As NODate)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False
@@ -38,7 +38,7 @@ Return myEndDate
             End Get
         End Property
 
-        Public Sub AboutEndDate(a As FieldAbout, EndDate As NODateNullable)
+        Public Sub AboutEndDate(a As IFieldAbout, EndDate As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -60,7 +60,7 @@ Return myStandardCost
             End Get
         End Property
 
-        Public Sub AboutStandardCost(a As FieldAbout, StandardCost As Money)
+        Public Sub AboutStandardCost(a As IFieldAbout, StandardCost As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -73,7 +73,7 @@ Return myStandardCost
 
         Public Overridable Property Product() As Product
 
-        Public Sub AboutProduct(a As FieldAbout, p As Product)
+        Public Sub AboutProduct(a As IFieldAbout, p As Product)
             Select Case a.TypeCode
                 Case Else
                     a.Visible = False
@@ -92,7 +92,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout)
+        Public Sub AboutModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

@@ -15,7 +15,7 @@
 
 		Public Overridable Property ProductModel() As ProductModel
 
-		Public Sub AboutProductModel(a As FieldAbout, pm As ProductModel)
+		Public Sub AboutProductModel(a As IFieldAbout, pm As ProductModel)
 			Select Case a.TypeCode
 				Case Else
 					a.Visible = False
@@ -34,7 +34,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

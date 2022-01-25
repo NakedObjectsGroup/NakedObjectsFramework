@@ -18,7 +18,7 @@ Return myCurrencyRateDate
             End Get
         End Property
 
-        Public Sub AboutCurrencyRateDate(a As FieldAbout, CurrencyRateDate As NODate)
+        Public Sub AboutCurrencyRateDate(a As IFieldAbout, CurrencyRateDate As NODate)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -40,7 +40,7 @@ Return myAverageRate
             End Get
         End Property
 
-        Public Sub AboutAverageRate(a As FieldAbout, AverageRate As Money)
+        Public Sub AboutAverageRate(a As IFieldAbout, AverageRate As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -62,7 +62,7 @@ Return myEndOfDayRate
             End Get
         End Property
 
-        Public Sub AboutEndOfDayRate(a As FieldAbout, EndOfDayRate As Money)
+        Public Sub AboutEndOfDayRate(a As IFieldAbout, EndOfDayRate As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -94,7 +94,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As FieldAbout)
+        Public Sub AboutModifiedDate(a As IFieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

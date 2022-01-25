@@ -20,7 +20,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutOperationSequence(a As FieldAbout, OperationSequence As WholeNumber)
+		Public Sub AboutOperationSequence(a As IFieldAbout, OperationSequence As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -42,7 +42,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutScheduledStartDate(a As FieldAbout, ScheduledStartDate As NODateNullable)
+		Public Sub AboutScheduledStartDate(a As IFieldAbout, ScheduledStartDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -64,7 +64,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutScheduledEndDate(a As FieldAbout, ScheduledEndDate As NODateNullable)
+		Public Sub AboutScheduledEndDate(a As IFieldAbout, ScheduledEndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -86,7 +86,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutActualStartDate(a As FieldAbout, ActualStartDate As NODateNullable)
+		Public Sub AboutActualStartDate(a As IFieldAbout, ActualStartDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -108,7 +108,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutActualEndDate(a As FieldAbout, ActualEndDate As NODateNullable)
+		Public Sub AboutActualEndDate(a As IFieldAbout, ActualEndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -130,7 +130,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutActualResourceHrs(a As FieldAbout, ActualResourceHrs As FloatingPointNumberNullable)
+		Public Sub AboutActualResourceHrs(a As IFieldAbout, ActualResourceHrs As FloatingPointNumberNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -152,7 +152,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutPlannedCost(a As FieldAbout, PlannedCost As Money)
+		Public Sub AboutPlannedCost(a As IFieldAbout, PlannedCost As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -174,7 +174,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutActualCost(a As FieldAbout, ActualCost As MoneyNullable)
+		Public Sub AboutActualCost(a As IFieldAbout, ActualCost As MoneyNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -187,7 +187,7 @@
 #Region "WorkOrder"
 		Public Overridable Property WorkOrder() As WorkOrder
 
-		Public Sub AboutWorkOrder(a As FieldAbout, w As WorkOrder)
+		Public Sub AboutWorkOrder(a As IFieldAbout, w As WorkOrder)
 			Select Case a.TypeCode
 				Case Else
 					a.Visible = False
@@ -212,7 +212,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As FieldAbout)
+		Public Sub AboutModifiedDate(a As IFieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False
