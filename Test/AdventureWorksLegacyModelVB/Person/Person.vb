@@ -15,7 +15,7 @@ Namespace AW.Types
         Public ReadOnly Property NameStyle As Logical
             Get
                 myNameStyle = If(myNameStyle, New Logical(mappedNameStyle, Sub(v) mappedNameStyle = v))
-Return myNameStyle
+                Return myNameStyle
             End Get
         End Property
 
@@ -38,7 +38,7 @@ Return myNameStyle
         Public ReadOnly Property NameTitle As TextString
             Get
                 myTitle = If(myTitle, New TextString(mappedTitle, Sub(v) mappedTitle = v))
-Return myTitle
+                Return myTitle
             End Get
         End Property
 
@@ -61,7 +61,7 @@ Return myTitle
         Public ReadOnly Property FirstName As TextString
             Get
                 myFirstName = If(myFirstName, New TextString(mappedFirstName, Sub(v) mappedFirstName = v))
-Return myFirstName
+                Return myFirstName
             End Get
         End Property
 
@@ -83,7 +83,7 @@ Return myFirstName
         Public ReadOnly Property MiddleName As TextString
             Get
                 myMiddleName = If(myMiddleName, New TextString(mappedMiddleName, Sub(v) mappedMiddleName = v))
-Return myMiddleName
+                Return myMiddleName
             End Get
         End Property
 
@@ -105,7 +105,7 @@ Return myMiddleName
         Public ReadOnly Property LastName As TextString
             Get
                 myLastName = If(myLastName, New TextString(mappedLastName, Sub(v) mappedLastName = v))
-Return myLastName
+                Return myLastName
             End Get
         End Property
 
@@ -127,7 +127,7 @@ Return myLastName
         Public ReadOnly Property Suffix As TextString
             Get
                 mySuffix = If(mySuffix, New TextString(mappedSuffix, Sub(v) mappedSuffix = v))
-Return mySuffix
+                Return mySuffix
             End Get
         End Property
 
@@ -150,7 +150,7 @@ Return mySuffix
         Public ReadOnly Property PersonType As TextString
             Get
                 myPersonType = If(myPersonType, New TextString(mappedPersonType, Sub(v) mappedPersonType = v))
-Return myPersonType
+                Return myPersonType
             End Get
         End Property
 
@@ -190,7 +190,7 @@ Return myPersonType
         Public ReadOnly Property EmailAddresses As InternalCollection
             Get
                 myEmailAddresses = If(myEmailAddresses, New InternalCollection(Of EmailAddress)(mappedEmailAddresses))
-Return myEmailAddresses
+                Return myEmailAddresses
             End Get
         End Property
 
@@ -211,7 +211,7 @@ Return myEmailAddresses
         Public ReadOnly Property PhoneNumbers As InternalCollection
             Get
                 myPhoneNumbers = If(myPhoneNumbers, New InternalCollection(Of PersonPhone)(mappedPhoneNumbers))
-Return myPhoneNumbers
+                Return myPhoneNumbers
             End Get
         End Property
 
@@ -233,7 +233,7 @@ Return myPhoneNumbers
         Public ReadOnly Property AdditionalContactInfo As TextString
             Get
                 myAdditionalContactInfo = If(myAdditionalContactInfo, New TextString(mappedAdditionalContactInfo, Sub(v) mappedAdditionalContactInfo = v))
-Return myAdditionalContactInfo
+                Return myAdditionalContactInfo
             End Get
         End Property
 
@@ -264,7 +264,7 @@ Return myAdditionalContactInfo
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+                Return myModifiedDate
             End Get
         End Property
 
@@ -286,13 +286,12 @@ Return myModifiedDate
             Return If(mappedNameStyle, $"{LastName} {FirstName}", $"{FirstName} {LastName}")
         End Function
 
-
 #Region "Actions"
         Public Function ActionOthersWithSameInitials() As IQueryable(Of Person)
-            Dim rep = CType(Container.Repository(GetType(PersonRepository)), PersonRepository)
+            Dim rep = CType(Container.DomainService(GetType(PersonRepository)), PersonRepository)
             Return rep.FindContactByName(mappedFirstName.Substring(0, 1), mappedLastName.Substring(0, 1))
         End Function
-
 #End Region
+
     End Class
 End Namespace
