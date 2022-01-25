@@ -205,10 +205,6 @@
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
 				Case AboutTypeCodes.Valid
-					If MaxQty Is Nothing OrElse MaxQty.Value < 1 Then
-						a.Usable = False
-						a.UnusableReason = "Min Qty must be at least 1"
-					End If
 				Case Else
 			End Select
 		End Sub
