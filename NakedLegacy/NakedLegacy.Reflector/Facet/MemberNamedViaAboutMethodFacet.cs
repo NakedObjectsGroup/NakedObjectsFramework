@@ -46,7 +46,7 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
                 var aboutName = GetAbout(nakedObjectAdapter, framework, false)?.Name ?? inferredName;
                 return string.IsNullOrEmpty(aboutName) ? inferredName : aboutName;
             }
-            case AboutTypeCodes.Parameters when GetAbout(nakedObjectAdapter, framework, true) is ActionAbout actionAbout: {
+            case AboutTypeCodes.Parameters when GetAbout(nakedObjectAdapter, framework, true) is IActionAbout actionAbout: {
                 var parameterNames = actionAbout.ParamLabels ?? Array.Empty<string>();
                 var aboutName = parameterNames.Length > index ? parameterNames[index] : inferredName;
                 return string.IsNullOrEmpty(aboutName) ? inferredName : aboutName;

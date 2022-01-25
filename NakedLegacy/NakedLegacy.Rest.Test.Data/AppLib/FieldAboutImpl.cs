@@ -1,6 +1,6 @@
-﻿namespace NakedLegacy.Reflector.Facet;
+﻿namespace NakedLegacy.Rest.Test.Data.AppLib;
 
-public class FieldAboutImpl : FieldAbout {
+public class FieldAboutImpl : IFieldAbout {
     public FieldAboutImpl(AboutTypeCodes typeCode) => TypeCode = typeCode;
 
     public bool Required { get; set; }

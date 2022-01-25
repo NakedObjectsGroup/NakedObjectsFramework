@@ -36,7 +36,7 @@ public sealed class SaveViaActionSaveFacet : AbstractViaAboutMethodFacet, ISaveF
     }
 
     public string Validate(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        if (Method is not null && InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, false, true) is ActionAbout actionAbout) {
+        if (Method is not null && InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, false, true) is IActionAbout actionAbout) {
             return actionAbout.Usable ? null : string.IsNullOrWhiteSpace(actionAbout.UnusableReason) ? "Invalid Save" : actionAbout.UnusableReason;
         }
 

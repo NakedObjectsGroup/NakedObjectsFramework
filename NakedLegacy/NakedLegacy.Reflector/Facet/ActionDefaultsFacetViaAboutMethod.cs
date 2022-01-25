@@ -28,7 +28,7 @@ public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFa
     }
 
     public (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        if (GetAbout(nakedObjectAdapter, framework) is ActionAbout actionAbout) {
+        if (GetAbout(nakedObjectAdapter, framework) is IActionAbout actionAbout) {
             var parameterDefaults = actionAbout.ParamDefaultValues ?? Array.Empty<object>();
             var aboutDefault = parameterDefaults.Length > index ? parameterDefaults[index] : null;
             if (aboutDefault is not null) {

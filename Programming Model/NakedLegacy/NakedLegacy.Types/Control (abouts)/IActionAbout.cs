@@ -7,7 +7,7 @@
 
 namespace NakedLegacy;
 
-public interface ActionAbout : IAbout {
+public interface IActionAbout : IAbout {
     string[] ParamLabels { get; set; }
     object[] ParamDefaultValues { get; set; }
     object[][] ParamOptions { get; set; }

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Framework;
 using NakedLegacy.Reflector.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -39,8 +40,10 @@ public static class AboutHelpers {
         return substitute ? LegacyHelpers.SubstituteNullsAndContainer(rawParameters, method, framework) : LegacyHelpers.InjectContainer(rawParameters, method, framework);
     }
 
-    public static IAbout AboutFactory(this AboutType aboutType, AboutTypeCodes aboutTypeCode) =>
-        aboutType is AboutType.Action
-            ? new ActionAboutImpl(aboutTypeCode)
-            : new FieldAboutImpl(aboutTypeCode);
+    public static IAbout AboutFactory(this AboutType aboutType, AboutTypeCodes aboutTypeCode, INakedFramework framework) {
+        var factory = framework.ServiceProvider.GetService<IAboutFactory>();
+        return aboutType is AboutType.Action
+            ? factory.NewActionAbout(aboutTypeCode)
+            : factory.NewFieldAbout(aboutTypeCode);
+    }
 }

@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Menu;
 public sealed class MenuAction : IMenuActionImmutable {
     public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {
         Action = actionSpec;
-        Name = renamedTo ?? actionSpec.Name(null, null); // for actions with about will need to do something else
+        Name = renamedTo ?? actionSpec.StaticName;
     }
 
     #region IMenuActionImmutable Members

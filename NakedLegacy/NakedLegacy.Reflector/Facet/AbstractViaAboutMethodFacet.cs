@@ -35,7 +35,7 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
             return null;
         }
 
-        var about = AboutType.AboutFactory(typeCode);
+        var about = AboutType.AboutFactory(typeCode, framework);
         Method.Invoke(target, Method.GetParameters(framework, about, substitute, proposedValues));
         return about;
     }

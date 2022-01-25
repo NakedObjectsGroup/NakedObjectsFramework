@@ -31,7 +31,7 @@ public sealed class PropertyChoicesViaAboutMethodFacet : AbstractViaAboutMethodF
     public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Parameters, false, true);
 
     private object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        if (GetAbout(nakedObjectAdapter, framework) is FieldAbout fa) {
+        if (GetAbout(nakedObjectAdapter, framework) is IFieldAbout fa) {
             return fa.Options?.Any() == true ? fa.Options : Array.Empty<object>();
         }
 

@@ -1,6 +1,6 @@
-﻿namespace NakedLegacy.Reflector.Facet;
+﻿namespace NakedLegacy.Rest.Test.Data.AppLib;
 
-public class ActionAboutImpl : ActionAbout {
+public class ActionAboutImpl : IActionAbout {
     public ActionAboutImpl(AboutTypeCodes typeCode) => TypeCode = typeCode;
     public string Name { get; set; }
     public string Description { get; set; }
