@@ -6,5 +6,5 @@ public class ServiceLocator {
 
     public ServiceLocator(IContainer container) => this.container = container;
 
-    public object Repository(Type ofType) => container.Repository(ofType);
+    public object Repository(Type ofType) => container.DomainService(ofType);
 }

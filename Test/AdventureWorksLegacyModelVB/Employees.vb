@@ -56,12 +56,19 @@
             Return d
         End Function
 
+        Public Shared Function ActionMe(container As IContainer) As Employee
+            container.AddWarningToBroker("Not implemented yet")
+            container.AddMessageToBroker("Please be patient")
+            Return Nothing
+        End Function
+
         Public Shared Function SharedMenuOrder() As Menu
             Dim main = New Menu("Employees")
             main.AddAction(NameOf(ActionRandomEmployee)) _
             .AddAction(NameOf(ActionAllEmployees)) _
             .AddAction(NameOf(ActionFindEmployeeByName).ToLower()) _ 'To test case insensitivity
-            .AddAction(NameOf(ActionFindEmployeeByNationalIDNumber))
+            .AddAction(NameOf(ActionFindEmployeeByNationalIDNumber)) _
+            .AddAction(NameOf(ActionMe))
 
             main.AddSubMenu("Organisation") _
             .AddAction(NameOf(ActionListAllDepartments)) _

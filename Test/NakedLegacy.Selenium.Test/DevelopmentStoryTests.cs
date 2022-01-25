@@ -217,6 +217,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ObjectActionThatDelegatesToARepositoryService();
             MenuActionThatTakesParameters();
             MenuActionThatReturnsArrayList();
+            SharedActionWithContainerAsParamater();
         }
 
         //[TestMethod]
@@ -275,6 +276,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetRowFromList(0).AssertTitleIs("Angela Barbariol");
         }
 
+        //[TestMethod]
+        public void SharedActionWithContainerAsParamater()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Contacts")
+               .GetActionWithDialog("Find Person By Name").Open();
+            dialog.GetTextField("First Name").Enter("a");
+            dialog.GetTextField("Last Name").Enter("c");
+            dialog.ClickOKToViewNewList().GetRowFromList(0).AssertTitleIs("Albert Cabello");
+        }
         #endregion
 
         #region Editing objects
@@ -335,11 +345,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void ObjectActionsMenu()
         {
             AccessInstanceWithTitle("Product--897", "LL Touring Frame - Blue, 58")
-                .OpenActions().AssertHasActions("Best Special Offer", "Associate With Special Offer")
+                .OpenActions().AssertHasActions("Best Special Offer", "Associate With Special Offer", "Change Subcategory")
                 .AssertHasSubMenus("Work Orders").OpenSubMenu("Work Orders").AssertHasAction(
                 "Current Work Orders").AssertHasAction("Create New Work Order");
         }
-
+        
         #endregion
 
         #region FieldAboutSpecifyingName_Description_Editability
@@ -393,6 +403,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             CreateAndSaveObjectProgrammatically();
             DisplayingAndSavingATransientObjectFromTheUI();
+            ControlOverSaving();
         }
 
         //[TestMethod]
@@ -418,49 +429,52 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             var transient = helper.GotoHome().OpenMainMenu("Special Offers")
               .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject();
             transient.AssertTitleIs("Editing - Unsaved Special Offer");
+            //Moved these 2 fields up to give more time
+            transient.GetEditableTextInputProperty("Start Date").Clear().Enter(DateTime.Today.ToString("d"));
+            transient.GetEditableTextInputProperty("End Date").Clear().Enter(DateTime.Today.ToString("d"));
             var rnd = new Random().Next(1, 10000);
             var desc = $"Sale {rnd}";
             transient.GetEditableTextInputProperty("Description").Enter(desc);
             transient.GetEditableTextInputProperty("Discount Pct").Clear().Enter("0.5");
             transient.GetEditableTextInputProperty("Type").Enter("A");
             transient.GetEditableSelectionProperty("Category").Select(1);
-            transient.GetEditableTextInputProperty("Start Date").Clear().Enter(DateTime.Today.ToString("d"));
-            transient.GetEditableTextInputProperty("End Date").Clear().Enter(DateTime.Today.ToString("d"));
-            transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
-            transient.Save().AssertTitleIs(desc);
+                transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
+            transient.WaitForMessage("");
+            var result = transient.Save();
             helper.GotoHome().OpenMainMenu("Special Offers")
              .GetActionWithoutDialog("Recently Updated Special Offers").ClickToViewList()
              .GetRowFromList(0).AssertTitleIs(desc);
         }
 
-        [TestMethod]
-        public void PersistingALinkObjectToFormAnAssociation()
+        //[TestMethod]
+        public void ControlOverSaving()
         {
             var transient = helper.GotoHome().OpenMainMenu("Special Offers")
-  .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject();
+              .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject();
+            transient.AssertTitleIs("Editing - Unsaved Special Offer");
+            //Test that individual property validation (via AboutProperty) are applied first
+            transient.AttemptUnsuccessfulSave();
             var rnd = new Random().Next(1, 10000);
             var desc = $"Sale {rnd}";
-            transient.GetEditableTextInputProperty("Description").Enter(desc);
-            transient.GetEditableTextInputProperty("Discount Pct").Clear().Enter("0.5");
-            transient.GetEditableTextInputProperty("Type").Enter("A");
+            transient.GetEditableTextInputProperty("Description")
+                    .AssertHasValidationError("Cannot be empty").Enter(desc);
+            transient.GetEditableTextInputProperty("Discount Pct").Clear().Enter("5");
+            transient.GetEditableTextInputProperty("Type")
+                .AssertHasValidationError("Cannot be empty").Enter("A");
             transient.GetEditableSelectionProperty("Category").Select(1);
             transient.GetEditableTextInputProperty("Start Date").Clear().Enter(DateTime.Today.ToString("d"));
             transient.GetEditableTextInputProperty("End Date").Clear().Enter(DateTime.Today.ToString("d"));
-            transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
-           var offer = transient.Save();
-            offer.OpenActions().GetActionWithoutDialog("Products Covered")
-                .ClickToViewEmptyList(MouseClick.SecondaryButton);
-            var dialog = offer.OpenActions().GetActionWithDialog("Include Product").Open();
-            var prodField = dialog.GetReferenceField("Product");
-            var rightHome = helper.GetFooter().ClickHome(MouseClick.SecondaryButton);
-            var prod = rightHome.OpenMainMenu("Products").GetActionWithoutDialog("Products").ClickToViewObject();
-            string p = prod.GetTitle();
-            prod.DragTitleAndDropOnto(prodField);
-            dialog.ClickOKToViewObject();
-
-            Assert.Fail(); //TODO complete
-
+            transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("10");
+            transient.GetEditableTextInputProperty("Max Qty").Clear().Enter("5");
+            Thread.Sleep(1000);
+            //Test that vaidation rules implemente in AboutActionSave are applied next.
+            transient.AttemptUnsuccessfulSave();
+                transient.WaitForMessage("Max Qty cannot be less than Min Qty");
+            transient.GetEditableTextInputProperty("Max Qty").Clear().Enter("20");
+           
+            transient.Save().AssertTitleIs(desc);
         }
+
         #endregion
 
         #region ActionAbout control

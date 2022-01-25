@@ -12,7 +12,7 @@ public class FieldAboutImpl : IFieldAbout {
     public bool Visible { get; set; } = true;
 
     public bool IsPersistent { get; set; }
-    public object[] Options { get; set; } = { };
+    public object[] Options { get; set; } = new object[] { };
     public string Name { get; set; }
     public string Description { get; set; }
     public string UnusableReason { get; set; }
