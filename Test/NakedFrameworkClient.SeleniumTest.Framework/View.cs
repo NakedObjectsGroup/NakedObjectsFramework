@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -20,6 +21,11 @@ namespace NakedFrameworkClient.TestFramework
         {
             var we = helper.WaitForChildElement(element, ".dialog");
             return new Dialog(we, helper, this);
+        }
+
+        public void AssertMessageIs(string msg)
+        {
+            var el = helper.wait.Until(e => e.FindElement(By.CssSelector(".header .messages")).Text == msg);
         }
     }
 }

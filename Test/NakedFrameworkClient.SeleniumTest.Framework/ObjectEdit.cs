@@ -65,5 +65,6 @@ namespace NakedFrameworkClient.TestFramework
             GetEditableProperty(propertyName).FindElement(By.CssSelector(".value"));
             return this;
         }
+
     }
 }
