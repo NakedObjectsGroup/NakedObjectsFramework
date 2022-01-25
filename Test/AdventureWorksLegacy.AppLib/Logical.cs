@@ -22,7 +22,5 @@ public class Logical : ValueHolder<bool> {
         throw new ValueHolderException(entry);
     }
 
-    public override object Display(string mask = null) => Value;
-
-    public override Title Title() => new Title(ToString());
+    
 }

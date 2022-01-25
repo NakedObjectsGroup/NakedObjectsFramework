@@ -5,7 +5,7 @@ using System.Globalization;
 namespace AdventureWorksLegacy.AppLib;
 
 public class WholeNumber : ValueHolder<int> {
-    public WholeNumber() { }
+    public WholeNumber() {}
 
     // necessary for when used as a parameter
     public WholeNumber(int number) : base(number) { }
@@ -28,7 +28,5 @@ public class WholeNumber : ValueHolder<int> {
         }
     }
 
-    public override object Display(string mask = null) => Value;
-
-    public override Title Title() => new Title(ToString());
+    
 }

@@ -29,7 +29,5 @@ public class NODateNullable : ValueHolder<DateTime?>, IDateOnly
 
     public override object Display(string mask = null) => Value == null? "": Value.Value.ToString(mask, CultureInfo.InvariantCulture);
 
-    public override Title Title() => new Title(ToString());
-
-    public bool IsEmpty => Value == null;
+    
 }

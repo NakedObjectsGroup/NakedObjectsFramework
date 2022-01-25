@@ -10,5 +10,5 @@ public class MultiLineTextString : TextString {
 
     public MultiLineTextString(string text, Action<string> callback) : base(text, callback) { }
 
-    public override Title Title() => new Title(ToString());
+    
 }
