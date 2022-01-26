@@ -5,7 +5,7 @@ using NakedLegacy;
 
 namespace AdventureWorksLegacy.AppLib;
 //This is needed to tell framework not to render the time portion
-public class NODate : ValueHolder<DateTime>, IDateOnly{
+public class NODate : AbstractValueHolder<DateTime>, IDateOnly{
     public NODate() { }
 
     public NODate(DateTime value) : base(value) { 
@@ -28,7 +28,7 @@ public class NODate : ValueHolder<DateTime>, IDateOnly{
             return new NODate(DateTime.Parse(entry));
         }
         catch (FormatException) {
-            throw new ValueHolderException(dateString);
+            throw new Exception(dateString);
         }
     }
 

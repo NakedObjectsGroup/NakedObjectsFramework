@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class FloatingPointNumberNullable : ValueHolder<decimal?> {
+public class FloatingPointNumberNullable : AbstractValueHolder<decimal?> {
     public FloatingPointNumberNullable() { }
 
     public FloatingPointNumberNullable(decimal? value) : base(value) { }
@@ -18,10 +18,10 @@ public class FloatingPointNumberNullable : ValueHolder<decimal?> {
             return new FloatingPointNumber(decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
         }
         catch (FormatException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
         catch (OverflowException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
     }
 

@@ -3,7 +3,7 @@
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class TimeStamp : ValueHolder<DateTime> {
+public class TimeStamp : AbstractValueHolder<DateTime> {
     public TimeStamp() { }
 
     // necessary for when used as a parameter
@@ -19,7 +19,7 @@ public class TimeStamp : ValueHolder<DateTime> {
             return new TimeStamp(DateTime.Parse(entry));
         }
         catch (FormatException) {
-            throw new ValueHolderException(dateString);
+            throw new Exception(dateString);
         }
     }
 

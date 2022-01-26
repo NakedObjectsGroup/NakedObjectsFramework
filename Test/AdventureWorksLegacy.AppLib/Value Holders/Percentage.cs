@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class Percentage : ValueHolder<decimal> {
+public class Percentage : AbstractValueHolder<decimal> {
     public Percentage() { }
 
     public Percentage(decimal value) : base(value) { }
@@ -16,10 +16,10 @@ public class Percentage : ValueHolder<decimal> {
             return new Percentage(decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
         }
         catch (FormatException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
         catch (OverflowException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
     }
 

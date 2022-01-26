@@ -3,7 +3,7 @@
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class Logical : ValueHolder<bool> {
+public class Logical : AbstractValueHolder<bool> {
     public Logical() { }
 
     public Logical(bool value) : base(value) { }
@@ -19,7 +19,7 @@ public class Logical : ValueHolder<bool> {
             return new Logical(false);
         }
 
-        throw new ValueHolderException(entry);
+        throw new Exception(entry);
     }
 
     

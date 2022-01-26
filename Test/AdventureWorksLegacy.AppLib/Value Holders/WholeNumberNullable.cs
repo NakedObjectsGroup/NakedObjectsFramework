@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class WholeNumberNullable : ValueHolder<int?> {
+public class WholeNumberNullable : AbstractValueHolder<int?> {
     public WholeNumberNullable() { }
 
     // necessary for when used as a parameter
@@ -19,12 +19,12 @@ public class WholeNumberNullable : ValueHolder<int?> {
             return new WholeNumberNullable(int.Parse(fromString, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
         }
         catch (FormatException) {
-            //throw new ValueHolderException(FormatMessage(fromString));
-            throw new ValueHolderException(fromString);
+            //throw new Exception(FormatMessage(fromString));
+            throw new Exception(fromString);
         }
         catch (OverflowException) {
-            //throw new ValueHolderException(OutOfRangeMessage(fromString, new WholeNumber(int.MinValue), new WholeNumber(int.MaxValue)));
-            throw new ValueHolderException(fromString);
+            //throw new Exception(OutOfRangeMessage(fromString, new WholeNumber(int.MinValue), new WholeNumber(int.MaxValue)));
+            throw new Exception(fromString);
         }
     }
     

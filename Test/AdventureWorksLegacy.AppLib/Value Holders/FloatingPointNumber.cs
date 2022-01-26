@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class FloatingPointNumber : ValueHolder<decimal> {
+public class FloatingPointNumber : AbstractValueHolder<decimal> {
     public FloatingPointNumber() { }
 
     public FloatingPointNumber(decimal value) : base(value) { }
@@ -17,10 +17,10 @@ public class FloatingPointNumber : ValueHolder<decimal> {
             return new FloatingPointNumber(decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
         }
         catch (FormatException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
         catch (OverflowException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
     }
     

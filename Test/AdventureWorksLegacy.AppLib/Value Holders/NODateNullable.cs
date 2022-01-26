@@ -5,7 +5,7 @@ using NakedLegacy;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class NODateNullable : ValueHolder<DateTime?>, IDateOnly
+public class NODateNullable : AbstractValueHolder<DateTime?>, IDateOnly
 {
     public NODateNullable() { }
 
@@ -23,7 +23,7 @@ public class NODateNullable : ValueHolder<DateTime?>, IDateOnly
             return new NODate(DateTime.Parse(entry));
         }
         catch (FormatException) {
-            throw new ValueHolderException(dateString);
+            throw new Exception(dateString);
         }
     }
 

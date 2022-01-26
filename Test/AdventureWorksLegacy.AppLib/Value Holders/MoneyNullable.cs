@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class MoneyNullable : ValueHolder<decimal?> {
+public class MoneyNullable : AbstractValueHolder<decimal?> {
     public MoneyNullable() { }
 
     public MoneyNullable(decimal? value) : base(value) { }
@@ -20,10 +20,10 @@ public class MoneyNullable : ValueHolder<decimal?> {
             return new MoneyNullable(decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
         }
         catch (FormatException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
         catch (OverflowException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
     }
 

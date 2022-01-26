@@ -3,7 +3,7 @@
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class TextString : ValueHolder<string> {
+public class TextString : AbstractValueHolder<string> {
     public TextString() {   }
 
     // necessary for when used as a parameter

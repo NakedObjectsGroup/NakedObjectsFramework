@@ -4,25 +4,25 @@ using System.Globalization;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
+public abstract class AbstractValueHolder<T> : IValueHolder<T>, ITitledObject {
     private T value;
 
     protected bool IsNull;
 
-    protected ValueHolder() {
+    protected AbstractValueHolder() {
         IsNull = true;
     }
 
-    protected ValueHolder(T value)
+    protected AbstractValueHolder(T value)
     {
         this.value = value;
         IsNull = value == null;
     }
 
-    protected ValueHolder(T value, Action<T> callback) : this(value) => UpdateBackingField = callback;
+    protected AbstractValueHolder(T value, Action<T> callback) : this(value) => UpdateBackingField = callback;
 
     //Used only for initialzing property on a transient object.
-    protected ValueHolder(Action<T> callback) : this() => UpdateBackingField = callback;
+    protected AbstractValueHolder(Action<T> callback) : this() => UpdateBackingField = callback;
 
     public T Value {
         get => value;

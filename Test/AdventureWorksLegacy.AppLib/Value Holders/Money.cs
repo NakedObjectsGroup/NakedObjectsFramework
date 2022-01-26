@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace AdventureWorksLegacy.AppLib;
 
-public class Money : ValueHolder<decimal> {
+public class Money : AbstractValueHolder<decimal> {
     public Money() { }
 
     public Money(decimal value) : base(value) { }
@@ -22,10 +22,10 @@ public class Money : ValueHolder<decimal> {
             return new Money(decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
         }
         catch (FormatException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
         catch (OverflowException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
     }
 
