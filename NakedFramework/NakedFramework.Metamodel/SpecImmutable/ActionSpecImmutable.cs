@@ -46,17 +46,7 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
         Parameters.All(p => p.Specification.IsParseable || p.IsChoicesDefined || p.IsMultipleChoicesEnabled);
 
     public bool IsFinderMethodFor(IObjectSpecImmutable spec) => IsFinderMethod && (ReturnSpec.IsOfType(spec) || ReturnSpec.IsCollection && ElementSpec.IsOfType(spec));
-    public string StaticName {
-        get {
-            try {
-                // todo fix this so exception not expected
-                return GetFacet<IMemberNamedFacet>().FriendlyName(null, null);
-            }
-            catch (Exception) {
-                return NameUtils.NaturalName(Identifier.MemberName);
-            }
-        }
-    }
+    public string StaticName => GetFacet<IMemberNamedFacet>().FriendlyName();
 
     public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && Parameters.Any() &&
                                        ContainsFacet(typeof(IContributedActionFacet));

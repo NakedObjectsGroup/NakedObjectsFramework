@@ -19,7 +19,8 @@ public sealed class MemberNamedFacetAnnotation : SingleStringValueFacetAbstract,
         : base(typeof(IMemberNamedFacet), holder, value) { }
 
     // Might be set from annotation or from display name on menu
-    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => Value;
+    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
+    public string FriendlyName() => Value;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

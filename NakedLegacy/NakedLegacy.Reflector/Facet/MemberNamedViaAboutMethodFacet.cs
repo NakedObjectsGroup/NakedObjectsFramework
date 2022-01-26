@@ -56,6 +56,8 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
         }
     }
 
+    public string FriendlyName() => inferredName;
+
     private static string TrimActionPrefix(string name, AboutType aboutType, AboutTypeCodes aboutCode) =>
         aboutType is AboutType.Action &&
         aboutCode is AboutTypeCodes.Name &&

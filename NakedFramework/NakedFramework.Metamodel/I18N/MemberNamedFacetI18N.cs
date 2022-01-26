@@ -19,7 +19,8 @@ public sealed class MemberNamedFacetI18N : SingleStringValueFacetAbstract, IMemb
     public MemberNamedFacetI18N(string valueString, ISpecification holder)
         : base(typeof(IMemberNamedFacet), holder, valueString) { }
 
-    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => Value;
+    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
+    public string FriendlyName() => Value;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -19,7 +19,8 @@ public sealed class MemberNamedFacetInferred : SingleStringValueFacetAbstract, I
         : base(typeof(IMemberNamedFacet), holder, NameUtils.NaturalName(value)) { }
 
     public override bool CanAlwaysReplace => false;
-    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => Value;
+    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
+    public string FriendlyName() => Value;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

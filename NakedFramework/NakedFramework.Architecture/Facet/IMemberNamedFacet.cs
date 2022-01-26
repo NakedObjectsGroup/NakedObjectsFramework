@@ -19,4 +19,6 @@ namespace NakedFramework.Architecture.Facet;
 /// </para>
 public interface IMemberNamedFacet : IFacet {
     string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
+
+    string FriendlyName();
 }
