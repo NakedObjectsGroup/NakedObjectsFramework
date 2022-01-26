@@ -19,7 +19,7 @@ Return myName
 			End Get
 		End Property
 
-		Public Sub AboutName(a As IFieldAbout, Name As TextString)
+		Public Sub AboutName(a As FieldAbout, Name As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -41,7 +41,7 @@ Return myCountryRegionCode
 			End Get
 		End Property
 
-		Public Sub AboutCountryRegionCode(a As IFieldAbout, CountryRegionCode As TextString)
+		Public Sub AboutCountryRegionCode(a As FieldAbout, CountryRegionCode As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -63,7 +63,7 @@ Return myGroup
 			End Get
 		End Property
 
-		Public Sub AboutGroup(a As IFieldAbout, Group As TextString)
+		Public Sub AboutGroup(a As FieldAbout, Group As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -85,7 +85,7 @@ Return mySalesYTD
 			End Get
 		End Property
 
-		Public Sub AboutSalesYTD(a As IFieldAbout, SalesYTD As Money)
+		Public Sub AboutSalesYTD(a As FieldAbout, SalesYTD As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -107,7 +107,7 @@ Return mySalesLastYear
 			End Get
 		End Property
 
-		Public Sub AboutSalesLastYear(a As IFieldAbout, SalesLastYear As Money)
+		Public Sub AboutSalesLastYear(a As FieldAbout, SalesLastYear As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -129,7 +129,7 @@ Return myCostYTD
 			End Get
 		End Property
 
-		Public Sub AboutCostYTD(a As IFieldAbout, CostYTD As Money)
+		Public Sub AboutCostYTD(a As FieldAbout, CostYTD As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -151,7 +151,7 @@ Return myCostLastYear
 			End Get
 		End Property
 
-		Public Sub AboutCostLastYear(a As IFieldAbout, CostLastYear As Money)
+		Public Sub AboutCostLastYear(a As FieldAbout, CostLastYear As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -174,7 +174,7 @@ Return myStateProvince
 			End Get
 		End Property
 
-		Public Sub AboutStateProvince(a As IFieldAbout)
+		Public Sub AboutStateProvince(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 					a.Name = "States/Provinces covered"
@@ -198,7 +198,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As IFieldAbout)
+		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

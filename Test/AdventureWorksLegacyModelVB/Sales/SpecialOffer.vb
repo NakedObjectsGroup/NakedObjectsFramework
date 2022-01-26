@@ -21,7 +21,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutDescription(a As IFieldAbout, Description As TextString)
+		Public Sub AboutDescription(a As FieldAbout, Description As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -47,7 +47,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutDiscountPct(a As IFieldAbout, DiscountPct As Percentage)
+		Public Sub AboutDiscountPct(a As FieldAbout, DiscountPct As Percentage)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -73,7 +73,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutType(a As IFieldAbout, Type As TextString)
+		Public Sub AboutType(a As FieldAbout, Type As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -99,7 +99,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutCategory(a As IFieldAbout, Category As TextString)
+		Public Sub AboutCategory(a As FieldAbout, Category As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -127,7 +127,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutStartDate(a As IFieldAbout, StartDate As NODate)
+		Public Sub AboutStartDate(a As FieldAbout, StartDate As NODate)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -153,7 +153,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutEndDate(a As IFieldAbout, EndDate As NODate)
+		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODate)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -184,7 +184,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutMinQty(a As IFieldAbout, MinQty As WholeNumber)
+		Public Sub AboutMinQty(a As FieldAbout, MinQty As WholeNumber)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -210,7 +210,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutMaxQty(a As IFieldAbout, MaxQty As WholeNumberNullable)
+		Public Sub AboutMaxQty(a As FieldAbout, MaxQty As WholeNumberNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -236,7 +236,7 @@
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As IFieldAbout)
+		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Visible
 					If SpecialOfferID = 0 Then
@@ -266,7 +266,7 @@
 			Container.MakePersistent(Me)
 		End Sub
 
-		Public Sub AboutActionSave(a As IActionAbout)
+		Public Sub AboutActionSave(a As ActionAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Valid
 					If Not MaxQty.Value Is Nothing AndAlso MaxQty.Value < MinQty.Value Then

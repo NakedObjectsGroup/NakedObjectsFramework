@@ -26,7 +26,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutNationalIDNumber(a As IFieldAbout, NationalIDNumber As TextString)
+        Public Sub AboutNationalIDNumber(a As FieldAbout, NationalIDNumber As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -48,7 +48,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutJobTitle(a As IFieldAbout, JobTitle As TextString)
+        Public Sub AboutJobTitle(a As FieldAbout, JobTitle As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -70,7 +70,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutDateOfBirth(a As IFieldAbout, DateOfBirth As NODateNullable)
+        Public Sub AboutDateOfBirth(a As FieldAbout, DateOfBirth As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -92,7 +92,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutMaritalStatus(a As IFieldAbout, MaritalStatus As TextString)
+        Public Sub AboutMaritalStatus(a As FieldAbout, MaritalStatus As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -114,7 +114,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutGender(a As IFieldAbout, Gender As TextString)
+        Public Sub AboutGender(a As FieldAbout, Gender As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -136,7 +136,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutHireDate(a As IFieldAbout, HireDate As NODateNullable)
+        Public Sub AboutHireDate(a As FieldAbout, HireDate As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -158,7 +158,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutSalaried(a As IFieldAbout, Salaried As Logical)
+        Public Sub AboutSalaried(a As FieldAbout, Salaried As Logical)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -180,7 +180,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutVacationHours(a As IFieldAbout, VacationHours As WholeNumber)
+        Public Sub AboutVacationHours(a As FieldAbout, VacationHours As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -202,7 +202,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutSickLeaveHours(a As IFieldAbout, SickLeaveHours As WholeNumber)
+        Public Sub AboutSickLeaveHours(a As FieldAbout, SickLeaveHours As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -224,7 +224,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutCurrent(a As IFieldAbout, Current As Logical)
+        Public Sub AboutCurrent(a As FieldAbout, Current As Logical)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -250,7 +250,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutLoginID(a As IFieldAbout, LoginID As TextString)
+        Public Sub AboutLoginID(a As FieldAbout, LoginID As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -276,7 +276,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutDepartmentHistory(a As IFieldAbout)
+        Public Sub AboutDepartmentHistory(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -297,7 +297,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutPayHistory(a As IFieldAbout)
+        Public Sub AboutPayHistory(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -318,7 +318,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False
@@ -355,7 +355,7 @@ Namespace AW.Types
             Me.MaritalStatus.Value = newStatus.Value
         End Sub
 
-        Public Sub AboutActionChangeStatus(a As IActionAbout, status As TextString)
+        Public Sub AboutActionChangeStatus(a As ActionAbout, status As TextString)
             Dim s = New TextString("S")
             Dim m = New TextString("M")
             Select Case a.TypeCode

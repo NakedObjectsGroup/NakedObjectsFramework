@@ -18,7 +18,7 @@
             End Get
         End Property
 
-        Public Sub AboutName(a As IFieldAbout, Name As TextString)
+        Public Sub AboutName(a As FieldAbout, Name As TextString)
             Select Case a.TypeCode
                 Case Else
                     a.Visible = True
@@ -38,7 +38,7 @@
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

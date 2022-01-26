@@ -16,7 +16,7 @@ Return myDiagram
             End Get
         End Property
 
-        Public Sub AboutDiagram(a As IFieldAbout, Diagram As TextString)
+        Public Sub AboutDiagram(a As FieldAbout, Diagram As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -39,7 +39,7 @@ Return myProductModelIllustration
             End Get
         End Property
 
-        Public Sub AboutProductModelIllustration(a As IFieldAbout)
+        Public Sub AboutProductModelIllustration(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -59,7 +59,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

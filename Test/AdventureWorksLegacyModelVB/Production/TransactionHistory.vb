@@ -21,7 +21,7 @@ Return myTransactionDate
             End Get
         End Property
 
-        Public Sub AboutTransactionDate(a As IFieldAbout, TransactionDate As NODate)
+        Public Sub AboutTransactionDate(a As FieldAbout, TransactionDate As NODate)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -43,7 +43,7 @@ Return myTransactionType
             End Get
         End Property
 
-        Public Sub AboutTransactionType(a As IFieldAbout, TransactionType As TextString)
+        Public Sub AboutTransactionType(a As FieldAbout, TransactionType As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -65,7 +65,7 @@ Return myQuantity
             End Get
         End Property
 
-        Public Sub AboutQuantity(a As IFieldAbout, Quantity As WholeNumber)
+        Public Sub AboutQuantity(a As FieldAbout, Quantity As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -87,7 +87,7 @@ Return myActualCost
             End Get
         End Property
 
-        Public Sub AboutActualCost(a As IFieldAbout, ActualCost As Money)
+        Public Sub AboutActualCost(a As FieldAbout, ActualCost As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -113,7 +113,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

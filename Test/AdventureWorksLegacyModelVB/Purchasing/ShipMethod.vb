@@ -18,7 +18,7 @@ Return myName
             End Get
         End Property
 
-        Public Sub AboutName(a As IFieldAbout, Name As TextString)
+        Public Sub AboutName(a As FieldAbout, Name As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -40,7 +40,7 @@ Return myShipBase
             End Get
         End Property
 
-        Public Sub AboutShipBase(a As IFieldAbout, ShipBase As Money)
+        Public Sub AboutShipBase(a As FieldAbout, ShipBase As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -62,7 +62,7 @@ Return myShipRate
             End Get
         End Property
 
-        Public Sub AboutShipRate(a As IFieldAbout, ShipRate As Money)
+        Public Sub AboutShipRate(a As FieldAbout, ShipRate As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -84,7 +84,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

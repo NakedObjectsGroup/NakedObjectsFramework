@@ -18,11 +18,11 @@
 		Public ReadOnly Property StartDate As NODate
 			Get
 				myStartDate = If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
-Return myStartDate
+				Return myStartDate
 			End Get
 		End Property
 
-		Public Sub AboutStartDate(a As IFieldAbout, StartDate As NODate)
+		Public Sub AboutStartDate(a As FieldAbout, StartDate As NODate)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -40,11 +40,11 @@ Return myStartDate
 		Public ReadOnly Property EndDate As NODateNullable
 			Get
 				myEndDate = If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
-Return myEndDate
+				Return myEndDate
 			End Get
 		End Property
 
-		Public Sub AboutEndDate(a As IFieldAbout, EndDate As NODateNullable)
+		Public Sub AboutEndDate(a As FieldAbout, EndDate As NODateNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -71,11 +71,11 @@ Return myEndDate
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+				Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As IFieldAbout)
+		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

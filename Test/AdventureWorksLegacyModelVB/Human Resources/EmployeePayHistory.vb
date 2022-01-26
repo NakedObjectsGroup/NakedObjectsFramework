@@ -18,7 +18,7 @@
             End Get
         End Property
 
-        Public Sub AboutRateChangeDate(a As IFieldAbout, RateChangeDate As NODate)
+        Public Sub AboutRateChangeDate(a As FieldAbout, RateChangeDate As NODate)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False
@@ -38,7 +38,7 @@
             End Get
         End Property
 
-        Public Sub AboutRate(a As IFieldAbout, Rate As Money)
+        Public Sub AboutRate(a As FieldAbout, Rate As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False
@@ -58,7 +58,7 @@
             End Get
         End Property
 
-        Public Sub AboutPayFrequency(a As IFieldAbout, PayFrequency As WholeNumber)
+        Public Sub AboutPayFrequency(a As FieldAbout, PayFrequency As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False
@@ -81,7 +81,7 @@
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

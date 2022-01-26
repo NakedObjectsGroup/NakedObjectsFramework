@@ -19,7 +19,7 @@ Return myDescription
             End Get
         End Property
 
-        Public Sub AboutDescription(a As IFieldAbout, Description As MultiLineTextString)
+        Public Sub AboutDescription(a As FieldAbout, Description As MultiLineTextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -41,7 +41,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

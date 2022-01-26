@@ -20,7 +20,7 @@ Return myEmailAddress1
 			End Get
 		End Property
 
-		Public Sub AboutEmailAddress1(a As IFieldAbout, EmailAddress1 As TextString)
+		Public Sub AboutEmailAddress1(a As FieldAbout, EmailAddress1 As TextString)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 					a.Name = "Email Address"
@@ -43,7 +43,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As IFieldAbout)
+		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

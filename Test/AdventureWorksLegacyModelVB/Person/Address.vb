@@ -18,7 +18,7 @@ Return myCity
             End Get
         End Property
 
-        Public Sub AboutCity(a As IFieldAbout, City As TextString)
+        Public Sub AboutCity(a As FieldAbout, City As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -40,7 +40,7 @@ Return myPostalCode
             End Get
         End Property
 
-        Public Sub AboutPostalCode(a As IFieldAbout, PostalCode As TextString)
+        Public Sub AboutPostalCode(a As FieldAbout, PostalCode As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -62,7 +62,7 @@ Return myAddressLine1
             End Get
         End Property
 
-        Public Sub AboutAddressLine1(a As IFieldAbout, AddressLine1 As TextString)
+        Public Sub AboutAddressLine1(a As FieldAbout, AddressLine1 As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -84,7 +84,7 @@ Return myAddressLine2
             End Get
         End Property
 
-        Public Sub AboutAddressLine2(a As IFieldAbout, AddressLine2 As TextString)
+        Public Sub AboutAddressLine2(a As FieldAbout, AddressLine2 As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -112,7 +112,7 @@ Return myModifiedDate
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

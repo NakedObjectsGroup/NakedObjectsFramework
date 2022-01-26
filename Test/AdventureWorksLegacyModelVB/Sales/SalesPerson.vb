@@ -35,7 +35,7 @@ Return mySalesQuota
 			End Get
 		End Property
 
-		Public Sub AboutSalesQuota(a As IFieldAbout, SalesQuota As MoneyNullable)
+		Public Sub AboutSalesQuota(a As FieldAbout, SalesQuota As MoneyNullable)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -57,7 +57,7 @@ Return myBonus
 			End Get
 		End Property
 
-		Public Sub AboutBonus(a As IFieldAbout, Bonus As Money)
+		Public Sub AboutBonus(a As FieldAbout, Bonus As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -79,7 +79,7 @@ Return myCommissionPct
 			End Get
 		End Property
 
-		Public Sub AboutCommissionPct(a As IFieldAbout, CommissionPct As Percentage)
+		Public Sub AboutCommissionPct(a As FieldAbout, CommissionPct As Percentage)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -101,7 +101,7 @@ Return mySalesYTD
 			End Get
 		End Property
 
-		Public Sub AboutSalesYTD(a As IFieldAbout, SalesYTD As Money)
+		Public Sub AboutSalesYTD(a As FieldAbout, SalesYTD As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -123,7 +123,7 @@ Return mySalesLastYear
 			End Get
 		End Property
 
-		Public Sub AboutSalesLastYear(a As IFieldAbout, SalesLastYear As Money)
+		Public Sub AboutSalesLastYear(a As FieldAbout, SalesLastYear As Money)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case AboutTypeCodes.Usable
@@ -147,7 +147,7 @@ Return myQuotaHistory
 			End Get
 		End Property
 
-		Public Sub AboutQuotaHistory(a As IFieldAbout)
+		Public Sub AboutQuotaHistory(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case Else
@@ -169,7 +169,7 @@ Return myTerritoryHistory
 			End Get
 		End Property
 
-		Public Sub AboutTerritoryHistory(a As IFieldAbout)
+		Public Sub AboutTerritoryHistory(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 				Case Else
@@ -189,7 +189,7 @@ Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As IFieldAbout)
+		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

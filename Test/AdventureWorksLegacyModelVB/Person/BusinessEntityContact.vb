@@ -8,7 +8,7 @@
 
 		Public Overridable Property BusinessEntity() As BusinessEntity
 
-		Public Sub AboutBusinessEntity(a As IFieldAbout)
+		Public Sub AboutBusinessEntity(a As FieldAbout)
 			Select Case a.TypeCode
 				Case Else
 					a.Visible = False
@@ -33,11 +33,11 @@
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
-Return myModifiedDate
+				Return myModifiedDate
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As IFieldAbout)
+		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

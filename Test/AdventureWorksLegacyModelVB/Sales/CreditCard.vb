@@ -34,7 +34,7 @@ Namespace AW.Types
 			End Get
 		End Property
 
-		Public Sub AboutPersonLinks(a As IFieldAbout)
+		Public Sub AboutPersonLinks(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Name
 					a.Name = "Persons"
@@ -55,7 +55,7 @@ Namespace AW.Types
 			End Get
 		End Property
 
-		Public Sub AboutModifiedDate(a As IFieldAbout)
+		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Usable
 					a.Usable = False

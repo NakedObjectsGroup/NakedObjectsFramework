@@ -18,7 +18,7 @@
             End Get
         End Property
 
-        Public Sub AboutTaxType(a As IFieldAbout, TaxType As WholeNumber)
+        Public Sub AboutTaxType(a As FieldAbout, TaxType As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -40,7 +40,7 @@
             End Get
         End Property
 
-        Public Sub AboutTaxRate(a As IFieldAbout, TaxRate As FloatingPointNumber)
+        Public Sub AboutTaxRate(a As FieldAbout, TaxRate As FloatingPointNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -62,7 +62,7 @@
             End Get
         End Property
 
-        Public Sub AboutName(a As IFieldAbout, Name As TextString)
+        Public Sub AboutName(a As FieldAbout, Name As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -89,7 +89,7 @@
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False

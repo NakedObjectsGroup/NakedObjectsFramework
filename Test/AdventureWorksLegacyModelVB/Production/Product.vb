@@ -25,7 +25,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutName(a As IFieldAbout, Name As TextString)
+        Public Sub AboutName(a As FieldAbout, Name As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -47,7 +47,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutProductNumber(a As IFieldAbout, ProductNumber As TextString)
+        Public Sub AboutProductNumber(a As FieldAbout, ProductNumber As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -69,7 +69,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutColor(a As IFieldAbout, Color As TextString)
+        Public Sub AboutColor(a As FieldAbout, Color As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -101,7 +101,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutListPrice(a As IFieldAbout, ListPrice As Money)
+        Public Sub AboutListPrice(a As FieldAbout, ListPrice As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -133,7 +133,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutProductLine(a As IFieldAbout, ProductLine As TextString)
+        Public Sub AboutProductLine(a As FieldAbout, ProductLine As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -153,7 +153,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutSizeWithUnit(a As IFieldAbout, SizeWithUnit As TextString)
+        Public Sub AboutSizeWithUnit(a As FieldAbout, SizeWithUnit As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Size"
@@ -173,7 +173,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutWeightWithUnit(a As IFieldAbout, WeightWithUnit As TextString)
+        Public Sub AboutWeightWithUnit(a As FieldAbout, WeightWithUnit As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                     a.Name = "Weight"
@@ -196,7 +196,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutStyle(a As IFieldAbout, Style As TextString)
+        Public Sub AboutStyle(a As FieldAbout, Style As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -218,7 +218,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutClass(a As IFieldAbout, [Class] As TextString)
+        Public Sub AboutClass(a As FieldAbout, [Class] As TextString)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -240,7 +240,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutMake(a As IFieldAbout, Make As Logical)
+        Public Sub AboutMake(a As FieldAbout, Make As Logical)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -262,7 +262,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutFinishedGoods(a As IFieldAbout, FinishedGoods As Logical)
+        Public Sub AboutFinishedGoods(a As FieldAbout, FinishedGoods As Logical)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -284,7 +284,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutSafetyStockLevel(a As IFieldAbout, SafetyStockLevel As WholeNumber)
+        Public Sub AboutSafetyStockLevel(a As FieldAbout, SafetyStockLevel As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -306,7 +306,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutReorderPoint(a As IFieldAbout, ReorderPoint As WholeNumber)
+        Public Sub AboutReorderPoint(a As FieldAbout, ReorderPoint As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -328,7 +328,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutDaysToManufacture(a As IFieldAbout, DaysToManufacture As WholeNumber)
+        Public Sub AboutDaysToManufacture(a As FieldAbout, DaysToManufacture As WholeNumber)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -350,7 +350,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutSellStartDate(a As IFieldAbout, SellStartDate As NODate)
+        Public Sub AboutSellStartDate(a As FieldAbout, SellStartDate As NODate)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -372,7 +372,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutSellEndDate(a As IFieldAbout, SellEndDate As NODateNullable)
+        Public Sub AboutSellEndDate(a As FieldAbout, SellEndDate As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -394,7 +394,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutDiscontinuedDate(a As IFieldAbout, DiscontinuedDate As NODateNullable)
+        Public Sub AboutDiscontinuedDate(a As FieldAbout, DiscontinuedDate As NODateNullable)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -416,7 +416,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutStandardCost(a As IFieldAbout, StandardCost As Money)
+        Public Sub AboutStandardCost(a As FieldAbout, StandardCost As Money)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case AboutTypeCodes.Usable
@@ -438,7 +438,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutModifiedDate(a As IFieldAbout)
+        Public Sub AboutModifiedDate(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Usable
                     a.Usable = False
@@ -463,7 +463,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutProductReviews(a As IFieldAbout)
+        Public Sub AboutProductReviews(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -484,7 +484,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutProductInventory(a As IFieldAbout)
+        Public Sub AboutProductInventory(a As FieldAbout)
             Select Case a.TypeCode
                 Case AboutTypeCodes.Name
                 Case Else
@@ -508,7 +508,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutSize(a As IFieldAbout, Size As TextString)
+        Public Sub AboutSize(a As FieldAbout, Size As TextString)
             Select Case a.TypeCode
                 Case Else
                     a.Visible = False
@@ -528,7 +528,7 @@ Namespace AW.Types
             End Get
         End Property
 
-        Public Sub AboutSizeUnitMeasureCode(a As IFieldAbout, SizeUnitMeasureCode As TextString)
+        Public Sub AboutSizeUnitMeasureCode(a As FieldAbout, SizeUnitMeasureCode As TextString)
             Select Case a.TypeCode
                 Case Else
                     a.Visible = False
