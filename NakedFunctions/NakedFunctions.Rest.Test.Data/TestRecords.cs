@@ -13,11 +13,13 @@ using System.Linq;
 namespace NakedFunctions.Rest.Test.Data;
 
 [PresentationHint("Hint1")]
+[RestExtension("Name1", "Value1")]
 public record SimpleRecord {
     [Key]
     public int Id { get; init; }
 
     [PresentationHint("Hint2")]
+    [RestExtension("Name2", "Value2")]
     public string Name { get; init; }
 
     public virtual bool Equals(SimpleRecord other) => ReferenceEquals(this, other);

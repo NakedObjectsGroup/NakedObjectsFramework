@@ -141,7 +141,8 @@ public abstract class ObjectReflectorTest : AbstractReflectorTest {
             NewFacetFactory<TypeOfAnnotationFacetFactory>(),
             NewFacetFactory<TableViewAnnotationFacetFactory>(),
             NewFacetFactory<EagerlyAnnotationFacetFactory>(),
-            NewFacetFactory<PresentationHintAnnotationFacetFactory>()
+            NewFacetFactory<PresentationHintAnnotationFacetFactory>(),
+            NewFacetFactory<RestExtensionAnnotationFacetFactory>()
         };
 
     private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T)Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);

@@ -135,7 +135,7 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         var links = parameter["links"];
         var extensions = parameter["extensions"];
         Assert.AreEqual(0, links.Count());
-        Assert.AreEqual(8, extensions.Count());
+        Assert.AreEqual(9, extensions.Count());
     }
 
     [Test]
@@ -148,6 +148,19 @@ public class ObjectTestEF6 : AcceptanceTestCase {
 
         Assert.AreEqual("Hint1", parsedResult["extensions"]["x-ro-nof-presentationHint"].ToString());
         Assert.AreEqual("Hint2", parsedResult["members"]["Name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectRestExtensions()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<SimpleRecord>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Value1", parsedResult["extensions"]["Name1"].ToString());
+        Assert.AreEqual("Value2", parsedResult["members"]["Name"]["extensions"]["Name2"].ToString());
     }
 
     [Test]
@@ -195,6 +208,19 @@ public class ObjectTestEF6 : AcceptanceTestCase {
 
         Assert.AreEqual("Hint3", parsedResult["extensions"]["x-ro-nof-presentationHint"].ToString());
         Assert.AreEqual("Hint4", parsedResult["parameters"]["name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectActionRestExtension()
+    {
+        var api = Api();
+        var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.EditSimpleRecord));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Value3", parsedResult["extensions"]["Name3"].ToString());
+        Assert.AreEqual("Value4", parsedResult["parameters"]["name"]["extensions"]["Name4"].ToString());
     }
 
     [Test]

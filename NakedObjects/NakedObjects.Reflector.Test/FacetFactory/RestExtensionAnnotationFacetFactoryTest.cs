@@ -22,16 +22,16 @@ using NakedObjects.Reflector.FacetFactory;
 namespace NakedObjects.Reflector.Test.FacetFactory;
 
 [TestClass]
-public class PresentationHintAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-    private PresentationHintAnnotationFacetFactory facetFactory;
+public class RestExtensionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    private RestExtensionAnnotationFacetFactory facetFactory;
 
-    protected override Type[] SupportedTypes => new[] { typeof(IPresentationHintFacet) };
+    protected override Type[] SupportedTypes => new[] { typeof(IRestExtensionFacet) };
 
     protected override IFacetFactory FacetFactory => facetFactory;
 
     #region Nested type: Customer
 
-    [PresentationHint("ahint")]
+    [RestExtension("aname", "avalue")]
     private class Customer { }
 
     #endregion
@@ -39,11 +39,11 @@ public class PresentationHintAnnotationFacetFactoryTest : AbstractFacetFactoryTe
     #region Nested type: Customer1
 
     private class Customer1 {
-        [PresentationHint("ahint")]
+        [RestExtension("aname", "avalue")]
 
         public string FirstName => null;
 
-        [PresentationHint("ahint")]
+        [RestExtension("aname", "avalue")]
         public List<Customer3> Customers { get; set; }
     }
 
@@ -52,9 +52,9 @@ public class PresentationHintAnnotationFacetFactoryTest : AbstractFacetFactoryTe
     #region Nested type: Customer2
 
     private class Customer2 {
-        [PresentationHint("ahint")]
+        [RestExtension("aname", "avalue")]
 // ReSharper disable UnusedParameter.Local
-        public void SomeAction([PresentationHint("ahint")] string foo) { }
+        public void SomeAction([RestExtension("aname", "avalue")] string foo) { }
     }
 
     #endregion
@@ -64,7 +64,7 @@ public class PresentationHintAnnotationFacetFactoryTest : AbstractFacetFactoryTe
     [TestInitialize]
     public override void SetUp() {
         base.SetUp();
-        facetFactory = new PresentationHintAnnotationFacetFactory(GetOrder<PresentationHintAnnotationFacetFactory>(), LoggerFactory);
+        facetFactory = new RestExtensionAnnotationFacetFactory(GetOrder<RestExtensionAnnotationFacetFactory>(), LoggerFactory);
     }
 
     [TestCleanup]
@@ -76,12 +76,12 @@ public class PresentationHintAnnotationFacetFactoryTest : AbstractFacetFactoryTe
     #endregion
 
     private class Customer3 {
-        [PresentationHint("ahint")]
+        [RestExtension("aname", "avalue")]
         public int NumberOfOrders => 0;
     }
 
     private class Customer4 {
-        public void SomeAction([PresentationHint("ahint")] int foo) { }
+        public void SomeAction([RestExtension("aname", "avalue")] int foo) { }
     }
 
     [TestMethod]
@@ -95,91 +95,96 @@ public class PresentationHintAnnotationFacetFactoryTest : AbstractFacetFactoryTe
     }
 
     [TestMethod]
-    public void TestPresentationHintAnnotationNotIgnoredForNonStringsProperty() {
+    public void TestRestExtensionAnnotationNotIgnoredForNonStringsProperty() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var property = FindProperty(typeof(Customer3), "NumberOfOrders");
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-        Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
+        Assert.IsNotNull(Specification.GetFacet(typeof(IRestExtensionFacet)));
         Assert.IsNotNull(metamodel);
     }
 
     [TestMethod]
-    public void TestPresentationHintAnnotationNotIgnoredForPrimitiveOnActionParameter() {
+    public void TestRestExtensionAnnotationNotIgnoredForPrimitiveOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var method = FindMethod(typeof(Customer4), "SomeAction", new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-        Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
+        Assert.IsNotNull(Specification.GetFacet(typeof(IRestExtensionFacet)));
         Assert.IsNotNull(metamodel);
     }
 
     [TestMethod]
-    public void TestPresentationHintAnnotationPickedUpOnAction() {
+    public void TestRestExtensionAnnotationPickedUpOnAction() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(string) });
         metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        var facet = Specification.GetFacet(typeof(IRestExtensionFacet));
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is PresentationHintFacet);
-        var hintFacet = (PresentationHintFacet)facet;
-        Assert.AreEqual("ahint", hintFacet.Value);
+        Assert.IsTrue(facet is RestExtensionFacet);
+        var extFacet = (RestExtensionFacet)facet;
+        Assert.AreEqual("aname", extFacet.Name);
+        Assert.AreEqual("avalue", extFacet.Value);
         Assert.IsNotNull(metamodel);
     }
 
     [TestMethod]
-    public void TestPresentationHintAnnotationPickedUpOnActionParameter() {
+    public void TestRestExtensionAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        var facet = Specification.GetFacet(typeof(IRestExtensionFacet));
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is PresentationHintFacet);
-        var hintFacet = (PresentationHintFacet)facet;
-        Assert.AreEqual("ahint", hintFacet.Value);
+        Assert.IsTrue(facet is RestExtensionFacet);
+        var extFacet = (RestExtensionFacet)facet;
+        Assert.AreEqual("aname", extFacet.Name);
+        Assert.AreEqual("avalue", extFacet.Value);
         Assert.IsNotNull(metamodel);
     }
 
     [TestMethod]
-    public void TestPresentationHintAnnotationPickedUpOnClass() {
+    public void TestRestExtensionAnnotationPickedUpOnClass() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        var facet = Specification.GetFacet(typeof(IRestExtensionFacet));
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is PresentationHintFacet);
-        var hintFacet = (PresentationHintFacet)facet;
-        Assert.AreEqual("ahint", hintFacet.Value);
+        Assert.IsTrue(facet is RestExtensionFacet);
+        var extFacet = (RestExtensionFacet)facet;
+        Assert.AreEqual("aname", extFacet.Name);
+        Assert.AreEqual("avalue", extFacet.Value);
         Assert.IsNotNull(metamodel);
     }
 
     [TestMethod]
-    public void TestPresentationHintAnnotationPickedUpOnCollectionProperty() {
+    public void TestRestExtensionAnnotationPickedUpOnCollectionProperty() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var property = FindProperty(typeof(Customer1), "Customers");
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        var facet = Specification.GetFacet(typeof(IRestExtensionFacet));
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is PresentationHintFacet);
-        var hintFacet = (PresentationHintFacet)facet;
-        Assert.AreEqual("ahint", hintFacet.Value);
+        Assert.IsTrue(facet is RestExtensionFacet);
+        var extFacet = (RestExtensionFacet)facet;
+        Assert.AreEqual("aname", extFacet.Name);
+        Assert.AreEqual("avalue", extFacet.Value);
         Assert.IsNotNull(metamodel);
     }
 
     [TestMethod]
-    public void TestPresentationHintAnnotationPickedUpOnProperty() {
+    public void TestRestExtensionAnnotationPickedUpOnProperty() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var property = FindProperty(typeof(Customer1), "FirstName");
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IPresentationHintFacet));
+        var facet = Specification.GetFacet(typeof(IRestExtensionFacet));
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is PresentationHintFacet);
-        var hintFacet = (PresentationHintFacet)facet;
-        Assert.AreEqual("ahint", hintFacet.Value);
+        Assert.IsTrue(facet is RestExtensionFacet);
+        var extFacet = (RestExtensionFacet)facet;
+        Assert.AreEqual("aname", extFacet.Name);
+        Assert.AreEqual("avalue", extFacet.Value);
         Assert.IsNotNull(metamodel);
     }
 }

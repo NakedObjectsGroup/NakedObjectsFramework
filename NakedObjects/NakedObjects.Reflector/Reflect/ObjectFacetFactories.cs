@@ -76,6 +76,7 @@ public static class ObjectFacetFactories {
             typeof(TableViewAnnotationFacetFactory),
             typeof(EagerlyAnnotationFacetFactory),
             typeof(PresentationHintAnnotationFacetFactory),
+            typeof(RestExtensionAnnotationFacetFactory),
             typeof(MenuFacetFactory)
         };
 }
