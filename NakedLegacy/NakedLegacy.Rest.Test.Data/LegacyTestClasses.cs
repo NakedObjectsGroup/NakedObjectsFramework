@@ -25,6 +25,7 @@ public class SimpleService : IContainerAware {
     public ClassWithTextString GetClassWithTextString() => Container.AllInstances<ClassWithTextString>().FirstOrDefault();
 }
 
+[RestExtension(Name = "x-ro-class-ext", Value = "class-value")]
 public class ClassWithTextString {
     private TextString _name;
     public string name { get; set; }
@@ -32,11 +33,13 @@ public class ClassWithTextString {
     [Key]
     public int Id { get; init; }
 
+    [RestExtension(Name = "x-ro-prop-ext", Value = "prop-value")]
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
     public Title Title() => new(Name.Title());
 
-    public ClassWithTextString ActionUpdateName(TextString newName) {
+    [RestExtension(Name = "x-ro-act-ext", Value = "act-value")]
+    public ClassWithTextString ActionUpdateName([RestExtension(Name = "x-ro-parm-ext", Value = "parm-value")] TextString newName) {
         Name.Value = newName.Value;
         return this;
     }
