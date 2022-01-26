@@ -19,11 +19,11 @@ public class WholeNumber : ValueHolder<int> {
         }
         catch (FormatException) {
             //throw new ValueHolderException(FormatMessage(fromString));
-            throw new ValueHolderException(fromString);
+            throw new Exception(fromString);
         }
         catch (OverflowException) {
             //throw new ValueHolderException(OutOfRangeMessage(fromString, new WholeNumber(int.MinValue), new WholeNumber(int.MaxValue)));
-            throw new ValueHolderException(fromString);
+            throw new Exception(fromString);
         }
     }
 

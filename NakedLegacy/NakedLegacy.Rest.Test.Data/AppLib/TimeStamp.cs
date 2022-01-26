@@ -18,7 +18,7 @@ public class TimeStamp : ValueHolder<DateTime> {
             return new TimeStamp(DateTime.Parse(entry));
         }
         catch (FormatException) {
-            throw new ValueHolderException(dateString);
+            throw new Exception(dateString);
         }
     }
 

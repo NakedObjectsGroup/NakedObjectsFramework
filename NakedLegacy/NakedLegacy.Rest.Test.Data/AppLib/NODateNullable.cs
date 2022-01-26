@@ -21,7 +21,7 @@ public class NODateNullable : ValueHolder<DateTime?>, IDateOnly {
             return new NODate(DateTime.Parse(entry));
         }
         catch (FormatException) {
-            throw new ValueHolderException(dateString);
+            throw new Exception(dateString);
         }
     }
 

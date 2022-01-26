@@ -34,7 +34,7 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
         try {
             return new T().Parse(entry) as T;
         }
-        catch (ValueHolderException e) {
+        catch (Exception e) {
             throw new InvalidEntryException(e.Message);
         }
     }

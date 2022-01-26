@@ -18,7 +18,7 @@ public class Logical : ValueHolder<bool> {
             return new Logical(false);
         }
 
-        throw new ValueHolderException(entry);
+        throw new Exception(entry);
     }
 
     public override object Display(string mask = null) => Value;

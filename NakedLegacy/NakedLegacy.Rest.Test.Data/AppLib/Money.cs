@@ -19,10 +19,10 @@ public class Money : ValueHolder<decimal> {
             return new Money(decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands));
         }
         catch (FormatException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
         catch (OverflowException) {
-            throw new ValueHolderException(entry);
+            throw new Exception(entry);
         }
     }
 
