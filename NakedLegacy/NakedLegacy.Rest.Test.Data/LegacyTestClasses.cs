@@ -60,7 +60,7 @@ public class ClassToPersist : IContainerAware {
         TestSave = TestProperty = false;
     }
 
-    public void AboutName(IFieldAbout fieldAbout, TextString name) {
+    public void AboutName(FieldAbout fieldAbout, TextString name) {
         if (fieldAbout.TypeCode == AboutTypeCodes.Valid) {
             if (TestProperty) {
                 if (name.Value == "invalid") {
@@ -87,7 +87,7 @@ public class ClassToPersist : IContainerAware {
         Container.MakePersistent(ref toSave);
     }
 
-    public void AboutActionSave(IActionAbout actionAbout) {
+    public void AboutActionSave(ActionAbout actionAbout) {
         if (actionAbout.TypeCode == AboutTypeCodes.Valid) {
             if (TestSave) {
                 if (Name.Value == "invalid") {
@@ -172,7 +172,7 @@ public class ClassWithActionAbout {
         // do something
     }
 
-    public void aboutActionTestAction(IActionAbout actionAbout) {
+    public void aboutActionTestAction(ActionAbout actionAbout) {
         AboutCount++;
         switch (actionAbout.TypeCode) {
             case AboutTypeCodes.Visible:
@@ -206,7 +206,7 @@ public class ClassWithActionAbout {
         var w = wn.Value;
     }
 
-    public void aboutActionTestActionWithParms(IActionAbout actionAbout, TextString ts, WholeNumber wn) {
+    public void aboutActionTestActionWithParms(ActionAbout actionAbout, TextString ts, WholeNumber wn) {
         AboutCount++;
         switch (actionAbout.TypeCode) {
             case AboutTypeCodes.Visible:
@@ -283,7 +283,7 @@ public class ClassWithFieldAbout {
 
     public ITitle Title() => Name.Title();
 
-    public void aboutName(IFieldAbout fieldAbout, TextString name) {
+    public void aboutName(FieldAbout fieldAbout, TextString name) {
         switch (fieldAbout.TypeCode) {
             case AboutTypeCodes.Visible:
                 fieldAbout.Visible = !TestInvisibleFlag;
@@ -356,7 +356,7 @@ public class ClassWithReferenceProperty : IContainerAware {
         return simpleService.GetClassWithTextString();
     }
 
-    public void AboutActionUpdateReferenceProperty(IActionAbout actionAbout, ClassWithTextString newReferenceProperty) {
+    public void AboutActionUpdateReferenceProperty(ActionAbout actionAbout, ClassWithTextString newReferenceProperty) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = true;
         }
@@ -422,7 +422,7 @@ public class ClassWithMenu {
         return null;
     }
 
-    public static void AboutActionMenuActionWithParm(IActionAbout actionAbout, TextString ts) {
+    public static void AboutActionMenuActionWithParm(ActionAbout actionAbout, TextString ts) {
         switch (actionAbout.TypeCode) {
             case AboutTypeCodes.Visible:
                 if (TestInvisibleFlag) {
@@ -471,7 +471,7 @@ public class ClassWithMenu {
 
     public static ClassWithTextString ActionMethodInjectedWithParm(TextString ts, IContainer container) => container.AllInstances<ClassWithTextString>().First();
 
-    public static void AboutActionMethodInjectedWithParm(IActionAbout actionAbout, TextString ts, IContainer container) {
+    public static void AboutActionMethodInjectedWithParm(ActionAbout actionAbout, TextString ts, IContainer container) {
         if (actionAbout.TypeCode == AboutTypeCodes.Valid) {
             // make sure container is not null
             var a = container.AllInstances<ClassWithTextString>().First();
@@ -564,7 +564,7 @@ public class ClassWithWholeNumber {
         return this;
     }
 
-    public void AboutActionUpdateWholeNumber(IActionAbout actionAbout, WholeNumber newWholeNumber) {
+    public void AboutActionUpdateWholeNumber(ActionAbout actionAbout, WholeNumber newWholeNumber) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }
@@ -593,7 +593,7 @@ public class ClassWithLogical {
         return this;
     }
 
-    public void AboutActionUpdateLogical(IActionAbout actionAbout, Logical newLogical) {
+    public void AboutActionUpdateLogical(ActionAbout actionAbout, Logical newLogical) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }
@@ -622,7 +622,7 @@ public class ClassWithMoney {
         return this;
     }
 
-    public void AboutActionUpdateMoney(IActionAbout actionAbout, Money newMoney) {
+    public void AboutActionUpdateMoney(ActionAbout actionAbout, Money newMoney) {
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }

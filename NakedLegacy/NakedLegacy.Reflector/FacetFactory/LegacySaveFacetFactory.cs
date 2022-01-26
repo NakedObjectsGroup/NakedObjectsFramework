@@ -40,7 +40,7 @@ public sealed class LegacySaveFacetFactory : LegacyFacetFactoryProcessor, IMetho
         const string name = "actionsave";
         var saveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, name, typeof(void), null);
         methodRemover.SafeRemoveMethod(saveMethod);
-        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{name}", typeof(void), new[] { typeof(IActionAbout) });
+        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{name}", typeof(void), new[] { typeof(ActionAbout) });
 
         methodRemover.SafeRemoveMethod(aboutSaveMethod);
 

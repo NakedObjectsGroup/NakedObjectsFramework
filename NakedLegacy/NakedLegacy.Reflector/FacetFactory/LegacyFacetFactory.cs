@@ -104,12 +104,12 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
 
         var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
         var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType);
-        var aboutParamTypes = new List<Type> { typeof(IActionAbout) };
+        var aboutParamTypes = new List<Type> { typeof(ActionAbout) };
         aboutParamTypes.AddRange(paramTypes);
         var aboutParams = aboutParamTypes.ToArray();
 
         var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ??
-                     MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(IActionAbout) });
+                     MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(ActionAbout) });
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {
@@ -154,8 +154,8 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
 
         facets.Add(new MemberNamedFacetInferred(specification.Identifier.MemberName, specification));
 
-        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(IFieldAbout), property.PropertyType }) ??
-                     MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(IFieldAbout) });
+        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType }) ??
+                     MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout) });
 
         methodRemover.SafeRemoveMethod(method);
 

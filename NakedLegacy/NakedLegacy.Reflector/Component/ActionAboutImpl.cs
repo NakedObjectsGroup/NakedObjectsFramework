@@ -1,6 +1,6 @@
 ﻿namespace NakedLegacy.Reflector.Component;
 
-public class ActionAboutImpl : IActionAbout {
+public class ActionAboutImpl : ActionAbout {
     public ActionAboutImpl(AboutTypeCodes typeCode) => TypeCode = typeCode;
     public string Name { get; set; }
     public string Description { get; set; }

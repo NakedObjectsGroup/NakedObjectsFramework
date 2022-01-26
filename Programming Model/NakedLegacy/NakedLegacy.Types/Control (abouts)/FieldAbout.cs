@@ -7,8 +7,7 @@
 
 namespace NakedLegacy;
 
-//[JavaInterface]
-public interface IFieldAbout : IAbout {
+public interface FieldAbout : IAbout {
     bool IsPersistent { get; set; } //TODO: Current API 'void nonPersistent()' implies this should be settable, but why?
     object[] Options { get; set; }
 
