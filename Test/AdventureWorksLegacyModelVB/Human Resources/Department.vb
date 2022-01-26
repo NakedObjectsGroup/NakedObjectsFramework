@@ -2,7 +2,7 @@
 
 
     Partial Public Class Department
-        Implements ITitledObject, INotEditableOncePersistent, IBounded
+        Implements ITitledObject, IBounded 'Does not implement INotEditableOncePersistent to permit testing
 
         Public Property DepartmentID As Short  'Not visible on UI
 
