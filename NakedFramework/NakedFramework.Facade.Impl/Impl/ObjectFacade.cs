@@ -100,6 +100,14 @@ public class ObjectFacade : IObjectFacade {
         }
     }
 
+    public (string, string)? RestExtension {
+        get {
+            var spec = WrappedNakedObject.Spec;
+            var extensionFacet = spec.GetFacet<IRestExtensionFacet>();
+            return extensionFacet == null ? null : (extensionFacet.Name, extensionFacet.Value);
+        }
+    }
+
     public object Object => WrappedNakedObject.Object;
 
     public IEnumerable<IObjectFacade> ToEnumerable() => WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));

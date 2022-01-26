@@ -184,6 +184,7 @@ public class ObjectRepresentation : Representation {
             null,
             null,
             objectFacade.PresentationHint,
+            objectFacade.RestExtension,
             GetCustomExtensions(objectFacade),
             null,
             null,

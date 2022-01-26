@@ -93,6 +93,8 @@ public class ActionFacade : IActionFacade {
 
     public string PresentationHint => WrappedSpec.GetPresentationHint();
 
+    public (string, string)? RestExtension => WrappedSpec.GetRestExtension();
+
     public int? NumberOfLines => WrappedSpec.GetNumberOfLines();
 
     #endregion

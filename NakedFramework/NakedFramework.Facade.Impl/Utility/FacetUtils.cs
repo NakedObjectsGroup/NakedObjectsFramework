@@ -96,6 +96,11 @@ public static class FacetUtils {
         return hintFacet?.Value;
     }
 
+    public static (string, string)? GetRestExtension(this ISpecification spec) {
+        var extFacet = spec.GetFacet<IRestExtensionFacet>();
+        return extFacet is null ? null : (extFacet.Name, extFacet.Value);
+    }
+
     public static (Regex, string)? GetRegEx(this ISpecification spec) {
         var regEx = spec.GetFacet<IRegExFacet>();
         return regEx == null ? null : (regEx.Pattern, regEx.FailureMessage);

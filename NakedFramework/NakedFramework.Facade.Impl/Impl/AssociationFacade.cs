@@ -185,6 +185,8 @@ public class AssociationFacade : IAssociationFacade {
 
     public string PresentationHint => WrappedSpec.GetPresentationHint();
 
+    public (string, string)? RestExtension => WrappedSpec.GetRestExtension();
+
     public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework);
 
     public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {

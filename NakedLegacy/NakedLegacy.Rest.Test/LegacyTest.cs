@@ -176,6 +176,26 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestGetObjectWithRestExtension()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithTextString>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.IsNull(parsedResult["members"]["Id"]);
+        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        Assert.IsNotNull(parsedResult["members"]["ActionUpdateName"]);
+
+        Assert.AreEqual("class-value", parsedResult["extensions"]["x-ro-class-ext"].ToString());
+        Assert.AreEqual("prop-value", parsedResult["members"]["Name"]["extensions"]["x-ro-prop-ext"].ToString());
+        Assert.AreEqual("act-value", parsedResult["members"]["ActionUpdateName"]["extensions"]["x-ro-act-ext"].ToString());
+        Assert.AreEqual("parm-value", parsedResult["members"]["ActionUpdateName"]["parameters"]["newName"]["extensions"]["x-ro-parm-ext"].ToString());
+    }
+
+    [Test]
     public void TestGetBounded() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithBounded>(), "1");

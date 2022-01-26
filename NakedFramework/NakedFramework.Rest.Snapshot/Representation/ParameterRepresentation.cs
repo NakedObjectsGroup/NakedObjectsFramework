@@ -116,6 +116,7 @@ public class ParameterRepresentation : Representation {
                                              null,
                                              parameter.DataType,
                                              parameter.PresentationHint,
+                                             parameter.RestExtension,
                                              custom,
                                              parameter.Specification,
                                              parameter.ElementType,

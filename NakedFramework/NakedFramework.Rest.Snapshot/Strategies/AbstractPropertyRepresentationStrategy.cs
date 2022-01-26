@@ -157,6 +157,7 @@ public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentat
             PropertyContext.Property.MemberOrder,
             PropertyContext.Property.DataType,
             PropertyContext.Property.PresentationHint,
+            PropertyContext.Property.RestExtension,
             GetCustomPropertyExtensions(objectFacade),
             PropertyContext.Specification,
             PropertyContext.ElementSpecification,

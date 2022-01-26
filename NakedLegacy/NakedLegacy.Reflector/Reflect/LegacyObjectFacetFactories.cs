@@ -26,7 +26,8 @@ public static class LegacyObjectFacetFactories {
             typeof(LegacyMenuFacetFactory),
             typeof(MemberOrderAnnotationFacetFactory),
             typeof(LengthAnnotationFacetFactory),
-            typeof(LegacySaveFacetFactory)
+            typeof(LegacySaveFacetFactory),
+            typeof(RestExtensionAnnotationFacetFactory)
         };
 
     public static Type[] TypeFacetFactories() =>

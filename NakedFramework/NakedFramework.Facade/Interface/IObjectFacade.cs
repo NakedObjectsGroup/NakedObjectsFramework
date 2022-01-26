@@ -18,6 +18,8 @@ public interface IObjectFacade : IFacadeHolder {
     IOidFacade Oid { get; }
     IVersionFacade Version { get; }
     string PresentationHint { get; }
+
+    (string, string)? RestExtension { get; }
     bool IsTransient { get; }
     bool IsDestroyed { get; }
     bool IsUserPersistable { get; }

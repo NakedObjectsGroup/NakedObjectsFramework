@@ -180,6 +180,8 @@ public class ActionParameterFacade : IActionParameterFacade {
 
     public string PresentationHint => WrappedSpec.GetPresentationHint();
 
+    public (string, string)? RestExtension => WrappedSpec.GetRestExtension();
+
     public int NumberOfLines => WrappedSpec.GetNumberOfLinesWithDefault();
 
     #endregion

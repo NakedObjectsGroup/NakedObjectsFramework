@@ -97,6 +97,7 @@ public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
             ActionContext.Action.MemberOrder,
             null,
             ActionContext.Action.PresentationHint,
+            ActionContext.Action.RestExtension,
             GetCustomActionExtensions(objectFacade),
             ActionContext.Action.ReturnType,
             ActionContext.Action.ElementType,

@@ -42,6 +42,7 @@ public abstract class AbstractCollectionRepresentationStrategy : MemberRepresent
             PropertyContext.Property.MemberOrder,
             PropertyContext.Property.DataType,
             PropertyContext.Property.PresentationHint,
+            PropertyContext.Property.RestExtension,
             GetCustomPropertyExtensions(),
             PropertyContext.Specification,
             PropertyContext.ElementSpecification,

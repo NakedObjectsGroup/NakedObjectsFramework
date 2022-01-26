@@ -95,6 +95,7 @@ public static class RestUtils {
                                                   int? memberOrder,
                                                   DataType? dataType,
                                                   string presentationHint,
+                                                  (string, string)? restExtension,
                                                   IDictionary<string, object> customExtensions,
                                                   ITypeFacade returnType,
                                                   ITypeFacade elementType,
@@ -113,6 +114,7 @@ public static class RestUtils {
         exts.AddIfNotNull(JsonPropertyNames.MemberOrder, memberOrder);
         exts.AddIfNotNull(JsonPropertyNames.CustomDataType, dataType?.ToString().ToLower());
         exts.AddIfNotNullOrEmpty(JsonPropertyNames.PresentationHint, presentationHint);
+        exts.AddIfNotNullOrEmpty(restExtension?.Item1, restExtension?.Item2);
 
         if (returnType is { IsVoid: false }) {
             var (typeString, formatString) = SpecToTypeAndFormatString(returnType, oidStrategy, useDateOverDateTime);

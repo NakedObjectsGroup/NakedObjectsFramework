@@ -17,6 +17,7 @@ public interface IFieldFacade {
     ITypeFacade Specification { get; }
     bool IsAutoCompleteEnabled { get; }
     string PresentationHint { get; }
+    (string, string)? RestExtension { get; }
     (Regex, string)? RegEx { get; }
     (IConvertible min, IConvertible max, bool isDateRange)? Range { get; }
     int NumberOfLines { get; }

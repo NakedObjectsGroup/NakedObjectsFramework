@@ -39,6 +39,7 @@ public class FieldFacadeAdapter {
     public DataType? DataType => parameter?.DataType ?? association?.DataType;
     public string PresentationHint => parameter?.PresentationHint ?? association?.PresentationHint;
 
+    public (string, string)? RestExtension => parameter?.RestExtension ?? association?.RestExtension;
     public bool? IsFindMenuEnabled => parameter?.IsFindMenuEnabled ?? association?.IsFindMenuEnabled;
 
     public Choices IsChoicesEnabled(IObjectFacade objectFacade) => (parameter?.IsChoicesEnabled(objectFacade) ?? association?.IsChoicesEnabled(objectFacade)).GetValueOrDefault();

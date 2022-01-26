@@ -14,6 +14,7 @@ public interface IActionFacade : IMemberFacade {
     IActionParameterFacade[] Parameters { get; }
     ITypeFacade OnType { get; }
     string PresentationHint { get; }
+    (string, string)? RestExtension { get; }
     int PageSize { get; }
     bool IsQueryOnly { get; }
     bool IsIdempotent { get; }
