@@ -2,7 +2,7 @@
 
 	Partial Public Class SalesTerritoryHistory
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 		'
 		'<Hidden>
 		Public Property BusinessEntityID() As Integer

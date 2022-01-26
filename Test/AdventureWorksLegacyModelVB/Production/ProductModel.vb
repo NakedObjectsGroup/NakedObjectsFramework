@@ -2,7 +2,7 @@
 
     Partial Public Class ProductModel
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 
         Public Property ProductModelID() As Integer
 

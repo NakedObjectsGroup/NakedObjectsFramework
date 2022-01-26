@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class PersonCreditCard
- Implements ITitledObject
+ Implements ITitledObject, INotEditableOncePersistent
         '<Hidden>
         Public Property PersonID() As Integer
 

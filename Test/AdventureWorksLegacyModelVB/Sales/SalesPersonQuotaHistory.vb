@@ -2,7 +2,7 @@
 
     Partial Public Class SalesPersonQuotaHistory
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
         '<Hidden>
         Public Property BusinessEntityID() As Integer
 

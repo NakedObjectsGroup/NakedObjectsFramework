@@ -2,7 +2,7 @@
 
 	Partial Public Class SalesOrderDetail
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		'<Hidden>
 		Public Property SalesOrderID() As Integer

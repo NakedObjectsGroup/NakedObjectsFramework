@@ -2,7 +2,7 @@
 
     Partial Public Class Vendor
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 
         Public Shared Function FieldOrder() As String
             Return "Accountnumber, NAME,  CreditRating, PreferredVendorStatus, " +

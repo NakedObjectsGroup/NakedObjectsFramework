@@ -3,7 +3,7 @@
 	'<Named("Address")>
 	Partial Public Class BusinessEntityAddress
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		Public Property BusinessEntityID() As Integer
 

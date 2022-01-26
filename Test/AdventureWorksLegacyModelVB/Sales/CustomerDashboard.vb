@@ -5,7 +5,7 @@ Namespace AW.Types
 	'TODO
 	'<ViewModel(GetType(CustomerDashboard_Functions))>
 	Partial Public Class CustomerDashboard
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		'<Hidden>
 		Public Overridable Property Root() As Customer

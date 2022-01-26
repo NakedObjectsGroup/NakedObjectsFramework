@@ -2,7 +2,7 @@
 
 
 	Partial Public Class StateProvince
-		Implements ITitledObject, IBounded
+		Implements ITitledObject, INotEditableOncePersistent, IBounded
 
 		Public Property StateProvinceID() As Integer
 

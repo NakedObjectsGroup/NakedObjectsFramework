@@ -3,7 +3,7 @@ Namespace AW.Types
 
     Partial Public Class ProductDescription
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 
         Public Property ProductDescriptionID() As Integer
 

@@ -4,7 +4,7 @@ Imports NakedFramework.Value
 Namespace AW.Types
 
     Partial Public Class Product
-        Implements ITitledObject, IContainerAware
+        Implements ITitledObject, INotEditableOncePersistent, IContainerAware
 
 
 #Region "Container"

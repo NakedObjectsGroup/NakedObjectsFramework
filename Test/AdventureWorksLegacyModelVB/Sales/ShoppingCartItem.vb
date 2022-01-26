@@ -2,7 +2,7 @@
 
 	Partial Public Class ShoppingCartItem
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 		''<Hidden>
 		Public Property ShoppingCartItemID() As Integer
 

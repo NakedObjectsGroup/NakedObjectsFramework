@@ -2,7 +2,7 @@
 	'<Named("Contact")>
 	Partial Public Class BusinessEntityContact
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		Public Property BusinessEntityID() As Integer
 

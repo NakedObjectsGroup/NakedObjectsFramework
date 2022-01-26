@@ -2,7 +2,7 @@
 
 
     Partial Public Class UnitMeasure
-        Implements ITitledObject, IBounded
+        Implements ITitledObject, INotEditableOncePersistent, IBounded
 
         Public Property UnitMeasureCode() As String
 

@@ -2,7 +2,7 @@
 
 	Partial Public Class JobCandidate
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		Public Property JobCandidateID() As Integer
 

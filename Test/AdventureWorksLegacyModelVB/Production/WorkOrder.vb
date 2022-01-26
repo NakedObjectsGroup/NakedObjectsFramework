@@ -1,9 +1,7 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class WorkOrder
-
-		Implements ITitledObject
-
+		Implements ITitledObject 'Does not implement INotEditableOncePersistent - to permit testing
 
 		Public Property WorkOrderID() As Integer
 

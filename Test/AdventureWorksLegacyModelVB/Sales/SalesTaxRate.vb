@@ -2,7 +2,7 @@
 
     Partial Public Class SalesTaxRate
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
         '<Hidden>
         Public Property SalesTaxRateID() As Integer
 

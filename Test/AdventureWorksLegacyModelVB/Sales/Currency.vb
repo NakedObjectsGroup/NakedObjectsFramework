@@ -2,7 +2,7 @@
 
 
 	Partial Public Class Currency
-		Implements ITitledObject, IBounded
+		Implements ITitledObject, INotEditableOncePersistent, IBounded
 
 		'<Hidden>
 		Public Property CurrencyCode() As String = ""

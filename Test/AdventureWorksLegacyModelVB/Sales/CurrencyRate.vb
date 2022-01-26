@@ -2,7 +2,7 @@
 
     Partial Public Class CurrencyRate
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
         ''<Hidden>
         Public Property CurrencyRateID() As Integer
 

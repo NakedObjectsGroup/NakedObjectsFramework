@@ -2,7 +2,7 @@
 
 
 	Partial Public Class ScrapReason
-		Implements ITitledObject, IBounded
+		Implements ITitledObject, INotEditableOncePersistent, IBounded
 
 		Public Property ScrapReasonID() As Short
 

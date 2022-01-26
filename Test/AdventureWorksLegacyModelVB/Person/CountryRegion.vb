@@ -2,7 +2,7 @@
 
 
     Partial Public Class CountryRegion
-        Implements ITitledObject, IBounded
+        Implements ITitledObject, INotEditableOncePersistent, IBounded
 
 #Region "Name"
         Public Property mappedName As String

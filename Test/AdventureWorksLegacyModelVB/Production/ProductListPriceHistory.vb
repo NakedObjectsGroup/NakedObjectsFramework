@@ -2,7 +2,7 @@
 
     Partial Public Class ProductListPriceHistory
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 
         Public Property ProductID() As Integer
 

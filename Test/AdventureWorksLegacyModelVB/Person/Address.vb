@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
     Partial Public Class Address
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 
 
         Public Property AddressID() As Integer

@@ -6,7 +6,7 @@ Namespace AW.Types
 
     Partial Public Class Store
         Inherits BusinessEntity
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 #Region "Name"
         Public Property mappedName As String
         Friend myName As TextString

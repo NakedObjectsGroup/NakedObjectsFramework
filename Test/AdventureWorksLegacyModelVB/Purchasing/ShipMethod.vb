@@ -2,7 +2,7 @@
 
 
     Partial Public Class ShipMethod
-        Implements ITitledObject, IBounded
+        Implements ITitledObject, INotEditableOncePersistent, IBounded
 
         Public Property ShipMethodID() As Integer
 

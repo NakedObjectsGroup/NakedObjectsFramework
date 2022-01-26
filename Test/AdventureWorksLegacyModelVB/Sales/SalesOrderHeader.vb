@@ -2,7 +2,7 @@
 
     '<Named("Sales Order")>
     Partial Public Class SalesOrderHeader
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 
         ''<Hidden>
         Public Property SalesOrderID() As Integer

@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class TransactionHistory
- Implements ITitledObject
+ Implements ITitledObject, INotEditableOncePersistent
 
 		Public Property TransactionID() As Integer
 

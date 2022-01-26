@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class Illustration
- Implements ITitledObject
+ Implements ITitledObject, INotEditableOncePersistent
 		Public Property IllustrationID() As Integer
 
 #Region "Diagram"

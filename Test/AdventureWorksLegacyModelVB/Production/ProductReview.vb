@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class ProductReview
- Implements ITitledObject
+ Implements ITitledObject, INotEditableOncePersistent
 
 		Public Property ProductReviewID() As Integer
 

@@ -2,7 +2,7 @@
 
 
     Partial Public Class SalesReason
-        Implements ITitledObject, IBounded
+        Implements ITitledObject, INotEditableOncePersistent, IBounded
 
         ''<Hidden>
         Public Property SalesReasonID() As Integer

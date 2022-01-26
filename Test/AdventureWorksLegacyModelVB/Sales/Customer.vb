@@ -4,7 +4,7 @@ Namespace AW.Types
 
 	Partial Public Class Customer
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 		''<Hidden>
 		Public Property CustomerID() As Integer
 

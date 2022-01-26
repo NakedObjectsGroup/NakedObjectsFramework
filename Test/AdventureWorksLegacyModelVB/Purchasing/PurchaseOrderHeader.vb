@@ -2,7 +2,7 @@
 
 	Partial Public Class PurchaseOrderHeader
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		''<Hidden>
 		Public Property PurchaseOrderID() As Integer

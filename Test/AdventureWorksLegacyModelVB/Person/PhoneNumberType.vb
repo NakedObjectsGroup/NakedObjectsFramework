@@ -2,7 +2,7 @@
 
 
 	Partial Public Class PhoneNumberType
-		Implements ITitledObject, IBounded
+		Implements ITitledObject, INotEditableOncePersistent, IBounded
 
 		Public Property PhoneNumberTypeID() As Integer
 

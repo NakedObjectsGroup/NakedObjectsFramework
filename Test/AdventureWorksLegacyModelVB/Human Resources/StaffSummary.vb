@@ -4,7 +4,7 @@ Namespace AW.Types
 
 	'<ViewModel(GetType(StaffSummary_Functions))>
 	Partial Public Class StaffSummary
- Implements ITitledObject
+ Implements ITitledObject, INotEditableOncePersistent
 		<MemberOrder(1)>
 		Public Property Female() As Integer
 

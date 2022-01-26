@@ -4,7 +4,7 @@ Namespace AW.Types
 
     Partial Public Class Person
         Inherits BusinessEntity
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 
 #Region "Name fields"
 #Region "NameStyle"

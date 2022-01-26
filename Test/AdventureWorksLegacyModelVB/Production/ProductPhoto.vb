@@ -4,7 +4,7 @@ Namespace AW.Types
 
 	Partial Public Class ProductPhoto
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		Public Property ProductPhotoID As Integer
 

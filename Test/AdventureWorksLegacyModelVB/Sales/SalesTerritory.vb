@@ -2,7 +2,7 @@
 
 
 	Partial Public Class SalesTerritory
-		Implements ITitledObject, IBounded
+		Implements ITitledObject, INotEditableOncePersistent, IBounded
 
 		'<Hidden>
 		Public Property TerritoryID() As Integer

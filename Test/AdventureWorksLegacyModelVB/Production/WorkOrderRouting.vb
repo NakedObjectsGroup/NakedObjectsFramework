@@ -2,7 +2,7 @@
 
 	Partial Public Class WorkOrderRouting
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		Public Property WorkOrderID() As Integer
 

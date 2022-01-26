@@ -2,7 +2,7 @@
 
     Partial Public Class EmployeePayHistory
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 
         Public Property EmployeeID() As Integer
 

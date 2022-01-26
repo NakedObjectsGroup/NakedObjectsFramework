@@ -2,7 +2,7 @@
 
 	Partial Public Class BillOfMaterial
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		Public Property BillOfMaterialID() As Integer
 

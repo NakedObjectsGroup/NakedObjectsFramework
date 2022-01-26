@@ -2,7 +2,7 @@
 
 
     Partial Public Class Culture
-        Implements ITitledObject, IBounded
+        Implements ITitledObject, INotEditableOncePersistent, IBounded
 
         Public Property CultureID() As String
 

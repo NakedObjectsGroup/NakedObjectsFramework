@@ -2,7 +2,7 @@
 
 
     Partial Public Class Location
-        Implements ITitledObject, IBounded
+        Implements ITitledObject, INotEditableOncePersistent, IBounded
 
         '<Hidden>
         Public Property LocationID() As Short

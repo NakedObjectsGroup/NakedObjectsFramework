@@ -2,7 +2,7 @@
 
 
 	Partial Public Class ProductCategory
-		Implements ITitledObject, IBounded
+		Implements ITitledObject, INotEditableOncePersistent, IBounded
 
 		Public Property ProductCategoryID() As Integer
 

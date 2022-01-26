@@ -2,7 +2,7 @@
 
 
     Partial Public Class AddressType
-        Implements ITitledObject, IBounded
+        Implements ITitledObject, INotEditableOncePersistent, IBounded
 
         Public Property AddressTypeID() As Integer
 

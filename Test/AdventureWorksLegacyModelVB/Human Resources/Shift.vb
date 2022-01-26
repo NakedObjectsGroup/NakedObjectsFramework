@@ -2,7 +2,7 @@
 
 
 	Partial Public Class Shift
-		Implements ITitledObject, IBounded
+		Implements ITitledObject, INotEditableOncePersistent, IBounded
 
 		Public Property ShiftID() As Byte
 

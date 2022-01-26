@@ -5,7 +5,7 @@ Namespace AW.Types
 	'TODO
 	'<ViewModel(GetType(CustomerCollectionViewModel_Functions))>
 	Partial Public Class CustomerCollectionViewModel
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		Public Sub New(ByVal customers As IList(Of Customer))
 			Me.Customers = customers

@@ -2,7 +2,7 @@
 
 	Partial Public Class SpecialOfferProduct
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 		''<Hidden>
 		Public Property SpecialOfferID() As Integer
 

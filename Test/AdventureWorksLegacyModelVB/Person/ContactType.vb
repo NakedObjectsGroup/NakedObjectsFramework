@@ -2,7 +2,7 @@
 
 
     Partial Public Class ContactType
-        Implements ITitledObject, IBounded
+        Implements ITitledObject, INotEditableOncePersistent, IBounded
 
         Public Property ContactTypeID() As Integer
 

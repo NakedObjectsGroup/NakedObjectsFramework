@@ -2,7 +2,7 @@
 
     Partial Public Class PersonPhone
 
-        Implements ITitledObject
+        Implements ITitledObject, INotEditableOncePersistent
 
         Public Property BusinessEntityID() As Integer
 

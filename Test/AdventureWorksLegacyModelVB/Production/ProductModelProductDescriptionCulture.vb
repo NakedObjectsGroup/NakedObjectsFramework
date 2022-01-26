@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class ProductModelProductDescriptionCulture
- Implements ITitledObject
+ Implements ITitledObject, INotEditableOncePersistent
 
 		Public Property ProductModelID() As Integer
 

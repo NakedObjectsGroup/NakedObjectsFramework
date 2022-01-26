@@ -1,7 +1,7 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class CountryRegionCurrency
- Implements ITitledObject
+ Implements ITitledObject, INotEditableOncePersistent
 		Public Property CountryRegionCode() As String = ""
 
 		Public Property CurrencyCode() As String = ""

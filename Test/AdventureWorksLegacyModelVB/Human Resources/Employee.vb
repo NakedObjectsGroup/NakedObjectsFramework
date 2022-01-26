@@ -3,7 +3,7 @@
 Namespace AW.Types
 
     Partial Public Class Employee
-        Implements ITitledObject, IContainerAware
+        Implements ITitledObject, INotEditableOncePersistent, IContainerAware
 
 #Region "Container"
         Public Property Container As IContainer Implements IContainerAware.Container

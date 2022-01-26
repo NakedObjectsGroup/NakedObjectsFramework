@@ -2,7 +2,7 @@
 
 	Partial Public Class SalesPerson
 
-		Implements ITitledObject
+		Implements ITitledObject, INotEditableOncePersistent
 
 		''<Hidden>
 		Public Property BusinessEntityID() As Integer
