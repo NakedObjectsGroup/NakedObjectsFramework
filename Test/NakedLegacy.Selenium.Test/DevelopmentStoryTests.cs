@@ -51,7 +51,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ActionsThatRetrieveObjects();
             EditingObjects();
             Menus();
-            FieldAboutSpecifyingName_Description_Editability();
+            PropertyControl_UsingFieldAbout();
             CreatingAndSavingObjects();
             ActionAboutControl();
             ParameterControl();
@@ -350,18 +350,19 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .AssertHasSubMenus("Work Orders").OpenSubMenu("Work Orders").AssertHasAction(
                 "Current Work Orders").AssertHasAction("Create New Work Order");
         }
-        
+
         #endregion
 
-        #region FieldAboutSpecifyingName_Description_Editability
+        #region PropertyControl_UsingFieldAbout
         //[TestMethod]
-        public void FieldAboutSpecifyingName_Description_Editability()
+        public void PropertyControl_UsingFieldAbout()
         {
             PropertyHiddenUsingFieldAbout();
             PropertyRenamedUsingFieldAbout();
             PropertyMadeUneditableUsingFieldAbout();
             PropertyValidationUsingFieldAbout();
             TypeImplementingINotEditableOncePersistent();
+            PropertyMadeVisibleOnlyWhenPersistent();
         }
 
         //[TestMethod]
@@ -400,7 +401,19 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void TypeImplementingINotEditableOncePersistent()
         {
-           var v = AccessInstanceWithTitle("Vendor--1660", "Magic Cycles").AssertIsNotEditable();
+           AccessInstanceWithTitle("Vendor--1660", "Magic Cycles").AssertIsNotEditable();
+        }
+
+        //[TestMethod]
+        public void PropertyMadeVisibleOnlyWhenPersistent()
+        {
+            helper.GotoHome().OpenMainMenu("Special Offers")
+            .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject()
+            .AssertPropertiesAre("Description", "Discount Pct", "Type", "Category", 
+                "Start Date", "End Date", "Min Qty", "Max Qty"); //i.e. no Modified Date
+            AccessInstanceWithTitle("SpecialOffer--2", "Volume Discount 11 to 14")
+                .AssertPropertiesAre("Description", "Discount Pct", "Type", "Category",
+                "Start Date", "End Date", "Min Qty", "Max Qty", "Modified Date");
         }
 
         #endregion
