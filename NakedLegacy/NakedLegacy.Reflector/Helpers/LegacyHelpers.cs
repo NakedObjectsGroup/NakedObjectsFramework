@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
@@ -84,4 +85,14 @@ public static class LegacyHelpers {
 
         return mi;
     }
+
+    public static IEnumerable<System.Attribute> GetCustomAttributes(object onObject) =>
+        onObject switch
+        {
+            MemberInfo mi => mi.GetCustomAttributes(),
+            ParameterInfo pi => pi.GetCustomAttributes(),
+            _ => new System.Attribute[] { }
+        };
+
+    public static T GetCustomAttribute<T>(this object on) => GetCustomAttributes(on).OfType<T>().FirstOrDefault();
 }

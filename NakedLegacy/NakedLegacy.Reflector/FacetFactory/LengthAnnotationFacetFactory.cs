@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Immutable;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
@@ -17,6 +16,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedLegacy.Attribute;
+using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
@@ -29,18 +29,16 @@ public sealed class LengthAnnotationFacetFactory : LegacyFacetFactoryProcessor, 
         logger = Logger<LengthAnnotationFacetFactory>();
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var attr = property.GetCustomAttributes().Where(a => a is IMaxLengthAttribute);
+        var attr = property.GetCustomAttribute<IMaxLengthAttribute>();
 
         // expect more to be added 
-        foreach (var attribute in attr) {
-            switch (attribute) {
-                case IMaxLengthAttribute max:
-                    FacetUtils.AddFacet(new MaxLengthFacetAnnotation(max.MaxLength, specification));
-                    break;
-            }
+
+        switch (attr) {
+            case { } max:
+                FacetUtils.AddFacet(new MaxLengthFacetAnnotation(max.MaxLength, specification));
+                break;
         }
 
-        ;
         return metamodel;
     }
 }

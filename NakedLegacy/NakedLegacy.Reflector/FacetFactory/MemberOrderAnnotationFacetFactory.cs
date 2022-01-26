@@ -20,6 +20,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Attribute;
+using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
@@ -65,9 +66,9 @@ public sealed class MemberOrderAnnotationFacetFactory : LegacyFacetFactoryProces
             }
         }
 
-        var attr = member.GetCustomAttributes().FirstOrDefault(a => a is IMemberOrderAttribute);
+        var attr = member.GetCustomAttribute<IMemberOrderAttribute>();
 
-        if (attr is IMemberOrderAttribute attribute) {
+        if (attr is { } attribute) {
             if (facet is not null) {
                 logger.LogWarning($"Member {memberName} on {declaringType} has MemberOrder annotation and is in {orderMethodName} annotation will take priority");
             }

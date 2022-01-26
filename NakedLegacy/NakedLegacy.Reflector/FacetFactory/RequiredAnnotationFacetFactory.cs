@@ -5,10 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
@@ -19,25 +16,21 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Attribute;
 using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
-public sealed class RestExtensionAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-    public RestExtensionAnnotationFacetFactory(IFacetFactoryOrder<RestExtensionAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.Everything) { }
+public sealed class RequiredAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    private readonly ILogger<RequiredAnnotationFacetFactory> logger;
 
-    private static IRestExtensionAttribute GetRestAttribute(object onObject) => onObject.GetCustomAttribute<IRestExtensionAttribute>();
-
-    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var attribute = GetRestAttribute(type);
-        FacetUtils.AddFacet(Create(attribute, specification));
-        return metamodel;
-    }
+    public RequiredAnnotationFacetFactory(IFacetFactoryOrder<RequiredAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
+        logger = loggerFactory.CreateLogger<RequiredAnnotationFacetFactory>();
 
     private static void Process(MemberInfo member, ISpecification holder) {
-        var attribute = GetRestAttribute(member);
+        var attribute = member.GetCustomAttribute<IRequiredAttribute>();
         FacetUtils.AddFacet(Create(attribute, holder));
     }
 
@@ -47,16 +40,19 @@ public sealed class RestExtensionAnnotationFacetFactory : LegacyFacetFactoryProc
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        Process(property, specification);
+        if (property.HasPublicGetter()) {
+            Process(property, specification);
+        }
+
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
-        var attribute = GetRestAttribute(parameter);
+        var attribute = parameter.GetCustomAttribute<IRequiredAttribute>();
         FacetUtils.AddFacet(Create(attribute, holder));
         return metamodel;
     }
 
-    private static IRestExtensionFacet Create(IRestExtensionAttribute attribute, ISpecification holder) => attribute is not null ? new RestExtensionFacet(attribute.Name, attribute.Value, holder) : null;
+    private static IMandatoryFacet Create(IRequiredAttribute attribute, ISpecification holder) => attribute is not null ? new MandatoryFacet(holder) : new OptionalFacet(holder);
 }
