@@ -25,8 +25,8 @@ public sealed class ImmutableFacetFactory : LegacyFacetFactoryProcessor {
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        if (type.GetInterfaces().Any(i => i == typeof(IImmutable))) {
-            FacetUtils.AddFacet(new ImmutableFacetAnnotation(WhenTo.Always, specification));
+        if (type.GetInterfaces().Any(i => i == typeof(INotEditableOncePersistent))) {
+            FacetUtils.AddFacet(new ImmutableFacetAnnotation(WhenTo.OncePersisted, specification));
         }
 
         return metamodel;

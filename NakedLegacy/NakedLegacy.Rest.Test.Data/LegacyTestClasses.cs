@@ -103,7 +103,8 @@ public class ClassToPersist : IContainerAware {
     }
 }
 
-public class ClassWithBounded : IBounded, IImmutable {
+public class ClassWithBounded : IBounded, INotEditableOncePersistent
+{
     private TextString _name;
     public string name;
 
