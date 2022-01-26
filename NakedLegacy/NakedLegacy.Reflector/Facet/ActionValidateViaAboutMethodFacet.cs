@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using NakedLegacy.About;
 
 namespace NakedLegacy.Reflector.Facet;
 

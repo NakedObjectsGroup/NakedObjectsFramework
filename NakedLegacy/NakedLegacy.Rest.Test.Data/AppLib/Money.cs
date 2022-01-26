@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using NakedLegacy.Title;
 
 namespace NakedLegacy.Rest.Test.Data.AppLib;
 

@@ -12,6 +12,8 @@ using System.Reflection;
 using NakedFramework.Architecture.Framework;
 using NakedLegacy.Reflector.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using NakedLegacy.About;
+using NakedLegacy.Container;
 
 namespace NakedLegacy.Reflector.Facet;
 

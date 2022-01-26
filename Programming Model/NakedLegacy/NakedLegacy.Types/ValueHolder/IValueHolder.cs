@@ -5,12 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedLegacy;
+namespace NakedLegacy.ValueHolder;
 
-public enum AboutTypeCodes {
-    Name,
-    Parameters,
-    Usable,
-    Valid,
-    Visible
+public interface IValueHolder<T> {
+    public T Value { get; set; }
+
+    public string Mask { get; }
+
+    public string ToString();
+
+    public object Parse(string fromString);
+
+    public object Display(string mask = null);
 }

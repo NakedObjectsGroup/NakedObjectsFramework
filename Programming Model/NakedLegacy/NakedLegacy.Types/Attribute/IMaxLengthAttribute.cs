@@ -5,16 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedLegacy;
+namespace NakedLegacy.Attribute;
 
-public interface IAbout {
-    AboutTypeCodes TypeCode { get; }
-
-    string Name { get; set; }
-    string Description { get; set; }
-
-    bool Visible { get; set; }
-
-    bool Usable { get; set; }
-    string UnusableReason { get; set; }
+public interface IMaxLengthAttribute {
+    public int MaxLength { get; }
 }

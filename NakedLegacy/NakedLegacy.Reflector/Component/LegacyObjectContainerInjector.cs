@@ -8,6 +8,7 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
+using NakedLegacy.Container;
 
 namespace NakedLegacy.Reflector.Component;
 

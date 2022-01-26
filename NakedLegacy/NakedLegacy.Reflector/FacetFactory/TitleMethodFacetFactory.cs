@@ -18,6 +18,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.Reflector.Facet;
+using NakedLegacy.Title;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 

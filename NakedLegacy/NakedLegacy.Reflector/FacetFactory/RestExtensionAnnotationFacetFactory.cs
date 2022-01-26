@@ -19,6 +19,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using NakedLegacy.Attribute;
 
 namespace NakedLegacy.Reflector.FacetFactory;
 
@@ -26,11 +27,11 @@ public sealed class RestExtensionAnnotationFacetFactory : LegacyFacetFactoryProc
     public RestExtensionAnnotationFacetFactory(IFacetFactoryOrder<RestExtensionAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Everything) { }
 
-    private static IEnumerable<Attribute> GetCustomAttributes(object onObject) =>
+    private static IEnumerable<System.Attribute> GetCustomAttributes(object onObject) =>
         onObject switch {
             MemberInfo mi => mi.GetCustomAttributes(),
             ParameterInfo pi => pi.GetCustomAttributes(),
-            _ => new Attribute[] { }
+            _ => new System.Attribute[] { }
         };
 
     private static IRestExtensionAttribute GetRestAttribute(object onObject) => GetCustomAttributes(onObject).OfType<IRestExtensionAttribute>().FirstOrDefault();

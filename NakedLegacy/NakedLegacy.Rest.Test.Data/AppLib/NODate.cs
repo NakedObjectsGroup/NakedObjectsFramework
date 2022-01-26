@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using NakedLegacy.Interface;
+using NakedLegacy.Title;
 
 namespace NakedLegacy.Rest.Test.Data.AppLib;
 

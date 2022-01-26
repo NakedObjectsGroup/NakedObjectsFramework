@@ -11,7 +11,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework.Core.Util;
+using NakedLegacy.About;
+using NakedLegacy.Collection;
+using NakedLegacy.Container;
+using NakedLegacy.Interface;
+using NakedLegacy.Menu;
 using NakedLegacy.Rest.Test.Data.AppLib;
+using NakedLegacy.Title;
 using NakedObjects;
 
 // ReSharper disable InconsistentNaming
@@ -36,7 +42,7 @@ public class ClassWithTextString {
     [RestExtensionTest(Name = "x-ro-prop-ext", Value = "prop-value")]
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
-    public Title Title() => new(Name.Title());
+    public AppLib.Title Title() => new(Name.Title());
 
     [RestExtensionTest(Name = "x-ro-act-ext", Value = "act-value")]
     public ClassWithTextString ActionUpdateName([RestExtensionTest(Name = "x-ro-parm-ext", Value = "parm-value")] TextString newName) {
@@ -78,7 +84,7 @@ public class ClassToPersist : IContainerAware {
         }
     }
 
-    public Title Title() => new(Name.Title());
+    public AppLib.Title Title() => new(Name.Title());
 
     public ClassToPersist ActionUpdateName(TextString newName) {
         Name.Value = newName.Value;
@@ -487,17 +493,17 @@ public class ClassWithMenu {
     }
 
     public static IMenu menuOrder() {
-        var menu = new Menu("ClassWithMenu Menu");
+        var menu = new AppLib.Menu("ClassWithMenu Menu");
         menu.MenuItems().Add(new MenuAction(nameof(ActionMethod1)));
 
-        var newSubMenu = new Menu("Submenu1");
+        var newSubMenu = new AppLib.Menu("Submenu1");
         menu.MenuItems().Add(newSubMenu);
         newSubMenu.MenuItems().Add(new MenuAction(nameof(actionMethod2)));
         return menu;
     }
 
     public static IMenu sharedMenuOrder() {
-        var menu = new Menu("ClassWithMenu Main Menu");
+        var menu = new AppLib.Menu("ClassWithMenu Main Menu");
         menu.MenuItems().Add(new MenuAction(nameof(ActionMenuAction)) { DisplayName = "Renamed menu Action" });
         menu.MenuItems().Add(new MenuAction(nameof(ActionMenuAction1)));
         menu.MenuItems().Add(new MenuAction(nameof(ActionMenuAction2)));
@@ -684,7 +690,7 @@ public class ClassWithOrderedActions {
     //public static string ActionOrder() => $"{nameof(actionAction2)}, {nameof(actionAction3)}, {nameof(actionAction1)}";
 
     public static IMenu menuOrder() {
-        var menu = new Menu("Actions");
+        var menu = new AppLib.Menu("Actions");
         menu.MenuItems().Add(new MenuAction(nameof(actionAction2)));
         menu.MenuItems().Add(new MenuAction(nameof(actionAction3)));
         menu.MenuItems().Add(new MenuAction(nameof(actionAction1)));

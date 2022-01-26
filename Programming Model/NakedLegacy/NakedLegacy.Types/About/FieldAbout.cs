@@ -5,10 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedLegacy;
+namespace NakedLegacy.About;
 
-public interface ActionAbout : IAbout {
-    string[] ParamLabels { get; set; }
-    object[] ParamDefaultValues { get; set; }
-    object[][] ParamOptions { get; set; }
+public interface FieldAbout : IAbout {
+    bool IsPersistent { get; set; } //TODO: Current API 'void nonPersistent()' implies this should be settable, but why?
+    object[] Options { get; set; }
+
+    bool IsValid { get; set; }
+    string InvalidReason { get; set; }
 }

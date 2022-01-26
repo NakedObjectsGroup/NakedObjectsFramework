@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Reflect;
+using NakedLegacy.Container;
 
 namespace NakedLegacy.Reflector.Reflect;
 

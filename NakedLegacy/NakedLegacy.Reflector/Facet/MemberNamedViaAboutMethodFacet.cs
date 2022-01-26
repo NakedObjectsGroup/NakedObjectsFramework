@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedLegacy.About;
 using static NakedLegacy.Reflector.Facet.AboutHelpers;
 
 namespace NakedLegacy.Reflector.Facet;

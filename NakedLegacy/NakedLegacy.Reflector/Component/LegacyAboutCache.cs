@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
+using NakedLegacy.About;
 
 namespace NakedLegacy.Reflector.Component;
 

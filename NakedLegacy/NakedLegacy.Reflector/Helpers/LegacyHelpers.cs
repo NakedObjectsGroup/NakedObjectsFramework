@@ -5,7 +5,10 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Menu;
+using NakedLegacy.Container;
+using NakedLegacy.Menu;
 using NakedLegacy.Reflector.Component;
+using NakedLegacy.ValueHolder;
 
 namespace NakedLegacy.Reflector.Helpers;
 
@@ -40,7 +43,7 @@ public static class LegacyHelpers {
 
         if (lastIndex >= 0 && parameters[lastIndex] is null) {
             if (method.GetParameters()[lastIndex].ParameterType.IsAssignableTo(typeof(IContainer))) {
-                parameters[lastIndex] = new Container(framework);
+                parameters[lastIndex] = new Component.Container(framework);
             }
         }
 

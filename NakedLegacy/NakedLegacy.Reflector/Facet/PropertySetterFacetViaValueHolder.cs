@@ -12,6 +12,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedLegacy.ValueHolder;
 
 namespace NakedLegacy.Reflector.Facet;
 

@@ -122,7 +122,7 @@ public class LegacyTest : AcceptanceTestCase {
     [SetUp]
     public void SetUp() {
         StartTest();
-        ThreadLocals.Initialize(GetConfiguredContainer(), sp => new Container(sp.GetService<INakedFramework>()));
+        ThreadLocals.Initialize(GetConfiguredContainer(), sp => new Reflector.Component.Container(sp.GetService<INakedFramework>()));
     }
 
     [TearDown]

@@ -11,6 +11,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedLegacy.Menu;
 using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.Facet;

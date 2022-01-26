@@ -10,6 +10,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
+using NakedLegacy.Container;
 
 namespace NakedLegacy.Reflector.Component;
 

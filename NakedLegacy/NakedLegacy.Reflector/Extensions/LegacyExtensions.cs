@@ -14,6 +14,7 @@ using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
+using NakedLegacy.About;
 using NakedLegacy.Reflector.Component;
 using NakedLegacy.Reflector.Configuration;
 using NakedLegacy.Reflector.FacetFactory;
