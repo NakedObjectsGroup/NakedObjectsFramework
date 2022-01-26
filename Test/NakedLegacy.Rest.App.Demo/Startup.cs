@@ -27,7 +27,6 @@ using Newtonsoft.Json;
 using AdventureWorksLegacy.AppLib;
 using NakedFramework.Menu;
 using System.Reflection;
-using AdventureWorksLegacy.AppLib.abouts;
 using Microsoft.AspNetCore.Http;
 using NakedLegacy;
 
@@ -59,7 +58,7 @@ namespace Legacy.Rest.App.Demo {
                     options.NoValidate = true;
                     options.DomainModelTypes = ModelConfig.DomainTypes;
                     options.DomainModelServices = ModelConfig.DomainServices;
-                    options.ValueHolderTypes = LegacyValueHolders;
+                    options.ValueHolderTypes = AppLibConfig.ValueHolderTypes;
                 });
             });
             services.AddCors(options => {
@@ -78,20 +77,9 @@ namespace Legacy.Rest.App.Demo {
             });
             // For ThreadLocals
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IAboutFactory, AboutFactory>();
         }
 
-        protected Type[] LegacyValueHolders { get; } = {
-            typeof(TextString),
-            typeof(Money),typeof(MoneyNullable),
-            typeof(Logical),
-            typeof(MultiLineTextString),
-            typeof(WholeNumber),typeof(WholeNumberNullable),
-            typeof(NODate),typeof(NODateNullable),
-            typeof(TimeStamp),
-            typeof(FloatingPointNumber),typeof(FloatingPointNumberNullable),
-            typeof(Percentage)
-            };
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder modelBuilder, ILoggerFactory loggerFactory) {
