@@ -46,6 +46,7 @@ public static class LegacyExtensions {
 
         frameworkOptions.Services.AddDefaultScoped<LegacyAboutCache, LegacyAboutCache>();
         frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, LegacyObjectContainerInjector>();
+        frameworkOptions.Services.AddDefaultSingleton<IAboutFactory, AboutFactory>();
 
         var additionalTypes = ReflectorDefaults.DefaultLegacyTypes.Union(options.ValueHolderTypes);
 

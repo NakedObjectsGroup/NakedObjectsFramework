@@ -1,4 +1,4 @@
-﻿namespace NakedLegacy.Rest.Test.Data.AppLib; 
+﻿namespace NakedLegacy.Reflector.Component; 
 
 public class AboutFactory : IAboutFactory {
     public IActionAbout NewActionAbout(AboutTypeCodes code) => new ActionAboutImpl(code);

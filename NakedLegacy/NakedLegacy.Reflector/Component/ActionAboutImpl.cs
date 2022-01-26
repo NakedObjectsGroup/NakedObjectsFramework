@@ -1,4 +1,4 @@
-﻿namespace NakedLegacy.Rest.Test.Data.AppLib;
+﻿namespace NakedLegacy.Reflector.Component;
 
 public class ActionAboutImpl : IActionAbout {
     public ActionAboutImpl(AboutTypeCodes typeCode) => TypeCode = typeCode;

@@ -116,7 +116,7 @@ public class LegacyTest : AcceptanceTestCase {
         services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
 
-        services.AddSingleton<IAboutFactory, AboutFactory>();
+        
     }
 
     [SetUp]
