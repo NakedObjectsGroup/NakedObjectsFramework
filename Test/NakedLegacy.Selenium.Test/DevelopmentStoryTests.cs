@@ -55,6 +55,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             CreatingAndSavingObjects();
             ActionAboutControl();
             ParameterControl();
+            AddInformationAndWarningMessages();
         }
 
         #region ViewPersistentObjectsAndProperties
@@ -336,7 +337,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void MainMenuWithSubMenus()
         {
             helper.GotoHome().OpenMainMenu("Employees").AssertHasActions("Random Employee",
-                "All Employees", "Find Employee By Name", "Find Employee By National ID Number")
+                "All Employees", "Find Employee By Name", "Find Employee By National ID Number", "Me")
                 .AssertHasSubMenus("Organisation").OpenSubMenu("Organisation").AssertHasAction("List All Departments");
 
         }
@@ -360,6 +361,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             PropertyRenamedUsingFieldAbout();
             PropertyMadeUneditableUsingFieldAbout();
             PropertyValidationUsingFieldAbout();
+            TypeImplementingINotEditableOncePersistent();
         }
 
         //[TestMethod]
@@ -393,6 +395,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .GetEditableTextInputProperty("Group Name")
                 .AssertHasValidationError("Cannot be > 50 chars");
             editView.Cancel();
+        }
+
+        //[TestMethod]
+        public void TypeImplementingINotEditableOncePersistent()
+        {
+           var v = AccessInstanceWithTitle("Vendor--1660", "Magic Cycles").AssertIsNotEditable();
         }
 
         #endregion
@@ -569,6 +577,18 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             .GetProperty("Marital Status").AssertValueIs("S");
         }
 
+        #endregion
+
+        #region Messages
+        //[TestMethod]
+        public void AddInformationAndWarningMessages()
+        {
+            var home = helper.GotoHome();
+            home.OpenMainMenu("Employees").GetActionWithoutDialog("Me")
+                .ClickExpectingToStayOnHome();
+            home.WaitForFooterWarning("Not implemented yet");
+            home.WaitForFooterMessage("Please be patient");
+        }
         #endregion
 
         #region Helpers
