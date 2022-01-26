@@ -239,9 +239,7 @@
 		Public Sub AboutModifiedDate(a As FieldAbout)
 			Select Case a.TypeCode
 				Case AboutTypeCodes.Visible
-					If SpecialOfferID = 0 Then
-						a.Visible = False
-					End If
+					a.Visible = Container.IsPersistent(Me)
 				Case AboutTypeCodes.Usable
 					a.Usable = False
 			End Select
