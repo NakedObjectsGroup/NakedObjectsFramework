@@ -7,25 +7,31 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedLegacy.About;
+using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.Facet;
 
 public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
-    protected AbstractViaAboutMethodFacet(Type facetType, ISpecification holder, MethodInfo method, AboutHelpers.AboutType aboutType) : base(facetType, holder) {
+    protected AbstractViaAboutMethodFacet(Type facetType, ISpecification holder, MethodInfo method, AboutHelpers.AboutType aboutType, ILogger logger) : base(facetType, holder) {
         Method = method;
         AboutType = aboutType;
+        MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
+
+    private Func<object, object[], object> MethodDelegate { get; set; }
 
     protected MethodInfo Method { get; }
     protected AboutHelpers.AboutType AboutType { get; }
     public MethodInfo GetMethod() => Method;
 
-    public Func<object, object[], object> GetMethodDelegate() => throw new NotImplementedException();
+    public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
 
     protected IAbout InvokeAboutMethod(INakedFramework framework, object target, AboutTypeCodes typeCode, bool substitute, bool flagNull, params object[] proposedValues) {
         if (target is null && !Method.IsStatic) {
@@ -37,7 +43,7 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
         }
 
         var about = AboutType.AboutFactory(typeCode, framework);
-        Method.Invoke(target, Method.GetParameters(framework, about, substitute, proposedValues));
+        MethodDelegate.Invoke(Method, target, Method.GetParameters(framework, about, substitute, proposedValues));
         return about;
     }
 

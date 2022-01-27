@@ -25,7 +25,7 @@ public sealed class ActionValidateViaAboutMethodFacet : AbstractViaAboutMethodFa
     private readonly ILogger<ActionValidateViaAboutMethodFacet> logger;
 
     public ActionValidateViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<ActionValidateViaAboutMethodFacet> logger)
-        : base(typeof(IPropertyValidateFacet), holder, method, aboutType) =>
+        : base(typeof(IPropertyValidateFacet), holder, method, aboutType, logger) =>
         this.logger = logger;
 
     public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);

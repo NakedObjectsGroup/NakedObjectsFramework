@@ -24,7 +24,7 @@ public sealed class HideForContextViaAboutMethodFacet : AbstractViaAboutMethodFa
     private readonly ILogger<HideForContextViaAboutMethodFacet> logger;
 
     public HideForContextViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<HideForContextViaAboutMethodFacet> logger)
-        : base(typeof(IHideForContextFacet), holder, method, aboutType) =>
+        : base(typeof(IHideForContextFacet), holder, method, aboutType, logger) =>
         this.logger = logger;
 
     #region IHideForContextFacet Members
