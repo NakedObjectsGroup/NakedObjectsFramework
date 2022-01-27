@@ -2,7 +2,7 @@
 
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>NakedLegacy.ProgrammingModel</id>
+    <id>NOF2.ProgrammingModel</id>
     <version>1.0.0-alpha01</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
@@ -20,7 +20,7 @@
   </metadata>
   <files>
     <file src="icon.png" target="images\" />
-    <file src="..\NakedLegacy.Types\bin\Debug\**\NakedLegacy.Types.dll" target="lib" />
-    <file src="..\NakedLegacy.Types\bin\Debug\**\NakedLegacy.Types.pdb" target="lib" />
+    <file src="..\NOF2.Types\bin\Debug\**\NOF2.Types.dll" target="lib" />
+    <file src="..\NOF2.Types\bin\Debug\**\NOF2.Types.pdb" target="lib" />
   </files>
 </package>

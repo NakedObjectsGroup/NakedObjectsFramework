@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<IsPackable>false</IsPackable>
-		<RootNamespace>NakedLegacy</RootNamespace>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,10 +15,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="NakedFramework.ProgrammingModel" Version="13.1.0-beta01" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Menu\" />
 	</ItemGroup>
 
 </Project>
