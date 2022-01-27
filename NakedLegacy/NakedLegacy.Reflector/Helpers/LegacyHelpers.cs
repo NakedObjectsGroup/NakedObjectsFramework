@@ -8,8 +8,8 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Menu;
 using NakedLegacy.Container;
 using NakedLegacy.Menu;
-using NakedLegacy.Reflector.Component;
 using NakedLegacy.ValueHolder;
+using IMenu = NakedFramework.Menu.IMenu;
 
 namespace NakedLegacy.Reflector.Helpers;
 
@@ -51,9 +51,9 @@ public static class LegacyHelpers {
         return parameters;
     }
 
-    private static void AddMenuComponent(NakedFramework.Menu.IMenu topLevelMenu, IMenuComponent menuComponent, Type declaringType) {
+    private static void AddMenuComponent(IMenu topLevelMenu, IMenuComponent menuComponent, Type declaringType) {
         switch (menuComponent) {
-            case IMenu menu:
+            case Menu.IMenu menu:
                 var subMenu = topLevelMenu.CreateSubMenu(menu.Name);
 
                 foreach (var component in menu.MenuItems()) {
@@ -67,7 +67,7 @@ public static class LegacyHelpers {
         }
     }
 
-    private static string GetName(IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
+    private static string GetName(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
         if (!string.IsNullOrWhiteSpace(name)) {
             return name;
         }
@@ -76,7 +76,7 @@ public static class LegacyHelpers {
         return spec?.GetFacet<INamedFacet>()?.FriendlyName ?? "";
     }
 
-    public static MenuImpl ConvertLegacyToNOFMenu(IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
+    public static MenuImpl ConvertLegacyToNOFMenu(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
         var menuName = GetName(legacyMenu, metamodel, declaringType, name);
         var mi = new MenuImpl(metamodel, declaringType, false, menuName);
         foreach (var menuComponent in legacyMenu.MenuItems()) {
@@ -87,8 +87,7 @@ public static class LegacyHelpers {
     }
 
     public static IEnumerable<System.Attribute> GetCustomAttributes(object onObject) =>
-        onObject switch
-        {
+        onObject switch {
             MemberInfo mi => mi.GetCustomAttributes(),
             ParameterInfo pi => pi.GetCustomAttributes(),
             _ => new System.Attribute[] { }

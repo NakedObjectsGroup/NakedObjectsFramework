@@ -9,11 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NakedFramework.Architecture.Framework;
-using NakedLegacy.Reflector.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Architecture.Framework;
 using NakedLegacy.About;
 using NakedLegacy.Container;
+using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.Facet;
 
