@@ -18,12 +18,12 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedLegacy.Reflector.Helpers;
-using NakedLegacy.ValueHolder;
+using NOF2.Reflector.Helpers;
+using NOF2.ValueHolder;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
-public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor {
+public sealed class DateOnlyFacetFactory : AbstractNOF2FacetFactoryProcessor {
     public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
@@ -34,7 +34,7 @@ public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor {
     }
 
     private static bool IsDate(Type type) {
-        var valueHolderType = LegacyHelpers.IsOrImplementsValueHolder(type);
+        var valueHolderType = NOF2Helpers.IsOrImplementsValueHolder(type);
         return (valueHolderType == typeof(DateTime) || valueHolderType == typeof(DateTime?)) && type.IsAssignableTo(typeof(IDateOnly));
     }
 

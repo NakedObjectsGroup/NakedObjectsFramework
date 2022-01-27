@@ -14,32 +14,32 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
-using NakedLegacy.Reflector.Configuration;
-using NakedLegacy.Reflector.Reflect;
+using NOF2.Reflector.Configuration;
+using NOF2.Reflector.Reflect;
 
-namespace NakedLegacy.Reflector.Component;
+namespace NOF2.Reflector.Component;
 
-public sealed class LegacyObjectReflector : AbstractParallelReflector {
-    private readonly ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration;
+public sealed class NOF2Reflector : AbstractParallelReflector {
+    private readonly INOF2ReflectorConfiguration inof2ReflectorConfiguration;
 
-    public LegacyObjectReflector(LegacyObjectFacetFactorySet legacyObjectFacetFactorySet,
-                                 LegacyObjectClassStrategy legacyObjectClassStrategy,
-                                 ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration,
+    public NOF2Reflector(NOF2FacetFactorySet NOF2FacetFactorySet,
+                                 NOF2ObjectClassStrategy nof2ObjectClassStrategy,
+                                 INOF2ReflectorConfiguration inof2ReflectorConfiguration,
                                  IEnumerable<IFacetDecorator> facetDecorators,
-                                 IReflectorOrder<LegacyObjectReflector> reflectorOrder,
+                                 IReflectorOrder<NOF2Reflector> reflectorOrder,
                                  ILoggerFactory loggerFactory,
                                  ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
-        this.legacyObjectReflectorConfiguration = legacyObjectReflectorConfiguration;
-        FacetFactorySet = legacyObjectFacetFactorySet;
-        ClassStrategy = legacyObjectClassStrategy;
+        this.inof2ReflectorConfiguration = inof2ReflectorConfiguration;
+        FacetFactorySet = NOF2FacetFactorySet;
+        ClassStrategy = nof2ObjectClassStrategy;
     }
 
-    public override bool ConcurrencyChecking => legacyObjectReflectorConfiguration.ConcurrencyChecking;
-    public override string Name => "NakedLegacy";
+    public override bool ConcurrencyChecking => inof2ReflectorConfiguration.ConcurrencyChecking;
+    public override string Name => "NOF2.Reflector";
     public override ReflectorType ReflectorType => ReflectorType.Object;
-    public override bool IgnoreCase => legacyObjectReflectorConfiguration.IgnoreCase;
+    public override bool IgnoreCase => inof2ReflectorConfiguration.IgnoreCase;
 
-    protected override IIntrospector GetNewIntrospector() => new LegacyObjectIntrospector(this, LoggerFactory.CreateLogger<LegacyObjectIntrospector>());
+    protected override IIntrospector GetNewIntrospector() => new NOF2Introspector(this, LoggerFactory.CreateLogger<NOF2Introspector>());
 
     private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
         var placeholders = GetPlaceholders(ooTypes);
@@ -51,7 +51,7 @@ public sealed class LegacyObjectReflector : AbstractParallelReflector {
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-        var ooTypes = legacyObjectReflectorConfiguration.ObjectTypes;
+        var ooTypes = inof2ReflectorConfiguration.ObjectTypes;
         specDictionary = IntrospectObjectTypes(ooTypes, specDictionary);
         return specDictionary;
     }

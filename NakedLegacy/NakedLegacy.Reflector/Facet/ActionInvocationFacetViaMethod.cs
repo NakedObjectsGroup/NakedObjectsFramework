@@ -19,11 +19,11 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Reflector.Helpers;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
@@ -62,7 +62,7 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
         }
 
         object result;
-        var substituteParms = LegacyHelpers.SubstituteNulls(parameters.Select(no => no.GetDomainObject()).ToArray(), ActionMethod);
+        var substituteParms = NOF2Helpers.SubstituteNulls(parameters.Select(no => no.GetDomainObject()).ToArray(), ActionMethod);
 
         result = ActionDelegate.Invoke<object>(ActionMethod, inObjectAdapter.GetDomainObject(), substituteParms);
 

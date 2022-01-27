@@ -2,11 +2,11 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
-using NakedLegacy.About;
+using NOF2.About;
 
-namespace NakedLegacy.Reflector.Component;
+namespace NOF2.Reflector.Component;
 
-public class LegacyAboutCache {
+public class AboutCache {
     private readonly IDictionary<object, IDictionary<MethodInfo, ActionAbout>> cacheDictionary = new Dictionary<object, IDictionary<MethodInfo, ActionAbout>>();
 
     private ActionAbout InvokeOrReturnCachedAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
@@ -24,8 +24,8 @@ public class LegacyAboutCache {
         cacheDictionary[target][aboutMethod];
 
     public static ActionAbout GetActionAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
-        framework.ServiceProvider.GetService<LegacyAboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
+        framework.ServiceProvider.GetService<AboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
 
     public static ActionAbout GetFieldAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
-        framework.ServiceProvider.GetService<LegacyAboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
+        framework.ServiceProvider.GetService<AboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
 }

@@ -15,9 +15,9 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
-using NakedLegacy.About;
+using NOF2.About;
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class HideForContextViaAboutMethodFacet : AbstractViaAboutMethodFacet, IHideForContextFacet {

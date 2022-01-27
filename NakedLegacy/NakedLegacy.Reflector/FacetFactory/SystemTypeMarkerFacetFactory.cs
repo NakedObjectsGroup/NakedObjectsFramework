@@ -5,40 +5,37 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Immutable;
-using System.Reflection;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.DependencyInjection.Component;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NOF2.Attribute;
+using NakedFramework.ParallelReflector.FacetFactory;
 using NOF2.Reflector.Helpers;
+using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class LengthAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory {
-    private const string FieldOrder = "FieldOrder";
-    private readonly ILogger<LengthAnnotationFacetFactory> logger;
+public sealed class SystemTypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor {
+    public SystemTypeMarkerFacetFactory(AppendFacetFactoryOrder<SystemTypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
+        : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-    public LengthAnnotationFacetFactory(IFacetFactoryOrder<LengthAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.PropertiesAndCollections) =>
-        logger = Logger<LengthAnnotationFacetFactory>();
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        var valueType = NOF2Helpers.IsOrImplementsValueHolder(type) ?? type;
 
-    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var attr = property.GetCustomAttribute<IMaxLengthAttribute>();
-
-        // expect more to be added 
-
-        switch (attr) {
-            case { } max:
-                FacetUtils.AddFacet(new MaxLengthFacetAnnotation(max.MaxLength, specification));
-                break;
+        if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+            valueType = valueType.GetGenericArguments().First();
+            FacetUtils.AddFacet(new NullableFacetAlways(specification));
         }
 
+        AddTypeFacets(specification, valueType);
         return metamodel;
     }
 }

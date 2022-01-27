@@ -12,27 +12,27 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework;
 using NakedFramework.Core.Util;
-using NakedLegacy.About;
-using NakedLegacy.Collection;
-using NakedLegacy.Container;
-using NakedLegacy.Interface;
-using NakedLegacy.Menu;
-using NakedLegacy.Rest.Test.Data.AppLib;
-using NakedLegacy.Title;
+using NOF2.About;
+using NOF2.Collection;
+using NOF2.Container;
+using NOF2.Interface;
+using NOF2.Menu;
+using NOF2.Rest.Test.Data.AppLib;
+using NOF2.Title;
 using NakedObjects;
 
 // ReSharper disable InconsistentNaming
 
-namespace NakedLegacy.Rest.Test.Data;
+namespace NOF2.Rest.Test.Data;
 
-public interface ILegacyRoleInterface { }
+public interface INOF2RoleInterface { }
 
 public class SimpleService : IContainerAware {
     public IContainer Container { get; set; }
     public ClassWithTextString GetClassWithTextString() => Container.AllInstances<ClassWithTextString>().FirstOrDefault();
 }
 
-[LegacyAttribute(ExtensionName = "x-ro-class-ext", ExtensionValue = "class-value")]
+[NOF2(ExtensionName = "x-ro-class-ext", ExtensionValue = "class-value")]
 public class ClassWithTextString {
     private TextString _name;
     public string name { get; set; }
@@ -40,13 +40,13 @@ public class ClassWithTextString {
     [Key]
     public int Id { get; init; }
 
-    [LegacyAttribute(ExtensionName = "x-ro-prop-ext", ExtensionValue = "prop-value")]
+    [NOF2(ExtensionName = "x-ro-prop-ext", ExtensionValue = "prop-value")]
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
     public AppLib.Title Title() => new(Name.Title());
 
-    [LegacyAttribute(ExtensionName = "x-ro-act-ext", ExtensionValue = "act-value")]
-    public ClassWithTextString ActionUpdateName([LegacyAttribute(ExtensionName = "x-ro-parm-ext", ExtensionValue = "parm-value")] TextString newName) {
+    [NOF2(ExtensionName = "x-ro-act-ext", ExtensionValue = "act-value")]
+    public ClassWithTextString ActionUpdateName([NOF2(ExtensionName = "x-ro-parm-ext", ExtensionValue = "parm-value")] TextString newName) {
         Name.Value = newName.Value;
         return this;
     }
@@ -65,18 +65,18 @@ public class ClassWithAnnotations {
 
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
-    [Legacy(WhenTo = WhenTo.Always)]
+    [NOF2(WhenTo = WhenTo.Always)]
     public TextString HiddenName => _name ??= new TextString(name, s => name = s);
 
-    [Legacy(IsRequired = true)]
+    [NOF2(IsRequired = true)]
     public TextString RequiredName => _name ??= new TextString(name, s => name = s);
 
-    [Legacy(Name = "renamed")]
+    [NOF2(Name = "renamed")]
     public TextString NamedName => _name ??= new TextString(name, s => name = s);
 
-    [Legacy(TableTitle = true, TableColumns = new []{"one", "two"})]
+    [NOF2(TableTitle = true, TableColumns = new []{"one", "two"})]
     public InternalCollection TestTableView => _testCollection ??= new InternalCollection<ClassWithTextString>(_TestCollection);
-    [Legacy(TableTitle = false, TableColumns = new[] { "three", "four" })]
+    [NOF2(TableTitle = false, TableColumns = new[] { "three", "four" })]
     public ArrayList ActionTestTableView() => new();
 }
 
@@ -405,7 +405,7 @@ public class ClassWithReferenceProperty : IContainerAware {
     }
 }
 
-public class LegacyClassWithInterface : IRoleInterface {
+public class NOF2ClassWithInterface : IRoleInterface {
     [Key]
     public int Id { get; init; }
 }
@@ -698,7 +698,7 @@ public class ClassWithOrderedProperties {
     public TextString Name2 => _name2 ??= new TextString(name2, s => name2 = s);
     public TextString Name3 => _name3 ??= new TextString(name3, s => name3 = s);
 
-    [Legacy(Order = 4, MaxLength = 10)]
+    [NOF2(Order = 4, MaxLength = 10)]
     public TextString Name4 => _name4 ??= new TextString(name4, s => name4 = s);
 
     public static string FieldOrder() => $"{nameof(Name2)}, {nameof(Name3)}, {nameof(Name1)}";

@@ -8,11 +8,11 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
-using NakedLegacy.Container;
+using NOF2.Container;
 
-namespace NakedLegacy.Reflector.Component;
+namespace NOF2.Reflector.Component;
 
-public sealed class LegacyObjectContainerInjector : IDomainObjectInjector {
+public sealed class NOF2ObjectContainerInjector : IDomainObjectInjector {
     private IContainer container;
     private bool initialized;
 

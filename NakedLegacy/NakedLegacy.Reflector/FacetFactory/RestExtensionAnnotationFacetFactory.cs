@@ -17,12 +17,12 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedLegacy.Attribute;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Attribute;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
-public sealed class RestExtensionAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class RestExtensionAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public RestExtensionAnnotationFacetFactory(IFacetFactoryOrder<RestExtensionAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Everything) { }
 

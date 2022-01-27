@@ -13,9 +13,9 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
-public interface ILegacyFacetFactoryProcessor : IFacetFactory {
+public interface INOF2FacetFactoryProcessor : IFacetFactory {
     //  AbstractParallelReflector
     /// <summary>
     ///     Process the class, and return the updated metamodel

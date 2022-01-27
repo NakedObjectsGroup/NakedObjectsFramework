@@ -19,12 +19,12 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.Attribute;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Attribute;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
-public sealed class MemberOrderAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory, IMethodFilteringFacetFactory {
+public sealed class MemberOrderAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory, IMethodFilteringFacetFactory {
     private const string FieldOrder = "FieldOrder";
     private readonly ILogger<MemberOrderAnnotationFacetFactory> logger;
 

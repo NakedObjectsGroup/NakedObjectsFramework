@@ -19,10 +19,10 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.Container;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Container;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
@@ -87,7 +87,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
             rawParms = rawParms.Append(null).ToArray();
         }
 
-        var substituteParms = LegacyHelpers.SubstituteNullsAndContainer(rawParms, ActionMethod, framework);
+        var substituteParms = NOF2Helpers.SubstituteNullsAndContainer(rawParms, ActionMethod, framework);
 
         return HandleInvokeResult(framework, methodDelegate.Invoke<object>(ActionMethod, null, substituteParms));
     }

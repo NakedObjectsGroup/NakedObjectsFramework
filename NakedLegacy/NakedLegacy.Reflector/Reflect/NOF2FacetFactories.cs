@@ -6,27 +6,27 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedLegacy.Reflector.FacetFactory;
+using NOF2.Reflector.FacetFactory;
 
-namespace NakedLegacy.Reflector.Reflect;
+namespace NOF2.Reflector.Reflect;
 
-public static class LegacyObjectFacetFactories {
+public static class NOF2FacetFactories {
     public static Type[] StandardFacetFactories() =>
         new[] {
             typeof(FallbackFacetFactory),
             typeof(TypeMarkerFacetFactory),
             typeof(OptionalDefaultFacetFactory),
-            typeof(LegacyCollectionFieldMethodsFacetFactory),
+            typeof(CollectionFieldMethodsFacetFactory),
             typeof(InternalCollectionFacetFactory),
             typeof(DateOnlyFacetFactory),
             typeof(BoundedFacetFactory),
             typeof(ImmutableFacetFactory),
-            typeof(LegacyFacetFactory),
+            typeof(AboutsFacetFactory),
             typeof(TitleMethodFacetFactory),
-            typeof(LegacyMenuFacetFactory),
+            typeof(MenuFacetFactory),
             typeof(MemberOrderAnnotationFacetFactory),
             typeof(LengthAnnotationFacetFactory),
-            typeof(LegacySaveFacetFactory),
+            typeof(SaveFacetFactory),
             typeof(RestExtensionAnnotationFacetFactory),
             typeof(HiddenAnnotationFacetFactory),
             typeof(RequiredAnnotationFacetFactory),
@@ -36,7 +36,7 @@ public static class LegacyObjectFacetFactories {
 
     public static Type[] TypeFacetFactories() =>
         new[] {
-            typeof(LegacySystemTypeMarkerFacetFactory),
+            typeof(SystemTypeMarkerFacetFactory),
             typeof(ValueHolderFacetFactory)
         };
 }

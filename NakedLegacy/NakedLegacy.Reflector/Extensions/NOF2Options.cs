@@ -8,9 +8,9 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace NakedLegacy.Reflector.Extensions;
+namespace NOF2.Reflector.Extensions;
 
-public class NakedLegacyOptions {
+public class NOF2Options {
     public Type[] DomainModelTypes { get; set; } = Array.Empty<Type>();
     public Type[] DomainModelServices { get; set; } = Array.Empty<Type>();
     public Type[] ValueHolderTypes { get; set; } = Array.Empty<Type>();

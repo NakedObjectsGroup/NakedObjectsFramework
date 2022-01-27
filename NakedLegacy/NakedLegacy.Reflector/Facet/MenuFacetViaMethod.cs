@@ -14,16 +14,16 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.Menu;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Menu;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract, IImperativeFacet {
+public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
     private readonly MethodInfo method;
 
-    public MenuFacetViaLegacyMethod(MethodInfo method, ISpecification holder, ILogger<MenuFacetViaLegacyMethod> logger)
+    public MenuFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<MenuFacetViaMethod> logger)
         : base(holder) {
         this.method = method;
         MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
@@ -38,7 +38,7 @@ public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract, IImperativeFac
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel) {
         var legacyMenu = MethodDelegate.Invoke<IMenu>(method, null, Array.Empty<object>());
-        Menu = LegacyHelpers.ConvertLegacyToNOFMenu(legacyMenu, metamodel, method.DeclaringType, "Actions");
+        Menu = NOF2Helpers.ConvertNOF2ToNOFMenu(legacyMenu, metamodel, method.DeclaringType, "Actions");
     }
 }
 

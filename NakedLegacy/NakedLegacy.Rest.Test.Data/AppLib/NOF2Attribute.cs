@@ -1,10 +1,10 @@
 ﻿using System;
 using NakedFramework;
-using NakedLegacy.Attribute;
+using NOF2.Attribute;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NOF2.Rest.Test.Data.AppLib;
 
-public class LegacyAttribute : System.Attribute, IMemberOrderAttribute, IMaxLengthAttribute, IRequiredAttribute,  INamedAttribute, IHiddenAttribute, ITableViewAttribute, IRestExtensionAttribute {
+public class NOF2Attribute : System.Attribute, IMemberOrderAttribute, IMaxLengthAttribute, IRequiredAttribute,  INamedAttribute, IHiddenAttribute, ITableViewAttribute, IRestExtensionAttribute {
     public int MaxLength { get; set; }
     public int Order { get; set; }
     public string Name { get; set; }

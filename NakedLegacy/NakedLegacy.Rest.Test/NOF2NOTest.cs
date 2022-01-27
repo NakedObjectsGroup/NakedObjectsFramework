@@ -17,26 +17,26 @@ using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
-using NakedLegacy.Reflector.Extensions;
-using NakedLegacy.Rest.Test.Data;
-using NakedLegacy.Rest.Test.Data.AppLib;
+using NOF2.Reflector.Extensions;
+using NOF2.Rest.Test.Data;
+using NOF2.Rest.Test.Data.AppLib;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace NakedLegacy.Rest.Test;
+namespace NOF2.Rest.Test;
 
-public class LegacyNOFTest : AcceptanceTestCase {
-    protected Type[] LegacyTypes { get; } = {
+public class NOF2NOTest : AcceptanceTestCase {
+    protected Type[] NOF2Types { get; } = {
         typeof(ClassWithTextString),
         typeof(ClassWithInternalCollection),
         typeof(ClassWithActionAbout),
         typeof(ClassWithFieldAbout),
         typeof(ClassWithLinkToNOFClass),
         typeof(ClassWithNOFInternalCollection),
-        typeof(LegacyClassWithInterface),
-        typeof(ILegacyRoleInterface),
+        typeof(NOF2ClassWithInterface),
+        typeof(INOF2RoleInterface),
         typeof(ClassWithMenu),
         typeof(ClassWithDate),
         typeof(ClassWithTimeStamp),
@@ -46,9 +46,9 @@ public class LegacyNOFTest : AcceptanceTestCase {
         typeof(ClassWithReferenceProperty)
     };
 
-    protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
+    protected Type[] NOF2Services { get; } = { typeof(SimpleService) };
 
-    protected Type[] LegacyValueHolders { get; } = {
+    protected Type[] NOF2ValueHolders { get; } = {
         typeof(TextString),
         typeof(Money),
         typeof(Logical),
@@ -60,7 +60,7 @@ public class LegacyNOFTest : AcceptanceTestCase {
 
     protected override Type[] ObjectTypes { get; } = {
         typeof(ClassWithString),
-        typeof(ClassWithLegacyInterface),
+        typeof(ClassWithNOF2Interface),
         typeof(IRoleInterface)
     };
 
@@ -70,15 +70,15 @@ public class LegacyNOFTest : AcceptanceTestCase {
 
     protected override Action<NakedFrameworkOptions> AddNakedFunctions => _ => { };
 
-    protected Action<NakedLegacyOptions> LegacyOptions =>
+    protected Action<NOF2Options> NOF2Options =>
         options => {
-            options.DomainModelTypes = LegacyTypes;
-            options.DomainModelServices = LegacyServices;
-            options.ValueHolderTypes = LegacyValueHolders;
+            options.DomainModelTypes = NOF2Types;
+            options.DomainModelServices = NOF2Services;
+            options.ValueHolderTypes = NOF2ValueHolders;
             options.NoValidate = true;
         };
 
-    protected virtual Action<NakedFrameworkOptions> AddLegacy => builder => builder.AddNakedLegacy(LegacyOptions);
+    protected virtual Action<NakedFrameworkOptions> AddNOF2 => builder => builder.AddNOF2(NOF2Options);
 
     protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
         builder => {
@@ -87,7 +87,7 @@ public class LegacyNOFTest : AcceptanceTestCase {
             AddNakedObjects(builder);
             //AddNakedFunctions(builder);
             AddRestfulObjects(builder);
-            AddLegacy(builder);
+            AddNOF2(builder);
         };
 
     protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
@@ -180,7 +180,7 @@ public class LegacyNOFTest : AcceptanceTestCase {
     //}
 
     //[Test]
-    //public void TestNOFToLegacy() {
+    //public void TestNOFToNOF2() {
     //    var api = Api();
     //    var result = api.GetObject(FullName<ClassWithString>(), "1");
     //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -188,14 +188,14 @@ public class LegacyNOFTest : AcceptanceTestCase {
     //    var parsedResult = JObject.Parse(json);
 
     //    Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
-    //    Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
-    //    Assert.IsNotNull(parsedResult["members"]["CollectionOfLegacyClass"]);
+    //    Assert.IsNotNull(parsedResult["members"]["LinkToNOF2Class"]);
+    //    Assert.IsNotNull(parsedResult["members"]["CollectionOfNOF2Class"]);
 
-    //    Assert.AreEqual("Ted", parsedResult["members"]["LinkToLegacyClass"]["value"]["title"].ToString());
+    //    Assert.AreEqual("Ted", parsedResult["members"]["LinkToNOF2Class"]["value"]["title"].ToString());
     //}
 
     [Test]
-    public void TestNOFToLegacyCollection() {
+    public void TestNOFToNOF2Collection() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithString>(), "2");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -203,14 +203,14 @@ public class LegacyNOFTest : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["LinkToLegacyClass"]);
-        Assert.IsNotNull(parsedResult["members"]["CollectionOfLegacyClass"]);
+        Assert.IsNotNull(parsedResult["members"]["LinkToNOF2Class"]);
+        Assert.IsNotNull(parsedResult["members"]["CollectionOfNOF2Class"]);
 
-        Assert.AreEqual("2", parsedResult["members"]["CollectionOfLegacyClass"]["size"].ToString());
+        Assert.AreEqual("2", parsedResult["members"]["CollectionOfNOF2Class"]["size"].ToString());
     }
 
     //[Test]
-    //public void TestLegacyToNOF() {
+    //public void TestNOF2ToNOF() {
     //    var api = Api();
     //    var result = api.GetObject(FullName<ClassWithLinkToNOFClass>(), "1");
     //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -224,7 +224,7 @@ public class LegacyNOFTest : AcceptanceTestCase {
     //}
 
     [Test]
-    public void TestLegacyToNOFCollection() {
+    public void TestNOF2ToNOFCollection() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithNOFInternalCollection>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -238,11 +238,11 @@ public class LegacyNOFTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithLegacyInterface() {
+    public void TestGetObjectWithNOF2Interface() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
 
         var api = Api();
-        var result = api.GetObject(FullName<ClassWithLegacyInterface>(), "10");
+        var result = api.GetObject(FullName<ClassWithNOF2Interface>(), "10");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
@@ -252,12 +252,12 @@ public class LegacyNOFTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithLegacyInterfaceConfirmSubtype() {
+    public void TestGetObjectWithNOF2InterfaceConfirmSubtype() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
 
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "supertype", new ScalarValue(FullName<ILegacyRoleInterface>()) } } };
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "supertype", new ScalarValue(FullName<INOF2RoleInterface>()) } } };
         var api = Api();
-        var result = api.GetInvokeTypeActions(FullName<ClassWithLegacyInterface>(), "isSubtypeOf", map);
+        var result = api.GetInvokeTypeActions(FullName<ClassWithNOF2Interface>(), "isSubtypeOf", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
@@ -266,11 +266,11 @@ public class LegacyNOFTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetLegacyObjectWithInterface() {
+    public void TestGetNOF2ObjectWithInterface() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
 
         var api = Api();
-        var result = api.GetObject(FullName<LegacyClassWithInterface>(), "10");
+        var result = api.GetObject(FullName<NOF2ClassWithInterface>(), "10");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
@@ -280,11 +280,11 @@ public class LegacyNOFTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetLegacyObjectWithContributedAction() {
+    public void TestGetNOF2ObjectWithContributedAction() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
 
         var api = Api();
-        var result = api.GetObject(FullName<LegacyClassWithInterface>(), "10");
+        var result = api.GetObject(FullName<NOF2ClassWithInterface>(), "10");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
@@ -294,12 +294,12 @@ public class LegacyNOFTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetLegacyObjectWithInterfaceConfirmSubtype() {
+    public void TestGetNOF2ObjectWithInterfaceConfirmSubtype() {
         ClassWithFieldAbout.TestInvisibleFlag = false;
 
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "supertype", new ScalarValue(FullName<IRoleInterface>()) } } };
         var api = Api();
-        var result = api.GetInvokeTypeActions(FullName<LegacyClassWithInterface>(), "isSubtypeOf", map);
+        var result = api.GetInvokeTypeActions(FullName<NOF2ClassWithInterface>(), "isSubtypeOf", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);

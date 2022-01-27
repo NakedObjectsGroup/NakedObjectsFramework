@@ -20,28 +20,28 @@ using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
-using NakedLegacy.Reflector.Component;
-using NakedLegacy.Reflector.Extensions;
-using NakedLegacy.Rest.Test.Data;
-using NakedLegacy.Rest.Test.Data.AppLib;
+using NOF2.Reflector.Component;
+using NOF2.Reflector.Extensions;
+using NOF2.Rest.Test.Data;
+using NOF2.Rest.Test.Data.AppLib;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace NakedLegacy.Rest.Test;
+namespace NOF2.Rest.Test;
 
 public class NullStringHasher : IStringHasher {
     public string GetHash(string toHash) => null;
 }
 
-public class LegacyTest : AcceptanceTestCase {
-    protected Type[] LegacyTypes { get; } = {
+public class NOF2Test : AcceptanceTestCase {
+    protected Type[] NOF2Types { get; } = {
         typeof(ClassWithTextString),
         typeof(ClassWithInternalCollection),
         typeof(ClassWithActionAbout),
         typeof(ClassWithFieldAbout),
-        typeof(ILegacyRoleInterface),
+        typeof(INOF2RoleInterface),
         typeof(ClassWithMenu),
         typeof(ClassWithDate),
         typeof(ClassWithTimeStamp),
@@ -56,9 +56,9 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithAnnotations)
     };
 
-    protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
+    protected Type[] NOF2Services { get; } = { typeof(SimpleService) };
 
-    protected Type[] LegacyValueHolders { get; } = {
+    protected Type[] NOF2ValueHolders { get; } = {
         typeof(TextString),
         typeof(Money),
         typeof(Logical),
@@ -75,22 +75,22 @@ public class LegacyTest : AcceptanceTestCase {
 
     protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
 
-    protected Action<NakedLegacyOptions> LegacyOptions =>
+    protected Action<NOF2Options> NOF2Options =>
         options => {
-            options.DomainModelTypes = LegacyTypes;
-            options.DomainModelServices = LegacyServices;
-            options.ValueHolderTypes = LegacyValueHolders;
+            options.DomainModelTypes = NOF2Types;
+            options.DomainModelServices = NOF2Services;
+            options.ValueHolderTypes = NOF2ValueHolders;
             options.NoValidate = true;
         };
 
-    protected virtual Action<NakedFrameworkOptions> AddLegacy => builder => builder.AddNakedLegacy(LegacyOptions);
+    protected virtual Action<NakedFrameworkOptions> AddNOF2 => builder => builder.AddNOF2(NOF2Options);
 
     protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
         builder => {
             AddCoreOptions(builder);
             AddPersistor(builder);
             AddRestfulObjects(builder);
-            AddLegacy(builder);
+            AddNOF2(builder);
         };
 
     protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
@@ -779,7 +779,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetLegacyObjectWithMenu() {
+    public void TestGetNOF2ObjectWithMenu() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -794,7 +794,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetLegacyMainMenu() {
+    public void TestGetNOF2MainMenu() {
         var api = Api();
         var result = api.GetMenu("ClassWithMenu");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -1125,8 +1125,8 @@ public class LegacyTest : AcceptanceTestCase {
 
         Assert.AreEqual(nameof(ClassWithReferenceProperty.ReferenceProperty), parsedResult["id"].ToString());
         Assert.AreEqual("Fred", parsedResult["value"]["title"].ToString());
-        Assert.AreEqual(@"http://localhost/objects/NakedLegacy.Rest.Test.Data.ClassWithTextString/1", parsedResult["value"]["href"].ToString());
-        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", parsedResult["extensions"]["returnType"].ToString());
+        Assert.AreEqual(@"http://localhost/objects/NOF2.Rest.Test.Data.ClassWithTextString/1", parsedResult["value"]["href"].ToString());
+        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", parsedResult["extensions"]["returnType"].ToString());
     }
 
     [Test]
@@ -1272,7 +1272,7 @@ public class LegacyTest : AcceptanceTestCase {
         var resultObj = parsedResult["result"];
 
         Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1290,7 +1290,7 @@ public class LegacyTest : AcceptanceTestCase {
         var resultObj = parsedResult["result"];
 
         Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1308,7 +1308,7 @@ public class LegacyTest : AcceptanceTestCase {
         var resultObj = parsedResult["result"];
 
         Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1362,7 +1362,7 @@ public class LegacyTest : AcceptanceTestCase {
         var resultObj = parsedResult["result"];
 
         Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1381,7 +1381,7 @@ public class LegacyTest : AcceptanceTestCase {
         var resultObj = parsedResult["result"];
 
         Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1453,7 +1453,7 @@ public class LegacyTest : AcceptanceTestCase {
         var resultObj = parsedResult["result"];
 
         //Assert.AreEqual(2, ((JContainer)resultObj["value"]).Count);
-        Assert.AreEqual("NakedLegacy.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["elementType"].ToString());
+        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["elementType"].ToString());
         Assert.AreEqual("Fred", resultObj["value"][0]["title"].ToString());
         Assert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
     }

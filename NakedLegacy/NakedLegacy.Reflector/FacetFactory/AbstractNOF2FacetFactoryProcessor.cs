@@ -16,10 +16,10 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
-public abstract class LegacyFacetFactoryProcessor : FacetFactoryAbstract, ILegacyFacetFactoryProcessor {
-    protected LegacyFacetFactoryProcessor(int numericOrder,
+public abstract class AbstractNOF2FacetFactoryProcessor : FacetFactoryAbstract, INOF2FacetFactoryProcessor {
+    protected AbstractNOF2FacetFactoryProcessor(int numericOrder,
                                           ILoggerFactory loggerFactory,
                                           FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
 

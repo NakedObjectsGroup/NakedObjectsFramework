@@ -12,9 +12,9 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedLegacy.ValueHolder;
+using NOF2.ValueHolder;
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFacetAbstract where T : class, IValueHolder<TU> {

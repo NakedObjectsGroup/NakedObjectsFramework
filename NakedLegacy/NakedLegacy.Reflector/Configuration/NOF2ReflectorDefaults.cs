@@ -8,12 +8,12 @@
 using System;
 using System.Collections;
 using System.Linq;
-using NakedLegacy.Collection;
+using NOF2.Collection;
 
-namespace NakedLegacy.Reflector.Configuration;
+namespace NOF2.Reflector.Configuration;
 
-public static class ReflectorDefaults {
-    public static readonly Type[] DefaultLegacyTypes = {
+public static class NOF2ReflectorDefaults {
+    public static readonly Type[] DefaultNOF2Types = {
         typeof(InternalCollection),
         typeof(InternalCollection<>),
         typeof(IEnumerable),

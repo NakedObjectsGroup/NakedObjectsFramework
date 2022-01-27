@@ -1,6 +1,6 @@
-﻿using NakedLegacy.About;
+﻿using NOF2.About;
 
-namespace NakedLegacy.Reflector.Component;
+namespace NOF2.Reflector.Component;
 
 public class AboutFactory : IAboutFactory {
     public ActionAbout NewActionAbout(AboutTypeCodes code) => new ActionAboutImpl(code);

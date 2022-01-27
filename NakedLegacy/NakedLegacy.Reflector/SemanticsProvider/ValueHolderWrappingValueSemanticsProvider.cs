@@ -12,9 +12,9 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
-using NakedLegacy.ValueHolder;
+using NOF2.ValueHolder;
 
-namespace NakedLegacy.Reflector.SemanticsProvider;
+namespace NOF2.Reflector.SemanticsProvider;
 
 [Serializable]
 public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSemanticsProviderAbstract<T> where T : class, IValueHolder<TU>, new() {

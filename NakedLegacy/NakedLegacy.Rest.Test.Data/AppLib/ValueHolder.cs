@@ -1,8 +1,8 @@
 ﻿using System;
-using NakedLegacy.Title;
-using NakedLegacy.ValueHolder;
+using NOF2.Title;
+using NOF2.ValueHolder;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NOF2.Rest.Test.Data.AppLib;
 
 public abstract class ValueHolder<T> : IValueHolder<T>, ITitledObject {
     private T value;

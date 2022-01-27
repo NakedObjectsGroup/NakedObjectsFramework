@@ -18,7 +18,7 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 /// <summary>
 ///     Installs a <see cref="OptionalFacetDefault" /> onto all properties and parameters if they are non primitive
@@ -28,7 +28,7 @@ namespace NakedLegacy.Reflector.FacetFactory;
 ///     This is an alternative to <see cref="MandatoryDefaultFacetFactory" />. Which works the same way but
 ///     makes everything optional by default. Requiring the use of annotations to indicate mandatoryness.
 /// </para>
-public sealed class OptionalDefaultFacetFactory : LegacyFacetFactoryProcessor {
+public sealed class OptionalDefaultFacetFactory : AbstractNOF2FacetFactoryProcessor {
     public OptionalDefaultFacetFactory(IFacetFactoryOrder<OptionalDefaultFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 

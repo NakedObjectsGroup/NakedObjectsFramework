@@ -1,7 +1,7 @@
 ﻿using System;
-using NakedLegacy.Container;
+using NOF2.Container;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NOF2.Rest.Test.Data.AppLib;
 
 public static class ThreadLocals {
     [ThreadStatic]

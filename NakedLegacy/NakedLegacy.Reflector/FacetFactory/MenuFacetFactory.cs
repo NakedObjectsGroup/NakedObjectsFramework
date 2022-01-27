@@ -15,38 +15,50 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.About;
-using NakedLegacy.Reflector.Facet;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Menu;
+using NOF2.Reflector.Facet;
+using NOF2.Reflector.Helpers;
+using MenuFacetViaMethod = NOF2.Reflector.Facet.MenuFacetViaMethod;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
-public sealed class LegacySaveFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+public sealed class MenuFacetFactory : AbstractNOF2FacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;
 
-    static LegacySaveFacetFactory() {
+    static MenuFacetFactory() {
         FixedPrefixes = new[] { RecognisedMethodsAndPrefixes.MenuMethod };
     }
 
-    public LegacySaveFacetFactory(IFacetFactoryOrder<LegacySaveFacetFactory> order, ILoggerFactory loggerFactory)
+    public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
     public string[] Prefixes => FixedPrefixes;
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         // instance
-        const string name = "actionsave";
-        var saveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, name, typeof(void), null);
-        methodRemover.SafeRemoveMethod(saveMethod);
-        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{name}", typeof(void), new[] { typeof(ActionAbout) });
-
-        methodRemover.SafeRemoveMethod(aboutSaveMethod);
-
-        var facet = saveMethod is not null ? (IFacet)new SaveViaActionSaveFacet(saveMethod, aboutSaveMethod, specification, Logger<SaveViaActionSaveFacet>()) : new SaveNullFacet(specification, Logger<SaveNullFacet>());
+        var menuOrderMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "menuOrder", typeof(IMenu), null);
+        methodRemover.SafeRemoveMethod(menuOrderMethod);
+        var facet = menuOrderMethod is not null ? (IFacet)new MenuFacetViaMethod(menuOrderMethod, specification, Logger<MenuFacetViaMethod>()) : new MenuFacetDefault(specification);
         FacetUtils.AddFacet(facet);
+
+        // mainMenu
+        var sharedmenuOrderMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "sharedMenuOrder", typeof(IMenu), null);
+        methodRemover.SafeRemoveMethod(sharedmenuOrderMethod);
+
+        if (sharedmenuOrderMethod is not null) {
+            void Action(IMetamodelBuilder builder) {
+                var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(sharedmenuOrderMethod, new object[] { });
+                var mainMenu = NOF2Helpers.ConvertNOF2ToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name);
+                builder.AddMainMenu(mainMenu);
+            }
+
+            FacetUtils.AddFacet(new IntegrationFacet(specification, Action));
+        }
 
         return metamodel;
     }

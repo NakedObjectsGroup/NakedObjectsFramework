@@ -20,11 +20,11 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
-using NakedLegacy.Reflector.Helpers;
-using NakedLegacy.Reflector.SemanticsProvider;
-using NakedLegacy.ValueHolder;
+using NOF2.Reflector.Helpers;
+using NOF2.Reflector.SemanticsProvider;
+using NOF2.ValueHolder;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public ValueHolderFacetFactory(IFacetFactoryOrder<ValueHolderFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
@@ -63,7 +63,7 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var valueType = LegacyHelpers.IsOrImplementsValueHolder(type);
+        var valueType = NOF2Helpers.IsOrImplementsValueHolder(type);
 
         if (valueType is not null) {
             var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);

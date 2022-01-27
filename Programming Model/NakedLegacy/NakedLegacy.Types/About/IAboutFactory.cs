@@ -1,4 +1,4 @@
-﻿namespace NakedLegacy.About;
+﻿namespace NOF2.About;
 
 public interface IAboutFactory {
     public ActionAbout NewActionAbout(AboutTypeCodes code);

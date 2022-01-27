@@ -7,35 +7,47 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.DependencyInjection.Component;
-using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
-using NakedLegacy.Reflector.Helpers;
-using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
+using NakedFramework.ParallelReflector.Utils;
+using NOF2.About;
+using NOF2.Reflector.Facet;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
-public sealed class LegacySystemTypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor {
-    public LegacySystemTypeMarkerFacetFactory(AppendFacetFactoryOrder<LegacySystemTypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
+public sealed class SaveFacetFactory : AbstractNOF2FacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+    private static readonly string[] FixedPrefixes;
+
+    static SaveFacetFactory() {
+        FixedPrefixes = new[] { RecognisedMethodsAndPrefixes.MenuMethod };
+    }
+
+    public SaveFacetFactory(IFacetFactoryOrder<SaveFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
+    public string[] Prefixes => FixedPrefixes;
+
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var valueType = LegacyHelpers.IsOrImplementsValueHolder(type) ?? type;
+        // instance
+        const string name = "actionsave";
+        var saveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, name, typeof(void), null);
+        methodRemover.SafeRemoveMethod(saveMethod);
+        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, $"{NOF2Helpers.AboutPrefix}{name}", typeof(void), new[] { typeof(ActionAbout) });
 
-        if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-            valueType = valueType.GetGenericArguments().First();
-            FacetUtils.AddFacet(new NullableFacetAlways(specification));
-        }
+        methodRemover.SafeRemoveMethod(aboutSaveMethod);
 
-        AddTypeFacets(specification, valueType);
+        var facet = saveMethod is not null ? (IFacet)new SaveViaActionSaveFacet(saveMethod, aboutSaveMethod, specification, Logger<SaveViaActionSaveFacet>()) : new SaveNullFacet(specification, Logger<SaveNullFacet>());
+        FacetUtils.AddFacet(facet);
+
         return metamodel;
     }
 }

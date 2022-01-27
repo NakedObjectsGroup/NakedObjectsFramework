@@ -7,14 +7,14 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Menu;
-using NakedLegacy.Container;
-using NakedLegacy.Menu;
-using NakedLegacy.ValueHolder;
+using NOF2.Container;
+using NOF2.Menu;
+using NOF2.ValueHolder;
 using IMenu = NakedFramework.Menu.IMenu;
 
-namespace NakedLegacy.Reflector.Helpers;
+namespace NOF2.Reflector.Helpers;
 
-public static class LegacyHelpers {
+public static class NOF2Helpers {
     public const string AboutPrefix = "about";
 
     public static Type IsOrImplementsValueHolder(Type type) =>
@@ -77,7 +77,7 @@ public static class LegacyHelpers {
         return spec?.GetFacet<INamedFacet>()?.FriendlyName ?? "";
     }
 
-    public static MenuImpl ConvertLegacyToNOFMenu(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
+    public static MenuImpl ConvertNOF2ToNOFMenu(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
         var menuName = GetName(legacyMenu, metamodel, declaringType, name);
         var mi = new MenuImpl(metamodel, declaringType, false, menuName);
         foreach (var menuComponent in legacyMenu.MenuItems()) {

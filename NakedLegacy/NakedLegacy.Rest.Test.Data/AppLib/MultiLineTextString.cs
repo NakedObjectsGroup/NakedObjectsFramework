@@ -1,7 +1,7 @@
 ﻿using System;
-using NakedLegacy.Title;
+using NOF2.Title;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NOF2.Rest.Test.Data.AppLib;
 
 public class MultiLineTextString : TextString {
     public MultiLineTextString() { }

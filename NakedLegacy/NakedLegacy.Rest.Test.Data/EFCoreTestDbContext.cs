@@ -8,7 +8,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace NakedLegacy.Rest.Test.Data;
+namespace NOF2.Rest.Test.Data;
 
 public static class Constants {
     public static string AppveyorServer => @"(local)\SQL2017";
@@ -20,7 +20,7 @@ public static class Constants {
     public static string Server => LocalServer;
 #endif
 
-    public static readonly string CsLegacy = @$"Data Source={Server};Initial Catalog={"LegacyTests"};Integrated Security=True;";
+    public static readonly string CsNOF2 = @$"Data Source={Server};Initial Catalog={"NOF2Tests"};Integrated Security=True;";
 }
 
 public abstract class EFCoreTestDbContext : DbContext {
@@ -35,8 +35,8 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<ClassWithString> ClassesWithString { get; set; }
     public DbSet<ClassWithLinkToNOFClass> ClassesWithLinkToNOFClass { get; set; }
     public DbSet<ClassWithNOFInternalCollection> ClassesWithNOFInternalCollection { get; set; }
-    public DbSet<LegacyClassWithInterface> LegacyClassWithInterfaces { get; set; }
-    public DbSet<ClassWithLegacyInterface> ClassWithLegacyInterfaces { get; set; }
+    public DbSet<NOF2ClassWithInterface> NOF2ClassWithInterfaces { get; set; }
+    public DbSet<ClassWithNOF2Interface> ClassWithNOF2Interfaces { get; set; }
     public DbSet<ClassWithMenu> ClassWithMenus { get; set; }
     public DbSet<ClassWithDate> ClassWithDates { get; set; }
     public DbSet<ClassWithDate> ClassWithTimeStamps { get; set; }
@@ -166,10 +166,10 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithMenu>().HasData(new { Id = 1 });
         modelBuilder.Entity<ClassWithDate>().HasData(jane);
 
-        modelBuilder.Entity<LegacyClassWithInterface>().HasData(new { Id = 10 });
-        modelBuilder.Entity<ClassWithLegacyInterface>().HasData(new { Id = 10 });
+        modelBuilder.Entity<NOF2ClassWithInterface>().HasData(new { Id = 10 });
+        modelBuilder.Entity<ClassWithNOF2Interface>().HasData(new { Id = 10 });
 
-        modelBuilder.Entity<ClassWithString>().HasData(new { Id = 1, Name = "Jill", LinkToLegacyClassId = 1, ClassWithNOFInternalCollectionId = 1 });
+        modelBuilder.Entity<ClassWithString>().HasData(new { Id = 1, Name = "Jill", LinkToNOF2ClassId = 1, ClassWithNOFInternalCollectionId = 1 });
 
         modelBuilder.Entity<ClassWithLinkToNOFClass>().HasData(new { Id = 1, Name = "Jack", LinkToNOFClassId = 1 });
 
@@ -188,7 +188,7 @@ public abstract class EFCoreTestDbContext : DbContext {
 }
 
 public class EFCoreObjectDbContext : EFCoreTestDbContext {
-    public EFCoreObjectDbContext() : base(Constants.CsLegacy) { }
+    public EFCoreObjectDbContext() : base(Constants.CsNOF2) { }
     public void Delete() => Database.EnsureDeleted();
 
     public void Create() => Database.EnsureCreated();
