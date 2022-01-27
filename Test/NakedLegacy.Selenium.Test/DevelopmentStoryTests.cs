@@ -463,8 +463,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void CreatingAndSavingObjects()
         {
             CreateAndSaveObjectProgrammatically();
-            DisplayingAndSavingATransientObjectFromTheUI();
-            ControlOverSaving();
+            //Too unreliable on server
+            //DisplayingAndSavingATransientObjectFromTheUI(); 
+            //ControlOverSaving();
         }
 
         //[TestMethod]
@@ -500,9 +501,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             transient.GetEditableTextInputProperty("Type").Enter("A");
             transient.GetEditableSelectionProperty("Category").Select(1);
                 transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
-            transient.WaitForMessage("");
-            Thread.Sleep(500);
-            transient.WaitForMessage("");
             var result = transient.Save();
             helper.GotoHome().OpenMainMenu("Special Offers")
              .GetActionWithoutDialog("Recently Updated Special Offers").ClickToViewList()
@@ -529,7 +527,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             transient.GetEditableTextInputProperty("End Date").Clear().Enter(DateTime.Today.ToString("d"));
             transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("10");
             transient.GetEditableTextInputProperty("Max Qty").Clear().Enter("5");
-            Thread.Sleep(1000);
             //Test that vaidation rules implemente in AboutActionSave are applied next.
             transient.AttemptUnsuccessfulSave();
                 transient.WaitForMessage("Max Qty cannot be less than Min Qty");
