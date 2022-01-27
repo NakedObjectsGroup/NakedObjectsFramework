@@ -41,20 +41,7 @@ public sealed class TableViewAnnotationFacetFactory : FunctionalFacetFactoryProc
         }
     }
 
-    private ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) {
-        var columns = attribute.Columns ?? Array.Empty<string>();
-        var distinctColumns = columns.Distinct().ToArray();
-
-        if (columns.Length != distinctColumns.Length) {
-            // we had duplicates - log
-            var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? $"{s}, {t}" : t);
-            var name = holder.Identifier is null ? "Unknown" : holder.Identifier.ToString();
-            logger.LogWarning($"Table View on {name} had duplicate columns {duplicates}");
-            columns = distinctColumns;
-        }
-
-        return new TableViewFacet(attribute.Title, columns, holder);
-    }
+    private ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) => TableViewFacet.CreateTableViewFacet(attribute.Title, attribute.Columns, holder, logger);
 
     private ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTableViewFacet(attribute, holder);
 
