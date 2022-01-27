@@ -463,7 +463,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void CreatingAndSavingObjects()
         {
             CreateAndSaveObjectProgrammatically();
-            DisplayingAndSavingATransientObjectFromTheUI();
+            //DisplayingAndSavingATransientObjectFromTheUI(); Too unreliable on server
             ControlOverSaving();
         }
 
@@ -500,9 +500,6 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             transient.GetEditableTextInputProperty("Type").Enter("A");
             transient.GetEditableSelectionProperty("Category").Select(1);
                 transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
-            transient.WaitForMessage("");
-            Thread.Sleep(500);
-            transient.WaitForMessage("");
             var result = transient.Save();
             helper.GotoHome().OpenMainMenu("Special Offers")
              .GetActionWithoutDialog("Recently Updated Special Offers").ClickToViewList()
