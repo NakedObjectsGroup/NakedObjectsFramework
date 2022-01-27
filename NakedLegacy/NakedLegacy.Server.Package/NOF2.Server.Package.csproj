@@ -5,6 +5,6 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <NuspecFile>NakedLegacy.Server.nuspec</NuspecFile>
+    <NuspecFile>NOF2.Server.nuspec</NuspecFile>
   </PropertyGroup>
 </Project>

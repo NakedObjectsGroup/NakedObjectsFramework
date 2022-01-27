@@ -93,13 +93,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Persistor.EF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Test", "NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj", "{63E3FCCF-F5C0-47F8-A5C1-59708F8517C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Server.Package", "NakedLegacy\NakedLegacy.Server.Package\NakedLegacy.Server.Package.csproj", "{18EE2C6E-A2D7-4544-90E1-8574A74F0F41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOF2.Server.Package", "NakedLegacy\NakedLegacy.Server.Package\NOF2.Server.Package.csproj", "{18EE2C6E-A2D7-4544-90E1-8574A74F0F41}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Reflector", "NakedLegacy\NakedLegacy.Reflector\NakedLegacy.Reflector.csproj", "{3413AAB5-2E18-4BC1-8BCC-885D026E5167}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOF2.Reflector", "NakedLegacy\NakedLegacy.Reflector\NOF2.Reflector.csproj", "{3413AAB5-2E18-4BC1-8BCC-885D026E5167}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Rest.Test.Data", "NakedLegacy\NakedLegacy.Rest.Test.Data\NakedLegacy.Rest.Test.Data.csproj", "{61E24965-8590-4BD1-8862-DCF1BE0462BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOF2.Rest.Test.Data", "NakedLegacy\NakedLegacy.Rest.Test.Data\NOF2.Rest.Test.Data.csproj", "{61E24965-8590-4BD1-8862-DCF1BE0462BB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Rest.Test", "NakedLegacy\NakedLegacy.Rest.Test\NakedLegacy.Rest.Test.csproj", "{549638C5-A6F2-48BC-B65F-52D18EEEDF3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOF2.Rest.Test", "NakedLegacy\NakedLegacy.Rest.Test\NOF2.Rest.Test.csproj", "{549638C5-A6F2-48BC-B65F-52D18EEEDF3E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD278907-3EF9-49DE-A9E5-1EE39532A6C2}"
 	ProjectSection(SolutionItems) = preProject
