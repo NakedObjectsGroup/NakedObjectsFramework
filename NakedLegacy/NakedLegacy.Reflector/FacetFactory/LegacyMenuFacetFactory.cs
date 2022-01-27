@@ -42,7 +42,7 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
         // instance
         var menuOrderMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "menuOrder", typeof(IMenu), null);
         methodRemover.SafeRemoveMethod(menuOrderMethod);
-        var facet = menuOrderMethod is not null ? (IFacet)new MenuFacetViaLegacyMethod(menuOrderMethod, specification) : new MenuFacetDefault(specification);
+        var facet = menuOrderMethod is not null ? (IFacet)new MenuFacetViaLegacyMethod(menuOrderMethod, specification, Logger<MenuFacetViaLegacyMethod>()) : new MenuFacetDefault(specification);
         FacetUtils.AddFacet(facet);
 
         // mainMenu

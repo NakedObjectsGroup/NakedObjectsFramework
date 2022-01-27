@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -20,8 +21,8 @@ namespace NakedLegacy.Reflector.Facet;
 public sealed class SaveViaActionSaveFacet : AbstractViaAboutMethodFacet, ISaveFacet, IImperativeFacet {
     private readonly MethodInfo saveMethod;
 
-    public SaveViaActionSaveFacet(MethodInfo saveMethod, MethodInfo aboutmethod, ISpecification holder)
-        : base(Type, holder, aboutmethod, AboutHelpers.AboutType.Action) =>
+    public SaveViaActionSaveFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ISpecification holder, ILogger<SaveViaActionSaveFacet> logger)
+        : base(Type, holder, aboutMethod, AboutHelpers.AboutType.Action, logger) =>
         this.saveMethod = saveMethod;
 
     public static Type Type => typeof(ISaveFacet);

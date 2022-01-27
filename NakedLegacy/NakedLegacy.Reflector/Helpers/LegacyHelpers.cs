@@ -5,6 +5,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Menu;
 using NakedLegacy.Container;
 using NakedLegacy.Menu;
@@ -94,4 +95,22 @@ public static class LegacyHelpers {
         };
 
     public static T GetCustomAttribute<T>(this object on) => GetCustomAttributes(on).OfType<T>().FirstOrDefault();
+
+    public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object target, object[] parms) {
+        try {
+            return methodDelegate is not null ? (T)methodDelegate(target, parms) : (T)method.Invoke(target, parms);
+        }
+        catch (InvalidCastException) {
+            throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.Name}");
+        }
+    }
+
+    public static void Invoke(this Func<object, object[], object> methodDelegate, MethodInfo method, object target, object[] parms) {
+        if (methodDelegate is not null) {
+            methodDelegate(target, parms);
+        }
+        else {
+            method.Invoke(target, parms);
+        }
+    }
 }

@@ -23,7 +23,7 @@ public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFa
     private readonly ILogger<ActionDefaultsViaAboutMethodFacet> logger;
 
     public ActionDefaultsViaAboutMethodFacet(MethodInfo method, ISpecification holder, int index, ILogger<ActionDefaultsViaAboutMethodFacet> logger)
-        : base(typeof(IActionDefaultsFacet), holder, method, AboutHelpers.AboutType.Action) {
+        : base(typeof(IActionDefaultsFacet), holder, method, AboutHelpers.AboutType.Action, logger) {
         this.index = index;
         this.logger = logger;
     }

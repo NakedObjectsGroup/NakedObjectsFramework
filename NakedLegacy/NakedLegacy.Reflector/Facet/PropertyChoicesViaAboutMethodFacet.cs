@@ -23,7 +23,7 @@ namespace NakedLegacy.Reflector.Facet;
 [Serializable]
 public sealed class PropertyChoicesViaAboutMethodFacet : AbstractViaAboutMethodFacet, IPropertyChoicesFacet, IImperativeFacet {
     public PropertyChoicesViaAboutMethodFacet(MethodInfo optionsMethod, ISpecification holder, ILogger<PropertyChoicesViaAboutMethodFacet> logger)
-        : base(typeof(IPropertyChoicesFacet), holder, optionsMethod, AboutHelpers.AboutType.Field) { }
+        : base(typeof(IPropertyChoicesFacet), holder, optionsMethod, AboutHelpers.AboutType.Field, logger) { }
 
     #region IPropertyChoicesFacet Members
 

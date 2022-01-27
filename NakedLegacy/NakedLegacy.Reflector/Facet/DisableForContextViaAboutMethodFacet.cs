@@ -24,7 +24,7 @@ public sealed class DisableForContextViaAboutMethodFacet : AbstractViaAboutMetho
     private readonly ILogger<DisableForContextViaAboutMethodFacet> logger;
 
     public DisableForContextViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DisableForContextViaAboutMethodFacet> logger)
-        : base(typeof(IDisableForContextFacet), holder, method, aboutType) =>
+        : base(typeof(IDisableForContextFacet), holder, method, aboutType, logger) =>
         this.logger = logger;
 
     public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);

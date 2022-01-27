@@ -74,15 +74,6 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
         // if any changes made by invocation fail 
         framework.NakedObjectManager.CreateAdapter(result, null, null);
 
-    private static T Invoke<T>(Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
-        try {
-            return methodDelegate is not null ? (T)methodDelegate(null, parms) : (T)method.Invoke(null, parms);
-        }
-        catch (InvalidCastException) {
-            throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.DeclaringType}.{method.Name}");
-        }
-    }
-
     public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
                                                INakedObjectAdapter[] parameters,
                                                INakedFramework framework) {
@@ -97,7 +88,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
 
         var substituteParms = LegacyHelpers.SubstituteNullsAndContainer(rawParms, ActionMethod, framework);
 
-        return HandleInvokeResult(framework, Invoke<object>(methodDelegate, ActionMethod, substituteParms));
+        return HandleInvokeResult(framework, methodDelegate.Invoke<object>(ActionMethod, null, substituteParms));
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
