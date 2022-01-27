@@ -9,7 +9,7 @@
 		Public Property mappedReviewerName As String
 		Friend myReviewerName As TextString
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property ReviewerName As TextString
 			Get
 				myReviewerName = If(myReviewerName, New TextString(mappedReviewerName, Sub(v) mappedReviewerName = v))
@@ -31,7 +31,7 @@ Return myReviewerName
 		Public Property mappedReviewDate As Date
 		Friend myReviewDate As NODate
 
-		<MemberOrder(2)>
+		<AWProperty(Order:=2)>
 		Public ReadOnly Property ReviewDate As NODate
 			Get
 				myReviewDate = If(myReviewDate, New NODate(mappedReviewDate, Sub(v) mappedReviewDate = v))
@@ -53,7 +53,7 @@ Return myReviewDate
 		Public Property mappedEmailAddress As String
 		Friend myEmailAddress As TextString
 
-		<MemberOrder(3)>
+		<AWProperty(Order:=3)>
 		Public ReadOnly Property EmailAddress As TextString
 			Get
 				myEmailAddress = If(myEmailAddress, New TextString(mappedEmailAddress, Sub(v) mappedEmailAddress = v))
@@ -75,7 +75,7 @@ Return myEmailAddress
 		Public Property mappedRating As Integer
 		Friend myRating As WholeNumber
 
-		<MemberOrder(4)>
+		<AWProperty(Order:=4)>
 		Public ReadOnly Property Rating As WholeNumber
 			Get
 				myRating = If(myRating, New WholeNumber(mappedRating, Sub(v) mappedRating = v))
@@ -97,7 +97,7 @@ Return myRating
 		Public Property mappedComments As String
 		Friend myComments As TextString
 
-		<MemberOrder(5)>
+		<AWProperty(Order:=5)>
 		Public ReadOnly Property Comments As TextString
 			Get
 				myComments = If(myComments, New TextString(mappedComments, Sub(v) mappedComments = v))
@@ -130,7 +130,7 @@ Return myComments
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

@@ -26,7 +26,7 @@ Namespace AW.Types
 		Private myPersonLinks As InternalCollection
 
 		'<TableView(False, NameOf(PersonCreditCard.Person))>
-		<MemberOrder(5)>
+		<AWProperty(Order:=5)>
 		Public ReadOnly Property PersonLinks As InternalCollection
 			Get
 				myPersonLinks = If(myPersonLinks, New InternalCollection(Of PersonCreditCard)(mappedPersonLinks))
@@ -47,7 +47,7 @@ Namespace AW.Types
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

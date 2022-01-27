@@ -10,7 +10,7 @@
         Public Property mappedStartDate As Date
         Friend myStartDate As NODate
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property StartDate As NODate
             Get
                 myStartDate = If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
@@ -30,7 +30,7 @@ Return myStartDate
         Public Property mappedEndDate As Date?
         Friend myEndDate As NODateNullable
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property EndDate As NODateNullable
             Get
                 myEndDate = If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
@@ -52,7 +52,7 @@ Return myEndDate
         Public Property mappedStandardCost As Decimal
         Friend myStandardCost As Money
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property StandardCost As Money
             Get
                 myStandardCost = If(myStandardCost, New Money(mappedStandardCost, Sub(v) mappedStandardCost = v))
@@ -84,7 +84,7 @@ Return myStandardCost
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

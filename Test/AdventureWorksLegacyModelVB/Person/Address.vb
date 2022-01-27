@@ -10,11 +10,11 @@
         Public Property mappedCity As String
         Friend myCity As TextString
 
-        <MemberOrder(13)>
+        <AWProperty(Order:=13)>
         Public ReadOnly Property City As TextString
             Get
                 myCity = If(myCity, New TextString(mappedCity, Sub(v) mappedCity = v))
-Return myCity
+                Return myCity
             End Get
         End Property
 
@@ -32,11 +32,11 @@ Return myCity
         Public Property mappedPostalCode As String
         Friend myPostalCode As TextString
 
-        <MemberOrder(14)>
+        <AWProperty(Order:=14)>
         Public ReadOnly Property PostalCode As TextString
             Get
                 myPostalCode = If(myPostalCode, New TextString(mappedPostalCode, Sub(v) mappedPostalCode = v))
-Return myPostalCode
+                Return myPostalCode
             End Get
         End Property
 
@@ -54,11 +54,11 @@ Return myPostalCode
         Public Property mappedAddressLine1 As String
         Friend myAddressLine1 As TextString
 
-        <MemberOrder(11)>
+        <AWProperty(Order:=11)>
         Public ReadOnly Property AddressLine1 As TextString
             Get
                 myAddressLine1 = If(myAddressLine1, New TextString(mappedAddressLine1, Sub(v) mappedAddressLine1 = v))
-Return myAddressLine1
+                Return myAddressLine1
             End Get
         End Property
 
@@ -76,11 +76,11 @@ Return myAddressLine1
         Public Property mappedAddressLine2 As String
         Friend myAddressLine2 As TextString
 
-        <MemberOrder(12)>
+        <AWProperty(Order:=12)>
         Public ReadOnly Property AddressLine2 As TextString
             Get
                 myAddressLine2 = If(myAddressLine2, New TextString(mappedAddressLine2, Sub(v) mappedAddressLine2 = v))
-Return myAddressLine2
+                Return myAddressLine2
             End Get
         End Property
 
@@ -97,14 +97,14 @@ Return myAddressLine2
 
         Public Property StateProvinceID() As Integer
 
-        <MemberOrder(15)>
+        <AWProperty(Order:=15)>
         Public Overridable Property StateProvince() As StateProvince
 
 #Region "ModifiedDate"
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

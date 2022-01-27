@@ -3,5 +3,5 @@ public class MemberOrderAttribute : Attribute, IMemberOrderAttribute
 {
     public MemberOrderAttribute(int order) => Order = order;
 
-    public int Order { get; init; }
+    public int Order { get; set; }
 }

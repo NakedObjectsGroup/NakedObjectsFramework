@@ -14,7 +14,7 @@
 		Public Property mappedDueDate As Date
 		Friend myDueDate As NODate
 
-		<MemberOrder(26)>
+		<AWProperty(Order:=26)>
 		Public ReadOnly Property DueDate As NODate
 			Get
 				myDueDate = If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
@@ -36,7 +36,7 @@
 		Public Property mappedOrderQty As Short
 		Friend myOrderQty As WholeNumber
 
-		<MemberOrder(20)>
+		<AWProperty(Order:=20)>
 		Public ReadOnly Property OrderQty As WholeNumber
 			Get
 				myOrderQty = If(myOrderQty, New WholeNumber(mappedOrderQty, Sub(v) mappedOrderQty = CType(v, Short)))
@@ -58,7 +58,7 @@
 		Public Property mappedUnitPrice As Decimal
 		Friend myUnitPrice As Money
 
-		<MemberOrder(22)>
+		<AWProperty(Order:=22)>
 		Public ReadOnly Property UnitPrice As Money
 			Get
 				myUnitPrice = If(myUnitPrice, New Money(mappedUnitPrice, Sub(v) mappedUnitPrice = v))
@@ -80,7 +80,7 @@
 		Public Property mappedLineTotal As Decimal
 		Friend myLineTotal As Money
 
-		<MemberOrder(24)>
+		<AWProperty(Order:=24)>
 		Public ReadOnly Property LineTotal As Money
 			Get
 				myLineTotal = If(myLineTotal, New Money(mappedLineTotal, Sub(v) mappedLineTotal = v))
@@ -102,7 +102,7 @@
 		Public Property mappedReceivedQty As Decimal
 		Friend myReceivedQty As FloatingPointNumber
 
-		<MemberOrder(30)>
+		<AWProperty(Order:=30)>
 		Public ReadOnly Property ReceivedQty As FloatingPointNumber
 			Get
 				myReceivedQty = If(myReceivedQty, New FloatingPointNumber(mappedReceivedQty, Sub(v) mappedReceivedQty = v))
@@ -123,7 +123,7 @@
 		Public Property mappedRejectedQty As Decimal
 		Friend myRejectedQty As FloatingPointNumber
 
-		<MemberOrder(32)>
+		<AWProperty(Order:=32)>
 		Public ReadOnly Property RejectedQty As FloatingPointNumber
 			Get
 				myRejectedQty = If(myRejectedQty, New FloatingPointNumber(mappedRejectedQty, Sub(v) mappedRejectedQty = v))
@@ -144,7 +144,7 @@
 		Public Property mappedStockedQty As Decimal
 		Friend myStockedQty As FloatingPointNumber
 
-		<MemberOrder(34)>
+		<AWProperty(Order:=34)>
 		Public ReadOnly Property StockedQty As FloatingPointNumber
 			Get
 				myStockedQty = If(myStockedQty, New FloatingPointNumber(mappedStockedQty, Sub(v) mappedStockedQty = v))
@@ -166,7 +166,7 @@
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
@@ -185,7 +185,7 @@
 		''<Hidden>
 		Public Property ProductID() As Integer
 
-		<MemberOrder(10)>
+		<AWProperty(Order:=10)>
 		Public Overridable Property Product() As Product
 
 		Public Overridable Property PurchaseOrderHeader() As PurchaseOrderHeader

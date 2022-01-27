@@ -11,7 +11,7 @@ Namespace AW.Types
         Public Property mappedName As String
         Friend myName As TextString
 
-        <MemberOrder(20)>
+        <AWProperty(Order:=20)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -34,7 +34,7 @@ Return myName
         Public Property Demographics() As String
 
         'TODO: <MultiLine(10)>
-        <MemberOrder(30)>
+        <AWProperty(Order:=30)>
         Public ReadOnly Property FormattedDemographics() As TextString
             Get
                 Return New TextString("TODO") 'TODO Utilities.FormatXML(Demographics)
@@ -54,14 +54,14 @@ Return myName
         ''<Hidden>
         Public Property SalesPersonID() As Integer?
 
-        <MemberOrder(40)>
+        <AWProperty(Order:=40)>
         Public Overridable Property SalesPerson() As SalesPerson
 
 #Region "ModifiedDate"
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

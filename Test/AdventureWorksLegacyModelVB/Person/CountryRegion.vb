@@ -8,7 +8,7 @@
         Public Property mappedName As String
         Friend myName As TextString
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -30,7 +30,7 @@ Return myName
         Public Property mappedCountryRegionCode As String
         Friend myCountryRegionCode As TextString
 
-        <MemberOrder(2)>
+        <AWProperty(Order:=2)>
         Public ReadOnly Property CountryRegionCode As TextString
             Get
                 myCountryRegionCode = If(myCountryRegionCode, New TextString(mappedCountryRegionCode, Sub(v) mappedCountryRegionCode = v))
@@ -52,7 +52,7 @@ Return myCountryRegionCode
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

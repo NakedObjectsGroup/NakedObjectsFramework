@@ -13,7 +13,7 @@
 		Public Property mappedQuantity As Integer
 		Friend myQuantity As WholeNumber
 
-		<MemberOrder(20)>
+		<AWProperty(Order:=20)>
 		Public ReadOnly Property Quantity As WholeNumber
 			Get
 				myQuantity = If(myQuantity, New WholeNumber(mappedQuantity, Sub(v) mappedQuantity = v))
@@ -34,7 +34,7 @@ Return myQuantity
 		''<Hidden>
 		Public Property ProductID() As Integer
 
-		<MemberOrder(10)>
+		<AWProperty(Order:=10)>
 		Public Overridable Property Product() As Product
 
 		''<Hidden>
@@ -44,7 +44,7 @@ Return myQuantity
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

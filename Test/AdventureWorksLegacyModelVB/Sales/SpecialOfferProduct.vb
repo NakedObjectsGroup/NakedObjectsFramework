@@ -7,14 +7,14 @@
 		Public Property SpecialOfferID() As Integer
 
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public Overridable Property SpecialOffer() As SpecialOffer
 
 
 		''<Hidden>
 		Public Property ProductID() As Integer
 
-		<MemberOrder(2)>
+		<AWProperty(Order:=2)>
 		Public Overridable Property Product() As Product
 
 
@@ -25,7 +25,7 @@
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

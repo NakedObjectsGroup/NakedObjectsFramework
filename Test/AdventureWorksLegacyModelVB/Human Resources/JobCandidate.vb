@@ -10,7 +10,7 @@
 		Public Property mappedResume As String
 		Friend myResume As TextString
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property Resumee As TextString
 			Get
 				myResume = If(myResume, New TextString(mappedResume, Sub(v) mappedResume = v))
@@ -36,7 +36,7 @@
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
