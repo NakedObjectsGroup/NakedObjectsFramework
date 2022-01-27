@@ -51,7 +51,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             ActionsThatRetrieveObjects();
             EditingObjects();
             Menus();
-            PropertyControl_UsingFieldAbout();
+            PropertyControl();
             CreatingAndSavingObjects();
             ActionAboutControl();
             ParameterControl();
@@ -368,7 +368,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
 
         #region PropertyControl_UsingFieldAbout
         //[TestMethod]
-        public void PropertyControl_UsingFieldAbout()
+        public void PropertyControl()
         {
             PropertyHiddenUsingFieldAbout();
             PropertyHiddenUsingAttribute();
@@ -377,7 +377,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             PropertyMadeUneditableUsingFieldAbout();
             PropertyValidationUsingFieldAbout();
             TypeImplementingINotEditableOncePersistent();
-            PropertyMadeVisibleOnlyWhenPersistent();
+            TableColumnsSpecifiedViaAttribute();
         }
 
         //[TestMethod]
@@ -445,6 +445,15 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             AccessInstanceWithTitle("SpecialOffer--2", "Volume Discount 11 to 14")
                 .AssertPropertiesAre("Description", "Discount Pct", "Type", "Category",
                 "Start Date", "End Date", "Min Qty", "Max Qty", "Modified Date");
+        }
+
+        //[TestMethod]
+        public void TableColumnsSpecifiedViaAttribute()
+        {
+            AccessInstanceWithTitle("Employee--187&c1_DepartmentHistory=Table", "Yvonne McKay")
+                .GetCollection("Department History").AssertIsOpenAsTable()
+                .AssertTableHeaderHasColumns("", "Start Date", "End Date", "Department", "Shift");
+            //First column title being empty indicates that the object title is shown as a column
         }
 
         #endregion

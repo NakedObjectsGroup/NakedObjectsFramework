@@ -36,7 +36,11 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public ObjectCollection AssertIsOpenAsTable() => throw new NotImplementedException();
+        public ObjectCollection AssertIsOpenAsTable()
+        {
+            helper.WaitForChildElement(element, "thead tr th");
+            return this;
+        }
 
         public ObjectCollection ClickTableView()
         {
@@ -46,7 +50,12 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public ObjectCollection AssertTableHeaderHasColumns(params string[] columns) => throw new NotImplementedException();
+        public ObjectCollection AssertTableHeaderHasColumns(params string[] expectedHeaders)
+        {
+            var actualHeaders = element.FindElements(By.CssSelector("thead tr th")).Select(el => el.Text).ToArray();
+            CollectionAssert.AreEqual(expectedHeaders, actualHeaders);
+            return this;
+        }
 
         //Row number counts from zero
         public TableRow GetRowFromTable(int rowNumber)
