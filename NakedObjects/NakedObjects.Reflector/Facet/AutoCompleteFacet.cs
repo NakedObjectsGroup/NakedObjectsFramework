@@ -18,6 +18,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 
@@ -55,7 +56,7 @@ public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImpe
 
     public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedFramework framework) {
         try {
-            var autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] { autoCompleteParm });
+            var autoComplete = methodDelegate.Invoke<object>(method, inObjectAdapter.GetDomainObject(), new object[] { autoCompleteParm });
             return autoComplete switch {
                 IQueryable queryable => queryable.Take(PageSize).ToArray(),
                 IEnumerable<string> strings => strings.Cast<object>().ToArray(),

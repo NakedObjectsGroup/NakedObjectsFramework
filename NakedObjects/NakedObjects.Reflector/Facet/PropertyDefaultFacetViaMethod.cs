@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 
@@ -31,7 +32,7 @@ public sealed class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    public override object GetDefault(INakedObjectAdapter inObjectAdapter) => methodDelegate(inObjectAdapter.GetDomainObject(), Array.Empty<object>());
+    public override object GetDefault(INakedObjectAdapter inObjectAdapter) => methodDelegate.Invoke<object>(method, inObjectAdapter.GetDomainObject(), Array.Empty<object>());
 
     protected override string ToStringValues() => $"method={method}";
 

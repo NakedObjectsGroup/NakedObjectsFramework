@@ -16,8 +16,17 @@ public static class FactoryUtils {
         try {
             return methodDelegate is not null ? (T)methodDelegate(target, parms) : (T)method.Invoke(target, parms);
         }
-        catch (InvalidCastException) {
-            throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.Name}");
+        catch (InvalidCastException e) {
+            throw new NakedObjectDomainException($"Cast error on method: {method} : {e.Message}");
+        }
+    }
+
+    public static void Invoke(this Func<object, object[], object> methodDelegate, MethodInfo method, object target, object[] parms) {
+        if (methodDelegate is not null) {
+            methodDelegate(target, parms);
+        }
+        else {
+            method.Invoke(target, parms);
         }
     }
 }

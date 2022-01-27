@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
@@ -39,20 +38,7 @@ public sealed class TableViewAnnotationFacetFactory : LegacyFacetFactoryProcesso
         }
     }
 
-    private ITableViewFacet CreateTableViewFacet(ITableViewAttribute attribute, ISpecification holder) {
-        var columns = attribute.TableColumns ?? new string[] { };
-        var distinctColumns = columns.Distinct().ToArray();
-
-        if (columns.Length != distinctColumns.Length) {
-            // we had duplicates - log
-            var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? $"{s}, {t}" : t);
-            var name = holder.Identifier == null ? "Unknown" : holder.Identifier.ToString();
-            logger.LogWarning($"Table View on {name} had duplicate columns {duplicates}");
-            columns = distinctColumns;
-        }
-
-        return new TableViewFacet(attribute.TableTitle, columns, holder);
-    }
+    private ITableViewFacet CreateTableViewFacet(ITableViewAttribute attribute, ISpecification holder) => TableViewFacet.CreateTableViewFacet(attribute.TableTitle, attribute.TableColumns, holder, logger);
 
     private ITableViewFacet Create(ITableViewAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTableViewFacet(attribute, holder);
 

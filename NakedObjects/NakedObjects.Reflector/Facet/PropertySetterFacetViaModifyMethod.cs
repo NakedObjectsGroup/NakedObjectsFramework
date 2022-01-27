@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 
@@ -35,7 +36,7 @@ public sealed class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbst
 
     public override string PropertyName { get; protected set; }
 
-    public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, INakedFramework framework) => methodDelegate(inObjectAdapter.GetDomainObject(), new[] { value.GetDomainObject() });
+    public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, INakedFramework framework) => methodDelegate.Invoke(method, inObjectAdapter.GetDomainObject(), new[] { value.GetDomainObject() });
 
     protected override string ToStringValues() => $"method={method}";
 

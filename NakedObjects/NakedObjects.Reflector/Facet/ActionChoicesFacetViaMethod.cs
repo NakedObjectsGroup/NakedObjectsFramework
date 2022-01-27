@@ -21,6 +21,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 
@@ -52,7 +53,7 @@ public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, II
         var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
 
         try {
-            if (choicesDelegate(nakedObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray()) is IEnumerable options) {
+            if (choicesDelegate.Invoke<object>(choicesMethod, nakedObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray()) is IEnumerable options) {
                 return options.Cast<object>().ToArray();
             }
 
