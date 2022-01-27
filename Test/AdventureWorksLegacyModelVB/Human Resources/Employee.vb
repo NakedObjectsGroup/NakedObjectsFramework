@@ -268,7 +268,12 @@ Namespace AW.Types
 
         Private myDepartmentHistory As InternalCollection
 
-        <AWProperty(Order:=1)>
+
+        <AWProperty(Order:=1, TableTitle:=True, TableColumns:={
+            NameOf(EmployeeDepartmentHistory.StartDate),
+            NameOf(EmployeeDepartmentHistory.EndDate),
+            NameOf(EmployeeDepartmentHistory.Department),
+            NameOf(EmployeeDepartmentHistory.Shift)})>
         Public ReadOnly Property DepartmentHistory As InternalCollection
             Get
                 myDepartmentHistory = If(myDepartmentHistory, New InternalCollection(Of EmployeeDepartmentHistory)(mappedDepartmentHistory))

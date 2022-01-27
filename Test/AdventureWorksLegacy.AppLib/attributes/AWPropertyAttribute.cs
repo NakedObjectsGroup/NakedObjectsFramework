@@ -2,7 +2,8 @@
 
 [AttributeUsage(AttributeTargets.Property)]
 public class AWPropertyAttribute : Attribute,
-    IMemberOrderAttribute, IHiddenAttribute, INamedAttribute, IRequiredAttribute, IRestExtensionAttribute
+    IMemberOrderAttribute, IHiddenAttribute, INamedAttribute, IRequiredAttribute,
+    IRestExtensionAttribute, ITableViewAttribute
 {
     public AWPropertyAttribute() { }
 
@@ -28,4 +29,6 @@ public class AWPropertyAttribute : Attribute,
     public bool IsRequired { get; set; }
     public string ExtensionName { get; set; }
     public string ExtensionValue { get; set; }
+    public bool TableTitle { get; set; }
+    public string[] TableColumns { get; set; }
 }
