@@ -1734,5 +1734,17 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
+        Assert.AreEqual("True", parsedResult["members"]["Name"]["extensions"]["optional"].ToString());
+        Assert.AreEqual("False", parsedResult["members"]["RequiredName"]["extensions"]["optional"].ToString());
+        Assert.AreEqual("renamed", parsedResult["members"]["NamedName"]["extensions"]["friendlyName"].ToString());
+        Assert.IsNull(parsedResult["members"]["HiddenName"]);
+
+        Assert.AreEqual("True", parsedResult["members"]["TestTableView"]["extensions"]["x-ro-nof-tableViewTitle"].ToString());
+        Assert.AreEqual("one", parsedResult["members"]["TestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][0].ToString());
+        Assert.AreEqual("two", parsedResult["members"]["TestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][1].ToString());
+
+        Assert.AreEqual("False", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewTitle"].ToString());
+        Assert.AreEqual("three", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][0].ToString());
+        Assert.AreEqual("four", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][1].ToString());
     }
 }

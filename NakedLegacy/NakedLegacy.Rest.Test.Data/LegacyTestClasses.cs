@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedFramework;
 using NakedFramework.Core.Util;
 using NakedLegacy.About;
 using NakedLegacy.Collection;
@@ -51,21 +52,33 @@ public class ClassWithTextString {
     }
 }
 
-public class ClassWithAnnotations
-{
+public class ClassWithAnnotations {
     private TextString _name;
+
+    private InternalCollection _testCollection;
+
+    protected virtual ICollection<ClassWithTextString> _TestCollection { get; } = new List<ClassWithTextString>();
     public string name { get; set; }
 
     [Key]
     public int Id { get; init; }
 
     public TextString Name => _name ??= new TextString(name, s => name = s);
+
+    [Legacy(WhenTo = WhenTo.Always)]
     public TextString HiddenName => _name ??= new TextString(name, s => name = s);
+
+    [Legacy(IsRequired = true)]
     public TextString RequiredName => _name ??= new TextString(name, s => name = s);
+
+    [Legacy(Name = "renamed")]
     public TextString NamedName => _name ??= new TextString(name, s => name = s);
+
+    [Legacy(TableTitle = true, TableColumns = new []{"one", "two"})]
+    public InternalCollection TestTableView => _testCollection ??= new InternalCollection<ClassWithTextString>(_TestCollection);
+    [Legacy(TableTitle = false, TableColumns = new[] { "three", "four" })]
+    public ArrayList ActionTestTableView() => new();
 }
-
-
 
 public class ClassToPersist : IContainerAware {
     public static bool TestSave;
@@ -128,8 +141,7 @@ public class ClassToPersist : IContainerAware {
     }
 }
 
-public class ClassWithBounded : IBounded, INotEditableOncePersistent
-{
+public class ClassWithBounded : IBounded, INotEditableOncePersistent {
     private TextString _name;
     public string name;
 
