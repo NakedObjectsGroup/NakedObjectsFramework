@@ -8,6 +8,6 @@
 namespace NakedLegacy.Attribute;
 
 public interface IRestExtensionAttribute {
-    public string Name { get; }
-    public string Value { get; }
+    public string ExtensionName { get; }
+    public string ExtensionValue { get; }
 }

@@ -7,4 +7,6 @@
 
 namespace NakedLegacy.Attribute;
 
-public interface IRequiredAttribute { }
+public interface IRequiredAttribute {
+    bool IsRequired { get; }
+}

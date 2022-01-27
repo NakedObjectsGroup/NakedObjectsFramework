@@ -40,7 +40,7 @@ public sealed class TableViewAnnotationFacetFactory : LegacyFacetFactoryProcesso
     }
 
     private ITableViewFacet CreateTableViewFacet(ITableViewAttribute attribute, ISpecification holder) {
-        var columns = attribute.Columns ?? new string[] { };
+        var columns = attribute.TableColumns ?? new string[] { };
         var distinctColumns = columns.Distinct().ToArray();
 
         if (columns.Length != distinctColumns.Length) {
@@ -51,7 +51,7 @@ public sealed class TableViewAnnotationFacetFactory : LegacyFacetFactoryProcesso
             columns = distinctColumns;
         }
 
-        return new TableViewFacet(attribute.Title, columns, holder);
+        return new TableViewFacet(attribute.TableTitle, columns, holder);
     }
 
     private ITableViewFacet Create(ITableViewAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTableViewFacet(attribute, holder);

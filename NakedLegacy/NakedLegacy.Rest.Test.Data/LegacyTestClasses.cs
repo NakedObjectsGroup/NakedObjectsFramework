@@ -31,7 +31,7 @@ public class SimpleService : IContainerAware {
     public ClassWithTextString GetClassWithTextString() => Container.AllInstances<ClassWithTextString>().FirstOrDefault();
 }
 
-[RestExtensionTest(Name = "x-ro-class-ext", Value = "class-value")]
+[LegacyAttribute(ExtensionName = "x-ro-class-ext", ExtensionValue = "class-value")]
 public class ClassWithTextString {
     private TextString _name;
     public string name { get; set; }
@@ -39,17 +39,33 @@ public class ClassWithTextString {
     [Key]
     public int Id { get; init; }
 
-    [RestExtensionTest(Name = "x-ro-prop-ext", Value = "prop-value")]
+    [LegacyAttribute(ExtensionName = "x-ro-prop-ext", ExtensionValue = "prop-value")]
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
     public AppLib.Title Title() => new(Name.Title());
 
-    [RestExtensionTest(Name = "x-ro-act-ext", Value = "act-value")]
-    public ClassWithTextString ActionUpdateName([RestExtensionTest(Name = "x-ro-parm-ext", Value = "parm-value")] TextString newName) {
+    [LegacyAttribute(ExtensionName = "x-ro-act-ext", ExtensionValue = "act-value")]
+    public ClassWithTextString ActionUpdateName([LegacyAttribute(ExtensionName = "x-ro-parm-ext", ExtensionValue = "parm-value")] TextString newName) {
         Name.Value = newName.Value;
         return this;
     }
 }
+
+public class ClassWithAnnotations
+{
+    private TextString _name;
+    public string name { get; set; }
+
+    [Key]
+    public int Id { get; init; }
+
+    public TextString Name => _name ??= new TextString(name, s => name = s);
+    public TextString HiddenName => _name ??= new TextString(name, s => name = s);
+    public TextString RequiredName => _name ??= new TextString(name, s => name = s);
+    public TextString NamedName => _name ??= new TextString(name, s => name = s);
+}
+
+
 
 public class ClassToPersist : IContainerAware {
     public static bool TestSave;

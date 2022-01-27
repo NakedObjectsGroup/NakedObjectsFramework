@@ -8,6 +8,6 @@
 namespace NakedLegacy.Attribute;
 
 public interface ITableViewAttribute {
-    public bool Title { get; }
-    public string[] Columns { get; }
+    public bool TableTitle { get; }
+    public string[] TableColumns { get; }
 }

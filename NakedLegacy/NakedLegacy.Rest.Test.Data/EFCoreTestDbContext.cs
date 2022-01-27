@@ -43,16 +43,12 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<ClassWithWholeNumber> ClassWithWholeNumbers { get; set; }
     public DbSet<ClassWithLogical> ClassWithLogicals { get; set; }
     public DbSet<ClassWithMoney> ClassWithMoneys { get; set; }
-
     public DbSet<ClassWithOrderedProperties> ClassesWithOrderedProperties { get; set; }
-
     public DbSet<ClassWithOrderedActions> ClassesWithOrderedActions { get; set; }
-
     public DbSet<ClassWithReferenceProperty> ClassWithReferenceProperties { get; set; }
-
     public DbSet<ClassWithBounded> ClassWithBoundeds { get; set; }
-
     public DbSet<ClassToPersist> ClassesToPersist { get; set; }
+    public DbSet<ClassWithAnnotations> ClassesWithAnnotations { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
@@ -126,6 +122,10 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithOrderedProperties>().Property("name2").HasColumnName("Name2");
         modelBuilder.Entity<ClassWithOrderedProperties>().Property("name3").HasColumnName("Name3");
     }
+    private static void MapClassWithAnnotations(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<ClassWithAnnotations>().Ignore(t => t.Name);
+        modelBuilder.Entity<ClassWithAnnotations>().Property("name").HasColumnName("Name");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         MapClassWithTextString(modelBuilder);
@@ -139,6 +139,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         MapClassWithReferenceProperty(modelBuilder);
         MapClassWithFieldAbout(modelBuilder);
         MapClassToPersist(modelBuilder);
+        MapClassWithAnnotations(modelBuilder);
 
         Seed(modelBuilder);
     }
@@ -181,6 +182,8 @@ public abstract class EFCoreTestDbContext : DbContext {
 
         modelBuilder.Entity<ClassWithBounded>().HasData(new ClassWithBounded { Id = 1, name = "data1" });
         modelBuilder.Entity<ClassWithBounded>().HasData(new ClassWithBounded { Id = 2, name = "data2" });
+
+        modelBuilder.Entity<ClassWithAnnotations>().HasData(new ClassWithAnnotations { Id = 1, name = "data1" });
     }
 }
 

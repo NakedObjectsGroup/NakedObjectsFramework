@@ -52,7 +52,8 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithOrderedProperties),
         typeof(ClassWithOrderedActions),
         typeof(ClassWithBounded),
-        typeof(ClassToPersist)
+        typeof(ClassToPersist),
+        typeof(ClassWithAnnotations)
     };
 
     protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
@@ -1722,5 +1723,16 @@ public class LegacyTest : AcceptanceTestCase {
         Assert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
 
         Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestGetClassWithAnnotations()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithAnnotations>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
     }
 }

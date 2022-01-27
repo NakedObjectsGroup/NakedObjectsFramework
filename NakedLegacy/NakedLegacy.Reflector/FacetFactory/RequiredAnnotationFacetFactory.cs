@@ -54,5 +54,5 @@ public sealed class RequiredAnnotationFacetFactory : LegacyFacetFactoryProcessor
         return metamodel;
     }
 
-    private static IMandatoryFacet Create(IRequiredAttribute attribute, ISpecification holder) => attribute is not null ? new MandatoryFacet(holder) : new OptionalFacet(holder);
+    private static IMandatoryFacet Create(IRequiredAttribute attribute, ISpecification holder) => attribute?.IsRequired == true ? new MandatoryFacet(holder) : new OptionalFacet(holder);
 }

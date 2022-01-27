@@ -54,15 +54,9 @@ public sealed class NamedAnnotationFacetFactory : LegacyFacetFactoryProcessor, I
         return metamodel;
     }
 
-    private INamedFacet Create(INamedAttribute attribute, ISpecification holder) =>
-        attribute switch {
-            { } namedAttribute => new NamedFacetAnnotation(namedAttribute.Name, holder),
-            _ => null
-        };
+    private static INamedFacet Create(INamedAttribute attribute, ISpecification holder) =>
+        string.IsNullOrWhiteSpace(attribute?.Name) ? null : new NamedFacetAnnotation(attribute.Name, holder);
 
-    private IMemberNamedFacet CreateForMember(INamedAttribute attribute, ISpecification holder) =>
-        attribute switch {
-            { } namedAttribute => new MemberNamedFacetAnnotation(namedAttribute.Name, holder),
-            _ => null
-        };
+    private static IMemberNamedFacet CreateForMember(INamedAttribute attribute, ISpecification holder) =>
+        string.IsNullOrWhiteSpace(attribute?.Name) ? null : new MemberNamedFacetAnnotation(attribute.Name, holder);
 }
