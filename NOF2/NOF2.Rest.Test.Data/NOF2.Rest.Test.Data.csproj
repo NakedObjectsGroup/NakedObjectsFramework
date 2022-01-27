@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Persistor.EFCore\NakedFramework.Persistor.EFCore.csproj" />
-    <ProjectReference Include="..\NakedLegacy.Reflector\NOF2.Reflector.csproj" />
+    <ProjectReference Include="..\NOF2.Reflector\NOF2.Reflector.csproj" />
   </ItemGroup>
 
 </Project>
