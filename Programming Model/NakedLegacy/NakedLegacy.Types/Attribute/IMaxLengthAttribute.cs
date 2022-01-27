@@ -8,5 +8,5 @@
 namespace NakedLegacy.Attribute;
 
 public interface IMaxLengthAttribute {
-    public int MaxLength { get; }
+    public int MaxLength { get; set; }
 }

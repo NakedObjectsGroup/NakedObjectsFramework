@@ -10,5 +10,5 @@ using NakedFramework;
 namespace NakedLegacy.Attribute;
 
 public interface IHiddenAttribute {
-    public WhenTo WhenTo { get; }
+    public WhenTo WhenTo { get; set; }
 }

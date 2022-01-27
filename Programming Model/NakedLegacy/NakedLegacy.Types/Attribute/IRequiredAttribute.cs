@@ -8,5 +8,5 @@
 namespace NakedLegacy.Attribute;
 
 public interface IRequiredAttribute {
-    bool IsRequired { get; }
+    bool IsRequired { get; set; }
 }

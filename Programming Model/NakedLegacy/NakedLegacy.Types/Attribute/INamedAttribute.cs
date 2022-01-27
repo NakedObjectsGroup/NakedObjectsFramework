@@ -8,5 +8,5 @@
 namespace NakedLegacy.Attribute;
 
 public interface INamedAttribute {
-    public string Name { get; }
+    public string Name { get; set; }
 }

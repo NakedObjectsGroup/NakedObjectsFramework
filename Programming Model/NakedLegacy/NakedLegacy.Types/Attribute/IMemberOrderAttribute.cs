@@ -8,5 +8,5 @@
 namespace NakedLegacy.Attribute;
 
 public interface IMemberOrderAttribute {
-    public int Order { get; }
+    public int Order { get; set; }
 }
