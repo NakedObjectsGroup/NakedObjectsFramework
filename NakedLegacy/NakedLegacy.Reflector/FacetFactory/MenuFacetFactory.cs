@@ -23,6 +23,7 @@ using NakedFramework.ParallelReflector.Utils;
 using NOF2.Menu;
 using NOF2.Reflector.Facet;
 using NOF2.Reflector.Helpers;
+using MenuFacetViaMethod = NOF2.Reflector.Facet.MenuFacetViaMethod;
 
 namespace NOF2.Reflector.FacetFactory;
 
@@ -42,7 +43,7 @@ public sealed class MenuFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
         // instance
         var menuOrderMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "menuOrder", typeof(IMenu), null);
         methodRemover.SafeRemoveMethod(menuOrderMethod);
-        var facet = menuOrderMethod is not null ? (IFacet)new MenuFacetViaLegacyMethod(menuOrderMethod, specification, Logger<MenuFacetViaLegacyMethod>()) : new MenuFacetDefault(specification);
+        var facet = menuOrderMethod is not null ? (IFacet)new MenuFacetViaMethod(menuOrderMethod, specification, Logger<MenuFacetViaMethod>()) : new MenuFacetDefault(specification);
         FacetUtils.AddFacet(facet);
 
         // mainMenu
@@ -52,7 +53,7 @@ public sealed class MenuFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
         if (sharedmenuOrderMethod is not null) {
             void Action(IMetamodelBuilder builder) {
                 var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(sharedmenuOrderMethod, new object[] { });
-                var mainMenu = NOF2Helpers.ConvertLegacyToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name);
+                var mainMenu = NOF2Helpers.ConvertNOF2ToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name);
                 builder.AddMainMenu(mainMenu);
             }
 

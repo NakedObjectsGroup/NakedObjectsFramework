@@ -16,7 +16,7 @@ public interface IRoleInterface { }
 public class SimpleNOService {
     public ClassWithString GetClassWithString() => null;
 
-    public void ContributedAction([ContributedAction] LegacyClassWithInterface contributee) { }
+    public void ContributedAction([ContributedAction] NOF2ClassWithInterface contributee) { }
 }
 
 public class ClassWithString {
@@ -25,12 +25,12 @@ public class ClassWithString {
 
     public string Name { get; set; }
 
-    public virtual ClassWithTextString LinkToLegacyClass { get; set; }
+    public virtual ClassWithTextString LinkToNOF2Class { get; set; }
 
-    public virtual ICollection<ClassWithTextString> CollectionOfLegacyClass { get; set; } = new List<ClassWithTextString>();
+    public virtual ICollection<ClassWithTextString> CollectionOfNOF2Class { get; set; } = new List<ClassWithTextString>();
 }
 
-public class ClassWithLegacyInterface : ILegacyRoleInterface {
+public class ClassWithNOF2Interface : INOF2RoleInterface {
     [Key]
     public int Id { get; init; }
 }

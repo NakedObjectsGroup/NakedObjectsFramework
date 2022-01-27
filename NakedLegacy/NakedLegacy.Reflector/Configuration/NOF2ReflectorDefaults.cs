@@ -13,7 +13,7 @@ using NOF2.Collection;
 namespace NOF2.Reflector.Configuration;
 
 public static class NOF2ReflectorDefaults {
-    public static readonly Type[] DefaultLegacyTypes = {
+    public static readonly Type[] DefaultNOF2Types = {
         typeof(InternalCollection),
         typeof(InternalCollection<>),
         typeof(IEnumerable),

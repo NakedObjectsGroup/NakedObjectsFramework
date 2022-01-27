@@ -35,13 +35,13 @@ public class NullStringHasher : IStringHasher {
     public string GetHash(string toHash) => null;
 }
 
-public class LegacyTest : AcceptanceTestCase {
-    protected Type[] LegacyTypes { get; } = {
+public class NOF2Test : AcceptanceTestCase {
+    protected Type[] NOF2Types { get; } = {
         typeof(ClassWithTextString),
         typeof(ClassWithInternalCollection),
         typeof(ClassWithActionAbout),
         typeof(ClassWithFieldAbout),
-        typeof(ILegacyRoleInterface),
+        typeof(INOF2RoleInterface),
         typeof(ClassWithMenu),
         typeof(ClassWithDate),
         typeof(ClassWithTimeStamp),
@@ -56,9 +56,9 @@ public class LegacyTest : AcceptanceTestCase {
         typeof(ClassWithAnnotations)
     };
 
-    protected Type[] LegacyServices { get; } = { typeof(SimpleService) };
+    protected Type[] NOF2Services { get; } = { typeof(SimpleService) };
 
-    protected Type[] LegacyValueHolders { get; } = {
+    protected Type[] NOF2ValueHolders { get; } = {
         typeof(TextString),
         typeof(Money),
         typeof(Logical),
@@ -75,22 +75,22 @@ public class LegacyTest : AcceptanceTestCase {
 
     protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
 
-    protected Action<NOF2Options> LegacyOptions =>
+    protected Action<NOF2Options> NOF2Options =>
         options => {
-            options.DomainModelTypes = LegacyTypes;
-            options.DomainModelServices = LegacyServices;
-            options.ValueHolderTypes = LegacyValueHolders;
+            options.DomainModelTypes = NOF2Types;
+            options.DomainModelServices = NOF2Services;
+            options.ValueHolderTypes = NOF2ValueHolders;
             options.NoValidate = true;
         };
 
-    protected virtual Action<NakedFrameworkOptions> AddLegacy => builder => builder.AddNakedLegacy(LegacyOptions);
+    protected virtual Action<NakedFrameworkOptions> AddNOF2 => builder => builder.AddNOF2(NOF2Options);
 
     protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
         builder => {
             AddCoreOptions(builder);
             AddPersistor(builder);
             AddRestfulObjects(builder);
-            AddLegacy(builder);
+            AddNOF2(builder);
         };
 
     protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
@@ -779,7 +779,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetLegacyObjectWithMenu() {
+    public void TestGetNOF2ObjectWithMenu() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -794,7 +794,7 @@ public class LegacyTest : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetLegacyMainMenu() {
+    public void TestGetNOF2MainMenu() {
         var api = Api();
         var result = api.GetMenu("ClassWithMenu");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);

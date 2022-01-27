@@ -23,12 +23,12 @@ using NOF2.Reflector.Reflect;
 namespace NOF2.Reflector.Extensions;
 
 public static class NOF2Extensions {
-    private static INOF2ReflectorConfiguration LegacyObjectReflectorConfig(NOF2Options options) {
+    private static INOF2ReflectorConfiguration NOF2ReflectorConfig(NOF2Options options) {
         NOF2ReflectorConfiguration.NoValidate = options.NoValidate;
         return new NOF2ReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ValueHolderTypes, options.ConcurrencyCheck);
     }
 
-    public static void AddNakedLegacy(this NakedFrameworkOptions frameworkOptions, Action<NOF2Options> setupAction) {
+    public static void AddNOF2(this NakedFrameworkOptions frameworkOptions, Action<NOF2Options> setupAction) {
         var options = new NOF2Options();
         setupAction(options);
 
@@ -40,7 +40,7 @@ public static class NOF2Extensions {
 
         frameworkOptions.Services.AddSingleton(typeof(IReflectorOrder<>), typeof(NOF2ReflectorOrder<>));
         frameworkOptions.Services.AddSingleton<IReflector, NOF2Reflector>();
-        var legacyObjectReflectorConfiguration = LegacyObjectReflectorConfig(options);
+        var legacyObjectReflectorConfiguration = NOF2ReflectorConfig(options);
         frameworkOptions.Services.AddSingleton<INOF2ReflectorConfiguration>(p => legacyObjectReflectorConfiguration);
         frameworkOptions.Services.AddSingleton<ITypeList>(p => legacyObjectReflectorConfiguration);
         frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
@@ -49,7 +49,7 @@ public static class NOF2Extensions {
         frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NOF2ObjectContainerInjector>();
         frameworkOptions.Services.AddDefaultSingleton<IAboutFactory, AboutFactory>();
 
-        var additionalTypes = NOF2ReflectorDefaults.DefaultLegacyTypes.Union(options.ValueHolderTypes);
+        var additionalTypes = NOF2ReflectorDefaults.DefaultNOF2Types.Union(options.ValueHolderTypes);
 
         frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(additionalTypes).ToArray();
     }

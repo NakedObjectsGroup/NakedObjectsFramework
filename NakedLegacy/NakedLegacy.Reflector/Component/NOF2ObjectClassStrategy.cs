@@ -28,7 +28,7 @@ public class NOF2ObjectClassStrategy : AbstractClassStrategy {
 
     protected override bool IsTypeExplicitlyRequested(Type type) {
         var services = config.Services.ToArray();
-        return NOF2ReflectorDefaults.DefaultLegacyTypes.Contains(type) ||
+        return NOF2ReflectorDefaults.DefaultNOF2Types.Contains(type) ||
                config.ValueHolderTypes.Any(t => t == type) ||
                config.TypesToIntrospect.Any(t => t == type) ||
                services.Any(t => t == type);
