@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
-namespace NakedLegacy.Rest.Test.Data;
+namespace NOF2.Rest.Test.Data;
 
 public interface IRoleInterface { }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using NakedLegacy.Menu;
+using NOF2.Menu;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NOF2.Rest.Test.Data.AppLib;
 
 public class Menu : IMenu {
     private readonly IList<IMenuComponent> Items = new List<IMenuComponent>();

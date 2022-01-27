@@ -18,10 +18,10 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedLegacy.Reflector.Helpers;
-using NakedLegacy.ValueHolder;
+using NOF2.Reflector.Helpers;
+using NOF2.ValueHolder;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class DateOnlyFacetFactory : LegacyFacetFactoryProcessor {
     public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)

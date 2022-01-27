@@ -8,7 +8,7 @@
 using System;
 using NakedFramework.Architecture.Component;
 
-namespace NakedLegacy.Reflector.Configuration;
+namespace NOF2.Reflector.Configuration;
 
 public interface ILegacyObjectReflectorConfiguration : ITypeList {
     /// <summary>

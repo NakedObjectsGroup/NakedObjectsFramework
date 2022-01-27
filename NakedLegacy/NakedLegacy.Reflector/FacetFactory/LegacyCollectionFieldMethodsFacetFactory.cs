@@ -23,9 +23,9 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.Collection;
+using NOF2.Collection;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class LegacyCollectionFieldMethodsFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {

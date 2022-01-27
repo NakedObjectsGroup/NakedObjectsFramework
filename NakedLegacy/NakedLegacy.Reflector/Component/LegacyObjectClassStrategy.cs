@@ -10,10 +10,10 @@ using System.Linq;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.ParallelReflector.Component;
-using NakedLegacy.Reflector.Configuration;
+using NOF2.Reflector.Configuration;
 using NakedObjects;
 
-namespace NakedLegacy.Reflector.Component;
+namespace NOF2.Reflector.Component;
 
 /// <summary>
 ///     Standard way of determining which fields are to be exposed in a Naked Objects system.

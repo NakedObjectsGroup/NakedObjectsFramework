@@ -11,11 +11,11 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
-using NakedLegacy.About;
-using NakedLegacy.Container;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.About;
+using NOF2.Container;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 public static class AboutHelpers {
     public enum AboutType {

@@ -13,9 +13,9 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedLegacy.About;
+using NOF2.About;
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionDefaultsFacet, IImperativeFacet {

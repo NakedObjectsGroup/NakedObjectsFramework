@@ -10,9 +10,9 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
-using NakedLegacy.Container;
+using NOF2.Container;
 
-namespace NakedLegacy.Reflector.Component;
+namespace NOF2.Reflector.Component;
 
 public class Container : IContainer {
     private readonly INakedFramework framework;

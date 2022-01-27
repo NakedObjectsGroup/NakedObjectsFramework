@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NakedLegacy.Container;
+namespace NOF2.Container;
 
 public interface IContainer {
     public void AddMessageToBroker(string message);

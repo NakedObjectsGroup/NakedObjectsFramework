@@ -14,10 +14,10 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
-using NakedLegacy.Reflector.Configuration;
-using NakedLegacy.Reflector.Reflect;
+using NOF2.Reflector.Configuration;
+using NOF2.Reflector.Reflect;
 
-namespace NakedLegacy.Reflector.Component;
+namespace NOF2.Reflector.Component;
 
 public sealed class LegacyObjectReflector : AbstractParallelReflector {
     private readonly ILegacyObjectReflectorConfiguration legacyObjectReflectorConfiguration;

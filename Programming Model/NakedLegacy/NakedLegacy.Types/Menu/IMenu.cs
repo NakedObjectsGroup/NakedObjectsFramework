@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedLegacy.Menu;
+namespace NOF2.Menu;
 
 public interface IMenu : IMenuComponent {
     IList<IMenuComponent> MenuItems();

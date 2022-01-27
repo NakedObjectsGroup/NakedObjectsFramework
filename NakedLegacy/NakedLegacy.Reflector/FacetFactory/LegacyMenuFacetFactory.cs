@@ -20,11 +20,11 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.Menu;
-using NakedLegacy.Reflector.Facet;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Menu;
+using NOF2.Reflector.Facet;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;

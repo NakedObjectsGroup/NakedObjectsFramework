@@ -2,9 +2,9 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
-using NakedLegacy.About;
+using NOF2.About;
 
-namespace NakedLegacy.Reflector.Component;
+namespace NOF2.Reflector.Component;
 
 public class LegacyAboutCache {
     private readonly IDictionary<object, IDictionary<MethodInfo, ActionAbout>> cacheDictionary = new Dictionary<object, IDictionary<MethodInfo, ActionAbout>>();

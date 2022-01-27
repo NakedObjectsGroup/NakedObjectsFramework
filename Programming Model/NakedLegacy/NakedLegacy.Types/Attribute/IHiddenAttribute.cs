@@ -7,7 +7,7 @@
 
 using NakedFramework;
 
-namespace NakedLegacy.Attribute;
+namespace NOF2.Attribute;
 
 public interface IHiddenAttribute {
     public WhenTo WhenTo { get; set; }

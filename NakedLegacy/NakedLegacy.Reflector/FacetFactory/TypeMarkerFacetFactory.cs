@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class TypeMarkerFacetFactory : LegacyFacetFactoryProcessor {
     public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)

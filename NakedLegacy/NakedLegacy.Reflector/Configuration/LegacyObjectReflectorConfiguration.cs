@@ -10,7 +10,7 @@ using System.Linq;
 using NakedFramework.Core.Error;
 using NakedFramework.ParallelReflector.Utils;
 
-namespace NakedLegacy.Reflector.Configuration;
+namespace NOF2.Reflector.Configuration;
 
 [Serializable]
 public class LegacyObjectReflectorConfiguration : ILegacyObjectReflectorConfiguration {

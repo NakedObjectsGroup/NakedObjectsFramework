@@ -23,11 +23,11 @@ using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.About;
-using NakedLegacy.Reflector.Facet;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.About;
+using NOF2.Reflector.Facet;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 /// <summary>
 ///     Sets up all the <see cref="IFacet" />s for an action in a single shot

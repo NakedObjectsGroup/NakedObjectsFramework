@@ -7,12 +7,12 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Menu;
-using NakedLegacy.Container;
-using NakedLegacy.Menu;
-using NakedLegacy.ValueHolder;
+using NOF2.Container;
+using NOF2.Menu;
+using NOF2.ValueHolder;
 using IMenu = NakedFramework.Menu.IMenu;
 
-namespace NakedLegacy.Reflector.Helpers;
+namespace NOF2.Reflector.Helpers;
 
 public static class LegacyHelpers {
     public const string AboutPrefix = "about";

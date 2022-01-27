@@ -16,9 +16,9 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.FacetFactory;
-using NakedLegacy.Reflector.FacetFactory;
+using NOF2.Reflector.FacetFactory;
 
-namespace NakedLegacy.Reflector.Reflect;
+namespace NOF2.Reflector.Reflect;
 
 public sealed class LegacyObjectFacetFactorySet : IFacetFactorySet {
     private readonly IList<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;

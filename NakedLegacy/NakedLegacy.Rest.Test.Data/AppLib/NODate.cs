@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
-using NakedLegacy.Interface;
-using NakedLegacy.Title;
-using NakedLegacy.ValueHolder;
+using NOF2.Interface;
+using NOF2.Title;
+using NOF2.ValueHolder;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NOF2.Rest.Test.Data.AppLib;
 
 public class NODate : ValueHolder<DateTime>, IDateOnly {
     public NODate() { }

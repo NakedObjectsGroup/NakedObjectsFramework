@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class SaveNullFacet : FacetAbstract, ISaveFacet {

@@ -15,10 +15,10 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedLegacy.Attribute;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Attribute;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class LengthAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private const string FieldOrder = "FieldOrder";

@@ -12,18 +12,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework;
 using NakedFramework.Core.Util;
-using NakedLegacy.About;
-using NakedLegacy.Collection;
-using NakedLegacy.Container;
-using NakedLegacy.Interface;
-using NakedLegacy.Menu;
-using NakedLegacy.Rest.Test.Data.AppLib;
-using NakedLegacy.Title;
+using NOF2.About;
+using NOF2.Collection;
+using NOF2.Container;
+using NOF2.Interface;
+using NOF2.Menu;
+using NOF2.Rest.Test.Data.AppLib;
+using NOF2.Title;
 using NakedObjects;
 
 // ReSharper disable InconsistentNaming
 
-namespace NakedLegacy.Rest.Test.Data;
+namespace NOF2.Rest.Test.Data;
 
 public interface ILegacyRoleInterface { }
 

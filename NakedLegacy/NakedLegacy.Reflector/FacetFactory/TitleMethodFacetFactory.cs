@@ -17,10 +17,10 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.Reflector.Facet;
-using NakedLegacy.Title;
+using NOF2.Reflector.Facet;
+using NOF2.Title;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class TitleMethodFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
     private static readonly string[] FixedPrefixes = {

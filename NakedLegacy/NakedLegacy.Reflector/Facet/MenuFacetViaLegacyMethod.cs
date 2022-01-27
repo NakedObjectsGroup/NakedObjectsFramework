@@ -14,10 +14,10 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.Menu;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Menu;
+using NOF2.Reflector.Helpers;
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract, IImperativeFacet {

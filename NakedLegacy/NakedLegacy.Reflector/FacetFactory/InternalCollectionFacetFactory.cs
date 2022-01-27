@@ -17,9 +17,9 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
-using NakedLegacy.Collection;
+using NOF2.Collection;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class InternalCollectionFacetFactory : LegacyFacetFactoryProcessor {
     public InternalCollectionFacetFactory(IFacetFactoryOrder<InternalCollectionFacetFactory> order, ILoggerFactory loggerFactory)

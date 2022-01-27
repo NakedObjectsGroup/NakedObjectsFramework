@@ -13,9 +13,9 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Reflect;
-using NakedLegacy.Container;
+using NOF2.Container;
 
-namespace NakedLegacy.Reflector.Reflect;
+namespace NOF2.Reflector.Reflect;
 
 public class LegacyObjectIntrospector : Introspector {
     public LegacyObjectIntrospector(IReflector reflector, ILogger<LegacyObjectIntrospector> logger) : base(reflector, logger) { }

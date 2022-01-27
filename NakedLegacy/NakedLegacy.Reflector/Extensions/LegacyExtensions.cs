@@ -14,13 +14,13 @@ using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
-using NakedLegacy.About;
-using NakedLegacy.Reflector.Component;
-using NakedLegacy.Reflector.Configuration;
-using NakedLegacy.Reflector.FacetFactory;
-using NakedLegacy.Reflector.Reflect;
+using NOF2.About;
+using NOF2.Reflector.Component;
+using NOF2.Reflector.Configuration;
+using NOF2.Reflector.FacetFactory;
+using NOF2.Reflector.Reflect;
 
-namespace NakedLegacy.Reflector.Extensions;
+namespace NOF2.Reflector.Extensions;
 
 public static class LegacyExtensions {
     private static LegacyObjectReflectorConfiguration LegacyObjectReflectorConfig(NakedLegacyOptions options) {

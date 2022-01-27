@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using NakedLegacy.Title;
+using NOF2.Title;
 
-namespace NakedLegacy.Rest.Test.Data.AppLib;
+namespace NOF2.Rest.Test.Data.AppLib;
 
 public class Money : ValueHolder<decimal> {
     public Money() { }

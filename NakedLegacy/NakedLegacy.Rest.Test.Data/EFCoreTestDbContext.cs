@@ -8,7 +8,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace NakedLegacy.Rest.Test.Data;
+namespace NOF2.Rest.Test.Data;
 
 public static class Constants {
     public static string AppveyorServer => @"(local)\SQL2017";

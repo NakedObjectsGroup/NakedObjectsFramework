@@ -16,9 +16,9 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedLegacy.Interface;
+using NOF2.Interface;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class BoundedFacetFactory : LegacyFacetFactoryProcessor {
     public BoundedFacetFactory(IFacetFactoryOrder<BoundedFacetFactory> order, ILoggerFactory loggerFactory)

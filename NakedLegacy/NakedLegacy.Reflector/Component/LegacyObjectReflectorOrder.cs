@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Component;
 using NakedFramework.ParallelReflector.Component;
 
-namespace NakedLegacy.Reflector.Component;
+namespace NOF2.Reflector.Component;
 
 public class LegacyObjectReflectorOrder<T> : IReflectorOrder<T> {
     public int Order => typeof(T) switch {

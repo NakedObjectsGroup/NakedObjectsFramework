@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedLegacy.Reflector.FacetFactory;
+using NOF2.Reflector.FacetFactory;
 
-namespace NakedLegacy.Reflector.Reflect;
+namespace NOF2.Reflector.Reflect;
 
 public static class LegacyObjectFacetFactories {
     public static Type[] StandardFacetFactories() =>

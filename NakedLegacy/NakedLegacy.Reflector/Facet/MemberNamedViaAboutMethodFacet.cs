@@ -14,10 +14,10 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedLegacy.About;
-using static NakedLegacy.Reflector.Facet.AboutHelpers;
+using NOF2.About;
+using static NOF2.Reflector.Facet.AboutHelpers;
 
-namespace NakedLegacy.Reflector.Facet;
+namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet, IMemberNamedFacet {

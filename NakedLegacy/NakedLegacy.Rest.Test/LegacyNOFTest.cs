@@ -17,15 +17,15 @@ using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Rest.Test;
-using NakedLegacy.Reflector.Extensions;
-using NakedLegacy.Rest.Test.Data;
-using NakedLegacy.Rest.Test.Data.AppLib;
+using NOF2.Reflector.Extensions;
+using NOF2.Rest.Test.Data;
+using NOF2.Rest.Test.Data.AppLib;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace NakedLegacy.Rest.Test;
+namespace NOF2.Rest.Test;
 
 public class LegacyNOFTest : AcceptanceTestCase {
     protected Type[] LegacyTypes { get; } = {

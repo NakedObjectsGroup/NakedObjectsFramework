@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace NakedLegacy.Collection;
+namespace NOF2.Collection;
 
 public interface InternalCollection : IList { }
 

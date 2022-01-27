@@ -18,10 +18,10 @@ using NakedFramework.DependencyInjection.Component;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
-using NakedLegacy.Reflector.Helpers;
+using NOF2.Reflector.Helpers;
 using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
-namespace NakedLegacy.Reflector.FacetFactory;
+namespace NOF2.Reflector.FacetFactory;
 
 public sealed class LegacySystemTypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor {
     public LegacySystemTypeMarkerFacetFactory(AppendFacetFactoryOrder<LegacySystemTypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
