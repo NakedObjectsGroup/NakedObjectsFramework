@@ -2,7 +2,7 @@
 
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>NakedLegacy.Server</id>
+		<id>NOF2.Server</id>
 		<version>1.0.0-alpha03</version>
 		<authors>Naked Objects Group Ltd</authors>
 		<owners>Naked Objects Group Ltd</owners>
@@ -52,7 +52,7 @@
 		<file src="..\..\NakedObjects\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.dll" target="lib" />
 		<file src="..\..\NakedObjects\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.dll" target="lib" />
 		<file src="..\..\NakedObjects\NakedObjects.Snapshot.Xml\bin\Debug\**\NakedObjects.Snapshot.Xml.dll" target="lib" />
-		<file src="..\..\NakedLegacy\NakedLegacy.Reflector\bin\Debug\**\NakedLegacy.Reflector.dll" target="lib" />
+		<file src="..\..\NOF2\NOF2.Reflector\bin\Debug\**\NOF2.Reflector.dll" target="lib" />
 
 		<file src="..\..\NakedFramework\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.pdb"
 		      target="lib" />
@@ -78,6 +78,6 @@
 		<file src="..\..\NakedObjects\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.pdb" target="lib" />
 		<file src="..\..\NakedObjects\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
 		<file src="..\..\NakedObjects\NakedObjects.Snapshot.Xml\bin\Debug\**\NakedObjects.Snapshot.Xml.pdb" target="lib" />
-		<file src="..\..\NakedLegacy\NakedLegacy.Reflector\bin\Debug\**\NakedLegacy.Reflector.pdb" target="lib" />
+		<file src="..\..\NOF2\NOF2.Reflector\bin\Debug\**\NOF2.Reflector.pdb" target="lib" />
 	</files>
 </package>
