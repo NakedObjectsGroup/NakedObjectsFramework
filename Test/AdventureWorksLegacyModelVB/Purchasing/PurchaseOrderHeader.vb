@@ -11,7 +11,7 @@
 		Public Property mappedRevisionNumber As Byte
 		Friend myRevisionNumber As WholeNumber
 
-		<MemberOrder(90)>
+		<AWProperty(Order:=90)>
 		Public ReadOnly Property RevisionNumber As WholeNumber
 			Get
 				myRevisionNumber = If(myRevisionNumber, New WholeNumber(mappedRevisionNumber, Sub(v) mappedRevisionNumber = CType(v, Byte)))
@@ -32,7 +32,7 @@
 		''<Hidden>
 		Public Property ShipMethodID() As Integer
 
-		<MemberOrder(22)>
+		<AWProperty(Order:=22)>
 		Public Overridable Property ShipMethod() As ShipMethod
 
 #Region "Details (Collection)"
@@ -41,7 +41,7 @@
 		Private myDetails As InternalCollection
 
 		'''<TableView(True, "OrderQty", "Product", "UnitPrice", "LineTotal")>
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property Details As InternalCollection
 			Get
 				myDetails = If(myDetails, New InternalCollection(Of PurchaseOrderDetail)(mappedDetails))
@@ -60,7 +60,7 @@
 		''<Hidden>
 		Public Property VendorID() As Integer
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public Overridable Property Vendor() As Vendor
 
 		''<Hidden>
@@ -83,7 +83,7 @@
 		Public Property mappedOrderDate As Date
 		Friend myOrderDate As NODate
 
-		<MemberOrder(11)>
+		<AWProperty(Order:=11)>
 		Public ReadOnly Property OrderDate As NODate
 			Get
 				myOrderDate = If(myOrderDate, New NODate(mappedOrderDate, Sub(v) mappedOrderDate = v))
@@ -105,7 +105,7 @@
 		Public Property mappedShipDate As DateTime?
 		Friend myShipDate As NODateNullable
 
-		<MemberOrder(20)>
+		<AWProperty(Order:=20)>
 		Public ReadOnly Property ShipDate As NODateNullable
 			Get
 				myShipDate = If(myShipDate, New NODateNullable(mappedShipDate, Sub(v) mappedShipDate = v))
@@ -127,7 +127,7 @@
 		Public Property mappedSubTotal As Decimal
 		Friend mySubTotal As Money
 
-		<MemberOrder(31)>
+		<AWProperty(Order:=31)>
 		Public ReadOnly Property SubTotal As Money
 			Get
 				mySubTotal = If(mySubTotal, New Money(mappedSubTotal, Sub(v) mappedSubTotal = v))
@@ -149,7 +149,7 @@
 		Public Property mappedTaxAmt As Decimal
 		Friend myTaxAmt As Money
 
-		<MemberOrder(32)>
+		<AWProperty(Order:=32)>
 		Public ReadOnly Property TaxAmt As Money
 			Get
 				myTaxAmt = If(myTaxAmt, New Money(mappedTaxAmt, Sub(v) mappedTaxAmt = v))
@@ -171,7 +171,7 @@
 		Public Property mappedFreight As Decimal
 		Friend myFreight As Money
 
-		<MemberOrder(33)>
+		<AWProperty(Order:=33)>
 		Public ReadOnly Property Freight As Money
 			Get
 				myFreight = If(myFreight, New Money(mappedFreight, Sub(v) mappedFreight = v))
@@ -193,7 +193,7 @@
 		Public Property mappedTotalDue As Decimal
 		Friend myTotalDue As Money
 
-		<MemberOrder(34)>
+		<AWProperty(Order:=34)>
 		Public ReadOnly Property TotalDue As Money
 			Get
 				myTotalDue = If(myTotalDue, New Money(mappedTotalDue, Sub(v) mappedTotalDue = v))
@@ -214,14 +214,14 @@
 		''<Hidden>
 		Public Property OrderPlacedByID() As Integer
 
-		<MemberOrder(12)>
+		<AWProperty(Order:=12)>
 		Public Overridable Property OrderPlacedBy() As Employee
 
 #Region "ModifiedDate"
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

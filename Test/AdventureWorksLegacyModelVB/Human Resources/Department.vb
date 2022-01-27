@@ -11,7 +11,7 @@
 
         Friend myName As TextString
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1, IsRequired:=True)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -19,21 +19,13 @@
             End Get
         End Property
 
-        Public Sub AboutName(a As FieldAbout, Name As TextString)
-            Select Case a.TypeCode
-                Case AboutTypeCodes.Name
-                Case AboutTypeCodes.Usable
-                Case AboutTypeCodes.Valid
-                Case Else
-            End Select
-        End Sub
 #End Region
 
 #Region "GroupName"
         Public Property mappedGroupName As String
         Friend myGroupName As TextString
 
-        <MemberOrder(2)>
+        <AWProperty(Order:=2, IsRequired:=True)>
         Public ReadOnly Property GroupName As TextString
             Get
                 myGroupName = If(myGroupName, New TextString(mappedGroupName, Sub(v) mappedGroupName = v))
@@ -59,7 +51,7 @@
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

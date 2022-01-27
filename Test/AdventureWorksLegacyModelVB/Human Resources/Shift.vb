@@ -10,7 +10,7 @@
 		Public Property mappedName As String
 		Friend myName As TextString
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property Name As TextString
 			Get
 				myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -28,17 +28,17 @@
 		End Sub
 #End Region
 
-		<MemberOrder(3)>
+		<AWProperty(Order:=3)>
 		Public Property StartTime() As TimeSpan
 
-		<MemberOrder(4)>
+		<AWProperty(Order:=4)>
 		Public Property EndTime() As TimeSpan 'TODO
 
 #Region "ModifiedDate"
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

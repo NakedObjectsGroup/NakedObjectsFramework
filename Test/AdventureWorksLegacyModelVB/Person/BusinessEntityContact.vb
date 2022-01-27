@@ -17,19 +17,19 @@
 
 		Public Property PersonID() As Integer
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public Overridable Property Person() As Person
 
 		Public Property ContactTypeID() As Integer
 
-		<MemberOrder(2)>
+		<AWProperty(Order:=2)>
 		Public Overridable Property ContactType() As ContactType
 
 #Region "ModifiedDate"
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

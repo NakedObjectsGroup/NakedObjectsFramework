@@ -12,7 +12,7 @@
 		Public Property mappedAverageLeadTime As Integer
 		Friend myAverageLeadTime As WholeNumber
 
-		<MemberOrder(30)>
+		<AWProperty(Order:=30)>
 		Public ReadOnly Property AverageLeadTime As WholeNumber
 			Get
 				myAverageLeadTime = If(myAverageLeadTime, New WholeNumber(mappedAverageLeadTime, Sub(v) mappedAverageLeadTime = v))
@@ -34,7 +34,7 @@ Return myAverageLeadTime
 		Public Property mappedStandardPrice As Decimal
 		Friend myStandardPrice As Money
 
-		<MemberOrder(40)>
+		<AWProperty(Order:=40)>
 		Public ReadOnly Property StandardPrice As Money
 			Get
 				myStandardPrice = If(myStandardPrice, New Money(mappedStandardPrice, Sub(v) mappedStandardPrice = v))
@@ -56,7 +56,7 @@ Return myStandardPrice
 		Public Property mappedLastReceiptCost As Decimal?
 		Friend myLastReceiptCost As MoneyNullable
 
-		<MemberOrder(41)>
+		<AWProperty(Order:=41)>
 		Public ReadOnly Property LastReceiptCost As MoneyNullable
 			Get
 				myLastReceiptCost = If(myLastReceiptCost, New MoneyNullable(mappedLastReceiptCost, Sub(v) mappedLastReceiptCost = v))
@@ -78,7 +78,7 @@ Return myLastReceiptCost
 		Public Property mappedLastReceiptDate As DateTime?
 		Friend myLastReceiptDate As NODateNullable
 
-		<MemberOrder(50)>
+		<AWProperty(Order:=50)>
 		Public ReadOnly Property LastReceiptDate As NODateNullable
 			Get
 				myLastReceiptDate = If(myLastReceiptDate, New NODateNullable(mappedLastReceiptDate, Sub(v) mappedLastReceiptDate = v))
@@ -100,7 +100,7 @@ Return myLastReceiptDate
 		Public Property mappedMinOrderQty As Integer
 		Friend myMinOrderQty As WholeNumber
 
-		<MemberOrder(60)>
+		<AWProperty(Order:=60)>
 		Public ReadOnly Property MinOrderQty As WholeNumber
 			Get
 				myMinOrderQty = If(myMinOrderQty, New WholeNumber(mappedMinOrderQty, Sub(v) mappedMinOrderQty = v))
@@ -122,7 +122,7 @@ Return myMinOrderQty
 		Public Property mappedMaxOrderQty As Integer
 		Friend myMaxOrderQty As WholeNumber
 
-		<MemberOrder(61)>
+		<AWProperty(Order:=61)>
 		Public ReadOnly Property MaxOrderQty As WholeNumber
 			Get
 				myMaxOrderQty = If(myMaxOrderQty, New WholeNumber(mappedMaxOrderQty, Sub(v) mappedMaxOrderQty = v))
@@ -144,7 +144,7 @@ Return myMaxOrderQty
 		Public Property mappedOnOrderQty As Integer?
 		Friend myOnOrderQty As WholeNumberNullable
 
-		<MemberOrder(62)>
+		<AWProperty(Order:=62)>
 		Public ReadOnly Property OnOrderQty As WholeNumberNullable
 			Get
 				myOnOrderQty = If(myOnOrderQty, New WholeNumberNullable(mappedOnOrderQty, Sub(v) mappedOnOrderQty = v))
@@ -161,13 +161,13 @@ Return myOnOrderQty
 			End Select
 		End Sub
 #End Region
-		<MemberOrder(10)>
+		<AWProperty(Order:=10)>
 		Public Overridable Property Product() As Product
 
 		''<Hidden>
 		Public Property UnitMeasureCode() As String
 
-		<MemberOrder(20)>
+		<AWProperty(Order:=20)>
 		Public Overridable Property UnitMeasure() As UnitMeasure
 
 		Public Overridable Property Vendor() As Vendor
@@ -176,7 +176,7 @@ Return myOnOrderQty
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

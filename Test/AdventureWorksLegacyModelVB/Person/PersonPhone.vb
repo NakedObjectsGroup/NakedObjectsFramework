@@ -12,7 +12,7 @@
         Public Property mappedPhoneNumber As String
         Friend myPhoneNumber As TextString
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property PhoneNumber As TextString
             Get
                 myPhoneNumber = If(myPhoneNumber, New TextString(mappedPhoneNumber, Sub(v) mappedPhoneNumber = v))
@@ -38,7 +38,7 @@ Return myPhoneNumber
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

@@ -14,7 +14,7 @@
 		Public Property mappedOrderQty As Short
 		Friend myOrderQty As WholeNumber
 
-		<MemberOrder(15)>
+		<AWProperty(Order:=15)>
 		Public ReadOnly Property OrderQty As WholeNumber
 			Get
 				myOrderQty = If(myOrderQty, New WholeNumber(mappedOrderQty, Sub(v) mappedOrderQty = CType(v, Short)))
@@ -36,7 +36,7 @@
 		Public Property mappedUnitPrice As Decimal
 		Friend myUnitPrice As Money
 
-		<MemberOrder(20)>
+		<AWProperty(Order:=20)>
 		Public ReadOnly Property UnitPrice As Money
 			Get
 				myUnitPrice = If(myUnitPrice, New Money(mappedUnitPrice, Sub(v) mappedUnitPrice = v))
@@ -58,7 +58,7 @@
 		Public Property mappedUnitPriceDiscount As Decimal
 		Friend myUnitPriceDiscount As Percentage
 
-		<MemberOrder(30)>
+		<AWProperty(Order:=30)>
 		Public ReadOnly Property UnitPriceDiscount As Percentage
 			Get
 				myUnitPriceDiscount = If(myUnitPriceDiscount, New Percentage(mappedUnitPriceDiscount, Sub(v) mappedUnitPriceDiscount = v))
@@ -81,7 +81,7 @@
 		Public Property mappedLineTotal As Decimal
 		Friend myLineTotal As Money
 
-		<MemberOrder(40)>
+		<AWProperty(Order:=40)>
 		Public ReadOnly Property LineTotal As Money
 			Get
 				myLineTotal = If(myLineTotal, New Money(mappedLineTotal, Sub(v) mappedLineTotal = v))
@@ -103,7 +103,7 @@
 		Public Property mappedCarrierTrackingNumber As String
 		Friend myCarrierTrackingNumber As TextString
 
-		<MemberOrder(50)>
+		<AWProperty(Order:=50)>
 		Public ReadOnly Property CarrierTrackingNumber As TextString
 			Get
 				myCarrierTrackingNumber = If(myCarrierTrackingNumber, New TextString(mappedCarrierTrackingNumber, Sub(v) mappedCarrierTrackingNumber = v))
@@ -133,14 +133,14 @@
 		'<Hidden>
 		Public Overridable Property SpecialOfferProduct() As SpecialOfferProduct
 
-		<MemberOrder(11)>
+		<AWProperty(Order:=11)>
 		Public Overridable ReadOnly Property Product() As Product
 			Get
 				Return SpecialOfferProduct.Product
 			End Get
 		End Property
 
-		<MemberOrder(12)>
+		<AWProperty(Order:=12)>
 		Public Overridable ReadOnly Property SpecialOffer() As SpecialOffer
 			Get
 				Return SpecialOfferProduct.SpecialOffer
@@ -152,7 +152,7 @@
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

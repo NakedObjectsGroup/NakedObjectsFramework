@@ -178,7 +178,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         }
 
         //[TestMethod]
-        public void FieldOrderSpecifiedByAttribute() //Also tests that system value properties are not displayed
+        public void FieldOrderSpecifiedByAttribute()
         {
             var obj = AccessInstanceWithTitle("Address--24082", "4669 Berry Dr....");
             obj.AssertPropertiesAre("Address Line1", "Address Line2", "City", "Postal Code", "State Province", "Modified Date");
@@ -294,6 +294,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             EditAndCancelWithoutModification();
             EditAndSaveChange();
+            MakeEditablePropertyRequiredViaAttribute();
         }
 
         //[TestMethod]
@@ -322,6 +323,18 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             updated = editView.Save();
             updated.GetProperty("Scrap Reason").AssertValueIs("");
             updated.GetProperty("Scrapped Qty").AssertValueIs("0");
+        }
+
+        //[TestMethod] 
+        public void MakeEditablePropertyRequiredViaAttribute()
+        {
+            var edit = AccessInstanceWithTitle("Department--7", "Production").Edit();
+            edit.AssertSaveIsEnabled();
+            edit.GetEditableTextInputProperty("Name").Clear().AssertHasPlaceholder("* ");
+            edit.AssertSaveIsDisabled("Missing mandatory fields: Name; ");
+            edit.GetEditableTextInputProperty("Group Name").Clear().AssertHasPlaceholder("* ");
+            edit.AssertSaveIsDisabled("Missing mandatory fields: Name; Group Name; ");
+            edit.Cancel();
         }
         #endregion
 
@@ -358,7 +371,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void PropertyControl_UsingFieldAbout()
         {
             PropertyHiddenUsingFieldAbout();
+            PropertyHiddenUsingAttribute();
             PropertyRenamedUsingFieldAbout();
+            PropertyRenamedUsingAttribute();
             PropertyMadeUneditableUsingFieldAbout();
             PropertyValidationUsingFieldAbout();
             TypeImplementingINotEditableOncePersistent();
@@ -372,11 +387,27 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             obj.AssertPropertiesAre(); //Because all properties have been hidden individually using FieldAbout
         }
 
+
+        //[TestMethod]
+        public void PropertyHiddenUsingAttribute()
+        {
+            var obj = AccessInstanceWithTitle("ContactType--1", "Accounting Manager");
+            obj.AssertPropertiesAre("Modified Date"); //Because Name property hidden by Attribute
+        
+        }
+
+        //[TestMethod]
+        public void PropertyRenamedUsingAttribute()
+        {
+            AccessInstanceWithTitle("EmailAddress--9--9", "gigi0@adventure-works.com")
+                .GetProperty(0).AssertNameIs("Email Address");
+        }
+
         //[TestMethod]
         public void PropertyRenamedUsingFieldAbout()
         {
-            var obj = AccessInstanceWithTitle("Person--115", "Angela Barbariol");
-            obj.GetProperty(4).AssertNameIs("Reverse name order");
+            AccessInstanceWithTitle("Person--115", "Angela Barbariol")
+                .GetProperty(4).AssertNameIs("Reverse name order");
         }
 
         //[TestMethod]

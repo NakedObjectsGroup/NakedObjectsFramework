@@ -7,25 +7,25 @@
 
 		Public Property BusinessEntityID() As Integer
 
-		<MemberOrder(3)>
+		<AWProperty(Order:=3)>
 		Public Overridable Property BusinessEntity() As BusinessEntity
 
 		Public Property AddressTypeID() As Integer
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public Overridable Property AddressType() As AddressType
 
 		'<Hidden>
 		Public Property AddressID() As Integer
 
-		<MemberOrder(2)>
+		<AWProperty(Order:=2)>
 		Public Overridable Property Address() As Address
 
 #Region "ModifiedDate"
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

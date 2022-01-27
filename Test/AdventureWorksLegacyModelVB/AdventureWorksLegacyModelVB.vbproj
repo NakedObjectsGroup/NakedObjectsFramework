@@ -41,7 +41,10 @@
   <ItemGroup>
     <Import Include="AdventureWorksLegacy.AppLib" />
     <Import Include="AW.Types" />
-    <Import Include="NakedLegacy" />
+    <Import Include="NakedLegacy.About" />
+    <Import Include="NakedLegacy.Collection" />
+    <Import Include="NakedLegacy.Container" />
+    <Import Include="NakedLegacy.Interface" />
     <Import Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 

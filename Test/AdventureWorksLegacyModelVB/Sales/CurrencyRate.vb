@@ -10,7 +10,7 @@
         Public Property mappedCurrencyRateDate As Date
         Friend myCurrencyRateDate As NODate
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property CurrencyRateDate As NODate
             Get
                 myCurrencyRateDate = If(myCurrencyRateDate, New NODate(mappedCurrencyRateDate, Sub(v) mappedCurrencyRateDate = v))
@@ -32,7 +32,7 @@ Return myCurrencyRateDate
         Public Property mappedAverageRate As Decimal
         Friend myAverageRate As Money
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property AverageRate As Money
             Get
                 myAverageRate = If(myAverageRate, New Money(mappedAverageRate, Sub(v) mappedAverageRate = v))
@@ -54,7 +54,7 @@ Return myAverageRate
         Public Property mappedEndOfDayRate As Decimal
         Friend myEndOfDayRate As Money
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property EndOfDayRate As Money
             Get
                 myEndOfDayRate = If(myEndOfDayRate, New Money(mappedEndOfDayRate, Sub(v) mappedEndOfDayRate = v))
@@ -86,7 +86,7 @@ Return myEndOfDayRate
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

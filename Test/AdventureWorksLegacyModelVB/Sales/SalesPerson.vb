@@ -7,10 +7,10 @@
 		''<Hidden>
 		Public Property BusinessEntityID() As Integer
 
-		<MemberOrder(10)>
+		<AWProperty(Order:=10)>
 		Public Overridable Property EmployeeDetails() As Employee
 
-		<MemberOrder(11)>
+		<AWProperty(Order:=11)>
 		Public Overridable ReadOnly Property PersonDetails() As Person
 			Get
 				Return EmployeeDetails.PersonDetails
@@ -20,14 +20,14 @@
 		''<Hidden>
 		Public Property SalesTerritoryID() As Integer?
 
-		<MemberOrder(20)>
+		<AWProperty(Order:=20)>
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
 #Region "SalesQuota"
 		Public Property mappedSalesQuota As Decimal?
 		Friend mySalesQuota As MoneyNullable
 
-		<MemberOrder(30)>
+		<AWProperty(Order:=30)>
 		Public ReadOnly Property SalesQuota As MoneyNullable
 			Get
 				mySalesQuota = If(mySalesQuota, New MoneyNullable(mappedSalesQuota, Sub(v) mappedSalesQuota = v))
@@ -49,7 +49,7 @@ Return mySalesQuota
 		Public Property mappedBonus As Decimal
 		Friend myBonus As Money
 
-		<MemberOrder(40)>
+		<AWProperty(Order:=40)>
 		Public ReadOnly Property Bonus As Money
 			Get
 				myBonus = If(myBonus, New Money(mappedBonus, Sub(v) mappedBonus = v))
@@ -71,7 +71,7 @@ Return myBonus
 		Public Property mappedCommissionPct As Decimal
 		Friend myCommissionPct As Percentage
 
-		<MemberOrder(50)>
+		<AWProperty(Order:=50)>
 		Public ReadOnly Property CommissionPct As Percentage
 			Get
 				myCommissionPct = If(myCommissionPct, New Percentage(mappedCommissionPct, Sub(v) mappedCommissionPct = v))
@@ -93,7 +93,7 @@ Return myCommissionPct
 		Public Property mappedSalesYTD As Decimal
 		Friend mySalesYTD As Money
 
-		<MemberOrder(60)>
+		<AWProperty(Order:=60)>
 		Public ReadOnly Property SalesYTD As Money
 			Get
 				mySalesYTD = If(mySalesYTD, New Money(mappedSalesYTD, Sub(v) mappedSalesYTD = v))
@@ -115,7 +115,7 @@ Return mySalesYTD
 		Public Property mappedSalesLastYear As Decimal
 		Friend mySalesLastYear As Money
 
-		<MemberOrder(70)>
+		<AWProperty(Order:=70)>
 		Public ReadOnly Property SalesLastYear As Money
 			Get
 				mySalesLastYear = If(mySalesLastYear, New Money(mappedSalesLastYear, Sub(v) mappedSalesLastYear = v))
@@ -139,7 +139,7 @@ Return mySalesLastYear
 		Private myQuotaHistory As InternalCollection
 
 		''<TableView(False, "QuotaDate", "SalesQuota")>
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property QuotaHistory As InternalCollection
 			Get
 				myQuotaHistory = If(myQuotaHistory, New InternalCollection(Of SalesPersonQuotaHistory)(mappedQuotaHistory))
@@ -161,7 +161,7 @@ Return myQuotaHistory
 		Private myTerritoryHistory As InternalCollection
 
 		'		'<TableView(False, "StartDate", "EndDate", "SalesTerritory")>
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property TerritoryHistory As InternalCollection
 			Get
 				myTerritoryHistory = If(myTerritoryHistory, New InternalCollection(Of SalesTerritoryHistory)(mappedTerritoryHistory))
@@ -181,7 +181,7 @@ Return myTerritoryHistory
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

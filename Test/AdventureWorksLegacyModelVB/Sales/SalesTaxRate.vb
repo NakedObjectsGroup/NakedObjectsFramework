@@ -10,7 +10,7 @@
         Public Property mappedTaxType As Byte
         Friend myTaxType As WholeNumber
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property TaxType As WholeNumber
             Get
                 myTaxType = If(myTaxType, New WholeNumber(mappedTaxType, Sub(v) mappedTaxType = CType(v, Byte)))
@@ -32,7 +32,7 @@
         Public Property mappedTaxRate As Decimal
         Friend myTaxRate As FloatingPointNumber
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property TaxRate As FloatingPointNumber
             Get
                 myTaxRate = If(myTaxRate, New FloatingPointNumber(mappedTaxRate, Sub(v) mappedTaxRate = v))
@@ -54,7 +54,7 @@
         Public Property mappedName As String
         Friend myName As TextString
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -81,7 +81,7 @@
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

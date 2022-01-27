@@ -17,8 +17,13 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectView Save()
         {
-            helper.WaitForCss("nof-action-bar nof-action input[value=\"Save\"]").Click();
+            GetSaveButton().Click();
             return helper.GetObjectView();
+        }
+
+        private IWebElement GetSaveButton()
+        {
+            return helper.WaitForCss("nof-action-bar nof-action input[value=\"Save\"]");
         }
 
         public ObjectEdit AttemptUnsuccessfulSave()
@@ -75,6 +80,18 @@ namespace NakedFrameworkClient.TestFramework
             {
                 Assert.AreEqual(propertyNames[i] + ":", props[i].FindElement(By.CssSelector(".name")).Text);
             }
+            return this;
+        }
+
+        public ObjectEdit AssertSaveIsEnabled(string message = "")
+        {
+            GetSaveButton().AssertIsEnabled().AssertHasTooltip(message);
+            return this;
+        }
+
+        public ObjectEdit AssertSaveIsDisabled(string message = "")
+        {
+            GetSaveButton().AssertIsDisabled().AssertHasTooltip(message);
             return this;
         }
     }

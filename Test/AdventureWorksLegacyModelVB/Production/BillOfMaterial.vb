@@ -10,7 +10,7 @@
 		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property StartDate As NODate
 			Get
 				myStartDate = If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
@@ -32,7 +32,7 @@
 		Public Property mappedEndDate As Date?
 		Friend myEndDate As NODateNullable
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property EndDate As NODateNullable
 			Get
 				myEndDate = If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
@@ -54,7 +54,7 @@
 		Public Property mappedBOMLevel As Short
 		Friend myBOMLevel As WholeNumber
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property BOMLevel As WholeNumber
 			Get
 				myBOMLevel = If(myBOMLevel, New WholeNumber(mappedBOMLevel, Sub(v) mappedBOMLevel = CType(v, Short)))
@@ -76,7 +76,7 @@
 		Public Property mappedPerAssemblyQty As Decimal
 		Friend myPerAssemblyQty As FloatingPointNumber
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public ReadOnly Property PerAssemblyQty As FloatingPointNumber
 			Get
 				myPerAssemblyQty = If(myPerAssemblyQty, New FloatingPointNumber(mappedPerAssemblyQty, Sub(v) mappedPerAssemblyQty = v))
@@ -110,7 +110,7 @@
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

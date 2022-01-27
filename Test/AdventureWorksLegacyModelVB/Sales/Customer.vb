@@ -8,7 +8,7 @@ Namespace AW.Types
 		''<Hidden>
 		Public Property CustomerID() As Integer
 
-		<MemberOrder(15)>
+		<AWProperty(Order:=15)>
 		Public ReadOnly Property CustomerType() As TextString
 			Get
 				Return New TextString(If(StoreID Is Nothing, "Individual", "Store"))
@@ -19,7 +19,7 @@ Namespace AW.Types
 		Public Property mappedAccountNumber As String
 		Friend myAccountNumber As TextString
 
-		<MemberOrder(10)>
+		<AWProperty(Order:=10)>
 		Public ReadOnly Property AccountNumber As TextString
 			Get
 				myAccountNumber = If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
@@ -56,13 +56,13 @@ Return myAccountNumber
 		''<Hidden>
 		Public Property StoreID() As Integer?
 
-		<MemberOrder(20)>
+		<AWProperty(Order:=20)>
 		Public Overridable Property Store() As Store
 
 		''<Hidden>
 		Public Property PersonID() As Integer?
 
-		<MemberOrder(20)>
+		<AWProperty(Order:=20)>
 		Public Overridable Property Person() As Person
 
 #End Region
@@ -72,7 +72,7 @@ Return myAccountNumber
 		''<Hidden>
 		Public Property SalesTerritoryID() As Integer?
 
-		<MemberOrder(30)>
+		<AWProperty(Order:=30)>
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
 #End Region

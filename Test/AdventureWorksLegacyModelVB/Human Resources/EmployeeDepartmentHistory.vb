@@ -14,7 +14,7 @@
 		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
-		<MemberOrder(4)>
+		<AWProperty(Order:=4)>
 		Public ReadOnly Property StartDate As NODate
 			Get
 				myStartDate = If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
@@ -36,7 +36,7 @@
 		Public Property mappedEndDate As Date?
 		Friend myEndDate As NODateNullable
 
-		<MemberOrder(5)>
+		<AWProperty(Order:=5)>
 		Public ReadOnly Property EndDate As NODateNullable
 			Get
 				myEndDate = If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
@@ -54,20 +54,20 @@
 		End Sub
 #End Region
 
-		<MemberOrder(2)>
+		<AWProperty(Order:=2)>
 		Public Overridable Property Department() As Department
 
-		<MemberOrder(1)>
+		<AWProperty(Order:=1)>
 		Public Overridable Property Employee() As Employee
 
-		<MemberOrder(3)>
+		<AWProperty(Order:=3)>
 		Public Overridable Property Shift() As Shift
 
 #Region "ModifiedDate"
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

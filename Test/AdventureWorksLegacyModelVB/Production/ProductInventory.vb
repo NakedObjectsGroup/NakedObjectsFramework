@@ -12,7 +12,7 @@
 		Public Property mappedShelf As String
 		Friend myShelf As TextString
 
-		<MemberOrder(40)>
+		<AWProperty(Order:=40)>
 		Public ReadOnly Property Shelf As TextString
 			Get
 				myShelf = If(myShelf, New TextString(mappedShelf, Sub(v) mappedShelf = v))
@@ -34,7 +34,7 @@
 		Public Property mappedBin As Byte
 		Friend myBin As WholeNumber
 
-		<MemberOrder(50)>
+		<AWProperty(Order:=50)>
 		Public ReadOnly Property Bin As WholeNumber
 			Get
 				myBin = If(myBin, New WholeNumber(mappedBin, Sub(v) mappedBin = CType(v, Byte)))
@@ -56,7 +56,7 @@
 		Public Property mappedQuantity As Short
 		Friend myQuantity As WholeNumber
 
-		<MemberOrder(10)>
+		<AWProperty(Order:=10)>
 		Public ReadOnly Property Quantity As WholeNumber
 			Get
 				myQuantity = If(myQuantity, New WholeNumber(mappedQuantity, Sub(v) mappedQuantity = CType(v, Short)))
@@ -74,17 +74,17 @@
 		End Sub
 #End Region
 
-		<MemberOrder(30)>
+		<AWProperty(Order:=30)>
 		Public Overridable Property Location() As Location
 
-		<MemberOrder(20)>
+		<AWProperty(Order:=20)>
 		Public Overridable Property Product() As Product
 
 #Region "ModifiedDate"
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

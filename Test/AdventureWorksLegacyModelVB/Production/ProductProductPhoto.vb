@@ -10,7 +10,7 @@
         Public Property mappedPrimary As Boolean
         Friend myPrimary As Logical
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property Primary As Logical
             Get
                 myPrimary = If(myPrimary, New Logical(mappedPrimary, Sub(v) mappedPrimary = v))
@@ -36,7 +36,7 @@ Return myPrimary
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<MemberOrder(99)>
+		<AWProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

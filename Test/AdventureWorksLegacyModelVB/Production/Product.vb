@@ -17,7 +17,7 @@ Namespace AW.Types
         Public Property mappedName As String
         Friend myName As TextString
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -39,7 +39,7 @@ Namespace AW.Types
         Public Property mappedProductNumber As String
         Friend myProductNumber As TextString
 
-        <MemberOrder(2)>
+        <AWProperty(Order:=2)>
         Public ReadOnly Property ProductNumber As TextString
             Get
                 myProductNumber = If(myProductNumber, New TextString(mappedProductNumber, Sub(v) mappedProductNumber = v))
@@ -61,7 +61,7 @@ Namespace AW.Types
         Public Property mappedColor As String
         Friend myColor As TextString
 
-        <MemberOrder(3)>
+        <AWProperty(Order:=3)>
         Public ReadOnly Property Color As TextString
             Get
                 myColor = If(myColor, New TextString(mappedColor, Sub(v) mappedColor = v))
@@ -79,21 +79,21 @@ Namespace AW.Types
         End Sub
 #End Region
 
-        <MemberOrder(4)>
+        <AWProperty(Order:=4)>
         Public Overridable ReadOnly Property Photo() As Image
             Get
                 Return Nothing 'Product_Functions.Photo(Me)
             End Get
         End Property
 
-        <MemberOrder(10)>
+        <AWProperty(Order:=10)>
         Public Overridable Property ProductModel() As ProductModel
 
 #Region "ListPrice"
         Public Property mappedListPrice As Decimal
         Friend myListPrice As Money
 
-        <MemberOrder(12)>
+        <AWProperty(Order:=12)>
         Public ReadOnly Property ListPrice As Money
             Get
                 myListPrice = If(myListPrice, New Money(mappedListPrice, Sub(v) mappedListPrice = v))
@@ -111,21 +111,21 @@ Namespace AW.Types
         End Sub
 #End Region
 
-        <MemberOrder(13)>
+        <AWProperty(Order:=13)>
         Public Overridable ReadOnly Property ProductCategory() As ProductCategory
             Get
                 Return Nothing 'TODO: ProductSubcategory.ProductCategory
             End Get
         End Property
 
-        <MemberOrder(14)>
+        <AWProperty(Order:=14)>
         Public Overridable Property ProductSubcategory() As ProductSubcategory
 
 #Region "ProductLine"
         Public Property mappedProductLine As String
         Friend myProductLine As TextString
 
-        <MemberOrder(15)>
+        <AWProperty(Order:=15)>
         Public ReadOnly Property ProductLine As TextString
             Get
                 myProductLine = If(myProductLine, New TextString(mappedProductLine, Sub(v) mappedProductLine = v))
@@ -146,7 +146,7 @@ Namespace AW.Types
 #Region "SizeWithUnit"
 
 
-        <MemberOrder(16)>
+        <AWProperty(Order:=16)>
         Public ReadOnly Property SizeWithUnit As TextString
             Get
                 Return New TextString($"{Size} {SizeUnit}")
@@ -166,7 +166,7 @@ Namespace AW.Types
 
 #Region "WeightWithUnit"
 
-        <MemberOrder(17)>
+        <AWProperty(Order:=17)>
         Public ReadOnly Property WeightWithUnit As TextString
             Get
                 Return New TextString($"{Weight} {WeightUnit}")
@@ -188,7 +188,7 @@ Namespace AW.Types
         Public Property mappedStyle As String
         Friend myStyle As TextString
 
-        <MemberOrder(18)>
+        <AWProperty(Order:=18)>
         Public ReadOnly Property Style As TextString
             Get
                 myStyle = If(myStyle, New TextString(mappedStyle, Sub(v) mappedStyle = v))
@@ -210,7 +210,7 @@ Namespace AW.Types
         Public Property mappedClass As String
         Friend My_Class As TextString
 
-        <MemberOrder(19)>
+        <AWProperty(Order:=19)>
         Public ReadOnly Property [Class] As TextString
             Get
                 My_Class = If(My_Class, New TextString(mappedClass, Sub(v) mappedClass = v))
@@ -232,7 +232,7 @@ Namespace AW.Types
         Public Property mappedMake As Boolean
         Friend myMake As Logical
 
-        <MemberOrder(20)>
+        <AWProperty(Order:=20)>
         Public ReadOnly Property Make As Logical
             Get
                 myMake = If(myMake, New Logical(mappedMake, Sub(v) mappedMake = v))
@@ -254,7 +254,7 @@ Namespace AW.Types
         Public Property mappedFinishedGoods As Boolean
         Friend myFinishedGoods As Logical
 
-        <MemberOrder(21)>
+        <AWProperty(Order:=21)>
         Public ReadOnly Property FinishedGoods As Logical
             Get
                 myFinishedGoods = If(myFinishedGoods, New Logical(mappedFinishedGoods, Sub(v) mappedFinishedGoods = v))
@@ -276,7 +276,7 @@ Namespace AW.Types
         Public Property mappedSafetyStockLevel As Short
         Friend mySafetyStockLevel As WholeNumber
 
-        <MemberOrder(22)>
+        <AWProperty(Order:=22)>
         Public ReadOnly Property SafetyStockLevel As WholeNumber
             Get
                 mySafetyStockLevel = If(mySafetyStockLevel, New WholeNumber(mappedSafetyStockLevel, Sub(v) mappedSafetyStockLevel = CType(v, Short)))
@@ -298,7 +298,7 @@ Namespace AW.Types
         Public Property mappedReorderPoint As Short
         Friend myReorderPoint As WholeNumber
 
-        <MemberOrder(23)>
+        <AWProperty(Order:=23)>
         Public ReadOnly Property ReorderPoint As WholeNumber
             Get
                 myReorderPoint = If(myReorderPoint, New WholeNumber(mappedReorderPoint, Sub(v) mappedReorderPoint = CType(v, Short)))
@@ -320,7 +320,7 @@ Namespace AW.Types
         Public Property mappedDaysToManufacture As Integer
         Friend myDaysToManufacture As WholeNumber
 
-        <MemberOrder(24)>
+        <AWProperty(Order:=24)>
         Public ReadOnly Property DaysToManufacture As WholeNumber
             Get
                 myDaysToManufacture = If(myDaysToManufacture, New WholeNumber(mappedDaysToManufacture, Sub(v) mappedDaysToManufacture = v))
@@ -342,7 +342,7 @@ Namespace AW.Types
         Public Property mappedSellStartDate As Date
         Friend mySellStartDate As NODate
 
-        <MemberOrder(81)>
+        <AWProperty(Order:=81)>
         Public ReadOnly Property SellStartDate As NODate
             Get
                 mySellStartDate = If(mySellStartDate, New NODate(mappedSellStartDate, Sub(v) mappedSellStartDate = v))
@@ -364,7 +364,7 @@ Namespace AW.Types
         Public Property mappedSellEndDate As Date?
         Friend mySellEndDate As NODateNullable
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property SellEndDate As NODateNullable
             Get
                 mySellEndDate = If(mySellEndDate, New NODateNullable(mappedSellEndDate, Sub(v) mappedSellEndDate = v))
@@ -386,7 +386,7 @@ Namespace AW.Types
         Public Property mappedDiscontinuedDate As Date?
         Friend myDiscontinuedDate As NODateNullable
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property DiscontinuedDate As NODateNullable
             Get
                 myDiscontinuedDate = If(myDiscontinuedDate, New NODateNullable(mappedDiscontinuedDate, Sub(v) mappedDiscontinuedDate = v))
@@ -408,7 +408,7 @@ Namespace AW.Types
         Public Property mappedStandardCost As Decimal
         Friend myStandardCost As Money
 
-        <MemberOrder(90)>
+        <AWProperty(Order:=90)>
         Public ReadOnly Property StandardCost As Money
             Get
                 myStandardCost = If(myStandardCost, New Money(mappedStandardCost, Sub(v) mappedStandardCost = v))
@@ -430,7 +430,7 @@ Namespace AW.Types
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
@@ -455,7 +455,7 @@ Namespace AW.Types
 
         Private myProductReviews As InternalCollection
 
-        <MemberOrder(100)>
+        <AWProperty(Order:=100)>
         Public ReadOnly Property ProductReviews As InternalCollection
             Get
                 myProductReviews = If(myProductReviews, New InternalCollection(Of ProductReview)(mappedProductReviews))
@@ -476,7 +476,7 @@ Namespace AW.Types
 
         Private myProductInventory As InternalCollection
 
-        <MemberOrder(120)>
+        <AWProperty(Order:=120)>
         Public ReadOnly Property ProductInventory As InternalCollection
             Get
                 myProductInventory = If(myProductInventory, New InternalCollection(Of ProductInventory)(mappedProductInventory))
@@ -520,7 +520,7 @@ Namespace AW.Types
         Public Property mappedSizeUnitMeasureCode As String
         Friend mySizeUnitMeasureCode As TextString
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property SizeUnitMeasureCode As TextString
             Get
                 mySizeUnitMeasureCode = If(mySizeUnitMeasureCode, New TextString(mappedSizeUnitMeasureCode, Sub(v) mappedSizeUnitMeasureCode = v))

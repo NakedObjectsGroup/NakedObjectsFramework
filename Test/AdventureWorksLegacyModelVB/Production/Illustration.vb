@@ -8,7 +8,7 @@
         Public Property mappedDiagram As String
         Friend myDiagram As TextString
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property Diagram As TextString
             Get
                 myDiagram = If(myDiagram, New TextString(mappedDiagram, Sub(v) mappedDiagram = v))
@@ -31,7 +31,7 @@ Return myDiagram
 
         Private myProductModelIllustration As InternalCollection
 
-        <MemberOrder(1)>
+        <AWProperty(Order:=1)>
         Public ReadOnly Property ProductModelIllustration As InternalCollection
             Get
                 myProductModelIllustration = If(myProductModelIllustration, New InternalCollection(Of ProductModelIllustration)(mappedProductModelIllustration))
@@ -51,7 +51,7 @@ Return myProductModelIllustration
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <MemberOrder(99)>
+        <AWProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
