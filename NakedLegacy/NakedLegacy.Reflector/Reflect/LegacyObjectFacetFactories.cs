@@ -27,7 +27,11 @@ public static class LegacyObjectFacetFactories {
             typeof(MemberOrderAnnotationFacetFactory),
             typeof(LengthAnnotationFacetFactory),
             typeof(LegacySaveFacetFactory),
-            typeof(RestExtensionAnnotationFacetFactory)
+            typeof(RestExtensionAnnotationFacetFactory),
+            typeof(HiddenAnnotationFacetFactory),
+            typeof(RequiredAnnotationFacetFactory),
+            typeof(NamedAnnotationFacetFactory),
+            typeof(TableViewAnnotationFacetFactory)
         };
 
     public static Type[] TypeFacetFactories() =>

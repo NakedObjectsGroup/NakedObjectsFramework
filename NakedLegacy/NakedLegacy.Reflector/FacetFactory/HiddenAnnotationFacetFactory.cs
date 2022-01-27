@@ -47,5 +47,5 @@ public sealed class HiddenAnnotationFacetFactory : LegacyFacetFactoryProcessor, 
         return metamodel;
     }
 
-    private static IHiddenFacet Create(IHiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(WhenTo.Always, holder);
+    private static IHiddenFacet Create(IHiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.WhenTo, holder);
 }
