@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>NakedFramework.Server</id>
+		<version>13.0.0-beta01</version>
+		<authors>Naked Objects Group Ltd</authors>
+		<owners>Naked Objects Group Ltd</owners>
+		<license type="expression">Apache-2.0</license>
+		<projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
+		<icon>images\icon.png</icon>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
+		<description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
+		<tags>naked objects nakedobjects ddd domain driven design</tags>
+		<dependencies>
+			<group targetFramework="net6.0">
+				<dependency id="NakedFramework.ProgrammingModel" version="[13.0.0-beta01, 14)" />
+				<dependency id="EntityFramework" version="[6.4.4, 7)" />
+				<dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[6.0.0, 7)" />
+				<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[6.0.0, 7)" />
+				<dependency id="Microsoft.Extensions.Configuration" version="[6.0.0, 7)" />
+				<dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.7, 6)" />
+				<dependency id="System.Reflection.Emit" version="[4.7.0, 5)" />
+			</group>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="icon.png" target="images\" />
+		<file src="..\..\NakedFramework\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.dll"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Architecture\bin\Debug\**\NakedFramework.Architecture.dll"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Core\bin\Debug\**\NakedFramework.Core.dll" target="lib" />
+		<file
+			src="..\..\NakedFramework\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.dll"
+			target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Facade\bin\Debug\**\NakedFramework.Facade.dll" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Facade.Impl\bin\Debug\**\NakedFramework.Facade.Impl.dll" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.FWResources\bin\Debug\**\NakedFramework.FWResources.dll" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Metamodel\bin\Debug\**\NakedFramework.Metamodel.dll" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.ParallelReflector\bin\Debug\**\NakedFramework.ParallelReflector.dll"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Persistor.EF6\bin\Debug\**\NakedFramework.Persistor.EF6.dll"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Persistor.EFCore\bin\Debug\**\NakedFramework.Persistor.EFCore.dll"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Rest\bin\Debug\**\NakedFramework.Rest.dll" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Rest.Snapshot\bin\Debug\**\NakedFramework.Rest.Snapshot.dll"
+		      target="lib" />
+		
+
+		<file src="..\..\NakedFramework\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.pdb"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Architecture\bin\Debug\**\NakedFramework.Architecture.pdb"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Core\bin\Debug\**\NakedFramework.Core.pdb" target="lib" />
+		<file
+			src="..\..\NakedFramework\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.pdb"
+			target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Facade\bin\Debug\**\NakedFramework.Facade.pdb" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Facade.Impl\bin\Debug\**\NakedFramework.Facade.Impl.pdb" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.FWResources\bin\Debug\**\NakedFramework.FWResources.pdb" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Metamodel\bin\Debug\**\NakedFramework.Metamodel.pdb" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.ParallelReflector\bin\Debug\**\NakedFramework.ParallelReflector.pdb"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Persistor.EF6\bin\Debug\**\NakedFramework.Persistor.EF6.pdb"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Persistor.EFCore\bin\Debug\**\NakedFramework.Persistor.EFCore.pdb"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Rest\bin\Debug\**\NakedFramework.Rest.pdb" target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.Rest.Snapshot\bin\Debug\**\NakedFramework.Rest.Snapshot.pdb"
+		      target="lib" />
+	
+	</files>
+</package>
