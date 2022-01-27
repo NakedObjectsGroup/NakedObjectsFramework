@@ -41,15 +41,6 @@ public static class FactoryUtils {
         return complementaryMethod;
     }
 
-    public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
-        try {
-            return methodDelegate is not null ? (T)methodDelegate(null, parms) : (T)method.Invoke(null, parms);
-        }
-        catch (InvalidCastException) {
-            throw new NakedObjectDomainException($"Must return {typeof(T)} from  method: {method.DeclaringType}.{method.Name}");
-        }
-    }
-
     private static bool Matches(ParameterInfo pri, PropertyInfo ppi) =>
         string.Equals(pri.Name, ppi.Name, StringComparison.CurrentCultureIgnoreCase) &&
         pri.ParameterType == ppi.PropertyType;

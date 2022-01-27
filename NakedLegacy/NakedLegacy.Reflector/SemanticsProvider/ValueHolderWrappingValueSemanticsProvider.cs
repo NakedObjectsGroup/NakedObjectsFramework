@@ -21,9 +21,12 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
     private const bool Immutable = true;
     private const int TypicalLengthConst = 11;
     private static T DefaultValueConst = default;
+    private T valueHolderinstance;
 
     public ValueHolderWrappingValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) {
+        valueHolderinstance = new T();
+    }
 
     public static Type Type => typeof(IValueSemanticsProvider);
 
@@ -33,7 +36,7 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
 
     protected override T DoParse(string entry) {
         try {
-            return new T().Parse(entry) as T;
+            return valueHolderinstance.Parse(entry) as T;
         }
         catch (Exception e) {
             throw new InvalidEntryException(e.Message);
@@ -42,6 +45,5 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
 
     public override object Value(INakedObjectAdapter adapter, string format = null) => adapter.GetDomainObject<T>().Display(format);
 
-    protected override string TitleStringWithMask(string mask, T value) => ""; //value.Number.ToString(mask);
-    public override string ToString() => "WholeNumberAdapter: ";
+    public override string ToString() => $"ValueHolderWrappingValueSemanticsProvider<{typeof(T)},{typeof (TU)}>";
 }

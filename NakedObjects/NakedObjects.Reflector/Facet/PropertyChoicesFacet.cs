@@ -21,7 +21,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
-using NakedObjects.Reflector.Utils;
+using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 

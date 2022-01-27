@@ -13,8 +13,8 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.ParallelReflector.Utils;
 using NakedLegacy.About;
-using NakedLegacy.Reflector.Helpers;
 
 namespace NakedLegacy.Reflector.Facet;
 
