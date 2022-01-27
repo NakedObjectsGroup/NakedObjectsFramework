@@ -2,6 +2,7 @@
 
 Namespace AW.Types
 
+    <RestExtension("icon", "person")> <RestExtension("colour", "red")>
     Partial Public Class Person
         Inherits BusinessEntity
         Implements ITitledObject, INotEditableOncePersistent
@@ -146,7 +147,7 @@ Namespace AW.Types
         Public Property mappedPersonType As String
         Friend myPersonType As TextString
 
-        <AWProperty(Order:=1)>
+
         Public ReadOnly Property PersonType As TextString
             Get
                 myPersonType = If(myPersonType, New TextString(mappedPersonType, Sub(v) mappedPersonType = v))
@@ -169,6 +170,7 @@ Namespace AW.Types
         <AWProperty(Order:=21)>
         Public Overridable Property EmailPromotion() As EmailPromotion
 
+        <RestExtension("colour", "blue")>
         Public Sub AboutEmailPromotion(a As FieldAbout, ep As EmailPromotion)
             Select Case a.TypeCode
                 Case Else
@@ -287,6 +289,7 @@ Namespace AW.Types
         End Function
 
 #Region "Actions"
+        <RestExtension("colour", "green")>
         Public Function ActionOthersWithSameInitials() As IQueryable(Of Person)
             Dim rep = CType(Container.DomainService(GetType(PersonRepository)), PersonRepository)
             Return rep.FindContactByName(mappedFirstName.Substring(0, 1), mappedLastName.Substring(0, 1))

@@ -269,7 +269,7 @@ Namespace AW.Types
         Private myDepartmentHistory As InternalCollection
 
 
-        <AWProperty(Order:=1, TableTitle:=True, TableColumns:={
+        <AWProperty(Order:=1)> <TableView(True, {
             NameOf(EmployeeDepartmentHistory.StartDate),
             NameOf(EmployeeDepartmentHistory.EndDate),
             NameOf(EmployeeDepartmentHistory.Department),
