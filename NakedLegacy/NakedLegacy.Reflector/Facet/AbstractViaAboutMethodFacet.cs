@@ -25,7 +25,7 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
         MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    private Func<object, object[], object> MethodDelegate { get; set; }
+    private Func<object, object[], object> MethodDelegate { get; }
 
     protected MethodInfo Method { get; }
     protected AboutHelpers.AboutType AboutType { get; }

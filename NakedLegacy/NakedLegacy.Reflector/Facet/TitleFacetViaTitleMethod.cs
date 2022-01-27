@@ -15,6 +15,8 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedLegacy.Reflector.Helpers;
+using NakedLegacy.Title;
 
 namespace NakedLegacy.Reflector.Facet;
 
@@ -32,7 +34,7 @@ public sealed class TitleFacetViaTitleMethod : TitleFacetAbstract, IImperativeFa
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>()).ToString();
+    public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodDelegate.Invoke<ITitle>(method, nakedObjectAdapter.GetDomainObject(), Array.Empty<object>()).TitleString();
 
     [OnDeserialized]
     private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

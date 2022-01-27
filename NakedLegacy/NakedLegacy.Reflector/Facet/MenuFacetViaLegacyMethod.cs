@@ -7,7 +7,9 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -17,16 +19,24 @@ using NakedLegacy.Reflector.Helpers;
 namespace NakedLegacy.Reflector.Facet;
 
 [Serializable]
-public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract {
+public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract, IImperativeFacet {
     private readonly MethodInfo method;
 
-    public MenuFacetViaLegacyMethod(MethodInfo method, ISpecification holder)
-        : base(holder) =>
+    public MenuFacetViaLegacyMethod(MethodInfo method, ISpecification holder, ILogger<MenuFacetViaLegacyMethod> logger)
+        : base(holder) {
         this.method = method;
+        MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+    }
+
+    private Func<object, object[], object> MethodDelegate { get; set; }
+
+    public MethodInfo GetMethod() => method;
+
+    public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
 
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel) {
-        var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(method, new object[] { });
+        var legacyMenu = MethodDelegate.Invoke<IMenu>(method, null, Array.Empty<object>());
         Menu = LegacyHelpers.ConvertLegacyToNOFMenu(legacyMenu, metamodel, method.DeclaringType, "Actions");
     }
 }
