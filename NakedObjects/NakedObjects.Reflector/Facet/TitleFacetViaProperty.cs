@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 
@@ -33,7 +34,7 @@ public sealed class TitleFacetViaProperty : TitleFacetAbstract, IImperativeFacet
     }
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        var obj = methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        var obj = methodDelegate.Invoke<object>(method, nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
         return obj == null ? null : framework.NakedObjectManager.CreateAdapter(obj, null, null).TitleString();
     }
 

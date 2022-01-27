@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedObjects.Reflector.Utils;
 
 [assembly: InternalsVisibleTo("NakedFramework.ParallelReflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
@@ -41,7 +42,7 @@ public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, 
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         // type safety is given by the reflector only identifying methods that match the 
         // parameter type
-        var defaultValue = MethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        var defaultValue = MethodDelegate.Invoke<object>(method, nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
         return (defaultValue, TypeOfDefaultValue.Explicit);
     }
 

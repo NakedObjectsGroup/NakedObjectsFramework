@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedObjects.Reflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 
@@ -33,8 +34,8 @@ public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstra
     }
 
     public override string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter proposedValue) =>
-        proposedValue != null
-            ? (string)methodDelegate(target.GetDomainObject(), new[] { proposedValue.GetDomainObject() })
+        proposedValue is not null
+            ? methodDelegate.Invoke<string>(method, target.GetDomainObject(), new[] { proposedValue.GetDomainObject() })
             : null;
 
     protected override string ToStringValues() => $"method={method}";

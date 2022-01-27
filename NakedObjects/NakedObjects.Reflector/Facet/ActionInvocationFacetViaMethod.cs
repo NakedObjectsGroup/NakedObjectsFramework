@@ -18,6 +18,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedObjects.Reflector.Utils;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
@@ -59,15 +60,7 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
             logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
         }
 
-        object result;
-        if (ActionDelegate != null) {
-            result = ActionDelegate(inObjectAdapter.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
-        }
-        else {
-            logger.LogWarning($"Invoking action via reflection as no delegate {OnType}.{ActionMethod}");
-            result = InvokeUtils.Invoke(ActionMethod, inObjectAdapter, parameters);
-        }
-
+        var result = ActionDelegate.Invoke<object>(ActionMethod, inObjectAdapter.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
         return framework.NakedObjectManager.CreateAdapter(result, null, null);
     }
 

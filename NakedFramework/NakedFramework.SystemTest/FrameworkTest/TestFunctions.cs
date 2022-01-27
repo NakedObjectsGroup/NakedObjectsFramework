@@ -82,8 +82,7 @@ public class TestFunctions : AbstractSystemTest<XatDbContext> {
             Assert.Fail("Should not get to here");
         }
         catch (Exception e) {
-            IsInstanceOfType(e, typeof(AssertFailedException));
-            Assert.AreEqual("Assert.Fail failed. Invalid Argument(s)", e.Message);
+            Assert.AreEqual("Cast error on method: Object1 DoSomething(Int32, System.String) : Unable to cast object of type 'System.Int32' to type 'System.String'.", e.Message);
         }
     }
 
