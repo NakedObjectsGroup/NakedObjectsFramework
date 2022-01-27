@@ -22,7 +22,7 @@ using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class HiddenAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class HiddenAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public HiddenAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 

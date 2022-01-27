@@ -75,7 +75,7 @@ public class LegacyTest : AcceptanceTestCase {
 
     protected override Action<NakedFrameworkOptions> AddNakedObjects => _ => { };
 
-    protected Action<NakedLegacyOptions> LegacyOptions =>
+    protected Action<NOF2Options> LegacyOptions =>
         options => {
             options.DomainModelTypes = LegacyTypes;
             options.DomainModelServices = LegacyServices;

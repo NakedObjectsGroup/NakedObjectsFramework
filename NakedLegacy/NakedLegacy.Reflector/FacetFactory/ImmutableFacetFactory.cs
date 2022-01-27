@@ -21,7 +21,7 @@ using NOF2.Interface;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class ImmutableFacetFactory : LegacyFacetFactoryProcessor {
+public sealed class ImmutableFacetFactory : AbstractNOF2FacetFactoryProcessor {
     public ImmutableFacetFactory(IFacetFactoryOrder<ImmutableFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 

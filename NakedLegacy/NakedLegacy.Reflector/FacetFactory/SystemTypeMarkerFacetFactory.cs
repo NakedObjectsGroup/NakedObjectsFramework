@@ -23,12 +23,12 @@ using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class LegacySystemTypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor {
-    public LegacySystemTypeMarkerFacetFactory(AppendFacetFactoryOrder<LegacySystemTypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
+public sealed class SystemTypeMarkerFacetFactory : SystemTypeFacetFactoryProcessor {
+    public SystemTypeMarkerFacetFactory(AppendFacetFactoryOrder<SystemTypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var valueType = LegacyHelpers.IsOrImplementsValueHolder(type) ?? type;
+        var valueType = NOF2Helpers.IsOrImplementsValueHolder(type) ?? type;
 
         if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
             valueType = valueType.GetGenericArguments().First();

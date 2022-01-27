@@ -26,7 +26,7 @@ namespace NOF2.Reflector.FacetFactory;
 ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects
 ///     Framework itself.
 /// </summary>
-public sealed class FallbackFacetFactory : LegacyFacetFactoryProcessor {
+public sealed class FallbackFacetFactory : AbstractNOF2FacetFactoryProcessor {
     public FallbackFacetFactory(IFacetFactoryOrder<FallbackFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Everything) { }
 

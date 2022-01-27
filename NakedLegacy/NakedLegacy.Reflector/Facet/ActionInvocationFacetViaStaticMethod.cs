@@ -87,7 +87,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
             rawParms = rawParms.Append(null).ToArray();
         }
 
-        var substituteParms = LegacyHelpers.SubstituteNullsAndContainer(rawParms, ActionMethod, framework);
+        var substituteParms = NOF2Helpers.SubstituteNullsAndContainer(rawParms, ActionMethod, framework);
 
         return HandleInvokeResult(framework, methodDelegate.Invoke<object>(ActionMethod, null, substituteParms));
     }

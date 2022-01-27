@@ -12,7 +12,7 @@ using NOF2.Container;
 
 namespace NOF2.Reflector.Component;
 
-public sealed class LegacyObjectContainerInjector : IDomainObjectInjector {
+public sealed class NOF2ObjectContainerInjector : IDomainObjectInjector {
     private IContainer container;
     private bool initialized;
 

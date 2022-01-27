@@ -63,7 +63,7 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var valueType = LegacyHelpers.IsOrImplementsValueHolder(type);
+        var valueType = NOF2Helpers.IsOrImplementsValueHolder(type);
 
         if (valueType is not null) {
             var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);

@@ -38,7 +38,7 @@ public sealed class MenuFacetViaLegacyMethod : MenuFacetAbstract, IImperativeFac
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel) {
         var legacyMenu = MethodDelegate.Invoke<IMenu>(method, null, Array.Empty<object>());
-        Menu = LegacyHelpers.ConvertLegacyToNOFMenu(legacyMenu, metamodel, method.DeclaringType, "Actions");
+        Menu = NOF2Helpers.ConvertLegacyToNOFMenu(legacyMenu, metamodel, method.DeclaringType, "Actions");
     }
 }
 

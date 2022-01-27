@@ -13,8 +13,8 @@ using NakedFramework.ParallelReflector.Utils;
 namespace NOF2.Reflector.Configuration;
 
 [Serializable]
-public class LegacyObjectReflectorConfiguration : ILegacyObjectReflectorConfiguration {
-    public LegacyObjectReflectorConfiguration(Type[] typesToIntrospect,
+public class NOF2ReflectorConfiguration : INOF2ReflectorConfiguration {
+    public NOF2ReflectorConfiguration(Type[] typesToIntrospect,
                                               Type[] services,
                                               Type[] valueHolderTypes,
                                               bool concurrencyChecking = true) {
@@ -55,7 +55,7 @@ public class LegacyObjectReflectorConfiguration : ILegacyObjectReflectorConfigur
         return types.ToArray();
     }
 
-    #region ILegacyObjectReflectorConfiguration Members
+    #region NOF2ReflectorConfiguration Members
 
     public Type[] TypesToIntrospect { get; }
     public Type[] ValueHolderTypes { get; }

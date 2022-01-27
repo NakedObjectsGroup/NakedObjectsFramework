@@ -26,14 +26,14 @@ using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+public sealed class MenuFacetFactory : AbstractNOF2FacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;
 
-    static LegacyMenuFacetFactory() {
+    static MenuFacetFactory() {
         FixedPrefixes = new[] { RecognisedMethodsAndPrefixes.MenuMethod };
     }
 
-    public LegacyMenuFacetFactory(IFacetFactoryOrder<LegacyMenuFacetFactory> order, ILoggerFactory loggerFactory)
+    public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
     public string[] Prefixes => FixedPrefixes;
@@ -52,7 +52,7 @@ public sealed class LegacyMenuFacetFactory : LegacyFacetFactoryProcessor, IMetho
         if (sharedmenuOrderMethod is not null) {
             void Action(IMetamodelBuilder builder) {
                 var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(sharedmenuOrderMethod, new object[] { });
-                var mainMenu = LegacyHelpers.ConvertLegacyToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name);
+                var mainMenu = NOF2Helpers.ConvertLegacyToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name);
                 builder.AddMainMenu(mainMenu);
             }
 

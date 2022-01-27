@@ -20,9 +20,9 @@ using NOF2.Reflector.FacetFactory;
 
 namespace NOF2.Reflector.Reflect;
 
-public sealed class LegacyObjectFacetFactorySet : IFacetFactorySet {
+public sealed class NOF2FacetFactorySet : IFacetFactorySet {
     private readonly IList<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
-    private readonly IDictionary<FeatureType, IList<ILegacyFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<ILegacyFacetFactoryProcessor>>();
+    private readonly IDictionary<FeatureType, IList<INOF2FacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<INOF2FacetFactoryProcessor>>();
 
     /// <summary>
     ///     All registered <see cref="IFacetFactory" />s that implement
@@ -52,7 +52,7 @@ public sealed class LegacyObjectFacetFactorySet : IFacetFactorySet {
     /// </para>
     private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-    public LegacyObjectFacetFactorySet(IEnumerable<ILegacyFacetFactoryProcessor> factories) {
+    public NOF2FacetFactorySet(IEnumerable<INOF2FacetFactoryProcessor> factories) {
         var allFactories = factories.ToList();
         allFactories.Sort();
 
@@ -70,7 +70,7 @@ public sealed class LegacyObjectFacetFactorySet : IFacetFactorySet {
 
     private string[] Prefixes { get; }
 
-    private IList<ILegacyFacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
+    private IList<INOF2FacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
 
     #region IFacetFactorySet Members
 

@@ -17,7 +17,7 @@ using static NakedFramework.ParallelReflector.Utils.FactoryUtils;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class TypeMarkerFacetFactory : LegacyFacetFactoryProcessor {
+public sealed class TypeMarkerFacetFactory : AbstractNOF2FacetFactoryProcessor {
     public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 

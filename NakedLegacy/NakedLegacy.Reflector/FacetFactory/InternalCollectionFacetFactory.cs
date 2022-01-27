@@ -21,7 +21,7 @@ using NOF2.Collection;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class InternalCollectionFacetFactory : LegacyFacetFactoryProcessor {
+public sealed class InternalCollectionFacetFactory : AbstractNOF2FacetFactoryProcessor {
     public InternalCollectionFacetFactory(IFacetFactoryOrder<InternalCollectionFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 

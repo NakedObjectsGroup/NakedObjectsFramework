@@ -24,7 +24,7 @@ using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class MemberOrderAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory, IMethodFilteringFacetFactory {
+public sealed class MemberOrderAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory, IMethodFilteringFacetFactory {
     private const string FieldOrder = "FieldOrder";
     private readonly ILogger<MemberOrderAnnotationFacetFactory> logger;
 

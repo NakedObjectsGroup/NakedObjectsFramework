@@ -62,7 +62,7 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
         }
 
         object result;
-        var substituteParms = LegacyHelpers.SubstituteNulls(parameters.Select(no => no.GetDomainObject()).ToArray(), ActionMethod);
+        var substituteParms = NOF2Helpers.SubstituteNulls(parameters.Select(no => no.GetDomainObject()).ToArray(), ActionMethod);
 
         result = ActionDelegate.Invoke<object>(ActionMethod, inObjectAdapter.GetDomainObject(), substituteParms);
 

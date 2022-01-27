@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Component;
 
 namespace NOF2.Reflector.Configuration;
 
-public interface ILegacyObjectReflectorConfiguration : ITypeList {
+public interface INOF2ReflectorConfiguration : ITypeList {
     /// <summary>
     ///     This is expected to contain any domain types that are not directly accessible by navigating the actions on the
     ///     services. Eg an implementation

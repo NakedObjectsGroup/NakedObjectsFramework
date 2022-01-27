@@ -22,7 +22,7 @@ using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class RestExtensionAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class RestExtensionAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public RestExtensionAnnotationFacetFactory(IFacetFactoryOrder<RestExtensionAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Everything) { }
 

@@ -39,7 +39,7 @@ public static class AboutHelpers {
 
         var rawParameters = parameters.ToArray();
 
-        return substitute ? LegacyHelpers.SubstituteNullsAndContainer(rawParameters, method, framework) : LegacyHelpers.InjectContainer(rawParameters, method, framework);
+        return substitute ? NOF2Helpers.SubstituteNullsAndContainer(rawParameters, method, framework) : NOF2Helpers.InjectContainer(rawParameters, method, framework);
     }
 
     public static IAbout AboutFactory(this AboutType aboutType, AboutTypeCodes aboutTypeCode, INakedFramework framework) {

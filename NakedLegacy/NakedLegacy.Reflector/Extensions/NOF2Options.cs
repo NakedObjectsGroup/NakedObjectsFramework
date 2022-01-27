@@ -5,17 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework.Architecture.Component;
-using NakedFramework.ParallelReflector.Component;
+using System;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace NOF2.Reflector.Component;
+namespace NOF2.Reflector.Extensions;
 
-public class LegacyObjectReflectorOrder<T> : IReflectorOrder<T> {
-    public int Order => typeof(T) switch {
-        { } t when t.IsAssignableTo(typeof(SystemTypeReflector)) => 0,
-        { } t when t.IsAssignableTo(typeof(LegacyObjectReflector)) => 1,
-        //{ } t when t.IsAssignableTo(typeof(ObjectReflector)) => 2,
-        _ => 2
-        //_ => throw new InitialisationException($"Unexpected reflector type {typeof(T)}")
-    };
+public class NOF2Options {
+    public Type[] DomainModelTypes { get; set; } = Array.Empty<Type>();
+    public Type[] DomainModelServices { get; set; } = Array.Empty<Type>();
+    public Type[] ValueHolderTypes { get; set; } = Array.Empty<Type>();
+    public bool ConcurrencyCheck { get; set; } = true;
+    public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
+    public bool NoValidate { get; set; }
 }

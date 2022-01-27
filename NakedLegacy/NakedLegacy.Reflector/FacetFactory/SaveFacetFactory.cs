@@ -24,14 +24,14 @@ using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class LegacySaveFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+public sealed class SaveFacetFactory : AbstractNOF2FacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
     private static readonly string[] FixedPrefixes;
 
-    static LegacySaveFacetFactory() {
+    static SaveFacetFactory() {
         FixedPrefixes = new[] { RecognisedMethodsAndPrefixes.MenuMethod };
     }
 
-    public LegacySaveFacetFactory(IFacetFactoryOrder<LegacySaveFacetFactory> order, ILoggerFactory loggerFactory)
+    public SaveFacetFactory(IFacetFactoryOrder<SaveFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
     public string[] Prefixes => FixedPrefixes;
@@ -41,7 +41,7 @@ public sealed class LegacySaveFacetFactory : LegacyFacetFactoryProcessor, IMetho
         const string name = "actionsave";
         var saveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, name, typeof(void), null);
         methodRemover.SafeRemoveMethod(saveMethod);
-        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{name}", typeof(void), new[] { typeof(ActionAbout) });
+        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, $"{NOF2Helpers.AboutPrefix}{name}", typeof(void), new[] { typeof(ActionAbout) });
 
         methodRemover.SafeRemoveMethod(aboutSaveMethod);
 

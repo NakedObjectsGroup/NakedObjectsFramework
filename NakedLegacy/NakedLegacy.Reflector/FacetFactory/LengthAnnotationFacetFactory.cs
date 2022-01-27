@@ -20,7 +20,7 @@ using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class LengthAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class LengthAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private const string FieldOrder = "FieldOrder";
     private readonly ILogger<LengthAnnotationFacetFactory> logger;
 

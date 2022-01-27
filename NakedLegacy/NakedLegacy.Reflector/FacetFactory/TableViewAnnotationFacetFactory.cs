@@ -24,7 +24,7 @@ using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class TableViewAnnotationFacetFactory : LegacyFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+public sealed class TableViewAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<TableViewAnnotationFacetFactory> logger;
 
     public TableViewAnnotationFacetFactory(IFacetFactoryOrder<TableViewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

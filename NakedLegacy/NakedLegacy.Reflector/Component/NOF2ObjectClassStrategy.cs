@@ -19,16 +19,16 @@ namespace NOF2.Reflector.Component;
 ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
 /// </summary>
 [Serializable]
-public class LegacyObjectClassStrategy : AbstractClassStrategy {
-    private readonly ILegacyObjectReflectorConfiguration config;
+public class NOF2ObjectClassStrategy : AbstractClassStrategy {
+    private readonly INOF2ReflectorConfiguration config;
 
-    public LegacyObjectClassStrategy(ILegacyObjectReflectorConfiguration config, IAllTypeList allTypeList) : base(allTypeList) => this.config = config;
+    public NOF2ObjectClassStrategy(INOF2ReflectorConfiguration config, IAllTypeList allTypeList) : base(allTypeList) => this.config = config;
 
     protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
 
     protected override bool IsTypeExplicitlyRequested(Type type) {
         var services = config.Services.ToArray();
-        return ReflectorDefaults.DefaultLegacyTypes.Contains(type) ||
+        return NOF2ReflectorDefaults.DefaultLegacyTypes.Contains(type) ||
                config.ValueHolderTypes.Any(t => t == type) ||
                config.TypesToIntrospect.Any(t => t == type) ||
                services.Any(t => t == type);

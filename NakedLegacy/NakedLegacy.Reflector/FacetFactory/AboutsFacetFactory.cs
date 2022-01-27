@@ -32,16 +32,16 @@ namespace NOF2.Reflector.FacetFactory;
 /// <summary>
 ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
 /// </summary>
-public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
+public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {
-        LegacyHelpers.AboutPrefix
+        NOF2Helpers.AboutPrefix
     };
 
-    private readonly ILogger<LegacyFacetFactory> logger;
+    private readonly ILogger<AboutsFacetFactory> logger;
 
-    public LegacyFacetFactory(IFacetFactoryOrder<LegacyFacetFactory> order, ILoggerFactory loggerFactory)
+    public AboutsFacetFactory(IFacetFactoryOrder<AboutsFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.EverythingButActionParameters) =>
-        logger = loggerFactory.CreateLogger<LegacyFacetFactory>();
+        logger = loggerFactory.CreateLogger<AboutsFacetFactory>();
 
     public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
         return candidates.Where(methodInfo => methodInfo.Name.ToLower().StartsWith("action") &&
@@ -109,8 +109,8 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
         aboutParamTypes.AddRange(paramTypes);
         var aboutParams = aboutParamTypes.ToArray();
 
-        var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ??
-                     MethodHelpers.FindMethod(reflector, type, methodType, $"{LegacyHelpers.AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(ActionAbout) });
+        var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{NOF2Helpers.AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ??
+                     MethodHelpers.FindMethod(reflector, type, methodType, $"{NOF2Helpers.AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(ActionAbout) });
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {
@@ -155,8 +155,8 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
 
         facets.Add(new MemberNamedFacetInferred(specification.Identifier.MemberName, specification));
 
-        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType }) ??
-                     MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{LegacyHelpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout) });
+        var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{NOF2Helpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType }) ??
+                     MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{NOF2Helpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout) });
 
         methodRemover.SafeRemoveMethod(method);
 
@@ -169,7 +169,7 @@ public sealed class LegacyFacetFactory : LegacyFacetFactoryProcessor, IMethodPre
             facets.Add(new PropertyChoicesViaAboutMethodFacet(method, specification, LoggerFactory.CreateLogger<PropertyChoicesViaAboutMethodFacet>()));
         }
 
-        var valueType = LegacyHelpers.IsOrImplementsValueHolder(property.PropertyType);
+        var valueType = NOF2Helpers.IsOrImplementsValueHolder(property.PropertyType);
 
         if (valueType is not null) {
             var setter = typeof(PropertySetterFacetViaValueHolder<,>).MakeGenericType(property.PropertyType, valueType);

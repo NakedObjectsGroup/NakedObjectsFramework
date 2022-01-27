@@ -14,7 +14,7 @@ using IMenu = NakedFramework.Menu.IMenu;
 
 namespace NOF2.Reflector.Helpers;
 
-public static class LegacyHelpers {
+public static class NOF2Helpers {
     public const string AboutPrefix = "about";
 
     public static Type IsOrImplementsValueHolder(Type type) =>

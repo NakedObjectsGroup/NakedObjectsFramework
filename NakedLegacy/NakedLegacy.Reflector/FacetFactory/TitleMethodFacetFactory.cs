@@ -22,7 +22,7 @@ using NOF2.Title;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class TitleMethodFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
+public sealed class TitleMethodFacetFactory : AbstractNOF2FacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
     private static readonly string[] FixedPrefixes = {
         RecognisedMethodsAndPrefixes.TitleMethod
     };

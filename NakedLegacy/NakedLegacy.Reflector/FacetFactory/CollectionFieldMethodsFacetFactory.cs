@@ -27,12 +27,12 @@ using NOF2.Collection;
 
 namespace NOF2.Reflector.FacetFactory;
 
-public sealed class LegacyCollectionFieldMethodsFacetFactory : LegacyFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
+public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
     private static readonly string[] FixedPrefixes = {
         RecognisedMethodsAndPrefixes.ModifyPrefix
     };
 
-    public LegacyCollectionFieldMethodsFacetFactory(IFacetFactoryOrder<LegacyCollectionFieldMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+    public CollectionFieldMethodsFacetFactory(IFacetFactoryOrder<CollectionFieldMethodsFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Collections) { }
 
     public string[] Prefixes => FixedPrefixes;
