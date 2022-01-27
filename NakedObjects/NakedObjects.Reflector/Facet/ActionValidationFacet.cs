@@ -18,7 +18,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
-using NakedObjects.Reflector.Utils;
+using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 

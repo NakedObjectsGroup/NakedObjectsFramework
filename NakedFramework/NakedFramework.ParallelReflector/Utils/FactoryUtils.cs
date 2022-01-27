@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
@@ -29,5 +31,32 @@ public static class FactoryUtils {
         };
 
         FacetUtils.AddFacets(facets);
+    }
+
+    public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object target, object[] parms) {
+        try {
+            return methodDelegate is not null ? (T)methodDelegate(target, parms) : (T)method.Invoke(target, parms);
+        }
+        catch (InvalidCastException e) {
+            throw new NakedObjectDomainException($"Cast error on method: {method} : {e.Message}");
+        }
+    }
+
+    public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object[] parms) {
+        try {
+            return methodDelegate is not null ? (T)methodDelegate(null, parms) : (T)method.Invoke(null, parms);
+        }
+        catch (InvalidCastException e) {
+            throw new NakedObjectDomainException($"Cast error on method: {method} : {e.Message}");
+        }
+    }
+
+    public static void Invoke(this Func<object, object[], object> methodDelegate, MethodInfo method, object target, object[] parms) {
+        if (methodDelegate is not null) {
+            methodDelegate(target, parms);
+        }
+        else {
+            method.Invoke(target, parms);
+        }
     }
 }

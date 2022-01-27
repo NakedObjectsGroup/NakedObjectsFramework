@@ -18,7 +18,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedObjects.Reflector.Utils;
+using NakedFramework.ParallelReflector.Utils;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
