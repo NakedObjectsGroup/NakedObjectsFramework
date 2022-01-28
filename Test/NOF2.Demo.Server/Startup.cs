@@ -59,8 +59,8 @@ namespace NOF2.Rest.App.Demo {
                         .WithOrigins("http://localhost:5001",
                                      "http://localhost:49998",
                                      "http://localhost:8080",
-                                     "http://NOF2test.azurewebsites.net",
-                                     "https://NOF2test.azurewebsites.net")
+                                     "http://nakedlegacytest.azurewebsites.net",
+                                     "https://nakedlegacytest.azurewebsites.net")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
                         .AllowAnyMethod()
