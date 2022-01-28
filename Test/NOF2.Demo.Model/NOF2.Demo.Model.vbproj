@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace />
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn></NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn></NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mapping\**" />
+    <EmbeddedResource Remove="Mapping\**" />
+    <None Remove="Mapping\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="AdventureWorksContext.vb" />
+    <Compile Remove="AdventureWorksEFCoreContext.vb" />
+    <Compile Remove="AssemblyHook.vb" />
+    <Compile Remove="AWModelConfig.vb" />
+    <Compile Remove="Helpers.vb" />
+    <Compile Remove="MockPrincipalProvider.vb" />
+    <Compile Remove="Sales\SalesPerson_Functions.vb" />
+    <Compile Remove="Sales\ShoppingCart_Functions.vb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0-alpha01" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Import Include="AdventureWorks.NOF2.AppLib" />
+    <Import Include="AW.Types" />
+    <Import Include="NOF2.About" />
+    <Import Include="NOF2.Collection" />
+    <Import Include="NOF2.Container" />
+    <Import Include="NOF2.Interface" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NOF2.Demo.AppLib\NOF2.Demo.AppLib.csproj" />
+  </ItemGroup>
+
+</Project>
