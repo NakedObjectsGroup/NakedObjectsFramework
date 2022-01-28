@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Selenium.Test"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFrameworkClient.TestFramework", "Test\NakedFrameworkClient.SeleniumTest.Framework\NakedFrameworkClient.TestFramework.csproj", "{164FC0B0-5F8D-452E-AA89-A3A3029BECB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedLegacy.Selenium.Test", "Test\NakedLegacy.Selenium.Test\NakedLegacy.Selenium.Test.csproj", "{2AD6E6C8-AA76-49CF-9ED2-49F2DBF2321B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOF2.Selenium.Test", "Test\NOF2.Selenium.Test\NOF2.Selenium.Test.csproj", "{73182A7B-16EF-4F74-B258-50179F38D958}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{164FC0B0-5F8D-452E-AA89-A3A3029BECB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{164FC0B0-5F8D-452E-AA89-A3A3029BECB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{164FC0B0-5F8D-452E-AA89-A3A3029BECB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AD6E6C8-AA76-49CF-9ED2-49F2DBF2321B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AD6E6C8-AA76-49CF-9ED2-49F2DBF2321B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AD6E6C8-AA76-49CF-9ED2-49F2DBF2321B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AD6E6C8-AA76-49CF-9ED2-49F2DBF2321B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73182A7B-16EF-4F74-B258-50179F38D958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73182A7B-16EF-4F74-B258-50179F38D958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73182A7B-16EF-4F74-B258-50179F38D958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73182A7B-16EF-4F74-B258-50179F38D958}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
