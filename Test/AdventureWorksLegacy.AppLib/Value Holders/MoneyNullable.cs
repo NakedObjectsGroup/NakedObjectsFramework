@@ -2,7 +2,7 @@
 using System.Globalization;
 
 
-namespace AdventureWorksLegacy.AppLib;
+namespace AdventureWorks.NOF2.AppLib;
 
 public class MoneyNullable : AbstractValueHolder<decimal?> {
     public MoneyNullable() { }

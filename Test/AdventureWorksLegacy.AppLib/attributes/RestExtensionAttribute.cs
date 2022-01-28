@@ -1,4 +1,4 @@
-﻿namespace AdventureWorksLegacy.AppLib;
+﻿namespace AdventureWorks.NOF2.AppLib;
 
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 public class RestExtensionAttribute : Attribute, IRestExtensionAttribute

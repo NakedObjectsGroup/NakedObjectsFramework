@@ -1,4 +1,4 @@
-﻿namespace AdventureWorksLegacy.AppLib;
+﻿namespace AdventureWorks.NOF2.AppLib;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class MemberOrderAttribute : Attribute, IMemberOrderAttribute 

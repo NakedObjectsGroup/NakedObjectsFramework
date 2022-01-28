@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace AdventureWorksLegacy.AppLib;
+namespace AdventureWorks.NOF2.AppLib;
 
 public class MultiLineTextString : TextString {
     public MultiLineTextString() { }

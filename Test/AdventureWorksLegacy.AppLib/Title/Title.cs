@@ -1,6 +1,6 @@
 ﻿
 
-namespace AdventureWorksLegacy.AppLib;
+namespace AdventureWorks.NOF2.AppLib;
 
 public class Title : ITitle {
     private readonly string text = "";

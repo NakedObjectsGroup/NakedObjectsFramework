@@ -35,17 +35,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
-    <PackageReference Include="NakedLegacy.ProgrammingModel" Version="1.0.0-alpha01" />
+    <PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0-alpha01" />
   </ItemGroup>
 
   <ItemGroup>
-    <Import Include="AdventureWorksLegacy.AppLib" />
+    <Import Include="AdventureWorks.NOF2.AppLib" />
     <Import Include="AW.Types" />
-    <Import Include="NakedLegacy.About" />
-    <Import Include="NakedLegacy.Collection" />
-    <Import Include="NakedLegacy.Container" />
-    <Import Include="NakedLegacy.Interface" />
-    <Import Include="System.ComponentModel.DataAnnotations" />
+    <Import Include="NOF2.About" />
+    <Import Include="NOF2.Collection" />
+    <Import Include="NOF2.Container" />
+    <Import Include="NOF2.Interface" />
   </ItemGroup>
 
   <ItemGroup>

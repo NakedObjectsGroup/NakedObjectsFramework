@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace AdventureWorksLegacy.AppLib;
+namespace AdventureWorks.NOF2.AppLib;
 
 public class FloatingPointNumber : AbstractValueHolder<decimal> {
     public FloatingPointNumber() { }

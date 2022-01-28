@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventureWorksLegacy.AppLib
+namespace AdventureWorks.NOF2.AppLib
 {
     public interface ITitledObject
     {

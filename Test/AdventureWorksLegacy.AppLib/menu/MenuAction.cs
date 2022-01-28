@@ -1,5 +1,5 @@
 ﻿
-namespace AdventureWorksLegacy.AppLib;
+namespace AdventureWorks.NOF2.AppLib;
 
 public class MenuAction : IMenuAction
 {

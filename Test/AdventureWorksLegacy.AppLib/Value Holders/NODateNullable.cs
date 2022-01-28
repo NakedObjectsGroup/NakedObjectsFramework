@@ -1,9 +1,7 @@
-﻿using System;
-using System.Globalization;
-using NakedLegacy;
+﻿using System.Globalization;
 
 
-namespace AdventureWorksLegacy.AppLib;
+namespace AdventureWorks.NOF2.AppLib;
 
 public class NODateNullable : AbstractValueHolder<DateTime?>, IDateOnly
 {

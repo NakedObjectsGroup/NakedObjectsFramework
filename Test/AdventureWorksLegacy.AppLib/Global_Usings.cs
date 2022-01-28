@@ -1,6 +1,6 @@
-﻿global using NakedLegacy.ValueHolder;
-global using NakedLegacy.Title;
-global using NakedLegacy.Menu;
-global using NakedLegacy.Attribute;
-global using NakedLegacy.Interface;
-global using NakedLegacy.Container;
+﻿global using NOF2.ValueHolder;
+global using NOF2.Title;
+global using NOF2.Menu;
+global using NOF2.Attribute;
+global using NOF2.Interface;
+global using NOF2.Container;

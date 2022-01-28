@@ -1,6 +1,6 @@
 ﻿using NakedFramework;
 
-namespace AdventureWorksLegacy.AppLib;
+namespace AdventureWorks.NOF2.AppLib;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class AWPropertyAttribute : Attribute,

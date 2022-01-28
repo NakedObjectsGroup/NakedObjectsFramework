@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Legacy.Rest.App.Demo {
+namespace NOF2.Rest.App.Demo {
     public class Program {
         public static void Main(string[] args) {
             DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);

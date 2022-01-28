@@ -15,7 +15,7 @@ using AdventureWorksModel;
 using AW.Types;
 using AW.Services;
 
-namespace Legacy.Rest.App.Demo
+namespace NOF2.Rest.App.Demo
 {
     public static class ModelConfig
     {

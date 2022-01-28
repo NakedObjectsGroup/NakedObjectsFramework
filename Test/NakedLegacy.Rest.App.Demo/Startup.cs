@@ -5,9 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Linq;
-using NakedLegacy.Reflector.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,20 +14,15 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.DependencyInjection.Component;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
-using NakedLegacy.Reflector.Component;
 using Newtonsoft.Json;
-using AdventureWorksLegacy.AppLib;
-using NakedFramework.Menu;
-using System.Reflection;
+using AdventureWorks.NOF2.AppLib;
 using Microsoft.AspNetCore.Http;
-using NakedLegacy;
+using NOF2.Reflector.Extensions;
 
-namespace Legacy.Rest.App.Demo {
+namespace NOF2.Rest.App.Demo {
     public class Startup {
         private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -54,7 +46,7 @@ namespace Legacy.Rest.App.Demo {
                     options.InlineDetailsInCollectionMemberRepresentations = false;
                     options.InlineDetailsInPropertyMemberRepresentations = false;
                 });
-                builder.AddNakedLegacy(options => {
+                builder.AddNOF2(options => {
                     options.NoValidate = true;
                     options.DomainModelTypes = ModelConfig.DomainTypes;
                     options.DomainModelServices = ModelConfig.DomainServices;
@@ -67,8 +59,8 @@ namespace Legacy.Rest.App.Demo {
                         .WithOrigins("http://localhost:5001",
                                      "http://localhost:49998",
                                      "http://localhost:8080",
-                                     "http://nakedlegacytest.azurewebsites.net",
-                                     "https://nakedlegacytest.azurewebsites.net")
+                                     "http://NOF2test.azurewebsites.net",
+                                     "https://NOF2test.azurewebsites.net")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
                         .AllowAnyMethod()
@@ -95,7 +87,7 @@ namespace Legacy.Rest.App.Demo {
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
-            ThreadLocals.Initialize(app.ApplicationServices, static sp => new Container(sp.GetService<INakedFramework>()));
+            ThreadLocals.Initialize(app.ApplicationServices, static sp => new NOF2.Reflector.Component.Container(sp.GetService<INakedFramework>()));
         }
     }
 }

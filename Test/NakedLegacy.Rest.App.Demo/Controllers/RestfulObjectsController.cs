@@ -6,18 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using AdventureWorksLegacy.AppLib;
+using AdventureWorks.NOF2.AppLib;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NakedFramework.Architecture.Framework;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 using NakedFramework.Rest.Model;
-using NakedLegacy.Reflector.Component;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Legacy.Rest.App.Demo.Controllers {
+
+namespace NOF2.Rest.App.Demo.Controllers {
     //[Authorize]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade,
