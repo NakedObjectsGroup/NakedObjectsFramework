@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using AdventureWorks.NOF2.AppLib;
+using NOF2.Demo.AppLib;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Interface;

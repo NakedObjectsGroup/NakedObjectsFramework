@@ -13,7 +13,7 @@
         Public Property mappedTransactionDate As Date
         Friend myTransactionDate As NODate
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property TransactionDate As NODate
             Get
                 myTransactionDate = If(myTransactionDate, New NODate(mappedTransactionDate, Sub(v) mappedTransactionDate = v))
@@ -35,7 +35,7 @@ Return myTransactionDate
         Public Property mappedTransactionType As String
         Friend myTransactionType As TextString
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property TransactionType As TextString
             Get
                 myTransactionType = If(myTransactionType, New TextString(mappedTransactionType, Sub(v) mappedTransactionType = v))
@@ -57,7 +57,7 @@ Return myTransactionType
         Public Property mappedQuantity As Integer
         Friend myQuantity As WholeNumber
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property Quantity As WholeNumber
             Get
                 myQuantity = If(myQuantity, New WholeNumber(mappedQuantity, Sub(v) mappedQuantity = v))
@@ -79,7 +79,7 @@ Return myQuantity
         Public Property mappedActualCost As Decimal
         Friend myActualCost As Money
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property ActualCost As Money
             Get
                 myActualCost = If(myActualCost, New Money(mappedActualCost, Sub(v) mappedActualCost = v))
@@ -105,7 +105,7 @@ Return myActualCost
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

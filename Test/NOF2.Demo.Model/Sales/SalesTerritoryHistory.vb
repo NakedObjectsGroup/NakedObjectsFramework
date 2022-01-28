@@ -11,7 +11,7 @@
 		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public ReadOnly Property StartDate As NODate
 			Get
 				myStartDate = If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
@@ -33,7 +33,7 @@ Return myStartDate
 		Public Property mappedEndDate As Date?
 		Friend myEndDate As NODateNullable
 
-		<AWProperty(Order:=2)>
+		<DemoProperty(Order:=2)>
 		Public ReadOnly Property EndDate As NODateNullable
 			Get
 				myEndDate = If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
@@ -51,20 +51,20 @@ Return myEndDate
 		End Sub
 #End Region
 
-		<AWProperty(Order:=3)>
+		<DemoProperty(Order:=3)>
 		Public Overridable Property SalesPerson() As SalesPerson
 
 		''<Hidden>
 		Public Property SalesTerritoryID() As Integer
 
-		<AWProperty(Order:=4)>
+		<DemoProperty(Order:=4)>
 		Public Overridable Property SalesTerritory() As SalesTerritory
 
 #Region "ModifiedDate"
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<AWProperty(Order:=99)>
+		<DemoProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

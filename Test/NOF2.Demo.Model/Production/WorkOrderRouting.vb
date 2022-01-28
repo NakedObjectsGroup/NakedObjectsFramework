@@ -12,7 +12,7 @@
 		Public Property mappedOperationSequence As Short
 		Friend myOperationSequence As WholeNumber
 
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public ReadOnly Property OperationSequence As WholeNumber
 			Get
 				myOperationSequence = If(myOperationSequence, New WholeNumber(mappedOperationSequence, Sub(v) mappedOperationSequence = CType(v, Short)))
@@ -34,7 +34,7 @@
 		Public Property mappedScheduledStartDate As DateTime?
 		Friend myScheduledStartDate As NODateNullable
 
-		<AWProperty(Order:=20)>
+		<DemoProperty(Order:=20)>
 		Public ReadOnly Property ScheduledStartDate As NODateNullable
 			Get
 				myScheduledStartDate = If(myScheduledStartDate, New NODateNullable(mappedScheduledStartDate, Sub(v) mappedScheduledStartDate = v))
@@ -56,7 +56,7 @@
 		Public Property mappedScheduledEndDate As DateTime?
 		Friend myScheduledEndDate As NODateNullable
 
-		<AWProperty(Order:=22)>
+		<DemoProperty(Order:=22)>
 		Public ReadOnly Property ScheduledEndDate As NODateNullable
 			Get
 				myScheduledEndDate = If(myScheduledEndDate, New NODateNullable(mappedScheduledEndDate, Sub(v) mappedScheduledEndDate = v))
@@ -78,7 +78,7 @@
 		Public Property mappedActualStartDate As DateTime?
 		Friend myActualStartDate As NODateNullable
 
-		<AWProperty(Order:=21)>
+		<DemoProperty(Order:=21)>
 		Public ReadOnly Property ActualStartDate As NODateNullable
 			Get
 				myActualStartDate = If(myActualStartDate, New NODateNullable(mappedActualStartDate, Sub(v) mappedActualStartDate = v))
@@ -100,7 +100,7 @@
 		Public Property mappedActualEndDate As DateTime?
 		Friend myActualEndDate As NODateNullable
 
-		<AWProperty(Order:=23)>
+		<DemoProperty(Order:=23)>
 		Public ReadOnly Property ActualEndDate As NODateNullable
 			Get
 				myActualEndDate = If(myActualEndDate, New NODateNullable(mappedActualEndDate, Sub(v) mappedActualEndDate = v))
@@ -122,7 +122,7 @@
 		Public Property mappedActualResourceHrs As Decimal?
 		Friend myActualResourceHrs As FloatingPointNumberNullable
 
-		<AWProperty(Order:=31)>
+		<DemoProperty(Order:=31)>
 		Public ReadOnly Property ActualResourceHrs As FloatingPointNumberNullable
 			Get
 				myActualResourceHrs = If(myActualResourceHrs, New FloatingPointNumberNullable(mappedActualResourceHrs, Sub(v) mappedActualResourceHrs = v))
@@ -144,7 +144,7 @@
 		Public Property mappedPlannedCost As Decimal
 		Friend myPlannedCost As Money
 
-		<AWProperty(Order:=40)>
+		<DemoProperty(Order:=40)>
 		Public ReadOnly Property PlannedCost As Money
 			Get
 				myPlannedCost = If(myPlannedCost, New Money(mappedPlannedCost, Sub(v) mappedPlannedCost = v))
@@ -166,7 +166,7 @@
 		Public Property mappedActualCost As Decimal?
 		Friend myActualCost As MoneyNullable
 
-		<AWProperty(Order:=41)>
+		<DemoProperty(Order:=41)>
 		Public ReadOnly Property ActualCost As MoneyNullable
 			Get
 				myActualCost = If(myActualCost, New MoneyNullable(mappedActualCost, Sub(v) mappedActualCost = v))
@@ -197,14 +197,14 @@
 
 		Public Property LocationID() As Short
 
-		<AWProperty(Order:=10)>
+		<DemoProperty(Order:=10)>
 		Public Overridable Property Location() As Location
 
 #Region "ModifiedDate"
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<AWProperty(Order:=99)>
+		<DemoProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

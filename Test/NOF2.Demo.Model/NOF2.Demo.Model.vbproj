@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Import Include="AdventureWorks.NOF2.AppLib" />
+    <Import Include="NOF2.Demo.AppLib" />
     <Import Include="AW.Types" />
     <Import Include="NOF2.About" />
     <Import Include="NOF2.Collection" />

@@ -18,7 +18,7 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using Newtonsoft.Json;
-using AdventureWorks.NOF2.AppLib;
+using NOF2.Demo.AppLib;
 using Microsoft.AspNetCore.Http;
 using NOF2.Reflector.Extensions;
 

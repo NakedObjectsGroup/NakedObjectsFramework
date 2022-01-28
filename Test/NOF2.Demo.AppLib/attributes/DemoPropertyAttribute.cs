@@ -1,12 +1,12 @@
 ﻿using NakedFramework;
 
-namespace AdventureWorks.NOF2.AppLib;
+namespace NOF2.Demo.AppLib;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class AWPropertyAttribute : Attribute,
+public class DemoPropertyAttribute : System.Attribute,
     IMemberOrderAttribute, IHiddenAttribute, INamedAttribute, IRequiredAttribute
 {
-    public AWPropertyAttribute() { }
+    public DemoPropertyAttribute() { }
 
     public int Order { get; set; }
     public string Name { get; set; }

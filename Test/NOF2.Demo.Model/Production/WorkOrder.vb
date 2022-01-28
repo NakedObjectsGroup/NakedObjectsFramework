@@ -9,7 +9,7 @@
 		Public Property mappedStockedQty As Integer
 		Friend myStockedQty As WholeNumber
 
-		<AWProperty(Order:=22)>
+		<DemoProperty(Order:=22)>
 		Public ReadOnly Property StockedQty As WholeNumber
 			Get
 				myStockedQty = If(myStockedQty, New WholeNumber(mappedStockedQty, Sub(v) mappedStockedQty = v))
@@ -31,7 +31,7 @@
 		Public Property mappedScrappedQty As Short
 		Friend myScrappedQty As WholeNumber
 
-		<AWProperty(Order:=24)>
+		<DemoProperty(Order:=24)>
 		Public ReadOnly Property ScrappedQty As WholeNumber
 			Get
 				myScrappedQty = If(myScrappedQty, New WholeNumber(mappedScrappedQty, Sub(v) mappedScrappedQty = CType(v, Short)))
@@ -53,7 +53,7 @@
 		Public Property mappedEndDate As Date?
 		Friend myEndDate As NODateNullable
 
-		<AWProperty(Order:=32)>
+		<DemoProperty(Order:=32)>
 		Public ReadOnly Property EndDate As NODateNullable
 			Get
 				myEndDate = If(myEndDate, New NODateNullable(mappedEndDate, Sub(v) mappedEndDate = v))
@@ -73,14 +73,14 @@
 
 		Public Property ScrapReasonID() As Short?
 
-		<AWProperty(Order:=26)>
+		<DemoProperty(Order:=26)>
 		Public Overridable Property ScrapReason() As ScrapReason
 
 #Region "OrderQty"
 		Public Property mappedOrderQty As Integer
 		Friend myOrderQty As WholeNumber
 
-		<AWProperty(Order:=20)>
+		<DemoProperty(Order:=20)>
 		Public ReadOnly Property OrderQty As WholeNumber
 			Get
 				myOrderQty = If(myOrderQty, New WholeNumber(mappedOrderQty, Sub(v) mappedOrderQty = v))
@@ -102,7 +102,7 @@
 		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
-		<AWProperty(Order:=30)>
+		<DemoProperty(Order:=30)>
 		Public ReadOnly Property StartDate As NODate
 			Get
 				myStartDate = If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
@@ -124,7 +124,7 @@
 		Public Property mappedDueDate As Date
 		Friend myDueDate As NODate
 
-		<AWProperty(Order:=34)>
+		<DemoProperty(Order:=34)>
 		Public ReadOnly Property DueDate As NODate
 			Get
 				myDueDate = If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
@@ -144,7 +144,7 @@
 
 		Public Property ProductID() As Integer
 
-		<AWProperty(Order:=10)>
+		<DemoProperty(Order:=10)>
 		Public Overridable Property Product() As Product
 
 #Region "WorkOrderRoutings (Collection)"
@@ -178,7 +178,7 @@
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<AWProperty(Order:=99)>
+		<DemoProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

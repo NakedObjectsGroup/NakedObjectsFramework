@@ -2,7 +2,7 @@
 
 using System.Globalization;
 
-namespace AdventureWorks.NOF2.AppLib;
+namespace NOF2.Demo.AppLib;
 
 public abstract class AbstractValueHolder<T> : IValueHolder<T>, ITitledObject {
     private T value;

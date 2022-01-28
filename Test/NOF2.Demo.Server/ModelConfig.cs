@@ -11,7 +11,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using NakedFramework.Menu;
-using AdventureWorksModel;
+using NOF2.Demo.Model;
 using AW.Types;
 using AW.Services;
 
@@ -20,18 +20,18 @@ namespace NOF2.Rest.App.Demo
     public static class ModelConfig
     {
 
-        // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
+        // Unintrospected specs: NOF2.Demo.Model.SalesOrderHeader+SalesReasonCategories,NOF2.Demo.Model.Sales.QuickOrderForm,
 
-        private static Type[] AllAdventureWorksTypes =>
+        private static Type[] AllModelTypes =>
             Assembly.GetAssembly(typeof(AW.Types.Department)).GetTypes().
                      Where(t => t.IsPublic).
                      ToArray();
 
 
-        public static Type[] DomainTypes => AllAdventureWorksTypes.Where(t => t.Namespace.StartsWith("AW")).ToArray();
+        public static Type[] DomainTypes => AllModelTypes.Where(t => t.Namespace.StartsWith("AW")).ToArray();
 
-        public static Type[] DomainServices => new Type[] {typeof(PersonRepository) };//AllAdventureWorksTypes.Where(t => t.Namespace.EndsWith("AW.Services")).ToArray();
+        public static Type[] DomainServices => new Type[] {typeof(PersonRepository) };//AllModelTypes.Where(t => t.Namespace.EndsWith("AW.Services")).ToArray();
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
+        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new DemoEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
     }
 }

@@ -1,7 +1,7 @@
-﻿namespace AdventureWorks.NOF2.AppLib;
+﻿namespace NOF2.Demo.AppLib;
 
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-public class RestExtensionAttribute : Attribute, IRestExtensionAttribute
+public class RestExtensionAttribute : System.Attribute, IRestExtensionAttribute
 {
     public RestExtensionAttribute(string name, string value)
     {

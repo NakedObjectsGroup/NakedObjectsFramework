@@ -10,7 +10,7 @@
         Public Property mappedQuotaDate As Date
         Friend myQuotaDate As NODate
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property QuotaDate As NODate
             Get
                 myQuotaDate = If(myQuotaDate, New NODate(mappedQuotaDate, Sub(v) mappedQuotaDate = v))
@@ -32,7 +32,7 @@ Return myQuotaDate
         Public Property mappedSalesQuota As Decimal
         Friend mySalesQuota As Money
 
-        <AWProperty(Order:=2)>
+        <DemoProperty(Order:=2)>
         Public ReadOnly Property SalesQuota As Money
             Get
                 mySalesQuota = If(mySalesQuota, New Money(mappedSalesQuota, Sub(v) mappedSalesQuota = v))
@@ -50,14 +50,14 @@ Return mySalesQuota
         End Sub
 #End Region
 
-        <AWProperty(Order:=3)>
+        <DemoProperty(Order:=3)>
         Public Overridable Property SalesPerson() As SalesPerson
 
 #Region "ModifiedDate"
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

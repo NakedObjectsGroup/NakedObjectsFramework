@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace AdventureWorks.NOF2.AppLib;
+namespace NOF2.Demo.AppLib;
 
 public class TextString : AbstractValueHolder<string> {
     public TextString() {   }

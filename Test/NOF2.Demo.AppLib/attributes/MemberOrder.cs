@@ -1,7 +1,7 @@
-﻿namespace AdventureWorks.NOF2.AppLib;
+﻿namespace NOF2.Demo.AppLib;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class MemberOrderAttribute : Attribute, IMemberOrderAttribute 
+public class MemberOrderAttribute : System.Attribute, IMemberOrderAttribute 
 {
     public MemberOrderAttribute(int order) => Order = order;
 

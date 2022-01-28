@@ -11,7 +11,7 @@
 		Public Property mappedName As String
 		Friend myName As TextString
 
-		<AWProperty(Order:=10)>
+		<DemoProperty(Order:=10)>
 		Public ReadOnly Property Name As TextString
 			Get
 				myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -33,7 +33,7 @@ Return myName
 		Public Property mappedCountryRegionCode As String
 		Friend myCountryRegionCode As TextString
 
-		<AWProperty(Order:=20)>
+		<DemoProperty(Order:=20)>
 		Public ReadOnly Property CountryRegionCode As TextString
 			Get
 				myCountryRegionCode = If(myCountryRegionCode, New TextString(mappedCountryRegionCode, Sub(v) mappedCountryRegionCode = v))
@@ -55,7 +55,7 @@ Return myCountryRegionCode
 		Public Property mappedGroup As String
 		Friend myGroup As TextString
 
-		<AWProperty(Order:=30)>
+		<DemoProperty(Order:=30)>
 		Public ReadOnly Property Group As TextString
 			Get
 				myGroup = If(myGroup, New TextString(mappedGroup, Sub(v) mappedGroup = v))
@@ -77,7 +77,7 @@ Return myGroup
 		Public Property mappedSalesYTD As Decimal
 		Friend mySalesYTD As Money
 
-		<AWProperty(Order:=40)>
+		<DemoProperty(Order:=40)>
 		Public ReadOnly Property SalesYTD As Money
 			Get
 				mySalesYTD = If(mySalesYTD, New Money(mappedSalesYTD, Sub(v) mappedSalesYTD = v))
@@ -99,7 +99,7 @@ Return mySalesYTD
 		Public Property mappedSalesLastYear As Decimal
 		Friend mySalesLastYear As Money
 
-		<AWProperty(Order:=41)>
+		<DemoProperty(Order:=41)>
 		Public ReadOnly Property SalesLastYear As Money
 			Get
 				mySalesLastYear = If(mySalesLastYear, New Money(mappedSalesLastYear, Sub(v) mappedSalesLastYear = v))
@@ -121,7 +121,7 @@ Return mySalesLastYear
 		Public Property mappedCostYTD As Decimal
 		Friend myCostYTD As Money
 
-		<AWProperty(Order:=42)>
+		<DemoProperty(Order:=42)>
 		Public ReadOnly Property CostYTD As Money
 			Get
 				myCostYTD = If(myCostYTD, New Money(mappedCostYTD, Sub(v) mappedCostYTD = v))
@@ -143,7 +143,7 @@ Return myCostYTD
 		Public Property mappedCostLastYear As Decimal
 		Friend myCostLastYear As Money
 
-		<AWProperty(Order:=43)>
+		<DemoProperty(Order:=43)>
 		Public ReadOnly Property CostLastYear As Money
 			Get
 				myCostLastYear = If(myCostLastYear, New Money(mappedCostLastYear, Sub(v) mappedCostLastYear = v))
@@ -166,7 +166,7 @@ Return myCostLastYear
 
 		Private myStateProvince As InternalCollection
 
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public ReadOnly Property StateProvince As InternalCollection
 			Get
 				myStateProvince = If(myStateProvince, New InternalCollection(Of StateProvince)(mappedStateProvince))
@@ -190,7 +190,7 @@ Return myStateProvince
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<AWProperty(Order:=99)>
+		<DemoProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

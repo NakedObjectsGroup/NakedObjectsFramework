@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AdventureWorks.NOF2.AppLib;
+namespace NOF2.Demo.AppLib;
 
 public static class ThreadLocals {
     private static IHttpContextAccessor? httpContextAccessor;

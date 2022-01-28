@@ -14,7 +14,7 @@ Namespace AW.Types
 		Public Property mappedThumbnailPhotoFileName As String
 		Friend myThumbnailPhotoFileName As TextString
 
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public ReadOnly Property ThumbnailPhotoFileName As TextString
 			Get
 				myThumbnailPhotoFileName = If(myThumbnailPhotoFileName, New TextString(mappedThumbnailPhotoFileName, Sub(v) mappedThumbnailPhotoFileName = v))
@@ -38,7 +38,7 @@ Return myThumbnailPhotoFileName
 		Public Property mappedLargePhotoFileName As String
 		Friend myLargePhotoFileName As TextString
 
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public ReadOnly Property LargePhotoFileName As TextString
 			Get
 				myLargePhotoFileName = If(myLargePhotoFileName, New TextString(mappedLargePhotoFileName, Sub(v) mappedLargePhotoFileName = v))
@@ -70,7 +70,7 @@ Return myLargePhotoFileName
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<AWProperty(Order:=99)>
+		<DemoProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

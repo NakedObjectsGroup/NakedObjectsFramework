@@ -2,7 +2,7 @@
 using System.Globalization;
 
 
-namespace AdventureWorks.NOF2.AppLib;
+namespace NOF2.Demo.AppLib;
 
 public class Percentage : AbstractValueHolder<decimal> {
     public Percentage() { }

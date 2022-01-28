@@ -11,7 +11,7 @@
         Public Property mappedName As String
         Friend myName As TextString
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -33,7 +33,7 @@ Return myName
         Public Property mappedCostRate As Decimal
         Friend myCostRate As Money
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property CostRate As Money
             Get
                 myCostRate = If(myCostRate, New Money(mappedCostRate, Sub(v) mappedCostRate = v))
@@ -55,7 +55,7 @@ Return myCostRate
         Public Property mappedAvailability As Decimal
         Friend myAvailability As Money
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property Availability As Money
             Get
                 myAvailability = If(myAvailability, New Money(mappedAvailability, Sub(v) mappedAvailability = v))
@@ -77,7 +77,7 @@ Return myAvailability
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

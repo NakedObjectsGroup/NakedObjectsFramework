@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
-namespace AdventureWorksModel
+namespace NOF2.Demo.Model
 {
-    public class AdventureWorksEFCoreContext : DbContext
+    public class DemoEFCoreContext : DbContext
     {
         private readonly string _cs;
 
-        public AdventureWorksEFCoreContext(string cs) {
+        public DemoEFCoreContext(string cs) {
             _cs = cs;
         }
 

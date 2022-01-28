@@ -10,7 +10,7 @@
         Public Property mappedName As String
         Friend myName As TextString
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -32,7 +32,7 @@ Return myName
         Public Property mappedShipBase As Decimal
         Friend myShipBase As Money
 
-        <AWProperty(Order:=2)>
+        <DemoProperty(Order:=2)>
         Public ReadOnly Property ShipBase As Money
             Get
                 myShipBase = If(myShipBase, New Money(mappedShipBase, Sub(v) mappedShipBase = v))
@@ -54,7 +54,7 @@ Return myShipBase
         Public Property mappedShipRate As Decimal
         Friend myShipRate As Money
 
-        <AWProperty(Order:=3)>
+        <DemoProperty(Order:=3)>
         Public ReadOnly Property ShipRate As Money
             Get
                 myShipRate = If(myShipRate, New Money(mappedShipRate, Sub(v) mappedShipRate = v))
@@ -76,7 +76,7 @@ Return myShipRate
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

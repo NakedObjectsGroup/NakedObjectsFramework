@@ -12,7 +12,7 @@ Namespace AW.Types
         Public Property mappedNameStyle As Boolean
         Friend myNameStyle As Logical
 
-        <AWProperty(Order:=15)>
+        <DemoProperty(Order:=15)>
         Public ReadOnly Property NameStyle As Logical
             Get
                 myNameStyle = If(myNameStyle, New Logical(mappedNameStyle, Sub(v) mappedNameStyle = v))
@@ -35,7 +35,7 @@ Namespace AW.Types
         Public Property mappedTitle As String
         Friend myTitle As TextString
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property NameTitle As TextString
             Get
                 myTitle = If(myTitle, New TextString(mappedTitle, Sub(v) mappedTitle = v))
@@ -58,7 +58,7 @@ Namespace AW.Types
         Public Property mappedFirstName As String
         Friend myFirstName As TextString
 
-        <AWProperty(Order:=12)>
+        <DemoProperty(Order:=12)>
         Public ReadOnly Property FirstName As TextString
             Get
                 myFirstName = If(myFirstName, New TextString(mappedFirstName, Sub(v) mappedFirstName = v))
@@ -80,7 +80,7 @@ Namespace AW.Types
         Public Property mappedMiddleName As String
         Friend myMiddleName As TextString
 
-        <AWProperty(Order:=13)>
+        <DemoProperty(Order:=13)>
         Public ReadOnly Property MiddleName As TextString
             Get
                 myMiddleName = If(myMiddleName, New TextString(mappedMiddleName, Sub(v) mappedMiddleName = v))
@@ -102,7 +102,7 @@ Namespace AW.Types
         Public Property mappedLastName As String
         Friend myLastName As TextString
 
-        <AWProperty(Order:=14)>
+        <DemoProperty(Order:=14)>
         Public ReadOnly Property LastName As TextString
             Get
                 myLastName = If(myLastName, New TextString(mappedLastName, Sub(v) mappedLastName = v))
@@ -124,7 +124,7 @@ Namespace AW.Types
         Public Property mappedSuffix As String
         Friend mySuffix As TextString
 
-        <AWProperty(Order:=15)>
+        <DemoProperty(Order:=15)>
         Public ReadOnly Property Suffix As TextString
             Get
                 mySuffix = If(mySuffix, New TextString(mappedSuffix, Sub(v) mappedSuffix = v))
@@ -167,7 +167,7 @@ Namespace AW.Types
 #End Region
 
 #Region "EmailPromotion"
-        <AWProperty(Order:=21)>
+        <DemoProperty(Order:=21)>
         Public Overridable Property EmailPromotion() As EmailPromotion
 
         <RestExtension("colour", "blue")>
@@ -231,7 +231,7 @@ Namespace AW.Types
         Public Property mappedAdditionalContactInfo As String
         Friend myAdditionalContactInfo As TextString
 
-        <AWProperty(Order:=30)>
+        <DemoProperty(Order:=30)>
         Public ReadOnly Property AdditionalContactInfo As TextString
             Get
                 myAdditionalContactInfo = If(myAdditionalContactInfo, New TextString(mappedAdditionalContactInfo, Sub(v) mappedAdditionalContactInfo = v))
@@ -262,7 +262,7 @@ Namespace AW.Types
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

@@ -11,7 +11,7 @@
 
         Friend myName As TextString
 
-        <AWProperty(Order:=1, IsRequired:=True)>
+        <DemoProperty(Order:=1, IsRequired:=True)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -25,7 +25,7 @@
         Public Property mappedGroupName As String
         Friend myGroupName As TextString
 
-        <AWProperty(Order:=2, IsRequired:=True)>
+        <DemoProperty(Order:=2, IsRequired:=True)>
         Public ReadOnly Property GroupName As TextString
             Get
                 myGroupName = If(myGroupName, New TextString(mappedGroupName, Sub(v) mappedGroupName = v))
@@ -51,7 +51,7 @@
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

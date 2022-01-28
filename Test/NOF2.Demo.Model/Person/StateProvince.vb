@@ -10,7 +10,7 @@
 		Public Property mappedStateProvinceCode As String
 		Friend myStateProvinceCode As TextString
 
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public ReadOnly Property StateProvinceCode As TextString
 			Get
 				myStateProvinceCode = If(myStateProvinceCode, New TextString(mappedStateProvinceCode, Sub(v) mappedStateProvinceCode = v))
@@ -32,7 +32,7 @@ Return myStateProvinceCode
 		Public Property mappedIsOnlyStateProvinceFlag As Boolean
 		Friend myIsOnlyStateProvinceFlag As Logical
 
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public ReadOnly Property IsOnlyStateProvinceFlag As Logical
 			Get
 				myIsOnlyStateProvinceFlag = If(myIsOnlyStateProvinceFlag, New Logical(mappedIsOnlyStateProvinceFlag, Sub(v) mappedIsOnlyStateProvinceFlag = v))
@@ -54,7 +54,7 @@ Return myIsOnlyStateProvinceFlag
 		Public Property mappedName As String
 		Friend myName As TextString
 
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public ReadOnly Property Name As TextString
 			Get
 				myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -84,7 +84,7 @@ Return myName
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<AWProperty(Order:=99)>
+		<DemoProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

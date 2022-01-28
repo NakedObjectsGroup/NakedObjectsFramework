@@ -13,7 +13,7 @@
 		Public Property mappedDescription As String
 		Friend myDescription As TextString
 
-		<AWProperty(Order:=10)>
+		<DemoProperty(Order:=10)>
 		Public ReadOnly Property Description As TextString
 			Get
 				myDescription = If(myDescription, New TextString(mappedDescription, Sub(v) mappedDescription = v))
@@ -39,7 +39,7 @@
 		Public Property mappedDiscountPct As Decimal
 		Friend myDiscountPct As Percentage
 
-		<AWProperty(Order:=20)>
+		<DemoProperty(Order:=20)>
 		Public ReadOnly Property DiscountPct As Percentage
 			Get
 				myDiscountPct = If(myDiscountPct, New Percentage(mappedDiscountPct, Sub(v) mappedDiscountPct = v))
@@ -65,7 +65,7 @@
 		Public Property mappedType As String
 		Friend myType As TextString
 
-		<AWProperty(Order:=30)>
+		<DemoProperty(Order:=30)>
 		Public ReadOnly Property Type As TextString
 			Get
 				myType = If(myType, New TextString(mappedType, Sub(v) mappedType = v))
@@ -91,7 +91,7 @@
 		Public Property mappedCategory As String
 		Friend myCategory As TextString
 
-		<AWProperty(Order:=40)>
+		<DemoProperty(Order:=40)>
 		Public ReadOnly Property Category As TextString
 			Get
 				myCategory = If(myCategory, New TextString(mappedCategory, Sub(v) mappedCategory = v))
@@ -119,7 +119,7 @@
 		Public Property mappedStartDate As Date
 		Friend myStartDate As NODate
 
-		<AWProperty(Order:=51)>
+		<DemoProperty(Order:=51)>
 		Public ReadOnly Property StartDate As NODate
 			Get
 				myStartDate = If(myStartDate, New NODate(mappedStartDate, Sub(v) mappedStartDate = v))
@@ -145,7 +145,7 @@
 		Public Property mappedEndDate As Date
 		Friend myEndDate As NODate
 
-		<AWProperty(Order:=52)>
+		<DemoProperty(Order:=52)>
 		Public ReadOnly Property EndDate As NODate
 			Get
 				myEndDate = If(myEndDate, New NODate(mappedEndDate, Sub(v) mappedEndDate = v))
@@ -171,7 +171,7 @@
 		Public Property mappedMinQty As Integer
 		Friend myMinQty As WholeNumber
 
-		<AWProperty(Order:=61)>
+		<DemoProperty(Order:=61)>
 		Public ReadOnly Property MinQty As WholeNumber
 			Get
 				'Test for transient:
@@ -202,7 +202,7 @@
 		Public Property mappedMaxQty As Integer?
 		Friend myMaxQty As WholeNumberNullable
 
-		<AWProperty(Order:=62)>
+		<DemoProperty(Order:=62)>
 		Public ReadOnly Property MaxQty As WholeNumberNullable
 			Get
 				myMaxQty = If(myMaxQty, New WholeNumberNullable(mappedMaxQty, Sub(v) mappedMaxQty = v))
@@ -228,7 +228,7 @@
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<AWProperty(Order:=99)>
+		<DemoProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

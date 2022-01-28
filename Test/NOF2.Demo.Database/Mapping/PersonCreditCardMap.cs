@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdventureWorksModel
+namespace NOF2.Demo.Model
 {
      public static partial class Mapper
     {

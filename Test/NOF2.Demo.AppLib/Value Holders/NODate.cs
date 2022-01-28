@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 
 
-namespace AdventureWorks.NOF2.AppLib;
+namespace NOF2.Demo.AppLib;
 //This is needed to tell framework not to render the time portion
 public class NODate : AbstractValueHolder<DateTime>, IDateOnly{
     public NODate() { }

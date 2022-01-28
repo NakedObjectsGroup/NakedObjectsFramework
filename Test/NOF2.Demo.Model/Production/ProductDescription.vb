@@ -11,7 +11,7 @@ Namespace AW.Types
         Public Property mappedDescription As String
         Friend myDescription As MultiLineTextString
 
-        <AWProperty(Order:=2)>
+        <DemoProperty(Order:=2)>
         Public ReadOnly Property Description As TextString
             Get
                 myDescription = If(myDescription, New MultiLineTextString(mappedDescription, Sub(v) mappedDescription = v))
@@ -33,7 +33,7 @@ Return myDescription
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

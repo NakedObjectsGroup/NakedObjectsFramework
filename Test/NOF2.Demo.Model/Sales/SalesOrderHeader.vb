@@ -11,7 +11,7 @@
         Public Property mappedSalesOrderNumber As String
         Friend mySalesOrderNumber As TextString
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property SalesOrderNumber As TextString
             Get
                 mySalesOrderNumber = If(mySalesOrderNumber, New TextString(mappedSalesOrderNumber, Sub(v) mappedSalesOrderNumber = v))
@@ -32,7 +32,7 @@
 #Region "Status"
         Public Property Status() As Byte
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public Overridable ReadOnly Property StatusByte() As TextString
             Get
                 Return New TextString([Enum].GetName(GetType(OrderStatus), Status))
@@ -51,7 +51,7 @@
         ''<Hidden>
         Public Property CustomerID() As Integer
 
-        <AWProperty(Order:=2)>
+        <DemoProperty(Order:=2)>
         Public Overridable Property Customer() As Customer
 #End Region
 
@@ -59,14 +59,14 @@
         ''<Hidden>
         Public Property BillingAddressID() As Integer
 
-        <AWProperty(Order:=4)>
+        <DemoProperty(Order:=4)>
         Public Overridable Property BillingAddress() As Address
 #End Region
 #Region "PurchaseOrderNumber"
         Public Property mappedPurchaseOrderNumber As String
         Friend myPurchaseOrderNumber As TextString
 
-        <AWProperty(Order:=5)>
+        <DemoProperty(Order:=5)>
         Public ReadOnly Property PurchaseOrderNumber As TextString
             Get
                 myPurchaseOrderNumber = If(myPurchaseOrderNumber, New TextString(mappedPurchaseOrderNumber, Sub(v) mappedPurchaseOrderNumber = v))
@@ -87,20 +87,20 @@
         ''<Hidden>
         Public Property ShippingAddressID() As Integer
 
-        <AWProperty(Order:=10)>
+        <DemoProperty(Order:=10)>
         Public Overridable Property ShippingAddress() As Address
 
         ''<Hidden>
         Public Property ShipMethodID() As Integer
 
-        <AWProperty(Order:=11)>
+        <DemoProperty(Order:=11)>
         Public Overridable Property ShipMethod() As ShipMethod
 
 #Region "AccountNumber"
         Public Property mappedAccountNumber As String
         Friend myAccountNumber As TextString
 
-        <AWProperty(Order:=12)>
+        <DemoProperty(Order:=12)>
         Public ReadOnly Property AccountNumber As TextString
             Get
                 myAccountNumber = If(myAccountNumber, New TextString(mappedAccountNumber, Sub(v) mappedAccountNumber = v))
@@ -122,7 +122,7 @@
         Public Property mappedOrderDate As Date
         Friend myOrderDate As NODate
 
-        <AWProperty(Order:=20)>
+        <DemoProperty(Order:=20)>
         Public ReadOnly Property OrderDate As NODate
             Get
                 myOrderDate = If(myOrderDate, New NODate(mappedOrderDate, Sub(v) mappedOrderDate = v))
@@ -144,7 +144,7 @@
         Public Property mappedDueDate As Date
         Friend myDueDate As NODate
 
-        <AWProperty(Order:=21)>
+        <DemoProperty(Order:=21)>
         Public ReadOnly Property DueDate As NODate
             Get
                 myDueDate = If(myDueDate, New NODate(mappedDueDate, Sub(v) mappedDueDate = v))
@@ -166,7 +166,7 @@
         Public Property mappedShipDate As Date?
         Friend myShipDate As NODateNullable
 
-        <AWProperty(Order:=22)>
+        <DemoProperty(Order:=22)>
         Public ReadOnly Property ShipDate As NODateNullable
             Get
                 myShipDate = If(myShipDate, New NODateNullable(mappedShipDate, Sub(v) mappedShipDate = v))
@@ -188,7 +188,7 @@
         Public Property mappedSubTotal As Decimal
         Friend mySubTotal As Money
 
-        <AWProperty(Order:=31)>
+        <DemoProperty(Order:=31)>
         Public ReadOnly Property SubTotal As Money
             Get
                 mySubTotal = If(mySubTotal, New Money(mappedSubTotal, Sub(v) mappedSubTotal = v))
@@ -210,7 +210,7 @@
         Public Property mappedTaxAmt As Decimal
         Friend myTaxAmt As Money
 
-        <AWProperty(Order:=32)>
+        <DemoProperty(Order:=32)>
         Public ReadOnly Property TaxAmt As Money
             Get
                 myTaxAmt = If(myTaxAmt, New Money(mappedTaxAmt, Sub(v) mappedTaxAmt = v))
@@ -232,7 +232,7 @@
         Public Property mappedFreight As Decimal
         Friend myFreight As Money
 
-        <AWProperty(Order:=33)>
+        <DemoProperty(Order:=33)>
         Public ReadOnly Property Freight As Money
             Get
                 myFreight = If(myFreight, New Money(mappedFreight, Sub(v) mappedFreight = v))
@@ -254,7 +254,7 @@
         Public Property mappedTotalDue As Decimal
         Friend myTotalDue As Money
 
-        <AWProperty(Order:=34)>
+        <DemoProperty(Order:=34)>
         Public ReadOnly Property TotalDue As Money
             Get
                 myTotalDue = If(myTotalDue, New Money(mappedTotalDue, Sub(v) mappedTotalDue = v))
@@ -275,14 +275,14 @@
         ''<Hidden>
         Public Property CurrencyRateID() As Integer?
 
-        <AWProperty(Order:=35)>
+        <DemoProperty(Order:=35)>
         Public Overridable Property CurrencyRate() As CurrencyRate
 
 #Region "OnlineOrder"
         Public Property mappedOnlineOrder As Boolean
         Friend myOnlineOrder As Logical
 
-        <AWProperty(Order:=41)>
+        <DemoProperty(Order:=41)>
         Public ReadOnly Property OnlineOrder As Logical
             Get
                 myOnlineOrder = If(myOnlineOrder, New Logical(mappedOnlineOrder, Sub(v) mappedOnlineOrder = v))
@@ -305,7 +305,7 @@
 
         Public Property CreditCardID As Integer?
 
-        <AWProperty(Order:=42)>
+        <DemoProperty(Order:=42)>
         Public Overridable Property CreditCard As CreditCard
 
 #End Region
@@ -314,7 +314,7 @@
         Public Property mappedCreditCardApprovalCode As String
         Friend myCreditCardApprovalCode As TextString
 
-        <AWProperty(Order:=43)>
+        <DemoProperty(Order:=43)>
         Public ReadOnly Property CreditCardApprovalCode As TextString
             Get
                 myCreditCardApprovalCode = If(myCreditCardApprovalCode, New TextString(mappedCreditCardApprovalCode, Sub(v) mappedCreditCardApprovalCode = v))
@@ -337,7 +337,7 @@
         Public Property mappedRevisionNumber As Byte
         Friend myRevisionNumber As WholeNumber
 
-        <AWProperty(Order:=51)>
+        <DemoProperty(Order:=51)>
         Public ReadOnly Property RevisionNumber As WholeNumber
             Get
                 myRevisionNumber = If(myRevisionNumber, New WholeNumber(mappedRevisionNumber, Sub(v) mappedRevisionNumber = CType(v, Byte)))
@@ -361,7 +361,7 @@
         Public Property mappedComment As String
         Friend myComment As TextString
         '[MultiLine(NumberOfLines = 3, Width = 50)]
-        <AWProperty(Order:=52)>
+        <DemoProperty(Order:=52)>
         Public ReadOnly Property Comment As TextString
             Get
                 myComment = If(myComment, New TextString(mappedComment, Sub(v) mappedComment = v))
@@ -386,7 +386,7 @@
 
         Public Property SalesPersonID As Integer?
 
-        <AWProperty(Order:=62)>
+        <DemoProperty(Order:=62)>
         Public Overridable Property SalesPerson As SalesTerritory
 
 #End Region
@@ -395,7 +395,7 @@
 
         Public Property SalesTerritoryID As Integer?
 
-        <AWProperty(Order:=62)>
+        <DemoProperty(Order:=62)>
         Public Overridable Property SalesTerritory As SalesTerritory
 
 #End Region
@@ -404,7 +404,7 @@
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
@@ -425,7 +425,7 @@
 
         Private myDetails As InternalCollection
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property Details As InternalCollection
             Get
                 myDetails = If(myDetails, New InternalCollection(Of SalesOrderDetail)(mappedDetails))
@@ -446,7 +446,7 @@
 
         Private myReasons As InternalCollection
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property Reasons As InternalCollection
             Get
                 myReasons = If(myReasons, New InternalCollection(Of SalesOrderHeaderSalesReason)(mappedReasons))

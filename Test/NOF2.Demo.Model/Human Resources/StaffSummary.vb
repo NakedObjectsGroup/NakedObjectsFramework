@@ -5,13 +5,13 @@ Namespace AW.Types
 	'<ViewModel(GetType(StaffSummary_Functions))>
 	Partial Public Class StaffSummary
  Implements ITitledObject, INotEditableOncePersistent
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public Property Female() As Integer
 
-		<AWProperty(Order:=2)>
+		<DemoProperty(Order:=2)>
 		Public Property Male() As Integer
 
-		<AWProperty(Order:=3)>
+		<DemoProperty(Order:=3)>
 		Public ReadOnly Property TotalStaff() As WholeNumber
 			Get
 				Return New WholeNumber(Male + Female)

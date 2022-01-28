@@ -1,4 +1,4 @@
-﻿namespace AdventureWorks.NOF2.AppLib;
+﻿namespace NOF2.Demo.AppLib;
 
 public class Menu : IMenu
 {

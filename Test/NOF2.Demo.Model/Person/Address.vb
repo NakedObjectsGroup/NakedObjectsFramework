@@ -10,7 +10,7 @@
         Public Property mappedCity As String
         Friend myCity As TextString
 
-        <AWProperty(Order:=13)>
+        <DemoProperty(Order:=13)>
         Public ReadOnly Property City As TextString
             Get
                 myCity = If(myCity, New TextString(mappedCity, Sub(v) mappedCity = v))
@@ -32,7 +32,7 @@
         Public Property mappedPostalCode As String
         Friend myPostalCode As TextString
 
-        <AWProperty(Order:=14)>
+        <DemoProperty(Order:=14)>
         Public ReadOnly Property PostalCode As TextString
             Get
                 myPostalCode = If(myPostalCode, New TextString(mappedPostalCode, Sub(v) mappedPostalCode = v))
@@ -54,7 +54,7 @@
         Public Property mappedAddressLine1 As String
         Friend myAddressLine1 As TextString
 
-        <AWProperty(Order:=11)>
+        <DemoProperty(Order:=11)>
         Public ReadOnly Property AddressLine1 As TextString
             Get
                 myAddressLine1 = If(myAddressLine1, New TextString(mappedAddressLine1, Sub(v) mappedAddressLine1 = v))
@@ -76,7 +76,7 @@
         Public Property mappedAddressLine2 As String
         Friend myAddressLine2 As TextString
 
-        <AWProperty(Order:=12)>
+        <DemoProperty(Order:=12)>
         Public ReadOnly Property AddressLine2 As TextString
             Get
                 myAddressLine2 = If(myAddressLine2, New TextString(mappedAddressLine2, Sub(v) mappedAddressLine2 = v))
@@ -97,14 +97,14 @@
 
         Public Property StateProvinceID() As Integer
 
-        <AWProperty(Order:=15)>
+        <DemoProperty(Order:=15)>
         Public Overridable Property StateProvince() As StateProvince
 
 #Region "ModifiedDate"
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

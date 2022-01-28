@@ -10,7 +10,7 @@
         Public Property mappedRateChangeDate As Date
         Friend myRateChangeDate As NODate
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property RateChangeDate As NODate
             Get
                 myRateChangeDate = If(myRateChangeDate, New NODate(mappedRateChangeDate, Sub(v) mappedRateChangeDate = v))
@@ -30,7 +30,7 @@
         Public Property mappedRate As Decimal
         Friend myRate As Money
 
-        <AWProperty(Order:=2)>
+        <DemoProperty(Order:=2)>
         Public ReadOnly Property Rate As Money
             Get
                 myRate = If(myRate, New Money(mappedRate, Sub(v) mappedRate = v))
@@ -50,7 +50,7 @@
         Public Property mappedPayFrequency As Byte
         Friend myPayFrequency As WholeNumber
 
-        <AWProperty(Order:=3)>
+        <DemoProperty(Order:=3)>
         Public ReadOnly Property PayFrequency As WholeNumber
             Get
                 myPayFrequency = If(myPayFrequency, New WholeNumber(mappedPayFrequency, Sub(v) mappedPayFrequency = CType(v, Byte)))
@@ -66,14 +66,14 @@
         End Sub
 #End Region
 
-        <AWProperty(Order:=4)>
+        <DemoProperty(Order:=4)>
         Public Overridable Property Employee() As Employee
 
 #Region "ModifiedDate"
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

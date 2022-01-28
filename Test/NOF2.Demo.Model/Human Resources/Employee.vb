@@ -11,14 +11,14 @@ Namespace AW.Types
 
         Public Property BusinessEntityID As Integer 'Not visible on UI
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public Overridable Property PersonDetails() As Person
 
 #Region "NationalIDNumber"
         Public Property mappedNationalIDNumber As String
         Friend myNationalIDNumber As TextString
 
-        <AWProperty(Order:=10)>
+        <DemoProperty(Order:=10)>
         Public ReadOnly Property NationalIDNumber As TextString
             Get
                 myNationalIDNumber = If(myNationalIDNumber, New TextString(mappedNationalIDNumber, Sub(v) mappedNationalIDNumber = v))
@@ -40,7 +40,7 @@ Namespace AW.Types
         Public Property mappedJobTitle As String
         Friend myJobTitle As TextString
 
-        <AWProperty(Order:=12)>
+        <DemoProperty(Order:=12)>
         Public ReadOnly Property JobTitle As TextString
             Get
                 myJobTitle = If(myJobTitle, New TextString(mappedJobTitle, Sub(v) mappedJobTitle = v))
@@ -62,7 +62,7 @@ Namespace AW.Types
         Public Property mappedDateOfBirth As DateTime?
         Friend myDateOfBirth As NODateNullable
 
-        <AWProperty(Order:=13)>
+        <DemoProperty(Order:=13)>
         Public ReadOnly Property DateOfBirth As NODateNullable
             Get
                 myDateOfBirth = If(myDateOfBirth, New NODateNullable(mappedDateOfBirth, Sub(v) mappedDateOfBirth = v))
@@ -84,7 +84,7 @@ Namespace AW.Types
         Public Property mappedMaritalStatus As String
         Friend myMaritalStatus As TextString
 
-        <AWProperty(Order:=14)>
+        <DemoProperty(Order:=14)>
         Public ReadOnly Property MaritalStatus As TextString
             Get
                 myMaritalStatus = If(myMaritalStatus, New TextString(mappedMaritalStatus, Sub(v) mappedMaritalStatus = v))
@@ -106,7 +106,7 @@ Namespace AW.Types
         Public Property mappedGender As String
         Friend myGender As TextString
 
-        <AWProperty(Order:=15)>
+        <DemoProperty(Order:=15)>
         Public ReadOnly Property Gender As TextString
             Get
                 myGender = If(myGender, New TextString(mappedGender, Sub(v) mappedGender = v))
@@ -128,7 +128,7 @@ Namespace AW.Types
         Public Property mappedHireDate As DateTime?
         Friend myHireDate As NODateNullable
 
-        <AWProperty(Order:=16)>
+        <DemoProperty(Order:=16)>
         Public ReadOnly Property HireDate As NODateNullable
             Get
                 myHireDate = If(myHireDate, New NODateNullable(mappedHireDate, Sub(v) mappedHireDate = v))
@@ -150,7 +150,7 @@ Namespace AW.Types
         Public Property mappedSalaried As Boolean
         Friend mySalaried As Logical
 
-        <AWProperty(Order:=17)>
+        <DemoProperty(Order:=17)>
         Public ReadOnly Property Salaried As Logical
             Get
                 mySalaried = If(mySalaried, New Logical(mappedSalaried, Sub(v) mappedSalaried = v))
@@ -172,7 +172,7 @@ Namespace AW.Types
         Public Property mappedVacationHours As Short
         Friend myVacationHours As WholeNumber
 
-        <AWProperty(Order:=18)>
+        <DemoProperty(Order:=18)>
         Public ReadOnly Property VacationHours As WholeNumber
             Get
                 myVacationHours = If(myVacationHours, New WholeNumber(mappedVacationHours, Sub(v) mappedVacationHours = CType(v, Short)))
@@ -194,7 +194,7 @@ Namespace AW.Types
         Public Property mappedSickLeaveHours As Short
         Friend mySickLeaveHours As WholeNumber
 
-        <AWProperty(Order:=19)>
+        <DemoProperty(Order:=19)>
         Public ReadOnly Property SickLeaveHours As WholeNumber
             Get
                 mySickLeaveHours = If(mySickLeaveHours, New WholeNumber(mappedSickLeaveHours, Sub(v) mappedSickLeaveHours = CType(v, Short)))
@@ -216,7 +216,7 @@ Namespace AW.Types
         Public Property mappedCurrent As Boolean
         Friend myCurrent As Logical
 
-        <AWProperty(Order:=20)>
+        <DemoProperty(Order:=20)>
         Public ReadOnly Property Current As Logical
             Get
                 myCurrent = If(myCurrent, New Logical(mappedCurrent, Sub(v) mappedCurrent = v))
@@ -235,14 +235,14 @@ Namespace AW.Types
 #End Region
 
         Public Property ManagerID As Integer?
-        <AWProperty(Order:=30)>
+        <DemoProperty(Order:=30)>
         Public Overridable Property Manager() As Employee
 
 #Region "LoginID"
         Public Property mappedLoginID As String
         Friend myLoginID As TextString
 
-        <AWProperty(Order:=11)>
+        <DemoProperty(Order:=11)>
         Public ReadOnly Property LoginID As TextString
             Get
                 myLoginID = If(myLoginID, New TextString(mappedLoginID, Sub(v) mappedLoginID = v))
@@ -269,7 +269,7 @@ Namespace AW.Types
         Private myDepartmentHistory As InternalCollection
 
 
-        <AWProperty(Order:=1)> <TableView(True, {
+        <DemoProperty(Order:=1)> <TableView(True, {
             NameOf(EmployeeDepartmentHistory.StartDate),
             NameOf(EmployeeDepartmentHistory.EndDate),
             NameOf(EmployeeDepartmentHistory.Department),
@@ -294,7 +294,7 @@ Namespace AW.Types
 
         Private myPayHistory As InternalCollection
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property PayHistory As InternalCollection
             Get
                 myPayHistory = If(myPayHistory, New InternalCollection(Of EmployeePayHistory)(mappedPayHistory))
@@ -315,7 +315,7 @@ Namespace AW.Types
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

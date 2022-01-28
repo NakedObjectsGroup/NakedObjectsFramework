@@ -10,7 +10,7 @@
         Public Property mappedName As String
         Friend myName As TextString
 
-        <AWProperty(Order:=10)>
+        <DemoProperty(Order:=10)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -32,7 +32,7 @@ Return myName
         Public Property CatalogDescription() As String
 
 
-        <AWProperty(Order:=20)> '<Named("CatalogDescription"), , MultiLine(10)>
+        <DemoProperty(Order:=20)> '<Named("CatalogDescription"), , MultiLine(10)>
         Public ReadOnly Property FormattedCatalogDescription() As MultiLineTextString
             Get
                 Return New MultiLineTextString(CatalogDescription)
@@ -40,7 +40,7 @@ Return myName
             End Get
         End Property
 
-        <AWProperty(Order:=22)>
+        <DemoProperty(Order:=22)>
         Public ReadOnly Property LocalCultureDescription() As ProductDescription
             Get
                 Return Nothing
@@ -52,7 +52,7 @@ Return myName
         Public Property mappedInstructions As String
         Friend myInstructions As TextString
 
-        <AWProperty(Order:=30)>
+        <DemoProperty(Order:=30)>
         Public ReadOnly Property Instructions As TextString
             Get
                 myInstructions = If(myInstructions, New TextString(mappedInstructions, Sub(v) mappedInstructions = v))
@@ -76,7 +76,7 @@ Return myInstructions
         Private myProductVariants As InternalCollection
 
         ''<TableView(True, "Name", "Number", "Color", "ProductInventory")>
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property ProductVariants As InternalCollection
             Get
                 myProductVariants = If(myProductVariants, New InternalCollection(Of Product)(mappedProductVariants))
@@ -102,7 +102,7 @@ Return myProductVariants
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

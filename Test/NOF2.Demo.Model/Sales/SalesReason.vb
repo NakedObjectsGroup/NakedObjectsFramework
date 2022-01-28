@@ -11,7 +11,7 @@
         Public Property mappedName As String
         Friend myName As TextString
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property Name As TextString
             Get
                 myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
@@ -33,7 +33,7 @@ Return myName
         Public Property mappedReasonType As String
         Friend myReasonType As TextString
 
-        <AWProperty(Order:=1)>
+        <DemoProperty(Order:=1)>
         Public ReadOnly Property ReasonType As TextString
             Get
                 myReasonType = If(myReasonType, New TextString(mappedReasonType, Sub(v) mappedReasonType = v))
@@ -55,7 +55,7 @@ Return myReasonType
         Public Property mappedModifiedDate As Date
         Friend myModifiedDate As TimeStamp
 
-        <AWProperty(Order:=99)>
+        <DemoProperty(Order:=99)>
         Public ReadOnly Property ModifiedDate As TimeStamp
             Get
                 myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))

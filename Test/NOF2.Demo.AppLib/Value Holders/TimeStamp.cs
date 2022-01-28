@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace AdventureWorks.NOF2.AppLib;
+namespace NOF2.Demo.AppLib;
 
 public class TimeStamp : AbstractValueHolder<DateTime> {
     public TimeStamp() { }

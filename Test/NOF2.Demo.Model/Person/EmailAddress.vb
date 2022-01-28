@@ -12,7 +12,7 @@
 		Public Property mappedEmailAddress1 As String
 		Friend myEmailAddress1 As TextString
 
-		<AWProperty(Order:=1)>
+		<DemoProperty(Order:=1)>
 		Public ReadOnly Property EmailAddress1 As TextString
 			Get
 				myEmailAddress1 = If(myEmailAddress1, New TextString(mappedEmailAddress1, Sub(v) mappedEmailAddress1 = v))
@@ -35,7 +35,7 @@ Return myEmailAddress1
 		Public Property mappedModifiedDate As Date
 		Friend myModifiedDate As TimeStamp
 
-		<AWProperty(Order:=99)>
+		<DemoProperty(Order:=99)>
 		Public ReadOnly Property ModifiedDate As TimeStamp
 			Get
 				myModifiedDate = If(myModifiedDate, New TimeStamp(mappedModifiedDate, Sub(v) mappedModifiedDate = v))
