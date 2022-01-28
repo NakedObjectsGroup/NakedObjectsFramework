@@ -9,21 +9,15 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.DependencyInjection.Extensions;
-using NakedFramework.Rest.Extensions;
+using NakedFunctions.Reflector.Extensions;
 
-namespace NakedFramework.DependencyInjection.Test.Extensions;
+namespace NakedFunctions.Reflector.Test.Extensions;
 
 [TestClass]
 public class ExtensionsTest {
     [TestMethod]
-    public void TestFramework() {
+    public void TestNakedFunctions() {
         IServiceCollection services = new ServiceCollection();
-        services.AddNakedFramework(options => { });
-    }
-
-    [TestMethod]
-    public void TestRestfulObjects() {
-        IServiceCollection services = new ServiceCollection();
-        services.AddNakedFramework(options => { options.AddRestfulObjects(options => { options.AcceptHeaderStrict = true; }); });
+        services.AddNakedFramework(options => { options.AddNakedFunctions(options => { options.DomainFunctions = Array.Empty<Type>(); }); });
     }
 }
