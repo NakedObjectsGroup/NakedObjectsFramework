@@ -24,7 +24,7 @@ public class NOF2ObjectClassStrategy : AbstractClassStrategy {
 
     public NOF2ObjectClassStrategy(INOF2ReflectorConfiguration config, IAllTypeList allTypeList) : base(allTypeList) => this.config = config;
 
-    protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
+    protected override bool IsTypeIgnored(Type type) => false;//type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
 
     protected override bool IsTypeExplicitlyRequested(Type type) {
         var services = config.Services.ToArray();
@@ -38,7 +38,7 @@ public class NOF2ObjectClassStrategy : AbstractClassStrategy {
 
     #region IClassStrategy Members
 
-    public override bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
+    public override bool IsIgnored(MemberInfo member) => false;//member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
     public override bool IsService(Type type) => config.Services.Contains(type);
     public override bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
 

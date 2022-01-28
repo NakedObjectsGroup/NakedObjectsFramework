@@ -12,13 +12,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NakedFunctions.ProgrammingModel" Version="1.1.0-beta01" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="NakedFunctions.ProgrammingModel" Version="1.1.0-beta01" />
+		<PackageReference Include="NakedFramework.Server" Version="13.0.0-beta01" />
+	</ItemGroup>
 
 </Project>

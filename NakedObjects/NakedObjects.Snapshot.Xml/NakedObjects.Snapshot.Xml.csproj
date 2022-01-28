@@ -14,10 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta01" />
+    <PackageReference Include="NakedFramework.Server" Version="13.0.0-beta01" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Core\NakedFramework.Core.csproj" />
-  </ItemGroup>
+ 
 </Project>

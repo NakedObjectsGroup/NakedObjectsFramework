@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>NOF2.Reflector</id>
+		<version>1.0.0-beta01</version>
+		<authors>Naked Objects Group Ltd</authors>
+		<owners>Naked Objects Group Ltd</owners>
+		<license type="expression">Apache-2.0</license>
+		<projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
+		<icon>images\icon.png</icon>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
+		<description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
+		<tags>naked objects nakedobjects ddd domain driven design</tags>
+		<dependencies>
+			<group targetFramework="net6.0">
+				<dependency id="NOF2.ProgrammingModel" version="[1.0.0-alpha01, 2)" />
+				<dependency id="NakedFramework.Server" version="[13.0.0-beta01, 14)" />
+				<dependency id="EntityFramework" version="[6.4.4, 7)" />
+				<dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[6.0.0, 7)" />
+				<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[6.0.0, 7)" />
+				<dependency id="Microsoft.Extensions.Configuration" version="[6.0.0, 7)" />
+				<dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.7, 6)" />
+				<dependency id="System.Reflection.Emit" version="[4.7.0, 5)" />
+			</group>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="icon.png" target="images\" />
+		
+		<file src="..\..\NOF2\NOF2.Reflector\bin\Debug\**\NOF2.Reflector.dll" target="lib" />
+
+		<file src="..\..\NOF2\NOF2.Reflector\bin\Debug\**\NOF2.Reflector.pdb" target="lib" />
+	</files>
+</package>

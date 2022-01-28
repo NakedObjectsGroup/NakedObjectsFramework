@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Services", "NakedFunctions\NakedFunctions.Services\NakedFunctions.Services.csproj", "{DB302D16-F531-48FE-9AB1-61723E94A690}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector.Package", "NakedFunctions\NakedFunctions.Reflector.Package\NakedFunctions.Reflector.Package.csproj", "{45767B93-46AF-42FC-8251-60F12D05AF1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector.Package", "NakedFunctions\NakedFunctions.Reflector.Package\NakedFunctions.Reflector.Package.csproj", "{650017E1-D2B1-4FF8-BCB2-9AB3AC7476EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,8 +23,8 @@ Global
 		{DB302D16-F531-48FE-9AB1-61723E94A690}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB302D16-F531-48FE-9AB1-61723E94A690}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB302D16-F531-48FE-9AB1-61723E94A690}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45767B93-46AF-42FC-8251-60F12D05AF1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45767B93-46AF-42FC-8251-60F12D05AF1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{650017E1-D2B1-4FF8-BCB2-9AB3AC7476EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{650017E1-D2B1-4FF8-BCB2-9AB3AC7476EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

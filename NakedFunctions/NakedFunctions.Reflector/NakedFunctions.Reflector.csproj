@@ -13,10 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
-    <ProjectReference Include="..\NakedFunctions.Services\NakedFunctions.Services.csproj" />
+	  <ProjectReference Include="..\NakedFunctions.Services\NakedFunctions.Services.csproj" />
   </ItemGroup>
 
 </Project>
