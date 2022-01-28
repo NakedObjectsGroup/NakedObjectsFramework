@@ -14,7 +14,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider;
+namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 
 [TestClass]
 public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<Color> {

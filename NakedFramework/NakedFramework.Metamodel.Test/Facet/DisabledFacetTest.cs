@@ -7,27 +7,26 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet;
+namespace NakedFramework.Metamodel.Test.Facet;
 
 [TestClass]
 public class DisabledFacetTest {
     [TestMethod]
     public void TestDisabledFacetAlways() {
         IDisabledFacet facet = new DisabledFacetAlways(null);
-        Assert.AreEqual(Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
+        Assert.AreEqual(NakedObjects.Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
     }
 
     [TestMethod]
     public void TestDisabledFacetAnnotationAlways() {
         IDisabledFacet facet = new DisabledFacetAnnotation(WhenTo.Always, null);
-        Assert.AreEqual(Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
+        Assert.AreEqual(NakedObjects.Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
     }
 
     [TestMethod]

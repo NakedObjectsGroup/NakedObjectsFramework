@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet;
+namespace NakedFramework.Metamodel.Test.Facet;
 
 [TestClass]
 public class RegexFacetTest {

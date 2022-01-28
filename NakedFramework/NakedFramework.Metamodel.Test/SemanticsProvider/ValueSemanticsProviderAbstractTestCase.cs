@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
 using NakedFramework.Metamodel.SemanticsProvider;
 
-namespace NakedObjects.Meta.Test.SemanticsProvider;
+namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 
 public abstract class ValueSemanticsProviderAbstractTestCase<T> {
     private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;

@@ -18,7 +18,7 @@ using NakedFramework.Metamodel.SemanticsProvider;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.Meta.Test.SemanticsProvider;
+namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 
 public enum TestEnum {
     London,

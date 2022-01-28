@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Profile;
 using NakedFramework.Profile;
 
-namespace NakedObjects.Meta.Test.Profile;
+namespace NakedFramework.Metamodel.Test.Profile;
 
 [TestClass]
 public class ProfileManagerTest {

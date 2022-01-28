@@ -18,7 +18,6 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Component;
 using NakedFramework.Metamodel.Component;
 using NakedFramework.ParallelReflector.Component;
-using NakedFunctions.Reflector.Configuration;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
@@ -102,7 +101,6 @@ public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTes
         ObjectReflectorConfiguration.NoValidate = true;
 
         var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
-        var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
 
         facetFactory = new RemoveEventHandlerMethodsFacetFactory(GetOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);
         var menuFactory = new NullMenuFactory();

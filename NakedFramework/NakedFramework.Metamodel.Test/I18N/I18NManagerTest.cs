@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.I18N;
 
-namespace NakedObjects.Meta.Test.I18N;
+namespace NakedFramework.Metamodel.Test.I18N;
 
 [TestClass]
 public class I18NManagerTest {

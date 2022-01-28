@@ -26,8 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
-    <ProjectReference Include="..\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
+	  <ProjectReference Include="..\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
   </ItemGroup>
 
 

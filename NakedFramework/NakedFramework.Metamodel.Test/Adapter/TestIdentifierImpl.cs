@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Metamodel.Adapter;
 
-namespace NakedObjects.Meta.Test.Adapter;
+namespace NakedFramework.Metamodel.Test.Adapter;
 
 [TestClass]
 public class TestIdentifierImpl {

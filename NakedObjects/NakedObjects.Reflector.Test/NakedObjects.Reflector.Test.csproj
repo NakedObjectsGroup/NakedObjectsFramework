@@ -26,8 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
-    <ProjectReference Include="..\..\NakedFunctions\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj" />
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 

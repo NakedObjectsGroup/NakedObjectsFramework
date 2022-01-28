@@ -6,18 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet;
+namespace NakedFramework.Metamodel.Test.Facet;
 
 [TestClass]
 public class HiddenFacetTest {
     [TestMethod]
     public void TestHiddenFacetAnnotationAlways() {
         IHiddenFacet facet = new HiddenFacet(WhenTo.Always, null);
-        Assert.AreEqual(Resources.NakedObjects.AlwaysHidden, facet.HiddenReason(null));
+        Assert.AreEqual(NakedObjects.Resources.NakedObjects.AlwaysHidden, facet.HiddenReason(null));
     }
 
     [TestMethod]

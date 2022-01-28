@@ -9,13 +9,13 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NakedFramework.Core.Error;
+using NakedObjects.Reflector.Facet;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Core.Error;
-using NakedObjects.Reflector.Facet;
 
-namespace NakedObjects.Metamodel.Test.Facet;
+namespace NakedObjects.Reflector.Test.Facet;
 
 [TestClass]
 public class HideForContextFacetTest {
@@ -26,7 +26,7 @@ public class HideForContextFacetTest {
         IHideForContextFacet facet = hideForContextFacet;
         Assert.IsNotNull(hideForContextFacet.GetMethodDelegate(), method.Name);
         var target = MockParm(new TestDelegateClass());
-        var result = isHidden ? Resources.NakedObjects.Hidden : null;
+        var result = isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
         Assert.AreEqual(result, facet.HiddenReason(target, null));
     }
 
