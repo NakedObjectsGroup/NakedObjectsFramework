@@ -25,7 +25,7 @@ namespace NakedFramework.Facade.Impl.Impl;
 public class ObjectFacade : IObjectFacade {
     private readonly INakedFramework framework;
 
-    protected ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade frameworkFacade, INakedFramework framework) {
+    private ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade frameworkFacade, INakedFramework framework) {
         WrappedNakedObject = nakedObject ?? throw new NullReferenceException($"{nameof(nakedObject)} is null");
         this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
         FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
@@ -33,7 +33,7 @@ public class ObjectFacade : IObjectFacade {
 
     public INakedObjectAdapter WrappedNakedObject { get; }
 
-    public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedFramework framework) => nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
+    public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedFramework framework) => nakedObject is null ? null : new ObjectFacade(nakedObject, facade, framework);
 
     private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) => objectRepresentingCollection.Oid is ICollectionMemento { IsNotQueryable: true };
 
@@ -61,7 +61,7 @@ public class ObjectFacade : IObjectFacade {
 
     public override bool Equals(object obj) => obj is ObjectFacade of && Equals(of);
 
-    public bool Equals(ObjectFacade other) {
+    private bool Equals(ObjectFacade other) {
         if (other is null) {
             return false;
         }
@@ -69,7 +69,7 @@ public class ObjectFacade : IObjectFacade {
         return ReferenceEquals(this, other) || Equals(other.WrappedNakedObject, WrappedNakedObject);
     }
 
-    public override int GetHashCode() => WrappedNakedObject != null ? WrappedNakedObject.GetHashCode() : 0;
+    public override int GetHashCode() =>  WrappedNakedObject.GetHashCode();
 
     #region IObjectFacade Members
 
@@ -81,36 +81,43 @@ public class ObjectFacade : IObjectFacade {
         }
     }
 
-    public ITypeFacade Specification => new TypeFacade(WrappedNakedObject.Spec, FrameworkFacade, framework);
+    private ITypeFacade cachedSpecification;
+    private ITypeFacade cachedElementSpecification;
+    private string cachedPresentationHint;
+    private (string, string)? cachedRestExtension;
+    private IEnumerable<IObjectFacade> cachedToEnumerable;
+    private AttachmentContextFacade cachedAttachmentContextFacade;
+    private PropertyInfo[] cachedKeys;
+    private bool? cachedIsViewModel;
 
-    public ITypeFacade ElementSpecification {
-        get {
-            var typeOfFacet = WrappedNakedObject.GetTypeOfFacetFromSpec();
-            var introspectableSpecification = typeOfFacet.GetValueSpec(WrappedNakedObject, framework.MetamodelManager.Metamodel);
-            var spec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
-            return new TypeFacade(spec, FrameworkFacade, framework);
-        }
+
+    public ITypeFacade Specification => cachedSpecification ??= new TypeFacade(WrappedNakedObject.Spec, FrameworkFacade, framework);
+
+    private ITypeFacade GetElementSpec() {
+        var typeOfFacet = WrappedNakedObject.GetTypeOfFacetFromSpec();
+        var introspectableSpecification = typeOfFacet.GetValueSpec(WrappedNakedObject, framework.MetamodelManager.Metamodel);
+        var spec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
+        return new TypeFacade(spec, FrameworkFacade, framework);
     }
 
-    public string PresentationHint {
-        get {
-            var spec = WrappedNakedObject.Spec;
-            var hintFacet = spec.GetFacet<IPresentationHintFacet>();
-            return hintFacet == null ? "" : hintFacet.Value;
-        }
-    }
+    public ITypeFacade ElementSpecification => cachedElementSpecification ??= GetElementSpec();
+
+    public string PresentationHint =>  cachedPresentationHint ??= WrappedNakedObject.Spec.GetFacet<IPresentationHintFacet>()?.Value ?? "";
 
     public (string, string)? RestExtension {
         get {
-            var spec = WrappedNakedObject.Spec;
-            var extensionFacet = spec.GetFacet<IRestExtensionFacet>();
-            return extensionFacet == null ? null : (extensionFacet.Name, extensionFacet.Value);
+            if (cachedRestExtension is null) {
+                var extensionFacet = WrappedNakedObject.Spec.GetFacet<IRestExtensionFacet>();
+                cachedRestExtension = extensionFacet is null ? (null, null) : (extensionFacet.Name, extensionFacet.Value);
+            }
+
+            return cachedRestExtension.Value.Item1 is null ? null : cachedRestExtension;
         }
     }
 
     public object Object => WrappedNakedObject.Object;
 
-    public IEnumerable<IObjectFacade> ToEnumerable() => WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
+    public IEnumerable<IObjectFacade> ToEnumerable() =>  cachedToEnumerable ??= WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
 
     public IObjectFacade Page(int page, int size, bool forceEnumerable) => new ObjectFacade(Page(WrappedNakedObject, page, size, forceEnumerable), FrameworkFacade, framework);
 
@@ -119,36 +126,39 @@ public class ObjectFacade : IObjectFacade {
     public int Count() => WrappedNakedObject.GetAsQueryable().Count();
 
     public AttachmentContextFacade GetAttachment() {
-        var context = new AttachmentContextFacade();
+        AttachmentContextFacade GetAttachmentContext() {
+            var context = new AttachmentContextFacade();
+            if (WrappedNakedObject.Object is FileAttachment fa) {
+                context.Content = fa.GetResourceAsStream();
+                context.MimeType = fa.MimeType;
+                context.ContentDisposition = fa.DispositionType;
+                context.FileName = fa.Name;
+            }
 
-        if (WrappedNakedObject.Object is FileAttachment fa) {
-            context.Content = fa.GetResourceAsStream();
-            context.MimeType = fa.MimeType;
-            context.ContentDisposition = fa.DispositionType;
-            context.FileName = fa.Name;
+            return context;
         }
 
-        return context;
+        return cachedAttachmentContextFacade ??= GetAttachmentContext();
     }
 
     public PropertyInfo[] GetKeys() =>
-        WrappedNakedObject.Spec is IServiceSpec
+        cachedKeys ??= WrappedNakedObject.Spec is IServiceSpec
             ? Array.Empty<PropertyInfo>()
             : framework.Persistor.GetKeys(WrappedNakedObject.Object.GetType());
 
     public IVersionFacade Version => new VersionFacade(WrappedNakedObject.Version);
 
-    public IOidFacade Oid => WrappedNakedObject.Oid == null ? null : new OidFacade(WrappedNakedObject.Oid);
+    public IOidFacade Oid => WrappedNakedObject.Oid is null ? null : new OidFacade(WrappedNakedObject.Oid);
 
     public IFrameworkFacade FrameworkFacade { get; set; }
 
     public bool IsViewModelEditView => IsViewModel && WrappedNakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject, framework);
 
-    public bool IsViewModel => WrappedNakedObject.Spec.ContainsFacet<IViewModelFacet>();
+    public bool IsViewModel => cachedIsViewModel ??= WrappedNakedObject.Spec.ContainsFacet<IViewModelFacet>();
 
     public bool IsDestroyed => WrappedNakedObject.ResolveState.IsDestroyed();
 
-    public bool IsUserPersistable => WrappedNakedObject.Spec.Persistable == PersistableType.UserPersistable;
+    public bool IsUserPersistable => WrappedNakedObject.Spec.Persistable is PersistableType.UserPersistable;
 
     public bool IsNotPersistent => WrappedNakedObject.IsNotPersistent();
 
