@@ -2,7 +2,7 @@
 <CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
   <CodeSnippet Format="1.0.0">
     <Header>
-      <Title>Value property VB</Title>
+      <Title>Value property</Title>
       <Shortcut>valp</Shortcut>
     </Header>
     <Snippet>
@@ -18,33 +18,19 @@
         <Literal>
           <ID>UnderlyingType</ID>
           <Default>String</Default>
-        </Literal> 
-        <Literal>
-          <ID>MemberOrder</ID>
-          <Default>1</Default>
-        </Literal> 
+        </Literal>  
       </Declarations>
       <Code Language="VB">
-        <![CDATA[#Region "$PropName$"
-Friend  mapped$PropName$ As $UnderlyingType$
-Friend my$PropName$ As $HolderType$
+        <![CDATA[
+Public  mapped$PropName$ As $UnderlyingType$
+Private my$PropName$ As $HolderType$
 
-<MemberOrder($MemberOrder$)>
 Public ReadOnly Property $PropName$ As $HolderType$
   Get
-    Return If(my$PropName$, New $HolderType$(mapped$PropName$, Function(v) mapped$PropName$ = v))
+    my$PropName$ = If(my$PropName$, New $HolderType$(mapped$PropName$, Function(v) mapped$PropName$ = v))
+    Return my$PropName$
   End Get
-End Property
-
-Public Sub About$PropName$(a As FieldAbout, $PropName$ As $HolderType$)
-    Select Case a.TypeCode
-        Case AboutTypeCodes.Name
-        Case AboutTypeCodes.Usable
-        Case AboutTypeCodes.Valid
-        Case AboutTypeCodes.Visible
-    End Select
-End Sub
-#End Region]]>
+End Property]]>
       </Code>
     </Snippet>
   </CodeSnippet>
