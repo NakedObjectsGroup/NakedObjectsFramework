@@ -26,76 +26,108 @@ public class ActionFacade : IActionFacade {
 
     public IActionSpec WrappedSpec { get; }
 
-    public ITypeFacade Specification => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
-
     public override bool Equals(object obj) => obj is ActionFacade af && Equals(af);
 
     private bool Equals(ActionFacade other) => other is not null && (ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec));
 
-    public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
+    public override int GetHashCode() =>  WrappedSpec.GetHashCode();
 
     #region IActionFacade Members
 
-    public bool IsContributed => WrappedSpec.IsContributedMethod;
+    private bool? cachedIsContributed;
+    private string cachedName;
+    private string cachedDescription;
+    private bool? cachedIsQueryOnly;
+    private bool? cachedIsStatic;
+    private bool? cachedIsStaticObjectMenu;
+    private bool? cachedIsIdempotent;
+    private bool? cachedIsQueryContributedAction;
+    private string[] cachedCreateNewProperties;
+    private string[] cachedEditProperties;
+    private int? cachedMemberOrder;
+    private string cachedMemberOrderName;
+    private TypeFacade cachedReturnType;
+    private bool haveGotElementType;
+    private TypeFacade cachedElementType;
+    private int? cachedParameterCount;
+    private IActionParameterFacade[] cachedParameters;
+    private bool? cachedIsVisible;
+    private IConsentFacade cachedIsUsable;
+    private string cachedFinderMethodPrefix;
+    private TypeFacade cachedOnType;
+    private bool? cachedRenderEagerly;
+    private int? cachedPageSize;
 
-    public string Name(IObjectFacade objectFacade) => WrappedSpec.Name(objectFacade.WrappedAdapter());
+    private NullCache<int?> cachedNumberOfLines;
+    private NullCache<(bool title, string[] columns)?> cachedTableViewData;
+    private NullCache<string> cachedPresentationHint;
+    private NullCache<(string, string)?> cachedRestExtension;
 
-    public string Description(IObjectFacade objectFacade) => WrappedSpec.Description(objectFacade.WrappedAdapter());
+    public bool IsContributed => cachedIsContributed ??= WrappedSpec.IsContributedMethod;
 
-    public bool IsQueryOnly => WrappedSpec.ReturnSpec.IsQueryable || WrappedSpec.ContainsFacet<IQueryOnlyFacet>();
+    public string Name(IObjectFacade objectFacade) => cachedName ??= WrappedSpec.Name(objectFacade.WrappedAdapter());
 
-    public bool IsStatic => WrappedSpec.IsStaticFunction;
+    public string Description(IObjectFacade objectFacade) => cachedDescription ??= WrappedSpec.Description(objectFacade.WrappedAdapter());
 
-    public bool IsStaticObjectMenu => WrappedSpec.IsStaticFunction && WrappedSpec.ContainsFacet<IStaticMenuFunctionFacet>();
+    public bool IsQueryOnly => cachedIsQueryOnly ??= WrappedSpec.ReturnSpec.IsQueryable || WrappedSpec.ContainsFacet<IQueryOnlyFacet>();
 
-    public bool IsIdempotent => WrappedSpec.ContainsFacet<IIdempotentFacet>();
+    public bool IsStatic => cachedIsStatic ??= WrappedSpec.IsStaticFunction;
 
-    public string[] CreateNewProperties(IObjectFacade objectFacade) => WrappedSpec.GetFacet<ICreateNewFacet>()?.OrderedProperties(objectFacade.WrappedAdapter(), framework) ?? Array.Empty<string>();
+    public bool IsStaticObjectMenu => cachedIsStaticObjectMenu ??= WrappedSpec.IsStaticFunction && WrappedSpec.ContainsFacet<IStaticMenuFunctionFacet>();
 
-    public bool IsQueryContributedAction => WrappedSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
+    public bool IsIdempotent => cachedIsIdempotent ??= WrappedSpec.ContainsFacet<IIdempotentFacet>();
 
-    public string[] EditProperties => WrappedSpec.GetFacet<IEditPropertiesFacet>()?.Properties ?? Array.Empty<string>();
+    public bool IsQueryContributedAction => cachedIsQueryContributedAction ??= WrappedSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
 
-    public int MemberOrder => WrappedSpec.GetMemberOrder();
+    public string[] CreateNewProperties(IObjectFacade objectFacade) => cachedCreateNewProperties ??=  WrappedSpec.GetFacet<ICreateNewFacet>()?.OrderedProperties(objectFacade.WrappedAdapter(), framework) ?? Array.Empty<string>();
 
-    public string MemberOrderName => WrappedSpec.GetMemberOrderName();
+    public string[] EditProperties => cachedEditProperties ??= WrappedSpec.GetFacet<IEditPropertiesFacet>()?.Properties ?? Array.Empty<string>();
+
+    public int MemberOrder => cachedMemberOrder ??= WrappedSpec.GetMemberOrder();
+
+    public string MemberOrderName => cachedMemberOrderName ??= WrappedSpec.GetMemberOrderName();
 
     public string Id => WrappedSpec.Id;
 
-    public ITypeFacade ReturnType => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
+    public ITypeFacade ReturnType => cachedReturnType ??= new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
 
     public ITypeFacade ElementType {
         get {
+            if (haveGotElementType) {
+                return cachedElementType;
+            }
+
+            haveGotElementType = true;
             var elementSpec = WrappedSpec.ElementSpec;
-            return elementSpec is null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
+            return elementSpec is null ? null : cachedElementType ??= new TypeFacade(elementSpec, FrameworkFacade, framework);
         }
     }
 
-    public int ParameterCount => WrappedSpec.ParameterCount;
+    public int ParameterCount => cachedParameterCount ??= WrappedSpec.ParameterCount;
 
-    public IActionParameterFacade[] Parameters => WrappedSpec.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework)).Cast<IActionParameterFacade>().ToArray();
+    public IActionParameterFacade[] Parameters => cachedParameters ??= WrappedSpec.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework)).Cast<IActionParameterFacade>().ToArray();
 
-    public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade)objectFacade)?.WrappedNakedObject);
+    public bool IsVisible(IObjectFacade objectFacade) => cachedIsVisible ??= WrappedSpec.IsVisible(((ObjectFacade)objectFacade)?.WrappedNakedObject);
 
-    public IConsentFacade IsUsable(IObjectFacade objectFacade) => new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade)objectFacade)?.WrappedNakedObject));
+    public IConsentFacade IsUsable(IObjectFacade objectFacade) =>  cachedIsUsable ??= new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade)objectFacade)?.WrappedNakedObject));
 
-    public string FinderMethodPrefix => WrappedSpec.GetFinderMethodPrefix();
+    public string FinderMethodPrefix => cachedFinderMethodPrefix ??= WrappedSpec.GetFinderMethodPrefix();
 
-    public ITypeFacade OnType => new TypeFacade(WrappedSpec.OnSpec, FrameworkFacade, framework);
+    public ITypeFacade OnType =>  cachedOnType ??= new TypeFacade(WrappedSpec.OnSpec, FrameworkFacade, framework);
 
     public IFrameworkFacade FrameworkFacade { get; set; }
 
-    public bool RenderEagerly => WrappedSpec.GetRenderEagerly();
+    public bool RenderEagerly => cachedRenderEagerly ??= WrappedSpec.GetRenderEagerly();
 
-    public (bool, string[])? TableViewData => WrappedSpec.GetTableViewData();
+    public (bool, string[])? TableViewData => (cachedTableViewData ??= FacadeUtils.NullCache(WrappedSpec.GetTableViewData())).Value;
 
-    public int PageSize => WrappedSpec.GetFacet<IPageSizeFacet>().Value;
+    public int PageSize => cachedPageSize ??= WrappedSpec.GetFacet<IPageSizeFacet>().Value;
 
-    public string PresentationHint => WrappedSpec.GetPresentationHint();
+    public string PresentationHint => (cachedPresentationHint ??= FacadeUtils.NullCache(WrappedSpec.GetPresentationHint())).Value;
 
-    public (string, string)? RestExtension => WrappedSpec.GetRestExtension();
+    public (string, string)? RestExtension => (cachedRestExtension ??= FacadeUtils.NullCache(WrappedSpec.GetRestExtension())).Value;
 
-    public int? NumberOfLines => WrappedSpec.GetNumberOfLines();
+    public int? NumberOfLines => (cachedNumberOfLines ??= FacadeUtils.NullCache(WrappedSpec.GetNumberOfLines())).Value;
 
     #endregion
 }
