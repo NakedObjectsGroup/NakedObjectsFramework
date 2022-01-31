@@ -6,52 +6,67 @@ Imports System.ComponentModel.DataAnnotations
 
 
 Public Class SubjectReport
-    Public Property Container As IContainer
-    Public Property Students As StudentRepository
-    Public Property Teachers As TeacherRepository
-    Public Property Subjects As SubjectRepository
+    Implements IContainerAware
+    Public Property Container As IContainer Implements IContainerAware.Container
 
     Public Overridable Property Id As Integer
 
     <DemoProperty(Order:=1)> 'Disabled
     Public Overridable Property Student As Student
 
-
-    Public Function AutoCompleteStudent(
-        <MinLength(2)> ByVal matching As String) As IQueryable(Of Student)
-        Return Students.FindStudentByName(matching)
-    End Function
-
     <DemoProperty(Order:=2)>
     Public Overridable Property Subject As Subject
 
+    'TODO
     Public Function ChoicesSubject() As IList(Of Subject)
-        Return Subjects.AllSubjects().ToList()
+        Return Container.AllInstances(Of Subject).ToList()
     End Function
 
     <DemoProperty(Order:=3)>
     Public Overridable Property Grade As Grades
+
     <DemoProperty(Order:=4)>
     Public Overridable Property GivenBy As Teacher
 
+    'TODO
     Public Function ChoicesGivenBy() As IList(Of Teacher)
-        Return Teachers.AllTeachers().ToList()
+        Return Container.AllInstances(Of Teacher).ToList()
     End Function
 
-    <DemoProperty(Order:=5)>
-    Public Overridable Property [Date] As DateTime
 
+    Public mappedDate As Date
+    Private myDate As NODate
+
+    <DemoProperty(Order:=5)>
+    Public ReadOnly Property [Date] As NODate
+        Get
+            myDate = If(myDate, New NODate(mappedDate, Function(v) mappedDate = v))
+            Return myDate
+        End Get
+    End Property
+
+    'TODO
     Public Function DefaultDate() As DateTime
         Return DateTime.Today
     End Function
 
+    Public mappedNotes As String
+    Private myNotes As MultiLineTextString
 
-    '! MUltiline
     <DemoProperty(Order:=6)>
-    Public Overridable Property Notes As String
+    Public ReadOnly Property Notes As MultiLineTextString
+        Get
+            myNotes = If(myNotes, New MultiLineTextString(mappedNotes, Function(v) mappedNotes = v))
+            Return myNotes
+        End Get
+    End Property
 
     Public Overrides Function ToString() As String
         Return $"{Subject} {[Date].ToString("d")}"
+    End Function
+
+    Public Function Title() As Title
+        Return New Title(ToString())
     End Function
 End Class
 

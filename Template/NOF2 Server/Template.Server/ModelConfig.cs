@@ -8,11 +8,10 @@ namespace NakedObjects.Rest.App.Demo
 {
     public static class ModelConfig
     {
-        public static Type[] DomainModelTypes() => new[] { typeof(Student), typeof(Set), typeof(Teacher), typeof(Subject), typeof(SubjectReport), typeof(Grades)};
+        public static Type[] DomainModelTypes() => new[] { typeof(Student), typeof(TeachingSet), typeof(Teacher), typeof(Subject), typeof(SubjectReport), typeof(Grades)};
+        public static Type[] DomainModelServices() => new Type[] { };
 
-        public static Type[] DomainModelServices() => new[] { typeof(StudentRepository), typeof(SetRepository), typeof(TeacherRepository), typeof(SubjectRepository) };
-
-        public static Type[] MainMenus() => new[] { typeof(StudentRepository), typeof(SetRepository), typeof(TeacherRepository), typeof(SubjectRepository) };
+        public static Type[] MainMenus() => new[] { typeof(Students), typeof(Sets), typeof(Teachers), typeof(Subjects) };
         
         public static Func<IConfiguration, DbContext> EFCoreDbContextCreator => c => new ExampleDbContext(c.GetConnectionString("ExampleCS"));
 
