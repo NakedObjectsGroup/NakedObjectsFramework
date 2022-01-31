@@ -9,7 +9,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using NakedFramework;
 using NakedFramework.Core.Util;
 using NOF2.About;
@@ -26,6 +28,23 @@ using NakedObjects;
 namespace NOF2.Rest.Test.Data;
 
 public interface INOF2RoleInterface { }
+
+public class AboutChecker {
+    private readonly Dictionary<MethodBase, HashSet<AboutTypeCodes>> aboutChecker = new();
+
+    protected void Called(MethodBase about, AboutTypeCodes code) {
+        if (aboutChecker.ContainsKey(about)) {
+            if (aboutChecker[about].Contains(code)) {
+                throw new Exception("About called multiple times for same code");
+            }
+
+            aboutChecker[about].Add(code);
+        }
+        else {
+            aboutChecker[about] = new HashSet<AboutTypeCodes> { code };
+        }
+    }
+}
 
 public class SimpleService : IContainerAware {
     public IContainer Container { get; set; }
@@ -80,7 +99,7 @@ public class ClassWithAnnotations {
     public ArrayList ActionTestTableView() => new();
 }
 
-public class ClassToPersist : IContainerAware {
+public class ClassToPersist : AboutChecker, IContainerAware {
     public static bool TestSave;
     public static bool TestProperty;
 
@@ -99,6 +118,8 @@ public class ClassToPersist : IContainerAware {
     }
 
     public void AboutName(FieldAbout fieldAbout, TextString name) {
+        Called(MethodBase.GetCurrentMethod(), fieldAbout.TypeCode);
+
         if (fieldAbout.TypeCode == AboutTypeCodes.Valid) {
             if (TestProperty) {
                 if (name.Value == "invalid") {
@@ -126,6 +147,8 @@ public class ClassToPersist : IContainerAware {
     }
 
     public void AboutActionSave(ActionAbout actionAbout) {
+        Called(MethodBase.GetCurrentMethod(), actionAbout.TypeCode);
+
         if (actionAbout.TypeCode == AboutTypeCodes.Valid) {
             if (TestSave) {
                 if (Name.Value == "invalid") {
@@ -187,7 +210,7 @@ public class ClassWithNOFInternalCollection {
     public InternalCollection CollectionOfNOFClass => _testCollection ??= new InternalCollection<ClassWithString>(_TestCollection);
 }
 
-public class ClassWithActionAbout {
+public class ClassWithActionAbout : AboutChecker {
     public static bool TestInvisibleFlag;
     public static bool TestUsableFlag;
     public static bool TestValidFlag;
@@ -195,8 +218,6 @@ public class ClassWithActionAbout {
     public static bool TestOptions;
     public static string TestName;
     public static string TestDescription;
-
-    public static int AboutCount;
 
     [Key]
     public int Id { get; init; }
@@ -211,7 +232,7 @@ public class ClassWithActionAbout {
     }
 
     public void aboutActionTestAction(ActionAbout actionAbout) {
-        AboutCount++;
+        Called(MethodBase.GetCurrentMethod(), actionAbout.TypeCode);
         switch (actionAbout.TypeCode) {
             case AboutTypeCodes.Visible:
                 actionAbout.Visible = !TestInvisibleFlag;
@@ -245,7 +266,7 @@ public class ClassWithActionAbout {
     }
 
     public void aboutActionTestActionWithParms(ActionAbout actionAbout, TextString ts, WholeNumber wn) {
-        AboutCount++;
+        Called(MethodBase.GetCurrentMethod(), actionAbout.TypeCode);
         switch (actionAbout.TypeCode) {
             case AboutTypeCodes.Visible:
                 actionAbout.Visible = !TestInvisibleFlag;
@@ -298,7 +319,7 @@ public class ClassWithActionAbout {
     }
 }
 
-public class ClassWithFieldAbout {
+public class ClassWithFieldAbout : AboutChecker {
     public static bool TestInvisibleFlag;
     public static bool TestUsableFlag;
     public static bool TestValidFlag;
@@ -322,6 +343,7 @@ public class ClassWithFieldAbout {
     public ITitle Title() => Name.Title();
 
     public void aboutName(FieldAbout fieldAbout, TextString name) {
+        Called(MethodBase.GetCurrentMethod(), fieldAbout.TypeCode);
         switch (fieldAbout.TypeCode) {
             case AboutTypeCodes.Visible:
                 fieldAbout.Visible = !TestInvisibleFlag;
@@ -370,7 +392,8 @@ public class ClassWithLinkToNOFClass {
     public virtual ClassWithString LinkToNOFClass { get; set; }
 }
 
-public class ClassWithReferenceProperty : IContainerAware {
+public class ClassWithReferenceProperty : AboutChecker, IContainerAware
+{
     [Key]
     public int Id { get; init; }
 
@@ -395,6 +418,7 @@ public class ClassWithReferenceProperty : IContainerAware {
     }
 
     public void AboutActionUpdateReferenceProperty(ActionAbout actionAbout, ClassWithTextString newReferenceProperty) {
+        Called(MethodBase.GetCurrentMethod(), actionAbout.TypeCode);
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = true;
         }
@@ -410,7 +434,7 @@ public class NOF2ClassWithInterface : IRoleInterface {
     public int Id { get; init; }
 }
 
-public class ClassWithMenu {
+public class ClassWithMenu : AboutChecker {
     public static bool TestInvisibleFlag;
     public static bool TestUsableFlag;
     public static bool TestValidFlag;
@@ -461,6 +485,7 @@ public class ClassWithMenu {
     }
 
     public static void AboutActionMenuActionWithParm(ActionAbout actionAbout, TextString ts) {
+        //Called(MethodBase.GetCurrentMethod(), actionAbout.TypeCode);
         switch (actionAbout.TypeCode) {
             case AboutTypeCodes.Visible:
                 if (TestInvisibleFlag) {
@@ -510,6 +535,7 @@ public class ClassWithMenu {
     public static ClassWithTextString ActionMethodInjectedWithParm(TextString ts, IContainer container) => container.AllInstances<ClassWithTextString>().First();
 
     public static void AboutActionMethodInjectedWithParm(ActionAbout actionAbout, TextString ts, IContainer container) {
+        //Called(MethodBase.GetCurrentMethod(), actionAbout.TypeCode);
         if (actionAbout.TypeCode == AboutTypeCodes.Valid) {
             // make sure container is not null
             var a = container.AllInstances<ClassWithTextString>().First();
@@ -584,7 +610,7 @@ public class ClassWithTimeStamp {
     }
 }
 
-public class ClassWithWholeNumber {
+public class ClassWithWholeNumber : AboutChecker {
     private WholeNumber _wholeNumber;
     public int number;
 
@@ -603,6 +629,7 @@ public class ClassWithWholeNumber {
     }
 
     public void AboutActionUpdateWholeNumber(ActionAbout actionAbout, WholeNumber newWholeNumber) {
+        Called(MethodBase.GetCurrentMethod(), actionAbout.TypeCode);
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }
@@ -613,7 +640,7 @@ public class ClassWithWholeNumber {
     }
 }
 
-public class ClassWithLogical {
+public class ClassWithLogical : AboutChecker {
     private Logical _logical;
     public bool boolean;
 
@@ -632,6 +659,7 @@ public class ClassWithLogical {
     }
 
     public void AboutActionUpdateLogical(ActionAbout actionAbout, Logical newLogical) {
+        Called(MethodBase.GetCurrentMethod(), actionAbout.TypeCode);
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }
@@ -642,7 +670,7 @@ public class ClassWithLogical {
     }
 }
 
-public class ClassWithMoney {
+public class ClassWithMoney : AboutChecker {
     private Money _money;
     public decimal amount;
 
@@ -661,6 +689,7 @@ public class ClassWithMoney {
     }
 
     public void AboutActionUpdateMoney(ActionAbout actionAbout, Money newMoney) {
+        Called(MethodBase.GetCurrentMethod(), actionAbout.TypeCode);
         if (actionAbout.TypeCode is AboutTypeCodes.Visible) {
             actionAbout.Visible = TestVisible;
         }

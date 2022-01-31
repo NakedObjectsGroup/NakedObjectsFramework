@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
@@ -7,25 +8,40 @@ using NOF2.About;
 namespace NOF2.Reflector.Component;
 
 public class AboutCache {
-    private readonly IDictionary<object, IDictionary<MethodInfo, ActionAbout>> cacheDictionary = new Dictionary<object, IDictionary<MethodInfo, ActionAbout>>();
+    private readonly Dictionary<object, Dictionary<MethodInfo, Dictionary<AboutTypeCodes, IAbout>>> cacheDictionary = new();
+    private readonly object staticPlaceholder = new(); 
 
-    private ActionAbout InvokeOrReturnCachedAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
-        //ActionAbout InvokeAbout() {
-        //    var about = new ActionAboutImpl();
-        //    aboutMethod.Invoke(target, new object[] { about });
-        //    return about;
-        //}
-        //if (!cacheDictionary.ContainsKey(target)) {
-        //    cacheDictionary[target] = new Dictionary<MethodInfo, ActionAbout> { { aboutMethod, InvokeAbout() } };
-        //}
-        //else if (!cacheDictionary[target].ContainsKey(aboutMethod)) {
-        //    cacheDictionary[target][aboutMethod] = InvokeAbout();
-        //}
-        cacheDictionary[target][aboutMethod];
+    public IAbout GetOrCacheAbout(object target, MethodInfo aboutMethod, AboutTypeCodes code, Func<IAbout> toCache) {
+        IAbout about;
+        // for static methods use method class
+        target ??= aboutMethod.DeclaringType;
 
-    public static ActionAbout GetActionAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
-        framework.ServiceProvider.GetService<AboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
+        if (cacheDictionary.ContainsKey(target)) {
+            if (cacheDictionary[target].ContainsKey(aboutMethod)) {
+                if (cacheDictionary[target][aboutMethod].ContainsKey(code)) {
+                    about = cacheDictionary[target][aboutMethod][code];
+                }
+                else {
+                    about = toCache();
+                    cacheDictionary[target][aboutMethod][code] = about;
+                }
+            }
+            else {
+                about = toCache();
+                cacheDictionary[target][aboutMethod] = new Dictionary<AboutTypeCodes, IAbout> {
+                    [code] = about
+                };
+            }
+        }
+        else {
+            about = toCache();
+            cacheDictionary[target] = new Dictionary<MethodInfo, Dictionary<AboutTypeCodes, IAbout>> {
+                [aboutMethod] = new() {
+                    [code] = about
+                }
+            };
+        }
 
-    public static ActionAbout GetFieldAbout(INakedFramework framework, MethodInfo aboutMethod, object target) =>
-        framework.ServiceProvider.GetService<AboutCache>()?.InvokeOrReturnCachedAbout(framework, aboutMethod, target);
+        return about;
+    }
 }
