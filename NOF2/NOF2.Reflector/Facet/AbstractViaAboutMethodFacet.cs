@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -15,6 +16,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
 using NOF2.About;
+using NOF2.Reflector.Component;
 
 namespace NOF2.Reflector.Facet;
 
@@ -28,10 +30,12 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
     private Func<object, object[], object> MethodDelegate { get; }
 
     protected MethodInfo Method { get; }
-    protected AboutHelpers.AboutType AboutType { get; }
+    private AboutHelpers.AboutType AboutType { get; }
     public MethodInfo GetMethod() => Method;
 
     public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
+
+    private static AboutCache GetCache(INakedFramework framework) => framework.ServiceProvider.GetService<AboutCache>() ?? throw new InvalidOperationException("Cannot find about cache");
 
     protected IAbout InvokeAboutMethod(INakedFramework framework, object target, AboutTypeCodes typeCode, bool substitute, bool flagNull, params object[] proposedValues) {
         if (target is null && !Method.IsStatic) {
@@ -42,9 +46,13 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
             return null;
         }
 
-        var about = AboutType.AboutFactory(typeCode, framework);
-        MethodDelegate.Invoke(Method, target, Method.GetParameters(framework, about, substitute, proposedValues));
-        return about;
+        IAbout About() {
+            var about = AboutType.AboutFactory(typeCode, framework);
+            MethodDelegate.Invoke(Method, target, Method.GetParameters(framework, about, substitute, proposedValues));
+            return about;
+        }
+        
+        return GetCache(framework).GetOrCacheAbout(target, Method, typeCode, About);
     }
 
     protected override string ToStringValues() => $"method={Method}";
