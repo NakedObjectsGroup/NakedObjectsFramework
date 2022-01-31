@@ -21,18 +21,6 @@ Public Class Teacher
         End Get
     End Property
 
-
-    Public Overridable ReadOnly Property SetsTaught() As ICollection(Of TeachingSet)
-        Get
-            Dim id As Integer = Me.Id
-            Return Container.AllInstances(Of TeachingSet)().Where(Function(s) s.Teacher.Id = id).OrderBy(Function(s) s.Subject.Name).ThenBy(Function(s) s.YearGroup).ToList()
-        End Get
-    End Property
-
-
-
-    Private mySetsTaught As InternalCollection
-
     'TODO <TableView(False, "Subject", "YearGroup", "SetName")>
     Public Function ActionSetsTaught() As IQueryable(Of TeachingSet)
         Return Container.AllInstances(Of TeachingSet)().Where(Function(s) s.Teacher.Id = Id).OrderBy(Function(s) s.Subject.mappedName).ThenBy(Function(s) s.mappedYearGroup)
