@@ -45,7 +45,7 @@ public static class NOF2Extensions {
         frameworkOptions.Services.AddSingleton<ITypeList>(p => legacyObjectReflectorConfiguration);
         frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 
-        frameworkOptions.Services.AddDefaultScoped<AboutCache, AboutCache>();
+        frameworkOptions.Services.AddDefaultScoped<IAboutCache, AboutCache>();
         frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NOF2ObjectContainerInjector>();
         frameworkOptions.Services.AddDefaultSingleton<IAboutFactory, AboutFactory>();
 
