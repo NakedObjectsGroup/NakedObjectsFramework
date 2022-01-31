@@ -24,7 +24,8 @@
 
         Public ReadOnly Property $Name$ As InternalCollection
             Get
-                Return If(my$Name$, New InternalCollection(Of $DomainType$)(mapped$Name$))
+                my$Name$ = If(my$Name$, New InternalCollection(Of $DomainType$)(mapped$Name$))
+                Return my$Name$
             End Get
         End Property]]>
       </Code>
