@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta01" />
-    <PackageReference Include="NakedFramework.Server" Version="13.0.0-beta01" />
+    <PackageReference Include="NakedFramework" Version="13.0.0-beta01" />
   </ItemGroup>
 
 

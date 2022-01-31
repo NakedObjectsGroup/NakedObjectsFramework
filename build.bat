@@ -28,11 +28,11 @@ XCOPY ".\Programming Model\NakedObjects\NakedObjects.ProgrammingModel.Package\bi
 XCOPY ".\Programming Model\NakedFunctions\NakedFunctions.ProgrammingModel.Package\bin\Debug\*.nupkg"  %nugetPackagePath% /y
 XCOPY ".\Programming Model\NOF2\NOF2.ProgrammingModel.Package\bin\Debug\*.nupkg"  %nugetPackagePath% /y
 
-dotnet build NakedFramework.Server.sln -c Debug
+dotnet build NakedFramework.sln -c Debug
 
-dotnet pack NakedFramework\NakedFramework.Server.Package\NakedFramework.Server.Package.csproj --include-symbols --include-source
+dotnet pack NakedFramework\NakedFramework.Package\NakedFramework.Package.csproj --include-symbols --include-source
 
-XCOPY ".\NakedFramework\NakedFramework.Server.Package\bin\Debug\*.nupkg"  %nugetPackagePath% /y
+XCOPY ".\NakedFramework\NakedFramework.Package\bin\Debug\*.nupkg"  %nugetPackagePath% /y
 
 dotnet build NakedObjects.Server.sln -c Debug
 dotnet build NakedFunctions.Server.sln -c Debug
