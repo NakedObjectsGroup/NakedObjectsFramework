@@ -5,6 +5,6 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <NuspecFile>NakedFunctions.Reflector.nuspec</NuspecFile>
+    <NuspecFile>NakedFunctions.Server.nuspec</NuspecFile>
   </PropertyGroup>
 </Project>
