@@ -16,9 +16,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
-using NakedObjects.Reflector.Extensions;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Menu;
+using NOF2.Reflector.Extensions;
+using NOF2.Demo.AppLib;
 
 namespace NakedObjects.Rest.App.Demo {
     public class Startup {
@@ -45,13 +46,12 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(frameworkOptions => {
-                frameworkOptions.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                // frameworkOptions.AddEF6Persistor(persistorOptions => { persistorOptions.ContextInstallers = new[] { ModelConfig. }; });
                 frameworkOptions.AddEFCorePersistor(persistorOptions => { persistorOptions.ContextCreators = new[] { ModelConfig.EFCoreDbContextCreator }; });
                 frameworkOptions.AddRestfulObjects(restOptions => {  });
-                frameworkOptions.AddNakedObjects(appOptions => {
+                frameworkOptions.AddNOF2(appOptions => {
                     appOptions.DomainModelTypes = ModelConfig.DomainModelTypes();
                     appOptions.DomainModelServices = ModelConfig.DomainModelServices();
+                    appOptions.ValueHolderTypes = AppLibConfig.ValueHolderTypes;
                 });
             });
             services.AddCors(corsOptions => {

@@ -1,16 +1,12 @@
-﻿Public Class StudentRepository
-    Public Property Container As IContainer
+﻿Namespace Services
+    Public Class StudentRepository
+        Implements IContainerAware
 
-    Public Function CreateNewStudent() As Student
-        Return Container.CreateTransientInstance(Of Student)()
-    End Function
+        Public Property Container As IContainer Implements IContainerAware.Container
 
-    Public Function AllStudents() As IQueryable(Of Student)
-        Return Container.AllInstances(Of Student)()
-    End Function
+        Public Function AllStudents() As IQueryable(Of Student)
+            Return Container.AllInstances(Of Student)
+        End Function
 
-    Public Function FindStudentByName(ByVal name As String) As IQueryable(Of Student)
-        Return AllStudents().Where(Function(c) c.FullName.ToUpper().Contains(name.ToUpper()))
-    End Function
-End Class
-
+    End Class
+End Namespace

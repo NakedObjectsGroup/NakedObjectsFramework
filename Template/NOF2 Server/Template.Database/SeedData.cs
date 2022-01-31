@@ -67,29 +67,29 @@ namespace Template.Database
 
         private static Teacher CreateNewTeacher(int id, string name, ModelBuilder modelBuilder)
         {
-            var t = new Teacher() { Id = id, FullName = name };
+            var t = new Teacher() { Id = id, mappedFullName = name };
             modelBuilder.Entity<Teacher>().HasData(t);
             return t;
         }
 
         private static Student CreateNewStudent(int id, string name, int year, ModelBuilder modelBuilder)
         {
-            var stu = new Student() { Id = id, FullName = name, CurrentYearGroup = year };
+            var stu = new Student() { Id = id, mappedFullName = name, mappedCurrentYearGroup = year };
             modelBuilder.Entity<Student>().HasData(stu);
             return stu;
         }
 
         private static Subject CreateNewSubject(int id, string name, ModelBuilder modelBuilder)
         {
-            var sub = new Subject() { Id = id, Name = name };
+            var sub = new Subject() { Id = id, mappedName = name };
             modelBuilder.Entity<Subject>().HasData(sub);
             return sub;
         }
 
-        private static Set CreateNewSet(int id, string name, Subject subject, int yearGroup, Teacher teacher, ModelBuilder modelBuilder)
+        private static TeachingSet CreateNewSet(int id, string name, Subject subject, int yearGroup, Teacher teacher, ModelBuilder modelBuilder)
         {
-            var set = new Set() { Id = id, SetName = name, Subject = subject, YearGroup = yearGroup, Teacher = teacher };
-            modelBuilder.Entity<Set>().HasData(set);
+            var set = new TeachingSet() { Id = id, mappedSetName = name, Subject = subject, mappedYearGroup = yearGroup, Teacher = teacher };
+            modelBuilder.Entity<TeachingSet>().HasData(set);
             return set;
         }
 
