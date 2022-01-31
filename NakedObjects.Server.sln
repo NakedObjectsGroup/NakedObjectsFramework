@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Snapshot.Xml",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Core", "NakedObjects\NakedObjects.Core\NakedObjects.Core.csproj", "{1323E93E-9EC9-47B0-A41C-C9DC787225B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector.Package", "NakedObjects\NakedObjects.Reflector.Package\NakedObjects.Reflector.Package.csproj", "{8BE89343-ACA1-404F-827D-CC03A7269432}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Server.Package", "NakedObjects\NakedObjects.Server.Package\NakedObjects.Server.Package.csproj", "{9E6CA269-85C1-4F0C-88F6-5438C0975E91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,8 +29,8 @@ Global
 		{1323E93E-9EC9-47B0-A41C-C9DC787225B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1323E93E-9EC9-47B0-A41C-C9DC787225B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1323E93E-9EC9-47B0-A41C-C9DC787225B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8BE89343-ACA1-404F-827D-CC03A7269432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8BE89343-ACA1-404F-827D-CC03A7269432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E6CA269-85C1-4F0C-88F6-5438C0975E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E6CA269-85C1-4F0C-88F6-5438C0975E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
