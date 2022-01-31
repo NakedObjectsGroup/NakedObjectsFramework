@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-using NakedFramework.Architecture.Framework;
 using NOF2.About;
 
 namespace NOF2.Reflector.Component;
 
-public class AboutCache {
+public class AboutCache : IAboutCache {
     private readonly Dictionary<object, Dictionary<MethodInfo, Dictionary<AboutTypeCodes, IAbout>>> cacheDictionary = new();
-    private readonly object staticPlaceholder = new(); 
 
     public IAbout GetOrCacheAbout(object target, MethodInfo aboutMethod, AboutTypeCodes code, Func<IAbout> toCache) {
         IAbout about;
