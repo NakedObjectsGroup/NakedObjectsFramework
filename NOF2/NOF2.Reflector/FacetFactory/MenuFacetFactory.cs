@@ -21,7 +21,6 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
 using NOF2.Menu;
-using NOF2.Reflector.Facet;
 using NOF2.Reflector.Helpers;
 using MenuFacetViaMethod = NOF2.Reflector.Facet.MenuFacetViaMethod;
 

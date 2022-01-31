@@ -51,7 +51,7 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
             MethodDelegate.Invoke(Method, target, Method.GetParameters(framework, about, substitute, proposedValues));
             return about;
         }
-        
+
         return GetCache(framework).GetOrCacheAbout(target, Method, typeCode, About);
     }
 

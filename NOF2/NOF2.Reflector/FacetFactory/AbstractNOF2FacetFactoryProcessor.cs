@@ -20,8 +20,8 @@ namespace NOF2.Reflector.FacetFactory;
 
 public abstract class AbstractNOF2FacetFactoryProcessor : FacetFactoryAbstract, INOF2FacetFactoryProcessor {
     protected AbstractNOF2FacetFactoryProcessor(int numericOrder,
-                                          ILoggerFactory loggerFactory,
-                                          FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
+                                                ILoggerFactory loggerFactory,
+                                                FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
 
     public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 

@@ -15,9 +15,9 @@ namespace NOF2.Reflector.Configuration;
 [Serializable]
 public class NOF2ReflectorConfiguration : INOF2ReflectorConfiguration {
     public NOF2ReflectorConfiguration(Type[] typesToIntrospect,
-                                              Type[] services,
-                                              Type[] valueHolderTypes,
-                                              bool concurrencyChecking = true) {
+                                      Type[] services,
+                                      Type[] valueHolderTypes,
+                                      bool concurrencyChecking = true) {
         TypesToIntrospect = typesToIntrospect;
         Services = services;
         ValueHolderTypes = valueHolderTypes;

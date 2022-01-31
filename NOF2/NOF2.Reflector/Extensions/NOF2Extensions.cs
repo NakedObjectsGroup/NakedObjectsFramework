@@ -41,7 +41,7 @@ public static class NOF2Extensions {
         frameworkOptions.Services.AddSingleton(typeof(IReflectorOrder<>), typeof(NOF2ReflectorOrder<>));
         frameworkOptions.Services.AddSingleton<IReflector, NOF2Reflector>();
         var legacyObjectReflectorConfiguration = NOF2ReflectorConfig(options);
-        frameworkOptions.Services.AddSingleton<INOF2ReflectorConfiguration>(p => legacyObjectReflectorConfiguration);
+        frameworkOptions.Services.AddSingleton(p => legacyObjectReflectorConfiguration);
         frameworkOptions.Services.AddSingleton<ITypeList>(p => legacyObjectReflectorConfiguration);
         frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
 

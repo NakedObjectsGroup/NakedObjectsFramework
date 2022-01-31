@@ -23,12 +23,12 @@ public sealed class NOF2Reflector : AbstractParallelReflector {
     private readonly INOF2ReflectorConfiguration inof2ReflectorConfiguration;
 
     public NOF2Reflector(NOF2FacetFactorySet NOF2FacetFactorySet,
-                                 NOF2ObjectClassStrategy nof2ObjectClassStrategy,
-                                 INOF2ReflectorConfiguration inof2ReflectorConfiguration,
-                                 IEnumerable<IFacetDecorator> facetDecorators,
-                                 IReflectorOrder<NOF2Reflector> reflectorOrder,
-                                 ILoggerFactory loggerFactory,
-                                 ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
+                         NOF2ObjectClassStrategy nof2ObjectClassStrategy,
+                         INOF2ReflectorConfiguration inof2ReflectorConfiguration,
+                         IEnumerable<IFacetDecorator> facetDecorators,
+                         IReflectorOrder<NOF2Reflector> reflectorOrder,
+                         ILoggerFactory loggerFactory,
+                         ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
         this.inof2ReflectorConfiguration = inof2ReflectorConfiguration;
         FacetFactorySet = NOF2FacetFactorySet;
         ClassStrategy = nof2ObjectClassStrategy;

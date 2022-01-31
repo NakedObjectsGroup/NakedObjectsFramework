@@ -6,18 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
-using System.Linq;
-using NOF2.Collection;
+using System.Reflection;
+using NOF2.About;
 
-namespace NOF2.Reflector.Configuration;
+namespace NOF2.Reflector.Component;
 
-public static class NOF2ReflectorDefaults {
-    public static readonly Type[] DefaultNOF2Types = {
-        typeof(InternalCollection),
-        typeof(InternalCollection<>),
-        typeof(IEnumerable),
-        typeof(ArrayList),
-        typeof(IQueryable<>)
-    };
+public class NoOpAboutCache : IAboutCache {
+    public IAbout GetOrCacheAbout(object target, MethodInfo aboutMethod, AboutTypeCodes code, Func<IAbout> toCache) => toCache();
 }

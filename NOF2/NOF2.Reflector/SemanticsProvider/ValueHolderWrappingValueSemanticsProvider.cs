@@ -24,9 +24,8 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
     private T valueHolderinstance;
 
     public ValueHolderWrappingValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) {
+        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) =>
         valueHolderinstance = new T();
-    }
 
     public static Type Type => typeof(IValueSemanticsProvider);
 
@@ -45,5 +44,5 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
 
     public override object Value(INakedObjectAdapter adapter, string format = null) => adapter.GetDomainObject<T>().Display(format);
 
-    public override string ToString() => $"ValueHolderWrappingValueSemanticsProvider<{typeof(T)},{typeof (TU)}>";
+    public override string ToString() => $"ValueHolderWrappingValueSemanticsProvider<{typeof(T)},{typeof(TU)}>";
 }
