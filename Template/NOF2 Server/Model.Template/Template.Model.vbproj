@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Template.Model</RootNamespace>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0-beta01" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Test\NOF2.Demo.AppLib\NOF2.Demo.AppLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Import Include="NOF2.About" />
+    <Import Include="NOF2.Collection" />
+    <Import Include="NOF2.Container" />
+    <Import Include="NOF2.Demo.AppLib" />
+  </ItemGroup>
+
+</Project>
