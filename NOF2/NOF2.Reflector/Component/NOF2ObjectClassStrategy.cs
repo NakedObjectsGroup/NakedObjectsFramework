@@ -25,11 +25,14 @@ public class NOF2ObjectClassStrategy : AbstractClassStrategy {
 
     protected override bool IsTypeIgnored(Type type) => false; //type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
 
+    private bool IsRecognizedGenericType(Type type) => type.IsConstructedGenericType && IsTypeExplicitlyRequested(type.GetGenericTypeDefinition()) && type.GetGenericArguments().All(IsTypeExplicitlyRequested);
+
     protected override bool IsTypeExplicitlyRequested(Type type) {
         var services = config.Services.ToArray();
         return NOF2ReflectorDefaults.DefaultNOF2Types.Contains(type) ||
                config.ValueHolderTypes.Any(t => t == type) ||
                config.TypesToIntrospect.Any(t => t == type) ||
+               IsRecognizedGenericType(type) ||
                services.Any(t => t == type);
     }
 

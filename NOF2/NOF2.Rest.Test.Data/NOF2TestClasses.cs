@@ -755,3 +755,17 @@ public class ClassWithOrderedActions {
         return menu;
     }
 }
+
+public class ClassWithInvalidNames
+{
+    [Key]
+    public int Id { get; init; }
+
+    public string actionInvalid1() => "";
+
+    public void actionInvalid2(string p) { }
+
+    public void actionInvalid3(IContainer p) { }
+
+    public IContainer actionInvalid4() => null;
+}
