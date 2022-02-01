@@ -32,7 +32,7 @@ public class OidFacade : IOidFacade {
         return ReferenceEquals(this, other) || Equals(other.oid, oid);
     }
 
-    public override int GetHashCode() => oid != null ? oid.GetHashCode() : 0;
+    public override int GetHashCode() => oid.GetHashCode();
 
     public override string ToString() => oid.ToString();
 }

@@ -80,7 +80,6 @@ public class NOF2Test : AcceptanceTestCase {
             options.DomainModelTypes = NOF2Types;
             options.DomainModelServices = NOF2Services;
             options.ValueHolderTypes = NOF2ValueHolders;
-            options.NoValidate = true;
         };
 
     protected virtual Action<NakedFrameworkOptions> AddNOF2 => builder => builder.AddNOF2(NOF2Options);
