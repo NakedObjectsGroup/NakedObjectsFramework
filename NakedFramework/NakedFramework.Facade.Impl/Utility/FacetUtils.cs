@@ -110,4 +110,6 @@ public static class FacetUtils {
         var rangeFacet = spec.GetFacet<IRangeFacet>();
         return rangeFacet == null ? null : (rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
     }
+
+    public static bool IsMandatory(this ISpecification spec) => spec.GetFacet<IMandatoryFacet>().IsMandatory;
 }
