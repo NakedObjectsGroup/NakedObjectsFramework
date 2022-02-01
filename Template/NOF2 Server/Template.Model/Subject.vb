@@ -6,7 +6,7 @@ Public Class Subject
 
     Public Overridable Property Id As Integer
 
-    Public mappedName As String
+    Public Property mappedName As String
     Private myName As TextString
 
     <DemoProperty(Order:=1)>
@@ -20,6 +20,8 @@ Public Class Subject
     Public Function Title() As Title
         Return New Title(Name)
     End Function
+
+
 
 End Class
 

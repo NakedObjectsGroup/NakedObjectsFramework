@@ -10,7 +10,7 @@ Public Class Teacher
 
     Public Property Id As Integer
 
-    Public mappedFullName As String
+    Public Property mappedFullName As String
     Private myFullName As TextString
 
     <DemoProperty(Order:=1)>
@@ -25,6 +25,10 @@ Public Class Teacher
     Public Function ActionSetsTaught() As IQueryable(Of TeachingSet)
         Return Container.AllInstances(Of TeachingSet)().Where(Function(s) s.Teacher.Id = Id).OrderBy(Function(s) s.Subject.mappedName).ThenBy(Function(s) s.mappedYearGroup)
     End Function
+
+    Public Sub ActionSave()
+        Container.MakePersistent(Me)
+    End Sub
 
     Public Overrides Function ToString() As String
         Return FullName.Value

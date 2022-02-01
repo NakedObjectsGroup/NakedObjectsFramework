@@ -5,8 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NOF2.Demo.AppLib;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Interface;
@@ -14,15 +12,13 @@ using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 using NakedFramework.Rest.Model;
 
-
-namespace NOF2.Rest.App.Demo.Controllers {
+namespace NakedObjects.Rest.App.Demo {
     //[Authorize]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade,
                                         ILogger<RestfulObjectsController> logger,
                                         ILoggerFactory loggerFactory,
-                                        IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) =>
-            ThreadLocals.InitializeContainer(frameworkFacade.GetScopedServiceProvider);
+                                        IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) { }
 
         [HttpGet]
         public override ActionResult GetHome() => base.GetHome();
@@ -116,7 +112,5 @@ namespace NOF2.Rest.App.Demo.Controllers {
 
         [HttpGet]
         public override ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) => base.GetCollectionValue(domainType, instanceId, propertyName);
-
-     
     }
 }

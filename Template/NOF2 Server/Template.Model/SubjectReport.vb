@@ -34,7 +34,7 @@ Public Class SubjectReport
     End Function
 
 
-    Public mappedDate As Date
+    Public Property mappedDate As Date
     Private myDate As NODate
 
     <DemoProperty(Order:=5)>
@@ -50,7 +50,7 @@ Public Class SubjectReport
         Return DateTime.Today
     End Function
 
-    Public mappedNotes As String
+    Public Property mappedNotes As String
     Private myNotes As MultiLineTextString
 
     <DemoProperty(Order:=6)>

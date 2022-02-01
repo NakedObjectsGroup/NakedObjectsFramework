@@ -13,8 +13,8 @@ namespace Template.Database
             builder.HasKey(t => t.Id);
 
             // Ignores
-            builder
-                .Ignore(t => t.Container);
+            builder.Ignore(t => t.Container);
+            builder.Property(t => t.mappedFullName);
 
           
         }

@@ -4,7 +4,7 @@
     Public Overridable Property Id As Integer
 
 
-    Public mappedSetName As String
+    Public Property mappedSetName As String
     Private mySetName As TextString
 
     <DemoProperty(Order:=1)>
@@ -19,7 +19,7 @@
     <DemoProperty(Order:=2)>
     Public Overridable Property Subject As Subject
 
-    Public mappedYearGroup As Integer
+    Public Property mappedYearGroup As Integer
     Private myYearGroup As WholeNumber
 
     <DemoProperty(Order:=3)> '< Range(9, 13)>

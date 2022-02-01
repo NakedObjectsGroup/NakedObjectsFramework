@@ -4,13 +4,13 @@
         Return ThreadLocals.Container.CreateTransientInstance(Of Student)()
     End Function
 
-    Public Shared Function ActionAllStudents() As IQueryable(Of Student)
-        Return ThreadLocals.Container.AllInstances(Of Student)()
+    Public Shared Function ActionAllStudents(container As IContainer) As IQueryable(Of Student)
+        Return container.AllInstances(Of Student)()
     End Function
 
-    Public Shared Function ActionFindStudentByName(ByVal name As TextString) As IQueryable(Of Student)
+    Public Shared Function ActionFindStudentByName(ByVal name As TextString, container As IContainer) As IQueryable(Of Student)
         Dim match = name.Value.ToUpper()
-        Return From s In ActionAllStudents()
+        Return From s In ActionAllStudents(container)
                Where s.mappedFullName.ToUpper().Contains(match)
     End Function
 

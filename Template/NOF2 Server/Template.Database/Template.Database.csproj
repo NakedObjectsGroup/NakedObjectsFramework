@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Model.Template\Template.Model.vbproj" />
+    <ProjectReference Include="..\Template.Model\Template.Model.vbproj" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@
 
     Public Overridable Property Id As Integer
 
-    Public mappedFullName As String
+    Public Property mappedFullName As String
     Private myFullName As TextString
 
     <DemoProperty(Order:=1)>
@@ -16,7 +16,7 @@
         End Get
     End Property
 
-    Public mappedCurrentYearGroup As Integer
+    Public Property mappedCurrentYearGroup As Integer
     Private myCurrentYearGroup As WholeNumber
 
     <DemoProperty(Order:=2)> '<Range(9, 13)>

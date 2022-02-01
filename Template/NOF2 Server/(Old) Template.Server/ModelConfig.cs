@@ -6,7 +6,7 @@ using System.Reflection;
 using Template.Database;
 using Template.Model;
 
-namespace Template.Server
+namespace NakedObjects.Rest.App.Demo
 {
     public static class ModelConfig
     {
@@ -24,7 +24,7 @@ namespace Template.Server
             c =>
             {
                 var db = new ExampleDbContext(c.GetConnectionString("ExampleCS"));
-                db.Delete();
+                //db.Delete();
                 db.Create();
                 return db;
             };
