@@ -53,7 +53,8 @@ public class NOF2Test : AcceptanceTestCase {
         typeof(ClassWithOrderedActions),
         typeof(ClassWithBounded),
         typeof(ClassToPersist),
-        typeof(ClassWithAnnotations)
+        typeof(ClassWithAnnotations),
+        typeof(ClassWithInvalidNames)
     };
 
     protected Type[] NOF2Services { get; } = { typeof(SimpleService) };
@@ -1745,5 +1746,22 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual("False", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewTitle"].ToString());
         Assert.AreEqual("three", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][0].ToString());
         Assert.AreEqual("four", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][1].ToString());
+    }
+
+
+    [Test]
+    public void TestGetObjectWithInvalidNames()
+    {
+        ClassWithActionAbout.ResetTest();
+
+        var api = Api();
+        var result = api.GetObject(FullName<ClassWithInvalidNames>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
+       
     }
 }

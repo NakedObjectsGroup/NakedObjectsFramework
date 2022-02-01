@@ -50,6 +50,8 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<ClassToPersist> ClassesToPersist { get; set; }
     public DbSet<ClassWithAnnotations> ClassesWithAnnotations { get; set; }
 
+    public DbSet<ClassWithInvalidNames> ClassWithInvalidNames { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
         optionsBuilder.UseLazyLoadingProxies();
@@ -184,6 +186,8 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithBounded>().HasData(new ClassWithBounded { Id = 2, name = "data2" });
 
         modelBuilder.Entity<ClassWithAnnotations>().HasData(new ClassWithAnnotations { Id = 1, name = "data1" });
+
+        modelBuilder.Entity<ClassWithInvalidNames>().HasData(new ClassWithInvalidNames { Id = 1 });
     }
 }
 
