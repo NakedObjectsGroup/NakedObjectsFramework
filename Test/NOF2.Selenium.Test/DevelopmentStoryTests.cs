@@ -569,7 +569,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void ActionUsabilityBasedOnObjectState()
         {
-            var order = AccessInstanceWithTitle("SalesOrderHeader--43660", "SO43660");
+            var order = AccessInstanceWithTitle("SalesOrderHeader--43670", "SO43670");
             order.GetProperty("Comment").AssertValueIs("");
             order.OpenActions().GetActionWithoutDialog("Clear Comments")
                .AssertIsDisabled("Comment field is already clear");
