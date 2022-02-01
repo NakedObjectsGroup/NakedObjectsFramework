@@ -20,7 +20,7 @@ public class ConsentFacade : IConsentFacade {
 
     private bool Equals(ConsentFacade other) => other is not null && (ReferenceEquals(this, other) || Equals(other.consent, consent));
 
-    public override int GetHashCode() => consent != null ? consent.GetHashCode() : 0;
+    public override int GetHashCode() => consent.GetHashCode();
 
     #region IConsentFacade Members
 

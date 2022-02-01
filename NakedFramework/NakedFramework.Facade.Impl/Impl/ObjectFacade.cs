@@ -69,7 +69,7 @@ public class ObjectFacade : IObjectFacade {
         return ReferenceEquals(this, other) || Equals(other.WrappedNakedObject, WrappedNakedObject);
     }
 
-    public override int GetHashCode() =>  WrappedNakedObject.GetHashCode();
+    public override int GetHashCode() => WrappedNakedObject.GetHashCode();
 
     #region IObjectFacade Members
 
@@ -90,7 +90,6 @@ public class ObjectFacade : IObjectFacade {
     private PropertyInfo[] cachedKeys;
     private bool? cachedIsViewModel;
 
-
     public ITypeFacade Specification => cachedSpecification ??= new TypeFacade(WrappedNakedObject.Spec, FrameworkFacade, framework);
 
     private ITypeFacade GetElementSpec() {
@@ -102,13 +101,13 @@ public class ObjectFacade : IObjectFacade {
 
     public ITypeFacade ElementSpecification => cachedElementSpecification ??= GetElementSpec();
 
-    public string PresentationHint =>  cachedPresentationHint ??= WrappedNakedObject.Spec.GetFacet<IPresentationHintFacet>()?.Value ?? "";
+    public string PresentationHint => cachedPresentationHint ??= WrappedNakedObject.Spec.GetFacet<IPresentationHintFacet>()?.Value ?? "";
 
     public (string, string)? RestExtension => (cachedRestExtension ??= FacadeUtils.NullCache(WrappedNakedObject.Spec.GetRestExtension())).Value;
 
     public object Object => WrappedNakedObject.Object;
 
-    public IEnumerable<IObjectFacade> ToEnumerable() =>  cachedToEnumerable ??= WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
+    public IEnumerable<IObjectFacade> ToEnumerable() => cachedToEnumerable ??= WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
 
     public IObjectFacade Page(int page, int size, bool forceEnumerable) => new ObjectFacade(Page(WrappedNakedObject, page, size, forceEnumerable), FrameworkFacade, framework);
 

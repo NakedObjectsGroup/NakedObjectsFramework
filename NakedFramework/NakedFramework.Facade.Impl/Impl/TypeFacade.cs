@@ -38,117 +38,124 @@ public class TypeFacade : ITypeFacade {
         return ReferenceEquals(this, other) || Equals(other.WrappedValue, WrappedValue);
     }
 
-    public override int GetHashCode() => WrappedValue != null ? WrappedValue.GetHashCode() : 0;
+    public override int GetHashCode() => WrappedValue.GetHashCode();
 
     #region ITypeFacade Members
 
-    public bool IsParseable => WrappedValue.IsParseable;
+    private bool? cachedIsParseable;
+    private bool? cachedIsQueryable;
+    private bool? cachedIsVoid;
+    private bool? cachedIsASet;
+    private bool? cachedIsAggregated;
+    private bool? cachedIsStatic;
+    private bool? cachedIsImage;
+    private bool? cachedIsFileAttachment;
+    private bool? cachedIsFile;
+    private bool? cachedIsDate;
+    private bool? cachedIsTime;
+    private bool? cachedIsNumber;
+    private bool? cachedIsEnum;
+    private bool? cachedIsBoolean;
+    private bool? cachedIsCollection;
+    private bool? cachedIsObject;
+    private bool? cachedIsAlwaysImmutable;
+    private bool? cachedIsImmutableOncePersisted;
+    private bool? cachedIsComplexType;
+    private bool? cachedIsStream;
+    private string cachedFullName;
+    private string cachedShortName;
+    private string cachedSingularName;
+    private string cachedPluralName;
+    private string cachedDescription;
+    private IAssociationFacade[] cachedProperties;
+    private MenuFacade cachedMenu;
+    private IActionFacade[] cachedActionLeafNodes;
+    private IActionFacade[] cachedCollectionContributedActions;
+    private Type cachedUnderlyingType;
+    private string cachedPresentationHint;
 
-    public bool IsQueryable => WrappedValue.IsQueryable;
+    public bool IsParseable => cachedIsParseable ??= WrappedValue.IsParseable;
+
+    public bool IsQueryable => cachedIsQueryable ??= WrappedValue.IsQueryable;
 
     public bool IsService => WrappedValue is IServiceSpec;
 
-    public bool IsVoid => WrappedValue.IsVoid;
+    public bool IsVoid => cachedIsVoid ??= WrappedValue.IsVoid;
 
-    public bool IsASet => WrappedValue.IsASet;
+    public bool IsASet => cachedIsASet ??= WrappedValue.IsASet;
 
-    public bool IsAggregated => WrappedValue.IsAggregated;
+    public bool IsAggregated => cachedIsAggregated ??= WrappedValue.IsAggregated;
 
-    public bool IsStatic => WrappedValue.IsStatic;
+    public bool IsStatic => cachedIsStatic ??= WrappedValue.IsStatic;
 
-    public bool IsImage {
-        get {
-            var imageSpec = framework.MetamodelManager.GetSpecification(typeof(Image));
-            return WrappedValue.IsOfType(imageSpec);
-        }
-    }
+    public bool IsImage => cachedIsImage ??= WrappedValue.IsOfType(framework.MetamodelManager.GetSpecification(typeof(Image)));
 
-    public bool IsFileAttachment {
-        get {
-            var fileSpec = framework.MetamodelManager.GetSpecification(typeof(FileAttachment));
-            return WrappedValue.IsOfType(fileSpec);
-        }
-    }
+    public bool IsFileAttachment => cachedIsFileAttachment ??= WrappedValue.IsOfType(framework.MetamodelManager.GetSpecification(typeof(FileAttachment)));
 
-    public bool IsFile => WrappedValue.IsFile(framework);
+    public bool IsFile => cachedIsFile ??= WrappedValue.IsFile(framework);
 
     public bool IsDateTime => FullName == "System.DateTime";
 
-    public bool IsDate => WrappedValue.ContainsFacet<IDateValueFacet>();
+    public bool IsDate => cachedIsDate ??= WrappedValue.ContainsFacet<IDateValueFacet>();
 
-    public bool IsTime => WrappedValue.ContainsFacet<ITimeValueFacet>();
+    public bool IsTime => cachedIsTime ??= WrappedValue.ContainsFacet<ITimeValueFacet>();
 
-    public bool IsNumber => WrappedValue.ContainsFacet<IIntegerValueFacet>();
+    public bool IsNumber => cachedIsNumber ??= WrappedValue.ContainsFacet<IIntegerValueFacet>();
 
-    public string FullName => WrappedValue.FullName;
+    public bool IsEnum => cachedIsEnum ??= WrappedValue.ContainsFacet<IEnumValueFacet>();
 
-    public string ShortName => WrappedValue.ShortName;
+    public bool IsBoolean => cachedIsBoolean ??= WrappedValue.ContainsFacet<IBooleanValueFacet>();
 
-    public bool IsCollection => WrappedValue.IsCollection && !WrappedValue.IsParseable;
+    public bool IsCollection => cachedIsCollection ??= WrappedValue.IsCollection && !WrappedValue.IsParseable;
 
-    public bool IsObject => WrappedValue.IsObject;
+    public bool IsObject => cachedIsObject ??= WrappedValue.IsObject;
 
-    public string SingularName => WrappedValue.SingularName;
+    public bool IsAlwaysImmutable => cachedIsAlwaysImmutable ??= WrappedValue.GetFacet<IImmutableFacet>() is { Value: WhenTo.Always };
 
-    public string PluralName => WrappedValue.PluralName;
+    public bool IsImmutableOncePersisted => cachedIsImmutableOncePersisted ??= WrappedValue.GetFacet<IImmutableFacet>() is { Value: WhenTo.OncePersisted };
 
-    public string Description(IObjectFacade objectFacade) => WrappedValue.Description(objectFacade.WrappedAdapter());
+    public bool IsComplexType => cachedIsComplexType ??= WrappedValue.ContainsFacet<IComplexTypeFacet>();
 
-    public bool IsEnum => WrappedValue.ContainsFacet<IEnumValueFacet>();
+    public bool IsStream => cachedIsStream ??= WrappedValue.ContainsFacet<IFromStreamFacet>();
 
-    public bool IsBoolean => WrappedValue.ContainsFacet<IBooleanValueFacet>();
+    public string FullName => cachedFullName ??= WrappedValue.FullName;
 
-    public bool IsAlwaysImmutable {
-        get {
-            var facet = WrappedValue.GetFacet<IImmutableFacet>();
-            return facet is { Value: WhenTo.Always };
-        }
-    }
+    public string ShortName => cachedShortName ??= WrappedValue.ShortName;
 
-    public bool IsImmutableOncePersisted {
-        get {
-            var facet = WrappedValue.GetFacet<IImmutableFacet>();
-            return facet is { Value: WhenTo.OncePersisted };
-        }
-    }
+    public string SingularName => cachedSingularName ??= WrappedValue.SingularName;
 
-    public bool IsComplexType => WrappedValue.ContainsFacet<IComplexTypeFacet>();
+    public string PluralName => cachedPluralName ??= WrappedValue.PluralName;
+
+    public string Description(IObjectFacade objectFacade) => cachedDescription ??= WrappedValue.Description(objectFacade.WrappedAdapter());
 
     public IAssociationFacade[] Properties =>
-        WrappedValue is IObjectSpec objectSpec
+        cachedProperties ??= WrappedValue is IObjectSpec objectSpec
             ? objectSpec.Properties.Select(p => new AssociationFacade(p, FrameworkFacade, framework)).Cast<IAssociationFacade>().ToArray()
             : Array.Empty<IAssociationFacade>();
 
-    public IMenuFacade Menu => new MenuFacade(WrappedValue.Menu, FrameworkFacade, framework);
+    public IMenuFacade Menu => cachedMenu ??= new MenuFacade(WrappedValue.Menu, FrameworkFacade, framework);
 
-    public bool IsImmutable(IObjectFacade objectFacade) => WrappedValue.IsAlwaysImmutable() || WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient;
+    public bool IsImmutable(IObjectFacade objectFacade) => IsAlwaysImmutable || WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient;
 
-    public IActionFacade[] GetActionLeafNodes() {
-        var actionSpecs = FacadeUtils.GetActionsFromSpec(WrappedValue);
-        return actionSpecs.Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray();
-    }
+    public IActionFacade[] GetActionLeafNodes() =>
+        cachedActionLeafNodes ??= FacadeUtils.GetActionsFromSpec(WrappedValue).Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray();
 
     public ITypeFacade GetElementType(IObjectFacade objectFacade) {
-        if (IsCollection) {
+        ITypeFacade ElementType() {
             var introspectableSpecification = WrappedValue.GetFacet<ITypeOfFacet>().GetValueSpec(((ObjectFacade)objectFacade).WrappedNakedObject, framework.MetamodelManager.Metamodel);
             var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
             return new TypeFacade(elementSpec, FrameworkFacade, framework);
         }
 
-        return null;
+        return IsCollection ? ElementType() : null;
     }
 
     public bool IsOfType(ITypeFacade otherSpec) => WrappedValue.IsOfType(((TypeFacade)otherSpec).WrappedValue);
 
-    public Type GetUnderlyingType() => WrappedValue.GetFacet<ITypeFacet>().TypeOrUnderlyingType;
+    public Type GetUnderlyingType() => cachedUnderlyingType ??= WrappedValue.GetFacet<ITypeFacet>().TypeOrUnderlyingType;
 
-    public IActionFacade[] GetCollectionContributedActions() {
-        if (WrappedValue is IObjectSpec objectSpec) {
-            return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray();
-        }
-
-        return Array.Empty<IActionFacade>();
-    }
+    public IActionFacade[] GetCollectionContributedActions() =>
+        cachedCollectionContributedActions ??= WrappedValue is IObjectSpec objectSpec ? objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray() : Array.Empty<IActionFacade>();
 
     public IActionFacade[] GetLocallyContributedActions(ITypeFacade typeFacade, string id) {
         if (WrappedValue is IObjectSpec objectSpec) {
@@ -162,14 +169,8 @@ public class TypeFacade : ITypeFacade {
 
     public bool Equals(ITypeFacade other) => Equals((object)other);
 
-    public string PresentationHint {
-        get {
-            var hintFacet = WrappedValue.GetFacet<IPresentationHintFacet>();
-            return hintFacet == null ? "" : hintFacet.Value;
-        }
-    }
-
-    public bool IsStream => WrappedValue.ContainsFacet<IFromStreamFacet>();
+    public string PresentationHint =>
+        cachedPresentationHint ??= WrappedValue.GetFacet<IPresentationHintFacet>()?.Value ?? "";
 
     #endregion
 }
