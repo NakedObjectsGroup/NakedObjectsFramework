@@ -47,7 +47,6 @@ namespace NOF2.Rest.App.Demo {
                     options.InlineDetailsInPropertyMemberRepresentations = false;
                 });
                 builder.AddNOF2(options => {
-                    options.NoValidate = true;
                     options.DomainModelTypes = ModelConfig.DomainTypes;
                     options.DomainModelServices = ModelConfig.DomainServices;
                     options.ValueHolderTypes = AppLibConfig.ValueHolderTypes;
