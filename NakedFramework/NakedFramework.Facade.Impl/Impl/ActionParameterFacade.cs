@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -83,10 +82,7 @@ public class ActionParameterFacade : AbstractCommonFacade, IActionParameterFacad
 
     #region IActionParameterFacade Members
 
-    private NullCache<DataType?> cachedDataType;
-
     private NullCache<string> cachedMask;
-    private int? cachedAutoCompleteMinLength;
     private int? cachedNumber;
     private TypeFacade cachedSpecification;
     private NullCache<TypeFacade> cachedElementType;
@@ -101,11 +97,7 @@ public class ActionParameterFacade : AbstractCommonFacade, IActionParameterFacad
 
     public string Grouping => "";
 
-    public DataType? DataType => (cachedDataType ??= FacadeUtils.NullCache(WrappedActionParameterSpec.GetFacet<IDataTypeFacet>()?.DataType() ?? WrappedActionParameterSpec.GetFacet<IPasswordFacet>()?.DataType)).Value;
-
     public string Mask => (cachedMask ??= FacadeUtils.NullCache(WrappedActionParameterSpec.GetMask())).Value;
-
-    public int AutoCompleteMinLength => cachedAutoCompleteMinLength ??= WrappedActionParameterSpec.GetAutoCompleteMinLength();
 
     public int Number => cachedNumber ??= WrappedActionParameterSpec.Number;
 

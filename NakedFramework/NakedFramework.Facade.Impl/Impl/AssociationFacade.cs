@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -20,6 +19,23 @@ namespace NakedFramework.Facade.Impl.Impl;
 
 public class AssociationFacade : AbstractCommonFacade, IAssociationFacade {
     private readonly INakedFramework framework;
+    private Choices? cachedChoices;
+    private bool? cachedDoNotCount;
+    private NullCache<TypeFacade> cachedElementSpec;
+    private string cachedGrouping;
+    private bool? cachedIsASet;
+    private bool? cachedIsAutoCompleteEnabled;
+    private bool? cachedIsConcurrency;
+    private bool? cachedIsEnum;
+    private bool? cachedIsFile;
+    private bool? cachedIsFindMenuEnabled;
+    private bool? cachedIsInline;
+    private NullCache<string> cachedMask;
+    private int? cachedMemberOrder;
+    private bool? cachedNotNavigable;
+    private bool? cachedRenderEagerly;
+    private TypeFacade cachedSpecification;
+    private NullCache<(bool title, string[] columns)?> cachedTableViewData;
 
     public AssociationFacade(IAssociationSpec assoc, IFrameworkFacade frameworkFacade, INakedFramework framework) : base(assoc) {
         WrappedAssocSpec = assoc ?? throw new NullReferenceException($"{nameof(assoc)} is null");
@@ -41,52 +57,35 @@ public class AssociationFacade : AbstractCommonFacade, IAssociationFacade {
         return ReferenceEquals(this, other) || Equals(other.WrappedAssocSpec, WrappedAssocSpec);
     }
 
-    public override int GetHashCode() =>  WrappedAssocSpec.GetHashCode();
+    public override int GetHashCode() => WrappedAssocSpec.GetHashCode();
 
     #region IAssociationFacade Members
-
 
     public bool IsCollection => WrappedAssocSpec is IOneToManyAssociationSpec;
 
     public bool IsObject => WrappedAssocSpec is IOneToOneAssociationSpec;
 
-    public bool IsConcurrency => WrappedAssocSpec.ContainsFacet<IConcurrencyCheckFacet>();
+    public bool IsConcurrency => cachedIsConcurrency ??= WrappedAssocSpec.ContainsFacet<IConcurrencyCheckFacet>();
 
-    public bool NotNavigable => WrappedAssocSpec.ContainsFacet<INotNavigableFacet>();
+    public bool NotNavigable => cachedNotNavigable ??= WrappedAssocSpec.ContainsFacet<INotNavigableFacet>();
 
-    public int MemberOrder => WrappedAssocSpec.GetMemberOrder();
+    public int MemberOrder => cachedMemberOrder ??= WrappedAssocSpec.GetMemberOrder();
 
-    public bool IsASet => WrappedAssocSpec is IOneToManyAssociationSpec { IsASet: true };
+    public bool IsASet => cachedIsASet ??= WrappedAssocSpec is IOneToManyAssociationSpec { IsASet: true };
 
-    public bool IsInline => WrappedAssocSpec.IsInline;
+    public bool IsInline => cachedIsInline ??= WrappedAssocSpec.IsInline;
 
-    public string Mask => WrappedAssocSpec.GetMask();
+    public string Mask => (cachedMask ??= FacadeUtils.NullCache(WrappedAssocSpec.GetMask())).Value;
 
-    public int AutoCompleteMinLength => WrappedAssocSpec.GetAutoCompleteMinLength();
+    public ITypeFacade Specification => cachedSpecification ??= new TypeFacade(WrappedAssocSpec.ReturnSpec, FrameworkFacade, framework);
 
-    public ITypeFacade Specification => new TypeFacade(WrappedAssocSpec.ReturnSpec, FrameworkFacade, framework);
-
-    public ITypeFacade ElementSpecification {
-        get {
-            var coll = WrappedAssocSpec as IOneToManyAssociationSpec;
-            var elementSpec = coll?.ElementSpec;
-            return elementSpec == null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
-        }
-    }
+    public ITypeFacade ElementSpecification => (cachedElementSpec ??= FacadeUtils.NullCache(WrappedAssocSpec is IOneToManyAssociationSpec coll ? new TypeFacade(coll.ElementSpec, FrameworkFacade, framework) : null)).Value;
 
     public string Id => WrappedAssocSpec.Id;
 
-    public Choices IsChoicesEnabled(IObjectFacade objectFacade) {
-        if (WrappedAssocSpec is IOneToOneFeatureSpec fs) {
-            if (fs.IsChoicesEnabled(objectFacade.WrappedAdapter())) {
-                return Choices.Single;
-            }
-        }
+    public Choices IsChoicesEnabled(IObjectFacade objectFacade) => cachedChoices ??= WrappedAssocSpec is IOneToOneFeatureSpec fs && fs.IsChoicesEnabled(objectFacade.WrappedAdapter()) ? Choices.Single : Choices.NotEnabled;
 
-        return Choices.NotEnabled;
-    }
-
-    public bool IsAutoCompleteEnabled => WrappedAssocSpec is IOneToOneFeatureSpec { IsAutoCompleteEnabled: true };
+    public bool IsAutoCompleteEnabled => cachedIsAutoCompleteEnabled ??= WrappedAssocSpec is IOneToOneFeatureSpec { IsAutoCompleteEnabled: true };
 
     public IConsentFacade IsUsable(IObjectFacade target) {
         var consent = WrappedAssocSpec.IsUsable(((ObjectFacade)target).WrappedNakedObject);
@@ -103,8 +102,6 @@ public class AssociationFacade : AbstractCommonFacade, IAssociationFacade {
     public bool IsEager(IObjectFacade objectFacade) =>
         ((TypeFacade)objectFacade.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
         WrappedAssocSpec.ContainsFacet<IEagerlyFacet>();
-
-    public DataType? DataType => WrappedAssocSpec.GetFacet<IDataTypeFacet>()?.DataType() ?? WrappedAssocSpec.GetFacet<IPasswordFacet>()?.DataType;
 
     public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
         var oneToOneFeature = WrappedAssocSpec as IOneToOneFeatureSpec;
@@ -157,26 +154,26 @@ public class AssociationFacade : AbstractCommonFacade, IAssociationFacade {
 
     public IFrameworkFacade FrameworkFacade { get; set; }
 
-    public bool IsFile => WrappedAssocSpec.IsFile(framework);
+    public bool IsFile => cachedIsFile ??= WrappedAssocSpec.IsFile(framework);
 
-    public bool IsEnum => WrappedAssocSpec.ContainsFacet<IEnumFacet>();
+    public bool IsEnum => cachedIsEnum ??= WrappedAssocSpec.ContainsFacet<IEnumFacet>();
 
-    public bool IsFindMenuEnabled => WrappedAssocSpec is IOneToOneAssociationSpec { IsFindMenuEnabled: true };
+    public bool IsFindMenuEnabled => cachedIsFindMenuEnabled ??= WrappedAssocSpec is IOneToOneAssociationSpec { IsFindMenuEnabled: true };
 
-    public bool DoNotCount => WrappedAssocSpec.ContainsFacet<INotCountedFacet>();
+    public bool DoNotCount => cachedDoNotCount ??= WrappedAssocSpec.ContainsFacet<INotCountedFacet>();
 
     public string GetMaskedValue(IObjectFacade objectFacade) => WrappedAssocSpec.GetMaskedValue(objectFacade, framework);
 
     public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
         var no = ((ObjectFacade)objectFacade).WrappedNakedObject;
-        return WrappedAssocSpec.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
+        return WrappedAssocSpec.GetDefaultType(no) is TypeOfDefaultValue.Explicit;
     }
 
-    public (bool, string[])? TableViewData => WrappedAssocSpec.GetTableViewData();
+    public (bool, string[])? TableViewData => (cachedTableViewData ??= FacadeUtils.NullCache(WrappedAssocSpec.GetTableViewData())).Value;
 
-    public bool RenderEagerly => WrappedAssocSpec.GetRenderEagerly();
+    public bool RenderEagerly => cachedRenderEagerly ??= WrappedAssocSpec.GetRenderEagerly();
 
-    public string Grouping => WrappedAssocSpec.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
+    public string Grouping => cachedGrouping ??= WrappedAssocSpec.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
 
     #endregion
 }

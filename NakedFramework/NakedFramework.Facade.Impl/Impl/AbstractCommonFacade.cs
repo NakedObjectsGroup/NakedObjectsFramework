@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -16,10 +17,15 @@ namespace NakedFramework.Facade.Impl.Impl;
 
 public abstract class AbstractCommonFacade {
     private readonly IFeatureSpec wrappedSpecification;
+    private int? cachedAutoCompleteMinLength;
+    private NullCache<DataType?> cachedDataType;
+    private string cachedDescription;
     private bool? cachedIsDateOnly;
+    private bool? cachedIsMandatory;
     private bool? cachedIsNullable;
     private bool? cachedIsPassword;
     private NullCache<int?> cachedMaxLength;
+    private string cachedName;
     private int? cachedNumberOfLines;
     private NullCache<string> cachedPattern;
     private NullCache<string> cachedPresentationHint;
@@ -27,9 +33,6 @@ public abstract class AbstractCommonFacade {
     private NullCache<(Regex, string)?> cachedRegex;
     private NullCache<(string, string)?> cachedRestExtension;
     private int? cachedWidth;
-    private string cachedName;
-    private string cachedDescription;
-    private bool? cachedIsMandatory;
 
     protected AbstractCommonFacade(IFeatureSpec wrappedSpecification) => this.wrappedSpecification = wrappedSpecification;
 
@@ -55,9 +58,13 @@ public abstract class AbstractCommonFacade {
 
     public string Pattern => (cachedPattern ??= FacadeUtils.NullCache(wrappedSpecification.GetPattern())).Value;
 
+    public bool IsMandatory => cachedIsMandatory ??= wrappedSpecification.IsMandatory();
+
+    public int AutoCompleteMinLength => cachedAutoCompleteMinLength ??= wrappedSpecification.GetAutoCompleteMinLength();
+
+    public DataType? DataType => (cachedDataType ??= FacadeUtils.NullCache(wrappedSpecification.GetFacet<IDataTypeFacet>()?.DataType() ?? wrappedSpecification.GetFacet<IPasswordFacet>()?.DataType)).Value;
+
     public string Name(IObjectFacade objectFacade) => cachedName ??= wrappedSpecification.Name(objectFacade.WrappedAdapter());
 
     public string Description(IObjectFacade objectFacade) => cachedDescription ??= wrappedSpecification.Description(objectFacade.WrappedAdapter());
-
-    public bool IsMandatory => cachedIsMandatory ??= wrappedSpecification.IsMandatory();
 }
