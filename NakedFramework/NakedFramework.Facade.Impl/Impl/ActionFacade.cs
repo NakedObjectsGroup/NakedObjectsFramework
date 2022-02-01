@@ -91,7 +91,7 @@ public class ActionFacade : IActionFacade {
 
     public ITypeFacade ReturnType => cachedReturnType ??= new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
 
-    public ITypeFacade ElementType => (cachedElementType ??= FacadeUtils.NullCache(new TypeFacade(WrappedSpec.ElementSpec, FrameworkFacade, framework))).Value;
+    public ITypeFacade ElementType => (cachedElementType ??= FacadeUtils.NullCache(WrappedSpec.ElementSpec is null ? null : new TypeFacade(WrappedSpec.ElementSpec, FrameworkFacade, framework))).Value;
 
     public int ParameterCount => cachedParameterCount ??= WrappedSpec.ParameterCount;
 
