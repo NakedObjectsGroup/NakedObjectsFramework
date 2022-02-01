@@ -6,13 +6,13 @@ Public Class Subject
 
     Public Overridable Property Id As Integer
 
-    Public mappedName As String
+    Public Property mappedName As String
     Private myName As TextString
 
     <DemoProperty(Order:=1)>
     Public ReadOnly Property Name As TextString
         Get
-            myName = If(myName, New TextString(mappedName, Function(v) mappedName = v))
+            myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
             Return myName
         End Get
     End Property
@@ -20,6 +20,8 @@ Public Class Subject
     Public Function Title() As Title
         Return New Title(Name)
     End Function
+
+
 
 End Class
 

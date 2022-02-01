@@ -4,13 +4,13 @@
     Public Overridable Property Id As Integer
 
 
-    Public mappedSetName As String
+    Public Property mappedSetName As String
     Private mySetName As TextString
 
     <DemoProperty(Order:=1)>
     Public ReadOnly Property SetName As TextString
         Get
-            mySetName = If(mySetName, New TextString(mappedSetName, Function(v) mappedSetName = v))
+            mySetName = If(mySetName, New TextString(mappedSetName, Sub(v) mappedSetName = v))
             Return mySetName
         End Get
     End Property
@@ -19,13 +19,13 @@
     <DemoProperty(Order:=2)>
     Public Overridable Property Subject As Subject
 
-    Public mappedYearGroup As Integer
+    Public Property mappedYearGroup As Integer
     Private myYearGroup As WholeNumber
 
     <DemoProperty(Order:=3)> '< Range(9, 13)>
     Public ReadOnly Property YearGroup As WholeNumber
         Get
-            myYearGroup = If(myYearGroup, New WholeNumber(mappedYearGroup, Function(v) mappedYearGroup = v))
+            myYearGroup = If(myYearGroup, New WholeNumber(mappedYearGroup, Sub(v) mappedYearGroup = v))
             Return myYearGroup
         End Get
     End Property

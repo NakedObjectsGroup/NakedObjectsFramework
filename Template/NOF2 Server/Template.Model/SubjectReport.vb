@@ -34,13 +34,13 @@ Public Class SubjectReport
     End Function
 
 
-    Public mappedDate As Date
+    Public Property mappedDate As Date
     Private myDate As NODate
 
     <DemoProperty(Order:=5)>
     Public ReadOnly Property [Date] As NODate
         Get
-            myDate = If(myDate, New NODate(mappedDate, Function(v) mappedDate = v))
+            myDate = If(myDate, New NODate(mappedDate, Sub(v) mappedDate = v))
             Return myDate
         End Get
     End Property
@@ -50,13 +50,13 @@ Public Class SubjectReport
         Return DateTime.Today
     End Function
 
-    Public mappedNotes As String
+    Public Property mappedNotes As String
     Private myNotes As MultiLineTextString
 
     <DemoProperty(Order:=6)>
     Public ReadOnly Property Notes As MultiLineTextString
         Get
-            myNotes = If(myNotes, New MultiLineTextString(mappedNotes, Function(v) mappedNotes = v))
+            myNotes = If(myNotes, New MultiLineTextString(mappedNotes, Sub(v) mappedNotes = v))
             Return myNotes
         End Get
     End Property
