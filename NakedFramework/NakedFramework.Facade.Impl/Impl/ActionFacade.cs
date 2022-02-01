@@ -30,7 +30,7 @@ public class ActionFacade : IActionFacade {
 
     private bool Equals(ActionFacade other) => other is not null && (ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec));
 
-    public override int GetHashCode() =>  WrappedSpec.GetHashCode();
+    public override int GetHashCode() => WrappedSpec.GetHashCode();
 
     #region IActionFacade Members
 
@@ -47,8 +47,8 @@ public class ActionFacade : IActionFacade {
     private int? cachedMemberOrder;
     private string cachedMemberOrderName;
     private TypeFacade cachedReturnType;
-    private bool haveGotElementType;
-    private TypeFacade cachedElementType;
+
+    private NullCache<TypeFacade> cachedElementType;
     private int? cachedParameterCount;
     private IActionParameterFacade[] cachedParameters;
     private bool? cachedIsVisible;
@@ -79,7 +79,7 @@ public class ActionFacade : IActionFacade {
 
     public bool IsQueryContributedAction => cachedIsQueryContributedAction ??= WrappedSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
 
-    public string[] CreateNewProperties(IObjectFacade objectFacade) => cachedCreateNewProperties ??=  WrappedSpec.GetFacet<ICreateNewFacet>()?.OrderedProperties(objectFacade.WrappedAdapter(), framework) ?? Array.Empty<string>();
+    public string[] CreateNewProperties(IObjectFacade objectFacade) => cachedCreateNewProperties ??= WrappedSpec.GetFacet<ICreateNewFacet>()?.OrderedProperties(objectFacade.WrappedAdapter(), framework) ?? Array.Empty<string>();
 
     public string[] EditProperties => cachedEditProperties ??= WrappedSpec.GetFacet<IEditPropertiesFacet>()?.Properties ?? Array.Empty<string>();
 
@@ -91,17 +91,7 @@ public class ActionFacade : IActionFacade {
 
     public ITypeFacade ReturnType => cachedReturnType ??= new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
 
-    public ITypeFacade ElementType {
-        get {
-            if (haveGotElementType) {
-                return cachedElementType;
-            }
-
-            haveGotElementType = true;
-            var elementSpec = WrappedSpec.ElementSpec;
-            return elementSpec is null ? null : cachedElementType ??= new TypeFacade(elementSpec, FrameworkFacade, framework);
-        }
-    }
+    public ITypeFacade ElementType => (cachedElementType ??= FacadeUtils.NullCache(new TypeFacade(WrappedSpec.ElementSpec, FrameworkFacade, framework))).Value;
 
     public int ParameterCount => cachedParameterCount ??= WrappedSpec.ParameterCount;
 
@@ -109,11 +99,11 @@ public class ActionFacade : IActionFacade {
 
     public bool IsVisible(IObjectFacade objectFacade) => cachedIsVisible ??= WrappedSpec.IsVisible(((ObjectFacade)objectFacade)?.WrappedNakedObject);
 
-    public IConsentFacade IsUsable(IObjectFacade objectFacade) =>  cachedIsUsable ??= new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade)objectFacade)?.WrappedNakedObject));
+    public IConsentFacade IsUsable(IObjectFacade objectFacade) => cachedIsUsable ??= new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade)objectFacade)?.WrappedNakedObject));
 
     public string FinderMethodPrefix => cachedFinderMethodPrefix ??= WrappedSpec.GetFinderMethodPrefix();
 
-    public ITypeFacade OnType =>  cachedOnType ??= new TypeFacade(WrappedSpec.OnSpec, FrameworkFacade, framework);
+    public ITypeFacade OnType => cachedOnType ??= new TypeFacade(WrappedSpec.OnSpec, FrameworkFacade, framework);
 
     public IFrameworkFacade FrameworkFacade { get; set; }
 

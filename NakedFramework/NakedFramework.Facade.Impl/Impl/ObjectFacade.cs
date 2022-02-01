@@ -84,7 +84,7 @@ public class ObjectFacade : IObjectFacade {
     private ITypeFacade cachedSpecification;
     private ITypeFacade cachedElementSpecification;
     private string cachedPresentationHint;
-    private (string, string)? cachedRestExtension;
+    private NullCache<(string, string)?> cachedRestExtension;
     private IEnumerable<IObjectFacade> cachedToEnumerable;
     private AttachmentContextFacade cachedAttachmentContextFacade;
     private PropertyInfo[] cachedKeys;
@@ -104,16 +104,7 @@ public class ObjectFacade : IObjectFacade {
 
     public string PresentationHint =>  cachedPresentationHint ??= WrappedNakedObject.Spec.GetFacet<IPresentationHintFacet>()?.Value ?? "";
 
-    public (string, string)? RestExtension {
-        get {
-            if (cachedRestExtension is null) {
-                var extensionFacet = WrappedNakedObject.Spec.GetFacet<IRestExtensionFacet>();
-                cachedRestExtension = extensionFacet is null ? (null, null) : (extensionFacet.Name, extensionFacet.Value);
-            }
-
-            return cachedRestExtension.Value.Item1 is null ? null : cachedRestExtension;
-        }
-    }
+    public (string, string)? RestExtension => (cachedRestExtension ??= FacadeUtils.NullCache(WrappedNakedObject.Spec.GetRestExtension())).Value;
 
     public object Object => WrappedNakedObject.Object;
 
