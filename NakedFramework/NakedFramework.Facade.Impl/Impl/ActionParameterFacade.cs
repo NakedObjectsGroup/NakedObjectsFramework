@@ -78,7 +78,7 @@ public class ActionParameterFacade : IActionParameterFacade {
 
     private bool Equals(ActionParameterFacade other) => other is not null && (ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec));
 
-    public override int GetHashCode() =>  WrappedSpec.GetHashCode();
+    public override int GetHashCode() => WrappedSpec.GetHashCode();
 
     #region IActionParameterFacade Members
 
@@ -96,13 +96,26 @@ public class ActionParameterFacade : IActionParameterFacade {
     private NullCache<TypeFacade> cachedElementType;
     private IActionFacade cachedAction;
     private Choices? cachedIsChoicesEnabled;
-
+    private bool? cachedIsAutoCompleteEnabled;
+    private (string, ITypeFacade)[] cachedChoicesParameters;
+    private (IObjectFacade, TypeOfDefaultValue)? cachedDefaultAndType;
+    private IConsentFacade cachedIsUsable;
+    private bool? cachedIsInjected;
+    private bool? cachedIsFindMenuEnabled;
+    private bool? cachedIsPassword;
+    private bool? cachedIsNullable;
+    private int? cachedWidth;
+    private int? cachedNumberOfLines;
+    private NullCache<(Regex, string)?> cachedRegex;
+    private NullCache<(IConvertible, IConvertible, bool)?> cachedRange;
+    private NullCache<string> cachedPresentationHint;
+    private NullCache<(string, string)?> cachedRestExtension;
 
     public string Name(IObjectFacade objectFacade) => cachedName ??= WrappedSpec.Name(objectFacade.WrappedAdapter());
 
     public string Description(IObjectFacade objectFacade) => cachedDescription ??= WrappedSpec.Description(objectFacade.WrappedAdapter());
 
-    public bool IsMandatory => cachedIsMandatory ??=  WrappedSpec.IsMandatory;
+    public bool IsMandatory => cachedIsMandatory ??= WrappedSpec.IsMandatory;
 
     public int? MaxLength => (cachedMaxLength ??= FacadeUtils.NullCache(WrappedSpec.GetMaxLength())).Value;
 
@@ -135,17 +148,15 @@ public class ActionParameterFacade : IActionParameterFacade {
                 ? Choices.Single
                 : Choices.NotEnabled;
 
-    public bool IsAutoCompleteEnabled => WrappedSpec.IsAutoCompleteEnabled;
+    public bool IsAutoCompleteEnabled => cachedIsAutoCompleteEnabled ??= WrappedSpec.IsAutoCompleteEnabled;
 
     public IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
         var otherParms = parameterNameValues?.Select(kvp => new { kvp.Key, kvp.Value, parm = Action.Parameters.Single(p => p.Id == kvp.Key) });
-
         var pnv = otherParms?.ToDictionary(a => a.Key, a => SafeGetValue(a.parm, a.Value));
-
         return WrappedSpec.GetChoices(((ObjectFacade)objectFacade)?.WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
     }
 
-    public (string, ITypeFacade)[] GetChoicesParameters() => WrappedSpec.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
+    public (string, ITypeFacade)[] GetChoicesParameters() => cachedChoicesParameters ??= WrappedSpec.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
 
     public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework);
 
@@ -154,45 +165,42 @@ public class ActionParameterFacade : IActionParameterFacade {
 
     public IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm) => WrappedSpec.GetCompletions(((ObjectFacade)objectFacade).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
 
-    private (IObjectFacade, TypeOfDefaultValue)? cachedDefault;
-   
-
     private (IObjectFacade value, TypeOfDefaultValue type) GetDefaultAndType(IObjectFacade objectFacade) {
-        if (cachedDefault is null) {
+        (IObjectFacade value, TypeOfDefaultValue type) GetDefaultTuple() {
             var (defaultValue, defaultType) = WrappedSpec.GetDefaultValueAndType(((ObjectFacade)objectFacade)?.WrappedNakedObject);
-            cachedDefault = (ObjectFacade.Wrap(defaultValue, FrameworkFacade, framework), defaultType);
+            return (ObjectFacade.Wrap(defaultValue, FrameworkFacade, framework), defaultType);
         }
 
-        return cachedDefault.Value;
+        return cachedDefaultAndType ??= GetDefaultTuple();
     }
 
-    public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) => GetDefaultAndType(objectFacade).type == TypeOfDefaultValue.Explicit;
+    public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) => GetDefaultAndType(objectFacade).type is TypeOfDefaultValue.Explicit;
 
     public IObjectFacade GetDefault(IObjectFacade objectFacade) => GetDefaultAndType(objectFacade).value;
 
-    public IConsentFacade IsUsable() => new ConsentFacade(WrappedSpec.IsUsable(null));
+    public IConsentFacade IsUsable() => cachedIsUsable ??= new ConsentFacade(WrappedSpec.IsUsable(null));
 
-    public bool IsInjected => WrappedSpec.IsInjected;
+    public bool IsInjected => cachedIsInjected ??= WrappedSpec.IsInjected;
 
     public IFrameworkFacade FrameworkFacade { get; set; }
 
-    public bool IsFindMenuEnabled => WrappedSpec is IOneToOneActionParameterSpec { IsFindMenuEnabled: true };
+    public bool IsFindMenuEnabled => cachedIsFindMenuEnabled ??= WrappedSpec is IOneToOneActionParameterSpec { IsFindMenuEnabled: true };
 
-    public (Regex, string)? RegEx => WrappedSpec.GetRegEx();
+    public bool IsPassword => cachedIsPassword ??= WrappedSpec.ContainsFacet<IPasswordFacet>();
 
-    public (IConvertible, IConvertible, bool)? Range => WrappedSpec.GetRange();
+    public bool IsNullable => cachedIsNullable ??= WrappedSpec.ContainsFacet<INullableFacet>();
 
-    public bool IsPassword => WrappedSpec.ContainsFacet<IPasswordFacet>();
+    public int Width => cachedWidth ??= WrappedSpec.GetWidth();
 
-    public bool IsNullable => WrappedSpec.ContainsFacet<INullableFacet>();
+    public int NumberOfLines => cachedNumberOfLines ??= WrappedSpec.GetNumberOfLinesWithDefault();
 
-    public int Width => WrappedSpec.GetWidth();
+    public (Regex, string)? RegEx => (cachedRegex ??= FacadeUtils.NullCache(WrappedSpec.GetRegEx())).Value;
 
-    public string PresentationHint => WrappedSpec.GetPresentationHint();
+    public (IConvertible, IConvertible, bool)? Range => (cachedRange ??= FacadeUtils.NullCache(WrappedSpec.GetRange())).Value;
 
-    public (string, string)? RestExtension => WrappedSpec.GetRestExtension();
+    public string PresentationHint => (cachedPresentationHint ??= FacadeUtils.NullCache(WrappedSpec.GetPresentationHint())).Value;
 
-    public int NumberOfLines => WrappedSpec.GetNumberOfLinesWithDefault();
+    public (string, string)? RestExtension => (cachedRestExtension ??= FacadeUtils.NullCache(WrappedSpec.GetRestExtension())).Value;
 
     #endregion
 }
