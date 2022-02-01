@@ -10,14 +10,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Test\NOF2.Demo.AppLib\NOF2.Demo.AppLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Import Include="NOF2.About" />
     <Import Include="NOF2.Collection" />
     <Import Include="NOF2.Container" />
     <Import Include="NOF2.Demo.AppLib" />
+    <Import Include="Template.AppLib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Template.AppLib\Template.AppLib.csproj" />
   </ItemGroup>
 
 </Project>

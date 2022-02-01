@@ -18,9 +18,9 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.Extensions;
 using Newtonsoft.Json;
-using NOF2.Demo.AppLib;
 using Microsoft.AspNetCore.Http;
 using NOF2.Reflector.Extensions;
+using Template.AppLib;
 
 namespace Template.Server {
     public class Startup {
