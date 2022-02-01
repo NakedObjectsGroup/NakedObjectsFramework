@@ -4,7 +4,7 @@
         Return ThreadLocals.Container.CreateTransientInstance(Of TeachingSet)()
     End Function
 
-    Public Shared Function ActionListSets(subject As Subject, yearGroup As Integer?) _
+    Public Shared Function ActionListSets(subject As Subject, yearGroup As WholeNumberNullable) _
             As IQueryable(Of TeachingSet)
 
         Dim sets = ThreadLocals.Container.AllInstances(Of TeachingSet)()
@@ -13,7 +13,7 @@
             Dim id As Integer = subject.Id
             sets = sets.Where(Function(s) s.Subject.Id = id)
         End If
-
+        'TODO - can yearGroup be Nothing - or just its Value?
         If yearGroup IsNot Nothing Then
             Dim yg = yearGroup.Value
             sets = sets.Where(Function(s) s.mappedYearGroup = yg)

@@ -74,5 +74,6 @@
         Public Overrides Function ToString() As String
             Return mappedName
         End Function
+
     End Class
 End Namespace

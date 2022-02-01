@@ -4,7 +4,11 @@
 
         Public Property Container As IContainer Implements IContainerAware.Container
 
-        Public Function AllStudents() As IQueryable(Of Student)
+        Public Function ActionAllStudents() As IQueryable(Of Student)
+            Return Container.AllInstances(Of Student)
+        End Function
+
+        Public Function ActionFindStudents(match As String) As IQueryable(Of Student)
             Return Container.AllInstances(Of Student)
         End Function
 

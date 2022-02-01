@@ -8,8 +8,9 @@
         Return ThreadLocals.Container.AllInstances(Of Subject)()
     End Function
 
-    Public Shared Function ActionFindSubjectByName(ByVal name As String) As IQueryable(Of Subject)
-        Return ActionAllSubjects().Where(Function(c) c.mappedName.ToUpper().Contains(name.ToUpper()))
+    Public Shared Function ActionFindSubjectByName(ByVal name As TextString) As IQueryable(Of Subject)
+        Dim match = name.Value.ToUpper()
+        Return ActionAllSubjects().Where(Function(c) c.mappedName.ToUpper().Contains(match))
     End Function
 
     Public Shared Function SharedMenuOrder() As Menu
