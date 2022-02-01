@@ -14,9 +14,7 @@ namespace Template.Server
                      Where(t => t.IsPublic && t.Namespace == "Template.Model").
                      ToArray();
 
-        public static Type[] DomainModelServices() => Assembly.GetAssembly(typeof(Student)).GetTypes().
-                     Where(t => t.Namespace.Contains("Service")).
-                     ToArray();
+        public static Type[] DomainModelServices() => new Type[] { };
 
         public static Type[] MainMenus() => new[] { typeof(Students), typeof(Sets), typeof(Teachers), typeof(Subjects) };
         
