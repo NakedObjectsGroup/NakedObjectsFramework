@@ -16,5 +16,4 @@ public class NOF2Options {
     public Type[] ValueHolderTypes { get; set; } = Array.Empty<Type>();
     public bool ConcurrencyCheck { get; set; } = true;
     public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
-    public bool NoValidate { get; set; }
 }

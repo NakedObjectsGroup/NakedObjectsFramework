@@ -24,7 +24,6 @@ namespace NOF2.Reflector.Extensions;
 
 public static class NOF2Extensions {
     private static INOF2ReflectorConfiguration NOF2ReflectorConfig(NOF2Options options) {
-        NOF2ReflectorConfiguration.NoValidate = options.NoValidate;
         return new NOF2ReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ValueHolderTypes, options.ConcurrencyCheck);
     }
 

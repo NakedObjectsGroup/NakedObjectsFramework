@@ -23,32 +23,9 @@ public class NOF2ReflectorConfiguration : INOF2ReflectorConfiguration {
         ValueHolderTypes = valueHolderTypes;
         IgnoreCase = true;
         ConcurrencyChecking = concurrencyChecking;
-
-        ValidateConfig();
     }
-
-    // for testing
-    public static bool NoValidate { get; set; }
 
     public Type[] Types => ObjectTypes;
-
-    private void ValidateConfig() {
-        if (NoValidate) {
-            return;
-        }
-
-        var msg = "Reflector configuration errors;\r\n";
-        var configError = false;
-
-        if (Services == null || !Services.Any()) {
-            configError = true;
-            msg += "No services specified;\r\n";
-        }
-
-        if (configError) {
-            throw new InitialisationException(msg);
-        }
-    }
 
     private Type[] GetObjectTypesToIntrospect() {
         var types = TypesToIntrospect.Select(ReflectorHelpers.EnsureGenericTypeIsComplete);
