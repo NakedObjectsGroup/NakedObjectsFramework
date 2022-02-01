@@ -27,6 +27,7 @@
         End Get
     End Property
 
+    Public Property PersonalTutorId As Integer?
     <DemoProperty(Order:=4)>
     Public Overridable Property PersonalTutor As Teacher
 
@@ -58,7 +59,7 @@
             studentReps = studentReps.Where(Function(sr) sr.Subject.Id = subjId)
         End If
 
-        Return studentReps.OrderByDescending(Function(sr) sr.Date)
+        Return studentReps.OrderByDescending(Function(sr) sr.mappedDate)
     End Function
 
     Public Function ActionCreateNewReport(ByVal subject As Subject) As SubjectReport

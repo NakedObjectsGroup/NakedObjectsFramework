@@ -62,11 +62,11 @@ Public Class SubjectReport
     End Property
 
     Public Overrides Function ToString() As String
-        Return $"{Subject} {[Date].ToString("d")}"
+        Return $"{Subject} {[Date]}"
     End Function
 
     Public Function Title() As Title
-        Return New Title(ToString())
+        Return New Title()
     End Function
 End Class
 
