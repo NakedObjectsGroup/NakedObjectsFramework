@@ -514,10 +514,6 @@
                     a.Description = "Append new comment to any existing"
                 Case AboutTypeCodes.Parameters
                 Case AboutTypeCodes.Usable
-                    If Not c Is Nothing AndAlso c.Length > 45 Then
-                        a.Usable = False
-                        a.UnusableReason = "Existing comments already near capacity. Clear first"
-                    End If
                 Case AboutTypeCodes.Valid
                     If comment.IsEmpty Then
                         a.Usable = False
