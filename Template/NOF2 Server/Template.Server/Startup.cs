@@ -47,7 +47,6 @@ namespace Template.Server {
                     options.InlineDetailsInPropertyMemberRepresentations = false;
                 });
                 builder.AddNOF2(options => {
-                    options.NoValidate = true;
                     options.DomainModelTypes = ModelConfig.DomainModelTypes();
                     options.DomainModelServices = ModelConfig.DomainModelServices();
                     options.ValueHolderTypes = AppLibConfig.ValueHolderTypes;
@@ -83,7 +82,6 @@ namespace Template.Server {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
