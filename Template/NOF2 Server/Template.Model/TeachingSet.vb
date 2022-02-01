@@ -10,7 +10,7 @@
     <DemoProperty(Order:=1)>
     Public ReadOnly Property SetName As TextString
         Get
-            mySetName = If(mySetName, New TextString(mappedSetName, Function(v) mappedSetName = v))
+            mySetName = If(mySetName, New TextString(mappedSetName, Sub(v) mappedSetName = v))
             Return mySetName
         End Get
     End Property
@@ -25,7 +25,7 @@
     <DemoProperty(Order:=3)> '< Range(9, 13)>
     Public ReadOnly Property YearGroup As WholeNumber
         Get
-            myYearGroup = If(myYearGroup, New WholeNumber(mappedYearGroup, Function(v) mappedYearGroup = v))
+            myYearGroup = If(myYearGroup, New WholeNumber(mappedYearGroup, Sub(v) mappedYearGroup = v))
             Return myYearGroup
         End Get
     End Property

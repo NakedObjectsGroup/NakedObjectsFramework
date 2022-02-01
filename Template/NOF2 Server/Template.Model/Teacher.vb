@@ -16,7 +16,7 @@ Public Class Teacher
     <DemoProperty(Order:=1)>
     Public ReadOnly Property FullName As TextString
         Get
-            myFullName = If(myFullName, New TextString(mappedFullName, Function(v) mappedFullName = v))
+            myFullName = If(myFullName, New TextString(mappedFullName, Sub(v) mappedFullName = v))
             Return myFullName
         End Get
     End Property
@@ -27,6 +27,7 @@ Public Class Teacher
     End Function
 
     Public Sub ActionSave()
+        Dim m = mappedFullName
         Container.MakePersistent(Me)
     End Sub
 

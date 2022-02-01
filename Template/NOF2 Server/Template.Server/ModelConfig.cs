@@ -24,7 +24,6 @@ namespace Template.Server
             c =>
             {
                 var db = new ExampleDbContext(c.GetConnectionString("ExampleCS"));
-                db.Delete();
                 db.Create();
                 return db;
             };

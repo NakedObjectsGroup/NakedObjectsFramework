@@ -11,7 +11,7 @@
     <DemoProperty(Order:=1)>
     Public ReadOnly Property FullName As TextString
         Get
-            myFullName = If(myFullName, New TextString(mappedFullName, Function(v) mappedFullName = v))
+            myFullName = If(myFullName, New TextString(mappedFullName, Sub(v) mappedFullName = v))
             Return myFullName
         End Get
     End Property
@@ -22,7 +22,7 @@
     <DemoProperty(Order:=2)> '<Range(9, 13)>
     Public ReadOnly Property CurrentYearGroup As WholeNumber
         Get
-            myCurrentYearGroup = If(myCurrentYearGroup, New WholeNumber(mappedCurrentYearGroup, Function(v) mappedCurrentYearGroup = v))
+            myCurrentYearGroup = If(myCurrentYearGroup, New WholeNumber(mappedCurrentYearGroup, Sub(v) mappedCurrentYearGroup = v))
             Return myCurrentYearGroup
         End Get
     End Property

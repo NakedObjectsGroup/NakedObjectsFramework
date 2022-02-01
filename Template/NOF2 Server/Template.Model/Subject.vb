@@ -12,7 +12,7 @@ Public Class Subject
     <DemoProperty(Order:=1)>
     Public ReadOnly Property Name As TextString
         Get
-            myName = If(myName, New TextString(mappedName, Function(v) mappedName = v))
+            myName = If(myName, New TextString(mappedName, Sub(v) mappedName = v))
             Return myName
         End Get
     End Property
