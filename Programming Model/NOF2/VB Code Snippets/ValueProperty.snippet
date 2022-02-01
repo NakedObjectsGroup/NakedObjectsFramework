@@ -27,7 +27,7 @@ Private my$PropName$ As $HolderType$
 
 Public ReadOnly Property $PropName$ As $HolderType$
   Get
-    my$PropName$ = If(my$PropName$, New $HolderType$(mapped$PropName$, Function(v) mapped$PropName$ = v))
+    my$PropName$ = If(my$PropName$, New $HolderType$(mapped$PropName$, Sub(v) mapped$PropName$ = v))
     Return my$PropName$
   End Get
 End Property]]>
