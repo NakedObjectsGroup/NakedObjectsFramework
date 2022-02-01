@@ -8,8 +8,9 @@
         Return ThreadLocals.Container.AllInstances(Of Teacher)()
     End Function
 
-    Public Shared Function ActionFindTeacherByName(ByVal name As String) As IQueryable(Of Teacher)
-        Return ActionAllTeachers().Where(Function(c) c.mappedFullName.ToUpper().Contains(name.ToUpper()))
+    Public Shared Function ActionFindTeacherByName(ByVal name As TextString) As IQueryable(Of Teacher)
+        Dim match = name.Value.ToUpper()
+        Return ActionAllTeachers().Where(Function(c) c.mappedFullName.ToUpper().Contains(match))
     End Function
 
     Public Shared Function SharedMenuOrder() As Menu

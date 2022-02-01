@@ -74,5 +74,13 @@
         Public Overrides Function ToString() As String
             Return mappedName
         End Function
+
+        Public Sub ActionFoo()
+
+        End Sub
+
+        Public Sub ActionBar(match As String)
+
+        End Sub
     End Class
 End Namespace

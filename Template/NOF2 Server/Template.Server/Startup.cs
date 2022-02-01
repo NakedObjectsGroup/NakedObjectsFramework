@@ -20,6 +20,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Menu;
 using NOF2.Reflector.Extensions;
 using NOF2.Demo.AppLib;
+using NakedFramework.Architecture.Framework;
 
 namespace NakedObjects.Rest.App.Demo {
     public class Startup {
@@ -81,6 +82,7 @@ namespace NakedObjects.Rest.App.Demo {
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
+            ThreadLocals.Initialize(app.ApplicationServices, static sp => new NOF2.Reflector.Component.Container(sp.GetService<INakedFramework>()));
         }
 
 
