@@ -17,21 +17,19 @@ Public Class SubjectReport
     <DemoProperty(Order:=2)>
     Public Overridable Property Subject As Subject
 
-    'TODO
-    Public Function ChoicesSubject() As IList(Of Subject)
-        Return Container.AllInstances(Of Subject).ToList()
-    End Function
-
     <DemoProperty(Order:=3)>
     Public Overridable Property Grade As Grades
 
     <DemoProperty(Order:=4)>
     Public Overridable Property GivenBy As Teacher
 
-    'TODO
-    Public Function ChoicesGivenBy() As IList(Of Teacher)
-        Return Container.AllInstances(Of Teacher).ToList()
-    End Function
+    Public Sub AboutGivenBy(a As FieldAbout)
+        Select Case a.TypeCode
+            Case AboutTypeCodes.Parameters
+                a.Options = Container.AllInstances(Of Teacher).ToArray()
+            Case Else
+        End Select
+    End Sub
 
 
     Public Property mappedDate As Date
@@ -40,15 +38,13 @@ Public Class SubjectReport
     <DemoProperty(Order:=5)>
     Public ReadOnly Property [Date] As NODate
         Get
+            If Not Container.IsPersistent(Me) Then
+                mappedDate = Today
+            End If
             myDate = If(myDate, New NODate(mappedDate, Sub(v) mappedDate = v))
             Return myDate
         End Get
     End Property
-
-    'TODO
-    Public Function DefaultDate() As DateTime
-        Return DateTime.Today
-    End Function
 
     Public Property mappedNotes As String
     Private myNotes As MultiLineTextString

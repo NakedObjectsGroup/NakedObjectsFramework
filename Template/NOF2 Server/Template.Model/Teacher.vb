@@ -21,7 +21,7 @@ Public Class Teacher
         End Get
     End Property
 
-    'TODO <TableView(False, "Subject", "YearGroup", "SetName")>
+    <TableView(False, "Subject", "YearGroup", "SetName")>
     Public Function ActionSetsTaught() As IQueryable(Of TeachingSet)
         Return Container.AllInstances(Of TeachingSet)().Where(Function(s) s.Teacher.Id = Id).OrderBy(Function(s) s.Subject.mappedName).ThenBy(Function(s) s.mappedYearGroup)
     End Function

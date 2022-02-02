@@ -8,17 +8,14 @@
             As IQueryable(Of TeachingSet)
 
         Dim sets = ThreadLocals.Container.AllInstances(Of TeachingSet)()
-
         If subject IsNot Nothing Then
             Dim id As Integer = subject.Id
             sets = sets.Where(Function(s) s.Subject.Id = id)
         End If
-        'TODO - can yearGroup be Nothing - or just its Value?
-        If yearGroup IsNot Nothing Then
-            Dim yg = yearGroup.Value
+        Dim yg = yearGroup.Value
+        If yg IsNot Nothing Then
             sets = sets.Where(Function(s) s.mappedYearGroup = yg)
         End If
-
         Return sets.OrderBy(Function(s) s.mappedYearGroup).ThenBy(Function(s) s.Subject.mappedName)
     End Function
 
