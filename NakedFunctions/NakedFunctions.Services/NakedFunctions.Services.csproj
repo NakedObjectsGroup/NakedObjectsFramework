@@ -14,7 +14,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="NakedFunctions.ProgrammingModel" Version="1.1.0-beta01" />
-		<PackageReference Include="NakedFramework" Version="13.0.0-beta01" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
 	</ItemGroup>
 
 </Project>

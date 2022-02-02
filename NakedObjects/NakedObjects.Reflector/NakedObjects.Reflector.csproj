@@ -13,6 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <ProjectReference Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
+	  <ProjectReference Include="..\..\NakedFramework\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
+	  <ProjectReference Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
 	  <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
   </ItemGroup>
 
