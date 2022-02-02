@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Reflect;
 
 namespace NakedFramework.Architecture.SpecImmutable;
@@ -36,7 +37,7 @@ public interface ITypeSpecBuilder : ITypeSpecImmutable {
     void AddSubclass(ITypeSpecImmutable subclass);
     void AddContributedFunctions(IList<IActionSpecImmutable> result);
     void AddContributedFields(IList<IAssociationSpecImmutable> addedFields);
-    void RemoveAction(IActionSpecImmutable action);
+    void RemoveAction(IActionSpecImmutable action, ILogger logger);
 
     void CompleteIntegration();
 }

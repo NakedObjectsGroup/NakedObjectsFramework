@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
@@ -49,9 +50,9 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     public bool IsPendingIntrospection => ReflectionStatus == ReflectionStatus.PendingIntrospection;
 
-    public void RemoveAction(IActionSpecImmutable action) {
-        if (UnorderedObjectActions.Contains(action)) {
-            UnorderedObjectActions.Remove(action);
+    public void RemoveAction(IActionSpecImmutable action, ILogger logger) {
+        if (!UnorderedObjectActions.Remove(action)) {
+            logger.LogWarning($"Failed to find and remove {action} from {identifier}");
         }
     }
 
