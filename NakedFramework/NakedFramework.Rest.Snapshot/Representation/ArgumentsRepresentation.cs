@@ -41,7 +41,7 @@ public class ArgumentsRepresentation : MapRepresentation {
         // All reasons why we cannot create a link representation
         if (context.Specification.IsCollection && context.ElementSpecification is { IsParseable: false }) {
             var proposedObjectFacade = frameworkFacade.GetObject(context.ProposedValue);
-            var coll = proposedObjectFacade.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();
+            var coll = proposedObjectFacade?.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();
             value = CreateMap(context, coll);
         }
         else if (context.Specification.IsParseable ||

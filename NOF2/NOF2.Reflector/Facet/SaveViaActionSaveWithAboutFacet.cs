@@ -13,17 +13,17 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
+using NOF2.About;
 
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class SaveViaActionSaveFacet : FacetAbstract, ISaveFacet, IImperativeFacet {
+public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFacet, ISaveFacet, IImperativeFacet {
     private readonly MethodInfo saveMethod;
 
-    public SaveViaActionSaveFacet(MethodInfo saveMethod, ISpecification holder, ILogger<SaveViaActionSaveFacet> logger)
-        : base(Type, holder) {
+    public SaveViaActionSaveWithAboutFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ISpecification holder, ILogger<SaveViaActionSaveWithAboutFacet> logger)
+        : base(Type, holder, aboutMethod, AboutHelpers.AboutType.Action, logger) {
         this.saveMethod = saveMethod;
         SaveDelegate = LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
     }
@@ -32,12 +32,21 @@ public sealed class SaveViaActionSaveFacet : FacetAbstract, ISaveFacet, IImperat
 
     public static Type Type => typeof(ISaveFacet);
 
-    public MethodInfo GetMethod() => saveMethod;
-
-    public Func<object, object[], object> GetMethodDelegate() => SaveDelegate;
-
     public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
+        var msg = Validate(nakedObject, framework);
+        if (msg is not null) {
+            return msg;
+        }
+
         SaveDelegate.Invoke(saveMethod, nakedObject.GetDomainObject(), Array.Empty<object>());
+        return null;
+    }
+
+    public string Validate(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
+        if (InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Valid, false, true) is ActionAbout actionAbout) {
+            return actionAbout.Usable ? null : string.IsNullOrWhiteSpace(actionAbout.UnusableReason) ? "Invalid Save" : actionAbout.UnusableReason;
+        }
+
         return null;
     }
 }

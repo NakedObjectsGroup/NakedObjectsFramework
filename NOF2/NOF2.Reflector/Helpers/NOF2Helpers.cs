@@ -34,7 +34,9 @@ public static class NOF2Helpers {
         for (var index = 0; index < parameters.Length; index++) {
             if (parameters[index] is null) {
                 var parmType = method.GetParameters()[index].ParameterType;
-                parameters[index] = Activator.CreateInstance(parmType);
+                if (IsOrImplementsValueHolder(parmType) is not null) {
+                    parameters[index] = Activator.CreateInstance(parmType);
+                }
             }
         }
 

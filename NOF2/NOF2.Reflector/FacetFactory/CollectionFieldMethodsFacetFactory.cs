@@ -58,8 +58,8 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
 
         MethodHelpers.AddHideForSessionFacetNone(facets, collection);
         MethodHelpers.AddDisableFacetAlways(facets, collection);
-        //ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
-        //ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, MethodType.Object, capitalizedName, collection, LoggerFactory, methodRemover);
+        facets.Add(new NotPersistedFacet(collection));
+
         FacetUtils.AddFacets(facets);
         return metamodel;
     }

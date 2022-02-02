@@ -41,12 +41,25 @@ public sealed class SaveFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
         const string name = "actionsave";
         var saveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, name, typeof(void), null);
         methodRemover.SafeRemoveMethod(saveMethod);
-        var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, $"{NOF2Helpers.AboutPrefix}{name}", typeof(void), new[] { typeof(ActionAbout) });
 
-        methodRemover.SafeRemoveMethod(aboutSaveMethod);
+        IFacet saveFacet;
+        if (saveMethod is not null) {
+            var aboutSaveMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, $"{NOF2Helpers.AboutPrefix}{name}", typeof(void), new[] { typeof(ActionAbout) });
 
-        var facet = saveMethod is not null ? (IFacet)new SaveViaActionSaveFacet(saveMethod, aboutSaveMethod, specification, Logger<SaveViaActionSaveFacet>()) : new SaveNullFacet(specification, Logger<SaveNullFacet>());
-        FacetUtils.AddFacet(facet);
+            methodRemover.SafeRemoveMethod(aboutSaveMethod);
+
+            if (aboutSaveMethod is null) {
+                saveFacet = new SaveViaActionSaveFacet(saveMethod, specification, Logger<SaveViaActionSaveFacet>());
+            }
+            else {
+                saveFacet = new SaveViaActionSaveWithAboutFacet(saveMethod, aboutSaveMethod, specification, Logger<SaveViaActionSaveWithAboutFacet>());
+            }
+        }
+        else {
+            saveFacet = new SaveNullFacet(specification, Logger<SaveNullFacet>());
+        }
+
+        FacetUtils.AddFacet(saveFacet);
 
         return metamodel;
     }
