@@ -73,6 +73,10 @@
         Container.AddMessageToBroker($"Message sent to {FullName}")
     End Sub
 
+    Public Sub ActionSave()
+        Container.MakePersistent(Me)
+    End Sub
+
     Public Function Title() As Title
         Return New Title(FullName)
     End Function
