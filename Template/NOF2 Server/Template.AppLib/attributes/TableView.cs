@@ -1,6 +1,6 @@
 ﻿using NakedFramework;
 
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property|AttributeTargets.Method)]
 public class TableViewAttribute : Attribute,ITableViewAttribute
 {
     public TableViewAttribute(bool showTitle, params string[] columns)

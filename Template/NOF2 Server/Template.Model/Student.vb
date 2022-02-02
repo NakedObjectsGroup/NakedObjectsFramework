@@ -8,7 +8,7 @@
     Public Property mappedFullName As String
     Private myFullName As TextString
 
-    <DemoProperty(Order:=1)>
+    <DemoProperty(Order:=1, IsRequired:=True)>
     Public ReadOnly Property FullName As TextString
         Get
             myFullName = If(myFullName, New TextString(mappedFullName, Sub(v) mappedFullName = v))
@@ -19,7 +19,7 @@
     Public Property mappedCurrentYearGroup As Integer
     Private myCurrentYearGroup As WholeNumber
 
-    <DemoProperty(Order:=2)> '<Range(9, 13)>
+    <DemoProperty(Order:=2, IsRequired:=True)>
     Public ReadOnly Property CurrentYearGroup As WholeNumber
         Get
             myCurrentYearGroup = If(myCurrentYearGroup, New WholeNumber(mappedCurrentYearGroup, Sub(v) mappedCurrentYearGroup = v))
@@ -27,14 +27,28 @@
         End Get
     End Property
 
+    Public Sub AboutCurrentYearGroup(a As FieldAbout, yg As WholeNumber)
+        Select Case a.TypeCode
+            Case AboutTypeCodes.Valid
+                If (yg.Value > 13 OrElse yg.Value < 9) Then
+                    a.IsValid = False
+                    a.InvalidReason = "Must be in range 9-13"
+                End If
+        End Select
+    End Sub
+
     Public Property PersonalTutorId As Integer?
+
     <DemoProperty(Order:=4)>
     Public Overridable Property PersonalTutor As Teacher
 
-    'TODO
-    Public Function ChoicesPersonalTutor() As IList(Of Teacher)
-        Return Container.AllInstances(Of Teacher).ToList()
-    End Function
+    Public Sub AboutPersonalTutor(a As FieldAbout)
+        Select Case a.TypeCode
+            Case AboutTypeCodes.Parameters
+                a.Options = Container.AllInstances(Of Teacher).ToArray()
+            Case Else
+        End Select
+    End Sub
 
     Public Overridable Property mappedSets As ICollection(Of TeachingSet) = New List(Of TeachingSet)()
 
