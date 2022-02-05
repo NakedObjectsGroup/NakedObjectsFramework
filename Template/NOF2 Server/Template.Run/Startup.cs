@@ -21,6 +21,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using NOF2.Reflector.Extensions;
 using Template.AppLib;
+using Template.Model;
+using Template.Database;
 
 namespace Template.Server {
     public class Startup {
@@ -36,8 +38,7 @@ namespace Template.Server {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
-                builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { ModelConfig.EFCoreDbContextCreator }; });
+                builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { DatabaseConfig.EFCoreDbContextCreator }; });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;
