@@ -7,7 +7,7 @@
 
 namespace NOF2.Attribute {
     public interface ITableViewAttribute {
-        public bool TableTitle { get; set; }
-        public string[] TableColumns { get; set; }
+        bool TableTitle { get; set; }
+        string[] TableColumns { get; set; }
     }
 }

@@ -9,6 +9,6 @@ using NOF2.Enum;
 
 namespace NOF2.Attribute {
     public interface IHiddenAttribute {
-        public WhenTo WhenTo { get; set; }
+        WhenTo WhenTo { get; set; }
     }
 }

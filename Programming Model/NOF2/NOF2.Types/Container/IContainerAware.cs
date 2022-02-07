@@ -7,6 +7,6 @@
 
 namespace NOF2.Container {
     public interface IContainerAware {
-        public IContainer Container { get; set; }
+        IContainer Container { get; set; }
     }
 }

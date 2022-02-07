@@ -7,14 +7,14 @@
 
 namespace NOF2.ValueHolder {
     public interface IValueHolder<T> {
-        public T Value { get; set; }
+        T Value { get; set; }
 
-        public string Mask { get; }
+        string Mask { get; }
 
-        public string ToString();
+        string ToString();
 
-        public object Parse(string fromString);
+        object Parse(string fromString);
 
-        public object Display(string mask = null);
+        object Display(string mask = null);
     }
 }

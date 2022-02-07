@@ -5,10 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace NOF2.Collection {
     public interface InternalCollection : IList { }
 
@@ -16,6 +12,18 @@ namespace NOF2.Collection {
         private readonly ICollection<T> backingCollection;
 
         public InternalCollection(ICollection<T> backingCollection) => this.backingCollection = backingCollection;
+
+        public bool IsFixedSize { get; }
+
+        public int Count => backingCollection.Count;
+        public bool IsSynchronized { get; } = false;
+        public object SyncRoot { get; } = new object();
+        public bool IsReadOnly => backingCollection.IsReadOnly;
+
+        public object this[int index] {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
 
         public IEnumerator<T> GetEnumerator() => backingCollection.GetEnumerator();
 
@@ -34,33 +42,13 @@ namespace NOF2.Collection {
 
         public int IndexOf(object value) => throw new NotImplementedException();
 
-        public void Insert(int index, object value) {
-            throw new NotImplementedException();
-        }
+        public void Insert(int index, object value) => throw new NotImplementedException();
 
-        public void Remove(object value) {
-            throw new NotImplementedException();
-        }
+        public void Remove(object value) => throw new NotImplementedException();
 
-        public void RemoveAt(int index) {
-            throw new NotImplementedException();
-        }
+        public void RemoveAt(int index) => throw new NotImplementedException();
 
-        public bool IsFixedSize { get; }
-
-        public void CopyTo(Array array, int index) {
-            throw new NotImplementedException();
-        }
-
-        public int Count => backingCollection.Count;
-        public bool IsSynchronized { get; } = false;
-        public object SyncRoot { get; } = new object();
-        public bool IsReadOnly => backingCollection.IsReadOnly;
-
-        public object this[int index] {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
+        public void CopyTo(Array array, int index) => throw new NotImplementedException();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

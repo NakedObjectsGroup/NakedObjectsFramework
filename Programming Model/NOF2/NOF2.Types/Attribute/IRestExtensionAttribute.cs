@@ -7,7 +7,7 @@
 
 namespace NOF2.Attribute {
     public interface IRestExtensionAttribute {
-        public string ExtensionName { get; set; }
-        public string ExtensionValue { get; set; }
+        string ExtensionName { get; set; }
+        string ExtensionValue { get; set; }
     }
 }

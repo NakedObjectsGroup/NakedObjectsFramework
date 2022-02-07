@@ -7,6 +7,6 @@
 
 namespace NOF2.Attribute {
     public interface IMaxLengthAttribute {
-        public int MaxLength { get; set; }
+        int MaxLength { get; set; }
     }
 }

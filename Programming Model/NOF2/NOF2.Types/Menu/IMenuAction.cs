@@ -7,6 +7,6 @@
 
 namespace NOF2.Menu {
     public interface IMenuAction : IMenuComponent {
-        public string DisplayName { get; }
+        string DisplayName { get; }
     }
 }

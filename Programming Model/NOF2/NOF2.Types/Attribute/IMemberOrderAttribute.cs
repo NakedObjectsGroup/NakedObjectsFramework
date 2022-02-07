@@ -7,6 +7,6 @@
 
 namespace NOF2.Attribute {
     public interface IMemberOrderAttribute {
-        public int Order { get; set; }
+        int Order { get; set; }
     }
 }

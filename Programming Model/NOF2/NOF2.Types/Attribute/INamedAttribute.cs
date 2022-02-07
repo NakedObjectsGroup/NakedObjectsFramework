@@ -7,6 +7,6 @@
 
 namespace NOF2.Attribute {
     public interface INamedAttribute {
-        public string Name { get; set; }
+        string Name { get; set; }
     }
 }
