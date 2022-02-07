@@ -110,6 +110,10 @@ type AMultiDatabaseTests() =
         [<Test>]
         member x.TestSaveTransientObjectWithPersistentReferenceProperty() = 
             DomainTestCode.CanSaveTransientObjectWithPersistentReferenceProperty x.multiDatabasePersistor
+
+        [<Test>]
+        member x.TestSaveTransientObjectWithPersistentReferencePropertyViaID() = 
+            DomainTestCode.CanSaveTransientObjectWithPersistentReferencePropertyViaID x.multiDatabasePersistor
         
         [<Test>]       
         member x.TestSaveTransientObjectWithTransientReferenceProperty() = 

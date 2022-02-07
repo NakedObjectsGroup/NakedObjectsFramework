@@ -27,6 +27,7 @@ open TestCode
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
+let Nth<'t when 't : not struct> (persistor, i) = Nth<'t> (persistor, i)
 
 let DomainLoadTestAssembly() = 
     let obj = new Address()
@@ -49,6 +50,12 @@ let CreateProductSubcategory persistor =
         psc.ModifiedDate <- DateTime.Now
         psc.ProductSubcategoryID <- 1
         psc.rowguid <- Guid.NewGuid()
+    CreateAndSetup persistor setter
+
+let CreateSpecialOfferProduct persistor = 
+    let setter (sop : SpecialOfferProduct) = 
+        sop.ModifiedDate <- DateTime.Now
+        sop.rowguid <- Guid.NewGuid()
     CreateAndSetup persistor setter
 
 let CreateProductCategory persistor = 
@@ -114,6 +121,31 @@ let CanSaveTransientObjectWithPersistentReferenceProperty persistor =
     let pc = (First<ProductCategory> persistor)
     psc.ProductCategory <- pc
     CreateAndEndTransaction persistor psc
+    let newobj = persistor.GetInstances<ProductSubcategory>()
+                 |> Seq.filter (fun i -> i.rowguid = psc.rowguid)
+                 |> Seq.head
+    Assert.NotZero(newobj.ProductCategoryID)
+
+let CanSaveTransientObjectWithPersistentReferencePropertyViaID (persistor : IObjectStore) = 
+    let sop = CreateSpecialOfferProduct persistor
+    let p = (Nth<Product> (persistor, 201))
+    let s = (Nth<SpecialOffer> (persistor, 15))
+    
+    sop.ProductID <- p.ProductID
+    sop.SpecialOfferID <- s.SpecialOfferID
+
+    CreateAndEndTransaction persistor sop
+    let newobj = persistor.GetInstances<SpecialOfferProduct>()
+                 |> Seq.filter (fun i -> i.rowguid = sop.rowguid)
+                 |> Seq.head
+    let pIsNull = newobj.Product = null
+    let sIsNull = newobj.SpecialOffer = null
+    
+    DestroyAndEndTransaction persistor newobj
+    
+    Assert.IsFalse(pIsNull)
+    Assert.IsFalse(sIsNull)
+
 
 let CanSaveTransientObjectWithPersistentReferencePropertyInSeperateTransaction(persistor : IObjectStore) = 
     persistor.StartTransaction()

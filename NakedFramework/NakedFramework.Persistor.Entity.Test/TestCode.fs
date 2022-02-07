@@ -73,6 +73,10 @@ let CreateAndEndTransaction (p : IObjectStore) o =
     p.ExecuteCreateObjectCommand(GetOrAddAdapterForTest o null) 
     p.EndTransaction()
 
+let DestroyAndEndTransaction (p : IObjectStore) o = 
+    p.ExecuteDestroyObjectCommand(GetOrAddAdapterForTest o null) 
+    p.EndTransaction()
+
 let SaveAndEndTransaction (p : IObjectStore) o = 
     p.ExecuteSaveObjectCommand(GetOrAddAdapterForTest o null) 
     p.EndTransaction()
@@ -112,6 +116,7 @@ let checkCountAndType classes (typ : Type) =
 
 let First<'t when 't : not struct>(p : IObjectStore) = p.GetInstances<'t>() |> Seq.head
 let Second<'t when 't : not struct>(p : IObjectStore) = p.GetInstances<'t>() |> Seq.item 1
+let Nth<'t when 't : not struct>(p : IObjectStore, i) = p.GetInstances<'t>() |> Seq.item i
 
 let GetMaxID<'t when 't : not struct> (p : IObjectStore) fGetID = 
     (p.GetInstances<'t>()

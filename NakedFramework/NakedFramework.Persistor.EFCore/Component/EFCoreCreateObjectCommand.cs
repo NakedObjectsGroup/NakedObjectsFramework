@@ -76,7 +76,6 @@ public class EFCoreCreateObjectCommand : ICreateObjectCommand {
         var persisting = entry.State == EntityState.Detached;
         if (persisting) {
             SetKeyAsNecessary(originalObject, objectToAdd);
-            //dbContext.Add(objectToAdd);
         }
         else {
             objectToAdd = originalObject;
@@ -103,7 +102,6 @@ public class EFCoreCreateObjectCommand : ICreateObjectCommand {
             // with already known object in identity map when replacing the poco
             parent.RemoveAdapter(proxyAdapter);
             parent.ReplacePoco(adapterForOriginalObjectAdapter, objectToAdd);
-            
         }
         else {
             SetKeyAsNecessary(originalObject, objectToAdd);
