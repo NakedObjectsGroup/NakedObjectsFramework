@@ -2,7 +2,7 @@
 {
     public static class AppLibConfig
     {
-        public static Type[] ValueHolderTypes { get; } = {
+        public static Type[] ValueHolderTypes() => new[] {
             typeof(TextString),
             typeof(Money),typeof(MoneyNullable),
             typeof(Logical),
