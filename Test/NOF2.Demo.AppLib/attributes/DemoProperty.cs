@@ -1,4 +1,5 @@
-﻿using NakedFramework;
+﻿
+using NOF2.Enum;
 
 namespace NOF2.Demo.AppLib;
 
