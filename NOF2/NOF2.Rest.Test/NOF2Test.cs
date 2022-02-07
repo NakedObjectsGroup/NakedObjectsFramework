@@ -1779,4 +1779,20 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
        
     }
+
+    [Test]
+    public void TestGetVersion()
+    {
+       
+
+        var api = Api();
+        var result = api.GetVersion();
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsTrue(parsedResult["implVersion"].ToString().StartsWith("NOF2 "));
+
+    }
 }
