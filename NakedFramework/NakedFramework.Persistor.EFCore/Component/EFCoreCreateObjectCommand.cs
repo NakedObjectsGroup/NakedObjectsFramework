@@ -76,7 +76,7 @@ public class EFCoreCreateObjectCommand : ICreateObjectCommand {
         var persisting = entry.State == EntityState.Detached;
         if (persisting) {
             SetKeyAsNecessary(originalObject, objectToAdd);
-            dbContext.Add(objectToAdd);
+            //dbContext.Add(objectToAdd);
         }
         else {
             objectToAdd = originalObject;
@@ -90,13 +90,20 @@ public class EFCoreCreateObjectCommand : ICreateObjectCommand {
         var proxyAdapter = CreateAdapter(objectToAdd);
 
         if (persisting) {
-            ProxyReferencesAndCopyValuesToProxy(originalObject, objectToAdd);
+            CopyNonIdMembers(originalObject, objectToAdd);
+            CopyAndProxyReferenceMembers(originalObject, objectToAdd);
+            CopyNotPersistedMembers(originalObject, objectToAdd);
+            // Add to context before copying collections but after copying references. Has to be at this point because null references may overwrite 
+            // generated references (created on adding) from shadow ids but as we read collection from proxy to copy into, if it's detached there's a lazy loading error 
+            dbContext.Add(objectToAdd);
+
+            CopyAndProxyCollectionMembers(originalObject, objectToAdd);
             context.PersistedNakedObjects.Add(proxyAdapter);
             // remove temporary adapter for proxy (tidy and also means we will not get problem 
             // with already known object in identity map when replacing the poco
             parent.RemoveAdapter(proxyAdapter);
             parent.ReplacePoco(adapterForOriginalObjectAdapter, objectToAdd);
-            //dbContext.Add(objectToAdd);
+            
         }
         else {
             SetKeyAsNecessary(originalObject, objectToAdd);
@@ -134,13 +141,12 @@ public class EFCoreCreateObjectCommand : ICreateObjectCommand {
         }
     }
 
-    private void ProxyReferencesAndCopyValuesToProxy(object objectToProxy, object proxy) {
-        var nonIdMembers = dbContext.GetNonIdMembers(objectToProxy.GetType());
-        nonIdMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+    private void CopyNotPersistedMembers(object objectToProxy, object proxy) {
+        var notPersistedMembers = objectToProxy.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && parent.IsNotPersisted(objectToProxy, p)).ToArray();
+        notPersistedMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+    }
 
-        var refMembers = dbContext.GetReferenceMembers(objectToProxy.GetType());
-        refMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, ProxyObjectIfAppropriate(pi.GetValue(objectToProxy, null)), null));
-
+    private void CopyAndProxyCollectionMembers(object objectToProxy, object proxy) {
         var collectionMembers = dbContext.GetCollectionMembers(objectToProxy.GetType());
         foreach (var pi in collectionMembers) {
             var toCol = proxy.GetProperty(pi.Name).GetValue(proxy, null);
@@ -149,9 +155,16 @@ public class EFCoreCreateObjectCommand : ICreateObjectCommand {
                 toCol.Invoke("Add", ProxyObjectIfAppropriate(item));
             }
         }
+    }
 
-        var notPersistedMembers = objectToProxy.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && parent.IsNotPersisted(objectToProxy, p)).ToArray();
-        notPersistedMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
+    private void CopyAndProxyReferenceMembers(object objectToProxy, object proxy) {
+        var refMembers = dbContext.GetReferenceMembers(objectToProxy.GetType());
+        refMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, ProxyObjectIfAppropriate(pi.GetValue(objectToProxy, null)), null));
+    }
+
+    private void CopyNonIdMembers(object objectToProxy, object proxy) {
+        var nonIdMembers = dbContext.GetNonIdMembers(objectToProxy.GetType());
+        nonIdMembers.ForEach(pi => proxy.GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
     }
 
     public override string ToString() => $"EFCoreCreateObjectCommand [object={nakedObjectAdapter}]";
