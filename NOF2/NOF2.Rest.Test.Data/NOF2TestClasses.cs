@@ -317,6 +317,8 @@ public class ClassWithActionAbout : AboutChecker {
                 break;
         }
     }
+
+    public ClassWithTextString actionTestActionWithRefParms(ClassWithTextString ts) => ts;
 }
 
 public class ClassWithFieldAbout : AboutChecker {

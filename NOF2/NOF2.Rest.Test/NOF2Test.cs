@@ -289,7 +289,7 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
         Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
@@ -307,7 +307,7 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
         //Assert.IsNotNull(parsedResult["members"]["Id"]);
     }
 
@@ -337,7 +337,7 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
         Assert.AreEqual("Renamed Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
@@ -355,7 +355,7 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
         Assert.AreEqual("Renamed Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
@@ -374,7 +374,7 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
         Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
@@ -460,7 +460,7 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
         Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
@@ -478,7 +478,7 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
         Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
@@ -578,6 +578,21 @@ public class NOF2Test : AcceptanceTestCase {
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    }
+
+    [Test]
+    public void TestInvokeActionWithEmptyRefParameter()
+    {
+        ClassWithActionAbout.ResetTest();
+
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue(null)} } };
+
+        var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithRefParms), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+        Assert.AreEqual("", parsedResult["result"],ToString());
     }
 
     [Test]
@@ -812,7 +827,6 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("fix locale")]
     public void TestGetObjectWithDate() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithDate>(), "1");
@@ -820,12 +834,13 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
         Assert.IsNull(parsedResult["members"]["Id"]);
         Assert.IsNotNull(parsedResult["members"]["Date"]);
+        Assert.AreEqual("2021-11-01", parsedResult["members"]["Date"]["value"].ToString());
         Assert.IsNotNull(parsedResult["members"]["ActionUpdateDate"]);
 
-        Assert.AreEqual("11/01/2021", parsedResult["title"].ToString());
+        Assert.AreEqual("01/11/2021", parsedResult["title"].ToString());
     }
 
     [Test]
