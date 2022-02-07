@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,22 +23,29 @@ using Template.AppLib;
 using Template.Model;
 using Template.Database;
 
-namespace Template.Server {
-    public class Startup {
+namespace Template.Server
+{
+    public class Startup
+    {
         private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration) { }
 
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services) {
+        // This method gets called by the runtime. Use it to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
             services.AddControllers()
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedFramework(builder => {
-                builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { DatabaseConfig.EFCoreDbContextCreator }; });
-                builder.AddRestfulObjects(options => {
+            services.AddNakedFramework(builder =>
+            {
+                builder.AddEFCorePersistor(options =>
+                {
+                    options.ContextCreators = new[] { DatabaseConfig.EFCoreDbContextCreator };
+                });
+                builder.AddRestfulObjects(options =>
+                {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;
                     options.DefaultPageSize = 20;
@@ -47,14 +53,17 @@ namespace Template.Server {
                     options.InlineDetailsInCollectionMemberRepresentations = false;
                     options.InlineDetailsInPropertyMemberRepresentations = false;
                 });
-                builder.AddNOF2(options => {
+                builder.AddNOF2(options =>
+                {
                     options.DomainModelTypes = ModelConfig.DomainModelTypes();
                     options.DomainModelServices = ModelConfig.DomainModelServices();
                     options.ValueHolderTypes = AppLibConfig.ValueHolderTypes();
                 });
             });
-            services.AddCors(options => {
-                options.AddPolicy(MyAllowSpecificOrigins, builder => {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins, builder =>
+                {
                     builder
                         .WithOrigins("http://localhost:5001",
                                      "http://localhost:49998",
@@ -67,26 +76,23 @@ namespace Template.Server {
                         .AllowCredentials();
                 });
             });
-            // For ThreadLocals
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // For use by ThreadLocals
         }
 
-
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder modelBuilder, ILoggerFactory loggerFactory) {
-            // for Demo use Log4Net. Configured in log4net.config  
-            loggerFactory.AddLog4Net();
-
+        // This method gets called by the runtime. Use it to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder modelBuilder, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddLog4Net(); // for Demo use Log4Net. Configured in log4net.config  
             modelBuilder.Build();
-
-            if (env.IsDevelopment()) {
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
-            ThreadLocals.Initialize(app.ApplicationServices, static sp => new NOF2.Reflector.Component.Container(sp.GetService<INakedFramework>()));
+            ThreadLocals.Initialize(app.ApplicationServices,
+                static sp => new NOF2.Reflector.Component.Container(sp.GetService<INakedFramework>()));
         }
     }
 }

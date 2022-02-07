@@ -8,6 +8,7 @@ namespace Template.Database
             c =>
             {
                 var db = new ExampleDbContext(c.GetConnectionString("ExampleCS"));
+                //db.Delete(); //Uncomment if need to regenerate the database with seed data
                 db.Create();
                 return db;
             };

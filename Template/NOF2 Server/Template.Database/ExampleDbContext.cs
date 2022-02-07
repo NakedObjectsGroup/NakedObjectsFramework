@@ -25,17 +25,16 @@ namespace Template.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //SeedData.CreateSeedData(modelBuilder);
             modelBuilder.Entity<Student>().Map();
             modelBuilder.Entity<TeachingSet>().Map();
             modelBuilder.Entity<SubjectReport>().Map();
             modelBuilder.Entity<Teacher>().Map();
-
+            SeedData.CreateSeedData(modelBuilder);
         }
-       
-            public void Delete() => Database.EnsureDeleted();
 
-            public void Create() => Database.EnsureCreated();
+        public void Delete() => Database.EnsureDeleted();
+
+        public void Create() => Database.EnsureCreated();
 
 
     }
