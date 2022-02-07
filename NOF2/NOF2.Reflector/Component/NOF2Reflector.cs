@@ -35,7 +35,7 @@ public sealed class NOF2Reflector : AbstractParallelReflector {
     }
 
     public override bool ConcurrencyChecking => inof2ReflectorConfiguration.ConcurrencyChecking;
-    public override string Name => "NOF2.Reflector";
+    public override string Name => "NOF2";
     public override ReflectorType ReflectorType => ReflectorType.Object;
     public override bool IgnoreCase => inof2ReflectorConfiguration.IgnoreCase;
 
