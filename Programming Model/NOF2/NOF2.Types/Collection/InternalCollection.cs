@@ -54,7 +54,7 @@ namespace NOF2.Collection {
 
         public int Count => backingCollection.Count;
         public bool IsSynchronized { get; } = false;
-        public object SyncRoot { get; } = new();
+        public object SyncRoot { get; } = new object();
         public bool IsReadOnly => backingCollection.IsReadOnly;
 
         public object this[int index] {
