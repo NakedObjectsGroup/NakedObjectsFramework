@@ -14,8 +14,10 @@
 		<description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
 		<tags>naked objects nakedobjects ddd domain driven design</tags>
 		<dependencies>
-			<group targetFramework="net6.0">
+			<group targetFramework="net35">
 				<dependency id="NOF2.ProgrammingModel" version="[1.0.0-beta01, 2)" />
+			</group>
+			<group targetFramework="net6.0">
 				<dependency id="NakedFramework" version="[13.0.0-beta01, 14)" />
 				<dependency id="EntityFramework" version="[6.4.4, 7)" />
 				<dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[6.0.0, 7)" />
@@ -28,9 +30,7 @@
 	</metadata>
 	<files>
 		<file src="icon.png" target="images\" />
-		
 		<file src="..\..\NOF2\NOF2.Reflector\bin\Debug\**\NOF2.Reflector.dll" target="lib" />
-
 		<file src="..\..\NOF2\NOF2.Reflector\bin\Debug\**\NOF2.Reflector.pdb" target="lib" />
 	</files>
 </package>
