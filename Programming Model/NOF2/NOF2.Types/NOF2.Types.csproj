@@ -12,9 +12,4 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="NakedFramework.ProgrammingModel" Version="13.1.0-beta01" />
-	</ItemGroup>
-
 </Project>

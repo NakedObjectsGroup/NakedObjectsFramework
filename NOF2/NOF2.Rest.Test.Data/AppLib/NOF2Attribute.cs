@@ -1,6 +1,6 @@
 ﻿using System;
-using NakedFramework;
 using NOF2.Attribute;
+using NOF2.Enum;
 
 namespace NOF2.Rest.Test.Data.AppLib;
 

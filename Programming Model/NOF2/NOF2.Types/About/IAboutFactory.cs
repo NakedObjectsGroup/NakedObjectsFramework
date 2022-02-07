@@ -1,7 +1,7 @@
-﻿namespace NOF2.About;
+﻿namespace NOF2.About {
+    public interface IAboutFactory {
+        public ActionAbout NewActionAbout(AboutTypeCodes code);
 
-public interface IAboutFactory {
-    public ActionAbout NewActionAbout(AboutTypeCodes code);
-
-    public FieldAbout NewFieldAbout(AboutTypeCodes code);
+        public FieldAbout NewFieldAbout(AboutTypeCodes code);
+    }
 }

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
@@ -31,6 +32,15 @@ public sealed class HiddenAnnotationFacetFactory : AbstractNOF2FacetFactoryProce
         return metamodel;
     }
 
+    private static WhenTo Map(Enum.WhenTo whenTo) =>
+        whenTo switch {
+            Enum.WhenTo.Always => WhenTo.Always,
+            Enum.WhenTo.Never => WhenTo.Never,
+            Enum.WhenTo.OncePersisted => WhenTo.OncePersisted,
+            Enum.WhenTo.UntilPersisted => WhenTo.UntilPersisted,
+            _ => throw new NotImplementedException()
+        };
+
     private static void Process(object onObject, ISpecification specification) {
         var attribute = onObject.GetCustomAttribute<IHiddenAttribute>();
         FacetUtils.AddFacet(Create(attribute, specification));
@@ -46,5 +56,5 @@ public sealed class HiddenAnnotationFacetFactory : AbstractNOF2FacetFactoryProce
         return metamodel;
     }
 
-    private static IHiddenFacet Create(IHiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.WhenTo, holder);
+    private static IHiddenFacet Create(IHiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(Map(attribute.WhenTo), holder);
 }

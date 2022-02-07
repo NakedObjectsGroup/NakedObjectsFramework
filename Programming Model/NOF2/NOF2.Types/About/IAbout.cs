@@ -5,16 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NOF2.About;
+namespace NOF2.About {
+    public interface IAbout {
+        AboutTypeCodes TypeCode { get; }
 
-public interface IAbout {
-    AboutTypeCodes TypeCode { get; }
+        string Name { get; set; }
+        string Description { get; set; }
 
-    string Name { get; set; }
-    string Description { get; set; }
+        bool Visible { get; set; }
 
-    bool Visible { get; set; }
-
-    bool Usable { get; set; }
-    string UnusableReason { get; set; }
+        bool Usable { get; set; }
+        string UnusableReason { get; set; }
+    }
 }

@@ -10,21 +10,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NOF2.Container;
-
-public interface IContainer {
-    public void AddMessageToBroker(string message);
-    public void AddWarningToBroker(string message);
-    public void ClearWarnings();
-    public IEnumerable AllInstances(Type ofType);
-    public IQueryable<T> AllInstances<T>() where T : class;
-    public object DomainService(Type ofType);
-    public T DomainService<T>();
-    public object CreateTransientInstance(Type ofType);
-    public T CreateTransientInstance<T>() where T : new();
-    public void MakePersistent<T>(ref T transientObject);
-    public bool IsPersistent(object obj);
-    public IList<Type> AllTypes();
-    public void Resolve(object obj);
-    public T SystemService<T>();
+namespace NOF2.Container {
+    public interface IContainer {
+        public void AddMessageToBroker(string message);
+        public void AddWarningToBroker(string message);
+        public void ClearWarnings();
+        public IEnumerable AllInstances(Type ofType);
+        public IQueryable<T> AllInstances<T>() where T : class;
+        public object DomainService(Type ofType);
+        public T DomainService<T>();
+        public object CreateTransientInstance(Type ofType);
+        public T CreateTransientInstance<T>() where T : new();
+        public void MakePersistent<T>(ref T transientObject);
+        public bool IsPersistent(object obj);
+        public IList<Type> AllTypes();
+        public void Resolve(object obj);
+        public T SystemService<T>();
+    }
 }

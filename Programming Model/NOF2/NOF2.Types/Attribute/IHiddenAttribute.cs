@@ -5,10 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework;
+using NOF2.Enum;
 
-namespace NOF2.Attribute;
-
-public interface IHiddenAttribute {
-    public WhenTo WhenTo { get; set; }
+namespace NOF2.Attribute {
+    public interface IHiddenAttribute {
+        public WhenTo WhenTo { get; set; }
+    }
 }

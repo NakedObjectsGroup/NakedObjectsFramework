@@ -58,7 +58,7 @@ public sealed class NOF2FacetFactorySet : IFacetFactorySet {
 
         Prefixes = allFactories.OfType<IMethodPrefixBasedFacetFactory>().SelectMany(prefixfactory => prefixfactory.Prefixes).ToArray();
 
-        foreach (FeatureType featureType in Enum.GetValues(typeof(FeatureType))) {
+        foreach (FeatureType featureType in System.Enum.GetValues(typeof(FeatureType))) {
             factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToArray();
         }
 

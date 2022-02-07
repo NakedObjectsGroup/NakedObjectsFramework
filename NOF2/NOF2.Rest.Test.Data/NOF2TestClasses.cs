@@ -12,7 +12,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using NakedFramework;
 using NakedFramework.Core.Util;
 using NOF2.About;
 using NOF2.Collection;
@@ -22,6 +21,7 @@ using NOF2.Menu;
 using NOF2.Rest.Test.Data.AppLib;
 using NOF2.Title;
 using NakedObjects;
+using NOF2.Enum;
 
 // ReSharper disable InconsistentNaming
 
