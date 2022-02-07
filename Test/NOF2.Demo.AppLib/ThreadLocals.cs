@@ -15,7 +15,7 @@ public static class ThreadLocals {
         containerFactory = cf;
     }
 
-    public static void InitializeContainer(IServiceProvider scopedSp) {
+    public static void SetContainer(IServiceProvider scopedSp) {
         var httpContext = httpContextAccessor.HttpContext;
         httpContext.Items["Container"] = containerFactory(scopedSp);
     }

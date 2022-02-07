@@ -22,7 +22,7 @@ namespace NOF2.Rest.App.Demo.Controllers {
                                         ILogger<RestfulObjectsController> logger,
                                         ILoggerFactory loggerFactory,
                                         IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) =>
-            ThreadLocals.InitializeContainer(frameworkFacade.GetScopedServiceProvider);
+            ThreadLocals.SetContainer(frameworkFacade.GetScopedServiceProvider);
 
         [HttpGet]
         public override ActionResult GetHome() => base.GetHome();

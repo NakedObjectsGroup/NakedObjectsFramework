@@ -50,7 +50,7 @@ namespace Template.Server {
                 builder.AddNOF2(options => {
                     options.DomainModelTypes = ModelConfig.DomainModelTypes();
                     options.DomainModelServices = ModelConfig.DomainModelServices();
-                    options.ValueHolderTypes = AppLibConfig.ValueHolderTypes;
+                    options.ValueHolderTypes = AppLibConfig.ValueHolderTypes();
                 });
             });
             services.AddCors(options => {

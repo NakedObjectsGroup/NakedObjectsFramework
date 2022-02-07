@@ -16,12 +16,12 @@ using Template.AppLib;
 
 namespace NOF2.Rest.App.Demo.Controllers {
     //[Authorize]
-    public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(IFrameworkFacade frameworkFacade,
-                                        ILogger<RestfulObjectsController> logger,
-                                        ILoggerFactory loggerFactory,
-                                        IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) =>
-            ThreadLocals.InitializeContainer(frameworkFacade.GetScopedServiceProvider);
+public class RestfulObjectsController : RestfulObjectsControllerBase {
+    public RestfulObjectsController(IFrameworkFacade frameworkFacade,
+                                    ILogger<RestfulObjectsController> logger,
+                                    ILoggerFactory loggerFactory,
+                                    IRestfulObjectsConfiguration config) : base(frameworkFacade, logger, loggerFactory, config) =>
+        ThreadLocals.SetContainer(frameworkFacade.GetScopedServiceProvider);
 
         [HttpGet]
         public override ActionResult GetHome() => base.GetHome();
