@@ -18,9 +18,6 @@ namespace RestfulObjects.Test.Data;
 
 public class TestKeyCodeMapper : IKeyCodeMapper {
     private const string KeySeparator = "--";
-#pragma warning disable SYSLIB0022 // Type or member is obsolete
-    private static readonly RijndaelManaged Provider = new();
-#pragma warning restore SYSLIB0022 // Type or member is obsolete
 
     // these are constants so that tests are reproduceable
     private static readonly byte[] Iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -32,16 +29,16 @@ public class TestKeyCodeMapper : IKeyCodeMapper {
 
     private static string Encrypt(string toEncrypt) {
         var valueBytes = Encoding.UTF8.GetBytes(toEncrypt);
-
-        using var encrypter = Provider.CreateEncryptor(Key, Iv);
-        var encryptedBytes = encrypter.TransformFinalBlock(valueBytes, 0, valueBytes.Length);
+        using var aesAlg = Aes.Create();
+        var encryptor = aesAlg.CreateEncryptor(Key, Iv);
+        var encryptedBytes = encryptor.TransformFinalBlock(valueBytes, 0, valueBytes.Length);
         return Convert.ToBase64String(encryptedBytes);
     }
 
     private static string Decrypt(string toDecrypt) {
         var valueBytes = Convert.FromBase64String(toDecrypt);
-
-        using var decrypter = Provider.CreateDecryptor(Key, Iv);
+        using var aesAlg = Aes.Create();
+        var decrypter = aesAlg.CreateDecryptor(Key, Iv);
         var decryptedBytes = decrypter.TransformFinalBlock(valueBytes, 0, valueBytes.Length);
         return Encoding.UTF8.GetString(decryptedBytes);
     }

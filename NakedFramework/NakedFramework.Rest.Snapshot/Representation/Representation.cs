@@ -98,18 +98,17 @@ public class Representation : IRepresentation {
         propertyBuilder.SetCustomAttribute(customAttribute);
     }
 
-    private static string ComputeMD5HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeMD5HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
+    private static string ComputeSHA256HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeSHA256HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
 
-    private static byte[] ComputeMD5HashFromString(string s) {
+    private static byte[] ComputeSHA256HashFromString(string s) {
+        using var sha256 = SHA256.Create();
         var idAsBytes = Encoding.UTF8.GetBytes(s);
-#pragma warning disable SYSLIB0021 // Type or member is obsolete
-        return new MD5CryptoServiceProvider().ComputeHash(idAsBytes);
-#pragma warning restore SYSLIB0021 // Type or member is obsolete
+        return sha256.ComputeHash(idAsBytes);
     }
 
     protected static T CreateWithOptionals<T>(object[] ctorParms, IList<OptionalProperty> properties) {
         var toHash = (properties.Aggregate("", (s, t) => s + t.Name + "." + t.PropertyType.FullName + ".") + typeof(T).Name).Replace("[]", "Array");
-        var hash = ComputeMD5HashAsString(toHash);
+        var hash = ComputeSHA256HashAsString(toHash);
 
         var typeName = "NakedObjects.Snapshot.Rest.Representations." + hash;
 
