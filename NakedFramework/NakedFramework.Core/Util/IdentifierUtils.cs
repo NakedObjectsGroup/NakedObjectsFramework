@@ -13,9 +13,10 @@ using System.Text;
 namespace NakedFramework.Core.Util;
 
 public static class IdentifierUtils {
-    public static string ComputeMD5HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeMD5HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
+    public static string ComputeSHA256HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeSHA256HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
 
-#pragma warning disable SYSLIB0021 // Type or member is obsolete
-    private static byte[] ComputeMD5HashFromString(string s) => new MD5CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(s));
-#pragma warning restore SYSLIB0021 // Type or member is obsolete
+    private static byte[] ComputeSHA256HashFromString(string s) {
+        using var sha256 = SHA256.Create();
+        return sha256.ComputeHash(Encoding.UTF8.GetBytes(s));
+    }
 }

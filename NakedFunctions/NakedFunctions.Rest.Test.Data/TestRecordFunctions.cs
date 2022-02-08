@@ -23,7 +23,7 @@ public static class SimpleRecordFunctions {
     [Edit]
     [PresentationHint("Hint3")]
     [RestExtension("Name3", "Value3")]
-    public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")][RestExtension("Name4", "Value4")] string name, IContext context) => Helpers.DisplayAndUpdate(sp with { Name = name }, sp, context);
+    public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, [PresentationHint("Hint4")] [RestExtension("Name4", "Value4")] string name, IContext context) => Helpers.DisplayAndUpdate(sp with { Name = name }, sp, context);
 
     [Edit]
     public static (SimpleRecord, IContext) EditSimpleRecordWithPostPersist(this SimpleRecord sp, string name, IContext context) {

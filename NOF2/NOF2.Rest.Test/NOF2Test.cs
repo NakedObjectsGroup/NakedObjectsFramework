@@ -19,14 +19,12 @@ using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
-using NakedFunctions.Rest.Test;
-using NOF2.Reflector.Component;
-using NOF2.Reflector.Extensions;
-using NOF2.Rest.Test.Data;
-using NOF2.Rest.Test.Data.AppLib;
 using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NOF2.Reflector.Extensions;
+using NOF2.Rest.Test.Data;
+using NOF2.Rest.Test.Data.AppLib;
 using NUnit.Framework;
 
 namespace NOF2.Rest.Test;
@@ -116,8 +114,6 @@ public class NOF2Test : AcceptanceTestCase {
         services.AddTransient<IStringHasher, NullStringHasher>();
         services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
-
-        
     }
 
     [SetUp]
@@ -177,8 +173,7 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectWithRestExtension()
-    {
+    public void TestGetObjectWithRestExtension() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithTextString>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -216,8 +211,7 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetImmutable()
-    {
+    public void TestGetImmutable() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithBounded>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -581,18 +575,17 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeActionWithEmptyRefParameter()
-    {
+    public void TestInvokeActionWithEmptyRefParameter() {
         ClassWithActionAbout.ResetTest();
 
         var api = Api().AsPost();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue(null)} } };
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "ts", new ScalarValue(null) } } };
 
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithRefParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
-        Assert.AreEqual("", parsedResult["result"],ToString());
+        Assert.AreEqual("", parsedResult["result"], ToString());
     }
 
     [Test]
@@ -1741,8 +1734,7 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetClassWithAnnotations()
-    {
+    public void TestGetClassWithAnnotations() {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithAnnotations>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -1763,10 +1755,8 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual("four", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][1].ToString());
     }
 
-
     [Test]
-    public void TestGetObjectWithInvalidNames()
-    {
+    public void TestGetObjectWithInvalidNames() {
         ClassWithActionAbout.ResetTest();
 
         var api = Api();
@@ -1777,14 +1767,10 @@ public class NOF2Test : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
-       
     }
 
     [Test]
-    public void TestGetVersion()
-    {
-       
-
+    public void TestGetVersion() {
         var api = Api();
         var result = api.GetVersion();
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -1793,6 +1779,5 @@ public class NOF2Test : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
 
         Assert.IsTrue(parsedResult["implVersion"].ToString().StartsWith("NOF2 "));
-
     }
 }

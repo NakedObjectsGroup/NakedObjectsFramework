@@ -59,7 +59,7 @@ public sealed class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
 
     public DateTime? Time => time;
 
-    public string Digest => version is not null ? IdentifierUtils.ComputeMD5HashAsString(version.ToString()) : null;
+    public string Digest => version is not null ? IdentifierUtils.ComputeSHA256HashAsString(version.ToString()) : null;
 
     public bool IsDifferent(IVersion otherVersion) => !Equals(otherVersion);
 

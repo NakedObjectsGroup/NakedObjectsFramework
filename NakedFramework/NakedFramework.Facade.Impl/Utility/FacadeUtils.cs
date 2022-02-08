@@ -36,8 +36,7 @@ public static class FacadeUtils {
     public static IActionSpec[] GetActionsFromSpec(ITypeSpec spec) =>
         spec.GetActionLeafNodes().ToArray();
 
-
-    public static NullCache<T> NullCache<T>(T value) => new NullCache<T>(value);
+    public static NullCache<T> NullCache<T>(T value) => new(value);
 }
 
 public class NullCache<T> {

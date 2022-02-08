@@ -9,19 +9,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using NakedFramework.Core.Util;
+using NakedObjects;
 using NOF2.About;
 using NOF2.Collection;
 using NOF2.Container;
+using NOF2.Enum;
 using NOF2.Interface;
 using NOF2.Menu;
 using NOF2.Rest.Test.Data.AppLib;
 using NOF2.Title;
-using NakedObjects;
-using NOF2.Enum;
 
 // ReSharper disable InconsistentNaming
 
@@ -93,8 +92,9 @@ public class ClassWithAnnotations {
     [NOF2(Name = "renamed")]
     public TextString NamedName => _name ??= new TextString(name, s => name = s);
 
-    [NOF2(TableTitle = true, TableColumns = new []{"one", "two"})]
+    [NOF2(TableTitle = true, TableColumns = new[] { "one", "two" })]
     public InternalCollection TestTableView => _testCollection ??= new InternalCollection<ClassWithTextString>(_TestCollection);
+
     [NOF2(TableTitle = false, TableColumns = new[] { "three", "four" })]
     public ArrayList ActionTestTableView() => new();
 }
@@ -394,8 +394,7 @@ public class ClassWithLinkToNOFClass {
     public virtual ClassWithString LinkToNOFClass { get; set; }
 }
 
-public class ClassWithReferenceProperty : AboutChecker, IContainerAware
-{
+public class ClassWithReferenceProperty : AboutChecker, IContainerAware {
     [Key]
     public int Id { get; init; }
 
@@ -758,8 +757,7 @@ public class ClassWithOrderedActions {
     }
 }
 
-public class ClassWithInvalidNames
-{
+public class ClassWithInvalidNames {
     [Key]
     public int Id { get; init; }
 

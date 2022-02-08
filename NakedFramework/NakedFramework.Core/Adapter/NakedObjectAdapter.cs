@@ -83,7 +83,7 @@ public sealed class NakedObjectAdapter : INakedObjectAdapter {
             spec is null ? $"class={objectType.FullName}," : $"specification={spec.ShortName},Type={spec.FullName},";
 
         string GetProxy() =>
-            Object is not null && FasterTypeUtils.IsAnyProxy(objectType) ? $"{objectType.FullName}," : "None,";
+            FasterTypeUtils.IsAnyProxy(objectType) ? $"{objectType.FullName}," : "None,";
 
         string GetVersion() =>
             $"{Version?.AsSequence()},";

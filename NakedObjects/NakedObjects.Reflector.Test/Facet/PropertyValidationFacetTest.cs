@@ -9,9 +9,9 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedObjects.Reflector.Facet;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedObjects.Reflector.Facet;
 
 namespace NakedObjects.Reflector.Test.Facet;
 

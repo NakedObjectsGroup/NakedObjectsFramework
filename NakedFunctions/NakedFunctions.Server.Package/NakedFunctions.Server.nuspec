@@ -28,7 +28,7 @@
 	</metadata>
 	<files>
 		<file src="icon.png" target="images\" />
-	
+
 		<file src="..\NakedFunctions.Reflector\bin\Debug\**\NakedFunctions.Reflector.dll" target="lib" />
 		<file src="..\NakedFunctions.Services\bin\Debug\**\NakedFunctions.Services.dll" target="lib" />
 

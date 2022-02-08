@@ -23,9 +23,7 @@ using NOF2.Reflector.Reflect;
 namespace NOF2.Reflector.Extensions;
 
 public static class NOF2Extensions {
-    private static INOF2ReflectorConfiguration NOF2ReflectorConfig(NOF2Options options) {
-        return new NOF2ReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ValueHolderTypes, options.ConcurrencyCheck);
-    }
+    private static INOF2ReflectorConfiguration NOF2ReflectorConfig(NOF2Options options) => new NOF2ReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ValueHolderTypes, options.ConcurrencyCheck);
 
     public static void AddNOF2(this NakedFrameworkOptions frameworkOptions, Action<NOF2Options> setupAction) {
         var options = new NOF2Options();
