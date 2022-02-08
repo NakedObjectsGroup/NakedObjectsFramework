@@ -42,7 +42,7 @@ public class ActionResultRepresentation : Representation {
     private void SetHeader(ActionResultContextFacade actionResult) {
         Caching = CacheType.Transactional;
 
-        if (actionResult.Specification.IsObject && actionResult.Result != null) {
+        if (actionResult.Specification.IsObject && actionResult.Result is not null) {
             if (actionResult.Result.Target.IsTransient) {
                 SetEtag(actionResult.TransientSecurityHash);
             }
@@ -71,19 +71,15 @@ public class ActionResultRepresentation : Representation {
         Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] { LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(frameworkFacade, req, actionResult))) } : Array.Empty<LinkRepresentation>();
     }
 
-    private void SetResultType(ActionResultContextFacade actionResult) {
-        if (actionResult.Specification.IsParseable) {
-            ResultType = ResultTypes.Scalar;
-        }
-        else if (actionResult.Specification.IsCollection) {
-            ResultType = ResultTypes.List;
-        }
-        else {
-            ResultType = actionResult.Specification.IsVoid ? ResultTypes.Void : ResultTypes.Object;
-        }
-    }
+    private void SetResultType(ActionResultContextFacade actionResult) =>
+        ResultType = actionResult.Specification switch {
+            { IsParseable: true } => ResultTypes.Scalar,
+            { IsCollection: true } => ResultTypes.List,
+            { IsVoid: true } => ResultTypes.Void,
+            _ => ResultTypes.Object
+        };
 
-    private IObjectFacade GetFacade(IFrameworkFacade frameworkFacade, object obj) => obj is not null ? frameworkFacade.GetObject(obj) : null;
+    private static IObjectFacade GetFacade(IFrameworkFacade frameworkFacade, object obj) => obj is not null ? frameworkFacade.GetObject(obj) : null;
 
     private MapRepresentation CreateArguments(IFrameworkFacade frameworkFacade, HttpRequest req, ActionResultContextFacade actionResult) {
         var optionalProperties = new List<OptionalProperty>();
@@ -98,11 +94,13 @@ public class ActionResultRepresentation : Representation {
             }
             else if (visibleParamContext.Specification.IsCollection) {
                 if (visibleParamContext.ElementSpecification.IsParseable) {
-                    var proposedEnumerable = (visibleParamContext.ProposedObjectFacade == null
-                        ? visibleParamContext.ProposedValue
-                        : visibleParamContext.ProposedObjectFacade?.Object) as IEnumerable;
+                    var proposedValue = visibleParamContext.ProposedObjectFacade is not null
+                        ? visibleParamContext.ProposedObjectFacade.Object
+                        : visibleParamContext.ProposedValue;
 
-                    var proposedCollection = proposedEnumerable == null ? Array.Empty<object>() : proposedEnumerable.Cast<object>();
+                    var proposedCollection = proposedValue is IEnumerable proposedEnumerable 
+                        ? proposedEnumerable.Cast<object>() 
+                        : Array.Empty<object>();
 
                     var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(GetFacade(frameworkFacade, i), false)).ToArray();
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));
@@ -116,7 +114,7 @@ public class ActionResultRepresentation : Representation {
             }
             else {
                 RefValueRepresentation valueRef = null;
-                if (visibleParamContext.ProposedObjectFacade != null) {
+                if (visibleParamContext.ProposedObjectFacade is not null) {
                     valueRef = RefValueRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, visibleParamContext.ProposedObjectFacade)), Flags);
                 }
 
@@ -135,9 +133,9 @@ public class ActionResultRepresentation : Representation {
         }
 
         IRepresentation result = actionResult switch {
-            _ when actionResult.Result == null => null,
-            _ when actionResult.Specification.IsParseable => ScalarRepresentation.Create(frameworkFacade.OidStrategy, actionResult.Result, req, flags),
-            _ when actionResult.Specification.IsObject => ObjectRepresentation.Create(frameworkFacade, actionResult.Result, req, flags),
+            { Result : null } => null,
+            { Specification: { IsParseable: true } } => ScalarRepresentation.Create(frameworkFacade.OidStrategy, actionResult.Result, req, flags),
+            { Specification: { IsObject: true } } => ObjectRepresentation.Create(frameworkFacade, actionResult.Result, req, flags),
             _ => PagedListRepresentation.Create(frameworkFacade, actionResult, req, flags)
         };
 

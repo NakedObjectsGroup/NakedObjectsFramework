@@ -45,20 +45,20 @@ public static class MethodHelpers {
                                         Type[] paramTypes,
                                         string[] paramNames = null) {
         try {
-            var method = paramTypes == null
+            var method = paramTypes is null
                 ? type.GetMethod(name, GetBindingFlagsForMethodType(methodType, reflector))
                 : type.GetMethod(name, GetBindingFlagsForMethodType(methodType, reflector), null, paramTypes, null);
 
-            if (method == null) {
+            if (method is null) {
                 return null;
             }
 
             // check for static modifier
-            if (method.IsStatic && methodType == MethodType.Object) {
+            if (method.IsStatic && methodType is MethodType.Object) {
                 return null;
             }
 
-            if (!method.IsStatic && methodType == MethodType.Class) {
+            if (!method.IsStatic && methodType is MethodType.Class) {
                 return null;
             }
 
@@ -67,11 +67,11 @@ public static class MethodHelpers {
             }
 
             // check for return Type
-            if (returnType != null && !returnType.IsAssignableFrom(method.ReturnType)) {
+            if (returnType is not null && !returnType.IsAssignableFrom(method.ReturnType)) {
                 return null;
             }
 
-            if (paramNames != null) {
+            if (paramNames is not null) {
                 var methodParamNames = method.GetParameters().Select(p => p.Name).ToArray();
 
                 if (!paramNames.SequenceEqual(methodParamNames)) {
@@ -88,7 +88,7 @@ public static class MethodHelpers {
 
     public static BindingFlags GetBindingFlagsForMethodType(MethodType methodType, IReflector reflector) =>
         BindingFlags.Public |
-        (methodType == MethodType.Object ? BindingFlags.Instance : BindingFlags.Static) |
+        (methodType is MethodType.Object ? BindingFlags.Instance : BindingFlags.Static) |
         (reflector.IgnoreCase ? BindingFlags.IgnoreCase : BindingFlags.Default);
 
     public static void SafeRemoveMethod(this IMethodRemover methodRemover, MethodInfo method) {
