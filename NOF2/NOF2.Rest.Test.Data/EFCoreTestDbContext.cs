@@ -124,6 +124,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithOrderedProperties>().Property("name2").HasColumnName("Name2");
         modelBuilder.Entity<ClassWithOrderedProperties>().Property("name3").HasColumnName("Name3");
     }
+
     private static void MapClassWithAnnotations(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithAnnotations>().Ignore(t => t.Name).Ignore(t => t.TestTableView);
         modelBuilder.Entity<ClassWithAnnotations>().Property("name").HasColumnName("Name");

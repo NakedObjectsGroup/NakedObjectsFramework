@@ -43,17 +43,14 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         : base(order.Order, loggerFactory, FeatureType.EverythingButActionParameters) =>
         logger = loggerFactory.CreateLogger<AboutsFacetFactory>();
 
-
-
     public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
         var possible = candidates.Where(methodInfo => methodInfo.Name.ToLower().StartsWith("action")).ToArray();
 
-
-        var actual =  possible.Where(methodInfo => !classStrategy.IsIgnored(methodInfo) &&
-                                              NOF2Helpers.IsVoidOrRecognized(methodInfo.ReturnType, classStrategy) &&
-                                              methodInfo.GetParameters().All(p => NOF2Helpers.IsIContainerOrRecognized(methodInfo, p.ParameterType, classStrategy)) &&
-                                              !methodInfo.IsGenericMethod &&
-                                              !classStrategy.IsIgnored(methodInfo.ReturnType)).ToArray();
+        var actual = possible.Where(methodInfo => !classStrategy.IsIgnored(methodInfo) &&
+                                                  NOF2Helpers.IsVoidOrRecognized(methodInfo.ReturnType, classStrategy) &&
+                                                  methodInfo.GetParameters().All(p => NOF2Helpers.IsIContainerOrRecognized(methodInfo, p.ParameterType, classStrategy)) &&
+                                                  !methodInfo.IsGenericMethod &&
+                                                  !classStrategy.IsIgnored(methodInfo.ReturnType)).ToArray();
 
         var ignored = possible.Except(actual);
 
@@ -79,7 +76,6 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
     #region IMethodIdentifyingFacetFactory Members
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        
         var name = actionMethod.Name;
         var type = actionMethod.DeclaringType;
         var facets = new List<IFacet>();

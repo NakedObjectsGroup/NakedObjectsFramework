@@ -14,11 +14,11 @@ public interface IActionSpecImmutable : IMemberSpecImmutable {
     bool IsContributedMethod { get; }
     bool IsStaticFunction { get; }
     bool IsFinderMethod { get; }
+    string StaticName { get; }
     bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable);
     bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable);
     bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id);
     bool IsFinderMethodFor(IObjectSpecImmutable spec);
-    string StaticName { get; }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

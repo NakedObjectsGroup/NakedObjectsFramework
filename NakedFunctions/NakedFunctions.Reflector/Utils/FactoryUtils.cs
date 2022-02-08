@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
 namespace NakedFunctions.Reflector.Utils;

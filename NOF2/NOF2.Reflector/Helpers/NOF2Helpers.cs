@@ -106,5 +106,5 @@ public static class NOF2Helpers {
 
     public static bool IsVoidOrRecognized(Type type, IClassStrategy strategy) => type == typeof(void) || strategy.IsTypeRecognizedByReflector(type);
 
-    public static bool IsIContainerOrRecognized(MethodInfo method,  Type type, IClassStrategy strategy) => (method.IsStatic &&  type.IsAssignableTo(typeof(IContainer))) || strategy.IsTypeRecognizedByReflector(type);
+    public static bool IsIContainerOrRecognized(MethodInfo method, Type type, IClassStrategy strategy) => method.IsStatic && type.IsAssignableTo(typeof(IContainer)) || strategy.IsTypeRecognizedByReflector(type);
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using NOF2.Interface;
 using NOF2.Title;
 using NOF2.ValueHolder;
 

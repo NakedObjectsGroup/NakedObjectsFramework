@@ -151,8 +151,7 @@ public class ObjectTestEF6 : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectRestExtensions()
-    {
+    public void TestGetObjectRestExtensions() {
         var api = Api();
         var result = api.GetObject(FullName<SimpleRecord>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -211,8 +210,7 @@ public class ObjectTestEF6 : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectActionRestExtension()
-    {
+    public void TestGetObjectActionRestExtension() {
         var api = Api();
         var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.EditSimpleRecord));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
