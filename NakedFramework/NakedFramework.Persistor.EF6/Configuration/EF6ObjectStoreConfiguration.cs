@@ -123,9 +123,6 @@ public class EF6ObjectStoreConfiguration : IEF6ObjectStoreConfiguration {
     /// <param name="types">A lambda or delegate that returns an array of Types</param>
     public void SpecifyTypesNotAssociatedWithAnyContext(Func<Type[]> types) => NotPersistedTypes = types;
 
-    [Obsolete]
-    public EntityContextConfigurator UsingCodeFirstContext(Func<DbContext> f) => UsingContext(f);
-
     /// <summary>
     ///     Call for each context in solution.
     /// </summary>
@@ -139,9 +136,6 @@ public class EF6ObjectStoreConfiguration : IEF6ObjectStoreConfiguration {
 
     // for testing
     public void ForceContextSet() => isContextSet = true;
-
-    [Obsolete("Use Validate")]
-    public void AssertSetup() => Validate();
 
     public void Validate() {
         if (!NoValidate && !isContextSet) {
