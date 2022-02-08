@@ -58,9 +58,6 @@ public interface IEF6ObjectStoreConfiguration {
     /// <param name="types">A lambda or delegate that returns an array of Types</param>
     void SpecifyTypesNotAssociatedWithAnyContext(Func<Type[]> types);
 
-    [Obsolete("use UsingContext")]
-    EF6ObjectStoreConfiguration.EntityContextConfigurator UsingCodeFirstContext(Func<DbContext> f);
-
     /// <summary>
     ///     Call for each  context in solution.
     /// </summary>
@@ -70,9 +67,6 @@ public interface IEF6ObjectStoreConfiguration {
     EF6ObjectStoreConfiguration.EntityContextConfigurator UsingContext(Func<DbContext> f);
 
     void ForceContextSet();
-
-    [Obsolete("Use Validate")]
-    void AssertSetup();
 
     /// <summary>
     ///     Throws if config not valid
