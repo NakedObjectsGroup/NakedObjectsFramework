@@ -393,9 +393,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             var obj = AccessInstanceWithTitle("ContactType--1", "Accounting Manager");
             obj.AssertPropertiesAre("Modified Date"); //Because Name property hidden by Attribute
-        
+
         }
-        
+
         //[TestMethod]
         public void PropertyRenamedUsingAttribute()
         {
@@ -432,7 +432,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         //[TestMethod]
         public void TypeImplementingINotEditableOncePersistent()
         {
-           AccessInstanceWithTitle("Vendor--1660", "Magic Cycles").AssertIsNotEditable();
+            AccessInstanceWithTitle("Vendor--1660", "Magic Cycles").AssertIsNotEditable();
         }
 
         //[TestMethod]
@@ -440,7 +440,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             helper.GotoHome().OpenMainMenu("Special Offers")
             .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject()
-            .AssertPropertiesAre("Description", "Discount Pct", "Type", "Category", 
+            .AssertPropertiesAre("Description", "Discount Pct", "Type", "Category",
                 "Start Date", "End Date", "Min Qty", "Max Qty"); //i.e. no Modified Date
             AccessInstanceWithTitle("SpecialOffer--2", "Volume Discount 11 to 14")
                 .AssertPropertiesAre("Description", "Discount Pct", "Type", "Category",
@@ -466,6 +466,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //Too unreliable on server
             //DisplayingAndSavingATransientObjectFromTheUI(); 
             //ControlOverSaving();
+            PersistingALinkObjectToFormAMultipleAssociation();
         }
 
         //[TestMethod]
@@ -500,7 +501,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             transient.GetEditableTextInputProperty("Discount Pct").Clear().Enter("0.5");
             transient.GetEditableTextInputProperty("Type").Enter("A");
             transient.GetEditableSelectionProperty("Category").Select(1);
-                transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
+            transient.GetEditableTextInputProperty("Min Qty").Clear().Enter("1");
             var result = transient.Save();
             helper.GotoHome().OpenMainMenu("Special Offers")
              .GetActionWithoutDialog("Recently Updated Special Offers").ClickToViewList()
@@ -529,12 +530,26 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             transient.GetEditableTextInputProperty("Max Qty").Clear().Enter("5");
             //Test that vaidation rules implemente in AboutActionSave are applied next.
             transient.AttemptUnsuccessfulSave();
-                transient.WaitForMessage("Max Qty cannot be less than Min Qty");
+            transient.WaitForMessage("Max Qty cannot be less than Min Qty");
             transient.GetEditableTextInputProperty("Max Qty").Clear().Enter("20");
-           
+
             transient.Save().AssertTitleIs(desc);
         }
 
+        //[TestMethod]
+        public void PersistingALinkObjectToFormAMultipleAssociation()
+        {
+            var dialog = helper.GotoHome().OpenMainMenu("Special Offers")
+                  .GetActionWithDialog("Demo Special Offer Product Bug").Open();
+            dialog.GetTextField("Special Offer Id").Enter("10");
+            var rnd = new Random().Next(720, 999);
+            dialog.GetTextField("Product Id").Enter(rnd.ToString());
+            var sop = dialog.ClickOKToViewObject().AssertTitleIs($"SpecialOfferProduct: 10-{rnd}");
+            var prodTitle = sop.GetProperty("Product").GetReference().GetTitle();
+            AccessInstanceWithTitle("SpecialOffer--10", "Mountain Tire Sale")
+                .OpenActions().GetActionWithoutDialog("Products Covered").ClickToViewList()
+                .GetRowFromList(0).AssertTitleIs(prodTitle);
+        }
         #endregion
 
         #region ActionAbout control

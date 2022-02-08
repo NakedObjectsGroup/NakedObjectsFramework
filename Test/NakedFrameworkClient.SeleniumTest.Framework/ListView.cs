@@ -28,6 +28,8 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
+        public int RowCount() => element.FindElements(By.CssSelector("table tbody tr")).Count;
+
         public ListView AssertIsList() => throw new NotImplementedException();
 
         public ListView ClickListView() => throw new NotImplementedException();

@@ -8,6 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
+using System.Threading;
 
 namespace NakedFrameworkClient.TestFramework
 {
@@ -29,7 +30,13 @@ namespace NakedFrameworkClient.TestFramework
             return this;
         }
 
-        public HomeView ClickHome(MouseClick button = MouseClick.MainButton) => throw new NotImplementedException();
+        public HomeView RightClickHome()
+        {
+            var homeB = helper.WaitForCss(".footer .home").AssertIsEnabled();
+            helper.Click(homeB, MouseClick.SecondaryButton);
+            Thread.Sleep(100);
+            return helper.GetHomeView(Pane.Right);
+        }
 
         public T ClickBack<T>(MouseClick button = MouseClick.MainButton) where T : View, new() => throw new NotImplementedException();
 
