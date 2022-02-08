@@ -56,13 +56,6 @@ Return myLargePhotoFileName
 		End Sub
 #End Region
 
-		Public Overridable ReadOnly Property LargePhotoAsAttachment() As FileAttachment
-			Get
-				Return Nothing
-			End Get
-		End Property
-		'DispositionType = "inline" ' fake mimetype
-
 		''<Hidden>
 		Public Overridable Property ProductProductPhoto As ICollection(Of ProductProductPhoto) = New List(Of ProductProductPhoto)()
 

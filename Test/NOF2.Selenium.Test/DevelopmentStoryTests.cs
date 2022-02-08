@@ -541,12 +541,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         {
             var dialog = helper.GotoHome().OpenMainMenu("Special Offers")
                   .GetActionWithDialog("Demo Special Offer Product Bug").Open();
-            dialog.GetTextField("Special Offer Id").Enter("10");
+            dialog.GetTextField("Special Offer Id").Enter("15");
             var rnd = new Random().Next(720, 999);
             dialog.GetTextField("Product Id").Enter(rnd.ToString());
             var sop = dialog.ClickOKToViewObject().AssertTitleIs($"SpecialOfferProduct: 10-{rnd}");
             var prodTitle = sop.GetProperty("Product").GetReference().GetTitle();
-            AccessInstanceWithTitle("SpecialOffer--10", "Mountain Tire Sale")
+            AccessInstanceWithTitle("SpecialOffer--15", "Half-Price Pedal Sale")
                 .OpenActions().GetActionWithoutDialog("Products Covered").ClickToViewList()
                 .GetRowFromList(0).AssertTitleIs(prodTitle);
         }
