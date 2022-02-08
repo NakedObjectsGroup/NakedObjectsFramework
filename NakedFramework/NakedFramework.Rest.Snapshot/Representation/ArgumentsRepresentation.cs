@@ -74,16 +74,12 @@ public class ArgumentsRepresentation : MapRepresentation {
         if (format == Format.Full) {
             var tempProperties = new List<OptionalProperty>();
 
-            if (!string.IsNullOrEmpty(contextFacade?.Reason)) {
-                tempProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, contextFacade.Reason));
-            }
-
             var dt = new OptionalProperty(JsonPropertyNames.DomainType, target.Specification.DomainTypeName(oidStrategy));
             tempProperties.Add(dt);
 
             var members = new OptionalProperty(JsonPropertyNames.Members, Create(memberValues.ToArray()));
             tempProperties.Add(members);
-            mapRepresentation = Create(tempProperties.ToArray());
+            mapRepresentation = CreateMap(tempProperties, contextFacade?.Reason);
         }
         else {
             mapRepresentation = Create(memberValues.ToArray());
@@ -94,25 +90,24 @@ public class ArgumentsRepresentation : MapRepresentation {
         return mapRepresentation;
     }
 
+    private static MapRepresentation CreateMap(List<OptionalProperty> optionalProperties, string invalidReason) {
+        if (!string.IsNullOrEmpty(invalidReason)) {
+            optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, invalidReason));
+        }
+
+        return Create(optionalProperties.ToArray());
+    }
+
     public static MapRepresentation Create(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, HttpRequest req, ContextFacade context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
         MapRepresentation mapRepresentation;
 
         if (context is ObjectContextFacade objectContext) {
             var optionalProperties = objectContext.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, frameworkFacade, req, c, flags))).ToList();
-            if (!string.IsNullOrEmpty(objectContext.Reason)) {
-                optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, objectContext.Reason));
-            }
-
-            mapRepresentation = Create(optionalProperties.ToArray());
+            mapRepresentation = CreateMap(optionalProperties, objectContext.Reason);
         }
         else if (context is ActionResultContextFacade actionResultContext) {
             var optionalProperties = actionResultContext.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, frameworkFacade, req, c, flags))).ToList();
-
-            if (!string.IsNullOrEmpty(actionResultContext.Reason)) {
-                optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, actionResultContext.Reason));
-            }
-
-            mapRepresentation = Create(optionalProperties.ToArray());
+            mapRepresentation = CreateMap(optionalProperties, actionResultContext.Reason);
         }
         else {
             mapRepresentation = GetMap(oidStrategy, frameworkFacade, req, context, flags);
