@@ -66,7 +66,7 @@ public class VersionRepresentation : Representation {
         SpecVersion = GetVersion(assembly, "specversion");
         var versions = GetVersion(assembly, "implversion").Split(",");
 
-        var sv = versions.Where(v => serverTypes.Any(st => v.StartsWith(st)));
+        var sv = versions.Where(v => serverTypes.Any(v.StartsWith));
 
         ImplVersion = string.Join(", ", sv);
     }

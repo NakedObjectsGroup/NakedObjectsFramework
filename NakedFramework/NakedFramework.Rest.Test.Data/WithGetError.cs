@@ -28,7 +28,7 @@ public class WithGetError {
 
     public virtual int AnErrorValue {
         get {
-            if (Container != null && ThrowErrors) {
+            if (Container is not null && ThrowErrors) {
                 // so no errors on startup 
                 throw new DomainException("An error exception");
             }
@@ -40,19 +40,19 @@ public class WithGetError {
 
     public virtual MostSimple AnErrorReference {
         get {
-            if (Container != null && ThrowErrors) {
+            if (Container is not null && ThrowErrors) {
                 // so no errors on startup 
                 throw new DomainException("An error exception");
             }
 
-            return Container == null ? null : Container.Instances<MostSimple>().FirstOrDefault();
+            return Container?.Instances<MostSimple>().FirstOrDefault();
         }
         set { }
     }
 
     public virtual ICollection<MostSimple> AnErrorCollection {
         get {
-            if (Container != null && ThrowErrors) {
+            if (Container is not null && ThrowErrors) {
                 // so no errors on startup 
                 throw new DomainException("An error exception");
             }

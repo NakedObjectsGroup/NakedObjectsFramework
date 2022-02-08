@@ -55,7 +55,7 @@ public sealed class ValidateObjectFacetFactory : DomainObjectFacetFactoryProcess
             foreach (var method in methods) {
                 var parameters = method.GetParameters();
                 if (parameters.Length >= 2) {
-                    var parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => $"{name[0].ToString(Thread.CurrentThread.CurrentCulture).ToUpper()}{name.Substring(1)}").All(p => ContainsField(p, type, reflector.ClassStrategy));
+                    var parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => $"{name[0].ToString(Thread.CurrentThread.CurrentCulture).ToUpper()}{name[1..]}").All(p => ContainsField(p, type, reflector.ClassStrategy));
                     if (parametersMatch) {
                         methodPeers.Add(new ValidateObjectFacet.NakedObjectValidationMethod(method, Logger<ValidateObjectFacet.NakedObjectValidationMethod>()));
                         methodRemover.SafeRemoveMethod(method);

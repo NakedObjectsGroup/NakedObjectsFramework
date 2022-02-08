@@ -54,7 +54,7 @@ public class WithReferenceViewModel : IViewModel {
     }
 
     public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
-        if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
+        if (aReference is { Id: 1 } && aChoicesReference is { Id : 2 }) {
             return "Cross validation failed";
         }
 

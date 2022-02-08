@@ -151,7 +151,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
         ITypeSpecBuilder returnSpec;
         (returnSpec, metamodel) = reflector.LoadSpecification(parameter.ParameterType, metamodel);
 
-        if (!(returnSpec is IObjectSpecImmutable)) {
+        if (returnSpec is not IObjectSpecImmutable) {
             throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");
         }
 

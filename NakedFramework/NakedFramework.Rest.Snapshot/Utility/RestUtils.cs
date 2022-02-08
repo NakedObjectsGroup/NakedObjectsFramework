@@ -271,7 +271,7 @@ public static class RestUtils {
     public static bool IsBlobOrClob(ITypeFacade spec) {
         if (spec.IsParseable || spec.IsCollection) {
             var pdt = TypeToPredefinedFormatType(spec, false);
-            return pdt == PredefinedFormatType.Blob || pdt == PredefinedFormatType.Clob;
+            return pdt is PredefinedFormatType.Blob or PredefinedFormatType.Clob;
         }
 
         return false;
@@ -280,9 +280,7 @@ public static class RestUtils {
     public static bool IsAttachment(ITypeFacade spec) => spec.IsImage || spec.IsFileAttachment;
 
     public static bool IsJsonMediaType(string mediaType) =>
-        mediaType == "*/*" ||
-        mediaType == "application/*" ||
-        mediaType == "application/json";
+        mediaType is "*/*" or "application/*" or "application/json";
 
     public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequest req, (string name, ITypeFacade type) pnt, RestControlFlags flags) =>
         new(pnt.name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),

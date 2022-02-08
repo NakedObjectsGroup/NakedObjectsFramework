@@ -176,13 +176,8 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
                                                  ISpecification property) {
         // only support if property is string or domain type
         if (returnType.IsClass || returnType.IsInterface) {
-            var method = FindAutoCompleteMethod(reflector, type, capitalizedName,
-                                                typeof(IQueryable<>).MakeGenericType(returnType));
-
-            //.. or returning a single object
-            if (method is null) {
-                method = FindAutoCompleteMethod(reflector, type, capitalizedName, returnType);
-            }
+            var method = FindAutoCompleteMethod(reflector, type, capitalizedName, typeof(IQueryable<>).MakeGenericType(returnType)) ??
+                         FindAutoCompleteMethod(reflector, type, capitalizedName, returnType);  //.. or returning a single object
 
             //... or returning an enumerable of string
             if (method is null && TypeUtils.IsString(returnType)) {
@@ -193,8 +188,8 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
                 var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
                 var minLengthAttr = (MinLengthAttribute)Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
-                var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
-                var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
+                var pageSize = pageSizeAttr?.Value ?? 0; // default to 0 ie system default
+                var minLength = minLengthAttr?.Length ?? 0;
 
                 methodRemover.SafeRemoveMethod(method);
                 propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));

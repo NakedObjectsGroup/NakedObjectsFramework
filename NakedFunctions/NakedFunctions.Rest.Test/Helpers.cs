@@ -22,17 +22,20 @@ public class RestfulObjectsController : RestfulObjectsControllerBase {
 }
 
 public static class Helpers {
-    public static DefaultHttpContext CreateTestHttpContext(IServiceProvider sp) {
-        var httpContext = new DefaultHttpContext { RequestServices = sp };
-        httpContext.Response.Body = new MemoryStream();
-
+    private static DefaultHttpContext CreateTestHttpContext(IServiceProvider sp) {
         var uri = new Uri(@"http://localhost/");
-        httpContext.Request.Scheme = "http";
-        httpContext.Request.Host = new HostString(uri.Host);
-        httpContext.Request.Path = new PathString(uri.PathAndQuery);
-        httpContext.Request.Method = "GET";
-
-        return httpContext;
+        return new DefaultHttpContext {
+            RequestServices = sp,
+            Response = {
+                Body = new MemoryStream()
+            },
+            Request = {
+                Scheme = "http",
+                Host = new HostString(uri.Host),
+                Path = new PathString(uri.PathAndQuery),
+                Method = "GET"
+            }
+        };
     }
 
     public static RestfulObjectsControllerBase SetMockContext(RestfulObjectsControllerBase api, IServiceProvider sp) {

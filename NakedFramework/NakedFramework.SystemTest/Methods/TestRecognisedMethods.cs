@@ -2447,7 +2447,7 @@ public class Validate1 {
     public virtual int Prop4 { get; set; }
 
     public string ValidateProp1(int value) {
-        if (value < 3 || value > 10) {
+        if (value is < 3 or > 10) {
             return "Value must be between 3 & 10";
         }
 
@@ -2472,7 +2472,7 @@ public class Validate1 {
 
     [NakedObjectsIgnore]
     public string ValidateProp4(int value) {
-        if (value < 3 || value > 10) {
+        if (value is < 3 or > 10) {
             return "Value must be between 3 & 10";
         }
 

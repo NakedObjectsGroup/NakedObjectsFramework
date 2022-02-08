@@ -109,11 +109,11 @@ public class GetTypeFromLoadedAssembliesTestAbstract {
 
         sw.WriteLine(header);
 
-        foreach (var result in Results) {
-            var indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ",") + t);
-            var shortName = result.Key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
+        foreach (var (longName, runs) in Results) {
+            var indRuns = runs.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ",") + t);
+            var shortName = longName.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
 
-            var line = $"{shortName}, {result.Value.TotalRun}, {indRuns}";
+            var line = $"{shortName}, {runs.TotalRun}, {indRuns}";
             sw.WriteLine(line);
         }
     }

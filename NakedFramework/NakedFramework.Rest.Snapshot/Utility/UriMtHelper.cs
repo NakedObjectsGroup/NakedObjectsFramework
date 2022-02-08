@@ -334,11 +334,11 @@ public class UriMtHelper {
                 : GetObjectMemberUri(member, memberType);
 
     private Uri ByMemberType(Func<IMemberFacade, string, Uri> getUri) {
-        if (action != null) {
+        if (action is not null) {
             return getUri(action, SegmentValues.Actions);
         }
 
-        if (assoc != null && assoc.IsCollection) {
+        if (assoc is { IsCollection: true }) {
             return getUri(assoc, SegmentValues.Collections);
         }
 
@@ -368,11 +368,11 @@ public class UriMtHelper {
     public static string GetActionResultMediaType() => RepresentationTypes.ActionResult;
 
     public string GetMemberMediaType() {
-        if (action != null) {
+        if (action is not null) {
             return RepresentationTypes.ObjectAction;
         }
 
-        if (assoc != null && assoc.IsCollection) {
+        if (assoc is { IsCollection: true }) {
             return RepresentationTypes.ObjectCollection;
         }
 
@@ -426,9 +426,9 @@ public class UriMtHelper {
     }
 
     public void AddObjectCollectionRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
-        if (assoc != null && assoc.IsCollection) {
+        if (assoc is { IsCollection: true }) {
             var parameterValue = GetParameterValue(flags, assoc.ElementSpecification);
-            if (parameterValue != null) {
+            if (parameterValue is not null) {
                 mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.ElementTypeReserved, $"\"{parameterValue}\""));
             }
         }
@@ -440,7 +440,7 @@ public class UriMtHelper {
         var parameterValueSpec = isCollection ? action.ElementType : resultSpec;
         var parameterValue = GetParameterValue(flags, parameterValueSpec);
 
-        if (parameterValue != null) {
+        if (parameterValue is not null) {
             var parameterType = isCollection ? RestControlFlags.ElementTypeReserved : RestControlFlags.DomainTypeReserved;
             mediaType.Parameters.Add(new NameValueHeaderValue(parameterType, $"\"{parameterValue}\""));
         }

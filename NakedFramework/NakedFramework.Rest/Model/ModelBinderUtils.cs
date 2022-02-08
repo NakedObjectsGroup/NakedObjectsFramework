@@ -123,32 +123,29 @@ public static class ModelBinderUtils {
     public static SingleValueArgument CreateSingleValueArgument(object obj, bool includeReservedArgs) {
         var arg = new SingleValueArgument();
 
-        var jObject = obj as JObject;
-        var bObject = obj as byte[];
+        switch (obj) {
+            case JObject jObject:
+                try {
+                    arg.Value = GetValue(jObject, "Single");
+                    arg.IsMalformed = !arg.HasValue && GetNonReservedProperties(jObject).Any() ||
+                                      arg.HasValue && GetNonReservedProperties(jObject).Count() > 1;
 
-        if (jObject != null) {
-            try {
-                arg.Value = GetValue(jObject, "Single");
-                arg.IsMalformed = !arg.HasValue && GetNonReservedProperties(jObject).Any() ||
-                                  arg.HasValue && GetNonReservedProperties(jObject).Count() > 1;
-
-                if (includeReservedArgs) {
-                    arg.ReservedArguments = new ReservedArguments {
-                        ValidateOnly = GetValidateOnlyFlag(jObject)
-                    };
+                    if (includeReservedArgs) {
+                        arg.ReservedArguments = new ReservedArguments { ValidateOnly = GetValidateOnlyFlag(jObject) };
+                    }
                 }
-            }
-            catch (Exception e) {
-                arg.IsMalformed = true;
-                arg.MalformedReason = $"Malformed single value argument: {ExceptionWarning(e)}";
-            }
-        }
+                catch (Exception e) {
+                    arg.IsMalformed = true;
+                    arg.MalformedReason = $"Malformed single value argument: {ExceptionWarning(e)}";
+                }
 
-        if (bObject != null) {
-            arg.Value = new AttachmentValue(bObject);
-            arg.ReservedArguments = new ReservedArguments {
-                ValidateOnly = false
-            }; // not supported on blob/clob
+                break;
+            case byte[] bObject:
+                arg.Value = new AttachmentValue(bObject);
+                arg.ReservedArguments = new ReservedArguments {
+                    ValidateOnly = false
+                }; // not supported on blob/clob
+                break;
         }
 
         return arg;

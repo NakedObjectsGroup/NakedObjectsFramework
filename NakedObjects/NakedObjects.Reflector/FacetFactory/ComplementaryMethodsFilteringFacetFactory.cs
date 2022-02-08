@@ -136,7 +136,7 @@ public sealed class ComplementaryMethodsFilteringFacetFactory : DomainObjectFace
 
     private static string TrimDigits(string toTrim) {
         while (toTrim.Length > 0 && char.IsDigit(toTrim, 0)) {
-            toTrim = toTrim.Substring(1);
+            toTrim = toTrim[1..];
         }
 
         return toTrim;
