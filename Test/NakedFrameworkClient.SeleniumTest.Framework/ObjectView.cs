@@ -57,9 +57,15 @@ namespace NakedFrameworkClient.TestFramework
 
         public ObjectView DragTitleAndDropOnto(ReferenceInputField field)
         {
+            CopyTitleToClipboard();
+            field.PasteReferenceFromClipboard();
+            return this;
+        }
+
+        public ObjectView CopyTitleToClipboard()
+        {
             var title = helper.WaitForChildElement(element, ".title");
             helper.CopyToClipboard(title);
-            field.PasteReferenceFromClipboard();
             return this;
         }
 

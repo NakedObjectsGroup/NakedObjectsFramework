@@ -887,6 +887,12 @@ namespace NakedFrameworkClient.TestFramework
             return new ListView(el, this, pane);
         }
 
+        public HomeView GetHomeView(Pane pane = Pane.Single)
+        {
+            var el = WaitForCss(CssSelectorFor(pane) + " .home");
+            return new HomeView(el, this, pane);
+        }
+
         public Footer GetFooter()
         {
             var we = WaitForCss(".footer");
