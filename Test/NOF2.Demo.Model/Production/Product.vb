@@ -79,13 +79,6 @@ Namespace AW.Types
         End Sub
 #End Region
 
-        <DemoProperty(Order:=4)>
-        Public Overridable ReadOnly Property Photo() As Image
-            Get
-                Return Nothing 'Product_Functions.Photo(Me)
-            End Get
-        End Property
-
         <DemoProperty(Order:=10)>
         Public Overridable Property ProductModel() As ProductModel
 
