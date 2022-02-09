@@ -597,8 +597,9 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
               .GetActionWithDialog("Add Comment").Open();
             dialog.GetTextField("Comment")
                 .Enter("Now is the time for all good men to come to the aid of the party");
-            dialog.ClickOKWithNoResultExpected()
-            .AssertHasValidationError("Total comment length would exceed 50 chars");
+            dialog.ClickOKWithNoResultExpected();
+            Thread.Sleep(300);
+            dialog.AssertHasValidationError("Total comment length would exceed 50 chars");
         }
 
         //[TestMethod]
