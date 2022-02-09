@@ -544,7 +544,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             dialog.GetTextField("Special Offer Id").Enter("15");
             var rnd = new Random().Next(720, 999);
             dialog.GetTextField("Product Id").Enter(rnd.ToString());
-            var sop = dialog.ClickOKToViewObject().AssertTitleIs($"SpecialOfferProduct: 10-{rnd}");
+            var sop = dialog.ClickOKToViewObject().AssertTitleIs($"SpecialOfferProduct: 15-{rnd}");
             var prodTitle = sop.GetProperty("Product").GetReference().GetTitle();
             AccessInstanceWithTitle("SpecialOffer--15", "Half-Price Pedal Sale")
                 .OpenActions().GetActionWithoutDialog("Products Covered").ClickToViewList()
