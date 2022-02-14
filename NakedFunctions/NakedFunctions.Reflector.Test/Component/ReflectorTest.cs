@@ -18,6 +18,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Reflector.Extensions;
@@ -1165,6 +1166,61 @@ public class ReflectorTest {
 
             Assert.IsNull(choices1Facet);
             Assert.IsNull(choices2Facet);
+        }
+    }
+
+    [TestMethod]
+    public void ReflectIntegrationFacetInteractions()
+    {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
+            coreOptions.AddNakedFunctions(options => {
+                    options.DomainTypes = new[] { typeof(SimpleClass) };
+                    options.DomainFunctions = new[] { typeof(IntegrationFacetFunctions) };
+                }
+            );
+        }
+
+        void Build(int run)
+        {
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+
+                var testSpec = AllObjectSpecImmutables(container).Single(s => s.ShortName == nameof(SimpleClass)) as IObjectSpecImmutable;
+                var fields = testSpec.OrderedFields;
+                var fCount = fields.Count;
+
+                var actions = testSpec.OrderedObjectActions;
+                var aCount = actions.Count;
+
+                var testFunctions = AllObjectSpecImmutables(container).Single(s => s.ShortName == nameof(IntegrationFacetFunctions)) as ITypeSpecImmutable;
+
+                var actions1 = testFunctions.OrderedObjectActions;
+                var cCount = actions1.Count;
+
+                var iCount = ((IntegrationFacet)testSpec.GetFacet<IIntegrationFacet>()).ActionCount;
+
+                Assert.AreEqual((3, 0, 2, 2), (fCount, aCount, cCount, iCount), $"Failed on run: {run}");
+            }
+        }
+
+        AbstractIntegrationFacet.AllowRemove = false;
+
+        try
+        {
+            // repeat to flush out race conditions 
+            for (var i = 0; i < 100; i++)
+            {
+                Build(i);
+            }
+        }
+        finally
+        {
+            AbstractIntegrationFacet.AllowRemove = true;
         }
     }
 }

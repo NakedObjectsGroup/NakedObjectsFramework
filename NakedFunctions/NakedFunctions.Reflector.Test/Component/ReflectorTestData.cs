@@ -308,3 +308,14 @@ public static class MismatchedTargetClass {
 
     public static IList<int> Choices1ActionWithChoices(this NavigableClass target, string parm2) => new List<int> { 0 };
 }
+
+public static class IntegrationFacetFunctions
+{
+    [DisplayAsProperty]
+    public static SimpleClass SimpleFunction(this SimpleClass target) => target;
+
+    [DisplayAsProperty]
+    public static IQueryable<SimpleClass> SimpleFunctionCollection(this SimpleClass target, IContext context) => context.Instances<SimpleClass>();
+
+    public static bool HideSimpleProperty(this SimpleClass target) => true;
+}

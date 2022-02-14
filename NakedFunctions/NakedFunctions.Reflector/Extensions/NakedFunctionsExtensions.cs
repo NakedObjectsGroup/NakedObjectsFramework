@@ -38,9 +38,9 @@ public static class NakedFunctionsExtensions {
             var coreFunctionalTypes = new[] { typeof(FunctionalContext), typeof(IContext) };
             options.DomainTypes = options.DomainTypes.Except(enums).ToArray();
             frameworkOptions.SupportedSystemTypes ??= t => t;
-            frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(enums).ToArray();
+            frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Union(enums).Union(coreFunctionalTypes).ToArray();
             frameworkOptions.AdditionalUnpersistedTypes = coreFunctionalTypes;
-            options.DomainTypes = options.DomainTypes.Union(coreFunctionalTypes).Distinct().ToArray();
+            options.DomainTypes = options.DomainTypes.Distinct().ToArray();
         }
 
         RegisterWellKnownServices(frameworkOptions.Services);
