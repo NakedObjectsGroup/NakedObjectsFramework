@@ -24,5 +24,6 @@ public class IntegrationFacet : AbstractIntegrationFacet {
             oldToExecute(mb);
             action(mb);
         };
+        ActionCount++;
     }
 }

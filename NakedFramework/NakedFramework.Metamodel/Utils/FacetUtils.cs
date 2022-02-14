@@ -76,15 +76,20 @@ public static class FacetUtils {
         }
     }
 
-    public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action) {
-        var integrationFacet = specification.GetFacet<IIntegrationFacet>();
+    private static readonly object IntegrationFacetLock = new();
 
-        if (integrationFacet is null) {
-            integrationFacet = new IntegrationFacet(specification, action);
-            AddFacet(integrationFacet);
-        }
-        else {
-            integrationFacet.AddAction(action);
+    public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action) {
+
+        lock (IntegrationFacetLock) {
+            var integrationFacet = specification.GetFacet<IIntegrationFacet>();
+
+            if (integrationFacet is null) {
+                integrationFacet = new IntegrationFacet(specification, action);
+                AddFacet(integrationFacet);
+            }
+            else {
+                integrationFacet.AddAction(action);
+            }
         }
     }
 

@@ -20,8 +20,14 @@ public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFace
     public abstract void Execute(IMetamodelBuilder metamodelBuilder);
     public abstract void AddAction(Action<IMetamodelBuilder> action);
 
+    // for testing so not on interface  
+    public int ActionCount { get; protected set; } = 1;
+
+    // also for testing to check ActionCount
+    public static bool AllowRemove { get; set; } = true; 
+
     public void Remove() {
-        if (Specification is ISpecificationBuilder builder) {
+        if (AllowRemove && Specification is ISpecificationBuilder builder) {
             builder.RemoveFacet(this);
         }
     }

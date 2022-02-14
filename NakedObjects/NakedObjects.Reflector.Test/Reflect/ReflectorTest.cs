@@ -26,6 +26,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects;
 using NakedObjects.Reflector.Extensions;
@@ -475,6 +476,55 @@ namespace NakedObjects.Reflector.Test.Reflect {
             }
         }
 
+        [TestMethod]
+        public void ReflectDisplayAsProperty() {
+            static void Setup(NakedFrameworkOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => new[] { typeof(void) };
+                coreOptions.AddNakedObjects(options => {
+                    options.DomainModelTypes = new[] { typeof(DisplayAsPropertyObject) };
+                    options.DomainModelServices = new[] { typeof(DisplayAsPropertyService) };
+                    options.NoValidate = true;
+                });
+            }
+
+            void Build(int run) {
+                var (container, host) = GetContainer(Setup);
+
+                using (host) {
+                    container.GetService<IModelBuilder>()?.Build();
+                    var specs = AllObjectSpecImmutables(container);
+
+                    var testSpec = AllObjectSpecImmutables(container).Single(s => s.ShortName == nameof(DisplayAsPropertyObject)) as IObjectSpecImmutable;
+                    var fields = testSpec.OrderedFields;
+                    var fCount = fields.Count;
+
+                    var actions = testSpec.OrderedObjectActions;
+                    var aCount = actions.Count;
+
+                    var testService = AllObjectSpecImmutables(container).Single(s => s.ShortName == nameof(DisplayAsPropertyService)) as ITypeSpecImmutable;
+
+                    var actions1 = testService.OrderedObjectActions;
+                    var cCount = actions1.Count;
+
+                    var iCount = ((IntegrationFacet)testSpec.GetFacet<IIntegrationFacet>()).ActionCount;
+
+                    Assert.AreEqual((2, 0, 0, 2), (fCount, aCount, cCount, iCount), $"Failed on run: {run}");
+                }
+            }
+
+            AbstractIntegrationFacet.AllowRemove = false;
+
+            try {
+                // repeat to flush out race conditions 
+                for (var i = 0; i < 100; i++) {
+                    Build(i);
+                }
+            }
+            finally {
+                AbstractIntegrationFacet.AllowRemove = true;
+            }
+        }
+
         #region Nested type: ReplacementBoundedAnnotationFacetFactory
 
         public sealed class ReplacementBoundedAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
@@ -579,6 +629,21 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             public virtual string HideAction() => null;
         }
+
+        public class DisplayAsPropertyObject
+        {
+            [Key] [Title] [ConcurrencyCheck] public virtual int Id { get; set; }
+
+            [DisplayAsProperty]
+            public virtual DisplayAsPropertyObject ADisplayAsPropertyAction() => null;
+        }
+
+        public class DisplayAsPropertyService {
+            [DisplayAsProperty]
+            public virtual DisplayAsPropertyObject ADisplayAsPropertyContributedAction([ContributedAction]DisplayAsPropertyObject obj) => null;
+        }
+
+
 
         #endregion
 
