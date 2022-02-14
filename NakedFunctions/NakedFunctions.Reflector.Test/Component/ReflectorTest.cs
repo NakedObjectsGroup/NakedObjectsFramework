@@ -1214,7 +1214,7 @@ public class ReflectorTest {
         try
         {
             // repeat to flush out race conditions 
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i < 100; i++)
             {
                 Build(i);
             }

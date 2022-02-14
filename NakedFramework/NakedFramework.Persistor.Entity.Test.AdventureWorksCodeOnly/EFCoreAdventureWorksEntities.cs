@@ -10,7 +10,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
+namespace NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 public class EFCoreAdventureWorksEntities : DbContext {
     private readonly string cs;

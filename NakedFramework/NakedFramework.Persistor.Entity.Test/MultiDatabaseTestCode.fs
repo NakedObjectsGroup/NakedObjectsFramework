@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.MultiDatabaseTestCode
 
-open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
+open NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NUnit.Framework
 open System
 open System.Data.Entity.Core.Objects
@@ -37,8 +37,8 @@ let CanQueryEachConnection<'t, 'u when 't : not struct and 'u : not struct>(mult
     Assert.IsNotNull(p2)
     Assert.AreNotEqual(p1, p2)
 
-let CanQueryEachConnectionMulti multiDatabasePersistor = CanQueryEachConnection<TestCodeOnly.Product, NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
-let CanQueryEachDomainConnection multiDatabasePersistor = CanQueryEachConnection<SimpleDatabase.Person, NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
+let CanQueryEachConnectionMulti multiDatabasePersistor = CanQueryEachConnection<TestCodeOnly.Product,  NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
+let CanQueryEachDomainConnection multiDatabasePersistor = CanQueryEachConnection<SimpleDatabase.Person, NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
 
 let CanCreateEachConnection(multiDatabasePersistor : IObjectStore) = 
     let productSetter (pr : TestCodeOnly.Product) = 

@@ -10,7 +10,7 @@
 
 using System.Data.Entity;
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
+namespace NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 public class AdventureWorksEntities : DbContext {
     public AdventureWorksEntities(string name)

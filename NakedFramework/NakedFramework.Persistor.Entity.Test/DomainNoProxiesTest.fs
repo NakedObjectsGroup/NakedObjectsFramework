@@ -7,7 +7,7 @@
 module NakedObjects.DomainNoProxiesTest
 
 open NakedFramework.Persistor.EF6.Configuration
-open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
+open NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NUnit.Framework
 open System
 open System.Data.Entity.Core.Objects

@@ -10,7 +10,7 @@ module NakedFramework.DomainTest
 open NUnit.Framework
 open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Configuration
-open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
+open NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly
 open Microsoft.EntityFrameworkCore
 open System
 open NakedFramework.Persistor.EFCore.Component

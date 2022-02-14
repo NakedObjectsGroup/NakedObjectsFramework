@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
+namespace NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 [Table("Sales.CreditCard")]
 public class CreditCard {

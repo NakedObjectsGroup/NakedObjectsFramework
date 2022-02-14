@@ -8,7 +8,6 @@ module NakedObjects.DomainTestCode
 
 open NakedFramework.Persistor.EF6.Configuration
 open NakedFramework.Persistor.EF6.Component
-open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedFramework.Core.Resolve
 open NUnit.Framework
 open System.Data.Common
@@ -24,6 +23,7 @@ open NakedFramework.Core.Persist
 open NakedFramework.Core.Util
 open TestTypes
 open TestCode
+open NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
