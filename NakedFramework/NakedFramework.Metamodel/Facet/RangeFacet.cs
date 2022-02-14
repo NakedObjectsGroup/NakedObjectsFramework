@@ -119,10 +119,7 @@ public class RangeFacet : IRangeFacet, ISerializable {
     public IConvertible Min { get; private set; }
     public IConvertible Max { get; private set; }
 
-    public virtual ISpecification Specification {
-        get => holder;
-        set => holder = value;
-    }
+    public virtual ISpecification Specification => holder;
 
     /// <summary>
     ///     Assume implementation is <i>not</i> a no-op.
@@ -143,6 +140,8 @@ public class RangeFacet : IRangeFacet, ISerializable {
     ///     should override and return <c>false</c>.
     /// </para>
     public virtual bool CanAlwaysReplace => true;
+
+    public bool CanNeverBeReplaced => false;
 
     #endregion
 }

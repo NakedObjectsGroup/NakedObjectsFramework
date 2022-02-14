@@ -20,6 +20,8 @@ public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFace
     public abstract void Execute(IMetamodelBuilder metamodelBuilder);
     public abstract void AddAction(Action<IMetamodelBuilder> action);
 
+    public override bool CanNeverBeReplaced => true;
+
     // for testing so not on interface  
     public int ActionCount { get; protected set; } = 1;
 

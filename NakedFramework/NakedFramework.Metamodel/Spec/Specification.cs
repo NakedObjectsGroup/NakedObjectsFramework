@@ -13,6 +13,7 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.Spec;
@@ -42,6 +43,9 @@ public abstract class Specification : ISpecificationBuilder, ISerializable, IDes
         }
 
         if (existingFacet is null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
+            if (existingFacet is {CanNeverBeReplaced : true}) {
+                throw new ReflectionException($"Attempting to replace non-replaceable {existingFacet} with {facet}");
+            }
             facetsByClass = facetsByClass.SetItem(facetType, facet);
         }
     }
@@ -52,9 +56,9 @@ public abstract class Specification : ISpecificationBuilder, ISerializable, IDes
 
     public virtual IIdentifier Identifier => null;
 
-    public bool ContainsFacet(Type facetType) => GetFacet(facetType) != null;
+    public bool ContainsFacet(Type facetType) => GetFacet(facetType) is not null;
 
-    public bool ContainsFacet<T>() where T : IFacet => GetFacet(typeof(T)) != null;
+    public bool ContainsFacet<T>() where T : IFacet => GetFacet(typeof(T)) is not null;
 
     public virtual IFacet GetFacet(Type facetType) => facetsByClass.ContainsKey(facetType) ? facetsByClass[facetType] : null;
 

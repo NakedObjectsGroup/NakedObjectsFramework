@@ -16,11 +16,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class FacetAbstract : IFacet, IDeserializationCallback {
-    private ISpecification holder;
-
     protected FacetAbstract(Type facetType, ISpecification holder) {
         FacetType = facetType;
-        this.holder = holder;
+        Specification = holder;
     }
 
     #region IDeserializationCallback Members
@@ -42,19 +40,19 @@ public abstract class FacetAbstract : IFacet, IDeserializationCallback {
 
     public override string ToString() {
         var details = "";
-        if (typeof(IValidatingInteractionAdvisor).IsAssignableFrom(GetType())) {
+        if (this is IValidatingInteractionAdvisor) {
             details += "Validating";
         }
 
-        if (typeof(IDisablingInteractionAdvisor).IsAssignableFrom(GetType())) {
+        if (this is IDisablingInteractionAdvisor) {
             details += $"{(details.Length > 0 ? ";" : "")}Disabling";
         }
 
-        if (typeof(IHidingInteractionAdvisor).IsAssignableFrom(GetType())) {
+        if (this is IHidingInteractionAdvisor) {
             details += $"{(details.Length > 0 ? ";" : "")}Hiding";
         }
 
-        if (!"".Equals(details)) {
+        if (!string.IsNullOrEmpty(details)) {
             details = $"interaction={details},";
         }
 
@@ -64,7 +62,7 @@ public abstract class FacetAbstract : IFacet, IDeserializationCallback {
         }
 
         var stringValues = ToStringValues();
-        if (!"".Equals(stringValues)) {
+        if (!string.IsNullOrEmpty(stringValues)) {
             details += ",";
         }
 
@@ -81,10 +79,7 @@ public abstract class FacetAbstract : IFacet, IDeserializationCallback {
 
     #region IFacet Members
 
-    public virtual ISpecification Specification {
-        get => holder;
-        set => holder = value;
-    }
+    public virtual ISpecification Specification { get; }
 
     /// <summary>
     ///     Assume implementation is <i>not</i> a no-op.
@@ -105,6 +100,8 @@ public abstract class FacetAbstract : IFacet, IDeserializationCallback {
     ///     should override and return <c>false</c>.
     /// </para>
     public virtual bool CanAlwaysReplace => true;
+
+    public virtual bool CanNeverBeReplaced => false;
 
     #endregion
 }

@@ -44,12 +44,6 @@ public class FacetAbstractTest {
     }
 
     [TestMethod]
-    public void SetFacetHolder() {
-        fooFacet.Specification = facetHolder2;
-        Assert.AreEqual(facetHolder2, fooFacet.Specification);
-    }
-
-    [TestMethod]
     public void TestToString() {
         Assert.AreEqual("FacetAbstractTest+ConcreteFacet[type=FacetAbstractTest+IFooFacet]", fooFacet.ToString());
     }

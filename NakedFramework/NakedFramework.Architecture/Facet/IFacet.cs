@@ -12,12 +12,12 @@ namespace NakedFramework.Architecture.Facet;
 
 public interface IFacet {
     /// <summary>
-    ///     The <see cref="ISpecification" /> of this facet. Set allows re-parenting of Facet.
+    ///     The <see cref="ISpecification" /> of this facet.
     /// </summary>
     /// <para>
     ///     Used by Facet decorators.
     /// </para>
-    ISpecification Specification { get; set; }
+    ISpecification Specification { get; }
 
     /// <summary>
     ///     Whether this facet implementation is a no-op
@@ -45,6 +45,12 @@ public interface IFacet {
 
     /// <summary>
     ///     Whether this facet implementation should replace existing(none-noop) implementations.
+    ///     Other than CanNeverBeReplaced
     /// </summary>
     bool CanAlwaysReplace { get; }
+
+    /// <summary>
+    ///     Whether this facet implementation can be replaced.
+    /// </summary>
+    bool CanNeverBeReplaced { get; }
 }
