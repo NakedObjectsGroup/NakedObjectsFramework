@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 namespace NakedFramework.Metamodel.Facet;
 
 public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
-    protected AbstractIntegrationFacet(ISpecification holder) : base(Type, holder) { }
+    protected internal AbstractIntegrationFacet(ISpecification holder) : base(Type, holder) { }
 
     private static Type Type => typeof(IIntegrationFacet);
 

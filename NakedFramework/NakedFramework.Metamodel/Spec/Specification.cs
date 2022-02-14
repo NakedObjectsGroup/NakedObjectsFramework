@@ -37,11 +37,11 @@ public abstract class Specification : ISpecificationBuilder, ISerializable, IDes
     private void AddFacet(Type facetType, IFacet facet) {
         var existingFacet = GetFacet(facetType);
 
-        if (facet.IsNoOp && !existingFacet?.IsNoOp == true) {
+        if (facet.IsNoOp && existingFacet is { IsNoOp: false }) {
             return;
         }
 
-        if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
+        if (existingFacet is null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
             facetsByClass = facetsByClass.SetItem(facetType, facet);
         }
     }
