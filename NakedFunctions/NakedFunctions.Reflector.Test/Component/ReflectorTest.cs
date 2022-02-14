@@ -1175,7 +1175,7 @@ public class ReflectorTest {
         static void Setup(NakedFrameworkOptions coreOptions)
         {
             coreOptions.AddNakedFunctions(options => {
-                    options.DomainTypes = new[] { typeof(SimpleClass) };
+                    options.DomainTypes = new[] { typeof(IntegrationFacetClass) };
                     options.DomainFunctions = new[] { typeof(IntegrationFacetFunctions) };
                 }
             );
@@ -1190,7 +1190,7 @@ public class ReflectorTest {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
 
-                var testSpec = AllObjectSpecImmutables(container).Single(s => s.ShortName == nameof(SimpleClass)) as IObjectSpecImmutable;
+                var testSpec = AllObjectSpecImmutables(container).Single(s => s.ShortName == nameof(IntegrationFacetClass)) as IObjectSpecImmutable;
                 var fields = testSpec.OrderedFields;
                 var fCount = fields.Count;
 
@@ -1202,9 +1202,10 @@ public class ReflectorTest {
                 var actions1 = testFunctions.OrderedObjectActions;
                 var cCount = actions1.Count;
 
-                var iCount = ((IntegrationFacet)testSpec.GetFacet<IIntegrationFacet>()).ActionCount;
+                var iCount1 = ((IntegrationFacet)testSpec.GetFacet<IIntegrationFacet>()).ActionCount;
+                var iCount2 = ((IntegrationFacet)testFunctions.GetFacet<IIntegrationFacet>()).ActionCount;
 
-                Assert.AreEqual((3, 0, 2, 2), (fCount, aCount, cCount, iCount), $"Failed on run: {run}");
+                Assert.AreEqual((3, 0, 3, 2, 2), (fCount, aCount, cCount, iCount1, iCount2), $"Failed on run: {run}");
             }
         }
 
@@ -1213,7 +1214,7 @@ public class ReflectorTest {
         try
         {
             // repeat to flush out race conditions 
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < 1; i++)
             {
                 Build(i);
             }

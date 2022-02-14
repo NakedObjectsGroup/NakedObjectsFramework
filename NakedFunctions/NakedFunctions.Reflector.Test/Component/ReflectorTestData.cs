@@ -309,13 +309,25 @@ public static class MismatchedTargetClass {
     public static IList<int> Choices1ActionWithChoices(this NavigableClass target, string parm2) => new List<int> { 0 };
 }
 
+[ViewModel(typeof(IntegrationFacetFunctions))]
+public record IntegrationFacetClass
+{
+    public virtual IntegrationFacetClass SimpleProperty { get; init; }
+}
+
+
 public static class IntegrationFacetFunctions
 {
     [DisplayAsProperty]
-    public static SimpleClass SimpleFunction(this SimpleClass target) => target;
+    public static IntegrationFacetClass SimpleFunction(this IntegrationFacetClass target) => target;
+
+    public static IntegrationFacetClass SimpleFunction1(this IntegrationFacetClass target) => target;
 
     [DisplayAsProperty]
-    public static IQueryable<SimpleClass> SimpleFunctionCollection(this SimpleClass target, IContext context) => context.Instances<SimpleClass>();
+    public static IQueryable<IntegrationFacetClass> SimpleFunctionCollection(this IntegrationFacetClass target, IContext context) => context.Instances<IntegrationFacetClass>();
 
-    public static bool HideSimpleProperty(this SimpleClass target) => true;
+    public static bool HideSimpleProperty(this IntegrationFacetClass target) => true;
+
+    public static string[] DeriveKeys(this IntegrationFacetClass target) => null;
+    public static IntegrationFacetClass CreateFromKeys(string[] keys) => new();
 }
