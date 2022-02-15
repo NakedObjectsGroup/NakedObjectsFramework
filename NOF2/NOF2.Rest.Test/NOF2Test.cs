@@ -786,6 +786,18 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestPutReferenceProperty() {
+        var api = Api().AsPut();
+        var sva = new SingleValueArgument { Value = new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "referenceProperty") };
+        var result = api.PutProperty(FullName<ClassWithReferenceProperty>(), "1", nameof(ClassWithReferenceProperty.ReferenceProperty), sva);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Bill", parsedResult["value"]["title"].ToString());
+    }
+
+    [Test]
     public void TestPutEmptyProperty() {
         ClassWithFieldAbout.ResetTest();
 
@@ -1534,7 +1546,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1557,7 +1572,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1624,7 +1642,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1648,7 +1669,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1671,7 +1695,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("invalid") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("invalid") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1692,7 +1719,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1713,7 +1743,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("invalid") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("invalid") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1734,7 +1767,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1756,7 +1792,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("invalid") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("invalid") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1778,7 +1817,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 

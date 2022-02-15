@@ -111,6 +111,30 @@ public class ClassToPersistWithAbout : AboutChecker, IContainerAware {
 
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
+    public virtual ClassWithTextString ReferenceProperty { get; set; }
+
+    public void AboutReferenceProperty(FieldAbout fieldAbout, ClassWithTextString classWithTextString) {
+        Called(MethodBase.GetCurrentMethod(), fieldAbout.TypeCode);
+
+        if (fieldAbout.TypeCode == AboutTypeCodes.Valid) {
+            //if (ReferenceProperty)
+            //{
+            //    //if (name.Value == "invalid")
+            //    //{
+            //    //    fieldAbout.IsValid = false;
+            //    //    fieldAbout.InvalidReason = "Property Name is invalid";
+            //    //}
+            //    //else if (name.Value is null)
+            //    //{
+            //    //    fieldAbout.IsValid = false;
+            //    //    fieldAbout.InvalidReason = "Property Name is null";
+            //    //}
+            //}
+        }
+    }
+
+
+
     public IContainer Container { get; set; }
 
     public static void ResetTest() {
