@@ -20,24 +20,24 @@ using NOF2.Reflector.Reflect;
 namespace NOF2.Reflector.Component;
 
 public sealed class NOF2Reflector : AbstractParallelReflector {
-    private readonly INOF2ReflectorConfiguration inof2ReflectorConfiguration;
+    private readonly INOF2ReflectorConfiguration nof2ReflectorConfiguration;
 
-    public NOF2Reflector(NOF2FacetFactorySet NOF2FacetFactorySet,
+    public NOF2Reflector(NOF2FacetFactorySet nof2FacetFactorySet,
                          NOF2ObjectClassStrategy nof2ObjectClassStrategy,
-                         INOF2ReflectorConfiguration inof2ReflectorConfiguration,
+                         INOF2ReflectorConfiguration nof2ReflectorConfiguration,
                          IEnumerable<IFacetDecorator> facetDecorators,
                          IReflectorOrder<NOF2Reflector> reflectorOrder,
                          ILoggerFactory loggerFactory,
                          ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
-        this.inof2ReflectorConfiguration = inof2ReflectorConfiguration;
-        FacetFactorySet = NOF2FacetFactorySet;
+        this.nof2ReflectorConfiguration = nof2ReflectorConfiguration;
+        FacetFactorySet = nof2FacetFactorySet;
         ClassStrategy = nof2ObjectClassStrategy;
     }
 
-    public override bool ConcurrencyChecking => inof2ReflectorConfiguration.ConcurrencyChecking;
+    public override bool ConcurrencyChecking => nof2ReflectorConfiguration.ConcurrencyChecking;
     public override string Name => "NOF2";
     public override ReflectorType ReflectorType => ReflectorType.Object;
-    public override bool IgnoreCase => inof2ReflectorConfiguration.IgnoreCase;
+    public override bool IgnoreCase => nof2ReflectorConfiguration.IgnoreCase;
 
     protected override IIntrospector GetNewIntrospector() => new NOF2Introspector(this, LoggerFactory.CreateLogger<NOF2Introspector>());
 
@@ -51,7 +51,7 @@ public sealed class NOF2Reflector : AbstractParallelReflector {
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-        var ooTypes = inof2ReflectorConfiguration.ObjectTypes;
+        var ooTypes = nof2ReflectorConfiguration.ObjectTypes;
         specDictionary = IntrospectObjectTypes(ooTypes, specDictionary);
         return specDictionary;
     }

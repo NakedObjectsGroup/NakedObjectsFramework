@@ -23,11 +23,8 @@ using NOF2.Reflector.Helpers;
 namespace NOF2.Reflector.FacetFactory;
 
 public sealed class RequiredAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory {
-    private readonly ILogger<RequiredAnnotationFacetFactory> logger;
-
     public RequiredAnnotationFacetFactory(IFacetFactoryOrder<RequiredAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
-        logger = loggerFactory.CreateLogger<RequiredAnnotationFacetFactory>();
+        : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
     private static void Process(MemberInfo member, ISpecification holder) {
         var attribute = member.GetCustomAttribute<IRequiredAttribute>();

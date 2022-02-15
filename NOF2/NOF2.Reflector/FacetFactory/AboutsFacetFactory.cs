@@ -76,7 +76,6 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
     #region IMethodIdentifyingFacetFactory Members
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var name = actionMethod.Name;
         var type = actionMethod.DeclaringType;
         var facets = new List<IFacet>();
 
@@ -108,8 +107,6 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         else {
             facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, false, Logger<ActionInvocationFacetViaMethod>()));
         }
-
-        var aName = actionMethod.Name;
 
         var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name[6..]); //remove 'action' from front 
 
@@ -156,8 +153,6 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var capitalizedName = property.Name;
-        var paramTypes = new[] { property.PropertyType };
-
         var facets = new List<IFacet> { new PropertyAccessorFacet(property, specification) };
 
         if (property.GetSetMethod() is not null) {

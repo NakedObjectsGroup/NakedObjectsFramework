@@ -61,10 +61,8 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
             logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
         }
 
-        object result;
         var substituteParms = NOF2Helpers.SubstituteNulls(parameters.Select(no => no.GetDomainObject()).ToArray(), ActionMethod);
-
-        result = ActionDelegate.Invoke<object>(ActionMethod, inObjectAdapter.GetDomainObject(), substituteParms);
+        var result = ActionDelegate.Invoke<object>(ActionMethod, inObjectAdapter.GetDomainObject(), substituteParms);
 
         return framework.NakedObjectManager.CreateAdapter(result, null, null);
     }

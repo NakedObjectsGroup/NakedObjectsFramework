@@ -23,10 +23,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
-	  <ProjectReference Include="..\..\NakedFramework\NakedFramework.Core\NakedFramework.Core.csproj" />
-	  <ProjectReference Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
-	  <ProjectReference Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
+		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Core\NakedFramework.Core.csproj" />
+		<ProjectReference
+			Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
+		<ProjectReference
+			Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
 	</ItemGroup>
 
 

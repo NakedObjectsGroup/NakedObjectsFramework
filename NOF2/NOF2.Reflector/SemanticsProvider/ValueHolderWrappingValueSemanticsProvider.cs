@@ -19,23 +19,20 @@ namespace NOF2.Reflector.SemanticsProvider;
 [Serializable]
 public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSemanticsProviderAbstract<T> where T : class, IValueHolder<TU>, new() {
     private const bool Immutable = true;
-    private const int TypicalLengthConst = 11;
-    private static T DefaultValueConst = default;
-    private T valueHolderinstance;
+    private static T defaultValueConst = default;
+    private T valueHolderInstance;
 
     public ValueHolderWrappingValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) =>
-        valueHolderinstance = new T();
+        : base(Type, holder, AdaptedType, Immutable, defaultValueConst, spec) =>
+        valueHolderInstance = new T();
 
     public static Type Type => typeof(IValueSemanticsProvider);
 
     public static Type AdaptedType => typeof(T);
 
-    public static bool IsAdaptedType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IValueHolder<>);
-
     protected override T DoParse(string entry) {
         try {
-            return valueHolderinstance.Parse(entry) as T;
+            return valueHolderInstance.Parse(entry) as T;
         }
         catch (Exception e) {
             throw new InvalidEntryException(e.Message);

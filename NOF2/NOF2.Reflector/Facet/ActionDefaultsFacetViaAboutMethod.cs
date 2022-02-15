@@ -18,15 +18,12 @@ using NOF2.About;
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionDefaultsFacet, IImperativeFacet {
+public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionDefaultsFacet {
     private readonly int index;
-    private readonly ILogger<ActionDefaultsViaAboutMethodFacet> logger;
 
     public ActionDefaultsViaAboutMethodFacet(MethodInfo method, ISpecification holder, int index, ILogger<ActionDefaultsViaAboutMethodFacet> logger)
-        : base(typeof(IActionDefaultsFacet), holder, method, AboutHelpers.AboutType.Action, logger) {
+        : base(typeof(IActionDefaultsFacet), holder, method, AboutHelpers.AboutType.Action, logger) =>
         this.index = index;
-        this.logger = logger;
-    }
 
     public (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         if (GetAbout(nakedObjectAdapter, framework) is ActionAbout actionAbout) {

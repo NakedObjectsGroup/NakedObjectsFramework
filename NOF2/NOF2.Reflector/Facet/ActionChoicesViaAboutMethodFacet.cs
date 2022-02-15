@@ -21,15 +21,12 @@ using NOF2.About;
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class ActionChoicesViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionChoicesFacet, IImperativeFacet {
+public sealed class ActionChoicesViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionChoicesFacet {
     private readonly int index;
-    private readonly ILogger<ActionChoicesViaAboutMethodFacet> logger;
 
     public ActionChoicesViaAboutMethodFacet(MethodInfo aboutmethod, ISpecification holder, int index, ILogger<ActionChoicesViaAboutMethodFacet> logger)
-        : base(typeof(IActionChoicesFacet), holder, aboutmethod, AboutHelpers.AboutType.Action, logger) {
+        : base(typeof(IActionChoicesFacet), holder, aboutmethod, AboutHelpers.AboutType.Action, logger) =>
         this.index = index;
-        this.logger = logger;
-    }
 
     public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();
 

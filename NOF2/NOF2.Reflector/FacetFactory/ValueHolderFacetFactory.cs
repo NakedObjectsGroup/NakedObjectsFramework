@@ -29,18 +29,6 @@ namespace NOF2.Reflector.FacetFactory;
 public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public ValueHolderFacetFactory(IFacetFactoryOrder<ValueHolderFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-    private static IFacet GetParserFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ParseableFacetUsingParser<T>(sm, holder);
-
-    private static IFacet GetTitleFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new TitleFacetUsingParser<T>(sm, holder);
-
-    private static IFacet GetValueFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ValueFacetFromSemanticProvider<T>(sm, holder);
-
-    private static IFacet GetMaskFacet<T, TU>(ISpecificationBuilder holder) where T : class, IValueHolder<TU>, new() {
-        var vh = new T();
-        var mask = vh.Mask;
-        return mask is null ? null : new MaskFacet(mask, holder);
-    }
-
     private static IEnumerable<IFacet> GetFacets(Type type, object sm, ISpecificationBuilder holder) =>
         typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetParserFacet" or "GetTitleFacet" or "GetValueFacet").Select(m => m.MakeGenericMethod(type)).Select(im => im.Invoke(null, new[] { sm, holder })).Cast<IFacet>();
 
@@ -73,4 +61,19 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
 
         return metamodel;
     }
+
+    // Used via reflection below - do not remove 
+    // ReSharper disable UnusedMember.Local
+    private static IFacet GetParserFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ParseableFacetUsingParser<T>(sm, holder);
+
+    private static IFacet GetTitleFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new TitleFacetUsingParser<T>(sm, holder);
+
+    private static IFacet GetValueFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ValueFacetFromSemanticProvider<T>(sm, holder);
+
+    private static IFacet GetMaskFacet<T, TU>(ISpecificationBuilder holder) where T : class, IValueHolder<TU>, new() {
+        var vh = new T();
+        var mask = vh.Mask;
+        return mask is null ? null : new MaskFacet(mask, holder);
+    }
+    // ReSharper restore UnusedMember.Local
 }

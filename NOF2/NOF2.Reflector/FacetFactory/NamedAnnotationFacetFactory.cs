@@ -23,11 +23,8 @@ using NOF2.Reflector.Helpers;
 namespace NOF2.Reflector.FacetFactory;
 
 public sealed class NamedAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory {
-    private readonly ILogger<NamedAnnotationFacetFactory> logger;
-
     public NamedAnnotationFacetFactory(IFacetFactoryOrder<NamedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.Everything) =>
-        logger = loggerFactory.CreateLogger<NamedAnnotationFacetFactory>();
+        : base(order.Order, loggerFactory, FeatureType.Everything) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<INamedAttribute>();

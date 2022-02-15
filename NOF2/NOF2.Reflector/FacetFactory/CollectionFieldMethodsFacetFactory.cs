@@ -38,7 +38,7 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
     public string[] Prefixes => FixedPrefixes;
 
     public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-        var collectionTypes = BuildCollectionTypes(candidates, classStrategy);
+        var collectionTypes = BuildCollectionTypes(candidates);
         candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToArray();
         return PropertiesToBeIntrospected(candidates, classStrategy);
     }
@@ -49,9 +49,6 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
                                      !classStrategy.IsIgnored(property)).ToList();
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var capitalizedName = property.Name;
-        var type = property.DeclaringType;
-
         var facets = new List<IFacet> { new PropertyAccessorFacet(property, collection) };
 
         AddSetFacet(facets, property, collection);
@@ -70,7 +67,7 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
         }
     }
 
-    public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties, IClassStrategy classStrategy) {
+    private static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties) {
         return properties.Where(property => property.HasPublicGetter() &&
                                             property.PropertyType.IsAssignableTo(typeof(InternalCollection))
         ).Select(p => p.PropertyType).ToArray();

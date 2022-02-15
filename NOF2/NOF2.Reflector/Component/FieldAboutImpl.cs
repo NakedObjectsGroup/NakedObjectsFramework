@@ -12,9 +12,6 @@ namespace NOF2.Reflector.Component;
 public class FieldAboutImpl : FieldAbout {
     public FieldAboutImpl(AboutTypeCodes typeCode) => TypeCode = typeCode;
 
-    public bool Required { get; set; }
-    public object DefaultValue { get; set; }
-
     public AboutTypeCodes TypeCode { get; }
 
     public bool Usable { get; set; } = true;

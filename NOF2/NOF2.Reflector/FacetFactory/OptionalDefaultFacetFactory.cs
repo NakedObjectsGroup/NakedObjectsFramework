@@ -24,10 +24,6 @@ namespace NOF2.Reflector.FacetFactory;
 ///     Installs a <see cref="OptionalFacetDefault" /> onto all properties and parameters if they are non primitive
 ///     and readable.
 /// </summary>
-/// <para>
-///     This is an alternative to <see cref="MandatoryDefaultFacetFactory" />. Which works the same way but
-///     makes everything optional by default. Requiring the use of annotations to indicate mandatoryness.
-/// </para>
 public sealed class OptionalDefaultFacetFactory : AbstractNOF2FacetFactoryProcessor {
     public OptionalDefaultFacetFactory(IFacetFactoryOrder<OptionalDefaultFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }

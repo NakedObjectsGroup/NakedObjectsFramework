@@ -50,7 +50,7 @@ public sealed class FallbackFacetFactory : AbstractNOF2FacetFactoryProcessor {
     private static void Process(ISpecification holder) {
         var facets = new List<IFacet>();
 
-        if (holder is IMemberSpecImmutable specImmutable) {
+        if (holder is IMemberSpecImmutable) {
             facets.Add(new DescribedAsFacetNone(holder));
         }
 
@@ -60,7 +60,7 @@ public sealed class FallbackFacetFactory : AbstractNOF2FacetFactoryProcessor {
             facets.Add(new PropertyValidateFacetNone(holder));
         }
 
-        if (holder is IOneToOneAssociationSpecImmutable immutable) {
+        if (holder is IOneToOneAssociationSpecImmutable) {
             facets.Add(new MaxLengthFacetZero(holder));
             facets.Add(new MultiLineFacetNone(holder));
         }
@@ -87,7 +87,7 @@ public sealed class FallbackFacetFactory : AbstractNOF2FacetFactoryProcessor {
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var facets = new List<IFacet>();
 
-        if (holder is IActionParameterSpecImmutable param) {
+        if (holder is IActionParameterSpecImmutable) {
             var name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
             facets.Add(new MemberNamedFacetInferred(name, holder));
             facets.Add(new DescribedAsFacetNone(holder));

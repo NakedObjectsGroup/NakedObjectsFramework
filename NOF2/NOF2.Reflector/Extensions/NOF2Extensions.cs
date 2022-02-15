@@ -38,9 +38,9 @@ public static class NOF2Extensions {
         frameworkOptions.Services.AddSingleton(typeof(IReflectorOrder<>), typeof(NOF2ReflectorOrder<>));
         frameworkOptions.Services.AddSingleton<IReflector, NOF2Reflector>();
         var legacyObjectReflectorConfiguration = NOF2ReflectorConfig(options);
-        frameworkOptions.Services.AddSingleton(p => legacyObjectReflectorConfiguration);
-        frameworkOptions.Services.AddSingleton<ITypeList>(p => legacyObjectReflectorConfiguration);
-        frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainModelServices));
+        frameworkOptions.Services.AddSingleton(_ => legacyObjectReflectorConfiguration);
+        frameworkOptions.Services.AddSingleton<ITypeList>(_ => legacyObjectReflectorConfiguration);
+        frameworkOptions.Services.AddSingleton<IServiceList>(_ => new ServiceList(options.DomainModelServices));
 
         frameworkOptions.Services.AddDefaultScoped<IAboutCache, AboutCache>();
         frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NOF2ObjectContainerInjector>();

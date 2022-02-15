@@ -21,11 +21,8 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class PropertyValidateViaAboutMethodFacet : AbstractViaAboutMethodFacet, IPropertyValidateFacet {
-    private readonly ILogger<PropertyValidateViaAboutMethodFacet> logger;
-
     public PropertyValidateViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<PropertyValidateViaAboutMethodFacet> logger)
-        : base(typeof(IPropertyValidateFacet), holder, method, aboutType, logger) =>
-        this.logger = logger;
+        : base(typeof(IPropertyValidateFacet), holder, method, aboutType, logger) { }
 
     public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArgument);
 

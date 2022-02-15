@@ -21,11 +21,8 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class DisableForContextViaAboutMethodFacet : AbstractViaAboutMethodFacet, IDisableForContextFacet {
-    private readonly ILogger<DisableForContextViaAboutMethodFacet> logger;
-
     public DisableForContextViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DisableForContextViaAboutMethodFacet> logger)
-        : base(typeof(IDisableForContextFacet), holder, method, aboutType, logger) =>
-        this.logger = logger;
+        : base(typeof(IDisableForContextFacet), holder, method, aboutType, logger) { }
 
     public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
 

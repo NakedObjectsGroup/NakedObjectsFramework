@@ -21,12 +21,8 @@ using NOF2.Reflector.Helpers;
 namespace NOF2.Reflector.FacetFactory;
 
 public sealed class LengthAnnotationFacetFactory : AbstractNOF2FacetFactoryProcessor, IAnnotationBasedFacetFactory {
-    private const string FieldOrder = "FieldOrder";
-    private readonly ILogger<LengthAnnotationFacetFactory> logger;
-
     public LengthAnnotationFacetFactory(IFacetFactoryOrder<LengthAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.PropertiesAndCollections) =>
-        logger = Logger<LengthAnnotationFacetFactory>();
+        : base(order.Order, loggerFactory, FeatureType.PropertiesAndCollections) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attr = property.GetCustomAttribute<IMaxLengthAttribute>();

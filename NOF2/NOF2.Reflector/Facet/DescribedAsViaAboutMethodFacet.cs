@@ -19,11 +19,8 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class DescribedAsViaAboutMethodFacet : AbstractViaAboutMethodFacet, IDescribedAsFacet {
-    private readonly ILogger<DescribedAsViaAboutMethodFacet> logger;
-
     public DescribedAsViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DescribedAsViaAboutMethodFacet> logger)
-        : base(typeof(IDescribedAsFacet), holder, method, aboutType, logger) =>
-        this.logger = logger;
+        : base(typeof(IDescribedAsFacet), holder, method, aboutType, logger) { }
 
     public string Description(INakedObjectAdapter adapter, INakedFramework framework) => GetAbout(adapter.GetDomainObject(), framework).Description;
 

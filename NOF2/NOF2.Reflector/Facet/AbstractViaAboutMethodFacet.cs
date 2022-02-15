@@ -29,7 +29,7 @@ public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
 
     private Func<object, object[], object> MethodDelegate { get; }
 
-    protected MethodInfo Method { get; }
+    private MethodInfo Method { get; }
     private AboutHelpers.AboutType AboutType { get; }
     public MethodInfo GetMethod() => Method;
 

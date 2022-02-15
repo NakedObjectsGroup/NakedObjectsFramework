@@ -24,13 +24,11 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
     private readonly AboutTypeCodes aboutCode;
     private readonly int index;
     private readonly string inferredName;
-    private readonly ILogger<MemberNamedViaAboutMethodFacet> logger;
 
     public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutType aboutType, string inferredName, ILogger<MemberNamedViaAboutMethodFacet> logger)
         : base(typeof(IMemberNamedFacet), holder, method, aboutType, logger) {
         this.inferredName = NameUtils.NaturalName(TrimActionPrefix(inferredName, aboutType, aboutCode));
         aboutCode = AboutTypeCodes.Name;
-        this.logger = logger;
     }
 
     public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutType aboutType, string[] inferredNames, int index, ILogger<MemberNamedViaAboutMethodFacet> logger)
@@ -38,7 +36,6 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
         inferredName = NameUtils.NaturalName(inferredNames[index]);
         aboutCode = AboutTypeCodes.Parameters;
         this.index = index;
-        this.logger = logger;
     }
 
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {

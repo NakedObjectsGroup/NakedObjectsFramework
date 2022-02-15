@@ -19,7 +19,7 @@ using NOF2.About;
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFacet, ISaveFacet, IImperativeFacet {
+public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFacet, ISaveFacet {
     private readonly MethodInfo saveMethod;
 
     public SaveViaActionSaveWithAboutFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ISpecification holder, ILogger<SaveViaActionSaveWithAboutFacet> logger)

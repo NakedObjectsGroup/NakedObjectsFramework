@@ -60,13 +60,13 @@ public static class NOF2Helpers {
         return parameters;
     }
 
-    private static void AddMenuComponent(IMenu topLevelMenu, IMenuComponent menuComponent, Type declaringType) {
+    private static void AddMenuComponent(IMenu topLevelMenu, IMenuComponent menuComponent) {
         switch (menuComponent) {
             case Menu.IMenu menu:
                 var subMenu = topLevelMenu.CreateSubMenu(menu.Name);
 
                 foreach (var component in menu.MenuItems()) {
-                    AddMenuComponent(subMenu, component, declaringType);
+                    AddMenuComponent(subMenu, component);
                 }
 
                 break;
@@ -76,7 +76,7 @@ public static class NOF2Helpers {
         }
     }
 
-    private static string GetName(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
+    private static string GetName(IMetamodelBuilder metamodel, Type declaringType, string name) {
         if (!string.IsNullOrWhiteSpace(name)) {
             return name;
         }
@@ -86,16 +86,16 @@ public static class NOF2Helpers {
     }
 
     public static MenuImpl ConvertNOF2ToNOFMenu(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
-        var menuName = GetName(legacyMenu, metamodel, declaringType, name);
+        var menuName = GetName(metamodel, declaringType, name);
         var mi = new MenuImpl(metamodel, declaringType, false, menuName);
         foreach (var menuComponent in legacyMenu.MenuItems()) {
-            AddMenuComponent(mi, menuComponent, declaringType);
+            AddMenuComponent(mi, menuComponent);
         }
 
         return mi;
     }
 
-    public static IEnumerable<System.Attribute> GetCustomAttributes(object onObject) =>
+    private static IEnumerable<System.Attribute> GetCustomAttributes(object onObject) =>
         onObject switch {
             MemberInfo mi => mi.GetCustomAttributes(),
             ParameterInfo pi => pi.GetCustomAttributes(),

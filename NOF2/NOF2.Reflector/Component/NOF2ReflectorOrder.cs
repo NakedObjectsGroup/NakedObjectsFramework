@@ -14,8 +14,6 @@ public class NOF2ReflectorOrder<T> : IReflectorOrder<T> {
     public int Order => typeof(T) switch {
         { } t when t.IsAssignableTo(typeof(SystemTypeReflector)) => 0,
         { } t when t.IsAssignableTo(typeof(NOF2Reflector)) => 1,
-        //{ } t when t.IsAssignableTo(typeof(ObjectReflector)) => 2,
         _ => 2
-        //_ => throw new InitialisationException($"Unexpected reflector type {typeof(T)}")
     };
 }

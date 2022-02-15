@@ -43,7 +43,6 @@ public interface INOF2FacetFactoryProcessor : IFacetFactory {
     ///     Process the property, and return the updated metamodel
     /// </summary>
     /// <param name="reflector"></param>
-    /// <param name="classStrategy"></param>
     /// <param name="property">PropertyInfo representing the feature being processed</param>
     /// <param name="methodRemover">allow any methods of the class to be removed</param>
     /// <param name="specification"> attach the facets to</param>
@@ -54,7 +53,6 @@ public interface INOF2FacetFactoryProcessor : IFacetFactory {
     ///     Process the parameters of the method, and return the updated metamodel
     /// </summary>
     /// <param name="reflector"></param>
-    /// <param name="classStrategy"></param>
     /// <param name="method">MethodInfo representing the feature being processed</param>
     /// <param name="paramNum">zero-based index to the parameter to be processed</param>
     /// <param name="holder">to attach the facets to</param>

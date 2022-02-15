@@ -46,7 +46,7 @@ public sealed class MemberOrderAnnotationFacetFactory : AbstractNOF2FacetFactory
         return Array.Empty<string>();
     }
 
-    public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MemberInfo member, string orderMethodName, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MemberInfo member, string orderMethodName, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var memberName = member.Name;
         var declaringType = member.DeclaringType;
 
