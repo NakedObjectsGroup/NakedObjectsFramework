@@ -153,14 +153,10 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var capitalizedName = property.Name;
-        var facets = new List<IFacet> { new PropertyAccessorFacet(property, specification) };
-
-        //if (property.GetSetMethod() is not null) {
-        //    facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
-        //    facets.Add(new PropertyInitializationFacet(property, specification));
-        //}
-
-        facets.Add(new MemberNamedFacetInferred(specification.Identifier.MemberName, specification));
+        var facets = new List<IFacet> {
+            new PropertyAccessorFacet(property, specification),
+            new MemberNamedFacetInferred(specification.Identifier.MemberName, specification)
+        };
 
         var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{NOF2Helpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType }) ??
                      MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{NOF2Helpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout) });
@@ -182,6 +178,10 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
             var setter = typeof(PropertySetterFacetViaValueHolder<,>).MakeGenericType(property.PropertyType, valueType);
             var setterFacet = (IFacet)Activator.CreateInstance(setter, property, specification);
             facets.Add(setterFacet);
+        }
+        else if (property.GetSetMethod() is not null) {
+            facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
+            facets.Add(new PropertyInitializationFacet(property, specification));
         }
 
         FacetUtils.AddFacets(facets);
