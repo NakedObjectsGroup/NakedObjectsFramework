@@ -28,7 +28,7 @@ public sealed class ViewModelFacetFactory : DomainObjectFacetFactoryProcessor {
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (typeof(IViewModel).IsAssignableFrom(type)) {
             IFacet facet;
-            var deriveMethod = type.GetMethod(nameof(IViewModel.DeriveKeys), new Type[] { });
+            var deriveMethod = type.GetMethod(nameof(IViewModel.DeriveKeys), Array.Empty<Type>());
             var populateMethod = type.GetMethod(nameof(IViewModel.PopulateUsingKeys), new[] { typeof(string[]) });
 
             var toRemove = new List<MethodInfo> { deriveMethod, populateMethod };

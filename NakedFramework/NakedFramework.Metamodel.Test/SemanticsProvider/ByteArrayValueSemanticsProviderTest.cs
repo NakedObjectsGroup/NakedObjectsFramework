@@ -68,7 +68,7 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
 
     [TestMethod]
     public void TestTitleEmpty() {
-        Assert.AreEqual("", value.DisplayTitleOf(new byte[] { }));
+        Assert.AreEqual("", value.DisplayTitleOf(Array.Empty<byte>()));
     }
 
     [TestMethod]

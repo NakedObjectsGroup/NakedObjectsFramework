@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -59,8 +60,7 @@ public class WithReference {
     }
 
     public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
-        if (aReference is { Id: 1 } && aChoicesReference is { Id: 2 })
-        {
+        if (aReference is { Id: 1 } && aChoicesReference is { Id: 2 }) {
             return "Cross validation failed";
         }
 
@@ -72,6 +72,6 @@ public class WithReference {
             return Container.Instances<MostSimple>().Where(ms => ms.Id != aReference.Id).ToArray();
         }
 
-        return new MostSimple[] { };
+        return Array.Empty<MostSimple>();
     }
 }

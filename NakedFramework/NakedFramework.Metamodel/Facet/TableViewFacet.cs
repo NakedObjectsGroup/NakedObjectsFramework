@@ -22,7 +22,7 @@ public sealed class TableViewFacet : FacetAbstract, ITableViewFacet {
     }
 
     public static ITableViewFacet CreateTableViewFacet(bool title, string[] columns, ISpecification holder, ILogger logger) {
-        columns ??= new string[] { };
+        columns ??= Array.Empty<string>();
         var distinctColumns = columns.Distinct().ToArray();
 
         if (columns.Length != distinctColumns.Length) {

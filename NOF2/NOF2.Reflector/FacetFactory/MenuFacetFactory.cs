@@ -51,7 +51,7 @@ public sealed class MenuFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
 
         if (sharedmenuOrderMethod is not null) {
             void Action(IMetamodelBuilder builder) {
-                var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(sharedmenuOrderMethod, new object[] { });
+                var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(sharedmenuOrderMethod, Array.Empty<object>());
                 var mainMenu = NOF2Helpers.ConvertNOF2ToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name);
                 builder.AddMainMenu(mainMenu);
             }

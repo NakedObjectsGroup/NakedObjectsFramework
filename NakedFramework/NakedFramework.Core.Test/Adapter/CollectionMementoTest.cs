@@ -42,7 +42,7 @@ public class TestDomainObject {
             return Enumerable.ToList(Container.Instances<TestDomainObject>().Where(tdo => tdo.Id != filter.Id));
         }
 
-        return new TestDomainObject[] { };
+        return Array.Empty<TestDomainObject>();
     }
 
     // ReSharper disable PossibleMultipleEnumeration
@@ -138,7 +138,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var strings2 = newMemento.ToEncodedStrings();
         Assert.IsTrue(strings1.SequenceEqual(strings2), "memento failed roundtrip");
 
-        var copyMemento = new CollectionMemento(NakedFramework, logger, memento, new object[] { });
+        var copyMemento = new CollectionMemento(NakedFramework, logger, memento, Array.Empty<object>());
         var strings3 = copyMemento.ToEncodedStrings();
         Assert.IsTrue(strings1.SequenceEqual(strings3), "memento failed copy");
     }
@@ -158,7 +158,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action1");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, Array.Empty<INakedObjectAdapter>());
         RoundTrip(memento);
         RecoverCollection(target.Action1(), memento, NakedFramework.NakedObjectManager);
     }
@@ -169,7 +169,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action1");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, Array.Empty<INakedObjectAdapter>());
         RoundTrip(memento);
         RecoverCollection(targetNo.GetDomainObject<TestDomainObject>().Action1(), memento, NakedFramework.NakedObjectManager);
     }
@@ -183,7 +183,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var actionSpec = targetNo.Spec.GetActions().Single(a => a.Id == "Action1");
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
 
-        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, new INakedObjectAdapter[] { });
+        var memento = new CollectionMemento(NakedFramework, logger, targetNo, actionSpec, Array.Empty<INakedObjectAdapter>());
 
         var selectedMemento = new CollectionMemento(NakedFramework, logger, memento, new object[] { target });
 

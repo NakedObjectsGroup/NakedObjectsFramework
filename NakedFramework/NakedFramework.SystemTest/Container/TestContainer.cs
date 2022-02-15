@@ -157,7 +157,7 @@ public class ViewModel2 : IViewModel {
     #region IViewModel Members
 
     public string[] DeriveKeys() {
-        return new string[] { };
+        return Array.Empty<string>();
     }
 
     public void PopulateUsingKeys(string[] keys) { }

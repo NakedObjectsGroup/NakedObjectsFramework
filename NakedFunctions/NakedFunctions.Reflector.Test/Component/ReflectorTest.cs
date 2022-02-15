@@ -36,7 +36,7 @@ public class ReflectorTest {
 
     protected (IServiceProvider, IHost) GetContainer(Action<NakedFrameworkOptions> setup) {
         ImmutableSpecFactory.ClearCache();
-        var hostBuilder = CreateHostBuilder(new string[] { }, setup).Build();
+        var hostBuilder = CreateHostBuilder(Array.Empty<string>(), setup).Build();
         return (hostBuilder.Services, hostBuilder);
     }
 
@@ -837,7 +837,7 @@ public class ReflectorTest {
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(HiddenClass) };
-                    options.DomainFunctions = new Type[] { };
+                    options.DomainFunctions = Array.Empty<Type>();
                 }
             );
         }
@@ -881,7 +881,7 @@ public class ReflectorTest {
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(VersionedClass) };
-                    options.DomainFunctions = new Type[] { };
+                    options.DomainFunctions = Array.Empty<Type>();
                 }
             );
         }

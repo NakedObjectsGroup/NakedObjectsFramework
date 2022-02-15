@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -66,6 +67,6 @@ public class WithReferencePersist {
             return Container.Instances<MostSimple>().Where(ms => ms.Id != aReference.Id).ToArray();
         }
 
-        return new MostSimple[] { };
+        return Array.Empty<MostSimple>();
     }
 }
