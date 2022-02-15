@@ -25,7 +25,8 @@ namespace NakedFrameworkClient.TestFramework
         {
             element.AssertIsEnabled();
             helper.Click(element, button);
-            return helper.GetObjectEdit();
+            var pane = helper.GetNewPane(enclosingView.pane, button);
+            return helper.GetObjectEdit(pane);
         }
 
         public ListView ClickToViewList(MouseClick button = MouseClick.MainButton)

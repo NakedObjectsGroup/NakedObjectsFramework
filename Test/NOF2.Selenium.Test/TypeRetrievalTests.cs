@@ -12,7 +12,7 @@ using OpenQA.Selenium;
 using System;
 using System.Threading;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests
+namespace NOF2.Selenium.Test
 {
 
     [TestClass]
