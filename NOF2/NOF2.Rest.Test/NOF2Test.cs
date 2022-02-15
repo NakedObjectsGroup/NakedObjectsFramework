@@ -755,6 +755,20 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestPutUnParseableProperty()
+    {
+        var api = Api().AsPut();
+        var sva = new SingleValueArgument { Value = new ScalarValue("unparseable value") };
+        var result = api.PutProperty(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.WholeNumber), sva);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("unparseable value", parsedResult["value"].ToString());
+        Assert.AreEqual("unparseable value", parsedResult["invalidReason"].ToString());
+    }
+
+    [Test]
     public void TestPutValidProperty() {
         ClassWithFieldAbout.ResetTest();
         ClassWithFieldAbout.TestValidFlag = true;
