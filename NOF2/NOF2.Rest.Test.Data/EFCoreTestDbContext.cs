@@ -47,6 +47,8 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<ClassWithOrderedActions> ClassesWithOrderedActions { get; set; }
     public DbSet<ClassWithReferenceProperty> ClassWithReferenceProperties { get; set; }
     public DbSet<ClassWithBounded> ClassWithBoundeds { get; set; }
+    public DbSet<ClassToPersistWithAbout> ClassesToPersistWithAbout { get; set; }
+
     public DbSet<ClassToPersist> ClassesToPersist { get; set; }
     public DbSet<ClassWithAnnotations> ClassesWithAnnotations { get; set; }
 
@@ -62,7 +64,13 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithTextString>().Property("name").HasColumnName("Name");
     }
 
-    private static void MapClassToPersist(ModelBuilder modelBuilder) {
+    private static void MapClassToPersistWithAbout(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<ClassToPersistWithAbout>().Ignore(t => t.Name).Ignore(t => t.Container);
+        modelBuilder.Entity<ClassToPersistWithAbout>().Property("name").HasColumnName("Name");
+    }
+
+    private static void MapClassToPersist(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<ClassToPersist>().Ignore(t => t.Name).Ignore(t => t.Container);
         modelBuilder.Entity<ClassToPersist>().Property("name").HasColumnName("Name");
     }
@@ -141,6 +149,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         MapClassWithBounded(modelBuilder);
         MapClassWithReferenceProperty(modelBuilder);
         MapClassWithFieldAbout(modelBuilder);
+        MapClassToPersistWithAbout(modelBuilder);
         MapClassToPersist(modelBuilder);
         MapClassWithAnnotations(modelBuilder);
 

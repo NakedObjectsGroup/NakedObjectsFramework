@@ -99,7 +99,7 @@ public class ClassWithAnnotations {
     public ArrayList ActionTestTableView() => new();
 }
 
-public class ClassToPersist : AboutChecker, IContainerAware {
+public class ClassToPersistWithAbout : AboutChecker, IContainerAware {
     public static bool TestSave;
     public static bool TestProperty;
 
@@ -136,7 +136,7 @@ public class ClassToPersist : AboutChecker, IContainerAware {
 
     public AppLib.Title Title() => new(Name.Title());
 
-    public ClassToPersist ActionUpdateName(TextString newName) {
+    public ClassToPersistWithAbout ActionUpdateName(TextString newName) {
         Name.Value = newName.Value;
         return this;
     }
@@ -161,6 +161,25 @@ public class ClassToPersist : AboutChecker, IContainerAware {
                 }
             }
         }
+    }
+}
+
+public class ClassToPersist : IContainerAware {
+    private TextString _name;
+    public string name { get; set; }
+
+    [Key]
+    public int Id { get; init; }
+
+    public TextString Name => _name ??= new TextString(name, s => name = s);
+
+    public IContainer Container { get; set; }
+
+    public AppLib.Title Title() => new(Name.Title());
+
+    public void ActionSave() {
+        var toSave = this;
+        Container.MakePersistent(ref toSave);
     }
 }
 

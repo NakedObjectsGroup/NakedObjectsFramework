@@ -50,6 +50,7 @@ public class NOF2Test : AcceptanceTestCase {
         typeof(ClassWithOrderedProperties),
         typeof(ClassWithOrderedActions),
         typeof(ClassWithBounded),
+        typeof(ClassToPersistWithAbout),
         typeof(ClassToPersist),
         typeof(ClassWithAnnotations),
         typeof(ClassWithInvalidNames)
@@ -1529,7 +1530,7 @@ public class NOF2Test : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransient() {
-        ClassToPersist.ResetTest();
+        ClassToPersistWithAbout.ResetTest();
 
         var api = Api().AsPost();
 
@@ -1537,12 +1538,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
-        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.Created, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
+        Assert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
         Assert.AreEqual("Jean", parsedResult["title"].ToString());
         Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
 
@@ -1551,8 +1552,8 @@ public class NOF2Test : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransientPassSave() {
-        ClassToPersist.ResetTest();
-        ClassToPersist.TestSave = true;
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
@@ -1560,12 +1561,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
-        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.Created, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
+        Assert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
         Assert.AreEqual("Jean", parsedResult["title"].ToString());
         Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
 
@@ -1573,13 +1574,13 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientPassProperty() {
-        ClassToPersist.ResetTest();
-        ClassToPersist.TestProperty = true;
+    public void TestPersistTransientNoAboutPassSave()
+    {
+       
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jan") } };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1589,6 +1590,30 @@ public class NOF2Test : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
+        Assert.AreEqual("Jan", parsedResult["title"].ToString());
+        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+
+    [Test]
+    public void TestPersistTransientPassProperty() {
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestProperty = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
         Assert.AreEqual("Jean", parsedResult["title"].ToString());
         Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
 
@@ -1597,9 +1622,9 @@ public class NOF2Test : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransientPassBoth() {
-        ClassToPersist.ResetTest();
-        ClassToPersist.TestSave = true;
-        ClassToPersist.TestProperty = true;
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestSave = true;
+        ClassToPersistWithAbout.TestProperty = true;
 
         var api = Api().AsPost();
 
@@ -1607,12 +1632,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
-        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.Created, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
+        Assert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
         Assert.AreEqual("Jean", parsedResult["title"].ToString());
         Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
 
@@ -1621,8 +1646,8 @@ public class NOF2Test : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransientFailSave() {
-        ClassToPersist.ResetTest();
-        ClassToPersist.TestSave = true;
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
@@ -1630,7 +1655,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
-        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
@@ -1642,8 +1667,8 @@ public class NOF2Test : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransientEmptySave() {
-        ClassToPersist.ResetTest();
-        ClassToPersist.TestSave = true;
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
@@ -1651,7 +1676,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
-        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
@@ -1663,8 +1688,8 @@ public class NOF2Test : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransientFailProperty() {
-        ClassToPersist.ResetTest();
-        ClassToPersist.TestProperty = true;
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestProperty = true;
 
         var api = Api().AsPost();
 
@@ -1672,7 +1697,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
-        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
@@ -1684,8 +1709,8 @@ public class NOF2Test : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransientEmptyProperty() {
-        ClassToPersist.ResetTest();
-        ClassToPersist.TestProperty = true;
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestProperty = true;
 
         var api = Api().AsPost();
 
@@ -1693,7 +1718,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
-        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
@@ -1705,9 +1730,9 @@ public class NOF2Test : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransientFailBoth() {
-        ClassToPersist.ResetTest();
-        ClassToPersist.TestProperty = true;
-        ClassToPersist.TestSave = true;
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestProperty = true;
+        ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
@@ -1715,7 +1740,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
-        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
@@ -1727,9 +1752,9 @@ public class NOF2Test : AcceptanceTestCase {
 
     [Test]
     public void TestPersistTransientEmptyBoth() {
-        ClassToPersist.ResetTest();
-        ClassToPersist.TestProperty = true;
-        ClassToPersist.TestSave = true;
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestProperty = true;
+        ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
@@ -1737,7 +1762,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
-        var result = api.PostPersist(FullName<ClassToPersist>(), map);
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
