@@ -1576,8 +1576,6 @@ public class NOF2Test : AcceptanceTestCase {
     [Test]
     public void TestPersistTransientNoAboutPassSave()
     {
-       
-
         var api = Api().AsPost();
 
         var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jan") } };
@@ -1595,6 +1593,28 @@ public class NOF2Test : AcceptanceTestCase {
 
         Assert.IsNull(parsedResult["members"]["ActionSave"]);
     }
+
+    [Test]
+    public void TestPersistTransientNoSaveFail()
+    {
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jim") } };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassWithTextString>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual(FullName<ClassWithTextString>(), parsedResult["domainType"].ToString());
+        Assert.AreEqual($"Attempt to save an object without an ActionSave: {FullName<ClassWithTextString>()}", parsedResult["x-ro-invalidReason"].ToString());
+       
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
 
 
     [Test]

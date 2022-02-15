@@ -11,6 +11,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
 namespace NOF2.Reflector.Facet;
@@ -26,7 +27,7 @@ public sealed class SaveNullFacet : FacetAbstract, ISaveFacet {
     public static Type Type => typeof(ISaveFacet);
 
     public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
-        var msg = $"Attempt to save an object without a ActionSave: {nakedObject}";
+        var msg = $"Attempt to save an object without an ActionSave: {nakedObject.Spec.FullName}";
         logger.LogWarning(msg);
         return msg;
     }
