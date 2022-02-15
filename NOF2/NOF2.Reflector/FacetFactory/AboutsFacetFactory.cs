@@ -155,10 +155,10 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         var capitalizedName = property.Name;
         var facets = new List<IFacet> { new PropertyAccessorFacet(property, specification) };
 
-        if (property.GetSetMethod() is not null) {
-            facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
-            facets.Add(new PropertyInitializationFacet(property, specification));
-        }
+        //if (property.GetSetMethod() is not null) {
+        //    facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
+        //    facets.Add(new PropertyInitializationFacet(property, specification));
+        //}
 
         facets.Add(new MemberNamedFacetInferred(specification.Identifier.MemberName, specification));
 
