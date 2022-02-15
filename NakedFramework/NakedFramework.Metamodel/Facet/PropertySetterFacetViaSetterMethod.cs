@@ -11,9 +11,8 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.Facet;
+namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbstract {

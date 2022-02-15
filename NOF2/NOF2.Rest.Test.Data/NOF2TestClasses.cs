@@ -101,7 +101,8 @@ public class ClassWithAnnotations {
 
 public class ClassToPersistWithAbout : AboutChecker, IContainerAware {
     public static bool TestSave;
-    public static bool TestProperty;
+    public static bool TestValueProperty;
+    public static bool TestRefProperty;
 
     private TextString _name;
     public string name { get; set; }
@@ -111,17 +112,40 @@ public class ClassToPersistWithAbout : AboutChecker, IContainerAware {
 
     public TextString Name => _name ??= new TextString(name, s => name = s);
 
+    public virtual ClassWithTextString ReferenceProperty { get; set; }
+
+    public void AboutReferenceProperty(FieldAbout fieldAbout, ClassWithTextString classWithTextString) {
+        Called(MethodBase.GetCurrentMethod(), fieldAbout.TypeCode);
+
+      
+
+
+        if (fieldAbout.TypeCode == AboutTypeCodes.Valid) {
+            if (TestRefProperty)
+            {
+                if (classWithTextString?.Name.Value == "Bill") {
+                    fieldAbout.IsValid = false;
+                    fieldAbout.InvalidReason = "Ref Property Name is invalid";
+                }
+                else if (classWithTextString is null) {
+                    fieldAbout.IsValid = false;
+                    fieldAbout.InvalidReason = "Ref Property is null";
+                }
+            }
+        }
+    }
+
     public IContainer Container { get; set; }
 
     public static void ResetTest() {
-        TestSave = TestProperty = false;
+        TestSave = TestValueProperty = TestRefProperty = false;
     }
 
     public void AboutName(FieldAbout fieldAbout, TextString name) {
         Called(MethodBase.GetCurrentMethod(), fieldAbout.TypeCode);
 
         if (fieldAbout.TypeCode == AboutTypeCodes.Valid) {
-            if (TestProperty) {
+            if (TestValueProperty) {
                 if (name.Value == "invalid") {
                     fieldAbout.IsValid = false;
                     fieldAbout.InvalidReason = "Property Name is invalid";
@@ -158,6 +182,14 @@ public class ClassToPersistWithAbout : AboutChecker, IContainerAware {
                 else if (Name.Value is null) {
                     actionAbout.Usable = false;
                     actionAbout.UnusableReason = "Object Name is null";
+                }
+                if (ReferenceProperty?.Name.Value == "Bill") {
+                    actionAbout.Usable = false;
+                    actionAbout.UnusableReason = "Ref Object Name is invalid";
+                }
+                else if (ReferenceProperty is null) {
+                    actionAbout.Usable = false;
+                    actionAbout.UnusableReason = "Ref Object is null";
                 }
             }
         }

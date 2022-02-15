@@ -756,8 +756,7 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPutUnParseableProperty()
-    {
+    public void TestPutUnParseableProperty() {
         var api = Api().AsPut();
         var sva = new SingleValueArgument { Value = new ScalarValue("unparseable value") };
         var result = api.PutProperty(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.WholeNumber), sva);
@@ -783,6 +782,18 @@ public class NOF2Test : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
 
         Assert.AreEqual("valid", parsedResult["value"].ToString());
+    }
+
+    [Test]
+    public void TestPutReferenceProperty() {
+        var api = Api().AsPut();
+        var sva = new SingleValueArgument { Value = new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "referenceProperty") };
+        var result = api.PutProperty(FullName<ClassWithReferenceProperty>(), "1", nameof(ClassWithReferenceProperty.ReferenceProperty), sva);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Bill", parsedResult["value"]["title"].ToString());
     }
 
     [Test]
@@ -1456,9 +1467,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual(2, ((JContainer)resultObj["value"]).Count);
+        Assert.AreEqual(3, ((JContainer)resultObj["value"]).Count);
         Assert.AreEqual("Fred", resultObj["value"][0]["title"].ToString());
         Assert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
+        Assert.AreEqual("Tom", resultObj["value"][2]["title"].ToString());
     }
 
     [Test]
@@ -1534,7 +1546,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1557,7 +1572,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/3", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1574,8 +1592,7 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientNoAboutPassSave()
-    {
+    public void TestPersistTransientNoAboutPassSave() {
         var api = Api().AsPost();
 
         var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jan") } };
@@ -1595,8 +1612,7 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientNoSaveFail()
-    {
+    public void TestPersistTransientNoSaveFail() {
         var api = Api().AsPost();
 
         var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jim") } };
@@ -1610,21 +1626,22 @@ public class NOF2Test : AcceptanceTestCase {
 
         Assert.AreEqual(FullName<ClassWithTextString>(), parsedResult["domainType"].ToString());
         Assert.AreEqual($"Attempt to save an object without an ActionSave: {FullName<ClassWithTextString>()}", parsedResult["x-ro-invalidReason"].ToString());
-       
 
         Assert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
-
-
     [Test]
     public void TestPersistTransientPassProperty() {
         ClassToPersistWithAbout.ResetTest();
-        ClassToPersistWithAbout.TestProperty = true;
+        ClassToPersistWithAbout.TestValueProperty = true;
+        ClassToPersistWithAbout.TestRefProperty = true;
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/3", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1644,11 +1661,15 @@ public class NOF2Test : AcceptanceTestCase {
     public void TestPersistTransientPassBoth() {
         ClassToPersistWithAbout.ResetTest();
         ClassToPersistWithAbout.TestSave = true;
-        ClassToPersistWithAbout.TestProperty = true;
+        ClassToPersistWithAbout.TestValueProperty = true;
+        ClassToPersistWithAbout.TestRefProperty = true;
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("Jean") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/3", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1665,13 +1686,16 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientFailSave() {
+    public void TestPersistTransientFailSaveValue() {
         ClassToPersistWithAbout.ResetTest();
         ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("invalid") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("invalid") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/3", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1686,13 +1710,40 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientEmptySave() {
+    public void TestPersistTransientFailSaveRef() {
         ClassToPersistWithAbout.ResetTest();
         ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Ref Object Name is invalid", parsedResult["x-ro-invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientEmptySaveValue() {
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestSave = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/3", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1707,13 +1758,40 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientFailProperty() {
+    public void TestPersistTransientEmptySaveRef() {
         ClassToPersistWithAbout.ResetTest();
-        ClassToPersistWithAbout.TestProperty = true;
+        ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("invalid") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty",  new ScalarValue(null) }
+        };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Ref Object is null", parsedResult["x-ro-invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientFailPropertyValue() {
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestValueProperty = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("invalid") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/3", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1728,13 +1806,40 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientEmptyProperty() {
+    public void TestPersistTransientFailPropertyRef() {
         ClassToPersistWithAbout.ResetTest();
-        ClassToPersistWithAbout.TestProperty = true;
+        ClassToPersistWithAbout.TestRefProperty = true;
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Ref Property Name is invalid", parsedResult["members"]["ReferenceProperty"]["invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientEmptyPropertyValue() {
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestValueProperty = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1749,14 +1854,42 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientFailBoth() {
+    [Ignore("pending")]
+    public void TestPersistTransientEmptyPropertyRef() {
         ClassToPersistWithAbout.ResetTest();
-        ClassToPersistWithAbout.TestProperty = true;
+        ClassToPersistWithAbout.TestRefProperty = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty",  new ScalarValue(null) }
+        };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientFailBothValue() {
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestValueProperty = true;
         ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("invalid") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("invalid") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 
@@ -1771,14 +1904,68 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestPersistTransientEmptyBoth() {
+    public void TestPersistTransientFailBothRef() {
         ClassToPersistWithAbout.ResetTest();
-        ClassToPersistWithAbout.TestProperty = true;
+        ClassToPersistWithAbout.TestRefProperty = true;
         ClassToPersistWithAbout.TestSave = true;
 
         var api = Api().AsPost();
 
-        var dict = new Dictionary<string, IValue> { { "Name", new ScalarValue("") } };
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Ref Property Name is invalid", parsedResult["members"]["ReferenceProperty"]["invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    public void TestPersistTransientEmptyBothValue() {
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestValueProperty = true;
+        ClassToPersistWithAbout.TestSave = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("") },
+            { "ReferenceProperty", new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "ReferenceProperty") }
+        };
+
+        var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
+
+        var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
+
+        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+    }
+
+    [Test]
+    [Ignore("pending")]
+    public void TestPersistTransientEmptyBothRef() {
+        ClassToPersistWithAbout.ResetTest();
+        ClassToPersistWithAbout.TestRefProperty = true;
+        ClassToPersistWithAbout.TestSave = true;
+
+        var api = Api().AsPost();
+
+        var dict = new Dictionary<string, IValue> {
+            { "Name", new ScalarValue("Jean") },
+            { "ReferenceProperty", new ScalarValue(null) }
+        };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
 

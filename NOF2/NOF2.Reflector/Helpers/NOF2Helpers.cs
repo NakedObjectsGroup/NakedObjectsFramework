@@ -99,7 +99,7 @@ public static class NOF2Helpers {
         onObject switch {
             MemberInfo mi => mi.GetCustomAttributes(),
             ParameterInfo pi => pi.GetCustomAttributes(),
-            _ => new System.Attribute[] { }
+            _ => Array.Empty<System.Attribute>()
         };
 
     public static T GetCustomAttribute<T>(this object on) => GetCustomAttributes(on).OfType<T>().FirstOrDefault();
