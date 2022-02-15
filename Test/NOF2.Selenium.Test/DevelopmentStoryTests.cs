@@ -13,7 +13,7 @@ using System;
 using System.Linq;
 using System.Threading;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests
+namespace NOF2.Selenium.Test
 {
 
     [TestClass]
@@ -350,7 +350,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
         public void MainMenuWithSubMenus()
         {
             helper.GotoHome().OpenMainMenu("Employees").AssertHasActions("Random Employee",
-                "All Employees", "Find Employee By Name", "Find Employee By National ID Number", "Me")
+                "All Employees", "Find Employee By Name", "Find Employee By National ID Number", "Me", "Create New Job Candidate")
                 .AssertHasSubMenus("Organisation").OpenSubMenu("Organisation").AssertHasAction("List All Departments");
 
         }
@@ -467,6 +467,7 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
             //DisplayingAndSavingATransientObjectFromTheUI(); 
             //ControlOverSaving();
             PersistingALinkObjectToFormAMultipleAssociation();
+            SavingATransientWithAReferenceToAPersistentObject();
         }
 
         //[TestMethod]
@@ -550,6 +551,19 @@ namespace NakedFunctions.Selenium.Test.FunctionTests
                 .OpenActions().GetActionWithoutDialog("Products Covered").ClickToViewList()
                 .GetRowFromList(0).AssertTitleIs(prodTitle);
         }
+
+        //[TestMethod]
+        public void SavingATransientWithAReferenceToAPersistentObject()
+        {
+            var start = helper.GotoUrlDirectly("home/object?m1=Employees&i2=View&o2=AW.Types.Employee--240");
+            var jc = helper.GetHomeView(Pane.Left).OpenMainMenu("Employees").GetActionWithoutDialog("Create New Job Candidate").ClickToViewTransientObject();
+            var emp = helper.GetObjectView(Pane.Right);
+            var empField = jc.GetEditableReferenceProperty("Employee");
+                emp.DragTitleAndDropOnto(empField);
+            var saved = jc.Save(Pane.Left);
+            saved.GetProperty("Employee").GetReference().AssertTitleIs("Willis Johnson");
+        }
+
         #endregion
 
         #region ActionAbout control

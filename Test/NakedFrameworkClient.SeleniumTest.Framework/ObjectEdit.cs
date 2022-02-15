@@ -15,10 +15,10 @@ namespace NakedFrameworkClient.TestFramework
             return helper.GetObjectView();
         }
 
-        public ObjectView Save()
+        public ObjectView Save(Pane pane = Pane.Single)
         {
             GetSaveButton().Click();
-            return helper.GetObjectView();
+            return helper.GetObjectView(pane);
         }
 
         private IWebElement GetSaveButton()
@@ -62,7 +62,9 @@ namespace NakedFrameworkClient.TestFramework
 
         public ReferenceInputField GetEditableReferenceProperty(string propertyName)
         {
-            throw new NotImplementedException();
+            var prop = GetEditableProperty(propertyName);
+            Assert.IsTrue(prop.FindElement(By.TagName("input")) is not null);
+            return new ReferenceInputField(prop, helper, this);
         }
 
         public ObjectEdit AssertPropertyIsDisabledForEdit(string propertyName)
