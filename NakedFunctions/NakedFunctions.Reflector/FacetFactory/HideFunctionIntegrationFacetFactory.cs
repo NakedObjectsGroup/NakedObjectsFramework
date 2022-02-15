@@ -98,7 +98,7 @@ public sealed class HideFunctionIntegrationFacetFactory : FunctionalFacetFactory
         if (unMatchedHides.Any()) {
             var actions = unMatchedHides.Select(GetAddAction);
             void Action(IMetamodelBuilder m) => actions.ForEach(a => a(m));
-            FacetUtils.AddIntegrationFacet(specification, Action);
+            metamodel = FacetUtils.AddIntegrationFacet(reflector, type, Action, metamodel);
         }
 
         return metamodel;

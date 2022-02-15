@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Adapter;
@@ -78,9 +79,10 @@ public static class FacetUtils {
 
     private static readonly object IntegrationFacetLock = new();
 
-    public static void AddIntegrationFacet(ISpecificationBuilder specification, Action<IMetamodelBuilder> action) {
+    public static IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, Type type, Action<IMetamodelBuilder> action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
 
         lock (IntegrationFacetLock) {
+            (var specification, metamodel) = reflector.LoadSpecification(type, metamodel);
             var integrationFacet = specification.GetFacet<IIntegrationFacet>();
 
             if (integrationFacet is null) {
@@ -90,6 +92,8 @@ public static class FacetUtils {
             else {
                 integrationFacet.AddAction(action);
             }
+
+            return metamodel;
         }
     }
 

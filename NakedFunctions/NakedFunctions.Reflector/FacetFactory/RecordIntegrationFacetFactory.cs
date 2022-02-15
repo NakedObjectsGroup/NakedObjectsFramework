@@ -84,7 +84,7 @@ public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProces
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (!FactoryUtils.IsStatic(type)) {
             var action = GetAddAction(type);
-            FacetUtils.AddIntegrationFacet(specification, action);
+            metamodel = FacetUtils.AddIntegrationFacet(reflector, type, action, metamodel);
         }
 
         return metamodel;

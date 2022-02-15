@@ -91,7 +91,7 @@ public sealed class ViewModelAnnotationIntegrationFacetFactory : FunctionalFacet
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var action = GetAddAction(type);
         if (action is not null) {
-            FacetUtils.AddIntegrationFacet(specification, action);
+            metamodel = FacetUtils.AddIntegrationFacet(reflector, type, action, metamodel);
         }
 
         return metamodel;

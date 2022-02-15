@@ -35,16 +35,16 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
     }
 
     private IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, ISpecificationBuilder specification, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        (var displayOnTypeSpec, metamodel) = reflector.LoadSpecification(type, metamodel);
-
+        
         if (specification is IActionSpecImmutable actionSpec) {
             void Action(IMetamodelBuilder b) {
+                var displayOnTypeSpec = b.GetSpecification(type) as ITypeSpecBuilder;
                 var adaptedMember = ImmutableSpecFactory.CreateSpecAdapter(actionSpec);
                 displayOnTypeSpec.AddContributedFields(new[] { adaptedMember });
                 RemoveAction(actionSpec);
             }
 
-            FacetUtils.AddIntegrationFacet(displayOnTypeSpec, Action);
+            metamodel = FacetUtils.AddIntegrationFacet(reflector, type, Action, metamodel);
         }
 
         return metamodel;

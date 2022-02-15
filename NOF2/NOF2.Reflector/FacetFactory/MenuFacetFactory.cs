@@ -56,7 +56,7 @@ public sealed class MenuFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
                 builder.AddMainMenu(mainMenu);
             }
 
-            FacetUtils.AddIntegrationFacet(specification, Action);
+            metamodel = FacetUtils.AddIntegrationFacet(reflector, type, Action, metamodel);
         }
 
         return metamodel;
