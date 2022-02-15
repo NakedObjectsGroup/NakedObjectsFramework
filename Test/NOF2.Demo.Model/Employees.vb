@@ -62,18 +62,24 @@
             Return Nothing
         End Function
 
+        Public Shared Function ActionCreateNewJobCandidate(container As IContainer) As JobCandidate
+            Return container.CreateTransientInstance(Of JobCandidate)
+        End Function
+
         Public Shared Function SharedMenuOrder() As Menu
             Dim main = New Menu("Employees")
             main.AddAction(NameOf(ActionRandomEmployee)) _
             .AddAction(NameOf(ActionAllEmployees)) _
             .AddAction(NameOf(ActionFindEmployeeByName).ToLower()) _ 'To test case insensitivity
             .AddAction(NameOf(ActionFindEmployeeByNationalIDNumber)) _
-            .AddAction(NameOf(ActionMe))
+            .AddAction(NameOf(ActionMe)) _
+            .AddAction(NameOf(ActionCreateNewJobCandidate))
 
             main.AddSubMenu("Organisation") _
             .AddAction(NameOf(ActionListAllDepartments)) _
             .AddAction(NameOf(ActionListNewDepartments)) _
             .AddAction(NameOf(ActionCreateNewDepartment))
+
             Return main
         End Function
 

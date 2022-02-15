@@ -9,6 +9,7 @@ namespace NOF2.Demo.Model
         public static void Map(this EntityTypeBuilder<JobCandidate> builder)
         {
             builder.HasKey(t => t.JobCandidateID);
+            builder.Ignore(t => t.Container);
 
             // Properties
             // Table & Column Mappings

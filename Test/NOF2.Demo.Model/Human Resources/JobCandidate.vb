@@ -1,8 +1,9 @@
 ﻿Namespace AW.Types
 
 	Partial Public Class JobCandidate
+		Implements ITitledObject, INotEditableOncePersistent, IContainerAware
 
-		Implements ITitledObject, INotEditableOncePersistent
+		Public Property Container As IContainer Implements IContainerAware.Container
 
 		Public Property JobCandidateID() As Integer
 
@@ -51,6 +52,11 @@
 			End Select
 		End Sub
 #End Region
+
+		Public Sub ActionSave()
+			mappedModifiedDate = Now
+			Container.MakePersistent(Me)
+		End Sub
 
 		Public Function Title() As Title Implements ITitledObject.Title
 			Return New Title(ToString())
