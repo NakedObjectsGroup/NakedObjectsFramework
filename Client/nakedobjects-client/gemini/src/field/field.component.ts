@@ -1,4 +1,4 @@
-import { ElementRef, OnDestroy, QueryList, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnDestroy, QueryList, Renderer2 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import * as Ro from '@nakedobjects/restful-objects';
 import { LoggerService, Pane } from '@nakedobjects/services';
@@ -9,6 +9,7 @@ import {
     DragAndDropService,
     FieldViewModel,
     IDraggableViewModel,
+    MenuViewModel,
     ParameterViewModel,
     PropertyViewModel
     } from '@nakedobjects/view-models';
@@ -26,6 +27,7 @@ import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-compon
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 import { CdkDrag, CdkDropList, CdkDragDrop } from '@angular/cdk/drag-drop';
 
+@Component({template : "<div></div>"})
 export abstract class FieldComponent implements OnDestroy {
 
     protected constructor(
@@ -66,7 +68,7 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     private formGrp: FormGroup;
-    private vmParent: DialogViewModel | DomainObjectViewModel;
+    private vmParent: DialogViewModel | DomainObjectViewModel | MenuViewModel;
     private model: ParameterViewModel | PropertyViewModel;
     private isConditionalChoices: boolean;
     private isAutoComplete: boolean;
@@ -84,7 +86,7 @@ export abstract class FieldComponent implements OnDestroy {
     abstract checkboxList: QueryList<ElementRef>;
     abstract focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
 
-    protected init(vmParent: DialogViewModel | DomainObjectViewModel,
+    protected init(vmParent: DialogViewModel | DomainObjectViewModel | MenuViewModel,
         vm: ParameterViewModel | PropertyViewModel,
         control: AbstractControl) {
 

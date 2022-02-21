@@ -16,10 +16,10 @@
     <nof-action-list *ngIf="showActions()" [menuHolder]="object"></nof-action-list>
     <div class="main-column">
         <ng-container *ngIf="!isEditDialog(selectedDialogId)">
-            <nof-dialog  [parent]="object" [selectedDialogId]="selectedDialogId"></nof-dialog>
+            <nof-dialog  [parentVM]="object" [selectedDialogId]="selectedDialogId"></nof-dialog>
             <nof-properties class="properties" *ngIf="properties" [properties]="properties"></nof-properties>
         </ng-container>
-        <nof-edit-dialog *ngIf="isEditDialog(selectedDialogId)" [parent]="object" [selectedDialogId]="selectedDialogId" [properties]="properties"></nof-edit-dialog>
+        <nof-edit-dialog *ngIf="isEditDialog(selectedDialogId)" [parentObject]="object" [selectedDialogId]="selectedDialogId" [properties]="properties"></nof-edit-dialog>
     </div>
     <nof-collections class="collections" *ngIf="collections" [collections]="collections"></nof-collections>
 </div>
@@ -53,5 +53,5 @@
     <nof-collections class="collections" *ngIf="collections" [collections]="collections"></nof-collections>
 </div>
 <ng-container *ngIf="object && viewMode === 'CreateNew'">
-    <nof-create-new-dialog  [parent]="object" [selectedDialogId]="selectedDialogId" [toCreateClass]="toCreateClass"></nof-create-new-dialog>
+    <nof-create-new-dialog  [parentMenu]="object" [selectedDialogId]="selectedDialogId" [toCreateClass]="toCreateClass"></nof-create-new-dialog>
 </ng-container>

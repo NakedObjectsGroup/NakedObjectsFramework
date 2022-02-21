@@ -175,7 +175,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     get properties() {
         const obj = this.object;
-        return obj ? obj.properties : '';
+        return obj ? obj.properties : [];
     }
 
     get collections(): CollectionViewModel[] {

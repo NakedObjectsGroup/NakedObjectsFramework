@@ -1,12 +1,13 @@
-import { OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ContextService, ICustomActivatedRouteData, Pane, PaneName, PaneRouteData, PaneType, UrlManagerService } from '@nakedobjects/services';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 
+@Component({template : "<div></div>"})
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
-    protected constructor(
+    constructor(
         protected readonly activatedRoute: ActivatedRoute,
         protected readonly urlManager: UrlManagerService,
         protected readonly context: ContextService

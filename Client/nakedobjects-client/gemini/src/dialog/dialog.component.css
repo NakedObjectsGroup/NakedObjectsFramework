@@ -52,7 +52,7 @@ input[type=button], input[type=reset], input[type=submit] {
     border: 1px transparent solid;
     cursor: pointer;
     width: auto;
-    *zoom: 1;
+    /*zoom: 1;
     /* color: black;
     background-color: white; */
     float: right;

@@ -13,7 +13,7 @@
 import { FormGroup } from '@angular/forms';
 import * as Ro from '@nakedobjects/restful-objects';
 import { LoggerService } from '@nakedobjects/services';
-import { ChoiceViewModel, DialogViewModel, DragAndDropService, ParameterViewModel } from '@nakedobjects/view-models';
+import { ChoiceViewModel, DialogViewModel, DomainObjectViewModel, DragAndDropService, MenuViewModel, ParameterViewModel } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
@@ -44,7 +44,7 @@ export class EditParameterComponent extends FieldComponent implements OnInit, On
     checkboxList: QueryList<ElementRef>;
 
     @Input()
-    parent: DialogViewModel;
+    parent: DialogViewModel | MenuViewModel | DomainObjectViewModel;
 
     @Input()
     set parameter(value: ParameterViewModel) {

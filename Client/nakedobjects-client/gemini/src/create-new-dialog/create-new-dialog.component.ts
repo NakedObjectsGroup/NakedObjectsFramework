@@ -2,6 +2,8 @@ import { AfterViewInit, Component, Input, OnDestroy, OnChanges, ViewChildren, Qu
 import { FormBuilder } from '@angular/forms';
 import { ColorService, ConfigService, ContextService, ErrorService } from '@nakedobjects/services';
 import {
+    DomainObjectViewModel,
+    MenuViewModel,
     ParameterViewModel,
     PropertyViewModel,
     ViewModelFactoryService
@@ -38,6 +40,15 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
     set toCreateClass(cls: string) {
         this.toCreate = cls;
         this.colorService.toColorNumberFromType(cls).then(c => this.pendingColor = `${this.configService.config.objectColor}${c}`);
+    }
+
+    @Input()
+    set parentMenu(parent: MenuViewModel | DomainObjectViewModel) {
+        this.parent = parent;
+    }
+
+    get parentMenu() {
+        return this.parent as MenuViewModel | DomainObjectViewModel;
     }
 
      // used to smooth transition before object set
@@ -86,12 +97,20 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
         return map(properties, (p) => parmMap[p.toLowerCase()] ?? p);
     }
 
-    isParameter(parmprop: PropertyViewModel | string) {
+    isParameter(parmprop: ParameterViewModel | string) {
         return parmprop instanceof ParameterViewModel;
     }
 
-    isProperty(parmprop: PropertyViewModel | string) {
+    asParameter(parmprop: ParameterViewModel | string) {
+        return parmprop as ParameterViewModel;
+    }
+
+    isProperty(parmprop: ParameterViewModel | string) {
         return !this.isParameter(parmprop);
+    }
+
+    asProperty(parmprop: ParameterViewModel | string) {
+        return parmprop as string;
     }
 
     private hasHint(parm: ParameterViewModel) {

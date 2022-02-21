@@ -71,7 +71,7 @@ export class ActionListComponent implements AfterViewInit, OnDestroy {
 
     displayClass = (menuItem: MenuItemViewModel) => ({ collapsed: menuItem.navCollapsed, open: !menuItem.navCollapsed, rootMenu: !menuItem.name });
 
-    classes(action: ActionViewModel) {
+    classes(action: ActionViewModel | IActionHolder ) {
         const hint = action.presentationHint ?? '';
         return hint.trim();
     }

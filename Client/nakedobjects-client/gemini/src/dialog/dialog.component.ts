@@ -1,7 +1,11 @@
-import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren, OnChanges } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren, OnChanges, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ContextService, ErrorService } from '@nakedobjects/services';
 import {
+    CollectionViewModel,
+    DomainObjectViewModel,
+    ListViewModel,
+    MenuViewModel,
     ViewModelFactoryService
 } from '@nakedobjects/view-models';
 import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
@@ -21,6 +25,11 @@ export class DialogComponent extends BaseDialogComponent  implements AfterViewIn
         context: ContextService,
         formBuilder: FormBuilder) {
             super(viewModelFactory, error, context, formBuilder);
+    }
+
+    @Input()
+    set parentVM(parent : CollectionViewModel | MenuViewModel | ListViewModel | DomainObjectViewModel) {
+        this.parent = parent;
     }
 
     @ViewChildren(ParametersComponent)

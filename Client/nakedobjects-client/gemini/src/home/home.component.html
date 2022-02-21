@@ -13,7 +13,7 @@
 				</div>
 				<nof-action-list *ngIf="selectedMenu" [menuHolder]="selectedMenu"></nof-action-list>
 				<div class="main-column">
-					<nof-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parent]="selectedMenu"></nof-dialog>
+					<nof-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parentVM]="selectedMenu"></nof-dialog>
 				</div>
 			</div>
 		</div>
@@ -21,7 +21,7 @@
 	<ng-container *ngIf="hasAuthorisedMenus && isCreateNew">
 		<div [attr.id]="paneIdName" [ngClass]="paneType">
 			<!--TODO: This is the Single/Split definition-->
-			<nof-create-new-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parent]="selectedMenu" [toCreateClass]="toCreateClass"></nof-create-new-dialog>
+			<nof-create-new-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parentMenu]="selectedMenu" [toCreateClass]="toCreateClass"></nof-create-new-dialog>
 		</div>
 	</ng-container>
 	<router-outlet *ngIf="hasAuthorisedMenus" (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

@@ -2,6 +2,7 @@ import { AfterViewInit, Component, Input, OnDestroy, OnChanges, ViewChildren, Qu
 import { FormBuilder } from '@angular/forms';
 import { ContextService, ErrorService } from '@nakedobjects/services';
 import {
+    DomainObjectViewModel,
     ParameterViewModel,
     PropertyViewModel,
     ViewModelFactoryService
@@ -33,6 +34,15 @@ export class EditDialogComponent  extends BaseDialogComponent implements AfterVi
     @ViewChildren(EditParameterComponent)
     parmComponents: QueryList<EditParameterComponent>;
 
+    @Input()
+    set parentObject(obj : DomainObjectViewModel) {
+        this.parent = obj;
+    }
+
+    get parentObject() {
+        return this.parent as DomainObjectViewModel;
+    }
+
     get parametersProperties(): (ParameterViewModel | PropertyViewModel)[] {
         const parmMap = fromPairs(this.parameters.map((p) => [p.id.toLowerCase(), p]));
         return map(this.properties, (p) => parmMap[p.id.toLowerCase()] ?? p);
@@ -42,12 +52,20 @@ export class EditDialogComponent  extends BaseDialogComponent implements AfterVi
         return parmprop instanceof ParameterViewModel;
     }
 
+    asParameter(parmprop: PropertyViewModel | ParameterViewModel) {
+        return parmprop as ParameterViewModel;
+    }
+
     isLastParameter(parmprop: PropertyViewModel | ParameterViewModel) {
         return parmprop === this.parameters[this.parameters.length - 1];
     }
 
     isProperty(parmprop: PropertyViewModel | ParameterViewModel) {
         return parmprop instanceof PropertyViewModel;
+    }
+
+    asProperty(parmprop: PropertyViewModel | ParameterViewModel) {
+        return parmprop as PropertyViewModel;
     }
 
     private hasHint(parm: ParameterViewModel) {

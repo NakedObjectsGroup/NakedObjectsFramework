@@ -37,6 +37,8 @@ export * from './helpers-components';
 export * from './time-picker-facade/time-picker-facade.component';
 export * from './time-picker/time-picker.component';
 export * from './object-not-found-error/object-not-found-error.component';
+export * from './edit-dialog/edit-dialog.component';
+export * from './create-new-dialog/create-new-dialog.component';
 
 export * from './custom-component-config.service';
 export * from './custom-component.service';

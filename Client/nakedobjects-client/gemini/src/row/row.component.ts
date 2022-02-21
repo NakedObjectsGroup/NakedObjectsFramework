@@ -66,10 +66,10 @@ export class RowComponent {
     hasTableTitle = () => (this.item.tableRowViewModel && this.item.tableRowViewModel.showTitle) || (this.item instanceof RecentItemViewModel && this.item.title);
     tableProperties = (): TableRowColumnViewModel[] => this.item.tableRowViewModel && this.item.tableRowViewModel.properties;
 
-    propertyType = (property: PropertyViewModel) => property.type;
-    propertyValue = (property: PropertyViewModel) => property.value;
-    propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue;
-    propertyReturnType = (property: PropertyViewModel) => property.returnType;
+    propertyType = (property: TableRowColumnViewModel) => property.type;
+    propertyValue = (property: TableRowColumnViewModel) => property.value;
+    propertyFormattedValue = (property: TableRowColumnViewModel) => property.formattedValue;
+    propertyReturnType = (property: TableRowColumnViewModel) => property.returnType;
 
     doClick = (right?: boolean) => this.item.doClick(right);
 

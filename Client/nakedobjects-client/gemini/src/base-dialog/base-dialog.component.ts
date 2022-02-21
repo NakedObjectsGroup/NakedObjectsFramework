@@ -18,6 +18,7 @@ import forEach from 'lodash-es/forEach';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { createForm, safeUnsubscribe } from '../helpers-components';
 
+@Component({template : "<div></div>"})
 export class BaseDialogComponent implements OnDestroy, OnChanges {
 
     constructor(
@@ -33,13 +34,12 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
     protected sub: ISubscription;
     private createFormSub: ISubscription;
 
-    @Input()
-    set parent(parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel) {
+    protected set parent(parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel) {
         this.parentChanged = this.parentViewModel !== parent;
         this.parentViewModel = parent;
     }
 
-    get parent(): MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel {
+    protected get parent(): MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel {
         return this.parentViewModel;
     }
 

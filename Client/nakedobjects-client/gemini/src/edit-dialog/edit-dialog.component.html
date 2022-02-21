@@ -1,7 +1,7 @@
 <div *ngIf="dialog">
 	<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 		<ng-container *ngFor="let parmprop of parametersProperties">
-			<nof-edit-parameter *ngIf="isParameter(parmprop)" [ngClass]="classes(parmprop)" [parameter]="parmprop" [parent]="parent" [form]="form"></nof-edit-parameter>
+			<nof-edit-parameter *ngIf="isParameter(parmprop)" [ngClass]="classes(parmprop)" [parameter]="asParameter(parmprop)" [parent]="parentObject" [form]="form"></nof-edit-parameter>
 			<ng-container *ngIf="isLastParameter(parmprop)">
 				<div class="co-validation">{{message}}</div>
 				<div class="form-row">
@@ -10,7 +10,7 @@
 					<input class="next" tabindex="0" type="submit" value="Next" title="{{tooltip}}" nofClick (leftClick)="onSubmitNext()" (rightClick)="onSubmitNext(true)" [disabled]="!form.valid" />
 				</div>
 			</ng-container>		
-			<nof-view-property  *ngIf="isProperty(parmprop)" [ngClass]="classes(parmprop)"  [property]="parmprop"></nof-view-property>
+			<nof-view-property  *ngIf="isProperty(parmprop)" [ngClass]="classes(parmprop)"  [property]="asProperty(parmprop)"></nof-view-property>
 		</ng-container>		
 	</form>
 </div>
