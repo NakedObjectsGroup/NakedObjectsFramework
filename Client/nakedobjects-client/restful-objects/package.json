@@ -2,26 +2,7 @@
     "ngPackage": {
         "$schema": "./node_modules/ng-packagr/package.schema.json",
         "lib": {
-            "entryFile": "src/public_api.ts",
-            "umdModuleIds": {
-                "lodash": "_",
-                "lodash-es/assign": "assign",
-                "lodash-es/clone": "clone",
-                "lodash-es/concat": "concat",
-                "lodash-es/each": "each",
-                "lodash-es/find": "find",
-                "lodash-es/forEach": "forEach",
-                "lodash-es/forOwn": "forOwn",
-                "lodash-es/fromPairs": "fromPairs",
-                "lodash-es/keys": "keys",
-                "lodash-es/last": "last",
-                "lodash-es/map": "map",
-                "lodash-es/mapValues": "mapValues",
-                "lodash-es/merge": "merge",
-                "lodash-es/pickBy": "pickBy",
-                "lodash-es/reduce": "reduce",
-                "lodash-es/some": "some"
-            }
+            "entryFile": "src/public_api.ts"
         },
         "allowedNonPeerDependencies": [
             "lodash",
