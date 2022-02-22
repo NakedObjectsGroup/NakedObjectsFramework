@@ -2,7 +2,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import * as Ro from '@nakedobjects/restful-objects';
-import {utc, Moment } from 'moment';
+import { utc, Moment } from 'moment';
 import { ConfigService } from './config.service';
 import { MaskService } from './mask.service';
 

@@ -169,7 +169,9 @@ export class ConfigService {
         return this.http.get<IAppConfig>('config.json', options).
             toPromise().
             then((r) => {
-                this.config = r;
+                if (r) {
+                    this.config = r;
+                }
                 this.checkAppPath();
                 this.loadingStatus = ConfigState.loaded;
                 return true;
