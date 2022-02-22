@@ -11,13 +11,11 @@ import {
 import * as Ro from '@nakedobjects/restful-objects';
 import { validateDate, fixedDateFormat } from '@nakedobjects/view-models';
 import concat from 'lodash-es/concat';
-import * as momentNs from 'moment';
+import * as moment from 'moment';
 import { BehaviorSubject, Observable, SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';
 import { Dictionary } from 'lodash';
-
-const moment = momentNs;
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 
@@ -42,7 +40,7 @@ export interface IDatePickerOutputDefaultEvent {
 
 export interface IDatePickerOutputChangedEvent {
     type: 'dateChanged';
-    data: momentNs.Moment;
+    data: moment.Moment;
 }
 
 export interface IDatePickerOutputInvalidEvent {
@@ -74,7 +72,7 @@ export interface ICalendarDate {
     enabled: boolean;
     today: boolean;
     selected: boolean;
-    momentObj: momentNs.Moment;
+    momentObj: moment.Moment;
 }
 
 @Component({
@@ -116,7 +114,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
     private validInputFormats = ['DD/MM/YYYY', 'DD/MM/YY', 'D/M/YY', 'D/M/YYYY', 'D MMM YYYY', 'D MMMM YYYY', fixedDateFormat];
 
-    private dateModelValue: momentNs.Moment | null;
+    private dateModelValue: moment.Moment | null;
     private modelValue: string;
 
     private bSubject: BehaviorSubject<string>;
@@ -134,15 +132,15 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         return this.modelValue;
     }
 
-    get dateModel(): momentNs.Moment | null {
+    get dateModel(): moment.Moment | null {
         return this.dateModelValue;
     }
 
-    get currentDate(): momentNs.Moment {
+    get currentDate(): moment.Moment {
         return this.dateModelValue || moment().utc();
     }
 
-    set dateModel(date: momentNs.Moment | null) {
+    set dateModel(date: moment.Moment | null) {
         if (date) {
             this.dateModelValue = date;
             this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel! });
@@ -158,7 +156,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         return validateDate(newValue, this.validInputFormats);
     }
 
-    setDateIfChanged(newDate: momentNs.Moment) {
+    setDateIfChanged(newDate: moment.Moment) {
         const currentDate = this.dateModel;
         if (!newDate.isSame(Ro.withUndefined(currentDate))) {
             this.setValue(newDate);
@@ -232,7 +230,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
         const endOfMonth = moment(currentDate).endOf('month');
         for (let i = n; i <= endOfMonth.date(); i += 1) {
-            const date: momentNs.Moment = moment.utc(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
+            const date: moment.Moment = moment.utc(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
             const today: boolean = moment().utc().isSame(date, 'day') && moment().isSame(date, 'month');
             const selected: boolean = this.currentDate.isSame(date, 'day');
 
@@ -250,15 +248,15 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         }
     }
 
-    setValue(date: momentNs.Moment | null) {
+    setValue(date: moment.Moment | null) {
         this.dateModel = date;
     }
 
-    private formatDate(date: momentNs.Moment | null) {
+    private formatDate(date: moment.Moment | null) {
         return this.dateModel ? this.dateModel.format(this.options.format) : '';
     }
 
-    selectDate(date: momentNs.Moment | null, e?: MouseEvent, ) {
+    selectDate(date: moment.Moment | null, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
             this.setValue(date);
@@ -267,7 +265,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         this.opened = false;
     }
 
-    writeValue(date: momentNs.Moment) {
+    writeValue(date: moment.Moment) {
         if (!date) { return; }
         this.dateModelValue = date;
     }

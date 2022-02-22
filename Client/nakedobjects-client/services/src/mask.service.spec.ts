@@ -2,11 +2,10 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import * as Ro from '@nakedobjects/restful-objects';
-import * as momentNs from 'moment';
+import * as moment from 'moment';
 import { ConfigService } from './config.service';
 import { MaskService } from './mask.service';
 
-const moment = momentNs;
 const supportedDateFormats = ['D/M/YYYY', 'D/M/YY', 'D MMM YYYY', 'D MMMM YYYY', 'D MMM YY', 'D MMMM YY'];
 
 describe('MaskService', () => {

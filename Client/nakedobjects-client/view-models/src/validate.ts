@@ -1,9 +1,7 @@
 ﻿import * as Models from '@nakedobjects/restful-objects';
-import * as momentNs from 'moment';
+import * as moment from 'moment';
 import { ILocalFilter } from '@nakedobjects/services';
 import * as Msg from './user-messages';
-
-const moment = momentNs;
 
 export const supportedDateFormats = ['D/M/YYYY', 'D/M/YY', 'D MMM YYYY', 'D MMMM YYYY', 'D MMM YY', 'D MMMM YY'];
 

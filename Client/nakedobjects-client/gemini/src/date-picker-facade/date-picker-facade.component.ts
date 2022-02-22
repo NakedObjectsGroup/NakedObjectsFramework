@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { ConfigService } from '@nakedobjects/services';
 import { FieldViewModel, fixedDateFormat, PropertyViewModel } from '@nakedobjects/view-models';
-import * as momentNs from 'moment';
+import * as moment from 'moment';
 import { DatePickerComponent, DatePickerOptions } from '../date-picker/date-picker.component';
 import { IDatePickerInputEvent, IDatePickerOutputEvent } from '../date-picker/date-picker.component';
 
@@ -52,7 +52,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         return this.model.description;
     }
 
-    setValueIfChanged(dateModel: momentNs.Moment | null) {
+    setValueIfChanged(dateModel: moment.Moment | null) {
         const oldValue = this.control.value;
         const newValue = dateModel ? dateModel.format(fixedDateFormat) : '';
 
@@ -72,7 +72,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         }
     }
 
-    handleDateChangedEvent(dateModel: momentNs.Moment) {
+    handleDateChangedEvent(dateModel: moment.Moment) {
         if (this.control) {
             this.setValueIfChanged(dateModel);
         }

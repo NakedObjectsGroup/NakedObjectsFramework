@@ -2,10 +2,8 @@
 import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import forEach from 'lodash-es/forEach';
-import * as momentNs from 'moment';
+import { utc } from 'moment';
 import { ConfigService } from './config.service';
-
-const moment = momentNs;
 
 export interface IMaskServiceConfigurator {
     setNumberMaskMapping: (customMask: string, format: Ro.FormatType, digits?: string, locale?: string) => void;
@@ -72,7 +70,7 @@ class LocalDateFilter implements ILocalFilter {
         // Angular date pipes no longer support timezones so we need to use moment here
 
         // date or time
-        let mmt = val.length > 8 ? moment.utc(val) : moment.utc(val, 'HH:mm:ss');
+        let mmt = val.length > 8 ? utc(val) : utc(val, 'HH:mm:ss');
 
         if (mmt.isValid()) {
             if (this.tz) {
