@@ -26,7 +26,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test --watch false --progress false",
+    "test": "ng test --watch true --progress false",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prepackage": "node prepackage.js",
