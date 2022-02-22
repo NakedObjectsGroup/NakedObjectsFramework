@@ -11,7 +11,7 @@ import {
 import * as Ro from '@nakedobjects/restful-objects';
 import { validateDate, fixedDateFormat } from '@nakedobjects/view-models';
 import concat from 'lodash-es/concat';
-import * as moment from 'moment';
+import { utc,  Moment}  from 'moment';
 import { BehaviorSubject, Observable, SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';
@@ -40,7 +40,7 @@ export interface IDatePickerOutputDefaultEvent {
 
 export interface IDatePickerOutputChangedEvent {
     type: 'dateChanged';
-    data: moment.Moment;
+    data: Moment;
 }
 
 export interface IDatePickerOutputInvalidEvent {
@@ -72,7 +72,7 @@ export interface ICalendarDate {
     enabled: boolean;
     today: boolean;
     selected: boolean;
-    momentObj: moment.Moment;
+    momentObj: Moment;
 }
 
 @Component({
@@ -114,7 +114,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
     private validInputFormats = ['DD/MM/YYYY', 'DD/MM/YY', 'D/M/YY', 'D/M/YYYY', 'D MMM YYYY', 'D MMMM YYYY', fixedDateFormat];
 
-    private dateModelValue: moment.Moment | null;
+    private dateModelValue: Moment | null;
     private modelValue: string;
 
     private bSubject: BehaviorSubject<string>;
@@ -132,15 +132,15 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         return this.modelValue;
     }
 
-    get dateModel(): moment.Moment | null {
+    get dateModel(): Moment | null {
         return this.dateModelValue;
     }
 
-    get currentDate(): moment.Moment {
-        return this.dateModelValue || moment().utc();
+    get currentDate(): Moment {
+        return this.dateModelValue || utc();
     }
 
-    set dateModel(date: moment.Moment | null) {
+    set dateModel(date: Moment | null) {
         if (date) {
             this.dateModelValue = date;
             this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel! });
@@ -156,7 +156,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         return validateDate(newValue, this.validInputFormats);
     }
 
-    setDateIfChanged(newDate: moment.Moment) {
+    setDateIfChanged(newDate: Moment) {
         const currentDate = this.dateModel;
         if (!newDate.isSame(Ro.withUndefined(currentDate))) {
             this.setValue(newDate);
@@ -216,7 +216,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     }
 
     generateCalendar() {
-        const currentDate = moment(this.currentDate); // clone so not mutated
+        const currentDate = this.currentDate.clone() ; // clone so not mutated
         const month = currentDate.month();
         const year = currentDate.year();
         let n = 1;
@@ -228,10 +228,10 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
         this.days = [];
 
-        const endOfMonth = moment(currentDate).endOf('month');
+        const endOfMonth = currentDate.clone().endOf('month');
         for (let i = n; i <= endOfMonth.date(); i += 1) {
-            const date: moment.Moment = moment.utc(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
-            const today: boolean = moment().utc().isSame(date, 'day') && moment().isSame(date, 'month');
+            const date: Moment = utc(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
+            const today: boolean = utc().isSame(date, 'day') && utc().isSame(date, 'month');
             const selected: boolean = this.currentDate.isSame(date, 'day');
 
             const day: ICalendarDate = {
@@ -248,15 +248,15 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         }
     }
 
-    setValue(date: moment.Moment | null) {
+    setValue(date: Moment | null) {
         this.dateModel = date;
     }
 
-    private formatDate(date: moment.Moment | null) {
+    private formatDate(date: Moment | null) {
         return this.dateModel ? this.dateModel.format(this.options.format) : '';
     }
 
-    selectDate(date: moment.Moment | null, e?: MouseEvent, ) {
+    selectDate(date: Moment | null, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
             this.setValue(date);
@@ -265,7 +265,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         this.opened = false;
     }
 
-    writeValue(date: moment.Moment) {
+    writeValue(date: Moment) {
         if (!date) { return; }
         this.dateModelValue = date;
     }
@@ -299,7 +299,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     }
 
     today() {
-        this.selectDate(moment().utc());
+        this.selectDate(utc());
     }
 
     toggle() {

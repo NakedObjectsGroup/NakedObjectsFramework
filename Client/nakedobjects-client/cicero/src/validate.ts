@@ -1,5 +1,5 @@
 ﻿import * as Models from '@nakedobjects/restful-objects';
-import * as moment from 'moment';
+import { utc } from 'moment';
 import { ILocalFilter } from '@nakedobjects/services';
 import * as Msg from './user-messages';
 
@@ -12,7 +12,7 @@ function isInteger(value: number) {
 }
 
 function getDate(val: string): Date | null {
-    const dt1 = moment(val, fixedDateFormat, true);
+    const dt1 = utc(val, fixedDateFormat, true);
     return dt1.isValid() ? dt1.toDate() : null;
 }
 
@@ -141,7 +141,7 @@ export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewV
 export function validateDate(newValue: string, validInputFormats: string[]) {
 
     for (const f of validInputFormats) {
-        const dt = moment.utc(newValue, f, true);
+        const dt = utc(newValue, f, true);
         if (dt.isValid()) {
             return dt;
         }
