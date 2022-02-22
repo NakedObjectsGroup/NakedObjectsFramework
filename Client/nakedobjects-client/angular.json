@@ -1,256 +1,310 @@
 {
-    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-    "cli": {
-      "analytics": "bb0d5163-2bc0-48ab-bcbb-08d43f379505"
-    },
-    "version": 1,
-    "newProjectRoot": "projects",
-    "projects": {
-        "nakedobjects-client": {
-            "root": "",
-            "sourceRoot": "src",
-            "projectType": "application",
-            "prefix": "app",
-            "schematics": {},
-            "targets": {
-                "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
-                    "options": {
-                        "sourceMap": {
-                            "scripts": true,
-                            "styles": true,
-                            "vendor": true
-                          },
-                        "outputPath": "dist/nakedobjects-client",
-                        "index": "src/index.html",
-                        "main": "src/main.ts",
-                        "polyfills": "src/polyfills.ts",
-                        "tsConfig": "src/tsconfig.app.json",
-                        "assets": [
-                            "src/favicon.ico",
-                            "src/assets",
-                            "src/config.json"
-                        ],
-                        "styles": [
-                            "src/theme.css",
-                            "src/styles.css"
-                        ],
-                        "scripts": [],
-                        "aot": false,
-                        "vendorChunk": true,
-                        "extractLicenses": false,
-                        "buildOptimizer": false,
-                        "optimization": false,
-                        "namedChunks": true
-                    },
-                    "configurations": {
-                        "production": {
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
-                                }
-                            ],
-                            "optimization": true,
-                            "outputHashing": "all",
-                            "sourceMap": false,
-                            "namedChunks": false,
-                            "aot": true,
-                            "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true
-                        }
-                    },
-                    "defaultConfiguration": ""
-                },
-                "serve": {
-                    "builder": "@angular-devkit/build-angular:dev-server",
-                    "options": {
-                        "browserTarget": "nakedobjects-client:build"
-                    },
-                    "configurations": {
-                        "production": {
-                            "browserTarget": "nakedobjects-client:build:production"
-                        }
-                    }
-                },
-                "extract-i18n": {
-                    "builder": "@angular-devkit/build-angular:extract-i18n",
-                    "options": {
-                        "browserTarget": "nakedobjects-client:build"
-                    }
-                },
-                "test": {
-                    "builder": "@angular-devkit/build-angular:karma",
-                    "options": {
-                        "main": "src/test.ts",
-                        "polyfills": "src/polyfills.ts",
-                        "tsConfig": "src/tsconfig.spec.json",
-                        "karmaConfig": "src/karma.conf.js",
-                        "styles": [
-                            "src/styles.css"
-                        ],
-                        "scripts": [],
-                        "assets": [
-                            "src/favicon.ico",
-                            "src/assets",
-                            "src/config.json"
-                        ]
-                    }
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "bb0d5163-2bc0-48ab-bcbb-08d43f379505"
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "nakedobjects-client": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "targets": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "sourceMap": {
+              "scripts": true,
+              "styles": true,
+              "vendor": true
+            },
+            "outputPath": "dist/nakedobjects-client",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/config.json"
+            ],
+            "styles": [
+              "src/theme.css",
+              "src/styles.css"
+            ],
+            "scripts": [],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
             }
+          },
+          "defaultConfiguration": ""
         },
-        "restful-objects": {
-            "root": "",
-            "sourceRoot": "restful-objects/src",
-            "projectType": "application",
-            "prefix": "app",
-            "schematics": {},
-            "architect": {
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "nakedobjects-client:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "nakedobjects-client:build:production"
             }
+          }
         },
-        "services": {
-            "root": "",
-            "sourceRoot": "services/src",
-            "projectType": "application",
-            "prefix": "app",
-            "schematics": {},
-            "architect": {
-            }
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "nakedobjects-client:build"
+          }
         },
-        "view-models": {
-            "root": "",
-            "sourceRoot": "view-models/src",
-            "projectType": "application",
-            "prefix": "app",
-            "schematics": {},
-            "architect": {
-            }
-        },
-        "gemini": {
-            "root": "",
-            "sourceRoot": "gemini/src",
-            "projectType": "application",
-            "prefix": "app",
-            "schematics": {},
-            "architect": {
-            }
-        },
-        "cicero": {
-            "root": "",
-            "sourceRoot": "cicero/src",
-            "projectType": "application",
-            "prefix": "app",
-            "schematics": {},
-            "architect": {
-            }
-        },
-        "packages": {
-            "root": "",
-            "projectType": "application",
-            "architect": {
-                "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
-                    "options": {
-                        "sourceMap": {
-                            "scripts": true,
-                            "styles": true,
-                            "vendor": true
-                          },
-                        "outputPath": "dist/nakedobjects-client",
-                        "index": "src/index.html",
-                        "main": "src/main.ts",
-                        "tsConfig": "src/tsconfig.packages.json",
-                        "polyfills": "src/polyfills.ts",
-                        "assets": [
-                            {
-                                "glob": "**/*",
-                                "input": "src/assets",
-                                "output": "/assets"
-                            },
-                            {
-                                "glob": "favicon.ico",
-                                "input": "src",
-                                "output": "/"
-                            },
-                            "src/config.json"
-                        ],
-                        "styles": [
-                            "src/theme.css",
-                            "src/styles.css"
-                        ],
-                        "scripts": [],
-                        "aot": false,
-                        "vendorChunk": true,
-                        "extractLicenses": false,
-                        "buildOptimizer": false,
-                        "optimization": false,
-                        "namedChunks": true
-                    },
-                    "configurations": {
-                        "production": {
-                            "optimization": true,
-                            "outputHashing": "all",
-                            "sourceMap": false,
-                            "namedChunks": false,
-                            "aot": true,
-                            "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
-                                }
-                            ]
-                        }
-                    },
-                    "defaultConfiguration": ""
-                },
-                "serve": {
-                    "builder": "@angular-devkit/build-angular:dev-server",
-                    "options": {
-                        "browserTarget": "packages:build"
-                    },
-                    "configurations": {
-                        "production": {
-                            "browserTarget": "packages:build:production"
-                        }
-                    }
-                },
-                "extract-i18n": {
-                    "builder": "@angular-devkit/build-angular:extract-i18n",
-                    "options": {
-                        "browserTarget": "packages:build"
-                    }
-                },
-                "test": {
-                    "builder": "@angular-devkit/build-angular:karma",
-                    "options": {
-                        "main": "src/test.ts",
-                        "karmaConfig": "./karma.conf.js",
-                        "polyfills": "src/polyfills.ts",
-                        "tsConfig": "src/tsconfig.spec.json",
-                        "scripts": [],
-                        "styles": [
-                            "src/styles.css"
-                        ],
-                        "assets": [
-                            {
-                                "glob": "**/*",
-                                "input": "src/assets",
-                                "output": "/assets"
-                            },
-                            {
-                                "glob": "favicon.ico",
-                                "input": "src",
-                                "output": "/"
-                            }
-                        ]
-                    }
-                }
-            }
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/config.json"
+            ]
+          }
         }
+      }
     },
-    "defaultProject": "nakedobjects-client"
+    "restful-objects": {
+      "root": "",
+      "sourceRoot": "restful-objects/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "services": {
+      "root": "",
+      "sourceRoot": "services/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "view-models": {
+      "root": "",
+      "sourceRoot": "view-models/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "gemini": {
+      "root": "",
+      "sourceRoot": "gemini/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "cicero": {
+      "root": "",
+      "sourceRoot": "cicero/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "packages": {
+      "root": "",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "sourceMap": {
+              "scripts": true,
+              "styles": true,
+              "vendor": true
+            },
+            "outputPath": "dist/nakedobjects-client",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.packages.json",
+            "polyfills": "src/polyfills.ts",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src",
+                "output": "/"
+              },
+              "src/config.json"
+            ],
+            "styles": [
+              "src/theme.css",
+              "src/styles.css"
+            ],
+            "scripts": [],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "packages:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "packages:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "packages:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [],
+            "styles": [
+              "src/styles.css"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src",
+                "output": "/"
+              }
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "nakedobjects-client"
 }
