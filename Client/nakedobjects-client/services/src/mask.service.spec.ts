@@ -161,7 +161,7 @@ describe('MaskService', () => {
 
         function testFormat(toTest: string, valid: boolean, expected: Date) {
 
-            const m = utc(toTest, supportedDateFormats, 'en-GB', true);
+            const m = utc(toTest, supportedDateFormats, 'en-GB', true).local(true);
 
             expect(m.isValid()).toBe(valid);
 
