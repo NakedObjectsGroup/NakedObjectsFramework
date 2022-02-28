@@ -53,7 +53,7 @@
     "build:clean": "rimraf dist && rimraf node_modules/@nakedobjects && yarn cache clean",
     "build:libs": "yarn lint && yarn build:clean && yarn build:restful-objects && yarn build:services && yarn build:view-models && yarn build:gemini && yarn build:cicero",
     "build:app": "ng build packages --no-progress",
-    "build:app:prod": "ng build packages --no-progress --prod"
+    "build:app:prod": "ng build packages --no-progress --configuration production"
   },
   "private": true,
   "dependencies": {
