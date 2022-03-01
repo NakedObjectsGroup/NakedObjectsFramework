@@ -1,6 +1,6 @@
 {
   "name": "@nakedobjects/schematics",
-  "version": "13.0.0-beta01",
+  "version": "13.0.0-beta02",
   "description": "Schematics for Naked Objects",
   "license": "Apache-2.0",
   "author": "Richard Pawson <rpawson@nakedobjects.org>",
