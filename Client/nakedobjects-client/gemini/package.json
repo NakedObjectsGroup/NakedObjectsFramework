@@ -14,7 +14,7 @@
         "dest": "../dist/nakedobjects-gemini"
     },
     "name": "@nakedobjects/gemini",
-    "version": "13.0.0-beta01",
+    "version": "13.0.0-beta02",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -62,9 +62,9 @@
         "@angular/platform-browser": "~13.2.3",
         "@angular/platform-browser-dynamic": "~13.2.3",
         "@angular/router": "~13.2.3",
-        "@nakedobjects/restful-objects": "~13.0.0-beta01",
-        "@nakedobjects/services": "~13.0.0-beta01",
-        "@nakedobjects/view-models": "~13.0.0-beta01",
+        "@nakedobjects/restful-objects": "~13.0.0-beta02",
+        "@nakedobjects/services": "~13.0.0-beta02",
+        "@nakedobjects/view-models": "~13.0.0-beta02",
         "rxjs": "~7.5.0",
         "zone.js": "~0.11.4"
     },
