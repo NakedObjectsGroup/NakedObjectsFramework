@@ -1854,7 +1854,6 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending")]
     public void TestPersistTransientEmptyPropertyRef() {
         ClassToPersistWithAbout.ResetTest();
         ClassToPersistWithAbout.TestRefProperty = true;
@@ -1870,12 +1869,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
-        var parsedResult = JObject.Parse(json);
-
-        Assert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
-
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        Assert.AreEqual((int)HttpStatusCode.Created, sc);
     }
 
     [Test]
@@ -1954,7 +1948,6 @@ public class NOF2Test : AcceptanceTestCase {
     }
 
     [Test]
-    [Ignore("pending")]
     public void TestPersistTransientEmptyBothRef() {
         ClassToPersistWithAbout.ResetTest();
         ClassToPersistWithAbout.TestRefProperty = true;
@@ -1974,7 +1967,7 @@ public class NOF2Test : AcceptanceTestCase {
         Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
+        Assert.AreEqual("Ref Object is null", parsedResult["x-ro-invalidReason"].ToString());
 
         Assert.IsNull(parsedResult["members"]["ActionSave"]);
     }
