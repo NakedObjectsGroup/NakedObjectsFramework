@@ -23,6 +23,8 @@ using NakedFramework.Metamodel.Facet;
 namespace NakedFramework.Metamodel.Utils;
 
 public static class FacetUtils {
+    private static readonly object IntegrationFacetLock = new();
+
     public static string[] SplitOnComma(string toSplit) {
         if (string.IsNullOrEmpty(toSplit)) {
             return Array.Empty<string>();
@@ -77,10 +79,7 @@ public static class FacetUtils {
         }
     }
 
-    private static readonly object IntegrationFacetLock = new();
-
     public static IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, Type type, Action<IMetamodelBuilder> action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-
         lock (IntegrationFacetLock) {
             (var specification, metamodel) = reflector.LoadSpecification(type, metamodel);
             var integrationFacet = specification.GetFacet<IIntegrationFacet>();

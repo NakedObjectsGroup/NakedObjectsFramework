@@ -1766,7 +1766,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var dict = new Dictionary<string, IValue> {
             { "Name", new ScalarValue("Jean") },
-            { "ReferenceProperty",  new ScalarValue(null) }
+            { "ReferenceProperty", new ScalarValue(null) }
         };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };
@@ -1863,7 +1863,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var dict = new Dictionary<string, IValue> {
             { "Name", new ScalarValue("Jean") },
-            { "ReferenceProperty",  new ScalarValue(null) }
+            { "ReferenceProperty", new ScalarValue(null) }
         };
 
         var map = new PersistArgumentMap { Map = dict, ReservedArguments = new ReservedArguments() };

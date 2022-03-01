@@ -1170,10 +1170,8 @@ public class ReflectorTest {
     }
 
     [TestMethod]
-    public void ReflectIntegrationFacetInteractions()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void ReflectIntegrationFacetInteractions() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(IntegrationFacetClass) };
                     options.DomainFunctions = new[] { typeof(IntegrationFacetFunctions) };
@@ -1181,12 +1179,10 @@ public class ReflectorTest {
             );
         }
 
-        void Build(int run)
-        {
+        void Build(int run) {
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
 
@@ -1211,16 +1207,13 @@ public class ReflectorTest {
 
         AbstractIntegrationFacet.AllowRemove = false;
 
-        try
-        {
+        try {
             // repeat to flush out race conditions 
-            for (var i = 0; i < 100; i++)
-            {
+            for (var i = 0; i < 100; i++) {
                 Build(i);
             }
         }
-        finally
-        {
+        finally {
             AbstractIntegrationFacet.AllowRemove = true;
         }
     }

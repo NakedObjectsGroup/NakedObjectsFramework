@@ -177,7 +177,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
         // only support if property is string or domain type
         if (returnType.IsClass || returnType.IsInterface) {
             var method = FindAutoCompleteMethod(reflector, type, capitalizedName, typeof(IQueryable<>).MakeGenericType(returnType)) ??
-                         FindAutoCompleteMethod(reflector, type, capitalizedName, returnType);  //.. or returning a single object
+                         FindAutoCompleteMethod(reflector, type, capitalizedName, returnType); //.. or returning a single object
 
             //... or returning an enumerable of string
             if (method is null && TypeUtils.IsString(returnType)) {

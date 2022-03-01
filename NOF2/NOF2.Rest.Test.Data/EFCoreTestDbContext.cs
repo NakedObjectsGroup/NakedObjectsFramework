@@ -7,7 +7,6 @@
 
 using System;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework.Constraints;
 
 namespace NOF2.Rest.Test.Data;
 
@@ -70,8 +69,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassToPersistWithAbout>().Property("name").HasColumnName("Name");
     }
 
-    private static void MapClassToPersist(ModelBuilder modelBuilder)
-    {
+    private static void MapClassToPersist(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassToPersist>().Ignore(t => t.Name).Ignore(t => t.Container);
         modelBuilder.Entity<ClassToPersist>().Property("name").HasColumnName("Name");
     }
@@ -173,7 +171,7 @@ public abstract class EFCoreTestDbContext : DbContext {
 
         modelBuilder.Entity<ClassWithTextString>().HasData(fred);
         modelBuilder.Entity<ClassWithTextString>().HasData(bill);
-        modelBuilder.Entity<ClassWithTextString>().HasData(new {Id = 3, name = "Tom"});
+        modelBuilder.Entity<ClassWithTextString>().HasData(new { Id = 3, name = "Tom" });
 
         modelBuilder.Entity<ClassWithActionAbout>().HasData(new { Id = 1 });
         modelBuilder.Entity<ClassWithFieldAbout>().HasData(new { Id = 1 });

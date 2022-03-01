@@ -620,33 +620,6 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         #endregion
 
-        #region Nested type: SimpleDomainObject
-
-        public class SimpleDomainObject {
-            [Key] [Title] [ConcurrencyCheck] public virtual int Id { get; set; }
-
-            public virtual void Action() { }
-
-            public virtual string HideAction() => null;
-        }
-
-        public class DisplayAsPropertyObject
-        {
-            [Key] [Title] [ConcurrencyCheck] public virtual int Id { get; set; }
-
-            [DisplayAsProperty]
-            public virtual DisplayAsPropertyObject ADisplayAsPropertyAction() => null;
-        }
-
-        public class DisplayAsPropertyService {
-            [DisplayAsProperty]
-            public virtual DisplayAsPropertyObject ADisplayAsPropertyContributedAction([ContributedAction]DisplayAsPropertyObject obj) => null;
-        }
-
-
-
-        #endregion
-
         #region Nested type: TestObjectWithByteArray
 
         public class TestObjectWithByteArray {
@@ -716,6 +689,30 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 ULong = 15;
                 UShort = 16;
             }
+        }
+
+        #endregion
+
+        #region Nested type: SimpleDomainObject
+
+        public class SimpleDomainObject {
+            [Key] [Title] [ConcurrencyCheck] public virtual int Id { get; set; }
+
+            public virtual void Action() { }
+
+            public virtual string HideAction() => null;
+        }
+
+        public class DisplayAsPropertyObject {
+            [Key] [Title] [ConcurrencyCheck] public virtual int Id { get; set; }
+
+            [DisplayAsProperty]
+            public virtual DisplayAsPropertyObject ADisplayAsPropertyAction() => null;
+        }
+
+        public class DisplayAsPropertyService {
+            [DisplayAsProperty]
+            public virtual DisplayAsPropertyObject ADisplayAsPropertyContributedAction([ContributedAction] DisplayAsPropertyObject obj) => null;
         }
 
         #endregion

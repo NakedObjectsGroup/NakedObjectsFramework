@@ -98,8 +98,8 @@ public class ActionResultRepresentation : Representation {
                         ? visibleParamContext.ProposedObjectFacade.Object
                         : visibleParamContext.ProposedValue;
 
-                    var proposedCollection = proposedValue is IEnumerable proposedEnumerable 
-                        ? proposedEnumerable.Cast<object>() 
+                    var proposedCollection = proposedValue is IEnumerable proposedEnumerable
+                        ? proposedEnumerable.Cast<object>()
                         : Array.Empty<object>();
 
                     var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(GetFacade(frameworkFacade, i), false)).ToArray();

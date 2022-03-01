@@ -114,15 +114,13 @@ public class ClassToPersistWithAbout : AboutChecker, IContainerAware {
 
     public virtual ClassWithTextString ReferenceProperty { get; set; }
 
+    public IContainer Container { get; set; }
+
     public void AboutReferenceProperty(FieldAbout fieldAbout, ClassWithTextString classWithTextString) {
         Called(MethodBase.GetCurrentMethod(), fieldAbout.TypeCode);
 
-      
-
-
         if (fieldAbout.TypeCode == AboutTypeCodes.Valid) {
-            if (TestRefProperty)
-            {
+            if (TestRefProperty) {
                 if (classWithTextString?.Name.Value == "Bill") {
                     fieldAbout.IsValid = false;
                     fieldAbout.InvalidReason = "Ref Property Name is invalid";
@@ -134,8 +132,6 @@ public class ClassToPersistWithAbout : AboutChecker, IContainerAware {
             }
         }
     }
-
-    public IContainer Container { get; set; }
 
     public static void ResetTest() {
         TestSave = TestValueProperty = TestRefProperty = false;
@@ -183,6 +179,7 @@ public class ClassToPersistWithAbout : AboutChecker, IContainerAware {
                     actionAbout.Usable = false;
                     actionAbout.UnusableReason = "Object Name is null";
                 }
+
                 if (ReferenceProperty?.Name.Value == "Bill") {
                     actionAbout.Usable = false;
                     actionAbout.UnusableReason = "Ref Object Name is invalid";

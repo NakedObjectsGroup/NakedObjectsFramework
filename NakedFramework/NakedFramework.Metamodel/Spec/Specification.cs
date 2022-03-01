@@ -43,9 +43,10 @@ public abstract class Specification : ISpecificationBuilder, ISerializable, IDes
         }
 
         if (existingFacet is null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
-            if (existingFacet is {CanNeverBeReplaced : true}) {
+            if (existingFacet is { CanNeverBeReplaced : true }) {
                 throw new ReflectionException($"Attempting to replace non-replaceable {existingFacet} with {facet}");
             }
+
             facetsByClass = facetsByClass.SetItem(facetType, facet);
         }
     }

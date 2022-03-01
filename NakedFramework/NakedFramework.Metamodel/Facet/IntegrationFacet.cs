@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 public class IntegrationFacet : AbstractIntegrationFacet {
     private Action<IMetamodelBuilder> toExecute;
-    
+
     internal IntegrationFacet(ISpecification holder, Action<IMetamodelBuilder> toExecute) : base(holder) => this.toExecute = toExecute;
 
     public override void Execute(IMetamodelBuilder metamodelBuilder) => toExecute(metamodelBuilder);

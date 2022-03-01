@@ -17,16 +17,16 @@ public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFace
 
     private static Type Type => typeof(IIntegrationFacet);
 
-    public abstract void Execute(IMetamodelBuilder metamodelBuilder);
-    public abstract void AddAction(Action<IMetamodelBuilder> action);
-
-    public override bool CanNeverBeReplaced => true;
-
     // for testing so not on interface  
     public int ActionCount { get; protected set; } = 1;
 
     // also for testing to check ActionCount
-    public static bool AllowRemove { get; set; } = true; 
+    public static bool AllowRemove { get; set; } = true;
+
+    public abstract void Execute(IMetamodelBuilder metamodelBuilder);
+    public abstract void AddAction(Action<IMetamodelBuilder> action);
+
+    public override bool CanNeverBeReplaced => true;
 
     public void Remove() {
         if (AllowRemove && Specification is ISpecificationBuilder builder) {

@@ -5,10 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Globalization;
-using System.Security.Cryptography;
-using System.Text;
 using NakedFramework.Core.Util;
 using NakedFramework.Facade.Utility;
 
@@ -20,5 +16,4 @@ public class SimpleStringHasher : IStringHasher {
     public string GetHash(string toHash) => IdentifierUtils.ComputeSHA256HashAsString(toHash);
 
     #endregion
-
 }

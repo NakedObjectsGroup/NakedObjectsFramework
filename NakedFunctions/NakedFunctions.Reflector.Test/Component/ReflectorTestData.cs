@@ -310,14 +310,11 @@ public static class MismatchedTargetClass {
 }
 
 [ViewModel(typeof(IntegrationFacetFunctions))]
-public record IntegrationFacetClass
-{
+public record IntegrationFacetClass {
     public virtual IntegrationFacetClass SimpleProperty { get; init; }
 }
 
-
-public static class IntegrationFacetFunctions
-{
+public static class IntegrationFacetFunctions {
     [DisplayAsProperty]
     public static IntegrationFacetClass SimpleFunction(this IntegrationFacetClass target) => target;
 
