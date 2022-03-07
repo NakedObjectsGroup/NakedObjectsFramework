@@ -151,7 +151,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
         }
 
         remover.RemoveMethods(methods);
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, specification);
         return metamodel;
     }
 }

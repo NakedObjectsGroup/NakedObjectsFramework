@@ -42,10 +42,14 @@ public static class FacetUtils {
     /// </summary>
     public static void AddFacet(IFacet facet) => ((ISpecificationBuilder)facet?.Specification)?.AddFacet(facet);
 
+    public static void AddFacet(IFacet facet, ISpecificationBuilder specification) => specification.AddFacet(facet);
+
     /// <summary>
     ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
     /// </summary>
     public static void AddFacets(IEnumerable<IFacet> facetList) => facetList.ForEach(AddFacet);
+
+    public static void AddFacets(IEnumerable<IFacet> facetList, ISpecificationBuilder specification) => facetList.ForEach(f => AddFacet(f, specification));
 
     public static INakedObjectAdapter[] MatchParameters(string[] parameterNames, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
         INakedObjectAdapter GetValue(string name) =>
@@ -86,7 +90,7 @@ public static class FacetUtils {
 
             if (integrationFacet is null) {
                 integrationFacet = new IntegrationFacet(specification, action);
-                AddFacet(integrationFacet);
+                AddFacet(integrationFacet, specification);
             }
             else {
                 integrationFacet.AddAction(action);

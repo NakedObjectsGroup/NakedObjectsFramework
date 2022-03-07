@@ -130,23 +130,23 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
             facets.Add(new ActionValidateViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, Logger<ActionValidateViaAboutMethodFacet>()));
 
             var actionSpec = (IActionSpecImmutable)action;
-            var parameterFacets = new List<IFacet>();
+            
 
             var index = 0; // about is 0
             foreach (var parameterSpec in actionSpec.Parameters) {
+                var parameterFacets = new List<IFacet>();
                 parameterFacets.Add(new MemberNamedViaAboutMethodFacet(method, parameterSpec, AboutHelpers.AboutType.Action, parameterSpec.Identifier.MemberParameterNames, index, Logger<MemberNamedViaAboutMethodFacet>()));
                 parameterFacets.Add(new ActionDefaultsViaAboutMethodFacet(method, parameterSpec, index, Logger<ActionDefaultsViaAboutMethodFacet>()));
                 parameterFacets.Add(new ActionChoicesViaAboutMethodFacet(method, parameterSpec, index, Logger<ActionChoicesViaAboutMethodFacet>()));
+                FacetUtils.AddFacets(parameterFacets, parameterSpec);
                 index++;
             }
-
-            FacetUtils.AddFacets(parameterFacets);
         }
 
         MethodHelpers.AddHideForSessionFacetNone(facets, action);
         MethodHelpers.AddDisableForSessionFacetNone(facets, action);
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, action);
 
         return metamodel;
     }
@@ -184,7 +184,7 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
             facets.Add(new PropertyInitializationFacet(property, specification));
         }
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, specification);
         return metamodel;
     }
 

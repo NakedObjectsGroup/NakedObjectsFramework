@@ -20,7 +20,7 @@ public static class FactoryUtils {
 
     public static bool IsStatic(Type type) => IsAbstract(type) && IsSealed(type);
 
-    public static void AddTypeFacets(ISpecification specification, Type type) {
+    public static void AddTypeFacets(ISpecificationBuilder specification, Type type) {
         var facets = new List<IFacet> {
             new TypeIsAbstractFacet(specification, IsAbstract(type)),
             new TypeIsInterfaceFacet(specification, IsInterface(type)),
@@ -30,7 +30,7 @@ public static class FactoryUtils {
             new TypeFacet(specification, type)
         };
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, specification);
     }
 
     public static T Invoke<T>(this Func<object, object[], object> methodDelegate, MethodInfo method, object target, object[] parms) {

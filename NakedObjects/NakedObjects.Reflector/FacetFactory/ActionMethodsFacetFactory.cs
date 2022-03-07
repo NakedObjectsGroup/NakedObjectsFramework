@@ -339,7 +339,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
             FindAndRemoveParametersValidateMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
         }
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, action);
 
         return metamodel;
     }
@@ -362,7 +362,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
             facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
         }
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, holder);
         return metamodel;
     }
 

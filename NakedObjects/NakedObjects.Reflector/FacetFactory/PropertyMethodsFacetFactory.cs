@@ -91,7 +91,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
         ObjectMethodHelpers.FindDefaultDisableMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
         ObjectMethodHelpers.FindAndRemoveDisableMethod(reflector, facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, specification);
         return metamodel;
     }
 

@@ -77,7 +77,7 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
                 accessorFacet,
                 new MandatoryFacetDefault(specification),
                 new DisabledFacetAlways(specification)
-            });
+            }, specification);
 
             metamodel = AddIntegrationFacet(reflector, specification, displayOnType, metamodel);
 

@@ -43,7 +43,7 @@ public sealed class DefaultNamingFacetFactory : DomainObjectFacetFactoryProcesso
             facets.Add(pluralFacet);
         }
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, specification);
         return metamodel;
     }
 }

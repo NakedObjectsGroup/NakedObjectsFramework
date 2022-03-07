@@ -57,7 +57,7 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
         MethodHelpers.AddDisableFacetAlways(facets, collection);
         facets.Add(new NotPersistedFacet(collection));
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, collection);
         return metamodel;
     }
 

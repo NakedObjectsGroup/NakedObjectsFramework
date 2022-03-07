@@ -44,11 +44,11 @@ public sealed class FallbackFacetFactory : DomainObjectFacetFactoryProcessor {
                 pluralFacet,
                 new ValueFacet(specification),
                 new SaveFacet(specification)
-            });
+            }, specification);
         return metamodel;
     }
 
-    private static void Process(ISpecification holder) {
+    private static void Process(ISpecificationBuilder holder) {
         var facets = new List<IFacet>();
 
         if (holder is IMemberSpecImmutable specImmutable) {
@@ -73,7 +73,7 @@ public sealed class FallbackFacetFactory : DomainObjectFacetFactoryProcessor {
             facets.Add(new PageSizeFacetDefault(holder));
         }
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -97,7 +97,7 @@ public sealed class FallbackFacetFactory : DomainObjectFacetFactoryProcessor {
             facets.Add(new MaxLengthFacetZero(holder));
         }
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, holder);
         return metamodel;
     }
 }

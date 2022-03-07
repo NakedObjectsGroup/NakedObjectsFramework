@@ -50,7 +50,7 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : FunctionalFacetFac
                 new PropertyAccessorFacetViaFunction(method, specification),
                 new MandatoryFacetDefault(specification),
                 new DisabledFacetAlways(specification)
-            });
+            }, specification);
         }
 
         return metamodel;

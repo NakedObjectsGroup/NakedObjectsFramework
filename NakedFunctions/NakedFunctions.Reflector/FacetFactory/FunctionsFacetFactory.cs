@@ -123,8 +123,13 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
             }
         }
 
-        var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod, onType, (IObjectSpecImmutable)returnSpec, (IObjectSpecImmutable)elementSpec,
-                                                                   action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>());
+        var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod,
+                                                                   onType,
+                                                                   (IObjectSpecImmutable)returnSpec,
+                                                                   (IObjectSpecImmutable)elementSpec,
+                                                                   action,
+                                                                   isQueryable,
+                                                                   LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>());
 
         facets.Add(invokeFacet);
 
@@ -135,7 +140,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
 
         facets.Add(new StaticFunctionFacet(action));
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, action);
 
         return metamodel;
     }
@@ -166,7 +171,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
             facets.Add(new ElementTypeFacet(holder, elementType, (IObjectSpecImmutable)elementSpec));
         }
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, holder);
         return metamodel;
     }
 

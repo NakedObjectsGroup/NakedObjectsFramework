@@ -68,7 +68,7 @@ public sealed class PropertyMethodsFacetFactory : FunctionalFacetFactoryProcesso
         MethodHelpers.AddHideForSessionFacetNone(facets, specification);
         MethodHelpers.AddDisableForSessionFacetNone(facets, specification);
 
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, specification);
         return metamodel;
     }
 }

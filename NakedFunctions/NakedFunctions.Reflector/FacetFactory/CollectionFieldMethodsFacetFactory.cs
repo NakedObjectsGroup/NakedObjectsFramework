@@ -57,7 +57,7 @@ public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryP
 
         MethodHelpers.AddHideForSessionFacetNone(facets, collection);
         MethodHelpers.AddDisableFacetAlways(facets, collection);
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, collection);
         return metamodel;
     }
 

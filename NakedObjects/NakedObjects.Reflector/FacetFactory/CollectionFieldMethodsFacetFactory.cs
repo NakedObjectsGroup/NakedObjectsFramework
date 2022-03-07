@@ -60,7 +60,7 @@ public sealed class CollectionFieldMethodsFacetFactory : DomainObjectFacetFactor
         MethodHelpers.AddDisableFacetAlways(facets, collection);
         ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
         ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, MethodType.Object, capitalizedName, collection, LoggerFactory, methodRemover);
-        FacetUtils.AddFacets(facets);
+        FacetUtils.AddFacets(facets, collection);
         return metamodel;
     }
 
