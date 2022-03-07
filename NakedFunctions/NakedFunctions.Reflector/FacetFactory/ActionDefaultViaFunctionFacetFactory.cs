@@ -47,7 +47,8 @@ public sealed class ActionDefaultViaFunctionFacetFactory : FunctionalFacetFactor
 
             if (methodToUse is not null) {
                 // add facets directly to parameters, not to actions
-                FacetUtils.AddFacet(new ActionDefaultsFacetViaFunction(methodToUse, parameters[i], LoggerFactory.CreateLogger<ActionDefaultsFacetViaFunction>()));
+                var spec = parameters[i];
+                FacetUtils.AddFacet(new ActionDefaultsFacetViaFunction(methodToUse, spec, Logger<ActionDefaultsFacetViaFunction>()), spec);
             }
         }
 

@@ -42,12 +42,11 @@ public static class FacetUtils {
     /// </summary>
     public static void AddFacet(IFacet facet) => ((ISpecificationBuilder)facet?.Specification)?.AddFacet(facet);
 
-    public static void AddFacet(IFacet facet, ISpecificationBuilder specification) => specification.AddFacet(facet);
-
-    /// <summary>
-    ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
-    /// </summary>
-    public static void AddFacets(IEnumerable<IFacet> facetList) => facetList.ForEach(AddFacet);
+    public static void AddFacet(IFacet facet, ISpecificationBuilder specification) {
+        if (facet is not null) {
+            specification.AddFacet(facet);
+        }
+    }
 
     public static void AddFacets(IEnumerable<IFacet> facetList, ISpecificationBuilder specification) => facetList.ForEach(f => AddFacet(f, specification));
 

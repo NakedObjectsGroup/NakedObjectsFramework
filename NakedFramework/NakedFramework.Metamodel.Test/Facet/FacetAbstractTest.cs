@@ -19,7 +19,7 @@ namespace NakedFramework.Metamodel.Test.Facet;
 public class FacetAbstractTest {
     private ISpecification facetHolder2;
     private FacetAbstract fooFacet;
-    private ISpecification specification;
+    private ISpecificationBuilder specification;
 
     #region Setup/Teardown
 
@@ -28,7 +28,7 @@ public class FacetAbstractTest {
         specification = new Mock<ISpecificationBuilder>().Object;
         facetHolder2 = new Mock<ISpecification>().Object;
         fooFacet = new ConcreteFacet(typeof(IFooFacet), specification);
-        FacetUtils.AddFacet(fooFacet);
+        FacetUtils.AddFacet(fooFacet, specification);
     }
 
     #endregion

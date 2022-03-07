@@ -26,7 +26,7 @@ public sealed class TypeOfAnnotationFacetFactory : FunctionalFacetFactoryProcess
     public TypeOfAnnotationFacetFactory(IFacetFactoryOrder<TypeOfAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) { }
 
-    private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type methodReturnType, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessReturnType(IReflector reflector, Type methodReturnType, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (!(CollectionUtils.IsCollection(methodReturnType) || CollectionUtils.IsQueryable(methodReturnType))) {
             return metamodel;
         }
@@ -35,8 +35,8 @@ public sealed class TypeOfAnnotationFacetFactory : FunctionalFacetFactoryProcess
             var elementType = methodReturnType.GetElementType();
             IObjectSpecBuilder elementSpec;
             (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-            FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
-            FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
+            FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec), holder);
+            FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder), holder);
         }
         else if (methodReturnType.IsGenericType) {
             var actualTypeArguments = methodReturnType.GetGenericArguments();
@@ -44,8 +44,8 @@ public sealed class TypeOfAnnotationFacetFactory : FunctionalFacetFactoryProcess
                 var elementType = actualTypeArguments.First();
                 IObjectSpecBuilder elementSpec;
                 (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-                FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
-                FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
+                FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec), holder);
+                FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder), holder);
             }
         }
 
@@ -53,10 +53,10 @@ public sealed class TypeOfAnnotationFacetFactory : FunctionalFacetFactoryProcess
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-        Process(reflector, method.ReturnType, specification, metamodel);
+        ProcessReturnType(reflector, method.ReturnType, specification, metamodel);
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
         property.HasPublicGetter()
-            ? Process(reflector, property.PropertyType, specification, metamodel)
+            ? ProcessReturnType(reflector, property.PropertyType, specification, metamodel)
             : metamodel;
 }

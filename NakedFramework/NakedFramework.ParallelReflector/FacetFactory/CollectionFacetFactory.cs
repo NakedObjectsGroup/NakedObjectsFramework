@@ -25,21 +25,21 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
     public CollectionFacetFactory(IFacetFactoryOrder<CollectionFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
-    private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new ArrayFacet(holder));
-        FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
+    private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, Type type, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        FacetUtils.AddFacet(new ArrayFacet(holder), holder);
+        FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder), holder);
 
         var elementType = type.GetElementType();
         (_, metamodel) = reflector.LoadSpecification(elementType, metamodel);
         return metamodel;
     }
 
-    private static void ProcessGenericEnumerable(Type type, ISpecification holder) {
+    private static void ProcessGenericEnumerable(Type type, ISpecificationBuilder holder) {
         var isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable
         var isQueryable = CollectionUtils.IsGenericQueryable(type);
         var isSet = CollectionUtils.IsSet(type);
 
-        FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
+        FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder), holder);
 
         IFacet facet;
         if (isQueryable) {
@@ -52,15 +52,15 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
             facet = new GenericIEnumerableFacet(holder, isSet);
         }
 
-        FacetUtils.AddFacet(facet);
+        FacetUtils.AddFacet(facet, holder);
     }
 
-    private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var collectionElementType = typeof(object);
         IObjectSpecBuilder oSpec;
         (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
-        FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, oSpec));
-        FacetUtils.AddFacet(new CollectionFacet(holder));
+        FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, oSpec), holder);
+        FacetUtils.AddFacet(new CollectionFacet(holder), holder);
         return metamodel;
     }
 

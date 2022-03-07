@@ -31,7 +31,7 @@ public sealed class RangeAnnotationFacetFactory : FunctionalFacetFactoryProcesso
         var parameter = method.GetParameters()[paramNum];
         var isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
         var range = parameter.GetCustomAttribute<ValueRangeAttribute>();
-        FacetUtils.AddFacet(Create(range, isDate, holder));
+        FacetUtils.AddFacet(Create(range, isDate, holder), holder);
         return metamodel;
     }
 

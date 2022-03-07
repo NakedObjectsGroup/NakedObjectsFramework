@@ -10,5 +10,5 @@ using NakedFramework.Architecture.Spec;
 namespace NakedFramework.Architecture.Reflect;
 
 public interface IFacetDecoratorSet {
-    void DecorateAllHoldersFacets(ISpecification holder);
+    void DecorateAllHoldersFacets(ISpecificationBuilder holder);
 }

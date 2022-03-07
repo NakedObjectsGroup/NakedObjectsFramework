@@ -29,26 +29,26 @@ public sealed class NamedAnnotationFacetFactory : FunctionalFacetFactoryProcesso
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForType(attribute, specification));
+        FacetUtils.AddFacet(CreateForType(attribute, specification), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = method.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, specification));
+        FacetUtils.AddFacet(CreateForMember(attribute, specification), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, specification));
+        FacetUtils.AddFacet(CreateForMember(attribute, specification), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, holder));
+        FacetUtils.AddFacet(CreateForMember(attribute, holder), holder);
         return metamodel;
     }
 

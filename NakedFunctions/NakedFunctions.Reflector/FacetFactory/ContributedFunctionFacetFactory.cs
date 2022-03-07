@@ -45,7 +45,7 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
             IsCollection(type.BaseType) ||
             type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
 
-    private IImmutableDictionary<string, ITypeSpecBuilder> AddCollectionContributedAction(IReflector reflector, MethodInfo member, Type parameterType, ContributedFunctionFacet facet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    private IImmutableDictionary<string, ITypeSpecBuilder> AddCollectionContributedAction(IReflector reflector, MethodInfo member, Type parameterType, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (!CollectionUtils.IsGenericQueryable(parameterType)) {
             logger.LogWarning($"Query Contributed Function ignored as it is added to a collection parameter type other than IQueryable: {member.Name}");
         }
@@ -54,11 +54,12 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
                 logger.LogWarning($"Query Contributed Function ignored as it returns a collection: {member.Name}");
             }
             else {
+                var facet = new ContributedFunctionFacet(specification, IsContributedToObjectOrCollection(member));
                 var elementType = parameterType.GetGenericArguments()[0];
                 IObjectSpecBuilder type;
                 (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
                 facet.AddCollectionContributee(type);
-                FacetUtils.AddFacet(facet);
+                FacetUtils.AddFacet(facet, specification);
             }
         }
 
@@ -71,7 +72,7 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
         IObjectSpecBuilder type;
         (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
         facet.AddLocalCollectionContributee(type, p.Name);
-        FacetUtils.AddFacet(facet);
+        FacetUtils.AddFacet(facet, holder);
         return metamodel;
     }
 
@@ -80,16 +81,15 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
 
         if (!method.IsDefined(typeof(DisplayAsPropertyAttribute), false)) {
             var parameterType = GetContributeeType(method);
-            var facet = new ContributedFunctionFacet(specification, IsContributedToObjectOrCollection(method));
 
             if (IsParseable(parameterType)) {
                 logger.LogWarning($"Query Contributed Function ignored as it is added to a collection of value types : {method.Name}");
             }
             else if (IsCollection(parameterType)) {
-                metamodel = AddCollectionContributedAction(reflector, method, parameterType, facet, metamodel);
+                metamodel = AddCollectionContributedAction(reflector, method, parameterType, specification, metamodel);
             }
             else {
-                metamodel = AddMenuOrObjectContributedFunction(reflector, metamodel, parameterType, facet);
+                metamodel = AddMenuOrObjectContributedFunction(reflector, method, parameterType, specification, metamodel);
                 if (IsLocalCollectionContributedAction(method)) {
                     metamodel = AddLocalCollectionContributedAction(reflector, method.GetParameters()[1], specification, metamodel);
                 }
@@ -99,11 +99,12 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
         return metamodel;
     }
 
-    private static IImmutableDictionary<string, ITypeSpecBuilder> AddMenuOrObjectContributedFunction(IReflector reflector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Type parameterType, ContributedFunctionFacet facet) {
+    private static IImmutableDictionary<string, ITypeSpecBuilder> AddMenuOrObjectContributedFunction(IReflector reflector, MethodInfo methodInfo, Type parameterType, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         ITypeSpecImmutable type;
         (type, metamodel) = reflector.LoadSpecification(parameterType, metamodel);
+        var facet = new ContributedFunctionFacet(specification, IsContributedToObjectOrCollection(methodInfo));
         facet.AddContributee(type);
-        FacetUtils.AddFacet(facet);
+        FacetUtils.AddFacet(facet, specification);
         return metamodel;
     }
 

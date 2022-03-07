@@ -45,7 +45,7 @@ public sealed class CreateNewAnnotationFacetFactory : FunctionalFacetFactoryProc
             var toCreateType = ToCreateType(method);
 
             if (toCreateType is not null && FactoryUtils.MatchParmsAndProperties(method, toCreateType, logger).Any()) {
-                FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification));
+                FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification), specification);
             }
         }
 

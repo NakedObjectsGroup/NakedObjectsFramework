@@ -34,28 +34,30 @@ public static class ValueTypeHelpers {
 
     public static readonly Dictionary<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> TypeToSemanticProvider = new(Factories);
 
-    public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
-        FacetUtils.AddFacet(semanticsProvider as IFacet);
-
-        // value implies aggregated
-        FacetUtils.AddFacet(new AggregatedFacetAlways(holder));
+    public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecificationBuilder holder) {
+        var facets = new List<IFacet> {
+            semanticsProvider as IFacet,
+            // value implies aggregated
+            new AggregatedFacetAlways(holder),
+            new ParseableFacetUsingParser<T>(semanticsProvider, holder),
+            new TitleFacetUsingParser<T>(semanticsProvider, holder),
+            new ValueFacetFromSemanticProvider<T>(semanticsProvider, holder)
+        };
 
         // ImmutableFacet, if appropriate
         if (semanticsProvider.IsImmutable) {
-            FacetUtils.AddFacet(new ImmutableFacetViaValueSemantics(holder));
+            facets.Add(new ImmutableFacetViaValueSemantics(holder));
         }
 
-        FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
-        FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
-        FacetUtils.AddFacet(new ValueFacetFromSemanticProvider<T>(semanticsProvider, holder));
-
         if (semanticsProvider is IFromStream fromStream) {
-            FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
+            facets.Add(new FromStreamFacetUsingFromStream(fromStream, holder));
         }
 
         // ReSharper disable once CompareNonConstrainedGenericWithNull
         if (semanticsProvider.DefaultValue is not null) {
-            FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
+            facets.Add(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
         }
+
+        FacetUtils.AddFacets(facets, holder);
     }
 }

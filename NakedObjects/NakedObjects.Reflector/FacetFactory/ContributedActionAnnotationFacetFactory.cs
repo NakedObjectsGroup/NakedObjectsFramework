@@ -43,7 +43,7 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
             IsCollection(type.BaseType) ||
             type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
 
-    private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var allParams = member.GetParameters();
         var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() is not null).ToArray();
         var isDisplayAsProperty = member.IsDefined(typeof(DisplayAsPropertyAttribute), false);
@@ -75,7 +75,7 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
             }
         }
 
-        FacetUtils.AddFacet(facet);
+        FacetUtils.AddFacet(facet, holder);
 
         return metamodel;
     }
@@ -95,20 +95,19 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
                 IObjectSpecBuilder type;
                 (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
                 facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
-                FacetUtils.AddFacet(facet);
             }
         }
 
         return metamodel;
     }
 
-    private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var facet = new ContributedToLocalCollectionFacet(holder);
         var elementType = p.ParameterType.GetGenericArguments()[0];
         IObjectSpecBuilder type;
         (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
         facet.AddLocalCollectionContributee(type, p.Name);
-        FacetUtils.AddFacet(facet);
+        FacetUtils.AddFacet(facet, holder);
         return metamodel;
     }
 

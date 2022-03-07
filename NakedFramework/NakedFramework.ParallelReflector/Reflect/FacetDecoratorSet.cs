@@ -23,7 +23,7 @@ public sealed class FacetDecoratorSet : IFacetDecoratorSet {
 
     #region IFacetDecoratorSet Members
 
-    public void DecorateAllHoldersFacets(ISpecification holder) {
+    public void DecorateAllHoldersFacets(ISpecificationBuilder holder) {
         if (facetDecorators.Any()) {
             foreach (var facetType in holder.FacetTypes) {
                 DecorateFacet(facetType, holder);
@@ -43,13 +43,13 @@ public sealed class FacetDecoratorSet : IFacetDecoratorSet {
         }
     }
 
-    private void DecorateFacet(Type facetType, ISpecification holder) {
+    private void DecorateFacet(Type facetType, ISpecificationBuilder holder) {
         if (facetDecorators.ContainsKey(facetType)) {
             foreach (var decorator in facetDecorators[facetType]) {
                 var previousFacet = holder.GetFacet(facetType);
                 var decoratedFacet = decorator.Decorate(previousFacet, holder);
                 if (decoratedFacet != null && decoratedFacet != previousFacet) {
-                    FacetUtils.AddFacet(decoratedFacet);
+                    FacetUtils.AddFacet(decoratedFacet, holder);
                 }
             }
         }

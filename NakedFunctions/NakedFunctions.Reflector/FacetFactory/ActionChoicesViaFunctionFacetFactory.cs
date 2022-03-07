@@ -88,7 +88,8 @@ public sealed class ActionChoicesViaFunctionFacetFactory : FunctionalFacetFactor
                 }
 
                 if (!mismatchedParm) {
-                    FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], LoggerFactory.CreateLogger<ActionChoicesFacetViaFunction>(), isMultiple));
+                    var spec = parameters[i];
+                    FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, spec, Logger<ActionChoicesFacetViaFunction>(), isMultiple), spec);
                 }
             }
         }

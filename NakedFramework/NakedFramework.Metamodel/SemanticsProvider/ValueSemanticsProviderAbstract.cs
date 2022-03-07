@@ -45,7 +45,7 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     /// </para>
     public override bool CanAlwaysReplace => false;
 
-    public void AddValueFacets() => ValueTypeHelpers.AddValueFacets(this, Specification);
+    public void AddValueFacets(ISpecificationBuilder specification) => ValueTypeHelpers.AddValueFacets(this, specification);
 
     protected abstract T DoParse(string entry);
 

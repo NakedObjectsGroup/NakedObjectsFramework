@@ -53,9 +53,10 @@ public sealed class AutocompleteViaFunctionFacetFactory : FunctionalFacetFactory
 
                     var pageSize = pageSizeAttr?.Value ?? 0; // default to 0 ie system default
                     var minLength = minLengthAttr?.Value ?? 0;
+                    var spec = parameters[i];
 
                     // add facets directly to parameters, not to actions
-                    FacetUtils.AddFacet(new AutoCompleteViaFunctionFacet(method, pageSize, minLength, parameters[i], LoggerFactory.CreateLogger<AutoCompleteViaFunctionFacet>()));
+                    FacetUtils.AddFacet(new AutoCompleteViaFunctionFacet(method, pageSize, minLength, spec, Logger<AutoCompleteViaFunctionFacet>()), spec);
                 }
             }
         }

@@ -80,7 +80,7 @@ public sealed class EditAnnotationFacetFactory : DomainObjectFacetFactoryProcess
                 // wrap any existing default facet
                 var defaultFacet = specification.GetFacet<IActionDefaultsFacet>();
 
-                FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification, defaultFacet, LoggerFactory.CreateLogger<ActionDefaultsFacetViaProperty>()));
+                FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification, defaultFacet, Logger<ActionDefaultsFacetViaProperty>()));
             }
         }
 

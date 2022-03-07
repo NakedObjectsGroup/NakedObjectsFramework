@@ -28,7 +28,7 @@ public sealed class ActionDefaultAnnotationFacetFactory : DomainObjectFacetFacto
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<DefaultValueAttribute>();
-        FacetUtils.AddFacet(Create(attribute, parameter.ParameterType == typeof(DateTime), holder));
+        FacetUtils.AddFacet(Create(attribute, parameter.ParameterType == typeof(DateTime), holder), holder);
         return metamodel;
     }
 

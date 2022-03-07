@@ -27,14 +27,14 @@ public sealed class DescribedAsAnnotationFacetFactory : FunctionalFacetFactoryPr
         : base(order.Order, loggerFactory, FeatureType.Everything) =>
         logger = loggerFactory.CreateLogger<DescribedAsAnnotationFacetFactory>();
 
-    private static void Process(MemberInfo member, ISpecification holder) {
+    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<DescribedAsAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(Create(attribute, holder), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<DescribedAsAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(Create(attribute, specification), specification);
         return metamodel;
     }
 
@@ -51,7 +51,7 @@ public sealed class DescribedAsAnnotationFacetFactory : FunctionalFacetFactoryPr
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<DescribedAsAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(Create(attribute, holder), holder);
         return metamodel;
     }
 

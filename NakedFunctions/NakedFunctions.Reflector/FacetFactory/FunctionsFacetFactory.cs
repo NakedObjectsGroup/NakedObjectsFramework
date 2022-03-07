@@ -129,7 +129,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
                                                                    (IObjectSpecImmutable)elementSpec,
                                                                    action,
                                                                    isQueryable,
-                                                                   LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>());
+                                                                   Logger<ActionInvocationFacetViaStaticMethod>());
 
         facets.Add(invokeFacet);
 

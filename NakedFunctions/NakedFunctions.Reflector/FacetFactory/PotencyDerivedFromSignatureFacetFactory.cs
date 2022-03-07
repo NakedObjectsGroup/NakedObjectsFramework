@@ -32,10 +32,10 @@ public sealed class PotencyDerivedFromSignatureFacetFactory : FunctionalFacetFac
 
     private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsTuple(returnType) && !returnType.IsAssignableTo(typeof(IContext));
 
-    private static void Process(MemberInfo member, ISpecification holder) {
+    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         if (member is MethodInfo method) {
             if (IsSideEffectFree(method.ReturnType)) {
-                FacetUtils.AddFacet(new QueryOnlyFacet(holder));
+                FacetUtils.AddFacet(new QueryOnlyFacet(holder), holder);
             }
         }
     }

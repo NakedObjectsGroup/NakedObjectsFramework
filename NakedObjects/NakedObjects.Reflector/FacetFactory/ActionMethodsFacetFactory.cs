@@ -93,7 +93,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
         var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{capitalizedName}", typeof(string), parms);
         methodRemover.SafeRemoveMethod(method);
         if (method is not null) {
-            actionFacets.Add(new ActionValidationFacet(method, action, LoggerFactory.CreateLogger<ActionValidationFacet>()));
+            actionFacets.Add(new ActionValidationFacet(method, action, Logger<ActionValidationFacet>()));
         }
     }
 
@@ -129,7 +129,8 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
                 methodRemover.SafeRemoveMethod(methodToUse);
 
                 // add facets directly to parameters, not to actions
-                FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, parameters[i], Logger<ActionDefaultsFacetViaMethod>()));
+                var spec = parameters[i];
+                FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, spec, Logger<ActionDefaultsFacetViaMethod>()), spec);
             }
         }
     }
@@ -207,7 +208,8 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
                 if (!mismatchedParm) {
                     // deliberately not removing both if duplicate to show that method  is duplicate
                     methodRemover.SafeRemoveMethod(methodToUse);
-                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], Logger<ActionChoicesFacetViaMethod>(), isMultiple));
+                    var spec = parameters[i];
+                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, spec, Logger<ActionChoicesFacetViaMethod>(), isMultiple), spec);
                 }
             }
         }
@@ -241,7 +243,8 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
                     methodRemover.SafeRemoveMethod(method);
 
                     // add facets directly to parameters, not to actions
-                    FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, parameters[i], Logger<AutoCompleteFacet>()));
+                    var spec = parameters[i];
+                    FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, spec, Logger<AutoCompleteFacet>()), spec);
                 }
             }
         }
@@ -283,7 +286,8 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
                 methodRemover.SafeRemoveMethod(methodToUse);
 
                 // add facets directly to parameters, not to actions
-                FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, parameters[i], Logger<ActionParameterValidation>()));
+                var spec = parameters[i];
+                FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, spec, Logger<ActionParameterValidation>()), spec);
             }
         }
     }

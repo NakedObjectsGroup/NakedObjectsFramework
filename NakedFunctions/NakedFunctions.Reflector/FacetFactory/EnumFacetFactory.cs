@@ -34,21 +34,21 @@ public sealed class EnumFacetFactory : FunctionalFacetFactoryProcessor {
         return metamodel;
     }
 
-    private static void AddEnumFacet(EnumDataTypeAttribute attribute, ISpecification holder, Type typeOfEnum) {
+    private static void AddEnumFacet(EnumDataTypeAttribute attribute, ISpecificationBuilder holder, Type typeOfEnum) {
         if (attribute is not null) {
-            FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder), holder);
             return;
         }
 
         var typeOrNulledType = TypeUtils.GetNulledType(typeOfEnum);
         if (TypeUtils.IsEnum(typeOrNulledType)) {
-            FacetUtils.AddFacet(new EnumFacet(holder, typeOrNulledType));
+            FacetUtils.AddFacet(new EnumFacet(holder, typeOrNulledType), holder);
             return;
         }
 
         if (CollectionUtils.IsGenericOfEnum(typeOfEnum)) {
             var enumInstanceType = typeOfEnum.GetGenericArguments().First();
-            FacetUtils.AddFacet(new EnumFacet(holder, enumInstanceType));
+            FacetUtils.AddFacet(new EnumFacet(holder, enumInstanceType), holder);
         }
     }
 

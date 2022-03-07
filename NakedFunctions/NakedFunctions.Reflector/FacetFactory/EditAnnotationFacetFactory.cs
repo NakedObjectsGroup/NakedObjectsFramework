@@ -47,7 +47,7 @@ public sealed class EditAnnotationFacetFactory : FunctionalFacetFactoryProcessor
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        void AddFacet(IDictionary<ParameterInfo, PropertyInfo> matches) => FacetUtils.AddFacet(new EditPropertiesFacet(specification, matches.Values.Select(p => p.Name).ToArray()));
+        void AddFacet(IDictionary<ParameterInfo, PropertyInfo> matches) => FacetUtils.AddFacet(new EditPropertiesFacet(specification, matches.Values.Select(p => p.Name).ToArray()), specification);
 
         return Process(method, AddFacet, metamodel);
     }
@@ -63,7 +63,7 @@ public sealed class EditAnnotationFacetFactory : FunctionalFacetFactoryProcessor
                 // leave any existing default facet
                 var defaultFacet = specification.GetFacet<IActionDefaultsFacet>();
 
-                FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification, defaultFacet, LoggerFactory.CreateLogger<ActionDefaultsFacetViaProperty>()));
+                FacetUtils.AddFacet(new ActionDefaultsFacetViaProperty(property, specification, defaultFacet, Logger<ActionDefaultsFacetViaProperty>()), specification);
             }
         }
 

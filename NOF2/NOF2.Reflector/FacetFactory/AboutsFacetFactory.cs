@@ -164,12 +164,12 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {
-            facets.Add(new DescribedAsViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<DescribedAsViaAboutMethodFacet>()));
-            facets.Add(new DisableForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<DisableForContextViaAboutMethodFacet>()));
-            facets.Add(new HideForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<HideForContextViaAboutMethodFacet>()));
-            facets.Add(new MemberNamedViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, property.Name, LoggerFactory.CreateLogger<MemberNamedViaAboutMethodFacet>()));
-            facets.Add(new PropertyValidateViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, LoggerFactory.CreateLogger<PropertyValidateViaAboutMethodFacet>()));
-            facets.Add(new PropertyChoicesViaAboutMethodFacet(method, specification, LoggerFactory.CreateLogger<PropertyChoicesViaAboutMethodFacet>()));
+            facets.Add(new DescribedAsViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, Logger<DescribedAsViaAboutMethodFacet>()));
+            facets.Add(new DisableForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, Logger<DisableForContextViaAboutMethodFacet>()));
+            facets.Add(new HideForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, Logger<HideForContextViaAboutMethodFacet>()));
+            facets.Add(new MemberNamedViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, property.Name, Logger<MemberNamedViaAboutMethodFacet>()));
+            facets.Add(new PropertyValidateViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, Logger<PropertyValidateViaAboutMethodFacet>()));
+            facets.Add(new PropertyChoicesViaAboutMethodFacet(method, specification, Logger<PropertyChoicesViaAboutMethodFacet>()));
         }
 
         var valueType = NOF2Helpers.IsOrImplementsValueHolder(property.PropertyType);

@@ -57,7 +57,7 @@ public sealed class ActionValidateViaFunctionFacetFactory : FunctionalFacetFacto
 
         if (methodToUse is not null) {
             // add facets directly to parameters, not to actions
-            FacetUtils.AddFacet(new ActionParameterValidationViaFunctionFacet(methodToUse, parameter, LoggerFactory.CreateLogger<ActionParameterValidationViaFunctionFacet>()));
+            FacetUtils.AddFacet(new ActionParameterValidationViaFunctionFacet(methodToUse, parameter, Logger<ActionParameterValidationViaFunctionFacet>()), parameter);
         }
 
         return metamodel;
@@ -68,7 +68,7 @@ public sealed class ActionValidateViaFunctionFacetFactory : FunctionalFacetFacto
         var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
 
         if (methodToUse is not null) {
-            FacetUtils.AddFacet(new ActionValidationViaFunctionFacet(methodToUse, action, LoggerFactory.CreateLogger<ActionValidationViaFunctionFacet>()));
+            FacetUtils.AddFacet(new ActionValidationViaFunctionFacet(methodToUse, action, Logger<ActionValidationViaFunctionFacet>()), action);
         }
 
         return metamodel;

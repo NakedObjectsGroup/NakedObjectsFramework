@@ -52,7 +52,7 @@ public sealed class HideFunctionIntegrationFacetFactory : FunctionalFacetFactory
     private IImmutableDictionary<string, ITypeSpecBuilder> FindAndAddFacet(Type declaringType, Type targetType, string name, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var methodToUse = MethodToUse(declaringType, targetType, name);
         if (methodToUse is not null) {
-            FacetUtils.AddFacet(new HideForContextViaFunctionFacet(methodToUse, action, LoggerFactory.CreateLogger<HideForContextViaFunctionFacet>()));
+            FacetUtils.AddFacet(new HideForContextViaFunctionFacet(methodToUse, action, Logger<HideForContextViaFunctionFacet>()), action);
         }
 
         return metamodel;
@@ -78,8 +78,8 @@ public sealed class HideFunctionIntegrationFacetFactory : FunctionalFacetFactory
                     var property = spec.UnorderedFields.SingleOrDefault(f => f.Identifier.MemberName == propertyName);
 
                     if (property is not null) {
-                        var facet = new HideForContextViaFunctionFacet(recognizedMethod, property, LoggerFactory.CreateLogger<HideForContextViaFunctionFacet>());
-                        FacetUtils.AddFacet(facet);
+                        var facet = new HideForContextViaFunctionFacet(recognizedMethod, property, Logger<HideForContextViaFunctionFacet>());
+                        FacetUtils.AddFacet(facet, property);
                     }
                     else {
                         logger.LogWarning($"No matching property found for {recognizedMethod.Name} on {spec.FullName}");

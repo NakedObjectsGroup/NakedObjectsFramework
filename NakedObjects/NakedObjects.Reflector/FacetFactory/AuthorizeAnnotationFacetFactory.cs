@@ -57,23 +57,23 @@ public sealed class AuthorizeAnnotationFacetFactory : DomainObjectFacetFactoryPr
         return metamodel;
     }
 
-    private static void Create(AuthorizePropertyAttribute attribute, ISpecification holder) {
+    private static void Create(AuthorizePropertyAttribute attribute, ISpecificationBuilder holder) {
         if (attribute is not null) {
             if (attribute.ViewRoles is not null || attribute.ViewUsers is not null) {
-                FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.ViewRoles, attribute.ViewUsers, holder));
+                FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.ViewRoles, attribute.ViewUsers, holder), holder);
             }
 
             if (attribute.EditRoles is not null || attribute.EditUsers is not null) {
-                FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.EditRoles, attribute.EditUsers, holder));
+                FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.EditRoles, attribute.EditUsers, holder), holder);
             }
         }
     }
 
-    private static void Create(AuthorizeActionAttribute attribute, ISpecification holder) {
+    private static void Create(AuthorizeActionAttribute attribute, ISpecificationBuilder holder) {
         if (attribute is not null) {
             if (attribute.Roles is not null || attribute.Users is not null) {
-                FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.Roles, attribute.Users, holder));
-                FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.Roles, attribute.Users, holder));
+                FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.Roles, attribute.Users, holder), holder);
+                FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.Roles, attribute.Users, holder), holder);
             }
         }
     }

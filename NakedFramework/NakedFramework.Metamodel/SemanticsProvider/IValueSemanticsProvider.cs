@@ -6,13 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
 public interface IValueSemanticsProvider {
     bool IsImmutable { get; }
 
-    void AddValueFacets();
+    void AddValueFacets(ISpecificationBuilder specification);
 }
 
 public interface IValueSemanticsProvider<T> : IValueSemanticsProvider {

@@ -25,7 +25,7 @@ public sealed class VersionedAnnotationFacetFactory : FunctionalFacetFactoryProc
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<VersionedAttribute>();
-        FacetUtils.AddFacet(Create(reflector, attribute, specification));
+        FacetUtils.AddFacet(Create(reflector, attribute, specification), specification);
         return metamodel;
     }
 
