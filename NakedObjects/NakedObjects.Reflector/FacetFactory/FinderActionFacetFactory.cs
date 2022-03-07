@@ -27,9 +27,9 @@ public sealed class FinderActionFacetFactory : DomainObjectFacetFactoryProcessor
     public FinderActionFacetFactory(IFacetFactoryOrder<FinderActionFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
-    private static void Process(MethodInfo member, ISpecification holder) {
+    private static void Process(MethodInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<FinderActionAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(Create(attribute, holder), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

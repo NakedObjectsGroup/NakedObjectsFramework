@@ -46,7 +46,7 @@ public sealed class ViewModelFacetFactory : DomainObjectFacetFactoryProcessor {
             }
 
             methodRemover.RemoveMethods(toRemove.ToArray());
-            FacetUtils.AddFacet(facet);
+            FacetUtils.AddFacet(facet, specification);
         }
 
         return metamodel;

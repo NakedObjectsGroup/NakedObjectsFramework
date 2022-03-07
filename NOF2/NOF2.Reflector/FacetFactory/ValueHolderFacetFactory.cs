@@ -29,8 +29,8 @@ namespace NOF2.Reflector.FacetFactory;
 public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public ValueHolderFacetFactory(IFacetFactoryOrder<ValueHolderFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-    private static IEnumerable<IFacet> GetFacets(Type type, object sm, ISpecificationBuilder holder) =>
-        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetParserFacet" or "GetTitleFacet" or "GetValueFacet").Select(m => m.MakeGenericMethod(type)).Select(im => im.Invoke(null, new[] { sm, holder })).Cast<IFacet>();
+    private static IList<IFacet> GetFacets(Type type, object sm, ISpecificationBuilder holder) =>
+        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetParserFacet" or "GetTitleFacet" or "GetValueFacet").Select(m => m.MakeGenericMethod(type)).Select(im => im.Invoke(null, new[] { sm, holder })).Cast<IFacet>().ToList();
 
     private static IFacet GetMaskFacet(Type type, Type valueType, ISpecificationBuilder holder) =>
         typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetMaskFacet" && m.IsGenericMethod).Select(m => m.MakeGenericMethod(type, valueType)).Select(im => im.Invoke(null, new object[] { holder })).Cast<IFacet>().SingleOrDefault();
@@ -39,15 +39,14 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
         var semanticsProviderType = typeof(ValueHolderWrappingValueSemanticsProvider<,>).MakeGenericType(type, valueType);
         var semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, holder);
 
-        foreach (var facet in GetFacets(type, semanticsProvider, holder)) {
-            FacetUtils.AddFacet(facet);
-        }
+        var facets = GetFacets(type, semanticsProvider, holder);
 
-        FacetUtils.AddFacet(GetMaskFacet(type, valueType, holder));
+        facets.Add(GetMaskFacet(type, valueType, holder));
+        facets.Add(new TypeFacet(holder, valueType));
+        facets.Add(new NotPersistedFacet(holder));
+        facets.Add(new AggregatedFacetAlways(holder));
 
-        FacetUtils.AddFacet(new TypeFacet(holder, valueType));
-        FacetUtils.AddFacet(new NotPersistedFacet(holder));
-        FacetUtils.AddFacet(new AggregatedFacetAlways(holder));
+        FacetUtils.AddFacets(facets, holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

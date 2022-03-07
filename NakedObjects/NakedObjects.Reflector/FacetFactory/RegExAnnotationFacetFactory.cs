@@ -33,13 +33,13 @@ public sealed class RegExAnnotationFacetFactory : DomainObjectFacetFactoryProces
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute)type.GetCustomAttribute<RegExAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(Create(attribute, specification), specification);
         return metamodel;
     }
 
-    private void Process(MemberInfo member, ISpecification holder) {
+    private void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute)member.GetCustomAttribute<RegExAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(Create(attribute, holder), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -62,7 +62,7 @@ public sealed class RegExAnnotationFacetFactory : DomainObjectFacetFactoryProces
         var parameter = method.GetParameters()[paramNum];
         if (TypeUtils.IsString(parameter.ParameterType)) {
             var attribute = parameter.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute)parameter.GetCustomAttribute<RegExAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder), holder);
         }
 
         return metamodel;

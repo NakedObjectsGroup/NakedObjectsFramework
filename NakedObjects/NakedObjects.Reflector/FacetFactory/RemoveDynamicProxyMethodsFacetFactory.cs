@@ -42,7 +42,7 @@ public sealed class RemoveDynamicProxyMethodsFacetFactory : DomainObjectFacetFac
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (IsDynamicProxyType(property.DeclaringType) && property.Name.Equals("RelationshipManager", StringComparison.Ordinal)) {
-            FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
+            FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification), specification);
         }
 
         return metamodel;

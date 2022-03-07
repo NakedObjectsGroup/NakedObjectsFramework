@@ -31,13 +31,13 @@ public sealed class MaxLengthAnnotationFacetFactory : DomainObjectFacetFactoryPr
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute)type.GetCustomAttribute<MaxLengthAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(Create(attribute, specification), specification);
         return metamodel;
     }
 
-    private void Process(MemberInfo member, ISpecification holder) {
+    private void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute)member.GetCustomAttribute<MaxLengthAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(Create(attribute, holder), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -54,7 +54,7 @@ public sealed class MaxLengthAnnotationFacetFactory : DomainObjectFacetFactoryPr
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute)parameter.GetCustomAttribute<MaxLengthAttribute>();
 
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(Create(attribute, holder), holder);
         return metamodel;
     }
 

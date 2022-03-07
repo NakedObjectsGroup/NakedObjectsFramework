@@ -28,26 +28,26 @@ public sealed class NamedAnnotationFacetFactory : AbstractNOF2FacetFactoryProces
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<INamedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(Create(attribute, specification), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = method.GetCustomAttribute<INamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, specification));
+        FacetUtils.AddFacet(CreateForMember(attribute, specification), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<INamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, specification));
+        FacetUtils.AddFacet(CreateForMember(attribute, specification), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<INamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, holder));
+        FacetUtils.AddFacet(CreateForMember(attribute, holder), holder);
         return metamodel;
     }
 

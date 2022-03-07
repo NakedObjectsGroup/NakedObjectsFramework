@@ -45,7 +45,7 @@ public sealed class TitleMethodFacetFactory : AbstractNOF2FacetFactoryProcessor,
             if (titleMethod is not null && titleMethod.ReturnType.IsAssignableTo(typeof(ITitle))) {
                 methodRemover.SafeRemoveMethod(titleMethod);
                 var titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification, Logger<TitleFacetViaTitleMethod>());
-                FacetUtils.AddFacet(titleFacet);
+                FacetUtils.AddFacet(titleFacet, specification);
             }
         }
         catch (Exception e) {

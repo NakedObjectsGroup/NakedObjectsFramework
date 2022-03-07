@@ -28,9 +28,9 @@ public sealed class RangeAnnotationFacetFactory : DomainObjectFacetFactoryProces
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
         logger = loggerFactory.CreateLogger<RangeAnnotationFacetFactory>();
 
-    private void Process(MemberInfo member, bool isDate, ISpecification specification) {
+    private void Process(MemberInfo member, bool isDate, ISpecificationBuilder specification) {
         var attribute = member.GetCustomAttribute<RangeAttribute>();
-        FacetUtils.AddFacet(Create(attribute, isDate, specification));
+        FacetUtils.AddFacet(Create(attribute, isDate, specification), specification);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -43,7 +43,7 @@ public sealed class RangeAnnotationFacetFactory : DomainObjectFacetFactoryProces
         var parameter = method.GetParameters()[paramNum];
         var isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
         var range = parameter.GetCustomAttribute<RangeAttribute>();
-        FacetUtils.AddFacet(Create(range, isDate, holder));
+        FacetUtils.AddFacet(Create(range, isDate, holder), holder);
         return metamodel;
     }
 

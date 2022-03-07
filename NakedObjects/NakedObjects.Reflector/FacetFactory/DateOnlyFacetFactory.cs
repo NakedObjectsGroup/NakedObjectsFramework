@@ -25,10 +25,10 @@ public sealed class DateOnlyFacetFactory : DomainObjectFacetFactoryProcessor, IA
     public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
-    private static void Process(MemberInfo member, ISpecification holder) {
+    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();
         var concurrencyCheckAttribute = member.GetCustomAttribute<ConcurrencyCheckAttribute>();
-        FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
+        FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder), holder);
     }
 
     private static bool IsDatetimeOrNullableDateTime(Type type) => type == typeof(DateTime) || type == typeof(DateTime?);
@@ -47,7 +47,7 @@ public sealed class DateOnlyFacetFactory : DomainObjectFacetFactoryProcessor, IA
         if (IsDatetimeOrNullableDateTime(parameter.ParameterType)) {
             var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
             var concurrencyCheckAttribute = parameter.GetCustomAttribute<ConcurrencyCheckAttribute>();
-            FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
+            FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder), holder);
         }
 
         return metamodel;

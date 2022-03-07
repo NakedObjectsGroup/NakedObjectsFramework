@@ -26,7 +26,7 @@ public sealed class NotNavigableAnnotationFacetFactory : DomainObjectFacetFactor
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<NotNavigableAttribute>() ?? property.PropertyType.GetCustomAttribute<NotNavigableAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(Create(attribute, specification), specification);
         return metamodel;
     }
 

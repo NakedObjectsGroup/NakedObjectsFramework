@@ -58,7 +58,7 @@ public sealed class TitleMethodFacetFactory : DomainObjectFacetFactoryProcessor,
 
         if (attributedMethods.Count > 0) {
             // attributes takes priority
-            FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification, Logger<TitleFacetViaProperty>()));
+            FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification, Logger<TitleFacetViaProperty>()), specification);
             return metamodel;
         }
 
@@ -89,7 +89,7 @@ public sealed class TitleMethodFacetFactory : DomainObjectFacetFactoryProcessor,
                 titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification, Logger<TitleFacetViaToStringMethod>());
             }
 
-            FacetUtils.AddFacet(titleFacet);
+            FacetUtils.AddFacet(titleFacet, specification);
         }
         catch (Exception e) {
             logger.LogError(e, "Unexpected Exception");

@@ -31,11 +31,11 @@ public sealed class HiddenAnnotationFacetFactory : DomainObjectFacetFactoryProce
         return metamodel;
     }
 
-    private static void Process(MemberInfo member, ISpecification holder) => Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
+    private static void Process(MemberInfo member, ISpecificationBuilder holder) => Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
 
-    private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
+    private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecificationBuilder specification) {
         var attribute = getHidden();
-        FacetUtils.AddFacet(attribute is not null ? Create((HiddenAttribute)attribute, specification) : Create((ScaffoldColumnAttribute)getScaffold(), specification));
+        FacetUtils.AddFacet(attribute is not null ? Create((HiddenAttribute)attribute, specification) : Create((ScaffoldColumnAttribute)getScaffold(), specification), specification);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

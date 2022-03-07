@@ -29,10 +29,10 @@ public sealed class TableViewAnnotationFacetFactory : DomainObjectFacetFactoryPr
         : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) =>
         logger = loggerFactory.CreateLogger<TableViewAnnotationFacetFactory>();
 
-    private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
+    private void Process(MemberInfo member, Type methodReturnType, ISpecificationBuilder specification) {
         if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
             var attribute = member.GetCustomAttribute<TableViewAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification), specification);
         }
     }
 

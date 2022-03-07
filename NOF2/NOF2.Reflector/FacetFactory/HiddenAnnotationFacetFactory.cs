@@ -41,9 +41,9 @@ public sealed class HiddenAnnotationFacetFactory : AbstractNOF2FacetFactoryProce
             _ => throw new NotImplementedException()
         };
 
-    private static void Process(object onObject, ISpecification specification) {
+    private static void Process(object onObject, ISpecificationBuilder specification) {
         var attribute = onObject.GetCustomAttribute<IHiddenAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification));
+        FacetUtils.AddFacet(Create(attribute, specification), specification);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

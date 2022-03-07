@@ -59,7 +59,7 @@ public sealed class SaveFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
             saveFacet = new SaveNullFacet(specification, Logger<SaveNullFacet>());
         }
 
-        FacetUtils.AddFacet(saveFacet);
+        FacetUtils.AddFacet(saveFacet, specification);
 
         return metamodel;
     }

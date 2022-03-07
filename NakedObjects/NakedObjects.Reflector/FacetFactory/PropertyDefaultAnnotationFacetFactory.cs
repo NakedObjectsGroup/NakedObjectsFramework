@@ -24,9 +24,9 @@ public sealed class PropertyDefaultAnnotationFacetFactory : DomainObjectFacetFac
     public PropertyDefaultAnnotationFacetFactory(IFacetFactoryOrder<PropertyDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
-    private static void Process(MemberInfo member, ISpecification holder) {
+    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<DefaultValueAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(Create(attribute, holder), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

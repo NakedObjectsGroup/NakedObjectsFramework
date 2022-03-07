@@ -28,9 +28,9 @@ public sealed class DataTypeAnnotationFacetFactory : DomainObjectFacetFactoryPro
     public DataTypeAnnotationFacetFactory(IFacetFactoryOrder<DataTypeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
-    private static void Process(MemberInfo member, ISpecification holder) {
+    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();
-        FacetUtils.AddFacet(Create(dataTypeAttribute, holder));
+        FacetUtils.AddFacet(Create(dataTypeAttribute, holder), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -41,7 +41,7 @@ public sealed class DataTypeAnnotationFacetFactory : DomainObjectFacetFactoryPro
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
-        FacetUtils.AddFacet(Create(dataTypeAttribute, holder));
+        FacetUtils.AddFacet(Create(dataTypeAttribute, holder), holder);
         return metamodel;
     }
 

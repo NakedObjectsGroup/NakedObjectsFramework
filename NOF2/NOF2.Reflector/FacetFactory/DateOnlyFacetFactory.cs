@@ -27,10 +27,10 @@ public sealed class DateOnlyFacetFactory : AbstractNOF2FacetFactoryProcessor {
     public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
-    private static void Process(MemberInfo member, ISpecification holder) {
+    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();
         var concurrencyCheckAttribute = member.GetCustomAttribute<ConcurrencyCheckAttribute>();
-        FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
+        FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder), holder);
     }
 
     private static bool IsDate(Type type) {
@@ -52,7 +52,7 @@ public sealed class DateOnlyFacetFactory : AbstractNOF2FacetFactoryProcessor {
         if (IsDate(parameter.ParameterType)) {
             var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
             var concurrencyCheckAttribute = parameter.GetCustomAttribute<ConcurrencyCheckAttribute>();
-            FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
+            FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder), holder);
         }
 
         return metamodel;

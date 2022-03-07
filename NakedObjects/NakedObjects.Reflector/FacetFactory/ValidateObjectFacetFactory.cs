@@ -65,7 +65,7 @@ public sealed class ValidateObjectFacetFactory : DomainObjectFacetFactoryProcess
         }
 
         var validateFacet = methodPeers.Any() ? (IValidateObjectFacet)new ValidateObjectFacet(specification, methodPeers, Logger<ValidateObjectFacet>()) : new ValidateObjectFacetNull(specification);
-        FacetUtils.AddFacet(validateFacet);
+        FacetUtils.AddFacet(validateFacet, specification);
         return metamodel;
     }
 }

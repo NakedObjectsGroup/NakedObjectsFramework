@@ -28,9 +28,9 @@ public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryPro
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
         logger = loggerFactory.CreateLogger<OptionalAnnotationFacetFactory>();
 
-    private static void Process(MemberInfo member, ISpecification holder) {
+    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<OptionallyAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(Create(attribute, holder), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -67,7 +67,7 @@ public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryPro
         }
 
         var attribute = parameter.GetCustomAttribute<OptionallyAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder));
+        FacetUtils.AddFacet(Create(attribute, holder), holder);
         return metamodel;
     }
 

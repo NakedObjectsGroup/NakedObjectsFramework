@@ -25,12 +25,12 @@ public sealed class InternalCollectionFacetFactory : AbstractNOF2FacetFactoryPro
     public InternalCollectionFacetFactory(IFacetFactoryOrder<InternalCollectionFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
-    private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (type == typeof(InternalCollection)) {
             var collectionElementType = typeof(object);
             IObjectSpecBuilder oSpec;
             (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
-            FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, oSpec));
+            FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, oSpec), holder);
         }
 
         return metamodel;

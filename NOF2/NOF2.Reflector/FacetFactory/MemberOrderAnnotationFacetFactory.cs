@@ -76,7 +76,7 @@ public sealed class MemberOrderAnnotationFacetFactory : AbstractNOF2FacetFactory
             facet = new MemberOrderFacet("", attribute.Order.ToString(), specification);
         }
 
-        FacetUtils.AddFacet(facet);
+        FacetUtils.AddFacet(facet, specification);
         return metamodel;
     }
 

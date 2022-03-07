@@ -27,13 +27,13 @@ public sealed class PotencyAnnotationFacetFactory : DomainObjectFacetFactoryProc
     public PotencyAnnotationFacetFactory(IFacetFactoryOrder<PotencyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
-    private static void Process(MemberInfo member, ISpecification holder) {
+    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         // give priority to Idempotent as more restrictive
         if (member.GetCustomAttribute<IdempotentAttribute>() is not null) {
-            FacetUtils.AddFacet(new IdempotentFacet(holder));
+            FacetUtils.AddFacet(new IdempotentFacet(holder), holder);
         }
         else if (member.GetCustomAttribute<QueryOnlyAttribute>() is not null) {
-            FacetUtils.AddFacet(new QueryOnlyFacet(holder));
+            FacetUtils.AddFacet(new QueryOnlyFacet(holder), holder);
         }
     }
 

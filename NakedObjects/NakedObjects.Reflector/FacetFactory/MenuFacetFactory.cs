@@ -38,7 +38,7 @@ public sealed class MenuFacetFactory : DomainObjectFacetFactoryProcessor, IMetho
         var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
         methodRemover.SafeRemoveMethod(method);
         var facet = method is not null ? (IFacet)new MenuFacetViaMethod(method, specification) : new MenuFacetDefault(specification);
-        FacetUtils.AddFacet(facet);
+        FacetUtils.AddFacet(facet, specification);
         return metamodel;
     }
 }

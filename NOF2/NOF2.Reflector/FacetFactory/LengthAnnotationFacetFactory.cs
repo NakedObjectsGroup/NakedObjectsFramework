@@ -31,7 +31,7 @@ public sealed class LengthAnnotationFacetFactory : AbstractNOF2FacetFactoryProce
 
         switch (attr) {
             case { } max:
-                FacetUtils.AddFacet(new MaxLengthFacetAnnotation(max.MaxLength, specification));
+                FacetUtils.AddFacet(new MaxLengthFacetAnnotation(max.MaxLength, specification), specification);
                 break;
         }
 

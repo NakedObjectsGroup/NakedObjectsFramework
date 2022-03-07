@@ -38,10 +38,8 @@ public static class FacetUtils {
         users.Any(user => session.Principal.Identity?.Name == user);
 
     /// <summary>
-    ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
+    ///     Attaches the <see cref="IFacet" /> to its <see cref="ISpecification" />
     /// </summary>
-    public static void AddFacet(IFacet facet) => ((ISpecificationBuilder)facet?.Specification)?.AddFacet(facet);
-
     public static void AddFacet(IFacet facet, ISpecificationBuilder specification) {
         if (facet is not null) {
             specification.AddFacet(facet);
