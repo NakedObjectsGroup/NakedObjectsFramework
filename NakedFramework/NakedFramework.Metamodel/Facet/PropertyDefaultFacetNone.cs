@@ -12,9 +12,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PropertyDefaultFacetNone : PropertyDefaultFacetAbstract {
-    public PropertyDefaultFacetNone()
-        : base() { }
-
     public override bool IsNoOp => true;
 
     /// <summary>

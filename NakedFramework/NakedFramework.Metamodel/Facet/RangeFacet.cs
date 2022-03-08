@@ -17,7 +17,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public class RangeFacet : IRangeFacet, ISerializable {
-    
     public RangeFacet(IConvertible min, IConvertible max, bool isDateRange) {
         Min = min;
         Max = max;

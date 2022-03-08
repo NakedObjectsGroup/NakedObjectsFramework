@@ -19,8 +19,7 @@ namespace NOF2.Reflector.Facet;
 public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFacetAbstract where T : class, IValueHolder<TU> {
     private readonly PropertyInfo property;
 
-    public PropertySetterFacetViaValueHolder(PropertyInfo property)
-        : base() =>
+    public PropertySetterFacetViaValueHolder(PropertyInfo property) =>
         this.property = property;
 
     public override string PropertyName {

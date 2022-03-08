@@ -23,8 +23,7 @@ public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativ
 
     [field: NonSerialized] private Func<object, object[], object> maskDelegate;
 
-    public TitleFacetViaToStringMethod(MethodInfo maskMethod, ILogger<TitleFacetViaToStringMethod> logger)
-        : base() {
+    public TitleFacetViaToStringMethod(MethodInfo maskMethod, ILogger<TitleFacetViaToStringMethod> logger) {
         this.maskMethod = maskMethod;
         this.logger = logger;
         maskDelegate = maskMethod is null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);

@@ -28,8 +28,7 @@ public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, 
     private readonly ILogger<ActionDefaultsFacetViaMethod> logger;
     private readonly MethodInfo method;
 
-    public ActionDefaultsFacetViaMethod(MethodInfo method, ILogger<ActionDefaultsFacetViaMethod> logger)
-        : base() {
+    public ActionDefaultsFacetViaMethod(MethodInfo method, ILogger<ActionDefaultsFacetViaMethod> logger) {
         this.method = method;
         this.logger = logger;
         MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

@@ -18,8 +18,6 @@ namespace NakedFramework.Metamodel.Facet;
 /// </para>
 [Serializable]
 public sealed class OptionalFacet : MandatoryFacetAbstract {
-    public OptionalFacet() { }
-
     /// <summary>
     ///     Always returns <c>false</c>, indicating that the facet holder is in fact optional.
     /// </summary>

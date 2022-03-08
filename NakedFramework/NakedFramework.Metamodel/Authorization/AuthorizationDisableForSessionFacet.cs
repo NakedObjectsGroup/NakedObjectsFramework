@@ -19,8 +19,7 @@ public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacet
     private readonly IIdentifier identifier;
 
     public AuthorizationDisableForSessionFacet(IIdentifier identifier,
-                                               IAuthorizationManager authorizationManager)
-        : base() {
+                                               IAuthorizationManager authorizationManager) {
         this.authorizationManager = authorizationManager;
         this.identifier = identifier;
     }

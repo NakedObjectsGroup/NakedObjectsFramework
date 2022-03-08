@@ -23,8 +23,7 @@ public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {
     private readonly IProfileManager profileManager;
     private readonly IActionInvocationFacet underlyingFacet;
 
-    public ProfileActionInvocationFacet(IActionInvocationFacet underlyingFacet, IProfileManager profileManager, ISpecification specification)
-        : base() {
+    public ProfileActionInvocationFacet(IActionInvocationFacet underlyingFacet, IProfileManager profileManager, ISpecification specification) {
         this.underlyingFacet = underlyingFacet;
         this.profileManager = profileManager;
         identifier = specification.Identifier;

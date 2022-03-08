@@ -25,8 +25,7 @@ public sealed class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbst
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public PropertySetterFacetViaModifyMethod(MethodInfo method, string name, ILogger<PropertySetterFacetViaModifyMethod> logger)
-        : base() {
+    public PropertySetterFacetViaModifyMethod(MethodInfo method, string name, ILogger<PropertySetterFacetViaModifyMethod> logger) {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

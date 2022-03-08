@@ -21,8 +21,7 @@ public sealed class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbst
 
     [field: NonSerialized] private Action<object> persistedDelegate;
 
-    public PersistedCallbackFacetViaMethod(MethodInfo method)
-        : base() {
+    public PersistedCallbackFacetViaMethod(MethodInfo method) {
         this.method = method;
         persistedDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }

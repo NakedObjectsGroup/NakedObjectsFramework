@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Menu;
-using NakedFramework.Metamodel.Spec;
 using NakedObjects.Resources;
 
 namespace NakedFramework.Metamodel.Facet;

@@ -34,8 +34,7 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
                                          (string, IObjectSpecImmutable)[] parameterNamesAndTypes,
                                          Type choicesType,
                                          ILogger<ActionChoicesFacetViaFunction> logger,
-                                         bool isMultiple = false)
-        : base() {
+                                         bool isMultiple = false) {
         this.choicesMethod = choicesMethod;
         this.choicesType = choicesType;
         IsMultiple = isMultiple;

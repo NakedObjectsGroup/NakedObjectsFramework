@@ -81,7 +81,6 @@ public class AuthorizationManagerTest {
 
         testFacet.Setup(n => n.FacetType).Returns(typeof(IHideForSessionFacet));
 
-
         var facet = manager.Decorate(testFacet.Object, testSpec.Object);
 
         Assert.IsInstanceOfType(facet, typeof(AuthorizationHideForSessionFacet));
@@ -107,7 +106,6 @@ public class AuthorizationManagerTest {
         testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
 
         testFacet.Setup(n => n.FacetType).Returns(typeof(IDisableForSessionFacet));
-
 
         var facet = manager.Decorate(testFacet.Object, testSpec.Object);
 

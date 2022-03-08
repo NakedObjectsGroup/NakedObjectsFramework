@@ -10,6 +10,4 @@ using System;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
-    public ComplexTypeFacetConvention() { }
-}
+public sealed class ComplexTypeFacetConvention : ComplexTypeFacetAbstract { }

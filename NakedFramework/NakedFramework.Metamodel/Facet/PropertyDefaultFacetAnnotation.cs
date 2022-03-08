@@ -14,8 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertyDefaultFacetAnnotation : PropertyDefaultFacetAbstract {
     private readonly object value;
 
-    public PropertyDefaultFacetAnnotation(object value)
-        : base() =>
+    public PropertyDefaultFacetAnnotation(object value) =>
         this.value = value;
 
     public override bool CanAlwaysReplace => false;

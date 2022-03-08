@@ -130,7 +130,6 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
             facets.Add(new ActionValidateViaAboutMethodFacet(method, AboutHelpers.AboutType.Action, Logger<ActionValidateViaAboutMethodFacet>()));
 
             var actionSpec = (IActionSpecImmutable)action;
-            
 
             var index = 0; // about is 0
             foreach (var parameterSpec in actionSpec.Parameters) {

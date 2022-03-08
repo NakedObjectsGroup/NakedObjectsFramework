@@ -6,12 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Facet;
 
 public interface IFacet {
-    
     /// <summary>
     ///     Whether this facet implementation is a no-op
     /// </summary>

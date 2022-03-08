@@ -23,7 +23,7 @@ public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperative
     private readonly MethodInfo method;
     private readonly Func<object, object[], object> methodDelegate;
 
-    public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) : base() {
+    public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) {
         this.method = method;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }

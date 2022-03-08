@@ -13,9 +13,6 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class LoadedCallbackFacetNull : LoadedCallbackFacetAbstract {
-    public LoadedCallbackFacetNull()
-        : base() { }
-
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }
 

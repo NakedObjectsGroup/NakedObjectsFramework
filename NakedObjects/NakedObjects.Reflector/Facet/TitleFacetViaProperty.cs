@@ -25,8 +25,7 @@ public sealed class TitleFacetViaProperty : TitleFacetAbstract, IImperativeFacet
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public TitleFacetViaProperty(MethodInfo method, ILogger<TitleFacetViaProperty> logger)
-        : base() {
+    public TitleFacetViaProperty(MethodInfo method, ILogger<TitleFacetViaProperty> logger) {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

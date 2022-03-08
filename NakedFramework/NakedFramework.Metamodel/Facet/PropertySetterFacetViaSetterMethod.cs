@@ -17,8 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbstract {
     private readonly PropertyInfo property;
 
-    public PropertySetterFacetViaSetterMethod(PropertyInfo property)
-        : base() =>
+    public PropertySetterFacetViaSetterMethod(PropertyInfo property) =>
         this.property = property;
 
     public override string PropertyName {

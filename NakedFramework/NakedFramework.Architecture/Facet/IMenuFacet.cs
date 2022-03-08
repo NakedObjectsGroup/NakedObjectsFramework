@@ -22,12 +22,12 @@ namespace NakedFramework.Architecture.Facet;
 ///     However, this may be overridden by writing a method named <c>Menu</c>.
 /// </para>
 public interface IMenuFacet : IFacet {
+    ISpecification Specification { get; }
+
     /// <summary>
     ///     The Menu for this type.
     /// </summary>
     IMenuImmutable GetMenu();
 
     void CreateMenu(IMetamodelBuilder metamodel);
-
-    ISpecification Specification { get; }
 }

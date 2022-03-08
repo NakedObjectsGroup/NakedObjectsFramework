@@ -21,8 +21,7 @@ public sealed class UpdatedCallbackFacetViaMethod : UpdatedCallbackFacetAbstract
 
     [field: NonSerialized] private Action<object> updatedDelegate;
 
-    public UpdatedCallbackFacetViaMethod(MethodInfo method)
-        : base() {
+    public UpdatedCallbackFacetViaMethod(MethodInfo method) {
         this.method = method;
         updatedDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }

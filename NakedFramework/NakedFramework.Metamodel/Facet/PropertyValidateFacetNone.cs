@@ -13,9 +13,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PropertyValidateFacetNone : PropertyValidateFacetAbstract {
-    public PropertyValidateFacetNone()
-        : base() { }
-
     public override bool IsNoOp => true;
 
     /// <summary>

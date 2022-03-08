@@ -36,8 +36,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                 IObjectSpecImmutable returnType,
                                                 IObjectSpecImmutable elementType,
                                                 bool isQueryOnly,
-                                                ILogger<ActionInvocationFacetViaStaticMethod> logger)
-        : base() {
+                                                ILogger<ActionInvocationFacetViaStaticMethod> logger) {
         ActionMethod = method;
         this.logger = logger;
         (injected, paramCount) = ParameterCount(method);

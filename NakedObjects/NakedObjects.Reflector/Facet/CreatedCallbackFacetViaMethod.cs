@@ -22,8 +22,7 @@ public sealed class CreatedCallbackFacetViaMethod : CreatedCallbackFacetAbstract
 
     [field: NonSerialized] private Action<object> createdDelegate;
 
-    public CreatedCallbackFacetViaMethod(MethodInfo method)
-        : base() {
+    public CreatedCallbackFacetViaMethod(MethodInfo method) {
         this.method = method;
         createdDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }

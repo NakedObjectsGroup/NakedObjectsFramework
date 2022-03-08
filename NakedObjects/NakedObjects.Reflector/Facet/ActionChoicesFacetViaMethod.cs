@@ -33,8 +33,7 @@ public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, II
 
     [field: NonSerialized] private Func<object, object[], object> choicesDelegate;
 
-    public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, Type choicesType, ILogger<ActionChoicesFacetViaMethod> logger, bool isMultiple = false)
-        : base() {
+    public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, Type choicesType, ILogger<ActionChoicesFacetViaMethod> logger, bool isMultiple = false) {
         this.choicesMethod = choicesMethod;
         this.choicesType = choicesType;
         this.logger = logger;

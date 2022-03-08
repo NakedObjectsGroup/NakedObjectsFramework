@@ -21,8 +21,7 @@ public sealed class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, 
 
     [field: NonSerialized] private Action<object> loadedDelegate;
 
-    public LoadedCallbackFacetViaMethod(MethodInfo method)
-        : base() {
+    public LoadedCallbackFacetViaMethod(MethodInfo method) {
         this.method = method;
         loadedDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }

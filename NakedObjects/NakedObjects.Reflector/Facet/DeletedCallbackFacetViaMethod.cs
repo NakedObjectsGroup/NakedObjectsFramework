@@ -21,8 +21,7 @@ public sealed class DeletedCallbackFacetViaMethod : DeletedCallbackFacetAbstract
 
     [field: NonSerialized] private Action<object> deletedDelegate;
 
-    public DeletedCallbackFacetViaMethod(MethodInfo method)
-        : base() {
+    public DeletedCallbackFacetViaMethod(MethodInfo method) {
         this.method = method;
         deletedDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }
