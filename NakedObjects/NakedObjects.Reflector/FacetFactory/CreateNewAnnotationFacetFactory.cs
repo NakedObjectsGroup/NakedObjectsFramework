@@ -45,7 +45,7 @@ public sealed class CreateNewAnnotationFacetFactory : DomainObjectFacetFactoryPr
             var toCreateType = ToCreateType(method);
 
             if (toCreateType is not null && ObjectMethodHelpers.MatchParmsAndProperties(method, toCreateType, logger).Any()) {
-                FacetUtils.AddFacet(new CreateNewFacet(toCreateType, specification), specification);
+                FacetUtils.AddFacet(new CreateNewFacet(toCreateType), specification);
             }
         }
 

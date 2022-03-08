@@ -10,14 +10,13 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class PropertyValidateFacetAbstract : FacetAbstract, IPropertyValidateFacet {
-    protected PropertyValidateFacetAbstract(ISpecification holder)
+    protected PropertyValidateFacetAbstract()
         : base(Type) { }
 
     public static Type Type => typeof(IPropertyValidateFacet);

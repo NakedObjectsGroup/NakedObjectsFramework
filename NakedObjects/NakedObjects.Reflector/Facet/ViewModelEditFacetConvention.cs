@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ViewModelEditFacetConvention : ViewModelFacetAbstract {
-    public ViewModelEditFacetConvention(ISpecification holder) : base(Type, holder) { }
+    public ViewModelEditFacetConvention(ISpecification holder) : base(Type) { }
 
     private static Type Type => typeof(IViewModelFacet);
 

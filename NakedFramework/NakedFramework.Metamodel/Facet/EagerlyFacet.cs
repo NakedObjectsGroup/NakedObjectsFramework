@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class EagerlyFacet : FacetAbstract, IEagerlyFacet {
-    public EagerlyFacet(Do what, ISpecification holder)
+    public EagerlyFacet(Do what)
         : base(Type) =>
         What = what;
 

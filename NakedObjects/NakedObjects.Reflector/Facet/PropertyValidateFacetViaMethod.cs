@@ -27,7 +27,7 @@ public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstra
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
     public PropertyValidateFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<PropertyValidateFacetViaMethod> logger)
-        : base(holder) {
+        : base() {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

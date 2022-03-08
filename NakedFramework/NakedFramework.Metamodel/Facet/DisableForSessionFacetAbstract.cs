@@ -9,13 +9,12 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class DisableForSessionFacetAbstract : FacetAbstract, IDisableForSessionFacet {
-    protected DisableForSessionFacetAbstract(ISpecification holder)
+    protected DisableForSessionFacetAbstract()
         : base(Type) { }
 
     public static Type Type => typeof(IDisableForSessionFacet);

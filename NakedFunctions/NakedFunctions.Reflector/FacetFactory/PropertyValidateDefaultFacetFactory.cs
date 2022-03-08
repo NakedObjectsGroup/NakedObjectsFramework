@@ -23,17 +23,17 @@ public sealed class PropertyValidateDefaultFacetFactory : FunctionalFacetFactory
         : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo propertyInfo, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new PropertyValidateFacetDefault(specification), specification);
+        FacetUtils.AddFacet(new PropertyValidateFacetDefault(), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new PropertyValidateFacetDefault(specification), specification);
+        FacetUtils.AddFacet(new PropertyValidateFacetDefault(), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new PropertyValidateFacetDefault(holder), holder);
+        FacetUtils.AddFacet(new PropertyValidateFacetDefault(), holder);
         return metamodel;
     }
 }

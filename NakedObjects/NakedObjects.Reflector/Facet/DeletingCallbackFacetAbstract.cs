@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.Facet;
 [Serializable]
 public abstract class DeletingCallbackFacetAbstract : CallbackFacetAbstract, IDeletingCallbackFacet {
     protected DeletingCallbackFacetAbstract(ISpecification holder)
-        : base(Type, holder) { }
+        : base(Type) { }
 
     public static Type Type => typeof(IDeletingCallbackFacet);
 }

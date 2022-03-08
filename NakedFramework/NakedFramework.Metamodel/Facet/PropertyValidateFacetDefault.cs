@@ -10,13 +10,12 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
-    public PropertyValidateFacetDefault(ISpecification holder)
+    public PropertyValidateFacetDefault()
         : base(typeof(IPropertyValidateFacet)) { }
 
     #region IPropertyValidateFacet Members

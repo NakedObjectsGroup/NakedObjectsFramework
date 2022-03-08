@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MemberOrderFacet : FacetAbstract, IMemberOrderFacet {
-    public MemberOrderFacet(string name, string sequence, ISpecification holder)
+    public MemberOrderFacet(string name, string sequence)
         : base(typeof(IMemberOrderFacet)) {
         Sequence = sequence;
         Name = name;

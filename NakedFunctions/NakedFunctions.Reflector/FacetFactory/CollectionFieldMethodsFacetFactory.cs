@@ -51,7 +51,7 @@ public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryP
         var capitalizedName = property.Name;
         var type = property.DeclaringType;
 
-        var facets = new List<IFacet> { new PropertyAccessorFacet(property, collection) };
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property) };
 
         AddSetFacet(facets, property, collection);
 
@@ -63,7 +63,7 @@ public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryP
 
     private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, ISpecification collection) {
         if (CollectionUtils.IsSet(property.PropertyType)) {
-            collectionFacets.Add(new IsASetFacet(collection));
+            collectionFacets.Add(new IsASetFacet());
         }
     }
 

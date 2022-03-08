@@ -65,7 +65,7 @@ public sealed class DescribedAsAnnotationFacetFactory : DomainObjectFacetFactory
             _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
         };
 
-    private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) => new DescribedAsFacetAnnotation(attribute.Value, holder);
+    private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) => new DescribedAsFacetAnnotation(attribute.Value);
 
-    private static IDescribedAsFacet Create(DescriptionAttribute attribute, ISpecification holder) => new DescribedAsFacetAnnotation(attribute.Description, holder);
+    private static IDescribedAsFacet Create(DescriptionAttribute attribute, ISpecification holder) => new DescribedAsFacetAnnotation(attribute.Description);
 }

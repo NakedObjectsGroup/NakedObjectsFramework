@@ -9,14 +9,13 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MemberNamedFacetInferred : SingleStringValueFacetAbstract, IMemberNamedFacet {
-    public MemberNamedFacetInferred(string value, ISpecification holder)
-        : base(typeof(IMemberNamedFacet), holder, NameUtils.NaturalName(value)) { }
+    public MemberNamedFacetInferred(string value)
+        : base(typeof(IMemberNamedFacet), NameUtils.NaturalName(value)) { }
 
     public override bool CanAlwaysReplace => false;
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();

@@ -8,7 +8,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -17,17 +16,17 @@ public abstract class DataTypeFacetAbstract : FacetAbstract, IDataTypeFacet {
     private readonly string customDataType;
     private readonly DataType dataType;
 
-    private DataTypeFacetAbstract(DataType dataType, string customDataType, ISpecification holder)
+    private DataTypeFacetAbstract(DataType dataType, string customDataType)
         : base(Type) {
         this.dataType = dataType;
         this.customDataType = customDataType;
     }
 
-    protected DataTypeFacetAbstract(DataType dataType, ISpecification holder)
-        : this(dataType, "", holder) { }
+    protected DataTypeFacetAbstract(DataType dataType)
+        : this(dataType, "") { }
 
-    protected DataTypeFacetAbstract(string customDataType, ISpecification holder)
-        : this(System.ComponentModel.DataAnnotations.DataType.Custom, customDataType, holder) { }
+    protected DataTypeFacetAbstract(string customDataType)
+        : this(System.ComponentModel.DataAnnotations.DataType.Custom, customDataType) { }
 
     public static Type Type => typeof(IDataTypeFacet);
 

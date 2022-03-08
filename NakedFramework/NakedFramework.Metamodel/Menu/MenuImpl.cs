@@ -167,7 +167,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
 
     private static void AddFriendlyName(string friendlyName, IActionSpecImmutable actionSpec) {
         if (!string.IsNullOrWhiteSpace(friendlyName)) {
-            var facet = new MemberNamedFacetAnnotation(friendlyName, actionSpec);
+            var facet = new MemberNamedFacetAnnotation(friendlyName);
             FacetUtils.AddFacet(facet, actionSpec);
         }
     }

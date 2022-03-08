@@ -25,7 +25,7 @@ public sealed class OnUpdatingErrorCallbackFacetViaMethod : OnUpdatingErrorCallb
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
     public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger)
-        : base(holder) {
+        : base() {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

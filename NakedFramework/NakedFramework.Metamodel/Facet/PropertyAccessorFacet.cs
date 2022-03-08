@@ -10,7 +10,6 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -19,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet {
     private readonly PropertyInfo propertyMethod;
 
-    public PropertyAccessorFacet(PropertyInfo property, ISpecification holder)
+    public PropertyAccessorFacet(PropertyInfo property)
         : base(typeof(IPropertyAccessorFacet)) =>
         propertyMethod = property;
 

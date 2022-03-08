@@ -10,7 +10,6 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Utils;
 
@@ -18,11 +17,8 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public class RangeFacet : IRangeFacet, ISerializable {
-    // not using FacetAbstract because of implementing ISerializable
-    private ISpecification holder;
-
-    public RangeFacet(IConvertible min, IConvertible max, bool isDateRange, ISpecification holder) {
-        this.holder = holder;
+    
+    public RangeFacet(IConvertible min, IConvertible max, bool isDateRange) {
         Min = min;
         Max = max;
         IsDateRange = isDateRange;
@@ -34,7 +30,6 @@ public class RangeFacet : IRangeFacet, ISerializable {
         Max = info.GetValue<IConvertible>("Max");
         IsDateRange = info.GetValue<bool>("IsDateRange");
         FacetType = info.GetValue<Type>("facetType");
-        holder = info.GetValue<ISpecification>("holder");
     }
 
     public static Type Type => typeof(IRangeFacet);
@@ -46,7 +41,6 @@ public class RangeFacet : IRangeFacet, ISerializable {
         info.AddValue<IConvertible>("Max", Max);
         info.AddValue<bool>("IsDateRange", IsDateRange);
         info.AddValue<Type>("facetType", FacetType);
-        info.AddValue<ISpecification>("holder", holder);
     }
 
     #endregion
@@ -118,8 +112,6 @@ public class RangeFacet : IRangeFacet, ISerializable {
 
     public IConvertible Min { get; private set; }
     public IConvertible Max { get; private set; }
-
-    public virtual ISpecification Specification => holder;
 
     /// <summary>
     ///     Assume implementation is <i>not</i> a no-op.

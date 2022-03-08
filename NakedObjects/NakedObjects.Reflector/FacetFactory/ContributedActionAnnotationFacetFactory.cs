@@ -51,7 +51,7 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
             return metamodel; //Nothing to do
         }
 
-        var facet = new ContributedActionFacet(holder);
+        var facet = new ContributedActionFacet();
         foreach (var p in paramsWithAttribute) {
             var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
             var parameterType = p.ParameterType;
@@ -102,7 +102,7 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
     }
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var facet = new ContributedToLocalCollectionFacet(holder);
+        var facet = new ContributedToLocalCollectionFacet();
         var elementType = p.ParameterType.GetGenericArguments()[0];
         IObjectSpecBuilder type;
         (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);

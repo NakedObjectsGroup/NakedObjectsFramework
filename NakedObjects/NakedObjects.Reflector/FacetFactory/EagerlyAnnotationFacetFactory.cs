@@ -43,5 +43,5 @@ public sealed class EagerlyAnnotationFacetFactory : DomainObjectFacetFactoryProc
         return metamodel;
     }
 
-    private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) => attribute == null ? null : new EagerlyFacet(Do.Rendering, holder);
+    private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) => attribute == null ? null : new EagerlyFacet(Do.Rendering);
 }

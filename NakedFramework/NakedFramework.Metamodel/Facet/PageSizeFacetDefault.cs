@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -14,8 +13,8 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PageSizeFacetDefault : PageSizeFacetAbstract {
     private const int DefaultPageSize = 20;
 
-    public PageSizeFacetDefault(ISpecification holder)
-        : base(DefaultPageSize, holder) { }
+    public PageSizeFacetDefault()
+        : base(DefaultPageSize) { }
 
     public override bool IsNoOp => true;
 }

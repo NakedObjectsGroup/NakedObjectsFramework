@@ -48,7 +48,7 @@ public sealed class HiddenAnnotationFacetFactory : DomainObjectFacetFactoryProce
         return metamodel;
     }
 
-    private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Value, holder);
+    private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Value);
 
-    private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
+    private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always);
 }

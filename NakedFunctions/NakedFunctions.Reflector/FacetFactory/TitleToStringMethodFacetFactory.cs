@@ -45,7 +45,7 @@ public sealed class TitleToStringMethodFacetFactory : FunctionalFacetFactoryProc
 
             if (toStringMethod is not null) {
                 // mask method can be null, facet defaults to ToString() which is always there and so no need to pass in 
-                IFacet titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification, Logger<TitleFacetViaToStringMethod>());
+                IFacet titleFacet = new TitleFacetViaToStringMethod(maskMethod, Logger<TitleFacetViaToStringMethod>());
                 FacetUtils.AddFacet(titleFacet, specification);
             }
         }

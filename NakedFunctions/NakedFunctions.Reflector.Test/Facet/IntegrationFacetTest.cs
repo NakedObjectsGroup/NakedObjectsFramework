@@ -20,7 +20,7 @@ public class IntegrationFacetTest {
     public void TestIntegrate() {
         var executed = false;
 
-        var testFacet = new IntegrationFacet(null, mb => executed = true);
+        var testFacet = new IntegrationFacet(mb => executed = true);
 
         testFacet.Execute(null);
 

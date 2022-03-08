@@ -42,13 +42,13 @@ public sealed class EnumFacetFactory : FunctionalFacetFactoryProcessor {
 
         var typeOrNulledType = TypeUtils.GetNulledType(typeOfEnum);
         if (TypeUtils.IsEnum(typeOrNulledType)) {
-            FacetUtils.AddFacet(new EnumFacet(holder, typeOrNulledType), holder);
+            FacetUtils.AddFacet(new EnumFacet(typeOrNulledType), holder);
             return;
         }
 
         if (CollectionUtils.IsGenericOfEnum(typeOfEnum)) {
             var enumInstanceType = typeOfEnum.GetGenericArguments().First();
-            FacetUtils.AddFacet(new EnumFacet(holder, enumInstanceType), holder);
+            FacetUtils.AddFacet(new EnumFacet(enumInstanceType), holder);
         }
     }
 
@@ -59,5 +59,5 @@ public sealed class EnumFacetFactory : FunctionalFacetFactoryProcessor {
         return metamodel;
     }
 
-    private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) => attribute is null ? null : new EnumFacet(holder, attribute.EnumType);
+    private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) => attribute is null ? null : new EnumFacet(attribute.EnumType);
 }

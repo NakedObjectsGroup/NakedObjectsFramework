@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -16,8 +15,8 @@ namespace NakedFramework.Metamodel.Facet;
 /// </summary>
 [Serializable]
 public sealed class NotCountedFacet : MarkerFacetAbstract, INotCountedFacet {
-    public NotCountedFacet(ISpecification holder)
-        : base(typeof(INotCountedFacet), holder) { }
+    public NotCountedFacet()
+        : base(typeof(INotCountedFacet)) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

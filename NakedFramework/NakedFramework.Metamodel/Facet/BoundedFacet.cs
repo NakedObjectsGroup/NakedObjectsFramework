@@ -9,15 +9,14 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
-    public BoundedFacet(ISpecification holder)
-        : base(typeof(IBoundedFacet), holder) { }
+    public BoundedFacet()
+        : base(typeof(IBoundedFacet)) { }
 
     public static string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;
 

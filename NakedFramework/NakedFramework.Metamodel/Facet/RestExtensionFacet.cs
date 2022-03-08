@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class RestExtensionFacet : FacetAbstract, IRestExtensionFacet {
-    public RestExtensionFacet(string name, string value, ISpecification holder)
+    public RestExtensionFacet(string name, string value)
         : base(typeof(IRestExtensionFacet)) {
         Name = name;
         Value = value;

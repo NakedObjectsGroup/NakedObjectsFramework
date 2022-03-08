@@ -93,7 +93,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArrayContains() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet(specification);
+        var testArrayFacet = new ArrayFacet();
         var testAdaptedArray = AdapterFor(testArray);
         Contains(testArrayFacet, testAdaptedArray, "element1", "element3");
     }
@@ -101,7 +101,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArrayFirstElement() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet(specification);
+        var testArrayFacet = new ArrayFacet();
         var testAdaptedArray = AdapterFor(testArray);
         FirstElement(testArrayFacet, testAdaptedArray, "element1");
     }
@@ -109,7 +109,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArrayGetEnumeratorFor() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet(specification);
+        var testArrayFacet = new ArrayFacet();
         var testAdaptedArray = AdapterFor(testArray);
         ValidateCollection(testArrayFacet, testAdaptedArray, testArray);
     }
@@ -118,7 +118,7 @@ public class CollectionFacetsTest {
     public void ArrayInit() {
         var testArray = new[] { "element1", "element2" };
         var testArray1 = new[] { "element2", "element3" };
-        var testArrayFacet = new ArrayFacet(specification);
+        var testArrayFacet = new ArrayFacet();
         var testAdaptedArray = AdapterFor(testArray);
         Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
     }
@@ -127,7 +127,7 @@ public class CollectionFacetsTest {
     public void ArrayInitAllEmpty() {
         var testArray = Array.Empty<string>();
         var testArray1 = Array.Empty<string>();
-        var testArrayFacet = new ArrayFacet(specification);
+        var testArrayFacet = new ArrayFacet();
         var testAdaptedArray = AdapterFor(testArray);
         Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
     }
@@ -136,7 +136,7 @@ public class CollectionFacetsTest {
     public void ArrayInitEmpty() {
         var testArray = Array.Empty<string>();
         var testArray1 = new[] { "element2", "element3" };
-        var testArrayFacet = new ArrayFacet(specification);
+        var testArrayFacet = new ArrayFacet();
         var testAdaptedArray = AdapterFor(testArray);
         Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
     }
@@ -145,7 +145,7 @@ public class CollectionFacetsTest {
     public void ArrayInitToEmpty() {
         var testArray = new[] { "element1", "element2" };
         var testArray1 = Array.Empty<string>();
-        var testArrayFacet = new ArrayFacet(specification);
+        var testArrayFacet = new ArrayFacet();
         var testAdaptedArray = AdapterFor(testArray);
         Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
     }
@@ -153,7 +153,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArrayPage() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet(specification);
+        var testArrayFacet = new ArrayFacet();
         var testAdaptedArray = AdapterFor(testArray);
         Page(testArrayFacet, testAdaptedArray, "element1");
     }
@@ -161,7 +161,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArraySize() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet(specification);
+        var testArrayFacet = new ArrayFacet();
         var testAdaptedArray = AdapterFor(testArray);
         Size(testArrayFacet, testAdaptedArray);
     }
@@ -169,7 +169,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void CollectionContains() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet(specification);
+        var testCollectionFacet = new CollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
     }
@@ -177,7 +177,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void CollectionFirstElement() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet(specification);
+        var testCollectionFacet = new CollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -185,7 +185,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void CollectionGetEnumeratorFor() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet(specification);
+        var testCollectionFacet = new CollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>());
     }
@@ -194,7 +194,7 @@ public class CollectionFacetsTest {
     public void CollectionInit() {
         var testCollection = new ArrayList { "element1", "element2" };
         var testCollection1 = new[] { "element2", "element3" };
-        var testCollectionFacet = new CollectionFacet(specification);
+        var testCollectionFacet = new CollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
     }
@@ -203,7 +203,7 @@ public class CollectionFacetsTest {
     public void CollectionInitAllEmpty() {
         var testCollection = new ArrayList();
         var testCollection1 = Array.Empty<string>();
-        var testCollectionFacet = new CollectionFacet(specification);
+        var testCollectionFacet = new CollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
     }
@@ -212,7 +212,7 @@ public class CollectionFacetsTest {
     public void CollectionInitEmpty() {
         var testCollection = new ArrayList();
         var testCollection1 = new[] { "element2", "element3" };
-        var testCollectionFacet = new CollectionFacet(specification);
+        var testCollectionFacet = new CollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
     }
@@ -221,25 +221,25 @@ public class CollectionFacetsTest {
     public void CollectionInitToEmpty() {
         var testCollection = new ArrayList { "element1", "element2" };
         var testCollection1 = Array.Empty<string>();
-        var testCollectionFacet = new CollectionFacet(specification);
+        var testCollectionFacet = new CollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
     }
 
     [TestMethod]
     public void CollectionNotIsSet() {
-        ICollectionFacet testCollectionFacet = new CollectionFacet(specification);
+        ICollectionFacet testCollectionFacet = new CollectionFacet();
         Assert.IsFalse(testCollectionFacet.IsASet);
-        testCollectionFacet = new ArrayFacet(specification);
+        testCollectionFacet = new ArrayFacet();
         Assert.IsFalse(testCollectionFacet.IsASet);
-        testCollectionFacet = new CollectionFacet(specification);
+        testCollectionFacet = new CollectionFacet();
         Assert.IsFalse(testCollectionFacet.IsASet);
     }
 
     [TestMethod]
     public void CollectionPage() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet(specification);
+        var testCollectionFacet = new CollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Page(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -247,7 +247,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void CollectionSize() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet(specification);
+        var testCollectionFacet = new CollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Size(testCollectionFacet, testAdaptedCollection);
     }
@@ -255,7 +255,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericCollectionContains() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericCollectionFacet(specification);
+        var testCollectionFacet = new GenericCollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
     }
@@ -263,7 +263,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericCollectionFirstElement() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericCollectionFacet(specification);
+        var testCollectionFacet = new GenericCollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -271,7 +271,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericCollectionGetEnumeratorFor() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericCollectionFacet(specification);
+        var testCollectionFacet = new GenericCollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
     }
@@ -280,7 +280,7 @@ public class CollectionFacetsTest {
     public void GenericCollectionInit() {
         var testCollection = new List<string> { "element1", "element2" };
         var testCollection1 = new[] { "element2", "element3" };
-        var testCollectionFacet = new GenericCollectionFacet(specification);
+        var testCollectionFacet = new GenericCollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
     }
@@ -289,7 +289,7 @@ public class CollectionFacetsTest {
     public void GenericCollectionInitAllEmpty() {
         var testCollection = new List<string>();
         var testCollection1 = Array.Empty<string>();
-        var testCollectionFacet = new GenericCollectionFacet(specification);
+        var testCollectionFacet = new GenericCollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
     }
@@ -298,7 +298,7 @@ public class CollectionFacetsTest {
     public void GenericCollectionInitEmpty() {
         var testCollection = new List<string>();
         var testCollection1 = new[] { "element2", "element3" };
-        var testCollectionFacet = new GenericCollectionFacet(specification);
+        var testCollectionFacet = new GenericCollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
     }
@@ -307,26 +307,26 @@ public class CollectionFacetsTest {
     public void GenericCollectionInitToEmpty() {
         var testCollection = new List<string> { "element1", "element2" };
         var testCollection1 = Array.Empty<string>();
-        var testCollectionFacet = new GenericCollectionFacet(specification);
+        var testCollectionFacet = new GenericCollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
     }
 
     [TestMethod]
     public void GenericCollectionIsSet() {
-        ICollectionFacet testCollectionFacet = new GenericCollectionFacet(specification, true);
+        ICollectionFacet testCollectionFacet = new GenericCollectionFacet(true);
         Assert.IsTrue(testCollectionFacet.IsASet);
-        testCollectionFacet = new GenericIEnumerableFacet(specification, true);
+        testCollectionFacet = new GenericIEnumerableFacet(true);
         Assert.IsTrue(testCollectionFacet.IsASet);
-        testCollectionFacet = new GenericIQueryableFacet(specification, true);
+        testCollectionFacet = new GenericIQueryableFacet(true);
         Assert.IsTrue(testCollectionFacet.IsASet);
     }
 
     [TestMethod]
     public void GenericCollectionNotIsSet() {
-        ICollectionFacet testCollectionFacet = new GenericCollectionFacet(specification);
+        ICollectionFacet testCollectionFacet = new GenericCollectionFacet();
         Assert.IsFalse(testCollectionFacet.IsASet);
-        testCollectionFacet = new GenericIEnumerableFacet(specification);
+        testCollectionFacet = new GenericIEnumerableFacet();
         Assert.IsFalse(testCollectionFacet.IsASet);
         testCollectionFacet = new GenericIQueryableFacet(specification);
         Assert.IsFalse(testCollectionFacet.IsASet);
@@ -335,7 +335,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericCollectionPage() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericCollectionFacet(specification);
+        var testCollectionFacet = new GenericCollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Page(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -343,7 +343,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericCollectionSize() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericCollectionFacet(specification);
+        var testCollectionFacet = new GenericCollectionFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Size(testCollectionFacet, testAdaptedCollection);
     }
@@ -351,7 +351,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerableContains() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet(specification);
+        var testCollectionFacet = new GenericIEnumerableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
     }
@@ -359,7 +359,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerableFirstElement() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet(specification);
+        var testCollectionFacet = new GenericIEnumerableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -367,7 +367,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerableGetEnumeratorFor() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet(specification);
+        var testCollectionFacet = new GenericIEnumerableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
     }
@@ -375,7 +375,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerablePage() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet(specification);
+        var testCollectionFacet = new GenericIEnumerableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Page(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -383,7 +383,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerableSize() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet(specification);
+        var testCollectionFacet = new GenericIEnumerableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Size(testCollectionFacet, testAdaptedCollection);
     }

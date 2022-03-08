@@ -10,7 +10,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -24,7 +23,7 @@ namespace NakedFramework.Metamodel.Facet;
 /// </para>
 [Serializable]
 public abstract class HideForSessionFacetAbstract : FacetAbstract, IHideForSessionFacet {
-    protected HideForSessionFacetAbstract(ISpecification holder)
+    protected HideForSessionFacetAbstract()
         : base(Type) { }
 
     public static Type Type => typeof(IHideForSessionFacet);

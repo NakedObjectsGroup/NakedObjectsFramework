@@ -55,5 +55,5 @@ public sealed class DescribedAsAnnotationFacetFactory : FunctionalFacetFactoryPr
         return metamodel;
     }
 
-    private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) => attribute is null ? null : new DescribedAsFacetAnnotation(attribute.Value, holder);
+    private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) => attribute is null ? null : new DescribedAsFacetAnnotation(attribute.Value);
 }

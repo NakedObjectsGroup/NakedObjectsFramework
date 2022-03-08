@@ -60,5 +60,5 @@ public sealed class MultiLineAnnotationFacetFactory : DomainObjectFacetFactoryPr
         return metamodel;
     }
 
-    private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) => attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
+    private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) => attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width) : null;
 }

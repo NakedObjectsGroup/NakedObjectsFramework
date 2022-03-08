@@ -45,5 +45,5 @@ public sealed class DisabledAnnotationFacetFactory : DomainObjectFacetFactoryPro
         return metamodel;
     }
 
-    private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute is null ? null : new DisabledFacetAnnotation(attribute.Value, holder);
+    private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute is null ? null : new DisabledFacetAnnotation(attribute.Value);
 }

@@ -7,15 +7,14 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ImmutableFacetImpl : ImmutableFacetAbstract {
-    protected ImmutableFacetImpl(WhenTo when, ISpecification holder)
-        : base(when, holder) { }
+    protected ImmutableFacetImpl(WhenTo when)
+        : base(when) { }
 
     public override string DisabledReason(INakedObjectAdapter target) =>
         Value switch {

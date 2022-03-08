@@ -32,14 +32,14 @@ public sealed class DefaultNamingFacetFactory : FunctionalFacetFactoryProcessor,
         var facets = new List<IFacet>();
         var namedFacet = specification.GetFacet<INamedFacet>();
         if (namedFacet is null) {
-            namedFacet = new NamedFacetInferred(type.Name, specification);
+            namedFacet = new NamedFacetInferred(type.Name);
             facets.Add(namedFacet);
         }
 
         var pluralFacet = specification.GetFacet<IPluralFacet>();
         if (pluralFacet is null) {
             var pluralName = NameUtils.PluralName(namedFacet.FriendlyName);
-            pluralFacet = new PluralFacetInferred(pluralName, specification);
+            pluralFacet = new PluralFacetInferred(pluralName);
             facets.Add(pluralFacet);
         }
 

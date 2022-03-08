@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class NotPersistedFacet : MarkerFacetAbstract, INotPersistedFacet {
-    public NotPersistedFacet(ISpecification holder)
-        : base(typeof(INotPersistedFacet), holder) { }
+    public NotPersistedFacet()
+        : base(typeof(INotPersistedFacet)) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

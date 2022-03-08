@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class SingleIntValueFacetAbstract : FacetAbstract, ISingleIntValueFacet {
-    protected SingleIntValueFacetAbstract(Type facetType, ISpecification holder, int valueInt)
+    protected SingleIntValueFacetAbstract(Type facetType, int valueInt)
         : base(facetType) =>
         Value = valueInt;
 

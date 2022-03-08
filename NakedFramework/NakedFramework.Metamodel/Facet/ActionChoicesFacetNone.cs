@@ -9,15 +9,13 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
-    public ActionChoicesFacetNone(ISpecification holder)
-        : base(holder) { }
+    public ActionChoicesFacetNone() { }
 
     public override bool IsNoOp => true;
 

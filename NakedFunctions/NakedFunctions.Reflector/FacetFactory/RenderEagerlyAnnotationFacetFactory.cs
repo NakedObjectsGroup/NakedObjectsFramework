@@ -43,5 +43,5 @@ public sealed class RenderEagerlyAnnotationFacetFactory : FunctionalFacetFactory
         return metamodel;
     }
 
-    private static IEagerlyFacet Create(RenderEagerlyAttribute attribute, ISpecification holder) => attribute == null ? null : new EagerlyFacet(Do.Rendering, holder);
+    private static IEagerlyFacet Create(RenderEagerlyAttribute attribute, ISpecification holder) => attribute == null ? null : new EagerlyFacet(Do.Rendering);
 }

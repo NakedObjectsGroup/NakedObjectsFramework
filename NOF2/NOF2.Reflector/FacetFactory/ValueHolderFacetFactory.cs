@@ -42,9 +42,9 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
         var facets = GetFacets(type, semanticsProvider, holder);
 
         facets.Add(GetMaskFacet(type, valueType, holder));
-        facets.Add(new TypeFacet(holder, valueType));
-        facets.Add(new NotPersistedFacet(holder));
-        facets.Add(new AggregatedFacetAlways(holder));
+        facets.Add(new TypeFacet(valueType));
+        facets.Add(new NotPersistedFacet());
+        facets.Add(new AggregatedFacetAlways());
 
         FacetUtils.AddFacets(facets, holder);
     }
@@ -63,16 +63,16 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
 
     // Used via reflection below - do not remove 
     // ReSharper disable UnusedMember.Local
-    private static IFacet GetParserFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ParseableFacetUsingParser<T>(sm, holder);
+    private static IFacet GetParserFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ParseableFacetUsingParser<T>(sm);
 
-    private static IFacet GetTitleFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new TitleFacetUsingParser<T>(sm, holder);
+    private static IFacet GetTitleFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new TitleFacetUsingParser<T>(sm);
 
-    private static IFacet GetValueFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ValueFacetFromSemanticProvider<T>(sm, holder);
+    private static IFacet GetValueFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ValueFacetFromSemanticProvider<T>(sm);
 
     private static IFacet GetMaskFacet<T, TU>(ISpecificationBuilder holder) where T : class, IValueHolder<TU>, new() {
         var vh = new T();
         var mask = vh.Mask;
-        return mask is null ? null : new MaskFacet(mask, holder);
+        return mask is null ? null : new MaskFacet(mask);
     }
     // ReSharper restore UnusedMember.Local
 }

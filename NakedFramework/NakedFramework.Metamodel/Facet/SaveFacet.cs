@@ -9,13 +9,12 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class SaveFacet : FacetAbstract, ISaveFacet {
-    public SaveFacet(ISpecification holder)
+    public SaveFacet()
         : base(Type) { }
 
     public static Type Type => typeof(ISaveFacet);

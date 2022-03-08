@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class PluralFacetAbstract : SingleStringValueFacetAbstract, IPluralFacet {
-    protected PluralFacetAbstract(string stringValue, ISpecification holder)
-        : base(Type, holder, stringValue) { }
+    protected PluralFacetAbstract(string stringValue)
+        : base(Type, stringValue) { }
 
     public static Type Type => typeof(IPluralFacet);
 }

@@ -8,7 +8,6 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -19,9 +18,7 @@ public sealed class AuthorizationHideForSessionFacet : HideForSessionFacetAbstra
     private readonly string[] users;
 
     public AuthorizationHideForSessionFacet(string roles,
-                                            string users,
-                                            ISpecification holder)
-        : base(holder) {
+                                            string users) {
         this.roles = FacetUtils.SplitOnComma(roles);
         this.users = FacetUtils.SplitOnComma(users);
     }

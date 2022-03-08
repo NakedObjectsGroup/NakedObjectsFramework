@@ -31,5 +31,5 @@ public sealed class ActionDefaultAnnotationFacetFactory : FunctionalFacetFactory
         return metamodel;
     }
 
-    private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, bool isDateTime, ISpecification holder) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, isDateTime, holder);
+    private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, bool isDateTime, ISpecification holder) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, isDateTime);
 }

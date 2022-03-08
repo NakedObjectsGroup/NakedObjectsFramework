@@ -9,14 +9,13 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class DescribedAsFacetAbstract : SingleStringValueFacetAbstract, IDescribedAsFacet {
-    protected DescribedAsFacetAbstract(string valueString, ISpecification holder)
-        : base(Type, holder, valueString) { }
+    protected DescribedAsFacetAbstract(string valueString)
+        : base(Type, valueString) { }
 
     public static Type Type => typeof(IDescribedAsFacet);
     public string Description(INakedObjectAdapter adapter, INakedFramework framework) => Value;

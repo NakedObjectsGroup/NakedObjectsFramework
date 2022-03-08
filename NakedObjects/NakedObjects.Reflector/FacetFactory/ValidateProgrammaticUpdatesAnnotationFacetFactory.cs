@@ -30,5 +30,5 @@ public sealed class ValidateProgrammaticUpdatesAnnotationFacetFactory : DomainOb
         return metamodel;
     }
 
-    private static IValidateProgrammaticUpdatesFacet Create(ValidateProgrammaticUpdatesAttribute attribute, ISpecification holder) => attribute is null ? null : new ValidateProgrammaticUpdatesFacetAnnotation(holder);
+    private static IValidateProgrammaticUpdatesFacet Create(ValidateProgrammaticUpdatesAttribute attribute, ISpecification holder) => attribute is null ? null : new ValidateProgrammaticUpdatesFacetAnnotation();
 }

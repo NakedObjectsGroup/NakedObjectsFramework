@@ -25,7 +25,7 @@ public sealed class OnPersistingErrorCallbackFacetViaMethod : OnPersistingErrorC
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
     public OnPersistingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<OnPersistingErrorCallbackFacetViaMethod> logger)
-        : base(holder) {
+        : base() {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

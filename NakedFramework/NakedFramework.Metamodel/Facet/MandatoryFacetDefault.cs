@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -24,8 +23,7 @@ namespace NakedFramework.Metamodel.Facet;
 /// </para>
 [Serializable]
 public sealed class MandatoryFacetDefault : MandatoryFacetAbstract {
-    public MandatoryFacetDefault(ISpecification holder)
-        : base(holder) { }
+    public MandatoryFacetDefault() { }
 
     public override bool IsMandatory => true;
 

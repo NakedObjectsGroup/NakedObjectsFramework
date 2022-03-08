@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyCheckFacet {
-    public ConcurrencyCheckFacet(ISpecification holder)
-        : base(Type, holder) { }
+    public ConcurrencyCheckFacet()
+        : base(Type) { }
 
     public static Type Type => typeof(IConcurrencyCheckFacet);
 }

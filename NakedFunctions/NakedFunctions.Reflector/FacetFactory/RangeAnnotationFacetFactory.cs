@@ -36,5 +36,5 @@ public sealed class RangeAnnotationFacetFactory : FunctionalFacetFactoryProcesso
     }
 
     private static IRangeFacet Create(ValueRangeAttribute attribute, bool isDate, ISpecification holder) =>
-        attribute is null ? null : new RangeFacet(attribute.Minimum, attribute.Maximum, isDate, holder);
+        attribute is null ? null : new RangeFacet(attribute.Minimum, attribute.Maximum, isDate);
 }

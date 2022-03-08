@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -15,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenValueFacet {
     private readonly WhenTo when;
 
-    protected SingleWhenValueFacetAbstract(Type facetType, ISpecification holder, WhenTo when)
+    protected SingleWhenValueFacetAbstract(Type facetType, WhenTo when)
         : base(facetType) =>
         this.when = when;
 

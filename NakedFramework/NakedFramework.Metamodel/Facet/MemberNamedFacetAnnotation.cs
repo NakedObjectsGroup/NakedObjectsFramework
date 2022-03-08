@@ -9,14 +9,13 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MemberNamedFacetAnnotation : SingleStringValueFacetAbstract, IMemberNamedFacet {
-    public MemberNamedFacetAnnotation(string value, ISpecification holder)
-        : base(typeof(IMemberNamedFacet), holder, value) { }
+    public MemberNamedFacetAnnotation(string value)
+        : base(typeof(IMemberNamedFacet), value) { }
 
     // Might be set from annotation or from display name on menu
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();

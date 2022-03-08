@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -18,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 /// </summary>
 [Serializable]
 public abstract class CallbackFacetAbstract : FacetAbstract, ICallbackFacet {
-    protected CallbackFacetAbstract(Type facetType, ISpecification holder)
+    protected CallbackFacetAbstract(Type facetType)
         : base(facetType) { }
 
     #region ICallbackFacet Members

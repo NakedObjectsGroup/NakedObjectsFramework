@@ -37,7 +37,7 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
                                          ISpecification holder,
                                          ILogger<ActionChoicesFacetViaFunction> logger,
                                          bool isMultiple = false)
-        : base(holder) {
+        : base() {
         this.choicesMethod = choicesMethod;
         this.choicesType = choicesType;
         IsMultiple = isMultiple;

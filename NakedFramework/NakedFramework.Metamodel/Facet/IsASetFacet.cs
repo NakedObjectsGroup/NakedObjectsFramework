@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class IsASetFacet : MarkerFacetAbstract, IIsASetFacet {
-    public IsASetFacet(ISpecification holder) : base(Type, holder) { }
+    public IsASetFacet() : base(Type) { }
 
     public static Type Type => typeof(IIsASetFacet);
 }

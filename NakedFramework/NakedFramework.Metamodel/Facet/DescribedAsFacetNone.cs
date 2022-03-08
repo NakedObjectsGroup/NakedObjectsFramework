@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -15,8 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 /// </summary>
 [Serializable]
 public sealed class DescribedAsFacetNone : DescribedAsFacetAbstract {
-    public DescribedAsFacetNone(ISpecification holder)
-        : base("", holder) { }
+    public DescribedAsFacetNone()
+        : base("") { }
 
     public override bool IsNoOp => true;
 }

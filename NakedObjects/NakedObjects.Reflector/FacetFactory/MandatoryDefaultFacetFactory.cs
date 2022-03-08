@@ -34,17 +34,17 @@ public sealed class MandatoryDefaultFacetFactory : DomainObjectFacetFactoryProce
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new MandatoryFacetDefault(specification), specification);
+        FacetUtils.AddFacet(new MandatoryFacetDefault(), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new MandatoryFacetDefault(specification), specification);
+        FacetUtils.AddFacet(new MandatoryFacetDefault(), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new MandatoryFacetDefault(holder), holder);
+        FacetUtils.AddFacet(new MandatoryFacetDefault(), holder);
         return metamodel;
     }
 }

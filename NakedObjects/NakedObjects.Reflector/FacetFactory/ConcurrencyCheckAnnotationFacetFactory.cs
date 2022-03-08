@@ -31,5 +31,5 @@ public sealed class ConcurrencyCheckAnnotationFacetFactory : DomainObjectFacetFa
         return metamodel;
     }
 
-    private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
+    private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet();
 }

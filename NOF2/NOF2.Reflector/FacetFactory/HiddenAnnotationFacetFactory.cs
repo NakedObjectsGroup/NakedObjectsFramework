@@ -56,5 +56,5 @@ public sealed class HiddenAnnotationFacetFactory : AbstractNOF2FacetFactoryProce
         return metamodel;
     }
 
-    private static IHiddenFacet Create(IHiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(Map(attribute.WhenTo), holder);
+    private static IHiddenFacet Create(IHiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(Map(attribute.WhenTo));
 }

@@ -31,5 +31,5 @@ public sealed class DisabledAnnotationFacetFactory : FunctionalFacetFactoryProce
         return metamodel;
     }
 
-    private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute is null ? null : new DisabledFacetAnnotation(WhenTo.Always, holder);
+    private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute is null ? null : new DisabledFacetAnnotation(WhenTo.Always);
 }

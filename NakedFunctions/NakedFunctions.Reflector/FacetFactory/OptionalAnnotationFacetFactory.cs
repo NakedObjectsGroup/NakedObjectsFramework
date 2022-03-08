@@ -71,5 +71,5 @@ public sealed class OptionalAnnotationFacetFactory : FunctionalFacetFactoryProce
         return metamodel;
     }
 
-    private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) => attribute is not null ? new OptionalFacet(holder) : null;
+    private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) => attribute is not null ? new OptionalFacet() : null;
 }

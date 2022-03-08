@@ -9,15 +9,14 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.I18N;
 
 [Serializable]
 public sealed class MemberNamedFacetI18N : SingleStringValueFacetAbstract, IMemberNamedFacet {
-    public MemberNamedFacetI18N(string valueString, ISpecification holder)
-        : base(typeof(IMemberNamedFacet), holder, valueString) { }
+    public MemberNamedFacetI18N(string valueString)
+        : base(typeof(IMemberNamedFacet), valueString) { }
 
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
     public string FriendlyName() => Value;

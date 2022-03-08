@@ -38,5 +38,5 @@ public sealed class MemberOrderAnnotationFacetFactory : DomainObjectFacetFactory
         return metamodel;
     }
 
-    private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute is null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence, holder);
+    private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute is null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence);
 }

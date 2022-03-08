@@ -15,13 +15,13 @@ namespace NakedFramework.Metamodel.Test.Facet;
 public class HiddenFacetTest {
     [TestMethod]
     public void TestHiddenFacetAnnotationAlways() {
-        IHiddenFacet facet = new HiddenFacet(WhenTo.Always, null);
+        IHiddenFacet facet = new HiddenFacet(WhenTo.Always);
         Assert.AreEqual(NakedObjects.Resources.NakedObjects.AlwaysHidden, facet.HiddenReason(null));
     }
 
     [TestMethod]
     public void TestHiddenFacetAnnotationNever() {
-        IHiddenFacet facet = new HiddenFacet(WhenTo.Never, null);
+        IHiddenFacet facet = new HiddenFacet(WhenTo.Never);
         Assert.IsNull(facet.HiddenReason(null));
     }
 }

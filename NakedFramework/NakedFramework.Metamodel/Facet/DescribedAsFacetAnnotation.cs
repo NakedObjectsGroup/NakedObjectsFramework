@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DescribedAsFacetAnnotation : DescribedAsFacetAbstract {
-    public DescribedAsFacetAnnotation(string value, ISpecification holder)
-        : base(value, holder) { }
+    public DescribedAsFacetAnnotation(string value)
+        : base(value) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

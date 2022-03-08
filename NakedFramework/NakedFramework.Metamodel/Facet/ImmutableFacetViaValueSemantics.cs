@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ImmutableFacetViaValueSemantics : ImmutableFacetImpl {
-    public ImmutableFacetViaValueSemantics(ISpecification holder)
-        : base(WhenTo.Always, holder) { }
+    public ImmutableFacetViaValueSemantics()
+        : base(WhenTo.Always) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

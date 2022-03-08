@@ -9,7 +9,6 @@ using System;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -18,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet {
     private readonly PropertyInfo property;
 
-    public PropertyInitializationFacet(PropertyInfo property, ISpecification holder)
+    public PropertyInitializationFacet(PropertyInfo property)
         : base(typeof(IPropertyInitializationFacet)) =>
         this.property = property;
 

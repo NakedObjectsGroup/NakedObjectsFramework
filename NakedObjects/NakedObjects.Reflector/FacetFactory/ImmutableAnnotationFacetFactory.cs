@@ -32,5 +32,5 @@ public sealed class ImmutableAnnotationFacetFactory : DomainObjectFacetFactoryPr
 
     private static IImmutableFacet Create(ImmutableAttribute attribute, ISpecification holder) => attribute == null
         ? null
-        : new ImmutableFacetAnnotation(attribute.Value, holder);
+        : new ImmutableFacetAnnotation(attribute.Value);
 }

@@ -56,7 +56,7 @@ public sealed class NamedAnnotationFacetFactory : FunctionalFacetFactoryProcesso
 
     private static IMemberNamedFacet CreateForMember(NamedAttribute attribute, ISpecification holder) => attribute is null ? null : CreateMemberAnnotation(attribute.Value, holder);
 
-    private static INamedFacet CreateTypeAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name, holder);
+    private static INamedFacet CreateTypeAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name);
 
-    private static IMemberNamedFacet CreateMemberAnnotation(string name, ISpecification holder) => new MemberNamedFacetAnnotation(name, holder);
+    private static IMemberNamedFacet CreateMemberAnnotation(string name, ISpecification holder) => new MemberNamedFacetAnnotation(name);
 }

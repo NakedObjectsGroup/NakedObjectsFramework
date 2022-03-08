@@ -16,14 +16,14 @@ public class NamedFacetTest {
     [TestMethod]
     public void TestNamedFacetAnnotation() {
         const string testName = "a Name";
-        INamedFacet facet = new NamedFacetAnnotation(testName, null);
+        INamedFacet facet = new NamedFacetAnnotation(testName);
         Assert.AreEqual(testName, facet.FriendlyName);
     }
 
     [TestMethod]
     public void TestNamedFacetInferred() {
         const string testName = "a nAme";
-        INamedFacet facet = new NamedFacetInferred(testName, null);
+        INamedFacet facet = new NamedFacetInferred(testName);
         Assert.AreEqual("A n Ame", facet.FriendlyName);
     }
 }

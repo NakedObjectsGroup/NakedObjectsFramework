@@ -19,7 +19,7 @@ public class RangeFacetTest {
     public void TestRangeFacet() {
         const int min = 1;
         const int max = 20;
-        IRangeFacet facet = new RangeFacet(min, max, false, null);
+        IRangeFacet facet = new RangeFacet(min, max, false);
 
         var inRangeMock = new Mock<INakedObjectAdapter>();
         var outRangeMock1 = new Mock<INakedObjectAdapter>();

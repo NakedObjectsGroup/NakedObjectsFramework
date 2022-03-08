@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TypeIsAbstractFacet : MarkerFlagFacetAbstract, ITypeIsAbstractFacet {
-    public TypeIsAbstractFacet(ISpecification holder, bool flag)
-        : base(Type, holder, flag) { }
+    public TypeIsAbstractFacet(bool flag)
+        : base(Type, flag) { }
 
     public static Type Type => typeof(ITypeIsAbstractFacet);
 }

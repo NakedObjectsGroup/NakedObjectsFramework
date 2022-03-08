@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -18,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
     private readonly List<ITypeSpecImmutable> objectContributees = new();
 
-    public DisplayAsPropertyFacet(ISpecification holder) : base(typeof(IDisplayAsPropertyFacet)) { }
+    public DisplayAsPropertyFacet() : base(typeof(IDisplayAsPropertyFacet)) { }
     public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
     public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
 }

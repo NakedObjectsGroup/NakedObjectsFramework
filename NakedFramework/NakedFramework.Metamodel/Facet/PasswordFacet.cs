@@ -8,14 +8,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PasswordFacet : MarkerFacetAbstract, IPasswordFacet {
-    public PasswordFacet(ISpecification holder)
-        : base(typeof(IPasswordFacet), holder) { }
+    public PasswordFacet()
+        : base(typeof(IPasswordFacet)) { }
 
     public DataType? DataType => System.ComponentModel.DataAnnotations.DataType.Password;
 }

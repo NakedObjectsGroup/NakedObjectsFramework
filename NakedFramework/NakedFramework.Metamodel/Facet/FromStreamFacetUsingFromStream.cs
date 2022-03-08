@@ -10,7 +10,6 @@ using System.IO;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -19,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
     private readonly IFromStream fromStream;
 
-    public FromStreamFacetUsingFromStream(IFromStream fromStream, ISpecification holder)
+    public FromStreamFacetUsingFromStream(IFromStream fromStream)
         : base(typeof(IFromStreamFacet)) =>
         this.fromStream = fromStream;
 

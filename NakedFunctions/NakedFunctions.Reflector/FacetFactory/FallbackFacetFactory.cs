@@ -31,11 +31,11 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         FacetUtils.AddFacets(
             new IFacet[] {
-                new DescribedAsFacetNone(specification),
-                new ImmutableFacetNever(specification),
-                new TitleFacetNone(specification),
-                new ValueFacet(specification),
-                new SaveFacet(specification)
+                new DescribedAsFacetNone(),
+                new ImmutableFacetNever(),
+                new TitleFacetNone(),
+                new ValueFacet(),
+                new SaveFacet()
             }, specification);
         return metamodel;
     }
@@ -44,25 +44,25 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
         var facets = new List<IFacet>();
 
         if (holder is IMemberSpecImmutable specImmutable) {
-            facets.Add(new MemberNamedFacetInferred(specImmutable.Identifier.MemberName, holder));
-            facets.Add(new DescribedAsFacetNone(holder));
+            facets.Add(new MemberNamedFacetInferred(specImmutable.Identifier.MemberName));
+            facets.Add(new DescribedAsFacetNone());
         }
 
         if (holder is IAssociationSpecImmutable) {
-            facets.Add(new ImmutableFacetNever(holder));
-            facets.Add(new PropertyDefaultFacetNone(holder));
-            facets.Add(new PropertyValidateFacetNone(holder));
+            facets.Add(new ImmutableFacetNever());
+            facets.Add(new PropertyDefaultFacetNone());
+            facets.Add(new PropertyValidateFacetNone());
         }
 
         if (holder is IOneToOneAssociationSpecImmutable immutable) {
-            facets.Add(new MaxLengthFacetZero(holder));
-            facets.Add(new MultiLineFacetNone(holder));
+            facets.Add(new MaxLengthFacetZero());
+            facets.Add(new MultiLineFacetNone());
         }
 
         if (holder is IActionSpecImmutable) {
-            facets.Add(new ActionDefaultsFacetNone(holder));
-            facets.Add(new ActionChoicesFacetNone(holder));
-            facets.Add(new PageSizeFacetDefault(holder));
+            facets.Add(new ActionDefaultsFacetNone());
+            facets.Add(new ActionChoicesFacetNone());
+            facets.Add(new PageSizeFacetDefault());
         }
 
         FacetUtils.AddFacets(facets, holder);
@@ -83,10 +83,10 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
 
         if (holder is IActionParameterSpecImmutable param) {
             var name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
-            facets.Add(new MemberNamedFacetInferred(name, holder));
-            facets.Add(new DescribedAsFacetNone(holder));
-            facets.Add(new MultiLineFacetNone(holder));
-            facets.Add(new MaxLengthFacetZero(holder));
+            facets.Add(new MemberNamedFacetInferred(name));
+            facets.Add(new DescribedAsFacetNone());
+            facets.Add(new MultiLineFacetNone());
+            facets.Add(new MaxLengthFacetZero());
         }
 
         FacetUtils.AddFacets(facets, holder);

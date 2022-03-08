@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MaxLengthFacetAnnotation : MaxLengthFacetAbstract {
-    public MaxLengthFacetAnnotation(int value, ISpecification holder)
-        : base(value, holder) { }
+    public MaxLengthFacetAnnotation(int value)
+        : base(value) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

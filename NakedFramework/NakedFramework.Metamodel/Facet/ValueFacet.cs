@@ -8,14 +8,13 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ValueFacet : FacetAbstract, IValueFacet {
-    public ValueFacet(ISpecification holder)
+    public ValueFacet()
         : base(typeof(IValueFacet)) { }
 
     public object Value(INakedObjectAdapter nakedObjectAdapter, string format = null) => nakedObjectAdapter.GetDomainObject();

@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.Facet;
 [Serializable]
 public abstract class UpdatedCallbackFacetAbstract : CallbackFacetAbstract, IUpdatedCallbackFacet {
     protected UpdatedCallbackFacetAbstract(ISpecification holder)
-        : base(Type, holder) { }
+        : base(Type) { }
 
     public static Type Type => typeof(IUpdatedCallbackFacet);
 }

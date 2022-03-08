@@ -20,7 +20,7 @@ public sealed class AuditUpdatedFacet : CallbackFacetAbstract, IUpdatedCallbackF
     private readonly IUpdatedCallbackFacet underlyingFacet;
 
     public AuditUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IAuditManager auditManager, ISpecification specification)
-        : base(Type, specification) {
+        : base(Type) {
         this.underlyingFacet = underlyingFacet;
         manager = auditManager;
     }

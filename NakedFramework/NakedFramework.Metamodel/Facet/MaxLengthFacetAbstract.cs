@@ -10,7 +10,6 @@ using System.Threading;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 
@@ -18,8 +17,8 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
-    protected MaxLengthFacetAbstract(int intValue, ISpecification holder)
-        : base(Type, holder, intValue) { }
+    protected MaxLengthFacetAbstract(int intValue)
+        : base(Type, intValue) { }
 
     public static Type Type => typeof(IMaxLengthFacet);
 

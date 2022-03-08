@@ -15,5 +15,5 @@ namespace NOF2.Reflector.Facet;
 [Serializable]
 public sealed class StaticMenuMethodFacet : MarkerFacetAbstract, IStaticMenuFunctionFacet {
     public StaticMenuMethodFacet(ISpecification holder)
-        : base(typeof(IStaticMenuFunctionFacet), holder) { }
+        : base(typeof(IStaticMenuFunctionFacet)) { }
 }

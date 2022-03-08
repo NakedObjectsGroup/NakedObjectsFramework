@@ -76,7 +76,7 @@ public sealed class RegExAnnotationFacetFactory : DomainObjectFacetFactoryProces
             _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
         };
 
-    private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) => new RegExFacet(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message, holder);
+    private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) => new RegExFacet(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message);
 
-    private static IRegExFacet Create(RegularExpressionAttribute attribute, ISpecification holder) => new RegExFacet(attribute.Pattern, string.Empty, true, attribute.ErrorMessage, holder);
+    private static IRegExFacet Create(RegularExpressionAttribute attribute, ISpecification holder) => new RegExFacet(attribute.Pattern, string.Empty, true, attribute.ErrorMessage);
 }

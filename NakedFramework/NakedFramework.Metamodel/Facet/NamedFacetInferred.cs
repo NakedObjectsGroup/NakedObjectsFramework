@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class NamedFacetInferred : NamedFacetAbstract, INamedFacet {
-    public NamedFacetInferred(string value, ISpecification holder)
-        : base(value, holder) =>
+    public NamedFacetInferred(string value)
+        : base(value) =>
         FriendlyName = NameUtils.NaturalName(value);
 
     public override bool CanAlwaysReplace => false;

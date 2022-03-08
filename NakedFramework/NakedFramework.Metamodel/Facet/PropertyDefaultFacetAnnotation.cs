@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -15,8 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertyDefaultFacetAnnotation : PropertyDefaultFacetAbstract {
     private readonly object value;
 
-    public PropertyDefaultFacetAnnotation(object value, ISpecification holder)
-        : base(holder) =>
+    public PropertyDefaultFacetAnnotation(object value)
+        : base() =>
         this.value = value;
 
     public override bool CanAlwaysReplace => false;

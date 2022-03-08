@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class OnUpdatingErrorCallbackFacetNull : OnUpdatingErrorCallbackFacetAbstract {
-    public OnUpdatingErrorCallbackFacetNull(ISpecification holder)
-        : base(holder) { }
+    public OnUpdatingErrorCallbackFacetNull()
+        : base() { }
 
     public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => throw exception;
 }

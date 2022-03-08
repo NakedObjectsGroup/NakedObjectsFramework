@@ -30,5 +30,5 @@ public sealed class PasswordAnnotationFacetFactory : FunctionalFacetFactoryProce
         return metamodel;
     }
 
-    private static IPasswordFacet Create(PasswordAttribute attribute, ISpecification holder) => attribute is not null ? new PasswordFacet(holder) : null;
+    private static IPasswordFacet Create(PasswordAttribute attribute, ISpecification holder) => attribute is not null ? new PasswordFacet() : null;
 }

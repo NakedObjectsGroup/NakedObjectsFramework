@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class CreatedCallbackFacetAbstract : CallbackFacetAbstract, ICreatedCallbackFacet {
-    protected CreatedCallbackFacetAbstract(ISpecification holder)
-        : base(Type, holder) { }
+    protected CreatedCallbackFacetAbstract()
+        : base(Type) { }
 
     public static Type Type => typeof(ICreatedCallbackFacet);
 }

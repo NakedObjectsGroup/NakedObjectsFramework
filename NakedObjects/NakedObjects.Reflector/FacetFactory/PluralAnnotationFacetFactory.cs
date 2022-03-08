@@ -30,5 +30,5 @@ public sealed class PluralAnnotationFacetFactory : DomainObjectFacetFactoryProce
         return metamodel;
     }
 
-    private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) => attribute is null ? null : new PluralFacetAnnotation(attribute.Value, holder);
+    private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) => attribute is null ? null : new PluralFacetAnnotation(attribute.Value);
 }

@@ -22,7 +22,7 @@ public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacet
     public AuthorizationDisableForSessionFacet(IIdentifier identifier,
                                                IAuthorizationManager authorizationManager,
                                                ISpecification holder)
-        : base(holder) {
+        : base() {
         this.authorizationManager = authorizationManager;
         this.identifier = identifier;
     }

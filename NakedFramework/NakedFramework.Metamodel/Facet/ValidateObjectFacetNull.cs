@@ -8,13 +8,12 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFacet {
-    public ValidateObjectFacetNull(ISpecification holder)
+    public ValidateObjectFacetNull()
         : base(Type) { }
 
     public static Type Type => typeof(IValidateObjectFacet);

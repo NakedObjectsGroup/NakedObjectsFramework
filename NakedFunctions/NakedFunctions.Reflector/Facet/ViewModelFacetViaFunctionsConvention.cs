@@ -25,7 +25,7 @@ public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstrac
     public ViewModelFacetViaFunctionsConvention(ISpecification holder,
                                                 MethodInfo deriveFunction,
                                                 MethodInfo populateFunction)
-        : base(Type, holder) {
+        : base(Type) {
         this.holder = holder;
         this.deriveFunction = deriveFunction;
         this.populateFunction = populateFunction;

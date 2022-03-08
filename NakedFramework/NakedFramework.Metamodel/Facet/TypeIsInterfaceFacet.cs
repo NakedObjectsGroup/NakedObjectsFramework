@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TypeIsInterfaceFacet : MarkerFlagFacetAbstract, ITypeIsInterfaceFacet {
-    public TypeIsInterfaceFacet(ISpecification holder, bool flag)
-        : base(Type, holder, flag) { }
+    public TypeIsInterfaceFacet(bool flag)
+        : base(Type, flag) { }
 
     public static Type Type => typeof(ITypeIsInterfaceFacet);
 }

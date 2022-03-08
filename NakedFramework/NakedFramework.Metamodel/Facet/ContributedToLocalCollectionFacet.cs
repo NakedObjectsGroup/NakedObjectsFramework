@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -18,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContributedToLocalCollectionFacet {
     private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
 
-    public ContributedToLocalCollectionFacet(ISpecification holder)
+    public ContributedToLocalCollectionFacet()
         : base(typeof(IContributedToLocalCollectionFacet)) { }
 
     #region IContributedActionFacet Members

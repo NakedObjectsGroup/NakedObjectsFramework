@@ -26,8 +26,8 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
         : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, Type type, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new ArrayFacet(holder), holder);
-        FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder), holder);
+        FacetUtils.AddFacet(new ArrayFacet(), holder);
+        FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(), holder);
 
         var elementType = type.GetElementType();
         (_, metamodel) = reflector.LoadSpecification(elementType, metamodel);
@@ -39,17 +39,17 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
         var isQueryable = CollectionUtils.IsGenericQueryable(type);
         var isSet = CollectionUtils.IsSet(type);
 
-        FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder), holder);
+        FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(), holder);
 
         IFacet facet;
         if (isQueryable) {
-            facet = new GenericIQueryableFacet(holder, isSet);
+            facet = new GenericIQueryableFacet(isSet);
         }
         else if (isCollection) {
-            facet = new GenericCollectionFacet(holder, isSet);
+            facet = new GenericCollectionFacet(isSet);
         }
         else {
-            facet = new GenericIEnumerableFacet(holder, isSet);
+            facet = new GenericIEnumerableFacet(isSet);
         }
 
         FacetUtils.AddFacet(facet, holder);
@@ -59,8 +59,8 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
         var collectionElementType = typeof(object);
         IObjectSpecBuilder oSpec;
         (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
-        FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, oSpec), holder);
-        FacetUtils.AddFacet(new CollectionFacet(holder), holder);
+        FacetUtils.AddFacet(new TypeOfFacetDefaultToType(collectionElementType, oSpec), holder);
+        FacetUtils.AddFacet(new CollectionFacet(), holder);
         return metamodel;
     }
 
@@ -81,7 +81,7 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (CollectionUtils.IsCollectionButNotArray(property.PropertyType)) {
-            specification.AddFacet(new CollectionResetFacet(property, specification));
+            specification.AddFacet(new CollectionResetFacet(property));
             return metamodel;
         }
 

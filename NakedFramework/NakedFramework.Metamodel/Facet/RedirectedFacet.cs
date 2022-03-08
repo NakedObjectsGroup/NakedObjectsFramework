@@ -8,7 +8,6 @@
 using System;
 using System.Reflection;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -17,7 +16,7 @@ public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
     private readonly PropertyInfo oid;
     private readonly PropertyInfo serverName;
 
-    public RedirectedFacet(ISpecification holder, PropertyInfo serverName, PropertyInfo oid)
+    public RedirectedFacet(PropertyInfo serverName, PropertyInfo oid)
         : base(Type) {
         this.serverName = serverName;
         this.oid = oid;

@@ -35,8 +35,8 @@ public sealed class TypeOfAnnotationFacetFactory : DomainObjectFacetFactoryProce
             var elementType = methodReturnType.GetElementType();
             IObjectSpecBuilder elementSpec;
             (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-            FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec), holder);
-            FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder), holder);
+            FacetUtils.AddFacet(new ElementTypeFacet(elementType, elementSpec), holder);
+            FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(), holder);
         }
         else if (methodReturnType.IsGenericType) {
             var actualTypeArguments = methodReturnType.GetGenericArguments();
@@ -44,8 +44,8 @@ public sealed class TypeOfAnnotationFacetFactory : DomainObjectFacetFactoryProce
                 var elementType = actualTypeArguments.First();
                 IObjectSpecBuilder elementSpec;
                 (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-                FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec), holder);
-                FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder), holder);
+                FacetUtils.AddFacet(new ElementTypeFacet(elementType, elementSpec), holder);
+                FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(), holder);
             }
         }
 

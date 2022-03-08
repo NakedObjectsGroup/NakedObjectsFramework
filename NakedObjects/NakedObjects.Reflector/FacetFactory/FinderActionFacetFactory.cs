@@ -37,5 +37,5 @@ public sealed class FinderActionFacetFactory : DomainObjectFacetFactoryProcessor
         return metamodel;
     }
 
-    private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) => attribute is null ? null : new FinderActionFacet(holder, attribute.Prefix ?? "");
+    private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) => attribute is null ? null : new FinderActionFacet(attribute.Prefix ?? "");
 }

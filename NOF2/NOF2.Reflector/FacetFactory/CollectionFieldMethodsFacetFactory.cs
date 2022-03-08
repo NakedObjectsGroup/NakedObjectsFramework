@@ -49,13 +49,13 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
                                      !classStrategy.IsIgnored(property)).ToList();
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var facets = new List<IFacet> { new PropertyAccessorFacet(property, collection) };
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property) };
 
         AddSetFacet(facets, property, collection);
 
         MethodHelpers.AddHideForSessionFacetNone(facets, collection);
         MethodHelpers.AddDisableFacetAlways(facets, collection);
-        facets.Add(new NotPersistedFacet(collection));
+        facets.Add(new NotPersistedFacet());
 
         FacetUtils.AddFacets(facets, collection);
         return metamodel;
@@ -63,7 +63,7 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
 
     private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, ISpecification collection) {
         if (CollectionUtils.IsSet(property.PropertyType)) {
-            collectionFacets.Add(new IsASetFacet(collection));
+            collectionFacets.Add(new IsASetFacet());
         }
     }
 

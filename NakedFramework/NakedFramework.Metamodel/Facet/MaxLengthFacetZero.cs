@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -15,8 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class MaxLengthFacetZero : MaxLengthFacetAbstract {
     private const int NoLimit = 0;
 
-    public MaxLengthFacetZero(ISpecification holder)
-        : base(NoLimit, holder) { }
+    public MaxLengthFacetZero()
+        : base(NoLimit) { }
 
     public override bool IsNoOp => true;
 

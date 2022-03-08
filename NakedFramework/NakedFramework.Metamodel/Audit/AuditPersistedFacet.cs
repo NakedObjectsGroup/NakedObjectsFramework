@@ -20,7 +20,7 @@ public sealed class AuditPersistedFacet : CallbackFacetAbstract, IPersistedCallb
     private readonly IPersistedCallbackFacet underlyingFacet;
 
     public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet, IAuditManager auditManager, ISpecification specification)
-        : base(Type, specification) {
+        : base(Type) {
         this.underlyingFacet = underlyingFacet;
         manager = auditManager;
     }

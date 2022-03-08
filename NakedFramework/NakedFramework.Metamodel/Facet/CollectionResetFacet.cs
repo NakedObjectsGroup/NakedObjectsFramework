@@ -10,7 +10,6 @@ using System.Collections;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
@@ -20,7 +19,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet {
     private readonly PropertyInfo property;
 
-    public CollectionResetFacet(PropertyInfo property, ISpecification holder)
+    public CollectionResetFacet(PropertyInfo property)
         : base(Type) =>
         this.property = property;
 

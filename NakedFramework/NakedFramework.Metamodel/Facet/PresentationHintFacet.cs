@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PresentationHintFacet : SingleStringValueFacetAbstract, IPresentationHintFacet {
-    public PresentationHintFacet(string value, ISpecification holder)
-        : base(typeof(IPresentationHintFacet), holder, value) { }
+    public PresentationHintFacet(string value)
+        : base(typeof(IPresentationHintFacet), value) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

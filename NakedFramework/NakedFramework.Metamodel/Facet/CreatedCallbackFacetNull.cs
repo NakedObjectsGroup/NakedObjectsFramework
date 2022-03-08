@@ -8,14 +8,12 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class CreatedCallbackFacetNull : CreatedCallbackFacetAbstract {
-    public CreatedCallbackFacetNull(ISpecification holder)
-        : base(holder) { }
+    public CreatedCallbackFacetNull() { }
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }

@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class MarkerFlagFacetAbstract : FacetAbstract, IMarkerFlagFacet {
-    protected MarkerFlagFacetAbstract(Type facetType, ISpecification holder, bool flag)
+    protected MarkerFlagFacetAbstract(Type facetType, bool flag)
         : base(facetType) =>
         Flag = flag;
 

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -19,7 +18,7 @@ public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFa
     private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> collectionContributees = new();
     private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> objectContributees = new();
 
-    public ContributedActionFacet(ISpecification holder)
+    public ContributedActionFacet()
         : base(typeof(IContributedActionFacet)) { }
 
     public void AddObjectContributee(IObjectSpecImmutable objectSpec, string subMenu, string id) => objectContributees.Add((objectSpec, subMenu, id));

@@ -62,7 +62,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
     /// <summary>
     ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
     /// </summary>
-    private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new MemberNamedFacetInferred(name, action));
+    private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new MemberNamedFacetInferred(name));
 
     #region IMethodIdentifyingFacetFactory Members
 
@@ -150,7 +150,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
         var facets = new List<IFacet>();
 
         if (parameter.ParameterType.IsGenericType && parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-            facets.Add(new NullableFacetAlways(holder));
+            facets.Add(new NullableFacetAlways());
         }
 
         ITypeSpecBuilder returnSpec;
@@ -168,7 +168,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
                 throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
             }
 
-            facets.Add(new ElementTypeFacet(holder, elementType, (IObjectSpecImmutable)elementSpec));
+            facets.Add(new ElementTypeFacet(elementType, (IObjectSpecImmutable)elementSpec));
         }
 
         FacetUtils.AddFacets(facets, holder);

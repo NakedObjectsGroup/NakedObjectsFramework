@@ -7,12 +7,11 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class FinderActionFacet : SingleStringValueFacetAbstract, IFinderActionFacet {
-    public FinderActionFacet(ISpecification holder, string value)
-        : base(typeof(IFinderActionFacet), holder, value) { }
+    public FinderActionFacet(string value)
+        : base(typeof(IFinderActionFacet), value) { }
 }

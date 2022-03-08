@@ -52,5 +52,5 @@ public sealed class MaskAnnotationFacetFactory : DomainObjectFacetFactoryProcess
         return metamodel;
     }
 
-    private static IMaskFacet Create(MaskAttribute attribute, ISpecification holder) => attribute is not null ? new MaskFacet(attribute.Value, holder) : null;
+    private static IMaskFacet Create(MaskAttribute attribute, ISpecification holder) => attribute is not null ? new MaskFacet(attribute.Value) : null;
 }

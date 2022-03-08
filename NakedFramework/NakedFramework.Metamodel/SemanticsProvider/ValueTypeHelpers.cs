@@ -38,24 +38,24 @@ public static class ValueTypeHelpers {
         var facets = new List<IFacet> {
             semanticsProvider as IFacet,
             // value implies aggregated
-            new AggregatedFacetAlways(holder),
-            new ParseableFacetUsingParser<T>(semanticsProvider, holder),
-            new TitleFacetUsingParser<T>(semanticsProvider, holder),
-            new ValueFacetFromSemanticProvider<T>(semanticsProvider, holder)
+            new AggregatedFacetAlways(),
+            new ParseableFacetUsingParser<T>(semanticsProvider),
+            new TitleFacetUsingParser<T>(semanticsProvider),
+            new ValueFacetFromSemanticProvider<T>(semanticsProvider)
         };
 
         // ImmutableFacet, if appropriate
         if (semanticsProvider.IsImmutable) {
-            facets.Add(new ImmutableFacetViaValueSemantics(holder));
+            facets.Add(new ImmutableFacetViaValueSemantics());
         }
 
         if (semanticsProvider is IFromStream fromStream) {
-            facets.Add(new FromStreamFacetUsingFromStream(fromStream, holder));
+            facets.Add(new FromStreamFacetUsingFromStream(fromStream));
         }
 
         // ReSharper disable once CompareNonConstrainedGenericWithNull
         if (semanticsProvider.DefaultValue is not null) {
-            facets.Add(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
+            facets.Add(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider));
         }
 
         FacetUtils.AddFacets(facets, holder);

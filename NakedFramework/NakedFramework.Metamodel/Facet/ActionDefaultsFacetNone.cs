@@ -14,8 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsFacetNone : ActionDefaultsFacetAbstract {
-    public ActionDefaultsFacetNone(ISpecification holder)
-        : base(holder) { }
+    public ActionDefaultsFacetNone() { }
 
     public override bool IsNoOp => true;
 

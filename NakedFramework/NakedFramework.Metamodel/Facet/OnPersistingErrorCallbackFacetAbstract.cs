@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class OnPersistingErrorCallbackFacetAbstract : CallbackWithExceptionFacetAbstract, IOnPersistingErrorCallbackFacet {
-    protected OnPersistingErrorCallbackFacetAbstract(ISpecification holder)
-        : base(Type, holder) { }
+    protected OnPersistingErrorCallbackFacetAbstract()
+        : base(Type) { }
 
     public static Type Type => typeof(IOnPersistingErrorCallbackFacet);
 }

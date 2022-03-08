@@ -17,8 +17,7 @@ public sealed class ActionDefaultsFacetAnnotation : ActionDefaultsFacetAbstract 
     private readonly bool isDateTime;
     private readonly object value;
 
-    public ActionDefaultsFacetAnnotation(object value, bool isDateTime, ISpecification holder)
-        : base(holder) {
+    public ActionDefaultsFacetAnnotation(object value, bool isDateTime) {
         this.value = value;
         this.isDateTime = isDateTime;
     }

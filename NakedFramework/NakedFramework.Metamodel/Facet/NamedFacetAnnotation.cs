@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class NamedFacetAnnotation : NamedFacetAbstract, INamedFacet {
-    public NamedFacetAnnotation(string value, ISpecification holder)
-        : base(value, holder) =>
+    public NamedFacetAnnotation(string value)
+        : base(value) =>
         FriendlyName = value;
 }
 

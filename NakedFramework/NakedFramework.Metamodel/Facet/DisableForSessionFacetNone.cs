@@ -8,14 +8,12 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisableForSessionFacetNone : DisableForSessionFacetAbstract {
-    public DisableForSessionFacetNone(ISpecification holder)
-        : base(holder) { }
+    public DisableForSessionFacetNone() { }
 
     public override bool IsNoOp => true;
 

@@ -18,10 +18,10 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class GenericIQueryableFacet : CollectionFacetAbstract {
     public GenericIQueryableFacet(ISpecification holder)
-        : this(holder, false) { }
+        : this(false) { }
 
-    public GenericIQueryableFacet(ISpecification holder, bool isASet)
-        : base(holder, isASet) { }
+    public GenericIQueryableFacet(bool isASet)
+        : base(isASet) { }
 
     public override bool IsQueryable => true;
 

@@ -52,8 +52,8 @@ public sealed class NamedAnnotationFacetFactory : AbstractNOF2FacetFactoryProces
     }
 
     private static INamedFacet Create(INamedAttribute attribute, ISpecification holder) =>
-        string.IsNullOrWhiteSpace(attribute?.Name) ? null : new NamedFacetAnnotation(attribute.Name, holder);
+        string.IsNullOrWhiteSpace(attribute?.Name) ? null : new NamedFacetAnnotation(attribute.Name);
 
     private static IMemberNamedFacet CreateForMember(INamedAttribute attribute, ISpecification holder) =>
-        string.IsNullOrWhiteSpace(attribute?.Name) ? null : new MemberNamedFacetAnnotation(attribute.Name, holder);
+        string.IsNullOrWhiteSpace(attribute?.Name) ? null : new MemberNamedFacetAnnotation(attribute.Name);
 }

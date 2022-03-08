@@ -22,12 +22,12 @@ public static class FactoryUtils {
 
     public static void AddTypeFacets(ISpecificationBuilder specification, Type type) {
         var facets = new List<IFacet> {
-            new TypeIsAbstractFacet(specification, IsAbstract(type)),
-            new TypeIsInterfaceFacet(specification, IsInterface(type)),
-            new TypeIsSealedFacet(specification, IsSealed(type)),
-            new TypeIsVoidFacet(specification, IsVoid(type)),
-            new TypeIsStaticFacet(specification, IsStatic(type)),
-            new TypeFacet(specification, type)
+            new TypeIsAbstractFacet(IsAbstract(type)),
+            new TypeIsInterfaceFacet(IsInterface(type)),
+            new TypeIsSealedFacet(IsSealed(type)),
+            new TypeIsVoidFacet(IsVoid(type)),
+            new TypeIsStaticFacet(IsStatic(type)),
+            new TypeFacet(type)
         };
 
         FacetUtils.AddFacets(facets, specification);

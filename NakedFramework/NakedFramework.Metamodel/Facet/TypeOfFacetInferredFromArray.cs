@@ -9,14 +9,13 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TypeOfFacetInferredFromArray : FacetAbstract, ITypeOfFacet {
-    public TypeOfFacetInferredFromArray(ISpecification holder)
+    public TypeOfFacetInferredFromArray()
         : base(Type) { }
 
     public static Type Type => typeof(ITypeOfFacet);

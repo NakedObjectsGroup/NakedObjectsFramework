@@ -56,5 +56,5 @@ public sealed class MaxLengthAnnotationFacetFactory : FunctionalFacetFactoryProc
         return metamodel;
     }
 
-    private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) => attribute is null ? null : new MaxLengthFacetAnnotation(attribute.Value, holder);
+    private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) => attribute is null ? null : new MaxLengthFacetAnnotation(attribute.Value);
 }

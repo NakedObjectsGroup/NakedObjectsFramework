@@ -52,5 +52,5 @@ public sealed class RestExtensionAnnotationFacetFactory : FunctionalFacetFactory
         return metamodel;
     }
 
-    private static IRestExtensionFacet Create(RestExtensionAttribute attribute, ISpecification holder) => attribute is not null ? new RestExtensionFacet(attribute.Name, attribute.Value, holder) : null;
+    private static IRestExtensionFacet Create(RestExtensionAttribute attribute, ISpecification holder) => attribute is not null ? new RestExtensionFacet(attribute.Name, attribute.Value) : null;
 }

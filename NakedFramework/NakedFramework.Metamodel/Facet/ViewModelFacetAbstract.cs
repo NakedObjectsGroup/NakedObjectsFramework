@@ -9,13 +9,12 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ViewModelFacetAbstract : FacetAbstract, IViewModelFacet {
-    protected ViewModelFacetAbstract(Type type, ISpecification holder)
+    protected ViewModelFacetAbstract(Type type)
         : base(type) { }
 
     #region IViewModelFacet Members

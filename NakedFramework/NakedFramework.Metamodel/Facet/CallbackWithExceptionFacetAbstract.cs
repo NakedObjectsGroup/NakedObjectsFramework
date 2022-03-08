@@ -8,13 +8,12 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class CallbackWithExceptionFacetAbstract : FacetAbstract, ICallbackWithExceptionFacet {
-    protected CallbackWithExceptionFacetAbstract(Type facetType, ISpecification holder)
+    protected CallbackWithExceptionFacetAbstract(Type facetType)
         : base(facetType) { }
 
     #region ICallbackWithExceptionFacet Members

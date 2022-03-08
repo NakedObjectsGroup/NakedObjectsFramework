@@ -14,7 +14,7 @@ namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class InjectedFacet : MarkerFacetAbstract, IInjectedFacet {
-    public InjectedFacet(ISpecification holder) : base(Type, holder) { }
+    public InjectedFacet(ISpecification holder) : base(Type) { }
 
     public static Type Type => typeof(IInjectedFacet);
 }

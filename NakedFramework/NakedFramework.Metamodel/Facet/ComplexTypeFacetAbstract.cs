@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ComplexTypeFacetAbstract : MarkerFacetAbstract, IComplexTypeFacet {
-    protected ComplexTypeFacetAbstract(ISpecification holder)
-        : base(Type, holder) { }
+    protected ComplexTypeFacetAbstract()
+        : base(Type) { }
 
     public static Type Type => typeof(IComplexTypeFacet);
 }

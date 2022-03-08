@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -18,8 +17,8 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class EnumFacet : MarkerFacetAbstract, IEnumFacet {
     private readonly Type typeOfEnum;
 
-    public EnumFacet(ISpecification holder, Type typeOfEnum)
-        : base(typeof(IEnumFacet), holder) =>
+    public EnumFacet(Type typeOfEnum)
+        : base(typeof(IEnumFacet)) =>
         this.typeOfEnum = typeOfEnum;
 
     private string ToDisplayName(string enumName) => NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());

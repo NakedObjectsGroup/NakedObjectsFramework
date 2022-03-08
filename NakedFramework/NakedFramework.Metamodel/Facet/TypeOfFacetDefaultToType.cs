@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -19,7 +18,7 @@ public sealed class TypeOfFacetDefaultToType : FacetAbstract, ITypeOfFacet {
     private readonly IObjectSpecImmutable spec;
     private readonly Type type;
 
-    public TypeOfFacetDefaultToType(ISpecification holder, Type type, IObjectSpecImmutable spec)
+    public TypeOfFacetDefaultToType(Type type, IObjectSpecImmutable spec)
         : base(Type) {
         this.type = type;
         this.spec = spec;

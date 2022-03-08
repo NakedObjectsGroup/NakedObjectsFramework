@@ -8,14 +8,13 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TitleFacetNone : TitleFacetAbstract {
-    public TitleFacetNone(ISpecification holder)
-        : base(holder) { }
+    public TitleFacetNone()
+        : base() { }
 
     public override bool IsNoOp => true;
 

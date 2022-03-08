@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -16,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
     private readonly IValueSemanticsProvider<T> defaultsProvider;
 
-    public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser, ISpecification holder)
+    public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser)
         : base(typeof(IDefaultedFacet)) =>
         defaultsProvider = parser;
 

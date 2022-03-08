@@ -9,13 +9,12 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
-    protected PropertySetterFacetAbstract(ISpecification holder)
+    protected PropertySetterFacetAbstract()
         : base(Type) { }
 
     public static Type Type => typeof(IPropertySetterFacet);

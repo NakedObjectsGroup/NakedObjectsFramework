@@ -52,5 +52,5 @@ public sealed class PresentationHintAnnotationFacetFactory : DomainObjectFacetFa
         return metamodel;
     }
 
-    private static IPresentationHintFacet Create(PresentationHintAttribute attribute, ISpecification holder) => attribute is not null ? new PresentationHintFacet(attribute.Value, holder) : null;
+    private static IPresentationHintFacet Create(PresentationHintAttribute attribute, ISpecification holder) => attribute is not null ? new PresentationHintFacet(attribute.Value) : null;
 }

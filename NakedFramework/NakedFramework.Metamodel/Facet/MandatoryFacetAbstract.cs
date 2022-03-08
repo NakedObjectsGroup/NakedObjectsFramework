@@ -9,15 +9,14 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Error;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
-    protected MandatoryFacetAbstract(ISpecification holder)
-        : base(Type, holder) { }
+    protected MandatoryFacetAbstract()
+        : base(Type) { }
 
     public static Type Type => typeof(IMandatoryFacet);
 

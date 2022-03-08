@@ -90,8 +90,8 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
             var elementType = actionMethod.ReturnType.GetGenericArguments().First();
 
             (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-            facets.Add(new ElementTypeFacet(action, elementType, elementSpec));
-            facets.Add(new TypeOfFacetInferredFromGenerics(action));
+            facets.Add(new ElementTypeFacet(elementType, elementSpec));
+            facets.Add(new TypeOfFacetInferredFromGenerics());
         }
         else {
             (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(typeof(object), metamodel);
@@ -110,7 +110,7 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
 
         var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name[6..]); //remove 'action' from front 
 
-        facets.Add(new MemberNamedFacetInferred(capitalizedName, action));
+        facets.Add(new MemberNamedFacetInferred(capitalizedName));
 
         var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
         var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType);
@@ -154,8 +154,8 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var capitalizedName = property.Name;
         var facets = new List<IFacet> {
-            new PropertyAccessorFacet(property, specification),
-            new MemberNamedFacetInferred(specification.Identifier.MemberName, specification)
+            new PropertyAccessorFacet(property),
+            new MemberNamedFacetInferred(specification.Identifier.MemberName)
         };
 
         var method = MethodHelpers.FindMethod(reflector, property.DeclaringType, MethodType.Object, $"{NOF2Helpers.AboutPrefix}{capitalizedName}", typeof(void), new[] { typeof(FieldAbout), property.PropertyType }) ??
@@ -180,8 +180,8 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
             facets.Add(setterFacet);
         }
         else if (property.GetSetMethod() is not null) {
-            facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
-            facets.Add(new PropertyInitializationFacet(property, specification));
+            facets.Add(new PropertySetterFacetViaSetterMethod(property));
+            facets.Add(new PropertyInitializationFacet(property));
         }
 
         FacetUtils.AddFacets(facets, specification);

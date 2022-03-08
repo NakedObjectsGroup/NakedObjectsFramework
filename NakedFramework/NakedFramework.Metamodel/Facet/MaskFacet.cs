@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
-    public MaskFacet(string value, ISpecification holder)
-        : base(typeof(IMaskFacet), holder, value) { }
+    public MaskFacet(string value)
+        : base(typeof(IMaskFacet), value) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -11,18 +11,17 @@ using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
-    protected CollectionFacetAbstract(ISpecification holder)
+    protected CollectionFacetAbstract()
         : base(typeof(ICollectionFacet)) =>
         IsASet = false;
 
-    protected CollectionFacetAbstract(ISpecification holder, bool isASet)
-        : this(holder) =>
+    protected CollectionFacetAbstract(bool isASet)
+        : this() =>
         IsASet = isASet;
 
     protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {

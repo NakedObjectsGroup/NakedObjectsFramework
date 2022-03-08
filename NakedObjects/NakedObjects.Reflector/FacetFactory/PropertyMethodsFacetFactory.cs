@@ -56,25 +56,25 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
         var capitalizedName = property.Name;
         var paramTypes = new[] { property.PropertyType };
 
-        var facets = new List<IFacet> { new PropertyAccessorFacet(property, specification) };
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property) };
 
         if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-            facets.Add(new NullableFacetAlways(specification));
+            facets.Add(new NullableFacetAlways());
         }
 
         if (property.GetSetMethod() != null) {
             if (property.PropertyType == typeof(byte[])) {
-                facets.Add(new DisabledFacetAlways(specification));
+                facets.Add(new DisabledFacetAlways());
             }
             else {
-                facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
+                facets.Add(new PropertySetterFacetViaSetterMethod(property));
             }
 
-            facets.Add(new PropertyInitializationFacet(property, specification));
+            facets.Add(new PropertyInitializationFacet(property));
         }
         else {
-            facets.Add(new NotPersistedFacet(specification));
-            facets.Add(new DisabledFacetAlways(specification));
+            facets.Add(new NotPersistedFacet());
+            facets.Add(new DisabledFacetAlways());
         }
 
         FindAndRemoveModifyMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, paramTypes, specification);

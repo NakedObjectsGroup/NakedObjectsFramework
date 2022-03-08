@@ -10,14 +10,13 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoicesFacet {
-    protected ActionChoicesFacetAbstract(ISpecification holder)
+    protected ActionChoicesFacetAbstract()
         : base(Type) { }
 
     public static Type Type => typeof(IActionChoicesFacet);

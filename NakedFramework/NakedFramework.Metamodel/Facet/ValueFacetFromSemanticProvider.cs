@@ -8,7 +8,6 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -17,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ValueFacetFromSemanticProvider<T> : FacetAbstract, IValueFacet {
     private readonly IValueSemanticsProvider<T> semanticsProvider;
 
-    public ValueFacetFromSemanticProvider(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder)
+    public ValueFacetFromSemanticProvider(IValueSemanticsProvider<T> semanticsProvider)
         : base(typeof(IValueFacet)) =>
         this.semanticsProvider = semanticsProvider;
 

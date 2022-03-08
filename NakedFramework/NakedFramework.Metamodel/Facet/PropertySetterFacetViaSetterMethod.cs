@@ -9,7 +9,6 @@ using System;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -18,8 +17,8 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbstract {
     private readonly PropertyInfo property;
 
-    public PropertySetterFacetViaSetterMethod(PropertyInfo property, ISpecification holder)
-        : base(holder) =>
+    public PropertySetterFacetViaSetterMethod(PropertyInfo property)
+        : base() =>
         this.property = property;
 
     public override string PropertyName {

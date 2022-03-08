@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PageSizeFacetAnnotation : PageSizeFacetAbstract {
-    public PageSizeFacetAnnotation(int pageSize, ISpecification holder)
-        : base(pageSize, holder) { }
+    public PageSizeFacetAnnotation(int pageSize)
+        : base(pageSize) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

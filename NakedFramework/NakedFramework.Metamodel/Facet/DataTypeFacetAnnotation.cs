@@ -13,11 +13,11 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DataTypeFacetAnnotation : DataTypeFacetAbstract {
-    public DataTypeFacetAnnotation(DataType dataType, ISpecification holder)
-        : base(dataType, holder) { }
+    public DataTypeFacetAnnotation(DataType dataType)
+        : base(dataType) { }
 
     public DataTypeFacetAnnotation(string customDataType, ISpecification holder)
-        : base(customDataType, holder) { }
+        : base(customDataType) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

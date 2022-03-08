@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -15,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public abstract class SingleStringValueFacetAbstract : FacetAbstract, ISingleStringValueFacet {
     private readonly string valueString;
 
-    protected SingleStringValueFacetAbstract(Type facetType, ISpecification holder, string valueString)
+    protected SingleStringValueFacetAbstract(Type facetType, string valueString)
         : base(facetType) =>
         this.valueString = valueString;
 

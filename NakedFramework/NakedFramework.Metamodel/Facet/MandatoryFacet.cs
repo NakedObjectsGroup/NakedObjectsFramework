@@ -19,8 +19,7 @@ namespace NakedFramework.Metamodel.Facet;
 /// </para>
 [Serializable]
 public sealed class MandatoryFacet : MandatoryFacetAbstract {
-    public MandatoryFacet(ISpecification holder)
-        : base(holder) { }
+    public MandatoryFacet() { }
 
     /// <summary>
     ///     Always returns <c>true</c>, indicating that the facet holder is in fact mandatory.

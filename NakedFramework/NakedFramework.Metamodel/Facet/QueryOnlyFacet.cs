@@ -7,12 +7,11 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class QueryOnlyFacet : MarkerFacetAbstract, IQueryOnlyFacet {
-    public QueryOnlyFacet(ISpecification holder)
-        : base(typeof(IQueryOnlyFacet), holder) { }
+    public QueryOnlyFacet()
+        : base(typeof(IQueryOnlyFacet)) { }
 }

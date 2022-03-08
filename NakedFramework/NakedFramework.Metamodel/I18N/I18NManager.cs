@@ -41,17 +41,17 @@ public class I18NManager : II18NManager, IFacetDecorator {
 
     private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier) {
         var i18NDescription = holder is IActionParameterSpec spec ? GetParameterDescription(identifier, spec.Number) : GetDescription(identifier);
-        return i18NDescription is null ? null : new DescribedAsFacetI18N(i18NDescription, holder);
+        return i18NDescription is null ? null : new DescribedAsFacetI18N(i18NDescription);
     }
 
     private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier) {
         var i18NName = GetName(identifier);
-        return i18NName is null ? null : new NamedFacetI18N(i18NName, holder);
+        return i18NName is null ? null : new NamedFacetI18N(i18NName);
     }
 
     private IFacet GetMemberNamedFacet(ISpecification holder, IMemberNamedFacet facet, IIdentifier identifier) {
         var i18NName = holder is IActionParameterSpec spec ? GetParameterName(identifier, spec.Number) : GetName(identifier);
-        return i18NName is null ? null : new MemberNamedFacetI18N(i18NName, holder);
+        return i18NName is null ? null : new MemberNamedFacetI18N(i18NName);
     }
 
     private string GetText(IIdentifier identifier, string type) {

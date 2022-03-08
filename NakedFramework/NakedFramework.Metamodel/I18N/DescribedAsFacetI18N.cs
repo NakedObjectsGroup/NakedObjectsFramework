@@ -6,15 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.I18N;
 
 [Serializable]
 public sealed class DescribedAsFacetI18N : DescribedAsFacetAbstract {
-    public DescribedAsFacetI18N(string valueString, ISpecification holder)
-        : base(valueString, holder) { }
+    public DescribedAsFacetI18N(string valueString)
+        : base(valueString) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

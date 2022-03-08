@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -16,7 +15,7 @@ public abstract class MultiLineFacetAbstract : FacetAbstract, IMultiLineFacet {
     private readonly int numberOfLines;
     private readonly int width;
 
-    protected MultiLineFacetAbstract(int numberOfLines, int width, ISpecification holder)
+    protected MultiLineFacetAbstract(int numberOfLines, int width)
         : base(Type) {
         this.numberOfLines = numberOfLines;
         this.width = width;

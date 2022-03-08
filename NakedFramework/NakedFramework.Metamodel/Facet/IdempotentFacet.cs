@@ -7,12 +7,11 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class IdempotentFacet : MarkerFacetAbstract, IIdempotentFacet {
-    public IdempotentFacet(ISpecification holder)
-        : base(typeof(IIdempotentFacet), holder) { }
+    public IdempotentFacet()
+        : base(typeof(IIdempotentFacet)) { }
 }

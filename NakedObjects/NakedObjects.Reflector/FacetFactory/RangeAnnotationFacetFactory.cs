@@ -58,7 +58,7 @@ public sealed class RangeAnnotationFacetFactory : DomainObjectFacetFactoryProces
         }
 
         if (attribute.Minimum is IConvertible min && attribute.Maximum is IConvertible max) {
-            return new RangeFacet(min, max, isDate, holder);
+            return new RangeFacet(min, max, isDate);
         }
 
         logger.LogWarning($"Min Max values must be IConvertible for Range on {holder}");

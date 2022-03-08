@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -18,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
     private readonly IValueSemanticsProvider<T> parser;
 
-    public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
+    public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser)
         : base(typeof(IParseableFacet)) =>
         this.parser = parser;
 

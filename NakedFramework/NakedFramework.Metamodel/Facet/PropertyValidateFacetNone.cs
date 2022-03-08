@@ -8,14 +8,13 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PropertyValidateFacetNone : PropertyValidateFacetAbstract {
-    public PropertyValidateFacetNone(ISpecification holder)
-        : base(holder) { }
+    public PropertyValidateFacetNone()
+        : base() { }
 
     public override bool IsNoOp => true;
 

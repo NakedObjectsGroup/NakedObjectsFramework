@@ -19,19 +19,19 @@ namespace NakedFramework.Metamodel.Test.Facet;
 public class DisabledFacetTest {
     [TestMethod]
     public void TestDisabledFacetAlways() {
-        IDisabledFacet facet = new DisabledFacetAlways(null);
+        IDisabledFacet facet = new DisabledFacetAlways();
         Assert.AreEqual(NakedObjects.Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
     }
 
     [TestMethod]
     public void TestDisabledFacetAnnotationAlways() {
-        IDisabledFacet facet = new DisabledFacetAnnotation(WhenTo.Always, null);
+        IDisabledFacet facet = new DisabledFacetAnnotation(WhenTo.Always);
         Assert.AreEqual(NakedObjects.Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
     }
 
     [TestMethod]
     public void TestDisabledFacetAnnotationNever() {
-        IDisabledFacet facet = new DisabledFacetAnnotation(WhenTo.Never, null);
+        IDisabledFacet facet = new DisabledFacetAnnotation(WhenTo.Never);
         Assert.IsNull(facet.DisabledReason(null));
     }
 
@@ -43,7 +43,7 @@ public class DisabledFacetTest {
 
     [TestMethod]
     public void TestDisabledFacetAnnotationAsInteraction() {
-        IDisablingInteractionAdvisor facet = new DisabledFacetAnnotation(WhenTo.Never, null);
+        IDisablingInteractionAdvisor facet = new DisabledFacetAnnotation(WhenTo.Never);
         var target = Mock(new object());
         var mockIc = new Mock<IInteractionContext>();
         mockIc.Setup(ic => ic.Target).Returns(target);

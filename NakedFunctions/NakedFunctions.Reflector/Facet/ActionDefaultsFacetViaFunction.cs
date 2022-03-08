@@ -26,7 +26,7 @@ public sealed class ActionDefaultsFacetViaFunction : ActionDefaultsFacetAbstract
     private readonly Func<object, object[], object> methodDelegate;
 
     public ActionDefaultsFacetViaFunction(MethodInfo method, ISpecification holder, ILogger<ActionDefaultsFacetViaFunction> logger)
-        : base(holder) {
+        : base() {
         this.method = method;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }

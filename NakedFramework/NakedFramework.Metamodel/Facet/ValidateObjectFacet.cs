@@ -23,7 +23,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
     private readonly ILogger<ValidateObjectFacet> logger;
 
-    public ValidateObjectFacet(ISpecification holder, IList<NakedObjectValidationMethod> validateMethods, ILogger<ValidateObjectFacet> logger)
+    public ValidateObjectFacet(IList<NakedObjectValidationMethod> validateMethods, ILogger<ValidateObjectFacet> logger)
         : base(Type) {
         this.logger = logger;
         ValidateMethods = validateMethods;

@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class EditPropertiesFacet : FacetAbstract, IEditPropertiesFacet {
-    public EditPropertiesFacet(ISpecification holder, string[] properties) : base(Type) => Properties = properties;
+    public EditPropertiesFacet(string[] properties) : base(Type) => Properties = properties;
 
     public static Type Type => typeof(IEditPropertiesFacet);
     public string[] Properties { get; }

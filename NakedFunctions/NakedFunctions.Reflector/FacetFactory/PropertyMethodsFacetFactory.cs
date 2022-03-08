@@ -50,19 +50,19 @@ public sealed class PropertyMethodsFacetFactory : FunctionalFacetFactoryProcesso
                                      !classStrategy.IsIgnored(property)).ToList();
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var facets = new List<IFacet> { new PropertyAccessorFacet(property, specification) };
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property) };
 
         if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-            facets.Add(new NullableFacetAlways(specification));
+            facets.Add(new NullableFacetAlways());
         }
 
         if (property.GetSetMethod() is not null) {
-            facets.Add(new DisabledFacetAlways(specification));
-            facets.Add(new PropertyInitializationFacet(property, specification));
+            facets.Add(new DisabledFacetAlways());
+            facets.Add(new PropertyInitializationFacet(property));
         }
         else {
-            facets.Add(new NotPersistedFacet(specification));
-            facets.Add(new DisabledFacetAlways(specification));
+            facets.Add(new NotPersistedFacet());
+            facets.Add(new DisabledFacetAlways());
         }
 
         MethodHelpers.AddHideForSessionFacetNone(facets, specification);

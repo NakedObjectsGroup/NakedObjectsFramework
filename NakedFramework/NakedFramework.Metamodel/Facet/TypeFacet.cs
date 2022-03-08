@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -15,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public class TypeFacet : FacetAbstract, ITypeFacet {
     private static readonly Type Type = typeof(ITypeFacet);
 
-    public TypeFacet(ISpecification holder, Type type)
+    public TypeFacet(Type type)
         : base(Type) =>
         TypeOrUnderlyingType = typeof(Enum).IsAssignableFrom(type) ? Enum.GetUnderlyingType(type) : type;
 

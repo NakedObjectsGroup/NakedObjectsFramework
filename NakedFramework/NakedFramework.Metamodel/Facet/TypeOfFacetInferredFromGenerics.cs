@@ -10,14 +10,13 @@ using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {
-    public TypeOfFacetInferredFromGenerics(ISpecification holder)
+    public TypeOfFacetInferredFromGenerics()
         : base(Type) { }
 
     public static Type Type => typeof(ITypeOfFacet);

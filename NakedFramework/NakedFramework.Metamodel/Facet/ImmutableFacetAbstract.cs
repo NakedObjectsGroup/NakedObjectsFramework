@@ -9,15 +9,14 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {
-    protected ImmutableFacetAbstract(WhenTo when, ISpecification holder)
-        : base(Type, holder, when) { }
+    protected ImmutableFacetAbstract(WhenTo when)
+        : base(Type, when) { }
 
     public static Type Type => typeof(IImmutableFacet);
 

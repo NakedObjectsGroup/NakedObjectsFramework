@@ -6,12 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
-    public ComplexTypeFacetConvention(ISpecification holder)
-        : base(holder) { }
+    public ComplexTypeFacetConvention() { }
 }

@@ -26,7 +26,7 @@ public sealed class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
     public PropertyDefaultFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<PropertyDefaultFacetViaMethod> logger)
-        : base(holder) {
+        : base() {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

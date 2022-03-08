@@ -27,7 +27,7 @@ public sealed class ImmutableFacetFactory : AbstractNOF2FacetFactoryProcessor {
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (type.GetInterfaces().Any(i => i == typeof(INotEditableOncePersistent))) {
-            FacetUtils.AddFacet(new ImmutableFacetAnnotation(WhenTo.OncePersisted, specification), specification);
+            FacetUtils.AddFacet(new ImmutableFacetAnnotation(WhenTo.OncePersisted), specification);
         }
 
         return metamodel;

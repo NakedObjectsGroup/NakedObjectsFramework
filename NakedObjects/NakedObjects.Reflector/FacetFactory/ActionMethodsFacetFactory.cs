@@ -87,7 +87,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
     /// <summary>
     ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
     /// </summary>
-    private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new MemberNamedFacetInferred(name, action));
+    private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new MemberNamedFacetInferred(name));
 
     private void FindAndRemoveValidMethod(IReflector reflector, ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
         var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{capitalizedName}", typeof(string), parms);
@@ -353,7 +353,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
         var facets = new List<IFacet>();
 
         if (parameter.ParameterType.IsGenericType && parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-            facets.Add(new NullableFacetAlways(holder));
+            facets.Add(new NullableFacetAlways());
         }
 
         IObjectSpecBuilder returnSpec;
@@ -363,7 +363,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
             var elementType = CollectionUtils.ElementType(parameter.ParameterType);
             IObjectSpecImmutable elementSpec;
             (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(elementType, metamodel);
-            facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
+            facets.Add(new ElementTypeFacet(elementType, elementSpec));
         }
 
         FacetUtils.AddFacets(facets, holder);

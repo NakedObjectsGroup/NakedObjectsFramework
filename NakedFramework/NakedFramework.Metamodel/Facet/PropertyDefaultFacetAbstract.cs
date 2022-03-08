@@ -8,13 +8,12 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class PropertyDefaultFacetAbstract : FacetAbstract, IPropertyDefaultFacet {
-    protected PropertyDefaultFacetAbstract(ISpecification holder)
+    protected PropertyDefaultFacetAbstract()
         : base(Type) { }
 
     public static Type Type => typeof(IPropertyDefaultFacet);

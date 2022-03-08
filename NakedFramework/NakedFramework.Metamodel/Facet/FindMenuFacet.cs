@@ -7,12 +7,11 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class FindMenuFacet : FacetAbstract, IFindMenuFacet {
-    public FindMenuFacet(ISpecification holder)
+    public FindMenuFacet()
         : base(typeof(IFindMenuFacet)) { }
 }

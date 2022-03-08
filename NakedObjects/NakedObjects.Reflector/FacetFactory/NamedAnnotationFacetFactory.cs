@@ -57,16 +57,16 @@ public sealed class NamedAnnotationFacetFactory : DomainObjectFacetFactoryProces
     private INamedFacet Create(Attribute attribute, ISpecification holder) =>
         attribute switch {
             null => null,
-            NamedAttribute namedAttribute => new NamedFacetAnnotation(namedAttribute.Value, holder),
-            DisplayNameAttribute nameAttribute => new NamedFacetAnnotation(nameAttribute.DisplayName, holder),
+            NamedAttribute namedAttribute => new NamedFacetAnnotation(namedAttribute.Value),
+            DisplayNameAttribute nameAttribute => new NamedFacetAnnotation(nameAttribute.DisplayName),
             _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
         };
 
     private IMemberNamedFacet CreateForMember(Attribute attribute, ISpecification holder) =>
         attribute switch {
             null => null,
-            NamedAttribute namedAttribute => new MemberNamedFacetAnnotation(namedAttribute.Value, holder),
-            DisplayNameAttribute nameAttribute => new MemberNamedFacetAnnotation(nameAttribute.DisplayName, holder),
+            NamedAttribute namedAttribute => new MemberNamedFacetAnnotation(namedAttribute.Value),
+            DisplayNameAttribute nameAttribute => new MemberNamedFacetAnnotation(nameAttribute.DisplayName),
             _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
         };
 }

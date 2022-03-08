@@ -11,14 +11,13 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public class CollectionFacet : CollectionFacetAbstract {
-    public CollectionFacet(ISpecification holder)
-        : base(holder, false) { }
+    public CollectionFacet()
+        : base(false) { }
 
     public override bool IsQueryable => false;
 

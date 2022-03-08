@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ImmutableFacetNever : ImmutableFacetAbstract {
-    public ImmutableFacetNever(ISpecification holder)
-        : base(WhenTo.Never, holder) { }
+    public ImmutableFacetNever()
+        : base(WhenTo.Never) { }
 
     public override bool IsNoOp => true;
 

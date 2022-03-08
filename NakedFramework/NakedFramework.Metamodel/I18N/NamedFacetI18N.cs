@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
@@ -15,8 +14,8 @@ namespace NakedFramework.Metamodel.I18N;
 
 [Serializable]
 public sealed class NamedFacetI18N : NamedFacetAbstract, INamedFacet {
-    public NamedFacetI18N(string valueString, ISpecification holder)
-        : base(valueString, holder) {
+    public NamedFacetI18N(string valueString)
+        : base(valueString) {
         var shortName = TypeNameUtils.GetShortName(valueString);
 
         FriendlyName = NameUtils.NaturalName(shortName);

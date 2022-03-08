@@ -30,7 +30,7 @@ public sealed class InternalCollectionFacetFactory : AbstractNOF2FacetFactoryPro
             var collectionElementType = typeof(object);
             IObjectSpecBuilder oSpec;
             (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
-            FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, oSpec), holder);
+            FacetUtils.AddFacet(new ElementTypeFacet(collectionElementType, oSpec), holder);
         }
 
         return metamodel;

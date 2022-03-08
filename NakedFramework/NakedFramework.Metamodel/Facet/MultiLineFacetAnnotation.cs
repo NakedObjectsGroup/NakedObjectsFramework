@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MultiLineFacetAnnotation : MultiLineFacetAbstract {
-    public MultiLineFacetAnnotation(int numberOfLines, int width, ISpecification holder)
-        : base(numberOfLines, width, holder) { }
+    public MultiLineFacetAnnotation(int numberOfLines, int width)
+        : base(numberOfLines, width) { }
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -29,7 +29,7 @@ public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, 
     private readonly MethodInfo method;
 
     public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<ActionDefaultsFacetViaMethod> logger)
-        : base(holder) {
+        : base() {
         this.method = method;
         this.logger = logger;
         MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

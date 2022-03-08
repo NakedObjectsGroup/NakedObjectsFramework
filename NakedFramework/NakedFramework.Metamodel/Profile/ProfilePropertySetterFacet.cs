@@ -21,7 +21,7 @@ public sealed class ProfilePropertySetterFacet : PropertySetterFacetAbstract {
     private readonly IPropertySetterFacet underlyingFacet;
 
     public ProfilePropertySetterFacet(IPropertySetterFacet underlyingFacet, IProfileManager profileManager, ISpecification specification) :
-        base(specification) {
+        base() {
         this.underlyingFacet = underlyingFacet;
         this.profileManager = profileManager;
     }

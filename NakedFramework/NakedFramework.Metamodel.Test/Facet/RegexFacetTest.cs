@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Test.Facet;
 public class RegexFacetTest {
     [TestMethod]
     public void TestRegexFacet() {
-        IRegExFacet facet = new RegExFacet(@"\d", "", false, "", null);
+        IRegExFacet facet = new RegExFacet(@"\d", "", false, "");
 
         Assert.IsTrue(facet.DoesNotMatch("a"));
         Assert.IsFalse(facet.DoesNotMatch("1"));

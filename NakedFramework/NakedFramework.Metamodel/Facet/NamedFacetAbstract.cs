@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract {
-    protected NamedFacetAbstract(string valueString, ISpecification holder)
-        : base(Type, holder, valueString) { }
+    protected NamedFacetAbstract(string valueString)
+        : base(Type, valueString) { }
 
     public static Type Type => typeof(INamedFacet);
 

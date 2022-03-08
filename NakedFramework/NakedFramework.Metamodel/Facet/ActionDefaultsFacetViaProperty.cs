@@ -23,8 +23,7 @@ public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract
     private readonly Func<object, object[], object> methodDelegate;
     private readonly PropertyInfo property;
 
-    public ActionDefaultsFacetViaProperty(PropertyInfo property, ISpecification holder, IActionDefaultsFacet actionDefaultsFacet, ILogger<ActionDefaultsFacetViaProperty> logger)
-        : base(holder) {
+    public ActionDefaultsFacetViaProperty(PropertyInfo property, IActionDefaultsFacet actionDefaultsFacet, ILogger<ActionDefaultsFacetViaProperty> logger) {
         this.property = property;
         this.actionDefaultsFacet = actionDefaultsFacet;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(property.GetGetMethod()), logger);

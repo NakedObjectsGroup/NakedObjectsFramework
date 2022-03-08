@@ -11,18 +11,17 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class GenericIEnumerableFacet : CollectionFacetAbstract {
-    public GenericIEnumerableFacet(ISpecification holder, bool isASet)
-        : base(holder, isASet) { }
+    public GenericIEnumerableFacet(bool isASet)
+        : base(isASet) { }
 
-    public GenericIEnumerableFacet(ISpecification holder)
-        : base(holder, false) { }
+    public GenericIEnumerableFacet()
+        : base(false) { }
 
     public override bool IsQueryable => false;
 

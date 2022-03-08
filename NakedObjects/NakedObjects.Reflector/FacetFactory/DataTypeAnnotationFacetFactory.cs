@@ -50,5 +50,5 @@ public sealed class DataTypeAnnotationFacetFactory : DomainObjectFacetFactoryPro
             ? null
             : attribute.DataType == DataType.Custom
                 ? new DataTypeFacetAnnotation(attribute.CustomDataType, holder)
-                : new DataTypeFacetAnnotation(attribute.DataType, holder);
+                : new DataTypeFacetAnnotation(attribute.DataType);
 }

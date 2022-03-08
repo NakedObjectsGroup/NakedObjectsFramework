@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MultiLineFacetNone : MultiLineFacetAbstract {
-    public MultiLineFacetNone(ISpecification holder)
-        : base(1, 0, holder) { }
+    public MultiLineFacetNone()
+        : base(1, 0) { }
 
     public override bool IsNoOp => true;
 }

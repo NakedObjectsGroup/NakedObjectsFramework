@@ -7,15 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ArrayFacet : CollectionFacet {
-    public ArrayFacet(ISpecification holder)
-        : base(holder) { }
+    public ArrayFacet() { }
 
     public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
         var newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);

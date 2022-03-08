@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DateOnlyFacet : MarkerFacetAbstract, IDateOnlyFacet {
-    public DateOnlyFacet(ISpecification holder) : base(Type, holder) { }
+    public DateOnlyFacet() : base(Type) { }
 
     public static Type Type => typeof(IDateOnlyFacet);
 }

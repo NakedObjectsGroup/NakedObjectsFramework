@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
-    public ElementTypeFacet(ISpecification holder, Type type, IObjectSpecImmutable spec) : base(Type) {
+    public ElementTypeFacet(Type type, IObjectSpecImmutable spec) : base(Type) {
         Value = type;
         ValueSpec = spec;
     }

@@ -97,9 +97,9 @@ public static class MethodHelpers {
         }
     }
 
-    public static void AddHideForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new HideForSessionFacetNone(specification));
+    public static void AddHideForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new HideForSessionFacetNone());
 
-    public static void AddDisableForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisableForSessionFacetNone(specification));
+    public static void AddDisableForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisableForSessionFacetNone());
 
-    public static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisabledFacetAlways(specification));
+    public static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisabledFacetAlways());
 }

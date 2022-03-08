@@ -21,7 +21,7 @@ public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFac
     private readonly PropertyInfo property;
 
     public PropertySetterFacetViaValueHolder(PropertyInfo property, ISpecification holder)
-        : base(holder) =>
+        : base() =>
         this.property = property;
 
     public override string PropertyName {

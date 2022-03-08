@@ -86,7 +86,7 @@ public static class FacetUtils {
             var integrationFacet = specification.GetFacet<IIntegrationFacet>();
 
             if (integrationFacet is null) {
-                integrationFacet = new IntegrationFacet(specification, action);
+                integrationFacet = new IntegrationFacet(action);
                 AddFacet(integrationFacet, specification);
             }
             else {

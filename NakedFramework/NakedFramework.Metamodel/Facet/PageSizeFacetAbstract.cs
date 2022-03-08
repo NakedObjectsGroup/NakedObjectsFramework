@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class PageSizeFacetAbstract : SingleIntValueFacetAbstract, IPageSizeFacet {
-    protected PageSizeFacetAbstract(int pageSize, ISpecification holder)
-        : base(Type, holder, pageSize) { }
+    protected PageSizeFacetAbstract(int pageSize)
+        : base(Type, pageSize) { }
 
     public static Type Type => typeof(IPageSizeFacet);
 }

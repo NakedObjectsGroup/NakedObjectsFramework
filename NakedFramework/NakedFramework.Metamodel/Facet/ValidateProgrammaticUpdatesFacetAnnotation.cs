@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ValidateProgrammaticUpdatesFacetAnnotation : FacetAbstract, IValidateProgrammaticUpdatesFacet {
-    public ValidateProgrammaticUpdatesFacetAnnotation(ISpecification holder)
+    public ValidateProgrammaticUpdatesFacetAnnotation()
         : base(typeof(IValidateProgrammaticUpdatesFacet)) { }
 }
 

@@ -48,7 +48,7 @@ public sealed class OptionalDefaultFacetFactory : DomainObjectFacetFactoryProces
         return metamodel;
     }
 
-    private static IMandatoryFacet CreateOptional(ISpecification holder) => new OptionalFacetDefault(holder);
+    private static IMandatoryFacet CreateOptional(ISpecification holder) => new OptionalFacetDefault();
 
-    private static IMandatoryFacet CreateMandatory(ISpecification holder) => new MandatoryFacetDefault(holder);
+    private static IMandatoryFacet CreateMandatory(ISpecification holder) => new MandatoryFacetDefault();
 }

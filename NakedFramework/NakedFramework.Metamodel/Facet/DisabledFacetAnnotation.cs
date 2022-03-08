@@ -7,15 +7,14 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisabledFacetAnnotation : DisabledFacetAbstract {
-    public DisabledFacetAnnotation(WhenTo value, ISpecification holder)
-        : base(value, holder) { }
+    public DisabledFacetAnnotation(WhenTo value)
+        : base(value) { }
 
     public override string DisabledReason(INakedObjectAdapter target) =>
         Value switch {

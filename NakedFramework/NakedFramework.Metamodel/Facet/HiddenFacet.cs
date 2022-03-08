@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 
@@ -17,8 +16,8 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
-    public HiddenFacet(WhenTo when, ISpecification holder)
-        : base(typeof(IHiddenFacet), holder, when) { }
+    public HiddenFacet(WhenTo when)
+        : base(typeof(IHiddenFacet), when) { }
 
     #region IHiddenFacet Members
 

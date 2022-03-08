@@ -58,7 +58,7 @@ public sealed class MemberOrderAnnotationFacetFactory : AbstractNOF2FacetFactory
             if (orderedMemberNames.Any()) {
                 var index = Array.IndexOf(orderedMemberNames, memberName.ToLower());
                 if (index >= 0) {
-                    facet = new MemberOrderFacet("", index.ToString(), specification);
+                    facet = new MemberOrderFacet("", index.ToString());
                 }
                 else {
                     logger.LogWarning($"Failed to find member {memberName} in {orderMethodName} string on {declaringType}");
@@ -73,7 +73,7 @@ public sealed class MemberOrderAnnotationFacetFactory : AbstractNOF2FacetFactory
                 logger.LogWarning($"Member {memberName} on {declaringType} has MemberOrder annotation and is in {orderMethodName} annotation will take priority");
             }
 
-            facet = new MemberOrderFacet("", attribute.Order.ToString(), specification);
+            facet = new MemberOrderFacet("", attribute.Order.ToString());
         }
 
         FacetUtils.AddFacet(facet, specification);

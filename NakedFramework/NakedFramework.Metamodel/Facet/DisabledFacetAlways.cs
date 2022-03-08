@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisabledFacetAlways : DisabledFacetAbstract {
-    public DisabledFacetAlways(ISpecification holder)
-        : base(WhenTo.Always, holder) { }
+    public DisabledFacetAlways()
+        : base(WhenTo.Always) { }
 
     /// <summary>
     ///     Always returns <i>Always disabled</i>
