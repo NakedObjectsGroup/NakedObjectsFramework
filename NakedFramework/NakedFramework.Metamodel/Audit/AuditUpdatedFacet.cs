@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.Audit;
@@ -19,7 +18,7 @@ public sealed class AuditUpdatedFacet : CallbackFacetAbstract, IUpdatedCallbackF
     private readonly IAuditManager manager;
     private readonly IUpdatedCallbackFacet underlyingFacet;
 
-    public AuditUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IAuditManager auditManager, ISpecification specification)
+    public AuditUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IAuditManager auditManager)
         : base(Type) {
         this.underlyingFacet = underlyingFacet;
         manager = auditManager;
@@ -31,4 +30,6 @@ public sealed class AuditUpdatedFacet : CallbackFacetAbstract, IUpdatedCallbackF
         manager.Updated(nakedObjectAdapter, framework);
         underlyingFacet.Invoke(nakedObjectAdapter, framework);
     }
+
+    public override Type FacetType => Type;
 }

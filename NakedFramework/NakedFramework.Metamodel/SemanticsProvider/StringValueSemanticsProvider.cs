@@ -22,6 +22,8 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     public static Type Type => typeof(IStringValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(string);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new StringValueSemanticsProvider(o));

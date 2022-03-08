@@ -17,6 +17,8 @@ public abstract class UpdatingCallbackFacetAbstract : CallbackFacetAbstract, IUp
         : base(Type) { }
 
     public static Type Type => typeof(IUpdatingCallbackFacet);
+
+    public override Type FacetType => Type;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

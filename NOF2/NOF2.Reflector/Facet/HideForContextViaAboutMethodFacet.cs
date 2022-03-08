@@ -23,6 +23,8 @@ public sealed class HideForContextViaAboutMethodFacet : AbstractViaAboutMethodFa
     public HideForContextViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<HideForContextViaAboutMethodFacet> logger)
         : base(typeof(IHideForContextFacet), method, aboutType, logger) { }
 
+    public override Type FacetType => typeof(IHideForContextFacet);
+
     #region IHideForContextFacet Members
 
     public string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);

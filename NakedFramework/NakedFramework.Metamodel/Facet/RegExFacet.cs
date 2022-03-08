@@ -35,6 +35,8 @@ public sealed class RegExFacet : FacetAbstract, IRegExFacet {
         IsCaseSensitive = caseSensitive;
     }
 
+    public override Type FacetType => typeof(IRegExFacet);
+
     private RegexOptions PatternFlags => !IsCaseSensitive ? RegexOptions.IgnoreCase : RegexOptions.None;
 
     internal string ValidationPattern { get; }

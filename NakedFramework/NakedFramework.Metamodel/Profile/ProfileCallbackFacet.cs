@@ -36,6 +36,8 @@ public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
         this.profileManager = profileManager;
     }
 
+    public override Type FacetType => underlyingFacet.FacetType;
+
     #region ICreatedCallbackFacet Members
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {

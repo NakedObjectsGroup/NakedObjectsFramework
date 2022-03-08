@@ -29,6 +29,8 @@ public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstrac
 
     private static Type Type => typeof(IViewModelFacet);
 
+    public override Type FacetType => Type;
+
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
                                     INakedFramework framework) =>
         deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, framework)) as string[];

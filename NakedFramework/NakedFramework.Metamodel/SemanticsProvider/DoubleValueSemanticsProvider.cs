@@ -23,6 +23,8 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     private static Type Type => typeof(IDoubleFloatingPointValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(double);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new DoubleValueSemanticsProvider(o));

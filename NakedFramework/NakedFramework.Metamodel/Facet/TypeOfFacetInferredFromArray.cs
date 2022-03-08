@@ -20,6 +20,8 @@ public sealed class TypeOfFacetInferredFromArray : FacetAbstract, ITypeOfFacet {
 
     public static Type Type => typeof(ITypeOfFacet);
 
+    public override Type FacetType => Type;
+
     #region ITypeOfFacet Members
 
     public Type GetValue(INakedObjectAdapter collection) => collection.Object.GetType().GetElementType();

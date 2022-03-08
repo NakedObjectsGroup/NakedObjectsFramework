@@ -24,6 +24,8 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static Type Type => typeof(ILongValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(long);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new LongValueSemanticsProvider(o));

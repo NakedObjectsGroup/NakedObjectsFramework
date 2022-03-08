@@ -16,4 +16,6 @@ public abstract class PluralFacetAbstract : SingleStringValueFacetAbstract, IPlu
         : base(Type, stringValue) { }
 
     public static Type Type => typeof(IPluralFacet);
+
+    public override Type FacetType => Type;
 }

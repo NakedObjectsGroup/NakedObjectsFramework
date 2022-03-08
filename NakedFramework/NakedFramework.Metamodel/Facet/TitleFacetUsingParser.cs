@@ -21,6 +21,8 @@ public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
         : base(typeof(ITitleFacet)) =>
         this.parser = parser;
 
+    public override Type FacetType => typeof(ITitleFacet);
+
     protected override string ToStringValues() => parser.ToString();
 
     #region ITitleFacet Members

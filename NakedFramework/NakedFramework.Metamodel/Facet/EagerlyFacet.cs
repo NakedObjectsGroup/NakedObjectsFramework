@@ -18,6 +18,8 @@ public sealed class EagerlyFacet : FacetAbstract, IEagerlyFacet {
 
     public static Type Type => typeof(IEagerlyFacet);
 
+    public override Type FacetType => Type;
+
     #region IEagerlyFacet Members
 
     public Do What { get; private set; }

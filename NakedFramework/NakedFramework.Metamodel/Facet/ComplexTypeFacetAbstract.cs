@@ -16,4 +16,6 @@ public abstract class ComplexTypeFacetAbstract : MarkerFacetAbstract, IComplexTy
         : base(Type) { }
 
     public static Type Type => typeof(IComplexTypeFacet);
+
+    public override Type FacetType => Type;
 }

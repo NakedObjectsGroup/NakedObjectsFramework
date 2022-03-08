@@ -24,6 +24,8 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
 
     public static Type Type => typeof(IArrayValueFacet<T>);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(T[]);
 
     #region IFromStream Members

@@ -18,6 +18,8 @@ public abstract class PropertyDefaultFacetAbstract : FacetAbstract, IPropertyDef
 
     public static Type Type => typeof(IPropertyDefaultFacet);
 
+    public override Type FacetType => Type;
+
     #region IPropertyDefaultFacet Members
 
     public abstract object GetDefault(INakedObjectAdapter nakedObjectAdapter);

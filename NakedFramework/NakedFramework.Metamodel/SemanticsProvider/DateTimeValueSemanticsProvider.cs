@@ -27,6 +27,8 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
 
     public static Type Type => typeof(IDateValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(DateTime);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new DateTimeValueSemanticsProvider(o));

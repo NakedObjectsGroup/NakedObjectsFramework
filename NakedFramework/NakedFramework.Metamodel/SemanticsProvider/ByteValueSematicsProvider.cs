@@ -23,6 +23,8 @@ public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static Type Type => typeof(IByteValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(byte);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ByteValueSemanticsProvider(o));

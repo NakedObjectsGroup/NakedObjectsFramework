@@ -15,4 +15,6 @@ public sealed class DateOnlyFacet : MarkerFacetAbstract, IDateOnlyFacet {
     public DateOnlyFacet() : base(Type) { }
 
     public static Type Type => typeof(IDateOnlyFacet);
+
+    public override Type FacetType => Type;
 }

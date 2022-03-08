@@ -20,6 +20,8 @@ public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContribu
     public ContributedToLocalCollectionFacet()
         : base(typeof(IContributedToLocalCollectionFacet)) { }
 
+    public override Type FacetType => typeof(IContributedToLocalCollectionFacet);
+
     #region IContributedActionFacet Members
 
     public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpec, string id) => localCollectionContributees.Where(t => t.id == id.ToLower()).Select(t => t.spec).Any(objectSpec.IsOfType);

@@ -18,6 +18,8 @@ public sealed class MemberOrderFacet : FacetAbstract, IMemberOrderFacet {
         Name = name;
     }
 
+    public override Type FacetType => typeof(IMemberOrderFacet);
+
     #region IMemberOrderFacet Members
 
     public string Sequence { get; }

@@ -24,6 +24,8 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static Type Type => typeof(IUnsignedIntegerValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(uint);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new UIntValueSemanticsProvider(o));

@@ -22,6 +22,8 @@ public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract 
 
     private static Type Type => typeof(IViewModelFacet);
 
+    public override Type FacetType => Type;
+
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 
     public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);

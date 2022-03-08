@@ -21,6 +21,8 @@ public sealed class EnumFacet : MarkerFacetAbstract, IEnumFacet {
         : base(typeof(IEnumFacet)) =>
         this.typeOfEnum = typeOfEnum;
 
+    public override Type FacetType => typeof(IEnumFacet);
+
     private string ToDisplayName(string enumName) => NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
 
     #region Nested type: EnumNameComparer

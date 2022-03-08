@@ -23,6 +23,7 @@ public sealed class PropertyValidateViaAboutMethodFacet : AbstractViaAboutMethod
     public PropertyValidateViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<PropertyValidateViaAboutMethodFacet> logger)
         : base(typeof(IPropertyValidateFacet), method, aboutType, logger) { }
 
+    public override Type FacetType => typeof(IPropertyValidateFacet);
     public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArgument);
 
     public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));

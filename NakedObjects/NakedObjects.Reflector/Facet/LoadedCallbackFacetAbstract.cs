@@ -17,6 +17,8 @@ public abstract class LoadedCallbackFacetAbstract : CallbackFacetAbstract, ILoad
         : base(Type) { }
 
     public static Type Type => typeof(ILoadedCallbackFacet);
+
+    public override Type FacetType => Type;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

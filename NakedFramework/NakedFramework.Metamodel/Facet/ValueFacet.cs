@@ -17,5 +17,7 @@ public sealed class ValueFacet : FacetAbstract, IValueFacet {
     public ValueFacet()
         : base(typeof(IValueFacet)) { }
 
+    public override Type FacetType => typeof(IValueFacet);
+
     public object Value(INakedObjectAdapter nakedObjectAdapter, string format = null) => nakedObjectAdapter.GetDomainObject();
 }

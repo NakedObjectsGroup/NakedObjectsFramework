@@ -23,6 +23,7 @@ public sealed class DisableForContextViaAboutMethodFacet : AbstractViaAboutMetho
     public DisableForContextViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<DisableForContextViaAboutMethodFacet> logger)
         : base(typeof(IDisableForContextFacet), method, aboutType, logger) { }
 
+    public override Type FacetType => typeof(IDisableForContextFacet);
     public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Framework);
 
     public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));

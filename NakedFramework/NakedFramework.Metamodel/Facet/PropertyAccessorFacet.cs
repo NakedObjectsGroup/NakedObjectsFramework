@@ -22,6 +22,8 @@ public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFace
         : base(typeof(IPropertyAccessorFacet)) =>
         propertyMethod = property;
 
+    public override Type FacetType => typeof(IPropertyAccessorFacet);
+
     #region IPropertyAccessorFacet Members
 
     public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {

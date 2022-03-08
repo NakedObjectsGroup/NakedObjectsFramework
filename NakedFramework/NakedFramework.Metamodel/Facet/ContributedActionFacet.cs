@@ -21,6 +21,8 @@ public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFa
     public ContributedActionFacet()
         : base(typeof(IContributedActionFacet)) { }
 
+    public override Type FacetType => typeof(IContributedActionFacet);
+
     public void AddObjectContributee(IObjectSpecImmutable objectSpec, string subMenu, string id) => objectContributees.Add((objectSpec, subMenu, id));
 
     //Here the type is the ElementType of the collection, not the type of collection.

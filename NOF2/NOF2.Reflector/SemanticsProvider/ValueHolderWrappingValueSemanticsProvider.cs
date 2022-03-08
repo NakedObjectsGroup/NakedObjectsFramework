@@ -26,6 +26,8 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
 
     public static Type Type => typeof(IValueSemanticsProvider);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(T);
 
     protected override T DoParse(string entry) {

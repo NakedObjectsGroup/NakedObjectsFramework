@@ -24,6 +24,8 @@ public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProvide
 
     public static Type Type => typeof(IFileAttachmentValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(FileAttachment);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new FileAttachmentValueSemanticsProvider(o));

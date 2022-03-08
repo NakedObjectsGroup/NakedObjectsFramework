@@ -20,6 +20,8 @@ public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IIm
 
     public static Type Type => typeof(IImmutableFacet);
 
+    public override Type FacetType => Type;
+
     /// <summary>
     ///     Hook method for subclasses to override
     /// </summary>

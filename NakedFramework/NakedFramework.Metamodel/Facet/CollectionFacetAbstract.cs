@@ -20,6 +20,8 @@ public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet 
         : base(typeof(ICollectionFacet)) =>
         IsASet = false;
 
+    public override Type FacetType => typeof(ICollectionFacet);
+
     protected CollectionFacetAbstract(bool isASet)
         : this() =>
         IsASet = isASet;

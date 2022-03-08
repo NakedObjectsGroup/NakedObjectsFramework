@@ -19,6 +19,8 @@ public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySett
 
     public static Type Type => typeof(IPropertySetterFacet);
 
+    public override Type FacetType => Type;
+
     #region IPropertySetterFacet Members
 
     public abstract void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework);

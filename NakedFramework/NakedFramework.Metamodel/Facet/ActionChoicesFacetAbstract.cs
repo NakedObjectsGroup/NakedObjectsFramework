@@ -21,6 +21,8 @@ public abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoices
 
     public static Type Type => typeof(IActionChoicesFacet);
 
+    public override Type FacetType => Type;
+
     #region IActionChoicesFacet Members
 
     public virtual bool IsEnabled(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => true;

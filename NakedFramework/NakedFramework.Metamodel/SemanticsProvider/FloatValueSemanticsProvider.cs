@@ -23,6 +23,8 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     public static Type Type => typeof(IFloatingPointValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(float);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new FloatValueSemanticsProvider(o));

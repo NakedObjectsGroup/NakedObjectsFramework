@@ -22,10 +22,10 @@ public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
     private readonly IIdentifier identifier;
     private readonly IActionInvocationFacet underlyingFacet;
 
-    public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, IAuditManager auditManager, ISpecification specification) {
+    public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, IAuditManager auditManager, IIdentifier identifier) {
         this.underlyingFacet = underlyingFacet;
         this.auditManager = auditManager;
-        identifier = specification.Identifier;
+        this.identifier = identifier;
     }
 
     public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;

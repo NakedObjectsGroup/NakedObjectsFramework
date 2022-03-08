@@ -27,6 +27,9 @@ public sealed class ActionChoicesViaAboutMethodFacet : AbstractViaAboutMethodFac
         : base(typeof(IActionChoicesFacet), aboutmethod, AboutHelpers.AboutType.Action, logger) =>
         this.index = index;
 
+
+    public override Type FacetType => typeof(IActionChoicesFacet);
+
     public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();
 
     public bool IsMultiple => false;

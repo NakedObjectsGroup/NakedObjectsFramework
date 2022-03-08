@@ -24,6 +24,8 @@ public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
         Specification = holder;
     }
 
+    public override Type FacetType => typeof(IMenuFacet);
+
     protected ITypeSpecImmutable Spec => (ITypeSpecImmutable)Specification;
 
     protected MenuImpl Menu { get; set; }

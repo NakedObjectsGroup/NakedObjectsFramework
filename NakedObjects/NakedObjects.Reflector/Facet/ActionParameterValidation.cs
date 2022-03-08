@@ -34,6 +34,8 @@ public sealed class ActionParameterValidation : FacetAbstract, IActionParameterV
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
+    public override Type FacetType => typeof(IActionParameterValidationFacet);
+
     protected override string ToStringValues() => $"method={method}";
 
     [OnDeserialized]

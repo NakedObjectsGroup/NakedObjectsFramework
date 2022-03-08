@@ -14,4 +14,6 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class FindMenuFacet : FacetAbstract, IFindMenuFacet {
     public FindMenuFacet()
         : base(typeof(IFindMenuFacet)) { }
+
+    public override Type FacetType => typeof(IFindMenuFacet);
 }

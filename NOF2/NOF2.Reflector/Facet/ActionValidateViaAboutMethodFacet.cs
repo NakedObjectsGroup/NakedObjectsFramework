@@ -24,6 +24,7 @@ public sealed class ActionValidateViaAboutMethodFacet : AbstractViaAboutMethodFa
     public ActionValidateViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<ActionValidateViaAboutMethodFacet> logger)
         : base(typeof(IPropertyValidateFacet), method, aboutType, logger) { }
 
+    public override Type FacetType => typeof(IActionValidationFacet);
     public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);
 
     public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));

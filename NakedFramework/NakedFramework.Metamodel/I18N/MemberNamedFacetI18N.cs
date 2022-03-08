@@ -18,6 +18,8 @@ public sealed class MemberNamedFacetI18N : SingleStringValueFacetAbstract, IMemb
     public MemberNamedFacetI18N(string valueString)
         : base(typeof(IMemberNamedFacet), valueString) { }
 
+    public override Type FacetType => typeof(IMemberNamedFacet);
+
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
     public string FriendlyName() => Value;
 }

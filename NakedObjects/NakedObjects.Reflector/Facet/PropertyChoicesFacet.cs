@@ -44,6 +44,8 @@ public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet,
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
+    public override Type FacetType => typeof(IPropertyChoicesFacet);
+
     protected override string ToStringValues() => $"method={method}";
 
     [OnDeserialized]

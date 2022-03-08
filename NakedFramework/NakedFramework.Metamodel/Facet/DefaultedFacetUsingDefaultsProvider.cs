@@ -19,6 +19,8 @@ public sealed class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDef
         : base(typeof(IDefaultedFacet)) =>
         defaultsProvider = parser;
 
+    public override Type FacetType => typeof(IDefaultedFacet);
+
     #region IDefaultedFacet Members
 
     public object Default => defaultsProvider.DefaultValue;

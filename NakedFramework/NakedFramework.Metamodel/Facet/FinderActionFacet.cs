@@ -14,4 +14,6 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class FinderActionFacet : SingleStringValueFacetAbstract, IFinderActionFacet {
     public FinderActionFacet(string value)
         : base(typeof(IFinderActionFacet), value) { }
+
+    public override Type FacetType => typeof(IFinderActionFacet);
 }

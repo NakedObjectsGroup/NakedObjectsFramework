@@ -15,7 +15,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class FacetAbstract : IFacet, IDeserializationCallback {
-    protected FacetAbstract(Type facetType) => FacetType = facetType;
+    protected FacetAbstract(Type facetType) {
+
+    }
 
     #region IDeserializationCallback Members
 
@@ -83,7 +85,7 @@ public abstract class FacetAbstract : IFacet, IDeserializationCallback {
     /// </para>
     public virtual bool IsNoOp => false;
 
-    public Type FacetType { get; }
+    public abstract Type FacetType { get; }
 
     /// <summary>
     ///     Default implementation of this method that returns <c>true</c>, ie

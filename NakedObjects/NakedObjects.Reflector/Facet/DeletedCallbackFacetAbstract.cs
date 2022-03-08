@@ -17,6 +17,8 @@ public abstract class DeletedCallbackFacetAbstract : CallbackFacetAbstract, IDel
         : base(Type) { }
 
     public static Type Type => typeof(IDeletedCallbackFacet);
+
+    public override Type FacetType => Type;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

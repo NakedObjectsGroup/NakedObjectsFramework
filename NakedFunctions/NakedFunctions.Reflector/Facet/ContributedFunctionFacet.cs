@@ -23,6 +23,8 @@ public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFuncti
     public ContributedFunctionFacet(bool isContributedToObject) : base(typeof(IContributedFunctionFacet)) =>
         IsContributedToObject = isContributedToObject;
 
+    public override Type FacetType => typeof(IContributedFunctionFacet);
+
     public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec) => collectionContributees.Any(objectSpec.IsOfType);
 
     public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);

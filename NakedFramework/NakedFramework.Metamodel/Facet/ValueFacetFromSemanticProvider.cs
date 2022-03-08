@@ -20,5 +20,7 @@ public sealed class ValueFacetFromSemanticProvider<T> : FacetAbstract, IValueFac
         : base(typeof(IValueFacet)) =>
         this.semanticsProvider = semanticsProvider;
 
+    public override Type FacetType => typeof(IValueFacet);
+
     public object Value(INakedObjectAdapter nakedObjectAdapter, string format = null) => semanticsProvider.Value(nakedObjectAdapter, format);
 }

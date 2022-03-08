@@ -21,6 +21,8 @@ public sealed class DescribedAsViaAboutMethodFacet : AbstractViaAboutMethodFacet
     public DescribedAsViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<DescribedAsViaAboutMethodFacet> logger)
         : base(typeof(IDescribedAsFacet), method, aboutType, logger) { }
 
+    public override Type FacetType => typeof(IDescribedAsFacet);
+
     public string Description(INakedObjectAdapter adapter, INakedFramework framework) => GetAbout(adapter.GetDomainObject(), framework).Description;
 
     public IAbout GetAbout(object target, INakedFramework framework) => InvokeAboutMethod(framework, target, AboutTypeCodes.Name, false, true);

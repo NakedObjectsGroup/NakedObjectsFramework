@@ -23,6 +23,8 @@ public abstract class MultiLineFacetAbstract : FacetAbstract, IMultiLineFacet {
 
     public static Type Type => typeof(IMultiLineFacet);
 
+    public override Type FacetType => Type;
+
     protected override string ToStringValues() => $"lines={numberOfLines}, width={width}";
 
     #region IMultiLineFacet Members

@@ -20,6 +20,8 @@ public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
 
     public static Type Type => typeof(IElementTypeFacet);
 
+    public override Type FacetType => Type;
+
     #region IElementTypeFacet Members
 
     public Type Value { get; }

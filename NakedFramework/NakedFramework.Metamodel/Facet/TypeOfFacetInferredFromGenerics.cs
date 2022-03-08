@@ -21,6 +21,8 @@ public sealed class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFace
 
     public static Type Type => typeof(ITypeOfFacet);
 
+    public override Type FacetType => Type;
+
     #region ITypeOfFacet Members
 
     public Type GetValue(INakedObjectAdapter collection) => collection.Object.GetType().GenericTypeArguments.First();

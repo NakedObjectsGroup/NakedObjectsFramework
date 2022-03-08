@@ -16,4 +16,6 @@ public sealed class InjectedFacet : MarkerFacetAbstract, IInjectedFacet {
     public InjectedFacet() : base(Type) { }
 
     public static Type Type => typeof(IInjectedFacet);
+
+    public override Type FacetType => Type;
 }

@@ -23,6 +23,8 @@ public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstra
 
     private static Type Type => typeof(IBooleanValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(bool);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new BooleanValueSemanticsProvider(o));

@@ -37,6 +37,8 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
         this.index = index;
     }
 
+    public override Type FacetType => typeof(IMemberNamedFacet);
+
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         switch (aboutCode) {
             case AboutTypeCodes.Name: {

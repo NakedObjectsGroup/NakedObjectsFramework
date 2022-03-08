@@ -16,4 +16,6 @@ public abstract class PageSizeFacetAbstract : SingleIntValueFacetAbstract, IPage
         : base(Type, pageSize) { }
 
     public static Type Type => typeof(IPageSizeFacet);
+
+    public override Type FacetType => Type;
 }

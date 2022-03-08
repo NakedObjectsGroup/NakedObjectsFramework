@@ -14,6 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class NotPersistedFacet : MarkerFacetAbstract, INotPersistedFacet {
     public NotPersistedFacet()
         : base(typeof(INotPersistedFacet)) { }
+
+    public override Type FacetType => typeof(INotPersistedFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

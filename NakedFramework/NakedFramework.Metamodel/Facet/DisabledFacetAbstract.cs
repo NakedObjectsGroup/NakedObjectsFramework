@@ -20,6 +20,8 @@ public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDis
 
     public static Type Type => typeof(IDisabledFacet);
 
+    public override Type FacetType => Type;
+
     #region IDisabledFacet Members
 
     public virtual string Disables(IInteractionContext ic) => DisabledReason(ic.Target);

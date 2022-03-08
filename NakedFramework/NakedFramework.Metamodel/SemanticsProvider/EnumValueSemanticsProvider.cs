@@ -22,6 +22,8 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
 
     public static Type Type => typeof(IEnumValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(T);
 
     #region IEnumValueFacet Members

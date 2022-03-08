@@ -28,6 +28,8 @@ public abstract class HideForSessionFacetAbstract : FacetAbstract, IHideForSessi
 
     public static Type Type => typeof(IHideForSessionFacet);
 
+    public override Type FacetType => Type;
+
     #region IHideForSessionFacet Members
 
     public virtual string Hides(IInteractionContext ic) => HiddenReason(ic.Target, ic.Framework);

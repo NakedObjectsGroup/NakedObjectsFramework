@@ -25,6 +25,8 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static Type Type => typeof(ITimeValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(TimeSpan);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new TimeValueSemanticsProvider(o));

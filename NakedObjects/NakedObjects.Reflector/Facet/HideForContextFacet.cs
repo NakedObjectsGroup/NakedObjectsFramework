@@ -34,6 +34,8 @@ public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, I
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
+    public override Type FacetType => typeof(IHideForContextFacet);
+
     protected override string ToStringValues() => $"method={method}";
 
     [OnDeserialized]

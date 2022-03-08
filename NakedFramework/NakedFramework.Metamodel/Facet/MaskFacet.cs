@@ -14,6 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
     public MaskFacet(string value)
         : base(typeof(IMaskFacet), value) { }
+
+    public override Type FacetType => typeof(IMaskFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -14,6 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PresentationHintFacet : SingleStringValueFacetAbstract, IPresentationHintFacet {
     public PresentationHintFacet(string value)
         : base(typeof(IPresentationHintFacet), value) { }
+
+    public override Type FacetType => typeof(IPresentationHintFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

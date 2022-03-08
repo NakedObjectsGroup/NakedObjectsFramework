@@ -23,6 +23,8 @@ public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     public static Type Type => typeof(ISbyteValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(sbyte);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new SbyteValueSemanticsProvider(o));

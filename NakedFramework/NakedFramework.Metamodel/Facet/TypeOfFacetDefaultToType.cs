@@ -26,6 +26,8 @@ public sealed class TypeOfFacetDefaultToType : FacetAbstract, ITypeOfFacet {
 
     public static Type Type => typeof(ITypeOfFacet);
 
+    public override Type FacetType => Type;
+
     #region ITypeOfFacet Members
 
     public Type GetValue(INakedObjectAdapter collection) => type;

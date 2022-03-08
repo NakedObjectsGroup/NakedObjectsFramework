@@ -46,7 +46,9 @@ public class FacetAbstractTest {
     #region Nested type: ConcreteFacet
 
     internal class ConcreteFacet : FacetAbstract, IFooFacet {
-        public ConcreteFacet(Type facetType) : base(facetType) { }
+        public ConcreteFacet(Type facetType) : base(facetType) => FacetType = facetType;
+
+        public override Type FacetType { get; }
     }
 
     #endregion

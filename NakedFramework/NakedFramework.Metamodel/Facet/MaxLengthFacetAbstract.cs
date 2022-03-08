@@ -22,6 +22,8 @@ public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMax
 
     public static Type Type => typeof(IMaxLengthFacet);
 
+    public override Type FacetType => Type;
+
     protected override string ToStringValues() => Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
 
     #region IMaxLengthFacet Members

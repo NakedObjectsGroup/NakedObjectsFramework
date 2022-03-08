@@ -19,6 +19,8 @@ public abstract class DisableForSessionFacetAbstract : FacetAbstract, IDisableFo
 
     public static Type Type => typeof(IDisableForSessionFacet);
 
+    public override Type FacetType => Type;
+
     #region IDisableForSessionFacet Members
 
     public abstract string DisabledReason(INakedObjectAdapter target, INakedFramework framework);

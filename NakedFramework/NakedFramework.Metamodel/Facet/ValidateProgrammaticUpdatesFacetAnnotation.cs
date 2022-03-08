@@ -14,6 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ValidateProgrammaticUpdatesFacetAnnotation : FacetAbstract, IValidateProgrammaticUpdatesFacet {
     public ValidateProgrammaticUpdatesFacetAnnotation()
         : base(typeof(IValidateProgrammaticUpdatesFacet)) { }
+
+    public override Type FacetType => typeof(IValidateProgrammaticUpdatesFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

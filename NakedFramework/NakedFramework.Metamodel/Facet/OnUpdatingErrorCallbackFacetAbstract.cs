@@ -16,6 +16,8 @@ public abstract class OnUpdatingErrorCallbackFacetAbstract : CallbackWithExcepti
         : base(Type) { }
 
     public static Type Type => typeof(IOnUpdatingErrorCallbackFacet);
+
+    public override Type FacetType => Type;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

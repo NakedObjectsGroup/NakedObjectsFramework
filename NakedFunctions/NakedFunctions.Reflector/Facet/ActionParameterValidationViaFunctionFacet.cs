@@ -31,6 +31,8 @@ public sealed class ActionParameterValidationViaFunctionFacet : FacetAbstract, I
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
+    public override Type FacetType => typeof(IActionParameterValidationFacet);
+
     protected override string ToStringValues() => $"method={method}";
 
     #region IActionParameterValidationFacet Members

@@ -21,6 +21,8 @@ public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFace
         : base(typeof(IParseableFacet)) =>
         this.parser = parser;
 
+    public override Type FacetType => typeof(IParseableFacet);
+
     #region IParseableFacet Members
 
     public INakedObjectAdapter ParseTextEntry(string entry, INakedObjectManager manager) {

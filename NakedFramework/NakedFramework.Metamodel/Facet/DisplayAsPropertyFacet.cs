@@ -18,6 +18,8 @@ public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFa
     private readonly List<ITypeSpecImmutable> objectContributees = new();
 
     public DisplayAsPropertyFacet() : base(typeof(IDisplayAsPropertyFacet)) { }
+
+    public override Type FacetType => typeof(IDisplayAsPropertyFacet);
     public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
     public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
 }

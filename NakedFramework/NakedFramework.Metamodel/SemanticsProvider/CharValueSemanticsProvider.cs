@@ -24,6 +24,8 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static Type Type => typeof(ICharValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(char);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new CharValueSemanticsProvider(o));

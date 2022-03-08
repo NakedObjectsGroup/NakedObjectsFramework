@@ -19,6 +19,8 @@ public sealed class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
     public HiddenFacet(WhenTo when)
         : base(typeof(IHiddenFacet), when) { }
 
+    public override Type FacetType => typeof(IHiddenFacet);
+
     #region IHiddenFacet Members
 
     public string HiddenReason(INakedObjectAdapter target) =>

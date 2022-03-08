@@ -17,6 +17,8 @@ public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFace
 
     private static Type Type => typeof(IIntegrationFacet);
 
+    public override Type FacetType => Type;
+
     // for testing so not on interface  
     public int ActionCount { get; protected set; } = 1;
 

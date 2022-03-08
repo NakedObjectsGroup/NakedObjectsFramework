@@ -21,6 +21,8 @@ public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvo
 
     public static Type Type => typeof(IActionInvocationFacet);
 
+    public override Type FacetType => Type; 
+
     #region IActionInvocationFacet Members
 
     public abstract MethodInfo ActionMethod { get; } //This is exposed to permit third-party decoration DO NOT REMOVE.

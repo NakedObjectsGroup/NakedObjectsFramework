@@ -31,6 +31,8 @@ public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
 
     public static Type Type => typeof(IValidateObjectFacet);
 
+    public override Type FacetType => Type;
+
     private IEnumerable<NakedObjectValidationMethod> ValidateMethods { get; set; }
 
     private void LogNoMatch(NakedObjectValidationMethod validator, string actual) {

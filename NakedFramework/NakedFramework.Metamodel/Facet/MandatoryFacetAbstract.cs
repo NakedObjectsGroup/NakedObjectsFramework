@@ -20,6 +20,8 @@ public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFa
 
     public static Type Type => typeof(IMandatoryFacet);
 
+    public override Type FacetType => Type;
+
     #region IMandatoryFacet Members
 
     public virtual string Invalidates(IInteractionContext ic) => IsRequiredButNull(ic.ProposedArgument) ? NakedObjects.Resources.NakedObjects.Mandatory : null;

@@ -24,6 +24,8 @@ public sealed class PropertyChoicesViaAboutMethodFacet : AbstractViaAboutMethodF
     public PropertyChoicesViaAboutMethodFacet(MethodInfo optionsMethod, ILogger<PropertyChoicesViaAboutMethodFacet> logger)
         : base(typeof(IPropertyChoicesFacet), optionsMethod, AboutHelpers.AboutType.Field, logger) { }
 
+    public override Type FacetType => typeof(IPropertyChoicesFacet);
+
     #region IPropertyChoicesFacet Members
 
     public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();

@@ -31,6 +31,8 @@ public sealed class SaveViaActionSaveFacet : FacetAbstract, ISaveFacet, IImperat
 
     public static Type Type => typeof(ISaveFacet);
 
+    public override Type FacetType => Type;
+
     public MethodInfo GetMethod() => saveMethod;
 
     public Func<object, object[], object> GetMethodDelegate() => SaveDelegate;

@@ -24,6 +24,8 @@ public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     public static Type Type => typeof(IUnsignedLongValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(ulong);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ULongValueSemanticsProvider(o));

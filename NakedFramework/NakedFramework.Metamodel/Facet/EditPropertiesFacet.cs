@@ -15,5 +15,7 @@ public sealed class EditPropertiesFacet : FacetAbstract, IEditPropertiesFacet {
     public EditPropertiesFacet(string[] properties) : base(Type) => Properties = properties;
 
     public static Type Type => typeof(IEditPropertiesFacet);
+
+    public override Type FacetType => Type;
     public string[] Properties { get; }
 }

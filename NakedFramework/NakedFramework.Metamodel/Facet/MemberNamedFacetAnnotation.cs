@@ -17,6 +17,8 @@ public sealed class MemberNamedFacetAnnotation : SingleStringValueFacetAbstract,
     public MemberNamedFacetAnnotation(string value)
         : base(typeof(IMemberNamedFacet), value) { }
 
+    public override Type FacetType => typeof(IMemberNamedFacet);
+
     // Might be set from annotation or from display name on menu
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
     public string FriendlyName() => Value;

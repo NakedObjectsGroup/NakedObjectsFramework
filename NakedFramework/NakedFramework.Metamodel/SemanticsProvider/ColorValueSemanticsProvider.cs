@@ -25,6 +25,8 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
 
     public static Type Type => typeof(IColorValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(Color);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ColorValueSemanticsProvider(o));

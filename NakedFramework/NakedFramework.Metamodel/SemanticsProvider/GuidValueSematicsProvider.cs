@@ -23,6 +23,8 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
 
     public static Type Type => typeof(IGuidValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(Guid);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new GuidValueSemanticsProvider(o));

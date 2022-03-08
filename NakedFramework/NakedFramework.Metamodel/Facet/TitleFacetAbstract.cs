@@ -19,6 +19,8 @@ public abstract class TitleFacetAbstract : FacetAbstract, ITitleFacet {
 
     public static Type Type => typeof(ITitleFacet);
 
+    public override Type FacetType => Type;
+
     #region ITitleFacet Members
 
     public virtual string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetTitle(nakedObjectAdapter, framework);

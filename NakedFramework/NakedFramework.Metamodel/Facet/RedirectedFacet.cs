@@ -23,6 +23,8 @@ public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
     }
 
     private static Type Type => typeof(IRedirectedFacet);
+
+    public override Type FacetType => Type;
     public (string serverName, string oid)? GetRedirection(object target) => (ServerName(target), Oid(target));
 
     private string Oid(object target) => (string)oid.GetValue(target, null);

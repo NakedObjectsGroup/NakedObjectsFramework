@@ -17,6 +17,8 @@ public abstract class PersistedCallbackFacetAbstract : CallbackFacetAbstract, IP
         : base(Type) { }
 
     public static Type Type => typeof(IPersistedCallbackFacet);
+
+    public override Type FacetType => Type;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -44,6 +44,8 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
 
     public static Type Type => typeof(IAutoCompleteFacet);
 
+    public override Type FacetType => Type;
+
     public int PageSize { get; }
 
     protected override string ToStringValues() => $"method={method}";

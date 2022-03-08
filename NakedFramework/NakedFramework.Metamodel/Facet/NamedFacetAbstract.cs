@@ -17,6 +17,8 @@ public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract {
 
     public static Type Type => typeof(INamedFacet);
 
+    public override Type FacetType => Type;
+
     #region INamedFacet Members
 
     public string FriendlyName { get; protected set; }

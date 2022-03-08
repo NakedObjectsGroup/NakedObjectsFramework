@@ -21,6 +21,8 @@ public sealed class TableViewFacet : FacetAbstract, ITableViewFacet {
         Columns = columns;
     }
 
+    public override Type FacetType => typeof(ITableViewFacet);
+
     public static ITableViewFacet CreateTableViewFacet(bool title, string[] columns, IIdentifier identifier, ILogger logger) {
         columns ??= Array.Empty<string>();
         var distinctColumns = columns.Distinct().ToArray();

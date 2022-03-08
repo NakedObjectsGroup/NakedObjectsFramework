@@ -18,6 +18,8 @@ public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValid
     public PropertyValidateFacetDefault()
         : base(typeof(IPropertyValidateFacet)) { }
 
+    public override Type FacetType => typeof(IPropertyValidateFacet);
+
     #region IPropertyValidateFacet Members
 
     public Exception CreateExceptionFor(IInteractionContext ic) => null;

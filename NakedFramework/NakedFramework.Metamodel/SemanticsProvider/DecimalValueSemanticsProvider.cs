@@ -24,6 +24,8 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
 
     public static Type Type => typeof(IDecimalValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(decimal);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new DecimalValueSemanticsProvider(o));

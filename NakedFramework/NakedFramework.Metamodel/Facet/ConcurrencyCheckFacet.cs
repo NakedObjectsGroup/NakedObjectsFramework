@@ -16,4 +16,6 @@ public sealed class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyChe
         : base(Type) { }
 
     public static Type Type => typeof(IConcurrencyCheckFacet);
+
+    public override Type FacetType => Type;
 }

@@ -16,6 +16,8 @@ public abstract class OnPersistingErrorCallbackFacetAbstract : CallbackWithExcep
         : base(Type) { }
 
     public static Type Type => typeof(IOnPersistingErrorCallbackFacet);
+
+    public override Type FacetType => Type;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

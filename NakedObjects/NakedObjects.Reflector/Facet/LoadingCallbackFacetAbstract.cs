@@ -17,6 +17,8 @@ public abstract class LoadingCallbackFacetAbstract : CallbackFacetAbstract, ILoa
         : base(Type) { }
 
     public static Type Type => typeof(ILoadingCallbackFacet);
+
+    public override Type FacetType => Type;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

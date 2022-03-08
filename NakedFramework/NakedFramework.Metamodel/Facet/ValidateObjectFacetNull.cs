@@ -18,6 +18,8 @@ public sealed class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFace
 
     public static Type Type => typeof(IValidateObjectFacet);
 
+    public override Type FacetType => Type;
+
     #region IValidateObjectFacet Members
 
     public string Validate(INakedObjectAdapter nakedObjectAdapter) => null;

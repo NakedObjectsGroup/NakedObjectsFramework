@@ -29,6 +29,8 @@ public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, I
         PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
     }
 
+    public override Type FacetType => typeof(IPropertyAccessorFacet);
+
     private Func<object, object[], object> PropertyDelegate { get; set; }
     public MethodInfo GetMethod() => propertyMethod;
 

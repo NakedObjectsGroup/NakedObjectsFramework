@@ -17,6 +17,8 @@ public sealed class MemberNamedFacetInferred : SingleStringValueFacetAbstract, I
     public MemberNamedFacetInferred(string value)
         : base(typeof(IMemberNamedFacet), NameUtils.NaturalName(value)) { }
 
+    public override Type FacetType => typeof(IMemberNamedFacet);
+
     public override bool CanAlwaysReplace => false;
     public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
     public string FriendlyName() => Value;

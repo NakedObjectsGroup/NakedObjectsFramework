@@ -15,4 +15,6 @@ public sealed class IsASetFacet : MarkerFacetAbstract, IIsASetFacet {
     public IsASetFacet() : base(Type) { }
 
     public static Type Type => typeof(IIsASetFacet);
+
+    public override Type FacetType => Type;
 }

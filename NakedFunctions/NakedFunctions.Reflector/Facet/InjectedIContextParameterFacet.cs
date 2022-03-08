@@ -19,6 +19,8 @@ public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedPar
 
     public static Type Type => typeof(IInjectedParameterFacet);
 
+    public override Type FacetType => Type;
+
     #region IInjectedParameterFacet Members
 
     public object GetInjectedValue(INakedFramework framework, IServiceProvider provider) => new FunctionalContext { Persistor = framework.Persistor, Provider = provider };

@@ -25,6 +25,8 @@ public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet 
 
     public static Type Type => typeof(ICollectionResetFacet);
 
+    public override Type FacetType => Type;
+
     #region ICollectionResetFacet Members
 
     public void Reset(INakedObjectAdapter inObjectAdapter) {

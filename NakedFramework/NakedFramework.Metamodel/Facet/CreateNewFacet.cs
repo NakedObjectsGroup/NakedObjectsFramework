@@ -22,6 +22,8 @@ public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
 
     public static Type Type => typeof(ICreateNewFacet);
 
+    public override Type FacetType => Type;
+
     public string[] OrderedProperties(INakedObjectAdapter adapter, INakedFramework framework) {
         if (framework.MetamodelManager.GetSpecification(toCreate) is IObjectSpec spec) {
             return spec.Properties.Where(IsNotHidden).Select(f => f.Name(adapter)).ToArray();

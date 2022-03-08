@@ -14,4 +14,6 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class IdempotentFacet : MarkerFacetAbstract, IIdempotentFacet {
     public IdempotentFacet()
         : base(typeof(IIdempotentFacet)) { }
+
+    public override Type FacetType => typeof(IIdempotentFacet);
 }

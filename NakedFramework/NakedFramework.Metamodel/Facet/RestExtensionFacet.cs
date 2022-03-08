@@ -18,6 +18,8 @@ public sealed class RestExtensionFacet : FacetAbstract, IRestExtensionFacet {
         Value = value;
     }
 
+    public override Type FacetType => typeof(IRestExtensionFacet);
+
     public string Name { get; }
     public string Value { get; }
 }

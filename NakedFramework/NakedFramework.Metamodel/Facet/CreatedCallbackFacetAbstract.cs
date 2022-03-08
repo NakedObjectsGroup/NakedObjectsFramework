@@ -16,6 +16,8 @@ public abstract class CreatedCallbackFacetAbstract : CallbackFacetAbstract, ICre
         : base(Type) { }
 
     public static Type Type => typeof(ICreatedCallbackFacet);
+
+    public override Type FacetType => Type;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

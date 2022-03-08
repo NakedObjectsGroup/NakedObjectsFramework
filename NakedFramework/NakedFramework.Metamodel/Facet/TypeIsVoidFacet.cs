@@ -16,4 +16,6 @@ public sealed class TypeIsVoidFacet : MarkerFlagFacetAbstract, ITypeIsVoidFacet 
         : base(Type, flag) { }
 
     public static Type Type => typeof(ITypeIsVoidFacet);
+
+    public override Type FacetType => Type;
 }

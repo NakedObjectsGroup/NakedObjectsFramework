@@ -25,6 +25,8 @@ public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFa
         : base(typeof(IActionDefaultsFacet), method, AboutHelpers.AboutType.Action, logger) =>
         this.index = index;
 
+    public override Type FacetType => typeof(IActionDefaultsFacet);
+
     public (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         if (GetAbout(nakedObjectAdapter, framework) is ActionAbout actionAbout) {
             var parameterDefaults = actionAbout.ParamDefaultValues ?? Array.Empty<object>();

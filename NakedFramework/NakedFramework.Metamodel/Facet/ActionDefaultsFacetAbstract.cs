@@ -20,6 +20,8 @@ public abstract class ActionDefaultsFacetAbstract : FacetAbstract, IActionDefaul
 
     public static Type Type => typeof(IActionDefaultsFacet);
 
+    public override Type FacetType => Type;
+
     #region IActionDefaultsFacet Members
 
     public abstract (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);

@@ -30,6 +30,8 @@ public abstract class DataTypeFacetAbstract : FacetAbstract, IDataTypeFacet {
 
     public static Type Type => typeof(IDataTypeFacet);
 
+    public override Type FacetType => Type;
+
     #region IDataTypeFacet Members
 
     public DataType DataType() => dataType;

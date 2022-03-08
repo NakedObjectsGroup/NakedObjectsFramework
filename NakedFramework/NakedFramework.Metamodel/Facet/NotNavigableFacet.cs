@@ -14,4 +14,6 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class NotNavigableFacet : MarkerFacetAbstract, INotNavigableFacet {
     public NotNavigableFacet()
         : base(typeof(INotNavigableFacet)) { }
+
+    public override Type FacetType => typeof(INotNavigableFacet);
 }

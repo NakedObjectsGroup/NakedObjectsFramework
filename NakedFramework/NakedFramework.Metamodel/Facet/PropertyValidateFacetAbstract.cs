@@ -21,6 +21,8 @@ public abstract class PropertyValidateFacetAbstract : FacetAbstract, IPropertyVa
 
     public static Type Type => typeof(IPropertyValidateFacet);
 
+    public override Type FacetType => Type;
+
     #region IPropertyValidateFacet Members
 
     public virtual string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArgument);

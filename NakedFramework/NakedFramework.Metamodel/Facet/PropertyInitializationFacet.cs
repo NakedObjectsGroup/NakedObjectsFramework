@@ -21,6 +21,8 @@ public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitia
         : base(typeof(IPropertyInitializationFacet)) =>
         this.property = property;
 
+    public override Type FacetType => typeof(IPropertyInitializationFacet);
+
     #region IPropertyInitializationFacet Members
 
     public void InitProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value) {

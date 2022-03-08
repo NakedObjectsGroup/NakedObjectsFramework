@@ -24,6 +24,8 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
 
     public static Type Type => typeof(IIntegerValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(int);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new IntValueSemanticsProvider(o));

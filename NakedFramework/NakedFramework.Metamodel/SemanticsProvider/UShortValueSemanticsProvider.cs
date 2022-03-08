@@ -24,6 +24,8 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
 
     public static Type Type => typeof(IUnsignedShortValueFacet);
 
+    public override Type FacetType => Type;
+
     public static Type AdaptedType => typeof(ushort);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new UShortValueSemanticsProvider(o));

@@ -22,6 +22,9 @@ public sealed class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamF
         : base(typeof(IFromStreamFacet)) =>
         this.fromStream = fromStream;
 
+    public override Type FacetType => typeof(IFromStreamFacet);
+
+
     #region IFromStreamFacet Members
 
     public INakedObjectAdapter ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager) {

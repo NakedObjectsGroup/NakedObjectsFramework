@@ -16,4 +16,6 @@ public sealed class TypeIsAbstractFacet : MarkerFlagFacetAbstract, ITypeIsAbstra
         : base(Type, flag) { }
 
     public static Type Type => typeof(ITypeIsAbstractFacet);
+
+    public override Type FacetType => Type;
 }
