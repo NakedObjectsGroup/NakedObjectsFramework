@@ -93,7 +93,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
         var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{capitalizedName}", typeof(string), parms);
         methodRemover.SafeRemoveMethod(method);
         if (method is not null) {
-            actionFacets.Add(new ActionValidationFacet(method, action, Logger<ActionValidationFacet>()));
+            actionFacets.Add(new ActionValidationFacet(method, Logger<ActionValidationFacet>()));
         }
     }
 
@@ -130,7 +130,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
 
                 // add facets directly to parameters, not to actions
                 var spec = parameters[i];
-                FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, spec, Logger<ActionDefaultsFacetViaMethod>()), spec);
+                FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, Logger<ActionDefaultsFacetViaMethod>()), spec);
             }
         }
     }
@@ -209,7 +209,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
                     // deliberately not removing both if duplicate to show that method  is duplicate
                     methodRemover.SafeRemoveMethod(methodToUse);
                     var spec = parameters[i];
-                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, spec, Logger<ActionChoicesFacetViaMethod>(), isMultiple), spec);
+                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, Logger<ActionChoicesFacetViaMethod>(), isMultiple), spec);
                 }
             }
         }
@@ -244,7 +244,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
 
                     // add facets directly to parameters, not to actions
                     var spec = parameters[i];
-                    FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, spec, Logger<AutoCompleteFacet>()), spec);
+                    FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, Logger<AutoCompleteFacet>()), spec);
                 }
             }
         }
@@ -287,7 +287,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
 
                 // add facets directly to parameters, not to actions
                 var spec = parameters[i];
-                FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, spec, Logger<ActionParameterValidation>()), spec);
+                FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, Logger<ActionParameterValidation>()), spec);
             }
         }
     }
@@ -314,7 +314,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
         }
 
         methodRemover.SafeRemoveMethod(actionMethod);
-        facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, Logger<ActionInvocationFacetViaMethod>()));
+        facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, isQueryable, Logger<ActionInvocationFacetViaMethod>()));
 
         var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
         var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();

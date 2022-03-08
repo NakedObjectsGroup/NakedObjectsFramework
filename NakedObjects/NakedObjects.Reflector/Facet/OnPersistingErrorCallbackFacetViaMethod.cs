@@ -11,7 +11,6 @@ using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
@@ -24,7 +23,7 @@ public sealed class OnPersistingErrorCallbackFacetViaMethod : OnPersistingErrorC
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public OnPersistingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<OnPersistingErrorCallbackFacetViaMethod> logger)
+    public OnPersistingErrorCallbackFacetViaMethod(MethodInfo method, ILogger<OnPersistingErrorCallbackFacetViaMethod> logger)
         : base() {
         this.method = method;
         this.logger = logger;

@@ -11,7 +11,6 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
@@ -23,7 +22,7 @@ public sealed class CreatedCallbackFacetViaMethod : CreatedCallbackFacetAbstract
 
     [field: NonSerialized] private Action<object> createdDelegate;
 
-    public CreatedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
+    public CreatedCallbackFacetViaMethod(MethodInfo method)
         : base() {
         this.method = method;
         createdDelegate = DelegateUtils.CreateCallbackDelegate(method);

@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public abstract class LoadingCallbackFacetAbstract : CallbackFacetAbstract, ILoadingCallbackFacet {
-    protected LoadingCallbackFacetAbstract(ISpecification holder)
+    protected LoadingCallbackFacetAbstract()
         : base(Type) { }
 
     public static Type Type => typeof(ILoadingCallbackFacet);

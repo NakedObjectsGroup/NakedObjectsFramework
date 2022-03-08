@@ -105,7 +105,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
         var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
         methodRemover.SafeRemoveMethod(method);
         if (method is not null) {
-            propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property, Logger<PropertySetterFacetViaModifyMethod>()));
+            propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, Logger<PropertySetterFacetViaModifyMethod>()));
         }
     }
 
@@ -113,7 +113,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
         var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
         methodRemover.SafeRemoveMethod(method);
         if (method is not null) {
-            propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
+            propertyFacets.Add(new PropertyValidateFacetViaMethod(method, Logger<PropertyValidateFacetViaMethod>()));
         }
     }
 
@@ -127,7 +127,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
         var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
         methodRemover.SafeRemoveMethod(method);
         if (method is not null) {
-            propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
+            propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, Logger<PropertyDefaultFacetViaMethod>()));
         }
     }
 
@@ -161,7 +161,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
                 parameterNamesAndTypes.Add((p.Name.ToLower(), oSpec));
             }
 
-            propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property, Logger<PropertyChoicesFacet>()));
+            propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), Logger<PropertyChoicesFacet>()));
         }
 
         return metamodel;
@@ -192,7 +192,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
                 var minLength = minLengthAttr?.Length ?? 0;
 
                 methodRemover.SafeRemoveMethod(method);
-                propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
+                propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, Logger<AutoCompleteFacet>()));
             }
         }
     }

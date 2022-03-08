@@ -71,7 +71,7 @@ public class GuidValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         guidObj = Guid.NewGuid();
         holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new GuidValueSemanticsProvider(spec, holder));
+        SetValue(value = new GuidValueSemanticsProvider(spec));
     }
 
     [TestCleanup]

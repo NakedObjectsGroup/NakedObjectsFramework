@@ -14,7 +14,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -29,7 +28,7 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
     private readonly ILogger<ActionInvocationFacetViaMethod> logger;
     private readonly int paramCount;
 
-    public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger)
+    public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger)
         : base() {
         this.logger = logger;
         ActionMethod = method;

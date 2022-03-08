@@ -20,7 +20,7 @@ public class PropertyValidationFacetTest {
     private static readonly ILogger<PropertyValidateFacetViaMethod> mockLogger = new Mock<ILogger<PropertyValidateFacetViaMethod>>().Object;
 
     private static void DelegateFuncTest(MethodInfo method) {
-        IImperativeFacet validationFacet = new PropertyValidateFacetViaMethod(method, null, mockLogger);
+        IImperativeFacet validationFacet = new PropertyValidateFacetViaMethod(method, mockLogger);
         var facet = (IPropertyValidateFacet)validationFacet;
         Assert.IsNotNull(validationFacet.GetMethodDelegate(), method.Name);
         var target = MockParm(new TestDelegateClass());

@@ -9,7 +9,6 @@ using System;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NOF2.ValueHolder;
@@ -20,7 +19,7 @@ namespace NOF2.Reflector.Facet;
 public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFacetAbstract where T : class, IValueHolder<TU> {
     private readonly PropertyInfo property;
 
-    public PropertySetterFacetViaValueHolder(PropertyInfo property, ISpecification holder)
+    public PropertySetterFacetViaValueHolder(PropertyInfo property)
         : base() =>
         this.property = property;
 

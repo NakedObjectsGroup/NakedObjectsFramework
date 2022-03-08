@@ -73,7 +73,7 @@ public class UShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
         s = 32;
         holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new UShortValueSemanticsProvider(spec, holder));
+        SetValue(value = new UShortValueSemanticsProvider(spec));
     }
 
     [TestCleanup]

@@ -19,14 +19,14 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
     private const double DefaultValueConst = 0;
     private const bool Immutable = true;
 
-    public DoubleValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public DoubleValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     private static Type Type => typeof(IDoubleFloatingPointValueFacet);
 
     public static Type AdaptedType => typeof(double);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DoubleValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DoubleValueSemanticsProvider(o));
 
     protected override double DoParse(string entry) {
         try {

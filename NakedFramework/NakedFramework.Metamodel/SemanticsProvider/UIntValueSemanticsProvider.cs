@@ -20,14 +20,14 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const uint DefaultValueConst = 0;
     private const bool Immutable = true;
 
-    public UIntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public UIntValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IUnsignedIntegerValueFacet);
 
     public static Type AdaptedType => typeof(uint);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new UIntValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new UIntValueSemanticsProvider(o));
 
     protected override uint DoParse(string entry) {
         try {

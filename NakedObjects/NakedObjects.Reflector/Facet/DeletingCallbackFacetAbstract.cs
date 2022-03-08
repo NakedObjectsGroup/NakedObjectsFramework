@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public abstract class DeletingCallbackFacetAbstract : CallbackFacetAbstract, IDeletingCallbackFacet {
-    protected DeletingCallbackFacetAbstract(ISpecification holder)
+    protected DeletingCallbackFacetAbstract()
         : base(Type) { }
 
     public static Type Type => typeof(IDeletingCallbackFacet);

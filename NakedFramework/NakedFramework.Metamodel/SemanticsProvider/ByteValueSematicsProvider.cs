@@ -19,14 +19,14 @@ public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const byte DefaultValueConst = 0;
     private const bool Immutable = true;
 
-    public ByteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public ByteValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IByteValueFacet);
 
     public static Type AdaptedType => typeof(byte);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ByteValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ByteValueSemanticsProvider(o));
 
     protected override byte DoParse(string entry) {
         try {

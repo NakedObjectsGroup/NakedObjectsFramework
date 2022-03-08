@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.ParallelReflector.Utils;
 using NOF2.About;
@@ -22,8 +21,8 @@ namespace NOF2.Reflector.Facet;
 public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFacet, ISaveFacet {
     private readonly MethodInfo saveMethod;
 
-    public SaveViaActionSaveWithAboutFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ISpecification holder, ILogger<SaveViaActionSaveWithAboutFacet> logger)
-        : base(Type, holder, aboutMethod, AboutHelpers.AboutType.Action, logger) {
+    public SaveViaActionSaveWithAboutFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ILogger<SaveViaActionSaveWithAboutFacet> logger)
+        : base(Type, aboutMethod, AboutHelpers.AboutType.Action, logger) {
         this.saveMethod = saveMethod;
         SaveDelegate = LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
     }

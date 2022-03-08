@@ -52,7 +52,7 @@ public class ActionParameterValidationFacetViaMethodTest {
         var mockLogger = new Mock<ILogger<ActionParameterValidation>>().Object;
 
         var method = typeof(Customer17).GetMethod("Validate0SomeAction");
-        facet = new ActionParameterValidation(method, holder, mockLogger);
+        facet = new ActionParameterValidation(method, mockLogger);
     }
 
     [TestCleanup]

@@ -20,14 +20,14 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const bool Immutable = true;
     private const long DefaultValueConst = 0;
 
-    public LongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public LongValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(ILongValueFacet);
 
     public static Type AdaptedType => typeof(long);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new LongValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new LongValueSemanticsProvider(o));
 
     protected override long DoParse(string entry) {
         try {

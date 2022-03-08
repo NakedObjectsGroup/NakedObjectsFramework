@@ -20,14 +20,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IImageValueFacet, IFromStream {
     private const bool Immutable = true;
 
-    public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, null, spec) { }
+    public ImageValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, null, spec) { }
 
     private static Type Type => typeof(IImageValueFacet);
 
     public static Type AdaptedType => typeof(Image);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ImageValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ImageValueSemanticsProvider(o));
 
     #region IFromStream Members
 

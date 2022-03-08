@@ -13,7 +13,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
@@ -28,7 +27,6 @@ public sealed class ActionValidationViaFunctionFacet : FacetAbstract, IActionVal
     private readonly Func<object, object[], object> methodDelegate;
 
     public ActionValidationViaFunctionFacet(MethodInfo method,
-                                            ISpecification holder,
                                             ILogger<ActionValidationViaFunctionFacet> logger)
         : base(typeof(IActionValidationFacet)) {
         this.method = method;

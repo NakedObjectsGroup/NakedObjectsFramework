@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
@@ -26,7 +25,7 @@ public sealed class ActionParameterValidationViaFunctionFacet : FacetAbstract, I
     private readonly MethodInfo method;
     private readonly Func<object, object[], object> methodDelegate;
 
-    public ActionParameterValidationViaFunctionFacet(MethodInfo method, ISpecification holder, ILogger<ActionParameterValidationViaFunctionFacet> logger)
+    public ActionParameterValidationViaFunctionFacet(MethodInfo method, ILogger<ActionParameterValidationViaFunctionFacet> logger)
         : base(typeof(IActionParameterValidationFacet)) {
         this.method = method;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

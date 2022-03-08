@@ -28,7 +28,7 @@ public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, 
     private readonly ILogger<ActionDefaultsFacetViaMethod> logger;
     private readonly MethodInfo method;
 
-    public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<ActionDefaultsFacetViaMethod> logger)
+    public ActionDefaultsFacetViaMethod(MethodInfo method, ILogger<ActionDefaultsFacetViaMethod> logger)
         : base() {
         this.method = method;
         this.logger = logger;

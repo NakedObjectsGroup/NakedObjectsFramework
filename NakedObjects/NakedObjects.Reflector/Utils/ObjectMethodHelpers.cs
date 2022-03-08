@@ -43,7 +43,7 @@ public static class ObjectMethodHelpers {
     public static void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
         var method = MethodHelpers.FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
         if (method != null) {
-            facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
+            facets.Add(new HideForContextFacet(method, loggerFactory.CreateLogger<HideForContextFacet>()));
         }
     }
 
@@ -51,14 +51,14 @@ public static class ObjectMethodHelpers {
         var method = MethodHelpers.FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
         if (method != null) {
             methodRemover?.RemoveMethod(method);
-            facets.Add(new HideForContextFacet(method, specification, loggerFactory.CreateLogger<HideForContextFacet>()));
+            facets.Add(new HideForContextFacet(method, loggerFactory.CreateLogger<HideForContextFacet>()));
         }
     }
 
     public static void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, Type type, MethodType methodType, string capitalizedName, ISpecification specification, ILoggerFactory loggerFactory) {
         var method = MethodHelpers.FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
         if (method != null) {
-            facets.Add(new DisableForContextFacet(method, specification, loggerFactory.CreateLogger<DisableForContextFacet>()));
+            facets.Add(new DisableForContextFacet(method, loggerFactory.CreateLogger<DisableForContextFacet>()));
         }
     }
 
@@ -66,7 +66,7 @@ public static class ObjectMethodHelpers {
         var method = MethodHelpers.FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
         if (method != null) {
             methodRemover?.RemoveMethod(method);
-            facets.Add(new DisableForContextFacet(method, specification, loggerFactory.CreateLogger<DisableForContextFacet>()));
+            facets.Add(new DisableForContextFacet(method, loggerFactory.CreateLogger<DisableForContextFacet>()));
         }
     }
 

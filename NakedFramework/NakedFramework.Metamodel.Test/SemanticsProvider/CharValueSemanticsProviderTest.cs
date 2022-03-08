@@ -67,7 +67,7 @@ public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         character = 'r';
         holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new CharValueSemanticsProvider(spec, holder));
+        SetValue(value = new CharValueSemanticsProvider(spec));
     }
 
     [TestCleanup]

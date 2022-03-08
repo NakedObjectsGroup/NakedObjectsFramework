@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
     private readonly MethodInfo propertyMethod;
 
-    public PropertyAccessorFacetViaContributedAction(MethodInfo propertyMethod, ISpecification holder, ILogger<PropertyAccessorFacetViaContributedAction> logger)
+    public PropertyAccessorFacetViaContributedAction(MethodInfo propertyMethod, ILogger<PropertyAccessorFacetViaContributedAction> logger)
         : base(typeof(IPropertyAccessorFacet)) {
         this.propertyMethod = propertyMethod;
 

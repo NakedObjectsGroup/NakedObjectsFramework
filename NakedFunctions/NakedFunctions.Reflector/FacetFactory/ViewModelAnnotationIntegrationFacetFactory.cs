@@ -80,7 +80,7 @@ public sealed class ViewModelAnnotationIntegrationFacetFactory : FunctionalFacet
 
             return m => {
                 var spec = m.GetSpecification(onType);
-                var facet = new ViewModelFacetViaFunctionsConvention(spec, deriveMethod, populateMethod);
+                var facet = new ViewModelFacetViaFunctionsConvention(deriveMethod, populateMethod);
                 FacetUtils.AddFacet(facet, spec);
             };
         }

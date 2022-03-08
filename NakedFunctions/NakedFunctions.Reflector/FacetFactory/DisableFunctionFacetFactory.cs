@@ -46,7 +46,7 @@ public sealed class DisableFunctionFacetFactory : FunctionalFacetFactoryProcesso
         bool Matcher(MethodInfo mi) => Matches(mi, name, declaringType, targetType);
         var methodToUse = FactoryUtils.FindComplementaryMethod(declaringType, name, Matcher, logger);
         if (methodToUse is not null) {
-            FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(methodToUse, action, Logger<DisableForContextViaFunctionFacet>()), action);
+            FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(methodToUse, Logger<DisableForContextViaFunctionFacet>()), action);
         }
 
         return metamodel;

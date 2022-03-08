@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NOF2.Reflector.Facet;
@@ -19,7 +18,7 @@ namespace NOF2.Reflector.Facet;
 public sealed class SaveNullFacet : FacetAbstract, ISaveFacet {
     private readonly ILogger logger;
 
-    public SaveNullFacet(ISpecification holder, ILogger<SaveNullFacet> logger)
+    public SaveNullFacet(ILogger<SaveNullFacet> logger)
         : base(Type) =>
         this.logger = logger;
 

@@ -100,12 +100,12 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         methodRemover.SafeRemoveMethod(actionMethod);
 
         if (actionMethod.IsStatic) {
-            facets.Add(new StaticMethodFacet(action));
-            facets.Add(new StaticMenuMethodFacet(action));
-            facets.Add(new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnSpec, elementSpec, action, false, Logger<ActionInvocationFacetViaStaticMethod>()));
+            facets.Add(new StaticMethodFacet());
+            facets.Add(new StaticMenuMethodFacet());
+            facets.Add(new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnSpec, elementSpec, false, Logger<ActionInvocationFacetViaStaticMethod>()));
         }
         else {
-            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, false, Logger<ActionInvocationFacetViaMethod>()));
+            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, false, Logger<ActionInvocationFacetViaMethod>()));
         }
 
         var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name[6..]); //remove 'action' from front 
@@ -123,11 +123,11 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {
-            facets.Add(new DescribedAsViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, Logger<DescribedAsViaAboutMethodFacet>()));
-            facets.Add(new DisableForContextViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, Logger<DisableForContextViaAboutMethodFacet>()));
-            facets.Add(new HideForContextViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, Logger<HideForContextViaAboutMethodFacet>()));
-            facets.Add(new MemberNamedViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, actionMethod.Name, Logger<MemberNamedViaAboutMethodFacet>()));
-            facets.Add(new ActionValidateViaAboutMethodFacet(method, action, AboutHelpers.AboutType.Action, Logger<ActionValidateViaAboutMethodFacet>()));
+            facets.Add(new DescribedAsViaAboutMethodFacet(method, AboutHelpers.AboutType.Action, Logger<DescribedAsViaAboutMethodFacet>()));
+            facets.Add(new DisableForContextViaAboutMethodFacet(method, AboutHelpers.AboutType.Action, Logger<DisableForContextViaAboutMethodFacet>()));
+            facets.Add(new HideForContextViaAboutMethodFacet(method, AboutHelpers.AboutType.Action, Logger<HideForContextViaAboutMethodFacet>()));
+            facets.Add(new MemberNamedViaAboutMethodFacet(method, AboutHelpers.AboutType.Action, actionMethod.Name, Logger<MemberNamedViaAboutMethodFacet>()));
+            facets.Add(new ActionValidateViaAboutMethodFacet(method, AboutHelpers.AboutType.Action, Logger<ActionValidateViaAboutMethodFacet>()));
 
             var actionSpec = (IActionSpecImmutable)action;
             
@@ -136,8 +136,8 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
             foreach (var parameterSpec in actionSpec.Parameters) {
                 var parameterFacets = new List<IFacet>();
                 parameterFacets.Add(new MemberNamedViaAboutMethodFacet(method, parameterSpec, AboutHelpers.AboutType.Action, parameterSpec.Identifier.MemberParameterNames, index, Logger<MemberNamedViaAboutMethodFacet>()));
-                parameterFacets.Add(new ActionDefaultsViaAboutMethodFacet(method, parameterSpec, index, Logger<ActionDefaultsViaAboutMethodFacet>()));
-                parameterFacets.Add(new ActionChoicesViaAboutMethodFacet(method, parameterSpec, index, Logger<ActionChoicesViaAboutMethodFacet>()));
+                parameterFacets.Add(new ActionDefaultsViaAboutMethodFacet(method, index, Logger<ActionDefaultsViaAboutMethodFacet>()));
+                parameterFacets.Add(new ActionChoicesViaAboutMethodFacet(method, index, Logger<ActionChoicesViaAboutMethodFacet>()));
                 FacetUtils.AddFacets(parameterFacets, parameterSpec);
                 index++;
             }
@@ -164,19 +164,19 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {
-            facets.Add(new DescribedAsViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, Logger<DescribedAsViaAboutMethodFacet>()));
-            facets.Add(new DisableForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, Logger<DisableForContextViaAboutMethodFacet>()));
-            facets.Add(new HideForContextViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, Logger<HideForContextViaAboutMethodFacet>()));
-            facets.Add(new MemberNamedViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, property.Name, Logger<MemberNamedViaAboutMethodFacet>()));
-            facets.Add(new PropertyValidateViaAboutMethodFacet(method, specification, AboutHelpers.AboutType.Field, Logger<PropertyValidateViaAboutMethodFacet>()));
-            facets.Add(new PropertyChoicesViaAboutMethodFacet(method, specification, Logger<PropertyChoicesViaAboutMethodFacet>()));
+            facets.Add(new DescribedAsViaAboutMethodFacet(method, AboutHelpers.AboutType.Field, Logger<DescribedAsViaAboutMethodFacet>()));
+            facets.Add(new DisableForContextViaAboutMethodFacet(method, AboutHelpers.AboutType.Field, Logger<DisableForContextViaAboutMethodFacet>()));
+            facets.Add(new HideForContextViaAboutMethodFacet(method, AboutHelpers.AboutType.Field, Logger<HideForContextViaAboutMethodFacet>()));
+            facets.Add(new MemberNamedViaAboutMethodFacet(method, AboutHelpers.AboutType.Field, property.Name, Logger<MemberNamedViaAboutMethodFacet>()));
+            facets.Add(new PropertyValidateViaAboutMethodFacet(method, AboutHelpers.AboutType.Field, Logger<PropertyValidateViaAboutMethodFacet>()));
+            facets.Add(new PropertyChoicesViaAboutMethodFacet(method, Logger<PropertyChoicesViaAboutMethodFacet>()));
         }
 
         var valueType = NOF2Helpers.IsOrImplementsValueHolder(property.PropertyType);
 
         if (valueType is not null) {
             var setter = typeof(PropertySetterFacetViaValueHolder<,>).MakeGenericType(property.PropertyType, valueType);
-            var setterFacet = (IFacet)Activator.CreateInstance(setter, property, specification);
+            var setterFacet = (IFacet)Activator.CreateInstance(setter, property);
             facets.Add(setterFacet);
         }
         else if (property.GetSetMethod() is not null) {

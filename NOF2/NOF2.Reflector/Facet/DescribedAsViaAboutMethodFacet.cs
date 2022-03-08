@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NOF2.About;
 
@@ -19,8 +18,8 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class DescribedAsViaAboutMethodFacet : AbstractViaAboutMethodFacet, IDescribedAsFacet {
-    public DescribedAsViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<DescribedAsViaAboutMethodFacet> logger)
-        : base(typeof(IDescribedAsFacet), holder, method, aboutType, logger) { }
+    public DescribedAsViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<DescribedAsViaAboutMethodFacet> logger)
+        : base(typeof(IDescribedAsFacet), method, aboutType, logger) { }
 
     public string Description(INakedObjectAdapter adapter, INakedFramework framework) => GetAbout(adapter.GetDomainObject(), framework).Description;
 

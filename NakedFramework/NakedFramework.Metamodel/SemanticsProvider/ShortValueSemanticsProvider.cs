@@ -20,14 +20,14 @@ public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const short DefaultValueConst = 0;
     private const bool Immutable = true;
 
-    public ShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public ShortValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IShortValueFacet);
 
     public static Type AdaptedType => typeof(short);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ShortValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ShortValueSemanticsProvider(o));
 
     protected override short DoParse(string entry) {
         try {

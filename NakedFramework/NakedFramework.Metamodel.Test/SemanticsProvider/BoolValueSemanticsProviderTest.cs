@@ -85,7 +85,7 @@ public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         booleanNO1 = CreateAdapter(true);
         specification = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
+        SetValue(value = new BooleanValueSemanticsProvider(spec));
         valueFacet = value;
     }
 

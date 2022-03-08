@@ -85,7 +85,7 @@ public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstrac
         CreateAdapter(byteArray);
         specification = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new ArrayValueSemanticsProvider<byte>(spec, specification));
+        SetValue(value = new ArrayValueSemanticsProvider<byte>(spec));
     }
 
     [TestCleanup]

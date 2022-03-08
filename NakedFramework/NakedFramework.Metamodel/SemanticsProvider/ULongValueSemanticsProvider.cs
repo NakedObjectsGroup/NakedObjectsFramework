@@ -20,14 +20,14 @@ public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const ulong DefaultValueConst = 0;
     private const bool Immutable = true;
 
-    public ULongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public ULongValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IUnsignedLongValueFacet);
 
     public static Type AdaptedType => typeof(ulong);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ULongValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new ULongValueSemanticsProvider(o));
 
     protected override ulong DoParse(string entry) {
         try {

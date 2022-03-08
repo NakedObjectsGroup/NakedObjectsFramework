@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.Facet;
 [Serializable]
 public sealed class UpdatedCallbackFacetNull : UpdatedCallbackFacetAbstract {
     public UpdatedCallbackFacetNull(ISpecification holder)
-        : base(holder) { }
+        : base() { }
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }

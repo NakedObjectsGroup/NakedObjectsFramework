@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
@@ -26,7 +25,7 @@ public sealed class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbst
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public PropertySetterFacetViaModifyMethod(MethodInfo method, string name, ISpecification holder, ILogger<PropertySetterFacetViaModifyMethod> logger)
+    public PropertySetterFacetViaModifyMethod(MethodInfo method, string name, ILogger<PropertySetterFacetViaModifyMethod> logger)
         : base() {
         this.method = method;
         this.logger = logger;

@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class InjectedFacet : MarkerFacetAbstract, IInjectedFacet {
-    public InjectedFacet(ISpecification holder) : base(Type) { }
+    public InjectedFacet() : base(Type) { }
 
     public static Type Type => typeof(IInjectedFacet);
 }

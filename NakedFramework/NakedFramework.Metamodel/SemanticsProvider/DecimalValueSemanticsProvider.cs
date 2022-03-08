@@ -20,14 +20,14 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
     private const decimal DefaultValueConst = 0;
     private const bool Immutable = true;
 
-    public DecimalValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public DecimalValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IDecimalValueFacet);
 
     public static Type AdaptedType => typeof(decimal);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DecimalValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DecimalValueSemanticsProvider(o));
 
     protected override decimal DoParse(string entry) {
         try {

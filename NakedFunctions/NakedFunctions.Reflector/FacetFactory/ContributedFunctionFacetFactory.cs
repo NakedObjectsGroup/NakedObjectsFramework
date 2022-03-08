@@ -54,7 +54,7 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
                 logger.LogWarning($"Query Contributed Function ignored as it returns a collection: {member.Name}");
             }
             else {
-                var facet = new ContributedFunctionFacet(specification, IsContributedToObjectOrCollection(member));
+                var facet = new ContributedFunctionFacet(IsContributedToObjectOrCollection(member));
                 var elementType = parameterType.GetGenericArguments()[0];
                 IObjectSpecBuilder type;
                 (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
@@ -102,7 +102,7 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
     private static IImmutableDictionary<string, ITypeSpecBuilder> AddMenuOrObjectContributedFunction(IReflector reflector, MethodInfo methodInfo, Type parameterType, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         ITypeSpecImmutable type;
         (type, metamodel) = reflector.LoadSpecification(parameterType, metamodel);
-        var facet = new ContributedFunctionFacet(specification, IsContributedToObjectOrCollection(methodInfo));
+        var facet = new ContributedFunctionFacet(IsContributedToObjectOrCollection(methodInfo));
         facet.AddContributee(type);
         FacetUtils.AddFacet(facet, specification);
         return metamodel;

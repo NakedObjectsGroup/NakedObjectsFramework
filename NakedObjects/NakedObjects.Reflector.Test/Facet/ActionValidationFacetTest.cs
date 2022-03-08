@@ -23,7 +23,7 @@ public class ActionValidationFacetTest {
     private static readonly ILogger<ActionValidationFacet> mockLogger = new Mock<ILogger<ActionValidationFacet>>().Object;
 
     private static void DelegateFuncTest(MethodInfo method) {
-        IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null, mockLogger);
+        IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, mockLogger);
         var facet = (IActionValidationFacet)actionValidationFacet;
         Assert.IsNotNull(actionValidationFacet.GetMethodDelegate(), method.Name);
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
@@ -32,7 +32,7 @@ public class ActionValidationFacetTest {
     }
 
     private static void InvokeFuncTest(MethodInfo method) {
-        IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null, mockLogger);
+        IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, mockLogger);
         var facet = (IActionValidationFacet)actionValidationFacet;
         Assert.IsNull(actionValidationFacet.GetMethodDelegate());
         Assert.IsNotNull(actionValidationFacet.GetMethod());
@@ -64,7 +64,7 @@ public class ActionValidationFacetTest {
     [TestMethod]
     public void TestDisabledFacetAnnotationAsInteraction() {
         var method = typeof(TestDelegateClass).GetMethod("Func2");
-        IValidatingInteractionAdvisor facet = new ActionValidationFacet(method, null, mockLogger);
+        IValidatingInteractionAdvisor facet = new ActionValidationFacet(method, mockLogger);
         var target = Mock(new TestDelegateClass());
         var mockIc = new Mock<IInteractionContext>();
         mockIc.Setup(ic => ic.Target).Returns(target);

@@ -23,7 +23,7 @@ public class ViewModelFacetsTest {
         var deriveMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Derive));
         var populateMethod = typeof(TestViewModelClass).GetMethod(nameof(TestViewModelClass.Populate));
 
-        var testFacet = new ViewModelFacetViaFunctionsConvention(null, deriveMethod, populateMethod);
+        var testFacet = new ViewModelFacetViaFunctionsConvention(deriveMethod, populateMethod);
 
         var keys = testFacet.Derive(null, null);
 

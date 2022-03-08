@@ -13,7 +13,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -28,7 +27,7 @@ public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFa
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public DisableForContextFacet(MethodInfo method, ISpecification holder, ILogger<DisableForContextFacet> logger)
+    public DisableForContextFacet(MethodInfo method, ILogger<DisableForContextFacet> logger)
         : base(typeof(IDisableForContextFacet)) {
         this.method = method;
         this.logger = logger;

@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NOF2.About;
@@ -21,8 +20,8 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class HideForContextViaAboutMethodFacet : AbstractViaAboutMethodFacet, IHideForContextFacet {
-    public HideForContextViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<HideForContextViaAboutMethodFacet> logger)
-        : base(typeof(IHideForContextFacet), holder, method, aboutType, logger) { }
+    public HideForContextViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<HideForContextViaAboutMethodFacet> logger)
+        : base(typeof(IHideForContextFacet), method, aboutType, logger) { }
 
     #region IHideForContextFacet Members
 

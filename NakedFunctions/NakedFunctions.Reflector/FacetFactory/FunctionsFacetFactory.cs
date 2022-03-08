@@ -127,7 +127,6 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
                                                                    onType,
                                                                    (IObjectSpecImmutable)returnSpec,
                                                                    (IObjectSpecImmutable)elementSpec,
-                                                                   action,
                                                                    isQueryable,
                                                                    Logger<ActionInvocationFacetViaStaticMethod>());
 
@@ -138,7 +137,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
         MethodHelpers.AddHideForSessionFacetNone(facets, action);
         MethodHelpers.AddDisableForSessionFacetNone(facets, action);
 
-        facets.Add(new StaticFunctionFacet(action));
+        facets.Add(new StaticFunctionFacet());
 
         FacetUtils.AddFacets(facets, action);
 

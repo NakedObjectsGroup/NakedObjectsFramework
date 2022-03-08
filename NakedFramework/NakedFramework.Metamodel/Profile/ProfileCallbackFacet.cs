@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
 
@@ -30,7 +29,7 @@ public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
     private readonly IProfileManager profileManager;
     private readonly ICallbackFacet underlyingFacet;
 
-    public ProfileCallbackFacet(ProfileEvent associatedEvent, ICallbackFacet underlyingFacet, IProfileManager profileManager, ISpecification specification) :
+    public ProfileCallbackFacet(ProfileEvent associatedEvent, ICallbackFacet underlyingFacet, IProfileManager profileManager) :
         base(underlyingFacet.FacetType) {
         this.associatedEvent = associatedEvent;
         this.underlyingFacet = underlyingFacet;

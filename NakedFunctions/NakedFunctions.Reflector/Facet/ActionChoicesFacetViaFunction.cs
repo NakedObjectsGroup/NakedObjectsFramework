@@ -15,7 +15,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
@@ -34,7 +33,6 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
     public ActionChoicesFacetViaFunction(MethodInfo choicesMethod,
                                          (string, IObjectSpecImmutable)[] parameterNamesAndTypes,
                                          Type choicesType,
-                                         ISpecification holder,
                                          ILogger<ActionChoicesFacetViaFunction> logger,
                                          bool isMultiple = false)
         : base() {

@@ -56,7 +56,7 @@ public sealed class AutocompleteViaFunctionFacetFactory : FunctionalFacetFactory
                     var spec = parameters[i];
 
                     // add facets directly to parameters, not to actions
-                    FacetUtils.AddFacet(new AutoCompleteViaFunctionFacet(method, pageSize, minLength, spec, Logger<AutoCompleteViaFunctionFacet>()), spec);
+                    FacetUtils.AddFacet(new AutoCompleteViaFunctionFacet(method, pageSize, minLength, Logger<AutoCompleteViaFunctionFacet>()), spec);
                 }
             }
         }

@@ -73,7 +73,7 @@ public class ULongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         l = 32;
         holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new ULongValueSemanticsProvider(spec, holder));
+        SetValue(value = new ULongValueSemanticsProvider(spec));
     }
 
     [TestCleanup]

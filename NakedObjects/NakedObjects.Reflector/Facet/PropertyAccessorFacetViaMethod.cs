@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
@@ -22,7 +21,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class PropertyAccessorFacetViaMethod : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
     private readonly MethodInfo propertyMethod;
 
-    public PropertyAccessorFacetViaMethod(MethodInfo propertyMethod, ISpecification holder, ILogger<PropertyAccessorFacetViaMethod> logger)
+    public PropertyAccessorFacetViaMethod(MethodInfo propertyMethod, ILogger<PropertyAccessorFacetViaMethod> logger)
         : base(typeof(IPropertyAccessorFacet)) {
         this.propertyMethod = propertyMethod;
         PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);

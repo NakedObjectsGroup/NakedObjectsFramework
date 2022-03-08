@@ -11,7 +11,6 @@ using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
 namespace NakedObjects.Reflector.Facet;
@@ -22,8 +21,8 @@ public sealed class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstra
 
     [field: NonSerialized] private Action<object> updatingDelegate;
 
-    public UpdatingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
-        : base(holder) {
+    public UpdatingCallbackFacetViaMethod(MethodInfo method)
+        : base() {
         this.method = method;
         updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }

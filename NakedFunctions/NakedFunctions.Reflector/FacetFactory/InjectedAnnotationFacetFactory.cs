@@ -24,7 +24,7 @@ public sealed class InjectedAnnotationFacetFactory : FunctionalFacetFactoryProce
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {
-            FacetUtils.AddFacet(new InjectedFacet(holder), holder);
+            FacetUtils.AddFacet(new InjectedFacet(), holder);
         }
 
         return metamodel;

@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class StaticMethodFacet : MarkerFacetAbstract, IStaticFunctionFacet {
-    public StaticMethodFacet(ISpecification holder)
+    public StaticMethodFacet()
         : base(typeof(IStaticFunctionFacet)) { }
 }

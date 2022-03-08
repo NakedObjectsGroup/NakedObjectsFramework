@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NOF2.About;
@@ -22,8 +21,8 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class PropertyChoicesViaAboutMethodFacet : AbstractViaAboutMethodFacet, IPropertyChoicesFacet {
-    public PropertyChoicesViaAboutMethodFacet(MethodInfo optionsMethod, ISpecification holder, ILogger<PropertyChoicesViaAboutMethodFacet> logger)
-        : base(typeof(IPropertyChoicesFacet), holder, optionsMethod, AboutHelpers.AboutType.Field, logger) { }
+    public PropertyChoicesViaAboutMethodFacet(MethodInfo optionsMethod, ILogger<PropertyChoicesViaAboutMethodFacet> logger)
+        : base(typeof(IPropertyChoicesFacet), optionsMethod, AboutHelpers.AboutType.Field, logger) { }
 
     #region IPropertyChoicesFacet Members
 

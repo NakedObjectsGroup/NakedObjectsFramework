@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NOF2.About;
@@ -24,8 +23,8 @@ namespace NOF2.Reflector.Facet;
 public sealed class ActionChoicesViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionChoicesFacet {
     private readonly int index;
 
-    public ActionChoicesViaAboutMethodFacet(MethodInfo aboutmethod, ISpecification holder, int index, ILogger<ActionChoicesViaAboutMethodFacet> logger)
-        : base(typeof(IActionChoicesFacet), holder, aboutmethod, AboutHelpers.AboutType.Action, logger) =>
+    public ActionChoicesViaAboutMethodFacet(MethodInfo aboutmethod, int index, ILogger<ActionChoicesViaAboutMethodFacet> logger)
+        : base(typeof(IActionChoicesFacet), aboutmethod, AboutHelpers.AboutType.Action, logger) =>
         this.index = index;
 
     public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();

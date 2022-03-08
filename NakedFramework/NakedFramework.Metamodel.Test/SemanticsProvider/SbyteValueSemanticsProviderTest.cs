@@ -67,7 +67,7 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         byteObj = 102;
         holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new SbyteValueSemanticsProvider(spec, holder));
+        SetValue(value = new SbyteValueSemanticsProvider(spec));
     }
 
     [TestCleanup]

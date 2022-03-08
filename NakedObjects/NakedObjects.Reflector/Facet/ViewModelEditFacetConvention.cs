@@ -10,7 +10,6 @@ using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
@@ -18,7 +17,7 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ViewModelEditFacetConvention : ViewModelFacetAbstract {
-    public ViewModelEditFacetConvention(ISpecification holder) : base(Type) { }
+    public ViewModelEditFacetConvention() : base(Type) { }
 
     private static Type Type => typeof(IViewModelFacet);
 

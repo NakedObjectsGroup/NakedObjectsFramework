@@ -20,14 +20,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFileAttachmentValueFacet, IFromStream {
     private const bool Immutable = true;
 
-    public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, null, spec) { }
+    public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, null, spec) { }
 
     public static Type Type => typeof(IFileAttachmentValueFacet);
 
     public static Type AdaptedType => typeof(FileAttachment);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FileAttachmentValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FileAttachmentValueSemanticsProvider(o));
 
     #region IFromStream Members
 

@@ -22,7 +22,7 @@ public class ContributedFunctionFacetTest {
 
     [TestMethod]
     public void TestContributee() {
-        var testFacet = new ContributedFunctionFacet(null, false);
+        var testFacet = new ContributedFunctionFacet(false);
 
         testFacet.AddContributee(mockSpec.Object);
         var result = testFacet.IsContributedTo(mockSpec.Object);

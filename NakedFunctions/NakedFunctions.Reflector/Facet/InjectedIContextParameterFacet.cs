@@ -8,7 +8,6 @@
 using System;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Component;
 
@@ -16,7 +15,7 @@ namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedParameterFacet {
-    public InjectedIContextParameterFacet(ISpecification holder) : base(Type) { }
+    public InjectedIContextParameterFacet() : base(Type) { }
 
     public static Type Type => typeof(IInjectedParameterFacet);
 

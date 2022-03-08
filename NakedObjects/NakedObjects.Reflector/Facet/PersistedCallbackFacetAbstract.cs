@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public abstract class PersistedCallbackFacetAbstract : CallbackFacetAbstract, IPersistedCallbackFacet {
-    protected PersistedCallbackFacetAbstract(ISpecification holder)
+    protected PersistedCallbackFacetAbstract()
         : base(Type) { }
 
     public static Type Type => typeof(IPersistedCallbackFacet);

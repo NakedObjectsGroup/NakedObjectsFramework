@@ -13,7 +13,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
@@ -28,7 +27,7 @@ public sealed class ActionParameterValidation : FacetAbstract, IActionParameterV
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public ActionParameterValidation(MethodInfo method, ISpecification holder, ILogger<ActionParameterValidation> logger)
+    public ActionParameterValidation(MethodInfo method, ILogger<ActionParameterValidation> logger)
         : base(typeof(IActionParameterValidationFacet)) {
         this.method = method;
         this.logger = logger;

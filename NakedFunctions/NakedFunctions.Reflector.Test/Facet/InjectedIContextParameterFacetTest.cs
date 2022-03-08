@@ -30,7 +30,7 @@ public class InjectedIContextParameterFacetTest {
 
     [TestMethod]
     public void TestInjected() {
-        var testFacet = new InjectedIContextParameterFacet(null);
+        var testFacet = new InjectedIContextParameterFacet();
 
         var result = testFacet.GetInjectedValue(mockFramework.Object, null);
 
@@ -39,7 +39,7 @@ public class InjectedIContextParameterFacetTest {
 
     [TestMethod]
     public void TestInjectedInstances() {
-        var testFacet = new InjectedIContextParameterFacet(null);
+        var testFacet = new InjectedIContextParameterFacet();
 
         var result = ((IContext)testFacet.GetInjectedValue(mockFramework.Object, null)).Instances<object>();
 

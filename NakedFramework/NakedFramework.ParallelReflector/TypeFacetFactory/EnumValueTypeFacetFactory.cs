@@ -27,7 +27,7 @@ public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProvider
 
         var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
         var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
-        if (Activator.CreateInstance(semanticsProviderType, oSpec, specification) is IValueSemanticsProvider semanticsProvider) {
+        if (Activator.CreateInstance(semanticsProviderType, oSpec) is IValueSemanticsProvider semanticsProvider) {
             semanticsProvider.AddValueFacets(specification);
         }
         else {

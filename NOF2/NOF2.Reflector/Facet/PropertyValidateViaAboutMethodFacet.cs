@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NOF2.About;
@@ -21,8 +20,8 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class PropertyValidateViaAboutMethodFacet : AbstractViaAboutMethodFacet, IPropertyValidateFacet {
-    public PropertyValidateViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutHelpers.AboutType aboutType, ILogger<PropertyValidateViaAboutMethodFacet> logger)
-        : base(typeof(IPropertyValidateFacet), holder, method, aboutType, logger) { }
+    public PropertyValidateViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<PropertyValidateViaAboutMethodFacet> logger)
+        : base(typeof(IPropertyValidateFacet), method, aboutType, logger) { }
 
     public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArgument);
 

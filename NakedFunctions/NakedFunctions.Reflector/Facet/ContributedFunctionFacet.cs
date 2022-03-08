@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 
@@ -21,7 +20,7 @@ public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFuncti
     private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
     private readonly List<ITypeSpecImmutable> objectContributees = new();
 
-    public ContributedFunctionFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IContributedFunctionFacet)) =>
+    public ContributedFunctionFacet(bool isContributedToObject) : base(typeof(IContributedFunctionFacet)) =>
         IsContributedToObject = isContributedToObject;
 
     public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec) => collectionContributees.Any(objectSpec.IsOfType);

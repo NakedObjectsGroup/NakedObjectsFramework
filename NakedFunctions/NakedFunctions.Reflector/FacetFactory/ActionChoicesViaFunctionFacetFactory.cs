@@ -89,7 +89,7 @@ public sealed class ActionChoicesViaFunctionFacetFactory : FunctionalFacetFactor
 
                 if (!mismatchedParm) {
                     var spec = parameters[i];
-                    FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, spec, Logger<ActionChoicesFacetViaFunction>(), isMultiple), spec);
+                    FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, Logger<ActionChoicesFacetViaFunction>(), isMultiple), spec);
                 }
             }
         }

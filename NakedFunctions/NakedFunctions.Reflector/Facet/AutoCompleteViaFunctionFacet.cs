@@ -14,7 +14,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -29,15 +28,14 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
     private readonly MethodInfo method;
     private readonly Func<object, object[], object> methodDelegate;
 
-    private AutoCompleteViaFunctionFacet(ISpecification holder)
+    private AutoCompleteViaFunctionFacet()
         : base(Type) { }
 
     public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod,
                                         int pageSize,
                                         int minLength,
-                                        ISpecification holder,
                                         ILogger<AutoCompleteViaFunctionFacet> logger)
-        : this(holder) {
+        : this() {
         method = autoCompleteMethod;
         PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
         MinLength = minLength;

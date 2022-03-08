@@ -32,7 +32,7 @@ public class ActionInvocationFacetViaStaticMethodTest {
     [TestMethod]
     public void TestInvoke() {
         var method = typeof(TestClass).GetMethod(nameof(TestClass.TestMethod1));
-        var testFacet = new ActionInvocationFacetViaStaticMethod(method, null, null, null, null, false, null);
+        var testFacet = new ActionInvocationFacetViaStaticMethod(method, null, null, null, false, null);
 
         var result = testFacet.Invoke(null, Array.Empty<INakedObjectAdapter>(), mockFramework.Object);
     }

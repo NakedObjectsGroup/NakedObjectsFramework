@@ -123,7 +123,7 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         Assert.AreEqual(TestEnum.London, def);
     }
 
-    private static IEnumValueFacet GetEnumFacet<T>() => new EnumValueSemanticsProvider<T>(null, null);
+    private static IEnumValueFacet GetEnumFacet<T>() => new EnumValueSemanticsProvider<T>(null);
 
     [TestMethod]
     public void TestIntegralValue() {
@@ -221,7 +221,7 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.SetUp();
         holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
+        SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec));
     }
 
     [TestCleanup]

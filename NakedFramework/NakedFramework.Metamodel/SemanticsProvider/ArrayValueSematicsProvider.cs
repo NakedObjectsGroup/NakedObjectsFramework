@@ -9,7 +9,6 @@ using System;
 using System.IO;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
@@ -20,8 +19,8 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
     private const T[] DefaultValueConst = null;
     private const bool Immutable = true;
 
-    public ArrayValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public ArrayValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IArrayValueFacet<T>);
 

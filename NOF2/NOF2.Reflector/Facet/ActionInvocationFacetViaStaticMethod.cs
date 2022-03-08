@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
@@ -36,7 +35,6 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                 ITypeSpecImmutable onType,
                                                 IObjectSpecImmutable returnType,
                                                 IObjectSpecImmutable elementType,
-                                                ISpecification holder,
                                                 bool isQueryOnly,
                                                 ILogger<ActionInvocationFacetViaStaticMethod> logger)
         : base() {

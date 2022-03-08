@@ -23,7 +23,6 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
     ///     Lazily looked up per <see cref="SpecImmutable" />
     /// </summary>
     protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-                                             ISpecification holder,
                                              Type adaptedType,
                                              bool immutable,
                                              T defaultValue,

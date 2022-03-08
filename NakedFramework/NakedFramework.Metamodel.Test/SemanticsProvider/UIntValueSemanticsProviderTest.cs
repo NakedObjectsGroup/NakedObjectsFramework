@@ -73,7 +73,7 @@ public class UIntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         integer = 32;
         holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new UIntValueSemanticsProvider(spec, holder));
+        SetValue(value = new UIntValueSemanticsProvider(spec));
     }
 
     [TestCleanup]

@@ -19,14 +19,14 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const float DefaultValueConst = 0;
     private const bool Immutable = true;
 
-    public FloatValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public FloatValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IFloatingPointValueFacet);
 
     public static Type AdaptedType => typeof(float);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FloatValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FloatValueSemanticsProvider(o));
 
     protected override float DoParse(string entry) {
         try {

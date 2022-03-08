@@ -7,13 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class StaticMenuMethodFacet : MarkerFacetAbstract, IStaticMenuFunctionFacet {
-    public StaticMenuMethodFacet(ISpecification holder)
+    public StaticMenuMethodFacet()
         : base(typeof(IStaticMenuFunctionFacet)) { }
 }

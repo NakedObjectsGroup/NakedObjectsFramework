@@ -18,14 +18,14 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
     private const string DefaultValueConst = null;
     private const bool Immutable = true;
 
-    public StringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public StringValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(IStringValueFacet);
 
     public static Type AdaptedType => typeof(string);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new StringValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new StringValueSemanticsProvider(o));
 
     protected override string DoParse(string entry) => entry.Trim().Equals("") ? null : entry;
 }

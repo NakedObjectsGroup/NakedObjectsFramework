@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
@@ -26,7 +25,7 @@ public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstra
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public PropertyValidateFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<PropertyValidateFacetViaMethod> logger)
+    public PropertyValidateFacetViaMethod(MethodInfo method, ILogger<PropertyValidateFacetViaMethod> logger)
         : base() {
         this.method = method;
         this.logger = logger;

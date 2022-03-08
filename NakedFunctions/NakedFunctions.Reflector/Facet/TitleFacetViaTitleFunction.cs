@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
@@ -24,7 +23,7 @@ public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperative
     private readonly MethodInfo method;
     private readonly Func<object, object[], object> methodDelegate;
 
-    public TitleFacetViaTitleFunction(MethodInfo method, ISpecification holder, ILogger<TitleFacetViaTitleFunction> logger) : base() {
+    public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) : base() {
         this.method = method;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }

@@ -24,7 +24,7 @@ public class ActionInvocationFacetViaMethodTest {
     #endregion
 
     private static void DelegateActionTest(MethodInfo method) {
-        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, null);
+        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, false, null);
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
         Assert.IsNotNull(facet.ActionDelegate, method.Name);
         var testObject = new TestDelegateClass();
@@ -33,14 +33,14 @@ public class ActionInvocationFacetViaMethodTest {
     }
 
     private static void DelegateFuncTest(MethodInfo method) {
-        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, null);
+        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, false, null);
         Assert.IsNotNull(facet.ActionDelegate, method.Name);
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
         Assert.AreEqual(method.Name, facet.ActionDelegate(new TestDelegateClass(), parms));
     }
 
     private static void InvokeActionTest(MethodInfo method) {
-        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, new Mock<ILogger<ActionInvocationFacetViaMethod>>().Object);
+        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, false, new Mock<ILogger<ActionInvocationFacetViaMethod>>().Object);
         Assert.IsNull(facet.ActionDelegate);
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
         Assert.IsNotNull(facet.GetMethod());
@@ -50,7 +50,7 @@ public class ActionInvocationFacetViaMethodTest {
     }
 
     private static void InvokeFuncTest(MethodInfo method) {
-        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, new Mock<ILogger<ActionInvocationFacetViaMethod>>().Object);
+        var facet = new ActionInvocationFacetViaMethod(method, null, null, null, false, new Mock<ILogger<ActionInvocationFacetViaMethod>>().Object);
         Assert.IsNull(facet.ActionDelegate);
         Assert.IsNotNull(facet.GetMethod());
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();

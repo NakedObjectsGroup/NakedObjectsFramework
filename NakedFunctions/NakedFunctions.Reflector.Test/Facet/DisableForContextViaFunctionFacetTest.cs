@@ -17,7 +17,7 @@ public class DisableForContextViaFunctionFacetTest {
     [TestMethod]
     public void TestDisabled() {
         var method = typeof(TestClass).GetMethod(nameof(TestClass.Disables));
-        var testFacet = new DisableForContextViaFunctionFacet(method, null, null);
+        var testFacet = new DisableForContextViaFunctionFacet(method, null);
 
         var result = testFacet.DisabledReason(null, null);
 

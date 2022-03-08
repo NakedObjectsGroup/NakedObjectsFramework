@@ -10,7 +10,6 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
 
@@ -19,14 +18,11 @@ namespace NakedFunctions.Reflector.Facet;
 [Serializable]
 public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstract {
     private readonly MethodInfo deriveFunction;
-    private readonly ISpecification holder;
     private readonly MethodInfo populateFunction;
 
-    public ViewModelFacetViaFunctionsConvention(ISpecification holder,
-                                                MethodInfo deriveFunction,
+    public ViewModelFacetViaFunctionsConvention(MethodInfo deriveFunction,
                                                 MethodInfo populateFunction)
         : base(Type) {
-        this.holder = holder;
         this.deriveFunction = deriveFunction;
         this.populateFunction = populateFunction;
     }

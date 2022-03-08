@@ -49,14 +49,14 @@ public sealed class SaveFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
             methodRemover.SafeRemoveMethod(aboutSaveMethod);
 
             if (aboutSaveMethod is null) {
-                saveFacet = new SaveViaActionSaveFacet(saveMethod, specification, Logger<SaveViaActionSaveFacet>());
+                saveFacet = new SaveViaActionSaveFacet(saveMethod, Logger<SaveViaActionSaveFacet>());
             }
             else {
-                saveFacet = new SaveViaActionSaveWithAboutFacet(saveMethod, aboutSaveMethod, specification, Logger<SaveViaActionSaveWithAboutFacet>());
+                saveFacet = new SaveViaActionSaveWithAboutFacet(saveMethod, aboutSaveMethod, Logger<SaveViaActionSaveWithAboutFacet>());
             }
         }
         else {
-            saveFacet = new SaveNullFacet(specification, Logger<SaveNullFacet>());
+            saveFacet = new SaveNullFacet(Logger<SaveNullFacet>());
         }
 
         FacetUtils.AddFacet(saveFacet, specification);

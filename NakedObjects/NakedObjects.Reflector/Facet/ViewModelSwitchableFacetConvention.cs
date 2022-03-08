@@ -10,7 +10,6 @@ using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -19,7 +18,7 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract {
-    public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type) { }
+    public ViewModelSwitchableFacetConvention() : base(Type) { }
 
     private static Type Type => typeof(IViewModelFacet);
 

@@ -19,7 +19,7 @@ public class HideForContextViaFunctionFacetTest {
     [TestMethod]
     public void TestHidden() {
         var method = typeof(TestClass).GetMethod(nameof(TestClass.Hides));
-        var testFacet = new HideForContextViaFunctionFacet(method, null, null);
+        var testFacet = new HideForContextViaFunctionFacet(method, null);
 
         var result = testFacet.HiddenReason(new Mock<INakedObjectAdapter>().Object, null);
 

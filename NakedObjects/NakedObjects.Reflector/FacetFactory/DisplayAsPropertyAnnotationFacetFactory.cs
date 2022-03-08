@@ -65,11 +65,11 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
 
             if (IsContributedMethod(method)) {
                 displayOnType = method.GetParameters().First().ParameterType;
-                accessorFacet = new PropertyAccessorFacetViaContributedAction(method, specification, Logger<PropertyAccessorFacetViaContributedAction>());
+                accessorFacet = new PropertyAccessorFacetViaContributedAction(method, Logger<PropertyAccessorFacetViaContributedAction>());
             }
             else {
                 displayOnType = method.DeclaringType;
-                accessorFacet = new PropertyAccessorFacetViaMethod(method, specification, Logger<PropertyAccessorFacetViaMethod>());
+                accessorFacet = new PropertyAccessorFacetViaMethod(method, Logger<PropertyAccessorFacetViaMethod>());
             }
 
             FacetUtils.AddFacets(new IFacet[] {

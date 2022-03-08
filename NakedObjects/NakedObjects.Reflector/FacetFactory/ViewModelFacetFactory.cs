@@ -34,15 +34,15 @@ public sealed class ViewModelFacetFactory : DomainObjectFacetFactoryProcessor {
             var toRemove = new List<MethodInfo> { deriveMethod, populateMethod };
 
             if (typeof(IViewModelEdit).IsAssignableFrom(type)) {
-                facet = new ViewModelEditFacetConvention(specification);
+                facet = new ViewModelEditFacetConvention();
             }
             else if (typeof(IViewModelSwitchable).IsAssignableFrom(type)) {
                 var isEditViewMethod = type.GetMethod(nameof(IViewModelSwitchable.IsEditView));
                 toRemove.Add(isEditViewMethod);
-                facet = new ViewModelSwitchableFacetConvention(specification);
+                facet = new ViewModelSwitchableFacetConvention();
             }
             else {
-                facet = new ViewModelFacetConvention(specification);
+                facet = new ViewModelFacetConvention();
             }
 
             methodRemover.RemoveMethods(toRemove.ToArray());

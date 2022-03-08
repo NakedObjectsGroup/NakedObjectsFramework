@@ -38,7 +38,7 @@ public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         time = new TimeSpan(8, 13, 0);
         holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
+        SetValue(adapter = new TimeValueSemanticsProvider(spec));
     }
 
     [TestCleanup]

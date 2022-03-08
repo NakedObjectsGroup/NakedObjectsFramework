@@ -10,7 +10,6 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
@@ -21,7 +20,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyAccessorFacet {
     private readonly MethodInfo method;
 
-    public PropertyAccessorFacetViaFunction(MethodInfo method, ISpecification holder)
+    public PropertyAccessorFacetViaFunction(MethodInfo method)
         : base(typeof(IPropertyAccessorFacet)) =>
         this.method = method;
 

@@ -23,7 +23,7 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
     private T valueHolderInstance;
 
     public ValueHolderWrappingValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, defaultValueConst, spec) =>
+        : base(Type, AdaptedType, Immutable, defaultValueConst, spec) =>
         valueHolderInstance = new T();
 
     public static Type Type => typeof(IValueSemanticsProvider);

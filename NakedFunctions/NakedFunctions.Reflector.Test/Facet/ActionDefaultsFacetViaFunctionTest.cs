@@ -18,7 +18,7 @@ public class ActionDefaultsFacetViaFunctionTest {
     [TestMethod]
     public void TestGetDefault() {
         var method = typeof(TestClass).GetMethod(nameof(TestClass.GetDefault));
-        var testFacet = new ActionDefaultsFacetViaFunction(method, null, null);
+        var testFacet = new ActionDefaultsFacetViaFunction(method, null);
 
         var (result, defaultType) = testFacet.GetDefault(null, null);
 

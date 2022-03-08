@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
 
@@ -20,7 +19,7 @@ public sealed class ProfilePropertySetterFacet : PropertySetterFacetAbstract {
     private readonly IProfileManager profileManager;
     private readonly IPropertySetterFacet underlyingFacet;
 
-    public ProfilePropertySetterFacet(IPropertySetterFacet underlyingFacet, IProfileManager profileManager, ISpecification specification) :
+    public ProfilePropertySetterFacet(IPropertySetterFacet underlyingFacet, IProfileManager profileManager) :
         base() {
         this.underlyingFacet = underlyingFacet;
         this.profileManager = profileManager;

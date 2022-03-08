@@ -73,7 +73,7 @@ public class DecimalValueSemanticsProviderTest : ValueSemanticsProviderAbstractT
         dec = 32;
         holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new DecimalValueSemanticsProvider(spec, holder));
+        SetValue(value = new DecimalValueSemanticsProvider(spec));
     }
 
     [TestCleanup]

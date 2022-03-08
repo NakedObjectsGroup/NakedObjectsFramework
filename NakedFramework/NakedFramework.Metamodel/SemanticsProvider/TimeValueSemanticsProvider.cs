@@ -21,14 +21,14 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const bool Immutable = false;
     private static readonly TimeSpan DefaultValueConst = new();
 
-    public TimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, holder, AdaptedType, Immutable, DefaultValueConst, spec) { }
+    public TimeValueSemanticsProvider(IObjectSpecImmutable spec)
+        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
 
     public static Type Type => typeof(ITimeValueFacet);
 
     public static Type AdaptedType => typeof(TimeSpan);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new TimeValueSemanticsProvider(o, s));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new TimeValueSemanticsProvider(o));
 
     protected override TimeSpan DoParse(string entry) {
         var dateString = entry.Trim();

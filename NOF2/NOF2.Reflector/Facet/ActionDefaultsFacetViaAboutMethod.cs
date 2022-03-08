@@ -21,8 +21,8 @@ namespace NOF2.Reflector.Facet;
 public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionDefaultsFacet {
     private readonly int index;
 
-    public ActionDefaultsViaAboutMethodFacet(MethodInfo method, ISpecification holder, int index, ILogger<ActionDefaultsViaAboutMethodFacet> logger)
-        : base(typeof(IActionDefaultsFacet), holder, method, AboutHelpers.AboutType.Action, logger) =>
+    public ActionDefaultsViaAboutMethodFacet(MethodInfo method, int index, ILogger<ActionDefaultsViaAboutMethodFacet> logger)
+        : base(typeof(IActionDefaultsFacet), method, AboutHelpers.AboutType.Action, logger) =>
         this.index = index;
 
     public (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {

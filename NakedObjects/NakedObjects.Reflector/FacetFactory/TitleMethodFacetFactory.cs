@@ -58,7 +58,7 @@ public sealed class TitleMethodFacetFactory : DomainObjectFacetFactoryProcessor,
 
         if (attributedMethods.Count > 0) {
             // attributes takes priority
-            FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification, Logger<TitleFacetViaProperty>()), specification);
+            FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), Logger<TitleFacetViaProperty>()), specification);
             return metamodel;
         }
 
@@ -68,7 +68,7 @@ public sealed class TitleMethodFacetFactory : DomainObjectFacetFactoryProcessor,
 
             methodRemover.SafeRemoveMethod(titleMethod);
             if (titleMethod is not null) {
-                titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification, Logger<TitleFacetViaTitleMethod>());
+                titleFacet = new TitleFacetViaTitleMethod(titleMethod, Logger<TitleFacetViaTitleMethod>());
             }
 
             var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);

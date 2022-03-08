@@ -18,7 +18,7 @@ public class AutoCompleteViaFunctionFacetTest {
     [TestMethod]
     public void TestGetCompletions() {
         var method = typeof(TestClass).GetMethod(nameof(TestClass.Completions));
-        var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null, null);
+        var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null);
 
         var result = testFacet.GetCompletions(null, null, null);
 
@@ -30,7 +30,7 @@ public class AutoCompleteViaFunctionFacetTest {
     [TestMethod]
     public void TestGetSingleCompletions() {
         var method = typeof(TestClass).GetMethod(nameof(TestClass.Completion));
-        var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null, null);
+        var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null);
 
         var result = testFacet.GetCompletions(null, null, null);
 
