@@ -8,7 +8,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.SemanticsProvider;
@@ -18,7 +17,6 @@ namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 [TestClass]
 public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<float> {
     private float floatObj;
-    private ISpecification holder;
 
     [TestMethod]
     public void TestInvalidParse() {
@@ -75,7 +73,6 @@ public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     public override void SetUp() {
         base.SetUp();
 
-        holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
         SetValue(new FloatValueSemanticsProvider(spec));
 

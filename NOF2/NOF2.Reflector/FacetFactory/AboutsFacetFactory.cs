@@ -135,7 +135,7 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
             var index = 0; // about is 0
             foreach (var parameterSpec in actionSpec.Parameters) {
                 var parameterFacets = new List<IFacet>();
-                parameterFacets.Add(new MemberNamedViaAboutMethodFacet(method, parameterSpec, AboutHelpers.AboutType.Action, parameterSpec.Identifier.MemberParameterNames, index, Logger<MemberNamedViaAboutMethodFacet>()));
+                parameterFacets.Add(new MemberNamedViaAboutMethodFacet(method, AboutHelpers.AboutType.Action, parameterSpec.Identifier.MemberParameterNames, index, Logger<MemberNamedViaAboutMethodFacet>()));
                 parameterFacets.Add(new ActionDefaultsViaAboutMethodFacet(method, index, Logger<ActionDefaultsViaAboutMethodFacet>()));
                 parameterFacets.Add(new ActionChoicesViaAboutMethodFacet(method, index, Logger<ActionChoicesViaAboutMethodFacet>()));
                 FacetUtils.AddFacets(parameterFacets, parameterSpec);

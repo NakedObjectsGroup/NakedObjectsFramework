@@ -12,7 +12,6 @@ using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NOF2.About;
 using static NOF2.Reflector.Facet.AboutHelpers;
@@ -31,7 +30,7 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
         aboutCode = AboutTypeCodes.Name;
     }
 
-    public MemberNamedViaAboutMethodFacet(MethodInfo method, ISpecification holder, AboutType aboutType, string[] inferredNames, int index, ILogger<MemberNamedViaAboutMethodFacet> logger)
+    public MemberNamedViaAboutMethodFacet(MethodInfo method, AboutType aboutType, string[] inferredNames, int index, ILogger<MemberNamedViaAboutMethodFacet> logger)
         : base(typeof(IMemberNamedFacet), method, aboutType, logger) {
         inferredName = NameUtils.NaturalName(inferredNames[index]);
         aboutCode = AboutTypeCodes.Parameters;

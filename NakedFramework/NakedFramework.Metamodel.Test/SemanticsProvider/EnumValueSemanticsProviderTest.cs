@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.SemanticsProvider;
@@ -108,7 +107,6 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
 
     #endregion
 
-    private ISpecification holder;
     private EnumValueSemanticsProvider<TestEnum> value;
 
     private static INakedObjectAdapter MockNakedObject(object toWrap) {
@@ -219,7 +217,6 @@ public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     [TestInitialize]
     public override void SetUp() {
         base.SetUp();
-        holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
         SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec));
     }

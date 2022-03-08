@@ -8,7 +8,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.SemanticsProvider;
@@ -17,7 +16,6 @@ namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 
 [TestClass]
 public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<short> {
-    private ISpecification holder;
     private short s;
     private ShortValueSemanticsProvider value;
 
@@ -71,7 +69,6 @@ public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     public override void SetUp() {
         base.SetUp();
         s = 32;
-        holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
         SetValue(value = new ShortValueSemanticsProvider(spec));
     }

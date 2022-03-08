@@ -8,7 +8,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
@@ -17,7 +16,6 @@ namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 [TestClass]
 public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
     private TimeValueSemanticsProvider adapter;
-    private ISpecification holder;
     private TimeSpan time;
 
     [TestMethod]
@@ -36,7 +34,6 @@ public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     public override void SetUp() {
         base.SetUp();
         time = new TimeSpan(8, 13, 0);
-        holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
         SetValue(adapter = new TimeValueSemanticsProvider(spec));
     }

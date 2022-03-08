@@ -8,7 +8,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.SemanticsProvider;
@@ -18,7 +17,6 @@ namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 [TestClass]
 public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<char> {
     private char character;
-    private ISpecification holder;
     private CharValueSemanticsProvider value;
 
     [TestMethod]
@@ -65,7 +63,6 @@ public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
     public override void SetUp() {
         base.SetUp();
         character = 'r';
-        holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
         SetValue(value = new CharValueSemanticsProvider(spec));
     }

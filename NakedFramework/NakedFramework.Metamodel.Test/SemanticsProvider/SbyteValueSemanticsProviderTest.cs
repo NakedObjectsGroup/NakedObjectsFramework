@@ -8,7 +8,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.SemanticsProvider;
@@ -18,7 +17,6 @@ namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 [TestClass]
 public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<sbyte> {
     private sbyte byteObj;
-    private ISpecification holder;
     private SbyteValueSemanticsProvider value;
 
     [TestMethod]
@@ -65,7 +63,6 @@ public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     public override void SetUp() {
         base.SetUp();
         byteObj = 102;
-        holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
         SetValue(value = new SbyteValueSemanticsProvider(spec));
     }

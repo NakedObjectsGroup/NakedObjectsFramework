@@ -9,7 +9,6 @@ using System;
 using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.SemanticsProvider;
@@ -19,7 +18,6 @@ namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 [TestClass]
 public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<Color> {
     private Color colorObj;
-    private ISpecification holder;
     private ColorValueSemanticsProvider value;
 
     [TestMethod]
@@ -67,7 +65,6 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     public override void SetUp() {
         base.SetUp();
         colorObj = Color.White;
-        holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
         SetValue(value = new ColorValueSemanticsProvider(spec));
     }

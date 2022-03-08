@@ -8,7 +8,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.SemanticsProvider;
 
@@ -17,7 +16,6 @@ namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 [TestClass]
 public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<DateTime> {
     private DateTimeValueSemanticsProvider adapter;
-    private ISpecification holder;
 
     private void AssertEntry(string entry, int year, int month, int day, int hour, int minute, int second) {
         var obj = adapter.ParseTextEntry(entry);
@@ -72,7 +70,6 @@ public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstract
     [TestInitialize]
     public override void SetUp() {
         base.SetUp();
-        holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
         SetValue(adapter = new DateTimeValueSemanticsProvider(spec));
     }

@@ -8,7 +8,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.SemanticsProvider;
@@ -17,7 +16,6 @@ namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 
 [TestClass]
 public class ULongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<ulong> {
-    private ISpecification holder;
     private ulong l;
     private ULongValueSemanticsProvider value;
 
@@ -71,7 +69,6 @@ public class ULongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
     public override void SetUp() {
         base.SetUp();
         l = 32;
-        holder = new Mock<ISpecification>().Object;
         var spec = new Mock<IObjectSpecImmutable>().Object;
         SetValue(value = new ULongValueSemanticsProvider(spec));
     }
