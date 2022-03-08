@@ -7,8 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Spec;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SemanticsProvider;
@@ -22,8 +20,8 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
     private static T defaultValueConst = default;
     private T valueHolderInstance;
 
-    public ValueHolderWrappingValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-        : base(Type, AdaptedType, Immutable, defaultValueConst, spec) =>
+    public ValueHolderWrappingValueSemanticsProvider()
+        : base(Type, AdaptedType, Immutable, defaultValueConst) =>
         valueHolderInstance = new T();
 
     public static Type Type => typeof(IValueSemanticsProvider);

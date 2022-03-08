@@ -9,7 +9,7 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
 public static class ValueTypeHelpers {
-    private static readonly List<KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>>> Factories = new() {
+    private static readonly List<KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>>> Factories = new() {
         BooleanValueSemanticsProvider.Factory,
         ByteValueSemanticsProvider.Factory,
         CharValueSemanticsProvider.Factory,
@@ -32,7 +32,7 @@ public static class ValueTypeHelpers {
         UShortValueSemanticsProvider.Factory
     };
 
-    public static readonly Dictionary<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> TypeToSemanticProvider = new(Factories);
+    public static readonly Dictionary<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> TypeToSemanticProvider = new(Factories);
 
     public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecificationBuilder holder) {
         var facets = new List<IFacet> {

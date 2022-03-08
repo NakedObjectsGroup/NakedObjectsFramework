@@ -26,7 +26,7 @@ public sealed class NotCountedAnnotationFacetFactory : DomainObjectFacetFactoryP
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<NotCountedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -34,5 +34,5 @@ public sealed class NotCountedAnnotationFacetFactory : DomainObjectFacetFactoryP
         return metamodel;
     }
 
-    private static INotCountedFacet Create(NotCountedAttribute attribute, ISpecification holder) => attribute is null ? null : new NotCountedFacet();
+    private static INotCountedFacet Create(NotCountedAttribute attribute) => attribute is null ? null : new NotCountedFacet();
 }

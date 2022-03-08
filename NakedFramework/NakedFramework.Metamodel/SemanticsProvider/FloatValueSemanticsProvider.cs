@@ -20,13 +20,13 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const bool Immutable = true;
 
     public FloatValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
+        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
 
     public static Type Type => typeof(IFloatingPointValueFacet);
 
     public static Type AdaptedType => typeof(float);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FloatValueSemanticsProvider(o));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new FloatValueSemanticsProvider(o));
 
     protected override float DoParse(string entry) {
         try {

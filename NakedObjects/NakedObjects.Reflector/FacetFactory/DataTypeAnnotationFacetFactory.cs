@@ -30,7 +30,7 @@ public sealed class DataTypeAnnotationFacetFactory : DomainObjectFacetFactoryPro
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();
-        FacetUtils.AddFacet(Create(dataTypeAttribute, holder), holder);
+        FacetUtils.AddFacet(Create(dataTypeAttribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -41,14 +41,14 @@ public sealed class DataTypeAnnotationFacetFactory : DomainObjectFacetFactoryPro
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
-        FacetUtils.AddFacet(Create(dataTypeAttribute, holder), holder);
+        FacetUtils.AddFacet(Create(dataTypeAttribute), holder);
         return metamodel;
     }
 
-    private static IDataTypeFacet Create(DataTypeAttribute attribute, ISpecification holder) =>
+    private static IDataTypeFacet Create(DataTypeAttribute attribute) =>
         attribute is null
             ? null
             : attribute.DataType == DataType.Custom
-                ? new DataTypeFacetAnnotation(attribute.CustomDataType, holder)
+                ? new DataTypeFacetAnnotation(attribute.CustomDataType)
                 : new DataTypeFacetAnnotation(attribute.DataType);
 }

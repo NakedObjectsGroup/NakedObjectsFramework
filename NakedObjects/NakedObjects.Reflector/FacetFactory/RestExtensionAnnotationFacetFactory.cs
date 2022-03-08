@@ -26,13 +26,13 @@ public sealed class RestExtensionAnnotationFacetFactory : DomainObjectFacetFacto
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<RestExtensionAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<RestExtensionAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -48,9 +48,9 @@ public sealed class RestExtensionAnnotationFacetFactory : DomainObjectFacetFacto
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<RestExtensionAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
         return metamodel;
     }
 
-    private static IRestExtensionFacet Create(RestExtensionAttribute attribute, ISpecification holder) => attribute is not null ? new RestExtensionFacet(attribute.Name, attribute.Value) : null;
+    private static IRestExtensionFacet Create(RestExtensionAttribute attribute) => attribute is not null ? new RestExtensionFacet(attribute.Name, attribute.Value) : null;
 }

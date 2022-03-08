@@ -31,10 +31,10 @@ public sealed class RangeAnnotationFacetFactory : FunctionalFacetFactoryProcesso
         var parameter = method.GetParameters()[paramNum];
         var isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
         var range = parameter.GetCustomAttribute<ValueRangeAttribute>();
-        FacetUtils.AddFacet(Create(range, isDate, holder), holder);
+        FacetUtils.AddFacet(Create(range, isDate), holder);
         return metamodel;
     }
 
-    private static IRangeFacet Create(ValueRangeAttribute attribute, bool isDate, ISpecification holder) =>
+    private static IRangeFacet Create(ValueRangeAttribute attribute, bool isDate) =>
         attribute is null ? null : new RangeFacet(attribute.Minimum, attribute.Maximum, isDate);
 }

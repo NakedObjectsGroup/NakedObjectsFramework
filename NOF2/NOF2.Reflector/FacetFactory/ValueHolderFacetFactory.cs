@@ -29,19 +29,19 @@ namespace NOF2.Reflector.FacetFactory;
 public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
     public ValueHolderFacetFactory(IFacetFactoryOrder<ValueHolderFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-    private static IList<IFacet> GetFacets(Type type, object sm, ISpecificationBuilder holder) =>
-        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetParserFacet" or "GetTitleFacet" or "GetValueFacet").Select(m => m.MakeGenericMethod(type)).Select(im => im.Invoke(null, new[] { sm, holder })).Cast<IFacet>().ToList();
+    private static IList<IFacet> GetFacets(Type type, object sm) =>
+        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetParserFacet" or "GetTitleFacet" or "GetValueFacet").Select(m => m.MakeGenericMethod(type)).Select(im => im.Invoke(null, new[] { sm })).Cast<IFacet>().ToList();
 
-    private static IFacet GetMaskFacet(Type type, Type valueType, ISpecificationBuilder holder) =>
-        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetMaskFacet" && m.IsGenericMethod).Select(m => m.MakeGenericMethod(type, valueType)).Select(im => im.Invoke(null, new object[] { holder })).Cast<IFacet>().SingleOrDefault();
+    private static IFacet GetMaskFacet(Type type, Type valueType) =>
+        typeof(ValueHolderFacetFactory).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).Where(m => m.Name is "GetMaskFacet" && m.IsGenericMethod).Select(m => m.MakeGenericMethod(type, valueType)).Select(im => im.Invoke(null, null)).Cast<IFacet>().SingleOrDefault();
 
-    private static void AddFacets(ISpecificationBuilder holder, Type type, Type valueType, IObjectSpecImmutable spec) {
+    private static void AddFacets(ISpecificationBuilder holder, Type type, Type valueType) {
         var semanticsProviderType = typeof(ValueHolderWrappingValueSemanticsProvider<,>).MakeGenericType(type, valueType);
-        var semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, holder);
+        var semanticsProvider = Activator.CreateInstance(semanticsProviderType);
 
-        var facets = GetFacets(type, semanticsProvider, holder);
+        var facets = GetFacets(type, semanticsProvider);
 
-        facets.Add(GetMaskFacet(type, valueType, holder));
+        facets.Add(GetMaskFacet(type, valueType));
         facets.Add(new TypeFacet(valueType));
         facets.Add(new NotPersistedFacet());
         facets.Add(new AggregatedFacetAlways());
@@ -54,7 +54,7 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
 
         if (valueType is not null) {
             var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
-            AddFacets(specification, type, valueType, oSpec);
+            AddFacets(specification, type, valueType);
             return mm;
         }
 
@@ -63,13 +63,13 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
 
     // Used via reflection below - do not remove 
     // ReSharper disable UnusedMember.Local
-    private static IFacet GetParserFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ParseableFacetUsingParser<T>(sm);
+    private static IFacet GetParserFacet<T>(IValueSemanticsProvider<T> sm) => new ParseableFacetUsingParser<T>(sm);
 
-    private static IFacet GetTitleFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new TitleFacetUsingParser<T>(sm);
+    private static IFacet GetTitleFacet<T>(IValueSemanticsProvider<T> sm) => new TitleFacetUsingParser<T>(sm);
 
-    private static IFacet GetValueFacet<T>(IValueSemanticsProvider<T> sm, ISpecificationBuilder holder) => new ValueFacetFromSemanticProvider<T>(sm);
+    private static IFacet GetValueFacet<T>(IValueSemanticsProvider<T> sm) => new ValueFacetFromSemanticProvider<T>(sm);
 
-    private static IFacet GetMaskFacet<T, TU>(ISpecificationBuilder holder) where T : class, IValueHolder<TU>, new() {
+    private static IFacet GetMaskFacet<T, TU>() where T : class, IValueHolder<TU>, new() {
         var vh = new T();
         var mask = vh.Mask;
         return mask is null ? null : new MaskFacet(mask);

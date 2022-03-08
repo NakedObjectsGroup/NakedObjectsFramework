@@ -43,7 +43,7 @@ public sealed class HiddenAnnotationFacetFactory : AbstractNOF2FacetFactoryProce
 
     private static void Process(object onObject, ISpecificationBuilder specification) {
         var attribute = onObject.GetCustomAttribute<IHiddenAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -56,5 +56,5 @@ public sealed class HiddenAnnotationFacetFactory : AbstractNOF2FacetFactoryProce
         return metamodel;
     }
 
-    private static IHiddenFacet Create(IHiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(Map(attribute.WhenTo));
+    private static IHiddenFacet Create(IHiddenAttribute attribute) => attribute is null ? null : new HiddenFacet(Map(attribute.WhenTo));
 }

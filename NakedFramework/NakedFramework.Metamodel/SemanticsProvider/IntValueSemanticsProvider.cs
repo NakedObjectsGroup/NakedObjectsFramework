@@ -21,13 +21,13 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
     private const bool Immutable = true;
 
     public IntValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
+        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
 
     public static Type Type => typeof(IIntegerValueFacet);
 
     public static Type AdaptedType => typeof(int);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new IntValueSemanticsProvider(o));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new IntValueSemanticsProvider(o));
 
     protected override int DoParse(string entry) {
         try {

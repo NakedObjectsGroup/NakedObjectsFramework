@@ -93,7 +93,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new UpdatedCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new UpdatedCallbackFacetNull(specification));
+            facets.Add(new UpdatedCallbackFacetNull());
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.LoadingMethod, typeof(void), Type.EmptyTypes);
@@ -120,7 +120,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new DeletingCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new DeletingCallbackFacetNull(specification));
+            facets.Add(new DeletingCallbackFacetNull());
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DeletedMethod, typeof(void), Type.EmptyTypes);

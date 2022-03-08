@@ -27,21 +27,21 @@ public sealed class RenderEagerlyAnnotationFacetFactory : FunctionalFacetFactory
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<RenderEagerlyAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<RenderEagerlyAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = method.GetCustomAttribute<RenderEagerlyAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
-    private static IEagerlyFacet Create(RenderEagerlyAttribute attribute, ISpecification holder) => attribute == null ? null : new EagerlyFacet(Do.Rendering);
+    private static IEagerlyFacet Create(RenderEagerlyAttribute attribute) => attribute == null ? null : new EagerlyFacet(Do.Rendering);
 }

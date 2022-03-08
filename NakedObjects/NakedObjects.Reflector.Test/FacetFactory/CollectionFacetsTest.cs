@@ -328,7 +328,7 @@ public class CollectionFacetsTest {
         Assert.IsFalse(testCollectionFacet.IsASet);
         testCollectionFacet = new GenericIEnumerableFacet();
         Assert.IsFalse(testCollectionFacet.IsASet);
-        testCollectionFacet = new GenericIQueryableFacet(specification);
+        testCollectionFacet = new GenericIQueryableFacet();
         Assert.IsFalse(testCollectionFacet.IsASet);
     }
 
@@ -391,7 +391,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryableContains() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet(specification);
+        var testCollectionFacet = new GenericIQueryableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
     }
@@ -399,7 +399,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryableFirstElement() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet(specification);
+        var testCollectionFacet = new GenericIQueryableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -407,7 +407,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryableGetEnumeratorFor() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet(specification);
+        var testCollectionFacet = new GenericIQueryableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
     }
@@ -415,7 +415,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryablePage() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet(specification);
+        var testCollectionFacet = new GenericIQueryableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Page(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -423,7 +423,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryableSize() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet(specification);
+        var testCollectionFacet = new GenericIQueryableFacet();
         var testAdaptedCollection = AdapterFor(testCollection);
         Size(testCollectionFacet, testAdaptedCollection);
     }

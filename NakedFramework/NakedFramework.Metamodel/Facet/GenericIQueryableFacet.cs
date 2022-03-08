@@ -10,14 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class GenericIQueryableFacet : CollectionFacetAbstract {
-    public GenericIQueryableFacet(ISpecification holder)
+    public GenericIQueryableFacet()
         : this(false) { }
 
     public GenericIQueryableFacet(bool isASet)

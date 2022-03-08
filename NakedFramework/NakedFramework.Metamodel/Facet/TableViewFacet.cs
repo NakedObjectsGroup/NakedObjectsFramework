@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 
@@ -21,14 +22,14 @@ public sealed class TableViewFacet : FacetAbstract, ITableViewFacet {
         Columns = columns;
     }
 
-    public static ITableViewFacet CreateTableViewFacet(bool title, string[] columns, ISpecification holder, ILogger logger) {
+    public static ITableViewFacet CreateTableViewFacet(bool title, string[] columns, IIdentifier identifier, ILogger logger) {
         columns ??= Array.Empty<string>();
         var distinctColumns = columns.Distinct().ToArray();
 
         if (columns.Length != distinctColumns.Length) {
             // we had duplicates - log
             var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? $"{s}, {t}" : t);
-            var name = holder.Identifier is null ? "Unknown" : holder.Identifier.ToString();
+            var name = identifier is null ? "Unknown" : identifier.ToString();
             logger.LogWarning($"Table View on {name} had duplicate columns {duplicates}");
             columns = distinctColumns;
         }

@@ -31,13 +31,13 @@ public sealed class RegExAnnotationFacetFactory : FunctionalFacetFactoryProcesso
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<RegExAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<RegExAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -60,11 +60,11 @@ public sealed class RegExAnnotationFacetFactory : FunctionalFacetFactoryProcesso
         var parameter = method.GetParameters()[paramNum];
         if (TypeUtils.IsString(parameter.ParameterType)) {
             var attribute = parameter.GetCustomAttribute<RegExAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder), holder);
+            FacetUtils.AddFacet(Create(attribute), holder);
         }
 
         return metamodel;
     }
 
-    private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) => attribute is null ? null : new RegExFacet(attribute.Validation, attribute.CaseSensitive, holder);
+    private static IRegExFacet Create(RegExAttribute attribute) => attribute is null ? null : new RegExFacet(attribute.Validation, attribute.CaseSensitive);
 }

@@ -31,30 +31,30 @@ public sealed class NamedAnnotationFacetFactory : DomainObjectFacetFactoryProces
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)type.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)method.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, specification), specification);
+        FacetUtils.AddFacet(CreateForMember(attribute), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)property.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, specification), specification);
+        FacetUtils.AddFacet(CreateForMember(attribute), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)parameter.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, holder), holder);
+        FacetUtils.AddFacet(CreateForMember(attribute), holder);
         return metamodel;
     }
 
-    private INamedFacet Create(Attribute attribute, ISpecification holder) =>
+    private INamedFacet Create(Attribute attribute) =>
         attribute switch {
             null => null,
             NamedAttribute namedAttribute => new NamedFacetAnnotation(namedAttribute.Value),
@@ -62,7 +62,7 @@ public sealed class NamedAnnotationFacetFactory : DomainObjectFacetFactoryProces
             _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
         };
 
-    private IMemberNamedFacet CreateForMember(Attribute attribute, ISpecification holder) =>
+    private IMemberNamedFacet CreateForMember(Attribute attribute) =>
         attribute switch {
             null => null,
             NamedAttribute namedAttribute => new MemberNamedFacetAnnotation(namedAttribute.Value),

@@ -26,13 +26,13 @@ public sealed class MaskAnnotationFacetFactory : FunctionalFacetFactoryProcessor
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<MaskAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<MaskAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -48,9 +48,9 @@ public sealed class MaskAnnotationFacetFactory : FunctionalFacetFactoryProcessor
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<MaskAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
         return metamodel;
     }
 
-    private static IMaskFacet Create(MaskAttribute attribute, ISpecification holder) => attribute is not null ? new MaskFacet(attribute.Value) : null;
+    private static IMaskFacet Create(MaskAttribute attribute) => attribute is not null ? new MaskFacet(attribute.Value) : null;
 }

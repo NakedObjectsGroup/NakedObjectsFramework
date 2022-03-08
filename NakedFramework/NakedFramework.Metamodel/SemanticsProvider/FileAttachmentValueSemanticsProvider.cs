@@ -21,13 +21,13 @@ public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProvide
     private const bool Immutable = true;
 
     public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, null, spec) { }
+        : base(Type, AdaptedType, Immutable, null) { }
 
     public static Type Type => typeof(IFileAttachmentValueFacet);
 
     public static Type AdaptedType => typeof(FileAttachment);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new FileAttachmentValueSemanticsProvider(o));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new FileAttachmentValueSemanticsProvider(o));
 
     #region IFromStream Members
 

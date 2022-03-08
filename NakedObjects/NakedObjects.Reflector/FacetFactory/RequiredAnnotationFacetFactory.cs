@@ -27,7 +27,7 @@ public sealed class RequiredAnnotationFacetFactory : DomainObjectFacetFactoryPro
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<RequiredAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -46,9 +46,9 @@ public sealed class RequiredAnnotationFacetFactory : DomainObjectFacetFactoryPro
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<RequiredAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
         return metamodel;
     }
 
-    private static IMandatoryFacet Create(RequiredAttribute attribute, ISpecification holder) => attribute is not null ? new MandatoryFacet() : null;
+    private static IMandatoryFacet Create(RequiredAttribute attribute) => attribute is not null ? new MandatoryFacet() : null;
 }

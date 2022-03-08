@@ -33,13 +33,13 @@ public sealed class RegExAnnotationFacetFactory : DomainObjectFacetFactoryProces
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute)type.GetCustomAttribute<RegExAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     private void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute)member.GetCustomAttribute<RegExAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -62,21 +62,21 @@ public sealed class RegExAnnotationFacetFactory : DomainObjectFacetFactoryProces
         var parameter = method.GetParameters()[paramNum];
         if (TypeUtils.IsString(parameter.ParameterType)) {
             var attribute = parameter.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute)parameter.GetCustomAttribute<RegExAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder), holder);
+            FacetUtils.AddFacet(Create(attribute), holder);
         }
 
         return metamodel;
     }
 
-    private IRegExFacet Create(Attribute attribute, ISpecification holder) =>
+    private IRegExFacet Create(Attribute attribute) =>
         attribute switch {
             null => null,
-            RegularExpressionAttribute expressionAttribute => Create(expressionAttribute, holder),
-            RegExAttribute exAttribute => Create(exAttribute, holder),
+            RegularExpressionAttribute expressionAttribute => Create(expressionAttribute),
+            RegExAttribute exAttribute => Create(exAttribute),
             _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
         };
 
-    private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) => new RegExFacet(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message);
+    private static IRegExFacet Create(RegExAttribute attribute) => new RegExFacet(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message);
 
-    private static IRegExFacet Create(RegularExpressionAttribute attribute, ISpecification holder) => new RegExFacet(attribute.Pattern, string.Empty, true, attribute.ErrorMessage);
+    private static IRegExFacet Create(RegularExpressionAttribute attribute) => new RegExFacet(attribute.Pattern, string.Empty, true, attribute.ErrorMessage);
 }

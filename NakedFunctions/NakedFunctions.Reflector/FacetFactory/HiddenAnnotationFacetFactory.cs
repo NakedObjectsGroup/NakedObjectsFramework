@@ -32,7 +32,7 @@ public sealed class HiddenAnnotationFacetFactory : FunctionalFacetFactoryProcess
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) => Process(member.GetCustomAttribute<HiddenAttribute>(), holder);
 
-    private static void Process(HiddenAttribute attribute, ISpecificationBuilder specification) => FacetUtils.AddFacet(Create(attribute, specification), specification);
+    private static void Process(HiddenAttribute attribute, ISpecificationBuilder specification) => FacetUtils.AddFacet(Create(attribute), specification);
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         Process(method, specification);
@@ -44,5 +44,5 @@ public sealed class HiddenAnnotationFacetFactory : FunctionalFacetFactoryProcess
         return metamodel;
     }
 
-    private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(WhenTo.Always);
+    private static IHiddenFacet Create(HiddenAttribute attribute) => attribute is null ? null : new HiddenFacet(WhenTo.Always);
 }

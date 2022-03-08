@@ -27,9 +27,9 @@ public sealed class DisabledAnnotationFacetFactory : FunctionalFacetFactoryProce
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<DisabledAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
         return metamodel;
     }
 
-    private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute is null ? null : new DisabledFacetAnnotation(WhenTo.Always);
+    private static IDisabledFacet Create(DisabledAttribute attribute) => attribute is null ? null : new DisabledFacetAnnotation(WhenTo.Always);
 }

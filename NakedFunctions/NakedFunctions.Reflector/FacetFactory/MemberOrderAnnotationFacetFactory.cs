@@ -25,7 +25,7 @@ public sealed class MemberOrderAnnotationFacetFactory : FunctionalFacetFactoryPr
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<MemberOrderAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -38,5 +38,5 @@ public sealed class MemberOrderAnnotationFacetFactory : FunctionalFacetFactoryPr
         return metamodel;
     }
 
-    private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute is null ? null : new MemberOrderFacet(attribute.Grouping ?? "", attribute.Order.ToString()) { Grouping = attribute.Grouping };
+    private static IMemberOrderFacet Create(MemberOrderAttribute attribute) => attribute is null ? null : new MemberOrderFacet(attribute.Grouping ?? "", attribute.Order.ToString()) { Grouping = attribute.Grouping };
 }

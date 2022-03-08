@@ -37,7 +37,7 @@ public sealed class EnumFacetFactory : DomainObjectFacetFactoryProcessor {
 
     private static void AddEnumFacet(EnumDataTypeAttribute attribute, ISpecificationBuilder holder, Type typeOfEnum) {
         if (attribute != null) {
-            FacetUtils.AddFacet(Create(attribute, holder), holder);
+            FacetUtils.AddFacet(Create(attribute), holder);
             return;
         }
 
@@ -60,5 +60,5 @@ public sealed class EnumFacetFactory : DomainObjectFacetFactoryProcessor {
         return metamodel;
     }
 
-    private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) => attribute is null ? null : new EnumFacet(attribute.EnumType);
+    private static IEnumFacet Create(EnumDataTypeAttribute attribute) => attribute is null ? null : new EnumFacet(attribute.EnumType);
 }

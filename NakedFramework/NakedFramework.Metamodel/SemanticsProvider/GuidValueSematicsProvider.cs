@@ -20,13 +20,13 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private static readonly Guid DefaultValueConst = Guid.Empty;
 
     public GuidValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
+        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
 
     public static Type Type => typeof(IGuidValueFacet);
 
     public static Type AdaptedType => typeof(Guid);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new GuidValueSemanticsProvider(o));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new GuidValueSemanticsProvider(o));
 
     protected override Guid DoParse(string entry) {
         try {

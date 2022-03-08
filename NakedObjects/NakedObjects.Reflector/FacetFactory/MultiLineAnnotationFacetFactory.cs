@@ -28,13 +28,13 @@ public sealed class MultiLineAnnotationFacetFactory : DomainObjectFacetFactoryPr
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<MultiLineAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<MultiLineAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -54,11 +54,11 @@ public sealed class MultiLineAnnotationFacetFactory : DomainObjectFacetFactoryPr
         var parameter = method.GetParameters()[paramNum];
         if (TypeUtils.IsString(parameter.ParameterType)) {
             var attribute = parameter.GetCustomAttribute<MultiLineAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder), holder);
+            FacetUtils.AddFacet(Create(attribute), holder);
         }
 
         return metamodel;
     }
 
-    private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) => attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width) : null;
+    private static IMultiLineFacet Create(MultiLineAttribute attribute) => attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width) : null;
 }

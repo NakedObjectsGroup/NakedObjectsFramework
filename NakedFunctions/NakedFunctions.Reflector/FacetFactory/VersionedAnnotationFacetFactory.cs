@@ -25,9 +25,9 @@ public sealed class VersionedAnnotationFacetFactory : FunctionalFacetFactoryProc
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<VersionedAttribute>();
-        FacetUtils.AddFacet(Create(reflector, attribute, specification), specification);
+        FacetUtils.AddFacet(Create(reflector, attribute), specification);
         return metamodel;
     }
 
-    private static IConcurrencyCheckFacet Create(IReflector reflector, VersionedAttribute attribute, ISpecification holder) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet();
+    private static IConcurrencyCheckFacet Create(IReflector reflector, VersionedAttribute attribute) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet();
 }

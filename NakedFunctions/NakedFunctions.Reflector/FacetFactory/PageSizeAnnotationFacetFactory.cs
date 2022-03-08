@@ -29,7 +29,7 @@ public sealed class PageSizeAnnotationFacetFactory : FunctionalFacetFactoryProce
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<PageSizeAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -37,5 +37,5 @@ public sealed class PageSizeAnnotationFacetFactory : FunctionalFacetFactoryProce
         return metamodel;
     }
 
-    private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) => attribute is null ? null : new PageSizeFacetAnnotation(attribute.Value);
+    private static IPageSizeFacet Create(PageSizeAttribute attribute) => attribute is null ? null : new PageSizeFacetAnnotation(attribute.Value);
 }

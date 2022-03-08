@@ -21,13 +21,13 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
     private const bool Immutable = true;
 
     public UShortValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
+        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
 
     public static Type Type => typeof(IUnsignedShortValueFacet);
 
     public static Type AdaptedType => typeof(ushort);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new UShortValueSemanticsProvider(o));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new UShortValueSemanticsProvider(o));
 
     protected override ushort DoParse(string entry) {
         try {

@@ -20,7 +20,7 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
     private const bool Immutable = true;
 
     public ArrayValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
+        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
 
     public static Type Type => typeof(IArrayValueFacet<T>);
 

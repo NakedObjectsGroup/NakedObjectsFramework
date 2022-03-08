@@ -21,13 +21,13 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
     private const bool Immutable = true;
 
     public DecimalValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst, spec) { }
+        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
 
     public static Type Type => typeof(IDecimalValueFacet);
 
     public static Type AdaptedType => typeof(decimal);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, ISpecification, IValueSemanticsProvider>> Factory => new(AdaptedType, (o, s) => new DecimalValueSemanticsProvider(o));
+    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new DecimalValueSemanticsProvider(o));
 
     protected override decimal DoParse(string entry) {
         try {

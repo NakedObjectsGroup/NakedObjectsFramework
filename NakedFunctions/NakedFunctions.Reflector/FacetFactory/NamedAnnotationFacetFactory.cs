@@ -29,34 +29,34 @@ public sealed class NamedAnnotationFacetFactory : FunctionalFacetFactoryProcesso
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForType(attribute, specification), specification);
+        FacetUtils.AddFacet(CreateForType(attribute), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = method.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, specification), specification);
+        FacetUtils.AddFacet(CreateForMember(attribute), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, specification), specification);
+        FacetUtils.AddFacet(CreateForMember(attribute), specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<NamedAttribute>();
-        FacetUtils.AddFacet(CreateForMember(attribute, holder), holder);
+        FacetUtils.AddFacet(CreateForMember(attribute), holder);
         return metamodel;
     }
 
-    private static INamedFacet CreateForType(NamedAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTypeAnnotation(attribute.Value, holder);
+    private static INamedFacet CreateForType(NamedAttribute attribute) => attribute is null ? null : CreateTypeAnnotation(attribute.Value);
 
-    private static IMemberNamedFacet CreateForMember(NamedAttribute attribute, ISpecification holder) => attribute is null ? null : CreateMemberAnnotation(attribute.Value, holder);
+    private static IMemberNamedFacet CreateForMember(NamedAttribute attribute) => attribute is null ? null : CreateMemberAnnotation(attribute.Value);
 
-    private static INamedFacet CreateTypeAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name);
+    private static INamedFacet CreateTypeAnnotation(string name) => new NamedFacetAnnotation(name);
 
-    private static IMemberNamedFacet CreateMemberAnnotation(string name, ISpecification holder) => new MemberNamedFacetAnnotation(name);
+    private static IMemberNamedFacet CreateMemberAnnotation(string name) => new MemberNamedFacetAnnotation(name);
 }

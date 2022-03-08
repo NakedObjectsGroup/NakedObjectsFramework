@@ -26,11 +26,11 @@ public sealed class ImmutableAnnotationFacetFactory : DomainObjectFacetFactoryPr
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<ImmutableAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
-    private static IImmutableFacet Create(ImmutableAttribute attribute, ISpecification holder) => attribute == null
+    private static IImmutableFacet Create(ImmutableAttribute attribute) => attribute == null
         ? null
         : new ImmutableFacetAnnotation(attribute.Value);
 }

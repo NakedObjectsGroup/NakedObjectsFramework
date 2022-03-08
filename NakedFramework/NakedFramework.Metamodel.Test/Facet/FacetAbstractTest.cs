@@ -27,7 +27,7 @@ public class FacetAbstractTest {
     public void SetUp() {
         specification = new Mock<ISpecificationBuilder>().Object;
         facetHolder2 = new Mock<ISpecification>().Object;
-        fooFacet = new ConcreteFacet(typeof(IFooFacet), specification);
+        fooFacet = new ConcreteFacet(typeof(IFooFacet));
         FacetUtils.AddFacet(fooFacet, specification);
     }
 
@@ -46,7 +46,7 @@ public class FacetAbstractTest {
     #region Nested type: ConcreteFacet
 
     internal class ConcreteFacet : FacetAbstract, IFooFacet {
-        public ConcreteFacet(Type facetType, ISpecification holder) : base(facetType) { }
+        public ConcreteFacet(Type facetType) : base(facetType) { }
     }
 
     #endregion

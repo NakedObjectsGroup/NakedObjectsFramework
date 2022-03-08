@@ -30,7 +30,7 @@ public sealed class OptionalAnnotationFacetFactory : FunctionalFacetFactoryProce
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<OptionallyAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -67,9 +67,9 @@ public sealed class OptionalAnnotationFacetFactory : FunctionalFacetFactoryProce
         }
 
         var attribute = parameter.GetCustomAttribute<OptionallyAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
         return metamodel;
     }
 
-    private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) => attribute is not null ? new OptionalFacet() : null;
+    private static IMandatoryFacet Create(OptionallyAttribute attribute) => attribute is not null ? new OptionalFacet() : null;
 }

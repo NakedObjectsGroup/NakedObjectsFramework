@@ -22,7 +22,7 @@ public sealed class ValueTypeFacetFactory : ValueUsingValueSemanticsProviderFace
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (TypeToSemanticProvider.ContainsKey(type)) {
             var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
-            TypeToSemanticProvider[type](oSpec, specification).AddValueFacets(specification);
+            TypeToSemanticProvider[type](oSpec).AddValueFacets(specification);
             return mm;
         }
 

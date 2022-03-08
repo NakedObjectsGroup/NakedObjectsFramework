@@ -35,7 +35,7 @@ public sealed class RemoveSuperclassMethodsFacetFactory : SystemTypeFacetFactory
         }
     }
 
-    public static void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
+    private static void ProcessSystemType(Type type, IMethodRemover methodRemover) {
         var typeToMethods = new Dictionary<Type, MethodInfo[]>();
         InitForType(type, typeToMethods);
         foreach (var method in typeToMethods[type]) {
@@ -47,7 +47,7 @@ public sealed class RemoveSuperclassMethodsFacetFactory : SystemTypeFacetFactory
         var currentType = type;
         while (currentType is not null) {
             if (reflector.ClassStrategy.IsIgnored(currentType)) {
-                ProcessSystemType(currentType, methodRemover, specification);
+                ProcessSystemType(currentType, methodRemover);
             }
 
             currentType = currentType.BaseType;

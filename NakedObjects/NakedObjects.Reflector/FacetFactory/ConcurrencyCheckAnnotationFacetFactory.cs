@@ -27,9 +27,9 @@ public sealed class ConcurrencyCheckAnnotationFacetFactory : DomainObjectFacetFa
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();
-        FacetUtils.AddFacet(Create(reflector, attribute, specification), specification);
+        FacetUtils.AddFacet(Create(reflector, attribute), specification);
         return metamodel;
     }
 
-    private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet();
+    private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet();
 }

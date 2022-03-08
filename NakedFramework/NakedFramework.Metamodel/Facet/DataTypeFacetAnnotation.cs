@@ -7,7 +7,6 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -16,7 +15,7 @@ public sealed class DataTypeFacetAnnotation : DataTypeFacetAbstract {
     public DataTypeFacetAnnotation(DataType dataType)
         : base(dataType) { }
 
-    public DataTypeFacetAnnotation(string customDataType, ISpecification holder)
+    public DataTypeFacetAnnotation(string customDataType)
         : base(customDataType) { }
 }
 

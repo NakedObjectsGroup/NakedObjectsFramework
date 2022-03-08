@@ -51,7 +51,7 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
         var identifier = holder.Identifier;
 
         if (facetType == typeof(IHideForSessionFacet)) {
-            return new AuthorizationHideForSessionFacet(identifier, this, holder);
+            return new AuthorizationHideForSessionFacet(identifier, this);
         }
 
         return facet;

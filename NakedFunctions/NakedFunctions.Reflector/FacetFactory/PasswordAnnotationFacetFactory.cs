@@ -26,9 +26,9 @@ public sealed class PasswordAnnotationFacetFactory : FunctionalFacetFactoryProce
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<PasswordAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
         return metamodel;
     }
 
-    private static IPasswordFacet Create(PasswordAttribute attribute, ISpecification holder) => attribute is not null ? new PasswordFacet() : null;
+    private static IPasswordFacet Create(PasswordAttribute attribute) => attribute is not null ? new PasswordFacet() : null;
 }

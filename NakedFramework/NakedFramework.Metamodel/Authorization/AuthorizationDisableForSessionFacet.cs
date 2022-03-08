@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.Authorization;
@@ -20,8 +19,7 @@ public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacet
     private readonly IIdentifier identifier;
 
     public AuthorizationDisableForSessionFacet(IIdentifier identifier,
-                                               IAuthorizationManager authorizationManager,
-                                               ISpecification holder)
+                                               IAuthorizationManager authorizationManager)
         : base() {
         this.authorizationManager = authorizationManager;
         this.identifier = identifier;

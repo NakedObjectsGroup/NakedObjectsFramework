@@ -26,13 +26,13 @@ public sealed class NotPersistedAnnotationFacetFactory : DomainObjectFacetFactor
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<NotPersistedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<NotPersistedAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -40,5 +40,5 @@ public sealed class NotPersistedAnnotationFacetFactory : DomainObjectFacetFactor
         return metamodel;
     }
 
-    private static INotPersistedFacet Create(NotPersistedAttribute attribute, ISpecification holder) => attribute is null ? null : new NotPersistedFacet();
+    private static INotPersistedFacet Create(NotPersistedAttribute attribute) => attribute is null ? null : new NotPersistedFacet();
 }

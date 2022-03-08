@@ -27,9 +27,9 @@ public sealed class ActionDefaultAnnotationFacetFactory : FunctionalFacetFactory
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<DefaultValueAttribute>();
-        FacetUtils.AddFacet(Create(attribute, parameter.ParameterType == typeof(DateTime), holder), holder);
+        FacetUtils.AddFacet(Create(attribute, parameter.ParameterType == typeof(DateTime)), holder);
         return metamodel;
     }
 
-    private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, bool isDateTime, ISpecification holder) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, isDateTime);
+    private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, bool isDateTime) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, isDateTime);
 }

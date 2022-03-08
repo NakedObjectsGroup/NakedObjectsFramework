@@ -31,12 +31,12 @@ public sealed class DescribedAsAnnotationFacetFactory : DomainObjectFacetFactory
 
     private void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute)member.GetCustomAttribute<DescribedAsAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute)type.GetCustomAttribute<DescribedAsAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
@@ -53,19 +53,19 @@ public sealed class DescribedAsAnnotationFacetFactory : DomainObjectFacetFactory
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute)parameter.GetCustomAttribute<DescribedAsAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
         return metamodel;
     }
 
-    private IDescribedAsFacet Create(Attribute attribute, ISpecification holder) =>
+    private IDescribedAsFacet Create(Attribute attribute) =>
         attribute switch {
             null => null,
-            DescribedAsAttribute asAttribute => Create(asAttribute, holder),
-            DescriptionAttribute descriptionAttribute => Create(descriptionAttribute, holder),
+            DescribedAsAttribute asAttribute => Create(asAttribute),
+            DescriptionAttribute descriptionAttribute => Create(descriptionAttribute),
             _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
         };
 
-    private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) => new DescribedAsFacetAnnotation(attribute.Value);
+    private static IDescribedAsFacet Create(DescribedAsAttribute attribute) => new DescribedAsFacetAnnotation(attribute.Value);
 
-    private static IDescribedAsFacet Create(DescriptionAttribute attribute, ISpecification holder) => new DescribedAsFacetAnnotation(attribute.Description);
+    private static IDescribedAsFacet Create(DescriptionAttribute attribute) => new DescribedAsFacetAnnotation(attribute.Description);
 }

@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 
@@ -19,22 +18,15 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T> {
     private readonly Type adaptedType;
 
-    /// <summary>
-    ///     Lazily looked up per <see cref="SpecImmutable" />
-    /// </summary>
     protected ValueSemanticsProviderAbstract(Type adapterFacetType,
                                              Type adaptedType,
                                              bool immutable,
-                                             T defaultValue,
-                                             IObjectSpecImmutable specImmutable)
+                                             T defaultValue)
         : base(adapterFacetType) {
         this.adaptedType = adaptedType;
         IsImmutable = immutable;
         DefaultValue = defaultValue;
-        SpecImmutable = specImmutable;
     }
-
-    public IObjectSpecImmutable SpecImmutable { get; }
 
     /// <summary>
     ///     We don't replace any (non- no-op) facets.

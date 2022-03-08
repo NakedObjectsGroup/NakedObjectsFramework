@@ -29,12 +29,12 @@ public sealed class DescribedAsAnnotationFacetFactory : FunctionalFacetFactoryPr
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<DescribedAsAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<DescribedAsAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
@@ -51,9 +51,9 @@ public sealed class DescribedAsAnnotationFacetFactory : FunctionalFacetFactoryPr
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var parameter = method.GetParameters()[paramNum];
         var attribute = parameter.GetCustomAttribute<DescribedAsAttribute>();
-        FacetUtils.AddFacet(Create(attribute, holder), holder);
+        FacetUtils.AddFacet(Create(attribute), holder);
         return metamodel;
     }
 
-    private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) => attribute is null ? null : new DescribedAsFacetAnnotation(attribute.Value);
+    private static IDescribedAsFacet Create(DescribedAsAttribute attribute) => attribute is null ? null : new DescribedAsFacetAnnotation(attribute.Value);
 }

@@ -26,9 +26,9 @@ public sealed class PluralAnnotationFacetFactory : FunctionalFacetFactoryProcess
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<PluralAttribute>();
-        FacetUtils.AddFacet(Create(attribute, specification), specification);
+        FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
-    private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) => attribute is null ? null : new PluralFacetAnnotation(attribute.Value);
+    private static IPluralFacet Create(PluralAttribute attribute) => attribute is null ? null : new PluralFacetAnnotation(attribute.Value);
 }

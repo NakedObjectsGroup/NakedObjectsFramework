@@ -9,6 +9,7 @@ using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
@@ -34,13 +35,13 @@ public sealed class TableViewAnnotationFacetFactory : AbstractNOF2FacetFactoryPr
     private void Process(MemberInfo member, Type methodReturnType, ISpecificationBuilder specification) {
         if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
             var attribute = member.GetCustomAttribute<ITableViewAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification), specification);
+            FacetUtils.AddFacet(Create(attribute, specification.Identifier), specification);
         }
     }
 
-    private ITableViewFacet CreateTableViewFacet(ITableViewAttribute attribute, ISpecification holder) => TableViewFacet.CreateTableViewFacet(attribute.TableTitle, attribute.TableColumns, holder, logger);
+    private ITableViewFacet CreateTableViewFacet(ITableViewAttribute attribute, IIdentifier identifier) => TableViewFacet.CreateTableViewFacet(attribute.TableTitle, attribute.TableColumns, identifier, logger);
 
-    private ITableViewFacet Create(ITableViewAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTableViewFacet(attribute, holder);
+    private ITableViewFacet Create(ITableViewAttribute attribute, IIdentifier identifier) => attribute is null ? null : CreateTableViewFacet(attribute, identifier);
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         Process(method, method.ReturnType, specification);

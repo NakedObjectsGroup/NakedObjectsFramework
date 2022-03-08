@@ -35,7 +35,7 @@ public sealed class HiddenAnnotationFacetFactory : DomainObjectFacetFactoryProce
 
     private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecificationBuilder specification) {
         var attribute = getHidden();
-        FacetUtils.AddFacet(attribute is not null ? Create((HiddenAttribute)attribute, specification) : Create((ScaffoldColumnAttribute)getScaffold(), specification), specification);
+        FacetUtils.AddFacet(attribute is not null ? Create((HiddenAttribute)attribute) : Create((ScaffoldColumnAttribute)getScaffold()), specification);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -48,7 +48,7 @@ public sealed class HiddenAnnotationFacetFactory : DomainObjectFacetFactoryProce
         return metamodel;
     }
 
-    private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Value);
+    private static IHiddenFacet Create(HiddenAttribute attribute) => attribute is null ? null : new HiddenFacet(attribute.Value);
 
-    private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always);
+    private static IHiddenFacet Create(ScaffoldColumnAttribute attribute) => attribute is null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always);
 }

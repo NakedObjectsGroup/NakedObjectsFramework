@@ -10,7 +10,6 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Error;
 
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
@@ -29,7 +28,7 @@ public sealed class RegExFacet : FacetAbstract, IRegExFacet {
         FailureMessage = message;
     }
 
-    public RegExFacet(string validation, bool caseSensitive, ISpecification holder)
+    public RegExFacet(string validation, bool caseSensitive)
         : base(typeof(IRegExFacet)) {
         ValidationPattern = validation;
         Pattern = new Regex(validation, PatternFlags);

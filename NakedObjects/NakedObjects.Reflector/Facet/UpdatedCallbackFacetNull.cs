@@ -8,13 +8,12 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class UpdatedCallbackFacetNull : UpdatedCallbackFacetAbstract {
-    public UpdatedCallbackFacetNull(ISpecification holder)
+    public UpdatedCallbackFacetNull()
         : base() { }
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
