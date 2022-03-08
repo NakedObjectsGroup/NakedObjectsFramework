@@ -46,10 +46,10 @@ public class ModelIntegrator : IModelIntegrator {
 
         // new way of doing things =- introduce integration facets
 
-        var integrationFacets = metamodelBuilder.AllSpecifications.Select(s => s.GetFacet<IIntegrationFacet>()).Where(f => f is not null).ToArray();
+        (ITypeSpecImmutable spec, IIntegrationFacet facet)[] integrationFacets = metamodelBuilder.AllSpecifications.Select(s => (s, s.GetFacet<IIntegrationFacet>())).Where(t => t.Item2 is not null).ToArray();
 
-        integrationFacets.ForEach(f => f.Execute(metamodelBuilder));
-        integrationFacets.ForEach(f => f.Remove());
+        integrationFacets.ForEach(t => t.facet.Execute(metamodelBuilder));
+        integrationFacets.ForEach(t => t.facet.Remove(t.spec));
 
         metamodelBuilder.AllSpecifications.OfType<ITypeSpecBuilder>().AsParallel().ForEach(spec => spec.CompleteIntegration());
 

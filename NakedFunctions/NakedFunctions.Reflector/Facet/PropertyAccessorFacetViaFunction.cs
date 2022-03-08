@@ -22,7 +22,7 @@ public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyA
     private readonly MethodInfo method;
 
     public PropertyAccessorFacetViaFunction(MethodInfo method, ISpecification holder)
-        : base(typeof(IPropertyAccessorFacet), holder) =>
+        : base(typeof(IPropertyAccessorFacet)) =>
         this.method = method;
 
     #region IPropertyAccessorFacet Members

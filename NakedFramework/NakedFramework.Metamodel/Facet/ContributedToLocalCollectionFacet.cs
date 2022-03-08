@@ -19,7 +19,7 @@ public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContribu
     private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
 
     public ContributedToLocalCollectionFacet(ISpecification holder)
-        : base(typeof(IContributedToLocalCollectionFacet), holder) { }
+        : base(typeof(IContributedToLocalCollectionFacet)) { }
 
     #region IContributedActionFacet Members
 

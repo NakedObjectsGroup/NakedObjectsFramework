@@ -48,11 +48,10 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
 
     public override IFacet Decorate(IFacet facet, ISpecification holder) {
         var facetType = facet.FacetType;
-        var specification = facet.Specification;
         var identifier = holder.Identifier;
 
         if (facetType == typeof(IHideForSessionFacet)) {
-            return new AuthorizationHideForSessionFacet(identifier, this, specification);
+            return new AuthorizationHideForSessionFacet(identifier, this, holder);
         }
 
         return facet;

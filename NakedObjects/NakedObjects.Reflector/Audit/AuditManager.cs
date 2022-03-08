@@ -76,15 +76,15 @@ public sealed class AuditManager : AbstractAuditManager, IFacetDecorator, IAudit
 
     public IFacet Decorate(IFacet facet, ISpecification holder) {
         if (facet.FacetType == typeof(IActionInvocationFacet)) {
-            return new AuditActionInvocationFacet((IActionInvocationFacet)facet, this);
+            return new AuditActionInvocationFacet((IActionInvocationFacet)facet, this, holder);
         }
 
         if (facet.FacetType == typeof(IUpdatedCallbackFacet)) {
-            return new AuditUpdatedFacet((IUpdatedCallbackFacet)facet, this);
+            return new AuditUpdatedFacet((IUpdatedCallbackFacet)facet, this, holder);
         }
 
         if (facet.FacetType == typeof(IPersistedCallbackFacet)) {
-            return new AuditPersistedFacet((IPersistedCallbackFacet)facet, this);
+            return new AuditPersistedFacet((IPersistedCallbackFacet)facet, this, holder);
         }
 
         return facet;

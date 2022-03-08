@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
     protected CollectionFacetAbstract(ISpecification holder)
-        : base(typeof(ICollectionFacet), holder) =>
+        : base(typeof(ICollectionFacet)) =>
         IsASet = false;
 
     protected CollectionFacetAbstract(ISpecification holder, bool isASet)

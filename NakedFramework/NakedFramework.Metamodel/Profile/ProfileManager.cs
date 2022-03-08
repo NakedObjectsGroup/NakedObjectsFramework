@@ -34,18 +34,18 @@ public sealed class ProfileManager : IFacetDecorator, IProfileManager {
         { ProfileEvent.Updating, typeof(IUpdatingCallbackFacet) }
     };
 
-    private static readonly IDictionary<Type, Func<IFacet, IProfileManager, IFacet>> FacetToConstructorMap = new Dictionary<Type, Func<IFacet, IProfileManager, IFacet>> {
-        { typeof(IActionInvocationFacet), (f, pm) => new ProfileActionInvocationFacet((IActionInvocationFacet)f, pm) },
-        { typeof(IPropertySetterFacet), (f, pm) => new ProfilePropertySetterFacet((IPropertySetterFacet)f, pm) },
-        { typeof(ICreatedCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Created, (ICallbackFacet)f, pm) },
-        { typeof(IDeletedCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Deleted, (ICallbackFacet)f, pm) },
-        { typeof(IDeletingCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Deleting, (ICallbackFacet)f, pm) },
-        { typeof(ILoadedCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Loaded, (ICallbackFacet)f, pm) },
-        { typeof(ILoadingCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Loading, (ICallbackFacet)f, pm) },
-        { typeof(IPersistedCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Persisted, (ICallbackFacet)f, pm) },
-        { typeof(IPersistingCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Persisting, (ICallbackFacet)f, pm) },
-        { typeof(IUpdatedCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Updated, (ICallbackFacet)f, pm) },
-        { typeof(IUpdatingCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Updating, (ICallbackFacet)f, pm) }
+    private static readonly IDictionary<Type, Func<IFacet, IProfileManager, ISpecification, IFacet>> FacetToConstructorMap = new Dictionary<Type, Func<IFacet, IProfileManager, ISpecification, IFacet>> {
+        { typeof(IActionInvocationFacet), (f, pm, s) => new ProfileActionInvocationFacet((IActionInvocationFacet)f, pm, s) },
+        { typeof(IPropertySetterFacet), (f, pm, s) => new ProfilePropertySetterFacet((IPropertySetterFacet)f, pm, s) },
+        { typeof(ICreatedCallbackFacet), (f, pm, s) => new ProfileCallbackFacet(ProfileEvent.Created, (ICallbackFacet)f, pm, s) },
+        { typeof(IDeletedCallbackFacet), (f, pm, s) => new ProfileCallbackFacet(ProfileEvent.Deleted, (ICallbackFacet)f, pm, s) },
+        { typeof(IDeletingCallbackFacet), (f, pm, s) => new ProfileCallbackFacet(ProfileEvent.Deleting, (ICallbackFacet)f, pm, s) },
+        { typeof(ILoadedCallbackFacet), (f, pm, s) => new ProfileCallbackFacet(ProfileEvent.Loaded, (ICallbackFacet)f, pm, s) },
+        { typeof(ILoadingCallbackFacet), (f, pm, s) => new ProfileCallbackFacet(ProfileEvent.Loading, (ICallbackFacet)f, pm, s) },
+        { typeof(IPersistedCallbackFacet), (f, pm, s) => new ProfileCallbackFacet(ProfileEvent.Persisted, (ICallbackFacet)f, pm, s) },
+        { typeof(IPersistingCallbackFacet), (f, pm, s) => new ProfileCallbackFacet(ProfileEvent.Persisting, (ICallbackFacet)f, pm, s) },
+        { typeof(IUpdatedCallbackFacet), (f, pm, s) => new ProfileCallbackFacet(ProfileEvent.Updated, (ICallbackFacet)f, pm, s) },
+        { typeof(IUpdatingCallbackFacet), (f, pm, s) => new ProfileCallbackFacet(ProfileEvent.Updating, (ICallbackFacet)f, pm, s) }
     };
 
     private readonly Type profilerType;
@@ -64,7 +64,7 @@ public sealed class ProfileManager : IFacetDecorator, IProfileManager {
 
     #region IFacetDecorator Members
 
-    public IFacet Decorate(IFacet facet, ISpecification holder) => ForFacetTypes.Contains(facet.FacetType) ? FacetToConstructorMap[facet.FacetType](facet, this) : facet;
+    public IFacet Decorate(IFacet facet, ISpecification holder) => ForFacetTypes.Contains(facet.FacetType) ? FacetToConstructorMap[facet.FacetType](facet, this, holder) : facet;
 
     public Type[] ForFacetTypes { get; }
 

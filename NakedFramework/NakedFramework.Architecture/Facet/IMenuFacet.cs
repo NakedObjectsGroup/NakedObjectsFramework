@@ -7,6 +7,7 @@
 
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Facet;
 
@@ -27,4 +28,6 @@ public interface IMenuFacet : IFacet {
     IMenuImmutable GetMenu();
 
     void CreateMenu(IMetamodelBuilder metamodel);
+
+    ISpecification Specification { get; }
 }

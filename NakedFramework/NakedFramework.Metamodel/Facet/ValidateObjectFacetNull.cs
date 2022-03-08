@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFacet {
     public ValidateObjectFacetNull(ISpecification holder)
-        : base(Type, holder) { }
+        : base(Type) { }
 
     public static Type Type => typeof(IValidateObjectFacet);
 

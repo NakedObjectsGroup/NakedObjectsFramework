@@ -21,7 +21,7 @@ using NOF2.Reflector.Component;
 namespace NOF2.Reflector.Facet;
 
 public class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
-    protected AbstractViaAboutMethodFacet(Type facetType, ISpecification holder, MethodInfo method, AboutHelpers.AboutType aboutType, ILogger logger) : base(facetType, holder) {
+    protected AbstractViaAboutMethodFacet(Type facetType, ISpecification holder, MethodInfo method, AboutHelpers.AboutType aboutType, ILogger logger) : base(facetType) {
         Method = method;
         AboutType = aboutType;
         MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

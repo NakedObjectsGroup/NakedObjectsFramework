@@ -10,15 +10,14 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvocationFacet {
-    protected ActionInvocationFacetAbstract(ISpecification holder)
-        : base(Type, holder) { }
+    protected ActionInvocationFacetAbstract()
+        : base(Type) { }
 
     public static Type Type => typeof(IActionInvocationFacet);
 

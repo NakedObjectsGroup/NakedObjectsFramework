@@ -30,7 +30,7 @@ public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImpe
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
     private AutoCompleteFacet(ISpecification holder)
-        : base(Type, holder) { }
+        : base(Type) { }
 
     public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder, ILogger<AutoCompleteFacet> logger)
         : this(holder) {

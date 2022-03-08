@@ -9,6 +9,7 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.Audit;
@@ -18,8 +19,8 @@ public sealed class AuditPersistedFacet : CallbackFacetAbstract, IPersistedCallb
     private readonly IAuditManager manager;
     private readonly IPersistedCallbackFacet underlyingFacet;
 
-    public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet, IAuditManager auditManager)
-        : base(Type, underlyingFacet.Specification) {
+    public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet, IAuditManager auditManager, ISpecification specification)
+        : base(Type, specification) {
         this.underlyingFacet = underlyingFacet;
         manager = auditManager;
     }

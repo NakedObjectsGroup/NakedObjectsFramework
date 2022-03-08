@@ -21,7 +21,7 @@ public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFuncti
     private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
     private readonly List<ITypeSpecImmutable> objectContributees = new();
 
-    public ContributedFunctionFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IContributedFunctionFacet), holder) =>
+    public ContributedFunctionFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IContributedFunctionFacet)) =>
         IsContributedToObject = isContributedToObject;
 
     public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec) => collectionContributees.Any(objectSpec.IsOfType);

@@ -14,5 +14,5 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class MarkerFacetAbstract : FacetAbstract, IMarkerFacet {
     protected MarkerFacetAbstract(Type facetType, ISpecification holder)
-        : base(facetType, holder) { }
+        : base(facetType) { }
 }

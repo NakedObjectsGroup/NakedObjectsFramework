@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class SingleIntValueFacetAbstract : FacetAbstract, ISingleIntValueFacet {
     protected SingleIntValueFacetAbstract(Type facetType, ISpecification holder, int valueInt)
-        : base(facetType, holder) =>
+        : base(facetType) =>
         Value = valueInt;
 
     #region ISingleIntValueFacet Members

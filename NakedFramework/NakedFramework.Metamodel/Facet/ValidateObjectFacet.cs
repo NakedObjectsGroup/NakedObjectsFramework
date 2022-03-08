@@ -24,7 +24,7 @@ public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
     private readonly ILogger<ValidateObjectFacet> logger;
 
     public ValidateObjectFacet(ISpecification holder, IList<NakedObjectValidationMethod> validateMethods, ILogger<ValidateObjectFacet> logger)
-        : base(Type, holder) {
+        : base(Type) {
         this.logger = logger;
         ValidateMethods = validateMethods;
     }

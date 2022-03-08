@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
-    public ElementTypeFacet(ISpecification holder, Type type, IObjectSpecImmutable spec) : base(Type, holder) {
+    public ElementTypeFacet(ISpecification holder, Type type, IObjectSpecImmutable spec) : base(Type) {
         Value = type;
         ValueSpec = spec;
     }

@@ -27,7 +27,7 @@ public sealed class DisableForContextViaFunctionFacet : FacetAbstract, IDisableF
     private readonly MethodInfo method;
     private readonly Func<object, object[], object> methodDelegate;
 
-    public DisableForContextViaFunctionFacet(MethodInfo method, ISpecification holder, ILogger<DisableForContextViaFunctionFacet> logger) : base(typeof(IDisableForContextFacet), holder) {
+    public DisableForContextViaFunctionFacet(MethodInfo method, ISpecification holder, ILogger<DisableForContextViaFunctionFacet> logger) : base(typeof(IDisableForContextFacet)) {
         this.method = method;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }

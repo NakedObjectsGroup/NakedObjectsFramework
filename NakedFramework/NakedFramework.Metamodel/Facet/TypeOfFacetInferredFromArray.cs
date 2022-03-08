@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class TypeOfFacetInferredFromArray : FacetAbstract, ITypeOfFacet {
     public TypeOfFacetInferredFromArray(ISpecification holder)
-        : base(Type, holder) { }
+        : base(Type) { }
 
     public static Type Type => typeof(ITypeOfFacet);
 

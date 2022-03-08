@@ -20,7 +20,7 @@ public sealed class TypeOfFacetDefaultToType : FacetAbstract, ITypeOfFacet {
     private readonly Type type;
 
     public TypeOfFacetDefaultToType(ISpecification holder, Type type, IObjectSpecImmutable spec)
-        : base(Type, holder) {
+        : base(Type) {
         this.type = type;
         this.spec = spec;
     }

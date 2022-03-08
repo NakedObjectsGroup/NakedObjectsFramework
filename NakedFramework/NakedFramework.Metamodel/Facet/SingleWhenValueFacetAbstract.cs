@@ -16,7 +16,7 @@ public abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenV
     private readonly WhenTo when;
 
     protected SingleWhenValueFacetAbstract(Type facetType, ISpecification holder, WhenTo when)
-        : base(facetType, holder) =>
+        : base(facetType) =>
         this.when = when;
 
     #region ISingleWhenValueFacet Members

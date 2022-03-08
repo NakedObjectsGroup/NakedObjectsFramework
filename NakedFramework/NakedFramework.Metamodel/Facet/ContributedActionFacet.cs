@@ -20,7 +20,7 @@ public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFa
     private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> objectContributees = new();
 
     public ContributedActionFacet(ISpecification holder)
-        : base(typeof(IContributedActionFacet), holder) { }
+        : base(typeof(IContributedActionFacet)) { }
 
     public void AddObjectContributee(IObjectSpecImmutable objectSpec, string subMenu, string id) => objectContributees.Add((objectSpec, subMenu, id));
 

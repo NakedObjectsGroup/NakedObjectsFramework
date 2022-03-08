@@ -16,7 +16,7 @@ public abstract class SingleStringValueFacetAbstract : FacetAbstract, ISingleStr
     private readonly string valueString;
 
     protected SingleStringValueFacetAbstract(Type facetType, ISpecification holder, string valueString)
-        : base(facetType, holder) =>
+        : base(facetType) =>
         this.valueString = valueString;
 
     #region ISingleStringValueFacet Members

@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class PropertyDefaultFacetAbstract : FacetAbstract, IPropertyDefaultFacet {
     protected PropertyDefaultFacetAbstract(ISpecification holder)
-        : base(Type, holder) { }
+        : base(Type) { }
 
     public static Type Type => typeof(IPropertyDefaultFacet);
 

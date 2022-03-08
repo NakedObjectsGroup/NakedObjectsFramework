@@ -19,7 +19,7 @@ public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFace
     private readonly IValueSemanticsProvider<T> parser;
 
     public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
-        : base(typeof(IParseableFacet), holder) =>
+        : base(typeof(IParseableFacet)) =>
         this.parser = parser;
 
     #region IParseableFacet Members

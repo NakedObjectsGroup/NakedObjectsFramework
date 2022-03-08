@@ -39,7 +39,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                 ISpecification holder,
                                                 bool isQueryOnly,
                                                 ILogger<ActionInvocationFacetViaStaticMethod> logger)
-        : base(holder) {
+        : base() {
         ActionMethod = method;
         this.logger = logger;
         (injected, paramCount) = ParameterCount(method);

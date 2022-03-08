@@ -39,11 +39,6 @@ public class FacetAbstractTest {
     }
 
     [TestMethod]
-    public void GetFacetHolder() {
-        Assert.AreEqual(specification, fooFacet.Specification);
-    }
-
-    [TestMethod]
     public void TestToString() {
         Assert.AreEqual("FacetAbstractTest+ConcreteFacet[type=FacetAbstractTest+IFooFacet]", fooFacet.ToString());
     }
@@ -51,7 +46,7 @@ public class FacetAbstractTest {
     #region Nested type: ConcreteFacet
 
     internal class ConcreteFacet : FacetAbstract, IFooFacet {
-        public ConcreteFacet(Type facetType, ISpecification holder) : base(facetType, holder) { }
+        public ConcreteFacet(Type facetType, ISpecification holder) : base(facetType) { }
     }
 
     #endregion

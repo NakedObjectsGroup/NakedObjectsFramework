@@ -19,7 +19,7 @@ public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
     private readonly IValueSemanticsProvider<T> parser;
 
     public TitleFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
-        : base(typeof(ITitleFacet), holder) =>
+        : base(typeof(ITitleFacet)) =>
         this.parser = parser;
 
     protected override string ToStringValues() => parser.ToString();

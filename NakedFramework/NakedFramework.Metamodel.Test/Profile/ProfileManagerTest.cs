@@ -41,9 +41,8 @@ public class ProfileManagerTest {
         var testFacet = new Mock<TFacet>();
 
         testFacet.Setup(n => n.FacetType).Returns(typeof(TFacet));
-        testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
-
-        var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+        
+        var facet = manager.Decorate(testFacet.Object, testSpec.Object);
 
         Assert.IsInstanceOfType(facet, typeof(TResult));
     }
@@ -53,9 +52,8 @@ public class ProfileManagerTest {
         var testFacet = new Mock<TFacet>();
 
         testFacet.Setup(n => n.FacetType).Returns(typeof(TFacet));
-        testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
-
-        var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+        
+        var facet = manager.Decorate(testFacet.Object, testSpec.Object);
 
         Assert.IsNotInstanceOfType(facet, typeof(TResult));
         Assert.IsInstanceOfType(facet, typeof(TFacet));

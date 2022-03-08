@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class MemberOrderFacet : FacetAbstract, IMemberOrderFacet {
     public MemberOrderFacet(string name, string sequence, ISpecification holder)
-        : base(typeof(IMemberOrderFacet), holder) {
+        : base(typeof(IMemberOrderFacet)) {
         Sequence = sequence;
         Name = name;
     }

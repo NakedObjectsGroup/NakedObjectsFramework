@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class ValueFacet : FacetAbstract, IValueFacet {
     public ValueFacet(ISpecification holder)
-        : base(typeof(IValueFacet), holder) { }
+        : base(typeof(IValueFacet)) { }
 
     public object Value(INakedObjectAdapter nakedObjectAdapter, string format = null) => nakedObjectAdapter.GetDomainObject();
 }

@@ -20,7 +20,7 @@ public sealed class SaveNullFacet : FacetAbstract, ISaveFacet {
     private readonly ILogger logger;
 
     public SaveNullFacet(ISpecification holder, ILogger<SaveNullFacet> logger)
-        : base(Type, holder) =>
+        : base(Type) =>
         this.logger = logger;
 
     public static Type Type => typeof(ISaveFacet);

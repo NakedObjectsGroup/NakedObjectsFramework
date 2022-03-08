@@ -29,7 +29,7 @@ public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, I
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
     public HideForContextFacet(MethodInfo method, ISpecification holder, ILogger<HideForContextFacet> logger)
-        : base(typeof(IHideForContextFacet), holder) {
+        : base(typeof(IHideForContextFacet)) {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

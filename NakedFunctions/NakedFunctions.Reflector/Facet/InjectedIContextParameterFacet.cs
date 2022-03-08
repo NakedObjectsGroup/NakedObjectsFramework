@@ -16,7 +16,7 @@ namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedParameterFacet {
-    public InjectedIContextParameterFacet(ISpecification holder) : base(Type, holder) { }
+    public InjectedIContextParameterFacet(ISpecification holder) : base(Type) { }
 
     public static Type Type => typeof(IInjectedParameterFacet);
 

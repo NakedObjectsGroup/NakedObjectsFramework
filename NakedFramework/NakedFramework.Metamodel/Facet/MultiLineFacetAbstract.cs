@@ -17,7 +17,7 @@ public abstract class MultiLineFacetAbstract : FacetAbstract, IMultiLineFacet {
     private readonly int width;
 
     protected MultiLineFacetAbstract(int numberOfLines, int width, ISpecification holder)
-        : base(Type, holder) {
+        : base(Type) {
         this.numberOfLines = numberOfLines;
         this.width = width;
     }

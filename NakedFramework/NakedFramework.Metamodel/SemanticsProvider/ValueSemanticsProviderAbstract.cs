@@ -28,7 +28,7 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
                                              bool immutable,
                                              T defaultValue,
                                              IObjectSpecImmutable specImmutable)
-        : base(adapterFacetType, holder) {
+        : base(adapterFacetType) {
         this.adaptedType = adaptedType;
         IsImmutable = immutable;
         DefaultValue = defaultValue;

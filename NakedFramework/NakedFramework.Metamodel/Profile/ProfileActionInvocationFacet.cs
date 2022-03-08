@@ -10,6 +10,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
@@ -22,11 +23,11 @@ public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {
     private readonly IProfileManager profileManager;
     private readonly IActionInvocationFacet underlyingFacet;
 
-    public ProfileActionInvocationFacet(IActionInvocationFacet underlyingFacet, IProfileManager profileManager)
-        : base(underlyingFacet.Specification) {
+    public ProfileActionInvocationFacet(IActionInvocationFacet underlyingFacet, IProfileManager profileManager, ISpecification specification)
+        : base() {
         this.underlyingFacet = underlyingFacet;
         this.profileManager = profileManager;
-        identifier = underlyingFacet.Specification.Identifier;
+        identifier = specification.Identifier;
     }
 
     public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;

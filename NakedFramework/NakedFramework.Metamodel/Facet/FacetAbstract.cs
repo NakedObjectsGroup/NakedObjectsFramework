@@ -10,15 +10,13 @@ using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class FacetAbstract : IFacet, IDeserializationCallback {
-    protected FacetAbstract(Type facetType, ISpecification holder) {
+    protected FacetAbstract(Type facetType) {
         FacetType = facetType;
-        Specification = holder;
     }
 
     #region IDeserializationCallback Members
@@ -78,8 +76,6 @@ public abstract class FacetAbstract : IFacet, IDeserializationCallback {
     protected virtual string ToStringValues() => "";
 
     #region IFacet Members
-
-    public virtual ISpecification Specification { get; }
 
     /// <summary>
     ///     Assume implementation is <i>not</i> a no-op.

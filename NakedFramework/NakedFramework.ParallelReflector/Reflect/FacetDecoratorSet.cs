@@ -48,7 +48,7 @@ public sealed class FacetDecoratorSet : IFacetDecoratorSet {
             foreach (var decorator in facetDecorators[facetType]) {
                 var previousFacet = holder.GetFacet(facetType);
                 var decoratedFacet = decorator.Decorate(previousFacet, holder);
-                if (decoratedFacet != null && decoratedFacet != previousFacet) {
+                if (decoratedFacet is not null && decoratedFacet != previousFacet) {
                     FacetUtils.AddFacet(decoratedFacet, holder);
                 }
             }

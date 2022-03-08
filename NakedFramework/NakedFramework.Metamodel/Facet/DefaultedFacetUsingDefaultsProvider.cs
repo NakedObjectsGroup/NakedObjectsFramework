@@ -17,7 +17,7 @@ public sealed class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDef
     private readonly IValueSemanticsProvider<T> defaultsProvider;
 
     public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser, ISpecification holder)
-        : base(typeof(IDefaultedFacet), holder) =>
+        : base(typeof(IDefaultedFacet)) =>
         defaultsProvider = parser;
 
     #region IDefaultedFacet Members

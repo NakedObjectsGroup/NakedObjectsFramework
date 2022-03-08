@@ -10,6 +10,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 
@@ -21,11 +22,11 @@ public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
     private readonly IIdentifier identifier;
     private readonly IActionInvocationFacet underlyingFacet;
 
-    public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, IAuditManager auditManager)
-        : base(underlyingFacet.Specification) {
+    public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, IAuditManager auditManager, ISpecification specification)
+        : base() {
         this.underlyingFacet = underlyingFacet;
         this.auditManager = auditManager;
-        identifier = underlyingFacet.Specification.Identifier;
+        identifier = specification.Identifier;
     }
 
     public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;

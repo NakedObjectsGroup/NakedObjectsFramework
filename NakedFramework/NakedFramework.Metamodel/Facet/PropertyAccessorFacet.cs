@@ -20,7 +20,7 @@ public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFace
     private readonly PropertyInfo propertyMethod;
 
     public PropertyAccessorFacet(PropertyInfo property, ISpecification holder)
-        : base(typeof(IPropertyAccessorFacet), holder) =>
+        : base(typeof(IPropertyAccessorFacet)) =>
         propertyMethod = property;
 
     #region IPropertyAccessorFacet Members

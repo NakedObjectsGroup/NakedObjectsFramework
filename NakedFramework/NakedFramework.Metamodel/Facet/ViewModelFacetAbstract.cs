@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class ViewModelFacetAbstract : FacetAbstract, IViewModelFacet {
     protected ViewModelFacetAbstract(Type type, ISpecification holder)
-        : base(type, holder) { }
+        : base(type) { }
 
     #region IViewModelFacet Members
 

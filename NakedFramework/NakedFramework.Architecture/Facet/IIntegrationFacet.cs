@@ -7,11 +7,12 @@
 
 using System;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Facet;
 
 public interface IIntegrationFacet : IFacet {
     public void Execute(IMetamodelBuilder metamodelBuilder);
     public void AddAction(Action<IMetamodelBuilder> action);
-    public void Remove();
+    public void Remove(ISpecificationBuilder specification);
 }

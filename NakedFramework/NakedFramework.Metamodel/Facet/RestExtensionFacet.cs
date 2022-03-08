@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class RestExtensionFacet : FacetAbstract, IRestExtensionFacet {
     public RestExtensionFacet(string name, string value, ISpecification holder)
-        : base(typeof(IRestExtensionFacet), holder) {
+        : base(typeof(IRestExtensionFacet)) {
         Name = name;
         Value = value;
     }

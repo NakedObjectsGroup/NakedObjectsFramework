@@ -18,7 +18,7 @@ public sealed class ValueFacetFromSemanticProvider<T> : FacetAbstract, IValueFac
     private readonly IValueSemanticsProvider<T> semanticsProvider;
 
     public ValueFacetFromSemanticProvider(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder)
-        : base(typeof(IValueFacet), holder) =>
+        : base(typeof(IValueFacet)) =>
         this.semanticsProvider = semanticsProvider;
 
     public object Value(INakedObjectAdapter nakedObjectAdapter, string format = null) => semanticsProvider.Value(nakedObjectAdapter, format);

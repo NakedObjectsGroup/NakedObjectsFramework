@@ -16,7 +16,7 @@ public class TypeFacet : FacetAbstract, ITypeFacet {
     private static readonly Type Type = typeof(ITypeFacet);
 
     public TypeFacet(ISpecification holder, Type type)
-        : base(Type, holder) =>
+        : base(Type) =>
         TypeOrUnderlyingType = typeof(Enum).IsAssignableFrom(type) ? Enum.GetUnderlyingType(type) : type;
 
     public Type TypeOrUnderlyingType { get; }

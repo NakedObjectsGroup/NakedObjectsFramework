@@ -20,7 +20,7 @@ public sealed class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamF
     private readonly IFromStream fromStream;
 
     public FromStreamFacetUsingFromStream(IFromStream fromStream, ISpecification holder)
-        : base(typeof(IFromStreamFacet), holder) =>
+        : base(typeof(IFromStreamFacet)) =>
         this.fromStream = fromStream;
 
     #region IFromStreamFacet Members

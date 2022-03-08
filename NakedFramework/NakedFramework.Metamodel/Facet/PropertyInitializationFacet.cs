@@ -19,7 +19,7 @@ public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitia
     private readonly PropertyInfo property;
 
     public PropertyInitializationFacet(PropertyInfo property, ISpecification holder)
-        : base(typeof(IPropertyInitializationFacet), holder) =>
+        : base(typeof(IPropertyInitializationFacet)) =>
         this.property = property;
 
     #region IPropertyInitializationFacet Members

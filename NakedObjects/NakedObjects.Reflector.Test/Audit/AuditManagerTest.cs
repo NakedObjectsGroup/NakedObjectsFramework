@@ -98,9 +98,8 @@ public class AuditManagerTest {
 
         testFacet.Setup(n => n.FacetType).Returns(typeof(IActionInvocationFacet));
 
-        testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
-        var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+        var facet = manager.Decorate(testFacet.Object, testSpec.Object);
 
         Assert.IsInstanceOfType(facet, typeof(AuditActionInvocationFacet));
     }
@@ -126,9 +125,8 @@ public class AuditManagerTest {
 
         testFacet.Setup(n => n.FacetType).Returns(typeof(IUpdatedCallbackFacet));
 
-        testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
-        var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+        var facet = manager.Decorate(testFacet.Object, testSpec.Object);
 
         Assert.IsInstanceOfType(facet, typeof(AuditUpdatedFacet));
     }
@@ -154,9 +152,8 @@ public class AuditManagerTest {
 
         testFacet.Setup(n => n.FacetType).Returns(typeof(IPersistedCallbackFacet));
 
-        testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
-        var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+        var facet = manager.Decorate(testFacet.Object, testSpec.Object);
 
         Assert.IsInstanceOfType(facet, typeof(AuditPersistedFacet));
     }

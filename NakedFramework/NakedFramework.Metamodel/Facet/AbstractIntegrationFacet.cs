@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Spec;
 namespace NakedFramework.Metamodel.Facet;
 
 public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
-    protected internal AbstractIntegrationFacet(ISpecification holder) : base(Type, holder) { }
+    protected internal AbstractIntegrationFacet(ISpecification holder) : base(Type) { }
 
     private static Type Type => typeof(IIntegrationFacet);
 
@@ -28,9 +28,9 @@ public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFace
 
     public override bool CanNeverBeReplaced => true;
 
-    public void Remove() {
-        if (AllowRemove && Specification is ISpecificationBuilder builder) {
-            builder.RemoveFacet(this);
+    public void Remove(ISpecificationBuilder specification) {
+        if (AllowRemove) {
+            specification.RemoveFacet(this);
         }
     }
 }

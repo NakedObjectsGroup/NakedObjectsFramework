@@ -30,7 +30,7 @@ public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFace
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
     public ActionValidationFacet(MethodInfo method, ISpecification holder, ILogger<ActionValidationFacet> logger)
-        : base(typeof(IActionValidationFacet), holder) {
+        : base(typeof(IActionValidationFacet)) {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

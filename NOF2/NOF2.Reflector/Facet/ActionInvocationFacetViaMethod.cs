@@ -31,7 +31,7 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
     private readonly int paramCount;
 
     public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger)
-        : base(holder) {
+        : base() {
         this.logger = logger;
         ActionMethod = method;
         paramCount = method.GetParameters().Length;
