@@ -13,5 +13,5 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class SingleValueFacetAbstract : FacetAbstract, ISingleValueFacet {
     protected SingleValueFacetAbstract(Type facetType)
-        : base(facetType) { }
+        : base() { }
 }

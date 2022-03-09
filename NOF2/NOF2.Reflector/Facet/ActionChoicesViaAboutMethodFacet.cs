@@ -24,7 +24,7 @@ public sealed class ActionChoicesViaAboutMethodFacet : AbstractViaAboutMethodFac
     private readonly int index;
 
     public ActionChoicesViaAboutMethodFacet(MethodInfo aboutmethod, int index, ILogger<ActionChoicesViaAboutMethodFacet> logger)
-        : base(typeof(IActionChoicesFacet), aboutmethod, AboutHelpers.AboutType.Action, logger) =>
+        : base(aboutmethod, AboutHelpers.AboutType.Action, logger) =>
         this.index = index;
 
 

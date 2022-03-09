@@ -12,7 +12,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DateOnlyFacet : MarkerFacetAbstract, IDateOnlyFacet {
-    public DateOnlyFacet() : base(Type) { }
+    public DateOnlyFacet() : base() { }
 
     public static Type Type => typeof(IDateOnlyFacet);
 

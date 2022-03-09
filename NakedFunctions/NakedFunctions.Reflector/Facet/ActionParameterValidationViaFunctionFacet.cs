@@ -26,7 +26,7 @@ public sealed class ActionParameterValidationViaFunctionFacet : FacetAbstract, I
     private readonly Func<object, object[], object> methodDelegate;
 
     public ActionParameterValidationViaFunctionFacet(MethodInfo method, ILogger<ActionParameterValidationViaFunctionFacet> logger)
-        : base(typeof(IActionParameterValidationFacet)) {
+        : base() {
         this.method = method;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }

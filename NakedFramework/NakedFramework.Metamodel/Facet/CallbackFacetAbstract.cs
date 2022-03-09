@@ -17,8 +17,8 @@ namespace NakedFramework.Metamodel.Facet;
 /// </summary>
 [Serializable]
 public abstract class CallbackFacetAbstract : FacetAbstract, ICallbackFacet {
-    protected CallbackFacetAbstract(Type facetType)
-        : base(facetType) { }
+    protected CallbackFacetAbstract()
+        : base() { }
 
     #region ICallbackFacet Members
 

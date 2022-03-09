@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
     public MaskFacet(string value)
-        : base(typeof(IMaskFacet), value) { }
+        : base(value) { }
 
     public override Type FacetType => typeof(IMaskFacet);
 }

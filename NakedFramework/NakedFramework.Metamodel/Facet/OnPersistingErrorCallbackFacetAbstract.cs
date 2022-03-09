@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class OnPersistingErrorCallbackFacetAbstract : CallbackWithExceptionFacetAbstract, IOnPersistingErrorCallbackFacet {
     protected OnPersistingErrorCallbackFacetAbstract()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(IOnPersistingErrorCallbackFacet);
 

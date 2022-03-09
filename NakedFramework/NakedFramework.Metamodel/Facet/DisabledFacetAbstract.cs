@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDisabledFacet {
     protected DisabledFacetAbstract(WhenTo when)
-        : base(Type, when) { }
+        : base(when) { }
 
     public static Type Type => typeof(IDisabledFacet);
 

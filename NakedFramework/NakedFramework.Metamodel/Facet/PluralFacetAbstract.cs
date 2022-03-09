@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class PluralFacetAbstract : SingleStringValueFacetAbstract, IPluralFacet {
     protected PluralFacetAbstract(string stringValue)
-        : base(Type, stringValue) { }
+        : base(stringValue) { }
 
     public static Type Type => typeof(IPluralFacet);
 

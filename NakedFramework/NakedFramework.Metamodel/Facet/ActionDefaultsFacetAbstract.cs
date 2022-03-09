@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class ActionDefaultsFacetAbstract : FacetAbstract, IActionDefaultsFacet {
     protected ActionDefaultsFacetAbstract()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(IActionDefaultsFacet);
 

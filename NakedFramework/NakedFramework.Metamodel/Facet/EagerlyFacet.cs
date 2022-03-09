@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class EagerlyFacet : FacetAbstract, IEagerlyFacet {
     public EagerlyFacet(Do what)
-        : base(Type) =>
+        : base() =>
         What = what;
 
     public static Type Type => typeof(IEagerlyFacet);

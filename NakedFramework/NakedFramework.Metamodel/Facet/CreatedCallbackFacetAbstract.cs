@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class CreatedCallbackFacetAbstract : CallbackFacetAbstract, ICreatedCallbackFacet {
     protected CreatedCallbackFacetAbstract()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(ICreatedCallbackFacet);
 

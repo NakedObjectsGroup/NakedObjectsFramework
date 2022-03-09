@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
     private readonly Type toCreate;
 
-    public CreateNewFacet(Type toCreate) : base(Type) => this.toCreate = toCreate;
+    public CreateNewFacet(Type toCreate) : base() => this.toCreate = toCreate;
 
     public static Type Type => typeof(ICreateNewFacet);
 

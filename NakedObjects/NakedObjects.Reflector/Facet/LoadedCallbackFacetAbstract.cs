@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.Facet;
 [Serializable]
 public abstract class LoadedCallbackFacetAbstract : CallbackFacetAbstract, ILoadedCallbackFacet {
     protected LoadedCallbackFacetAbstract()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(ILoadedCallbackFacet);
 

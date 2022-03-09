@@ -20,7 +20,7 @@ public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet 
     private readonly PropertyInfo property;
 
     public CollectionResetFacet(PropertyInfo property)
-        : base(Type) =>
+        : base() =>
         this.property = property;
 
     public static Type Type => typeof(ICollectionResetFacet);

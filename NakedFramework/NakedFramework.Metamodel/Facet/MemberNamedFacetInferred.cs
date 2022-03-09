@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class MemberNamedFacetInferred : SingleStringValueFacetAbstract, IMemberNamedFacet {
     public MemberNamedFacetInferred(string value)
-        : base(typeof(IMemberNamedFacet), NameUtils.NaturalName(value)) { }
+        : base(NameUtils.NaturalName(value)) { }
 
     public override Type FacetType => typeof(IMemberNamedFacet);
 

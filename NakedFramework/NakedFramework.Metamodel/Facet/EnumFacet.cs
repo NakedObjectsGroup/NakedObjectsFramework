@@ -18,7 +18,7 @@ public sealed class EnumFacet : MarkerFacetAbstract, IEnumFacet {
     private readonly Type typeOfEnum;
 
     public EnumFacet(Type typeOfEnum)
-        : base(typeof(IEnumFacet)) =>
+        : base() =>
         this.typeOfEnum = typeOfEnum;
 
     public override Type FacetType => typeof(IEnumFacet);

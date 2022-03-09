@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
     public HiddenFacet(WhenTo when)
-        : base(typeof(IHiddenFacet), when) { }
+        : base(when) { }
 
     public override Type FacetType => typeof(IHiddenFacet);
 

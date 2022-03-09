@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
     private readonly List<ITypeSpecImmutable> objectContributees = new();
 
-    public DisplayAsPropertyFacet() : base(typeof(IDisplayAsPropertyFacet)) { }
+    public DisplayAsPropertyFacet() : base() { }
 
     public override Type FacetType => typeof(IDisplayAsPropertyFacet);
     public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);

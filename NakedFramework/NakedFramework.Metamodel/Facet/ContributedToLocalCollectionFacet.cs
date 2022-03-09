@@ -18,7 +18,7 @@ public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContribu
     private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
 
     public ContributedToLocalCollectionFacet()
-        : base(typeof(IContributedToLocalCollectionFacet)) { }
+        : base() { }
 
     public override Type FacetType => typeof(IContributedToLocalCollectionFacet);
 

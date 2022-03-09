@@ -17,7 +17,7 @@ public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
     private readonly PropertyInfo serverName;
 
     public RedirectedFacet(PropertyInfo serverName, PropertyInfo oid)
-        : base(Type) {
+        : base() {
         this.serverName = serverName;
         this.oid = oid;
     }

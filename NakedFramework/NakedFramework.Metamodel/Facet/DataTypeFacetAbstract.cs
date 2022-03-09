@@ -17,7 +17,7 @@ public abstract class DataTypeFacetAbstract : FacetAbstract, IDataTypeFacet {
     private readonly DataType dataType;
 
     private DataTypeFacetAbstract(DataType dataType, string customDataType)
-        : base(Type) {
+        : base() {
         this.dataType = dataType;
         this.customDataType = customDataType;
     }

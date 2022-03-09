@@ -16,7 +16,7 @@ public sealed class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDef
     private readonly IValueSemanticsProvider<T> defaultsProvider;
 
     public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser)
-        : base(typeof(IDefaultedFacet)) =>
+        : base() =>
         defaultsProvider = parser;
 
     public override Type FacetType => typeof(IDefaultedFacet);

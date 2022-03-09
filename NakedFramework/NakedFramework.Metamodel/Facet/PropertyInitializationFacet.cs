@@ -18,7 +18,7 @@ public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitia
     private readonly PropertyInfo property;
 
     public PropertyInitializationFacet(PropertyInfo property)
-        : base(typeof(IPropertyInitializationFacet)) =>
+        : base() =>
         this.property = property;
 
     public override Type FacetType => typeof(IPropertyInitializationFacet);

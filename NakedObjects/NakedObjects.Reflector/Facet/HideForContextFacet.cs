@@ -28,7 +28,7 @@ public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, I
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
     public HideForContextFacet(MethodInfo method, ILogger<HideForContextFacet> logger)
-        : base(typeof(IHideForContextFacet)) {
+        : base() {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

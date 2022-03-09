@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class DescribedAsFacetAbstract : SingleStringValueFacetAbstract, IDescribedAsFacet {
     protected DescribedAsFacetAbstract(string valueString)
-        : base(Type, valueString) { }
+        : base(valueString) { }
 
     public static Type Type => typeof(IDescribedAsFacet);
 

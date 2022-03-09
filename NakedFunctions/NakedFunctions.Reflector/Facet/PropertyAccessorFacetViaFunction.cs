@@ -21,7 +21,7 @@ public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyA
     private readonly MethodInfo method;
 
     public PropertyAccessorFacetViaFunction(MethodInfo method)
-        : base(typeof(IPropertyAccessorFacet)) =>
+        : base() =>
         this.method = method;
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);

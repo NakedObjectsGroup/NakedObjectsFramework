@@ -23,7 +23,7 @@ public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, I
     private readonly MethodInfo propertyMethod;
 
     public PropertyAccessorFacetViaContributedAction(MethodInfo propertyMethod, ILogger<PropertyAccessorFacetViaContributedAction> logger)
-        : base(typeof(IPropertyAccessorFacet)) {
+        : base() {
         this.propertyMethod = propertyMethod;
 
         PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);

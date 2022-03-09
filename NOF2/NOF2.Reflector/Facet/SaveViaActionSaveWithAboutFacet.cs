@@ -22,7 +22,7 @@ public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFace
     private readonly MethodInfo saveMethod;
 
     public SaveViaActionSaveWithAboutFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ILogger<SaveViaActionSaveWithAboutFacet> logger)
-        : base(Type, aboutMethod, AboutHelpers.AboutType.Action, logger) {
+        : base(aboutMethod, AboutHelpers.AboutType.Action, logger) {
         this.saveMethod = saveMethod;
         SaveDelegate = LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
     }

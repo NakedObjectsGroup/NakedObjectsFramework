@@ -19,7 +19,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
     protected MenuFacetAbstract(ISpecification holder)
-        : base(typeof(IMenuFacet)) {
+        : base() {
         Menu = null;
         Specification = holder;
     }

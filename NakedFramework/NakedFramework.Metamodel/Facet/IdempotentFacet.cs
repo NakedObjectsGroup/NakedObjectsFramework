@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class IdempotentFacet : MarkerFacetAbstract, IIdempotentFacet {
     public IdempotentFacet()
-        : base(typeof(IIdempotentFacet)) { }
+        : base() { }
 
     public override Type FacetType => typeof(IIdempotentFacet);
 }

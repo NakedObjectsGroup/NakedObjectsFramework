@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.Facet;
 [Serializable]
 public abstract class PersistingCallbackFacetAbstract : CallbackFacetAbstract, IPersistingCallbackFacet {
     protected PersistingCallbackFacetAbstract()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(IPersistingCallbackFacet);
 

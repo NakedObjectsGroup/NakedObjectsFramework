@@ -21,7 +21,7 @@ namespace NOF2.Reflector.Facet;
 [Serializable]
 public sealed class HideForContextViaAboutMethodFacet : AbstractViaAboutMethodFacet, IHideForContextFacet {
     public HideForContextViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<HideForContextViaAboutMethodFacet> logger)
-        : base(typeof(IHideForContextFacet), method, aboutType, logger) { }
+        : base(method, aboutType, logger) { }
 
     public override Type FacetType => typeof(IHideForContextFacet);
 

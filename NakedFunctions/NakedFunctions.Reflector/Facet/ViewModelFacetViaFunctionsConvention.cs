@@ -22,7 +22,7 @@ public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstrac
 
     public ViewModelFacetViaFunctionsConvention(MethodInfo deriveFunction,
                                                 MethodInfo populateFunction)
-        : base(Type) {
+        : base() {
         this.deriveFunction = deriveFunction;
         this.populateFunction = populateFunction;
     }

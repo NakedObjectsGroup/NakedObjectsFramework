@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvocationFacet {
     protected ActionInvocationFacetAbstract()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(IActionInvocationFacet);
 

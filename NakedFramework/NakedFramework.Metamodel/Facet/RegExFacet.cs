@@ -20,7 +20,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class RegExFacet : FacetAbstract, IRegExFacet {
     public RegExFacet(string validation, string format, bool caseSensitive, string message)
-        : base(typeof(IRegExFacet)) {
+        : base() {
         ValidationPattern = validation;
         Pattern = new Regex(validation, PatternFlags);
         FormatPattern = format;
@@ -29,7 +29,7 @@ public sealed class RegExFacet : FacetAbstract, IRegExFacet {
     }
 
     public RegExFacet(string validation, bool caseSensitive)
-        : base(typeof(IRegExFacet)) {
+        : base() {
         ValidationPattern = validation;
         Pattern = new Regex(validation, PatternFlags);
         IsCaseSensitive = caseSensitive;

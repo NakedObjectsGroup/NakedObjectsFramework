@@ -12,7 +12,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class EditPropertiesFacet : FacetAbstract, IEditPropertiesFacet {
-    public EditPropertiesFacet(string[] properties) : base(Type) => Properties = properties;
+    public EditPropertiesFacet(string[] properties) : base() => Properties = properties;
 
     public static Type Type => typeof(IEditPropertiesFacet);
 

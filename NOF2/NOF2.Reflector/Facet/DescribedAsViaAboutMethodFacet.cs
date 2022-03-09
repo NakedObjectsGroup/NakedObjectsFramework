@@ -19,7 +19,7 @@ namespace NOF2.Reflector.Facet;
 [Serializable]
 public sealed class DescribedAsViaAboutMethodFacet : AbstractViaAboutMethodFacet, IDescribedAsFacet {
     public DescribedAsViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<DescribedAsViaAboutMethodFacet> logger)
-        : base(typeof(IDescribedAsFacet), method, aboutType, logger) { }
+        : base(method, aboutType, logger) { }
 
     public override Type FacetType => typeof(IDescribedAsFacet);
 

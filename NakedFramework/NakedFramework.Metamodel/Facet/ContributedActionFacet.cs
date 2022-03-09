@@ -19,7 +19,7 @@ public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFa
     private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> objectContributees = new();
 
     public ContributedActionFacet()
-        : base(typeof(IContributedActionFacet)) { }
+        : base() { }
 
     public override Type FacetType => typeof(IContributedActionFacet);
 

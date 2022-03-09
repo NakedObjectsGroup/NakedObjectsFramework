@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class ValueFacet : FacetAbstract, IValueFacet {
     public ValueFacet()
-        : base(typeof(IValueFacet)) { }
+        : base() { }
 
     public override Type FacetType => typeof(IValueFacet);
 

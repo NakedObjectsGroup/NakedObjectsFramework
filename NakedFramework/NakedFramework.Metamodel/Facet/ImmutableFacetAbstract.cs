@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {
     protected ImmutableFacetAbstract(WhenTo when)
-        : base(Type, when) { }
+        : base(when) { }
 
     public static Type Type => typeof(IImmutableFacet);
 

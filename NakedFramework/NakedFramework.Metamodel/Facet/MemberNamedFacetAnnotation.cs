@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class MemberNamedFacetAnnotation : SingleStringValueFacetAbstract, IMemberNamedFacet {
     public MemberNamedFacetAnnotation(string value)
-        : base(typeof(IMemberNamedFacet), value) { }
+        : base(value) { }
 
     public override Type FacetType => typeof(IMemberNamedFacet);
 

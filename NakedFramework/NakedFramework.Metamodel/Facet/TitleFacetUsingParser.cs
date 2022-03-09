@@ -18,7 +18,7 @@ public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
     private readonly IValueSemanticsProvider<T> parser;
 
     public TitleFacetUsingParser(IValueSemanticsProvider<T> parser)
-        : base(typeof(ITitleFacet)) =>
+        : base() =>
         this.parser = parser;
 
     public override Type FacetType => typeof(ITitleFacet);

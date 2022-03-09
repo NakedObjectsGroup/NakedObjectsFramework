@@ -25,13 +25,13 @@ public sealed class MemberNamedViaAboutMethodFacet : AbstractViaAboutMethodFacet
     private readonly string inferredName;
 
     public MemberNamedViaAboutMethodFacet(MethodInfo method, AboutType aboutType, string inferredName, ILogger<MemberNamedViaAboutMethodFacet> logger)
-        : base(typeof(IMemberNamedFacet), method, aboutType, logger) {
+        : base(method, aboutType, logger) {
         this.inferredName = NameUtils.NaturalName(TrimActionPrefix(inferredName, aboutType, aboutCode));
         aboutCode = AboutTypeCodes.Name;
     }
 
     public MemberNamedViaAboutMethodFacet(MethodInfo method, AboutType aboutType, string[] inferredNames, int index, ILogger<MemberNamedViaAboutMethodFacet> logger)
-        : base(typeof(IMemberNamedFacet), method, aboutType, logger) {
+        : base(method, aboutType, logger) {
         inferredName = NameUtils.NaturalName(inferredNames[index]);
         aboutCode = AboutTypeCodes.Parameters;
         this.index = index;

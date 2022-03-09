@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class FacetAbstract : IFacet, IDeserializationCallback {
-    protected FacetAbstract(Type facetType) {
+    protected FacetAbstract() {
 
     }
 

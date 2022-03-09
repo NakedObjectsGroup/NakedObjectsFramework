@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.I18N;
 [Serializable]
 public sealed class MemberNamedFacetI18N : SingleStringValueFacetAbstract, IMemberNamedFacet {
     public MemberNamedFacetI18N(string valueString)
-        : base(typeof(IMemberNamedFacet), valueString) { }
+        : base(valueString) { }
 
     public override Type FacetType => typeof(IMemberNamedFacet);
 

@@ -17,7 +17,7 @@ public class TypeFacet : FacetAbstract, ITypeFacet {
     public override Type FacetType => Type;
 
     public TypeFacet(Type type)
-        : base(Type) =>
+        : base() =>
         TypeOrUnderlyingType = typeof(Enum).IsAssignableFrom(type) ? Enum.GetUnderlyingType(type) : type;
 
     public Type TypeOrUnderlyingType { get; }

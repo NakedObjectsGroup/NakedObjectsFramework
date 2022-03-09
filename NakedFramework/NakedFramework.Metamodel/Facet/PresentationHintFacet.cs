@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class PresentationHintFacet : SingleStringValueFacetAbstract, IPresentationHintFacet {
     public PresentationHintFacet(string value)
-        : base(typeof(IPresentationHintFacet), value) { }
+        : base(value) { }
 
     public override Type FacetType => typeof(IPresentationHintFacet);
 }

@@ -22,7 +22,7 @@ namespace NOF2.Reflector.Facet;
 [Serializable]
 public sealed class ActionValidateViaAboutMethodFacet : AbstractViaAboutMethodFacet, IActionValidationFacet {
     public ActionValidateViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger<ActionValidateViaAboutMethodFacet> logger)
-        : base(typeof(IPropertyValidateFacet), method, aboutType, logger) { }
+        : base(method, aboutType, logger) { }
 
     public override Type FacetType => typeof(IActionValidationFacet);
     public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);

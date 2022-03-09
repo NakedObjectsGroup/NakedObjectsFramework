@@ -14,8 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 public abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenValueFacet {
     private readonly WhenTo when;
 
-    protected SingleWhenValueFacetAbstract(Type facetType, WhenTo when)
-        : base(facetType) =>
+    protected SingleWhenValueFacetAbstract(WhenTo when)
+        : base() =>
         this.when = when;
 
     #region ISingleWhenValueFacet Members

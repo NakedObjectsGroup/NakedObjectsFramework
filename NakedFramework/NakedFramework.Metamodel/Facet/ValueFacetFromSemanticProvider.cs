@@ -17,7 +17,7 @@ public sealed class ValueFacetFromSemanticProvider<T> : FacetAbstract, IValueFac
     private readonly IValueSemanticsProvider<T> semanticsProvider;
 
     public ValueFacetFromSemanticProvider(IValueSemanticsProvider<T> semanticsProvider)
-        : base(typeof(IValueFacet)) =>
+        : base() =>
         this.semanticsProvider = semanticsProvider;
 
     public override Type FacetType => typeof(IValueFacet);

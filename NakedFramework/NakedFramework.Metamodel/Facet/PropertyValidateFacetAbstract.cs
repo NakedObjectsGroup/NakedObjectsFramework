@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class PropertyValidateFacetAbstract : FacetAbstract, IPropertyValidateFacet {
     protected PropertyValidateFacetAbstract()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(IPropertyValidateFacet);
 

@@ -22,7 +22,7 @@ public sealed class ActionDefaultsViaAboutMethodFacet : AbstractViaAboutMethodFa
     private readonly int index;
 
     public ActionDefaultsViaAboutMethodFacet(MethodInfo method, int index, ILogger<ActionDefaultsViaAboutMethodFacet> logger)
-        : base(typeof(IActionDefaultsFacet), method, AboutHelpers.AboutType.Action, logger) =>
+        : base(method, AboutHelpers.AboutType.Action, logger) =>
         this.index = index;
 
     public override Type FacetType => typeof(IActionDefaultsFacet);

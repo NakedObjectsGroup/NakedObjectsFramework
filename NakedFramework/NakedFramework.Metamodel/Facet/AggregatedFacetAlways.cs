@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class AggregatedFacetAlways : MarkerFacetAbstract, IAggregatedFacet {
     public AggregatedFacetAlways()
-        : base(typeof(IAggregatedFacet)) { }
+        : base() { }
 
     public override Type FacetType => typeof(IAggregatedFacet);
 }

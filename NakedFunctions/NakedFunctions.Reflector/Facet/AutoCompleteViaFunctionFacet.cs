@@ -29,7 +29,7 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
     private readonly Func<object, object[], object> methodDelegate;
 
     private AutoCompleteViaFunctionFacet()
-        : base(Type) { }
+        : base() { }
 
     public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod,
                                         int pageSize,

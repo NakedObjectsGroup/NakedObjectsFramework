@@ -14,7 +14,7 @@ namespace NOF2.Reflector.Facet;
 [Serializable]
 public sealed class StaticMethodFacet : MarkerFacetAbstract, IStaticFunctionFacet {
     public StaticMethodFacet()
-        : base(typeof(IStaticFunctionFacet)) { }
+        : base() { }
 
     public override Type FacetType => typeof(IStaticFunctionFacet);
 }

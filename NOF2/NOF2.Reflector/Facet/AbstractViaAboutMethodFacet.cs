@@ -20,7 +20,7 @@ using NOF2.Reflector.Component;
 namespace NOF2.Reflector.Facet;
 
 public abstract class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
-    protected AbstractViaAboutMethodFacet(Type facetType, MethodInfo method, AboutHelpers.AboutType aboutType, ILogger logger) : base(facetType) {
+    protected AbstractViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger logger) : base() {
         Method = method;
         AboutType = aboutType;
         MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

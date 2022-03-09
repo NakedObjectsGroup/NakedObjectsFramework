@@ -20,7 +20,7 @@ public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFuncti
     private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
     private readonly List<ITypeSpecImmutable> objectContributees = new();
 
-    public ContributedFunctionFacet(bool isContributedToObject) : base(typeof(IContributedFunctionFacet)) =>
+    public ContributedFunctionFacet(bool isContributedToObject) : base() =>
         IsContributedToObject = isContributedToObject;
 
     public override Type FacetType => typeof(IContributedFunctionFacet);

@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class ComplexTypeFacetAbstract : MarkerFacetAbstract, IComplexTypeFacet {
     protected ComplexTypeFacetAbstract()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(IComplexTypeFacet);
 

@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class SaveFacet : FacetAbstract, ISaveFacet {
     public SaveFacet()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(ISaveFacet);
 

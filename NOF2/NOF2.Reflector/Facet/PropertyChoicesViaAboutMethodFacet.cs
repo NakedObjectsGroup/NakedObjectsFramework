@@ -22,7 +22,7 @@ namespace NOF2.Reflector.Facet;
 [Serializable]
 public sealed class PropertyChoicesViaAboutMethodFacet : AbstractViaAboutMethodFacet, IPropertyChoicesFacet {
     public PropertyChoicesViaAboutMethodFacet(MethodInfo optionsMethod, ILogger<PropertyChoicesViaAboutMethodFacet> logger)
-        : base(typeof(IPropertyChoicesFacet), optionsMethod, AboutHelpers.AboutType.Field, logger) { }
+        : base(optionsMethod, AboutHelpers.AboutType.Field, logger) { }
 
     public override Type FacetType => typeof(IPropertyChoicesFacet);
 

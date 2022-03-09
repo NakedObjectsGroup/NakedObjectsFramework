@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class NotPersistedFacet : MarkerFacetAbstract, INotPersistedFacet {
     public NotPersistedFacet()
-        : base(typeof(INotPersistedFacet)) { }
+        : base() { }
 
     public override Type FacetType => typeof(INotPersistedFacet);
 }

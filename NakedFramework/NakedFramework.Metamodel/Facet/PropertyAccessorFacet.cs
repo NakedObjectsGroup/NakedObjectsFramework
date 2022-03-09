@@ -19,7 +19,7 @@ public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFace
     private readonly PropertyInfo propertyMethod;
 
     public PropertyAccessorFacet(PropertyInfo property)
-        : base(typeof(IPropertyAccessorFacet)) =>
+        : base() =>
         propertyMethod = property;
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);

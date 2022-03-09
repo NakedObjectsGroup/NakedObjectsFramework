@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
     protected MandatoryFacetAbstract()
-        : base(Type) { }
+        : base() { }
 
     public static Type Type => typeof(IMandatoryFacet);
 

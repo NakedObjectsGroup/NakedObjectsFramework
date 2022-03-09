@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
     public BoundedFacet()
-        : base(typeof(IBoundedFacet)) { }
+        : base() { }
 
     public override Type FacetType => typeof(IBoundedFacet);
 
