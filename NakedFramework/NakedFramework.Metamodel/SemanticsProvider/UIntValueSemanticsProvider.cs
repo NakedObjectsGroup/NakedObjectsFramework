@@ -20,15 +20,13 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const bool Immutable = true;
 
     public UIntValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    public static Type Type => typeof(IUnsignedIntegerValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(uint);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new UIntValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(IUnsignedIntegerValueFacet);
 
     protected override uint DoParse(string entry) {
         try {

@@ -19,15 +19,13 @@ public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstra
     private const bool Immutable = true;
 
     public BooleanValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    private static Type Type => typeof(IBooleanValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(bool);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new BooleanValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(IBooleanValueFacet);
 
     protected override bool DoParse(string entry) {
         if ("true".StartsWith(entry.ToLower())) {

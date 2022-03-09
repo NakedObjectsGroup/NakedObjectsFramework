@@ -14,11 +14,10 @@ namespace NakedFramework.Metamodel.Facet;
 public class TypeFacet : FacetAbstract, ITypeFacet {
     private static readonly Type Type = typeof(ITypeFacet);
 
-    public override Type FacetType => Type;
-
-    public TypeFacet(Type type)
-        : base() =>
+    public TypeFacet(Type type) =>
         TypeOrUnderlyingType = typeof(Enum).IsAssignableFrom(type) ? Enum.GetUnderlyingType(type) : type;
+
+    public override Type FacetType => Type;
 
     public Type TypeOrUnderlyingType { get; }
 }

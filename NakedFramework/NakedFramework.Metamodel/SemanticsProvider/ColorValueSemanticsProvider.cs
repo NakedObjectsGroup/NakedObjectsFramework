@@ -21,15 +21,13 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
     private static readonly Color DefaultValueConst = Color.Black;
 
     public ColorValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    public static Type Type => typeof(IColorValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(Color);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ColorValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(IColorValueFacet);
 
     protected override Color DoParse(string entry) {
         try {

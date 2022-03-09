@@ -21,21 +21,18 @@ namespace NOF2.Reflector.Facet;
 public sealed class SaveViaActionSaveFacet : FacetAbstract, ISaveFacet, IImperativeFacet {
     private readonly MethodInfo saveMethod;
 
-    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger)
-        : base() {
+    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger) {
         this.saveMethod = saveMethod;
         SaveDelegate = LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
     }
 
     public Func<object, object[], object> SaveDelegate { get; set; }
 
-    public static Type Type => typeof(ISaveFacet);
-
-    public override Type FacetType => Type;
-
     public MethodInfo GetMethod() => saveMethod;
 
     public Func<object, object[], object> GetMethodDelegate() => SaveDelegate;
+
+    public override Type FacetType => typeof(ISaveFacet);
 
     public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
         SaveDelegate.Invoke(saveMethod, nakedObject.GetDomainObject(), Array.Empty<object>());

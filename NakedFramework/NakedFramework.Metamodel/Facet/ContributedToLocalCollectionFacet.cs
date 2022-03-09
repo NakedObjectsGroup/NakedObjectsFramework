@@ -17,9 +17,6 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContributedToLocalCollectionFacet {
     private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
 
-    public ContributedToLocalCollectionFacet()
-        : base() { }
-
     public override Type FacetType => typeof(IContributedToLocalCollectionFacet);
 
     #region IContributedActionFacet Members

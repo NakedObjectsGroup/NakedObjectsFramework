@@ -17,8 +17,6 @@ public abstract class DescribedAsFacetAbstract : SingleStringValueFacetAbstract,
     protected DescribedAsFacetAbstract(string valueString)
         : base(valueString) { }
 
-    public static Type Type => typeof(IDescribedAsFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IDescribedAsFacet);
     public string Description(INakedObjectAdapter adapter, INakedFramework framework) => Value;
 }

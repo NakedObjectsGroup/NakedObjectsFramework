@@ -15,11 +15,7 @@ namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedParameterFacet {
-    public InjectedIContextParameterFacet() : base() { }
-
-    public static Type Type => typeof(IInjectedParameterFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IInjectedParameterFacet);
 
     #region IInjectedParameterFacet Members
 

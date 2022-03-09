@@ -13,9 +13,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PasswordFacet : MarkerFacetAbstract, IPasswordFacet {
-    public PasswordFacet()
-        : base() { }
-
     public override Type FacetType => typeof(IPasswordFacet);
 
     public DataType? DataType => System.ComponentModel.DataAnnotations.DataType.Password;

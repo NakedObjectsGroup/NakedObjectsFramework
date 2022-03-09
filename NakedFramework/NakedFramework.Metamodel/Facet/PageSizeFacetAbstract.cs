@@ -13,9 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class PageSizeFacetAbstract : SingleIntValueFacetAbstract, IPageSizeFacet {
     protected PageSizeFacetAbstract(int pageSize)
-        : base(Type, pageSize) { }
+        : base(typeof(IPageSizeFacet), pageSize) { }
 
-    public static Type Type => typeof(IPageSizeFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IPageSizeFacet);
 }

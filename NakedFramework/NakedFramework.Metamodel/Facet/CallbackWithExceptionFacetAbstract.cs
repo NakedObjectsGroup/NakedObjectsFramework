@@ -13,9 +13,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class CallbackWithExceptionFacetAbstract : FacetAbstract, ICallbackWithExceptionFacet {
-    protected CallbackWithExceptionFacetAbstract()
-        : base() { }
-
     #region ICallbackWithExceptionFacet Members
 
     public abstract string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception);

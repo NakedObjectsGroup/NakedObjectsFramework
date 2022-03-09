@@ -13,12 +13,7 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public abstract class DeletingCallbackFacetAbstract : CallbackFacetAbstract, IDeletingCallbackFacet {
-    protected DeletingCallbackFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(IDeletingCallbackFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IDeletingCallbackFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

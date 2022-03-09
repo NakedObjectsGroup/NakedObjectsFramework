@@ -20,18 +20,16 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
     private static readonly DateTime DefaultValueConst = new();
 
     public DateTimeValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
+        : base(Immutable, DefaultValueConst) { }
 
     // inject for testing 
     public static DateTime? TestDateTime { get; set; }
 
-    public static Type Type => typeof(IDateValueFacet);
-
-    public override Type FacetType => Type;
-
     public static Type AdaptedType => typeof(DateTime);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new DateTimeValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(IDateValueFacet);
 
     private DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => (DateTime?)nakedObjectAdapter?.Object ?? Now();
 

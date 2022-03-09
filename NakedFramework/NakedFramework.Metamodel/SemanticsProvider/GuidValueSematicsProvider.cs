@@ -19,15 +19,13 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private static readonly Guid DefaultValueConst = Guid.Empty;
 
     public GuidValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    public static Type Type => typeof(IGuidValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(Guid);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new GuidValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(IGuidValueFacet);
 
     protected override Guid DoParse(string entry) {
         try {

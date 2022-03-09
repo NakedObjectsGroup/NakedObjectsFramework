@@ -18,18 +18,15 @@ public sealed class AuditPersistedFacet : CallbackFacetAbstract, IPersistedCallb
     private readonly IAuditManager manager;
     private readonly IPersistedCallbackFacet underlyingFacet;
 
-    public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet, IAuditManager auditManager)
-        : base() {
+    public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet, IAuditManager auditManager) {
         this.underlyingFacet = underlyingFacet;
         manager = auditManager;
     }
-
-    public static Type Type => typeof(IPersistedCallbackFacet);
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         manager.Persisted(nakedObjectAdapter, framework);
         underlyingFacet.Invoke(nakedObjectAdapter, framework);
     }
 
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IPersistedCallbackFacet);
 }

@@ -18,11 +18,9 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
     protected MaxLengthFacetAbstract(int intValue)
-        : base(Type, intValue) { }
+        : base(typeof(IMaxLengthFacet), intValue) { }
 
-    public static Type Type => typeof(IMaxLengthFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IMaxLengthFacet);
 
     protected override string ToStringValues() => Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
 

@@ -17,9 +17,6 @@ namespace NakedFramework.Metamodel.Facet;
 /// </summary>
 [Serializable]
 public abstract class CallbackFacetAbstract : FacetAbstract, ICallbackFacet {
-    protected CallbackFacetAbstract()
-        : base() { }
-
     #region ICallbackFacet Members
 
     public abstract void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);

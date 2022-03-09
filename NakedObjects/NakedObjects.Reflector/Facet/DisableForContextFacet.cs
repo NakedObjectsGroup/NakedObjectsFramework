@@ -27,8 +27,7 @@ public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFa
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public DisableForContextFacet(MethodInfo method, ILogger<DisableForContextFacet> logger)
-        : base() {
+    public DisableForContextFacet(MethodInfo method, ILogger<DisableForContextFacet> logger) {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

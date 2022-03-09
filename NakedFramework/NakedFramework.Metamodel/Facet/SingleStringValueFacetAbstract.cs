@@ -14,8 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public abstract class SingleStringValueFacetAbstract : FacetAbstract, ISingleStringValueFacet {
     private readonly string valueString;
 
-    protected SingleStringValueFacetAbstract(string valueString)
-        : base() =>
+    protected SingleStringValueFacetAbstract(string valueString) =>
         this.valueString = valueString;
 
     #region ISingleStringValueFacet Members

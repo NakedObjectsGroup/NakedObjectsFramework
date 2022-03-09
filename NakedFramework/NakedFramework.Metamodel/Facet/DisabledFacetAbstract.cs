@@ -18,9 +18,7 @@ public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDis
     protected DisabledFacetAbstract(WhenTo when)
         : base(when) { }
 
-    public static Type Type => typeof(IDisabledFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IDisabledFacet);
 
     #region IDisabledFacet Members
 

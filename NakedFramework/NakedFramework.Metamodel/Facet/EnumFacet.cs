@@ -17,8 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class EnumFacet : MarkerFacetAbstract, IEnumFacet {
     private readonly Type typeOfEnum;
 
-    public EnumFacet(Type typeOfEnum)
-        : base() =>
+    public EnumFacet(Type typeOfEnum) =>
         this.typeOfEnum = typeOfEnum;
 
     public override Type FacetType => typeof(IEnumFacet);

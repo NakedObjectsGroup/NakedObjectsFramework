@@ -14,12 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
-    protected PropertySetterFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(IPropertySetterFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IPropertySetterFacet);
 
     #region IPropertySetterFacet Members
 

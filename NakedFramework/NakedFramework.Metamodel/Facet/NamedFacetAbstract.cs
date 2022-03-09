@@ -15,9 +15,7 @@ public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract {
     protected NamedFacetAbstract(string valueString)
         : base(valueString) { }
 
-    public static Type Type => typeof(INamedFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(INamedFacet);
 
     #region INamedFacet Members
 

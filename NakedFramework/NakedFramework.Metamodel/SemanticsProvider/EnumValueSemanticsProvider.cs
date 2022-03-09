@@ -18,13 +18,11 @@ public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstra
     private const bool Immutable = true;
 
     public EnumValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, GetDefault()) { }
-
-    public static Type Type => typeof(IEnumValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, GetDefault()) { }
 
     public static Type AdaptedType => typeof(T);
+
+    public override Type FacetType => typeof(IEnumValueFacet);
 
     #region IEnumValueFacet Members
 

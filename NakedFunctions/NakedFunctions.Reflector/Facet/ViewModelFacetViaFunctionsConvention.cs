@@ -21,15 +21,12 @@ public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstrac
     private readonly MethodInfo populateFunction;
 
     public ViewModelFacetViaFunctionsConvention(MethodInfo deriveFunction,
-                                                MethodInfo populateFunction)
-        : base() {
+                                                MethodInfo populateFunction) {
         this.deriveFunction = deriveFunction;
         this.populateFunction = populateFunction;
     }
 
-    private static Type Type => typeof(IViewModelFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IViewModelFacet);
 
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
                                     INakedFramework framework) =>

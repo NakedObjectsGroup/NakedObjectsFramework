@@ -21,17 +21,13 @@ public class RangeFacet : IRangeFacet, ISerializable {
         Min = min;
         Max = max;
         IsDateRange = isDateRange;
-        FacetType = Type;
     }
 
     public RangeFacet(SerializationInfo info, StreamingContext context) {
         Min = info.GetValue<IConvertible>("Min");
         Max = info.GetValue<IConvertible>("Max");
         IsDateRange = info.GetValue<bool>("IsDateRange");
-        FacetType = info.GetValue<Type>("facetType");
     }
-
-    public static Type Type => typeof(IRangeFacet);
 
     #region ISerializable Members
 
@@ -120,7 +116,7 @@ public class RangeFacet : IRangeFacet, ISerializable {
     /// </para>
     public virtual bool IsNoOp => false;
 
-    public Type FacetType { get; }
+    public Type FacetType => typeof(IRangeFacet);
 
     /// <summary>
     ///     Default implementation of this method that returns <c>true</c>, ie

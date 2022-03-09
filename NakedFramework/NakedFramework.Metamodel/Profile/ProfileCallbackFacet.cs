@@ -29,8 +29,7 @@ public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
     private readonly IProfileManager profileManager;
     private readonly ICallbackFacet underlyingFacet;
 
-    public ProfileCallbackFacet(ProfileEvent associatedEvent, ICallbackFacet underlyingFacet, IProfileManager profileManager) :
-        base() {
+    public ProfileCallbackFacet(ProfileEvent associatedEvent, ICallbackFacet underlyingFacet, IProfileManager profileManager) {
         this.associatedEvent = associatedEvent;
         this.underlyingFacet = underlyingFacet;
         this.profileManager = profileManager;

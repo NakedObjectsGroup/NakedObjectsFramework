@@ -34,8 +34,7 @@ public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet,
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public PropertyChoicesFacet(MethodInfo optionsMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, ILogger<PropertyChoicesFacet> logger)
-        : base() {
+    public PropertyChoicesFacet(MethodInfo optionsMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, ILogger<PropertyChoicesFacet> logger) {
         method = optionsMethod;
         this.logger = logger;
 

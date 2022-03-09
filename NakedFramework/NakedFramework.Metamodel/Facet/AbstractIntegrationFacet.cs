@@ -13,17 +13,15 @@ using NakedFramework.Architecture.Spec;
 namespace NakedFramework.Metamodel.Facet;
 
 public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
-    protected internal AbstractIntegrationFacet() : base() { }
-
-    private static Type Type => typeof(IIntegrationFacet);
-
-    public override Type FacetType => Type;
+    protected internal AbstractIntegrationFacet() { }
 
     // for testing so not on interface  
     public int ActionCount { get; protected set; } = 1;
 
     // also for testing to check ActionCount
     public static bool AllowRemove { get; set; } = true;
+
+    public override Type FacetType => typeof(IIntegrationFacet);
 
     public abstract void Execute(IMetamodelBuilder metamodelBuilder);
     public abstract void AddAction(Action<IMetamodelBuilder> action);

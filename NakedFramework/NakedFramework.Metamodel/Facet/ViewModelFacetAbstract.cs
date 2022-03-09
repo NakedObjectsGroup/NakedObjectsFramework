@@ -14,9 +14,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ViewModelFacetAbstract : FacetAbstract, IViewModelFacet {
-    protected ViewModelFacetAbstract()
-        : base() { }
-
     #region IViewModelFacet Members
 
     public abstract string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);

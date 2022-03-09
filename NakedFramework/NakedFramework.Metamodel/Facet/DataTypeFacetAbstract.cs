@@ -16,8 +16,7 @@ public abstract class DataTypeFacetAbstract : FacetAbstract, IDataTypeFacet {
     private readonly string customDataType;
     private readonly DataType dataType;
 
-    private DataTypeFacetAbstract(DataType dataType, string customDataType)
-        : base() {
+    private DataTypeFacetAbstract(DataType dataType, string customDataType) {
         this.dataType = dataType;
         this.customDataType = customDataType;
     }
@@ -28,9 +27,7 @@ public abstract class DataTypeFacetAbstract : FacetAbstract, IDataTypeFacet {
     protected DataTypeFacetAbstract(string customDataType)
         : this(System.ComponentModel.DataAnnotations.DataType.Custom, customDataType) { }
 
-    public static Type Type => typeof(IDataTypeFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IDataTypeFacet);
 
     #region IDataTypeFacet Members
 

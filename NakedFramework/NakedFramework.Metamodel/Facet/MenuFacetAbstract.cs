@@ -18,17 +18,16 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
-    protected MenuFacetAbstract(ISpecification holder)
-        : base() {
+    protected MenuFacetAbstract(ISpecification holder) {
         Menu = null;
         Specification = holder;
     }
 
-    public override Type FacetType => typeof(IMenuFacet);
-
     protected ITypeSpecImmutable Spec => (ITypeSpecImmutable)Specification;
 
     protected MenuImpl Menu { get; set; }
+
+    public override Type FacetType => typeof(IMenuFacet);
 
     protected static string GetMenuName(ITypeSpecImmutable spec) => spec is IServiceSpecImmutable ? spec.GetFacet<INamedFacet>().FriendlyName : Model.ActionsMenuName;
 

@@ -20,8 +20,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyAccessorFacet {
     private readonly MethodInfo method;
 
-    public PropertyAccessorFacetViaFunction(MethodInfo method)
-        : base() =>
+    public PropertyAccessorFacetViaFunction(MethodInfo method) =>
         this.method = method;
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);

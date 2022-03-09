@@ -12,8 +12,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class MarkerFlagFacetAbstract : FacetAbstract, IMarkerFlagFacet {
-    protected MarkerFlagFacetAbstract(Type facetType, bool flag)
-        : base() =>
+    protected MarkerFlagFacetAbstract(bool flag) =>
         Flag = flag;
 
     #region IMarkerFlagFacet Members

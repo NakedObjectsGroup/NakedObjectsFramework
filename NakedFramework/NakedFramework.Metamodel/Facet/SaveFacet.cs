@@ -14,12 +14,8 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class SaveFacet : FacetAbstract, ISaveFacet {
-    public SaveFacet()
-        : base() { }
+    public override Type FacetType => typeof(ISaveFacet);
 
-    public static Type Type => typeof(ISaveFacet);
-
-    public override Type FacetType => Type;
     public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
         framework.LifecycleManager.MakePersistent(nakedObject);
         return null;

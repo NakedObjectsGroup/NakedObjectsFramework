@@ -27,8 +27,7 @@ public sealed class ActionParameterValidation : FacetAbstract, IActionParameterV
 
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    public ActionParameterValidation(MethodInfo method, ILogger<ActionParameterValidation> logger)
-        : base() {
+    public ActionParameterValidation(MethodInfo method, ILogger<ActionParameterValidation> logger) {
         this.method = method;
         this.logger = logger;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);

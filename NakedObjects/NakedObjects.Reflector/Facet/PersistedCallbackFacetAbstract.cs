@@ -13,12 +13,7 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public abstract class PersistedCallbackFacetAbstract : CallbackFacetAbstract, IPersistedCallbackFacet {
-    protected PersistedCallbackFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(IPersistedCallbackFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IPersistedCallbackFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -18,15 +18,12 @@ public sealed class TypeOfFacetDefaultToType : FacetAbstract, ITypeOfFacet {
     private readonly IObjectSpecImmutable spec;
     private readonly Type type;
 
-    public TypeOfFacetDefaultToType(Type type, IObjectSpecImmutable spec)
-        : base() {
+    public TypeOfFacetDefaultToType(Type type, IObjectSpecImmutable spec) {
         this.type = type;
         this.spec = spec;
     }
 
-    public static Type Type => typeof(ITypeOfFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(ITypeOfFacet);
 
     #region ITypeOfFacet Members
 

@@ -18,9 +18,7 @@ public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IIm
     protected ImmutableFacetAbstract(WhenTo when)
         : base(when) { }
 
-    public static Type Type => typeof(IImmutableFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IImmutableFacet);
 
     /// <summary>
     ///     Hook method for subclasses to override

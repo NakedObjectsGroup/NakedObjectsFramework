@@ -14,12 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class TitleFacetAbstract : FacetAbstract, ITitleFacet {
-    protected TitleFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(ITitleFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(ITitleFacet);
 
     #region ITitleFacet Members
 

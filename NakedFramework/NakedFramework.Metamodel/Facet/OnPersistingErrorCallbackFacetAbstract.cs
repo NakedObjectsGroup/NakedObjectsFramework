@@ -12,12 +12,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class OnPersistingErrorCallbackFacetAbstract : CallbackWithExceptionFacetAbstract, IOnPersistingErrorCallbackFacet {
-    protected OnPersistingErrorCallbackFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(IOnPersistingErrorCallbackFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IOnPersistingErrorCallbackFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

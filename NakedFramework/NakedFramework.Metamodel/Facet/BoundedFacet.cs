@@ -15,9 +15,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
-    public BoundedFacet()
-        : base() { }
-
     public override Type FacetType => typeof(IBoundedFacet);
 
     public static string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;

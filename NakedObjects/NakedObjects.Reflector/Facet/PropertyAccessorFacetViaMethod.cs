@@ -21,18 +21,17 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class PropertyAccessorFacetViaMethod : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
     private readonly MethodInfo propertyMethod;
 
-    public PropertyAccessorFacetViaMethod(MethodInfo propertyMethod, ILogger<PropertyAccessorFacetViaMethod> logger)
-        : base() {
+    public PropertyAccessorFacetViaMethod(MethodInfo propertyMethod, ILogger<PropertyAccessorFacetViaMethod> logger) {
         this.propertyMethod = propertyMethod;
         PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
     }
-
-    public override Type FacetType => typeof(IPropertyAccessorFacet);
 
     private Func<object, object[], object> PropertyDelegate { get; set; }
     public MethodInfo GetMethod() => propertyMethod;
 
     public Func<object, object[], object> GetMethodDelegate() => PropertyDelegate;
+
+    public override Type FacetType => typeof(IPropertyAccessorFacet);
 
     #region IPropertyAccessorFacet Members
 

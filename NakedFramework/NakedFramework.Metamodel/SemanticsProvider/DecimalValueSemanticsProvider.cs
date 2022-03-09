@@ -20,15 +20,13 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
     private const bool Immutable = true;
 
     public DecimalValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    public static Type Type => typeof(IDecimalValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(decimal);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new DecimalValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(IDecimalValueFacet);
 
     protected override decimal DoParse(string entry) {
         try {

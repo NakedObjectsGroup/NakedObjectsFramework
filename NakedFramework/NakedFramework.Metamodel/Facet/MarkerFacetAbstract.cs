@@ -11,7 +11,4 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public abstract class MarkerFacetAbstract : FacetAbstract, IMarkerFacet {
-    protected MarkerFacetAbstract()
-        : base() { }
-}
+public abstract class MarkerFacetAbstract : FacetAbstract, IMarkerFacet { }

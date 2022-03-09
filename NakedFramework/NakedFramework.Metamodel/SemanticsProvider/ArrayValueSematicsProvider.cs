@@ -9,7 +9,6 @@ using System;
 using System.IO;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -19,14 +18,12 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
     private const T[] DefaultValueConst = null;
     private const bool Immutable = true;
 
-    public ArrayValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    public static Type Type => typeof(IArrayValueFacet<T>);
-
-    public override Type FacetType => Type;
+    public ArrayValueSemanticsProvider()
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(T[]);
+
+    public override Type FacetType => typeof(IArrayValueFacet<T>);
 
     #region IFromStream Members
 

@@ -19,15 +19,13 @@ public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const bool Immutable = true;
 
     public SbyteValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    public static Type Type => typeof(ISbyteValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(sbyte);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new SbyteValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(ISbyteValueFacet);
 
     protected override sbyte DoParse(string entry) {
         try {

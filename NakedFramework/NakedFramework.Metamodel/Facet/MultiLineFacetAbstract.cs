@@ -15,15 +15,12 @@ public abstract class MultiLineFacetAbstract : FacetAbstract, IMultiLineFacet {
     private readonly int numberOfLines;
     private readonly int width;
 
-    protected MultiLineFacetAbstract(int numberOfLines, int width)
-        : base() {
+    protected MultiLineFacetAbstract(int numberOfLines, int width) {
         this.numberOfLines = numberOfLines;
         this.width = width;
     }
 
-    public static Type Type => typeof(IMultiLineFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IMultiLineFacet);
 
     protected override string ToStringValues() => $"lines={numberOfLines}, width={width}";
 

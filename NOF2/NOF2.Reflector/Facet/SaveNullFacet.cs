@@ -18,13 +18,10 @@ namespace NOF2.Reflector.Facet;
 public sealed class SaveNullFacet : FacetAbstract, ISaveFacet {
     private readonly ILogger logger;
 
-    public SaveNullFacet(ILogger<SaveNullFacet> logger)
-        : base() =>
+    public SaveNullFacet(ILogger<SaveNullFacet> logger) =>
         this.logger = logger;
 
-    public static Type Type => typeof(ISaveFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(ISaveFacet);
 
     public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
         var msg = $"Attempt to save an object without an ActionSave: {nakedObject.Spec.FullName}";

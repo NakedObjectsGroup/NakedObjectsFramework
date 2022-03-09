@@ -15,8 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
     private readonly IValueSemanticsProvider<T> defaultsProvider;
 
-    public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser)
-        : base() =>
+    public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser) =>
         defaultsProvider = parser;
 
     public override Type FacetType => typeof(IDefaultedFacet);

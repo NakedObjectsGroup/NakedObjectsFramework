@@ -13,12 +13,7 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public abstract class UpdatingCallbackFacetAbstract : CallbackFacetAbstract, IUpdatingCallbackFacet {
-    protected UpdatingCallbackFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(IUpdatingCallbackFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IUpdatingCallbackFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

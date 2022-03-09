@@ -28,25 +28,21 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
     private readonly MethodInfo method;
     private readonly Func<object, object[], object> methodDelegate;
 
-    private AutoCompleteViaFunctionFacet()
-        : base() { }
 
     public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod,
                                         int pageSize,
                                         int minLength,
                                         ILogger<AutoCompleteViaFunctionFacet> logger)
-        : this() {
+         {
         method = autoCompleteMethod;
         PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
         MinLength = minLength;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    public static Type Type => typeof(IAutoCompleteFacet);
-
-    public override Type FacetType => Type;
-
     public int PageSize { get; }
+
+    public override Type FacetType => typeof(IAutoCompleteFacet);
 
     protected override string ToStringValues() => $"method={method}";
 

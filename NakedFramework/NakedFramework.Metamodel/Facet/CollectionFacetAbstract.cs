@@ -16,15 +16,14 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
-    protected CollectionFacetAbstract()
-        : base() =>
+    protected CollectionFacetAbstract() =>
         IsASet = false;
-
-    public override Type FacetType => typeof(ICollectionFacet);
 
     protected CollectionFacetAbstract(bool isASet)
         : this() =>
         IsASet = isASet;
+
+    public override Type FacetType => typeof(ICollectionFacet);
 
     protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {
         var m = GetType().GetMethod(name);

@@ -20,15 +20,13 @@ public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const bool Immutable = true;
 
     public ShortValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    public static Type Type => typeof(IShortValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(short);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ShortValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(IShortValueFacet);
 
     protected override short DoParse(string entry) {
         try {

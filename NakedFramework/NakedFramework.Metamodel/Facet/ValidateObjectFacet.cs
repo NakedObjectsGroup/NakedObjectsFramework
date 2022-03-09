@@ -23,17 +23,14 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
     private readonly ILogger<ValidateObjectFacet> logger;
 
-    public ValidateObjectFacet(IList<NakedObjectValidationMethod> validateMethods, ILogger<ValidateObjectFacet> logger)
-        : base() {
+    public ValidateObjectFacet(IList<NakedObjectValidationMethod> validateMethods, ILogger<ValidateObjectFacet> logger) {
         this.logger = logger;
         ValidateMethods = validateMethods;
     }
 
-    public static Type Type => typeof(IValidateObjectFacet);
-
-    public override Type FacetType => Type;
-
     private IEnumerable<NakedObjectValidationMethod> ValidateMethods { get; set; }
+
+    public override Type FacetType => typeof(IValidateObjectFacet);
 
     private void LogNoMatch(NakedObjectValidationMethod validator, string actual) {
         var expects = validator.ParameterNames.Aggregate((s, t) => $"{s} {t}");

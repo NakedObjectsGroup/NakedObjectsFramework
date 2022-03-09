@@ -19,8 +19,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class RegExFacet : FacetAbstract, IRegExFacet {
-    public RegExFacet(string validation, string format, bool caseSensitive, string message)
-        : base() {
+    public RegExFacet(string validation, string format, bool caseSensitive, string message) {
         ValidationPattern = validation;
         Pattern = new Regex(validation, PatternFlags);
         FormatPattern = format;
@@ -28,14 +27,11 @@ public sealed class RegExFacet : FacetAbstract, IRegExFacet {
         FailureMessage = message;
     }
 
-    public RegExFacet(string validation, bool caseSensitive)
-        : base() {
+    public RegExFacet(string validation, bool caseSensitive) {
         ValidationPattern = validation;
         Pattern = new Regex(validation, PatternFlags);
         IsCaseSensitive = caseSensitive;
     }
-
-    public override Type FacetType => typeof(IRegExFacet);
 
     private RegexOptions PatternFlags => !IsCaseSensitive ? RegexOptions.IgnoreCase : RegexOptions.None;
 
@@ -44,6 +40,8 @@ public sealed class RegExFacet : FacetAbstract, IRegExFacet {
     private string FormatPattern { get; }
 
     internal bool IsCaseSensitive { get; }
+
+    public override Type FacetType => typeof(IRegExFacet);
 
     protected override string ToStringValues() => Pattern.ToString();
 

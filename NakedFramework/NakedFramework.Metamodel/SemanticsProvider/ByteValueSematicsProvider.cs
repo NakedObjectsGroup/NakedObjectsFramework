@@ -19,15 +19,13 @@ public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const bool Immutable = true;
 
     public ByteValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    public static Type Type => typeof(IByteValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(byte);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ByteValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(IByteValueFacet);
 
     protected override byte DoParse(string entry) {
         try {

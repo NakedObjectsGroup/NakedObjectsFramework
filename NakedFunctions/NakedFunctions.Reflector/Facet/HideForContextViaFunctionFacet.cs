@@ -26,7 +26,7 @@ public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForCont
     private readonly MethodInfo method;
     private readonly Func<object, object[], object> methodDelegate;
 
-    public HideForContextViaFunctionFacet(MethodInfo method, ILogger<HideForContextViaFunctionFacet> logger) : base() {
+    public HideForContextViaFunctionFacet(MethodInfo method, ILogger<HideForContextViaFunctionFacet> logger) {
         this.method = method;
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }

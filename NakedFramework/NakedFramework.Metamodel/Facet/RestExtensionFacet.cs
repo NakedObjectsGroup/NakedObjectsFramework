@@ -12,8 +12,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class RestExtensionFacet : FacetAbstract, IRestExtensionFacet {
-    public RestExtensionFacet(string name, string value)
-        : base() {
+    public RestExtensionFacet(string name, string value) {
         Name = name;
         Value = value;
     }

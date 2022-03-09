@@ -13,14 +13,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
-    public ElementTypeFacet(Type type, IObjectSpecImmutable spec) : base() {
+    public ElementTypeFacet(Type type, IObjectSpecImmutable spec) {
         Value = type;
         ValueSpec = spec;
     }
 
-    public static Type Type => typeof(IElementTypeFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IElementTypeFacet);
 
     #region IElementTypeFacet Members
 

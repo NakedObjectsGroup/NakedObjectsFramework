@@ -15,12 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
-    protected MandatoryFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(IMandatoryFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IMandatoryFacet);
 
     #region IMandatoryFacet Members
 

@@ -20,15 +20,13 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const bool Immutable = true;
 
     public CharValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, DefaultValueConst) { }
-
-    public static Type Type => typeof(ICharValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(char);
 
     public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new CharValueSemanticsProvider(o));
+
+    public override Type FacetType => typeof(ICharValueFacet);
 
     protected override char DoParse(string entry) {
         try {

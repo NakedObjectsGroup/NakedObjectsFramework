@@ -20,11 +20,7 @@ public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const bool Immutable = true;
 
     public ImageValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Type, AdaptedType, Immutable, null) { }
-
-    private static Type Type => typeof(IImageValueFacet);
-
-    public override Type FacetType => Type;
+        : base(Immutable, null) { }
 
     public static Type AdaptedType => typeof(Image);
 
@@ -35,6 +31,8 @@ public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract
     public object ParseFromStream(Stream stream, string mimeType = null, string name = null) => new Image(stream, name, mimeType);
 
     #endregion
+
+    public override Type FacetType => typeof(IImageValueFacet);
 
     protected override Image DoParse(string entry) => throw new NakedObjectSystemException($"Image cannot parse: {entry}");
 

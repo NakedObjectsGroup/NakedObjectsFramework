@@ -16,14 +16,8 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 
 [Serializable]
 public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T> {
-    private readonly Type adaptedType;
-
-    protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-                                             Type adaptedType,
-                                             bool immutable,
-                                             T defaultValue)
-        : base() {
-        this.adaptedType = adaptedType;
+    protected ValueSemanticsProviderAbstract(bool immutable,
+                                             T defaultValue) {
         IsImmutable = immutable;
         DefaultValue = defaultValue;
     }

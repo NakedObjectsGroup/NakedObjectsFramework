@@ -17,12 +17,7 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ViewModelFacetConvention : ViewModelFacetAbstract {
-    public ViewModelFacetConvention()
-        : base() { }
-
-    private static Type Type => typeof(IViewModelFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IViewModelFacet);
 
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 

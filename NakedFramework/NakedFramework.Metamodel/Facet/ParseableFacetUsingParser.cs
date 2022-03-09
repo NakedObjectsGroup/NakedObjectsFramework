@@ -17,8 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
     private readonly IValueSemanticsProvider<T> parser;
 
-    public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser)
-        : base() =>
+    public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser) =>
         this.parser = parser;
 
     public override Type FacetType => typeof(IParseableFacet);

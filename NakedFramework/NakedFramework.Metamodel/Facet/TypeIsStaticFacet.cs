@@ -13,9 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class TypeIsStaticFacet : MarkerFlagFacetAbstract, ITypeIsStaticFacet {
     public TypeIsStaticFacet(bool flag)
-        : base(Type, flag) { }
+        : base(flag) { }
 
-    public static Type Type => typeof(ITypeIsStaticFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(ITypeIsStaticFacet);
 }

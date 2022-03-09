@@ -21,12 +21,10 @@ public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSema
     private T valueHolderInstance;
 
     public ValueHolderWrappingValueSemanticsProvider()
-        : base(Type, AdaptedType, Immutable, defaultValueConst) =>
+        : base(Immutable, defaultValueConst) =>
         valueHolderInstance = new T();
 
-    public static Type Type => typeof(IValueSemanticsProvider);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IValueSemanticsProvider);
 
     public static Type AdaptedType => typeof(T);
 

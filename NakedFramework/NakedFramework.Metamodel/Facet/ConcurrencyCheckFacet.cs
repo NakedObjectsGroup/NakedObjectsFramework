@@ -12,10 +12,5 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyCheckFacet {
-    public ConcurrencyCheckFacet()
-        : base() { }
-
-    public static Type Type => typeof(IConcurrencyCheckFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IConcurrencyCheckFacet);
 }

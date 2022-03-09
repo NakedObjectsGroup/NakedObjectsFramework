@@ -15,8 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TableViewFacet : FacetAbstract, ITableViewFacet {
-    public TableViewFacet(bool title, string[] columns)
-        : base() {
+    public TableViewFacet(bool title, string[] columns) {
         Title = title;
         Columns = columns;
     }

@@ -16,15 +16,12 @@ public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
     private readonly PropertyInfo oid;
     private readonly PropertyInfo serverName;
 
-    public RedirectedFacet(PropertyInfo serverName, PropertyInfo oid)
-        : base() {
+    public RedirectedFacet(PropertyInfo serverName, PropertyInfo oid) {
         this.serverName = serverName;
         this.oid = oid;
     }
 
-    private static Type Type => typeof(IRedirectedFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IRedirectedFacet);
     public (string serverName, string oid)? GetRedirection(object target) => (ServerName(target), Oid(target));
 
     private string Oid(object target) => (string)oid.GetValue(target, null);

@@ -18,8 +18,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet {
     private readonly PropertyInfo propertyMethod;
 
-    public PropertyAccessorFacet(PropertyInfo property)
-        : base() =>
+    public PropertyAccessorFacet(PropertyInfo property) =>
         propertyMethod = property;
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);

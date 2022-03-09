@@ -13,12 +13,7 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public abstract class LoadingCallbackFacetAbstract : CallbackFacetAbstract, ILoadingCallbackFacet {
-    protected LoadingCallbackFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(ILoadingCallbackFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(ILoadingCallbackFacet);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

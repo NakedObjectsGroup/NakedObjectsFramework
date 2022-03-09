@@ -19,13 +19,10 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet {
     private readonly PropertyInfo property;
 
-    public CollectionResetFacet(PropertyInfo property)
-        : base() =>
+    public CollectionResetFacet(PropertyInfo property) =>
         this.property = property;
 
-    public static Type Type => typeof(ICollectionResetFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(ICollectionResetFacet);
 
     #region ICollectionResetFacet Members
 

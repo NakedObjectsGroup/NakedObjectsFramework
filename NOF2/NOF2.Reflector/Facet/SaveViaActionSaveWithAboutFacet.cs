@@ -29,9 +29,7 @@ public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFace
 
     public Func<object, object[], object> SaveDelegate { get; set; }
 
-    public static Type Type => typeof(ISaveFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(ISaveFacet);
 
     public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
         var msg = Validate(nakedObject, framework);

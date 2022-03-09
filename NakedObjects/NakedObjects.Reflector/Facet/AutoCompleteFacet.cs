@@ -28,8 +28,7 @@ public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImpe
     private readonly MethodInfo method;
     [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-    private AutoCompleteFacet()
-        : base() { }
+    private AutoCompleteFacet() { }
 
     public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ILogger<AutoCompleteFacet> logger)
         : this() {
@@ -40,11 +39,9 @@ public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImpe
         methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
-    public static Type Type => typeof(IAutoCompleteFacet);
-
-    public override Type FacetType => Type;
-
     public int PageSize { get; }
+
+    public override Type FacetType => typeof(IAutoCompleteFacet);
 
     protected override string ToStringValues() => $"method={method}";
 

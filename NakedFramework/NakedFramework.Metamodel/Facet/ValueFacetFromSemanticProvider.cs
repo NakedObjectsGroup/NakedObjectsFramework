@@ -16,8 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ValueFacetFromSemanticProvider<T> : FacetAbstract, IValueFacet {
     private readonly IValueSemanticsProvider<T> semanticsProvider;
 
-    public ValueFacetFromSemanticProvider(IValueSemanticsProvider<T> semanticsProvider)
-        : base() =>
+    public ValueFacetFromSemanticProvider(IValueSemanticsProvider<T> semanticsProvider) =>
         this.semanticsProvider = semanticsProvider;
 
     public override Type FacetType => typeof(IValueFacet);

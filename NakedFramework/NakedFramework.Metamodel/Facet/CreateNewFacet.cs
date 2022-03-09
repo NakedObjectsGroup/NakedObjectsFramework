@@ -18,11 +18,9 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
     private readonly Type toCreate;
 
-    public CreateNewFacet(Type toCreate) : base() => this.toCreate = toCreate;
+    public CreateNewFacet(Type toCreate) => this.toCreate = toCreate;
 
-    public static Type Type => typeof(ICreateNewFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(ICreateNewFacet);
 
     public string[] OrderedProperties(INakedObjectAdapter adapter, INakedFramework framework) {
         if (framework.MetamodelManager.GetSpecification(toCreate) is IObjectSpec spec) {

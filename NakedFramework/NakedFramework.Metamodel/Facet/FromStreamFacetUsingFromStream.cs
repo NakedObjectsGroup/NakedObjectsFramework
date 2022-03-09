@@ -18,12 +18,10 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
     private readonly IFromStream fromStream;
 
-    public FromStreamFacetUsingFromStream(IFromStream fromStream)
-        : base() =>
+    public FromStreamFacetUsingFromStream(IFromStream fromStream) =>
         this.fromStream = fromStream;
 
     public override Type FacetType => typeof(IFromStreamFacet);
-
 
     #region IFromStreamFacet Members
 

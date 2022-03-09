@@ -14,12 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class DisableForSessionFacetAbstract : FacetAbstract, IDisableForSessionFacet {
-    protected DisableForSessionFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(IDisableForSessionFacet);
-
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IDisableForSessionFacet);
 
     #region IDisableForSessionFacet Members
 

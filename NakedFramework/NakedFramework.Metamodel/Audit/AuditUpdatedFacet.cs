@@ -18,18 +18,15 @@ public sealed class AuditUpdatedFacet : CallbackFacetAbstract, IUpdatedCallbackF
     private readonly IAuditManager manager;
     private readonly IUpdatedCallbackFacet underlyingFacet;
 
-    public AuditUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IAuditManager auditManager)
-        : base() {
+    public AuditUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IAuditManager auditManager) {
         this.underlyingFacet = underlyingFacet;
         manager = auditManager;
     }
-
-    public static Type Type => typeof(IUpdatedCallbackFacet);
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         manager.Updated(nakedObjectAdapter, framework);
         underlyingFacet.Invoke(nakedObjectAdapter, framework);
     }
 
-    public override Type FacetType => Type;
+    public override Type FacetType => typeof(IUpdatedCallbackFacet);
 }

@@ -16,12 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvocationFacet {
-    protected ActionInvocationFacetAbstract()
-        : base() { }
-
-    public static Type Type => typeof(IActionInvocationFacet);
-
-    public override Type FacetType => Type; 
+    public override Type FacetType => typeof(IActionInvocationFacet);
 
     #region IActionInvocationFacet Members
 

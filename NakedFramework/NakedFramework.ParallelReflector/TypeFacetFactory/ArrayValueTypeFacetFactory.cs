@@ -25,7 +25,7 @@ public sealed class ArrayValueTypeFacetFactory<T> : ValueUsingValueSemanticsProv
         }
 
         var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(ArrayValueSemanticsProvider<T>.AdaptedType, metamodel);
-        new ArrayValueSemanticsProvider<T>(oSpec).AddValueFacets(specification);
+        new ArrayValueSemanticsProvider<T>().AddValueFacets(specification);
         return mm;
     }
 }

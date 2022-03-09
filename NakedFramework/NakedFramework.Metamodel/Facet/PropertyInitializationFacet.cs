@@ -17,8 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet {
     private readonly PropertyInfo property;
 
-    public PropertyInitializationFacet(PropertyInfo property)
-        : base() =>
+    public PropertyInitializationFacet(PropertyInfo property) =>
         this.property = property;
 
     public override Type FacetType => typeof(IPropertyInitializationFacet);

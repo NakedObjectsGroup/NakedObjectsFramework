@@ -12,7 +12,5 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class NullableFacetAlways : FacetAbstract, INullableFacet {
-    public NullableFacetAlways() : base() { }
-
     public override Type FacetType => typeof(INullableFacet);
 }
