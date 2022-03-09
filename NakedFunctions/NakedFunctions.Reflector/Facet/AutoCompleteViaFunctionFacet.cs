@@ -28,12 +28,10 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
     private readonly MethodInfo method;
     private readonly Func<object, object[], object> methodDelegate;
 
-
     public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod,
                                         int pageSize,
                                         int minLength,
-                                        ILogger<AutoCompleteViaFunctionFacet> logger)
-         {
+                                        ILogger<AutoCompleteViaFunctionFacet> logger) {
         method = autoCompleteMethod;
         PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
         MinLength = minLength;
