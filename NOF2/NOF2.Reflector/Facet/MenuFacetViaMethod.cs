@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NOF2.Menu;
 using NOF2.Reflector.Helpers;
@@ -25,7 +26,7 @@ public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
 
     public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) {
         this.method = method;
-        MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        MethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     private Func<object, object[], object> MethodDelegate { get; set; }

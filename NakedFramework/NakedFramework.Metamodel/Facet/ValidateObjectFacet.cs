@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -49,7 +50,7 @@ public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
         public NakedObjectValidationMethod(MethodInfo method, ILogger<NakedObjectValidationMethod> logger) {
             this.method = method;
             this.logger = logger;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+            methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         public string Name => method.Name;
@@ -59,7 +60,7 @@ public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
         public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) => methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     #endregion

@@ -44,6 +44,4 @@ public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFac
             InvokeUtils.InvocationException($"Exception executing {property}", e);
         }
     }
-
-    protected override string ToStringValues() => $"property={property}";
 }

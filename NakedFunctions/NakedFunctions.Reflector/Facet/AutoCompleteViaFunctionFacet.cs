@@ -17,6 +17,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Utils;
 
@@ -35,14 +36,12 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
         method = autoCompleteMethod;
         PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
         MinLength = minLength;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public int PageSize { get; }
 
     public override Type FacetType => typeof(IAutoCompleteFacet);
-
-    protected override string ToStringValues() => $"method={method}";
 
     [OnDeserialized]
     private static void OnDeserialized(StreamingContext context) { }

@@ -28,8 +28,6 @@ public sealed class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, 
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => loadedDelegate(nakedObjectAdapter.GetDomainObject());
 
-    protected override string ToStringValues() => $"method={method}";
-
     [OnDeserialized]
     private void OnDeserialized(StreamingContext context) => loadedDelegate = DelegateUtils.CreateCallbackDelegate(method);
 

@@ -15,8 +15,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MenuFacetDefault : MenuFacetAbstract {
-    public MenuFacetDefault() { }
-
     //Creates a menu based on the object's actions and their specified ordering
     //For backwards compatibility of UI only, it gives the menu an Id of the type name
     public override void CreateMenu(IMetamodelBuilder metamodel, ITypeSpecImmutable spec) {

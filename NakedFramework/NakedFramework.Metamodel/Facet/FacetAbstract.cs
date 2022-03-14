@@ -7,9 +7,7 @@
 
 using System;
 using System.Runtime.Serialization;
-using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Interactions;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -22,54 +20,6 @@ public abstract class FacetAbstract : IFacet, IDeserializationCallback {
     }
 
     #endregion
-
-    protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair, ILogger logger) {
-        var (delFunc, warning) = pair;
-        if (delFunc is null && !string.IsNullOrWhiteSpace(warning)) {
-            logger.LogInformation(warning);
-        }
-
-        return delFunc;
-    }
-
-    public override string ToString() {
-        var details = "";
-        if (this is IValidatingInteractionAdvisor) {
-            details += "Validating";
-        }
-
-        if (this is IDisablingInteractionAdvisor) {
-            details += $"{(details.Length > 0 ? ";" : "")}Disabling";
-        }
-
-        if (this is IHidingInteractionAdvisor) {
-            details += $"{(details.Length > 0 ? ";" : "")}Hiding";
-        }
-
-        if (!string.IsNullOrEmpty(details)) {
-            details = $"interaction={details},";
-        }
-
-        if (GetType() != FacetType) {
-            var sFacetType = FacetType.FullName;
-            details += $"type={sFacetType[(sFacetType.LastIndexOf('.') + 1)..]}";
-        }
-
-        var stringValues = ToStringValues();
-        if (!string.IsNullOrEmpty(stringValues)) {
-            details += ",";
-        }
-
-        var typeName = GetType().FullName;
-        var last = typeName.IndexOf('`');
-        if (last == -1) {
-            last = typeName.Length - 1;
-        }
-
-        return $"{typeName[(typeName.LastIndexOf('.', last) + 1)..]}[{details}{stringValues}]";
-    }
-
-    protected virtual string ToStringValues() => "";
 
     #region IFacet Members
 

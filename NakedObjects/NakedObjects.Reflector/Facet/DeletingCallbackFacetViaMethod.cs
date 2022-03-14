@@ -28,8 +28,6 @@ public sealed class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstra
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => deletingDelegate(nakedObjectAdapter.GetDomainObject());
 
-    protected override string ToStringValues() => $"method={method}";
-
     [OnDeserialized]
     private void OnDeserialized(StreamingContext context) => deletingDelegate = DelegateUtils.CreateCallbackDelegate(method);
 

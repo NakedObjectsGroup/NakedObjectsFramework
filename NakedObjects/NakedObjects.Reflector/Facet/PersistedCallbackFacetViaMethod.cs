@@ -28,8 +28,6 @@ public sealed class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbst
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => persistedDelegate(nakedObjectAdapter.GetDomainObject());
 
-    protected override string ToStringValues() => $"method={method}";
-
     [OnDeserialized]
     private void OnDeserialized(StreamingContext context) => persistedDelegate = DelegateUtils.CreateCallbackDelegate(method);
 

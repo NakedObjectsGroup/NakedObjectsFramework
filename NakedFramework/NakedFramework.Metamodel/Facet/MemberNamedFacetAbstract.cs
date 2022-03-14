@@ -7,27 +7,19 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class TypeOfFacetDefaultToType : TypeOfFacetInferredAbstract, ITypeOfFacet {
-    private readonly IObjectSpecImmutable spec;
-    private readonly Type type;
+public abstract class MemberNamedFacetAbstract : SingleStringValueFacetAbstract, IMemberNamedFacet {
+    protected MemberNamedFacetAbstract(string value)
+        : base(value) { }
 
-    public TypeOfFacetDefaultToType(Type type, IObjectSpecImmutable spec) {
-        this.type = type;
-        this.spec = spec;
-    }
+    public override Type FacetType => typeof(IMemberNamedFacet);
 
-    #region ITypeOfFacet Members
-
-    public override Type GetValue(INakedObjectAdapter collection) => type;
-
-    public override IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => spec;
-
-    #endregion
+    // Might be set from annotation or from display name on menu
+    public virtual string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
+    public virtual string FriendlyName() => Value;
 }

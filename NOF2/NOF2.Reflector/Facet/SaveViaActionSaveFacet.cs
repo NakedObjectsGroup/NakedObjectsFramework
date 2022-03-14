@@ -12,18 +12,18 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class SaveViaActionSaveFacet : FacetAbstract, ISaveFacet, IImperativeFacet {
+public sealed class SaveViaActionSaveFacet : SaveFacetAbstract, ISaveFacet, IImperativeFacet {
     private readonly MethodInfo saveMethod;
 
-    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger) {
+    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger) : base(logger) {
         this.saveMethod = saveMethod;
-        SaveDelegate = LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
+        SaveDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
     }
 
     public Func<object, object[], object> SaveDelegate { get; set; }
@@ -32,9 +32,7 @@ public sealed class SaveViaActionSaveFacet : FacetAbstract, ISaveFacet, IImperat
 
     public Func<object, object[], object> GetMethodDelegate() => SaveDelegate;
 
-    public override Type FacetType => typeof(ISaveFacet);
-
-    public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
+    public override string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
         SaveDelegate.Invoke(saveMethod, nakedObject.GetDomainObject(), Array.Empty<object>());
         return null;
     }

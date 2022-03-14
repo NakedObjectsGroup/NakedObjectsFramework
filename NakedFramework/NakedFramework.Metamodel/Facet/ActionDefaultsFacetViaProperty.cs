@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -26,7 +27,7 @@ public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract
     public ActionDefaultsFacetViaProperty(PropertyInfo property, IActionDefaultsFacet actionDefaultsFacet, ILogger<ActionDefaultsFacetViaProperty> logger) {
         this.property = property;
         this.actionDefaultsFacet = actionDefaultsFacet;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(property.GetGetMethod()), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(property.GetGetMethod()), logger);
     }
 
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
@@ -39,8 +40,6 @@ public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract
 
         return (defaultValue, TypeOfDefaultValue.Explicit);
     }
-
-    protected override string ToStringValues() => $"property={property}";
 
     [OnDeserialized]
     private static void OnDeserialized(StreamingContext context) { }

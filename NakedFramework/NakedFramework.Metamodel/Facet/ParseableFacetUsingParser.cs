@@ -34,6 +34,4 @@ public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFace
     }
 
     #endregion
-
-    protected override string ToStringValues() => parser.ToString();
 }

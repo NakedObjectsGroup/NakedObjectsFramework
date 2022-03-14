@@ -12,6 +12,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NOF2.About;
 
@@ -24,7 +25,7 @@ public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFace
     public SaveViaActionSaveWithAboutFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ILogger<SaveViaActionSaveWithAboutFacet> logger)
         : base(aboutMethod, AboutHelpers.AboutType.Action, logger) {
         this.saveMethod = saveMethod;
-        SaveDelegate = LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
+        SaveDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
     }
 
     public Func<object, object[], object> SaveDelegate { get; set; }

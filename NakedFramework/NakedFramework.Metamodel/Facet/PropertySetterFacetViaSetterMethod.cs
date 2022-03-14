@@ -33,6 +33,4 @@ public sealed class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbst
             InvokeUtils.InvocationException($"Exception executing {property}", e);
         }
     }
-
-    protected override string ToStringValues() => $"property={property}";
 }

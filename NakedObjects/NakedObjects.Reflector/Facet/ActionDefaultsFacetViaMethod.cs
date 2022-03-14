@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
 [assembly: InternalsVisibleTo("NakedFramework.ParallelReflector.Test")]
@@ -31,7 +32,7 @@ public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, 
     public ActionDefaultsFacetViaMethod(MethodInfo method, ILogger<ActionDefaultsFacetViaMethod> logger) {
         this.method = method;
         this.logger = logger;
-        MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        MethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     // for testing only 
@@ -45,10 +46,8 @@ public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, 
         return (defaultValue, TypeOfDefaultValue.Explicit);
     }
 
-    protected override string ToStringValues() => $"method={method}";
-
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+    private void OnDeserialized(StreamingContext context) => MethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
 
     #region IImperativeFacet Members
 

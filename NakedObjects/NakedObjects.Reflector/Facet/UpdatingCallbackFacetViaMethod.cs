@@ -28,8 +28,6 @@ public sealed class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstra
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => updatingDelegate(nakedObjectAdapter.GetDomainObject());
 
-    protected override string ToStringValues() => $"method={method}";
-
     [OnDeserialized]
     private void OnDeserialized(StreamingContext context) => updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
 

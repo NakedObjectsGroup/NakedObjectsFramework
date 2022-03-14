@@ -38,8 +38,6 @@ public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet 
     }
 
     #endregion
-
-    protected override string ToStringValues() => $"property={property}";
 }
 
 // Copyright (c) Naked Objects Group Ltd.

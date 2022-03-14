@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
@@ -23,7 +24,7 @@ public sealed class PropertyAccessorFacetViaMethod : FacetAbstract, IPropertyAcc
 
     public PropertyAccessorFacetViaMethod(MethodInfo propertyMethod, ILogger<PropertyAccessorFacetViaMethod> logger) {
         this.propertyMethod = propertyMethod;
-        PropertyDelegate = LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
+        PropertyDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
     }
 
     private Func<object, object[], object> PropertyDelegate { get; set; }
@@ -46,6 +47,4 @@ public sealed class PropertyAccessorFacetViaMethod : FacetAbstract, IPropertyAcc
     }
 
     #endregion
-
-    protected override string ToStringValues() => $"method={propertyMethod}";
 }

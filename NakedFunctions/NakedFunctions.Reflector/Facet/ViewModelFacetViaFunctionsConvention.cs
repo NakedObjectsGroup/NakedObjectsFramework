@@ -8,7 +8,6 @@
 using System;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
 using NakedFunctions.Reflector.Utils;
@@ -25,8 +24,6 @@ public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstrac
         this.deriveFunction = deriveFunction;
         this.populateFunction = populateFunction;
     }
-
-    public override Type FacetType => typeof(IViewModelFacet);
 
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
                                     INakedFramework framework) =>

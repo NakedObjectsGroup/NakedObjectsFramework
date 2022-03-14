@@ -20,8 +20,6 @@ public sealed class PropertyDefaultFacetAnnotation : PropertyDefaultFacetAbstrac
     public override bool CanAlwaysReplace => false;
 
     public override object GetDefault(INakedObjectAdapter inObjectAdapter) => value;
-
-    protected override string ToStringValues() => $"Value={value}";
 }
 
 // Copyright (c) Naked Objects Group Ltd.

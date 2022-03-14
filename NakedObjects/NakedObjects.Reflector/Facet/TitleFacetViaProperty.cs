@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
@@ -28,7 +29,7 @@ public sealed class TitleFacetViaProperty : TitleFacetAbstract, IImperativeFacet
     public TitleFacetViaProperty(MethodInfo method, ILogger<TitleFacetViaProperty> logger) {
         this.method = method;
         this.logger = logger;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
@@ -37,7 +38,7 @@ public sealed class TitleFacetViaProperty : TitleFacetAbstract, IImperativeFacet
     }
 
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
 
     #region IImperativeFacet Members
 

@@ -27,8 +27,6 @@ public sealed class ActionDefaultsFacetAnnotation : ActionDefaultsFacetAbstract 
     private object GetDefaultValue() => isDateTime && value is int i ? DateTime.UtcNow.AddDays(i) : value;
 
     public override (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (GetDefaultValue(), TypeOfDefaultValue.Explicit);
-
-    protected override string ToStringValues() => $"Value={value}";
 }
 
 // Copyright (c) Naked Objects Group Ltd.

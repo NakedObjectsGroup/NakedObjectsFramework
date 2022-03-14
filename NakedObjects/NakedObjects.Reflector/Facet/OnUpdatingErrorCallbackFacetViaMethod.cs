@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 
@@ -26,15 +27,13 @@ public sealed class OnUpdatingErrorCallbackFacetViaMethod : OnUpdatingErrorCallb
     public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger) {
         this.method = method;
         this.logger = logger;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => (string)methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { exception });
 
-    protected override string ToStringValues() => $"method={method}";
-
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
 
     #region IImperativeFacet Members
 

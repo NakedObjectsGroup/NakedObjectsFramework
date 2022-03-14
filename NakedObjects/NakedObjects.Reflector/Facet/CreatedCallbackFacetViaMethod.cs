@@ -29,8 +29,6 @@ public sealed class CreatedCallbackFacetViaMethod : CreatedCallbackFacetAbstract
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => createdDelegate(nakedObjectAdapter.GetDomainObject());
 
-    protected override string ToStringValues() => $"method={method}";
-
     [OnDeserialized]
     private void OnDeserialized(StreamingContext context) => createdDelegate = DelegateUtils.CreateCallbackDelegate(method);
 

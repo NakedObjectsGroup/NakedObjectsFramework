@@ -34,6 +34,4 @@ public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitia
     }
 
     #endregion
-
-    protected override string ToStringValues() => $"property={property}";
 }

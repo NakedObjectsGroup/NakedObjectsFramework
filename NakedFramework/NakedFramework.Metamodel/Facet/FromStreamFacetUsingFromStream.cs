@@ -31,6 +31,4 @@ public sealed class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamF
     }
 
     #endregion
-
-    protected override string ToStringValues() => fromStream.ToString();
 }

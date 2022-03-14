@@ -14,21 +14,17 @@ using NakedFramework.Metamodel.SemanticsProvider;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
+public sealed class TitleFacetUsingParser<T> : TitleFacetAbstract, ITitleFacet {
     private readonly IValueSemanticsProvider<T> parser;
 
     public TitleFacetUsingParser(IValueSemanticsProvider<T> parser) =>
         this.parser = parser;
 
-    public override Type FacetType => typeof(ITitleFacet);
-
-    protected override string ToStringValues() => parser.ToString();
-
     #region ITitleFacet Members
 
-    public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T)nakedObjectAdapter.Object);
+    public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T)nakedObjectAdapter.Object);
 
-    public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T)nakedObjectAdapter.Object);
+    public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T)nakedObjectAdapter.Object);
 
     #endregion
 }

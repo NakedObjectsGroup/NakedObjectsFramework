@@ -17,6 +17,7 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
@@ -31,15 +32,13 @@ public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFace
     public ActionValidationFacet(MethodInfo method, ILogger<ActionValidationFacet> logger) {
         this.method = method;
         this.logger = logger;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public override Type FacetType => typeof(IActionValidationFacet);
 
-    protected override string ToStringValues() => $"method={method}";
-
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
 
     #region IActionValidationFacet Members
 

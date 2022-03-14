@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
@@ -28,7 +29,7 @@ public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstra
     public PropertyValidateFacetViaMethod(MethodInfo method, ILogger<PropertyValidateFacetViaMethod> logger) {
         this.method = method;
         this.logger = logger;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public override string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter proposedValue) =>
@@ -36,10 +37,8 @@ public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstra
             ? methodDelegate.Invoke<string>(method, target.GetDomainObject(), new[] { proposedValue.GetDomainObject() })
             : null;
 
-    protected override string ToStringValues() => $"method={method}";
-
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
 
     #region IImperativeFacet Members
 

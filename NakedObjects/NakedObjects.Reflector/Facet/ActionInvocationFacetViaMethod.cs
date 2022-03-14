@@ -17,6 +17,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
@@ -36,7 +37,7 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
         ReturnType = returnType;
         ElementType = elementType;
         IsQueryOnly = isQueryOnly;
-        ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
+        ActionDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
     }
 
     // for testing only 
@@ -64,10 +65,8 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) => Invoke(nakedObjectAdapter, parameters, framework);
 
-    protected override string ToStringValues() => $"method={ActionMethod}";
-
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
+    private void OnDeserialized(StreamingContext context) => ActionDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
 
     #region IImperativeFacet Members
 

@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Utils;
 
@@ -28,12 +29,10 @@ public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForCont
 
     public HideForContextViaFunctionFacet(MethodInfo method, ILogger<HideForContextViaFunctionFacet> logger) {
         this.method = method;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public override Type FacetType => typeof(IHideForContextFacet);
-
-    protected override string ToStringValues() => $"method={method}";
 
     [OnDeserialized]
     private static void OnDeserialized(StreamingContext context) { }

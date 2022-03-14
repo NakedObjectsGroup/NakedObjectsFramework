@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Utils;
 
@@ -27,7 +28,7 @@ public sealed class ActionDefaultsFacetViaFunction : ActionDefaultsFacetAbstract
 
     public ActionDefaultsFacetViaFunction(MethodInfo method, ILogger<ActionDefaultsFacetViaFunction> logger) {
         this.method = method;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
@@ -36,8 +37,6 @@ public sealed class ActionDefaultsFacetViaFunction : ActionDefaultsFacetAbstract
         var defaultValue = methodDelegate.Invoke<object>(method, method.GetParameterValues(nakedObjectAdapter, framework));
         return (defaultValue, TypeOfDefaultValue.Explicit);
     }
-
-    protected override string ToStringValues() => $"method={method}";
 
     [OnDeserialized]
     private static void OnDeserialized(StreamingContext context) { }

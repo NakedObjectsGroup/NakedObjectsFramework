@@ -25,6 +25,4 @@ public sealed class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDef
     public object Default => defaultsProvider.DefaultValue;
 
     #endregion
-
-    protected override string ToStringValues() => defaultsProvider.ToString();
 }

@@ -10,20 +10,15 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Metamodel.Facet;
 
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class SaveNullFacet : FacetAbstract, ISaveFacet {
-    private readonly ILogger logger;
+public sealed class SaveNullFacet : SaveFacetAbstract, ISaveFacet {
 
-    public SaveNullFacet(ILogger<SaveNullFacet> logger) =>
-        this.logger = logger;
+    public SaveNullFacet(ILogger<SaveNullFacet> logger) : base(logger) { }
 
-    public override Type FacetType => typeof(ISaveFacet);
-
-    public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
+    public override string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
         var msg = $"Attempt to save an object without an ActionSave: {nakedObject.Spec.FullName}";
         logger.LogWarning(msg);
         return msg;

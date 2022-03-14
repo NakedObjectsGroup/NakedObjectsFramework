@@ -38,6 +38,4 @@ public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyA
     }
 
     #endregion
-
-    protected override string ToStringValues() => $"method={method}";
 }

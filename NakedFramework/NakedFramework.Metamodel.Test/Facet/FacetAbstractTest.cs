@@ -40,7 +40,7 @@ public class FacetAbstractTest {
 
     [TestMethod]
     public void TestToString() {
-        Assert.AreEqual("FacetAbstractTest+ConcreteFacet[type=FacetAbstractTest+IFooFacet]", fooFacet.ToString());
+        Assert.AreEqual("NakedFramework.Metamodel.Test.Facet.FacetAbstractTest+ConcreteFacet", fooFacet.ToString());
     }
 
     #region Nested type: ConcreteFacet

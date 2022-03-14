@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NOF2.About;
 using NOF2.Reflector.Component;
@@ -23,7 +24,7 @@ public abstract class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFa
     protected AbstractViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger logger) {
         Method = method;
         AboutType = aboutType;
-        MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        MethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     private Func<object, object[], object> MethodDelegate { get; }
@@ -53,6 +54,4 @@ public abstract class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFa
 
         return GetCache(framework).GetOrCacheAbout(target, Method, typeCode, About);
     }
-
-    protected override string ToStringValues() => $"method={Method}";
 }

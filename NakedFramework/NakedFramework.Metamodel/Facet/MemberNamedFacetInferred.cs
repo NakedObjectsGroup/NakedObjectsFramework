@@ -6,22 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class MemberNamedFacetInferred : SingleStringValueFacetAbstract, IMemberNamedFacet {
-    public MemberNamedFacetInferred(string value)
-        : base(NameUtils.NaturalName(value)) { }
-
-    public override Type FacetType => typeof(IMemberNamedFacet);
+public sealed class MemberNamedFacetInferred : MemberNamedFacetAbstract, IMemberNamedFacet {
+    public MemberNamedFacetInferred(string value) : base(NameUtils.NaturalName(value)) { }
 
     public override bool CanAlwaysReplace => false;
-    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
-    public string FriendlyName() => Value;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

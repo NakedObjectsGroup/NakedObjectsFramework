@@ -40,7 +40,7 @@ public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, II
         IsMultiple = isMultiple;
         ParameterNamesAndTypes = parameterNamesAndTypes;
         parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
-        choicesDelegate = LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
+        choicesDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
     }
 
     public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
@@ -62,10 +62,8 @@ public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, II
         }
     }
 
-    protected override string ToStringValues() => $"method={choicesMethod},Type={choicesType}";
-
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => choicesDelegate = LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
+    private void OnDeserialized(StreamingContext context) => choicesDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
 
     #region IImperativeFacet Members
 

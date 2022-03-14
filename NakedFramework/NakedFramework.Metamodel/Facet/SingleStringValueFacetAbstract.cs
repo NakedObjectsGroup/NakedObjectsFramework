@@ -12,16 +12,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class SingleStringValueFacetAbstract : FacetAbstract, ISingleStringValueFacet {
-    private readonly string valueString;
-
     protected SingleStringValueFacetAbstract(string valueString) =>
-        this.valueString = valueString;
+        this.Value = valueString;
 
     #region ISingleStringValueFacet Members
 
-    public virtual string Value => valueString;
+    public virtual string Value { get; }
 
     #endregion
-
-    protected override string ToStringValues() => valueString == null ? "null" : $"\"{valueString}\"";
 }

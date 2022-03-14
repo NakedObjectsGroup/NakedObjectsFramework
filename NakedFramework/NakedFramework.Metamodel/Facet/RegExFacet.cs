@@ -43,8 +43,6 @@ public sealed class RegExFacet : FacetAbstract, IRegExFacet {
 
     public override Type FacetType => typeof(IRegExFacet);
 
-    protected override string ToStringValues() => Pattern.ToString();
-
     #region IRegExFacet Members
 
     public Regex Pattern { get; private set; }

@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -26,7 +27,7 @@ public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativ
     public TitleFacetViaToStringMethod(MethodInfo maskMethod, ILogger<TitleFacetViaToStringMethod> logger) {
         this.maskMethod = maskMethod;
         this.logger = logger;
-        maskDelegate = maskMethod is null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
+        maskDelegate = maskMethod is null ? null : FacetUtils.LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
     }
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.Object.ToString();
@@ -44,7 +45,7 @@ public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativ
     }
 
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => maskDelegate = maskMethod == null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
+    private void OnDeserialized(StreamingContext context) => maskDelegate = maskMethod == null ? null : FacetUtils.LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
 
     #region IImperativeFacet Members
 

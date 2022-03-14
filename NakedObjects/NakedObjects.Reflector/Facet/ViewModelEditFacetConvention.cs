@@ -8,7 +8,6 @@
 using System;
 using NakedFramework;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -17,8 +16,6 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ViewModelEditFacetConvention : ViewModelFacetAbstract {
-    public override Type FacetType => typeof(IViewModelFacet);
-
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 
     public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Threading;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
@@ -21,8 +20,6 @@ public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMax
         : base(typeof(IMaxLengthFacet), intValue) { }
 
     public override Type FacetType => typeof(IMaxLengthFacet);
-
-    protected override string ToStringValues() => Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
 
     #region IMaxLengthFacet Members
 

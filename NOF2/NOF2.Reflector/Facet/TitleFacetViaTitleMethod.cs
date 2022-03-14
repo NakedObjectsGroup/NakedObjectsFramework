@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NOF2.Title;
 
@@ -29,13 +30,13 @@ public sealed class TitleFacetViaTitleMethod : TitleFacetAbstract, IImperativeFa
     public TitleFacetViaTitleMethod(MethodInfo method, ILogger<TitleFacetViaTitleMethod> logger) {
         this.method = method;
         this.logger = logger;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodDelegate.Invoke<ITitle>(method, nakedObjectAdapter.GetDomainObject(), Array.Empty<object>()).TitleString();
 
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
 
     #region IImperativeFacet Members
 

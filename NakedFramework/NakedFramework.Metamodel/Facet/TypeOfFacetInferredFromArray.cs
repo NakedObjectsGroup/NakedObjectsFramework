@@ -14,14 +14,12 @@ using NakedFramework.Architecture.SpecImmutable;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class TypeOfFacetInferredFromArray : FacetAbstract, ITypeOfFacet {
-    public override Type FacetType => typeof(ITypeOfFacet);
-
+public sealed class TypeOfFacetInferredFromArray : TypeOfFacetInferredAbstract, ITypeOfFacet {
     #region ITypeOfFacet Members
 
-    public Type GetValue(INakedObjectAdapter collection) => collection.Object.GetType().GetElementType();
+    public override Type GetValue(INakedObjectAdapter collection) => collection.Object.GetType().GetElementType();
 
-    public IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => (IObjectSpecImmutable)metamodel.GetSpecification(GetValue(collection));
+    public override IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => (IObjectSpecImmutable)metamodel.GetSpecification(GetValue(collection));
 
     #endregion
 }

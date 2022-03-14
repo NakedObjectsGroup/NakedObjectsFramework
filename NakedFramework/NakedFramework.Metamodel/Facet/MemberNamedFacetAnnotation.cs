@@ -6,22 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class MemberNamedFacetAnnotation : SingleStringValueFacetAbstract, IMemberNamedFacet {
+public sealed class MemberNamedFacetAnnotation : MemberNamedFacetAbstract, IMemberNamedFacet {
     public MemberNamedFacetAnnotation(string value)
         : base(value) { }
-
-    public override Type FacetType => typeof(IMemberNamedFacet);
-
-    // Might be set from annotation or from display name on menu
-    public string FriendlyName(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => FriendlyName();
-    public string FriendlyName() => Value;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

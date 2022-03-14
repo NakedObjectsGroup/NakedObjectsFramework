@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Utils;
 
@@ -25,7 +26,7 @@ public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperative
 
     public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) {
         this.method = method;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>

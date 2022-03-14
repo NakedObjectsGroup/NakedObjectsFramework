@@ -19,6 +19,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Utils;
 
@@ -39,7 +40,7 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
         this.choicesType = choicesType;
         IsMultiple = isMultiple;
         ParameterNamesAndTypes = parameterNamesAndTypes;
-        choicesDelegate = LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
+        choicesDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
     }
 
     public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
@@ -57,8 +58,6 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
             throw new InvokeException($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types", ae);
         }
     }
-
-    protected override string ToStringValues() => $"method={choicesMethod},Type={choicesType}";
 
     [OnDeserialized]
     private static void OnDeserialized(StreamingContext context) { }

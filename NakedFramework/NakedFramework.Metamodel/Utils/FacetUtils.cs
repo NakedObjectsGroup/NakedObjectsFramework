@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
@@ -96,6 +97,16 @@ public static class FacetUtils {
             return metamodel;
         }
     }
+
+    public static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair, ILogger logger) {
+        var (delFunc, warning) = pair;
+        if (delFunc is null && !string.IsNullOrWhiteSpace(warning)) {
+            logger.LogInformation(warning);
+        }
+
+        return delFunc;
+    }
+
 
     public record ActionHolder {
         private readonly object wrapped;

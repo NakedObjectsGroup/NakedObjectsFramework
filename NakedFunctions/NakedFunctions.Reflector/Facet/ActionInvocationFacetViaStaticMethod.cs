@@ -21,6 +21,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Persist;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Component;
 
@@ -46,7 +47,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
         ReturnType = returnType;
         ElementType = elementType;
         IsQueryOnly = isQueryOnly;
-        methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     [field: NonSerialized] public override MethodInfo ActionMethod { get; }
@@ -146,8 +147,6 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                int resultPage,
                                                INakedFramework framework) =>
         Invoke(nakedObjectAdapter, parameters, framework);
-
-    protected override string ToStringValues() => $"method={ActionMethod}";
 
     [OnDeserialized]
     private static void OnDeserialized(StreamingContext context) { }

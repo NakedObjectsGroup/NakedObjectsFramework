@@ -14,20 +14,9 @@ using NakedFramework.Architecture.SpecImmutable;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class TypeOfFacetDefaultToType : TypeOfFacetInferredAbstract, ITypeOfFacet {
-    private readonly IObjectSpecImmutable spec;
-    private readonly Type type;
+public abstract class TypeOfFacetInferredAbstract : FacetAbstract, ITypeOfFacet {
+    public override Type FacetType => typeof(ITypeOfFacet);
 
-    public TypeOfFacetDefaultToType(Type type, IObjectSpecImmutable spec) {
-        this.type = type;
-        this.spec = spec;
-    }
-
-    #region ITypeOfFacet Members
-
-    public override Type GetValue(INakedObjectAdapter collection) => type;
-
-    public override IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => spec;
-
-    #endregion
+    public abstract Type GetValue(INakedObjectAdapter collection);
+    public abstract IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel);
 }
