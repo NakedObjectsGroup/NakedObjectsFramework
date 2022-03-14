@@ -114,8 +114,8 @@ public class ModelIntegrator : IModelIntegrator {
     }
 
     private static void InstallObjectMenus(IMetamodelBuilder metamodel) {
-        var menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
-        menuFacets.ForEach(mf => mf.CreateMenu(metamodel));
+        IEnumerable<(IMenuFacet f, ITypeSpecImmutable s)> menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => (s.GetFacet<IMenuFacet>(), s));
+        menuFacets.ForEach(mf => mf.f.CreateMenu(metamodel, mf.s));
     }
 
     private static void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel) {

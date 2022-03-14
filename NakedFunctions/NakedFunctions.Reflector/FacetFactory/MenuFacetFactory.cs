@@ -36,10 +36,10 @@ public sealed class MenuFacetFactory : FunctionalFacetFactoryProcessor, IMethodP
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
         if (method is not null) {
-            FacetUtils.AddFacet(new MenuFacetViaMethod(method, specification), specification);
+            FacetUtils.AddFacet(new MenuFacetViaMethod(method), specification);
         }
         else {
-            FacetUtils.AddFacet(new MenuFacetDefault(specification), specification);
+            FacetUtils.AddFacet(new MenuFacetDefault(), specification);
         }
 
         return metamodel;

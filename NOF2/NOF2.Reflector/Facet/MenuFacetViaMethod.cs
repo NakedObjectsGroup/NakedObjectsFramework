@@ -10,7 +10,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.ParallelReflector.Utils;
@@ -23,8 +23,7 @@ namespace NOF2.Reflector.Facet;
 public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
     private readonly MethodInfo method;
 
-    public MenuFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<MenuFacetViaMethod> logger)
-        : base(holder) {
+    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) {
         this.method = method;
         MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
@@ -36,7 +35,7 @@ public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
     public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
 
     //Creates a menu based on the definition in the object's Menu method
-    public override void CreateMenu(IMetamodelBuilder metamodel) {
+    public override void CreateMenu(IMetamodelBuilder metamodel, ITypeSpecImmutable spec) {
         var legacyMenu = MethodDelegate.Invoke<IMenu>(method, null, Array.Empty<object>());
         Menu = NOF2Helpers.ConvertNOF2ToNOFMenu(legacyMenu, metamodel, method.DeclaringType, "Actions");
     }

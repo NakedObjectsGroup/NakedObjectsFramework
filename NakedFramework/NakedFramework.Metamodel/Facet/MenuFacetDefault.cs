@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Menu;
 
@@ -16,16 +15,15 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MenuFacetDefault : MenuFacetAbstract {
-    public MenuFacetDefault(ISpecification holder)
-        : base(holder) { }
+    public MenuFacetDefault() { }
 
     //Creates a menu based on the object's actions and their specified ordering
     //For backwards compatibility of UI only, it gives the menu an Id of the type name
-    public override void CreateMenu(IMetamodelBuilder metamodel) {
+    public override void CreateMenu(IMetamodelBuilder metamodel, ITypeSpecImmutable spec) {
         //The Id is specified as follows purely to facilitate backwards compatibility with existing UI
         //It is not needed for menus to function
-        var id = Spec is IServiceSpecImmutable ? UniqueShortName(Spec) : $"{Spec.ShortName}-Actions";
-        CreateDefaultMenu(metamodel, Spec.Type, GetMenuName(Spec), id);
+        var id = spec is IServiceSpecImmutable ? UniqueShortName(spec) : $"{spec.ShortName}-Actions";
+        CreateDefaultMenu(metamodel, spec.Type, GetMenuName(spec), id);
     }
 
     private static string UniqueShortName(ITypeSpecImmutable spec) {

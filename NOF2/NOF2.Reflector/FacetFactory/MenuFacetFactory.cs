@@ -42,7 +42,7 @@ public sealed class MenuFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
         // instance
         var menuOrderMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Class, "menuOrder", typeof(IMenu), null);
         methodRemover.SafeRemoveMethod(menuOrderMethod);
-        var facet = menuOrderMethod is not null ? (IFacet)new MenuFacetViaMethod(menuOrderMethod, specification, Logger<MenuFacetViaMethod>()) : new MenuFacetDefault(specification);
+        var facet = menuOrderMethod is not null ? (IFacet)new MenuFacetViaMethod(menuOrderMethod, Logger<MenuFacetViaMethod>()) : new MenuFacetDefault();
         FacetUtils.AddFacet(facet, specification);
 
         // mainMenu

@@ -7,7 +7,7 @@
 
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
-using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Facet;
 
@@ -22,12 +22,10 @@ namespace NakedFramework.Architecture.Facet;
 ///     However, this may be overridden by writing a method named <c>Menu</c>.
 /// </para>
 public interface IMenuFacet : IFacet {
-    ISpecification Specification { get; }
-
     /// <summary>
     ///     The Menu for this type.
     /// </summary>
     IMenuImmutable GetMenu();
 
-    void CreateMenu(IMetamodelBuilder metamodel);
+    void CreateMenu(IMetamodelBuilder metamodel, ITypeSpecImmutable spec);
 }

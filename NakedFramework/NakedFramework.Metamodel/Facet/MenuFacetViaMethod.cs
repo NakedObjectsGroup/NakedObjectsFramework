@@ -8,7 +8,7 @@
 using System;
 using System.Reflection;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Menu;
 
@@ -18,13 +18,12 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class MenuFacetViaMethod : MenuFacetAbstract {
     private readonly MethodInfo method;
 
-    public MenuFacetViaMethod(MethodInfo method, ISpecification holder)
-        : base(holder) =>
+    public MenuFacetViaMethod(MethodInfo method) =>
         this.method = method;
 
     //Creates a menu based on the definition in the object's Menu method
-    public override void CreateMenu(IMetamodelBuilder metamodel) {
-        var menu = new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(Spec));
+    public override void CreateMenu(IMetamodelBuilder metamodel, ITypeSpecImmutable spec) {
+        var menu = new MenuImpl(metamodel, method.DeclaringType, false, GetMenuName(spec));
         InvokeUtils.InvokeStatic(method, new object[] { menu });
         Menu = menu;
     }
