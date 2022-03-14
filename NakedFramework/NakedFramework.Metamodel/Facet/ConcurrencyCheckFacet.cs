@@ -11,6 +11,6 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyCheckFacet {
+public sealed class ConcurrencyCheckFacet : FacetAbstract, IConcurrencyCheckFacet, IMarkerFacet {
     public override Type FacetType => typeof(IConcurrencyCheckFacet);
 }

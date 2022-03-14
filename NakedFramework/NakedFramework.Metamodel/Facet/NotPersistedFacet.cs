@@ -11,7 +11,7 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class NotPersistedFacet : MarkerFacetAbstract, INotPersistedFacet {
+public sealed class NotPersistedFacet : FacetAbstract, INotPersistedFacet, IMarkerFacet {
     public override Type FacetType => typeof(INotPersistedFacet);
 }
 

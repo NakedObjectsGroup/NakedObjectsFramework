@@ -12,6 +12,6 @@ using NakedFramework.Metamodel.Facet;
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class StaticMenuMethodFacet : MarkerFacetAbstract, IStaticMenuFunctionFacet {
+public sealed class StaticMenuMethodFacet : FacetAbstract, IStaticMenuFunctionFacet, IMarkerFacet {
     public override Type FacetType => typeof(IStaticMenuFunctionFacet);
 }

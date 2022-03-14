@@ -12,6 +12,6 @@ using NakedFramework.Metamodel.Facet;
 namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
-public sealed class StaticFunctionFacet : MarkerFacetAbstract, IStaticFunctionFacet {
+public sealed class StaticFunctionFacet : FacetAbstract, IStaticFunctionFacet, IMarkerFacet {
     public override Type FacetType => typeof(IStaticFunctionFacet);
 }

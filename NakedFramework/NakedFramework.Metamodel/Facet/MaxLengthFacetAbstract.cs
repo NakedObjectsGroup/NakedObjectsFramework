@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
     protected MaxLengthFacetAbstract(int intValue)
-        : base(typeof(IMaxLengthFacet), intValue) { }
+        : base(intValue) { }
 
     public override Type FacetType => typeof(IMaxLengthFacet);
 

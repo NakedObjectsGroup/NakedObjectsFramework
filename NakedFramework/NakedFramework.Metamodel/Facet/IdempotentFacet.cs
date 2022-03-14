@@ -11,6 +11,6 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class IdempotentFacet : MarkerFacetAbstract, IIdempotentFacet {
+public sealed class IdempotentFacet : FacetAbstract, IIdempotentFacet, IMarkerFacet {
     public override Type FacetType => typeof(IIdempotentFacet);
 }

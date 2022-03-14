@@ -14,7 +14,7 @@ using NakedFramework.Metamodel.Error;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
+public abstract class MandatoryFacetAbstract : FacetAbstract, IMandatoryFacet, IMarkerFacet {
     public override Type FacetType => typeof(IMandatoryFacet);
 
     #region IMandatoryFacet Members

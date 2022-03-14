@@ -11,6 +11,6 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class IsASetFacet : MarkerFacetAbstract, IIsASetFacet {
+public sealed class IsASetFacet : FacetAbstract, IIsASetFacet, IMarkerFacet {
     public override Type FacetType => typeof(IIsASetFacet);
 }

@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class PasswordFacet : MarkerFacetAbstract, IPasswordFacet {
+public sealed class PasswordFacet : FacetAbstract, IPasswordFacet, IMarkerFacet {
     public override Type FacetType => typeof(IPasswordFacet);
 
     public DataType? DataType => System.ComponentModel.DataAnnotations.DataType.Password;

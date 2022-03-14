@@ -11,6 +11,6 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class AggregatedFacetAlways : MarkerFacetAbstract, IAggregatedFacet {
+public sealed class AggregatedFacetAlways : FacetAbstract, IAggregatedFacet, IMarkerFacet {
     public override Type FacetType => typeof(IAggregatedFacet);
 }

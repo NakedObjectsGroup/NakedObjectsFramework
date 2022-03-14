@@ -14,7 +14,7 @@ using NakedFramework.Core.Error;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
+public sealed class BoundedFacet : FacetAbstract, IBoundedFacet, IMarkerFacet {
     public override Type FacetType => typeof(IBoundedFacet);
 
     public static string DisabledReason(INakedObjectAdapter inObjectAdapter) => NakedObjects.Resources.NakedObjects.Bounded;

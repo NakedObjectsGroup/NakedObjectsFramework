@@ -11,6 +11,6 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class QueryOnlyFacet : MarkerFacetAbstract, IQueryOnlyFacet {
+public sealed class QueryOnlyFacet : FacetAbstract, IQueryOnlyFacet, IMarkerFacet {
     public override Type FacetType => typeof(IQueryOnlyFacet);
 }

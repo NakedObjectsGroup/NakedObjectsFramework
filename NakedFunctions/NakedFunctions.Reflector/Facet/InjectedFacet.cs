@@ -12,6 +12,6 @@ using NakedFramework.Metamodel.Facet;
 namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
-public sealed class InjectedFacet : MarkerFacetAbstract, IInjectedFacet {
+public sealed class InjectedFacet : FacetAbstract, IInjectedFacet, IMarkerFacet {
     public override Type FacetType => typeof(IInjectedFacet);
 }

@@ -11,6 +11,6 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class DateOnlyFacet : MarkerFacetAbstract, IDateOnlyFacet {
+public sealed class DateOnlyFacet : FacetAbstract, IDateOnlyFacet, IMarkerFacet {
     public override Type FacetType => typeof(IDateOnlyFacet);
 }

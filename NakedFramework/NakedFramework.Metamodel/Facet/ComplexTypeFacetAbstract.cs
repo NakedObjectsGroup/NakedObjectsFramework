@@ -11,6 +11,6 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public abstract class ComplexTypeFacetAbstract : MarkerFacetAbstract, IComplexTypeFacet {
+public abstract class ComplexTypeFacetAbstract : FacetAbstract, IComplexTypeFacet, IMarkerFacet {
     public override Type FacetType => typeof(IComplexTypeFacet);
 }

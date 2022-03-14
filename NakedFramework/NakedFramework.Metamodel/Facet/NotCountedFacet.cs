@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 ///     This is only used at by the custom 'SdmNotCountedAttribute'
 /// </summary>
 [Serializable]
-public sealed class NotCountedFacet : MarkerFacetAbstract, INotCountedFacet {
+public sealed class NotCountedFacet : FacetAbstract, INotCountedFacet, IMarkerFacet {
     public override Type FacetType => typeof(INotCountedFacet);
 }
 
