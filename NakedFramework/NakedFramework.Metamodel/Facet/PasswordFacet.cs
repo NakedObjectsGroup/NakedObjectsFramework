@@ -13,9 +13,8 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PasswordFacet : FacetAbstract, IPasswordFacet, IMarkerFacet {
-    private PasswordFacet() { }
-
     private static PasswordFacet instance;
+    private PasswordFacet() { }
 
     public static PasswordFacet Instance => instance ??= new PasswordFacet();
 

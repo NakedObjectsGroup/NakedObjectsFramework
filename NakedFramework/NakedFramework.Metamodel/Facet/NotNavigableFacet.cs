@@ -12,9 +12,8 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class NotNavigableFacet : FacetAbstract, INotNavigableFacet, IMarkerFacet {
-    private NotNavigableFacet() { }
-
     private static NotNavigableFacet instance;
+    private NotNavigableFacet() { }
 
     public static NotNavigableFacet Instance => instance ??= new NotNavigableFacet();
 

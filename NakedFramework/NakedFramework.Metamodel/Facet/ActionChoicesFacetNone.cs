@@ -15,6 +15,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
+    private static ActionChoicesFacetNone instance;
+
+    private ActionChoicesFacetNone() { }
+
+    public static ActionChoicesFacetNone Instance => instance ??= new ActionChoicesFacetNone();
+
     public override bool IsNoOp => true;
 
     public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();

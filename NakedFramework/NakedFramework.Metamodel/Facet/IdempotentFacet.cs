@@ -12,10 +12,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class IdempotentFacet : FacetAbstract, IIdempotentFacet, IMarkerFacet {
+    private static IdempotentFacet instance;
 
     private IdempotentFacet() { }
-
-    private static IdempotentFacet instance;
 
     public static IdempotentFacet Instance => instance ??= new IdempotentFacet();
     public override Type FacetType => typeof(IIdempotentFacet);

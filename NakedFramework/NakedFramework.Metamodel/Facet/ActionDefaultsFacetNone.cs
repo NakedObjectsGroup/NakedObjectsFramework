@@ -14,6 +14,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsFacetNone : ActionDefaultsFacetAbstract {
+    private static ActionDefaultsFacetNone instance;
+
+    private ActionDefaultsFacetNone() { }
+
+    public static ActionDefaultsFacetNone Instance => instance ??= new ActionDefaultsFacetNone();
+
     public override bool IsNoOp => true;
 
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => (null, TypeOfDefaultValue.Implicit);

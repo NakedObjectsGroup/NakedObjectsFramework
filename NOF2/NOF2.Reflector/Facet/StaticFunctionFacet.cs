@@ -13,10 +13,9 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class StaticMethodFacet : FacetAbstract, IStaticFunctionFacet, IMarkerFacet {
+    private static StaticMethodFacet instance;
 
     private StaticMethodFacet() { }
-
-    private static StaticMethodFacet instance;
 
     public static StaticMethodFacet Instance => instance ??= new StaticMethodFacet();
 

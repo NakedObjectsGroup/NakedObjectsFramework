@@ -26,7 +26,7 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
         : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, Type type, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new ArrayFacet(), holder);
+        FacetUtils.AddFacet(ArrayFacet.Instance, holder);
         FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(), holder);
 
         var elementType = type.GetElementType();
@@ -60,7 +60,7 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
         IObjectSpecBuilder oSpec;
         (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
         FacetUtils.AddFacet(new TypeOfFacetDefaultToType(collectionElementType, oSpec), holder);
-        FacetUtils.AddFacet(new CollectionFacet(), holder);
+        FacetUtils.AddFacet(CollectionFacet.Instance, holder);
         return metamodel;
     }
 

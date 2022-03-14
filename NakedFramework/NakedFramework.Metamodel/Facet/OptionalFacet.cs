@@ -18,10 +18,9 @@ namespace NakedFramework.Metamodel.Facet;
 /// </para>
 [Serializable]
 public sealed class OptionalFacet : MandatoryFacetAbstract {
+    private static OptionalFacet instance;
 
     private OptionalFacet() { }
-
-    private static OptionalFacet instance;
 
     public static OptionalFacet Instance => instance ??= new OptionalFacet();
 

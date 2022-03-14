@@ -12,9 +12,8 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class QueryOnlyFacet : FacetAbstract, IQueryOnlyFacet, IMarkerFacet {
-    private QueryOnlyFacet() { }
-
     private static QueryOnlyFacet instance;
+    private QueryOnlyFacet() { }
 
     public static QueryOnlyFacet Instance => instance ??= new QueryOnlyFacet();
 

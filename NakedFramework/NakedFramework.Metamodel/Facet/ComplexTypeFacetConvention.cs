@@ -11,10 +11,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
+    private static ComplexTypeFacetConvention instance;
 
     private ComplexTypeFacetConvention() { }
-
-    private static ComplexTypeFacetConvention instance;
 
     public static ComplexTypeFacetConvention Instance => instance ??= new ComplexTypeFacetConvention();
 }

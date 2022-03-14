@@ -13,6 +13,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ArrayFacet : CollectionFacet {
+    private static ArrayFacet instance;
+
+    private ArrayFacet() { }
+
+    public new static ArrayFacet Instance => instance ??= new ArrayFacet();
+
     public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
         var newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);
         collection.ReplacePoco(newCollection);

@@ -15,9 +15,8 @@ namespace NakedFramework.Metamodel.Facet;
 /// </summary>
 [Serializable]
 public sealed class NotCountedFacet : FacetAbstract, INotCountedFacet, IMarkerFacet {
-    private NotCountedFacet() { }
-
     private static NotCountedFacet instance;
+    private NotCountedFacet() { }
 
     public static NotCountedFacet Instance => instance ??= new NotCountedFacet();
 

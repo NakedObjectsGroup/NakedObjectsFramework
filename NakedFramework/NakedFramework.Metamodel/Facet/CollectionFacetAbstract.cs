@@ -16,12 +16,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
-    protected CollectionFacetAbstract() =>
-        IsASet = false;
-
+    
     protected CollectionFacetAbstract(bool isASet)
-        : this() =>
-        IsASet = isASet;
+        => IsASet = isASet;
 
     public override Type FacetType => typeof(ICollectionFacet);
 

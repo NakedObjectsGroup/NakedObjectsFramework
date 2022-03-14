@@ -93,7 +93,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArrayContains() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet();
+        var testArrayFacet = ArrayFacet.Instance;
         var testAdaptedArray = AdapterFor(testArray);
         Contains(testArrayFacet, testAdaptedArray, "element1", "element3");
     }
@@ -101,7 +101,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArrayFirstElement() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet();
+        var testArrayFacet = ArrayFacet.Instance;
         var testAdaptedArray = AdapterFor(testArray);
         FirstElement(testArrayFacet, testAdaptedArray, "element1");
     }
@@ -109,7 +109,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArrayGetEnumeratorFor() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet();
+        var testArrayFacet = ArrayFacet.Instance;
         var testAdaptedArray = AdapterFor(testArray);
         ValidateCollection(testArrayFacet, testAdaptedArray, testArray);
     }
@@ -118,7 +118,7 @@ public class CollectionFacetsTest {
     public void ArrayInit() {
         var testArray = new[] { "element1", "element2" };
         var testArray1 = new[] { "element2", "element3" };
-        var testArrayFacet = new ArrayFacet();
+        var testArrayFacet = ArrayFacet.Instance;
         var testAdaptedArray = AdapterFor(testArray);
         Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
     }
@@ -127,7 +127,7 @@ public class CollectionFacetsTest {
     public void ArrayInitAllEmpty() {
         var testArray = Array.Empty<string>();
         var testArray1 = Array.Empty<string>();
-        var testArrayFacet = new ArrayFacet();
+        var testArrayFacet = ArrayFacet.Instance;
         var testAdaptedArray = AdapterFor(testArray);
         Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
     }
@@ -136,7 +136,7 @@ public class CollectionFacetsTest {
     public void ArrayInitEmpty() {
         var testArray = Array.Empty<string>();
         var testArray1 = new[] { "element2", "element3" };
-        var testArrayFacet = new ArrayFacet();
+        var testArrayFacet = ArrayFacet.Instance;
         var testAdaptedArray = AdapterFor(testArray);
         Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
     }
@@ -145,7 +145,7 @@ public class CollectionFacetsTest {
     public void ArrayInitToEmpty() {
         var testArray = new[] { "element1", "element2" };
         var testArray1 = Array.Empty<string>();
-        var testArrayFacet = new ArrayFacet();
+        var testArrayFacet = ArrayFacet.Instance;
         var testAdaptedArray = AdapterFor(testArray);
         Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
     }
@@ -153,7 +153,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArrayPage() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet();
+        var testArrayFacet = ArrayFacet.Instance;
         var testAdaptedArray = AdapterFor(testArray);
         Page(testArrayFacet, testAdaptedArray, "element1");
     }
@@ -161,7 +161,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void ArraySize() {
         var testArray = new[] { "element1", "element2" };
-        var testArrayFacet = new ArrayFacet();
+        var testArrayFacet = ArrayFacet.Instance;
         var testAdaptedArray = AdapterFor(testArray);
         Size(testArrayFacet, testAdaptedArray);
     }
@@ -169,7 +169,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void CollectionContains() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet();
+        var testCollectionFacet = CollectionFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
     }
@@ -177,7 +177,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void CollectionFirstElement() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet();
+        var testCollectionFacet = CollectionFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -185,7 +185,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void CollectionGetEnumeratorFor() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet();
+        var testCollectionFacet = CollectionFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>());
     }
@@ -194,7 +194,7 @@ public class CollectionFacetsTest {
     public void CollectionInit() {
         var testCollection = new ArrayList { "element1", "element2" };
         var testCollection1 = new[] { "element2", "element3" };
-        var testCollectionFacet = new CollectionFacet();
+        var testCollectionFacet = CollectionFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
     }
@@ -203,7 +203,7 @@ public class CollectionFacetsTest {
     public void CollectionInitAllEmpty() {
         var testCollection = new ArrayList();
         var testCollection1 = Array.Empty<string>();
-        var testCollectionFacet = new CollectionFacet();
+        var testCollectionFacet = CollectionFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
     }
@@ -212,7 +212,7 @@ public class CollectionFacetsTest {
     public void CollectionInitEmpty() {
         var testCollection = new ArrayList();
         var testCollection1 = new[] { "element2", "element3" };
-        var testCollectionFacet = new CollectionFacet();
+        var testCollectionFacet = CollectionFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
     }
@@ -221,25 +221,25 @@ public class CollectionFacetsTest {
     public void CollectionInitToEmpty() {
         var testCollection = new ArrayList { "element1", "element2" };
         var testCollection1 = Array.Empty<string>();
-        var testCollectionFacet = new CollectionFacet();
+        var testCollectionFacet = CollectionFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
     }
 
     [TestMethod]
     public void CollectionNotIsSet() {
-        ICollectionFacet testCollectionFacet = new CollectionFacet();
+        ICollectionFacet testCollectionFacet = CollectionFacet.Instance;
         Assert.IsFalse(testCollectionFacet.IsASet);
-        testCollectionFacet = new ArrayFacet();
+        testCollectionFacet = ArrayFacet.Instance;
         Assert.IsFalse(testCollectionFacet.IsASet);
-        testCollectionFacet = new CollectionFacet();
+        testCollectionFacet = CollectionFacet.Instance;
         Assert.IsFalse(testCollectionFacet.IsASet);
     }
 
     [TestMethod]
     public void CollectionPage() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet();
+        var testCollectionFacet = CollectionFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Page(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -247,7 +247,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void CollectionSize() {
         var testCollection = new ArrayList { "element1", "element2" };
-        var testCollectionFacet = new CollectionFacet();
+        var testCollectionFacet = CollectionFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Size(testCollectionFacet, testAdaptedCollection);
     }

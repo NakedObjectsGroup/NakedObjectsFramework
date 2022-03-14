@@ -68,8 +68,8 @@ public sealed class FallbackFacetFactory : DomainObjectFacetFactoryProcessor {
         }
 
         if (holder is IActionSpecImmutable) {
-            facets.Add(new ActionDefaultsFacetNone());
-            facets.Add(new ActionChoicesFacetNone());
+            facets.Add(ActionDefaultsFacetNone.Instance);
+            facets.Add(ActionChoicesFacetNone.Instance);
             facets.Add(new PageSizeFacetDefault());
         }
 
