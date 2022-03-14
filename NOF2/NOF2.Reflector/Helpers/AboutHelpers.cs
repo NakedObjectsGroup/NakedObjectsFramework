@@ -13,9 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Framework;
 using NOF2.About;
 using NOF2.Container;
-using NOF2.Reflector.Helpers;
 
-namespace NOF2.Reflector.Facet;
+namespace NOF2.Reflector.Helpers;
 
 public static class AboutHelpers {
     public enum AboutType {

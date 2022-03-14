@@ -14,7 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NOF2.About;
-using static NOF2.Reflector.Facet.AboutHelpers;
+using static NOF2.Reflector.Helpers.AboutHelpers;
 
 namespace NOF2.Reflector.Facet;
 

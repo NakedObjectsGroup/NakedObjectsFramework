@@ -17,6 +17,7 @@ using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NOF2.About;
 using NOF2.Reflector.Component;
+using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.Facet;
 
