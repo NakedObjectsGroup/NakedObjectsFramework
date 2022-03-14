@@ -55,7 +55,7 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
 
         MethodHelpers.AddHideForSessionFacetNone(facets, collection);
         MethodHelpers.AddDisableFacetAlways(facets, collection);
-        facets.Add(new NotPersistedFacet());
+        facets.Add(NotPersistedFacet.Instance);
 
         FacetUtils.AddFacets(facets, collection);
         return metamodel;
@@ -63,7 +63,7 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
 
     private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, ISpecification collection) {
         if (CollectionUtils.IsSet(property.PropertyType)) {
-            collectionFacets.Add(new IsASetFacet());
+            collectionFacets.Add(IsASetFacet.Instance);
         }
     }
 

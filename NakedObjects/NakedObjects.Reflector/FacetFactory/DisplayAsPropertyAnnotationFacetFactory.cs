@@ -75,8 +75,8 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
             FacetUtils.AddFacets(new IFacet[] {
                 new DisplayAsPropertyFacet(),
                 accessorFacet,
-                new MandatoryFacetDefault(),
-                new DisabledFacetAlways()
+                MandatoryFacetDefault.Instance,
+                DisabledFacetAlways.Instance
             }, specification);
 
             metamodel = AddIntegrationFacet(reflector, specification, displayOnType, metamodel);

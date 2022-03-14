@@ -50,5 +50,5 @@ public sealed class RequiredAnnotationFacetFactory : DomainObjectFacetFactoryPro
         return metamodel;
     }
 
-    private static IMandatoryFacet Create(RequiredAttribute attribute) => attribute is not null ? new MandatoryFacet() : null;
+    private static IMandatoryFacet Create(RequiredAttribute attribute) => attribute is not null ? MandatoryFacet.Instance : null;
 }

@@ -53,16 +53,16 @@ public sealed class PropertyMethodsFacetFactory : FunctionalFacetFactoryProcesso
         var facets = new List<IFacet> { new PropertyAccessorFacet(property) };
 
         if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-            facets.Add(new NullableFacetAlways());
+            facets.Add(NullableFacetAlways.Instance);
         }
 
         if (property.GetSetMethod() is not null) {
-            facets.Add(new DisabledFacetAlways());
+            facets.Add(DisabledFacetAlways.Instance);
             facets.Add(new PropertyInitializationFacet(property));
         }
         else {
-            facets.Add(new NotPersistedFacet());
-            facets.Add(new DisabledFacetAlways());
+            facets.Add(NotPersistedFacet.Instance);
+            facets.Add(DisabledFacetAlways.Instance);
         }
 
         MethodHelpers.AddHideForSessionFacetNone(facets, specification);

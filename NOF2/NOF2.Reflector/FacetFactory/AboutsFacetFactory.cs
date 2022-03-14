@@ -100,8 +100,8 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         methodRemover.SafeRemoveMethod(actionMethod);
 
         if (actionMethod.IsStatic) {
-            facets.Add(new StaticMethodFacet());
-            facets.Add(new StaticMenuMethodFacet());
+            facets.Add(StaticMethodFacet.Instance);
+            facets.Add(StaticMenuMethodFacet.Instance);
             facets.Add(new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnSpec, elementSpec, false, Logger<ActionInvocationFacetViaStaticMethod>()));
         }
         else {

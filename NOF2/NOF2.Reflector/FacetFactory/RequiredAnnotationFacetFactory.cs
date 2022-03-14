@@ -51,5 +51,5 @@ public sealed class RequiredAnnotationFacetFactory : AbstractNOF2FacetFactoryPro
         return metamodel;
     }
 
-    private static IMandatoryFacet Create(IRequiredAttribute attribute) => attribute?.IsRequired == true ? new MandatoryFacet() : new OptionalFacet();
+    private static IMandatoryFacet Create(IRequiredAttribute attribute) => attribute?.IsRequired == true ? MandatoryFacet.Instance : OptionalFacet.Instance;
 }

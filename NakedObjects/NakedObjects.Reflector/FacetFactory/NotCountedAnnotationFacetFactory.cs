@@ -34,5 +34,5 @@ public sealed class NotCountedAnnotationFacetFactory : DomainObjectFacetFactoryP
         return metamodel;
     }
 
-    private static INotCountedFacet Create(NotCountedAttribute attribute) => attribute is null ? null : new NotCountedFacet();
+    private static INotCountedFacet Create(NotCountedAttribute attribute) => attribute is null ? null : NotCountedFacet.Instance;
 }

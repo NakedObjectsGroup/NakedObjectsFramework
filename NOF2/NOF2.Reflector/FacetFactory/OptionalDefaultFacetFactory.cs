@@ -44,7 +44,7 @@ public sealed class OptionalDefaultFacetFactory : AbstractNOF2FacetFactoryProces
         return metamodel;
     }
 
-    private static IMandatoryFacet CreateOptional() => new OptionalFacetDefault();
+    private static IMandatoryFacet CreateOptional() => OptionalFacetDefault.Instance;
 
-    private static IMandatoryFacet CreateMandatory() => new MandatoryFacetDefault();
+    private static IMandatoryFacet CreateMandatory() => MandatoryFacetDefault.Instance;
 }

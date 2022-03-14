@@ -29,5 +29,5 @@ public sealed class VersionedAnnotationFacetFactory : FunctionalFacetFactoryProc
         return metamodel;
     }
 
-    private static IConcurrencyCheckFacet Create(IReflector reflector, VersionedAttribute attribute) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet();
+    private static IConcurrencyCheckFacet Create(IReflector reflector, VersionedAttribute attribute) => attribute is null || !reflector.ConcurrencyChecking ? null : ConcurrencyCheckFacet.Instance;
 }

@@ -35,7 +35,7 @@ public sealed class PotencyDerivedFromSignatureFacetFactory : FunctionalFacetFac
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         if (member is MethodInfo method) {
             if (IsSideEffectFree(method.ReturnType)) {
-                FacetUtils.AddFacet(new QueryOnlyFacet(), holder);
+                FacetUtils.AddFacet(QueryOnlyFacet.Instance, holder);
             }
         }
     }

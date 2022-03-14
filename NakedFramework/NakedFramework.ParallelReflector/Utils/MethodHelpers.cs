@@ -101,5 +101,5 @@ public static class MethodHelpers {
 
     public static void AddDisableForSessionFacetNone(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisableForSessionFacetNone());
 
-    public static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) => facets.Add(new DisabledFacetAlways());
+    public static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) => facets.Add(DisabledFacetAlways.Instance);
 }

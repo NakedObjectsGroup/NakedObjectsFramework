@@ -353,7 +353,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
         var facets = new List<IFacet>();
 
         if (parameter.ParameterType.IsGenericType && parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-            facets.Add(new NullableFacetAlways());
+            facets.Add(NullableFacetAlways.Instance);
         }
 
         IObjectSpecBuilder returnSpec;

@@ -7,13 +7,17 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class DisabledFacetAlways : DisabledFacetAbstract {
-    public DisabledFacetAlways()
-        : base(WhenTo.Always) { }
+public sealed class DisabledFacetAlways : DisabledFacetAbstract, IMarkerFacet {
+    private static DisabledFacetAlways instance;
+
+    private DisabledFacetAlways() : base(WhenTo.Always) { }
+
+    public static DisabledFacetAlways Instance => instance ??= new DisabledFacetAlways();
 
     /// <summary>
     ///     Always returns <i>Always disabled</i>

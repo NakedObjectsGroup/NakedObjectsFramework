@@ -12,5 +12,11 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class IsASetFacet : FacetAbstract, IIsASetFacet, IMarkerFacet {
+    private IsASetFacet() { }
+
+    private static IsASetFacet instance;
+
+    public static IsASetFacet Instance => instance ??= new IsASetFacet();
+
     public override Type FacetType => typeof(IIsASetFacet);
 }

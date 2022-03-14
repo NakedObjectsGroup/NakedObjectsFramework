@@ -32,7 +32,7 @@ public sealed class SystemTypeMarkerFacetFactory : SystemTypeFacetFactoryProcess
 
         if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
             valueType = valueType.GetGenericArguments().First();
-            FacetUtils.AddFacet(new NullableFacetAlways(), specification);
+            FacetUtils.AddFacet(NullableFacetAlways.Instance, specification);
         }
 
         AddTypeFacets(specification, valueType);

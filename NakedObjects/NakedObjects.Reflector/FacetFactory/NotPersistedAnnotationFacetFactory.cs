@@ -40,5 +40,5 @@ public sealed class NotPersistedAnnotationFacetFactory : DomainObjectFacetFactor
         return metamodel;
     }
 
-    private static INotPersistedFacet Create(NotPersistedAttribute attribute) => attribute is null ? null : new NotPersistedFacet();
+    private static INotPersistedFacet Create(NotPersistedAttribute attribute) => attribute is null ? null : NotPersistedFacet.Instance;
 }

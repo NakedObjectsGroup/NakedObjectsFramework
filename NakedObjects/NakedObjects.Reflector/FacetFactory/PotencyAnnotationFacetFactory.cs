@@ -30,10 +30,10 @@ public sealed class PotencyAnnotationFacetFactory : DomainObjectFacetFactoryProc
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         // give priority to Idempotent as more restrictive
         if (member.GetCustomAttribute<IdempotentAttribute>() is not null) {
-            FacetUtils.AddFacet(new IdempotentFacet(), holder);
+            FacetUtils.AddFacet(IdempotentFacet.Instance, holder);
         }
         else if (member.GetCustomAttribute<QueryOnlyAttribute>() is not null) {
-            FacetUtils.AddFacet(new QueryOnlyFacet(), holder);
+            FacetUtils.AddFacet(QueryOnlyFacet.Instance, holder);
         }
     }
 

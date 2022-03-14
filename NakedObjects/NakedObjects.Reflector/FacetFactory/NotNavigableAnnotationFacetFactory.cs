@@ -30,5 +30,5 @@ public sealed class NotNavigableAnnotationFacetFactory : DomainObjectFacetFactor
         return metamodel;
     }
 
-    private static INotNavigableFacet Create(NotNavigableAttribute attribute) => attribute is null ? null : new NotNavigableFacet();
+    private static INotNavigableFacet Create(NotNavigableAttribute attribute) => attribute is null ? null : NotNavigableFacet.Instance;
 }

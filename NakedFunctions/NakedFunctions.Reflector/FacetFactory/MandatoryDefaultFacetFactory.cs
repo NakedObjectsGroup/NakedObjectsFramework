@@ -32,17 +32,17 @@ public sealed class MandatoryDefaultFacetFactory : FunctionalFacetFactoryProcess
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new MandatoryFacetDefault(), specification);
+        FacetUtils.AddFacet(MandatoryFacetDefault.Instance, specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new MandatoryFacetDefault(), specification);
+        FacetUtils.AddFacet(MandatoryFacetDefault.Instance, specification);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        FacetUtils.AddFacet(new MandatoryFacetDefault(), holder);
+        FacetUtils.AddFacet(MandatoryFacetDefault.Instance, holder);
         return metamodel;
     }
 }

@@ -19,7 +19,7 @@ namespace NakedFramework.Metamodel.Test.Facet;
 public class DisabledFacetTest {
     [TestMethod]
     public void TestDisabledFacetAlways() {
-        IDisabledFacet facet = new DisabledFacetAlways();
+        IDisabledFacet facet = DisabledFacetAlways.Instance;
         Assert.AreEqual(NakedObjects.Resources.NakedObjects.AlwaysDisabled, facet.DisabledReason(null));
     }
 

@@ -13,5 +13,10 @@ namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class InjectedFacet : FacetAbstract, IInjectedFacet, IMarkerFacet {
+    private static InjectedFacet instance;
+
+    private InjectedFacet() { }
+
+    public static InjectedFacet Instance => instance ??= new InjectedFacet();
     public override Type FacetType => typeof(IInjectedFacet);
 }

@@ -6,8 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
 
@@ -15,9 +13,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
-    private readonly List<ITypeSpecImmutable> objectContributees = new();
+    private readonly ITypeSpecImmutable objectContributee;
+
+    public DisplayAsPropertyFacet(ITypeSpecImmutable type) => objectContributee = type;
+
+    public DisplayAsPropertyFacet() { }
 
     public override Type FacetType => typeof(IDisplayAsPropertyFacet);
-    public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
-    public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
+    public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributee is not null && spec.IsOfType(objectContributee);
 }

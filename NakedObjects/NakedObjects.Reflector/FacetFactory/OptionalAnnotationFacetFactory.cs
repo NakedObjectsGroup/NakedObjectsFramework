@@ -71,5 +71,5 @@ public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryPro
         return metamodel;
     }
 
-    private static IMandatoryFacet Create(OptionallyAttribute attribute) => attribute is not null ? new OptionalFacet() : null;
+    private static IMandatoryFacet Create(OptionallyAttribute attribute) => attribute is not null ? OptionalFacet.Instance : null;
 }

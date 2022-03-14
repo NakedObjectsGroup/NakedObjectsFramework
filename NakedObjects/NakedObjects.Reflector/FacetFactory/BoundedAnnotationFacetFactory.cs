@@ -30,5 +30,5 @@ public sealed class BoundedAnnotationFacetFactory : DomainObjectFacetFactoryProc
         return metamodel;
     }
 
-    private static IBoundedFacet Create(BoundedAttribute attribute) => attribute is null ? null : new BoundedFacet();
+    private static IBoundedFacet Create(BoundedAttribute attribute) => attribute is null ? null : BoundedFacet.Instance;
 }

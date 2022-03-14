@@ -38,7 +38,7 @@ public static class ValueTypeHelpers {
         var facets = new List<IFacet> {
             semanticsProvider as IFacet,
             // value implies aggregated
-            new AggregatedFacetAlways(),
+            AggregatedFacetAlways.Instance,
             new ParseableFacetUsingParser<T>(semanticsProvider),
             new TitleFacetUsingParser<T>(semanticsProvider),
             new ValueFacetFromSemanticProvider<T>(semanticsProvider)

@@ -43,8 +43,8 @@ public sealed class ValueHolderFacetFactory : ValueUsingValueSemanticsProviderFa
 
         facets.Add(GetMaskFacet(type, valueType));
         facets.Add(new TypeFacet(valueType));
-        facets.Add(new NotPersistedFacet());
-        facets.Add(new AggregatedFacetAlways());
+        facets.Add(NotPersistedFacet.Instance);
+        facets.Add(AggregatedFacetAlways.Instance);
 
         FacetUtils.AddFacets(facets, holder);
     }

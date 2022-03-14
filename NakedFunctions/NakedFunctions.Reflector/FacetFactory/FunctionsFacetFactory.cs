@@ -137,7 +137,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
         MethodHelpers.AddHideForSessionFacetNone(facets, action);
         MethodHelpers.AddDisableForSessionFacetNone(facets, action);
 
-        facets.Add(new StaticFunctionFacet());
+        facets.Add(StaticFunctionFacet.Instance);
 
         FacetUtils.AddFacets(facets, action);
 
@@ -149,7 +149,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
         var facets = new List<IFacet>();
 
         if (parameter.ParameterType.IsGenericType && parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-            facets.Add(new NullableFacetAlways());
+            facets.Add(NullableFacetAlways.Instance);
         }
 
         ITypeSpecBuilder returnSpec;

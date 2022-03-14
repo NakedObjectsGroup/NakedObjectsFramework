@@ -10,4 +10,11 @@ using System;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class ComplexTypeFacetAnnotation : ComplexTypeFacetAbstract { }
+public sealed class ComplexTypeFacetAnnotation : ComplexTypeFacetAbstract {
+    private ComplexTypeFacetAnnotation() { }
+
+    private static ComplexTypeFacetAnnotation instance;
+
+    public static ComplexTypeFacetAnnotation Instance => instance ??= new ComplexTypeFacetAnnotation();
+
+}

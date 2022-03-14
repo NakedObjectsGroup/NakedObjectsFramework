@@ -66,7 +66,7 @@ public sealed class CollectionFieldMethodsFacetFactory : DomainObjectFacetFactor
 
     private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, ISpecification collection) {
         if (CollectionUtils.IsSet(property.PropertyType)) {
-            collectionFacets.Add(new IsASetFacet());
+            collectionFacets.Add(IsASetFacet.Instance);
         }
     }
 

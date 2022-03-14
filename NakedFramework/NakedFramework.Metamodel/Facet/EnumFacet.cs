@@ -15,6 +15,13 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class EnumFacet : FacetAbstract, IEnumFacet, IMarkerFacet {
+    private EnumFacet() { }
+
+    private static EnumFacet instance;
+
+    public static EnumFacet Instance => instance ??= new EnumFacet();
+
+
     private readonly Type typeOfEnum;
 
     public EnumFacet(Type typeOfEnum) =>

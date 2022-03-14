@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Test.Facet;
 public class MandatoryFacetTest {
     [TestMethod]
     public void TestMandatoryFacet() {
-        IMandatoryFacet facet = new MandatoryFacet();
+        IMandatoryFacet facet = MandatoryFacet.Instance;
         Assert.IsTrue(facet.IsMandatory);
         Assert.IsFalse(facet.IsOptional);
         Assert.IsTrue(facet.IsRequiredButNull(null));
@@ -23,7 +23,7 @@ public class MandatoryFacetTest {
 
     [TestMethod]
     public void TestMandatoryFacetDefault() {
-        IMandatoryFacet facet = new MandatoryFacetDefault();
+        IMandatoryFacet facet = MandatoryFacetDefault.Instance;
         Assert.IsTrue(facet.IsMandatory);
         Assert.IsFalse(facet.IsOptional);
         Assert.IsTrue(facet.IsRequiredButNull(null));
@@ -31,7 +31,7 @@ public class MandatoryFacetTest {
 
     [TestMethod]
     public void TestOptionalFacet() {
-        IMandatoryFacet facet = new OptionalFacet();
+        IMandatoryFacet facet = OptionalFacet.Instance;
         Assert.IsFalse(facet.IsMandatory);
         Assert.IsTrue(facet.IsOptional);
         Assert.IsFalse(facet.IsRequiredButNull(null));
@@ -39,7 +39,7 @@ public class MandatoryFacetTest {
 
     [TestMethod]
     public void TestOptionsFacetDefault() {
-        IMandatoryFacet facet = new OptionalFacetDefault();
+        IMandatoryFacet facet = OptionalFacetDefault.Instance;
         Assert.IsFalse(facet.IsMandatory);
         Assert.IsTrue(facet.IsOptional);
         Assert.IsFalse(facet.IsRequiredButNull(null));

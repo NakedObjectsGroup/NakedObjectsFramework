@@ -41,5 +41,5 @@ public sealed class PasswordAnnotationFacetFactory : DomainObjectFacetFactoryPro
         return metamodel;
     }
 
-    private static IPasswordFacet Create(DataTypeAttribute attribute) => attribute is not null && attribute.DataType == DataType.Password ? new PasswordFacet() : null;
+    private static IPasswordFacet Create(DataTypeAttribute attribute) => attribute is not null && attribute.DataType == DataType.Password ? PasswordFacet.Instance : null;
 }

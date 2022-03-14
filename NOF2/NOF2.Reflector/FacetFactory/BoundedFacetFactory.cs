@@ -26,7 +26,7 @@ public sealed class BoundedFacetFactory : AbstractNOF2FacetFactoryProcessor {
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (type.GetInterfaces().Any(i => i == typeof(IBounded))) {
-            FacetUtils.AddFacet(new BoundedFacet(), specification);
+            FacetUtils.AddFacet(BoundedFacet.Instance, specification);
         }
 
         return metamodel;

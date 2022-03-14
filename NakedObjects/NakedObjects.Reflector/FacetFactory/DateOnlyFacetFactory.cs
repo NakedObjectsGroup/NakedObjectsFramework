@@ -54,11 +54,11 @@ public sealed class DateOnlyFacetFactory : DomainObjectFacetFactoryProcessor, IA
     }
 
     private static IDateOnlyFacet Create(DataTypeAttribute attribute, ConcurrencyCheckAttribute concurrencyCheckAttribute) =>
-        attribute?.DataType == DataType.Date
-            ? new DateOnlyFacet()
+        attribute?.DataType is DataType.Date
+            ? DateOnlyFacet.Instance
             : concurrencyCheckAttribute is not null
                 ? null
-                : attribute?.DataType == DataType.DateTime
+                : attribute?.DataType is DataType.DateTime
                     ? null
-                    : new DateOnlyFacet();
+                    : DateOnlyFacet.Instance;
 }
