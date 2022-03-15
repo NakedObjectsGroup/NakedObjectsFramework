@@ -71,7 +71,7 @@ public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstract
     public override void SetUp() {
         base.SetUp();
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(adapter = new DateTimeValueSemanticsProvider(spec));
+        SetValue(adapter = DateTimeValueSemanticsProvider.Instance);
     }
 
     [TestCleanup]

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -18,13 +17,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<uint>, IUnsignedIntegerValueFacet {
     private const uint DefaultValueConst = 0;
     private const bool Immutable = true;
+    private static UIntValueSemanticsProvider instance;
 
-    public UIntValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private UIntValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static UIntValueSemanticsProvider Instance => instance ??= new UIntValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(uint);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new UIntValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IUnsignedIntegerValueFacet);
 

@@ -64,7 +64,7 @@ public class ByteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTest
         base.SetUp();
         byteObj = 102;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new ByteValueSemanticsProvider(spec));
+        SetValue(value = ByteValueSemanticsProvider.Instance);
     }
 
     [TestCleanup]

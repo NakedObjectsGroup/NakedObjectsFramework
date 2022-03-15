@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -18,13 +17,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<char>, ICharValueFacet {
     private const char DefaultValueConst = ' ';
     private const bool Immutable = true;
+    private static CharValueSemanticsProvider instance;
 
-    public CharValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private CharValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static CharValueSemanticsProvider Instance => instance ??= new CharValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(char);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new CharValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(ICharValueFacet);
 

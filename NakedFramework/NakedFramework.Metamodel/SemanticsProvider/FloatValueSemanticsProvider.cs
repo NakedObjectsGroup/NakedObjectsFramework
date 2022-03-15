@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -17,13 +16,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract<float>, IFloatingPointValueFacet {
     private const float DefaultValueConst = 0;
     private const bool Immutable = true;
+    private static FloatValueSemanticsProvider instance;
 
-    public FloatValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private FloatValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static FloatValueSemanticsProvider Instance => instance ??= new FloatValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(float);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new FloatValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IFloatingPointValueFacet);
 

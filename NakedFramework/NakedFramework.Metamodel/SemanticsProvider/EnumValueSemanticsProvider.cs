@@ -8,7 +8,6 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -17,8 +16,7 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IEnumValueFacet {
     private const bool Immutable = true;
 
-    public EnumValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, GetDefault()) { }
+    public EnumValueSemanticsProvider() : base(Immutable, GetDefault()) { }
 
     public static Type AdaptedType => typeof(T);
 

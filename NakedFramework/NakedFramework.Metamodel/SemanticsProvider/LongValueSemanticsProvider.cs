@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -18,13 +17,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, ILongValueFacet {
     private const bool Immutable = true;
     private const long DefaultValueConst = 0;
+    private static LongValueSemanticsProvider instance;
 
-    public LongValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private LongValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static LongValueSemanticsProvider Instance => instance ??= new LongValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(long);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new LongValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(ILongValueFacet);
 

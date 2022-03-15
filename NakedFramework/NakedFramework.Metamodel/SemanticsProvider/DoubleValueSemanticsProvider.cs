@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -18,12 +17,14 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
     private const double DefaultValueConst = 0;
     private const bool Immutable = true;
 
-    public DoubleValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private static DoubleValueSemanticsProvider instance;
+
+    private DoubleValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static DoubleValueSemanticsProvider Instance => instance ??= new DoubleValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(double);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new DoubleValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IDoubleFloatingPointValueFacet);
 

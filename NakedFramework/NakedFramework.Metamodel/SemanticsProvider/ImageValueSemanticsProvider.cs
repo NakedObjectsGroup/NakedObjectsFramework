@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Value;
 
@@ -18,13 +17,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IImageValueFacet, IFromStream {
     private const bool Immutable = true;
+    private static ImageValueSemanticsProvider instance;
 
-    public ImageValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, null) { }
+    private ImageValueSemanticsProvider() : base(Immutable, null) { }
+    internal static ImageValueSemanticsProvider Instance => instance ??= new ImageValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(Image);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ImageValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     #region IFromStream Members
 

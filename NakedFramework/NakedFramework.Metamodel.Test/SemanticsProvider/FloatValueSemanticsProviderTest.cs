@@ -74,7 +74,7 @@ public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.SetUp();
 
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(new FloatValueSemanticsProvider(spec));
+        SetValue(FloatValueSemanticsProvider.Instance);
 
         floatObj = 32.5F;
     }

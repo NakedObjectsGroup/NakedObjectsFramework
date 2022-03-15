@@ -66,7 +66,7 @@ public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTes
         base.SetUp();
         colorObj = Color.White;
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(value = new ColorValueSemanticsProvider(spec));
+        SetValue(value = ColorValueSemanticsProvider.Instance);
     }
 
     [TestCleanup]

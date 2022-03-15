@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -17,13 +16,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<byte>, IByteValueFacet {
     private const byte DefaultValueConst = 0;
     private const bool Immutable = true;
+    private static ByteValueSemanticsProvider instance;
 
-    public ByteValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private ByteValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static ByteValueSemanticsProvider Instance => instance ??= new ByteValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(byte);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ByteValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IByteValueFacet);
 

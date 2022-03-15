@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -16,14 +15,15 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<Guid>, IGuidValueFacet {
     private const bool Immutable = true;
+    private static GuidValueSemanticsProvider instance;
     private static readonly Guid DefaultValueConst = Guid.Empty;
 
-    public GuidValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private GuidValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static GuidValueSemanticsProvider Instance => instance ??= new GuidValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(Guid);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new GuidValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IGuidValueFacet);
 

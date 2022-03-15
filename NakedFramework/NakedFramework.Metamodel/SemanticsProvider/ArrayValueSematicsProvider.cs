@@ -18,8 +18,7 @@ public sealed class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstr
     private const T[] DefaultValueConst = null;
     private const bool Immutable = true;
 
-    public ArrayValueSemanticsProvider()
-        : base(Immutable, DefaultValueConst) { }
+    public ArrayValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
 
     public static Type AdaptedType => typeof(T[]);
 

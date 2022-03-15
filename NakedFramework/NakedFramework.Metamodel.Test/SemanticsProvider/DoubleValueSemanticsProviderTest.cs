@@ -74,7 +74,7 @@ public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTe
         base.SetUp();
 
         var spec = new Mock<IObjectSpecImmutable>().Object;
-        SetValue(new DoubleValueSemanticsProvider(spec));
+        SetValue(DoubleValueSemanticsProvider.Instance);
 
         doubleObj = 32.5;
     }

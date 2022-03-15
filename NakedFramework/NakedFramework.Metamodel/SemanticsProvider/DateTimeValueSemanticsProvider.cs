@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -17,17 +16,18 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstract<DateTime>, IDateValueFacet {
     private const bool Immutable = false;
+    private static DateTimeValueSemanticsProvider instance;
     private static readonly DateTime DefaultValueConst = new();
 
-    public DateTimeValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private DateTimeValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static DateTimeValueSemanticsProvider Instance => instance ??= new DateTimeValueSemanticsProvider();
 
     // inject for testing 
     public static DateTime? TestDateTime { get; set; }
 
     public static Type AdaptedType => typeof(DateTime);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new DateTimeValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IDateValueFacet);
 

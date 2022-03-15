@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Value;
 
@@ -18,13 +17,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFileAttachmentValueFacet, IFromStream {
     private const bool Immutable = true;
+    private static FileAttachmentValueSemanticsProvider instance;
 
-    public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, null) { }
+    private FileAttachmentValueSemanticsProvider() : base(Immutable, null) { }
+    internal static FileAttachmentValueSemanticsProvider Instance => instance ??= new FileAttachmentValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(FileAttachment);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new FileAttachmentValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IFileAttachmentValueFacet);
 

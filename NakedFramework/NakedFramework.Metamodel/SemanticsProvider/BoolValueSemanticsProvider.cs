@@ -7,9 +7,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
+
+[assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
@@ -17,13 +19,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstract<bool>, IBooleanValueFacet {
     private const bool DefaultValueConst = false;
     private const bool Immutable = true;
+    private static BooleanValueSemanticsProvider instance;
 
-    public BooleanValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private BooleanValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static BooleanValueSemanticsProvider Instance => instance ??= new BooleanValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(bool);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new BooleanValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IBooleanValueFacet);
 

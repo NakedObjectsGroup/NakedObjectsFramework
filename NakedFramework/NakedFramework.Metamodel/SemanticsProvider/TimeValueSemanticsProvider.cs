@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 
@@ -18,14 +17,15 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeSpan>, ITimeValueFacet {
     private const bool Immutable = false;
+    private static TimeValueSemanticsProvider instance;
     private static readonly TimeSpan DefaultValueConst = new();
 
-    public TimeValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private TimeValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static TimeValueSemanticsProvider Instance => instance ??= new TimeValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(TimeSpan);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new TimeValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(ITimeValueFacet);
 

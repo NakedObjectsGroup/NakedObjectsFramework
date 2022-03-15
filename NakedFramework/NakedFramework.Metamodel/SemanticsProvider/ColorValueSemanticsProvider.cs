@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -18,14 +17,15 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
     private const bool Immutable = true;
+    private static ColorValueSemanticsProvider instance;
     private static readonly Color DefaultValueConst = Color.Black;
 
-    public ColorValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private ColorValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static ColorValueSemanticsProvider Instance => instance ??= new ColorValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(Color);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ColorValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IColorValueFacet);
 

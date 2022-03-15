@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
 public static class ValueTypeHelpers {
-    private static readonly List<KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>>> Factories = new() {
+    private static readonly List<KeyValuePair<Type, IValueSemanticsProvider>> Factories = new() {
         BooleanValueSemanticsProvider.Factory,
         ByteValueSemanticsProvider.Factory,
         CharValueSemanticsProvider.Factory,
@@ -32,7 +31,7 @@ public static class ValueTypeHelpers {
         UShortValueSemanticsProvider.Factory
     };
 
-    public static readonly Dictionary<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> TypeToSemanticProvider = new(Factories);
+    public static readonly Dictionary<Type, IValueSemanticsProvider> TypeToSemanticProvider = new(Factories);
 
     public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecificationBuilder holder) {
         var facets = new List<IFacet> {

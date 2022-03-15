@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
 
@@ -16,13 +15,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstract<string>, IStringValueFacet {
     private const string DefaultValueConst = null;
     private const bool Immutable = true;
+    private static StringValueSemanticsProvider instance;
 
-    public StringValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private StringValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static StringValueSemanticsProvider Instance => instance ??= new StringValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(string);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new StringValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IStringValueFacet);
 

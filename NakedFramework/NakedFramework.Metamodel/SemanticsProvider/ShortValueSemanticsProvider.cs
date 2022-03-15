@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -18,13 +17,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract<short>, IShortValueFacet {
     private const short DefaultValueConst = 0;
     private const bool Immutable = true;
+    private static ShortValueSemanticsProvider instance;
 
-    public ShortValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private ShortValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static ShortValueSemanticsProvider Instance => instance ??= new ShortValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(short);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new ShortValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IShortValueFacet);
 

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
@@ -18,13 +17,14 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstract<decimal>, IDecimalValueFacet {
     private const decimal DefaultValueConst = 0;
     private const bool Immutable = true;
+    private static DecimalValueSemanticsProvider instance;
 
-    public DecimalValueSemanticsProvider(IObjectSpecImmutable spec)
-        : base(Immutable, DefaultValueConst) { }
+    private DecimalValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
+    internal static DecimalValueSemanticsProvider Instance => instance ??= new DecimalValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(decimal);
 
-    public static KeyValuePair<Type, Func<IObjectSpecImmutable, IValueSemanticsProvider>> Factory => new(AdaptedType, o => new DecimalValueSemanticsProvider(o));
+    public static KeyValuePair<Type, IValueSemanticsProvider> Factory => new(AdaptedType, Instance);
 
     public override Type FacetType => typeof(IDecimalValueFacet);
 
