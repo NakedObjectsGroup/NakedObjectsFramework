@@ -15,6 +15,15 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
+
+    private static PropertyValidateFacetDefault instance;
+
+    private PropertyValidateFacetDefault() { }
+
+    public static PropertyValidateFacetDefault Instance => instance ??= new PropertyValidateFacetDefault();
+
+
+
     public override Type FacetType => typeof(IPropertyValidateFacet);
 
     #region IPropertyValidateFacet Members

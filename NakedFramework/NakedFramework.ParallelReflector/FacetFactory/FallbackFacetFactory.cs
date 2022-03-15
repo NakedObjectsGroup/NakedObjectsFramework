@@ -38,10 +38,10 @@ public sealed class FallbackFacetFactory : SystemTypeFacetFactoryProcessor {
             new IFacet[] {
                 DescribedAsFacetNone.Instance,
                 ImmutableFacetNever.Instance,
-                new TitleFacetNone(),
+                TitleFacetNone.Instance,
                 namedFacet,
                 pluralFacet,
-                new ValueFacet()
+                ValueFacet.Instance
             }, specification);
         return metamodel;
     }
@@ -56,19 +56,19 @@ public sealed class FallbackFacetFactory : SystemTypeFacetFactoryProcessor {
 
         if (holder is IAssociationSpecImmutable) {
             facets.Add(ImmutableFacetNever.Instance);
-            facets.Add(new PropertyDefaultFacetNone());
-            facets.Add(new PropertyValidateFacetNone());
+            facets.Add(PropertyDefaultFacetNone.Instance);
+            facets.Add(PropertyValidateFacetNone.Instance);
         }
 
         if (holder is IOneToOneAssociationSpecImmutable immutable) {
-            facets.Add(new MaxLengthFacetZero());
-            facets.Add(new MultiLineFacetNone());
+            facets.Add(MaxLengthFacetZero.Instance);
+            facets.Add(MultiLineFacetNone.Instance);
         }
 
         if (holder is IActionSpecImmutable) {
             facets.Add(ActionDefaultsFacetNone.Instance);
             facets.Add(ActionChoicesFacetNone.Instance);
-            facets.Add(new PageSizeFacetDefault());
+            facets.Add(PageSizeFacetDefault.Instance);
         }
 
         FacetUtils.AddFacets(facets, holder);
@@ -92,8 +92,8 @@ public sealed class FallbackFacetFactory : SystemTypeFacetFactoryProcessor {
             INamedFacet namedFacet = new NamedFacetInferred(name);
             facets.Add(namedFacet);
             facets.Add(DescribedAsFacetNone.Instance);
-            facets.Add(new MultiLineFacetNone());
-            facets.Add(new MaxLengthFacetZero());
+            facets.Add(MultiLineFacetNone.Instance);
+            facets.Add(MaxLengthFacetZero.Instance);
         }
 
         FacetUtils.AddFacets(facets, holder);

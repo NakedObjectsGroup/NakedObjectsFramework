@@ -14,6 +14,15 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ValueFacet : FacetAbstract, IValueFacet {
+    private static ValueFacet instance;
+
+    private ValueFacet() { }
+
+    public static ValueFacet Instance => instance ??= new ValueFacet();
+
+
+
+
     public override Type FacetType => typeof(IValueFacet);
 
     public object Value(INakedObjectAdapter nakedObjectAdapter, string format = null) => nakedObjectAdapter.GetDomainObject();

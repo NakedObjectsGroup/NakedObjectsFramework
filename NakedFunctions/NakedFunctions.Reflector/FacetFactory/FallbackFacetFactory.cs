@@ -33,9 +33,9 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
             new IFacet[] {
                 DescribedAsFacetNone.Instance,
                 ImmutableFacetNever.Instance,
-                new TitleFacetNone(),
-                new ValueFacet(),
-                new SaveFacet()
+                TitleFacetNone.Instance,
+                ValueFacet.Instance,
+                SaveFacet.Instance
             }, specification);
         return metamodel;
     }
@@ -50,19 +50,19 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
 
         if (holder is IAssociationSpecImmutable) {
             facets.Add(ImmutableFacetNever.Instance);
-            facets.Add(new PropertyDefaultFacetNone());
-            facets.Add(new PropertyValidateFacetNone());
+            facets.Add(PropertyDefaultFacetNone.Instance);
+            facets.Add(PropertyValidateFacetNone.Instance);
         }
 
         if (holder is IOneToOneAssociationSpecImmutable immutable) {
-            facets.Add(new MaxLengthFacetZero());
-            facets.Add(new MultiLineFacetNone());
+            facets.Add(MaxLengthFacetZero.Instance);
+            facets.Add(MultiLineFacetNone.Instance);
         }
 
         if (holder is IActionSpecImmutable) {
             facets.Add(ActionDefaultsFacetNone.Instance);
             facets.Add(ActionChoicesFacetNone.Instance);
-            facets.Add(new PageSizeFacetDefault());
+            facets.Add(PageSizeFacetDefault.Instance);
         }
 
         FacetUtils.AddFacets(facets, holder);
@@ -85,8 +85,8 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
             var name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
             facets.Add(new MemberNamedFacetInferred(name));
             facets.Add(DescribedAsFacetNone.Instance);
-            facets.Add(new MultiLineFacetNone());
-            facets.Add(new MaxLengthFacetZero());
+            facets.Add(MultiLineFacetNone.Instance);
+            facets.Add(MaxLengthFacetZero.Instance);
         }
 
         FacetUtils.AddFacets(facets, holder);

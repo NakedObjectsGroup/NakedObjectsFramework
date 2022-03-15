@@ -13,6 +13,14 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TitleFacetNone : TitleFacetAbstract {
+
+    private static TitleFacetNone instance;
+
+    private TitleFacetNone() { }
+
+    public static TitleFacetNone Instance => instance ??= new TitleFacetNone();
+
+
     public override bool IsNoOp => true;
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => null;

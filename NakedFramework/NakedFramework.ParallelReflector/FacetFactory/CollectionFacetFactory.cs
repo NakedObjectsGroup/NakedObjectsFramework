@@ -27,7 +27,7 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, Type type, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         FacetUtils.AddFacet(ArrayFacet.Instance, holder);
-        FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(), holder);
+        FacetUtils.AddFacet(TypeOfFacetInferredFromArray.Instance, holder);
 
         var elementType = type.GetElementType();
         (_, metamodel) = reflector.LoadSpecification(elementType, metamodel);
@@ -39,7 +39,7 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
         var isQueryable = CollectionUtils.IsGenericQueryable(type);
         var isSet = CollectionUtils.IsSet(type);
 
-        FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(), holder);
+        FacetUtils.AddFacet(TypeOfFacetInferredFromGenerics.Instance, holder);
 
         var facet = GetCollectionFacet((isQueryable, isCollection, isSet));
 

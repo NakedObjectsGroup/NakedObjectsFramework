@@ -12,6 +12,14 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class PropertyDefaultFacetNone : PropertyDefaultFacetAbstract {
+
+    private static PropertyDefaultFacetNone instance;
+
+    private PropertyDefaultFacetNone()  { }
+
+    public static PropertyDefaultFacetNone Instance => instance ??= new PropertyDefaultFacetNone();
+
+
     public override bool IsNoOp => true;
 
     /// <summary>

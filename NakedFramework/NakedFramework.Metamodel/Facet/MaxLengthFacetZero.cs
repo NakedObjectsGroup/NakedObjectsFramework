@@ -14,8 +14,11 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class MaxLengthFacetZero : MaxLengthFacetAbstract {
     private const int NoLimit = 0;
 
-    public MaxLengthFacetZero()
-        : base(NoLimit) { }
+    private static MaxLengthFacetZero instance;
+
+    private MaxLengthFacetZero() : base(NoLimit) { }
+
+    public static MaxLengthFacetZero Instance => instance ??= new MaxLengthFacetZero();
 
     public override bool IsNoOp => true;
 

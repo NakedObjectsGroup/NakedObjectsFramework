@@ -91,7 +91,7 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
 
             (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
             facets.Add(new ElementTypeFacet(elementType, elementSpec));
-            facets.Add(new TypeOfFacetInferredFromGenerics());
+            facets.Add(TypeOfFacetInferredFromGenerics.Instance);
         }
         else {
             (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(typeof(object), metamodel);
