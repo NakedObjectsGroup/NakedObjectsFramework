@@ -11,9 +11,15 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class TypeIsInterfaceFacet : MarkerFlagFacetAbstract, ITypeIsInterfaceFacet {
-    public TypeIsInterfaceFacet(bool flag)
-        : base(flag) { }
+public sealed class TypeIsInterfaceFacet : FacetAbstract, ITypeIsInterfaceFacet, IMarkerFacet
+{
+    private static TypeIsInterfaceFacet instance;
 
+    private TypeIsInterfaceFacet() { }
+
+    public static TypeIsInterfaceFacet Instance => instance ??= new TypeIsInterfaceFacet();
+
+
+   
     public override Type FacetType => typeof(ITypeIsInterfaceFacet);
 }

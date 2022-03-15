@@ -185,7 +185,7 @@ public abstract class TypeSpec : ITypeSpec {
 
     public bool IsAbstract {
         get {
-            isAbstract ??= InnerSpec.GetFacet<ITypeIsAbstractFacet>().Flag;
+            isAbstract ??= InnerSpec.ContainsFacet<ITypeIsAbstractFacet>();
 
             return isAbstract.Value;
         }
@@ -193,7 +193,7 @@ public abstract class TypeSpec : ITypeSpec {
 
     public bool IsInterface {
         get {
-            isInterface ??= InnerSpec.GetFacet<ITypeIsInterfaceFacet>().Flag;
+            isInterface ??= InnerSpec.ContainsFacet<ITypeIsInterfaceFacet>();
 
             return isInterface.Value;
         }
@@ -240,7 +240,7 @@ public abstract class TypeSpec : ITypeSpec {
 
     public bool IsVoid {
         get {
-            isVoid ??= InnerSpec.GetFacet<ITypeIsVoidFacet>().Flag;
+            isVoid ??= InnerSpec.ContainsFacet<ITypeIsVoidFacet>();
 
             return isVoid.Value;
         }
@@ -248,7 +248,7 @@ public abstract class TypeSpec : ITypeSpec {
 
     public bool IsStatic {
         get {
-            isStatic ??= InnerSpec.GetFacet<ITypeIsStaticFacet>().Flag;
+            isStatic ??= InnerSpec.ContainsFacet<ITypeIsStaticFacet>();
 
             return isStatic.Value;
         }

@@ -11,9 +11,14 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class TypeIsSealedFacet : MarkerFlagFacetAbstract, ITypeIsSealedFacet {
-    public TypeIsSealedFacet(bool flag)
-        : base(flag) { }
+public sealed class TypeIsSealedFacet : FacetAbstract, ITypeIsSealedFacet, IMarkerFacet
+{
+    private static TypeIsSealedFacet instance;
 
+    private TypeIsSealedFacet() { }
+
+    public static TypeIsSealedFacet Instance => instance ??= new TypeIsSealedFacet();
+
+    
     public override Type FacetType => typeof(ITypeIsSealedFacet);
 }

@@ -47,32 +47,27 @@ public class TypeMarkerFacetFactoryTest : AbstractFacetFactoryTest {
 
     private void AssertAbstract(bool isAbstract) {
         var facet = Specification.GetFacet<ITypeIsAbstractFacet>();
-        Assert.IsNotNull(facet);
-        Assert.AreEqual(isAbstract, facet.Flag);
+        Assert.AreEqual(isAbstract, facet is not null);
     }
 
     private void AssertVoid(bool isVoid) {
         var facet = Specification.GetFacet<ITypeIsVoidFacet>();
-        Assert.IsNotNull(facet);
-        Assert.AreEqual(isVoid, facet.Flag);
+        Assert.AreEqual(isVoid, facet is not null);
     }
 
     private void AssertSealed(bool isSealed) {
         var facet = Specification.GetFacet<ITypeIsSealedFacet>();
-        Assert.IsNotNull(facet);
-        Assert.AreEqual(isSealed, facet.Flag);
+        Assert.AreEqual(isSealed, facet is not null);
     }
 
     private void AssertInterface(bool isInterface) {
         var facet = Specification.GetFacet<ITypeIsInterfaceFacet>();
-        Assert.IsNotNull(facet);
-        Assert.AreEqual(isInterface, facet.Flag);
+        Assert.AreEqual(isInterface, facet is not null);
     }
 
     private void AssertStatic(bool isStatic) {
         var facet = Specification.GetFacet<ITypeIsStaticFacet>();
-        Assert.IsNotNull(facet);
-        Assert.AreEqual(isStatic, facet.Flag);
+        Assert.AreEqual(isStatic,facet is not null);
     }
 
     private void Process(Type type) {

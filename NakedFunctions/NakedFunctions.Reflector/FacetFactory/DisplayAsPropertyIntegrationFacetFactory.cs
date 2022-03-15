@@ -25,7 +25,7 @@ public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFa
     public DisplayAsPropertyIntegrationFacetFactory(IFacetFactoryOrder<DisplayAsPropertyIntegrationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-    private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;
+    private static bool IsStatic(ITypeSpecImmutable spec) => spec.ContainsFacet<ITypeIsStaticFacet>();
 
     private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
 

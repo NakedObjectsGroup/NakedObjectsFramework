@@ -28,7 +28,7 @@ public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProces
 
     private static bool IsContributedFunctionToCollectionOf(IActionSpecImmutable sa, IObjectSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollectionOf(ts) == true;
 
-    private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;
+    private static bool IsStatic(ITypeSpecImmutable spec) => spec.ContainsFacet<ITypeIsStaticFacet>();
 
     private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecBuilder[] functions) {
         var objectContribActions = functions.AsParallel().SelectMany(functionsSpec => {

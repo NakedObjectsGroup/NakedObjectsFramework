@@ -7,4 +7,4 @@
 
 namespace NakedFramework.Architecture.Facet;
 
-public interface ITypeIsInterfaceFacet : IMarkerFlagFacet { }
+public interface ITypeIsInterfaceFacet : IFacet { }
