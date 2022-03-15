@@ -55,7 +55,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new CreatedCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new CreatedCallbackFacetNull());
+            facets.Add(CreatedCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.PersistingMethod, typeof(void), Type.EmptyTypes);
@@ -65,7 +65,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new PersistingCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new PersistingCallbackFacetNull());
+            facets.Add(PersistingCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.PersistedMethod, typeof(void), Type.EmptyTypes);
@@ -75,7 +75,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new PersistedCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new PersistedCallbackFacetNull());
+            facets.Add(PersistedCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.UpdatingMethod, typeof(void), Type.EmptyTypes);
@@ -84,7 +84,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new UpdatingCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new UpdatingCallbackFacetNull());
+            facets.Add(UpdatingCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.UpdatedMethod, typeof(void), Type.EmptyTypes);
@@ -93,7 +93,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new UpdatedCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new UpdatedCallbackFacetNull());
+            facets.Add(UpdatedCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.LoadingMethod, typeof(void), Type.EmptyTypes);
@@ -102,7 +102,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new LoadingCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new LoadingCallbackFacetNull());
+            facets.Add(LoadingCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.LoadedMethod, typeof(void), Type.EmptyTypes);
@@ -111,7 +111,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new LoadedCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new LoadedCallbackFacetNull());
+            facets.Add(LoadedCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DeletingMethod, typeof(void), Type.EmptyTypes);
@@ -120,7 +120,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new DeletingCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new DeletingCallbackFacetNull());
+            facets.Add(DeletingCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DeletedMethod, typeof(void), Type.EmptyTypes);
@@ -129,7 +129,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new DeletedCallbackFacetViaMethod(method));
         }
         else {
-            facets.Add(new DeletedCallbackFacetNull());
+            facets.Add(DeletedCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.OnUpdatingErrorMethod, typeof(string), new[] { typeof(Exception) });
@@ -138,7 +138,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new OnUpdatingErrorCallbackFacetViaMethod(method, Logger<OnUpdatingErrorCallbackFacetViaMethod>()));
         }
         else {
-            facets.Add(new OnUpdatingErrorCallbackFacetNull());
+            facets.Add(OnUpdatingErrorCallbackFacetNull.Instance);
         }
 
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.OnPersistingErrorMethod, typeof(string), new[] { typeof(Exception) });
@@ -147,7 +147,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
             facets.Add(new OnPersistingErrorCallbackFacetViaMethod(method, Logger<OnPersistingErrorCallbackFacetViaMethod>()));
         }
         else {
-            facets.Add(new OnPersistingErrorCallbackFacetNull());
+            facets.Add(OnPersistingErrorCallbackFacetNull.Instance);
         }
 
         remover.RemoveMethods(methods);

@@ -17,18 +17,21 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract {
+    private static ViewModelSwitchableFacetConvention instance;
+
+    private ViewModelSwitchableFacetConvention() { }
+
+    public static ViewModelSwitchableFacetConvention Instance => instance ??= new ViewModelSwitchableFacetConvention();
+
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 
     public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
 
     public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        var target = nakedObjectAdapter.GetDomainObject<IViewModelSwitchable>();
-
-        if (target == null) {
-            throw new NakedObjectSystemException(nakedObjectAdapter.Object == null
-                                                     ? "Null domain object"
-                                                     : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}");
-        }
+        var target = nakedObjectAdapter.GetDomainObject<IViewModelSwitchable>() ??
+                     throw new NakedObjectSystemException(nakedObjectAdapter?.Object is null
+                                                              ? "Null domain object"
+                                                              : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}");
 
         return target.IsEditView();
     }

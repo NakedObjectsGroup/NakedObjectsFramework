@@ -12,5 +12,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class OnUpdatingErrorCallbackFacetNull : OnUpdatingErrorCallbackFacetAbstract {
+    private static OnUpdatingErrorCallbackFacetNull instance;
+
+    private OnUpdatingErrorCallbackFacetNull() { }
+
+    public static OnUpdatingErrorCallbackFacetNull Instance => instance ??= new OnUpdatingErrorCallbackFacetNull();
+
+
     public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => throw exception;
 }

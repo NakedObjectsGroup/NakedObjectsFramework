@@ -13,6 +13,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class CreatedCallbackFacetNull : CreatedCallbackFacetAbstract {
+    private static CreatedCallbackFacetNull instance;
+
+    private CreatedCallbackFacetNull() { }
+
+    public static CreatedCallbackFacetNull Instance => instance ??= new CreatedCallbackFacetNull();
+
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }
 

@@ -13,6 +13,12 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class LoadingCallbackFacetNull : LoadingCallbackFacetAbstract {
+    private static LoadingCallbackFacetNull instance;
+
+    private LoadingCallbackFacetNull() { }
+
+    public static LoadingCallbackFacetNull Instance => instance ??= new LoadingCallbackFacetNull();
+
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }
 

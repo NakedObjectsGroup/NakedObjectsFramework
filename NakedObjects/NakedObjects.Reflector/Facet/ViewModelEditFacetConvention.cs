@@ -16,6 +16,12 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ViewModelEditFacetConvention : ViewModelFacetAbstract {
+    private static ViewModelEditFacetConvention instance;
+
+    private ViewModelEditFacetConvention() { }
+
+    public static ViewModelEditFacetConvention Instance => instance ??= new ViewModelEditFacetConvention();
+
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 
     public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);

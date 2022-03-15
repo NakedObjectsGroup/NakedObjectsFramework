@@ -14,14 +14,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ViewModelFacetAbstract : FacetAbstract, IViewModelFacet {
-
     public override Type FacetType => typeof(IViewModelFacet);
 
     #region IViewModelFacet Members
 
     public abstract string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
     public abstract void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);
-
     public virtual bool IsEditView(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => false;
 
     #endregion
