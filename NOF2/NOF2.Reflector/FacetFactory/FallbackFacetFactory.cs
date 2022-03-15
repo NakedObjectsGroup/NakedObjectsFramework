@@ -37,8 +37,8 @@ public sealed class FallbackFacetFactory : AbstractNOF2FacetFactoryProcessor {
 
         FacetUtils.AddFacets(
             new IFacet[] {
-                new DescribedAsFacetNone(),
-                new ImmutableFacetNever(),
+                DescribedAsFacetNone.Instance,
+                ImmutableFacetNever.Instance,
                 new TitleFacetNone(),
                 namedFacet,
                 pluralFacet,
@@ -51,11 +51,11 @@ public sealed class FallbackFacetFactory : AbstractNOF2FacetFactoryProcessor {
         var facets = new List<IFacet>();
 
         if (holder is IMemberSpecImmutable) {
-            facets.Add(new DescribedAsFacetNone());
+            facets.Add(DescribedAsFacetNone.Instance);
         }
 
         if (holder is IAssociationSpecImmutable) {
-            facets.Add(new ImmutableFacetNever());
+            facets.Add(ImmutableFacetNever.Instance);
             facets.Add(new PropertyDefaultFacetNone());
             facets.Add(new PropertyValidateFacetNone());
         }
@@ -90,7 +90,7 @@ public sealed class FallbackFacetFactory : AbstractNOF2FacetFactoryProcessor {
         if (holder is IActionParameterSpecImmutable) {
             var name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
             facets.Add(new MemberNamedFacetInferred(name));
-            facets.Add(new DescribedAsFacetNone());
+            facets.Add(DescribedAsFacetNone.Instance);
             facets.Add(new MultiLineFacetNone());
             facets.Add(new MaxLengthFacetZero());
         }

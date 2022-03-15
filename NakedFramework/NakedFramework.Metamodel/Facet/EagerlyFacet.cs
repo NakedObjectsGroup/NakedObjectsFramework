@@ -12,14 +12,17 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class EagerlyFacet : FacetAbstract, IEagerlyFacet {
-    public EagerlyFacet(Do what) =>
-        What = what;
+    private static EagerlyFacet instance;
+
+    private EagerlyFacet() { }
+
+    public static EagerlyFacet Instance => instance ??= new EagerlyFacet();
 
     public override Type FacetType => typeof(IEagerlyFacet);
 
     #region IEagerlyFacet Members
 
-    public Do What { get; private set; }
+    public Do What => Do.Rendering;
 
     #endregion
 }

@@ -46,7 +46,7 @@ public static class ValueTypeHelpers {
 
         // ImmutableFacet, if appropriate
         if (semanticsProvider.IsImmutable) {
-            facets.Add(new ImmutableFacetViaValueSemantics());
+            facets.Add(ImmutableFacetViaValueSemantics.Instance);
         }
 
         if (semanticsProvider is IFromStream fromStream) {

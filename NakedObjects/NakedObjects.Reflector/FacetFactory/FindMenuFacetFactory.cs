@@ -72,5 +72,5 @@ public sealed class FindMenuFacetFactory : DomainObjectFacetFactoryProcessor, IA
         return metamodel;
     }
 
-    private static IFacet Create(FindMenuAttribute attribute) => attribute is null ? null : new FindMenuFacet();
+    private static IFacet Create(FindMenuAttribute attribute) => attribute is null ? null : FindMenuFacet.Instance;
 }

@@ -37,8 +37,8 @@ public sealed class FallbackFacetFactory : DomainObjectFacetFactoryProcessor {
 
         FacetUtils.AddFacets(
             new IFacet[] {
-                new DescribedAsFacetNone(),
-                new ImmutableFacetNever(),
+                DescribedAsFacetNone.Instance,
+                ImmutableFacetNever.Instance,
                 new TitleFacetNone(),
                 namedFacet,
                 pluralFacet,
@@ -53,11 +53,11 @@ public sealed class FallbackFacetFactory : DomainObjectFacetFactoryProcessor {
 
         if (holder is IMemberSpecImmutable specImmutable) {
             facets.Add(new MemberNamedFacetInferred(specImmutable.Identifier.MemberName));
-            facets.Add(new DescribedAsFacetNone());
+            facets.Add(DescribedAsFacetNone.Instance);
         }
 
         if (holder is IAssociationSpecImmutable) {
-            facets.Add(new ImmutableFacetNever());
+            facets.Add(ImmutableFacetNever.Instance);
             facets.Add(new PropertyDefaultFacetNone());
             facets.Add(new PropertyValidateFacetNone());
         }
@@ -92,7 +92,7 @@ public sealed class FallbackFacetFactory : DomainObjectFacetFactoryProcessor {
         if (holder is IActionParameterSpecImmutable param) {
             var name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
             facets.Add(new MemberNamedFacetInferred(name));
-            facets.Add(new DescribedAsFacetNone());
+            facets.Add(DescribedAsFacetNone.Instance);
             facets.Add(new MultiLineFacetNone());
             facets.Add(new MaxLengthFacetZero());
         }

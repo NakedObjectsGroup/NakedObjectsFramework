@@ -31,8 +31,8 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         FacetUtils.AddFacets(
             new IFacet[] {
-                new DescribedAsFacetNone(),
-                new ImmutableFacetNever(),
+                DescribedAsFacetNone.Instance,
+                ImmutableFacetNever.Instance,
                 new TitleFacetNone(),
                 new ValueFacet(),
                 new SaveFacet()
@@ -45,11 +45,11 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
 
         if (holder is IMemberSpecImmutable specImmutable) {
             facets.Add(new MemberNamedFacetInferred(specImmutable.Identifier.MemberName));
-            facets.Add(new DescribedAsFacetNone());
+            facets.Add(DescribedAsFacetNone.Instance);
         }
 
         if (holder is IAssociationSpecImmutable) {
-            facets.Add(new ImmutableFacetNever());
+            facets.Add(ImmutableFacetNever.Instance);
             facets.Add(new PropertyDefaultFacetNone());
             facets.Add(new PropertyValidateFacetNone());
         }
@@ -84,7 +84,7 @@ public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor {
         if (holder is IActionParameterSpecImmutable param) {
             var name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
             facets.Add(new MemberNamedFacetInferred(name));
-            facets.Add(new DescribedAsFacetNone());
+            facets.Add(DescribedAsFacetNone.Instance);
             facets.Add(new MultiLineFacetNone());
             facets.Add(new MaxLengthFacetZero());
         }

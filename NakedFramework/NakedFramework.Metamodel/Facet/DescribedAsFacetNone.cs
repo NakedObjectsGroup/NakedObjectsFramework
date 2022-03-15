@@ -14,8 +14,11 @@ namespace NakedFramework.Metamodel.Facet;
 /// </summary>
 [Serializable]
 public sealed class DescribedAsFacetNone : DescribedAsFacetAbstract {
-    public DescribedAsFacetNone()
-        : base("") { }
+    private static DescribedAsFacetNone instance;
+
+    private DescribedAsFacetNone() : base(string.Empty) { }
+
+    public static DescribedAsFacetNone Instance => instance ??= new DescribedAsFacetNone();
 
     public override bool IsNoOp => true;
 }

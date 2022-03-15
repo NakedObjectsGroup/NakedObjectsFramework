@@ -11,8 +11,11 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ImmutableFacetViaValueSemantics : ImmutableFacetImpl {
-    public ImmutableFacetViaValueSemantics()
-        : base(WhenTo.Always) { }
+    private static ImmutableFacetViaValueSemantics instance;
+
+    private ImmutableFacetViaValueSemantics() : base(WhenTo.Always) { }
+
+    public static ImmutableFacetViaValueSemantics Instance => instance ??= new ImmutableFacetViaValueSemantics();
 }
 
 // Copyright (c) Naked Objects Group Ltd.

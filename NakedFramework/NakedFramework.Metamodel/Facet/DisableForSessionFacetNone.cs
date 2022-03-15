@@ -13,6 +13,12 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisableForSessionFacetNone : DisableForSessionFacetAbstract {
+    private static DisableForSessionFacetNone instance;
+
+    private DisableForSessionFacetNone() { }
+
+    public static DisableForSessionFacetNone Instance => instance ??= new DisableForSessionFacetNone();
+
     public override bool IsNoOp => true;
 
     public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => null;
