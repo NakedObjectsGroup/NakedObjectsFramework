@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class SingleStringValueFacetAbstract : FacetAbstract, ISingleStringValueFacet {
     protected SingleStringValueFacetAbstract(string valueString) =>
-        this.Value = valueString;
+        Value = valueString;
 
     #region ISingleStringValueFacet Members
 

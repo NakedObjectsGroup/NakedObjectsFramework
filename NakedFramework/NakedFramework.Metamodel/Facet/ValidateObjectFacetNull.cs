@@ -19,9 +19,6 @@ public sealed class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFace
 
     public static ValidateObjectFacetNull Instance => instance ??= new ValidateObjectFacetNull();
 
-
-
-
     public override Type FacetType => typeof(IValidateObjectFacet);
 
     #region IValidateObjectFacet Members

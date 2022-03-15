@@ -18,6 +18,5 @@ public sealed class OnUpdatingErrorCallbackFacetNull : OnUpdatingErrorCallbackFa
 
     public static OnUpdatingErrorCallbackFacetNull Instance => instance ??= new OnUpdatingErrorCallbackFacetNull();
 
-
     public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => throw exception;
 }

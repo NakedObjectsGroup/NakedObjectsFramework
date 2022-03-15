@@ -13,8 +13,8 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public abstract class MultiLineFacetAbstract : FacetAbstract, IMultiLineFacet {
     protected MultiLineFacetAbstract(int numberOfLines, int width) {
-        this.NumberOfLines = numberOfLines;
-        this.Width = width;
+        NumberOfLines = numberOfLines;
+        Width = width;
     }
 
     public override Type FacetType => typeof(IMultiLineFacet);

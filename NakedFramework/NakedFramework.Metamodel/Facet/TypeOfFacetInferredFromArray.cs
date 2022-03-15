@@ -21,8 +21,6 @@ public sealed class TypeOfFacetInferredFromArray : TypeOfFacetInferredAbstract, 
 
     public static TypeOfFacetInferredFromArray Instance => instance ??= new TypeOfFacetInferredFromArray();
 
-
-
     #region ITypeOfFacet Members
 
     public override Type GetValue(INakedObjectAdapter collection) => collection.Object.GetType().GetElementType();

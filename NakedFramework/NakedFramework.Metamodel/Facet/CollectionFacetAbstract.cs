@@ -17,7 +17,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
-    
     protected CollectionFacetAbstract(bool isASet)
         => IsASet = isASet;
 

@@ -18,6 +18,5 @@ public sealed class FindMenuFacet : FacetAbstract, IFindMenuFacet, IMarkerFacet 
 
     public static FindMenuFacet Instance => instance ??= new FindMenuFacet();
 
-
     public override Type FacetType => typeof(IFindMenuFacet);
 }

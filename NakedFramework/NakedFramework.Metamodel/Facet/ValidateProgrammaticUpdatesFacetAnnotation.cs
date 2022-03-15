@@ -18,9 +18,6 @@ public sealed class ValidateProgrammaticUpdatesFacetAnnotation : FacetAbstract, 
 
     public static ValidateProgrammaticUpdatesFacetAnnotation Instance => instance ??= new ValidateProgrammaticUpdatesFacetAnnotation();
 
-
-
-
     public override Type FacetType => typeof(IValidateProgrammaticUpdatesFacet);
 }
 

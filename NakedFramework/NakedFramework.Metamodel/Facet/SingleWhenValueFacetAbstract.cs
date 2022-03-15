@@ -12,7 +12,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenValueFacet {
-    protected SingleWhenValueFacetAbstract(WhenTo when) => this.Value = when;
+    protected SingleWhenValueFacetAbstract(WhenTo when) => Value = when;
 
     #region ISingleWhenValueFacet Members
 

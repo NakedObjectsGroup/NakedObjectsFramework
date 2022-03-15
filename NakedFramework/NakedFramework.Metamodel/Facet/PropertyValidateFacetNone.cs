@@ -19,8 +19,6 @@ public sealed class PropertyValidateFacetNone : PropertyValidateFacetAbstract {
 
     public static PropertyValidateFacetNone Instance => instance ??= new PropertyValidateFacetNone();
 
-
-
     public override bool IsNoOp => true;
 
     /// <summary>
