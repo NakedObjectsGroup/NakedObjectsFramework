@@ -73,10 +73,10 @@ public class SystemTypeReflectorGenericSetTest : SystemTypeReflectorTest {
     }
 
     [TestMethod]
-    public void TestCollectionFacet() {
+    public void TestSetFacet() {
         var facet = Specification.GetFacet(typeof(ICollectionFacet));
         Assert.IsNotNull(facet);
-        AssertIsInstanceOfType<GenericCollectionFacet>(facet);
+        AssertIsInstanceOfType<GenericSetFacet>(facet);
     }
 
     [TestMethod]

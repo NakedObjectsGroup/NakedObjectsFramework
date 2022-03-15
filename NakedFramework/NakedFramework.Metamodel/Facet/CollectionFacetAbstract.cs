@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
@@ -23,7 +24,7 @@ public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet 
     public override Type FacetType => typeof(ICollectionFacet);
 
     protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {
-        var m = GetType().GetMethod(name);
+        var m = GetType().GetMethod(name, BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static);
         var t = collection.Object.GetType().GenericTypeArguments.First();
 
         return m.MakeGenericMethod(t).Invoke(this, pp);

@@ -46,7 +46,7 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
             facet = new GenericIQueryableFacet(isSet);
         }
         else if (isCollection) {
-            facet = new GenericCollectionFacet(isSet);
+            facet = isSet ? GenericSetFacet.Instance : GenericCollectionFacet.Instance;
         }
         else {
             facet = new GenericIEnumerableFacet(isSet);
