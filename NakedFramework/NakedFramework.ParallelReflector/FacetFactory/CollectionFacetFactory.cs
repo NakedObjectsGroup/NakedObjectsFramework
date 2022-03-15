@@ -41,19 +41,20 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
 
         FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(), holder);
 
-        IFacet facet;
-        if (isQueryable) {
-            facet = new GenericIQueryableFacet(isSet);
-        }
-        else if (isCollection) {
-            facet = isSet ? GenericSetFacet.Instance : GenericCollectionFacet.Instance;
-        }
-        else {
-            facet = new GenericIEnumerableFacet(isSet);
-        }
+        var facet = GetCollectionFacet((isQueryable, isCollection, isSet));
 
         FacetUtils.AddFacet(facet, holder);
     }
+
+    private static IFacet GetCollectionFacet((bool isQueryable, bool isCollection, bool isSet) conditions) =>
+        conditions switch {
+            (true, _, true) => GenericIQueryableSetFacet.Instance,
+            (true, _, false) => GenericIQueryableFacet.Instance,
+            (_, true, true) => GenericCollectionSetFacet.Instance,
+            (_, true, false) => GenericCollectionFacet.Instance,
+            (_, _, true) => GenericIEnumerableSetFacet.Instance,
+            (_, _, false) => GenericIEnumerableFacet.Instance
+        };
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var collectionElementType = typeof(object);

@@ -314,11 +314,11 @@ public class CollectionFacetsTest {
 
     [TestMethod]
     public void GenericCollectionIsSet() {
-        ICollectionFacet testCollectionFacet = GenericSetFacet.Instance;
+        ICollectionFacet testCollectionFacet = GenericCollectionSetFacet.Instance;
         Assert.IsTrue(testCollectionFacet.IsASet);
-        testCollectionFacet = new GenericIEnumerableFacet(true);
+        testCollectionFacet =  GenericIEnumerableSetFacet.Instance;
         Assert.IsTrue(testCollectionFacet.IsASet);
-        testCollectionFacet = new GenericIQueryableFacet(true);
+        testCollectionFacet = GenericIQueryableSetFacet.Instance;
         Assert.IsTrue(testCollectionFacet.IsASet);
     }
 
@@ -326,9 +326,9 @@ public class CollectionFacetsTest {
     public void GenericCollectionNotIsSet() {
         ICollectionFacet testCollectionFacet = GenericCollectionFacet.Instance;
         Assert.IsFalse(testCollectionFacet.IsASet);
-        testCollectionFacet = new GenericIEnumerableFacet();
+        testCollectionFacet = GenericIEnumerableFacet.Instance;
         Assert.IsFalse(testCollectionFacet.IsASet);
-        testCollectionFacet = new GenericIQueryableFacet();
+        testCollectionFacet =  GenericIQueryableFacet.Instance;
         Assert.IsFalse(testCollectionFacet.IsASet);
     }
 
@@ -351,7 +351,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerableContains() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet();
+        var testCollectionFacet = GenericIEnumerableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
     }
@@ -359,7 +359,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerableFirstElement() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet();
+        var testCollectionFacet = GenericIEnumerableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -367,7 +367,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerableGetEnumeratorFor() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet();
+        var testCollectionFacet = GenericIEnumerableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
     }
@@ -375,7 +375,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerablePage() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet();
+        var testCollectionFacet = GenericIEnumerableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Page(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -383,7 +383,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericEnumerableSize() {
         var testCollection = new List<string> { "element1", "element2" };
-        var testCollectionFacet = new GenericIEnumerableFacet();
+        var testCollectionFacet = GenericIEnumerableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Size(testCollectionFacet, testAdaptedCollection);
     }
@@ -391,7 +391,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryableContains() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet();
+        var testCollectionFacet = GenericIQueryableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
     }
@@ -399,7 +399,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryableFirstElement() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet();
+        var testCollectionFacet = GenericIQueryableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -407,7 +407,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryableGetEnumeratorFor() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet();
+        var testCollectionFacet = GenericIQueryableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
     }
@@ -415,7 +415,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryablePage() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet();
+        var testCollectionFacet = GenericIQueryableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Page(testCollectionFacet, testAdaptedCollection, "element1");
     }
@@ -423,7 +423,7 @@ public class CollectionFacetsTest {
     [TestMethod]
     public void GenericQueryableSize() {
         var testCollection = new List<string> { "element1", "element2" }.AsQueryable();
-        var testCollectionFacet = new GenericIQueryableFacet();
+        var testCollectionFacet = GenericIQueryableFacet.Instance;
         var testAdaptedCollection = AdapterFor(testCollection);
         Size(testCollectionFacet, testAdaptedCollection);
     }
