@@ -184,7 +184,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
         var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
-        var (_, expectedSpec) = Reflector.LoadSpecification(type, null);
+        var (expectedSpec, _) = Reflector.LoadSpecification(type, null);
         Assert.AreEqual(expectedSpec, actionInvocationFacetViaMethod.OnType);
         Assert.AreEqual(0, metamodel.Count);
     }
@@ -197,7 +197,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
         var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
-        var (_, expectedSpec) = Reflector.LoadSpecification(typeof(string), null);
+        var (expectedSpec, _) = Reflector.LoadSpecification(typeof(string), null);
         Assert.AreEqual(expectedSpec, actionInvocationFacetViaMethod.ReturnType);
         Assert.AreEqual(0, metamodel.Count);
     }
@@ -210,7 +210,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
         var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
-        var (_, expectedSpec) = Reflector.LoadSpecification(typeof(void), null);
+        var (expectedSpec, _) = Reflector.LoadSpecification(typeof(void), null);
         Assert.AreEqual(expectedSpec, actionInvocationFacetViaMethod.ReturnType);
         Assert.AreEqual(0, metamodel.Count);
     }

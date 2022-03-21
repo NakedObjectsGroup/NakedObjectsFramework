@@ -33,7 +33,7 @@ public abstract class AbstractFacetFactoryTest {
     private Mock<IReflector> mockReflector;
 
     protected IReflector Reflector;
-    protected ISpecificationBuilder Specification;
+    protected IObjectSpecBuilder Specification;
     protected abstract Type[] SupportedTypes { get; }
     protected abstract IFacetFactory FacetFactory { get; }
 
@@ -54,13 +54,13 @@ public abstract class AbstractFacetFactoryTest {
         mockMethodRemover.Setup(remover => remover.RemoveMethods(It.IsAny<IList<MethodInfo>>()));
 
         mockReflector.Setup(reflector =>
-                                reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+                                reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (Specification, m));
 
         mockReflector.Setup(reflector =>
-                                reflector.LoadSpecification<ITypeSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+                                reflector.LoadSpecification<ITypeSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (Specification, m));
 
         mockReflector.Setup(reflector =>
-                                reflector.LoadSpecification<IObjectSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+                                reflector.LoadSpecification<IObjectSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (Specification, m));
 
         mockReflector.Setup(reflector => reflector.ClassStrategy).Returns(ClassStrategy);
     }
