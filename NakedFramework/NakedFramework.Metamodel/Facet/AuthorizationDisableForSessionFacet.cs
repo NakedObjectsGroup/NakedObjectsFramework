@@ -14,14 +14,14 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {
-    private readonly string[] roles;
-    private readonly string[] users;
-
     public AuthorizationDisableForSessionFacet(string roles,
                                                string users) {
-        this.roles = FacetUtils.SplitOnComma(roles);
-        this.users = FacetUtils.SplitOnComma(users);
+        Roles = FacetUtils.SplitOnComma(roles);
+        Users = FacetUtils.SplitOnComma(users);
     }
 
-    public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => FacetUtils.IsAllowed(framework.Session, roles, users) ? null : "Not authorized to edit";
+    public string[] Roles { get; }
+    public string[] Users { get; }
+
+    public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => FacetUtils.IsAllowed(framework.Session, Roles, Users) ? null : "Not authorized to edit";
 }

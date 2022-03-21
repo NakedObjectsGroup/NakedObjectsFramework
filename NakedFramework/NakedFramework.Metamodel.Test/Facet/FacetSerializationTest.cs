@@ -12,7 +12,7 @@ using NakedFramework.Metamodel.Facet;
 namespace NakedFramework.Metamodel.Test.Facet;
 
 [TestClass]
-public class FacetSerialization {
+public class FacetSerializationTest {
     private static void AssertIFacet(IFacet facet, IFacet facet1) {
         Assert.AreNotEqual(facet, facet1);
         Assert.AreEqual(facet.GetType(), facet1.GetType());
@@ -39,6 +39,8 @@ public class FacetSerialization {
         using var stream = BinarySerialize(facet);
         return (T)BinaryDeserialize(stream);
     }
+
+    private static PropertyInfo GetProperty() => typeof(TestSerializationClass).GetProperty(nameof(TestSerializationClass.TestProperty));
 
     private static void TestSerializeActionChoicesFacetNone(Func<ActionChoicesFacetNone, ActionChoicesFacetNone> roundTripper) {
         var f = ActionChoicesFacetNone.Instance;
@@ -78,7 +80,57 @@ public class FacetSerialization {
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
 
-    private static PropertyInfo GetProperty() => typeof(TestSerializationClass).GetProperty(nameof(TestSerializationClass.TestProperty));
+    private static void TestSerializeAggregatedFacetAlways(Func<AggregatedFacetAlways, AggregatedFacetAlways> roundTripper) {
+        var f = AggregatedFacetAlways.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeArrayFacet(Func<ArrayFacet, ArrayFacet> roundTripper) {
+        var f = ArrayFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsQueryable, dsf.IsQueryable);
+        Assert.AreEqual(f.IsASet, dsf.IsASet);
+    }
+
+    private static void TestSerializeAuthorizationDisableForSessionFacet(Func<AuthorizationDisableForSessionFacet, AuthorizationDisableForSessionFacet> roundTripper) {
+        var f = new AuthorizationDisableForSessionFacet("r1,r2", "u1,u2");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+
+        Assert.AreEqual(string.Join(',', f.Roles), string.Join(',', dsf.Roles));
+        Assert.AreEqual(string.Join(',', f.Users), string.Join(',', dsf.Users));
+    }
+
+    private static void TestSerializeAuthorizationHideForSessionFacet(Func<AuthorizationHideForSessionFacet, AuthorizationHideForSessionFacet> roundTripper) {
+        var f = new AuthorizationHideForSessionFacet("r1,r2", "u1,u2");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+
+        Assert.AreEqual(string.Join(',', f.Roles), string.Join(',', dsf.Roles));
+        Assert.AreEqual(string.Join(',', f.Users), string.Join(',', dsf.Users));
+    }
+
+    private static void TestSerializeBoundedFacet(Func<BoundedFacet, BoundedFacet> roundTripper) {
+        var f = BoundedFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeCollectionFacet(Func<CollectionFacet, CollectionFacet> roundTripper) {
+        var f = CollectionFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsQueryable, dsf.IsQueryable);
+        Assert.AreEqual(f.IsASet, dsf.IsASet);
+    }
 
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
@@ -91,6 +143,24 @@ public class FacetSerialization {
 
     [TestMethod]
     public void TestBinarySerializeActionDefaultsFacetViaProperty() => TestSerializeActionDefaultsFacetViaProperty(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeAggregatedFacetAlways() => TestSerializeAggregatedFacetAlways(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeArrayFacet() => TestSerializeArrayFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeAuthorizationDisableForSessionFacet() => TestSerializeAuthorizationDisableForSessionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeAuthorizationHideForSessionFacet() => TestSerializeAuthorizationHideForSessionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeBoundedFacet() => TestSerializeBoundedFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeCollectionFacet() => TestSerializeCollectionFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
