@@ -512,7 +512,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 }
             }
 
-            AbstractIntegrationFacet.AllowRemove = false;
+            IntegrationFacetAbstract.AllowRemove = false;
 
             try {
                 // repeat to flush out race conditions 
@@ -521,7 +521,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 }
             }
             finally {
-                AbstractIntegrationFacet.AllowRemove = true;
+                IntegrationFacetAbstract.AllowRemove = true;
             }
         }
 

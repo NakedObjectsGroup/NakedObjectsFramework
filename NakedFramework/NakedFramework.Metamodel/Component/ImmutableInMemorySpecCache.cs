@@ -14,7 +14,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.Meta;
+using NakedFramework.Metamodel.Serialization;
 using NakedFramework.Metamodel.Utils;
 
 #pragma warning disable 618

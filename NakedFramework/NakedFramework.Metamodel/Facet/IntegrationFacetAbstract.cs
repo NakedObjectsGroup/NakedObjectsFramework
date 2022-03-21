@@ -12,8 +12,8 @@ using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Facet;
 
-public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
-    protected internal AbstractIntegrationFacet() { }
+public abstract class IntegrationFacetAbstract : FacetAbstract, IIntegrationFacet {
+    protected internal IntegrationFacetAbstract() { }
 
     // for testing so not on interface  
     public int ActionCount { get; protected set; } = 1;

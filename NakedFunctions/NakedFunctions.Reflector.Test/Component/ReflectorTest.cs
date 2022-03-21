@@ -1205,7 +1205,7 @@ public class ReflectorTest {
             }
         }
 
-        AbstractIntegrationFacet.AllowRemove = false;
+        IntegrationFacetAbstract.AllowRemove = false;
 
         try {
             // repeat to flush out race conditions 
@@ -1214,7 +1214,7 @@ public class ReflectorTest {
             }
         }
         finally {
-            AbstractIntegrationFacet.AllowRemove = true;
+            IntegrationFacetAbstract.AllowRemove = true;
         }
     }
 }

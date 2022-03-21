@@ -10,7 +10,7 @@ using NakedFramework.Architecture.Component;
 
 namespace NakedFramework.Metamodel.Facet;
 
-public class IntegrationFacet : AbstractIntegrationFacet {
+public class IntegrationFacet : IntegrationFacetAbstract {
     private Action<IMetamodelBuilder> toExecute;
 
     internal IntegrationFacet(Action<IMetamodelBuilder> toExecute) => this.toExecute = toExecute;

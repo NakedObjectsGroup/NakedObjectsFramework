@@ -7,33 +7,30 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract, IImperativeFacet {
     private readonly IActionDefaultsFacet actionDefaultsFacet;
-    private readonly Func<object, object[], object> methodDelegate;
-    private readonly PropertyInfo property;
+    private readonly PropertySerializationWrapper property;
 
     public ActionDefaultsFacetViaProperty(PropertyInfo property, IActionDefaultsFacet actionDefaultsFacet, ILogger<ActionDefaultsFacetViaProperty> logger) {
-        this.property = property;
+        this.property = new PropertySerializationWrapper(property, logger);
         this.actionDefaultsFacet = actionDefaultsFacet;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(property.GetGetMethod()), logger);
     }
 
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         // type safety is given by the reflector only identifying methods that match the 
         // parameter type
-        var defaultValue = methodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        var defaultValue = property.MethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
         if (actionDefaultsFacet is not null && (defaultValue is null || string.IsNullOrWhiteSpace(defaultValue.ToString()))) {
             return actionDefaultsFacet.GetDefault(nakedObjectAdapter, framework);
         }
@@ -41,14 +38,11 @@ public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract
         return (defaultValue, TypeOfDefaultValue.Explicit);
     }
 
-    [OnDeserialized]
-    private static void OnDeserialized(StreamingContext context) { }
-
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => property.GetGetMethod();
+    public MethodInfo GetMethod() => property.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => property.MethodDelegate;
 
     #endregion
 }

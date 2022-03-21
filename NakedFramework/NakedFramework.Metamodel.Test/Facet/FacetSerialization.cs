@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Facet;
@@ -33,19 +35,64 @@ public class FacetSerialization {
         return (IFacet)deserializer.Deserialize(stream);
     }
 
-    private static T RoundTrip<T>(T facet) where T : IFacet {
+    private static T BinaryRoundTrip<T>(T facet) where T : IFacet {
         using var stream = BinarySerialize(facet);
         return (T)BinaryDeserialize(stream);
     }
 
-    [TestMethod]
-    public void TestSerializeActionChoicesFacetNone() {
+    private static void TestSerializeActionChoicesFacetNone(Func<ActionChoicesFacetNone, ActionChoicesFacetNone> roundTripper) {
         var f = ActionChoicesFacetNone.Instance;
-        var dsf = RoundTrip(f);
+        var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
 
         Assert.AreEqual(f.ParameterNamesAndTypes, dsf.ParameterNamesAndTypes);
         Assert.AreEqual(f.IsMultiple, dsf.IsMultiple);
     }
+
+    private static void TestSerializeActionDefaultsFacetAnnotation(Func<ActionDefaultsFacetAnnotation, ActionDefaultsFacetAnnotation> roundTripper) {
+        var f = new ActionDefaultsFacetAnnotation(17, false);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+
+        Assert.AreEqual(f.GetDefault(null, null), dsf.GetDefault(null, null));
+    }
+
+    private static void TestSerializeActionDefaultsFacetNone(Func<ActionDefaultsFacetNone, ActionDefaultsFacetNone> roundTripper) {
+        var f = ActionDefaultsFacetNone.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+
+        Assert.AreEqual(f.GetDefault(null, null), dsf.GetDefault(null, null));
+    }
+
+    private static void TestSerializeActionDefaultsFacetViaProperty(Func<ActionDefaultsFacetViaProperty, ActionDefaultsFacetViaProperty> roundTripper) {
+        var f = new ActionDefaultsFacetViaProperty(GetProperty(), null, null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    private static PropertyInfo GetProperty() => typeof(TestSerializationClass).GetProperty(nameof(TestSerializationClass.TestProperty));
+
+    [TestMethod]
+    public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionDefaultsFacetAnnotation() => TestSerializeActionDefaultsFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionDefaultsFacetNone() => TestSerializeActionDefaultsFacetNone(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionDefaultsFacetViaProperty() => TestSerializeActionDefaultsFacetViaProperty(BinaryRoundTrip);
+}
+
+public class TestSerializationClass {
+    public int TestProperty { get; set; } = 1;
 }

@@ -98,15 +98,20 @@ public static class FacetUtils {
         }
     }
 
-    public static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair, ILogger logger) {
+    private static Func<object, object[], object> HandleNull((Func<object, object[], object>, string) pair, ILogger logger = null) {
         var (delFunc, warning) = pair;
         if (delFunc is null && !string.IsNullOrWhiteSpace(warning)) {
+            if (logger is null) {
+                throw new ReflectionException(warning);
+            }
+
             logger.LogInformation(warning);
         }
 
         return delFunc;
     }
 
+    public static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair, ILogger logger) => HandleNull(pair, logger);
 
     public record ActionHolder {
         private readonly object wrapped;
