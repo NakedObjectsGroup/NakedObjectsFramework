@@ -30,8 +30,7 @@ public sealed class InjectedParameterFacetFactory : FunctionalFacetFactoryProces
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {
-            var facet = new InjectedIContextParameterFacet();
-            FacetUtils.AddFacet(facet, holder);
+            FacetUtils.AddFacet(InjectedIContextParameterFacet.Instance, holder);
         }
 
         return metamodel;
