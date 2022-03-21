@@ -124,7 +124,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
 
             var methodToUse = methodUsingName ?? methodUsingIndex;
 
-            if (methodToUse != null) {
+            if (methodToUse is not null) {
                 // deliberately not removing both if duplicate to show that method  is duplicate
                 methodRemover.SafeRemoveMethod(methodToUse);
 
@@ -171,19 +171,18 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
                 new[] { paramType },
                 new[] { paramName });
 
-            if (methodUsingIndex is not null && methodUsingName != null) {
+            if (methodUsingIndex is not null && methodUsingName is not null) {
                 logger.LogWarning($"Duplicate choices parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");
             }
 
             var methodToUse = methodUsingName ?? methodUsingIndex;
 
-            if (methodToUse != null) {
+            if (methodToUse is not null) {
                 // add facets directly to parameters, not to actions
                 var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
                 foreach (var p in methodToUse.GetParameters()) {
-                    IObjectSpecBuilder oSpec;
-                    (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
+                    (var oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
                     var name = p.Name?.ToLower();
                     parameterNamesAndTypes.Add((name, oSpec));
                 }
@@ -300,11 +299,8 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
         var type = actionMethod.DeclaringType;
         var facets = new List<IFacet>();
 
-        ITypeSpecBuilder onType;
-        (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
-
-        IObjectSpecBuilder returnSpec;
-        (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType, metamodel);
+        (var onType, metamodel) = reflector.LoadSpecification(type, metamodel);
+        (var returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType, metamodel);
 
         IObjectSpecBuilder elementSpec = null;
         var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
@@ -356,13 +352,11 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
             facets.Add(NullableFacetAlways.Instance);
         }
 
-        IObjectSpecBuilder returnSpec;
-        (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(parameter.ParameterType, metamodel);
+        (var returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(parameter.ParameterType, metamodel);
 
         if (returnSpec is not null && IsParameterCollection(parameter.ParameterType)) {
             var elementType = CollectionUtils.ElementType(parameter.ParameterType);
-            IObjectSpecImmutable elementSpec;
-            (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(elementType, metamodel);
+            (var elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(elementType, metamodel);
             facets.Add(new ElementTypeFacet(elementType, elementSpec));
         }
 
