@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Test\AdventureWorksModel\AdventureWorksModel.csproj" />
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 
