@@ -6,14 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Facet;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
-    private static ComplexTypeFacetConvention instance;
+public sealed class ComplexTypeFacet : FacetAbstract, IComplexTypeFacet, IMarkerFacet {
+    private static ComplexTypeFacet instance;
+    private ComplexTypeFacet() { }
 
-    private ComplexTypeFacetConvention() { }
+    public static ComplexTypeFacet Instance => instance ??= new ComplexTypeFacet();
 
-    public static ComplexTypeFacetConvention Instance => instance ??= new ComplexTypeFacetConvention();
+    public override Type FacetType => typeof(IComplexTypeFacet);
 }

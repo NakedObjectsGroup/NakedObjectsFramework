@@ -47,7 +47,7 @@ public class InlineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IComplexTypeFacet));
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is ComplexTypeFacetAnnotation);
+        Assert.IsTrue(facet is ComplexTypeFacet);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
     }

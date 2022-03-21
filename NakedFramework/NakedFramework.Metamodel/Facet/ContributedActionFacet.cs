@@ -18,6 +18,9 @@ public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFa
     private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> collectionContributees = new();
     private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> objectContributees = new();
 
+
+    public bool IsContributed => objectContributees.Any() || collectionContributees.Any();
+
     public override Type FacetType => typeof(IContributedActionFacet);
 
     public void AddObjectContributee(IObjectSpecImmutable objectSpec, string subMenu, string id) => objectContributees.Add((objectSpec, subMenu, id));

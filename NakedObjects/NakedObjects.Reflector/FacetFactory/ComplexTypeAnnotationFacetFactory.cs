@@ -31,5 +31,5 @@ public sealed class ComplexTypeAnnotationFacetFactory : DomainObjectFacetFactory
         return metamodel;
     }
 
-    private static IComplexTypeFacet Create(Attribute attribute) => attribute is null ? null : ComplexTypeFacetAnnotation.Instance;
+    private static IComplexTypeFacet Create(Attribute attribute) => attribute is null ? null : ComplexTypeFacet.Instance;
 }

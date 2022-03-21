@@ -132,6 +132,21 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.IsASet, dsf.IsASet);
     }
 
+    private static void TestSerializeComplexTypeFacet(Func<ComplexTypeFacet, ComplexTypeFacet> roundTripper) {
+        var f = ComplexTypeFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeConcurrencyCheckFacet(Func<ConcurrencyCheckFacet, ConcurrencyCheckFacet> roundTripper)
+    {
+        var f = ConcurrencyCheckFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -161,6 +176,12 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeCollectionFacet() => TestSerializeCollectionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeComplexTypeFacet() => TestSerializeComplexTypeFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeConcurrencyCheckFacet() => TestSerializeConcurrencyCheckFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
