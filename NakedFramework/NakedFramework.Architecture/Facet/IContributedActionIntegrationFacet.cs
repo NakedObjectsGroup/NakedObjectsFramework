@@ -9,6 +9,13 @@ using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Facet;
 
-public interface IContributedActionFacet : IFacet, IMarkerFacet {
-  
+public interface IContributedActionIntegrationFacet : IFacet {
+    bool IsContributedTo(IObjectSpecImmutable spec);
+    bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
+
+    //Returns null if the action is to be 'top-level'
+    string SubMenuWhenContributedTo(IObjectSpecImmutable spec);
+
+    //Id has been included for generating UI code that is backwards-compatible with NOF 6.
+    string IdWhenContributedTo(IObjectSpecImmutable spec);
 }

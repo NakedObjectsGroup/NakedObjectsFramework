@@ -29,7 +29,7 @@ public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryT
     private ContributedActionAnnotationFacetFactory facetFactory;
 
     protected override Type[] SupportedTypes {
-        get { return new[] { typeof(IContributedActionFacet) }; }
+        get { return new[] { typeof(IContributedActionIntegrationFacet) }; }
     }
 
     protected override IFacetFactory FacetFactory => facetFactory;
@@ -52,7 +52,7 @@ public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryT
 
         var actionMethod = FindMethod(typeof(Service), "Action1");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-        IFacet facet = Specification.GetFacet<IContributedActionFacet>();
+        IFacet facet = Specification.GetFacet<IContributedActionIntegrationFacet>();
         Assert.IsNull(facet);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -64,7 +64,7 @@ public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryT
 
         var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action2");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-        IFacet facet = Specification.GetFacet<IContributedActionFacet>();
+        IFacet facet = Specification.GetFacet<IContributedActionIntegrationFacet>();
         Assert.IsNull(facet);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
@@ -76,9 +76,9 @@ public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryT
 
         var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action3");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet<IContributedActionFacet>();
+        var facet = Specification.GetFacet<IContributedActionIntegrationFacet>();
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is ContributedActionFacet);
+        Assert.IsTrue(facet is ContributedActionIntegrationFacet);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
     }
@@ -89,9 +89,9 @@ public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryT
 
         var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action4");
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet<IContributedActionFacet>();
+        var facet = Specification.GetFacet<IContributedActionIntegrationFacet>();
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is ContributedActionFacet);
+        Assert.IsTrue(facet is ContributedActionIntegrationFacet);
         AssertNoMethodsRemoved();
         Assert.IsNotNull(metamodel);
     }

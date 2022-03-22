@@ -118,14 +118,14 @@ public class ModelIntegrator : IModelIntegrator {
         menuFacets.ForEach(mf => mf.f.CreateMenu(metamodel, mf.s));
     }
 
-    private static bool IsContributedTo(IActionSpecImmutable actionSpec, IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
-        actionSpec.GetFacet<IContributedActionFacet>()?.IsContributedTo(contributeeSpec) == true && contributeeSpec.IsOfType(parmSpec);
+    private static bool IsContributedTo(IContributedActionIntegrationFacet integrationFacet, IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
+        integrationFacet.IsContributedTo(contributeeSpec) && contributeeSpec.IsOfType(parmSpec);
 
-    private static bool IsContributedTo(IActionSpecImmutable actionSpec, IObjectSpecImmutable objectSpecImmutable) =>
-        actionSpec.Parameters.Any(parm => IsContributedTo(actionSpec, parm.Specification, objectSpecImmutable));
+    private static bool IsContributedTo(IContributedActionIntegrationFacet integrationFacet, IActionSpecImmutable actionSpec, IObjectSpecImmutable objectSpec) =>
+        actionSpec.Parameters.Any(p => IsContributedTo(integrationFacet, p.Specification, objectSpec));
 
-    private static bool IsContributedToCollectionOf(IActionSpecImmutable actionSpec, IObjectSpecImmutable objectSpecImmutable) =>
-        actionSpec.GetFacet<IContributedActionFacet>()?.IsContributedToCollectionOf(objectSpecImmutable) == true;
+    private static bool IsContributedToCollectionOf(IContributedActionIntegrationFacet integrationFacet, IObjectSpecImmutable objectSpec) =>
+        integrationFacet.IsContributedToCollectionOf(objectSpec);
 
     private static void PopulateContributedActions(IObjectSpecBuilder objectSpec, Type[] services, IMetamodel metamodel) {
         var (contribActions, collContribActions, finderActions) = services.AsParallel().Select(serviceType => {
@@ -137,12 +137,14 @@ public class ModelIntegrator : IModelIntegrator {
             var matchingFinderActions = new List<IActionSpecImmutable>();
 
             foreach (var actionSpec in serviceActions) {
-                if (serviceType != objectSpec.Type) {
-                    if (IsContributedTo(actionSpec, objectSpec)) {
+                var contributedActionFacet = actionSpec.GetFacet<IContributedActionIntegrationFacet>();
+
+                if (contributedActionFacet is not null && serviceType != objectSpec.Type) {
+                    if (IsContributedTo(contributedActionFacet, actionSpec, objectSpec)) {
                         matchingActionsForObject.Add(actionSpec);
                     }
 
-                    if (IsContributedToCollectionOf(actionSpec, objectSpec)) {
+                    if (IsContributedToCollectionOf(contributedActionFacet, objectSpec)) {
                         matchingActionsForCollection.Add(actionSpec);
                     }
                 }

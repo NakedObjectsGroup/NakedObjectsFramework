@@ -24,7 +24,7 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedObjects.Reflector.FacetFactory;
 
 /// <summary>
-///     Creates an <see cref="IContributedActionFacet" /> based on the presence of an
+///     Creates an <see cref="IContributedActionIntegrationFacet" /> based on the presence of an
 ///     <see cref="ContributedActionAttribute" /> annotation
 /// </summary>
 public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
@@ -52,7 +52,7 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
             return metamodel; //Nothing to do
         }
 
-        var facet = new ContributedActionFacet();
+        var facet = new ContributedActionIntegrationFacet();
         foreach (var (p, attribute) in  paramsWithAttribute) {
             var parameterType = p.ParameterType;
             (var type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(parameterType, metamodel);
@@ -75,12 +75,13 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
 
         if (facet.IsContributed) {
             FacetUtils.AddFacet(facet, holder);
+            FacetUtils.AddFacet(ContributedActionFacet.Instance, holder);
         }
 
         return metamodel;
     }
 
-    private IImmutableDictionary<string, ITypeSpecBuilder> AddCollectionContributedAction(IReflector reflector, MethodInfo member, Type parameterType, ParameterInfo p, ContributedActionAttribute attribute, ContributedActionFacet facet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    private IImmutableDictionary<string, ITypeSpecBuilder> AddCollectionContributedAction(IReflector reflector, MethodInfo member, Type parameterType, ParameterInfo p, ContributedActionAttribute attribute, ContributedActionIntegrationFacet integrationFacet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (!CollectionUtils.IsGenericQueryable(parameterType)) {
             logger.LogWarning($"ContributedAction attribute added to a collection parameter type other than IQueryable: {member.Name}");
         }
@@ -93,7 +94,7 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
             else {
                 var elementType = p.ParameterType.GetGenericArguments()[0];
                 (var type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-                facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
+                integrationFacet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
             }
         }
 

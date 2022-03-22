@@ -122,7 +122,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
     }
 
     private void AddContributedAction(IActionSpecImmutable ca, IObjectSpecImmutable spec) {
-        var facet = ca.GetFacet<IContributedActionFacet>();
+        var facet = ca.GetFacet<IContributedActionIntegrationFacet>();
         var subMenuName = facet?.SubMenuWhenContributedTo(spec);
         if (subMenuName != null) {
             var id = facet.IdWhenContributedTo(spec);
