@@ -118,7 +118,16 @@ public class ModelIntegrator : IModelIntegrator {
         menuFacets.ForEach(mf => mf.f.CreateMenu(metamodel, mf.s));
     }
 
-    private static void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel) {
+    private static bool IsContributedTo(IActionSpecImmutable actionSpec, IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
+        actionSpec.GetFacet<IContributedActionFacet>()?.IsContributedTo(contributeeSpec) == true && contributeeSpec.IsOfType(parmSpec);
+
+    private static bool IsContributedTo(IActionSpecImmutable actionSpec, IObjectSpecImmutable objectSpecImmutable) =>
+        actionSpec.Parameters.Any(parm => IsContributedTo(actionSpec, parm.Specification, objectSpecImmutable));
+
+    private static bool IsContributedToCollectionOf(IActionSpecImmutable actionSpec, IObjectSpecImmutable objectSpecImmutable) =>
+        actionSpec.GetFacet<IContributedActionFacet>()?.IsContributedToCollectionOf(objectSpecImmutable) == true;
+
+    private static void PopulateContributedActions(IObjectSpecBuilder objectSpec, Type[] services, IMetamodel metamodel) {
         var (contribActions, collContribActions, finderActions) = services.AsParallel().Select(serviceType => {
             var serviceSpecification = (ITypeSpecBuilder)metamodel.GetSpecification(serviceType);
             var serviceActions = serviceSpecification.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
@@ -127,19 +136,19 @@ public class ModelIntegrator : IModelIntegrator {
             var matchingActionsForCollection = new List<IActionSpecImmutable>();
             var matchingFinderActions = new List<IActionSpecImmutable>();
 
-            foreach (var sa in serviceActions) {
-                if (serviceType != spec.Type) {
-                    if (sa.IsContributedTo(spec)) {
-                        matchingActionsForObject.Add(sa);
+            foreach (var actionSpec in serviceActions) {
+                if (serviceType != objectSpec.Type) {
+                    if (IsContributedTo(actionSpec, objectSpec)) {
+                        matchingActionsForObject.Add(actionSpec);
                     }
 
-                    if (sa.IsContributedToCollectionOf(spec)) {
-                        matchingActionsForCollection.Add(sa);
+                    if (IsContributedToCollectionOf(actionSpec, objectSpec)) {
+                        matchingActionsForCollection.Add(actionSpec);
                     }
                 }
 
-                if (sa.IsFinderMethodFor(spec)) {
-                    matchingFinderActions.Add(sa);
+                if (actionSpec.IsFinderMethodFor(objectSpec)) {
+                    matchingFinderActions.Add(actionSpec);
                 }
             }
 
@@ -154,8 +163,8 @@ public class ModelIntegrator : IModelIntegrator {
                          return a;
                      });
 
-        spec.AddContributedActions(contribActions, services);
-        spec.AddCollectionContributedActions(collContribActions);
-        spec.AddFinderActions(finderActions);
+        objectSpec.AddContributedActions(contribActions, services);
+        objectSpec.AddCollectionContributedActions(collContribActions);
+        objectSpec.AddFinderActions(finderActions);
     }
 }

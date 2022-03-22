@@ -27,9 +27,6 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
 
     private bool HasReturn() => ReturnSpec != null;
 
-    private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
-        GetFacet<IContributedActionFacet>()?.IsContributedTo(contributeeSpec) == true && contributeeSpec.IsOfType(parmSpec);
-
     #region IActionSpecImmutable Members
 
     public override IObjectSpecImmutable ReturnSpec => GetFacet<IActionInvocationFacet>().ReturnType;
@@ -52,12 +49,6 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
                                        ContainsFacet(typeof(IContributedActionFacet));
 
     public bool IsStaticFunction => ContainsFacet<IStaticFunctionFacet>();
-
-    public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) =>
-        Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));
-
-    public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) =>
-        GetFacet<IContributedActionFacet>()?.IsContributedToCollectionOf(objectSpecImmutable) == true;
 
     public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id) {
         var memberOrderFacet = GetFacet<IMemberOrderFacet>();
