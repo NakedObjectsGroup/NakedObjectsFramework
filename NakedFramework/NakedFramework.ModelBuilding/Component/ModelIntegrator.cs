@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
@@ -27,6 +28,7 @@ public class ModelIntegrator : IModelIntegrator {
     private readonly IMenuFactory menuFactory;
     private readonly IMetamodelBuilder metamodelBuilder;
     private readonly IAllServiceList serviceList;
+    private readonly HashSet<(IContributedActionIntegrationFacet facet, ISpecificationBuilder spec)> toRemove = new();
 
     public ModelIntegrator(IMetamodelBuilder metamodelBuilder,
                            IMenuFactory menuFactory,
@@ -38,6 +40,12 @@ public class ModelIntegrator : IModelIntegrator {
         this.logger = logger;
         this.coreConfiguration = coreConfiguration;
         this.serviceList = serviceList;
+    }
+
+    private void AddToRemove(IContributedActionIntegrationFacet facet, ISpecificationBuilder spec) {
+        lock (toRemove) {
+            toRemove.Add((facet, spec));
+        }
     }
 
     public void Integrate() {
@@ -56,6 +64,10 @@ public class ModelIntegrator : IModelIntegrator {
         //Menus installed once rest of metamodel has been built:
         InstallMainMenus(metamodelBuilder);
         InstallObjectMenus(metamodelBuilder);
+
+        // remove any contributed action facets after used by PopulateAssociatedActions and Menu Install
+
+        toRemove.ForEach(tr => tr.facet.Remove(tr.spec));
 
         ValidateModel(metamodelBuilder);
     }
@@ -127,7 +139,7 @@ public class ModelIntegrator : IModelIntegrator {
     private static bool IsContributedToCollectionOf(IContributedActionIntegrationFacet integrationFacet, IObjectSpecImmutable objectSpec) =>
         integrationFacet.IsContributedToCollectionOf(objectSpec);
 
-    private static void PopulateContributedActions(IObjectSpecBuilder objectSpec, Type[] services, IMetamodel metamodel) {
+    private  void PopulateContributedActions(IObjectSpecBuilder objectSpec, Type[] services, IMetamodel metamodel) {
         var (contribActions, collContribActions, finderActions) = services.AsParallel().Select(serviceType => {
             var serviceSpecification = (ITypeSpecBuilder)metamodel.GetSpecification(serviceType);
             var serviceActions = serviceSpecification.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
@@ -147,6 +159,7 @@ public class ModelIntegrator : IModelIntegrator {
                     if (IsContributedToCollectionOf(contributedActionFacet, objectSpec)) {
                         matchingActionsForCollection.Add(actionSpec);
                     }
+                    AddToRemove(contributedActionFacet, actionSpec);
                 }
 
                 if (actionSpec.IsFinderMethodFor(objectSpec)) {

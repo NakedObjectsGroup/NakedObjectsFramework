@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -42,6 +43,7 @@ public sealed class ContributedActionIntegrationFacet : FacetAbstract, IContribu
     public string SubMenuWhenContributedTo(IObjectSpecImmutable objectSpec) => FindContributee(objectSpec).subMenu;
 
     public string IdWhenContributedTo(IObjectSpecImmutable objectSpec) => FindContributee(objectSpec).id;
+    public void Remove(ISpecificationBuilder specification) => specification.RemoveFacet(this);
 
     #endregion
 }

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Facet;
@@ -18,4 +19,6 @@ public interface IContributedActionIntegrationFacet : IFacet {
 
     //Id has been included for generating UI code that is backwards-compatible with NOF 6.
     string IdWhenContributedTo(IObjectSpecImmutable spec);
+
+    public void Remove(ISpecificationBuilder specification);
 }
