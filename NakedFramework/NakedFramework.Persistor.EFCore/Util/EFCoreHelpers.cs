@@ -22,19 +22,19 @@ namespace NakedFramework.Persistor.EFCore.Util;
 public static class EFCoreHelpers {
     private static IEntityType GetEntityType(this DbContext context, Type type) => context.Model.FindEntityType(type.GetProxiedType());
 
-    private static PropertyInfo[] GetKeys(this IEntityType eType, Type type) {
-        var keyProperties = eType.GetKeys().SelectMany(k => k.Properties);
+    private static PropertyInfo[] GetPrimaryKey(this IEntityType eType) {
+        var keyProperties = eType.FindPrimaryKey()?.Properties ?? Array.Empty<IProperty>();
         return keyProperties.Select(p => p.PropertyInfo).ToArray();
     }
 
     public static bool HasEntityType(this DbContext context, Type type) => context.GetEntityType(type) is not null;
 
-    public static PropertyInfo[] SafeGetKeys(this DbContext context, Type type) => context.GetEntityType(type)?.GetKeys(type) ?? Array.Empty<PropertyInfo>();
+    public static PropertyInfo[] SafeGetKeys(this DbContext context, Type type) => context.GetEntityType(type)?.GetPrimaryKey() ?? Array.Empty<PropertyInfo>();
 
     public static object[] GetKeyValues(this DbContext context, object obj) {
         var eType = context.GetEntityType(obj.GetType());
-        var keyProperties = eType.GetKeys().SelectMany(k => k.Properties).Where(k => k.PropertyInfo is not null);
-        return keyProperties.Select(p => p.PropertyInfo.GetValue(obj, null)).ToArray();
+        var keyProperties = eType.GetPrimaryKey().Where(pi => pi is not null);
+        return keyProperties.Select(p => p.GetValue(obj, null)).ToArray();
     }
 
     public static object[] GetForeignKeyValues(this DbContext context, object obj, IEntityType ofType) {
@@ -47,7 +47,7 @@ public static class EFCoreHelpers {
 
     public static PropertyInfo[] GetNonIdMembers(this DbContext context, Type type) {
         var eType = context.GetEntityType(type);
-        var keyProperties = eType.GetKeys().SelectMany(k => k.Properties).Select(p => p.PropertyInfo).ToArray();
+        var keyProperties = eType.GetPrimaryKey();
         var properties = eType.GetProperties().Select(p => p.PropertyInfo).Where(pi => pi is not null).ToArray();
         var nonIdProperties = properties.Except(keyProperties);
         var valueNavigations = eType.GetNavigations().Select(p => p.PropertyInfo).Where(pi => pi is not null).Where(pi => pi.PropertyType.IsValueType);
@@ -69,7 +69,7 @@ public static class EFCoreHelpers {
 
     public static PropertyInfo[] GetCloneableMembers(this DbContext context, Type type) {
         var eType = context.GetEntityType(type);
-        var keyProperties = eType.GetKeys().SelectMany(k => k.Properties).Select(p => p.PropertyInfo).ToArray();
+        var keyProperties = eType.GetPrimaryKey();
         var properties = eType.GetProperties().Select(p => p.PropertyInfo).Where(pi => pi is not null).ToArray();
         var nonIdProperties = properties.Except(keyProperties);
         var navigations = eType.GetNavigations().Select(p => p.PropertyInfo).Where(pi => pi is not null);
@@ -91,7 +91,7 @@ public static class EFCoreHelpers {
     public static bool IdMembersAreIdentity(this DbContext context, Type type) {
         var eType = context.GetEntityType(type);
         if (eType is not null) {
-            var keyProperties = eType.GetKeys().SelectMany(k => k.Properties).Where(p => p.ValueGenerated == ValueGenerated.OnAdd);
+            var keyProperties = (eType.FindPrimaryKey()?.Properties ?? Array.Empty<IProperty>()).Where(p => p.ValueGenerated == ValueGenerated.OnAdd);
             return keyProperties.Any();
         }
 

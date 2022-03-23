@@ -44,6 +44,7 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<ByteArrayRecord> ByteArrayRecords { get; set; }
     public DbSet<MaskRecord> MaskRecords { get; set; }
     public DbSet<HiddenRecord> HiddenRecords { get; set; }
+    public DbSet<AlternateKeyRecord> AlternateKeyRecords { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
@@ -89,6 +90,11 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<MaskRecord>().Ignore(m => m.MaskRecordProperty);
         modelBuilder.Entity<MaskRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
         modelBuilder.Entity<HiddenRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
+
+
+        modelBuilder.Entity<AlternateKeyRecord>().HasAlternateKey(k => k.Name);
+        modelBuilder.Entity<AlternateKeyRecord>().HasData(new AlternateKeyRecord { Id = 1, Name = "AK1" });
+
     }
 }
 

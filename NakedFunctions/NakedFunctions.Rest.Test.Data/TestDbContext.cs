@@ -66,6 +66,8 @@ public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : Test
         context.MaskRecords.Add(new MaskRecord { Name = "Title" });
         context.HiddenRecords.Add(new HiddenRecord { Name = "Title" });
 
+        context.AlternateKeyRecords.Add(new AlternateKeyRecord { Name = "AK1" });
+
         context.SaveChanges();
     }
 }
@@ -98,6 +100,7 @@ public abstract class TestDbContext : DbContext {
     public DbSet<ByteArrayRecord> ByteArrayRecords { get; set; }
     public DbSet<MaskRecord> MaskRecords { get; set; }
     public DbSet<HiddenRecord> HiddenRecords { get; set; }
+    public DbSet<AlternateKeyRecord> AlternateKeyRecords { get; set; }
 
     protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
         Database.SetInitializer(new DatabaseInitializer<T>());

@@ -51,7 +51,8 @@ public class MenuTestEF6 : AcceptanceTestCase {
         typeof(ReferenceRecord),
         typeof(UpdatedRecord),
         typeof(CollectionRecord),
-        typeof(OrderedRecord)
+        typeof(OrderedRecord),
+        typeof(AlternateKeyRecord)
     };
 
     protected override Type[] ObjectTypes { get; } = { };
@@ -953,4 +954,24 @@ public class MenuTestEF6 : AcceptanceTestCase {
         Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction5"]["extensions"]["returnType"].ToString());
         Assert.AreEqual(4, resultObj["members"]["ContributedFunction5"]["parameters"]["psr"]["choices"].Count());
     }
+
+    [Test]
+    public void TestInvokeMenuActionThatReturnsAlternateKeyObject()
+    {
+        var api = Api();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+        var result = api.GetInvokeOnMenu(nameof(MenuTestFunctions), nameof(MenuTestFunctions.AlternateKey), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        Assert.AreEqual("1", resultObj["instanceId"].ToString());
+        Assert.AreEqual("http://localhost/objects/NakedFunctions.Rest.Test.Data.AlternateKeyRecord/1", resultObj["links"][0]["href"].ToString());
+
+    }
+
+
 }

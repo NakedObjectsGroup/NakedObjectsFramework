@@ -60,7 +60,8 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         typeof(BoundedRecord),
         typeof(ByteArrayRecord),
         typeof(MaskRecord),
-        typeof(HiddenRecord)
+        typeof(HiddenRecord),
+        typeof(AlternateKeyRecord)
     };
 
     protected override Type[] ObjectTypes { get; } = { };
@@ -1177,5 +1178,15 @@ public class ObjectTestEF6 : AcceptanceTestCase {
 
         Assert.IsNull(parsedResult["members"]["HiddenProperty"]);
         Assert.IsNull(parsedResult["members"]["HiddenFunction"]);
+    }
+
+    [Test]
+    public void TestGetObjectAlternateKey()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<AlternateKeyRecord>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
     }
 }
