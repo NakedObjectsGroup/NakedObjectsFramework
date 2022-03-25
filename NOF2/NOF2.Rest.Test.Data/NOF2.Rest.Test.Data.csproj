@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
-    <PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0-beta02" />
-    <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta02" />
+    <PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0-beta03" />
+    <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta03" />
   </ItemGroup>
 
   <ItemGroup>
