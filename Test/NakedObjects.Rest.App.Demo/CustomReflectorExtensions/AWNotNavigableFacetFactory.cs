@@ -26,39 +26,39 @@ namespace NakedObjects.Rest.App.Demo.AWCustom {
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (property.PropertyType.IsAssignableFrom(typeof(ContactType))) {
-                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+                FacetUtils.AddFacet(NotNavigableFacet.Instance, specification);
             }
 
             if (property.PropertyType.IsAssignableFrom(typeof(AddressType))) {
-                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+                FacetUtils.AddFacet(NotNavigableFacet.Instance, specification);
             }
 
             if (property.PropertyType.IsAssignableFrom(typeof(ContactType))) {
-                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+                FacetUtils.AddFacet(NotNavigableFacet.Instance, specification);
             }
 
             if (property.PropertyType.IsAssignableFrom(typeof(Culture))) {
-                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+                FacetUtils.AddFacet(NotNavigableFacet.Instance, specification);
             }
 
             if (property.PropertyType.IsAssignableFrom(typeof(SalesReason))) {
-                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+                FacetUtils.AddFacet(NotNavigableFacet.Instance, specification);
             }
 
             if (property.PropertyType.IsAssignableFrom(typeof(UnitMeasure))) {
-                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+                FacetUtils.AddFacet(NotNavigableFacet.Instance, specification);
             }
 
             if (property.PropertyType.IsAssignableFrom(typeof(ScrapReason))) {
-                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+                FacetUtils.AddFacet(NotNavigableFacet.Instance, specification);
             }
 
             if (property.PropertyType.IsAssignableFrom(typeof(ProductSubcategory))) {
-                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+                FacetUtils.AddFacet(NotNavigableFacet.Instance, specification);
             }
 
             if (property.PropertyType.IsAssignableFrom(typeof(ProductCategory))) {
-                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+                FacetUtils.AddFacet(NotNavigableFacet.Instance, specification);
             }
 
             return metamodel;
