@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
@@ -11,10 +10,9 @@ namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
 public class PropertySerializationWrapper {
-    private readonly string assemblyName;
     private readonly bool jit;
     private readonly string propertyName;
-    private readonly string typeName;
+    private readonly TypeSerializationWrapper typeWrapper;
 
     [NonSerialized]
     private Func<object, object[], object> methodDelegate;
@@ -25,8 +23,7 @@ public class PropertySerializationWrapper {
     public PropertySerializationWrapper(PropertyInfo propertyInfo, ILogger logger, bool jit = false) {
         this.jit = jit;
         PropertyInfo = propertyInfo;
-        assemblyName = propertyInfo.DeclaringType.Assembly.FullName;
-        typeName = propertyInfo.DeclaringType.FullName;
+        typeWrapper = new TypeSerializationWrapper(propertyInfo.DeclaringType, jit);
         propertyName = propertyInfo.Name;
         methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(propertyInfo.GetGetMethod()), logger);
     }
@@ -53,11 +50,11 @@ public class PropertySerializationWrapper {
 
     private PropertyInfo FindProperty() {
         try {
-            var declaringType = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.FullName == assemblyName)?.GetType(typeName);
+            var declaringType = typeWrapper.Type;
             return declaringType?.GetProperty(propertyName) ?? throw new NullReferenceException();
         }
         catch (NullReferenceException) {
-            throw new ReflectionException($"Failed to find {assemblyName}:{typeName}: {propertyName}");
+            throw new ReflectionException($"Failed to find {propertyName}");
         }
     }
 

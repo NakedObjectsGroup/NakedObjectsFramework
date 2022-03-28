@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -153,6 +154,46 @@ public class FacetSerializationTest {
         AssertIFacet(f, dsf);
     }
 
+    private static void TestSerializeCreatedCallbackFacetNull(Func<CreatedCallbackFacetNull, CreatedCallbackFacetNull> roundTripper) {
+        var f = CreatedCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeCreateNewFacet(Func<CreateNewFacet, CreateNewFacet> roundTripper) {
+        var f = new CreateNewFacet(typeof(TestSerializationClass));
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Type, dsf.Type);
+    }
+
+    private static void TestSerializeDataTypeFacet(Func<DataTypeFacetAnnotation, DataTypeFacetAnnotation> roundTripper) {
+        static void AssertDataType(DataTypeFacetAnnotation f, DataTypeFacetAnnotation dsf) {
+            Assert.AreEqual(f.DataType(), dsf.DataType());
+            Assert.AreEqual(f.CustomDataType(), dsf.CustomDataType());
+        }
+
+        var f = new DataTypeFacetAnnotation(DataType.EmailAddress);
+        var dsf = roundTripper(f);
+        var f1 = new DataTypeFacetAnnotation("custom data type");
+        var dsf1 = roundTripper(f1);
+
+        AssertIFacet(f, dsf);
+        AssertDataType(f, dsf);
+        AssertIFacet(f1, dsf1);
+        AssertDataType(f1, dsf1);
+    }
+
+    private static void TestSerializeDateOnlyFacet(Func<DateOnlyFacet, DateOnlyFacet> roundTripper)
+    {
+        var f = DateOnlyFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -190,7 +231,19 @@ public class FacetSerializationTest {
     public void TestBinarySerializeConcurrencyCheckFacet() => TestSerializeConcurrencyCheckFacet(BinaryRoundTrip);
 
     [TestMethod]
-    public void TestBinarySerializeContributedActionFacetFacet() => TestSerializeContributedActionFacet(BinaryRoundTrip);
+    public void TestBinarySerializeContributedActionFacet() => TestSerializeContributedActionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeCreatedCallbackFacetNull() => TestSerializeCreatedCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeCreateNewFacet() => TestSerializeCreateNewFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDataTypeFacet() => TestSerializeDataTypeFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDateOnlyFacet() => TestSerializeDateOnlyFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {

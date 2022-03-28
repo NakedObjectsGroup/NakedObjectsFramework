@@ -7,16 +7,31 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using NakedFramework.Architecture.Facet;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class DataTypeFacetAnnotation : DataTypeFacetAbstract {
+public sealed class DataTypeFacetAnnotation : FacetAbstract, IDataTypeFacet {
+    private readonly string customDataType;
+    private readonly DataType dataType;
+
+    private DataTypeFacetAnnotation(DataType dataType, string customDataType) {
+        this.dataType = dataType;
+        this.customDataType = customDataType;
+    }
+
     public DataTypeFacetAnnotation(DataType dataType)
-        : base(dataType) { }
+        : this(dataType, string.Empty) { }
 
     public DataTypeFacetAnnotation(string customDataType)
-        : base(customDataType) { }
+        : this(System.ComponentModel.DataAnnotations.DataType.Custom, customDataType) { }
+
+    public override Type FacetType => typeof(IDataTypeFacet);
+
+    public DataType DataType() => dataType;
+
+    public string CustomDataType() => customDataType;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

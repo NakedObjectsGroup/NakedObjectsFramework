@@ -67,7 +67,7 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
     }
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var facet = new ContributedToLocalCollectionFacet();
+        var facet = new ContributedToLocalCollectionIntegrationFacet();
         var elementType = p.ParameterType.GetGenericArguments()[0];
         IObjectSpecBuilder type;
         (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);

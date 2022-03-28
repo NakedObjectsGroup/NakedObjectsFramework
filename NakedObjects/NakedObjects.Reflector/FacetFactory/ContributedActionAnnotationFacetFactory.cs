@@ -102,7 +102,7 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
     }
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var facet = new ContributedToLocalCollectionFacet();
+        var facet = new ContributedToLocalCollectionIntegrationFacet();
         var elementType = p.ParameterType.GetGenericArguments()[0];
         (var type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
         facet.AddLocalCollectionContributee(type, p.Name);

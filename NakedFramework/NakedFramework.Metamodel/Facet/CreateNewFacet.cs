@@ -11,19 +11,22 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
-    private readonly Type toCreate;
+    private readonly TypeSerializationWrapper toCreate;
 
-    public CreateNewFacet(Type toCreate) => this.toCreate = toCreate;
+    public CreateNewFacet(Type toCreate) => this.toCreate = new TypeSerializationWrapper(toCreate);
 
     public override Type FacetType => typeof(ICreateNewFacet);
 
+    public Type Type => toCreate.Type; 
+
     public string[] OrderedProperties(INakedObjectAdapter adapter, INakedFramework framework) {
-        if (framework.MetamodelManager.GetSpecification(toCreate) is IObjectSpec spec) {
+        if (framework.MetamodelManager.GetSpecification(Type) is IObjectSpec spec) {
             return spec.Properties.Where(IsNotHidden).Select(f => f.Name(adapter)).ToArray();
         }
 

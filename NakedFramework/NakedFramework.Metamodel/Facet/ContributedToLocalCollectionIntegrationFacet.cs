@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 
 // Not Serializable. Should be removed from metamodel at end of model integration. 
-public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContributedToLocalCollectionFacet {
+public sealed class ContributedToLocalCollectionIntegrationFacet : FacetAbstract, IContributedToLocalCollectionFacet {
     private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
 
     public override Type FacetType => typeof(IContributedToLocalCollectionFacet);
