@@ -36,4 +36,6 @@ public class ActionToAssociationSpecAdapter : AbstractAdapter, IOneToOneAssociat
 
 public class ActionToCollectionSpecAdapter : AbstractAdapter, IOneToManyAssociationSpecImmutable {
     public ActionToCollectionSpecAdapter(IActionSpecImmutable action) : base(action) { }
+
+    public string[] ContributedActionNames => Array.Empty<string>();
 }

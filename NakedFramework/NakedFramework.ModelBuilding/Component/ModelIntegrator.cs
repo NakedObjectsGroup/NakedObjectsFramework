@@ -28,7 +28,7 @@ public class ModelIntegrator : IModelIntegrator {
     private readonly IMenuFactory menuFactory;
     private readonly IMetamodelBuilder metamodelBuilder;
     private readonly IAllServiceList serviceList;
-    private readonly HashSet<(IContributedActionIntegrationFacet facet, ISpecificationBuilder spec)> toRemove = new();
+    private readonly HashSet<(IRemovableFacet facet, ISpecificationBuilder spec)> toRemove = new();
 
     public ModelIntegrator(IMetamodelBuilder metamodelBuilder,
                            IMenuFactory menuFactory,
@@ -42,11 +42,17 @@ public class ModelIntegrator : IModelIntegrator {
         this.serviceList = serviceList;
     }
 
-    private void AddToRemove(IContributedActionIntegrationFacet facet, ISpecificationBuilder spec) {
+    private void AddToRemove(IRemovableFacet facet, ISpecificationBuilder spec) {
         lock (toRemove) {
             toRemove.Add((facet, spec));
         }
     }
+
+    private void Execute((ITypeSpecImmutable spec, IIntegrationFacet facet) t) {
+        t.facet.Execute(metamodelBuilder);
+        AddToRemove(t.facet, t.spec);
+    }
+
 
     public void Integrate() {
         var services = serviceList.Services;
@@ -56,8 +62,9 @@ public class ModelIntegrator : IModelIntegrator {
 
         (ITypeSpecImmutable spec, IIntegrationFacet facet)[] integrationFacets = metamodelBuilder.AllSpecifications.Select(s => (s, s.GetFacet<IIntegrationFacet>())).Where(t => t.Item2 is not null).ToArray();
 
-        integrationFacets.ForEach(t => t.facet.Execute(metamodelBuilder));
-        integrationFacets.ForEach(t => t.facet.Remove(t.spec));
+        integrationFacets.ForEach(Execute);
+
+        metamodelBuilder.AllSpecifications.OfType<IObjectSpecBuilder>().AsParallel().ForEach(PopulateLocalCollectionContributedActions);
 
         metamodelBuilder.AllSpecifications.OfType<ITypeSpecBuilder>().AsParallel().ForEach(spec => spec.CompleteIntegration());
 
@@ -105,7 +112,6 @@ public class ModelIntegrator : IModelIntegrator {
             var id = spec.Identifier?.ClassName ?? "unknown";
             logger.LogWarning($"Specification with id : {id} has null or empty name");
         }
-
         PopulateContributedActions(spec, services, metamodel);
     }
 
@@ -181,5 +187,27 @@ public class ModelIntegrator : IModelIntegrator {
         objectSpec.AddContributedActions(contribActions, services);
         objectSpec.AddCollectionContributedActions(collContribActions);
         objectSpec.AddFinderActions(finderActions);
+    }
+
+    private void PopulateLocalCollectionContributedActions(IObjectSpecBuilder objectSpec) { 
+        bool CollectionContributed(IActionSpecImmutable actionSpec, IContributedToLocalCollectionFacet contributedToLocalCollectionFacet, IObjectSpecImmutable elementSpec, string id) {
+            if (contributedToLocalCollectionFacet is not null) {
+                AddToRemove(contributedToLocalCollectionFacet, actionSpec);
+                return contributedToLocalCollectionFacet.IsContributedToLocalCollectionOf(elementSpec, id);
+            }
+
+            return false;
+        }
+
+        static bool DirectlyContributed(IMemberOrderFacet memberOrderFacet, string id) => string.Equals(memberOrderFacet?.Name, id, StringComparison.CurrentCultureIgnoreCase);
+
+        foreach (var collSpec in objectSpec.UnorderedFields.OfType<IOneToManyAssociationSpecBuilder>()) {
+            var allActions = objectSpec.UnorderedObjectActions.Union(objectSpec.UnorderedContributedActions);
+            var id = collSpec.Identifier.MemberName;
+
+            var toAdd = allActions.Select(a => (a, a.GetFacet<IContributedToLocalCollectionFacet>(), a.GetFacet<IMemberOrderFacet>())).Where(t => DirectlyContributed(t.Item3, id) || CollectionContributed(t.a, t.Item2, collSpec.ElementSpec, id)).Select(t => t.a.Identifier.MemberName);
+
+            collSpec.AddLocalContributedActions(toAdd.ToArray());
+        }
     }
 }

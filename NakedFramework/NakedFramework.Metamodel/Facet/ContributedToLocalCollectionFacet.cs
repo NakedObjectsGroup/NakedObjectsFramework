@@ -9,11 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
 
-[Serializable]
+
+// Not Serializable. Should be removed from metamodel at end of model integration. 
 public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContributedToLocalCollectionFacet {
     private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
 
@@ -22,4 +24,7 @@ public sealed class ContributedToLocalCollectionFacet : FacetAbstract, IContribu
     public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpec, string id) => localCollectionContributees.Where(t => t.id == id.ToLower()).Select(t => t.spec).Any(objectSpec.IsOfType);
 
     public void AddLocalCollectionContributee(IObjectSpecImmutable objectSpec, string id) => localCollectionContributees.Add((objectSpec, id.ToLower()));
+    public void Remove(ISpecificationBuilder specification) {
+        specification.RemoveFacet(this);
+    }
 }

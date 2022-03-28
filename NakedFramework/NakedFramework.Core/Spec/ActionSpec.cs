@@ -174,9 +174,6 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
     public INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) =>
         parameterSet ?? (IsContributedMethod ? new[] { target } : Array.Empty<INakedObjectAdapter>());
 
-    public bool IsLocallyContributedTo(ITypeSpec typeSpec, string id) =>
-        Framework.MetamodelManager.Metamodel.GetSpecification(typeSpec.FullName) is IObjectSpecImmutable spec &&
-        actionSpecImmutable.IsContributedToLocalCollectionOf(spec, id);
 
     public string GetFinderMethodPrefix() => actionSpecImmutable.GetFacet<IFinderActionFacet>()?.Value;
 

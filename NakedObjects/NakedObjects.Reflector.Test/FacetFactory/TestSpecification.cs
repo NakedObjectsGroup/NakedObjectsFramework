@@ -35,6 +35,9 @@ internal class TestSpecification : Specification, IObjectSpecBuilder {
     public bool IsQueryable { get; }
     public bool IsParseable { get; }
     public bool IsOfType(ITypeSpecImmutable otherSpecification) => throw new NotImplementedException();
+    public string[] GetLocallyContributedActionNames(string id) => throw new NotImplementedException();
+
+    public IReadOnlyList<IActionSpecImmutable> GetLocallyContributedActions(string id) => throw new NotImplementedException();
 
     public bool IsPlaceHolder { get; }
     public bool IsPendingIntrospection { get; }
@@ -61,6 +64,8 @@ internal class TestSpecification : Specification, IObjectSpecBuilder {
     public void CompleteIntegration() {
         throw new NotImplementedException();
     }
+
+    public IList<IActionSpecImmutable> UnorderedContributedActions { get; }
 
     public void AddContributedActions(IList<IActionSpecImmutable> contributedActions, Type[] services) {
         throw new NotImplementedException();

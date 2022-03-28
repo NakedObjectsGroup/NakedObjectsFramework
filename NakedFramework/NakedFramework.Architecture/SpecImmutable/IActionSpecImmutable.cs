@@ -16,7 +16,6 @@ public interface IActionSpecImmutable : IMemberSpecImmutable {
     bool IsFinderMethod { get; }
     string StaticName { get; }
 
-    bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id);
     bool IsFinderMethodFor(IObjectSpecImmutable spec);
 }
 

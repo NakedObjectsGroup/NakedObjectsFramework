@@ -11,8 +11,7 @@ using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Facet;
 
-public interface IIntegrationFacet : IFacet {
+public interface IIntegrationFacet : IFacet, IRemovableFacet {
     public void Execute(IMetamodelBuilder metamodelBuilder);
     public void AddAction(Action<IMetamodelBuilder> action);
-    public void Remove(ISpecificationBuilder specification);
 }

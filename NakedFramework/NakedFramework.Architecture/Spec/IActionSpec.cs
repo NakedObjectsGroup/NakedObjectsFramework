@@ -69,11 +69,6 @@ public interface IActionSpec : IMemberSpec {
 
     INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet);
 
-    /// <summary>
-    ///     Return true if the action is run on a service object using the target object as a parameter
-    /// </summary>
-    bool IsLocallyContributedTo(ITypeSpec typeSpec, string id);
-
     string GetFinderMethodPrefix();
 }
 

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.SpecImmutable;
 
@@ -14,6 +15,9 @@ namespace NakedFramework.Metamodel.SpecImmutable;
 [Serializable]
 public sealed class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {
     public ObjectSpecImmutable(Type type, bool isRecognized) : base(type, isRecognized) { }
+
+
+    public IList<IActionSpecImmutable> UnorderedContributedActions => unorderedContributedActions;
 
     #region ISerializable
 

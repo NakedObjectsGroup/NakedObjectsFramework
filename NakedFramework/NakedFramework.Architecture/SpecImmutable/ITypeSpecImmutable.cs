@@ -40,6 +40,7 @@ public interface ITypeSpecImmutable : ISpecificationBuilder {
 
     //Will return true if this is a sub-type of the passed-in spec
     bool IsOfType(ITypeSpecImmutable otherSpecification);
+    string[] GetLocallyContributedActionNames(string id);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

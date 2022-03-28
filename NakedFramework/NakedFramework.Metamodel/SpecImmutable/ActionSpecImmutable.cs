@@ -50,14 +50,6 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
 
     public bool IsStaticFunction => ContainsFacet<IStaticFunctionFacet>();
 
-    public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable, string id) {
-        var memberOrderFacet = GetFacet<IMemberOrderFacet>();
-        var directlyContributed = string.Equals(memberOrderFacet?.Name, id, StringComparison.CurrentCultureIgnoreCase);
-
-        return directlyContributed ||
-               GetFacet<IContributedToLocalCollectionFacet>()?.IsContributedToLocalCollectionOf(objectSpecImmutable, id) == true;
-    }
-
     #endregion
 
     #region ISerializable

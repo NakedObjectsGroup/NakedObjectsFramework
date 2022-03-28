@@ -73,7 +73,8 @@ public sealed class ObjectSpec : TypeSpec, IObjectSpec {
 
     public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec, string id) {
         if (!locallyContributedActions.ContainsKey(id)) {
-            locallyContributedActions[id] = GetActions().Where(oa => oa.IsLocallyContributedTo(typeSpec, id)).ToArray();
+            var names = InnerSpec.GetLocallyContributedActionNames(id);
+            locallyContributedActions[id] = GetActions().Where(a => names.Contains(a.Id)).ToArray();
         }
 
         return locallyContributedActions[id];

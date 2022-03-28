@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -16,9 +17,10 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
-public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable, IOneToManyAssociationSpecImmutable {
+public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable, IOneToManyAssociationSpecBuilder {
     private readonly IObjectSpecImmutable defaultElementSpec;
     private readonly Type defaultElementType;
+    public string[] ContributedActionNames { get; private set; } = Array.Empty<string>();
 
     public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
         : base(name, returnSpec) {
@@ -40,6 +42,8 @@ public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable
             return typeOfFacet != null ? typeOfFacet.ValueSpec : defaultElementSpec;
         }
     }
+
+    public void AddLocalContributedActions(string[] contributedActionNames) => ContributedActionNames = contributedActionNames;
 
     public override IObjectSpecImmutable OwnerSpec { get; }
 

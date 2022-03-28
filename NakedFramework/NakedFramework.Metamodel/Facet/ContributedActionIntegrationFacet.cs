@@ -14,11 +14,10 @@ using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
 
-[Serializable]
+// Not Serializable. Should be removed from metamodel at end of model integration. 
 public sealed class ContributedActionIntegrationFacet : FacetAbstract, IContributedActionIntegrationFacet {
     private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> collectionContributees = new();
     private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> objectContributees = new();
-
 
     public bool IsContributed => objectContributees.Any() || collectionContributees.Any();
 

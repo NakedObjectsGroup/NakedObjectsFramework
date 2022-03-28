@@ -139,9 +139,15 @@ public class FacetSerializationTest {
         AssertIFacet(f, dsf);
     }
 
-    private static void TestSerializeConcurrencyCheckFacet(Func<ConcurrencyCheckFacet, ConcurrencyCheckFacet> roundTripper)
-    {
+    private static void TestSerializeConcurrencyCheckFacet(Func<ConcurrencyCheckFacet, ConcurrencyCheckFacet> roundTripper) {
         var f = ConcurrencyCheckFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeContributedActionFacet(Func<ContributedActionFacet, ContributedActionFacet> roundTripper) {
+        var f = ContributedActionFacet.Instance;
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
@@ -182,6 +188,9 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeConcurrencyCheckFacet() => TestSerializeConcurrencyCheckFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeContributedActionFacetFacet() => TestSerializeContributedActionFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {

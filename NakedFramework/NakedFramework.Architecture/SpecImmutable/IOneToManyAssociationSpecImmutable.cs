@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
+
 namespace NakedFramework.Architecture.SpecImmutable;
 
 /// <summary>
@@ -12,6 +14,11 @@ namespace NakedFramework.Architecture.SpecImmutable;
 /// </summary>
 public interface IOneToManyAssociationSpecImmutable : IAssociationSpecImmutable {
     IObjectSpecImmutable ElementSpec { get; }
+    string[] ContributedActionNames { get; }
+}
+
+public interface IOneToManyAssociationSpecBuilder : IOneToManyAssociationSpecImmutable {
+    void AddLocalContributedActions(string[] contributedActionNames);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

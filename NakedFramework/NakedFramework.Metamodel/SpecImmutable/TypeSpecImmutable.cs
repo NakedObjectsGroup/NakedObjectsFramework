@@ -28,7 +28,7 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     private Type[] services;
     private ImmutableList<ITypeSpecImmutable> subclasses;
     private List<IActionSpecImmutable> unorderedCollectionContributedActions = new();
-    private List<IActionSpecImmutable> unorderedContributedActions = new();
+    protected List<IActionSpecImmutable> unorderedContributedActions = new();
     private List<IAssociationSpecImmutable> unorderedFields;
     private List<IActionSpecImmutable> unorderedFinderActions = new();
     private List<IActionSpecImmutable> unorderedObjectActions;
@@ -176,6 +176,8 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     public IList<IActionSpecImmutable> UnorderedObjectActions => unorderedObjectActions;
 
+  
+
     public bool IsOfType(ITypeSpecImmutable otherSpecification) {
         if (otherSpecification == this) {
             return true;
@@ -195,6 +197,10 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         }
 
         return false;
+    }
+
+    public string[] GetLocallyContributedActionNames(string id) {
+        return OrderedFields.OfType<IOneToManyAssociationSpecImmutable>().SingleOrDefault(a => a.Identifier.MemberName == id)?.ContributedActionNames ?? Array.Empty<string>();
     }
 
     #endregion

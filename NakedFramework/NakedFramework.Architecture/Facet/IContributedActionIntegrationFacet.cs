@@ -10,7 +10,7 @@ using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Facet;
 
-public interface IContributedActionIntegrationFacet : IFacet {
+public interface IContributedActionIntegrationFacet : IFacet, IRemovableFacet {
     bool IsContributedTo(IObjectSpecImmutable spec);
     bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
 
@@ -19,6 +19,4 @@ public interface IContributedActionIntegrationFacet : IFacet {
 
     //Id has been included for generating UI code that is backwards-compatible with NOF 6.
     string IdWhenContributedTo(IObjectSpecImmutable spec);
-
-    public void Remove(ISpecificationBuilder specification);
 }
