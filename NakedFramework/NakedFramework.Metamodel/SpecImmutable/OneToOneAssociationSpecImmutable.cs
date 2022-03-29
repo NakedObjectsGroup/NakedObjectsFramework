@@ -8,6 +8,7 @@
 using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
@@ -25,7 +26,7 @@ public sealed class OneToOneAssociationSpecImmutable : AssociationSpecImmutable,
 
     #endregion
 
-    public override IObjectSpecImmutable ElementSpec => null;
+    public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => null;
 
     #region IOneToOneAssociationSpecImmutable Members
 

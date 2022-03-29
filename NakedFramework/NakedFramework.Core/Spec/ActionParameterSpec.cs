@@ -53,7 +53,7 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
         get {
             if (!checkedForElementSpec) {
                 var facet = GetFacet<IElementTypeFacet>();
-                var es = facet?.ValueSpec;
+                var es = facet?.GetElementSpec(Framework.MetamodelManager.Metamodel);
                 elementSpec = es == null ? null : Framework.MetamodelManager.GetSpecification(es);
                 checkedForElementSpec = true;
             }

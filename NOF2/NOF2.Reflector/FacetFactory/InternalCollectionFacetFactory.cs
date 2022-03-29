@@ -28,9 +28,7 @@ public sealed class InternalCollectionFacetFactory : AbstractNOF2FacetFactoryPro
     private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (type == typeof(InternalCollection)) {
             var collectionElementType = typeof(object);
-            IObjectSpecBuilder oSpec;
-            (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
-            FacetUtils.AddFacet(new ElementTypeFacet(collectionElementType, oSpec), holder);
+            FacetUtils.AddFacet(new ElementTypeFacet(collectionElementType), holder);
         }
 
         return metamodel;

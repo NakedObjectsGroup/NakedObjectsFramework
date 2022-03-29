@@ -601,7 +601,7 @@ public sealed class EF6ObjectStore : IObjectStore, IDisposable {
     public void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field) => field.GetNakedObject(nakedObjectAdapter);
 
     public int CountField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec associationSpec) {
-        var type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
+        var type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().GetElementSpec(metamodelManager.Metamodel).FullName);
         var countMethod = GetType().GetMethod("Count")?.GetGenericMethodDefinition().MakeGenericMethod(type);
         return (int)(countMethod?.Invoke(this, new object[] { nakedObjectAdapter, associationSpec, nakedObjectManager }) ?? 0);
     }

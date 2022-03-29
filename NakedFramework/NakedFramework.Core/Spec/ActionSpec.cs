@@ -80,7 +80,7 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
 
     public override IObjectSpec ReturnSpec => returnSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec);
 
-    public override IObjectSpec ElementSpec => elementSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec);
+    public override IObjectSpec ElementSpec => elementSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.GetElementSpec(Framework.MetamodelManager.Metamodel));
 
     public ITypeSpec OnSpec => onSpec ??= Framework.MetamodelManager.GetSpecification(ActionInvocationFacet.OnType);
 

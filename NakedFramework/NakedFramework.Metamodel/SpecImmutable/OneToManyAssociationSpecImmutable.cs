@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
@@ -36,11 +37,9 @@ public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable
     /// <summary>
     ///     Return the <see cref="IObjectSpec" /> for the  Type that the collection holds.
     /// </summary>
-    public override IObjectSpecImmutable ElementSpec {
-        get {
-            var typeOfFacet = GetFacet<IElementTypeFacet>();
-            return typeOfFacet != null ? typeOfFacet.ValueSpec : defaultElementSpec;
-        }
+    public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) {
+        var typeOfFacet = GetFacet<IElementTypeFacet>();
+        return typeOfFacet != null ? typeOfFacet.GetElementSpec(metamodel) : defaultElementSpec;
     }
 
     public void AddLocalContributedActions(string[] contributedActionNames) => ContributedActionNames = contributedActionNames;

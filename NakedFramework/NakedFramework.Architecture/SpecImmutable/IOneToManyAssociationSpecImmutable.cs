@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using NakedFramework.Architecture.Component;
 
 namespace NakedFramework.Architecture.SpecImmutable;
 
@@ -13,7 +14,7 @@ namespace NakedFramework.Architecture.SpecImmutable;
 ///     Additional reflective details about field members
 /// </summary>
 public interface IOneToManyAssociationSpecImmutable : IAssociationSpecImmutable {
-    IObjectSpecImmutable ElementSpec { get; }
+    IObjectSpecImmutable GetElementSpec(IMetamodel metamodel);
     string[] ContributedActionNames { get; }
 }
 

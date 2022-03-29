@@ -64,7 +64,7 @@ public class ModelIntegrator : IModelIntegrator {
 
         integrationFacets.ForEach(Execute);
 
-        metamodelBuilder.AllSpecifications.OfType<IObjectSpecBuilder>().AsParallel().ForEach(PopulateLocalCollectionContributedActions);
+        metamodelBuilder.AllSpecifications.OfType<IObjectSpecBuilder>().AsParallel().ForEach(spec => PopulateLocalCollectionContributedActions(spec, metamodelBuilder));
 
         metamodelBuilder.AllSpecifications.OfType<ITypeSpecBuilder>().AsParallel().ForEach(spec => spec.CompleteIntegration());
 
@@ -168,7 +168,7 @@ public class ModelIntegrator : IModelIntegrator {
                     AddToRemove(contributedActionFacet, actionSpec);
                 }
 
-                if (actionSpec.IsFinderMethodFor(objectSpec)) {
+                if (actionSpec.IsFinderMethodFor(objectSpec, metamodel)) {
                     matchingFinderActions.Add(actionSpec);
                 }
             }
@@ -189,7 +189,7 @@ public class ModelIntegrator : IModelIntegrator {
         objectSpec.AddFinderActions(finderActions);
     }
 
-    private void PopulateLocalCollectionContributedActions(IObjectSpecBuilder objectSpec) { 
+    private void PopulateLocalCollectionContributedActions(IObjectSpecBuilder objectSpec, IMetamodel metamodel) { 
         bool CollectionContributed(IActionSpecImmutable actionSpec, IContributedToLocalCollectionFacet contributedToLocalCollectionFacet, IObjectSpecImmutable elementSpec, string id) {
             if (contributedToLocalCollectionFacet is not null) {
                 AddToRemove(contributedToLocalCollectionFacet, actionSpec);
@@ -205,7 +205,7 @@ public class ModelIntegrator : IModelIntegrator {
             var allActions = objectSpec.UnorderedObjectActions.Union(objectSpec.UnorderedContributedActions);
             var id = collSpec.Identifier.MemberName;
 
-            var toAdd = allActions.Select(a => (a, a.GetFacet<IContributedToLocalCollectionFacet>(), a.GetFacet<IMemberOrderFacet>())).Where(t => DirectlyContributed(t.Item3, id) || CollectionContributed(t.a, t.Item2, collSpec.ElementSpec, id)).Select(t => t.a.Identifier.MemberName);
+            var toAdd = allActions.Select(a => (a, a.GetFacet<IContributedToLocalCollectionFacet>(), a.GetFacet<IMemberOrderFacet>())).Where(t => DirectlyContributed(t.Item3, id) || CollectionContributed(t.a, t.Item2, collSpec.GetElementSpec(metamodel), id)).Select(t => t.a.Identifier.MemberName);
 
             collSpec.AddLocalContributedActions(toAdd.ToArray());
         }

@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
@@ -35,14 +36,14 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
 
     public IActionParameterSpecImmutable[] Parameters { get; }
 
-    public override IObjectSpecImmutable ElementSpec => GetFacet<IActionInvocationFacet>().ElementType;
+    public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => GetFacet<IActionInvocationFacet>().ElementType;
 
     public bool IsFinderMethod =>
         HasReturn() &&
         ContainsFacet(typeof(IFinderActionFacet)) &&
         Parameters.All(p => p.Specification.IsParseable || p.IsChoicesDefined || p.IsMultipleChoicesEnabled);
 
-    public bool IsFinderMethodFor(IObjectSpecImmutable spec) => IsFinderMethod && (ReturnSpec.IsOfType(spec) || ReturnSpec.IsCollection && ElementSpec.IsOfType(spec));
+    public bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel) => IsFinderMethod && (ReturnSpec.IsOfType(spec) || ReturnSpec.IsCollection && GetElementSpec(metamodel).IsOfType(spec));
     public string StaticName => GetFacet<IMemberNamedFacet>().FriendlyName();
 
     public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && Parameters.Any() &&

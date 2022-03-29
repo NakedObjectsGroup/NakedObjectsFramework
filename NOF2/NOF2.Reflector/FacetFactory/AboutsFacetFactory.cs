@@ -90,7 +90,7 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
             var elementType = actionMethod.ReturnType.GetGenericArguments().First();
 
             (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-            facets.Add(new ElementTypeFacet(elementType, elementSpec));
+            facets.Add(new ElementTypeFacet(elementType));
             facets.Add(TypeOfFacetInferredFromGenerics.Instance);
         }
         else {

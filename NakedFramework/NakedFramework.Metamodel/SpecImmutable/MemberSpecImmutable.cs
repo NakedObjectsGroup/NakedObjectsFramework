@@ -8,6 +8,7 @@
 using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
@@ -22,7 +23,7 @@ public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable 
 
     protected MemberSpecImmutable(IIdentifier identifier) => this.identifier = identifier;
 
-    public abstract IObjectSpecImmutable ElementSpec { get; }
+    public abstract IObjectSpecImmutable GetElementSpec(IMetamodel metamodel);
 
     #region IMemberSpecImmutable Members
 

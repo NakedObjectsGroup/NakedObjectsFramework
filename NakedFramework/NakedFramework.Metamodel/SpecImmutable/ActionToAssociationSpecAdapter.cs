@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
 
@@ -17,7 +18,7 @@ public abstract class AbstractAdapter : MemberSpecImmutable {
 
     protected AbstractAdapter(IActionSpecImmutable action) : base(action.Identifier) => this.action = action;
 
-    public override IObjectSpecImmutable ElementSpec => action.ElementSpec;
+    public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => action.GetElementSpec(metamodel);
     public override IObjectSpecImmutable ReturnSpec => action.ReturnSpec;
     public IObjectSpecImmutable OwnerSpec => action.OwnerSpec as IObjectSpecImmutable;
 

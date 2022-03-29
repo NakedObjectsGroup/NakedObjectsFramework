@@ -23,7 +23,7 @@ public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToMa
         : base(association, framework) {
         IsASet = association.ContainsFacet<IIsASetFacet>();
 
-        ElementSpec = framework.MetamodelManager.GetSpecification(association.ElementSpec);
+        ElementSpec = framework.MetamodelManager.GetSpecification(association.GetElementSpec(framework.MetamodelManager.Metamodel));
     }
 
     public override bool IsAutoCompleteEnabled => false;

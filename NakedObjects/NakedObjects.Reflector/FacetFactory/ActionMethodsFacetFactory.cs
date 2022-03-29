@@ -356,8 +356,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
 
         if (returnSpec is not null && IsParameterCollection(parameter.ParameterType)) {
             var elementType = CollectionUtils.ElementType(parameter.ParameterType);
-            (var elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(elementType, metamodel);
-            facets.Add(new ElementTypeFacet(elementType, elementSpec));
+            facets.Add(new ElementTypeFacet(elementType));
         }
 
         FacetUtils.AddFacets(facets, holder);

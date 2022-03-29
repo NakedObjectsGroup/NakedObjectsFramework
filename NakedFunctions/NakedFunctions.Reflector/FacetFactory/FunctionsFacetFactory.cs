@@ -161,13 +161,7 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
 
         if (IsParameterCollection(parameter.ParameterType)) {
             var elementType = CollectionUtils.ElementType(parameter.ParameterType);
-            ITypeSpecImmutable elementSpec;
-            (elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);
-            if (!(elementSpec is IObjectSpecImmutable)) {
-                throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
-            }
-
-            facets.Add(new ElementTypeFacet(elementType, (IObjectSpecImmutable)elementSpec));
+            facets.Add(new ElementTypeFacet(elementType));
         }
 
         FacetUtils.AddFacets(facets, holder);

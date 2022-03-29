@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
 
@@ -13,10 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
-    public ElementTypeFacet(Type type, IObjectSpecImmutable spec) {
-        Value = type;
-        ValueSpec = spec;
-    }
+    public ElementTypeFacet(Type type) => Value = type;
 
     public override Type FacetType => typeof(IElementTypeFacet);
 
@@ -24,7 +22,7 @@ public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
 
     public Type Value { get; }
 
-    public IObjectSpecImmutable ValueSpec { get; }
+    public IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => metamodel.GetSpecification(Value) as IObjectSpecImmutable;
 
     #endregion
 }

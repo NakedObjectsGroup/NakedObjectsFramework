@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 
@@ -18,5 +19,6 @@ public interface ISingleClassValueFacet : IFacet {
     ///     Convenience to return the <see cref="IObjectSpec" /> corresponding to this facet's
     ///     <see cref="Value" />
     /// </summary>
-    IObjectSpecImmutable ValueSpec { get; }
+    /// <param name="metamodel"></param>
+    IObjectSpecImmutable GetElementSpec(IMetamodel metamodel);
 }
