@@ -250,6 +250,22 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.ContributedTo, dsf.ContributedTo);
     }
 
+    private static void TestSerializeEagerlyFacet(Func<EagerlyFacet, EagerlyFacet> roundTripper) {
+        var f = EagerlyFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.What, dsf.What);
+    }
+
+    private static void TestSerializeEditPropertiesFacet(Func<EditPropertiesFacet, EditPropertiesFacet> roundTripper) {
+        var f = new EditPropertiesFacet(new[] { "s1", "s2" });
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(string.Join(',', f.Properties), string.Join(',', dsf.Properties));
+    }
+
 
 
     [TestMethod]
@@ -323,6 +339,12 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeDisplayAsPropertyFacet() => TestSerializeDisplayAsPropertyFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeEagerlyFacet() => TestSerializeEagerlyFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeEditPropertiesFacet() => TestSerializeEditPropertiesFacet(BinaryRoundTrip);
 
 }
 
