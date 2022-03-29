@@ -10,7 +10,7 @@ using System;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class ImmutableFacetAnnotation : ImmutableFacetImpl {
+public sealed class ImmutableFacetAnnotation : ImmutableFacetAbstract {
     public ImmutableFacetAnnotation(WhenTo value)
         : base(value) { }
 }

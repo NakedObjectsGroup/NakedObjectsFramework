@@ -10,6 +10,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
+using NakedFramework.Core.Resolve;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -20,10 +21,14 @@ public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IIm
 
     public override Type FacetType => typeof(IImmutableFacet);
 
-    /// <summary>
-    ///     Hook method for subclasses to override
-    /// </summary>
-    public abstract string DisabledReason(INakedObjectAdapter no);
+    public virtual string DisabledReason(INakedObjectAdapter target) =>
+        Value switch {
+            WhenTo.Always => string.Format(NakedObjects.Resources.NakedObjects.ImmutableMessage, target.Spec.SingularName),
+            WhenTo.Never => null,
+            WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => string.Format(NakedObjects.Resources.NakedObjects.ImmutableUntilPersistedMessage, target.Spec.SingularName),
+            WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => string.Format(NakedObjects.Resources.NakedObjects.ImmutableOncePersistedMessage, target.Spec.SingularName),
+            _ => null
+        };
 
     #region IImmutableFacet Members
 

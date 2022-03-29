@@ -10,7 +10,7 @@ using System;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class ImmutableFacetAlways : ImmutableFacetImpl {
+public sealed class ImmutableFacetAlways : ImmutableFacetAbstract {
     private static ImmutableFacetAlways instance;
 
     private ImmutableFacetAlways() : base(WhenTo.Always) { }
