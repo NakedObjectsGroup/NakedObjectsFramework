@@ -10,12 +10,12 @@ using System;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class ImmutableFacetViaValueSemantics : ImmutableFacetImpl {
-    private static ImmutableFacetViaValueSemantics instance;
+public sealed class ImmutableFacetAlways : ImmutableFacetImpl {
+    private static ImmutableFacetAlways instance;
 
-    private ImmutableFacetViaValueSemantics() : base(WhenTo.Always) { }
+    private ImmutableFacetAlways() : base(WhenTo.Always) { }
 
-    public static ImmutableFacetViaValueSemantics Instance => instance ??= new ImmutableFacetViaValueSemantics();
+    public static ImmutableFacetAlways Instance => instance ??= new ImmutableFacetAlways();
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -358,6 +358,53 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.IsASet, dsf.IsASet);
     }
 
+    private static void TestSerializeHiddenFacet(Func<HiddenFacet, HiddenFacet> roundTripper) {
+        var f = new HiddenFacet(WhenTo.OncePersisted);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeHideForSessionFacetNone(Func<HideForSessionFacetNone, HideForSessionFacetNone> roundTripper) {
+        var f = HideForSessionFacetNone.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.HiddenReason(null, null), dsf.HiddenReason(null, null));
+    }
+
+    private static void TestSerializeIdempotentFacet(Func<IdempotentFacet, IdempotentFacet> roundTripper) {
+        var f = IdempotentFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeImmutableFacetAlways(Func<ImmutableFacetAlways, ImmutableFacetAlways> roundTripper) {
+        var f = ImmutableFacetAlways.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeImmutableFacetAnnotation(Func<ImmutableFacetAnnotation, ImmutableFacetAnnotation> roundTripper) {
+        var f = new ImmutableFacetAnnotation(WhenTo.OncePersisted);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeImmutableFacetNever(Func<ImmutableFacetNever, ImmutableFacetNever> roundTripper) {
+        var f = ImmutableFacetNever.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -457,7 +504,6 @@ public class FacetSerializationTest {
     [TestMethod]
     public void TestBinarySerializeGenericCollectionSetFacet() => TestSerializeGenericCollectionSetFacet(BinaryRoundTrip);
 
-
     [TestMethod]
     public void TestBinarySerializeGenericIEnumerableFacet() => TestSerializeGenericIEnumerableFacet(BinaryRoundTrip);
 
@@ -469,6 +515,24 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeGenericIQueryableSetFacet() => TestSerializeGenericIQueryableSetFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeHiddenFacet() => TestSerializeHiddenFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeHideForSessionFacetNone() => TestSerializeHideForSessionFacetNone(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeIdempotentFacet() => TestSerializeIdempotentFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeImmutableFacetAlways() => TestSerializeImmutableFacetAlways(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeImmutableFacetAnnotation() => TestSerializeImmutableFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeImmutableFacetNever() => TestSerializeImmutableFacetNever(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
