@@ -266,6 +266,21 @@ public class FacetSerializationTest {
         Assert.AreEqual(string.Join(',', f.Properties), string.Join(',', dsf.Properties));
     }
 
+    private static void TestSerializeElementTypeFacet(Func<ElementTypeFacet, ElementTypeFacet> roundTripper) {
+        var f = new ElementTypeFacet(typeof(TestSerializationClass));
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeEnumFacet(Func<EnumFacet, EnumFacet> roundTripper) {
+        var f = new EnumFacet(typeof(TestEnum));
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.TypeOfEnum, dsf.TypeOfEnum);
+    }
 
 
     [TestMethod]
@@ -346,8 +361,19 @@ public class FacetSerializationTest {
     [TestMethod]
     public void TestBinarySerializeEditPropertiesFacet() => TestSerializeEditPropertiesFacet(BinaryRoundTrip);
 
+    [TestMethod]
+    public void TestBinarySerializeElementTypeFacet() => TestSerializeElementTypeFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeEnumFacet() => TestSerializeEnumFacet(BinaryRoundTrip);
+
 }
 
 public class TestSerializationClass {
     public int TestProperty { get; set; } = 1;
+}
+
+public enum TestEnum {
+    EOne,
+    ETwo
 }

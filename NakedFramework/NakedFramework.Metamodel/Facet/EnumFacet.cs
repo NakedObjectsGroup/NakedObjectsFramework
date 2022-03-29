@@ -10,19 +10,21 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class EnumFacet : FacetAbstract, IEnumFacet, IMarkerFacet {
-    private readonly Type typeOfEnum;
+    private readonly TypeSerializationWrapper typeWrapper;
 
-    public EnumFacet(Type typeOfEnum) =>
-        this.typeOfEnum = typeOfEnum;
+    public EnumFacet(Type typeOfEnum) => typeWrapper = new TypeSerializationWrapper(typeOfEnum);
+
+    public Type TypeOfEnum => typeWrapper.Type;
 
     public override Type FacetType => typeof(IEnumFacet);
 
-    private string ToDisplayName(string enumName) => NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
+    private string ToDisplayName(string enumName) => NameUtils.NaturalName(Enum.Parse(TypeOfEnum, enumName).ToString());
 
     #region Nested type: EnumNameComparer
 
@@ -42,9 +44,9 @@ public sealed class EnumFacet : FacetAbstract, IEnumFacet, IMarkerFacet {
 
     #region IEnumFacet Members
 
-    public object[] GetChoices(INakedObjectAdapter inObjectAdapter) => Enum.GetNames(typeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
+    public object[] GetChoices(INakedObjectAdapter inObjectAdapter) => Enum.GetNames(TypeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(TypeOfEnum, s)).ToArray();
 
-    public object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues) => choiceValues.Select(o => Enum.Parse(typeOfEnum, o.ToString())).ToArray();
+    public object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues) => choiceValues.Select(o => Enum.Parse(TypeOfEnum, o.ToString())).ToArray();
 
     public string GetTitle(INakedObjectAdapter inObjectAdapter) => ToDisplayName(inObjectAdapter.Object.ToString());
 

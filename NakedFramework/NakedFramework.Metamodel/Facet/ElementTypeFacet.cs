@@ -9,18 +9,22 @@ using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
-    public ElementTypeFacet(Type type) => Value = type;
+
+    private readonly TypeSerializationWrapper typeWrapper;
+
+    public ElementTypeFacet(Type type) => typeWrapper = new TypeSerializationWrapper(type);
 
     public override Type FacetType => typeof(IElementTypeFacet);
 
     #region IElementTypeFacet Members
 
-    public Type Value { get; }
+    public Type Value => typeWrapper.Type;
 
     public IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => metamodel.GetSpecification(Value) as IObjectSpecImmutable;
 
