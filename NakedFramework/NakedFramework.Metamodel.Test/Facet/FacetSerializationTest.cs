@@ -282,6 +282,81 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.TypeOfEnum, dsf.TypeOfEnum);
     }
 
+    private static void TestSerializeFinderActionFacet(Func<FinderActionFacet, FinderActionFacet> roundTripper) {
+        var f = new FinderActionFacet("action name");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeFindMenuFacet(Func<FindMenuFacet, FindMenuFacet> roundTripper) {
+        var f = FindMenuFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeFromStreamFacetUsingFromStream(Func<FromStreamFacetUsingFromStream, FromStreamFacetUsingFromStream> roundTripper) {
+        var f = new FromStreamFacetUsingFromStream(ImageValueSemanticsProvider.Instance);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeGenericCollectionFacet(Func<GenericCollectionFacet, GenericCollectionFacet> roundTripper) {
+        var f = GenericCollectionFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsQueryable, dsf.IsQueryable);
+        Assert.AreEqual(f.IsASet, dsf.IsASet);
+    }
+
+    private static void TestSerializeGenericCollectionSetFacet(Func<GenericCollectionSetFacet, GenericCollectionSetFacet> roundTripper) {
+        var f = GenericCollectionSetFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsQueryable, dsf.IsQueryable);
+        Assert.AreEqual(f.IsASet, dsf.IsASet);
+    }
+
+    private static void TestSerializeGenericIEnumerableFacet(Func<GenericIEnumerableFacet, GenericIEnumerableFacet> roundTripper) {
+        var f = GenericIEnumerableFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsQueryable, dsf.IsQueryable);
+        Assert.AreEqual(f.IsASet, dsf.IsASet);
+    }
+
+    private static void TestSerializeGenericIEnumerableSetFacet(Func<GenericIEnumerableSetFacet, GenericIEnumerableSetFacet> roundTripper) {
+        var f = GenericIEnumerableSetFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsQueryable, dsf.IsQueryable);
+        Assert.AreEqual(f.IsASet, dsf.IsASet);
+    }
+
+    private static void TestSerializeGenericIQueryableFacet(Func<GenericIQueryableFacet, GenericIQueryableFacet> roundTripper) {
+        var f = GenericIQueryableFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsQueryable, dsf.IsQueryable);
+        Assert.AreEqual(f.IsASet, dsf.IsASet);
+    }
+
+    private static void TestSerializeGenericIQueryableSetFacet(Func<GenericIQueryableSetFacet, GenericIQueryableSetFacet> roundTripper) {
+        var f = GenericIQueryableSetFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsQueryable, dsf.IsQueryable);
+        Assert.AreEqual(f.IsASet, dsf.IsASet);
+    }
 
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
@@ -367,6 +442,33 @@ public class FacetSerializationTest {
     [TestMethod]
     public void TestBinarySerializeEnumFacet() => TestSerializeEnumFacet(BinaryRoundTrip);
 
+    [TestMethod]
+    public void TestBinarySerializeFinderActionFacet() => TestSerializeFinderActionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeFindMenuFacet() => TestSerializeFindMenuFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeFromStreamFacetUsingFromStream() => TestSerializeFromStreamFacetUsingFromStream(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeGenericCollectionFacet() => TestSerializeGenericCollectionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeGenericCollectionSetFacet() => TestSerializeGenericCollectionSetFacet(BinaryRoundTrip);
+
+
+    [TestMethod]
+    public void TestBinarySerializeGenericIEnumerableFacet() => TestSerializeGenericIEnumerableFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeGenericIEnumerableSetFacet() => TestSerializeGenericIEnumerableSetFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeGenericIQueryableFacet() => TestSerializeGenericIQueryableFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeGenericIQueryableSetFacet() => TestSerializeGenericIQueryableSetFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
