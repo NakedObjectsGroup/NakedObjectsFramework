@@ -405,6 +405,32 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.Value, dsf.Value);
     }
 
+    private static void TestSerializeIsASetFacet(Func<IsASetFacet, IsASetFacet> roundTripper)
+    {
+        var f = IsASetFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeMandatoryFacet(Func<MandatoryFacet, MandatoryFacet> roundTripper) {
+        var f = MandatoryFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsMandatory, dsf.IsMandatory);
+    }
+
+    private static void TestSerializeMandatoryFacetDefault(Func<MandatoryFacetDefault, MandatoryFacetDefault> roundTripper)
+    {
+        var f = MandatoryFacetDefault.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsMandatory, dsf.IsMandatory);
+    }
+
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -533,6 +559,15 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeImmutableFacetNever() => TestSerializeImmutableFacetNever(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeIsASetFacet() => TestSerializeIsASetFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMandatoryFacet() => TestSerializeMandatoryFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMandatoryFacetDefault() => TestSerializeMandatoryFacetDefault(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
