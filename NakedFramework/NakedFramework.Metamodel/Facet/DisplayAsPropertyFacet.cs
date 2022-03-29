@@ -7,18 +7,18 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
-    private readonly ITypeSpecImmutable objectContributee;
-
-    public DisplayAsPropertyFacet(ITypeSpecImmutable type) => objectContributee = type;
+    public DisplayAsPropertyFacet(Type type) => ContributedToWrapper = new TypeSerializationWrapper(type);
 
     public DisplayAsPropertyFacet() { }
+    private TypeSerializationWrapper ContributedToWrapper { get; }
 
     public override Type FacetType => typeof(IDisplayAsPropertyFacet);
-    public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributee is not null && spec.IsOfType(objectContributee);
+
+    public Type ContributedTo => ContributedToWrapper?.Type;
 }

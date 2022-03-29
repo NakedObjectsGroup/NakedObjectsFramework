@@ -38,9 +38,8 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : FunctionalFacetFac
         // all functions are contributed to first parameter or if menu, itself
 
         if (method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null) {
-            (var type, metamodel) = reflector.LoadSpecification(GetContributeeType(method), metamodel);
-
-            var displayAsPropertyFacet = new DisplayAsPropertyFacet(type);
+            
+            var displayAsPropertyFacet = new DisplayAsPropertyFacet(GetContributeeType(method));
 
             FacetUtils.AddFacets(new IFacet[] {
                 displayAsPropertyFacet,

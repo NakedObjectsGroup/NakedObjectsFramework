@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.SemanticsProvider;
 
 #pragma warning disable CS0618
 #pragma warning disable SYSLIB0011
@@ -186,13 +187,70 @@ public class FacetSerializationTest {
         AssertDataType(f1, dsf1);
     }
 
-    private static void TestSerializeDateOnlyFacet(Func<DateOnlyFacet, DateOnlyFacet> roundTripper)
-    {
+    private static void TestSerializeDateOnlyFacet(Func<DateOnlyFacet, DateOnlyFacet> roundTripper) {
         var f = DateOnlyFacet.Instance;
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
     }
+
+    private static void TestSerializeDefaultedFacetUsingDefaultsProvider(Func<DefaultedFacetUsingDefaultsProvider<bool>, DefaultedFacetUsingDefaultsProvider<bool>> roundTripper) {
+        var f = new DefaultedFacetUsingDefaultsProvider<bool>(BooleanValueSemanticsProvider.Instance);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Default, dsf.Default);
+    }
+
+    private static void TestSerializeDescribedAsFacetAnnotation(Func<DescribedAsFacetAnnotation, DescribedAsFacetAnnotation> roundTripper) {
+        var f = new DescribedAsFacetAnnotation("default value");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeDescribedAsFacetNone(Func<DescribedAsFacetNone, DescribedAsFacetNone> roundTripper) {
+        var f = DescribedAsFacetNone.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeDisabledFacetAnnotation(Func<DisabledFacetAnnotation, DisabledFacetAnnotation> roundTripper) {
+        var f = new DisabledFacetAnnotation(WhenTo.OncePersisted);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeDisabledFacetAlways(Func<DisabledFacetAlways, DisabledFacetAlways> roundTripper) {
+        var f = DisabledFacetAlways.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeDisableForSessionFacetNone(Func<DisableForSessionFacetNone, DisableForSessionFacetNone> roundTripper) {
+        var f = DisableForSessionFacetNone.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DisabledReason(null, null), dsf.DisabledReason(null, null));
+    }
+
+    private static void TestSerializeDisplayAsPropertyFacet(Func<DisplayAsPropertyFacet, DisplayAsPropertyFacet> roundTripper) {
+        var f = new DisplayAsPropertyFacet(typeof(TestSerializationClass));
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.ContributedTo, dsf.ContributedTo);
+    }
+
+
 
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
@@ -244,6 +302,28 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeDateOnlyFacet() => TestSerializeDateOnlyFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDefaultedFacetUsingDefaultsProvider() => TestSerializeDefaultedFacetUsingDefaultsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDescribedAsFacetAnnotation() => TestSerializeDescribedAsFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDescribedAsFacetNone() => TestSerializeDescribedAsFacetNone(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDisabledFacetAnnotation() => TestSerializeDisabledFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDisabledFacetAlways() => TestSerializeDisabledFacetAlways(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDisableForSessionFacetNone() => TestSerializeDisableForSessionFacetNone(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDisplayAsPropertyFacet() => TestSerializeDisplayAsPropertyFacet(BinaryRoundTrip);
+
 }
 
 public class TestSerializationClass {

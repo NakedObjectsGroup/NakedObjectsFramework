@@ -27,22 +27,18 @@ public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFa
 
     private static bool IsStatic(ITypeSpecImmutable spec) => spec.ContainsFacet<ITypeIsStaticFacet>();
 
-    private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IDisplayAsPropertyFacet>()?.IsContributedTo(ts) == true;
+    private static bool IsContributedProperty(IActionSpecImmutable sa, ITypeSpecImmutable ts, IMetamodel metamodel) {
+        if (sa.GetFacet<IDisplayAsPropertyFacet>()?.ContributedTo is { } type) {
+            var contributedToSpec = metamodel.GetSpecification(type);
+            return contributedToSpec is not null && ts.IsOfType(contributedToSpec);
+        }
+
+        return false;
+    }
 
     private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecBuilder[] functions, IMetamodel metamodel) {
-        var result = functions.AsParallel().SelectMany(functionsSpec => {
-            var serviceActions = functionsSpec.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
-
-            var matchingActionsForObject = new List<IActionSpecImmutable>();
-
-            foreach (var sa in serviceActions) {
-                if (IsContributedProperty(sa, spec)) {
-                    matchingActionsForObject.Add(sa);
-                }
-            }
-
-            return matchingActionsForObject;
-        }).ToList();
+        var result = functions.AsParallel().SelectMany(functionsSpec =>
+                                                           functionsSpec.UnorderedObjectActions.Where(sa => sa is not null && IsContributedProperty(sa, spec, metamodel))).ToList();
 
         if (result.Any()) {
             var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
