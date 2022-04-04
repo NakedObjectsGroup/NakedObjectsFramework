@@ -535,6 +535,34 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.FriendlyName, dsf.FriendlyName);
     }
 
+    private static void TestSerializeNotCountedFacet(Func<NotCountedFacet, NotCountedFacet> roundTripper) {
+        var f = NotCountedFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeNotNavigableFacet(Func<NotNavigableFacet, NotNavigableFacet> roundTripper) {
+        var f = NotNavigableFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeNotPersistedFacet(Func<NotPersistedFacet, NotPersistedFacet> roundTripper) {
+        var f = NotPersistedFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeNullableFacetAlways(Func<NullableFacetAlways, NullableFacetAlways> roundTripper) {
+        var f = NullableFacetAlways.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -708,6 +736,18 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeNamedFacetInferred() => TestSerializeNamedFacetInferred(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeNotCountedFacet() => TestSerializeNotCountedFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeNotNavigableFacet() => TestSerializeNotNavigableFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeNotPersistedFacet() => TestSerializeNotPersistedFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeNullableFacetAlways() => TestSerializeNullableFacetAlways(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
