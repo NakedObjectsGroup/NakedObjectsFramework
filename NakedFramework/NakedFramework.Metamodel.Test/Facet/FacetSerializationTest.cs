@@ -405,8 +405,7 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.Value, dsf.Value);
     }
 
-    private static void TestSerializeIsASetFacet(Func<IsASetFacet, IsASetFacet> roundTripper)
-    {
+    private static void TestSerializeIsASetFacet(Func<IsASetFacet, IsASetFacet> roundTripper) {
         var f = IsASetFacet.Instance;
         var dsf = roundTripper(f);
 
@@ -421,13 +420,54 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.IsMandatory, dsf.IsMandatory);
     }
 
-    private static void TestSerializeMandatoryFacetDefault(Func<MandatoryFacetDefault, MandatoryFacetDefault> roundTripper)
-    {
+    private static void TestSerializeMandatoryFacetDefault(Func<MandatoryFacetDefault, MandatoryFacetDefault> roundTripper) {
         var f = MandatoryFacetDefault.Instance;
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
         Assert.AreEqual(f.IsMandatory, dsf.IsMandatory);
+    }
+
+    private static void TestSerializeMaskFacet(Func<MaskFacet, MaskFacet> roundTripper) {
+        var f = new MaskFacet("a mask");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeMaxLengthFacetAnnotation(Func<MaxLengthFacetAnnotation, MaxLengthFacetAnnotation> roundTripper) {
+        var f = new MaxLengthFacetAnnotation(167);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeMaxLengthFacetZero(Func<MaxLengthFacetZero, MaxLengthFacetZero> roundTripper) {
+        var f = MaxLengthFacetZero.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeMemberNamedFacetAnnotation(Func<MemberNamedFacetAnnotation, MemberNamedFacetAnnotation> roundTripper) {
+        var f = new MemberNamedFacetAnnotation("a name");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+        Assert.AreEqual(f.FriendlyName(), dsf.FriendlyName());
+    }
+
+    private static void TestSerializeMemberNamedFacetInferred(Func<MemberNamedFacetInferred, MemberNamedFacetInferred> roundTripper) {
+        var f = new MemberNamedFacetInferred("a name");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+        Assert.AreEqual(f.FriendlyName(), dsf.FriendlyName());
     }
 
 
@@ -568,6 +608,21 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeMandatoryFacetDefault() => TestSerializeMandatoryFacetDefault(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMaskFacet() => TestSerializeMaskFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMaxLengthFacetAnnotation() => TestSerializeMaxLengthFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMaxLengthFacetZero() => TestSerializeMaxLengthFacetZero(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMemberNamedFacetAnnotation() => TestSerializeMemberNamedFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMemberNamedFacetInferred() => TestSerializeMemberNamedFacetInferred(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
