@@ -63,7 +63,7 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
             }
         }
 
-        throw new FindObjectException(logger.LogAndReturn($"failed to find service for action {Name}"));
+        throw new FindObjectException(logger.LogAndReturn($"failed to find service for action {Id}"));
     }
 
     private IActionParameterSpec GetParameter(int position) {

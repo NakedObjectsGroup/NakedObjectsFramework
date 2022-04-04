@@ -32,7 +32,7 @@ public abstract class MemberSpecAbstract : IMemberSpec {
 
     public abstract IObjectSpec ElementSpec { get; }
 
-    public override string ToString() => $"id={Id},name='{Name}'";
+    public override string ToString() => $"id={Id}";
 
     protected virtual IConsent GetConsent(string message) => message is null ? Allow.Default : new Veto(message);
 

@@ -498,8 +498,8 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
         }
 
         if (nakedObjectAdapter.Spec is IObjectSpec spec) {
-            static INakedObjectAdapter GetCollection(IOneToManyAssociationSpec assoc, INakedObjectAdapter owner) =>
-                assoc.GetNakedObject(owner) ?? throw new PersistFailedException($"Unexpected null collection {assoc.Name} on {owner.Spec.FullName}");
+             INakedObjectAdapter GetCollection(IOneToManyAssociationSpec assoc, INakedObjectAdapter owner) =>
+                assoc.GetNakedObject(owner) ?? throw new PersistFailedException($"Unexpected null collection {assoc.Name(nakedObjectAdapter)} on {owner.Spec.FullName}");
 
             // testing check 
             var ghostAdapters = spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted).Select(a => GetCollection(a, nakedObjectAdapter)).Where(a => a.ResolveState.IsGhost());

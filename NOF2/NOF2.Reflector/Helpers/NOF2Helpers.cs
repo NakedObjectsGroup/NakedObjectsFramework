@@ -85,9 +85,9 @@ public static class NOF2Helpers {
         return spec?.GetFacet<INamedFacet>()?.FriendlyName ?? "";
     }
 
-    public static MenuImpl ConvertNOF2ToNOFMenu(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
+    public static MenuBuilder ConvertNOF2ToNOFMenu(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
         var menuName = GetName(metamodel, declaringType, name);
-        var mi = new MenuImpl(metamodel, declaringType, false, menuName);
+        var mi = new MenuBuilder(metamodel, declaringType, false, menuName);
         foreach (var menuComponent in legacyMenu.MenuItems()) {
             AddMenuComponent(mi, menuComponent);
         }

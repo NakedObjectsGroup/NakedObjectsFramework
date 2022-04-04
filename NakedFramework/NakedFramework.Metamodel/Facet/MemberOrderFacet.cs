@@ -12,9 +12,10 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MemberOrderFacet : FacetAbstract, IMemberOrderFacet {
-    public MemberOrderFacet(string name, string sequence) {
+    public MemberOrderFacet(string name, string sequence, string grouping = "") {
         Sequence = sequence;
         Name = name;
+        Grouping = grouping;
     }
 
     public override Type FacetType => typeof(IMemberOrderFacet);
@@ -25,7 +26,7 @@ public sealed class MemberOrderFacet : FacetAbstract, IMemberOrderFacet {
 
     public string Name { get; }
 
-    public string Grouping { get; init; }
+    public string Grouping { get; }
 
     #endregion
 }

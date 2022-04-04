@@ -470,6 +470,17 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.FriendlyName(), dsf.FriendlyName());
     }
 
+    private static void TestSerializeMemberOrderFacet(Func<MemberOrderFacet, MemberOrderFacet> roundTripper) {
+        var f = new MemberOrderFacet("name", "sequence", "group");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Name, dsf.Name);
+        Assert.AreEqual(f.Sequence, dsf.Sequence);
+        Assert.AreEqual(f.Grouping, dsf.Grouping);
+    }
+
+
 
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
@@ -623,6 +634,9 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeMemberNamedFacetInferred() => TestSerializeMemberNamedFacetInferred(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMemberOrderFacet() => TestSerializeMemberOrderFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {

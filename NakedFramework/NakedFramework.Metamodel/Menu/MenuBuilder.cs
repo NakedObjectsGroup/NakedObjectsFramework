@@ -22,9 +22,11 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.Menu;
 
-[Serializable]
-public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCallback {
-    public MenuImpl(IMetamodel metamodel, Type defaultType, bool addAllActions, string name, string id = null) {
+
+public class MenuBuilder : IMenu {
+    private IActionSpecImmutable Action { get; }
+
+    public MenuBuilder(IMetamodel metamodel, Type defaultType, bool addAllActions, string name, string id = null) {
         Metamodel = metamodel;
         Type = defaultType;
         Name = name ?? ObjectSpec.GetFacet<INamedFacet>().FriendlyName;
@@ -35,7 +37,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
         }
     }
 
-    public MenuImpl(IMetamodel metamodel, string name, string id = null) {
+    public MenuBuilder(IMetamodel metamodel, string name, string id = null) {
         Metamodel = metamodel;
         if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(id)) {
             throw new Exception("Menu Name and Id must not be null, unless a default type is specified");
@@ -43,6 +45,10 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
 
         Name = name;
         Id = id;
+    }
+
+    private MenuBuilder(IMetamodel metamodel, IActionSpecImmutable action) {
+        this.Action = action;
     }
 
     private ITypeSpecImmutable ObjectSpec => Metamodel.GetSpecification(Type);
@@ -69,8 +75,8 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
 
     private IList<IActionSpecImmutable> ActionsForType(Type type) => Metamodel.GetSpecification(type).OrderedObjectActions.ToList();
 
-    private MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id = null) {
-        var subMenu = new MenuImpl(Metamodel, Type, false, subMenuName);
+    private MenuBuilder CreateMenuImmutableAsSubMenu(string subMenuName, string id = null) {
+        var subMenu = new MenuBuilder(Metamodel, Type, false, subMenuName);
         if (id == null) {
             subMenu.Id += $"-{subMenuName}:";
         }
@@ -84,28 +90,28 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
     }
 
     private bool HasAction(IActionSpecImmutable action) {
-        var nativeAction = MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action);
-        return nativeAction || MenuItems.OfType<MenuImpl>().Any(m => m.HasAction(action));
+        var nativeAction = MenuItems.Any(mi => mi.Action == action);
+        return nativeAction || MenuItems.Any(m => m.HasAction(action));
     }
 
-    public bool HasActionOrSuperMenuHasAction(IActionSpecImmutable action) =>
+    private bool HasActionOrSuperMenuHasAction(IActionSpecImmutable action) =>
         HasAction(action) ||
-        SuperMenu is MenuImpl superMenu &&
+        SuperMenu is MenuBuilder superMenu &&
         superMenu.HasActionOrSuperMenuHasAction(action);
 
-    private MenuImpl GetSubMenuIfExists(string menuName) => MenuItems.OfType<MenuImpl>().FirstOrDefault(a => a.Name == menuName);
+    private MenuBuilder GetSubMenuIfExists(string menuName) => MenuItems.FirstOrDefault(a => a.Name == menuName);
 
-    private static void AddOrderableElementsToMenu(IList<IActionSpecImmutable> ordeableElements, MenuImpl toMenu) {
+    private void AddOrderableElementsToMenu(IList<IActionSpecImmutable> ordeableElements, MenuBuilder toMenu) {
         foreach (var action in ordeableElements) {
             if (action != null) {
                 if (!toMenu.HasActionOrSuperMenuHasAction(action)) {
-                    toMenu.AddMenuItem(new MenuAction(action));
+                    toMenu.AddMenuItem(new MenuBuilder(Metamodel, action));
                 }
             }
         }
     }
 
-    private void AddMenuItem(IMenuItemImmutable item) => items = items.Add(item); //Only way to add to an immutable collection
+    private void AddMenuItem(MenuBuilder item) => items = items.Add(item); //Only way to add to an immutable collection
 
     private void AddContributed(IActionSpecImmutable ca) {
         if (ObjectSpec is IObjectSpecImmutable objectSpec) {
@@ -118,7 +124,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
 
     private void AddContributedFunction(IActionSpecImmutable ca) {
         //i.e. no sub-menu
-        AddMenuItem(new MenuAction(ca));
+        AddMenuItem(new MenuBuilder(Metamodel, ca));
     }
 
     private void AddContributedAction(IActionSpecImmutable ca, IObjectSpecImmutable spec) {
@@ -131,7 +137,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
         }
         else {
             //i.e. no sub-menu
-            AddMenuItem(new MenuAction(ca));
+            AddMenuItem(new MenuBuilder(Metamodel, ca));
         }
     }
 
@@ -161,7 +167,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
 
         AddFriendlyName(friendlyName, actionSpec);
 
-        AddMenuItem(new MenuAction(actionSpec));
+        AddMenuItem(new MenuBuilder(Metamodel, actionSpec));
         return this;
     }
 
@@ -210,7 +216,7 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
 
         AddFriendlyName(friendlyName, actionSpec);
 
-        AddMenuItem(new MenuAction(actionSpec));
+        AddMenuItem(new MenuBuilder(Metamodel, actionSpec));
         return this;
     }
 
@@ -223,17 +229,17 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
 
     #region other properties
 
-    private ImmutableList<IMenuItemImmutable> items = ImmutableList<IMenuItemImmutable>.Empty;
+    private ImmutableList<MenuBuilder> items = ImmutableList<MenuBuilder>.Empty;
 
     /// <summary>
     ///     Will only be set if this menu is a sub-menu of another.
     /// </summary>
-    public IMenu SuperMenu { get; private set; }
+    private IMenu SuperMenu { get; set; }
 
     /// <summary>
     ///     The name of the menu -  will typically be rendered on the UI
     /// </summary>
-    public string Name { get; set; }
+    private string Name { get; set; }
 
     /// <summary>
     ///     Id is optional.  It is only included to facilitate backwards compatibility with
@@ -241,37 +247,17 @@ public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCa
     /// </summary>
     public string Id { get; set; }
 
-    public string Grouping => "";
+    private string Grouping => "";
 
     //Includes both actions and sub-menus
-    public IList<IMenuItemImmutable> MenuItems => items;
+    private IList<MenuBuilder> MenuItems => items;
 
-    protected IMetamodel Metamodel { get; }
-
-    #endregion
-
-    #region ISerializable
-
-    private readonly IList<IMenuItemImmutable> tempItems;
-
-    // The special constructor is used to deserialize values. 
-    protected MenuImpl(SerializationInfo info, StreamingContext context) {
-        tempItems = info.GetValue<IList<IMenuItemImmutable>>("items");
-        SuperMenu = info.GetValue<IMenu>("SuperMenu");
-        Name = info.GetValue<string>("Name");
-        Id = info.GetValue<string>("Id");
-        Metamodel = info.GetValue<IMetamodel>("Metamodel");
-    }
-
-    public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
-        info.AddValue<IList<IMenuItemImmutable>>("items", items.ToList());
-        info.AddValue<IMenu>("SuperMenu", SuperMenu);
-        info.AddValue<string>("Name", Name);
-        info.AddValue<string>("Id", Id);
-        info.AddValue<IMetamodel>("Metamodel", Metamodel);
-    }
-
-    public void OnDeserialization(object sender) => items = tempItems.ToImmutableList();
+    private IMetamodel Metamodel { get; }
 
     #endregion
+
+    private IMenuItemImmutable ExtractMenuItem => Action is not null ? new MenuAction(Action) : ExtractMenu();
+
+    public IMenuImmutable ExtractMenu() =>  new MenuImmutable(Name, Id, Grouping, MenuItems.Select(i => i.ExtractMenuItem).ToList());
+
 }

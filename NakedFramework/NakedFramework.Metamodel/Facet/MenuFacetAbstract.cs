@@ -19,7 +19,7 @@ namespace NakedFramework.Metamodel.Facet;
 public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
     protected MenuFacetAbstract() => Menu = null;
 
-    protected MenuImpl Menu { get; set; }
+    protected IMenuImmutable Menu { get; set; }
 
     public override Type FacetType => typeof(IMenuFacet);
 

@@ -18,6 +18,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.ModelBuilding.Component;
@@ -125,8 +126,8 @@ public class ModelIntegrator : IModelIntegrator {
                 throw new ReflectionException(logger.LogAndReturn("No MainMenus specified."));
             }
 
-            foreach (var menu in menus.OfType<IMenuImmutable>()) {
-                metamodel.AddMainMenu(menu);
+            foreach (var menu in menus.OfType<MenuBuilder>()) {
+                metamodel.AddMainMenu(menu.ExtractMenu());
             }
         }
     }

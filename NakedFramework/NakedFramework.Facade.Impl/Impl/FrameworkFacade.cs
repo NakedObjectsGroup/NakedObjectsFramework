@@ -907,7 +907,7 @@ public class FrameworkFacade : IFrameworkFacade {
     private IEnumerable<IActionSpecImmutable> GetActionFromMenuItem(IMenuItemImmutable menuItemImmutable) =>
         menuItemImmutable switch {
             MenuAction menuAction => new[] { menuAction.Action },
-            MenuImpl menuImpl => GetActionsFromMenuItems(menuImpl.MenuItems),
+            MenuImmutable menuImmutable => GetActionsFromMenuItems(menuImmutable.MenuItems),
             _ => Array.Empty<IActionSpecImmutable>()
         };
 

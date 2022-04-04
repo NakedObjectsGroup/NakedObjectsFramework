@@ -23,12 +23,12 @@ public class MenuFactory : IMenuFactory {
 
     #region IMenuFactory Members
 
-    public IMenu NewMenu<T>(bool addAllActions = false, string name = null) => new MenuImpl(metamodel, typeof(T), addAllActions, name);
+    public IMenu NewMenu<T>(bool addAllActions = false, string name = null) => new MenuBuilder(metamodel, typeof(T), addAllActions, name);
 
-    public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => new MenuImpl(metamodel, type, addAllActions, name);
+    public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => new MenuBuilder(metamodel, type, addAllActions, name);
 
-    public IMenu NewMenu(string name, string id) => new MenuImpl(metamodel, name, id);
-    public IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false) => new MenuImpl(metamodel, defaultType, addAllActions, name, id);
+    public IMenu NewMenu(string name, string id) => new MenuBuilder(metamodel, name, id);
+    public IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false) => new MenuBuilder(metamodel, defaultType, addAllActions, name, id);
 
     #endregion
 }

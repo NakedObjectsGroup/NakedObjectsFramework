@@ -38,5 +38,5 @@ public sealed class MemberOrderAnnotationFacetFactory : FunctionalFacetFactoryPr
         return metamodel;
     }
 
-    private static IMemberOrderFacet Create(MemberOrderAttribute attribute) => attribute is null ? null : new MemberOrderFacet(attribute.Grouping ?? "", attribute.Order.ToString()) { Grouping = attribute.Grouping };
+    private static IMemberOrderFacet Create(MemberOrderAttribute attribute) => attribute is null ? null : new MemberOrderFacet(attribute.Grouping ?? "", attribute.Order.ToString(), attribute.Grouping);
 }
