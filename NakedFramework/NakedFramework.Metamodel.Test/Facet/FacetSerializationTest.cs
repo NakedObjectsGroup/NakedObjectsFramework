@@ -499,6 +499,42 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
 
+    private static void TestSerializeMultiLineFacetAnnotation(Func<MultiLineFacetAnnotation, MultiLineFacetAnnotation> roundTripper) {
+        var f = new MultiLineFacetAnnotation(10, 20);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.NumberOfLines, dsf.NumberOfLines);
+        Assert.AreEqual(f.Width, dsf.Width);
+    }
+
+    private static void TestSerializeMultiLineFacetNone(Func<MultiLineFacetNone, MultiLineFacetNone> roundTripper) {
+        var f = MultiLineFacetNone.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.NumberOfLines, dsf.NumberOfLines);
+        Assert.AreEqual(f.Width, dsf.Width);
+    }
+
+    private static void TestSerializeNamedFacetAnnotation(Func<NamedFacetAnnotation, NamedFacetAnnotation> roundTripper) {
+        var f = new NamedFacetAnnotation("a name");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+        Assert.AreEqual(f.FriendlyName, dsf.FriendlyName);
+    }
+
+    private static void TestSerializeNamedFacetInferred(Func<NamedFacetInferred, NamedFacetInferred> roundTripper) {
+        var f = new NamedFacetInferred("a name");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+        Assert.AreEqual(f.FriendlyName, dsf.FriendlyName);
+    }
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -660,6 +696,18 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeMenuFacetViaMethod() => TestSerializeMenuFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMultiLineFacetAnnotation() => TestSerializeMultiLineFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMultiLineFacetNone() => TestSerializeMultiLineFacetNone(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeNamedFacetAnnotation() => TestSerializeNamedFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeNamedFacetInferred() => TestSerializeNamedFacetInferred(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
