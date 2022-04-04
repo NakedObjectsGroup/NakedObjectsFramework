@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NakedFramework.Architecture.Menu;
 
 namespace NakedFramework.Metamodel.Menu;
 
+[Serializable]
 public class MenuImmutable : IMenuImmutable {
     public MenuImmutable(string name, string id, string grouping, IList<IMenuItemImmutable> menuItems) {
         Name = name;

@@ -12,6 +12,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Menu;
 using NakedFramework.Metamodel.Menu;
 using NOF2.Container;
 using NOF2.Menu;
@@ -85,14 +86,14 @@ public static class NOF2Helpers {
         return spec?.GetFacet<INamedFacet>()?.FriendlyName ?? "";
     }
 
-    public static MenuBuilder ConvertNOF2ToNOFMenu(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
+    public static IMenuImmutable ConvertNOF2ToNOFMenu(Menu.IMenu legacyMenu, IMetamodelBuilder metamodel, Type declaringType, string name) {
         var menuName = GetName(metamodel, declaringType, name);
         var mi = new MenuBuilder(metamodel, declaringType, false, menuName);
         foreach (var menuComponent in legacyMenu.MenuItems()) {
             AddMenuComponent(mi, menuComponent);
         }
 
-        return mi;
+        return mi.ExtractMenu();
     }
 
     private static IEnumerable<System.Attribute> GetCustomAttributes(object onObject) =>

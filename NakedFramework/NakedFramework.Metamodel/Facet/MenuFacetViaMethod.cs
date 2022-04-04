@@ -7,24 +7,30 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Menu;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class MenuFacetViaMethod : MenuFacetAbstract {
-    private readonly MethodInfo method;
+public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
+    private readonly MethodSerializationWrapper method;
 
-    public MenuFacetViaMethod(MethodInfo method) =>
-        this.method = method;
+    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) => this.method = new MethodSerializationWrapper(method, logger);
+
+    public MethodInfo GetMethod() => method.GetMethod();
+
+    public Func<object, object[], object> GetMethodDelegate() => method.GetMethodDelegate();
 
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel, ITypeSpecImmutable spec) {
-        var menu = new MenuBuilder(metamodel, method.DeclaringType, false, GetMenuName(spec));
-        InvokeUtils.InvokeStatic(method, new object[] { menu });
+        var menu = new MenuBuilder(metamodel, method.MethodInfo.DeclaringType, false, GetMenuName(spec));
+        InvokeUtils.InvokeStatic(method.MethodInfo, new object[] { menu });
         Menu = menu.ExtractMenu();
     }
 }

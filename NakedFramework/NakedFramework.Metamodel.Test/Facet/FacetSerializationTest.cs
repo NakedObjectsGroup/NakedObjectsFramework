@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 
@@ -43,6 +44,8 @@ public class FacetSerializationTest {
     }
 
     private static PropertyInfo GetProperty() => typeof(TestSerializationClass).GetProperty(nameof(TestSerializationClass.TestProperty));
+
+    private static MethodInfo GetMenuMethod() => typeof(TestMenuClass).GetMethod(nameof(TestMenuClass.Menu));
 
     private static void TestSerializeActionChoicesFacetNone(Func<ActionChoicesFacetNone, ActionChoicesFacetNone> roundTripper) {
         var f = ActionChoicesFacetNone.Instance;
@@ -480,7 +483,21 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.Grouping, dsf.Grouping);
     }
 
+    private static void TestSerializeMenuFacetDefault(Func<MenuFacetDefault, MenuFacetDefault> roundTripper) {
+        var f = new MenuFacetDefault();
+        var dsf = roundTripper(f);
 
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeMenuFacetViaMethod(Func<MenuFacetViaMethod, MenuFacetViaMethod> roundTripper) {
+        var f = new MenuFacetViaMethod(GetMenuMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
 
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
@@ -637,10 +654,20 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeMemberOrderFacet() => TestSerializeMemberOrderFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMenuFacetDefault() => TestSerializeMenuFacetDefault(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMenuFacetViaMethod() => TestSerializeMenuFacetViaMethod(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
     public int TestProperty { get; set; } = 1;
+}
+
+public class TestMenuClass {
+    public static void Menu(IMenu menu) { }
 }
 
 public enum TestEnum {

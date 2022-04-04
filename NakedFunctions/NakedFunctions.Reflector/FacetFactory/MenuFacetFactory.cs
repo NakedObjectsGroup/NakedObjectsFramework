@@ -14,6 +14,7 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
@@ -34,9 +35,9 @@ public sealed class MenuFacetFactory : FunctionalFacetFactoryProcessor, IMethodP
     public string[] Prefixes => FixedPrefixes;
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
+        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, typeof(void), new [] {typeof(IMenu)});
         if (method is not null) {
-            FacetUtils.AddFacet(new MenuFacetViaMethod(method), specification);
+            FacetUtils.AddFacet(new MenuFacetViaMethod(method, Logger<MenuFacetViaMethod>()), specification);
         }
         else {
             FacetUtils.AddFacet(new MenuFacetDefault(), specification);

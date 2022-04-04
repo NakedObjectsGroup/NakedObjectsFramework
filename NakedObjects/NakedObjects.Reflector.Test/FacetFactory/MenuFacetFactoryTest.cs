@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
@@ -74,7 +75,7 @@ public class MenuFacetFactoryTest : AbstractFacetFactoryTest {
 
     private class Class2 {
 // ReSharper disable once UnusedMember.Local
-        public static void Menu() { }
+        public static void Menu(IMenu menu) { }
     }
 
     #endregion

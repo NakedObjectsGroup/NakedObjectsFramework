@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
@@ -22,9 +21,8 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.Menu;
 
-
 public class MenuBuilder : IMenu {
-    private IActionSpecImmutable Action { get; }
+    private ImmutableList<MenuBuilder> items = ImmutableList<MenuBuilder>.Empty;
 
     public MenuBuilder(IMetamodel metamodel, Type defaultType, bool addAllActions, string name, string id = null) {
         Metamodel = metamodel;
@@ -48,107 +46,46 @@ public class MenuBuilder : IMenu {
     }
 
     private MenuBuilder(IMetamodel metamodel, IActionSpecImmutable action) {
-        this.Action = action;
+        Metamodel = metamodel;
+        Action = action;
     }
+
+    private IActionSpecImmutable Action { get; }
 
     private ITypeSpecImmutable ObjectSpec => Metamodel.GetSpecification(Type);
 
     private IList<IActionSpecImmutable> ActionsForObject => ObjectSpec.OrderedObjectActions.ToList();
 
-    private IActionSpecImmutable GetAction(string actionName, bool ignoreCase) {
-        // TODO revisit this would prefer not to have to check both collections. 
-        IList<IActionSpecImmutable> actions;
-        if (ObjectSpec.OrderedObjectActions is not null && ObjectSpec.OrderedObjectActions.Any()) {
-            actions = ObjectSpec.OrderedObjectActions.ToList();
-        }
-        else if (ObjectSpec is ITypeSpecBuilder spec) {
-            actions = spec.UnorderedObjectActions;
-        }
-        else {
-            actions = Array.Empty<IActionSpecImmutable>();
-        }
+    private IMenuItemImmutable ExtractMenuItem => Action is not null ? new MenuAction(Action) : ExtractMenu();
+    private Type Type { get; }
 
-        var compare = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
+    /// <summary>
+    ///     Will only be set if this menu is a sub-menu of another.
+    /// </summary>
+    private IMenu SuperMenu { get; set; }
 
-        return actions.FirstOrDefault(a => string.Equals(a.Identifier.MemberName, actionName, compare));
-    }
+    /// <summary>
+    ///     The name of the menu -  will typically be rendered on the UI
+    /// </summary>
+    private string Name { get; set; }
 
-    private IList<IActionSpecImmutable> ActionsForType(Type type) => Metamodel.GetSpecification(type).OrderedObjectActions.ToList();
+    /// <summary>
+    ///     Id is optional.  It is only included to facilitate backwards compatibility with
+    ///     existing auto-generated menus.
+    /// </summary>
+    public string Id { get; set; }
 
-    private MenuBuilder CreateMenuImmutableAsSubMenu(string subMenuName, string id = null) {
-        var subMenu = new MenuBuilder(Metamodel, Type, false, subMenuName);
-        if (id == null) {
-            subMenu.Id += $"-{subMenuName}:";
-        }
-        else {
-            subMenu.Id = id;
-        }
+    private string Grouping => "";
 
-        subMenu.SuperMenu = this;
-        AddMenuItem(subMenu);
-        return subMenu;
-    }
+    //Includes both actions and sub-menus
+    private IList<MenuBuilder> MenuItems => items;
 
-    private bool HasAction(IActionSpecImmutable action) {
-        var nativeAction = MenuItems.Any(mi => mi.Action == action);
-        return nativeAction || MenuItems.Any(m => m.HasAction(action));
-    }
-
-    private bool HasActionOrSuperMenuHasAction(IActionSpecImmutable action) =>
-        HasAction(action) ||
-        SuperMenu is MenuBuilder superMenu &&
-        superMenu.HasActionOrSuperMenuHasAction(action);
-
-    private MenuBuilder GetSubMenuIfExists(string menuName) => MenuItems.FirstOrDefault(a => a.Name == menuName);
-
-    private void AddOrderableElementsToMenu(IList<IActionSpecImmutable> ordeableElements, MenuBuilder toMenu) {
-        foreach (var action in ordeableElements) {
-            if (action != null) {
-                if (!toMenu.HasActionOrSuperMenuHasAction(action)) {
-                    toMenu.AddMenuItem(new MenuBuilder(Metamodel, action));
-                }
-            }
-        }
-    }
-
-    private void AddMenuItem(MenuBuilder item) => items = items.Add(item); //Only way to add to an immutable collection
-
-    private void AddContributed(IActionSpecImmutable ca) {
-        if (ObjectSpec is IObjectSpecImmutable objectSpec) {
-            AddContributedAction(ca, objectSpec);
-        }
-        else {
-            AddContributedFunction(ca);
-        }
-    }
-
-    private void AddContributedFunction(IActionSpecImmutable ca) {
-        //i.e. no sub-menu
-        AddMenuItem(new MenuBuilder(Metamodel, ca));
-    }
-
-    private void AddContributedAction(IActionSpecImmutable ca, IObjectSpecImmutable spec) {
-        var facet = ca.GetFacet<IContributedActionIntegrationFacet>();
-        var subMenuName = facet?.SubMenuWhenContributedTo(spec);
-        if (subMenuName != null) {
-            var id = facet.IdWhenContributedTo(spec);
-            var subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);
-            AddOrderableElementsToMenu(new List<IActionSpecImmutable> { ca }, subMenu);
-        }
-        else {
-            //i.e. no sub-menu
-            AddMenuItem(new MenuBuilder(Metamodel, ca));
-        }
-    }
-
-    #region IMenu Members
+    private IMetamodel Metamodel { get; }
 
     public IMenu WithMenuName(string name) {
         Name = name;
         return this;
     }
-
-    private Type Type { get; set; }
 
     public IMenu WithId(string id) {
         Id = id;
@@ -169,13 +106,6 @@ public class MenuBuilder : IMenu {
 
         AddMenuItem(new MenuBuilder(Metamodel, actionSpec));
         return this;
-    }
-
-    private static void AddFriendlyName(string friendlyName, IActionSpecImmutable actionSpec) {
-        if (!string.IsNullOrWhiteSpace(friendlyName)) {
-            var facet = new MemberNamedFacetAnnotation(friendlyName);
-            FacetUtils.AddFacet(facet, actionSpec);
-        }
     }
 
     public IMenu CreateSubMenu(string subMenuName) => CreateMenuImmutableAsSubMenu(subMenuName);
@@ -225,39 +155,98 @@ public class MenuBuilder : IMenu {
         return this;
     }
 
-    #endregion
+    private IActionSpecImmutable GetAction(string actionName, bool ignoreCase) {
+        // TODO revisit this would prefer not to have to check both collections. 
+        IList<IActionSpecImmutable> actions;
+        if (ObjectSpec.OrderedObjectActions is not null && ObjectSpec.OrderedObjectActions.Any()) {
+            actions = ObjectSpec.OrderedObjectActions.ToList();
+        }
+        else if (ObjectSpec is ITypeSpecBuilder spec) {
+            actions = spec.UnorderedObjectActions;
+        }
+        else {
+            actions = Array.Empty<IActionSpecImmutable>();
+        }
 
-    #region other properties
+        var compare = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
 
-    private ImmutableList<MenuBuilder> items = ImmutableList<MenuBuilder>.Empty;
+        return actions.FirstOrDefault(a => string.Equals(a.Identifier.MemberName, actionName, compare));
+    }
 
-    /// <summary>
-    ///     Will only be set if this menu is a sub-menu of another.
-    /// </summary>
-    private IMenu SuperMenu { get; set; }
+    private IList<IActionSpecImmutable> ActionsForType(Type type) => Metamodel.GetSpecification(type).OrderedObjectActions.ToList();
 
-    /// <summary>
-    ///     The name of the menu -  will typically be rendered on the UI
-    /// </summary>
-    private string Name { get; set; }
+    private MenuBuilder CreateMenuImmutableAsSubMenu(string subMenuName, string id = null) {
+        var subMenu = new MenuBuilder(Metamodel, Type, false, subMenuName);
+        if (id == null) {
+            subMenu.Id += $"-{subMenuName}:";
+        }
+        else {
+            subMenu.Id = id;
+        }
 
-    /// <summary>
-    ///     Id is optional.  It is only included to facilitate backwards compatibility with
-    ///     existing auto-generated menus.
-    /// </summary>
-    public string Id { get; set; }
+        subMenu.SuperMenu = this;
+        AddMenuItem(subMenu);
+        return subMenu;
+    }
 
-    private string Grouping => "";
+    private bool HasAction(IActionSpecImmutable action) {
+        var nativeAction = MenuItems.Any(mi => mi.Action == action);
+        return nativeAction || MenuItems.Any(m => m.HasAction(action));
+    }
 
-    //Includes both actions and sub-menus
-    private IList<MenuBuilder> MenuItems => items;
+    private bool HasActionOrSuperMenuHasAction(IActionSpecImmutable action) =>
+        HasAction(action) ||
+        SuperMenu is MenuBuilder superMenu &&
+        superMenu.HasActionOrSuperMenuHasAction(action);
 
-    private IMetamodel Metamodel { get; }
+    private MenuBuilder GetSubMenuIfExists(string menuName) => MenuItems.FirstOrDefault(a => a.Name == menuName);
 
-    #endregion
+    private void AddOrderableElementsToMenu(IList<IActionSpecImmutable> orderableElements, MenuBuilder toMenu) {
+        foreach (var action in orderableElements) {
+            if (action != null) {
+                if (!toMenu.HasActionOrSuperMenuHasAction(action)) {
+                    toMenu.AddMenuItem(new MenuBuilder(Metamodel, action));
+                }
+            }
+        }
+    }
 
-    private IMenuItemImmutable ExtractMenuItem => Action is not null ? new MenuAction(Action) : ExtractMenu();
+    private void AddMenuItem(MenuBuilder item) => items = items.Add(item); //Only way to add to an immutable collection
 
-    public IMenuImmutable ExtractMenu() =>  new MenuImmutable(Name, Id, Grouping, MenuItems.Select(i => i.ExtractMenuItem).ToList());
+    private void AddContributed(IActionSpecImmutable ca) {
+        if (ObjectSpec is IObjectSpecImmutable objectSpec) {
+            AddContributedAction(ca, objectSpec);
+        }
+        else {
+            AddContributedFunction(ca);
+        }
+    }
 
+    private void AddContributedFunction(IActionSpecImmutable ca) {
+        //i.e. no sub-menu
+        AddMenuItem(new MenuBuilder(Metamodel, ca));
+    }
+
+    private void AddContributedAction(IActionSpecImmutable ca, IObjectSpecImmutable spec) {
+        var facet = ca.GetFacet<IContributedActionIntegrationFacet>();
+        var subMenuName = facet?.SubMenuWhenContributedTo(spec);
+        if (subMenuName != null) {
+            var id = facet.IdWhenContributedTo(spec);
+            var subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);
+            AddOrderableElementsToMenu(new List<IActionSpecImmutable> { ca }, subMenu);
+        }
+        else {
+            //i.e. no sub-menu
+            AddMenuItem(new MenuBuilder(Metamodel, ca));
+        }
+    }
+
+    public IMenuImmutable ExtractMenu() => new MenuImmutable(Name, Id, Grouping, MenuItems.Select(i => i.ExtractMenuItem).ToList());
+
+    private static void AddFriendlyName(string friendlyName, IActionSpecImmutable actionSpec) {
+        if (!string.IsNullOrWhiteSpace(friendlyName)) {
+            var facet = new MemberNamedFacetAnnotation(friendlyName);
+            FacetUtils.AddFacet(facet, actionSpec);
+        }
+    }
 }

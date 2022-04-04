@@ -35,9 +35,7 @@ public sealed class MenuFacetDefault : MenuFacetAbstract {
     }
 
     public void CreateDefaultMenu(IMetamodelBuilder metamodel, Type type, string menuName, string id) {
-        var menu = new MenuBuilder(metamodel, type, false, menuName) { Id = id };
-        menu.AddRemainingNativeActions();
-        menu.AddContributedActions();
+        var menu = new MenuBuilder(metamodel, type, true, menuName, id);
         Menu = menu.ExtractMenu();
     }
 }

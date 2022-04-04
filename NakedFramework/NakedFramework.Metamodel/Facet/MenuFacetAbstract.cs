@@ -10,7 +10,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.Menu;
 using NakedObjects.Resources;
 
 namespace NakedFramework.Metamodel.Facet;
