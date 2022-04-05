@@ -735,6 +735,17 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.GetMethodDelegate(1).GetType(), dsf.GetMethodDelegate(1).GetType());
     }
 
+    private static void TestSerializeRegExFacet(Func<RegExFacet, RegExFacet> roundTripper) {
+        var f = new RegExFacet("d", "c", true, "");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Pattern.ToString(), dsf.Pattern.ToString());
+        Assert.AreEqual(f.ValidationPattern, dsf.ValidationPattern);
+        Assert.AreEqual(f.FailureMessage, dsf.FailureMessage);
+        Assert.AreEqual(f.IsCaseSensitive, dsf.IsCaseSensitive);
+    }
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -980,6 +991,9 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeRedirectedFacet() => TestSerializeRedirectedFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeRegExFacet() => TestSerializeRegExFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {

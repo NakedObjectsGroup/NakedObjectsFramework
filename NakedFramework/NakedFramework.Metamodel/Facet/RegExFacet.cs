@@ -19,9 +19,11 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class RegExFacet : FacetAbstract, IRegExFacet {
+    [NonSerialized]
+    private Regex pattern;
+
     public RegExFacet(string validation, string format, bool caseSensitive, string message) {
         ValidationPattern = validation;
-        Pattern = new Regex(validation, PatternFlags);
         FormatPattern = format;
         IsCaseSensitive = caseSensitive;
         FailureMessage = message;
@@ -29,7 +31,6 @@ public sealed class RegExFacet : FacetAbstract, IRegExFacet {
 
     public RegExFacet(string validation, bool caseSensitive) {
         ValidationPattern = validation;
-        Pattern = new Regex(validation, PatternFlags);
         IsCaseSensitive = caseSensitive;
     }
 
@@ -45,22 +46,22 @@ public sealed class RegExFacet : FacetAbstract, IRegExFacet {
 
     #region IRegExFacet Members
 
-    public Regex Pattern { get; private set; }
+    public Regex Pattern => pattern ??= new Regex(ValidationPattern, PatternFlags);
 
     public string Format(string text) =>
-        text == null
+        text is null
             ? NakedObjects.Resources.NakedObjects.EmptyString
             : string.IsNullOrEmpty(FormatPattern)
                 ? text
                 : Pattern.Replace(text, FormatPattern);
 
-    public bool DoesNotMatch(string text) => text == null || !Pattern.IsMatch(text);
+    public bool DoesNotMatch(string text) => text is null || !Pattern.IsMatch(text);
 
     public string FailureMessage { get; }
 
     public string Invalidates(IInteractionContext ic) {
         var proposedArgument = ic.ProposedArgument;
-        if (proposedArgument == null) {
+        if (proposedArgument is null) {
             return null;
         }
 
