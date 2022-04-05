@@ -39,7 +39,7 @@ public class FacetSerializationTest {
     }
 
     private static T BinaryRoundTrip<T>(T facet) where T : IFacet {
-        using var stream = BinarySerialize(facet);
+         var stream = BinarySerialize(facet);
         return (T)BinaryDeserialize(stream);
     }
 
@@ -683,6 +683,49 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
 
+    private static void TestSerializePropertySetterFacetViaSetterMethod(Func<PropertySetterFacetViaSetterMethod, PropertySetterFacetViaSetterMethod> roundTripper) {
+        var f = new PropertySetterFacetViaSetterMethod(GetProperty(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    private static void TestSerializePropertyValidateFacetDefault(Func<PropertyValidateFacetDefault, PropertyValidateFacetDefault> roundTripper) {
+        var f = PropertyValidateFacetDefault.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializePropertyValidateFacetNone(Func<PropertyValidateFacetNone, PropertyValidateFacetNone> roundTripper) {
+        var f = PropertyValidateFacetNone.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeQueryOnlyFacet(Func<QueryOnlyFacet, QueryOnlyFacet> roundTripper)
+    {
+        var f = QueryOnlyFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeRangeFacet(Func<RangeFacet, RangeFacet> roundTripper)
+    {
+        var f = new RangeFacet(1, 2, false);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Min, dsf.Min);
+        Assert.AreEqual(f.Max, dsf.Max);
+    }
+
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -913,6 +956,18 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializePropertyInitializationFacet() => TestSerializePropertyInitializationFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertySetterFacetViaSetterMethod() => TestSerializePropertySetterFacetViaSetterMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyValidateFacetDefault() => TestSerializePropertyValidateFacetDefault(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyValidateFacetNone() => TestSerializePropertyValidateFacetNone(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeRangeFacet() => TestSerializeRangeFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {

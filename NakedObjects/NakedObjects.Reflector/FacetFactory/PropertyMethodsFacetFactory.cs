@@ -67,7 +67,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
                 facets.Add(DisabledFacetAlways.Instance);
             }
             else {
-                facets.Add(new PropertySetterFacetViaSetterMethod(property));
+                facets.Add(new PropertySetterFacetViaSetterMethod(property, Logger<PropertySetterFacetViaSetterMethod>()));
             }
 
             facets.Add(new PropertyInitializationFacet(property, Logger<PropertyInitializationFacet>()));
