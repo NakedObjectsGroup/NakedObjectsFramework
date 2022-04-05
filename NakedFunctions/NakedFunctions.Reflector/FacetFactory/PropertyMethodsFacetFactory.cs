@@ -58,7 +58,7 @@ public sealed class PropertyMethodsFacetFactory : FunctionalFacetFactoryProcesso
 
         if (property.GetSetMethod() is not null) {
             facets.Add(DisabledFacetAlways.Instance);
-            facets.Add(new PropertyInitializationFacet(property));
+            facets.Add(new PropertyInitializationFacet(property, Logger<PropertyInitializationFacet>()));
         }
         else {
             facets.Add(NotPersistedFacet.Instance);

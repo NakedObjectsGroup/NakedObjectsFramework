@@ -15,17 +15,20 @@ public class PropertySerializationWrapper {
     private readonly TypeSerializationWrapper typeWrapper;
 
     [NonSerialized]
-    private Func<object, object[], object> methodDelegate;
+    private Func<object, object[], object> getMethodDelegate;
 
     [NonSerialized]
     private PropertyInfo property;
+
+    [NonSerialized]
+    private Func<object, object[], object> setMethodDelegate;
 
     public PropertySerializationWrapper(PropertyInfo propertyInfo, ILogger logger, bool jit = false) {
         this.jit = jit;
         PropertyInfo = propertyInfo;
         typeWrapper = new TypeSerializationWrapper(propertyInfo.DeclaringType, jit);
         propertyName = propertyInfo.Name;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(propertyInfo.GetGetMethod()), logger);
+        getMethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(propertyInfo.GetGetMethod()), logger);
     }
 
     public PropertyInfo PropertyInfo {
@@ -33,18 +36,32 @@ public class PropertySerializationWrapper {
         set => property = value;
     }
 
-    public Func<object, object[], object> MethodDelegate {
-        get => methodDelegate ??= CreateDelegate();
-        set => methodDelegate = value;
+    public Func<object, object[], object> GetMethodDelegate {
+        get => getMethodDelegate ??= CreateGetDelegate();
+        set => getMethodDelegate = value;
     }
 
-    private Func<object, object[], object> CreateDelegate() => DelegateUtils.CreateDelegate(GetMethod()).Item1;
+    public Func<object, object[], object> SetMethodDelegate {
+        get => setMethodDelegate ??= CreateSetDelegate();
+        set => setMethodDelegate = value;
+    }
+
+    private Func<object, object[], object> CreateGetDelegate() {
+        var getMethod = GetMethod();
+        return getMethod is not null ? DelegateUtils.CreateDelegate(getMethod).Item1 : null;
+    }
+
+    private Func<object, object[], object> CreateSetDelegate() {
+        var setMethod = SetMethod();
+        return DelegateUtils.CreateDelegate(setMethod).Item1;
+    }
 
     [OnDeserialized]
     private void OnDeserialized(StreamingContext context) {
         if (!jit) {
             PropertyInfo = FindProperty();
-            MethodDelegate = CreateDelegate();
+            GetMethodDelegate = CreateGetDelegate();
+            SetMethodDelegate = CreateSetDelegate();
         }
     }
 
@@ -60,5 +77,9 @@ public class PropertySerializationWrapper {
 
     public MethodInfo GetMethod() => PropertyInfo.GetGetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
+    public MethodInfo SetMethod() => PropertyInfo.GetSetMethod();
+
+    public Func<object, object[], object> GetGetMethodDelegate() => GetMethodDelegate;
+
+    public Func<object, object[], object> GetSetMethodDelegate() => SetMethodDelegate;
 }

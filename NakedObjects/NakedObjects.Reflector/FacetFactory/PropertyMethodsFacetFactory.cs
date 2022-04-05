@@ -70,7 +70,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
                 facets.Add(new PropertySetterFacetViaSetterMethod(property));
             }
 
-            facets.Add(new PropertyInitializationFacet(property));
+            facets.Add(new PropertyInitializationFacet(property, Logger<PropertyInitializationFacet>()));
         }
         else {
             facets.Add(NotPersistedFacet.Instance);

@@ -7,18 +7,20 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet {
-    private readonly PropertyInfo property;
+public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet, IImperativeFacet {
+    private readonly PropertySerializationWrapper property;
 
-    public PropertyInitializationFacet(PropertyInfo property) =>
-        this.property = property;
+    public PropertyInitializationFacet(PropertyInfo propertyInfo, ILogger<PropertyInitializationFacet> logger) =>
+        property = new PropertySerializationWrapper(propertyInfo, logger);
 
     public override Type FacetType => typeof(IPropertyInitializationFacet);
 
@@ -26,12 +28,20 @@ public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitia
 
     public void InitProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value) {
         try {
-            property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
+            property.SetMethodDelegate(nakedObjectAdapter.GetDomainObject(), new[] { value.GetDomainObject(), null });
         }
         catch (TargetInvocationException e) {
             InvokeUtils.InvocationException($"Exception executing {property}", e);
         }
     }
+
+    #endregion
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => property.SetMethod();
+
+    public Func<object, object[], object> GetMethodDelegate() => property.SetMethodDelegate;
 
     #endregion
 }

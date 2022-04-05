@@ -29,7 +29,7 @@ public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFace
 
     public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
         try {
-            return property.MethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+            return property.GetMethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
         }
         catch (TargetInvocationException e) {
             InvokeUtils.InvocationException($"Exception executing {GetMethod()}", e);
@@ -43,7 +43,7 @@ public sealed class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFace
 
     public MethodInfo GetMethod() => property.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => property.MethodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => property.GetMethodDelegate;
 
     #endregion
 }

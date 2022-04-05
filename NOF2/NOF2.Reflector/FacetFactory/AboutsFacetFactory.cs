@@ -180,7 +180,7 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         }
         else if (property.GetSetMethod() is not null) {
             facets.Add(new PropertySetterFacetViaSetterMethod(property));
-            facets.Add(new PropertyInitializationFacet(property));
+            facets.Add(new PropertyInitializationFacet(property, Logger<PropertyInitializationFacet>()));
         }
 
         FacetUtils.AddFacets(facets, specification);

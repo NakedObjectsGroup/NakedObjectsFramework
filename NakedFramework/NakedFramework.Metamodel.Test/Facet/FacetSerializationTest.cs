@@ -647,8 +647,7 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.Value, dsf.Value);
     }
 
-    private static void TestSerializePropertyAccessorFacet(Func<PropertyAccessorFacet, PropertyAccessorFacet> roundTripper)
-    {
+    private static void TestSerializePropertyAccessorFacet(Func<PropertyAccessorFacet, PropertyAccessorFacet> roundTripper) {
         var f = new PropertyAccessorFacet(GetProperty(), null);
         var dsf = roundTripper(f);
 
@@ -658,6 +657,31 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
 
+    private static void TestSerializePropertyDefaultFacetAnnotation(Func<PropertyDefaultFacetAnnotation, PropertyDefaultFacetAnnotation> roundTripper) {
+        var f = new PropertyDefaultFacetAnnotation("default");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetDefault(null), dsf.GetDefault(null));
+    }
+
+    private static void TestSerializePropertyDefaultFacetNone(Func<PropertyDefaultFacetNone, PropertyDefaultFacetNone> roundTripper) {
+        var f = PropertyDefaultFacetNone.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetDefault(null), dsf.GetDefault(null));
+    }
+
+    private static void TestSerializePropertyInitializationFacet(Func<PropertyInitializationFacet, PropertyInitializationFacet> roundTripper) {
+        var f = new PropertyInitializationFacet(GetProperty(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
 
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
@@ -880,6 +904,15 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializePropertyAccessorFacet() => TestSerializePropertyAccessorFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyDefaultFacetAnnotation() => TestSerializePropertyDefaultFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyDefaultFacetNone() => TestSerializePropertyDefaultFacetNone(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyInitializationFacet() => TestSerializePropertyInitializationFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {

@@ -30,7 +30,7 @@ public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         // type safety is given by the reflector only identifying methods that match the 
         // parameter type
-        var defaultValue = property.MethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        var defaultValue = property.GetMethodDelegate(nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
         if (actionDefaultsFacet is not null && (defaultValue is null || string.IsNullOrWhiteSpace(defaultValue.ToString()))) {
             return actionDefaultsFacet.GetDefault(nakedObjectAdapter, framework);
         }
@@ -42,7 +42,7 @@ public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract
 
     public MethodInfo GetMethod() => property.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => property.MethodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => property.GetMethodDelegate;
 
     #endregion
 }
