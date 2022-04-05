@@ -4760,6 +4760,8 @@ let PutWithValueInternalError(api : RestfulObjectsControllerBase) =
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
           TProperty(JsonPropertyNames.StackTrace, 
                     TArray([ TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in "))
                              TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
