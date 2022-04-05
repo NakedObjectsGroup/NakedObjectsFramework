@@ -51,7 +51,7 @@ public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryP
         var capitalizedName = property.Name;
         var type = property.DeclaringType;
 
-        var facets = new List<IFacet> { new PropertyAccessorFacet(property) };
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property, Logger<PropertyAccessorFacet>()) };
 
         AddSetFacet(facets, property, collection);
 

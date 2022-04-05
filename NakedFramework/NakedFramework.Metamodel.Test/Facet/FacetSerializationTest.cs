@@ -563,6 +563,102 @@ public class FacetSerializationTest {
         AssertIFacet(f, dsf);
     }
 
+    private static void TestSerializeOnPersistingErrorCallbackFacetNull(Func<OnPersistingErrorCallbackFacetNull, OnPersistingErrorCallbackFacetNull> roundTripper) {
+        var f = OnPersistingErrorCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeOnUpdatingErrorCallbackFacetNull(Func<OnUpdatingErrorCallbackFacetNull, OnUpdatingErrorCallbackFacetNull> roundTripper) {
+        var f = OnUpdatingErrorCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeOptionalFacet(Func<OptionalFacet, OptionalFacet> roundTripper) {
+        var f = OptionalFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsOptional, dsf.IsOptional);
+    }
+
+    private static void TestSerializeOptionalFacetDefault(Func<OptionalFacetDefault, OptionalFacetDefault> roundTripper) {
+        var f = OptionalFacetDefault.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsOptional, dsf.IsOptional);
+    }
+
+    private static void TestSerializePageSizeFacetAnnotation(Func<PageSizeFacetAnnotation, PageSizeFacetAnnotation> roundTripper) {
+        var f = new PageSizeFacetAnnotation(10);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializePageSizeFacetDefault(Func<PageSizeFacetDefault, PageSizeFacetDefault> roundTripper) {
+        var f = PageSizeFacetDefault.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeParseableFacetUsingParser(Func<ParseableFacetUsingParser<bool>, ParseableFacetUsingParser<bool>> roundTripper) {
+        var f = new ParseableFacetUsingParser<bool>(BooleanValueSemanticsProvider.Instance);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializePasswordFacet(Func<PasswordFacet, PasswordFacet> roundTripper) {
+        var f = PasswordFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializePluralFacetAnnotation(Func<PluralFacetAnnotation, PluralFacetAnnotation> roundTripper) {
+        var f = new PluralFacetAnnotation("a name");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializePluralFacetInferred(Func<PluralFacetInferred, PluralFacetInferred> roundTripper) {
+        var f = new PluralFacetInferred("a name");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializePresentationHintFacet(Func<PresentationHintFacet, PresentationHintFacet> roundTripper) {
+        var f = new PresentationHintFacet("a hint");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializePropertyAccessorFacet(Func<PropertyAccessorFacet, PropertyAccessorFacet> roundTripper)
+    {
+        var f = new PropertyAccessorFacet(GetProperty(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -748,6 +844,42 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeNullableFacetAlways() => TestSerializeNullableFacetAlways(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeOnPersistingErrorCallbackFacetNull() => TestSerializeOnPersistingErrorCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeOnUpdatingErrorCallbackFacetNull() => TestSerializeOnUpdatingErrorCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeOptionalFacet() => TestSerializeOptionalFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeOptionalFacetDefault() => TestSerializeOptionalFacetDefault(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePageSizeFacetAnnotation() => TestSerializePageSizeFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePageSizeFacetDefault() => TestSerializePageSizeFacetDefault(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeParseableFacetUsingParser() => TestSerializeParseableFacetUsingParser(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePasswordFacet() => TestSerializePasswordFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePluralFacetAnnotation() => TestSerializePluralFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePluralFacetInferred() => TestSerializePluralFacetInferred(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePresentationHintFacet() => TestSerializePresentationHintFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyAccessorFacet() => TestSerializePropertyAccessorFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {

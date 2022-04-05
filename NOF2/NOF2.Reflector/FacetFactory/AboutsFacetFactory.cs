@@ -153,7 +153,7 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var capitalizedName = property.Name;
         var facets = new List<IFacet> {
-            new PropertyAccessorFacet(property),
+            new PropertyAccessorFacet(property, Logger<PropertyAccessorFacet>()),
             new MemberNamedFacetInferred(specification.Identifier.MemberName)
         };
 

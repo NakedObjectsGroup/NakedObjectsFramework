@@ -49,7 +49,7 @@ public sealed class CollectionFieldMethodsFacetFactory : AbstractNOF2FacetFactor
                                      !classStrategy.IsIgnored(property)).ToList();
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var facets = new List<IFacet> { new PropertyAccessorFacet(property) };
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property, Logger<PropertyAccessorFacet>()) };
 
         AddSetFacet(facets, property, collection);
 

@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Facet;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class PasswordFacet : FacetAbstract, IPasswordFacet, IMarkerFacet {
+public sealed class PasswordFacet : FacetAbstract, IPasswordFacet {
     private static PasswordFacet instance;
     private PasswordFacet() { }
 

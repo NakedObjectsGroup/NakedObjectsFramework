@@ -56,7 +56,7 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
         var capitalizedName = property.Name;
         var paramTypes = new[] { property.PropertyType };
 
-        var facets = new List<IFacet> { new PropertyAccessorFacet(property) };
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property, Logger<PropertyAccessorFacet>()) };
 
         if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
             facets.Add(NullableFacetAlways.Instance);

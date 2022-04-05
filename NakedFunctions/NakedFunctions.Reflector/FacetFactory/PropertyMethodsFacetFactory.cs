@@ -50,7 +50,7 @@ public sealed class PropertyMethodsFacetFactory : FunctionalFacetFactoryProcesso
                                      !classStrategy.IsIgnored(property)).ToList();
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var facets = new List<IFacet> { new PropertyAccessorFacet(property) };
+        var facets = new List<IFacet> { new PropertyAccessorFacet(property, Logger<PropertyAccessorFacet>()) };
 
         if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
             facets.Add(NullableFacetAlways.Instance);
