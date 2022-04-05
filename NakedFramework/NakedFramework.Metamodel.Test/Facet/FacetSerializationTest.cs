@@ -746,6 +746,31 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.IsCaseSensitive, dsf.IsCaseSensitive);
     }
 
+    private static void TestSerializeRestExtensionFacet(Func<RestExtensionFacet, RestExtensionFacet> roundTripper) {
+        var f = new RestExtensionFacet("var1", "var2");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Name, dsf.Name);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    private static void TestSerializeSaveFacet(Func<SaveFacet, SaveFacet> roundTripper) {
+        var f = SaveFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTableViewFacet(Func<TableViewFacet, TableViewFacet> roundTripper) {
+        var f = new TableViewFacet(true, new[] { "col1", "col2" });
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Title, dsf.Title);
+        Assert.AreEqual(string.Join(',', f.Columns), string.Join(',', dsf.Columns));
+    }
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -994,6 +1019,14 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeRegExFacet() => TestSerializeRegExFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeRestExtensionFacet() => TestSerializeRestExtensionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeSaveFacet() => TestSerializeSaveFacet(BinaryRoundTrip);
+    [TestMethod]
+    public void TestBinarySerializeTableViewFacet() => TestSerializeTableViewFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
