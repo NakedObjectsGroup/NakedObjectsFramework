@@ -35,7 +35,7 @@ public abstract class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFa
     public MethodInfo GetMethod() => Method;
 
     public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
-
+    
     private static IAboutCache GetCache(INakedFramework framework) => framework.ServiceProvider.GetService<IAboutCache>() ?? throw new InvalidOperationException("Cannot find about cache");
 
     protected IAbout InvokeAboutMethod(INakedFramework framework, object target, AboutTypeCodes typeCode, bool substitute, bool flagNull, params object[] proposedValues) {

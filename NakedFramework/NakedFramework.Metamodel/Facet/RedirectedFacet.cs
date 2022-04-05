@@ -7,24 +7,42 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet {
-    private readonly PropertyInfo oid;
-    private readonly PropertyInfo serverName;
+public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet, IMultipleImperativeFacet {
+    private readonly PropertySerializationWrapper oid;
+    private readonly PropertySerializationWrapper serverName;
 
-    public RedirectedFacet(PropertyInfo serverName, PropertyInfo oid) {
-        this.serverName = serverName;
-        this.oid = oid;
+    public RedirectedFacet(PropertyInfo serverName, PropertyInfo oid, ILogger<RedirectedFacet> logger) {
+        this.serverName = new PropertySerializationWrapper(serverName, logger);
+        this.oid = new PropertySerializationWrapper(oid, logger);
     }
+
+    public MethodInfo GetMethod(int index) =>
+        index switch {
+            0 => serverName.GetMethod(),
+            1 => oid.GetMethod(),
+            _ => null
+        };
+
+    public Func<object, object[], object> GetMethodDelegate(int index) =>
+        index switch {
+            0 => serverName.GetMethodDelegate,
+            1 => oid.GetMethodDelegate,
+            _ => null
+        };
+
+    public int Count => 2;
 
     public override Type FacetType => typeof(IRedirectedFacet);
     public (string serverName, string oid)? GetRedirection(object target) => (ServerName(target), Oid(target));
 
-    private string Oid(object target) => (string)oid.GetValue(target, null);
+    private string Oid(object target) => (string)oid.GetMethodDelegate(target, null);
 
-    private string ServerName(object target) => (string)serverName.GetValue(target, null);
+    private string ServerName(object target) => (string)serverName.GetMethodDelegate(target, null);
 }

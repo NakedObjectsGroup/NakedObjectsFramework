@@ -39,7 +39,7 @@ public class FacetSerializationTest {
     }
 
     private static T BinaryRoundTrip<T>(T facet) where T : IFacet {
-         var stream = BinarySerialize(facet);
+        using var stream = BinarySerialize(facet);
         return (T)BinaryDeserialize(stream);
     }
 
@@ -707,16 +707,14 @@ public class FacetSerializationTest {
         AssertIFacet(f, dsf);
     }
 
-    private static void TestSerializeQueryOnlyFacet(Func<QueryOnlyFacet, QueryOnlyFacet> roundTripper)
-    {
+    private static void TestSerializeQueryOnlyFacet(Func<QueryOnlyFacet, QueryOnlyFacet> roundTripper) {
         var f = QueryOnlyFacet.Instance;
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
     }
 
-    private static void TestSerializeRangeFacet(Func<RangeFacet, RangeFacet> roundTripper)
-    {
+    private static void TestSerializeRangeFacet(Func<RangeFacet, RangeFacet> roundTripper) {
         var f = new RangeFacet(1, 2, false);
         var dsf = roundTripper(f);
 
@@ -725,6 +723,17 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.Max, dsf.Max);
     }
 
+    private static void TestSerializeRedirectedFacet(Func<RedirectedFacet, RedirectedFacet> roundTripper) {
+        var f = new RedirectedFacet(GetProperty(), GetProperty(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+
+        Assert.AreEqual(f.GetMethod(0), dsf.GetMethod(0));
+        Assert.AreEqual(f.GetMethodDelegate(0).GetType(), dsf.GetMethodDelegate(0).GetType());
+        Assert.AreEqual(f.GetMethod(1), dsf.GetMethod(1));
+        Assert.AreEqual(f.GetMethodDelegate(1).GetType(), dsf.GetMethodDelegate(1).GetType());
+    }
 
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
@@ -968,6 +977,9 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeRangeFacet() => TestSerializeRangeFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeRedirectedFacet() => TestSerializeRedirectedFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {

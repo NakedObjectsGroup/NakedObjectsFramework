@@ -26,7 +26,7 @@ public sealed class RedirectedObjectFacetFactory : DomainObjectFacetFactoryProce
         if (typeof(IRedirectedObject).IsAssignableFrom(type)) {
             var serverName = type.GetProperty(nameof(IRedirectedObject.ServerName));
             var oid = type.GetProperty(nameof(IRedirectedObject.Oid));
-            FacetUtils.AddFacet(new RedirectedFacet(serverName, oid), specification);
+            FacetUtils.AddFacet(new RedirectedFacet(serverName, oid, Logger<RedirectedFacet>()), specification);
         }
 
         return metamodel;
