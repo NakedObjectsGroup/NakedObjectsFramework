@@ -67,12 +67,17 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     let address1 = new DomesticAddress()
     let address2 = new DomesticAddress()
     let address3 = new InternationalAddress()
+    let usa = new CountryCode()
+    usa.Code <- "USA"
+    usa.ISOCode <- 100
+    usa.Name <- "USA"
+    let usa = context.CountryCodes.Add(usa)
     address1.Lines <- "22 Westleigh Drive"
     address2.Lines <- "BNR Park, Concorde Road"
     address3.Lines <- "1 Madison Avenue, New York"
     address1.Postcode <- "RG4 9LB"
     address2.Postcode <- "SL6 4AG"
-    address3.Country <- "USA"
+    address3.Country <- usa
     let address1 = context.Addresses.Add(address1)
     let address2 = context.Addresses.Add(address2)
     let address3 = context.Addresses.Add(address3)
@@ -92,7 +97,7 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     jane.Address <- address3
     let jane = context.People.Add(jane)
     let count = context.SaveChanges()
-    Assert.AreEqual(19, count)
+    Assert.AreEqual(21, count)
     ()
 
 type CodeFirstInitializer() = 
@@ -125,10 +130,11 @@ let CanCreateTransientObject codeOnlyPersistor = CanCreateTransientObject<Produc
 let CanSaveTransientObjectWithScalarProperties codeOnlyPersistor = CanSaveTransientObject codeOnlyPersistor (productSetter codeOnlyPersistor)
 
 
-let CreateCountryCode code name (codeOnlyPersistor : IObjectStore) = 
+let CreateCountryCode code iso name (codeOnlyPersistor : IObjectStore) = 
     let createCC() = 
         let setter (cc : CountryCode) = 
             cc.Code <- code
+            cc.ISOCode <- iso
             cc.Name <- name
         CreateAndSetup<CountryCode> codeOnlyPersistor setter
     
@@ -136,18 +142,18 @@ let CreateCountryCode code name (codeOnlyPersistor : IObjectStore) =
     CreateAndEndTransaction codeOnlyPersistor nocc
 
 let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt(codeOnlyPersistor : IObjectStore) = 
-    CreateCountryCode "keyCode1" "countryName1" codeOnlyPersistor
+    CreateCountryCode "keyCode1" 100 "countryName1" codeOnlyPersistor
     try 
-        CreateCountryCode "keyCode1" "countryName2" codeOnlyPersistor
+        CreateCountryCode "keyCode1" 100 "countryName1" codeOnlyPersistor
         Assert.Fail()
     with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
-    CreateCountryCode "keyCode2" "countryName2" codeOnlyPersistor
+    CreateCountryCode "keyCode2" 101 "countryName2" codeOnlyPersistor
     ()
 
 let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore(codeOnlyPersistor : IObjectStore) = 
-    CreateCountryCode "keyCode3" "countryName1" codeOnlyPersistor
+    CreateCountryCode "keyCode3" 100 "countryName1" codeOnlyPersistor
     try 
-        CreateCountryCode "keyCode3" "countryName2" codeOnlyPersistor
+        CreateCountryCode "keyCode3" 100 "countryName1" codeOnlyPersistor
         Assert.Fail()
     with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
     let p2 = codeOnlyPersistor.CreateInstance<Product>(null)
@@ -247,6 +253,13 @@ let CanUpdatePersistentObjectWithCollectionProperties codeOnlyPersistor =
     swapProducts origPr replPr
     swapProducts replPr origPr
 
+let CanUpdatePersistentObjectWithCompositeKeys codeOnlyPersistor = 
+    let c = First<InternationalAddress> codeOnlyPersistor
+    let origcc = c.Country
+    let replcc = Second<CountryCode> codeOnlyPersistor
+    c.Country <- replcc
+    SaveAndEndTransaction codeOnlyPersistor c
+
 let CanPersistingPersistedCalledForCreateInstance(codeOnlyPersistor : IObjectStore) = 
     let nextId = GetNextID<Product> codeOnlyPersistor (fun i -> i.ID)
     persistingCount <- 0
@@ -291,9 +304,10 @@ let CanCreateDomesticSubclass(codeOnlyPersistor : IObjectStore) =
 
 let CanCreateInternationalSubclass(codeOnlyPersistor : IObjectStore) = 
     let address = codeOnlyPersistor.CreateInstance<InternationalAddress>(null)
+    let cc = First<CountryCode> codeOnlyPersistor
     address.ID <- GetNextAddressID codeOnlyPersistor
     address.Lines <- uniqueName()
-    address.Country <- uniqueName()
+    address.Country <- cc
     CreateAndEndTransaction codeOnlyPersistor address
 
 let CanCreateBaseClass(codeOnlyPersistor : IObjectStore) = 
@@ -374,11 +388,11 @@ let CanSaveTransientDomesticSubclasstWithScalarProperties codeOnlyPersistor =
         a.Postcode <- uniqueName()
     CanSaveTransientObject<DomesticAddress> codeOnlyPersistor setter
 
-let CanSaveTransientIntlSubclassWithScalarProperties codeOnlyPersistor = 
+let CanSaveTransientIntlSubclassWithScalarProperties codeOnlyPersistor =
     let setter (a : InternationalAddress) = 
         a.ID <- GetNextAddressID codeOnlyPersistor
         a.Lines <- uniqueName()
-        a.Country <- uniqueName()
+        a.Country <- First<CountryCode> codeOnlyPersistor
     CanSaveTransientObject<InternationalAddress> codeOnlyPersistor setter
 
 let CanUpdatePersistentSubclassWithScalarProperties codeOnlyPersistor = 

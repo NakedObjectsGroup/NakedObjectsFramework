@@ -13,6 +13,8 @@ public class CountryCode {
     [Key]
     public virtual string Code { get; set; }
 
+    public virtual int ISOCode { get; set; }
+
     [Required]
     public virtual string Name { get; set; }
 }
