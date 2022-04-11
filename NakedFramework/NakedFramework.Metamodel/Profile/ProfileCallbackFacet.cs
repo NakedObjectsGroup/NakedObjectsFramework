@@ -50,4 +50,6 @@ public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
     }
 
     #endregion
+
+    public bool IsActive => true;
 }

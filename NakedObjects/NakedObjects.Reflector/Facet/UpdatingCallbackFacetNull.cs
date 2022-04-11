@@ -20,6 +20,8 @@ public sealed class UpdatingCallbackFacetNull : UpdatingCallbackFacetAbstract {
     public static UpdatingCallbackFacetNull Instance => instance ??= new UpdatingCallbackFacetNull();
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
+
+    public override bool IsActive => false;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

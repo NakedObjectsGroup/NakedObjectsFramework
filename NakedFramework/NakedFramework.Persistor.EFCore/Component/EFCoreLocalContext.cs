@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Persistor.EFCore.Configuration;
 using NakedFramework.Persistor.EFCore.Util;
@@ -121,12 +123,13 @@ public class EFCoreLocalContext : IDisposable {
         DeletedNakedObjects.Clear();
     }
 
-    private IEnumerable<object> CheckForForeignKeys(EntityEntry entry) {
+    private IEnumerable<object> CheckForForeignKeys(EntityEntry entry, IMetamodelManager metamodelManager) {
         var updatedObjects = new List<object>();
         var updatedForeignKeys = 0;
         var foreignKeys = WrappedDbContext.Model.FindEntityType(entry.Entity.GetType().GetProxiedType())?.GetForeignKeys() ?? Array.Empty<IForeignKey>();
 
         foreach (var foreignKey in foreignKeys) {
+            var isAlternateKey = !foreignKey.PrincipalKey.IsPrimaryKey();
             var names = foreignKey.Properties.Select(p => p.Name);
             var members = entry.Members.OfType<PropertyEntry>();
 
@@ -134,12 +137,20 @@ public class EFCoreLocalContext : IDisposable {
 
             if (matchingMembers.Any(m => m.IsModified)) {
                 var type = foreignKey.PrincipalEntityType.ClrType;
-                var keys = matchingMembers.Select(m => m.OriginalValue).ToArray();
-                updatedForeignKeys++;
+                var spec = metamodelManager.GetSpecification(type);
 
-                if (keys.All(k => k is not null)) {
-                    var otherEnd = WrappedDbContext.Find(type, keys);
-                    updatedObjects.Add(otherEnd);
+                if (spec?.GetFacet<IUpdatingCallbackFacet>()?.IsActive is true) {
+                    if (isAlternateKey) {
+                        throw new NakedObjectDomainException($"Type:{type} is referenced via a foreign alternate key from {entry.Entity.GetType()} and has an 'Updating' method this is not currently supported: issue #412 on github");
+                    }
+
+                    var keys = matchingMembers.Select(m => m.OriginalValue).ToArray();
+                    updatedForeignKeys++;
+
+                    if (keys.All(k => k is not null)) {
+                        var otherEnd = WrappedDbContext.Find(type, keys);
+                        updatedObjects.Add(otherEnd);
+                    }
                 }
             }
         }
@@ -152,7 +163,7 @@ public class EFCoreLocalContext : IDisposable {
         return updatedObjects;
     }
 
-    public void PreSave() {
+    public void PreSave(IMetamodelManager metamodelManager) {
         WrappedDbContext.ChangeTracker.DetectChanges();
         var entries = WrappedDbContext.ChangeTracker.Entries().ToArray();
 
@@ -160,7 +171,7 @@ public class EFCoreLocalContext : IDisposable {
 
         added.AddRange(entries.Where(e => e.State == EntityState.Added).Select(ose => ose.Entity).ToList());
 
-        updatingNakedObjects = entries.Where(e => e.State != EntityState.Added && e.Members.Any(m => m.IsModified)).SelectMany(CheckForForeignKeys).Distinct().Select(o => parent.CreateAdapter(null, o)).ToList();
+        updatingNakedObjects = entries.Where(e => e.State != EntityState.Added && e.Members.Any(m => m.IsModified)).SelectMany(entry => CheckForForeignKeys(entry, metamodelManager)).Distinct().Select(o => parent.CreateAdapter(null, o)).ToList();
 
         updatingNakedObjects.ForEach(no => no.Updating());
     }

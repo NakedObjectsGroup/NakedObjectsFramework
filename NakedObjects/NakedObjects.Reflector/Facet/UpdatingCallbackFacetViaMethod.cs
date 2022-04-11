@@ -42,6 +42,8 @@ public sealed class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstra
         };
 
     #endregion
+
+    public override bool IsActive => true;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

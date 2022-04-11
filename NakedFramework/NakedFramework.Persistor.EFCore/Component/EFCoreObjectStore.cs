@@ -420,7 +420,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
         return contexts.Any(c => c.HasChanges());
     }
 
-    private void PreSave() => contexts.ForEach(c => c.PreSave());
+    private void PreSave() => contexts.ForEach(c => c.PreSave(metamodelManager));
 
     private void RecurseUntilAllChangesApplied(int depth) {
         if (depth > MaximumCommitCycles) {

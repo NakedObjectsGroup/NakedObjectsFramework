@@ -14,6 +14,7 @@ namespace NakedObjects.Reflector.Facet;
 [Serializable]
 public abstract class UpdatingCallbackFacetAbstract : CallbackFacetAbstract, IUpdatingCallbackFacet {
     public override Type FacetType => typeof(IUpdatingCallbackFacet);
+    public abstract bool IsActive { get; }
 }
 
 // Copyright (c) Naked Objects Group Ltd.
