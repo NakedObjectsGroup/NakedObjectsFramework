@@ -6,54 +6,34 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
-    private readonly ILogger<TitleFacetViaToStringMethod> logger;
-    private readonly MethodInfo maskMethod;
+    private readonly MethodSerializationWrapper method;
 
-    [field: NonSerialized] private Func<object, object[], object> maskDelegate;
-
-    public TitleFacetViaToStringMethod(MethodInfo maskMethod, ILogger<TitleFacetViaToStringMethod> logger) {
-        this.maskMethod = maskMethod;
-        this.logger = logger;
-        maskDelegate = maskMethod is null ? null : FacetUtils.LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
+    public TitleFacetViaToStringMethod(MethodInfo method, ILogger<TitleFacetViaToStringMethod> logger) {
+        if (method is not null) {
+            this.method = new MethodSerializationWrapper(method, logger, method.GetParameters().Select(p => p.ParameterType).ToArray());
+        }
     }
+
+    public MethodInfo GetMethod() => method?.GetMethod();
+
+    public Func<object, object[], object> GetMethodDelegate() => method?.GetMethodDelegate();
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.Object.ToString();
 
-    public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        if (maskDelegate is not null) {
-            return (string)maskDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { mask });
-        }
-
-        if (maskMethod is not null) {
-            return (string)maskMethod.Invoke(nakedObjectAdapter.GetDomainObject(), new object[] { mask });
-        }
-
-        return GetTitle(nakedObjectAdapter, framework);
-    }
-
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => maskDelegate = maskMethod == null ? null : FacetUtils.LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
-
-    #region IImperativeFacet Members
-
-    public MethodInfo GetMethod() => maskMethod;
-
-    public Func<object, object[], object> GetMethodDelegate() => maskDelegate;
-
-    #endregion
+    public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => method is not null ? method.Invoke<string>(nakedObjectAdapter.GetDomainObject(), new object[] { mask }) : GetTitle(nakedObjectAdapter, framework);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

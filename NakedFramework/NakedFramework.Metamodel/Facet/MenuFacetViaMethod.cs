@@ -30,7 +30,7 @@ public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel, ITypeSpecImmutable spec) {
         var menu = new MenuBuilder(metamodel, method.MethodInfo.DeclaringType, false, GetMenuName(spec));
-        InvokeUtils.InvokeStatic(method.MethodInfo, new object[] { menu });
+        method.Invoke(new object[] { menu });
         Menu = menu.ExtractMenu();
     }
 }

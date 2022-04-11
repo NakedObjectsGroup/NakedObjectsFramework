@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
 public class MethodSerializationWrapper {
+    private readonly TypeSerializationWrapper[] methodArgsWrapper;
     private readonly bool jit;
     private readonly string methodName;
     private readonly TypeSerializationWrapper typeWrapper;
@@ -20,12 +22,20 @@ public class MethodSerializationWrapper {
     [NonSerialized]
     private Func<object, object[], object> methodDelegate;
 
+    [NonSerialized]
+    private readonly Type[] methodArgs;
+
     public MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, bool jit = false) {
         this.jit = jit;
         MethodInfo = methodInfo;
         typeWrapper = new TypeSerializationWrapper(methodInfo.DeclaringType, jit);
         methodName = methodInfo.Name;
         methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(methodInfo), logger);
+    }
+
+    public MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, Type[] methodArgs, bool jit = false) : this(methodInfo, logger, jit) {
+        this.methodArgs = methodArgs;
+        methodArgsWrapper = methodArgs.Select(a => new TypeSerializationWrapper(a, jit)).ToArray();
     }
 
     public MethodInfo MethodInfo {
@@ -51,7 +61,8 @@ public class MethodSerializationWrapper {
     private MethodInfo FindMethod() {
         try {
             var declaringType = typeWrapper.Type;
-            return declaringType?.GetMethod(methodName) ?? throw new NullReferenceException();
+            var args = methodArgsWrapper?.Select(w => w.Type).ToArray();
+            return args is null ? declaringType?.GetMethod(methodName) : declaringType?.GetMethod(methodName, args) ?? throw new NullReferenceException();
         }
         catch (NullReferenceException) {
             throw new ReflectionException($"Failed to find {methodName}");
@@ -61,4 +72,12 @@ public class MethodSerializationWrapper {
     public MethodInfo GetMethod() => MethodInfo;
 
     public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
+
+    public T Invoke<T>(object target, object[] args) => MethodDelegate.Invoke<T>(MethodInfo, target, args);
+
+    public T Invoke<T>(object[] args) => MethodDelegate.InvokeStatic<T>(MethodInfo, args);
+
+    public void Invoke(object target, object[] args) => MethodDelegate.Invoke(MethodInfo, target, args);
+
+    public void Invoke(object[] args) => MethodDelegate.InvokeStatic(MethodInfo, args);
 }

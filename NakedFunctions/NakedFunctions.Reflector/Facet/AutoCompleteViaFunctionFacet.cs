@@ -52,7 +52,7 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
 
     public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedFramework framework) {
         try {
-            var autoComplete = methodDelegate.Invoke<object>(method, method.GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
+            var autoComplete = methodDelegate.InvokeStatic<object>(method, method.GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
 
             switch (autoComplete) {
                 //returning an IQueryable

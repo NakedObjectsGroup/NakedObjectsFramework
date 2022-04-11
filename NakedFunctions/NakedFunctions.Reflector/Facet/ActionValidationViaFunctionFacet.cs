@@ -45,7 +45,7 @@ public sealed class ActionValidationViaFunctionFacet : FacetAbstract, IActionVal
     public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
     public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArguments) =>
-        methodDelegate.Invoke<string>(method, method.GetParameterValues(target, proposedArguments, framework));
+        methodDelegate.InvokeStatic<string>(method, method.GetParameterValues(target, proposedArguments, framework));
 
     #endregion
 

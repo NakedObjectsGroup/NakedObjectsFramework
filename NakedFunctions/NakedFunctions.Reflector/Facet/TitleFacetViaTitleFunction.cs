@@ -30,7 +30,7 @@ public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperative
     }
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>
-        methodDelegate.Invoke<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
+        methodDelegate.InvokeStatic<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
 
     #region IImperativeFacet Members
 

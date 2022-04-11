@@ -52,7 +52,7 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
                                         INakedFramework framework) {
         try {
             var parms = choicesMethod.GetParameterValues(nakedObjectAdapter, parameterNameValues, framework);
-            return choicesDelegate.Invoke<IEnumerable>(choicesMethod, parms).Cast<object>().ToArray();
+            return choicesDelegate.InvokeStatic<IEnumerable>(choicesMethod, parms).Cast<object>().ToArray();
         }
         catch (ArgumentException ae) {
             throw new InvokeException($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types", ae);

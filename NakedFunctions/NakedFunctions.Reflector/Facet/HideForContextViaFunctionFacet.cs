@@ -44,7 +44,7 @@ public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForCont
     public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
     public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        var isHidden = methodDelegate.Invoke<bool>(method, method.GetParameterValues(nakedObjectAdapter, framework));
+        var isHidden = methodDelegate.InvokeStatic<bool>(method, method.GetParameterValues(nakedObjectAdapter, framework));
         return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
     }
 

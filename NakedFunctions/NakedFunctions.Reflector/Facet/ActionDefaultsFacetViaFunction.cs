@@ -34,7 +34,7 @@ public sealed class ActionDefaultsFacetViaFunction : ActionDefaultsFacetAbstract
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         // type safety is given by the reflector only identifying methods that match the 
         // parameter type
-        var defaultValue = methodDelegate.Invoke<object>(method, method.GetParameterValues(nakedObjectAdapter, framework));
+        var defaultValue = methodDelegate.InvokeStatic<object>(method, method.GetParameterValues(nakedObjectAdapter, framework));
         return (defaultValue, TypeOfDefaultValue.Explicit);
     }
 

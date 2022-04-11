@@ -44,7 +44,7 @@ public sealed class DisableForContextViaFunctionFacet : FacetAbstract, IDisableF
     public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
     public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>
-        methodDelegate.Invoke<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
+        methodDelegate.InvokeStatic<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
 
     #endregion
 

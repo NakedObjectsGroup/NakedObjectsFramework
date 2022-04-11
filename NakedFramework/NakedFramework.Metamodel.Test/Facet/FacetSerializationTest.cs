@@ -771,6 +771,40 @@ public class FacetSerializationTest {
         Assert.AreEqual(string.Join(',', f.Columns), string.Join(',', dsf.Columns));
     }
 
+    private static void TestSerializeTitleFacetNone(Func<TitleFacetNone, TitleFacetNone> roundTripper) {
+        var f = TitleFacetNone.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTitleFacetUsingParser(Func<TitleFacetUsingParser<bool>, TitleFacetUsingParser<bool>> roundTripper) {
+        var f = new TitleFacetUsingParser<bool>(BooleanValueSemanticsProvider.Instance);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTitleFacetViaToStringMethodNull(Func<TitleFacetViaToStringMethod, TitleFacetViaToStringMethod> roundTripper) {
+        var f = new TitleFacetViaToStringMethod(null, null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate()?.GetType(), dsf.GetMethodDelegate()?.GetType());
+    }
+
+    private static void TestSerializeTitleFacetViaToStringMethod(Func<TitleFacetViaToStringMethod, TitleFacetViaToStringMethod> roundTripper)
+    {
+        var f = new TitleFacetViaToStringMethod(typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.ToString), new [] {typeof(string)}) , null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate()?.GetType(), dsf.GetMethodDelegate()?.GetType());
+    }
+
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -1025,12 +1059,27 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeSaveFacet() => TestSerializeSaveFacet(BinaryRoundTrip);
+
     [TestMethod]
     public void TestBinarySerializeTableViewFacet() => TestSerializeTableViewFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTitleFacetNone() => TestSerializeTitleFacetNone(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTitleFacetUsingParser() => TestSerializeTitleFacetUsingParser(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTitleFacetViaToStringMethodNull() => TestSerializeTitleFacetViaToStringMethodNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTitleFacetViaToStringMethod() => TestSerializeTitleFacetViaToStringMethod(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
     public int TestProperty { get; set; } = 1;
+
+    public string ToString(string mask) => ToString();
 }
 
 public class TestMenuClass {

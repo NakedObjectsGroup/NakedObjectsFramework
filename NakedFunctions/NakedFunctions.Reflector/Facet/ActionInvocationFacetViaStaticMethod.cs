@@ -139,7 +139,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
 
         var rawParms = parameters.Select(p => p?.Object).ToArray();
 
-        return HandleInvokeResult(framework, methodDelegate.Invoke<object>(ActionMethod, rawParms));
+        return HandleInvokeResult(framework, methodDelegate.InvokeStatic<object>(ActionMethod, rawParms));
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
