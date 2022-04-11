@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
@@ -121,23 +122,21 @@ namespace NakedFramework.Persistor.EFCore.Component {
         private IEnumerable<object> CheckForForeignKeys(EntityEntry entry) {
             var updatedObjects = new List<object>();
             var updatedForeignKeys = 0;
-            var foreignKeys = WrappedDbContext.Model.FindEntityType(entry.Entity.GetType().GetProxiedType()).GetForeignKeys();
+            var foreignKeys = WrappedDbContext.Model.FindEntityType(entry.Entity.GetType().GetProxiedType())?.GetForeignKeys() ?? Array.Empty<IForeignKey>();
 
             foreach (var foreignKey in foreignKeys) {
                 var names = foreignKey.Properties.Select(p => p.Name);
+                var members = entry.Members.OfType<PropertyEntry>();
+                var matchingMembers = names.Select(name => members.Single(m => m.Metadata.Name == name)).ToList();
 
-                foreach (var name in names) {
-                    var matchingMember = entry.Members.SingleOrDefault(m => m.Metadata.Name == name) as PropertyEntry;
+                if (matchingMembers.Any(m => m.IsModified)) {
+                    var type = foreignKey.PrincipalEntityType.ClrType;
+                    var keys = matchingMembers.Select(m => m.OriginalValue).ToArray();
+                    updatedForeignKeys++;
 
-                    if (matchingMember?.IsModified == true) {
-                        var type = foreignKey.PrincipalEntityType.ClrType;
-                        var keys = matchingMember.OriginalValue;
-                        updatedForeignKeys++;
-
-                        if (keys is not null) {
-                            var otherEnd = WrappedDbContext.Find(type, keys);
-                            updatedObjects.Add(otherEnd);
-                        }
+                    if (keys.All(k => k is not null)) {
+                        var otherEnd = WrappedDbContext.Find(type, keys);
+                        updatedObjects.Add(otherEnd);
                     }
                 }
             }

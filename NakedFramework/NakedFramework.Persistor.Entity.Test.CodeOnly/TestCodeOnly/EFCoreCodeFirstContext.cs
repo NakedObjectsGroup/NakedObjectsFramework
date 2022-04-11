@@ -42,10 +42,14 @@ namespace TestCodeOnly {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
-            modelBuilder.Entity<CountryCode>().HasKey(cc => cc.Code);
+            modelBuilder.Entity<CountryCode>().HasKey(cc => new { cc.Code, cc.ISOCode });
 
             var food = new Category { ID = 1, Name = "Food" };
             modelBuilder.Entity<Category>().HasData(food);
+
+            modelBuilder.Entity<CountryCode>().HasData(new CountryCode { Code = "USA", ISOCode = 100, Name = "USA" });
+            modelBuilder.Entity<CountryCode>().HasData(new CountryCode { Code = "UK", ISOCode = 101, Name = "Great Britain" });
+            modelBuilder.Entity<CountryCode>().HasData(new CountryCode { Code = "FR", ISOCode = 102, Name = "France" });
 
             modelBuilder.Entity<Product>().HasData(new { ID = 1, Name = "Bovril", OwningcategoryID = 1 });
             modelBuilder.Entity<Product>().HasData(new { ID = 2, Name = "Marmite", OwningcategoryID = 1 });
@@ -53,7 +57,7 @@ namespace TestCodeOnly {
 
             modelBuilder.Entity<DomesticAddress>().HasData(new DomesticAddress { ID = 1, Lines = "22 Westleigh Drive", Postcode = "RG4 9LB" });
             modelBuilder.Entity<DomesticAddress>().HasData(new DomesticAddress { ID = 2, Lines = "BNR Park, Concorde Road", Postcode = "SL6 4AG" });
-            modelBuilder.Entity<InternationalAddress>().HasData(new InternationalAddress { ID = 3, Lines = "1 Madison Avenue, New York", Country = "USA" });
+            modelBuilder.Entity<InternationalAddress>().HasData(new { ID = 3, Lines = "1 Madison Avenue, New York", CountryCode = "USA", CountryISOCode = 100 });
 
             modelBuilder.Entity<Person>().HasData(new { ID = 1, Name = "Ted", FavouriteID = 1, AddressID = 1 });
             modelBuilder.Entity<Person>().HasData(new { ID = 2, Name = "Bob", FavouriteID = 2, AddressID = 2 });

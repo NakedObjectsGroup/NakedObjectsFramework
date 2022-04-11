@@ -10,6 +10,6 @@
 
 namespace TestCodeOnly {
     public class InternationalAddress : Address {
-        public virtual string Country { get; set; }
+        public virtual CountryCode Country { get; set; }
     }
 }

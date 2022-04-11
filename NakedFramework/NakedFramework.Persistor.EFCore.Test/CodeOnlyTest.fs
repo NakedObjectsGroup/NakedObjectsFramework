@@ -87,6 +87,9 @@ type CodeOnlyTests() =
         member x.TestUpdatePersistentObjectWithCollectionProperties() = CanUpdatePersistentObjectWithCollectionProperties codeOnlyPersistor
         
         [<Test>]
+        member x.TestUpdatePersistentObjectWithCompositeKeys() = CanUpdatePersistentObjectWithCompositeKeys codeOnlyPersistor
+
+        [<Test>]
         member x.TestPersistingPersistedCalledForCreateInstance() = CanPersistingPersistedCalledForCreateInstance codeOnlyPersistor
         
         [<Test>]
