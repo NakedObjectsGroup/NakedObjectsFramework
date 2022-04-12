@@ -9,6 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.I18N;
 using NakedFramework.Metamodel.SemanticsProvider;
 using static NakedFramework.Metamodel.Test.Facet.SerializationTestHelpers;
 
@@ -869,5 +870,22 @@ public static class FacetSerializationTests {
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeDescribedAsFacetI18N(Func<DescribedAsFacetI18N, DescribedAsFacetI18N> roundTripper) {
+        var f = new DescribedAsFacetI18N("default value");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+    }
+
+    public static void TestSerializeMemberNamedFacetI18N(Func<MemberNamedFacetI18N, MemberNamedFacetI18N> roundTripper) {
+        var f = new MemberNamedFacetI18N("a name");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+        Assert.AreEqual(f.FriendlyName(), dsf.FriendlyName());
     }
 }

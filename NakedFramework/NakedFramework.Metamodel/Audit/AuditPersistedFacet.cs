@@ -6,26 +6,29 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.Audit;
 
 [Serializable]
 public sealed class AuditPersistedFacet : CallbackFacetAbstract, IPersistedCallbackFacet {
-    private readonly IAuditManager manager;
     private readonly IPersistedCallbackFacet underlyingFacet;
 
-    public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet, IAuditManager auditManager) {
-        this.underlyingFacet = underlyingFacet;
-        manager = auditManager;
-    }
+    public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet) => this.underlyingFacet = underlyingFacet;
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        manager.Persisted(nakedObjectAdapter, framework);
-        underlyingFacet.Invoke(nakedObjectAdapter, framework);
+        if (framework.ServiceProvider.GetService<IAuditManager>() is { } auditManager) {
+            auditManager.Persisted(nakedObjectAdapter, framework);
+            underlyingFacet.Invoke(nakedObjectAdapter, framework);
+        }
+        else {
+            throw new NakedObjectSystemException($"Attempting 'Persisted' audit on {nakedObjectAdapter} but missing AuditManager");
+        }
     }
 
     public override Type FacetType => typeof(IPersistedCallbackFacet);

@@ -13,7 +13,6 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Audit;
 
-[Serializable]
 public abstract class AbstractAuditManager {
     protected readonly Type DefaultAuditor;
     protected readonly ILogger Logger;

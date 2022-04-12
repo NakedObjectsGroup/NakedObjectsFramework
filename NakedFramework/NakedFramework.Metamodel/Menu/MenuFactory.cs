@@ -11,7 +11,6 @@ using NakedFramework.Menu;
 
 namespace NakedFramework.Metamodel.Menu;
 
-[Serializable]
 public class MenuFactory : IMenuFactory {
     #region Injected ServicesManager
 

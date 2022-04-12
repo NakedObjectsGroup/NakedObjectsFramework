@@ -13,6 +13,7 @@ using NakedFramework.Core.Component;
 using NakedFramework.DependencyInjection.Configuration;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
+using NakedFramework.Metamodel.Audit;
 using NakedObjects.Core.Component;
 using NakedObjects.Reflector.Audit;
 using NakedObjects.Reflector.Authorization;
@@ -64,7 +65,8 @@ public static class NakedObjectsExtensions {
 
         if (frameworkOptions.AuditConfiguration is not null) {
             frameworkOptions.Services.AddSingleton(frameworkOptions.AuditConfiguration);
-            frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuditManager>();
+            frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuditDecorator>();
+            frameworkOptions.Services.AddDefaultSingleton<IAuditManager, AuditManager>();
         }
     }
 }

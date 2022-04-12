@@ -324,4 +324,10 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeValueFacetFromSemanticProvider() => TestSerializeValueFacetFromSemanticProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDescribedAsFacetI18N() => TestSerializeDescribedAsFacetI18N(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMemberNamedFacetI18N() => TestSerializeMemberNamedFacetI18N(BinaryRoundTrip);
 }

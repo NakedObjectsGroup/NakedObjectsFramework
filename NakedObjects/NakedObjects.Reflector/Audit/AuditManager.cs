@@ -10,7 +10,6 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Audit;
@@ -20,8 +19,7 @@ using NakedFramework.Metamodel.Audit;
 
 namespace NakedObjects.Reflector.Audit;
 
-[Serializable]
-public sealed class AuditManager : AbstractAuditManager, IFacetDecorator, IAuditManager {
+public sealed class AuditManager : AbstractAuditManager, IAuditManager {
     public AuditManager(IAuditConfiguration config, ILogger<AuditManager> logger) : base(config, logger) { }
 
     protected override void ValidateType(Type toValidate) {
@@ -69,28 +67,6 @@ public sealed class AuditManager : AbstractAuditManager, IFacetDecorator, IAudit
         var auditor = GetAuditor(nakedObjectAdapter, framework.LifecycleManager);
         auditor.ObjectPersisted(framework.Session.Principal, nakedObjectAdapter.GetDomainObject());
     }
-
-    #endregion
-
-    #region IFacetDecorator Members
-
-    public IFacet Decorate(IFacet facet, ISpecification holder) {
-        if (facet.FacetType == typeof(IActionInvocationFacet)) {
-            return new AuditActionInvocationFacet((IActionInvocationFacet)facet, this, holder.Identifier);
-        }
-
-        if (facet.FacetType == typeof(IUpdatedCallbackFacet)) {
-            return new AuditUpdatedFacet((IUpdatedCallbackFacet)facet, this);
-        }
-
-        if (facet.FacetType == typeof(IPersistedCallbackFacet)) {
-            return new AuditPersistedFacet((IPersistedCallbackFacet)facet, this);
-        }
-
-        return facet;
-    }
-
-    public Type[] ForFacetTypes { get; } = { typeof(IActionInvocationFacet), typeof(IUpdatedCallbackFacet), typeof(IPersistedCallbackFacet) };
 
     #endregion
 }

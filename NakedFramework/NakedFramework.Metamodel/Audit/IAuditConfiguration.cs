@@ -14,5 +14,4 @@ public interface IAuditConfiguration {
     Type DefaultAuditor { get; }
 
     Dictionary<string, Type> NamespaceAuditors { get; }
-    //void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor;
 }

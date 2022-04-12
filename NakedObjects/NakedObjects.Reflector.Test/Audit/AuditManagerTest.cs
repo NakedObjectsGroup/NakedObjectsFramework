@@ -85,7 +85,7 @@ public class AuditManagerTest {
         config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
         config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> { { "", auditor.Object.GetType() } });
 
-        var manager = new AuditManager(config.Object, mockLogger);
+        var manager = new AuditDecorator();
 
         var testSpec = new Mock<ISpecification>();
         var testHolder = new Mock<ISpecification>();
@@ -111,7 +111,7 @@ public class AuditManagerTest {
         config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
         config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> { { "", auditor.Object.GetType() } });
 
-        var manager = new AuditManager(config.Object, mockLogger);
+        var manager = new AuditDecorator();
 
         var testSpec = new Mock<ISpecification>();
         var testHolder = new Mock<ISpecification>();
@@ -137,7 +137,7 @@ public class AuditManagerTest {
         config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
         config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> { { "", auditor.Object.GetType() } });
 
-        var manager = new AuditManager(config.Object, mockLogger);
+        var manager = new AuditDecorator();
 
         var testSpec = new Mock<ISpecification>();
         var testHolder = new Mock<ISpecification>();

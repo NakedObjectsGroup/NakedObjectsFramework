@@ -7,23 +7,23 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.Audit;
 
 [Serializable]
 public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
-    private readonly IAuditManager auditManager;
     private readonly IIdentifier identifier;
     private readonly IActionInvocationFacet underlyingFacet;
 
-    public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, IAuditManager auditManager, IIdentifier identifier) {
+    public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, IIdentifier identifier) {
         this.underlyingFacet = underlyingFacet;
-        this.auditManager = auditManager;
         this.identifier = identifier;
     }
 
@@ -38,12 +38,20 @@ public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
     public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
-        auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
-        return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
+        if (framework.ServiceProvider.GetService<IAuditManager>() is { } auditManager) {
+            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
+        }
+
+        throw new NakedObjectSystemException($"Attempting 'Invoke' audit on {identifier} but missing AuditManager");
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) {
-        auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
-        return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
+        if (framework.ServiceProvider.GetService<IAuditManager>() is { } auditManager) {
+            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework);
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
+        }
+
+        throw new NakedObjectSystemException($"Attempting 'Invoke' audit on {identifier} but missing AuditManager");
     }
 }
