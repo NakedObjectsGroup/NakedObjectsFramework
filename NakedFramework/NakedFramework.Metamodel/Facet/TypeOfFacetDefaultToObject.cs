@@ -14,20 +14,20 @@ using NakedFramework.Architecture.SpecImmutable;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class TypeOfFacetDefaultToType : TypeOfFacetInferredAbstract, ITypeOfFacet {
-    private readonly IObjectSpecImmutable spec;
-    private readonly Type type;
+public sealed class TypeOfFacetDefaultToObject : TypeOfFacetInferredAbstract, ITypeOfFacet {
+    private static TypeOfFacetDefaultToObject instance;
 
-    public TypeOfFacetDefaultToType(Type type, IObjectSpecImmutable spec) {
-        this.type = type;
-        this.spec = spec;
-    }
+    private TypeOfFacetDefaultToObject() { }
+
+    public static TypeOfFacetDefaultToObject Instance => instance ??= new TypeOfFacetDefaultToObject();
+
+    private static Type DefaultType => typeof(object);
 
     #region ITypeOfFacet Members
 
-    public override Type GetValue(INakedObjectAdapter collection) => type;
+    public override Type GetValue(INakedObjectAdapter collection) => DefaultType;
 
-    public override IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => spec;
+    public override IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => metamodel.GetSpecification(DefaultType) as IObjectSpecImmutable;
 
     #endregion
 }

@@ -165,7 +165,7 @@ public sealed class NakedObjectAdapter : INakedObjectAdapter {
             }
         }
 
-        return objectSpec.GetFacet<IValidateObjectFacet>()?.Validate(this);
+        return objectSpec.GetFacet<IValidateObjectFacet>()?.Validate(this, logger);
     }
 
     public void SetATransientOid(IOid newOid) {

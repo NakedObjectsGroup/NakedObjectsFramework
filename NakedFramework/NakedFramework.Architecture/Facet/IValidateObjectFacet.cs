@@ -5,11 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 
 namespace NakedFramework.Architecture.Facet;
 
 public interface IValidateObjectFacet : IFacet {
-    string Validate(INakedObjectAdapter nakedObjectAdapter);
-    string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string name, INakedObjectAdapter value)[] parms);
+    string Validate(INakedObjectAdapter nakedObjectAdapter, ILogger logger);
+    string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string name, INakedObjectAdapter value)[] parms, ILogger logger);
 }

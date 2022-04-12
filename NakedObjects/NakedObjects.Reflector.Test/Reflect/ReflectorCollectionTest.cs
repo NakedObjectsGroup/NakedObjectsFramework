@@ -52,7 +52,7 @@ public class SystemTypeReflectorCollectionTest : SystemTypeReflectorTest {
     public void TestTypeOfFacet() {
         var facet = (ITypeOfFacet)Specification.GetFacet(typeof(ITypeOfFacet));
         Assert.IsNotNull(facet);
-        AssertIsInstanceOfType<TypeOfFacetDefaultToType>(facet);
+        AssertIsInstanceOfType<TypeOfFacetDefaultToObject>(facet);
     }
 }
 

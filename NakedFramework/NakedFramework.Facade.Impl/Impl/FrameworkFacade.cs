@@ -326,13 +326,13 @@ public class FrameworkFacade : IFrameworkFacade {
         return context;
     }
 
-    private static IConsent CrossValidate(ObjectContext context) {
+    private IConsent CrossValidate(ObjectContext context) {
         var validateFacet = context.Specification.GetFacet<IValidateObjectFacet>();
 
         if (validateFacet != null) {
             var allParms = context.VisibleProperties.Select(pc => (pc.Id.ToLower(), pc.ProposedNakedObject)).ToArray();
 
-            var result = validateFacet.ValidateParms(context.Target, allParms);
+            var result = validateFacet.ValidateParms(context.Target, allParms, logger);
             if (!string.IsNullOrEmpty(result)) {
                 return new Veto(result);
             }

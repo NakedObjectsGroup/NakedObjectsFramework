@@ -110,7 +110,7 @@ internal class TestObject : TestHasActions, ITestObject {
 
         var validatorFacet = NakedObject.Spec.GetFacet<IValidateObjectFacet>();
 
-        var result = validatorFacet.Validate(NakedObject);
+        var result = validatorFacet.Validate(NakedObject, null);
 
         if (!string.IsNullOrEmpty(result)) {
             Assert.Fail(result);

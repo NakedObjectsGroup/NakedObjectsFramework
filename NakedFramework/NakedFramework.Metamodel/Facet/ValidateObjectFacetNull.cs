@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 
@@ -23,9 +24,9 @@ public sealed class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFace
 
     #region IValidateObjectFacet Members
 
-    public string Validate(INakedObjectAdapter nakedObjectAdapter) => null;
+    public string Validate(INakedObjectAdapter nakedObjectAdapter, ILogger logger) => null;
 
-    public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string, INakedObjectAdapter)[] parms) => null;
+    public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string, INakedObjectAdapter)[] parms, ILogger logger) => null;
 
     #endregion
 }

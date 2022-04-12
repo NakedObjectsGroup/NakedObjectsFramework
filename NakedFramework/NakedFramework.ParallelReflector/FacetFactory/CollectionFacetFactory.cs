@@ -57,10 +57,7 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
         };
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var collectionElementType = typeof(object);
-        IObjectSpecBuilder oSpec;
-        (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
-        FacetUtils.AddFacet(new TypeOfFacetDefaultToType(collectionElementType, oSpec), holder);
+        FacetUtils.AddFacet(TypeOfFacetDefaultToObject.Instance, holder);
         FacetUtils.AddFacet(CollectionFacet.Instance, holder);
         return metamodel;
     }

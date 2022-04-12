@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
@@ -48,7 +49,7 @@ public sealed class ValidateObjectFacetFactory : DomainObjectFacetFactoryProcess
                                       !CollectionUtils.IsQueryable(p.PropertyType));
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
+        var validateMethods = new List<MethodInfo>();
         var methods = ObjectMethodHelpers.FindMethods(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix, typeof(string));
 
         if (methods.Any()) {
@@ -57,14 +58,14 @@ public sealed class ValidateObjectFacetFactory : DomainObjectFacetFactoryProcess
                 if (parameters.Length >= 2) {
                     var parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => $"{name[0].ToString(Thread.CurrentThread.CurrentCulture).ToUpper()}{name[1..]}").All(p => ContainsField(p, type, reflector.ClassStrategy));
                     if (parametersMatch) {
-                        methodPeers.Add(new ValidateObjectFacet.NakedObjectValidationMethod(method, Logger<ValidateObjectFacet.NakedObjectValidationMethod>()));
+                        validateMethods.Add(method);
                         methodRemover.SafeRemoveMethod(method);
                     }
                 }
             }
         }
 
-        var validateFacet = methodPeers.Any() ? (IValidateObjectFacet)new ValidateObjectFacet(methodPeers, Logger<ValidateObjectFacet>()) : ValidateObjectFacetNull.Instance;
+        IValidateObjectFacet validateFacet = validateMethods.Any() ? new ValidateObjectFacet(validateMethods, Logger<ValidateObjectFacet>()) : ValidateObjectFacetNull.Instance;
         FacetUtils.AddFacet(validateFacet, specification);
         return metamodel;
     }

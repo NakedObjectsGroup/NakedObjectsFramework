@@ -801,6 +801,78 @@ public class FacetSerializationTest {
         Assert.AreEqual(f.GetMethodDelegate()?.GetType(), dsf.GetMethodDelegate()?.GetType());
     }
 
+    private static void TestSerializeTypeFacet(Func<TypeFacet, TypeFacet> roundTripper) {
+        var f = new TypeFacet(typeof(TestEnum));
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.TypeOrUnderlyingType, dsf.TypeOrUnderlyingType);
+    }
+
+    private static void TestSerializeTypeIsAbstractFacet(Func<TypeIsAbstractFacet, TypeIsAbstractFacet> roundTripper) {
+        var f = TypeIsAbstractFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTypeIsInterfaceFacet(Func<TypeIsInterfaceFacet, TypeIsInterfaceFacet> roundTripper) {
+        var f = TypeIsInterfaceFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTypeIsSealedFacet(Func<TypeIsSealedFacet, TypeIsSealedFacet> roundTripper) {
+        var f = TypeIsSealedFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTypeIsStaticFacet(Func<TypeIsStaticFacet, TypeIsStaticFacet> roundTripper) {
+        var f = TypeIsStaticFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTypeIsVoidFacet(Func<TypeIsVoidFacet, TypeIsVoidFacet> roundTripper) {
+        var f = TypeIsVoidFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTypeOfFacetDefaultToObject(Func<TypeOfFacetDefaultToObject, TypeOfFacetDefaultToObject> roundTripper) {
+        var f = TypeOfFacetDefaultToObject.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetValue(null), dsf.GetValue(null));
+    }
+
+    private static void TestSerializeTypeOfFacetInferredFromArray(Func<TypeOfFacetInferredFromArray, TypeOfFacetInferredFromArray> roundTripper) {
+        var f = TypeOfFacetInferredFromArray.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTypeOfFacetInferredFromGenerics(Func<TypeOfFacetInferredFromGenerics, TypeOfFacetInferredFromGenerics> roundTripper) {
+        var f = TypeOfFacetInferredFromGenerics.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeValidateObjectFacet(Func<ValidateObjectFacet, ValidateObjectFacet> roundTripper) {
+        var f = new ValidateObjectFacet(new[] { typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.ValidateTest)) }, null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
 
@@ -1070,12 +1142,44 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeTitleFacetViaToStringMethod() => TestSerializeTitleFacetViaMaskedToStringMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTypeFacet() => TestSerializeTypeFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTypeIsAbstractFacet() => TestSerializeTypeIsAbstractFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTypeIsInterfaceFacet() => TestSerializeTypeIsInterfaceFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTypeIsSealedFacet() => TestSerializeTypeIsSealedFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTypeIsStaticFacet() => TestSerializeTypeIsStaticFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTypeIsVoidFacet() => TestSerializeTypeIsVoidFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTypeOfFacetDefaultToObject() => TestSerializeTypeOfFacetDefaultToObject(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTypeOfFacetInferredFromArray() => TestSerializeTypeOfFacetInferredFromArray(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTypeOfFacetInferredFromGenerics() => TestSerializeTypeOfFacetInferredFromGenerics(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeValidateObjectFacet() => TestSerializeValidateObjectFacet(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
     public int TestProperty { get; set; } = 1;
 
     public string ToString(string mask) => ToString();
+
+    public string ValidateTest(string arg) => null;
 }
 
 public class TestMenuClass {

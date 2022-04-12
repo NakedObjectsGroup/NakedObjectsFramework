@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Utils;
@@ -71,9 +72,13 @@ public class MethodSerializationWrapper {
 
     public MethodInfo GetMethod() => MethodInfo;
 
+    private static object[] Args(INakedObjectAdapter[] args) => args.Select(a => a.GetDomainObject()).ToArray();
+
     public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
 
     public T Invoke<T>(object target, object[] args) => MethodDelegate.Invoke<T>(MethodInfo, target, args);
+
+    public T Invoke<T>(INakedObjectAdapter target, INakedObjectAdapter[] args) => MethodDelegate.Invoke<T>(MethodInfo, target.GetDomainObject(), Args(args));
 
     public T Invoke<T>(object[] args) => MethodDelegate.InvokeStatic<T>(MethodInfo, args);
 

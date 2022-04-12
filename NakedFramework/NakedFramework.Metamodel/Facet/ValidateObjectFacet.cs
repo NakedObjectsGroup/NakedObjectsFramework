@@ -9,100 +9,72 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
-using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
-    private readonly ILogger<ValidateObjectFacet> logger;
+public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet, IMultipleImperativeFacet {
+    public ValidateObjectFacet(IList<MethodInfo> validateMethods, ILogger logger) => ValidateMethods = validateMethods.Select(m => new MethodSerializationWrapper(m, logger)).ToList();
 
-    public ValidateObjectFacet(IList<NakedObjectValidationMethod> validateMethods, ILogger<ValidateObjectFacet> logger) {
-        this.logger = logger;
-        ValidateMethods = validateMethods;
-    }
+    private List<MethodSerializationWrapper> ValidateMethods { get; set; }
 
-    private IEnumerable<NakedObjectValidationMethod> ValidateMethods { get; set; }
+    public int Count => ValidateMethods.Count;
+    public MethodInfo GetMethod(int index) => ValidateMethods[index].MethodInfo;
+    public Func<object, object[], object> GetMethodDelegate(int index) => ValidateMethods[index].MethodDelegate;
 
     public override Type FacetType => typeof(IValidateObjectFacet);
 
-    private void LogNoMatch(NakedObjectValidationMethod validator, string actual) {
-        var expects = validator.ParameterNames.Aggregate((s, t) => $"{s} {t}");
+    private static void LogNoMatch(MethodInfo validator, string actual, ILogger logger) {
+        var expects = validator.GetParameters().Select(p => p.Name.ToLower()).ToArray().Aggregate((s, t) => $"{s} {t}");
         logger.LogWarning($"No Matching parms Validator: {validator.Name} Expects {expects} Actual {actual} ");
     }
 
-    #region Nested type: NakedObjectValidationMethod
-
-    [Serializable]
-    public class NakedObjectValidationMethod {
-        private readonly ILogger<NakedObjectValidationMethod> logger;
-        private readonly MethodInfo method;
-
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
-
-        public NakedObjectValidationMethod(MethodInfo method, ILogger<NakedObjectValidationMethod> logger) {
-            this.method = method;
-            this.logger = logger;
-            methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-        }
-
-        public string Name => method.Name;
-
-        public string[] ParameterNames => method.GetParameters().Select(p => p.Name.ToLower()).ToArray();
-
-        public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) => methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
-
-    #endregion
+    private static string[] ParameterNames(MethodSerializationWrapper validator) => validator.MethodInfo.GetParameters().Select(p => p.Name.ToLower()).ToArray();
 
     #region IValidateObjectFacet Members
 
-    public string Validate(INakedObjectAdapter nakedObjectAdapter) {
+    public string Validate(INakedObjectAdapter nakedObjectAdapter, ILogger logger) {
         foreach (var validator in ValidateMethods) {
             var objectSpec = nakedObjectAdapter.Spec as IObjectSpec ?? throw new NakedObjectSystemException("nakedObjectAdapter.Spec must be IObjectSpec");
 
-            var matches = validator.ParameterNames.Select(name => objectSpec.Properties.SingleOrDefault(p => p.Id.ToLower() == name)).Where(s => s != null).ToArray();
+            var parameterNames = ParameterNames(validator);
+            var matches = parameterNames.Select(name => objectSpec.Properties.SingleOrDefault(p => p.Id.ToLower() == name)).Where(s => s != null).ToArray();
 
-            if (matches.Length == validator.ParameterNames.Length) {
+            if (matches.Length == parameterNames.Length) {
                 var parameters = matches.Select(s => s.GetNakedObject(nakedObjectAdapter)).ToArray();
-                var result = validator.Execute(nakedObjectAdapter, parameters);
-                if (result != null) {
+                if (validator.Invoke<string>(nakedObjectAdapter, parameters) is { } result) {
                     return result;
                 }
             }
             else {
                 var actual = objectSpec.Properties.Select(s => s.Id).Aggregate((s, t) => $"{s} {t}");
-                LogNoMatch(validator, actual);
+                LogNoMatch(validator.MethodInfo, actual, logger);
             }
         }
 
         return null;
     }
 
-    public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string name, INakedObjectAdapter value)[] parms) {
+    public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string name, INakedObjectAdapter value)[] parms, ILogger logger) {
         foreach (var validator in ValidateMethods) {
-            var matches = validator.ParameterNames.Select(name => parms.SingleOrDefault(p => p.name.ToLower() == name)).Where(p => p != default).ToArray();
+            var parameterNames = ParameterNames(validator);
+            var matches = parameterNames.Select(name => parms.SingleOrDefault(p => p.name.ToLower() == name)).Where(p => p != default).ToArray();
 
-            if (matches.Length == validator.ParameterNames.Length) {
+            if (matches.Length == parameterNames.Length) {
                 var parameters = matches.Select(p => p.value).ToArray();
-                var result = validator.Execute(nakedObjectAdapter, parameters);
-                if (result != null) {
+                if (validator.Invoke<string>(nakedObjectAdapter, parameters) is { } result) {
                     return result;
                 }
             }
             else {
                 var actual = parms.Select(s => s.name).Aggregate((s, t) => $"{s} {t}");
-                LogNoMatch(validator, actual);
+                LogNoMatch(validator.MethodInfo, actual, logger);
             }
         }
 
