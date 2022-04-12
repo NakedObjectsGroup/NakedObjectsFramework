@@ -85,8 +85,12 @@ public sealed class TitleMethodFacetFactory : DomainObjectFacetFactoryProcessor,
             methodRemover.SafeRemoveMethod(maskMethod);
 
             if (titleFacet is null && toStringMethod is not null) {
-                // mask method can be null, facet defaults to ToString() which is always there and so no need to pass in 
-                titleFacet = new TitleFacetViaToStringMethod(maskMethod, Logger<TitleFacetViaToStringMethod>());
+                if (maskMethod is not null) {
+                    titleFacet = new TitleFacetViaMaskedToStringMethod(maskMethod, Logger<TitleFacetViaMaskedToStringMethod>());
+                }
+                else {
+                    titleFacet = TitleFacetViaToStringMethod.Instance;
+                }
             }
 
             FacetUtils.AddFacet(titleFacet, specification);

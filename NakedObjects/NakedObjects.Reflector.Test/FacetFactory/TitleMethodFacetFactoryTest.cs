@@ -73,8 +73,8 @@ public class TitleMethodFacetFactoryTest : AbstractFacetFactoryTest {
         metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(ITitleFacet));
         Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is TitleFacetViaToStringMethod);
-        var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod)facet;
+        Assert.IsTrue(facet is TitleFacetViaMaskedToStringMethod);
+        var titleFacetViaTitleMethod = (TitleFacetViaMaskedToStringMethod)facet;
         Assert.AreEqual(toStringMethod, titleFacetViaTitleMethod.GetMethod());
         AssertMethodRemoved(toStringMethod);
         Assert.IsNotNull(metamodel);

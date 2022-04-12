@@ -42,12 +42,17 @@ public sealed class TitleToStringMethodFacetFactory : FunctionalFacetFactoryProc
         try {
             var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
             var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] { typeof(string) });
+            IFacet titleFacet = null;
 
-            if (toStringMethod is not null) {
-                // mask method can be null, facet defaults to ToString() which is always there and so no need to pass in 
-                IFacet titleFacet = new TitleFacetViaToStringMethod(maskMethod, Logger<TitleFacetViaToStringMethod>());
-                FacetUtils.AddFacet(titleFacet, specification);
+            if (maskMethod is not null) {
+                titleFacet = new TitleFacetViaMaskedToStringMethod(maskMethod, Logger<TitleFacetViaMaskedToStringMethod>());
             }
+            else if (toStringMethod is not null) {
+                titleFacet = TitleFacetViaToStringMethod.Instance;
+            }
+
+            // safe if facet null
+            FacetUtils.AddFacet(titleFacet, specification);
         }
         catch (Exception e) {
             logger.LogError(e, "Unexpected Exception");

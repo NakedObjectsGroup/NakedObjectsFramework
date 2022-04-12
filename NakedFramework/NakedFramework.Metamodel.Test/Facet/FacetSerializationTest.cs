@@ -785,25 +785,21 @@ public class FacetSerializationTest {
         AssertIFacet(f, dsf);
     }
 
-    private static void TestSerializeTitleFacetViaToStringMethodNull(Func<TitleFacetViaToStringMethod, TitleFacetViaToStringMethod> roundTripper) {
-        var f = new TitleFacetViaToStringMethod(null, null);
+    private static void TestSerializeTitleFacetViaToStringMethod(Func<TitleFacetViaToStringMethod, TitleFacetViaToStringMethod> roundTripper) {
+        var f = TitleFacetViaToStringMethod.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeTitleFacetViaMaskedToStringMethod(Func<TitleFacetViaMaskedToStringMethod, TitleFacetViaMaskedToStringMethod> roundTripper) {
+        var f = new TitleFacetViaMaskedToStringMethod(typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.ToString), new[] { typeof(string) }), null);
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
         Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
         Assert.AreEqual(f.GetMethodDelegate()?.GetType(), dsf.GetMethodDelegate()?.GetType());
     }
-
-    private static void TestSerializeTitleFacetViaToStringMethod(Func<TitleFacetViaToStringMethod, TitleFacetViaToStringMethod> roundTripper)
-    {
-        var f = new TitleFacetViaToStringMethod(typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.ToString), new [] {typeof(string)}) , null);
-        var dsf = roundTripper(f);
-
-        AssertIFacet(f, dsf);
-        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
-        Assert.AreEqual(f.GetMethodDelegate()?.GetType(), dsf.GetMethodDelegate()?.GetType());
-    }
-
 
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(BinaryRoundTrip);
@@ -1070,10 +1066,10 @@ public class FacetSerializationTest {
     public void TestBinarySerializeTitleFacetUsingParser() => TestSerializeTitleFacetUsingParser(BinaryRoundTrip);
 
     [TestMethod]
-    public void TestBinarySerializeTitleFacetViaToStringMethodNull() => TestSerializeTitleFacetViaToStringMethodNull(BinaryRoundTrip);
+    public void TestBinarySerializeTitleFacetViaToStringMethodNull() => TestSerializeTitleFacetViaToStringMethod(BinaryRoundTrip);
 
     [TestMethod]
-    public void TestBinarySerializeTitleFacetViaToStringMethod() => TestSerializeTitleFacetViaToStringMethod(BinaryRoundTrip);
+    public void TestBinarySerializeTitleFacetViaToStringMethod() => TestSerializeTitleFacetViaMaskedToStringMethod(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
