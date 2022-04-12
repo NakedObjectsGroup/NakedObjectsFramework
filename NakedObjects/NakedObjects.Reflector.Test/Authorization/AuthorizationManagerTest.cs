@@ -68,7 +68,7 @@ public class AuthorizationManagerTest {
         config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> { { "1", typeof(TestNamespaceAuthorizer) } });
         config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
-        var manager = new AuthorizationManager(config.Object, mockLogger);
+        var manager = new AuthorizationDecorator();
 
         var testSpec = new Mock<ISpecification>();
         var testHolder = new Mock<ISpecification>();
@@ -94,7 +94,7 @@ public class AuthorizationManagerTest {
         config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> { { "1", typeof(TestNamespaceAuthorizer) } });
         config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
-        var manager = new AuthorizationManager(config.Object, mockLogger);
+        var manager = new AuthorizationDecorator();
 
         var testSpec = new Mock<ISpecification>();
         var testHolder = new Mock<ISpecification>();

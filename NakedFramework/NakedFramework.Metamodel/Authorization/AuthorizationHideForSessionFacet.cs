@@ -6,26 +6,28 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.Authorization;
 
 [Serializable]
 public sealed class AuthorizationHideForSessionFacet : HideForSessionFacetAbstract {
-    private readonly IAuthorizationManager authorizationManager;
     private readonly IIdentifier identifier;
 
-    public AuthorizationHideForSessionFacet(IIdentifier identifier,
-                                            IAuthorizationManager authorizationManager) {
-        this.identifier = identifier;
-        this.authorizationManager = authorizationManager;
-    }
+    public AuthorizationHideForSessionFacet(IIdentifier identifier) => this.identifier = identifier;
 
-    public override string HiddenReason(INakedObjectAdapter target, INakedFramework framework) =>
-        authorizationManager.IsVisible(framework, target, identifier)
-            ? null
-            : "Not authorized to view";
+    public override string HiddenReason(INakedObjectAdapter target, INakedFramework framework) {
+        if (framework.ServiceProvider.GetService<IAuthorizationManager>() is { } authorizationManager) {
+            return authorizationManager.IsVisible(framework, target, identifier)
+                ? null
+                : "Not authorized to view";
+        }
+
+        throw new NakedObjectSystemException($"Attempting Authorization on {identifier} but missing AuthorizationManager");
+    }
 }

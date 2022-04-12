@@ -19,8 +19,7 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Authorization;
 
-[Serializable]
-public abstract class AbstractAuthorizationManager : IAuthorizationManager, IFacetDecorator {
+public abstract class AbstractAuthorizationManager : IAuthorizationManager {
     protected readonly Type defaultAuthorizer;
     protected readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
     protected readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
@@ -42,9 +41,9 @@ public abstract class AbstractAuthorizationManager : IAuthorizationManager, IFac
 
     public abstract bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier);
     public abstract bool IsEditable(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier);
-    public abstract IFacet Decorate(IFacet facet, ISpecification holder);
+   
 
-    public Type[] ForFacetTypes { get; } = { typeof(IHideForSessionFacet), typeof(IDisableForSessionFacet) };
+   
 
     protected abstract object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager);
 

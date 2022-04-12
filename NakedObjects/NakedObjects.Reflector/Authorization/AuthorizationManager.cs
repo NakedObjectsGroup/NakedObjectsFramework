@@ -13,9 +13,7 @@ using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Authorization;
@@ -23,7 +21,6 @@ using NakedFramework.Security;
 
 namespace NakedObjects.Reflector.Authorization;
 
-[Serializable]
 public sealed class AuthorizationManager : AbstractAuthorizationManager {
     private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates;
     private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isVisibleDelegates;
@@ -50,21 +47,6 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
             isVisibleDelegates = isVisibleDict.ToImmutableDictionary();
             isEditableDelegates = isEditableDict.ToImmutableDictionary();
         }
-    }
-
-    public override IFacet Decorate(IFacet facet, ISpecification holder) {
-        var facetType = facet.FacetType;
-        var identifier = holder.Identifier;
-
-        if (facetType == typeof(IHideForSessionFacet)) {
-            return new AuthorizationHideForSessionFacet(identifier, this);
-        }
-
-        if (facetType == typeof(IDisableForSessionFacet)) {
-            return new AuthorizationDisableForSessionFacet(identifier, this);
-        }
-
-        return facet;
     }
 
     protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);

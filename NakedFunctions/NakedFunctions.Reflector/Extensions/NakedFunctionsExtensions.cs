@@ -60,7 +60,8 @@ public static class NakedFunctionsExtensions {
 
         if (frameworkOptions.AuthorizationConfiguration is not null) {
             frameworkOptions.Services.AddSingleton(frameworkOptions.AuthorizationConfiguration);
-            frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuthorizationManager>();
+            frameworkOptions.Services.AddDefaultSingleton<IFacetDecorator, AuthorizationDecorator>();
+            frameworkOptions.Services.AddDefaultSingleton<IAuthorizationManager, AuthorizationManager>();
         }
     }
 

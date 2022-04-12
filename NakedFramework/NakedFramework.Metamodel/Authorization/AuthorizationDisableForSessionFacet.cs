@@ -6,26 +6,28 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFramework.Metamodel.Authorization;
 
 [Serializable]
 public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {
-    private readonly IAuthorizationManager authorizationManager;
     private readonly IIdentifier identifier;
 
-    public AuthorizationDisableForSessionFacet(IIdentifier identifier,
-                                               IAuthorizationManager authorizationManager) {
-        this.authorizationManager = authorizationManager;
-        this.identifier = identifier;
-    }
+    public AuthorizationDisableForSessionFacet(IIdentifier identifier) => this.identifier = identifier;
 
-    public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) =>
-        authorizationManager.IsEditable(framework, target, identifier)
-            ? null
-            : "Not authorized to edit";
+    public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) {
+        if (framework.ServiceProvider.GetService<IAuthorizationManager>() is { } authorizationManager) {
+            return authorizationManager.IsEditable(framework, target, identifier)
+                ? null
+                : "Not authorized to edit";
+        }
+
+        throw new NakedObjectSystemException($"Attempting Authorization on {identifier} but missing AuthorizationManager");
+    }
 }

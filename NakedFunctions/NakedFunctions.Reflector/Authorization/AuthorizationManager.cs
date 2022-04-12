@@ -12,9 +12,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Authorization;
@@ -24,7 +22,6 @@ using NakedFunctions.Security;
 
 namespace NakedFunctions.Reflector.Authorization;
 
-[Serializable]
 public sealed class AuthorizationManager : AbstractAuthorizationManager {
     private readonly ImmutableDictionary<Type, Func<object, object, string, IContext, bool>> isVisibleDelegates;
 
@@ -44,17 +41,6 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
             // default authorizer must be the only TypeAuthorizer
             isVisibleDelegates = isVisibleDict.ToImmutableDictionary();
         }
-    }
-
-    public override IFacet Decorate(IFacet facet, ISpecification holder) {
-        var facetType = facet.FacetType;
-        var identifier = holder.Identifier;
-
-        if (facetType == typeof(IHideForSessionFacet)) {
-            return new AuthorizationHideForSessionFacet(identifier, this);
-        }
-
-        return facet;
     }
 
     protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedObject(type);
