@@ -871,6 +871,36 @@ public class FacetSerializationTest {
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(0), dsf.GetMethod(0));
+        Assert.AreEqual(f.GetMethodDelegate(0).GetType(), dsf.GetMethodDelegate(0).GetType());
+    }
+
+    private static void TestSerializeValidateObjectFacetNull(Func<ValidateObjectFacetNull, ValidateObjectFacetNull> roundTripper) {
+        var f = ValidateObjectFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeValidateProgrammaticUpdatesFacetAnnotation(Func<ValidateProgrammaticUpdatesFacetAnnotation, ValidateProgrammaticUpdatesFacetAnnotation> roundTripper) {
+        var f = ValidateProgrammaticUpdatesFacetAnnotation.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeValueFacet(Func<ValueFacet, ValueFacet> roundTripper) {
+        var f = ValueFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    private static void TestSerializeValueFacetFromSemanticProvider(Func<ValueFacetFromSemanticProvider<bool>, ValueFacetFromSemanticProvider<bool>> roundTripper) {
+        var f = new ValueFacetFromSemanticProvider<bool>(BooleanValueSemanticsProvider.Instance);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
     }
 
     [TestMethod]
@@ -1172,6 +1202,18 @@ public class FacetSerializationTest {
 
     [TestMethod]
     public void TestBinarySerializeValidateObjectFacet() => TestSerializeValidateObjectFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeValidateObjectFacetNull() => TestSerializeValidateObjectFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeValidateProgrammaticUpdatesFacetAnnotation() => TestSerializeValidateProgrammaticUpdatesFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeValueFacet() => TestSerializeValueFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeValueFacetFromSemanticProvider() => TestSerializeValueFacetFromSemanticProvider(BinaryRoundTrip);
 }
 
 public class TestSerializationClass {
