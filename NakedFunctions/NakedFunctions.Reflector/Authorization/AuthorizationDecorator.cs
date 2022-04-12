@@ -13,7 +13,6 @@ using NakedFramework.Metamodel.Authorization;
 
 namespace NakedFunctions.Reflector.Authorization;
 
-[Serializable]
 public sealed class AuthorizationDecorator : IFacetDecorator {
     public Type[] ForFacetTypes { get; } = { typeof(IHideForSessionFacet) };
 

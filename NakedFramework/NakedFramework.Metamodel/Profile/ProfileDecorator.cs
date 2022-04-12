@@ -16,7 +16,6 @@ using NakedFramework.Profile;
 
 namespace NakedFramework.Metamodel.Profile;
 
-[Serializable]
 public sealed class ProfileDecorator : IFacetDecorator {
     private static readonly IDictionary<ProfileEvent, Type> EventToFacetMap = new Dictionary<ProfileEvent, Type> {
         { ProfileEvent.ActionInvocation, typeof(IActionInvocationFacet) },

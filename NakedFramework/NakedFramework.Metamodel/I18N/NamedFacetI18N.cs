@@ -14,8 +14,7 @@ namespace NakedFramework.Metamodel.I18N;
 
 [Serializable]
 public sealed class NamedFacetI18N : NamedFacetAbstract, INamedFacet {
-    public NamedFacetI18N(string valueString)
-        : base(valueString) {
+    public NamedFacetI18N(string valueString) : base(valueString) {
         var shortName = TypeNameUtils.GetShortName(valueString);
 
         FriendlyName = NameUtils.NaturalName(shortName);

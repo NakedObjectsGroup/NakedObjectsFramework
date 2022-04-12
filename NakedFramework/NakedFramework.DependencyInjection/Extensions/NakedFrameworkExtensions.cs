@@ -50,7 +50,7 @@ public static class NakedFrameworkExtensions {
         }
 
         if (options.UseI18N) {
-            services.AddDefaultSingleton<IFacetDecorator, I18NManager>();
+            services.AddDefaultSingleton<IFacetDecorator, I18NDecorator>();
         }
 
         var coreConfiguration = CoreConfig(options);

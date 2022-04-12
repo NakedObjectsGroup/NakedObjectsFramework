@@ -19,7 +19,7 @@ namespace NakedFramework.Metamodel.Test.I18N;
 
 [TestClass]
 public class I18NManagerTest {
-    private static readonly ILogger<I18NManager> mockLogger = new Mock<ILogger<I18NManager>>().Object;
+    private static readonly ILogger<I18NDecorator> mockLogger = new Mock<ILogger<I18NDecorator>>().Object;
 
     #region Setup/Teardown
 
@@ -30,7 +30,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestDecoratePropertyName() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testName = new Mock<IMemberNamedFacet>();
         testName.Setup(n => n.FacetType).Returns(typeof(IMemberNamedFacet));
@@ -56,7 +56,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestDecorateActionName() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testName = new Mock<IMemberNamedFacet>();
         testName.Setup(n => n.FacetType).Returns(typeof(IMemberNamedFacet));
@@ -82,7 +82,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestDecorateParameterName() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testName = new Mock<IMemberNamedFacet>();
         testName.Setup(n => n.FacetType).Returns(typeof(IMemberNamedFacet));
@@ -105,7 +105,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestDecoratePropertyDescription() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testDescribed = new Mock<IDescribedAsFacet>();
         testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
@@ -131,7 +131,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestDecorateActionDescription() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testDescribed = new Mock<IDescribedAsFacet>();
         testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
@@ -157,7 +157,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestDecorateParameterDescription() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testDescribed = new Mock<IDescribedAsFacet>();
         testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
@@ -180,7 +180,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestMissingResource() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testName = new Mock<INamedFacet>();
         testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
@@ -203,7 +203,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestSystemOrNakedObjectsResource() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testName = new Mock<INamedFacet>();
         testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
@@ -233,7 +233,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestMissingResourceException() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testName = new Mock<INamedFacet>();
         testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
@@ -258,7 +258,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestFacetTypes() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var facets = manager.ForFacetTypes;
 
@@ -267,7 +267,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestUndecoratedFacet() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testTitle = new Mock<ITitleFacet>();
         testTitle.Setup(n => n.FacetType).Returns(typeof(ITitleFacet));
@@ -282,7 +282,7 @@ public class I18NManagerTest {
 
     [TestMethod]
     public void TestCaching() {
-        var manager = new I18NManager(mockLogger);
+        var manager = new I18NDecorator(mockLogger);
 
         var testName = new Mock<INamedFacet>();
         testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));

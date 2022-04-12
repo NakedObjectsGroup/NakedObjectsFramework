@@ -73,7 +73,7 @@ public class I18nTestEF6 : AcceptanceTestCase {
     [OneTimeSetUp]
     public void FixtureSetUp() {
         ObjectReflectorConfiguration.NoValidate = true;
-        I18NManager.TestResourceManager = Model.ResourceManager;
+        I18NDecorator.TestResourceManager = Model.ResourceManager;
         InitializeNakedObjectsFramework(this);
     }
 

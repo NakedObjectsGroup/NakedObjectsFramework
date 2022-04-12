@@ -14,7 +14,6 @@ using NakedFramework.Profile;
 
 namespace NakedFramework.Metamodel.Profile;
 
-[Serializable]
 public sealed class ProfileManager : IProfileManager {
     private readonly Type profilerType;
 

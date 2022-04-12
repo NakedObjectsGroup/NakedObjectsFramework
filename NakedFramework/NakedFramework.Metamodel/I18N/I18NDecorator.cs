@@ -18,18 +18,18 @@ using NakedObjects.Resources;
 
 namespace NakedFramework.Metamodel.I18N;
 
-public class I18NManager : II18NManager, IFacetDecorator {
+public class I18NDecorator : IFacetDecorator {
     private const string Action = "action";
     private const string Description = "description";
     private const string Name = "name";
     private const string Parameter = "parameter";
     private const string Property = "property";
     private readonly IDictionary<string, string> keyCache = new Dictionary<string, string>();
-    private readonly ILogger<I18NManager> logger;
+    private readonly ILogger<I18NDecorator> logger;
 
     private ResourceManager resources;
 
-    public I18NManager(ILogger<I18NManager> logger) => this.logger = logger;
+    public I18NDecorator(ILogger<I18NDecorator> logger) => this.logger = logger;
 
     public static ResourceManager TestResourceManager { get; set; } = null;
 
