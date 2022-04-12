@@ -36,7 +36,7 @@ public class ProfileManagerTest {
         return testSpec;
     }
 
-    private static void TestDecorated<TFacet, TResult>(ProfileManager manager) where TFacet : class, IFacet {
+    private static void TestDecorated<TFacet, TResult>(ProfileDecorator manager) where TFacet : class, IFacet {
         var testSpec = SetupMocks(out var testHolder);
         var testFacet = new Mock<TFacet>();
 
@@ -47,7 +47,7 @@ public class ProfileManagerTest {
         Assert.IsInstanceOfType(facet, typeof(TResult));
     }
 
-    private static void TestNotDecorated<TFacet, TResult>(ProfileManager manager) where TFacet : class, IFacet {
+    private static void TestNotDecorated<TFacet, TResult>(ProfileDecorator manager) where TFacet : class, IFacet {
         var testSpec = SetupMocks(out var testHolder);
         var testFacet = new Mock<TFacet>();
 
@@ -66,7 +66,7 @@ public class ProfileManagerTest {
         config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
         config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent> { eventToTest });
 
-        var manager = new ProfileManager(config.Object);
+        var manager = new ProfileDecorator(config.Object);
 
         TestDecorated<TFacet, TResult>(manager);
     }
@@ -175,7 +175,7 @@ public class ProfileManagerTest {
             ProfileEvent.Updating
         });
 
-        var manager = new ProfileManager(config.Object);
+        var manager = new ProfileDecorator(config.Object);
 
         TestDecorated<IActionInvocationFacet, ProfileActionInvocationFacet>(manager);
         TestDecorated<IPropertySetterFacet, ProfilePropertySetterFacet>(manager);
@@ -198,7 +198,7 @@ public class ProfileManagerTest {
         config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
         config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent>());
 
-        var manager = new ProfileManager(config.Object);
+        var manager = new ProfileDecorator(config.Object);
 
         TestNotDecorated<IActionInvocationFacet, ProfileActionInvocationFacet>(manager);
         TestNotDecorated<IPropertySetterFacet, ProfilePropertySetterFacet>(manager);

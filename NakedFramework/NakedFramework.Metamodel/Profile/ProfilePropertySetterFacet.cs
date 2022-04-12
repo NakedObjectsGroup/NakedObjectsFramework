@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -16,13 +17,9 @@ namespace NakedFramework.Metamodel.Profile;
 
 [Serializable]
 public sealed class ProfilePropertySetterFacet : PropertySetterFacetAbstract {
-    private readonly IProfileManager profileManager;
     private readonly IPropertySetterFacet underlyingFacet;
 
-    public ProfilePropertySetterFacet(IPropertySetterFacet underlyingFacet, IProfileManager profileManager) {
-        this.underlyingFacet = underlyingFacet;
-        this.profileManager = profileManager;
-    }
+    public ProfilePropertySetterFacet(IPropertySetterFacet underlyingFacet) => this.underlyingFacet = underlyingFacet;
 
     public override string PropertyName {
         get => underlyingFacet.PropertyName;
@@ -30,12 +27,13 @@ public sealed class ProfilePropertySetterFacet : PropertySetterFacetAbstract {
     }
 
     public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, INakedFramework framework) {
-        profileManager.Begin(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
+        var profileManager = framework.ServiceProvider.GetService<IProfileManager>();
+        profileManager?.Begin(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
         try {
             underlyingFacet.SetProperty(nakedObjectAdapter, nakedValue, framework);
         }
         finally {
-            profileManager.End(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
+            profileManager?.End(framework.Session, ProfileEvent.PropertySet, PropertyName, nakedObjectAdapter, framework.LifecycleManager);
         }
     }
 }

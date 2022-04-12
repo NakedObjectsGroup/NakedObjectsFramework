@@ -45,7 +45,8 @@ public static class NakedFrameworkExtensions {
 
         if (options.ProfileConfiguration is not null) {
             services.AddSingleton(options.ProfileConfiguration);
-            services.AddDefaultSingleton<IFacetDecorator, ProfileManager>();
+            services.AddDefaultSingleton<IFacetDecorator, ProfileDecorator>();
+            services.AddDefaultSingleton<IProfileManager, ProfileManager>();
         }
 
         if (options.UseI18N) {

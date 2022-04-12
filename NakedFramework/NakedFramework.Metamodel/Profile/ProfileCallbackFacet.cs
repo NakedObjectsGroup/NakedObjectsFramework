@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -26,13 +27,12 @@ public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
                                            IUpdatedCallbackFacet,
                                            IUpdatingCallbackFacet {
     private readonly ProfileEvent associatedEvent;
-    private readonly IProfileManager profileManager;
+
     private readonly ICallbackFacet underlyingFacet;
 
-    public ProfileCallbackFacet(ProfileEvent associatedEvent, ICallbackFacet underlyingFacet, IProfileManager profileManager) {
+    public ProfileCallbackFacet(ProfileEvent associatedEvent, ICallbackFacet underlyingFacet) {
         this.associatedEvent = associatedEvent;
         this.underlyingFacet = underlyingFacet;
-        this.profileManager = profileManager;
     }
 
     public override Type FacetType => underlyingFacet.FacetType;
@@ -40,12 +40,13 @@ public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
     #region ICreatedCallbackFacet Members
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        profileManager.Begin(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
+        var profileManager = framework.ServiceProvider.GetService<IProfileManager>();
+        profileManager?.Begin(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
         try {
             underlyingFacet.Invoke(nakedObjectAdapter, framework);
         }
         finally {
-            profileManager.End(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
+            profileManager?.End(framework.Session, associatedEvent, "", nakedObjectAdapter, framework.LifecycleManager);
         }
     }
 

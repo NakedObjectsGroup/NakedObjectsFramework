@@ -18,7 +18,7 @@ public class ProfileConfiguration<T> : IProfileConfiguration where T : IProfiler
 
     public Type Profiler { get; }
 
-    public ISet<ProfileEvent> EventsToProfile { get; set; } = new HashSet<ProfileEvent>();
+    public ISet<ProfileEvent> EventsToProfile { get; init; } = new HashSet<ProfileEvent>();
 
     #endregion
 }

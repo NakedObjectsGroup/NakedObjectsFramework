@@ -7,10 +7,10 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
@@ -20,13 +20,11 @@ namespace NakedFramework.Metamodel.Profile;
 [Serializable]
 public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {
     private readonly IIdentifier identifier;
-    private readonly IProfileManager profileManager;
     private readonly IActionInvocationFacet underlyingFacet;
 
-    public ProfileActionInvocationFacet(IActionInvocationFacet underlyingFacet, IProfileManager profileManager, ISpecification specification) {
+    public ProfileActionInvocationFacet(IActionInvocationFacet underlyingFacet, IIdentifier identifier) {
         this.underlyingFacet = underlyingFacet;
-        this.profileManager = profileManager;
-        identifier = specification.Identifier;
+        this.identifier = identifier;
     }
 
     public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;
@@ -40,22 +38,25 @@ public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {
     public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
-        profileManager.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
+        var profileManager = framework.ServiceProvider.GetService<IProfileManager>();
+
+        profileManager?.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
         try {
             return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
         }
         finally {
-            profileManager.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
+            profileManager?.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
         }
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) {
-        profileManager.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
+        var profileManager = framework.ServiceProvider.GetService<IProfileManager>();
+        profileManager?.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
         try {
             return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
         }
         finally {
-            profileManager.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
+            profileManager?.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
         }
     }
 }
