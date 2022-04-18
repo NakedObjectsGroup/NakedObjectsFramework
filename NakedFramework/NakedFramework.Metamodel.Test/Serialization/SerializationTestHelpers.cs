@@ -15,7 +15,7 @@ using NakedFramework.Menu;
 #pragma warning disable CS0618
 #pragma warning disable SYSLIB0011
 
-namespace NakedFramework.Metamodel.Test.Facet;
+namespace NakedFramework.Metamodel.Test.Serialization;
 
 public static class SerializationTestHelpers {
     public static void AssertIFacet(IFacet facet, IFacet facet1) {

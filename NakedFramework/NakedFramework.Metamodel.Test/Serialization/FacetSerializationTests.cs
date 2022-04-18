@@ -8,14 +8,17 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Metamodel.Adapter;
+using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.I18N;
 using NakedFramework.Metamodel.SemanticsProvider;
-using static NakedFramework.Metamodel.Test.Facet.SerializationTestHelpers;
+using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
-namespace NakedFramework.Metamodel.Test.Facet;
+namespace NakedFramework.Metamodel.Test.Serialization;
 
 public static class FacetSerializationTests {
+
     public static void TestSerializeActionChoicesFacetNone(Func<ActionChoicesFacetNone, ActionChoicesFacetNone> roundTripper) {
         var f = ActionChoicesFacetNone.Instance;
         var dsf = roundTripper(f);

@@ -6,10 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static NakedFramework.Metamodel.Test.Facet.FacetSerializationTests;
-using static NakedFramework.Metamodel.Test.Facet.SerializationTestHelpers;
+using static NakedFramework.Metamodel.Test.Serialization.FacetSerializationTests;
+using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
-namespace NakedFramework.Metamodel.Test.Facet;
+namespace NakedFramework.Metamodel.Test.Serialization;
 
 [TestClass]
 public class FacetBinarySerializationTests {
