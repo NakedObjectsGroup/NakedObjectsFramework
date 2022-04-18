@@ -27,4 +27,7 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeActionDefaultsFacetViaMethod() => TestSerializeActionDefaultsFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionInvocationFacetViaMethod() => TestSerializeActionInvocationFacetViaMethod(BinaryRoundTrip);
 }

@@ -7,7 +7,6 @@
 
 using System;
 using System.Linq;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Audit;
@@ -19,10 +18,19 @@ namespace NakedObjects.Reflector.Test.Serialization;
 
 public static class FacetSerializationTests {
     public static void TestSerializeAuditActionInvocationFacet(Func<AuditActionInvocationFacet, AuditActionInvocationFacet> roundTripper) {
-        var f = new AuditActionInvocationFacet(null, new IdentifierImpl(""));
+        var m = GetMethod();
+        var af = new ActionInvocationFacetViaMethod(m, m.DeclaringType, m.ReturnType, typeof(TestSerializationClass), true, null);
+
+        var f = new AuditActionInvocationFacet(af, new IdentifierImpl(nameof(TestSerializationClass), nameof(TestSerializationClass.InvokeTest)));
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
+        Assert.AreEqual(f.OnType, dsf.OnType);
+        Assert.AreEqual(f.ReturnType, dsf.ReturnType);
+        Assert.AreEqual(f.ElementType, dsf.ElementType);
+        Assert.AreEqual(f.IsQueryOnly, dsf.IsQueryOnly);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
 
     public static void TestSerializeAuditPersistedFacet(Func<AuditPersistedFacet, AuditPersistedFacet> roundTripper) {
@@ -50,12 +58,25 @@ public static class FacetSerializationTests {
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
 
-    public static void TestSerializeActionDefaultsFacetViaMethod(Func<ActionDefaultsFacetViaMethod, ActionDefaultsFacetViaMethod> roundTripper)
-    {
+    public static void TestSerializeActionDefaultsFacetViaMethod(Func<ActionDefaultsFacetViaMethod, ActionDefaultsFacetViaMethod> roundTripper) {
         var f = new ActionDefaultsFacetViaMethod(GetDefaultMethod(), null);
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeActionInvocationFacetViaMethod(Func<ActionInvocationFacetViaMethod, ActionInvocationFacetViaMethod> roundTripper) {
+        var m = GetMethod();
+        var f = new ActionInvocationFacetViaMethod(m, m.DeclaringType, m.ReturnType, typeof(TestSerializationClass), true, null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.OnType, dsf.OnType);
+        Assert.AreEqual(f.ReturnType, dsf.ReturnType);
+        Assert.AreEqual(f.ElementType, dsf.ElementType);
+        Assert.AreEqual(f.IsQueryOnly, dsf.IsQueryOnly);
         Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }

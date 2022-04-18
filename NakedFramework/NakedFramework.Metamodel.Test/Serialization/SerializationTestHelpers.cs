@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -54,6 +55,8 @@ public static class SerializationTestHelpers {
     public static MethodInfo GetChoicesMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.ChoicesTest));
 
     public static MethodInfo GetDefaultMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.DefaultTest));
+
+    public static MethodInfo GetMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.InvokeTest));
 }
 
 public class TestSerializationClass {
@@ -66,6 +69,8 @@ public class TestSerializationClass {
     public IList<object> ChoicesTest(string arg, string arg1) => null;
 
     public object DefaultTest() => null;
+
+    public IQueryable<TestSerializationClass> InvokeTest(string arg) => null;
 }
 
 public class TestMenuClass {
