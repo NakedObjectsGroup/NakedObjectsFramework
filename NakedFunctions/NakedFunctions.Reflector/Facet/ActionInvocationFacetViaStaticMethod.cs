@@ -21,6 +21,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Persist;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Serialization;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NakedFunctions.Reflector.Component;
@@ -29,8 +30,7 @@ namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-    private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
-    private readonly Func<object, object[], object> methodDelegate;
+    private readonly MethodSerializationWrapper methodWrapper;
 
     private readonly int paramCount;
 
@@ -40,17 +40,15 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                 Type elementType,
                                                 bool isQueryOnly,
                                                 ILogger<ActionInvocationFacetViaStaticMethod> logger) {
-        ActionMethod = method;
-        this.logger = logger;
+        methodWrapper = new MethodSerializationWrapper(method, logger);
         paramCount = method.GetParameters().Length;
         OnType = onType;
         ReturnType = returnType;
         ElementType = elementType;
         IsQueryOnly = isQueryOnly;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
+        
     }
 
-    [field: NonSerialized] public override MethodInfo ActionMethod { get; }
 
     public override Type ReturnType { get; }
 
@@ -108,7 +106,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
         // if any changes made by invocation fail 
 
         if (framework.Persistor.HasChanges()) {
-            throw new PersistFailedException($"method {ActionMethod} on {ActionMethod.DeclaringType} made database changes and so is not pure");
+            throw new PersistFailedException($"method {GetMethod()} on {GetMethod().DeclaringType} made database changes and so is not pure");
         }
 
         var toReturn = result switch {
@@ -124,7 +122,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
         var size = tuple.Length;
 
         if (size is not 2) {
-            throw new InvokeException($"Invalid return type {size} item tuple on {ActionMethod.Name}");
+            throw new InvokeException($"Invalid return type {size} item tuple on {GetMethod().Name}");
         }
 
         return tuple;
@@ -134,12 +132,12 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                INakedObjectAdapter[] parameters,
                                                INakedFramework framework) {
         if (parameters.Length != paramCount) {
-            logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
+            throw new NakedObjectSystemException($"{GetMethod()} requires {paramCount} parameters, not {parameters.Length}");
         }
 
         var rawParms = parameters.Select(p => p?.Object).ToArray();
 
-        return HandleInvokeResult(framework, methodDelegate.InvokeStatic<object>(ActionMethod, rawParms));
+        return HandleInvokeResult(framework, GetMethodDelegate().InvokeStatic<object>(GetMethod(), rawParms));
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
@@ -156,9 +154,9 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
     /// <summary>
     ///     See <see cref="IImperativeFacet" />
     /// </summary>
-    public MethodInfo GetMethod() => ActionMethod;
+    public override MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public override Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

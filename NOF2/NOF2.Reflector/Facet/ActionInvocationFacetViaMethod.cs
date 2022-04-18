@@ -9,16 +9,14 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 using NOF2.Reflector.Helpers;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
@@ -27,25 +25,18 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-    private readonly ILogger<ActionInvocationFacetViaMethod> logger;
+    private readonly MethodSerializationWrapper methodWrapper;
     private readonly int paramCount;
 
     public ActionInvocationFacetViaMethod(MethodInfo method, Type onType, Type returnType, Type elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
-        this.logger = logger;
-        ActionMethod = method;
+        methodWrapper = new MethodSerializationWrapper(method, logger);
+
         paramCount = method.GetParameters().Length;
         OnType = onType;
         ReturnType = returnType;
         ElementType = elementType;
         IsQueryOnly = isQueryOnly;
-        ActionDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
     }
-
-    // for testing only 
-    [field: NonSerialized]
-    internal Func<object, object[], object> ActionDelegate { get; private set; }
-
-    public override MethodInfo ActionMethod { get; }
 
     public override Type ReturnType { get; }
 
@@ -57,28 +48,25 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
         if (parameters.Length != paramCount) {
-            logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
+            throw new NakedObjectSystemException($"{GetMethod()} requires {paramCount} parameters, not {parameters.Length}");
         }
 
-        var substituteParms = NOF2Helpers.SubstituteNulls(parameters.Select(no => no.GetDomainObject()).ToArray(), ActionMethod);
-        var result = ActionDelegate.Invoke<object>(ActionMethod, inObjectAdapter.GetDomainObject(), substituteParms);
+        var substituteParms = NOF2Helpers.SubstituteNulls(parameters.Select(no => no.GetDomainObject()).ToArray(), GetMethod());
+        var result = methodWrapper.Invoke<object>(inObjectAdapter.GetDomainObject(), substituteParms);
 
         return framework.NakedObjectManager.CreateAdapter(result, null, null);
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) => Invoke(nakedObjectAdapter, parameters, framework);
 
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => ActionDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
-
     #region IImperativeFacet Members
 
     /// <summary>
     ///     See <see cref="IImperativeFacet" />
     /// </summary>
-    public MethodInfo GetMethod() => ActionMethod;
+    public override MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => ActionDelegate;
+    public override Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

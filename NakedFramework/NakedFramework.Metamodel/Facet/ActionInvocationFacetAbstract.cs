@@ -20,7 +20,6 @@ public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvo
 
     #region IActionInvocationFacet Members
 
-    public abstract MethodInfo ActionMethod { get; } //This is exposed to permit third-party decoration DO NOT REMOVE.
     public abstract Type OnType { get; }
     public abstract Type ReturnType { get; }
     public abstract Type ElementType { get; }
@@ -31,4 +30,7 @@ public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvo
     public abstract bool IsQueryOnly { get; }
 
     #endregion
+
+    public abstract MethodInfo GetMethod();
+    public abstract Func<object, object[], object> GetMethodDelegate();
 }

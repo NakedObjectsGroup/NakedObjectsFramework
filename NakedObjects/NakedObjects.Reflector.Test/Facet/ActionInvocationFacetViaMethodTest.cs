@@ -26,22 +26,22 @@ public class ActionInvocationFacetViaMethodTest {
     private static void DelegateActionTest(MethodInfo method) {
         var facet = new ActionInvocationFacetViaMethod(method, null, null, null, false, null);
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
-        Assert.IsNotNull(facet.ActionDelegate, method.Name);
+        Assert.IsNotNull(facet.GetMethodDelegate(), method.Name);
         var testObject = new TestDelegateClass();
-        facet.ActionDelegate.Invoke(testObject, parms);
+        facet.GetMethodDelegate().Invoke(testObject, parms);
         Assert.AreEqual(method.Name, testObject.ActionCalled);
     }
 
     private static void DelegateFuncTest(MethodInfo method) {
         var facet = new ActionInvocationFacetViaMethod(method, null, null, null, false, null);
-        Assert.IsNotNull(facet.ActionDelegate, method.Name);
+        Assert.IsNotNull(facet.GetMethodDelegate(), method.Name);
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
-        Assert.AreEqual(method.Name, facet.ActionDelegate(new TestDelegateClass(), parms));
+        Assert.AreEqual(method.Name, facet.GetMethodDelegate().Invoke(new TestDelegateClass(), parms));
     }
 
     private static void InvokeActionTest(MethodInfo method) {
         var facet = new ActionInvocationFacetViaMethod(method, null, null, null, false, new Mock<ILogger<ActionInvocationFacetViaMethod>>().Object);
-        Assert.IsNull(facet.ActionDelegate);
+        Assert.IsNull(facet.GetMethodDelegate());
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
         Assert.IsNotNull(facet.GetMethod());
         var testObject = new TestDelegateClass();
@@ -51,7 +51,7 @@ public class ActionInvocationFacetViaMethodTest {
 
     private static void InvokeFuncTest(MethodInfo method) {
         var facet = new ActionInvocationFacetViaMethod(method, null, null, null, false, new Mock<ILogger<ActionInvocationFacetViaMethod>>().Object);
-        Assert.IsNull(facet.ActionDelegate);
+        Assert.IsNull(facet.GetMethodDelegate());
         Assert.IsNotNull(facet.GetMethod());
         var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
         Assert.AreEqual(method.Name, facet.GetMethod().Invoke(new TestDelegateClass(), parms));

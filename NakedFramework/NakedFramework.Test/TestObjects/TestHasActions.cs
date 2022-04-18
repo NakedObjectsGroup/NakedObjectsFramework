@@ -27,7 +27,7 @@ internal abstract class TestHasActions : ITestHasActions {
 
     private ITestAction[] ActionsForMethodName(string methodName) {
         return NakedObject.Spec.GetActions().Where(
-                              a => a.GetFacet<IActionInvocationFacet>().ActionMethod.Name.Split('.').Last() == methodName)
+                              a => a.GetFacet<IActionInvocationFacet>().GetMethod().Name.Split('.').Last() == methodName)
                           .Select(x => Factory.CreateTestAction(x, this)).ToArray();
     }
 

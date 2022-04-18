@@ -28,8 +28,9 @@ public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
     }
 
     public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;
+    public override MethodInfo GetMethod() => underlyingFacet.GetMethod();
 
-    public override MethodInfo ActionMethod => underlyingFacet.ActionMethod;
+    public override Func<object, object[], object> GetMethodDelegate() => underlyingFacet.GetMethodDelegate();
 
     public override Type ReturnType => underlyingFacet.ReturnType;
 

@@ -17,6 +17,7 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Serialization;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 using NOF2.Container;
@@ -27,8 +28,7 @@ namespace NOF2.Reflector.Facet;
 [Serializable]
 public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
     private readonly bool injected;
-    private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
-    private readonly Func<object, object[], object> methodDelegate;
+    private readonly MethodSerializationWrapper methodWrapper;
 
     private readonly int paramCount;
 
@@ -38,17 +38,14 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                 Type elementType,
                                                 bool isQueryOnly,
                                                 ILogger<ActionInvocationFacetViaStaticMethod> logger) {
-        ActionMethod = method;
-        this.logger = logger;
+        methodWrapper = new MethodSerializationWrapper(method, logger);
         (injected, paramCount) = ParameterCount(method);
         OnType = onType;
         ReturnType = returnType;
         ElementType = elementType;
         IsQueryOnly = isQueryOnly;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
+        
     }
-
-    [field: NonSerialized] public override MethodInfo ActionMethod { get; }
 
     public override Type ReturnType { get; }
 
@@ -77,7 +74,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                INakedObjectAdapter[] parameters,
                                                INakedFramework framework) {
         if (parameters.Length != paramCount) {
-            logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
+            throw new NakedObjectSystemException($"{GetMethod()} requires {paramCount} parameters, not {parameters.Length}");
         }
 
         var rawParms = parameters.Select(p => p?.Object).ToArray();
@@ -85,9 +82,9 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
             rawParms = rawParms.Append(null).ToArray();
         }
 
-        var substituteParms = NOF2Helpers.SubstituteNullsAndContainer(rawParms, ActionMethod, framework);
+        var substituteParms = NOF2Helpers.SubstituteNullsAndContainer(rawParms, GetMethod(), framework);
 
-        return HandleInvokeResult(framework, methodDelegate.Invoke<object>(ActionMethod, null, substituteParms));
+        return HandleInvokeResult(framework, GetMethodDelegate().Invoke<object>(GetMethod(), null, substituteParms));
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
@@ -104,9 +101,9 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
     /// <summary>
     ///     See <see cref="IImperativeFacet" />
     /// </summary>
-    public MethodInfo GetMethod() => ActionMethod;
+    public override MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public override Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

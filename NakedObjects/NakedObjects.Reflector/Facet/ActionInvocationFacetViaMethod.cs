@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -23,12 +22,12 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
+    private readonly TypeSerializationWrapper elementType;
     private readonly MethodSerializationWrapper methodWrapper;
+    private readonly TypeSerializationWrapper onType;
 
     private readonly int paramCount;
     private readonly TypeSerializationWrapper returnType;
-    private readonly TypeSerializationWrapper onType;
-    private readonly TypeSerializationWrapper elementType;
 
     public ActionInvocationFacetViaMethod(MethodInfo method, Type onType, Type returnType, Type elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
         methodWrapper = new MethodSerializationWrapper(method, logger);
@@ -39,10 +38,6 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
         this.elementType = elementType is not null ? new TypeSerializationWrapper(elementType) : null;
         IsQueryOnly = isQueryOnly;
     }
-
-    internal Func<object, object[], object> ActionDelegate => GetMethodDelegate();
-
-    public override MethodInfo ActionMethod => GetMethod();
 
     public override Type ReturnType => returnType?.Type;
 
@@ -58,7 +53,7 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
             return framework.NakedObjectManager.CreateAdapter(result, null, null);
         }
 
-        throw new NakedObjectSystemException($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
+        throw new NakedObjectSystemException($"{GetMethod()} requires {paramCount} parameters, not {parameters.Length}");
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) => Invoke(nakedObjectAdapter, parameters, framework);
@@ -68,9 +63,9 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
     /// <summary>
     ///     See <see cref="IImperativeFacet" />
     /// </summary>
-    public MethodInfo GetMethod() => methodWrapper.GetMethod();
+    public override MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
+    public override Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

@@ -21,8 +21,7 @@ namespace NakedFramework.Architecture.Facet;
 ///     does not represent a property, a collection or any of the supporting
 ///     methods).
 /// </para>
-public interface IActionInvocationFacet : IFacet {
-    MethodInfo ActionMethod { get; }
+public interface IActionInvocationFacet : IFacet, IImperativeFacet {
     Type ReturnType { get; }
     Type OnType { get; }
     Type ElementType { get; }
