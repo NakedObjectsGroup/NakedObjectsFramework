@@ -76,25 +76,25 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
     #region IMethodIdentifyingFacetFactory Members
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var type = actionMethod.DeclaringType;
+        
         var facets = new List<IFacet>();
+        var onType = actionMethod.DeclaringType;
+        var returnType = actionMethod.ReturnType;
 
-        ITypeSpecBuilder onType;
-        (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
+        (var onSpec, metamodel) = reflector.LoadSpecification(onType, metamodel);
 
-        IObjectSpecBuilder returnSpec;
-        (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType, metamodel);
+        (var returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(returnType, metamodel);
 
-        IObjectSpecBuilder elementSpec;
-        if (actionMethod.ReturnType.IsGenericType) {
-            var elementType = actionMethod.ReturnType.GetGenericArguments().First();
+        Type elementType = null;
+        if (returnType.IsGenericType) {
+            elementType = returnType.GetGenericArguments().First();
 
-            (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+            (_, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
             facets.Add(new ElementTypeFacet(elementType));
             facets.Add(TypeOfFacetInferredFromGenerics.Instance);
         }
         else {
-            (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(typeof(object), metamodel);
+            elementType = typeof(object);
         }
 
         methodRemover.SafeRemoveMethod(actionMethod);
@@ -102,10 +102,10 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         if (actionMethod.IsStatic) {
             facets.Add(StaticMethodFacet.Instance);
             facets.Add(StaticMenuMethodFacet.Instance);
-            facets.Add(new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnSpec, elementSpec, false, Logger<ActionInvocationFacetViaStaticMethod>()));
+            facets.Add(new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnType, elementType, false, Logger<ActionInvocationFacetViaStaticMethod>()));
         }
         else {
-            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, false, Logger<ActionInvocationFacetViaMethod>()));
+            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnType, elementType, false, Logger<ActionInvocationFacetViaMethod>()));
         }
 
         var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name[6..]); //remove 'action' from front 
@@ -118,8 +118,8 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
         aboutParamTypes.AddRange(paramTypes);
         var aboutParams = aboutParamTypes.ToArray();
 
-        var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{NOF2Helpers.AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ??
-                     MethodHelpers.FindMethod(reflector, type, methodType, $"{NOF2Helpers.AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(ActionAbout) });
+        var method = MethodHelpers.FindMethod(reflector, onType, methodType, $"{NOF2Helpers.AboutPrefix}{actionMethod.Name}", typeof(void), aboutParams) ??
+                     MethodHelpers.FindMethod(reflector, onType, methodType, $"{NOF2Helpers.AboutPrefix}{actionMethod.Name}", typeof(void), new[] { typeof(ActionAbout) });
         methodRemover.SafeRemoveMethod(method);
 
         if (method is not null) {

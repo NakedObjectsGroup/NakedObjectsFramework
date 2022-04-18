@@ -98,26 +98,23 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
             throw new ReflectionException($"{actionMethod.DeclaringType}.{actionMethod.Name} must be static");
         }
 
-        var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
-
-        var type = actionMethod.DeclaringType;
+        
         var facets = new List<IFacet>();
-        ITypeSpecBuilder onType;
-        ITypeSpecBuilder returnSpec;
-        (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
+        var onType = actionMethod.DeclaringType;
 
-        Type returnType;
-        (returnSpec, returnType, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector, actionMethod);
+        (_, metamodel) = reflector.LoadSpecification(onType, metamodel);
 
-        if (!(returnSpec is IObjectSpecImmutable)) {
+        (var returnSpec, var returnType, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector, actionMethod);
+
+        if (returnSpec is not IObjectSpecImmutable) {
             throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");
         }
 
-        ITypeSpecImmutable elementSpec = null;
+        Type elementType = null;
         var isQueryable = CollectionUtils.IsQueryable(returnType);
         if (returnSpec is IObjectSpecBuilder && IsCollection(returnType)) {
-            var elementType = CollectionUtils.ElementType(returnType);
-            (elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);
+            elementType = CollectionUtils.ElementType(returnType);
+            (var elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);
             if (elementSpec is not IObjectSpecImmutable) {
                 throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
             }
@@ -125,8 +122,8 @@ public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMe
 
         var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod,
                                                                    onType,
-                                                                   (IObjectSpecImmutable)returnSpec,
-                                                                   (IObjectSpecImmutable)elementSpec,
+                                                                   returnSpec.Type,
+                                                                   elementType,
                                                                    isQueryable,
                                                                    Logger<ActionInvocationFacetViaStaticMethod>());
 

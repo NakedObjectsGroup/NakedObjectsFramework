@@ -78,7 +78,7 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
 
     #region IActionSpec Members
 
-    public override IObjectSpec ReturnSpec => returnSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec);
+    public override IObjectSpec ReturnSpec => returnSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.GetReturnSpec(Framework.MetamodelManager.Metamodel));
 
     public override IObjectSpec ElementSpec => elementSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.GetElementSpec(Framework.MetamodelManager.Metamodel));
 

@@ -83,7 +83,9 @@ internal class MemberPeerStub : Specification, IMemberSpecImmutable {
     #endregion
 
     // ReSharper disable UnusedAutoPropertyAccessor.Local
-    public IObjectSpecImmutable ReturnSpec { get; private set; }
+
+    public IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel) => null;
+
     public IObjectSpecImmutable ElementSpec { get; private set; }
 
     public IObjectSpecImmutable OwnerSpec { get; private set; }

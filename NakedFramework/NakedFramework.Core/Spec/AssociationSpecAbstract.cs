@@ -20,7 +20,7 @@ namespace NakedFramework.Core.Spec;
 public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
     protected AssociationSpecAbstract(IAssociationSpecImmutable association, INakedFramework framework)
         : base(association.Identifier.MemberName, association, framework) =>
-        ReturnSpec = framework.MetamodelManager.GetSpecification(association.ReturnSpec);
+        ReturnSpec = framework.MetamodelManager.GetSpecification(association.GetReturnSpec(framework.MetamodelManager.Metamodel));
 
     public virtual bool IsAutoCompleteEnabled => ContainsFacet(typeof(IAutoCompleteFacet));
 

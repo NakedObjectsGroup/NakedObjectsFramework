@@ -38,7 +38,7 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
         if (specification is IActionSpecImmutable actionSpec) {
             void Action(IMetamodelBuilder b) {
                 var displayOnTypeSpec = b.GetSpecification(type) as ITypeSpecBuilder;
-                var adaptedMember = ImmutableSpecFactory.CreateSpecAdapter(actionSpec);
+                var adaptedMember = ImmutableSpecFactory.CreateSpecAdapter(actionSpec, b);
                 displayOnTypeSpec.AddContributedFields(new[] { adaptedMember });
                 RemoveAction(actionSpec);
             }

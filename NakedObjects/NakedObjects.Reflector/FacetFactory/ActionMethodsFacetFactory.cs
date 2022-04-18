@@ -296,34 +296,34 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
-        var type = actionMethod.DeclaringType;
+        var onType = actionMethod.DeclaringType;
         var facets = new List<IFacet>();
 
-        (var onType, metamodel) = reflector.LoadSpecification(type, metamodel);
+        (var onSpec, metamodel) = reflector.LoadSpecification(onType, metamodel);
         (var returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType, metamodel);
 
-        IObjectSpecBuilder elementSpec = null;
+        Type elementType = null;
         var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
-        if (returnSpec is not null && IsCollection(actionMethod.ReturnType)) {
-            var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
-            (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+        if (returnSpec is not null && IsCollection(actionMethod.ReturnType)) { 
+            elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
+            (var elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
         }
 
         methodRemover.SafeRemoveMethod(actionMethod);
-        facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, isQueryable, Logger<ActionInvocationFacetViaMethod>()));
+        facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, actionMethod.ReturnType, elementType, isQueryable, Logger<ActionInvocationFacetViaMethod>()));
 
         var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
         var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
-        FindAndRemoveValidMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, paramTypes, action);
+        FindAndRemoveValidMethod(reflector, facets, methodRemover, onType, methodType, capitalizedName, paramTypes, action);
 
         DefaultNamedFacet(facets, actionMethod.Name, action); // must be called after the checkForXxxPrefix methods
 
         MethodHelpers.AddHideForSessionFacetNone(facets, action);
         MethodHelpers.AddDisableForSessionFacetNone(facets, action);
-        ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, type, methodType, "ActionDefault", action, LoggerFactory);
-        ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
-        ObjectMethodHelpers.FindDefaultDisableMethod(reflector, facets, type, methodType, "ActionDefault", action, LoggerFactory);
-        ObjectMethodHelpers.FindAndRemoveDisableMethod(reflector, facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
+        ObjectMethodHelpers.FindDefaultHideMethod(reflector, facets, onType, methodType, "ActionDefault", action, LoggerFactory);
+        ObjectMethodHelpers.FindAndRemoveHideMethod(reflector, facets, onType, methodType, capitalizedName, action, LoggerFactory, methodRemover);
+        ObjectMethodHelpers.FindDefaultDisableMethod(reflector, facets, onType, methodType, "ActionDefault", action, LoggerFactory);
+        ObjectMethodHelpers.FindAndRemoveDisableMethod(reflector, facets, onType, methodType, capitalizedName, action, LoggerFactory, methodRemover);
 
         if (action is IActionSpecImmutable actionSpecImmutable) {
             // Process the action's parameters names, descriptions and optional
@@ -333,10 +333,10 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
             var actionParameters = actionSpecImmutable.Parameters;
             var paramNames = actionMethod.GetParameters().Select(p => p.Name).ToArray();
 
-            FindAndRemoveParametersAutoCompleteMethod(reflector, methodRemover, type, capitalizedName, paramTypes, actionParameters);
-            metamodel = FindAndRemoveParametersChoicesMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionMethod, actionParameters, metamodel);
-            FindAndRemoveParametersDefaultsMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
-            FindAndRemoveParametersValidateMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
+            FindAndRemoveParametersAutoCompleteMethod(reflector, methodRemover, onType, capitalizedName, paramTypes, actionParameters);
+            metamodel = FindAndRemoveParametersChoicesMethod(reflector, methodRemover, onType, capitalizedName, paramTypes, paramNames, actionMethod, actionParameters, metamodel);
+            FindAndRemoveParametersDefaultsMethod(reflector, methodRemover, onType, capitalizedName, paramTypes, paramNames, actionParameters);
+            FindAndRemoveParametersValidateMethod(reflector, methodRemover, onType, capitalizedName, paramTypes, paramNames, actionParameters);
         }
 
         FacetUtils.AddFacets(facets, action);

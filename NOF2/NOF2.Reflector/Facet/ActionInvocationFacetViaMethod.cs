@@ -30,7 +30,7 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
     private readonly ILogger<ActionInvocationFacetViaMethod> logger;
     private readonly int paramCount;
 
-    public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
+    public ActionInvocationFacetViaMethod(MethodInfo method, Type onType, Type returnType, Type elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
         this.logger = logger;
         ActionMethod = method;
         paramCount = method.GetParameters().Length;
@@ -47,11 +47,11 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
 
     public override MethodInfo ActionMethod { get; }
 
-    public override IObjectSpecImmutable ReturnType { get; }
+    public override Type ReturnType { get; }
 
-    public override ITypeSpecImmutable OnType { get; }
+    public override Type OnType { get; }
 
-    public override IObjectSpecImmutable ElementType { get; }
+    public override Type ElementType { get; }
 
     public override bool IsQueryOnly { get; }
 

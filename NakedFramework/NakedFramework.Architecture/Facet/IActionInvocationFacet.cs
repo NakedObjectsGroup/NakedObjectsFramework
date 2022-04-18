@@ -5,10 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Facet;
 
@@ -23,9 +23,9 @@ namespace NakedFramework.Architecture.Facet;
 /// </para>
 public interface IActionInvocationFacet : IFacet {
     MethodInfo ActionMethod { get; }
-    IObjectSpecImmutable ReturnType { get; }
-    ITypeSpecImmutable OnType { get; }
-    IObjectSpecImmutable ElementType { get; }
+    Type ReturnType { get; }
+    Type OnType { get; }
+    Type ElementType { get; }
     bool IsQueryOnly { get; }
     INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, INakedFramework framework);
     INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework);

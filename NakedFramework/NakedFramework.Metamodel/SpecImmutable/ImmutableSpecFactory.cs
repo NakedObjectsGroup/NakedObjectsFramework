@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
@@ -48,8 +49,8 @@ public static class ImmutableSpecFactory {
             ? CreateServiceSpecImmutable(type, isRecognized)
             : CreateObjectSpecImmutable(type, isRecognized);
 
-    public static IAssociationSpecImmutable CreateSpecAdapter(IActionSpecImmutable actionSpecImmutable) =>
-        actionSpecImmutable.ReturnSpec.IsCollection
+    public static IAssociationSpecImmutable CreateSpecAdapter(IActionSpecImmutable actionSpecImmutable, IMetamodel metamodel) =>
+        actionSpecImmutable.GetReturnSpec(metamodel).IsCollection
             ? new ActionToCollectionSpecAdapter(actionSpecImmutable)
             : new ActionToAssociationSpecAdapter(actionSpecImmutable);
 

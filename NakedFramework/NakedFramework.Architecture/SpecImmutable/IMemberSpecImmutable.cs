@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.SpecImmutable;
@@ -13,7 +14,7 @@ namespace NakedFramework.Architecture.SpecImmutable;
 ///     Details about action and field members gained via reflection.
 /// </summary>
 public interface IMemberSpecImmutable : ISpecificationBuilder, INamedAndDescribedImmutable {
-    IObjectSpecImmutable ReturnSpec { get; }
+    IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

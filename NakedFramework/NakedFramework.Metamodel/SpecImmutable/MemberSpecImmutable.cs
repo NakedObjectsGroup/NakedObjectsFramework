@@ -29,7 +29,7 @@ public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable 
 
     public override IIdentifier Identifier => identifier;
 
-    public abstract IObjectSpecImmutable ReturnSpec { get; }
+    public abstract IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel);
 
     public string Name(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetFacet<IMemberNamedFacet>().FriendlyName(nakedObjectAdapter, framework);
 

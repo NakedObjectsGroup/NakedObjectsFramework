@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -24,17 +25,18 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
-    private readonly MethodSerializationWrapper choicesMethod;
+    private readonly MethodSerializationWrapper choices;
     private readonly string[] parameterNames;
+    private readonly (string name, TypeSerializationWrapper typeWrapper)[] parameterNamesAndTypes;
 
     public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string name, Type type)[] parameterNamesAndTypes, ILogger<ActionChoicesFacetViaMethod> logger, bool isMultiple) {
-        this.choicesMethod = new MethodSerializationWrapper(choicesMethod, logger);
+        this.choices = new MethodSerializationWrapper(choicesMethod, logger);
         IsMultiple = isMultiple;
-        ParameterNamesAndTypes = parameterNamesAndTypes;
+        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, new TypeSerializationWrapper(t.type))).ToArray();
         parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
     }
 
-    public override (string, Type)[] ParameterNamesAndTypes { get; }
+    public override (string, Type)[] ParameterNamesAndTypes => parameterNamesAndTypes.Select(t => (t.name, t.typeWrapper.Type)).ToArray();
 
     public override bool IsMultiple { get; }
 
@@ -42,7 +44,7 @@ public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, II
         var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
 
         try {
-            if (choicesMethod.Invoke<object>(nakedObjectAdapter, parms) is IEnumerable options) {
+            if (choices.Invoke<object>(nakedObjectAdapter, parms) is IEnumerable options) {
                 return options.Cast<object>().ToArray();
             }
 
@@ -55,9 +57,9 @@ public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, II
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => choicesMethod.GetMethod();
+    public MethodInfo GetMethod() => choices.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => choicesMethod.GetMethodDelegate();
+    public Func<object, object[], object> GetMethodDelegate() => choices.GetMethodDelegate();
 
     #endregion
 }

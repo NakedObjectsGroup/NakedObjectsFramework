@@ -21,4 +21,10 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeAuditUpdatedFacet() => TestSerializeAuditUpdatedFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionChoicesFacetViaMethod() => TestSerializeActionChoicesFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionDefaultsFacetViaMethod() => TestSerializeActionDefaultsFacetViaMethod(BinaryRoundTrip);
 }

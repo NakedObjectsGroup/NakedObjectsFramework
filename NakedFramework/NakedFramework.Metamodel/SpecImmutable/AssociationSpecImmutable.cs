@@ -8,6 +8,7 @@
 using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 
@@ -15,27 +16,27 @@ namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
-    private readonly IObjectSpecImmutable returnSpec;
+    protected IObjectSpecImmutable ReturnSpec { get; }
 
     protected AssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)
         : base(identifier) =>
-        this.returnSpec = returnSpec;
+        this.ReturnSpec = returnSpec;
 
     #region IAssociationSpecImmutable Members
 
     public abstract IObjectSpecImmutable OwnerSpec { get; }
 
-    public override IObjectSpecImmutable ReturnSpec => returnSpec;
+    public override IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel) => ReturnSpec;
 
     #endregion
 
     #region ISerializable
 
     // The special constructor is used to deserialize values. 
-    protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => returnSpec = info.GetValue<IObjectSpecImmutable>("returnSpec");
+    protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => ReturnSpec = info.GetValue<IObjectSpecImmutable>("returnSpec");
 
     public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-        info.AddValue<IObjectSpecImmutable>("returnSpec", returnSpec);
+        info.AddValue<IObjectSpecImmutable>("returnSpec", ReturnSpec);
         base.GetObjectData(info, context);
     }
 

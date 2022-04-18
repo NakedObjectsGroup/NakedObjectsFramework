@@ -6,19 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Util;
+using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
@@ -26,56 +23,54 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-    private readonly ILogger<ActionInvocationFacetViaMethod> logger;
-    private readonly int paramCount;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
-        this.logger = logger;
-        ActionMethod = method;
+    private readonly int paramCount;
+    private readonly TypeSerializationWrapper returnType;
+    private readonly TypeSerializationWrapper onType;
+    private readonly TypeSerializationWrapper elementType;
+
+    public ActionInvocationFacetViaMethod(MethodInfo method, Type onType, Type returnType, Type elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
+        methodWrapper = new MethodSerializationWrapper(method, logger);
+
         paramCount = method.GetParameters().Length;
-        OnType = onType;
-        ReturnType = returnType;
-        ElementType = elementType;
+        this.onType = onType is not null ? new TypeSerializationWrapper(onType) : null;
+        this.returnType = returnType is not null ? new TypeSerializationWrapper(returnType) : null;
+        this.elementType = elementType is not null ? new TypeSerializationWrapper(elementType) : null;
         IsQueryOnly = isQueryOnly;
-        ActionDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
     }
 
-    // for testing only 
-    [field: NonSerialized]
-    internal Func<object, object[], object> ActionDelegate { get; private set; }
+    internal Func<object, object[], object> ActionDelegate => GetMethodDelegate();
 
-    public override MethodInfo ActionMethod { get; }
+    public override MethodInfo ActionMethod => GetMethod();
 
-    public override IObjectSpecImmutable ReturnType { get; }
+    public override Type ReturnType => returnType?.Type;
 
-    public override ITypeSpecImmutable OnType { get; }
+    public override Type OnType => onType?.Type;
 
-    public override IObjectSpecImmutable ElementType { get; }
+    public override Type ElementType => elementType?.Type;
 
     public override bool IsQueryOnly { get; }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
-        if (parameters.Length != paramCount) {
-            logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
+        if (parameters.Length == paramCount) {
+            var result = methodWrapper.Invoke<object>(inObjectAdapter, parameters);
+            return framework.NakedObjectManager.CreateAdapter(result, null, null);
         }
 
-        var result = ActionDelegate.Invoke<object>(ActionMethod, inObjectAdapter.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
-        return framework.NakedObjectManager.CreateAdapter(result, null, null);
+        throw new NakedObjectSystemException($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
     }
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedFramework framework) => Invoke(nakedObjectAdapter, parameters, framework);
-
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => ActionDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
 
     #region IImperativeFacet Members
 
     /// <summary>
     ///     See <see cref="IImperativeFacet" />
     /// </summary>
-    public MethodInfo GetMethod() => ActionMethod;
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => ActionDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

@@ -6,8 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
+using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Audit;
+using NakedFramework.Metamodel.Test.Serialization;
 using NakedObjects.Reflector.Facet;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
@@ -33,5 +37,26 @@ public static class FacetSerializationTests {
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeActionChoicesFacetViaMethod(Func<ActionChoicesFacetViaMethod, ActionChoicesFacetViaMethod> roundTripper) {
+        var m = GetChoicesMethod();
+        var f = new ActionChoicesFacetViaMethod(m, m.GetParameters().Select(p => (p.Name, p.ParameterType)).ToArray(), null, false);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.IsMultiple, dsf.IsMultiple);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeActionDefaultsFacetViaMethod(Func<ActionDefaultsFacetViaMethod, ActionDefaultsFacetViaMethod> roundTripper)
+    {
+        var f = new ActionDefaultsFacetViaMethod(GetDefaultMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
 }

@@ -33,9 +33,9 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
     private readonly int paramCount;
 
     public ActionInvocationFacetViaStaticMethod(MethodInfo method,
-                                                ITypeSpecImmutable onType,
-                                                IObjectSpecImmutable returnType,
-                                                IObjectSpecImmutable elementType,
+                                                Type onType,
+                                                Type returnType,
+                                                Type elementType,
                                                 bool isQueryOnly,
                                                 ILogger<ActionInvocationFacetViaStaticMethod> logger) {
         ActionMethod = method;
@@ -50,11 +50,11 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
 
     [field: NonSerialized] public override MethodInfo ActionMethod { get; }
 
-    public override IObjectSpecImmutable ReturnType { get; }
+    public override Type ReturnType { get; }
 
-    public override ITypeSpecImmutable OnType { get; }
+    public override Type OnType { get; }
 
-    public override IObjectSpecImmutable ElementType { get; }
+    public override Type ElementType { get; }
 
     public override bool IsQueryOnly { get; }
 

@@ -8,16 +8,13 @@
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 [assembly: InternalsVisibleTo("NakedFramework.ParallelReflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
@@ -26,34 +23,22 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
-    private readonly ILogger<ActionDefaultsFacetViaMethod> logger;
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper defaultWrapper;
 
-    public ActionDefaultsFacetViaMethod(MethodInfo method, ILogger<ActionDefaultsFacetViaMethod> logger) {
-        this.method = method;
-        this.logger = logger;
-        MethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
-
-    // for testing only 
-    [field: NonSerialized]
-    internal Func<object, object[], object> MethodDelegate { get; private set; }
+    public ActionDefaultsFacetViaMethod(MethodInfo defaultMethod, ILogger<ActionDefaultsFacetViaMethod> logger) => defaultWrapper = new MethodSerializationWrapper(defaultMethod, logger);
 
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         // type safety is given by the reflector only identifying methods that match the 
         // parameter type
-        var defaultValue = MethodDelegate.Invoke<object>(method, nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        var defaultValue = defaultWrapper.Invoke<object>(nakedObjectAdapter, Array.Empty<INakedObjectAdapter>());
         return (defaultValue, TypeOfDefaultValue.Explicit);
     }
 
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => MethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    public MethodInfo GetMethod() => defaultWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => defaultWrapper.GetMethodDelegate();
 
     #endregion
 }

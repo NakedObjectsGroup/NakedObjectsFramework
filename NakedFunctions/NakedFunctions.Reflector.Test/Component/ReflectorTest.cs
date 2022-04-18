@@ -279,13 +279,13 @@ public class ReflectorTest {
             var propertySpec = spec.OrderedFields[0];
             var facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual(false, propertySpec.ReturnSpec.IsCollection);
+            Assert.AreEqual(false, propertySpec.GetReturnSpec(container.GetService<IMetamodel>()).IsCollection);
             Assert.AreEqual("Always disabled", propertySpec.GetFacet<IDisabledFacet>().DisabledReason(null));
 
             propertySpec = spec.OrderedFields[1];
             facet = propertySpec.GetFacet<IDisplayAsPropertyFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual(true, propertySpec.ReturnSpec.IsCollection);
+            Assert.AreEqual(true, propertySpec.GetReturnSpec(container.GetService<IMetamodel>()).IsCollection);
             Assert.AreEqual("Always disabled", propertySpec.GetFacet<IDisabledFacet>().DisabledReason(null));
         }
     }

@@ -19,7 +19,7 @@ public abstract class AbstractAdapter : MemberSpecImmutable {
     protected AbstractAdapter(IActionSpecImmutable action) : base(action.Identifier) => this.action = action;
 
     public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => action.GetElementSpec(metamodel);
-    public override IObjectSpecImmutable ReturnSpec => action.ReturnSpec;
+    public override IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel) => action.GetReturnSpec(metamodel);
     public IObjectSpecImmutable OwnerSpec => action.OwnerSpec as IObjectSpecImmutable;
 
     public override Type[] FacetTypes => action.FacetTypes;

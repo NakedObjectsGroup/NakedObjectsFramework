@@ -41,7 +41,7 @@ public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFa
                                                            functionsSpec.UnorderedObjectActions.Where(sa => sa is not null && IsContributedProperty(sa, spec, metamodel))).ToList();
 
         if (result.Any()) {
-            var adaptedMembers = result.Select(ImmutableSpecFactory.CreateSpecAdapter).ToList();
+            var adaptedMembers = result.Select(r => ImmutableSpecFactory.CreateSpecAdapter(r, metamodel)).ToList();
             spec.AddContributedFields(adaptedMembers);
         }
     }

@@ -19,31 +19,38 @@ namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
-    public ActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec,
+    public ActionSpecImmutable(IIdentifier identifier, 
+                               ITypeSpecImmutable ownerSpec,
                                IActionParameterSpecImmutable[] parameters)
         : base(identifier) {
         OwnerSpec = ownerSpec;
         Parameters = parameters;
     }
 
-    private bool HasReturn() => ReturnSpec != null;
+    private bool HasReturn() => GetFacet<IActionInvocationFacet>().ReturnType is not null;
 
     #region IActionSpecImmutable Members
 
-    public override IObjectSpecImmutable ReturnSpec => GetFacet<IActionInvocationFacet>().ReturnType;
+    public override IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel) {
+        var type = GetFacet<IActionInvocationFacet>().ReturnType;
+        return type is null ? null : metamodel.GetSpecification(type) as IObjectSpecImmutable;
+    }
 
     public ITypeSpecImmutable OwnerSpec { get; }
 
     public IActionParameterSpecImmutable[] Parameters { get; }
 
-    public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => GetFacet<IActionInvocationFacet>().ElementType;
+    public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) {
+        var type = GetFacet<IActionInvocationFacet>().ElementType;
+        return type is null ? null : metamodel.GetSpecification(type) as IObjectSpecImmutable;
+    }
 
     public bool IsFinderMethod =>
         HasReturn() &&
         ContainsFacet(typeof(IFinderActionFacet)) &&
         Parameters.All(p => p.Specification.IsParseable || p.IsChoicesDefined || p.IsMultipleChoicesEnabled);
 
-    public bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel) => IsFinderMethod && (ReturnSpec.IsOfType(spec) || ReturnSpec.IsCollection && GetElementSpec(metamodel).IsOfType(spec));
+    public bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel) => IsFinderMethod && (GetReturnSpec(metamodel).IsOfType(spec) || GetReturnSpec(metamodel).IsCollection && GetElementSpec(metamodel).IsOfType(spec));
     public string StaticName => GetFacet<IMemberNamedFacet>().FriendlyName();
 
     public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && Parameters.Any() &&

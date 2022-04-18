@@ -21,9 +21,9 @@ public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvo
     #region IActionInvocationFacet Members
 
     public abstract MethodInfo ActionMethod { get; } //This is exposed to permit third-party decoration DO NOT REMOVE.
-    public abstract ITypeSpecImmutable OnType { get; }
-    public abstract IObjectSpecImmutable ReturnType { get; }
-    public abstract IObjectSpecImmutable ElementType { get; }
+    public abstract Type OnType { get; }
+    public abstract Type ReturnType { get; }
+    public abstract Type ElementType { get; }
 
     //Note: Some passed-in components are not used within NOF code, but are provided for third-party customization. DO NOT REMOVE.
     public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework);

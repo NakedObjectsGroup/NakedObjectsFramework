@@ -31,11 +31,11 @@ public sealed class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
 
     public override MethodInfo ActionMethod => underlyingFacet.ActionMethod;
 
-    public override IObjectSpecImmutable ReturnType => underlyingFacet.ReturnType;
+    public override Type ReturnType => underlyingFacet.ReturnType;
 
-    public override IObjectSpecImmutable ElementType => underlyingFacet.ElementType;
+    public override Type ElementType => underlyingFacet.ElementType;
 
-    public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
+    public override Type OnType => underlyingFacet.OnType;
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
         if (framework.ServiceProvider.GetService<IAuditManager>() is { } auditManager) {

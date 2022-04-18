@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -48,6 +50,10 @@ public static class SerializationTestHelpers {
     public static PropertyInfo GetProperty() => typeof(TestSerializationClass).GetProperty(nameof(TestSerializationClass.TestProperty));
 
     public static MethodInfo GetMenuMethod() => typeof(TestMenuClass).GetMethod(nameof(TestMenuClass.Menu));
+
+    public static MethodInfo GetChoicesMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.ChoicesTest));
+
+    public static MethodInfo GetDefaultMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.DefaultTest));
 }
 
 public class TestSerializationClass {
@@ -56,6 +62,10 @@ public class TestSerializationClass {
     public string ToString(string mask) => ToString();
 
     public string ValidateTest(string arg) => null;
+
+    public IList<object> ChoicesTest(string arg, string arg1) => null;
+
+    public object DefaultTest() => null;
 }
 
 public class TestMenuClass {
