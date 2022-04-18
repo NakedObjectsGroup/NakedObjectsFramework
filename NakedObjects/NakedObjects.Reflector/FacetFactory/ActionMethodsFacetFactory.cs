@@ -179,12 +179,12 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
 
             if (methodToUse is not null) {
                 // add facets directly to parameters, not to actions
-                var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
+                var parameterNamesAndTypes = new List<(string, Type)>();
 
                 foreach (var p in methodToUse.GetParameters()) {
                     (var oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
                     var name = p.Name?.ToLower();
-                    parameterNamesAndTypes.Add((name, oSpec));
+                    parameterNamesAndTypes.Add((name, p.ParameterType));
                 }
 
                 var mismatchedParm = false;
@@ -208,7 +208,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
                     // deliberately not removing both if duplicate to show that method  is duplicate
                     methodRemover.SafeRemoveMethod(methodToUse);
                     var spec = parameters[i];
-                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, Logger<ActionChoicesFacetViaMethod>(), isMultiple), spec);
+                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), Logger<ActionChoicesFacetViaMethod>(), isMultiple), spec);
                 }
             }
         }

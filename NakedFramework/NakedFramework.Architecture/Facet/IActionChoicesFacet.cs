@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
@@ -21,7 +22,7 @@ namespace NakedFramework.Architecture.Facet;
 ///     action
 /// </para>
 public interface IActionChoicesFacet : IFacet {
-    (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+    (string, Type)[] ParameterNamesAndTypes { get; }
     bool IsMultiple { get; }
 
     bool IsEnabled(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework);

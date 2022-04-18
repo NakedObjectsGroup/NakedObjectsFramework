@@ -30,7 +30,7 @@ public sealed class ActionChoicesViaAboutMethodFacet : AbstractViaAboutMethodFac
 
     public override Type FacetType => typeof(IActionChoicesFacet);
 
-    public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();
+    public (string, Type)[] ParameterNamesAndTypes => Array.Empty<(string, Type)>();
 
     public bool IsMultiple => false;
 

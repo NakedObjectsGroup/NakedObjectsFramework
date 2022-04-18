@@ -10,40 +10,31 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Serialization;
 using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
-    private readonly MethodInfo choicesMethod;
-    private readonly Type choicesType;
-    private readonly ILogger<ActionChoicesFacetViaMethod> logger;
+    private readonly MethodSerializationWrapper choicesMethod;
     private readonly string[] parameterNames;
 
-    [field: NonSerialized] private Func<object, object[], object> choicesDelegate;
-
-    public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, Type choicesType, ILogger<ActionChoicesFacetViaMethod> logger, bool isMultiple = false) {
-        this.choicesMethod = choicesMethod;
-        this.choicesType = choicesType;
-        this.logger = logger;
+    public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string name, Type type)[] parameterNamesAndTypes, ILogger<ActionChoicesFacetViaMethod> logger, bool isMultiple) {
+        this.choicesMethod = new MethodSerializationWrapper(choicesMethod, logger);
         IsMultiple = isMultiple;
         ParameterNamesAndTypes = parameterNamesAndTypes;
         parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
-        choicesDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
     }
 
-    public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+    public override (string, Type)[] ParameterNamesAndTypes { get; }
 
     public override bool IsMultiple { get; }
 
@@ -51,25 +42,22 @@ public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, II
         var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
 
         try {
-            if (choicesDelegate.Invoke<object>(choicesMethod, nakedObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray()) is IEnumerable options) {
+            if (choicesMethod.Invoke<object>(nakedObjectAdapter, parms) is IEnumerable options) {
                 return options.Cast<object>().ToArray();
             }
 
-            throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {choicesMethod.Name}");
+            throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {GetMethod().Name}");
         }
         catch (ArgumentException ae) {
-            throw new InvokeException($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types", ae);
+            throw new InvokeException($"Choices exception: {GetMethod().Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types", ae);
         }
     }
 
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => choicesDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
-
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => choicesMethod;
+    public MethodInfo GetMethod() => choicesMethod.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => choicesDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => choicesMethod.GetMethodDelegate();
 
     #endregion
 }

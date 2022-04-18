@@ -32,7 +32,7 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
     private readonly Type choicesType;
 
     public ActionChoicesFacetViaFunction(MethodInfo choicesMethod,
-                                         (string, IObjectSpecImmutable)[] parameterNamesAndTypes,
+                                         (string, Type)[] parameterNamesAndTypes,
                                          Type choicesType,
                                          ILogger<ActionChoicesFacetViaFunction> logger,
                                          bool isMultiple = false) {
@@ -43,7 +43,7 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
         choicesDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(choicesMethod), logger);
     }
 
-    public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+    public override (string, Type)[] ParameterNamesAndTypes { get; }
 
     public override bool IsMultiple { get; }
 

@@ -57,15 +57,14 @@ public sealed class ActionChoicesViaFunctionFacetFactory : FunctionalFacetFactor
 
             if (methodToUse is not null) {
                 // add facets directly to parameters, not to actions
-                var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
+                var parameterNamesAndTypes = new List<(string, Type)>();
                 var mismatchedParm = false;
 
                 foreach (var parameterInfo in InjectUtils.FilterParms(methodToUse)) {
-                    ITypeSpecBuilder typeSpecBuilder;
-                    (typeSpecBuilder, metamodel) = reflector.LoadSpecification(parameterInfo.ParameterType, metamodel);
+                    (var typeSpecBuilder, metamodel) = reflector.LoadSpecification(parameterInfo.ParameterType, metamodel);
                     var paramName = parameterInfo.Name?.ToLower();
                     if (typeSpecBuilder is IObjectSpecBuilder objectSpec && paramName is not null) {
-                        parameterNamesAndTypes.Add((paramName, objectSpec));
+                        parameterNamesAndTypes.Add((paramName, parameterInfo.ParameterType));
                     }
                     else {
                         logger.LogWarning($"Unexpected name: {paramName} or spec: {typeSpecBuilder}");

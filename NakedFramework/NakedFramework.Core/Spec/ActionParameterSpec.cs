@@ -178,8 +178,8 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
             choicesParameters = choicesFacet is null
                 ? Array.Empty<(string, IObjectSpec)>()
                 : choicesFacet.ParameterNamesAndTypes.Select(t => {
-                    var (pName, pSpec) = t;
-                    return (pName, Framework.MetamodelManager.GetSpecification(pSpec));
+                    var (pName, pType) = t;
+                    return (pName, Framework.MetamodelManager.GetSpecification(pType) as IObjectSpec);
                 }).ToArray();
         }
 

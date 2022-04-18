@@ -23,7 +23,7 @@ public sealed class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
 
     public override bool IsNoOp => true;
 
-    public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();
+    public override (string, Type)[] ParameterNamesAndTypes => Array.Empty<(string, Type)>();
 
     public override bool IsMultiple => false;
 

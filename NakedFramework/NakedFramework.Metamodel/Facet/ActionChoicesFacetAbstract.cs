@@ -22,7 +22,7 @@ public abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoices
 
     public virtual bool IsEnabled(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => true;
     public abstract object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework);
-    public abstract (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+    public abstract (string, Type)[] ParameterNamesAndTypes { get; }
     public abstract bool IsMultiple { get; }
 
     #endregion
