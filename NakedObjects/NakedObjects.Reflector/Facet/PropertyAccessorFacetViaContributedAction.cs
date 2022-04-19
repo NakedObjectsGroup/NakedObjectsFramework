@@ -14,25 +14,15 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
-    private readonly MethodInfo propertyMethod;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public PropertyAccessorFacetViaContributedAction(MethodInfo propertyMethod, ILogger<PropertyAccessorFacetViaContributedAction> logger) {
-        this.propertyMethod = propertyMethod;
-
-        PropertyDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(propertyMethod), logger);
-    }
-
-    private Func<object, object[], object> PropertyDelegate { get; set; }
-    public MethodInfo GetMethod() => propertyMethod;
-
-    public Func<object, object[], object> GetMethodDelegate() => PropertyDelegate;
+    public PropertyAccessorFacetViaContributedAction(MethodInfo method, ILogger<PropertyAccessorFacetViaContributedAction> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);
 
@@ -40,15 +30,26 @@ public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, I
 
     public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
         try {
-            var spec = nakedFramework.MetamodelManager.GetSpecification(propertyMethod.DeclaringType);
+            var spec = nakedFramework.MetamodelManager.GetSpecification(GetMethod().DeclaringType);
             var service = nakedFramework.ServicesManager.GetService(spec as IServiceSpec);
-            return PropertyDelegate.Invoke<object>(propertyMethod, service.GetDomainObject(), new[] { nakedObjectAdapter.GetDomainObject() });
+            return methodWrapper.Invoke<object>(service, new[] { nakedObjectAdapter });
         }
         catch (TargetInvocationException e) {
-            InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);
+            InvokeUtils.InvocationException($"Exception executing {GetMethod()}", e);
             return null;
         }
     }
+
+    #endregion
+
+    #region IImperativeFacet Members
+
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
+
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

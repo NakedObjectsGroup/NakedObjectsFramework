@@ -23,22 +23,22 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
-    private readonly MethodSerializationWrapper defaultWrapper;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public ActionDefaultsFacetViaMethod(MethodInfo defaultMethod, ILogger<ActionDefaultsFacetViaMethod> logger) => defaultWrapper = new MethodSerializationWrapper(defaultMethod, logger);
+    public ActionDefaultsFacetViaMethod(MethodInfo defaultMethod, ILogger<ActionDefaultsFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(defaultMethod, logger);
 
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         // type safety is given by the reflector only identifying methods that match the 
         // parameter type
-        var defaultValue = defaultWrapper.Invoke<object>(nakedObjectAdapter, Array.Empty<INakedObjectAdapter>());
+        var defaultValue = methodWrapper.Invoke<object>(nakedObjectAdapter, Array.Empty<INakedObjectAdapter>());
         return (defaultValue, TypeOfDefaultValue.Explicit);
     }
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => defaultWrapper.GetMethod();
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => defaultWrapper.GetMethodDelegate();
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

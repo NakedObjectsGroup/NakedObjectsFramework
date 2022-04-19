@@ -7,7 +7,6 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -35,7 +34,6 @@ public sealed class LoadingCallbackFacetViaMethod : LoadingCallbackFacetAbstract
     public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
-   
 }
 
 // Copyright (c) Naked Objects Group Ltd.

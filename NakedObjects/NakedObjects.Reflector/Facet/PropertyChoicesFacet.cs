@@ -10,70 +10,62 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Serialization;
 using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
-    private readonly ILogger<PropertyChoicesFacet> logger;
-
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper methodWrapper;
 
     private readonly string[] parameterNames;
+    private readonly (string name, TypeSerializationWrapper typeWrapper)[] parameterNamesAndTypes;
 
-    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+    public PropertyChoicesFacet(MethodInfo method, (string name, Type type)[] parameterNamesAndTypes, ILogger<PropertyChoicesFacet> logger) {
+        methodWrapper = new MethodSerializationWrapper(method, logger);
 
-    public PropertyChoicesFacet(MethodInfo optionsMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, ILogger<PropertyChoicesFacet> logger) {
-        method = optionsMethod;
-        this.logger = logger;
-
-        ParameterNamesAndTypes = parameterNamesAndTypes;
+        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, new TypeSerializationWrapper(t.type))).ToArray();
         parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     public override Type FacetType => typeof(IPropertyChoicesFacet);
 
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 
     #region IPropertyChoicesFacet Members
 
-    public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
+    public (string, Type)[] ParameterNamesAndTypes => parameterNamesAndTypes.Select(t => (t.name, t.typeWrapper.Type)).ToArray();
 
     public bool IsEnabled(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => true;
 
     public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, INakedFramework framework) {
         var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
         try {
-            var options = methodDelegate.Invoke<object>(method, inObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray());
+            var options = methodWrapper.Invoke<object>(inObjectAdapter, parms);
             if (options is IEnumerable enumerable) {
                 return enumerable.Cast<object>().ToArray();
             }
 
-            throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {method.Name}");
+            throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {GetMethod().Name}");
         }
         catch (ArgumentException ae) {
-            throw new InvokeException($"Choices exception: {method.Name} has mismatched (ie type of parameter does not match type of property) parameter types", ae);
+            throw new InvokeException($"Choices exception: {GetMethod().Name} has mismatched (ie type of parameter does not match type of property) parameter types", ae);
         }
     }
 

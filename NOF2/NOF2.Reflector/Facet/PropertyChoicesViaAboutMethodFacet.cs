@@ -29,7 +29,7 @@ public sealed class PropertyChoicesViaAboutMethodFacet : AbstractViaAboutMethodF
 
     #region IPropertyChoicesFacet Members
 
-    public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => Array.Empty<(string, IObjectSpecImmutable)>();
+    public (string, Type)[] ParameterNamesAndTypes => Array.Empty<(string, Type)>();
 
     public IAbout GetAbout(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => InvokeAboutMethod(framework, nakedObjectAdapter.GetDomainObject(), AboutTypeCodes.Parameters, false, true);
 

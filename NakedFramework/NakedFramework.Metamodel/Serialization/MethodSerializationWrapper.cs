@@ -78,6 +78,8 @@ public class MethodSerializationWrapper {
 
     public T Invoke<T>(object target, object[] args) => MethodDelegate.Invoke<T>(MethodInfo, target, args);
 
+    public T Invoke<T>(object target) => MethodDelegate.Invoke<T>(MethodInfo, target, null);
+
     public T Invoke<T>(INakedObjectAdapter target, INakedObjectAdapter[] args) => MethodDelegate.Invoke<T>(MethodInfo, target.GetDomainObject(), Args(args));
 
     public T Invoke<T>(object[] args) => MethodDelegate.InvokeStatic<T>(MethodInfo, args);

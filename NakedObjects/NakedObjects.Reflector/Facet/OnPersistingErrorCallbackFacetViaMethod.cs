@@ -7,14 +7,12 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
-using NakedFramework.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.Facet;
 

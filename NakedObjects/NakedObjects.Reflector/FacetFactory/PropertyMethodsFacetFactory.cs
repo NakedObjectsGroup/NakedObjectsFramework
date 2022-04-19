@@ -153,12 +153,11 @@ public sealed class PropertyMethodsFacetFactory : DomainObjectFacetFactoryProces
         var method = methods.FirstOrDefault();
         methodRemover.SafeRemoveMethod(method);
         if (method is not null) {
-            var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
+            var parameterNamesAndTypes = new List<(string, Type)>();
 
             foreach (var p in method.GetParameters()) {
-                IObjectSpecBuilder oSpec;
-                (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
-                parameterNamesAndTypes.Add((p.Name.ToLower(), oSpec));
+                (_, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
+                parameterNamesAndTypes.Add((p.Name.ToLower(), p.ParameterType));
             }
 
             propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), Logger<PropertyChoicesFacet>()));

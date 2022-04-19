@@ -7,7 +7,6 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -16,28 +15,17 @@ using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
-    private readonly ILogger<DisableForContextFacet> logger;
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
-
-    public DisableForContextFacet(MethodInfo method, ILogger<DisableForContextFacet> logger) {
-        this.method = method;
-        this.logger = logger;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
+    public DisableForContextFacet(MethodInfo method, ILogger<DisableForContextFacet> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
     public override Type FacetType => typeof(IDisableForContextFacet);
-
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
 
     #region IDisableForContextFacet Members
 
@@ -46,15 +34,18 @@ public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFa
     public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
     public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>
-        methodDelegate.Invoke<string>(method, nakedObjectAdapter.GetDomainObject(), Array.Empty<object>());
+        methodWrapper.Invoke<string>(nakedObjectAdapter.GetDomainObject());
 
     #endregion
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

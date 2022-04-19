@@ -79,8 +79,8 @@ public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOne
         return propertyChoicesFacet is null
             ? Array.Empty<(string, IObjectSpec)>()
             : propertyChoicesFacet.ParameterNamesAndTypes.Select(t => {
-                var (pName, pSpec) = t;
-                return (pName, Framework.MetamodelManager.GetSpecification(pSpec));
+                var (pName, pType) = t;
+                return (pName, Framework.MetamodelManager.GetSpecification(pType) as IObjectSpec);
             }).ToArray();
     }
 

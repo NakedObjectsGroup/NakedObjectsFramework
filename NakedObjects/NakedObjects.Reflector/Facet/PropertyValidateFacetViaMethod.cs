@@ -7,44 +7,34 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstract, IImperativeFacet {
-    private readonly ILogger<PropertyValidateFacetViaMethod> logger;
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
-
-    public PropertyValidateFacetViaMethod(MethodInfo method, ILogger<PropertyValidateFacetViaMethod> logger) {
-        this.method = method;
-        this.logger = logger;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
+    public PropertyValidateFacetViaMethod(MethodInfo method, ILogger<PropertyValidateFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
     public override string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter proposedValue) =>
         proposedValue is not null
-            ? methodDelegate.Invoke<string>(method, target.GetDomainObject(), new[] { proposedValue.GetDomainObject() })
+            ? methodWrapper.Invoke<string>(target, new[] { proposedValue })
             : null;
-
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

@@ -7,7 +7,6 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -22,9 +21,10 @@ public sealed class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstra
     private readonly MethodSerializationWrapper methodWrapper;
     public UpdatingCallbackFacetViaMethod(MethodInfo method, ILogger<UpdatingCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
+    public override bool IsActive => true;
+
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodWrapper.Invoke(nakedObjectAdapter.GetDomainObject());
 
-    
     #region IImperativeFacet Members
 
     /// <summary>
@@ -35,8 +35,6 @@ public sealed class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstra
     public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
-
-    public override bool IsActive => true;
 }
 
 // Copyright (c) Naked Objects Group Ltd.

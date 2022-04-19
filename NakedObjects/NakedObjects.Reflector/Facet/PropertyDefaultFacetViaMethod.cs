@@ -7,40 +7,31 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
-    private readonly ILogger<PropertyDefaultFacetViaMethod> logger;
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
+    public PropertyDefaultFacetViaMethod(MethodInfo method, ILogger<PropertyDefaultFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
-    public PropertyDefaultFacetViaMethod(MethodInfo method, ILogger<PropertyDefaultFacetViaMethod> logger) {
-        this.method = method;
-        this.logger = logger;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
-
-    public override object GetDefault(INakedObjectAdapter inObjectAdapter) => methodDelegate.Invoke<object>(method, inObjectAdapter.GetDomainObject(), Array.Empty<object>());
-
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
+    public override object GetDefault(INakedObjectAdapter inObjectAdapter) => methodWrapper.Invoke<object>(inObjectAdapter.GetDomainObject());
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

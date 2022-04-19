@@ -19,7 +19,6 @@ public sealed class UpdatedCallbackFacetNull : UpdatedCallbackFacetAbstract {
 
     public static UpdatedCallbackFacetNull Instance => instance ??= new UpdatedCallbackFacetNull();
 
-
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }
 
