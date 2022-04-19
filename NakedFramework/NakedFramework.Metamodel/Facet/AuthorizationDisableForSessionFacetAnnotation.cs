@@ -13,9 +13,9 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
-public sealed class AuthorizationHideForSessionFacet : HideForSessionFacetAbstract {
-    public AuthorizationHideForSessionFacet(string roles,
-                                            string users) {
+public sealed class AuthorizationDisableForSessionFacetAnnotation : DisableForSessionFacetAbstract {
+    public AuthorizationDisableForSessionFacetAnnotation(string roles,
+                                               string users) {
         Roles = FacetUtils.SplitOnComma(roles);
         Users = FacetUtils.SplitOnComma(users);
     }
@@ -23,5 +23,5 @@ public sealed class AuthorizationHideForSessionFacet : HideForSessionFacetAbstra
     public string[] Roles { get; }
     public string[] Users { get; }
 
-    public override string HiddenReason(INakedObjectAdapter target, INakedFramework framework) => FacetUtils.IsAllowed(framework.Session, Roles, Users) ? null : "Not authorized to view";
+    public override string DisabledReason(INakedObjectAdapter target, INakedFramework framework) => FacetUtils.IsAllowed(framework.Session, Roles, Users) ? null : "Not authorized to edit";
 }

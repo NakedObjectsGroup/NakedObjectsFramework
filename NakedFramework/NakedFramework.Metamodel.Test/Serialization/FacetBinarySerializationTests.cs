@@ -32,7 +32,13 @@ public class FacetBinarySerializationTests {
     public void TestBinarySerializeArrayFacet() => TestSerializeArrayFacet(BinaryRoundTrip);
 
     [TestMethod]
+    public void TestBinarySerializeAuthorizationDisableForSessionFacetAnnotation() => TestSerializeAuthorizationDisableForSessionFacetAnnotation(BinaryRoundTrip);
+
+    [TestMethod]
     public void TestBinarySerializeAuthorizationDisableForSessionFacet() => TestSerializeAuthorizationDisableForSessionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeAuthorizationHideForSessionFacetAnnotation() => TestSerializeAuthorizationHideForSessionFacetAnnotation(BinaryRoundTrip);
 
     [TestMethod]
     public void TestBinarySerializeAuthorizationHideForSessionFacet() => TestSerializeAuthorizationHideForSessionFacet(BinaryRoundTrip);

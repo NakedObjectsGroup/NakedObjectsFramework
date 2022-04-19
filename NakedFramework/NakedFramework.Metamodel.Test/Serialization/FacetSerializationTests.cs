@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Audit;
+using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.I18N;
 using NakedFramework.Metamodel.SemanticsProvider;
@@ -73,8 +74,8 @@ public static class FacetSerializationTests {
         Assert.AreEqual(f.IsASet, dsf.IsASet);
     }
 
-    public static void TestSerializeAuthorizationDisableForSessionFacet(Func<AuthorizationDisableForSessionFacet, AuthorizationDisableForSessionFacet> roundTripper) {
-        var f = new AuthorizationDisableForSessionFacet("r1,r2", "u1,u2");
+    public static void TestSerializeAuthorizationDisableForSessionFacetAnnotation(Func<AuthorizationDisableForSessionFacetAnnotation, AuthorizationDisableForSessionFacetAnnotation> roundTripper) {
+        var f = new AuthorizationDisableForSessionFacetAnnotation("r1,r2", "u1,u2");
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
@@ -83,8 +84,17 @@ public static class FacetSerializationTests {
         Assert.AreEqual(string.Join(',', f.Users), string.Join(',', dsf.Users));
     }
 
-    public static void TestSerializeAuthorizationHideForSessionFacet(Func<AuthorizationHideForSessionFacet, AuthorizationHideForSessionFacet> roundTripper) {
-        var f = new AuthorizationHideForSessionFacet("r1,r2", "u1,u2");
+    public static void TestSerializeAuthorizationDisableForSessionFacet(Func<AuthorizationDisableForSessionFacet, AuthorizationDisableForSessionFacet> roundTripper)
+    {
+        var f = new AuthorizationDisableForSessionFacet(new IdentifierImpl(nameof(TestSerializationClass)));
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+
+    public static void TestSerializeAuthorizationHideForSessionFacetAnnotation(Func<AuthorizationHideForSessionFacetAnnotation, AuthorizationHideForSessionFacetAnnotation> roundTripper) {
+        var f = new AuthorizationHideForSessionFacetAnnotation("r1,r2", "u1,u2");
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
@@ -92,6 +102,15 @@ public static class FacetSerializationTests {
         Assert.AreEqual(string.Join(',', f.Roles), string.Join(',', dsf.Roles));
         Assert.AreEqual(string.Join(',', f.Users), string.Join(',', dsf.Users));
     }
+
+    public static void TestSerializeAuthorizationHideForSessionFacet(Func<AuthorizationHideForSessionFacet, AuthorizationHideForSessionFacet> roundTripper)
+    {
+        var f = new AuthorizationHideForSessionFacet(new IdentifierImpl(nameof(TestSerializationClass)));
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
 
     public static void TestSerializeBoundedFacet(Func<BoundedFacet, BoundedFacet> roundTripper) {
         var f = BoundedFacet.Instance;
