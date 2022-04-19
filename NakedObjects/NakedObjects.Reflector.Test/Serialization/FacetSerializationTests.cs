@@ -107,4 +107,45 @@ public static class FacetSerializationTests {
         Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
+
+    public static void TestSerializeCreatedCallbackFacetViaMethod(Func<CreatedCallbackFacetViaMethod, CreatedCallbackFacetViaMethod> roundTripper) {
+        var f = new CreatedCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeDeletedCallbackFacetNull(Func<DeletedCallbackFacetNull, DeletedCallbackFacetNull> roundTripper) {
+        var f = DeletedCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeDeletedCallbackFacetViaMethod(Func<DeletedCallbackFacetViaMethod, DeletedCallbackFacetViaMethod> roundTripper) {
+        var f = new DeletedCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeDeletingCallbackFacetNull(Func<DeletingCallbackFacetNull, DeletingCallbackFacetNull> roundTripper) {
+        var f = DeletingCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeDeletingCallbackFacetViaMethod(Func<DeletingCallbackFacetViaMethod, DeletingCallbackFacetViaMethod> roundTripper) {
+        var f = new DeletingCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
 }

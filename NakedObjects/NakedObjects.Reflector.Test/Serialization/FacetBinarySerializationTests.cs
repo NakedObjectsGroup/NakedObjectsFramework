@@ -39,4 +39,19 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeAutoCompleteFacet() => TestSerializeAutoCompleteFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeCreatedCallbackFacetViaMethod() => TestSerializeCreatedCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDeletedCallbackFacetNull() => TestSerializeDeletedCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDeletedCallbackFacetViaMethod() => TestSerializeDeletedCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDeletingCallbackFacetNull() => TestSerializeDeletingCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDeletingCallbackFacetViaMethod() => TestSerializeDeletingCallbackFacetViaMethod(BinaryRoundTrip);
 }

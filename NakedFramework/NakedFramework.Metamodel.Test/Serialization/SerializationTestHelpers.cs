@@ -57,6 +57,8 @@ public static class SerializationTestHelpers {
     public static MethodInfo GetDefaultMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.DefaultTest));
 
     public static MethodInfo GetMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.InvokeTest));
+
+    public static MethodInfo GetCallbackMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.CallbackMethod));
 }
 
 public class TestSerializationClass {
@@ -71,6 +73,8 @@ public class TestSerializationClass {
     public object DefaultTest() => null;
 
     public IQueryable<TestSerializationClass> InvokeTest(string arg) => null;
+
+    public void CallbackMethod() { }
 }
 
 public class TestMenuClass {
