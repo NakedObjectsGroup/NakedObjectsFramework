@@ -7,39 +7,31 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, IImperativeFacet {
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    [field: NonSerialized] private Action<object> loadedDelegate;
+    public LoadedCallbackFacetViaMethod(MethodInfo method, ILogger<LoadedCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
-    public LoadedCallbackFacetViaMethod(MethodInfo method) {
-        this.method = method;
-        loadedDelegate = DelegateUtils.CreateCallbackDelegate(method);
-    }
-
-    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => loadedDelegate(nakedObjectAdapter.GetDomainObject());
-
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => loadedDelegate = DelegateUtils.CreateCallbackDelegate(method);
+    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodWrapper.Invoke(nakedObjectAdapter.GetDomainObject());
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() =>
-        (tgt, p) => {
-            loadedDelegate(tgt);
-            return null;
-        };
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

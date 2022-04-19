@@ -8,38 +8,31 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstract, IImperativeFacet {
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper methodWrapper;
+    public UpdatingCallbackFacetViaMethod(MethodInfo method, ILogger<UpdatingCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
-    [field: NonSerialized] private Action<object> updatingDelegate;
+    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodWrapper.Invoke(nakedObjectAdapter.GetDomainObject());
 
-    public UpdatingCallbackFacetViaMethod(MethodInfo method) {
-        this.method = method;
-        updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
-    }
-
-    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => updatingDelegate(nakedObjectAdapter.GetDomainObject());
-
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
-
+    
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() =>
-        (tgt, p) => {
-            updatingDelegate(tgt);
-            return null;
-        };
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 

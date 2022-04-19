@@ -52,7 +52,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
         var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.CreatedMethod, typeof(void), Type.EmptyTypes);
         if (method is not null) {
             methods.Add(method);
-            facets.Add(new CreatedCallbackFacetViaMethod(method));
+            facets.Add(new CreatedCallbackFacetViaMethod(method, Logger<CreatedCallbackFacetViaMethod>()));
         }
         else {
             facets.Add(CreatedCallbackFacetNull.Instance);
@@ -62,7 +62,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
 
         if (method is not null) {
             methods.Add(method);
-            facets.Add(new PersistingCallbackFacetViaMethod(method));
+            facets.Add(new PersistingCallbackFacetViaMethod(method, Logger<PersistingCallbackFacetViaMethod>()));
         }
         else {
             facets.Add(PersistingCallbackFacetNull.Instance);
@@ -72,7 +72,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
 
         if (method is not null) {
             methods.Add(method);
-            facets.Add(new PersistedCallbackFacetViaMethod(method));
+            facets.Add(new PersistedCallbackFacetViaMethod(method, Logger<PersistedCallbackFacetViaMethod>()));
         }
         else {
             facets.Add(PersistedCallbackFacetNull.Instance);
@@ -81,7 +81,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.UpdatingMethod, typeof(void), Type.EmptyTypes);
         if (method is not null) {
             methods.Add(method);
-            facets.Add(new UpdatingCallbackFacetViaMethod(method));
+            facets.Add(new UpdatingCallbackFacetViaMethod(method, Logger<UpdatingCallbackFacetViaMethod>()));
         }
         else {
             facets.Add(UpdatingCallbackFacetNull.Instance);
@@ -90,7 +90,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.UpdatedMethod, typeof(void), Type.EmptyTypes);
         if (method is not null) {
             methods.Add(method);
-            facets.Add(new UpdatedCallbackFacetViaMethod(method));
+            facets.Add(new UpdatedCallbackFacetViaMethod(method, Logger<UpdatedCallbackFacetViaMethod>()));
         }
         else {
             facets.Add(UpdatedCallbackFacetNull.Instance);
@@ -99,7 +99,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.LoadingMethod, typeof(void), Type.EmptyTypes);
         if (method is not null) {
             methods.Add(method);
-            facets.Add(new LoadingCallbackFacetViaMethod(method));
+            facets.Add(new LoadingCallbackFacetViaMethod(method, Logger<LoadingCallbackFacetViaMethod>()));
         }
         else {
             facets.Add(LoadingCallbackFacetNull.Instance);
@@ -108,7 +108,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.LoadedMethod, typeof(void), Type.EmptyTypes);
         if (method is not null) {
             methods.Add(method);
-            facets.Add(new LoadedCallbackFacetViaMethod(method));
+            facets.Add(new LoadedCallbackFacetViaMethod(method, Logger<LoadedCallbackFacetViaMethod>()));
         }
         else {
             facets.Add(LoadedCallbackFacetNull.Instance);
@@ -117,7 +117,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DeletingMethod, typeof(void), Type.EmptyTypes);
         if (method is not null) {
             methods.Add(method);
-            facets.Add(new DeletingCallbackFacetViaMethod(method));
+            facets.Add(new DeletingCallbackFacetViaMethod(method, Logger<DeletingCallbackFacetViaMethod>()));
         }
         else {
             facets.Add(DeletingCallbackFacetNull.Instance);
@@ -126,7 +126,7 @@ public sealed class CallbackMethodsFacetFactory : DomainObjectFacetFactoryProces
         method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DeletedMethod, typeof(void), Type.EmptyTypes);
         if (method is not null) {
             methods.Add(method);
-            facets.Add(new DeletedCallbackFacetViaMethod(method));
+            facets.Add(new DeletedCallbackFacetViaMethod(method, Logger<DeletedCallbackFacetViaMethod>()));
         }
         else {
             facets.Add(DeletedCallbackFacetNull.Instance);

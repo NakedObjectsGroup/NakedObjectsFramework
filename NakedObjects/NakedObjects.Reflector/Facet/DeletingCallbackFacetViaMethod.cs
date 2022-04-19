@@ -7,39 +7,31 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    [field: NonSerialized] private Action<object> deletingDelegate;
+    public DeletingCallbackFacetViaMethod(MethodInfo method, ILogger<DeletingCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
-    public DeletingCallbackFacetViaMethod(MethodInfo method) {
-        this.method = method;
-        deletingDelegate = DelegateUtils.CreateCallbackDelegate(method);
-    }
-
-    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => deletingDelegate(nakedObjectAdapter.GetDomainObject());
-
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => deletingDelegate = DelegateUtils.CreateCallbackDelegate(method);
+    public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodWrapper.Invoke(nakedObjectAdapter.GetDomainObject());
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() =>
-        (tgt, p) => {
-            deletingDelegate(tgt);
-            return null;
-        };
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

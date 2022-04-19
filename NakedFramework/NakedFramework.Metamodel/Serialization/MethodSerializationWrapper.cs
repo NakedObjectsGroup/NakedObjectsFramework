@@ -84,5 +84,7 @@ public class MethodSerializationWrapper {
 
     public void Invoke(object target, object[] args) => MethodDelegate.Invoke(MethodInfo, target, args);
 
+    public void Invoke(object target) => MethodDelegate.Invoke(MethodInfo, target, null);
+
     public void Invoke(object[] args) => MethodDelegate.InvokeStatic(MethodInfo, args);
 }
