@@ -30,4 +30,13 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeActionInvocationFacetViaMethod() => TestSerializeActionInvocationFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionParameterValidation() => TestSerializeActionParameterValidation(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionValidationFacet() => TestSerializeActionValidationFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeAutoCompleteFacet() => TestSerializeAutoCompleteFacet(BinaryRoundTrip);
 }

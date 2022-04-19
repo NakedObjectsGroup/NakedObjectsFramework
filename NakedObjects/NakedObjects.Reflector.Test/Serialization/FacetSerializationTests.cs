@@ -80,4 +80,31 @@ public static class FacetSerializationTests {
         Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
+
+    public static void TestSerializeActionParameterValidation(Func<ActionParameterValidation, ActionParameterValidation> roundTripper) {
+        var f = new ActionParameterValidation(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeActionValidationFacet(Func<ActionValidationFacet, ActionValidationFacet> roundTripper) {
+        var f = new ActionValidationFacet(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeAutoCompleteFacet(Func<AutoCompleteFacet, AutoCompleteFacet> roundTripper) {
+        var f = new AutoCompleteFacet(GetMethod(), 1, 2, null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
 }

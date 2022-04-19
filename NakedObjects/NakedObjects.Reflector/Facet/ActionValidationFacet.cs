@@ -6,39 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
-    private readonly ILogger<ActionValidationFacet> logger;
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    [field: NonSerialized] private Func<object, object[], object> methodDelegate;
-
-    public ActionValidationFacet(MethodInfo method, ILogger<ActionValidationFacet> logger) {
-        this.method = method;
-        this.logger = logger;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
+    public ActionValidationFacet(MethodInfo method, ILogger<ActionValidationFacet> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
     public override Type FacetType => typeof(IActionValidationFacet);
-
-    [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
 
     #region IActionValidationFacet Members
 
@@ -47,15 +33,18 @@ public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFace
     public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
     public string InvalidReason(INakedObjectAdapter target, INakedFramework framework, INakedObjectAdapter[] proposedArguments) =>
-        methodDelegate.Invoke<string>(method, target.GetDomainObject(), proposedArguments.Select(no => no.GetDomainObject()).ToArray());
+        methodWrapper.Invoke<string>(target, proposedArguments);
 
     #endregion
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }
