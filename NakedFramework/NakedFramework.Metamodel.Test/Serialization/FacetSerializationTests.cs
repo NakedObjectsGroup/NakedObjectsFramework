@@ -9,7 +9,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Metamodel.Adapter;
-using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.I18N;
@@ -19,7 +18,6 @@ using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelper
 namespace NakedFramework.Metamodel.Test.Serialization;
 
 public static class FacetSerializationTests {
-
     public static void TestSerializeActionChoicesFacetNone(Func<ActionChoicesFacetNone, ActionChoicesFacetNone> roundTripper) {
         var f = ActionChoicesFacetNone.Instance;
         var dsf = roundTripper(f);
@@ -84,14 +82,12 @@ public static class FacetSerializationTests {
         Assert.AreEqual(string.Join(',', f.Users), string.Join(',', dsf.Users));
     }
 
-    public static void TestSerializeAuthorizationDisableForSessionFacet(Func<AuthorizationDisableForSessionFacet, AuthorizationDisableForSessionFacet> roundTripper)
-    {
+    public static void TestSerializeAuthorizationDisableForSessionFacet(Func<AuthorizationDisableForSessionFacet, AuthorizationDisableForSessionFacet> roundTripper) {
         var f = new AuthorizationDisableForSessionFacet(new IdentifierImpl(nameof(TestSerializationClass)));
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
     }
-
 
     public static void TestSerializeAuthorizationHideForSessionFacetAnnotation(Func<AuthorizationHideForSessionFacetAnnotation, AuthorizationHideForSessionFacetAnnotation> roundTripper) {
         var f = new AuthorizationHideForSessionFacetAnnotation("r1,r2", "u1,u2");
@@ -103,14 +99,12 @@ public static class FacetSerializationTests {
         Assert.AreEqual(string.Join(',', f.Users), string.Join(',', dsf.Users));
     }
 
-    public static void TestSerializeAuthorizationHideForSessionFacet(Func<AuthorizationHideForSessionFacet, AuthorizationHideForSessionFacet> roundTripper)
-    {
+    public static void TestSerializeAuthorizationHideForSessionFacet(Func<AuthorizationHideForSessionFacet, AuthorizationHideForSessionFacet> roundTripper) {
         var f = new AuthorizationHideForSessionFacet(new IdentifierImpl(nameof(TestSerializationClass)));
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
     }
-
 
     public static void TestSerializeBoundedFacet(Func<BoundedFacet, BoundedFacet> roundTripper) {
         var f = BoundedFacet.Instance;
@@ -909,5 +903,212 @@ public static class FacetSerializationTests {
         AssertIFacet(f, dsf);
         Assert.AreEqual(f.Value, dsf.Value);
         Assert.AreEqual(f.FriendlyName(), dsf.FriendlyName());
+    }
+
+    public static void TestSerializeNamedFacetI18N(Func<NamedFacetI18N, NamedFacetI18N> roundTripper) {
+        var f = new NamedFacetI18N("a name");
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.Value, dsf.Value);
+        Assert.AreEqual(f.FriendlyName, dsf.FriendlyName);
+    }
+
+    public static void TestSerializeArrayValueSemanticsProvider(Func<ArrayValueSemanticsProvider<int>, ArrayValueSemanticsProvider<int>> roundTripper) {
+        var f = new ArrayValueSemanticsProvider<int>();
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeBooleanValueSemanticsProvider(Func<BooleanValueSemanticsProvider, BooleanValueSemanticsProvider> roundTripper) {
+        var f = BooleanValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeByteValueSemanticsProvider(Func<ByteValueSemanticsProvider, ByteValueSemanticsProvider> roundTripper) {
+        var f = ByteValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeCharValueSemanticsProvider(Func<CharValueSemanticsProvider, CharValueSemanticsProvider> roundTripper) {
+        var f = CharValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeColorValueSemanticsProvider(Func<ColorValueSemanticsProvider, ColorValueSemanticsProvider> roundTripper) {
+        var f = ColorValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeDateTimeValueSemanticsProvider(Func<DateTimeValueSemanticsProvider, DateTimeValueSemanticsProvider> roundTripper) {
+        var f = DateTimeValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeDecimalValueSemanticsProvider(Func<DecimalValueSemanticsProvider, DecimalValueSemanticsProvider> roundTripper) {
+        var f = DecimalValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeDoubleValueSemanticsProvider(Func<DoubleValueSemanticsProvider, DoubleValueSemanticsProvider> roundTripper) {
+        var f = DoubleValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeEnumValueSemanticsProvider(Func<EnumValueSemanticsProvider<int>, EnumValueSemanticsProvider<int>> roundTripper) {
+        var f = new EnumValueSemanticsProvider<int>();
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeFileAttachmentValueSemanticsProvider(Func<FileAttachmentValueSemanticsProvider, FileAttachmentValueSemanticsProvider> roundTripper) {
+        var f = FileAttachmentValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeFloatValueSemanticsProvider(Func<FloatValueSemanticsProvider, FloatValueSemanticsProvider> roundTripper) {
+        var f = FloatValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeGuidValueSemanticsProvider(Func<GuidValueSemanticsProvider, GuidValueSemanticsProvider> roundTripper) {
+        var f = GuidValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeImageValueSemanticsProvider(Func<ImageValueSemanticsProvider, ImageValueSemanticsProvider> roundTripper) {
+        var f = ImageValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeIntValueSemanticsProvider(Func<IntValueSemanticsProvider, IntValueSemanticsProvider> roundTripper) {
+        var f = IntValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeLongValueSemanticsProvider(Func<LongValueSemanticsProvider, LongValueSemanticsProvider> roundTripper) {
+        var f = LongValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeSbyteValueSemanticsProvider(Func<SbyteValueSemanticsProvider, SbyteValueSemanticsProvider> roundTripper) {
+        var f = SbyteValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeShortValueSemanticsProvider(Func<ShortValueSemanticsProvider, ShortValueSemanticsProvider> roundTripper) {
+        var f = ShortValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeStringValueSemanticsProvider(Func<StringValueSemanticsProvider, StringValueSemanticsProvider> roundTripper) {
+        var f = StringValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeTimeValueSemanticsProvider(Func<TimeValueSemanticsProvider, TimeValueSemanticsProvider> roundTripper) {
+        var f = TimeValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeUIntValueSemanticsProvider(Func<UIntValueSemanticsProvider, UIntValueSemanticsProvider> roundTripper) {
+        var f = UIntValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeULongValueSemanticsProvider(Func<ULongValueSemanticsProvider, ULongValueSemanticsProvider> roundTripper) {
+        var f = ULongValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
+    }
+
+    public static void TestSerializeUShortValueSemanticsProvider(Func<UShortValueSemanticsProvider, UShortValueSemanticsProvider> roundTripper) {
+        var f = UShortValueSemanticsProvider.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.DefaultValue, dsf.DefaultValue);
+        Assert.AreEqual(f.IsImmutable, dsf.IsImmutable);
     }
 }

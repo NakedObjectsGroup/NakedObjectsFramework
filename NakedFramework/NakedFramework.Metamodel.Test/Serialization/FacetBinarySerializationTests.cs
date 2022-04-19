@@ -336,4 +336,74 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeMemberNamedFacetI18N() => TestSerializeMemberNamedFacetI18N(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeNamedFacetI18N() => TestSerializeNamedFacetI18N(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeArrayValueSemanticsProvider() => TestSerializeArrayValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeBooleanValueSemanticsProvider() => TestSerializeBooleanValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeByteValueSemanticsProvider() => TestSerializeByteValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeCharValueSemanticsProvider() => TestSerializeCharValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeColorValueSemanticsProvider() => TestSerializeColorValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDateTimeValueSemanticsProvider() => TestSerializeDateTimeValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDecimalValueSemanticsProvider() => TestSerializeDecimalValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDoubleValueSemanticsProvider() => TestSerializeDoubleValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeEnumValueSemanticsProvider() => TestSerializeEnumValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeFileAttachmentValueSemanticsProvider() => TestSerializeFileAttachmentValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeFloatValueSemanticsProvider() => TestSerializeFloatValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeGuidValueSemanticsProvider() => TestSerializeGuidValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeImageValueSemanticsProvider() => TestSerializeImageValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeIntValueSemanticsProvider() => TestSerializeIntValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeLongValueSemanticsProvider() => TestSerializeLongValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeSbyteValueSemanticsProvider() => TestSerializeSbyteValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeShortValueSemanticsProvider() => TestSerializeShortValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeStringValueSemanticsProvider() => TestSerializeStringValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTimeValueSemanticsProvider() => TestSerializeTimeValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeUIntValueSemanticsProvider() => TestSerializeUIntValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeULongValueSemanticsProvider() => TestSerializeULongValueSemanticsProvider(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeUShortValueSemanticsProvider() => TestSerializeUShortValueSemanticsProvider(BinaryRoundTrip);
+
 }

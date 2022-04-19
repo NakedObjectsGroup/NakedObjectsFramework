@@ -136,4 +136,14 @@ public class FacetBinarySerializationTests {
     [TestMethod]
     public void TestBinarySerializeViewModelSwitchableFacetConvention() => TestSerializeViewModelSwitchableFacetConvention(BinaryRoundTrip);
 
+    [TestMethod]
+    public void TestBinarySerializeProfileActionInvocationFacet() => TestSerializeProfileActionInvocationFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeProfileCallbackFacet() => TestSerializeProfileCallbackFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeProfilePropertySetterFacet() => TestSerializeProfilePropertySetterFacet(BinaryRoundTrip);
+
+    
 }

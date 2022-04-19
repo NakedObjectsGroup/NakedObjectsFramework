@@ -10,7 +10,11 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Audit;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Profile;
+using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Test.Serialization;
+using NakedFramework.Profile;
 using NakedObjects.Reflector.Facet;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
@@ -375,5 +379,42 @@ public static class FacetSerializationTests {
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeProfileActionInvocationFacet(Func<ProfileActionInvocationFacet, ProfileActionInvocationFacet> roundTripper) {
+        var m = GetMethod();
+        var af = new ActionInvocationFacetViaMethod(m, m.DeclaringType, m.ReturnType, typeof(TestSerializationClass), true, null);
+
+        var f = new ProfileActionInvocationFacet(af, new IdentifierImpl(nameof(TestSerializationClass), nameof(TestSerializationClass.InvokeTest)));
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.OnType, dsf.OnType);
+        Assert.AreEqual(f.ReturnType, dsf.ReturnType);
+        Assert.AreEqual(f.ElementType, dsf.ElementType);
+        Assert.AreEqual(f.IsQueryOnly, dsf.IsQueryOnly);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeProfileCallbackFacet(Func<ProfileCallbackFacet, ProfileCallbackFacet> roundTripper) {
+        var m = GetCallbackMethod();
+        var af = new UpdatedCallbackFacetViaMethod(m, null);
+
+        var f = new ProfileCallbackFacet(ProfileEvent.Updated, af);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeProfilePropertySetterFacet(Func<ProfilePropertySetterFacet, ProfilePropertySetterFacet> roundTripper) {
+        var p = GetProperty();
+        var ps = new PropertySetterFacetViaSetterMethod(p, null);
+
+        var f = new ProfilePropertySetterFacet(ps);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.PropertyName, dsf.PropertyName);
     }
 }
