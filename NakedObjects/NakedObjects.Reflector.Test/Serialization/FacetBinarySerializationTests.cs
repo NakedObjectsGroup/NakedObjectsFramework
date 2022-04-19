@@ -54,4 +54,86 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeDeletingCallbackFacetViaMethod() => TestSerializeDeletingCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDisableForContextFacet() => TestSerializeDisableForContextFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeHideForContextFacet() => TestSerializeHideForContextFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeLoadedCallbackFacetNull() => TestSerializeLoadedCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeLoadedCallbackFacetViaMethod() => TestSerializeLoadedCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeLoadingCallbackFacetNull() => TestSerializeLoadingCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeLoadingCallbackFacetViaMethod() => TestSerializeLoadingCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeOnPersistingErrorCallbackFacetViaMethod() => TestSerializeOnPersistingErrorCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeOnUpdatingErrorCallbackFacetViaMethod() => TestSerializeOnUpdatingErrorCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePersistedCallbackFacetNull() => TestSerializePersistedCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePersistedCallbackFacetViaMethod() => TestSerializePersistedCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePersistingCallbackFacetNull() => TestSerializePersistingCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePersistingCallbackFacetViaMethod() => TestSerializePersistingCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyAccessorFacetViaContributedAction() => TestSerializePropertyAccessorFacetViaContributedAction(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyAccessorFacetViaMethod() => TestSerializePropertyAccessorFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyChoicesFacet() => TestSerializePropertyChoicesFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyDefaultFacetViaMethod() => TestSerializePropertyDefaultFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertySetterFacetViaModifyMethod() => TestSerializePropertySetterFacetViaModifyMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyValidateFacetViaMethod() => TestSerializePropertyValidateFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTitleFacetViaProperty() => TestSerializeTitleFacetViaProperty(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTitleFacetViaTitleMethod() => TestSerializeTitleFacetViaTitleMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeUpdatedCallbackFacetNull() => TestSerializeUpdatedCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeUpdatedCallbackFacetViaMethod() => TestSerializeUpdatedCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeUpdatingCallbackFacetNull() => TestSerializeUpdatingCallbackFacetNull(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeUpdatingCallbackFacetViaMethod() => TestSerializeUpdatingCallbackFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeViewModelEditFacetConvention() => TestSerializeViewModelEditFacetConvention(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeViewModelFacetConvention() => TestSerializeViewModelFacetConvention(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeViewModelSwitchableFacetConvention() => TestSerializeViewModelSwitchableFacetConvention(BinaryRoundTrip);
+
 }

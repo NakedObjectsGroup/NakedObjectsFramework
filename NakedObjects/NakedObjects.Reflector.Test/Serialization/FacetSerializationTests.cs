@@ -54,6 +54,7 @@ public static class FacetSerializationTests {
 
         AssertIFacet(f, dsf);
         Assert.AreEqual(f.IsMultiple, dsf.IsMultiple);
+        Assert.AreEqual(f.ParameterNamesAndTypes[0], dsf.ParameterNamesAndTypes[0]);
         Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
@@ -147,5 +148,232 @@ public static class FacetSerializationTests {
         AssertIFacet(f, dsf);
         Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeDisableForContextFacet(Func<DisableForContextFacet, DisableForContextFacet> roundTripper) {
+        var f = new DisableForContextFacet(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeHideForContextFacet(Func<HideForContextFacet, HideForContextFacet> roundTripper) {
+        var f = new HideForContextFacet(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeLoadedCallbackFacetNull(Func<LoadedCallbackFacetNull, LoadedCallbackFacetNull> roundTripper) {
+        var f = LoadedCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeLoadedCallbackFacetViaMethod(Func<LoadedCallbackFacetViaMethod, LoadedCallbackFacetViaMethod> roundTripper) {
+        var f = new LoadedCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeLoadingCallbackFacetNull(Func<LoadingCallbackFacetNull, LoadingCallbackFacetNull> roundTripper) {
+        var f = LoadingCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeLoadingCallbackFacetViaMethod(Func<LoadingCallbackFacetViaMethod, LoadingCallbackFacetViaMethod> roundTripper) {
+        var f = new LoadingCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeOnPersistingErrorCallbackFacetViaMethod(Func<OnPersistingErrorCallbackFacetViaMethod, OnPersistingErrorCallbackFacetViaMethod> roundTripper) {
+        var f = new OnPersistingErrorCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeOnUpdatingErrorCallbackFacetViaMethod(Func<OnUpdatingErrorCallbackFacetViaMethod, OnUpdatingErrorCallbackFacetViaMethod> roundTripper) {
+        var f = new OnUpdatingErrorCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializePersistedCallbackFacetNull(Func<PersistedCallbackFacetNull, PersistedCallbackFacetNull> roundTripper) {
+        var f = PersistedCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializePersistedCallbackFacetViaMethod(Func<PersistedCallbackFacetViaMethod, PersistedCallbackFacetViaMethod> roundTripper) {
+        var f = new PersistedCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializePersistingCallbackFacetNull(Func<PersistingCallbackFacetNull, PersistingCallbackFacetNull> roundTripper) {
+        var f = PersistingCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializePersistingCallbackFacetViaMethod(Func<PersistingCallbackFacetViaMethod, PersistingCallbackFacetViaMethod> roundTripper) {
+        var f = new PersistingCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializePropertyAccessorFacetViaContributedAction(Func<PropertyAccessorFacetViaContributedAction, PropertyAccessorFacetViaContributedAction> roundTripper) {
+        var f = new PropertyAccessorFacetViaContributedAction(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializePropertyAccessorFacetViaMethod(Func<PropertyAccessorFacetViaMethod, PropertyAccessorFacetViaMethod> roundTripper) {
+        var f = new PropertyAccessorFacetViaMethod(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializePropertyChoicesFacet(Func<PropertyChoicesFacet, PropertyChoicesFacet> roundTripper) {
+        var f = new PropertyChoicesFacet(GetMethod(), new[] { ("name", typeof(TestSerializationClass)) }, null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.ParameterNamesAndTypes[0], dsf.ParameterNamesAndTypes[0]);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializePropertyDefaultFacetViaMethod(Func<PropertyDefaultFacetViaMethod, PropertyDefaultFacetViaMethod> roundTripper) {
+        var f = new PropertyDefaultFacetViaMethod(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializePropertySetterFacetViaModifyMethod(Func<PropertySetterFacetViaModifyMethod, PropertySetterFacetViaModifyMethod> roundTripper) {
+        var f = new PropertySetterFacetViaModifyMethod(GetCallbackMethod(), "name", null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.PropertyName, dsf.PropertyName);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializePropertyValidateFacetViaMethod(Func<PropertyValidateFacetViaMethod, PropertyValidateFacetViaMethod> roundTripper) {
+        var f = new PropertyValidateFacetViaMethod(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeTitleFacetViaProperty(Func<TitleFacetViaProperty, TitleFacetViaProperty> roundTripper) {
+        var f = new TitleFacetViaProperty(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeTitleFacetViaTitleMethod(Func<TitleFacetViaTitleMethod, TitleFacetViaTitleMethod> roundTripper) {
+        var f = new TitleFacetViaTitleMethod(GetMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeUpdatedCallbackFacetNull(Func<UpdatedCallbackFacetNull, UpdatedCallbackFacetNull> roundTripper) {
+        var f = UpdatedCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeUpdatedCallbackFacetViaMethod(Func<UpdatedCallbackFacetViaMethod, UpdatedCallbackFacetViaMethod> roundTripper) {
+        var f = new UpdatedCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeUpdatingCallbackFacetNull(Func<UpdatingCallbackFacetNull, UpdatingCallbackFacetNull> roundTripper) {
+        var f = UpdatingCallbackFacetNull.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeUpdatingCallbackFacetViaMethod(Func<UpdatingCallbackFacetViaMethod, UpdatingCallbackFacetViaMethod> roundTripper) {
+        var f = new UpdatingCallbackFacetViaMethod(GetCallbackMethod(), null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeViewModelEditFacetConvention(Func<ViewModelEditFacetConvention, ViewModelEditFacetConvention> roundTripper) {
+        var f = ViewModelEditFacetConvention.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeViewModelFacetConvention(Func<ViewModelFacetConvention, ViewModelFacetConvention> roundTripper) {
+        var f = ViewModelFacetConvention.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeViewModelSwitchableFacetConvention(Func<ViewModelSwitchableFacetConvention, ViewModelSwitchableFacetConvention> roundTripper) {
+        var f = ViewModelSwitchableFacetConvention.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
     }
 }
