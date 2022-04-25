@@ -1144,7 +1144,7 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                     new JProperty("Byte", new JObject(new JProperty(JsonPropertyNames.Value, 2))), 
                     new JProperty("Char", new JObject(new JProperty(JsonPropertyNames.Value, "A"))), 
                     new JProperty("Decimal", new JObject(new JProperty(JsonPropertyNames.Value, 100.9))), 
-                    new JProperty("DateTime", new JObject(new JProperty(JsonPropertyNames.Value, "2011-12-25T12:13:14Z"))), 
+                    new JProperty("DateTime", new JObject(new JProperty(JsonPropertyNames.Value, "2022-08-01"))), 
                     new JProperty("Double", new JObject(new JProperty(JsonPropertyNames.Value, 200.8))), 
                     new JProperty("EnumByAttributeChoices", new JObject(new JProperty(JsonPropertyNames.Value, 1))), 
                     new JProperty("Float", new JObject(new JProperty(JsonPropertyNames.Value, 300.7))), 
@@ -1208,7 +1208,7 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                           ("DateTime",                            
                            TObjectJson
                                (makePropertyMemberWithFormat "objects" "DateTime" oName "Date Time" "" "date" false 
-                                    (TObjectVal("2011-12-25"))))
+                                    (TObjectVal("2022-08-01"))))
                       TProperty("Double", TObjectJson(makePropertyMemberWithNumber "objects" "Double" oName "Double" "" "decimal" false (TObjectVal(200.8))))                      
                       TProperty
                           ("EnumByAttributeChoices",                            
