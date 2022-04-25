@@ -442,10 +442,14 @@ let GetKeysReturnsKey(persistor : IObjectStore) =
     Assert.AreEqual(1, keys |> Seq.length)
     Assert.AreSame(typeof<Person>.GetProperty("ID"), keys |> Seq.head)
 
-let CanUpdateManyToManyWithUsingEntityMapping codeOnlyPersistor = 
+let CanUpdateManyToManyWithUsingEntityMapping codeOnlyPersistor =
+    updatingCount <- 0
+    updatedCount <- 0
     let squad = First<Squad> codeOnlyPersistor
     let system = First<TestCodeOnly.System> codeOnlyPersistor
 
     system.Squads.Add(squad)
 
     SaveAndEndTransaction codeOnlyPersistor system
+    Assert.AreEqual(2, updatingCount, "updating")
+    Assert.AreEqual(2, updatedCount, "updated")
