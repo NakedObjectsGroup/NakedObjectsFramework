@@ -33,10 +33,21 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
 
     private DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => (DateTime?)nakedObjectAdapter?.Object ?? Now();
 
+    private DateTime GetUtcDate(string dateString) {
+        var year = int.Parse(dateString[..4]);
+        var month = int.Parse(dateString[5..7]);
+        var day = int.Parse(dateString[8..]);
+
+        return new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc).Date;
+    }
+
     protected override DateTime DoParse(string entry) {
         var dateString = entry.Trim();
         try {
-            return DateTime.Parse(dateString);
+            var date = dateString.Length is 10 && dateString.Contains('-')
+                ? GetUtcDate(dateString)
+                : DateTime.Parse(dateString);
+            return date;
         }
         catch (FormatException) {
             throw new InvalidEntryException(FormatMessage(dateString));
