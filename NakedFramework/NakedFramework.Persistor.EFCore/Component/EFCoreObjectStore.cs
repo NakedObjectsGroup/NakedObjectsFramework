@@ -464,21 +464,23 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
         GetContext(nakedObjectAdapter.Object).LoadedNakedObjects.Add(nakedObjectAdapter);
 
     private void LoadObjectIntoNakedObjectsFramework(object domainObject, DbContext context) {
-        var keys = context.GetKeyValues(domainObject);
-        if (keys.Any()) {
-            var oid = oidGenerator.CreateOid(EFCoreHelpers.GetEFCoreProxiedTypeName(domainObject), keys);
-            var nakedObjectAdapter = CreateAdapter(oid, domainObject);
-            injector.InjectInto(nakedObjectAdapter.Object);
-            LoadComplexTypesIntoNakedObjectFramework(nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsGhost());
-            nakedObjectAdapter.UpdateVersion(session);
+        if (context.IsNotMappingObject(domainObject.GetType())) {
+            var keys = context.GetKeyValues(domainObject);
+            if (keys.Any()) {
+                var oid = oidGenerator.CreateOid(EFCoreHelpers.GetEFCoreProxiedTypeName(domainObject), keys);
+                var nakedObjectAdapter = CreateAdapter(oid, domainObject);
+                injector.InjectInto(nakedObjectAdapter.Object);
+                LoadComplexTypesIntoNakedObjectFramework(nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsGhost());
+                nakedObjectAdapter.UpdateVersion(session);
 
-            if (nakedObjectAdapter.ResolveState.IsGhost()) {
-                StartResolving(nakedObjectAdapter);
-                MarkAsLoaded(nakedObjectAdapter);
+                if (nakedObjectAdapter.ResolveState.IsGhost()) {
+                    StartResolving(nakedObjectAdapter);
+                    MarkAsLoaded(nakedObjectAdapter);
+                }
             }
-        }
-        else {
-            LoadComplexTypesIntoNakedObjectFramework(domainObject);
+            else {
+                LoadComplexTypesIntoNakedObjectFramework(domainObject);
+            }
         }
     }
 

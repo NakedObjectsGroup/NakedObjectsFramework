@@ -169,7 +169,7 @@ public class EFCoreLocalContext : IDisposable {
 
         entries.ForEach(e => e.DetectChanges());
 
-        added.AddRange(entries.Where(e => e.State == EntityState.Added).Select(ose => ose.Entity).ToList());
+        added.AddRange(entries.Where(e => e.State is EntityState.Added && WrappedDbContext.IsNotMappingObject(e.Entity.GetType())).Select(ose => ose.Entity).ToList());
 
         updatingNakedObjects = entries.Where(e => e.State != EntityState.Added && e.Members.Any(m => m.IsModified)).SelectMany(entry => CheckForForeignKeys(entry, metamodelManager)).Distinct().Select(o => parent.CreateAdapter(null, o)).ToList();
 

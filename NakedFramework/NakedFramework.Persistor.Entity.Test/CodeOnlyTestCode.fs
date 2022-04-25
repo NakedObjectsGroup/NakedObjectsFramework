@@ -96,6 +96,7 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     jane.Favourite <- vegemite
     jane.Address <- address3
     let jane = context.People.Add(jane)
+
     let count = context.SaveChanges()
     Assert.AreEqual(21, count)
     ()
@@ -224,6 +225,9 @@ let CanUpdatePersistentObjectWithReferenceProperties(codeOnlyPersistor : IObject
     
     setFavouriteAndSave replFav
     setFavouriteAndSave origFav
+
+
+
 
 let CanUpdatePersistentObjectWithReferencePropertiesAbort(codeOnlyPersistor : IObjectStore) = 
     let person = First<Person> codeOnlyPersistor
@@ -437,3 +441,11 @@ let GetKeysReturnsKey(persistor : IObjectStore) =
     let keys = persistor.GetKeys(l.GetType())
     Assert.AreEqual(1, keys |> Seq.length)
     Assert.AreSame(typeof<Person>.GetProperty("ID"), keys |> Seq.head)
+
+let CanUpdateManyToManyWithUsingEntityMapping codeOnlyPersistor = 
+    let squad = First<Squad> codeOnlyPersistor
+    let system = First<TestCodeOnly.System> codeOnlyPersistor
+
+    system.Squads.Add(squad)
+
+    SaveAndEndTransaction codeOnlyPersistor system

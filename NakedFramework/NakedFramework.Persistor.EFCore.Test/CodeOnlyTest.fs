@@ -179,5 +179,8 @@ type CodeOnlyTests() =
         
         [<Test>]
         member x.GetKeysReturnsKey() = GetKeysReturnsKey codeOnlyPersistor
+
+        [<Test>]
+        member x.CanUpdateManyToManyWithUsingEntityMapping() = CanUpdateManyToManyWithUsingEntityMapping codeOnlyPersistor
     end
 

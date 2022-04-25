@@ -8,7 +8,9 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace TestCodeOnly;
 
@@ -24,6 +26,10 @@ public class EFCoreCodeFirstContext : DbContext {
     public DbSet<InternationalAddress> InternationalAddresses { get; set; }
     public DbSet<Person> People { get; set; }
     public DbSet<Product> Products { get; set; }
+
+    public DbSet<Squad> Squads { get; set; }
+
+    public DbSet<TestCodeOnly.System> Systems { get; set; }
 
     public void Delete() => Database.EnsureDeleted();
 
@@ -59,5 +65,30 @@ public class EFCoreCodeFirstContext : DbContext {
         modelBuilder.Entity<Person>().HasData(new { ID = 1, Name = "Ted", FavouriteID = 1, AddressID = 1 });
         modelBuilder.Entity<Person>().HasData(new { ID = 2, Name = "Bob", FavouriteID = 2, AddressID = 2 });
         modelBuilder.Entity<Person>().HasData(new { ID = 3, Name = "Jane", FavouriteID = 3, AddressID = 3 });
+
+        modelBuilder.Entity<Squad>().HasData(new Squad() { Id = 1, Name= "squad1"});
+        modelBuilder.Entity<System>().HasData(new System() { Id = 1, Name = "system1" });
+
+
+        modelBuilder.Entity<TestCodeOnly.System>(entity =>
+        {
+
+            entity.HasMany(d => d.Squads)
+                  .WithMany(p => p.Systems)
+                  .UsingEntity<Dictionary<string, object>>(
+                      "SystemSquadAssignment",
+                      l => l.HasOne<Squad>().WithMany().HasForeignKey("SquadId").HasConstraintName("system_squad_assignment_fk_squad_id"),
+                      r => r.HasOne<TestCodeOnly.System>().WithMany().HasForeignKey("SystemId").HasConstraintName("system_squad_assignment_fk_system_id"),
+                      j =>
+                      {
+                          j.HasKey("SystemId", "SquadId").HasName("system_squad_assignment_pk");
+
+                          j.ToTable("system_squad_assignment", "tracking").HasComment("Associates a system to it's assigned squads");
+
+                          j.IndexerProperty<int>("SystemId").HasColumnName("system_id");
+
+                          j.IndexerProperty<int>("SquadId").HasColumnName("squad_id");
+                      });
+        });
     }
 }
