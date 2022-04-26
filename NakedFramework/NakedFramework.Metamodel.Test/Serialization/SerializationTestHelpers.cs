@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -65,6 +66,10 @@ public static class SerializationTestHelpers {
     public static MethodInfo GetDefaultFunction() => typeof(TestSerializationFunctions).GetMethod(nameof(TestSerializationFunctions.DefaultTest));
 
     public static MethodInfo GetFunction() => typeof(TestSerializationFunctions).GetMethod(nameof(TestSerializationFunctions.InvokeTest));
+
+    public static MethodInfo GetDerive() => typeof(TestSerializationFunctions).GetMethod(nameof(TestSerializationFunctions.Derive));
+
+    public static MethodInfo GetPopulate() => typeof(TestSerializationFunctions).GetMethod(nameof(TestSerializationFunctions.Populate));
 }
 
 public class TestSerializationClass {
@@ -93,6 +98,10 @@ public static class TestSerializationFunctions
     public static object DefaultTest() => null;
 
     public static IQueryable<TestSerializationClass> InvokeTest(string arg) => null;
+
+    public static string[] Derive() => Array.Empty<string>();
+
+    public static object Populate(string[] keys) => null;
 
 }
 

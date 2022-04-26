@@ -44,8 +44,14 @@ public class FacetBinarySerializationTests {
     public void TestBinarySerializeInjectedIContextParameterFacet() => TestSerializeInjectedIContextParameterFacet(BinaryRoundTrip);
 
     [TestMethod]
+    public void TestBinarySerializePropertyAccessorFacetViaFunction() => TestSerializePropertyAccessorFacetViaFunction(BinaryRoundTrip);
+
+    [TestMethod]
     public void TestBinarySerializeStaticFunctionFacet() => TestSerializeStaticFunctionFacet(BinaryRoundTrip);
 
     [TestMethod]
     public void TestBinarySerializeTitleFacetViaTitleFunction() => TestSerializeTitleFacetViaTitleFunction(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeViewModelFacetViaFunctionsConvention() => TestSerializeViewModelFacetViaFunctionsConvention(BinaryRoundTrip);
 }

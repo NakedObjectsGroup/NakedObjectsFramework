@@ -7,21 +7,23 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Serialization;
 using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
-public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyAccessorFacet {
-    private readonly MethodInfo method;
+public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public PropertyAccessorFacetViaFunction(MethodInfo method) =>
-        this.method = method;
+    public PropertyAccessorFacetViaFunction(MethodInfo method, ILogger<PropertyAccessorFacetViaFunction> logger) =>
+        methodWrapper = new MethodSerializationWrapper(method, logger);
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);
 
@@ -29,13 +31,24 @@ public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyA
 
     public object GetProperty(INakedObjectAdapter nakedObjectAdapter, INakedFramework nakedFramework) {
         try {
-            return method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, nakedFramework));
+            return methodWrapper.Invoke<object>(GetMethod().GetParameterValues(nakedObjectAdapter, nakedFramework));
         }
         catch (TargetInvocationException e) {
-            InvokeUtils.InvocationException($"Exception executing {method}", e);
+            InvokeUtils.InvocationException($"Exception executing {GetMethod()}", e);
             return null;
         }
     }
+
+    #endregion
+
+    #region IImperativeFacet Members
+
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
+
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

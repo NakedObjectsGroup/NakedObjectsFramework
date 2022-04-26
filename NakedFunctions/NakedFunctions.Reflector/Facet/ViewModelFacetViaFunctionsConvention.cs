@@ -7,32 +7,50 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Serialization;
 using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
-public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstract {
-    private readonly MethodInfo deriveFunction;
-    private readonly MethodInfo populateFunction;
+public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstract, IMultipleImperativeFacet {
+    private readonly MethodSerializationWrapper deriveWrapper;
+    private readonly MethodSerializationWrapper populateWrapper;
 
     public ViewModelFacetViaFunctionsConvention(MethodInfo deriveFunction,
-                                                MethodInfo populateFunction) {
-        this.deriveFunction = deriveFunction;
-        this.populateFunction = populateFunction;
+                                                MethodInfo populateFunction,
+                                                ILogger<ViewModelFacetViaFunctionsConvention> logger) {
+        deriveWrapper = new MethodSerializationWrapper(deriveFunction, logger);
+        populateWrapper = new MethodSerializationWrapper(populateFunction, logger);
     }
+
+    public int Count => 2;
+
+    public MethodInfo GetMethod(int index) => index switch {
+        0 => deriveWrapper.GetMethod(),
+        1 => populateWrapper.GetMethod(),
+        _ => null
+    };
+
+    public Func<object, object[], object> GetMethodDelegate(int index) => index switch {
+        0 => deriveWrapper.GetMethodDelegate(),
+        1 => populateWrapper.GetMethodDelegate(),
+        _ => null
+    };
 
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
                                     INakedFramework framework) =>
-        deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, framework)) as string[];
+        deriveWrapper.Invoke<string[]>(deriveWrapper.GetMethod().GetParameterValues(nakedObjectAdapter, framework));
 
     public override void Populate(string[] keys,
                                   INakedObjectAdapter nakedObjectAdapter,
                                   INakedFramework framework) {
-        var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys, framework));
+        var newVm = populateWrapper.Invoke<object>(populateWrapper.GetMethod().GetParameterValues(nakedObjectAdapter, keys, framework));
         nakedObjectAdapter.ReplacePoco(newVm);
     }
 }

@@ -43,7 +43,7 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : FunctionalFacetFac
 
             FacetUtils.AddFacets(new IFacet[] {
                 displayAsPropertyFacet,
-                new PropertyAccessorFacetViaFunction(method),
+                new PropertyAccessorFacetViaFunction(method, Logger<PropertyAccessorFacetViaFunction>()),
                 MandatoryFacetDefault.Instance,
                 DisabledFacetAlways.Instance
             }, specification);
