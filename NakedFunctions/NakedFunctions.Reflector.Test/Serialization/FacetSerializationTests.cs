@@ -82,4 +82,67 @@ public static class FacetSerializationTests {
         Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
+
+    // todo ContributedFunctionFacet
+
+    public static void TestSerializeDisableForContextViaFunctionFacet(Func<DisableForContextViaFunctionFacet, DisableForContextViaFunctionFacet> roundTripper)
+    {
+        var m = GetFunction();
+        var f = new DisableForContextViaFunctionFacet(m, null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeHideForContextViaFunctionFacet(Func<HideForContextViaFunctionFacet, HideForContextViaFunctionFacet> roundTripper)
+    {
+        var m = GetFunction();
+        var f = new HideForContextViaFunctionFacet(m, null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeInjectedFacet(Func<InjectedFacet, InjectedFacet> roundTripper)
+    {
+        var f = InjectedFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeInjectedIContextParameterFacet(Func<InjectedIContextParameterFacet, InjectedIContextParameterFacet> roundTripper)
+    {
+        var f = InjectedIContextParameterFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    // todo ProperyAccessViaFunction
+
+    public static void TestSerializeStaticFunctionFacet(Func<StaticFunctionFacet, StaticFunctionFacet> roundTripper)
+    {
+        var f = StaticFunctionFacet.Instance;
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+    }
+
+    public static void TestSerializeTitleFacetViaTitleFunction(Func<TitleFacetViaTitleFunction, TitleFacetViaTitleFunction> roundTripper)
+    {
+        var m = GetFunction();
+        var f = new TitleFacetViaTitleFunction(m, null);
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
+        Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
+        Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    // todo ViewModelFacetViaFunctionsConvention
 }

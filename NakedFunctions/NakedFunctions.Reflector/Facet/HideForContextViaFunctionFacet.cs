@@ -7,35 +7,25 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Error;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
-    private readonly MethodInfo method;
-    private readonly Func<object, object[], object> methodDelegate;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public HideForContextViaFunctionFacet(MethodInfo method, ILogger<HideForContextViaFunctionFacet> logger) {
-        this.method = method;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
+    public HideForContextViaFunctionFacet(MethodInfo method, ILogger<HideForContextViaFunctionFacet> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
     public override Type FacetType => typeof(IHideForContextFacet);
-
-    [OnDeserialized]
-    private static void OnDeserialized(StreamingContext context) { }
 
     #region IHideForContextFacet Members
 
@@ -44,7 +34,7 @@ public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForCont
     public Exception CreateExceptionFor(IInteractionContext ic) => new HiddenException(ic, Hides(ic));
 
     public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
-        var isHidden = methodDelegate.InvokeStatic<bool>(method, method.GetParameterValues(nakedObjectAdapter, framework));
+        var isHidden = methodWrapper.Invoke<bool>(GetMethod().GetParameterValues(nakedObjectAdapter, framework));
         return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
     }
 
@@ -52,9 +42,12 @@ public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForCont
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

@@ -11,32 +11,29 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperativeFacet {
-    private readonly MethodInfo method;
-    private readonly Func<object, object[], object> methodDelegate;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) {
-        this.method = method;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
+    public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>
-        methodDelegate.InvokeStatic<string>(method, method.GetParameterValues(nakedObjectAdapter, framework));
+        methodWrapper.Invoke<string>(GetMethod().GetParameterValues(nakedObjectAdapter, framework));
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

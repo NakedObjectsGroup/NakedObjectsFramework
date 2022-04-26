@@ -30,4 +30,22 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeAutoCompleteViaFunctionFacet() => TestSerializeAutoCompleteViaFunctionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeDisableForContextViaFunctionFacet() => TestSerializeDisableForContextViaFunctionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeHideForContextViaFunctionFacet() => TestSerializeHideForContextViaFunctionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeInjectedFacet() => TestSerializeInjectedFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeInjectedIContextParameterFacet() => TestSerializeInjectedIContextParameterFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeStaticFunctionFacet() => TestSerializeStaticFunctionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTitleFacetViaTitleFunction() => TestSerializeTitleFacetViaTitleFunction(BinaryRoundTrip);
 }
