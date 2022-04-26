@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
@@ -22,7 +23,7 @@ public sealed class SaveFacet : FacetAbstract, ISaveFacet {
 
     public override Type FacetType => typeof(ISaveFacet);
 
-    public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
+    public string Save(INakedFramework framework, INakedObjectAdapter nakedObject, ILogger logger) {
         framework.LifecycleManager.MakePersistent(nakedObject);
         return null;
     }

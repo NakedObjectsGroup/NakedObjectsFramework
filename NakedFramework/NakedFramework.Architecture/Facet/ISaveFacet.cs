@@ -5,11 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
 
 namespace NakedFramework.Architecture.Facet;
 
 public interface ISaveFacet : IFacet {
-    string Save(INakedFramework framework, INakedObjectAdapter nakedObject);
+    string Save(INakedFramework framework, INakedObjectAdapter nakedObject, ILogger logger);
 }

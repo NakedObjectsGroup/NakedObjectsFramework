@@ -16,12 +16,10 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public abstract class SaveFacetAbstract : FacetAbstract, ISaveFacet {
-    protected readonly ILogger logger;
 
-    protected SaveFacetAbstract(ILogger logger) =>
-        this.logger = logger;
+    protected SaveFacetAbstract() { }
 
     public override Type FacetType => typeof(ISaveFacet);
 
-    public abstract string Save(INakedFramework framework, INakedObjectAdapter nakedObject);
+    public abstract string Save(INakedFramework framework, INakedObjectAdapter nakedObject, ILogger logger);
 }

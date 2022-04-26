@@ -33,7 +33,7 @@ public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFace
 
     public override Type FacetType => typeof(ISaveFacet);
 
-    public string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
+    public string Save(INakedFramework framework, INakedObjectAdapter nakedObject, ILogger logger) {
         var msg = Validate(nakedObject, framework);
         if (msg is not null) {
             return msg;

@@ -526,7 +526,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
     private void Save(INakedObjectAdapter nakedObject, ObjectContext objectContext) {
         var saveFacet = nakedObject.Spec.GetFacet<ISaveFacet>();
-        var validate = saveFacet.Save(Framework, nakedObject);
+        var validate = saveFacet.Save(Framework, nakedObject, logger);
         IConsent consent = validate is not null ? new Veto(validate) : new Allow();
         ConsentHandler(consent, objectContext, Cause.Other);
     }

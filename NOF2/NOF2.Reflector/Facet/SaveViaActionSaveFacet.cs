@@ -21,7 +21,7 @@ namespace NOF2.Reflector.Facet;
 public sealed class SaveViaActionSaveFacet : SaveFacetAbstract, ISaveFacet, IImperativeFacet {
     private readonly MethodInfo saveMethod;
 
-    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger) : base(logger) {
+    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger)  {
         this.saveMethod = saveMethod;
         SaveDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
     }
@@ -32,7 +32,7 @@ public sealed class SaveViaActionSaveFacet : SaveFacetAbstract, ISaveFacet, IImp
 
     public Func<object, object[], object> GetMethodDelegate() => SaveDelegate;
 
-    public override string Save(INakedFramework framework, INakedObjectAdapter nakedObject) {
+    public override string Save(INakedFramework framework, INakedObjectAdapter nakedObject, ILogger logger) {
         SaveDelegate.Invoke(saveMethod, nakedObject.GetDomainObject(), Array.Empty<object>());
         return null;
     }

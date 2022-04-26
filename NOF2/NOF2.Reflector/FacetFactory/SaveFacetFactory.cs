@@ -56,7 +56,7 @@ public sealed class SaveFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
             }
         }
         else {
-            saveFacet = new SaveNullFacet(Logger<SaveNullFacet>());
+            saveFacet = SaveNullFacet.Instance;
         }
 
         FacetUtils.AddFacet(saveFacet, specification);

@@ -26,23 +26,27 @@ namespace NOF2.Reflector.Facet;
 [Serializable]
 public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
+    private readonly TypeSerializationWrapper elementType;
+    private readonly TypeSerializationWrapper returnType;
+    private readonly TypeSerializationWrapper onType;
     private readonly int paramCount;
+    
 
     public ActionInvocationFacetViaMethod(MethodInfo method, Type onType, Type returnType, Type elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
         methodWrapper = new MethodSerializationWrapper(method, logger);
 
         paramCount = method.GetParameters().Length;
-        OnType = onType;
-        ReturnType = returnType;
-        ElementType = elementType;
+        this.onType = onType is not null ? new TypeSerializationWrapper(onType) : null;
+        this.returnType = returnType is not null ? new TypeSerializationWrapper(returnType) : null;
+        this.elementType = elementType is not null ? new TypeSerializationWrapper(elementType) : null;
         IsQueryOnly = isQueryOnly;
     }
 
-    public override Type ReturnType { get; }
+    public override Type ReturnType => returnType?.Type;
 
-    public override Type OnType { get; }
+    public override Type OnType => onType?.Type;
 
-    public override Type ElementType { get; }
+    public override Type ElementType => elementType?.Type;
 
     public override bool IsQueryOnly { get; }
 

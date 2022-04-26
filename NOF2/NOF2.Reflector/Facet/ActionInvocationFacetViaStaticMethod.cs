@@ -8,18 +8,14 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
 using NOF2.Container;
 using NOF2.Reflector.Helpers;
 
@@ -27,10 +23,12 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
+    private readonly TypeSerializationWrapper elementType;
     private readonly bool injected;
     private readonly MethodSerializationWrapper methodWrapper;
-
+    private readonly TypeSerializationWrapper onType;
     private readonly int paramCount;
+    private readonly TypeSerializationWrapper returnType;
 
     public ActionInvocationFacetViaStaticMethod(MethodInfo method,
                                                 Type onType,
@@ -40,18 +38,17 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                 ILogger<ActionInvocationFacetViaStaticMethod> logger) {
         methodWrapper = new MethodSerializationWrapper(method, logger);
         (injected, paramCount) = ParameterCount(method);
-        OnType = onType;
-        ReturnType = returnType;
-        ElementType = elementType;
+        this.onType = onType is not null ? new TypeSerializationWrapper(onType) : null;
+        this.returnType = returnType is not null ? new TypeSerializationWrapper(returnType) : null;
+        this.elementType = elementType is not null ? new TypeSerializationWrapper(elementType) : null;
         IsQueryOnly = isQueryOnly;
-        
     }
 
-    public override Type ReturnType { get; }
+    public override Type ReturnType => returnType?.Type;
 
-    public override Type OnType { get; }
+    public override Type OnType => onType?.Type;
 
-    public override Type ElementType { get; }
+    public override Type ElementType => elementType?.Type;
 
     public override bool IsQueryOnly { get; }
 
@@ -92,9 +89,6 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                int resultPage,
                                                INakedFramework framework) =>
         Invoke(nakedObjectAdapter, parameters, framework);
-
-    [OnDeserialized]
-    private static void OnDeserialized(StreamingContext context) { }
 
     #region IImperativeFacet Members
 
