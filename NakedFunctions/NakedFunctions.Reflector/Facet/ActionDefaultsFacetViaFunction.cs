@@ -7,45 +7,35 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsFacetViaFunction : ActionDefaultsFacetAbstract, IImperativeFacet {
-    private readonly MethodInfo method;
-    private readonly Func<object, object[], object> methodDelegate;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public ActionDefaultsFacetViaFunction(MethodInfo method, ILogger<ActionDefaultsFacetViaFunction> logger) {
-        this.method = method;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
+    public ActionDefaultsFacetViaFunction(MethodInfo method, ILogger<ActionDefaultsFacetViaFunction> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         // type safety is given by the reflector only identifying methods that match the 
         // parameter type
-        var defaultValue = methodDelegate.InvokeStatic<object>(method, method.GetParameterValues(nakedObjectAdapter, framework));
+        var defaultValue = methodWrapper.Invoke<object>(GetMethod().GetParameterValues(nakedObjectAdapter, framework));
         return (defaultValue, TypeOfDefaultValue.Explicit);
     }
 
-    [OnDeserialized]
-    private static void OnDeserialized(StreamingContext context) { }
-
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

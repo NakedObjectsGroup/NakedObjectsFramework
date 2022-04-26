@@ -13,8 +13,21 @@ namespace NakedFunctions.Reflector.Test.Serialization;
 
 [TestClass]
 public class FacetBinarySerializationTests {
-
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetViaFunction() => TestSerializeActionChoicesFacetViaFunction(BinaryRoundTrip);
 
+    [TestMethod]
+    public void TestBinarySerializeActionDefaultsFacetViaFunction() => TestSerializeActionDefaultsFacetViaFunction(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionInvocationFacetViaStaticMethod() => TestSerializeActionInvocationFacetViaStaticMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionParameterValidationViaFunctionFacet() => TestSerializeActionParameterValidationViaFunctionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeActionValidationViaFunctionFacet() => TestSerializeActionValidationViaFunctionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeAutoCompleteViaFunctionFacet() => TestSerializeAutoCompleteViaFunctionFacet(BinaryRoundTrip);
 }

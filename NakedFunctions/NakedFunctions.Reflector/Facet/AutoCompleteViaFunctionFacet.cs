@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
@@ -17,8 +16,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 using NakedFunctions.Reflector.Utils;
 
 namespace NakedFunctions.Reflector.Facet;
@@ -26,25 +24,20 @@ namespace NakedFunctions.Reflector.Facet;
 [Serializable]
 public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
     private const int DefaultPageSize = 50;
-    private readonly MethodInfo method;
-    private readonly Func<object, object[], object> methodDelegate;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod,
+    public AutoCompleteViaFunctionFacet(MethodInfo method,
                                         int pageSize,
                                         int minLength,
                                         ILogger<AutoCompleteViaFunctionFacet> logger) {
-        method = autoCompleteMethod;
         PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
         MinLength = minLength;
-        methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
+        methodWrapper = new MethodSerializationWrapper(method, logger);
     }
 
     public int PageSize { get; }
 
     public override Type FacetType => typeof(IAutoCompleteFacet);
-
-    [OnDeserialized]
-    private static void OnDeserialized(StreamingContext context) { }
 
     #region IAutoCompleteFacet Members
 
@@ -52,7 +45,7 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
 
     public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, INakedFramework framework) {
         try {
-            var autoComplete = methodDelegate.InvokeStatic<object>(method, method.GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
+            var autoComplete = methodWrapper.Invoke<object>(GetMethod().GetParameterValues(inObjectAdapter, autoCompleteParm, framework));
 
             switch (autoComplete) {
                 //returning an IQueryable
@@ -67,12 +60,12 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
                         return new[] { autoComplete };
                     }
 
-                    throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {method.Name}");
+                    throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {GetMethod().Name}");
                 }
             }
         }
         catch (ArgumentException ae) {
-            throw new InvokeException($"autoComplete exception: {method.Name} has mismatched parameter type - must be string", ae);
+            throw new InvokeException($"autoComplete exception: {GetMethod().Name} has mismatched parameter type - must be string", ae);
         }
     }
 
@@ -80,9 +73,12 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
 
     #region IImperativeFacet Members
 
-    public MethodInfo GetMethod() => method;
+    /// <summary>
+    ///     See <see cref="IImperativeFacet" />
+    /// </summary>
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     #endregion
 }

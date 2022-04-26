@@ -61,6 +61,10 @@ public static class SerializationTestHelpers {
     public static MethodInfo GetCallbackMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.CallbackMethod));
 
     public static MethodInfo GetChoicesFunction() => typeof(TestSerializationFunctions).GetMethod(nameof(TestSerializationFunctions.ChoicesTest));
+
+    public static MethodInfo GetDefaultFunction() => typeof(TestSerializationFunctions).GetMethod(nameof(TestSerializationFunctions.DefaultTest));
+
+    public static MethodInfo GetFunction() => typeof(TestSerializationFunctions).GetMethod(nameof(TestSerializationFunctions.InvokeTest));
 }
 
 public class TestSerializationClass {
