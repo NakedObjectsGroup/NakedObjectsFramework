@@ -19,7 +19,7 @@ public class ActionChoicesFacetViaFunctionTest {
     [TestMethod]
     public void TestGetChoices() {
         var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
-        var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, Type)>(), typeof(string), null);
+        var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, Type)>(), null);
 
         var result = testFacet.GetChoices(null, null, null);
 

@@ -59,6 +59,8 @@ public static class SerializationTestHelpers {
     public static MethodInfo GetMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.InvokeTest));
 
     public static MethodInfo GetCallbackMethod() => typeof(TestSerializationClass).GetMethod(nameof(TestSerializationClass.CallbackMethod));
+
+    public static MethodInfo GetChoicesFunction() => typeof(TestSerializationFunctions).GetMethod(nameof(TestSerializationFunctions.ChoicesTest));
 }
 
 public class TestSerializationClass {
@@ -76,6 +78,20 @@ public class TestSerializationClass {
 
     public void CallbackMethod() { }
 }
+
+public static class TestSerializationFunctions
+{
+    
+    public static string ValidateTest(string arg) => null;
+
+    public static IList<object> ChoicesTest(string arg, string arg1) => null;
+
+    public static object DefaultTest() => null;
+
+    public static IQueryable<TestSerializationClass> InvokeTest(string arg) => null;
+
+}
+
 
 public class TestMenuClass {
     public static void Menu(IMenu menu) { }
