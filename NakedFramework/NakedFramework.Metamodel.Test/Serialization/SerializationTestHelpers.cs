@@ -105,7 +105,6 @@ public static class TestSerializationFunctions
 
 }
 
-
 public class TestMenuClass {
     public static void Menu(IMenu menu) { }
 }

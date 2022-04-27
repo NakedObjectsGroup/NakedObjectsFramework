@@ -19,6 +19,7 @@ using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.Facet;
 
+[Serializable]
 public abstract class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
