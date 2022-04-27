@@ -11,10 +11,8 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 using NOF2.Menu;
 using NOF2.Reflector.Helpers;
 
@@ -22,23 +20,18 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
-    private readonly MethodInfo method;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) {
-        this.method = method;
-        MethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(method), logger);
-    }
+    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
 
-    private Func<object, object[], object> MethodDelegate { get; set; }
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public MethodInfo GetMethod() => method;
-
-    public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel, ITypeSpecImmutable spec) {
-        var legacyMenu = MethodDelegate.Invoke<IMenu>(method, null, Array.Empty<object>());
-        Menu = NOF2Helpers.ConvertNOF2ToNOFMenu(legacyMenu, metamodel, method.DeclaringType, "Actions");
+        var legacyMenu = methodWrapper.Invoke<IMenu>(Array.Empty<object>());
+        Menu = NOF2Helpers.ConvertNOF2ToNOFMenu(legacyMenu, metamodel, GetMethod().DeclaringType, "Actions");
     }
 }
 

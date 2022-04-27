@@ -36,6 +36,9 @@ public class PropertySerializationWrapper {
         set => property = value;
     }
 
+    public T GetValue<T>(object target) => (T)PropertyInfo.GetValue(target);
+
+
     public Func<object, object[], object> GetMethodDelegate {
         get => getMethodDelegate ??= CreateGetDelegate();
         set => getMethodDelegate = value;

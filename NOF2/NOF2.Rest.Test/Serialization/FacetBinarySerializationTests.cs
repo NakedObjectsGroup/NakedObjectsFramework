@@ -39,4 +39,31 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeMemberNamedViaAboutMethodFacet() => TestSerializeMemberNamedViaAboutMethodFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeMenuFacetViaMethod() => TestSerializeMenuFacetViaMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyChoicesViaAboutMethodFacet() => TestSerializePropertyChoicesViaAboutMethodFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializePropertyValidateViaAboutMethodFacet() => TestSerializePropertyValidateViaAboutMethodFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeSaveNullFacet() => TestSerializeSaveNullFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeSaveViaActionSaveFacet() => TestSerializeSaveViaActionSaveFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeSaveViaActionSaveWithAboutFacet() => TestSerializeSaveViaActionSaveWithAboutFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeStaticFunctionFacet() => TestSerializeStaticFunctionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeStaticMenuMethodFacet() => TestSerializeStaticMenuMethodFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeTitleFacetViaTitleMethod() => TestSerializeTitleFacetViaTitleMethod(BinaryRoundTrip);
 }

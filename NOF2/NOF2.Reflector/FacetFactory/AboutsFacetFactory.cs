@@ -175,7 +175,7 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
 
         if (valueType is not null) {
             var setter = typeof(PropertySetterFacetViaValueHolder<,>).MakeGenericType(property.PropertyType, valueType);
-            var setterFacet = (IFacet)Activator.CreateInstance(setter, property);
+            var setterFacet = (IFacet)Activator.CreateInstance(setter, property, LoggerFactory.CreateLogger(setter));
             facets.Add(setterFacet);
         }
         else if (property.GetSetMethod() is not null) {

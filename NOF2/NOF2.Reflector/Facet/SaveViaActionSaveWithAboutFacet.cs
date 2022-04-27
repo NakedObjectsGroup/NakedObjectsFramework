@@ -12,24 +12,33 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 using NOF2.About;
 using NOF2.Reflector.Helpers;
 
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFacet, ISaveFacet {
-    private readonly MethodInfo saveMethod;
+public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFacet, ISaveFacet, IMultipleImperativeFacet {
+    private readonly MethodSerializationWrapper methodWrapper;
 
     public SaveViaActionSaveWithAboutFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ILogger<SaveViaActionSaveWithAboutFacet> logger)
-        : base(aboutMethod, AboutHelpers.AboutType.Action, logger) {
-        this.saveMethod = saveMethod;
-        SaveDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
-    }
+        : base(aboutMethod, AboutHelpers.AboutType.Action, logger) =>
+        methodWrapper = new MethodSerializationWrapper(saveMethod, logger);
 
-    public Func<object, object[], object> SaveDelegate { get; set; }
+    public int Count => 2;
+
+    public MethodInfo GetMethod(int index) => index switch {
+        0 => methodWrapper.GetMethod(),
+        1 => GetMethod(),
+        _ => null
+    };
+
+    public Func<object, object[], object> GetMethodDelegate(int index) => index switch {
+        0 => methodWrapper.GetMethodDelegate(),
+        1 => GetMethodDelegate(),
+        _ => null
+    };
 
     public override Type FacetType => typeof(ISaveFacet);
 
@@ -39,7 +48,7 @@ public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFace
             return msg;
         }
 
-        SaveDelegate.Invoke(saveMethod, nakedObject.GetDomainObject(), Array.Empty<object>());
+        methodWrapper.Invoke(nakedObject.GetDomainObject());
         return null;
     }
 

@@ -19,18 +19,18 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
-    private readonly MethodSerializationWrapper method;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) => this.method = new MethodSerializationWrapper(method, logger);
+    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) => this.methodWrapper = new MethodSerializationWrapper(method, logger);
 
-    public MethodInfo GetMethod() => method.GetMethod();
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
-    public Func<object, object[], object> GetMethodDelegate() => method.GetMethodDelegate();
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
 
     //Creates a menu based on the definition in the object's Menu method
     public override void CreateMenu(IMetamodelBuilder metamodel, ITypeSpecImmutable spec) {
-        var menu = new MenuBuilder(metamodel, method.MethodInfo.DeclaringType, false, GetMenuName(spec));
-        method.Invoke(new object[] { menu });
+        var menu = new MenuBuilder(metamodel, methodWrapper.MethodInfo.DeclaringType, false, GetMenuName(spec));
+        methodWrapper.Invoke(new object[] { menu });
         Menu = menu.ExtractMenu();
     }
 }

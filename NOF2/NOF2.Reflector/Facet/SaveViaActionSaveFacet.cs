@@ -12,28 +12,26 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Utils;
-using NakedFramework.ParallelReflector.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class SaveViaActionSaveFacet : SaveFacetAbstract, ISaveFacet, IImperativeFacet {
-    private readonly MethodInfo saveMethod;
+    private readonly MethodSerializationWrapper methodWrapper;
 
-    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger)  {
-        this.saveMethod = saveMethod;
-        SaveDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(this.saveMethod), logger);
-    }
-
-    public Func<object, object[], object> SaveDelegate { get; set; }
-
-    public MethodInfo GetMethod() => saveMethod;
-
-    public Func<object, object[], object> GetMethodDelegate() => SaveDelegate;
+    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger) => methodWrapper = new MethodSerializationWrapper(saveMethod, logger);
 
     public override string Save(INakedFramework framework, INakedObjectAdapter nakedObject, ILogger logger) {
-        SaveDelegate.Invoke(saveMethod, nakedObject.GetDomainObject(), Array.Empty<object>());
+        methodWrapper.Invoke(nakedObject.GetDomainObject());
         return null;
     }
+
+    #region IImperativeFacet Members
+
+    public MethodInfo GetMethod() => methodWrapper.GetMethod();
+
+    public Func<object, object[], object> GetMethodDelegate() => methodWrapper.GetMethodDelegate();
+
+    #endregion
 }

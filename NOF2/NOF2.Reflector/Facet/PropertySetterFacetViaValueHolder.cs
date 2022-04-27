@@ -7,29 +7,36 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.Serialization;
 using NOF2.ValueHolder;
 
 namespace NOF2.Reflector.Facet;
 
 [Serializable]
-public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFacetAbstract where T : class, IValueHolder<TU> {
-    private readonly PropertyInfo property;
+public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFacetAbstract, IImperativeFacet where T : class, IValueHolder<TU> {
+    private readonly PropertySerializationWrapper propertyWrapper;
 
-    public PropertySetterFacetViaValueHolder(PropertyInfo property) =>
-        this.property = property;
+    public PropertySetterFacetViaValueHolder(PropertyInfo property, ILogger logger) =>
+        propertyWrapper = new PropertySerializationWrapper(property, logger);
 
     public override string PropertyName {
-        get => property.Name;
+        get => propertyWrapper.PropertyInfo.Name;
         protected set { }
     }
 
+    public MethodInfo GetMethod() => propertyWrapper.GetMethod();
+
+    public Func<object, object[], object> GetMethodDelegate() => propertyWrapper.GetGetMethodDelegate();
+
     public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, INakedFramework framework) {
         try {
-            var valueHolder = (T)property.GetValue(nakedObjectAdapter.Object);
+            var valueHolder = propertyWrapper.GetValue<T>(nakedObjectAdapter.Object);
             if (value.GetDomainObject() is T obj) {
                 valueHolder.Value = obj.Value;
             }
@@ -38,10 +45,13 @@ public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFac
             }
         }
         catch (NullReferenceException e) {
-            InvokeUtils.InvocationException($"Unexpected null valueholder on {property}", e);
+            InvokeUtils.InvocationException($"Unexpected null valueholder on {propertyWrapper.PropertyInfo}", e);
+        }
+        catch (InvalidCastException e) {
+            InvokeUtils.InvocationException($"Unexpected type valueholder on {propertyWrapper.PropertyInfo}", e);
         }
         catch (TargetInvocationException e) {
-            InvokeUtils.InvocationException($"Exception executing {property}", e);
+            InvokeUtils.InvocationException($"Exception executing {propertyWrapper.PropertyInfo}", e);
         }
     }
 }
