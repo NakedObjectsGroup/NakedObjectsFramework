@@ -46,8 +46,8 @@ public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFa
         }
     }
 
-    private static Action<IMetamodelBuilder> GetAddAction(Type type) {
-        void Action(IMetamodelBuilder m) {
+    private static Action<IMetamodelBuilder, IModelIntegrator> GetAddAction(Type type) {
+        void Action(IMetamodelBuilder m, IModelIntegrator mi) {
             if (m.GetSpecification(type) is ITypeSpecBuilder spec) {
                 var functions = m.AllSpecifications.Where(IsStatic).OfType<ITypeSpecBuilder>().ToArray();
                 PopulateDisplayAsPropertyFunctions(spec, functions, m);

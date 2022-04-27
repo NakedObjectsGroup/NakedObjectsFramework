@@ -9,9 +9,7 @@ using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Architecture.Facet;
 
-public interface IContributedFunctionFacet : IFacet {
-    bool IsContributedToObject { get; }
-    bool IsContributedToCollection { get; }
+public interface IContributedFunctionFacet : IFacet, IRemovableFacet {
     bool IsContributedTo(ITypeSpecImmutable spec);
     bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
 }

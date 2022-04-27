@@ -5,13 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Spec;
-
 namespace NakedFramework.Architecture.Facet;
 
-public interface IIntegrationFacet : IFacet, IRemovableFacet {
-    public void Execute(IMetamodelBuilder metamodelBuilder, IModelIntegrator modelIntegrator);
-    public void AddAction(Action<IMetamodelBuilder, IModelIntegrator> action);
-}
+public interface IContributedToObjectFacet : IMarkerFacet { }

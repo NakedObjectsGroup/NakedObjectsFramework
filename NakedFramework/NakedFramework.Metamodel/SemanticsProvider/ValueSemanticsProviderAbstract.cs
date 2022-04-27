@@ -44,7 +44,7 @@ public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueS
 
     #region IValueSemanticsProvider<T> Members
 
-    public T DefaultValue { get; }
+    public virtual T DefaultValue { get; }
 
     public bool IsImmutable { get; }
 

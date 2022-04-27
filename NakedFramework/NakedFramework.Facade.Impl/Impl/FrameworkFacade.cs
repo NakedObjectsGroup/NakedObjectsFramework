@@ -817,10 +817,8 @@ public class FrameworkFacade : IFrameworkFacade {
 
     private static bool IsTargetParm(IActionSpec action, IActionParameterSpec parm) =>
         parm.Number == 0 &&
-        action.GetFacet<IContributedFunctionFacet>() switch {
-            { IsContributedToObject: true } and { IsContributedToCollection: false } => true,
-            _ => false
-        };
+        action.ContainsFacet<IContributedToObjectFacet>() &&
+        !action.ContainsFacet<IContributedToCollectionFacet>();
 
     private static ParameterContext[] FilterParmsForFunctions(IActionSpec action) =>
         action.Parameters
@@ -937,7 +935,7 @@ public class FrameworkFacade : IFrameworkFacade {
         throw new ActionResourceNotFoundNOSException(actionName);
     }
 
-    private static bool IsContributedToCollection(IActionSpec actionSpec) => actionSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
+    private static bool IsContributedToCollection(IActionSpec actionSpec) => actionSpec.ContainsFacet<IContributedToCollectionFacet>();
 
     private ActionContext GetActionOnService(IOidTranslation serviceName, string actionName, ArgumentsContextFacade argumentsContextFacade) {
         return Framework.ReflectorType switch {

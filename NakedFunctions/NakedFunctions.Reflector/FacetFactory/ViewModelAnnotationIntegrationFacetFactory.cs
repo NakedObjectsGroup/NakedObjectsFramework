@@ -71,7 +71,7 @@ public sealed class ViewModelAnnotationIntegrationFacetFactory : FunctionalFacet
         return deriveMethodVmType;
     }
 
-    private Action<IMetamodelBuilder> GetAddAction(Type type) {
+    private Action<IMetamodelBuilder, IModelIntegrator> GetAddAction(Type type) {
         var deriveMethod = GetDeriveMethod(type);
         var populateMethod = GetPopulateMethod(type);
 
@@ -79,7 +79,7 @@ public sealed class ViewModelAnnotationIntegrationFacetFactory : FunctionalFacet
             var onType = GetAndValidateContributedToType(deriveMethod);
             var logger = Logger<ViewModelFacetViaFunctionsConvention>();
 
-            return m => {
+            return (m, mi) => {
                 var spec = m.GetSpecification(onType);
                 var facet = new ViewModelFacetViaFunctionsConvention(deriveMethod, populateMethod, logger);
                 FacetUtils.AddFacet(facet, spec);

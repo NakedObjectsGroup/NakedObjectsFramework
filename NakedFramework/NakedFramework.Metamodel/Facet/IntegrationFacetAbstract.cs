@@ -23,8 +23,8 @@ public abstract class IntegrationFacetAbstract : FacetAbstract, IIntegrationFace
 
     public override Type FacetType => typeof(IIntegrationFacet);
 
-    public abstract void Execute(IMetamodelBuilder metamodelBuilder);
-    public abstract void AddAction(Action<IMetamodelBuilder> action);
+    public abstract void Execute(IMetamodelBuilder metamodelBuilder, IModelIntegrator modelIntegrator);
+    public abstract void AddAction(Action<IMetamodelBuilder, IModelIntegrator> action);
 
     public override bool CanNeverBeReplaced => true;
 

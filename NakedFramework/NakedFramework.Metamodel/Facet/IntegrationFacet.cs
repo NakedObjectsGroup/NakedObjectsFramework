@@ -10,19 +10,21 @@ using NakedFramework.Architecture.Component;
 
 namespace NakedFramework.Metamodel.Facet;
 
+// Not Serializable. Should be removed from metamodel at end of model integration. 
+
 public class IntegrationFacet : IntegrationFacetAbstract {
-    private Action<IMetamodelBuilder> toExecute;
+    private Action<IMetamodelBuilder, IModelIntegrator> toExecute;
 
-    internal IntegrationFacet(Action<IMetamodelBuilder> toExecute) => this.toExecute = toExecute;
+    internal IntegrationFacet(Action<IMetamodelBuilder, IModelIntegrator> toExecute) => this.toExecute = toExecute;
 
-    public override void Execute(IMetamodelBuilder metamodelBuilder) => toExecute(metamodelBuilder);
+    public override void Execute(IMetamodelBuilder metamodelBuilder, IModelIntegrator modelIntegrator) => toExecute(metamodelBuilder, modelIntegrator);
 
-    public override void AddAction(Action<IMetamodelBuilder> action) {
+    public override void AddAction(Action<IMetamodelBuilder, IModelIntegrator> action) {
         var oldToExecute = toExecute;
 
-        toExecute = mb => {
-            oldToExecute(mb);
-            action(mb);
+        toExecute = (mb, mi) => {
+            oldToExecute(mb, mi);
+            action(mb, mi);
         };
         ActionCount++;
     }

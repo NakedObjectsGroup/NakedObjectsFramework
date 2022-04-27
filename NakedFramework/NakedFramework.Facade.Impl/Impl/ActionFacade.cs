@@ -77,7 +77,7 @@ public class ActionFacade : IActionFacade {
 
     public bool IsIdempotent => cachedIsIdempotent ??= WrappedSpec.ContainsFacet<IIdempotentFacet>();
 
-    public bool IsQueryContributedAction => cachedIsQueryContributedAction ??= WrappedSpec.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollection == true;
+    public bool IsQueryContributedAction => cachedIsQueryContributedAction ??= WrappedSpec.ContainsFacet<IContributedToCollectionFacet>();
 
     public string[] CreateNewProperties(IObjectFacade objectFacade) => cachedCreateNewProperties ??= WrappedSpec.GetFacet<ICreateNewFacet>()?.OrderedProperties(objectFacade.WrappedAdapter(), framework) ?? Array.Empty<string>();
 

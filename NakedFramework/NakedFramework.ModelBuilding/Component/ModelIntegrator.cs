@@ -43,14 +43,14 @@ public class ModelIntegrator : IModelIntegrator {
         this.serviceList = serviceList;
     }
 
-    private void AddToRemove(IRemovableFacet facet, ISpecificationBuilder spec) {
+    public void AddToRemove(IRemovableFacet facet, ISpecificationBuilder spec) {
         lock (toRemove) {
             toRemove.Add((facet, spec));
         }
     }
 
     private void Execute((ITypeSpecImmutable spec, IIntegrationFacet facet) t) {
-        t.facet.Execute(metamodelBuilder);
+        t.facet.Execute(metamodelBuilder, this);
         AddToRemove(t.facet, t.spec);
     }
 

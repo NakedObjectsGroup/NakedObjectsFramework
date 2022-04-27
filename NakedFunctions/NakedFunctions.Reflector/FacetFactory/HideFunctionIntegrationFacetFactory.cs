@@ -67,12 +67,12 @@ public sealed class HideFunctionIntegrationFacetFactory : FunctionalFacetFactory
         return FindAndAddFacet(declaringType, targetType, name, action, metamodel);
     }
 
-    private Action<IMetamodelBuilder> GetAddAction(MethodInfo recognizedMethod) {
-        Action<IMetamodelBuilder> action = m => { };
+    private Action<IMetamodelBuilder, IModelIntegrator> GetAddAction(MethodInfo recognizedMethod) {
+        Action<IMetamodelBuilder, IModelIntegrator> action = (m, mi) => { };
 
         var onType = recognizedMethod.ContributedToType();
         if (onType is not null) {
-            action = m => {
+            action = (m, mi) => {
                 if (m.GetSpecification(onType) is ITypeSpecBuilder spec) {
                     var propertyName = recognizedMethod.Name.Remove(0, 4);
                     var property = spec.UnorderedFields.SingleOrDefault(f => f.Identifier.MemberName == propertyName);
@@ -97,7 +97,7 @@ public sealed class HideFunctionIntegrationFacetFactory : FunctionalFacetFactory
 
         if (unMatchedHides.Any()) {
             var actions = unMatchedHides.Select(GetAddAction);
-            void Action(IMetamodelBuilder m) => actions.ForEach(a => a(m));
+            void Action(IMetamodelBuilder m, IModelIntegrator mi) => actions.ForEach(a => a(m, mi));
             metamodel = FacetUtils.AddIntegrationFacet(reflector, type, Action, metamodel);
         }
 

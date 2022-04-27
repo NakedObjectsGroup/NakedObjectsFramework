@@ -24,20 +24,38 @@ public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProces
     public RecordIntegrationFacetFactory(IFacetFactoryOrder<RecordIntegrationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-    private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedTo(ts) == true;
+    private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts, IModelIntegrator mi) {
+        var facet = sa.GetFacet<IContributedFunctionFacet>();
 
-    private static bool IsContributedFunctionToCollectionOf(IActionSpecImmutable sa, IObjectSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedToCollectionOf(ts) == true;
+        if (facet is not null) {
+            mi.AddToRemove(facet, sa);
+
+            return facet.IsContributedTo(ts);
+        }
+
+        return false;
+    }
+
+    private static bool IsContributedFunctionToCollectionOf(IActionSpecImmutable sa, IObjectSpecImmutable ts, IModelIntegrator mi) {
+        var facet = sa.GetFacet<IContributedFunctionFacet>();
+        if (facet is not null) {
+            mi.AddToRemove(facet, sa);
+            return facet.IsContributedToCollectionOf(ts);
+        }
+
+        return false;
+    }
 
     private static bool IsStatic(ITypeSpecImmutable spec) => spec.ContainsFacet<ITypeIsStaticFacet>();
 
-    private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecBuilder[] functions) {
+    private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecBuilder[] functions, IModelIntegrator modelIntegrator) {
         var objectContribActions = functions.AsParallel().SelectMany(functionsSpec => {
             var serviceActions = functionsSpec.UnorderedObjectActions.Where(sa => sa != null).ToArray();
 
             var matchingActionsForObject = new List<IActionSpecImmutable>();
 
             foreach (var sa in serviceActions) {
-                if (IsContributedFunction(sa, spec)) {
+                if (IsContributedFunction(sa, spec, modelIntegrator)) {
                     matchingActionsForObject.Add(sa);
                 }
             }
@@ -56,7 +74,7 @@ public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProces
             var matchingActionsForCollection = new List<IActionSpecImmutable>();
 
             foreach (var sa in serviceActions) {
-                if (IsContributedFunctionToCollectionOf(sa, spec)) {
+                if (IsContributedFunctionToCollectionOf(sa, spec, modelIntegrator)) {
                     matchingActionsForCollection.Add(sa);
                 }
             }
@@ -70,11 +88,11 @@ public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProces
         }
     }
 
-    private static Action<IMetamodelBuilder> GetAddAction(Type type) {
-        void Action(IMetamodelBuilder m) {
+    private static Action<IMetamodelBuilder, IModelIntegrator> GetAddAction(Type type) {
+        void Action(IMetamodelBuilder m, IModelIntegrator mi) {
             if (m.GetSpecification(type) is IObjectSpecBuilder spec) {
                 var functions = m.AllSpecifications.Where(IsStatic).OfType<ITypeSpecBuilder>().ToArray();
-                PopulateContributedFunctions(spec, functions);
+                PopulateContributedFunctions(spec, functions, mi);
             }
         }
 

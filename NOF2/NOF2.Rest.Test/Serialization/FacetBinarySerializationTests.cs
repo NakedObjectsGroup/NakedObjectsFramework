@@ -66,4 +66,7 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeTitleFacetViaTitleMethod() => TestSerializeTitleFacetViaTitleMethod(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeValueHolderWrappingValueSemanticsProvider() => TestSerializeValueHolderWrappingValueSemanticsProvider(BinaryRoundTrip);
 }

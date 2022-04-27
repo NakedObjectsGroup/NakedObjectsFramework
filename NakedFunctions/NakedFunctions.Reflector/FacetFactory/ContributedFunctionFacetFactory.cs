@@ -31,9 +31,9 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
         : base(order.Order, loggerFactory, FeatureType.Actions) =>
         logger = loggerFactory.CreateLogger<ContributedFunctionFacetFactory>();
 
-    private static bool IsContributedToObjectOrCollection(MethodInfo member) => member.IsDefined(typeof(ExtensionAttribute), false);
+    private static bool IsContributedToObject(MethodInfo member) => member.IsDefined(typeof(ExtensionAttribute), false);
 
-    private static Type GetContributeeType(MethodInfo member) => IsContributedToObjectOrCollection(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
+    private static Type GetContributeeType(MethodInfo member) => IsContributedToObject(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
 
     private static bool IsParseable(Type type) => type.IsValueType;
 
@@ -54,12 +54,12 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
                 logger.LogWarning($"Query Contributed Function ignored as it returns a collection: {member.Name}");
             }
             else {
-                var facet = new ContributedFunctionFacet(IsContributedToObjectOrCollection(member));
                 var elementType = parameterType.GetGenericArguments()[0];
-                IObjectSpecBuilder type;
-                (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
-                facet.AddCollectionContributee(type);
+                (IObjectSpecBuilder elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+                var facet = new ContributedFunctionFacet();
+                facet.AddCollectionContributee(elementSpec);
                 FacetUtils.AddFacet(facet, specification);
+                FacetUtils.AddFacet(ContributedToCollectionFacet.Instance, specification);
             }
         }
 
@@ -100,10 +100,12 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
     }
 
     private static IImmutableDictionary<string, ITypeSpecBuilder> AddMenuOrObjectContributedFunction(IReflector reflector, MethodInfo methodInfo, Type parameterType, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        ITypeSpecImmutable type;
-        (type, metamodel) = reflector.LoadSpecification(parameterType, metamodel);
-        var facet = new ContributedFunctionFacet(IsContributedToObjectOrCollection(methodInfo));
-        facet.AddContributee(type);
+        if (IsContributedToObject(methodInfo)) {
+            FacetUtils.AddFacet(ContributedToObjectFacet.Instance, specification);
+        }
+        (ITypeSpecImmutable parameterSpec, metamodel) = reflector.LoadSpecification(parameterType, metamodel);
+        var facet = new ContributedFunctionFacet();
+        facet.AddContributee(parameterSpec);
         FacetUtils.AddFacet(facet, specification);
         return metamodel;
     }
@@ -117,7 +119,7 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
 
             var matchingCollection = parm0.ParameterType.GetProperties().SingleOrDefault(p => p.Name.Equals(parm1.Name, StringComparison.CurrentCultureIgnoreCase));
 
-            return IsContributedToObjectOrCollection(method) &&
+            return IsContributedToObject(method) &&
                    !IsCollection(parm0.ParameterType) &&
                    CollectionUtils.IsGenericEnumerable(parm1.ParameterType) &&
                    matchingCollection is not null &&

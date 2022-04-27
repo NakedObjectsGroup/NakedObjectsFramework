@@ -9,37 +9,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 
 namespace NakedFunctions.Reflector.Facet;
 
-[Serializable]
-public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFunctionFacet {
-    private readonly List<IObjectSpecImmutable> collectionContributees = new();
-    private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new();
-    private readonly List<ITypeSpecImmutable> objectContributees = new();
+// Not Serializable. Should be removed from metamodel at end of model integration. 
 
-    public ContributedFunctionFacet(bool isContributedToObject) =>
-        IsContributedToObject = isContributedToObject;
+public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFunctionFacet, IRemovableFacet {
+    private readonly List<IObjectSpecImmutable> collectionContributees = new();
+    private readonly List<ITypeSpecImmutable> objectContributees = new();
 
     public override Type FacetType => typeof(IContributedFunctionFacet);
 
     public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec) => collectionContributees.Any(objectSpec.IsOfType);
 
+    public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
+
+    public void Remove(ISpecificationBuilder specification) => specification.RemoveFacet(this);
+
     public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
 
-    public void AddCollectionContributee(IObjectSpecBuilder type) {
-        collectionContributees.Add(type);
-    }
-
-    public void AddLocalCollectionContributee(IObjectSpecBuilder type, string pName) => localCollectionContributees.Add((type, pName.ToLower()));
-
-    #region IContributedFunctionFacet Members
-
-    public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
-    public bool IsContributedToObject { get; }
-    public bool IsContributedToCollection => collectionContributees.Any();
-
-    #endregion
+    public void AddCollectionContributee(IObjectSpecBuilder type) => collectionContributees.Add(type);
 }

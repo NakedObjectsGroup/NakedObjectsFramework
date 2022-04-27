@@ -81,7 +81,7 @@ public static class FacetUtils {
         }
     }
 
-    public static IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, Type type, Action<IMetamodelBuilder> action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    public static IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, Type type, Action<IMetamodelBuilder, IModelIntegrator> action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         lock (IntegrationFacetLock) {
             (var specification, metamodel) = reflector.LoadSpecification(type, metamodel);
             var integrationFacet = specification.GetFacet<IIntegrationFacet>();

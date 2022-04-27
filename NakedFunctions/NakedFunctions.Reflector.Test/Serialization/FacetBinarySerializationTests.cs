@@ -32,6 +32,12 @@ public class FacetBinarySerializationTests {
     public void TestBinarySerializeAutoCompleteViaFunctionFacet() => TestSerializeAutoCompleteViaFunctionFacet(BinaryRoundTrip);
 
     [TestMethod]
+    public void TestBinarySerializeContributedToCollectionFacet() => TestSerializeContributedToCollectionFacet(BinaryRoundTrip);
+
+    [TestMethod]
+    public void TestBinarySerializeContributedToObjectFacet() => TestSerializeContributedToObjectFacet(BinaryRoundTrip);
+
+    [TestMethod]
     public void TestBinarySerializeDisableForContextViaFunctionFacet() => TestSerializeDisableForContextViaFunctionFacet(BinaryRoundTrip);
 
     [TestMethod]

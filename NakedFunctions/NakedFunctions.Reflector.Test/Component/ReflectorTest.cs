@@ -966,10 +966,10 @@ public class ReflectorTest {
             var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == FullName<SimpleClass>());
 
             var actionSpecs = spec.OrderedCollectionContributedActions;
-            var facet = actionSpecs[0].GetFacet<IContributedFunctionFacet>();
-
+            var facet = actionSpecs[0].GetFacet<IContributedToCollectionFacet>();
+            var facet1 = actionSpecs[0].GetFacet<IContributedToObjectFacet>();
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet.IsContributedToCollectionOf(spec));
+            Assert.IsNull(facet1);
         }
     }
 

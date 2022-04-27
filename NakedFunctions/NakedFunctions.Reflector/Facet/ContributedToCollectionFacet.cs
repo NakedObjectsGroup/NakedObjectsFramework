@@ -6,12 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.Facet;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Architecture.Facet;
+namespace NakedFunctions.Reflector.Facet;
 
-public interface IIntegrationFacet : IFacet, IRemovableFacet {
-    public void Execute(IMetamodelBuilder metamodelBuilder, IModelIntegrator modelIntegrator);
-    public void AddAction(Action<IMetamodelBuilder, IModelIntegrator> action);
+[Serializable]
+public sealed class ContributedToCollectionFacet : FacetAbstract, IContributedToCollectionFacet, IMarkerFacet {
+    private static ContributedToCollectionFacet instance;
+
+    private ContributedToCollectionFacet() { }
+
+    public static ContributedToCollectionFacet Instance => instance ??= new ContributedToCollectionFacet();
+
+    public override Type FacetType => typeof(IContributedToCollectionFacet);
 }

@@ -50,7 +50,7 @@ public sealed class MenuFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
         methodRemover.SafeRemoveMethod(sharedmenuOrderMethod);
 
         if (sharedmenuOrderMethod is not null) {
-            void Action(IMetamodelBuilder builder) {
+            void Action(IMetamodelBuilder builder, IModelIntegrator mi) {
                 var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(sharedmenuOrderMethod, Array.Empty<object>());
                 var mainMenu = NOF2Helpers.ConvertNOF2ToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name);
                 builder.AddMainMenu(mainMenu);

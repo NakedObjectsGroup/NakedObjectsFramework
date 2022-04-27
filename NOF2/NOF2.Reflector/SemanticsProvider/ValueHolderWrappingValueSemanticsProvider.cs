@@ -7,37 +7,60 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NOF2.ValueHolder;
 
 namespace NOF2.Reflector.SemanticsProvider;
 
 [Serializable]
-public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : ValueSemanticsProviderAbstract<T> where T : class, IValueHolder<TU>, new() {
-    private const bool Immutable = true;
-    private static T defaultValueConst = default;
+public sealed class ValueHolderWrappingValueSemanticsProvider<T, TU> : FacetAbstract, IValueSemanticsProvider<T> where T : class, IValueHolder<TU>, new() {
+    [NonSerialized]
     private T valueHolderInstance;
 
-    public ValueHolderWrappingValueSemanticsProvider()
-        : base(Immutable, defaultValueConst) =>
-        valueHolderInstance = new T();
+    public ValueHolderWrappingValueSemanticsProvider() => valueHolderInstance = new T();
+
+    public T ValueHolderInstance => valueHolderInstance ??= new T();
 
     public override Type FacetType => typeof(IValueSemanticsProvider);
 
     public static Type AdaptedType => typeof(T);
 
-    protected override T DoParse(string entry) {
+    public override bool CanAlwaysReplace => false;
+
+    public T DefaultValue => default;
+
+    public object ParseTextEntry(string entry) {
+        if (entry == null) {
+            throw new ArgumentException();
+        }
+
+        return entry.Trim().Equals("") ? null : DoParse(entry);
+    }
+
+    public string DisplayTitleOf(T obj) => TitleString(obj);
+
+    public string TitleWithMaskOf(string mask, T obj) => TitleStringWithMask(mask, obj);
+
+    public object Value(INakedObjectAdapter adapter, string format = null) => adapter.GetDomainObject<T>().Display(format);
+    public bool IsImmutable => true;
+    public void AddValueFacets(ISpecificationBuilder specification) => ValueTypeHelpers.AddValueFacets(this, specification);
+
+    private T DoParse(string entry) {
         try {
-            return valueHolderInstance.Parse(entry) as T;
+            return ValueHolderInstance.Parse(entry) as T;
         }
         catch (Exception e) {
             throw new InvalidEntryException(e.Message);
         }
     }
 
-    public override object Value(INakedObjectAdapter adapter, string format = null) => adapter.GetDomainObject<T>().Display(format);
-
     public override string ToString() => $"ValueHolderWrappingValueSemanticsProvider<{typeof(T)},{typeof(TU)}>";
+
+    private string TitleStringWithMask(string mask, T obj) => obj.ToString();
+
+    private string TitleString(T obj) => obj.ToString();
 }

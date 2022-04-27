@@ -36,7 +36,7 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
 
     private IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, ISpecificationBuilder specification, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if (specification is IActionSpecImmutable actionSpec) {
-            void Action(IMetamodelBuilder b) {
+            void Action(IMetamodelBuilder b, IModelIntegrator mi) {
                 var displayOnTypeSpec = b.GetSpecification(type) as ITypeSpecBuilder;
                 var adaptedMember = ImmutableSpecFactory.CreateSpecAdapter(actionSpec, b);
                 displayOnTypeSpec.AddContributedFields(new[] { adaptedMember });

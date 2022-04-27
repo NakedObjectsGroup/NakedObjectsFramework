@@ -12,6 +12,7 @@ using NOF2.About;
 using NOF2.Menu;
 using NOF2.Reflector.Facet;
 using NOF2.Reflector.Helpers;
+using NOF2.Reflector.SemanticsProvider;
 using NOF2.Rest.Test.Data.AppLib;
 using NOF2.Title;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
@@ -227,5 +228,13 @@ public static class FacetSerializationTests {
         AssertIFacet(f, dsf);
         Assert.AreEqual(f.GetMethod(), dsf.GetMethod());
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
+    }
+
+    public static void TestSerializeValueHolderWrappingValueSemanticsProvider(Func<ValueHolderWrappingValueSemanticsProvider<Logical, bool>, ValueHolderWrappingValueSemanticsProvider<Logical, bool>> roundTripper)
+    {
+        var f = new ValueHolderWrappingValueSemanticsProvider<Logical, bool>();
+        var dsf = roundTripper(f);
+
+        AssertIFacet(f, dsf);
     }
 }
