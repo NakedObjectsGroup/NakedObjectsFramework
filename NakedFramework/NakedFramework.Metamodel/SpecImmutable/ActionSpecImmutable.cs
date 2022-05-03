@@ -60,22 +60,6 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
 
     #endregion
 
-    #region ISerializable
-
-    // The special constructor is used to deserialize values. 
-    public ActionSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-        OwnerSpec = info.GetValue<ITypeSpecImmutable>("specification");
-        Parameters = info.GetValue<IActionParameterSpecImmutable[]>("parameters");
-    }
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-        info.AddValue<ISpecification>("specification", OwnerSpec);
-        info.AddValue<IActionParameterSpecImmutable[]>("parameters", Parameters);
-
-        base.GetObjectData(info, context);
-    }
-
-    #endregion
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +13,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Menu;
 
 #pragma warning disable CS0618
@@ -31,10 +31,16 @@ public static class SerializationTestHelpers {
         Assert.AreEqual(facet.CanNeverBeReplaced, facet1.CanNeverBeReplaced);
     }
 
-    private static Stream BinarySerialize(IFacet facet) {
+    public static void AssertISpecification(ISpecification spec, ISpecification spec1) {
+        Assert.AreNotEqual(spec, spec1);
+        Assert.AreEqual(spec.Identifier, spec1.Identifier);
+        Assert.AreEqual(spec.FacetTypes, spec1.FacetTypes);
+    }
+
+    private static Stream BinarySerialize(object graph) {
         Stream memoryStream = new MemoryStream();
         var serializer = new BinaryFormatter();
-        serializer.Serialize(memoryStream, facet);
+        serializer.Serialize(memoryStream, graph);
         memoryStream.Position = 0;
         return memoryStream;
     }
@@ -46,6 +52,11 @@ public static class SerializationTestHelpers {
 
     public static T BinaryRoundTrip<T>(T facet) where T : IFacet {
         using var stream = BinarySerialize(facet);
+        return (T)BinaryDeserialize(stream);
+    }
+
+    public static T BinaryRoundTripSpec<T>(T spec) where T : ISpecification {
+        using var stream = BinarySerialize(spec);
         return (T)BinaryDeserialize(stream);
     }
 
@@ -72,6 +83,8 @@ public static class SerializationTestHelpers {
     public static MethodInfo GetPopulate() => typeof(TestSerializationFunctions).GetMethod(nameof(TestSerializationFunctions.Populate));
 }
 
+public class TestSerializationService { }
+
 public class TestSerializationClass {
     public int TestProperty { get; set; } = 1;
 
@@ -88,9 +101,7 @@ public class TestSerializationClass {
     public void CallbackMethod() { }
 }
 
-public static class TestSerializationFunctions
-{
-    
+public static class TestSerializationFunctions {
     public static string ValidateTest(string arg) => null;
 
     public static IList<object> ChoicesTest(string arg, string arg1) => null;
@@ -102,7 +113,6 @@ public static class TestSerializationFunctions
     public static string[] Derive() => Array.Empty<string>();
 
     public static object Populate(string[] keys) => null;
-
 }
 
 public class TestMenuClass {

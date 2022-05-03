@@ -14,9 +14,22 @@ using NakedFramework.Menu;
 namespace NakedFramework.Core.Configuration;
 
 public class CoreConfiguration : ICoreConfiguration {
-    public CoreConfiguration(Func<IMenuFactory, IMenu[]> mainMenus = null) => MainMenus = mainMenus;
+    public CoreConfiguration(Func<IMenuFactory, IMenu[]> mainMenus = null) {
+        if (mainMenus is not null) {
+            AllMainMenus = new[] { mainMenus };
+        }
+    }
 
-    public Func<IMenuFactory, IMenu[]> MainMenus { get; }
+    private Func<IMenuFactory, IMenu[]>[] AllMainMenus { get; set; }
+
+    public Func<IMenuFactory, IMenu[]> MainMenus =>
+        AllMainMenus switch {
+            null => null,
+            _ when AllMainMenus.Length is 1 => AllMainMenus[0], // here to keep old menu behaviour for single function returning null
+            _ => mf => AllMainMenus.SelectMany(mm => mm(mf) ?? Array.Empty<IMenu>()).ToArray()
+        };
+
+    public void AddMainMenu(Func<IMenuFactory, IMenu[]> mainMenu) => AllMainMenus = AllMainMenus is null ? new[] { mainMenu } : AllMainMenus.Append(mainMenu).ToArray();
 
     /// <summary>
     ///     Standard implementation of this contains system value and collection types recognized by the Framework.

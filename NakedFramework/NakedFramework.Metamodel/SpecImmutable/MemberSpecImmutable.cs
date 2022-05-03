@@ -36,18 +36,6 @@ public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable 
     public string Description(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => GetFacet<IDescribedAsFacet>().Description(nakedObjectAdapter, framework);
 
     #endregion
-
-    #region ISerializable
-
-    // The special constructor is used to deserialize values. 
-    protected MemberSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => identifier = info.GetValue<IIdentifier>("identifier");
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-        info.AddValue<IIdentifier>("identifier", identifier);
-        base.GetObjectData(info, context);
-    }
-
-    #endregion
 }
 
 // Copyright (c) Naked Objects Group Ltd.

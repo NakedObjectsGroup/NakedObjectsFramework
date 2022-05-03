@@ -12,16 +12,18 @@ using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.FacetFactory;
+using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
+using NakedFramework.Menu;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Utils;
-using NOF2.Menu;
 using NOF2.Reflector.Helpers;
+using IMenu = NOF2.Menu.IMenu;
 using MenuFacetViaMethod = NOF2.Reflector.Facet.MenuFacetViaMethod;
 
 namespace NOF2.Reflector.FacetFactory;
@@ -52,8 +54,12 @@ public sealed class MenuFacetFactory : AbstractNOF2FacetFactoryProcessor, IMetho
         if (sharedmenuOrderMethod is not null) {
             void Action(IMetamodelBuilder builder, IModelIntegrator mi) {
                 var legacyMenu = (IMenu)InvokeUtils.InvokeStatic(sharedmenuOrderMethod, Array.Empty<object>());
-                var mainMenu = NOF2Helpers.ConvertNOF2ToNOFMenu(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name);
-                builder.AddMainMenu(mainMenu);
+
+                NakedFramework.Menu.IMenu[] MenuBuilder(IMenuFactory mf) {
+                    return new NakedFramework.Menu.IMenu[] { NOF2Helpers.ConvertNOF2ToNOFMenuBuilder(legacyMenu, builder, sharedmenuOrderMethod.DeclaringType, legacyMenu.Name) };
+                }
+
+                mi.CoreConfiguration.AddMainMenu(MenuBuilder);
             }
 
             metamodel = FacetUtils.AddIntegrationFacet(reflector, type, Action, metamodel);

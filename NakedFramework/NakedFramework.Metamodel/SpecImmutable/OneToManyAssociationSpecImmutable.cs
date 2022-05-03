@@ -48,21 +48,7 @@ public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable
 
     #endregion
 
-    #region ISerializable
-
-    // The special constructor is used to deserialize values. 
-    public OneToManyAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-        defaultElementType = info.GetValue<Type>("defaultElementType");
-        defaultElementSpec = info.GetValue<IObjectSpecImmutable>("defaultElementSpec");
-    }
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-        info.AddValue<Type>("defaultElementType", defaultElementType);
-        info.AddValue<IObjectSpecImmutable>("defaultElementSpec", defaultElementSpec);
-        base.GetObjectData(info, context);
-    }
-
-    #endregion
+   
 }
 
 // Copyright (c) Naked Objects Group Ltd.

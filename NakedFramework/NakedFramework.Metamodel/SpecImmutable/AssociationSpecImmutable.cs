@@ -30,17 +30,6 @@ public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociati
 
     #endregion
 
-    #region ISerializable
-
-    // The special constructor is used to deserialize values. 
-    protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => ReturnSpec = info.GetValue<IObjectSpecImmutable>("returnSpec");
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-        info.AddValue<IObjectSpecImmutable>("returnSpec", ReturnSpec);
-        base.GetObjectData(info, context);
-    }
-
-    #endregion
 }
 
 // Copyright (c) Naked Objects Group Ltd.

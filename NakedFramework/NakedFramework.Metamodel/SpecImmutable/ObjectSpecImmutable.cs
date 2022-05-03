@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
@@ -16,13 +15,5 @@ namespace NakedFramework.Metamodel.SpecImmutable;
 public sealed class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {
     public ObjectSpecImmutable(Type type, bool isRecognized) : base(type, isRecognized) { }
 
-
     public IList<IActionSpecImmutable> UnorderedContributedActions => unorderedContributedActions;
-
-    #region ISerializable
-
-    // The special constructor is used to deserialize values. 
-    public ObjectSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }
-
-    #endregion
 }

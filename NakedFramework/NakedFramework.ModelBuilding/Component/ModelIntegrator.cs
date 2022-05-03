@@ -24,7 +24,6 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.ModelBuilding.Component;
 
 public class ModelIntegrator : IModelIntegrator {
-    private readonly ICoreConfiguration coreConfiguration;
     private readonly ILogger<ModelIntegrator> logger;
     private readonly IMenuFactory menuFactory;
     private readonly IMetamodelBuilder metamodelBuilder;
@@ -39,21 +38,17 @@ public class ModelIntegrator : IModelIntegrator {
         this.metamodelBuilder = metamodelBuilder;
         this.menuFactory = menuFactory;
         this.logger = logger;
-        this.coreConfiguration = coreConfiguration;
+        CoreConfiguration = coreConfiguration;
         this.serviceList = serviceList;
     }
+
+    public ICoreConfiguration CoreConfiguration { get; }
 
     public void AddToRemove(IRemovableFacet facet, ISpecificationBuilder spec) {
         lock (toRemove) {
             toRemove.Add((facet, spec));
         }
     }
-
-    private void Execute((ITypeSpecImmutable spec, IIntegrationFacet facet) t) {
-        t.facet.Execute(metamodelBuilder, this);
-        AddToRemove(t.facet, t.spec);
-    }
-
 
     public void Integrate() {
         var services = serviceList.Services;
@@ -78,6 +73,11 @@ public class ModelIntegrator : IModelIntegrator {
         toRemove.ForEach(tr => tr.facet.Remove(tr.spec));
 
         ValidateModel(metamodelBuilder);
+    }
+
+    private void Execute((ITypeSpecImmutable spec, IIntegrationFacet facet) t) {
+        t.facet.Execute(metamodelBuilder, this);
+        AddToRemove(t.facet, t.spec);
     }
 
     private static IMenuActionImmutable[] GetMenuActions(IMenuItemImmutable item) =>
@@ -113,11 +113,12 @@ public class ModelIntegrator : IModelIntegrator {
             var id = spec.Identifier?.ClassName ?? "unknown";
             logger.LogWarning($"Specification with id : {id} has null or empty name");
         }
+
         PopulateContributedActions(spec, services, metamodel);
     }
 
     private void InstallMainMenus(IMetamodelBuilder metamodel) {
-        var menus = coreConfiguration.MainMenus?.Invoke(menuFactory);
+        var menus = CoreConfiguration.MainMenus?.Invoke(menuFactory);
         // Unlike other things specified in objectReflectorConfiguration, this one can't be checked when ObjectReflectorConfiguration is constructed.
         // Allows developer to deliberately not specify any menus
         if (menus is not null) {
@@ -146,7 +147,7 @@ public class ModelIntegrator : IModelIntegrator {
     private static bool IsContributedToCollectionOf(IContributedActionIntegrationFacet integrationFacet, IObjectSpecImmutable objectSpec) =>
         integrationFacet.IsContributedToCollectionOf(objectSpec);
 
-    private  void PopulateContributedActions(IObjectSpecBuilder objectSpec, Type[] services, IMetamodel metamodel) {
+    private void PopulateContributedActions(IObjectSpecBuilder objectSpec, Type[] services, IMetamodel metamodel) {
         var (contribActions, collContribActions, finderActions) = services.AsParallel().Select(serviceType => {
             var serviceSpecification = (ITypeSpecBuilder)metamodel.GetSpecification(serviceType);
             var serviceActions = serviceSpecification.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
@@ -166,6 +167,7 @@ public class ModelIntegrator : IModelIntegrator {
                     if (IsContributedToCollectionOf(contributedActionFacet, objectSpec)) {
                         matchingActionsForCollection.Add(actionSpec);
                     }
+
                     AddToRemove(contributedActionFacet, actionSpec);
                 }
 
@@ -190,7 +192,7 @@ public class ModelIntegrator : IModelIntegrator {
         objectSpec.AddFinderActions(finderActions);
     }
 
-    private void PopulateLocalCollectionContributedActions(IObjectSpecBuilder objectSpec, IMetamodel metamodel) { 
+    private void PopulateLocalCollectionContributedActions(IObjectSpecBuilder objectSpec, IMetamodel metamodel) {
         bool CollectionContributed(IActionSpecImmutable actionSpec, IContributedToLocalCollectionFacet contributedToLocalCollectionFacet, IObjectSpecImmutable elementSpec, string id) {
             if (contributedToLocalCollectionFacet is not null) {
                 AddToRemove(contributedToLocalCollectionFacet, actionSpec);

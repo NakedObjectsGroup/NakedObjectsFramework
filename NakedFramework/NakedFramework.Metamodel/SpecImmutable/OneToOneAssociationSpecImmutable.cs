@@ -19,12 +19,7 @@ public sealed class OneToOneAssociationSpecImmutable : AssociationSpecImmutable,
         : base(identifier, returnSpec) =>
         OwnerSpec = ownerSpec;
 
-    #region ISerializable
-
-    // The special constructor is used to deserialize values. 
-    public OneToOneAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }
-
-    #endregion
+    
 
     public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => null;
 

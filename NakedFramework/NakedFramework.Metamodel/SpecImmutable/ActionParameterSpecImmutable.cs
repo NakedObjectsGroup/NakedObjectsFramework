@@ -38,15 +38,4 @@ public sealed class ActionParameterSpecImmutable : Specification, IActionParamet
 
     #endregion
 
-    #region ISerializable
-
-    // The special constructor is used to deserialize values. 
-    public ActionParameterSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => Specification = info.GetValue<IObjectSpecImmutable>("specification");
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-        info.AddValue<IObjectSpecImmutable>("specification", Specification);
-        base.GetObjectData(info, context);
-    }
-
-    #endregion
 }

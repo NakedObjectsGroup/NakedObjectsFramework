@@ -22,18 +22,9 @@ namespace NakedFramework.Metamodel.Spec;
 ///     For base subclasses or, more likely, to help write tests
 /// </summary>
 [Serializable]
-public abstract class Specification : ISpecificationBuilder, ISerializable, IDeserializationCallback {
+public abstract class Specification : ISpecificationBuilder {
     private IImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
     protected Specification() { }
-
-    #region IDeserializationCallback Members
-
-    public virtual void OnDeserialization(object sender) {
-        tempDict.OnDeserialization(sender);
-        facetsByClass = tempDict.ToImmutableDictionary();
-    }
-
-    #endregion
 
     private void AddFacet(Type facetType, IFacet facet) {
         var existingFacet = GetFacet(facetType);
@@ -74,18 +65,6 @@ public abstract class Specification : ISpecificationBuilder, ISerializable, IDes
             facetsByClass = facetsByClass.Remove(facet.FacetType);
         }
     }
-
-    #endregion
-
-    #region ISerializable
-
-    // temp variables for deserialization 
-    private readonly Dictionary<Type, IFacet> tempDict;
-
-    // The special constructor is used to deserialize values. 
-    protected Specification(SerializationInfo info, StreamingContext context) => tempDict = info.GetValue<Type, IFacet>("facetsByClass");
-
-    public virtual void GetObjectData(SerializationInfo info, StreamingContext context) => info.AddValue<Type, IFacet>("facetsByClass", facetsByClass);
 
     #endregion
 }

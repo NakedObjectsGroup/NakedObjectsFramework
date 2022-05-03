@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
@@ -14,7 +13,4 @@ namespace NakedFramework.Metamodel.SpecImmutable;
 [Serializable]
 public sealed class ServiceSpecImmutable : TypeSpecImmutable, IServiceSpecBuilder {
     public ServiceSpecImmutable(Type type, bool isRecognized) : base(type, isRecognized) { }
-
-    // The special constructor is used to deserialize values. 
-    public ServiceSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }
 }

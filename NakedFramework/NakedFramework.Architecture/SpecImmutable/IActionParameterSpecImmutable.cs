@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.SpecImmutable;
 
-public interface IActionParameterSpecImmutable : ISpecificationBuilder, ISerializable {
+public interface IActionParameterSpecImmutable : ISpecificationBuilder {
     IObjectSpecImmutable Specification { get; }
     bool IsChoicesDefined { get; }
     bool IsMultipleChoicesEnabled { get; }
