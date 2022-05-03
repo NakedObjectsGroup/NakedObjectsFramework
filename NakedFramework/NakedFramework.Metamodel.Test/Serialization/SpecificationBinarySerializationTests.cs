@@ -7,5 +7,29 @@ namespace NakedFramework.Metamodel.Test.Serialization;
 [TestClass]
 public class SpecificationBinarySerializationTests {
     [TestMethod]
-    public void TestBinarySerializeSerializeServiceSpecImmutable() => TestSerializeServiceSpecImmutable(BinaryRoundTripSpec);
+    public void TestBinarySerializeIdentifierImpl() => TestSerializeIdentifierImpl(BinaryRoundTripId);
+
+    [TestMethod]
+    public void TestBinarySerializeActionParameterSpecImmutable() => TestSerializeActionParameterSpecImmutable(BinaryRoundTripSpec);
+
+    [TestMethod]
+    public void TestBinarySerializeActionSpecImmutable() => TestSerializeActionSpecImmutable(BinaryRoundTripSpec);
+
+    [TestMethod]
+    public void TestBinarySerializeActionToAssociationSpecAdapter() => TestSerializeActionToAssociationSpecAdapter(BinaryRoundTripSpec);
+
+    [TestMethod]
+    public void TestBinarySerializeActionToCollectionSpecAdapter() => TestSerializeActionToCollectionSpecAdapter(BinaryRoundTripSpec);
+
+    [TestMethod]
+    public void TestBinarySerializeOneToManyAssociationSpecImmutable() => TestSerializeOneToManyAssociationSpecImmutable(BinaryRoundTripSpec);
+
+    [TestMethod]
+    public void TestBinarySerializeOneToOneAssociationSpecImmutable() => TestSerializeOneToOneAssociationSpecImmutable(BinaryRoundTripSpec);
+
+    [TestMethod]
+    public void TestBinarySerializeServiceSpecImmutable() => TestSerializeServiceSpecImmutable(BinaryRoundTripSpec);
+
+    [TestMethod]
+    public void TestBinarySerializeObjectSpecImmutable() => TestSerializeObjectSpecImmutable(BinaryRoundTripSpec);
 }

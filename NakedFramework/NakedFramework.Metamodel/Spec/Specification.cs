@@ -21,6 +21,11 @@ namespace NakedFramework.Metamodel.Spec;
 /// </summary>
 [Serializable]
 public abstract class Specification : ISpecificationBuilder {
+
+    protected Specification(IIdentifier identifier) {
+        Identifier = identifier;
+    }
+
     private readonly FacetDictionarySerializationWrapper facetDictionary = new();
 
     private void AddFacet(Type facetType, IFacet facet) {
@@ -43,7 +48,7 @@ public abstract class Specification : ISpecificationBuilder {
 
     public virtual Type[] FacetTypes => facetDictionary.Keys.ToArray();
 
-    public virtual IIdentifier Identifier => null;
+    public virtual IIdentifier Identifier { get; }
 
     public bool ContainsFacet(Type facetType) => GetFacet(facetType) is not null;
 

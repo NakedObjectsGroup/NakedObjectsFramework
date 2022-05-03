@@ -394,9 +394,7 @@ public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     }
 
     private class TestSpecificationWithId : Specification {
-        public TestSpecificationWithId(IIdentifier identifier) => Identifier = identifier;
-
-        public override IIdentifier Identifier { get; }
+        public TestSpecificationWithId(IIdentifier identifier) : base(identifier) { }
     }
 
     [TestMethod] // for bug #156

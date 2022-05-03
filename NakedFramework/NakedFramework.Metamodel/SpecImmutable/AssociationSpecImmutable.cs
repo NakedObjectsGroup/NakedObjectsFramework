@@ -6,21 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
-    protected IObjectSpecImmutable ReturnSpec { get; }
-
     protected AssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)
         : base(identifier) =>
-        this.ReturnSpec = returnSpec;
+        ReturnSpec = returnSpec;
+
+    protected IObjectSpecImmutable ReturnSpec { get; }
 
     #region IAssociationSpecImmutable Members
 
@@ -29,7 +27,6 @@ public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociati
     public override IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel) => ReturnSpec;
 
     #endregion
-
 }
 
 // Copyright (c) Naked Objects Group Ltd.

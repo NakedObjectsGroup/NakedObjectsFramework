@@ -6,28 +6,22 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Spec;
-using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
-    private readonly IIdentifier identifier;
-
-    protected MemberSpecImmutable(IIdentifier identifier) => this.identifier = identifier;
+    protected MemberSpecImmutable(IIdentifier identifier) : base(identifier) { }
 
     public abstract IObjectSpecImmutable GetElementSpec(IMetamodel metamodel);
 
     #region IMemberSpecImmutable Members
-
-    public override IIdentifier Identifier => identifier;
 
     public abstract IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel);
 

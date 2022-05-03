@@ -7,19 +7,16 @@
 
 using System;
 using System.Linq;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
-    public ActionSpecImmutable(IIdentifier identifier, 
+    public ActionSpecImmutable(IIdentifier identifier,
                                ITypeSpecImmutable ownerSpec,
                                IActionParameterSpecImmutable[] parameters)
         : base(identifier) {
@@ -50,7 +47,7 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
         ContainsFacet(typeof(IFinderActionFacet)) &&
         Parameters.All(p => p.Specification.IsParseable || p.IsChoicesDefined || p.IsMultipleChoicesEnabled);
 
-    public bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel) => IsFinderMethod && (GetReturnSpec(metamodel).IsOfType(spec) || GetReturnSpec(metamodel).IsCollection && GetElementSpec(metamodel).IsOfType(spec));
+    public bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel) => IsFinderMethod && (GetReturnSpec(metamodel).IsOfType(spec) || (GetReturnSpec(metamodel).IsCollection && GetElementSpec(metamodel).IsOfType(spec)));
     public string StaticName => GetFacet<IMemberNamedFacet>().FriendlyName();
 
     public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && Parameters.Any() &&
@@ -59,7 +56,6 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
     public bool IsStaticFunction => ContainsFacet<IStaticFunctionFacet>();
 
     #endregion
-
 }
 
 // Copyright (c) Naked Objects Group Ltd.

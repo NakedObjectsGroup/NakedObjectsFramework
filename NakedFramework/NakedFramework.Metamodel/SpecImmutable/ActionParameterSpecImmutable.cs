@@ -6,29 +6,22 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Spec;
-using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public sealed class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {
-    public ActionParameterSpecImmutable(IObjectSpecImmutable specification, IIdentifier identifier) {
-        Specification = specification;
-        Identifier = identifier;
-    }
+    public ActionParameterSpecImmutable(IObjectSpecImmutable specification, IIdentifier identifier) : base(identifier) => Specification = specification;
 
     #region IActionParameterSpecImmutable Members
 
     public IObjectSpecImmutable Specification { get; }
-
-    public override IIdentifier Identifier { get; }
 
     public bool IsChoicesEnabled(INakedObjectAdapter adapter, INakedFramework framework) => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || GetFacet<IActionChoicesFacet>()?.IsEnabled(adapter, framework) == true || ContainsFacet<IEnumFacet>());
 
@@ -37,5 +30,4 @@ public sealed class ActionParameterSpecImmutable : Specification, IActionParamet
     public bool IsMultipleChoicesEnabled => ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple;
 
     #endregion
-
 }

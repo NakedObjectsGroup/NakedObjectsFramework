@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
@@ -19,15 +18,13 @@ public sealed class OneToOneAssociationSpecImmutable : AssociationSpecImmutable,
         : base(identifier, returnSpec) =>
         OwnerSpec = ownerSpec;
 
-    
-
-    public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => null;
-
     #region IOneToOneAssociationSpecImmutable Members
 
     public override IObjectSpecImmutable OwnerSpec { get; }
 
     #endregion
+
+    public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => null;
 
     public override string ToString() => $"Reference Association [name=\"{Identifier}\", Type={ReturnSpec} ]";
 }

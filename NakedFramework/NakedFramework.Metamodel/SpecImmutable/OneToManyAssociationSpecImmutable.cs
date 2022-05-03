@@ -6,29 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable, IOneToManyAssociationSpecBuilder {
     private readonly IObjectSpecImmutable defaultElementSpec;
-    private readonly Type defaultElementType;
-    public string[] ContributedActionNames { get; private set; } = Array.Empty<string>();
 
     public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
         : base(name, returnSpec) {
-        defaultElementType = defaultElementSpec.Type;
         OwnerSpec = ownerSpec;
         this.defaultElementSpec = defaultElementSpec;
     }
+
+    public string[] ContributedActionNames { get; private set; } = Array.Empty<string>();
 
     public override string ToString() => $"OneToManyAssociation [name=\"{Identifier}\",Type={ReturnSpec} ]";
 
@@ -47,8 +43,6 @@ public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable
     public override IObjectSpecImmutable OwnerSpec { get; }
 
     #endregion
-
-   
 }
 
 // Copyright (c) Naked Objects Group Ltd.

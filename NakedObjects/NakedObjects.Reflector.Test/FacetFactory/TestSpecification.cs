@@ -18,6 +18,8 @@ namespace NakedObjects.Reflector.Test.FacetFactory;
 
 // This is for testing of facets 
 internal class TestSpecification : Specification, IObjectSpecBuilder {
+    public TestSpecification() : base(null) { }
+
     public Type Type { get; }
     public string FullName { get; }
     public string ShortName { get; }

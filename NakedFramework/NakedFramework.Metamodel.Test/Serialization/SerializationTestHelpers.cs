@@ -12,8 +12,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Menu;
 
 #pragma warning disable CS0618
@@ -31,10 +33,40 @@ public static class SerializationTestHelpers {
         Assert.AreEqual(facet.CanNeverBeReplaced, facet1.CanNeverBeReplaced);
     }
 
+    public static void AssertArrayAreEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual) {
+        if (expected is null && actual is null) {
+            return;
+        }
+
+        Assert.AreEqual(expected.Count(), actual.Count());
+        var zipped = expected.Zip(actual);
+
+        foreach (var (first, second) in zipped) {
+            Assert.AreEqual(first, second);
+        }
+    }
+
     public static void AssertISpecification(ISpecification spec, ISpecification spec1) {
         Assert.AreNotEqual(spec, spec1);
         Assert.AreEqual(spec.Identifier, spec1.Identifier);
-        Assert.AreEqual(spec.FacetTypes, spec1.FacetTypes);
+        AssertArrayAreEqual(spec.FacetTypes, spec1.FacetTypes);
+    }
+
+    public static void AssertTypeSpecification(ITypeSpecImmutable spec, ITypeSpecImmutable spec1) {
+        Assert.AreEqual(spec.Type, spec1.Type);
+        Assert.AreEqual(spec.FullName, spec1.FullName);
+        Assert.AreEqual(spec.ShortName, spec1.ShortName);
+        Assert.AreEqual(spec.ObjectMenu, spec1.ObjectMenu);
+        AssertArrayAreEqual(spec.OrderedObjectActions, spec1.OrderedObjectActions);
+        AssertArrayAreEqual(spec.OrderedContributedActions, spec1.OrderedContributedActions);
+        AssertArrayAreEqual(spec.OrderedCollectionContributedActions, spec1.OrderedCollectionContributedActions);
+        AssertArrayAreEqual(spec.OrderedFinderActions, spec1.OrderedFinderActions);
+        AssertArrayAreEqual(spec.Interfaces, spec1.Interfaces);
+        AssertArrayAreEqual(spec.Subclasses, spec1.Subclasses);
+        Assert.AreEqual(spec.IsObject, spec1.IsObject);
+        Assert.AreEqual(spec.IsCollection, spec1.IsCollection);
+        Assert.AreEqual(spec.IsQueryable, spec1.IsQueryable);
+        Assert.AreEqual(spec.IsParseable, spec1.IsParseable);
     }
 
     private static Stream BinarySerialize(object graph) {
@@ -57,6 +89,11 @@ public static class SerializationTestHelpers {
 
     public static T BinaryRoundTripSpec<T>(T spec) where T : ISpecification {
         using var stream = BinarySerialize(spec);
+        return (T)BinaryDeserialize(stream);
+    }
+
+    public static T BinaryRoundTripId<T>(T id) where T : IIdentifier {
+        using var stream = BinarySerialize(id);
         return (T)BinaryDeserialize(stream);
     }
 

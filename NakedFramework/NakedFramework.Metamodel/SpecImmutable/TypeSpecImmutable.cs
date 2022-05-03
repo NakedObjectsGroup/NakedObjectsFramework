@@ -25,12 +25,19 @@ namespace NakedFramework.Metamodel.SpecImmutable;
 [Serializable]
 public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     private IIdentifier identifier;
+    private ImmutableListSerializationWrapper<ITypeSpecImmutable> interfaces;
+    private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedCollectionContributedActions;
+    private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedContributedActions;
+    private ImmutableListSerializationWrapper<IAssociationSpecImmutable> orderedFields;
+    private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedFinderActions;
 
-    [NonSerialized]
-    private List<ITypeSpecImmutable> unorderedSubclasses = new();
+    private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedObjectActions;
 
     [NonSerialized]
     private Type[] services;
+
+    private ImmutableListSerializationWrapper<ITypeSpecImmutable> subclasses;
+    private TypeSerializationWrapper typeWrapper;
 
     [NonSerialized]
     private List<IActionSpecImmutable> unorderedCollectionContributedActions = new();
@@ -47,17 +54,11 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     [NonSerialized]
     private List<IActionSpecImmutable> unorderedObjectActions;
 
-    private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedObjectActions;
-    private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedContributedActions;
-    private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedCollectionContributedActions;
-    private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedFinderActions;
-    private ImmutableListSerializationWrapper<IAssociationSpecImmutable> orderedFields;
-    private ImmutableListSerializationWrapper<ITypeSpecImmutable> interfaces;
-    private ImmutableListSerializationWrapper<ITypeSpecImmutable> subclasses;
-    private TypeSerializationWrapper typeWrapper;
+    [NonSerialized]
+    private List<ITypeSpecImmutable> unorderedSubclasses = new();
 
-    protected TypeSpecImmutable(Type type, bool isRecognized) {
-        typeWrapper = new(type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type);
+    protected TypeSpecImmutable(Type type, bool isRecognized) : base(null) {
+        typeWrapper = new TypeSerializationWrapper(type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type);
         ReflectionStatus = isRecognized ? ReflectionStatus.PlaceHolder : ReflectionStatus.PendingIntrospection;
     }
 
@@ -114,19 +115,15 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     }
 
     public void CompleteIntegration() {
-        orderedFields = new(CreateOrderedImmutableList(UnorderedFields));
+        orderedFields = new ImmutableListSerializationWrapper<IAssociationSpecImmutable>(CreateOrderedImmutableList(UnorderedFields));
         orderedFields.ImmutableList.Select(a => new FacetUtils.ActionHolder(a)).ToList().ErrorOnDuplicates();
-        orderedObjectActions = new(CreateOrderedImmutableList(UnorderedObjectActions));
-        orderedContributedActions = new(CreateOrderedContributedActions());
-        orderedCollectionContributedActions = new(CreateOrderedImmutableList(unorderedCollectionContributedActions));
-        orderedFinderActions = new(CreateOrderedImmutableList(unorderedFinderActions));
-        subclasses = new(unorderedSubclasses.ToImmutableList());
+        orderedObjectActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(UnorderedObjectActions));
+        orderedContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedContributedActions());
+        orderedCollectionContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(unorderedCollectionContributedActions));
+        orderedFinderActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(unorderedFinderActions));
+        subclasses = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(unorderedSubclasses.ToImmutableList());
 
         ClearUnorderedCollections();
-    }
-
-    private ImmutableList<IActionSpecImmutable> CreateOrderedContributedActions() {
-        return Order(unorderedContributedActions).GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new { service, actions }).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToImmutableList();
     }
 
     public IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -135,11 +132,11 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         FullName = introspector.FullName;
         ShortName = introspector.ShortName;
         Superclass = introspector.Superclass;
-        interfaces = new(introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList());
+        interfaces = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList());
         unorderedFields = introspector.UnorderedFields.ToList();
         unorderedObjectActions = introspector.UnorderedObjectActions.ToList();
         DecorateAllFacets(decorator);
-        typeWrapper = new(introspector.SpecificationType);
+        typeWrapper = new TypeSerializationWrapper(introspector.SpecificationType);
         ReflectionStatus = ReflectionStatus.Introspected;
         return metamodel;
     }
@@ -202,6 +199,10 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     public string[] GetLocallyContributedActionNames(string id) {
         return OrderedFields.OfType<IOneToManyAssociationSpecImmutable>().SingleOrDefault(a => a.Identifier.MemberName == id)?.ContributedActionNames ?? Array.Empty<string>();
+    }
+
+    private ImmutableList<IActionSpecImmutable> CreateOrderedContributedActions() {
+        return Order(unorderedContributedActions).GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new { service, actions }).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToImmutableList();
     }
 
     private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
