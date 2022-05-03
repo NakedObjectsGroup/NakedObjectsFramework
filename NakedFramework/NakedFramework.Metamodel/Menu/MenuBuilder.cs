@@ -156,18 +156,7 @@ public class MenuBuilder : IMenu {
     }
 
     private IActionSpecImmutable GetAction(string actionName, bool ignoreCase) {
-        // TODO revisit this would prefer not to have to check both collections. 
-        IList<IActionSpecImmutable> actions;
-        if (ObjectSpec.OrderedObjectActions is not null && ObjectSpec.OrderedObjectActions.Any()) {
-            actions = ObjectSpec.OrderedObjectActions.ToList();
-        }
-        else if (ObjectSpec is ITypeSpecBuilder spec) {
-            actions = spec.UnorderedObjectActions;
-        }
-        else {
-            actions = Array.Empty<IActionSpecImmutable>();
-        }
-
+        var actions = ObjectSpec.OrderedObjectActions?.Any() is true ? ObjectSpec.OrderedObjectActions.ToArray() : Array.Empty<IActionSpecImmutable>();
         var compare = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
 
         return actions.FirstOrDefault(a => string.Equals(a.Identifier.MemberName, actionName, compare));

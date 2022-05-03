@@ -7,14 +7,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
-using NakedFramework.Metamodel.Utils;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Spec;
 
@@ -23,8 +21,7 @@ namespace NakedFramework.Metamodel.Spec;
 /// </summary>
 [Serializable]
 public abstract class Specification : ISpecificationBuilder {
-    private IImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
-    protected Specification() { }
+    private readonly FacetDictionarySerializationWrapper facetDictionary = new();
 
     private void AddFacet(Type facetType, IFacet facet) {
         var existingFacet = GetFacet(facetType);
@@ -38,31 +35,31 @@ public abstract class Specification : ISpecificationBuilder {
                 throw new ReflectionException($"Attempting to replace non-replaceable {existingFacet} with {facet}");
             }
 
-            facetsByClass = facetsByClass.SetItem(facetType, facet);
+            facetDictionary.AddFacet(facet);
         }
     }
 
     #region ISpecificationBuilder Members
 
-    public virtual Type[] FacetTypes => facetsByClass.Keys.ToArray();
+    public virtual Type[] FacetTypes => facetDictionary.Keys.ToArray();
 
     public virtual IIdentifier Identifier => null;
 
     public bool ContainsFacet(Type facetType) => GetFacet(facetType) is not null;
 
-    public bool ContainsFacet<T>() where T : IFacet => GetFacet(typeof(T)) is not null;
+    public bool ContainsFacet<T>() where T : IFacet => ContainsFacet(typeof(T));
 
-    public virtual IFacet GetFacet(Type facetType) => facetsByClass.ContainsKey(facetType) ? facetsByClass[facetType] : null;
+    public virtual IFacet GetFacet(Type facetType) => facetDictionary.GetFacet(facetType);
 
     public T GetFacet<T>() where T : IFacet => (T)GetFacet(typeof(T));
 
-    public virtual IEnumerable<IFacet> GetFacets() => facetsByClass.Values;
+    public virtual IEnumerable<IFacet> GetFacets() => facetDictionary.Values;
 
     public virtual void AddFacet(IFacet facet) => AddFacet(facet.FacetType, facet);
 
     public void RemoveFacet(IFacet facet) {
         if (ContainsFacet(facet.FacetType)) {
-            facetsByClass = facetsByClass.Remove(facet.FacetType);
+            facetDictionary.RemoveFacet(facet);
         }
     }
 

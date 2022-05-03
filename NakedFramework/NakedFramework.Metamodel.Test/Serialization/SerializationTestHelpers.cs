@@ -45,9 +45,9 @@ public static class SerializationTestHelpers {
         return memoryStream;
     }
 
-    private static IFacet BinaryDeserialize(Stream stream) {
+    private static object BinaryDeserialize(Stream stream) {
         var deserializer = new BinaryFormatter();
-        return (IFacet)deserializer.Deserialize(stream);
+        return deserializer.Deserialize(stream);
     }
 
     public static T BinaryRoundTrip<T>(T facet) where T : IFacet {

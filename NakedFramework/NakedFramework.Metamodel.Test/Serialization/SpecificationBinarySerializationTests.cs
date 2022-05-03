@@ -6,6 +6,6 @@ namespace NakedFramework.Metamodel.Test.Serialization;
 
 [TestClass]
 public class SpecificationBinarySerializationTests {
-    [TestMethod, Ignore]
+    [TestMethod]
     public void TestBinarySerializeSerializeServiceSpecImmutable() => TestSerializeServiceSpecImmutable(BinaryRoundTripSpec);
 }
