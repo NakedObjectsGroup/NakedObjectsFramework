@@ -137,9 +137,9 @@ export function checkNotNull<T>(v: T | undefined | null) {
 
 export function toDateString(dt: Date) {
 
-    const year = dt.getFullYear().toString();
-    let month = (dt.getMonth() + 1).toString();
-    let day = dt.getDate().toString();
+    const year = dt.getUTCFullYear().toString();
+    let month = (dt.getUTCMonth() + 1).toString();
+    let day = dt.getUTCDate().toString();
 
     month = month.length === 1 ? `0${month}` : month;
     day = day.length === 1 ? `0${day}` : day;
@@ -153,9 +153,9 @@ export function toDateTimeString(dt: Date) {
 
 export function toTimeString(dt: Date) {
 
-    let hours = dt.getHours().toString();
-    let minutes = dt.getMinutes().toString();
-    let seconds = dt.getSeconds().toString();
+    let hours = dt.getUTCHours().toString();
+    let minutes = dt.getUTCMinutes().toString();
+    let seconds = dt.getUTCSeconds().toString();
 
     hours = hours.length === 1 ? `0${hours}` : hours;
     minutes = minutes.length === 1 ? `0${minutes}` : minutes;
