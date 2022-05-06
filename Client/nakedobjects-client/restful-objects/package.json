@@ -26,7 +26,7 @@
         "dest": "../dist/nakedobjects-restful-objects"
     },
     "name": "@nakedobjects/restful-objects",
-    "version": "13.0.0-beta02",
+    "version": "13.0.0-beta03",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
