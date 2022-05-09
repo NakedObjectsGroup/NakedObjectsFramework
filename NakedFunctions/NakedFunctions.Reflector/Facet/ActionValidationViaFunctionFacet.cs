@@ -30,9 +30,6 @@ public sealed class ActionValidationViaFunctionFacet : FacetAbstract, IActionVal
 
     public override Type FacetType => typeof(IActionValidationFacet);
 
-    [OnDeserialized]
-    private static void OnDeserialized(StreamingContext context) { }
-
     #region IActionValidationFacet Members
 
     public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.Framework, ic.ProposedArguments);
