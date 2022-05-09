@@ -8,5 +8,7 @@
 namespace NakedFramework.Architecture.Component;
 
 public interface IModelBuilder {
-    public void Build();
+    public void Build(string filePath = null);
+
+    public void RestoreFromFile(string filePath);
 }

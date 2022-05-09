@@ -15,25 +15,23 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Component;
 
-[Serializable]
 public sealed class MetamodelHolder : IMetamodelBuilder {
-    private readonly ISpecificationCache cache;
     private readonly ILogger<MetamodelHolder> logger;
 
     public MetamodelHolder(ISpecificationCache cache, ILogger<MetamodelHolder> logger) {
-        this.cache = cache;
+        this.Cache = cache;
         this.logger = logger;
     }
 
     private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
         var key = TypeKeyUtils.GetKeyForType(type);
         TypeUtils.GetType(type.FullName); // This should ensure type is cached 
-        return cache.GetSpecification(key);
+        return Cache.GetSpecification(key);
     }
 
     #region IMetamodelBuilder Members
 
-    public ITypeSpecImmutable[] AllSpecifications => cache.AllSpecifications();
+    public ITypeSpecImmutable[] AllSpecifications => Cache.AllSpecifications();
 
     public ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false) {
         try {
@@ -58,11 +56,19 @@ public sealed class MetamodelHolder : IMetamodelBuilder {
         return GetSpecification(type);
     }
 
-    public void Add(Type type, ITypeSpecBuilder spec) => cache.Cache(TypeKeyUtils.GetKeyForType(type), spec);
+    public void Add(Type type, ITypeSpecBuilder spec) => Cache.Cache(TypeKeyUtils.GetKeyForType(type), spec);
 
-    public void AddMainMenu(IMenuImmutable menu) => cache.Cache(menu);
+    public void AddMainMenu(IMenuImmutable menu) => Cache.Cache(menu);
 
-    public IMenuImmutable[] MainMenus => cache.MainMenus();
+    public void ReplaceCache(ISpecificationCache newCache) => Cache = newCache;
+
+    public void SaveToFile(string filePath) {
+        Cache.Serialize(filePath);
+    }
+
+    public ISpecificationCache Cache { get; private set; }
+
+    public IMenuImmutable[] MainMenus => Cache.MainMenus();
 
     #endregion
 }

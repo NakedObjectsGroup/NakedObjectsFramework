@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
@@ -102,6 +103,13 @@ public static class SerializationTestHelpers {
         using var stream = BinarySerialize(menu);
         return (T)BinaryDeserialize(stream);
     }
+
+    public static T BinaryRoundTripCache<T>(T cache) where T : ISpecificationCache
+    {
+        using var stream = BinarySerialize(cache);
+        return (T)BinaryDeserialize(stream);
+    }
+
 
     public static PropertyInfo GetProperty() => typeof(TestSerializationClass).GetProperty(nameof(TestSerializationClass.TestProperty));
 

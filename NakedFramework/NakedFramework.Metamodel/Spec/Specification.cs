@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -43,6 +44,7 @@ public abstract class Specification : ISpecificationBuilder {
             facetDictionary.AddFacet(facet);
         }
     }
+
 
     #region ISpecificationBuilder Members
 

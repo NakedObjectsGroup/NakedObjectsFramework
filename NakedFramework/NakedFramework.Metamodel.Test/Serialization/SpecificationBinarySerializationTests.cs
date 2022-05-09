@@ -38,4 +38,7 @@ public class SpecificationBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeMenuImmutable() => TestSerializeMenuImmutable(BinaryRoundTripMenu);
+
+    [TestMethod]
+    public void TestBinarySerializeImmutableInMemorySpecCache() => TestSerializeImmutableInMemorySpecCache(BinaryRoundTripCache);
 }

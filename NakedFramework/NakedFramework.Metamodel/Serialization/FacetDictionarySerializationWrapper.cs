@@ -12,7 +12,7 @@ public class FacetDictionarySerializationWrapper {
     [NonSerialized]
     private IImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
 
-    private Dictionary<TypeSerializationWrapper, IFacet> serializeDictionary;
+    private List<(TypeSerializationWrapper key, IFacet value)> serializeList;
 
     public IEnumerable<Type> Keys => facetsByClass.Keys;
 
@@ -27,8 +27,8 @@ public class FacetDictionarySerializationWrapper {
     public void RemoveFacet(IFacet facet) => facetsByClass = facetsByClass.Remove(facet.FacetType);
 
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => facetsByClass = serializeDictionary.ToDictionary(kvp => kvp.Key.Type, kvp => kvp.Value).ToImmutableDictionary();
+    private void OnDeserialized(StreamingContext context) => facetsByClass = serializeList.ToDictionary(t => t.key.Type, t => t.value).ToImmutableDictionary();
 
     [OnSerializing]
-    private void OnSerializing(StreamingContext context) => serializeDictionary = facetsByClass.ToDictionary(kvp => new TypeSerializationWrapper(kvp.Key), kvp => kvp.Value);
+    private void OnSerializing(StreamingContext context) => serializeList = facetsByClass.Select(kvp => (new TypeSerializationWrapper(kvp.Key), kvp.Value)).ToList();
 }

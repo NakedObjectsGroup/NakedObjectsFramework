@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Metamodel.Adapter;
+using NakedFramework.Metamodel.Component;
 using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
@@ -103,4 +104,14 @@ public static class SpecificationSerializationTests {
         Assert.AreEqual(m.Grouping, dsm.Grouping);
         AssertISpecification(m.Action, dsm.Action);
     }
+
+    public static void TestSerializeImmutableInMemorySpecCache(Func<ImmutableInMemorySpecCache, ImmutableInMemorySpecCache> roundTripper)
+    {
+        var m = new ImmutableInMemorySpecCache();
+        var dsm = roundTripper(m);
+
+       
+    }
+
+
 }

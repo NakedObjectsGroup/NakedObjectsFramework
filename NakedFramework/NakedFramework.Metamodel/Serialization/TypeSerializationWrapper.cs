@@ -33,12 +33,14 @@ public class TypeSerializationWrapper {
         }
     }
 
-    private Type FindType() {
+    private Type FindType() => FindType(assemblyName, typeName);
+
+    private static Type FindType(string an, string tn) {
         try {
-            return AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.FullName == assemblyName)?.GetType(typeName) ?? throw new NullReferenceException();
+            return AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.FullName == an)?.GetType(tn) ?? throw new NullReferenceException();
         }
         catch (NullReferenceException) {
-            throw new ReflectionException($"Failed to find {assemblyName}:{typeName}");
+            throw new ReflectionException($"Failed to find {an}:{tn}");
         }
     }
 }
