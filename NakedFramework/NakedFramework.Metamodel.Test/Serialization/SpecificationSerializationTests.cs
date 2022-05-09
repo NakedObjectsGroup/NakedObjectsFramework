@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Metamodel.Adapter;
+using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
@@ -82,5 +82,25 @@ public static class SpecificationSerializationTests {
 
         AssertISpecification(s, dss);
         //AssertTypeSpecification(dss, dss);
+    }
+
+    public static void TestSerializeMenuImmutable(Func<MenuImmutable, MenuImmutable> roundTripper) {
+        var m = new MenuImmutable("name", "id", "grouping", null);
+        var dsm = roundTripper(m);
+
+        Assert.AreEqual(m.Name, dsm.Name);
+        Assert.AreEqual(m.Id, dsm.Id);
+        Assert.AreEqual(m.Grouping, dsm.Grouping);
+        Assert.AreEqual(m.MenuItems, dsm.MenuItems);
+    }
+
+    public static void TestSerializeMenuAction(Func<MenuAction, MenuAction> roundTripper) {
+        var m = new MenuAction(new ActionSpecImmutable(null, null, null), "name");
+        var dsm = roundTripper(m);
+
+        Assert.AreEqual(m.Name, dsm.Name);
+        Assert.AreEqual(m.Id, dsm.Id);
+        Assert.AreEqual(m.Grouping, dsm.Grouping);
+        AssertISpecification(m.Action, dsm.Action);
     }
 }

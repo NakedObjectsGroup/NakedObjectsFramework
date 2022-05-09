@@ -32,4 +32,10 @@ public class SpecificationBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeObjectSpecImmutable() => TestSerializeObjectSpecImmutable(BinaryRoundTripSpec);
+
+    [TestMethod]
+    public void TestBinarySerializeMenuAction() => TestSerializeMenuAction(BinaryRoundTripMenu);
+
+    [TestMethod]
+    public void TestBinarySerializeMenuImmutable() => TestSerializeMenuImmutable(BinaryRoundTripMenu);
 }

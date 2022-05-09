@@ -14,6 +14,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Menu;
@@ -94,6 +95,11 @@ public static class SerializationTestHelpers {
 
     public static T BinaryRoundTripId<T>(T id) where T : IIdentifier {
         using var stream = BinarySerialize(id);
+        return (T)BinaryDeserialize(stream);
+    }
+
+    public static T BinaryRoundTripMenu<T>(T menu) where T : IMenuItemImmutable {
+        using var stream = BinarySerialize(menu);
         return (T)BinaryDeserialize(stream);
     }
 
