@@ -56,7 +56,7 @@ public class PropertySerializationWrapper {
 
     private Func<object, object[], object> CreateSetDelegate() {
         var setMethod = SetMethod();
-        return DelegateUtils.CreateDelegate(setMethod).Item1;
+        return setMethod is not null ?  DelegateUtils.CreateDelegate(setMethod).Item1 : null;
     }
 
     [OnDeserialized]
