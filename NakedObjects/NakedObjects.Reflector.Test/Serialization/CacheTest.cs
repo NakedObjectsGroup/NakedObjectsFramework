@@ -148,76 +148,123 @@ public class CacheTest {
         var (container, host) = GetContainer(Setup);
 
         using (host) {
-            var mm = container.GetService<IMetamodelBuilder>();
-            var mb = container.GetService<IModelBuilder>();
-            mb?.Build(file);
-
-            var cache1 = mm.Cache;
-
-            mb.RestoreFromFile(file);
-
-            var cache2 = mm.Cache;
-
-            Assert.AreNotEqual(cache1, cache2);
-
-            CompareCaches(cache1, cache2);
+            CompareCaches(container, file);
         }
     }
 
-    //[TestMethod]
-    //public void BinarySerializeImageTypes() {
-    //    var ss = new[] { typeof(Image) };
-    //    var ns = new[] { typeof(TestService).Namespace };
-    //    ReflectorConfiguration.NoValidate = true;
+    [TestMethod]
+    public void BinarySerializeImageTypes() {
+        var file = Path.Combine(testDir, "metadataimg.bin");
 
-    //    var rc = new ReflectorConfiguration(ss, ss, ns);
-    //    var file = Path.Combine(testDir, "metadataimg.bin");
-    //    BinarySerialize(rc, file);
-    //}
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.SupportedSystemTypes = t => new[] { typeof(Image) };
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = Array.Empty<Type>();
+                options.DomainModelServices = Array.Empty<Type>();
+                options.NoValidate = true;
+            });
+        }
 
-    //[TestMethod]
-    //public void BinarySerializeBaTypes() {
-    //    var ss = new[] { typeof(AbstractTestWithByteArray) };
+        var (container, host) = GetContainer(Setup);
 
-    //    var ns = new[] { typeof(AbstractTestWithByteArray).Namespace };
-    //    ReflectorConfiguration.NoValidate = true;
+        using (host) {
+            CompareCaches(container, file);
+        }
+    }
 
-    //    var rc = new ReflectorConfiguration(new[] { typeof(AbstractTestWithByteArray) }, ss, ns);
-    //    var file = Path.Combine(testDir, "metadataba.bin");
-    //    BinarySerialize(rc, file);
-    //}
+    [TestMethod]
+    public void BinarySerializeBaTypes() {
+        var file = Path.Combine(testDir, "metadataba.bin");
 
-    //[TestMethod]
-    //public void BinarySerializeEnumTypes() {
-    //    var ss = new[] { typeof(SemanticsProvider.TestEnum) };
-    //    var ns = new[] { typeof(SemanticsProvider.TestEnum).Namespace };
-    //    ReflectorConfiguration.NoValidate = true;
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.SupportedSystemTypes = t => t;
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = new[] { typeof(AbstractTestWithByteArray) };
+                options.DomainModelServices = Array.Empty<Type>();
+                options.NoValidate = true;
+            });
+        }
 
-    //    var rc = new ReflectorConfiguration(ss, ss, ns);
-    //    var file = Path.Combine(testDir, "metadataenum.bin");
-    //    BinarySerialize(rc, file);
-    //}
+        var (container, host) = GetContainer(Setup);
 
-    //[TestMethod]
-    //public void BinarySerializeSimpleDomainObjectTypes() {
-    //    var ns = new[] { typeof(TestSimpleDomainObject).Namespace };
-    //    ReflectorConfiguration.NoValidate = true;
+        using (host) {
+            CompareCaches(container, file);
+        }
+    }
 
-    //    var rc = new ReflectorConfiguration(new[] { typeof(TestSimpleDomainObject) }, new[] { typeof(TestService) }, ns);
-    //    var file = Path.Combine(testDir, "metadatatsdo.bin");
-    //    BinarySerialize(rc, file);
-    //}
+    [TestMethod]
+    public void BinarySerializeEnumTypes() {
+        var file = Path.Combine(testDir, "metadataenum.bin");
 
-    //[TestMethod]
-    //public void BinarySerializeAnnotatedDomainObjectTypes() {
-    //    ReflectorConfiguration.NoValidate = true;
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.SupportedSystemTypes = t => t;
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = new[] { typeof(TestEnum) };
+                options.DomainModelServices = Array.Empty<Type>();
+                options.NoValidate = true;
+            });
+        }
 
-    //    var rc = new ReflectorConfiguration(new[] { typeof(TestAnnotatedDomainObject) }, new[] { typeof(TestService) },
-    //                                        new[] { typeof(TestService).Namespace });
+        var (container, host) = GetContainer(Setup);
 
-    //    var file = Path.Combine(testDir, "metadatatado.bin");
-    //    BinarySerialize(rc, file);
-    //}
+        using (host) {
+            CompareCaches(container, file);
+        }
+    }
+
+    [TestMethod]
+    public void BinarySerializeSimpleDomainObjectTypes() {
+        var file = Path.Combine(testDir, "metadatatsdo.bin");
+
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.SupportedSystemTypes = t => t;
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = new[] { typeof(TestSimpleDomainObject) };
+                options.DomainModelServices = new[] { typeof(TestService) };
+                options.NoValidate = true;
+            });
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
+            CompareCaches(container, file);
+        }
+    }
+
+    [TestMethod]
+    public void BinarySerializeAnnotatedDomainObjectTypes() {
+        var file = Path.Combine(testDir, "metadatatado.bin");
+
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.SupportedSystemTypes = t => t;
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = new[] { typeof(TestAnnotatedDomainObject) };
+                options.DomainModelServices = new[] { typeof(TestService) };
+                options.NoValidate = true;
+            });
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
+            CompareCaches(container, file);
+        }
+    }
+
+    private static void CompareCaches(IServiceProvider container, string file) {
+        var metamodelBuilder = container.GetService<IMetamodelBuilder>();
+        var modelBuilder = container.GetService<IModelBuilder>();
+        modelBuilder?.Build(file);
+        var cache1 = metamodelBuilder?.Cache;
+        modelBuilder?.RestoreFromFile(file);
+        var cache2 = metamodelBuilder?.Cache;
+
+        Assert.IsNotNull(cache1);
+        Assert.IsNotNull(cache2);
+        Assert.AreNotEqual(cache1, cache2);
+        CompareCaches(cache1, cache2);
+    }
 
     private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
         Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
