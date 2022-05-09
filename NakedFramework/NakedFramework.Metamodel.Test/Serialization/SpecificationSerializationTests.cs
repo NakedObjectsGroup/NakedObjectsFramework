@@ -24,49 +24,42 @@ public static class SpecificationSerializationTests {
         var s = new ActionParameterSpecImmutable(null, null);
         var dss = roundTripper(s);
 
-        AssertISpecification(s, dss);
-        Assert.AreEqual(s.Specification, dss.Specification);
+        AssertActionParameterSpec(s, dss);
     }
 
     public static void TestSerializeActionSpecImmutable(Func<ActionSpecImmutable, ActionSpecImmutable> roundTripper) {
         var s = new ActionSpecImmutable(null, null, null);
         var dss = roundTripper(s);
 
-        AssertISpecification(s, dss);
-        Assert.AreEqual(s.OwnerSpec, dss.OwnerSpec);
-        AssertArrayAreEqual(s.Parameters, dss.Parameters);
+        AssertActionSpec(s, dss);
     }
 
     public static void TestSerializeActionToAssociationSpecAdapter(Func<ActionToAssociationSpecAdapter, ActionToAssociationSpecAdapter> roundTripper) {
         var s = new ActionToAssociationSpecAdapter(new ActionSpecImmutable(null, null, null));
         var dss = roundTripper(s);
 
-        AssertISpecification(s, dss);
-        Assert.AreEqual(s.OwnerSpec, dss.OwnerSpec);
+        AssertActionSpecAdapter(s, dss);
     }
 
     public static void TestSerializeActionToCollectionSpecAdapter(Func<ActionToCollectionSpecAdapter, ActionToCollectionSpecAdapter> roundTripper) {
         var s = new ActionToCollectionSpecAdapter(new ActionSpecImmutable(null, null, null));
         var dss = roundTripper(s);
 
-        AssertISpecification(s, dss);
-        Assert.AreEqual(s.OwnerSpec, dss.OwnerSpec);
+        AssertActionSpecAdapter(s, dss);
     }
 
     public static void TestSerializeOneToManyAssociationSpecImmutable(Func<OneToManyAssociationSpecImmutable, OneToManyAssociationSpecImmutable> roundTripper) {
         var s = new OneToManyAssociationSpecImmutable(null, null, null, null);
         var dss = roundTripper(s);
 
-        AssertISpecification(s, dss);
-        Assert.AreEqual(s.OwnerSpec, dss.OwnerSpec);
+        AssertAssociationSpec(s, dss);
     }
 
     public static void TestSerializeOneToOneAssociationSpecImmutable(Func<OneToOneAssociationSpecImmutable, OneToOneAssociationSpecImmutable> roundTripper) {
         var s = new OneToOneAssociationSpecImmutable(null, null, null);
         var dss = roundTripper(s);
 
-        AssertISpecification(s, dss);
-        Assert.AreEqual(s.OwnerSpec, dss.OwnerSpec);
+        AssertAssociationSpec(s, dss);
     }
 
     public static void TestSerializeServiceSpecImmutable(Func<ServiceSpecImmutable, ServiceSpecImmutable> roundTripper) {
@@ -89,29 +82,18 @@ public static class SpecificationSerializationTests {
         var m = new MenuImmutable("name", "id", "grouping", null);
         var dsm = roundTripper(m);
 
-        Assert.AreEqual(m.Name, dsm.Name);
-        Assert.AreEqual(m.Id, dsm.Id);
-        Assert.AreEqual(m.Grouping, dsm.Grouping);
-        Assert.AreEqual(m.MenuItems, dsm.MenuItems);
+        AssertMenu(m, dsm);
     }
 
     public static void TestSerializeMenuAction(Func<MenuAction, MenuAction> roundTripper) {
         var m = new MenuAction(new ActionSpecImmutable(null, null, null), "name");
         var dsm = roundTripper(m);
 
-        Assert.AreEqual(m.Name, dsm.Name);
-        Assert.AreEqual(m.Id, dsm.Id);
-        Assert.AreEqual(m.Grouping, dsm.Grouping);
-        AssertISpecification(m.Action, dsm.Action);
+        AssertMenuAction(m, dsm);
     }
 
-    public static void TestSerializeImmutableInMemorySpecCache(Func<ImmutableInMemorySpecCache, ImmutableInMemorySpecCache> roundTripper)
-    {
+    public static void TestSerializeImmutableInMemorySpecCache(Func<ImmutableInMemorySpecCache, ImmutableInMemorySpecCache> roundTripper) {
         var m = new ImmutableInMemorySpecCache();
         var dsm = roundTripper(m);
-
-       
     }
-
-
 }

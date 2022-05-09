@@ -52,8 +52,7 @@ public abstract class AbstractReflectorTest {
 
         var reflector = Reflector(metamodel, LoggerFactory);
 
-        ITypeSpecBuilder spec;
-        (spec, Metamodel) = LoadSpecification(reflector);
+        (var spec, Metamodel) = LoadSpecification(reflector);
         Specification = spec as IObjectSpecImmutable;
     }
 

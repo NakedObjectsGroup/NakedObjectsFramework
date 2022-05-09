@@ -19,6 +19,8 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.Menu;
+using NakedFramework.Metamodel.SpecImmutable;
 
 #pragma warning disable CS0618
 #pragma warning disable SYSLIB0011
@@ -44,9 +46,73 @@ public static class SerializationTestHelpers {
         var zipped = expected.Zip(actual);
 
         foreach (var (first, second) in zipped) {
-            Assert.AreEqual(first, second);
+            switch (first) {
+                case ISpecification s1 when second is ISpecification s2:
+                    AssertSpecification(s1, s2);
+                    break;
+                case IMenuItemImmutable m1 when second is IMenuItemImmutable m2:
+                    AssertIMenuItem(m1, m2);
+                    break;
+                default:
+                    Assert.AreEqual(first, second);
+                    break;
+            }
         }
     }
+
+    public static HashSet<ISpecification> RecurseCheck = new();
+
+    public static void AssertSpecification(ISpecification s1, ISpecification s2) {
+        if (s1 is null && s2 is null) {
+            return;
+        }
+
+        if (RecurseCheck.Contains(s1) || RecurseCheck.Contains(s2)) {
+            return;
+        }
+
+        RecurseCheck.Add(s1);
+        RecurseCheck.Add(s2);
+
+        Assert.AreEqual(s1.GetType(), s2.GetType());
+        AssertISpecification(s1, s2);
+
+        switch (s1) {
+            case ITypeSpecImmutable t1 when s2 is ITypeSpecImmutable t2:
+                AssertTypeSpecification(t1, t2);
+                break;
+            case ActionParameterSpecImmutable ap1 when s2 is ActionParameterSpecImmutable ap2:
+                AssertActionParameterSpec(ap1, ap2);
+                break;
+            case ActionSpecImmutable a1 when s2 is ActionSpecImmutable a2:
+                AssertActionSpec(a1, a2);
+                break;
+            case AbstractSpecAdapter ad1 when s2 is AbstractSpecAdapter ad2:
+                AssertActionSpecAdapter(ad1, ad2);
+                break;
+            case AssociationSpecImmutable as1 when s2 is AssociationSpecImmutable as2:
+                AssertAssociationSpec(as1, as2);
+                break;
+        }
+    }
+
+    public static void AssertIMenuItem(IMenuItemImmutable s1, IMenuItemImmutable s2) {
+        if (s1 is null && s2 is null) {
+            return;
+        }
+
+        Assert.AreEqual(s1.GetType(), s2.GetType());
+
+        switch (s1) {
+            case MenuImmutable t1 when s2 is MenuImmutable t2:
+                AssertMenu(t1, t2);
+                break;
+            case MenuAction ap1 when s2 is MenuAction ap2:
+                AssertMenuAction(ap1, ap2);
+                break;
+        }
+    }
+
 
     public static void AssertISpecification(ISpecification spec, ISpecification spec1) {
         Assert.AreNotEqual(spec, spec1);
@@ -58,7 +124,7 @@ public static class SerializationTestHelpers {
         Assert.AreEqual(spec.Type, spec1.Type);
         Assert.AreEqual(spec.FullName, spec1.FullName);
         Assert.AreEqual(spec.ShortName, spec1.ShortName);
-        Assert.AreEqual(spec.ObjectMenu, spec1.ObjectMenu);
+        AssertIMenuItem(spec.ObjectMenu, spec1.ObjectMenu);
         AssertArrayAreEqual(spec.OrderedObjectActions, spec1.OrderedObjectActions);
         AssertArrayAreEqual(spec.OrderedContributedActions, spec1.OrderedContributedActions);
         AssertArrayAreEqual(spec.OrderedCollectionContributedActions, spec1.OrderedCollectionContributedActions);
@@ -69,6 +135,46 @@ public static class SerializationTestHelpers {
         Assert.AreEqual(spec.IsCollection, spec1.IsCollection);
         Assert.AreEqual(spec.IsQueryable, spec1.IsQueryable);
         Assert.AreEqual(spec.IsParseable, spec1.IsParseable);
+    }
+
+    public static void AssertActionParameterSpec(ActionParameterSpecImmutable s, ActionParameterSpecImmutable dss) {
+        AssertISpecification(s, dss);
+        AssertSpecification(s.Specification, dss.Specification);
+    }
+
+    public static void AssertActionSpec(ActionSpecImmutable s, ActionSpecImmutable dss) {
+        AssertISpecification(s, dss);
+        AssertSpecification(s.OwnerSpec, dss.OwnerSpec);
+        AssertArrayAreEqual(s.Parameters, dss.Parameters);
+    }
+
+    public static void AssertActionSpecAdapter(AbstractSpecAdapter s, AbstractSpecAdapter dss) {
+        AssertISpecification(s, dss);
+        AssertSpecification(s.OwnerSpec, dss.OwnerSpec);
+    }
+
+    public static void AssertAssociationSpec(AssociationSpecImmutable s, AssociationSpecImmutable dss) {
+        AssertISpecification(s, dss);
+        AssertSpecification(s.OwnerSpec, dss.OwnerSpec);
+    }
+
+    private static void AssertMenuItem(IMenuItemImmutable m, IMenuItemImmutable dsm)
+    {
+        Assert.AreEqual(m.Name, dsm.Name);
+        Assert.AreEqual(m.Id, dsm.Id);
+        Assert.AreEqual(m.Grouping, dsm.Grouping);
+    }
+
+    public static void AssertMenu(MenuImmutable m, MenuImmutable dsm)
+    {
+        AssertMenuItem(m, dsm);
+        AssertArrayAreEqual(m.MenuItems, dsm.MenuItems);
+    }
+
+    public static void AssertMenuAction(MenuAction m, MenuAction dsm)
+    {
+        AssertMenuItem(m, dsm);
+        AssertSpecification(m.Action, dsm.Action);
     }
 
     private static Stream BinarySerialize(object graph) {
@@ -104,12 +210,10 @@ public static class SerializationTestHelpers {
         return (T)BinaryDeserialize(stream);
     }
 
-    public static T BinaryRoundTripCache<T>(T cache) where T : ISpecificationCache
-    {
+    public static T BinaryRoundTripCache<T>(T cache) where T : ISpecificationCache {
         using var stream = BinarySerialize(cache);
         return (T)BinaryDeserialize(stream);
     }
-
 
     public static PropertyInfo GetProperty() => typeof(TestSerializationClass).GetProperty(nameof(TestSerializationClass.TestProperty));
 

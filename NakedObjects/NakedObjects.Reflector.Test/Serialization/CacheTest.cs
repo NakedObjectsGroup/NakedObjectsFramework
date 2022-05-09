@@ -17,12 +17,15 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Value;
 using NakedObjects.Reflector.Extensions;
+
+using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
 namespace NakedObjects.Reflector.Test.Serialization;
 
@@ -102,7 +105,7 @@ public enum TestEnum {
     Value2
 }
 
-[TestClass]
+[TestClass, Ignore]
 public class CacheTest {
     private string testDir;
 
@@ -134,6 +137,7 @@ public class CacheTest {
 
     [TestMethod]
     public void BinarySerializeIntTypes() {
+        RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadataint.bin");
 
         static void Setup(NakedFrameworkOptions coreOptions) {
@@ -154,6 +158,7 @@ public class CacheTest {
 
     [TestMethod]
     public void BinarySerializeImageTypes() {
+        RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadataimg.bin");
 
         static void Setup(NakedFrameworkOptions coreOptions) {
@@ -173,12 +178,16 @@ public class CacheTest {
     }
 
     [TestMethod]
-    public void BinarySerializeBaTypes() {
+    public void BinarySerializeBaTypes()
+    {
+        RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadataba.bin");
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => t;
-            coreOptions.AddNakedObjects(options => {
+            coreOptions.AddNakedObjects(options =>
+            {
                 options.DomainModelTypes = new[] { typeof(AbstractTestWithByteArray) };
                 options.DomainModelServices = Array.Empty<Type>();
                 options.NoValidate = true;
@@ -187,18 +196,23 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
+        using (host)
+        {
             CompareCaches(container, file);
         }
     }
 
     [TestMethod]
-    public void BinarySerializeEnumTypes() {
+    public void BinarySerializeEnumTypes()
+    {
+        RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadataenum.bin");
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => t;
-            coreOptions.AddNakedObjects(options => {
+            coreOptions.AddNakedObjects(options =>
+            {
                 options.DomainModelTypes = new[] { typeof(TestEnum) };
                 options.DomainModelServices = Array.Empty<Type>();
                 options.NoValidate = true;
@@ -207,18 +221,23 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
+        using (host)
+        {
             CompareCaches(container, file);
         }
     }
 
     [TestMethod]
-    public void BinarySerializeSimpleDomainObjectTypes() {
+    public void BinarySerializeSimpleDomainObjectTypes()
+    {
+        RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadatatsdo.bin");
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => t;
-            coreOptions.AddNakedObjects(options => {
+            coreOptions.AddNakedObjects(options =>
+            {
                 options.DomainModelTypes = new[] { typeof(TestSimpleDomainObject) };
                 options.DomainModelServices = new[] { typeof(TestService) };
                 options.NoValidate = true;
@@ -227,18 +246,23 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
+        using (host)
+        {
             CompareCaches(container, file);
         }
     }
 
     [TestMethod]
-    public void BinarySerializeAnnotatedDomainObjectTypes() {
+    public void BinarySerializeAnnotatedDomainObjectTypes()
+    {
+        RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadatatado.bin");
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => t;
-            coreOptions.AddNakedObjects(options => {
+            coreOptions.AddNakedObjects(options =>
+            {
                 options.DomainModelTypes = new[] { typeof(TestAnnotatedDomainObject) };
                 options.DomainModelServices = new[] { typeof(TestService) };
                 options.NoValidate = true;
@@ -247,7 +271,8 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
+        using (host)
+        {
             CompareCaches(container, file);
         }
     }
@@ -282,15 +307,7 @@ public class CacheTest {
         var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
 
         foreach (var item in zipped) {
-            Assert.AreEqual(item.a.FullName, item.b.FullName);
-
-            Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
-
-            var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new { x, y });
-
-            foreach (var zipfacet in zipfacets) {
-                Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
-            }
+            AssertSpecification(item.a, item.b);
         }
     }
 
