@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -30,9 +31,9 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
                                          (string name, Type type)[] parameterNamesAndTypes,
                                          ILogger<ActionChoicesFacetViaFunction> logger,
                                          bool isMultiple = false) {
-        methodWrapper = new MethodSerializationWrapper(choicesMethod, logger);
+        methodWrapper = new MethodSerializationWrapper(choicesMethod, logger, ReflectorDefaults.JitSerialization);
         IsMultiple = isMultiple;
-        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, new TypeSerializationWrapper(t.type))).ToArray();
+        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, new TypeSerializationWrapper(t.type, ReflectorDefaults.JitSerialization))).ToArray();
     }
 
     public override (string, Type)[] ParameterNamesAndTypes => parameterNamesAndTypes.Select(t => (t.name, t.typeWrapper.Type)).ToArray();

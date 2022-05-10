@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
 using NOF2.About;
@@ -24,7 +25,7 @@ public abstract class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFa
     private readonly MethodSerializationWrapper methodWrapper;
 
     protected AbstractViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger logger) {
-        methodWrapper = new MethodSerializationWrapper(method, logger);
+        methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
         AboutType = aboutType;
     }
 

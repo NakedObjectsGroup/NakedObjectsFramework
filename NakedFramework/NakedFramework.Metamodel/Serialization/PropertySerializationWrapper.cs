@@ -23,7 +23,7 @@ public class PropertySerializationWrapper {
     [NonSerialized]
     private Func<object, object[], object> setMethodDelegate;
 
-    public PropertySerializationWrapper(PropertyInfo propertyInfo, ILogger logger, bool jit = false) {
+    public PropertySerializationWrapper(PropertyInfo propertyInfo, ILogger logger, bool jit) {
         this.jit = jit;
         PropertyInfo = propertyInfo;
         typeWrapper = new TypeSerializationWrapper(propertyInfo.DeclaringType, jit);

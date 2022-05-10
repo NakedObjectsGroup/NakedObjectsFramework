@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -27,7 +28,7 @@ public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImpe
     private readonly MethodSerializationWrapper methodWrapper;
 
     public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ILogger<AutoCompleteFacet> logger) {
-        methodWrapper = new MethodSerializationWrapper(autoCompleteMethod, logger);
+        methodWrapper = new MethodSerializationWrapper(autoCompleteMethod, logger, ReflectorDefaults.JitSerialization);
 
         PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
         MinLength = minLength;

@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Core.Configuration;
 
 namespace NakedFramework.Metamodel.Serialization;
 
@@ -30,5 +31,5 @@ public class FacetDictionarySerializationWrapper {
     private void OnDeserialized(StreamingContext context) => facetsByClass = serializeList.ToDictionary(t => t.key.Type, t => t.value).ToImmutableDictionary();
 
     [OnSerializing]
-    private void OnSerializing(StreamingContext context) => serializeList = facetsByClass.Select(kvp => (new TypeSerializationWrapper(kvp.Key), kvp.Value)).ToList();
+    private void OnSerializing(StreamingContext context) => serializeList = facetsByClass.Select(kvp => (new TypeSerializationWrapper(kvp.Key, ReflectorDefaults.JitSerialization), kvp.Value)).ToList();
 }

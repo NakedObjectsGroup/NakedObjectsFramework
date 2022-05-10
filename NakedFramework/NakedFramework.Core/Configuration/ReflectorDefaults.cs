@@ -76,4 +76,6 @@ public static class ReflectorDefaults {
         new List<int>().Union(new List<int>()).GetType().GetGenericTypeDefinition(),
         typeof(Action<>)
     };
+
+    public static bool JitSerialization { get; set; } = false;
 }

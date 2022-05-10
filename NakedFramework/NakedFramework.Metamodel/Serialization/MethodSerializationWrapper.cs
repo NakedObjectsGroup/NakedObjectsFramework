@@ -26,7 +26,7 @@ public class MethodSerializationWrapper {
     [NonSerialized]
     private readonly Type[] methodArgs;
 
-    public MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, bool jit = false) {
+    public MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, bool jit) {
         this.jit = jit;
         MethodInfo = methodInfo;
         typeWrapper = new TypeSerializationWrapper(methodInfo.DeclaringType, jit);
@@ -34,7 +34,7 @@ public class MethodSerializationWrapper {
         methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(methodInfo), logger);
     }
 
-    public MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, Type[] methodArgs, bool jit = false) : this(methodInfo, logger, jit) {
+    public MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, Type[] methodArgs, bool jit) : this(methodInfo, logger, jit) {
         this.methodArgs = methodArgs;
         methodArgsWrapper = methodArgs.Select(a => new TypeSerializationWrapper(a, jit)).ToArray();
     }

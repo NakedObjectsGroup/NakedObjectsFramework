@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -23,7 +24,7 @@ public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFac
     private readonly PropertySerializationWrapper propertyWrapper;
 
     public PropertySetterFacetViaValueHolder(PropertyInfo property, ILogger logger) =>
-        propertyWrapper = new PropertySerializationWrapper(property, logger);
+        propertyWrapper = new PropertySerializationWrapper(property, logger, ReflectorDefaults.JitSerialization);
 
     public override string PropertyName {
         get => propertyWrapper.PropertyInfo.Name;

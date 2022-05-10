@@ -9,6 +9,7 @@ using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -18,7 +19,7 @@ public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
 
     private readonly TypeSerializationWrapper typeWrapper;
 
-    public ElementTypeFacet(Type type) => typeWrapper = new TypeSerializationWrapper(type);
+    public ElementTypeFacet(Type type) => typeWrapper = new TypeSerializationWrapper(type, ReflectorDefaults.JitSerialization);
 
     public override Type FacetType => typeof(IElementTypeFacet);
 

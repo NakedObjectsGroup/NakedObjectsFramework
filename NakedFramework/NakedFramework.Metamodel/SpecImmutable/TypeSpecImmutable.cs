@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Serialization;
 using NakedFramework.Metamodel.Spec;
@@ -53,7 +54,7 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     private ReflectionWorkingData workingData = new();
 
     protected TypeSpecImmutable(Type type, bool isRecognized) : base(null) {
-        typeWrapper = new TypeSerializationWrapper(type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type);
+        typeWrapper = new TypeSerializationWrapper(type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type, ReflectorDefaults.JitSerialization);
         ReflectionStatus = isRecognized ? ReflectionStatus.PlaceHolder : ReflectionStatus.PendingIntrospection;
     }
 
@@ -114,13 +115,13 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     }
 
     public void CompleteIntegration() {
-        orderedFields = new ImmutableListSerializationWrapper<IAssociationSpecImmutable>(CreateOrderedImmutableList(UnorderedFields));
+        orderedFields = new ImmutableListSerializationWrapper<IAssociationSpecImmutable>(CreateOrderedImmutableList(UnorderedFields), ReflectorDefaults.JitSerialization);
         orderedFields.ImmutableList.Select(a => new FacetUtils.ActionHolder(a)).ToList().ErrorOnDuplicates();
-        orderedObjectActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(UnorderedObjectActions));
-        orderedContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedContributedActions());
-        orderedCollectionContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(workingData.CollectionContributedActions));
-        orderedFinderActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(workingData.FinderActions));
-        subclasses = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(workingData.Subclasses.ToImmutableList());
+        orderedObjectActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(UnorderedObjectActions), ReflectorDefaults.JitSerialization);
+        orderedContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedContributedActions(), ReflectorDefaults.JitSerialization);
+        orderedCollectionContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(workingData.CollectionContributedActions), ReflectorDefaults.JitSerialization);
+        orderedFinderActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(workingData.FinderActions), ReflectorDefaults.JitSerialization);
+        subclasses = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(workingData.Subclasses.ToImmutableList(), ReflectorDefaults.JitSerialization);
 
         ClearWorkingData();
     }
@@ -131,11 +132,11 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         FullName = introspector.FullName;
         ShortName = introspector.ShortName;
         Superclass = introspector.Superclass;
-        interfaces = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList());
+        interfaces = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList(), ReflectorDefaults.JitSerialization);
         workingData.Fields = introspector.UnorderedFields.ToList();
         workingData.ObjectActions = introspector.UnorderedObjectActions.ToList();
         DecorateAllFacets(decorator);
-        typeWrapper = new TypeSerializationWrapper(introspector.SpecificationType);
+        typeWrapper = new TypeSerializationWrapper(introspector.SpecificationType, ReflectorDefaults.JitSerialization);
         ReflectionStatus = ReflectionStatus.Introspected;
         return metamodel;
     }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Serialization;
 
@@ -19,7 +20,7 @@ namespace NakedObjects.Reflector.Facet;
 [Serializable]
 public sealed class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
-    public UpdatingCallbackFacetViaMethod(MethodInfo method, ILogger<UpdatingCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
+    public UpdatingCallbackFacetViaMethod(MethodInfo method, ILogger<UpdatingCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
 
     public override bool IsActive => true;
 

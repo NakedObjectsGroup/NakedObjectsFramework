@@ -12,6 +12,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -22,7 +23,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public PropertyAccessorFacetViaContributedAction(MethodInfo method, ILogger<PropertyAccessorFacetViaContributedAction> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
+    public PropertyAccessorFacetViaContributedAction(MethodInfo method, ILogger<PropertyAccessorFacetViaContributedAction> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);
 

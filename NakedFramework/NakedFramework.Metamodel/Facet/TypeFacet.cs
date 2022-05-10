@@ -7,6 +7,7 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -15,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 public class TypeFacet : FacetAbstract, ITypeFacet {
     private readonly TypeSerializationWrapper typeOrUnderlyingType;
 
-    public TypeFacet(Type type) => typeOrUnderlyingType = new TypeSerializationWrapper(typeof(Enum).IsAssignableFrom(type) ? Enum.GetUnderlyingType(type) : type);
+    public TypeFacet(Type type) => typeOrUnderlyingType = new TypeSerializationWrapper(typeof(Enum).IsAssignableFrom(type) ? Enum.GetUnderlyingType(type) : type, ReflectorDefaults.JitSerialization);
 
     public override Type FacetType => typeof(ITypeFacet);
 

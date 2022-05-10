@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -21,7 +22,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class PropertyAccessorFacetViaMethod : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public PropertyAccessorFacetViaMethod(MethodInfo method, ILogger<PropertyAccessorFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
+    public PropertyAccessorFacetViaMethod(MethodInfo method, ILogger<PropertyAccessorFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);
 

@@ -10,6 +10,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Serialization;
 
@@ -20,7 +21,7 @@ public sealed class PropertyInitializationFacet : FacetAbstract, IPropertyInitia
     private readonly PropertySerializationWrapper property;
 
     public PropertyInitializationFacet(PropertyInfo propertyInfo, ILogger<PropertyInitializationFacet> logger) =>
-        property = new PropertySerializationWrapper(propertyInfo, logger);
+        property = new PropertySerializationWrapper(propertyInfo, logger, ReflectorDefaults.JitSerialization);
 
     public override Type FacetType => typeof(IPropertyInitializationFacet);
 

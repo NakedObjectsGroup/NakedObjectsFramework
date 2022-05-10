@@ -12,6 +12,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Serialization;
 
@@ -23,7 +24,7 @@ public sealed class ActionDefaultsFacetViaProperty : ActionDefaultsFacetAbstract
     private readonly PropertySerializationWrapper property;
 
     public ActionDefaultsFacetViaProperty(PropertyInfo property, IActionDefaultsFacet actionDefaultsFacet, ILogger<ActionDefaultsFacetViaProperty> logger) {
-        this.property = new PropertySerializationWrapper(property, logger);
+        this.property = new PropertySerializationWrapper(property, logger, ReflectorDefaults.JitSerialization);
         this.actionDefaultsFacet = actionDefaultsFacet;
     }
 

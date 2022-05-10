@@ -10,6 +10,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -20,7 +21,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class OnPersistingErrorCallbackFacetViaMethod : OnPersistingErrorCallbackFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public OnPersistingErrorCallbackFacetViaMethod(MethodInfo method, ILogger<OnPersistingErrorCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
+    public OnPersistingErrorCallbackFacetViaMethod(MethodInfo method, ILogger<OnPersistingErrorCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
 
     public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => methodWrapper.Invoke<string>(nakedObjectAdapter.GetDomainObject(), new object[] { exception });
 

@@ -14,7 +14,7 @@ public class TypeSerializationWrapper {
     [NonSerialized]
     private Type type;
 
-    public TypeSerializationWrapper(Type type, bool jit = false) {
+    public TypeSerializationWrapper(Type type, bool jit) {
         this.jit = jit;
         this.type = type;
         assemblyName = type.Assembly.FullName;

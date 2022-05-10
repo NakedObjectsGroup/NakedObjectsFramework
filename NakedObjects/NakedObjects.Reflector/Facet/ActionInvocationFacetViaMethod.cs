@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -30,12 +31,12 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
     private readonly TypeSerializationWrapper returnType;
 
     public ActionInvocationFacetViaMethod(MethodInfo method, Type onType, Type returnType, Type elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
-        methodWrapper = new MethodSerializationWrapper(method, logger);
+        methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
 
         paramCount = method.GetParameters().Length;
-        this.onType = onType is not null ? new TypeSerializationWrapper(onType) : null;
-        this.returnType = returnType is not null ? new TypeSerializationWrapper(returnType) : null;
-        this.elementType = elementType is not null ? new TypeSerializationWrapper(elementType) : null;
+        this.onType = onType is not null ? new TypeSerializationWrapper(onType, ReflectorDefaults.JitSerialization) : null;
+        this.returnType = returnType is not null ? new TypeSerializationWrapper(returnType, ReflectorDefaults.JitSerialization) : null;
+        this.elementType = elementType is not null ? new TypeSerializationWrapper(elementType, ReflectorDefaults.JitSerialization) : null;
         IsQueryOnly = isQueryOnly;
     }
 

@@ -16,7 +16,7 @@ public class ImmutableListSerializationWrapper<T> where T : ISpecification {
 
     private readonly List<T> list;
 
-    public ImmutableListSerializationWrapper(ImmutableList<T> immutableList, bool jit = false) {
+    public ImmutableListSerializationWrapper(ImmutableList<T> immutableList, bool jit) {
         this.jit = jit;
         this.immutableList = immutableList;
         list = immutableList.ToList();

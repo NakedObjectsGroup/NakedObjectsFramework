@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Serialization;
 using NOF2.About;
@@ -24,7 +25,7 @@ public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFace
 
     public SaveViaActionSaveWithAboutFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ILogger<SaveViaActionSaveWithAboutFacet> logger)
         : base(aboutMethod, AboutHelpers.AboutType.Action, logger) =>
-        methodWrapper = new MethodSerializationWrapper(saveMethod, logger);
+        methodWrapper = new MethodSerializationWrapper(saveMethod, logger, ReflectorDefaults.JitSerialization);
 
     public int Count => 2;
 

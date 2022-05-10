@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
@@ -159,6 +160,46 @@ public class ReflectorSpeedTest {
 
             var mb = container.GetService<IModelBuilder>();
           
+            mb.Build(file);
+
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            mb.RestoreFromFile(file);
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+        }
+    }
+
+    [TestMethod]
+    public void SerializeAWTypesBenchMarkWithJit()
+    {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = NakedObjectsRunSettings.Types;
+                options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
+            ReflectorDefaults.JitSerialization = true;
+            var curDir = Directory.GetCurrentDirectory();
+            var testDir = Path.Combine(curDir, "testserialize");
+            Directory.CreateDirectory(testDir);
+            Directory.GetFiles(testDir).ForEach(File.Delete);
+            var file = Path.Combine(testDir, "metadata.bin");
+
+            var mb = container.GetService<IModelBuilder>();
+
             mb.Build(file);
 
             var stopWatch = new Stopwatch();

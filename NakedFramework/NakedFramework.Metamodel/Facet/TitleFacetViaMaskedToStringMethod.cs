@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Serialization;
 
@@ -22,7 +23,7 @@ public sealed class TitleFacetViaMaskedToStringMethod : TitleFacetAbstract, IImp
     private readonly MethodSerializationWrapper method;
 
     public TitleFacetViaMaskedToStringMethod(MethodInfo method, ILogger<TitleFacetViaMaskedToStringMethod> logger) {
-        this.method = new MethodSerializationWrapper(method, logger, method.GetParameters().Select(p => p.ParameterType).ToArray());
+        this.method = new MethodSerializationWrapper(method, logger, method.GetParameters().Select(p => p.ParameterType).ToArray(), ReflectorDefaults.JitSerialization);
     }
 
     public MethodInfo GetMethod() => method.GetMethod();

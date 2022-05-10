@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
 using NakedFunctions.Reflector.Utils;
@@ -25,8 +26,8 @@ public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstrac
     public ViewModelFacetViaFunctionsConvention(MethodInfo deriveFunction,
                                                 MethodInfo populateFunction,
                                                 ILogger<ViewModelFacetViaFunctionsConvention> logger) {
-        deriveWrapper = new MethodSerializationWrapper(deriveFunction, logger);
-        populateWrapper = new MethodSerializationWrapper(populateFunction, logger);
+        deriveWrapper = new MethodSerializationWrapper(deriveFunction, logger, ReflectorDefaults.JitSerialization);
+        populateWrapper = new MethodSerializationWrapper(populateFunction, logger, ReflectorDefaults.JitSerialization);
     }
 
     public int Count => 2;

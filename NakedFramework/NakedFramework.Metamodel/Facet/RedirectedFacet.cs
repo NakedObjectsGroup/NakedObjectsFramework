@@ -9,6 +9,7 @@ using System;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -19,8 +20,8 @@ public sealed class RedirectedFacet : FacetAbstract, IRedirectedFacet, IMultiple
     private readonly PropertySerializationWrapper serverName;
 
     public RedirectedFacet(PropertyInfo serverName, PropertyInfo oid, ILogger<RedirectedFacet> logger) {
-        this.serverName = new PropertySerializationWrapper(serverName, logger);
-        this.oid = new PropertySerializationWrapper(oid, logger);
+        this.serverName = new PropertySerializationWrapper(serverName, logger, ReflectorDefaults.JitSerialization);
+        this.oid = new PropertySerializationWrapper(oid, logger, ReflectorDefaults.JitSerialization);
     }
 
     public MethodInfo GetMethod(int index) =>

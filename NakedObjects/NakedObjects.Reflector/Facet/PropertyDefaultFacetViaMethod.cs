@@ -10,6 +10,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -20,7 +21,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public PropertyDefaultFacetViaMethod(MethodInfo method, ILogger<PropertyDefaultFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
+    public PropertyDefaultFacetViaMethod(MethodInfo method, ILogger<PropertyDefaultFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
 
     public override object GetDefault(INakedObjectAdapter inObjectAdapter) => methodWrapper.Invoke<object>(inObjectAdapter.GetDomainObject());
 

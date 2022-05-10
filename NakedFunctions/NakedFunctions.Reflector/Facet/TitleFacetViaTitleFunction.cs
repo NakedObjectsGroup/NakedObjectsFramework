@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
 using NakedFunctions.Reflector.Utils;
@@ -21,7 +22,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
+    public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>
         methodWrapper.Invoke<string>(GetMethod().GetParameterValues(nakedObjectAdapter, framework));

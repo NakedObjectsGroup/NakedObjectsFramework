@@ -12,6 +12,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -23,7 +24,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public HideForContextViaFunctionFacet(MethodInfo method, ILogger<HideForContextViaFunctionFacet> logger) => methodWrapper = new MethodSerializationWrapper(method, logger);
+    public HideForContextViaFunctionFacet(MethodInfo method, ILogger<HideForContextViaFunctionFacet> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
 
     public override Type FacetType => typeof(IHideForContextFacet);
 

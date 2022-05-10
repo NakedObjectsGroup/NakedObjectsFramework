@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.Serialization;
@@ -21,7 +22,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) => this.methodWrapper = new MethodSerializationWrapper(method, logger);
+    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) => this.methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
 
     public MethodInfo GetMethod() => methodWrapper.GetMethod();
 
