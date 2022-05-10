@@ -62,9 +62,7 @@ public sealed class MetamodelHolder : IMetamodelBuilder {
 
     public void ReplaceCache(ISpecificationCache newCache) => Cache = newCache;
 
-    public void SaveToFile(string filePath) {
-        Cache.Serialize(filePath);
-    }
+    public void SaveToFile(string filePath) => Cache.Serialize(filePath);
 
     public ISpecificationCache Cache { get; private set; }
 
