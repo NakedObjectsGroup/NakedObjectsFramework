@@ -105,7 +105,7 @@ public enum TestEnum {
     Value2
 }
 
-[TestClass, Ignore]
+[TestClass]
 public class CacheTest {
     private string testDir;
 

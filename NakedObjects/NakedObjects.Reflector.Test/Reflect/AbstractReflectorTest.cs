@@ -20,6 +20,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Component;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Component;
+using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
@@ -45,6 +46,7 @@ public abstract class AbstractReflectorTest {
 
     [TestInitialize]
     public virtual void SetUp() {
+        ImmutableSpecFactory.ClearCache();
         var cache = new ImmutableInMemorySpecCache();
         ObjectReflectorConfiguration.NoValidate = true;
 
