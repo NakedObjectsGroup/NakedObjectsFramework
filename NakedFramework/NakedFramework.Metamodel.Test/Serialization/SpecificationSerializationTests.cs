@@ -91,9 +91,4 @@ public static class SpecificationSerializationTests {
 
         AssertMenuAction(m, dsm);
     }
-
-    public static void TestSerializeImmutableInMemorySpecCache(Func<ImmutableInMemorySpecCache, ImmutableInMemorySpecCache> roundTripper) {
-        var m = new ImmutableInMemorySpecCache();
-        var dsm = roundTripper(m);
-    }
 }

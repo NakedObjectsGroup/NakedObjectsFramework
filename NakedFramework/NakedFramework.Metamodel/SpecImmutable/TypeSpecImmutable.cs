@@ -22,6 +22,19 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
+
+// all unordered
+internal class ReflectionWorkingData {
+    internal Type[] Services { get; set; }
+    internal List<IActionSpecImmutable> CollectionContributedActions { get; } = new();
+    internal List<IActionSpecImmutable> ContributedActions { get; set; } = new();
+    internal List<IAssociationSpecImmutable> Fields { get; set; }
+    internal List<IActionSpecImmutable> FinderActions { get; } = new();
+    internal List<IActionSpecImmutable> ObjectActions { get; set; }
+    internal List<ITypeSpecImmutable> Subclasses { get; } = new();
+}
+
+
 [Serializable]
 public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     private IIdentifier identifier;
@@ -33,29 +46,11 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedObjectActions;
 
-    [NonSerialized]
-    private Type[] services;
-
     private ImmutableListSerializationWrapper<ITypeSpecImmutable> subclasses;
     private TypeSerializationWrapper typeWrapper;
 
     [NonSerialized]
-    private List<IActionSpecImmutable> unorderedCollectionContributedActions = new();
-
-    [NonSerialized]
-    protected List<IActionSpecImmutable> unorderedContributedActions = new();
-
-    [NonSerialized]
-    private List<IAssociationSpecImmutable> unorderedFields;
-
-    [NonSerialized]
-    private List<IActionSpecImmutable> unorderedFinderActions = new();
-
-    [NonSerialized]
-    private List<IActionSpecImmutable> unorderedObjectActions;
-
-    [NonSerialized]
-    private List<ITypeSpecImmutable> unorderedSubclasses = new();
+    private ReflectionWorkingData workingData = new();
 
     protected TypeSpecImmutable(Type type, bool isRecognized) : base(null) {
         typeWrapper = new TypeSerializationWrapper(type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type);
@@ -84,17 +79,19 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     public IReadOnlyList<ITypeSpecImmutable> Subclasses => subclasses.ImmutableList;
 
-    public IList<IAssociationSpecImmutable> UnorderedFields => unorderedFields;
+    public IList<IAssociationSpecImmutable> UnorderedFields =>  workingData.Fields;
 
-    public IList<IActionSpecImmutable> UnorderedObjectActions => unorderedObjectActions;
+    public IList<IActionSpecImmutable> UnorderedObjectActions => workingData.ObjectActions;
+
+    public IList<IActionSpecImmutable> UnorderedContributedActions => workingData.ContributedActions;
 
     public ITypeSpecImmutable Superclass { get; private set; }
 
     public override IIdentifier Identifier => identifier;
 
-    public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions) => unorderedContributedActions.AddRange(contributedFunctions);
+    public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions) => workingData.ContributedActions.AddRange(contributedFunctions);
 
-    public void AddContributedFields(IList<IAssociationSpecImmutable> addedFields) => unorderedFields.AddRange(addedFields);
+    public void AddContributedFields(IList<IAssociationSpecImmutable> addedFields) => workingData.Fields.AddRange(addedFields);
 
     public bool IsPlaceHolder => ReflectionStatus == ReflectionStatus.PlaceHolder;
 
@@ -109,8 +106,10 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     public virtual bool IsObject => !IsCollection;
 
     public void RemoveAction(IActionSpecImmutable action, ILogger logger) {
-        if (!UnorderedObjectActions.Remove(action)) {
-            logger.LogWarning($"Failed to find and remove {action} from {identifier}");
+        lock (workingData) {
+            if (!workingData.ObjectActions.Remove(action)) {
+                logger.LogWarning($"Failed to find and remove {action} from {identifier}");
+            }
         }
     }
 
@@ -119,11 +118,11 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         orderedFields.ImmutableList.Select(a => new FacetUtils.ActionHolder(a)).ToList().ErrorOnDuplicates();
         orderedObjectActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(UnorderedObjectActions));
         orderedContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedContributedActions());
-        orderedCollectionContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(unorderedCollectionContributedActions));
-        orderedFinderActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(unorderedFinderActions));
-        subclasses = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(unorderedSubclasses.ToImmutableList());
+        orderedCollectionContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(workingData.CollectionContributedActions));
+        orderedFinderActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(workingData.FinderActions));
+        subclasses = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(workingData.Subclasses.ToImmutableList());
 
-        ClearUnorderedCollections();
+        ClearWorkingData();
     }
 
     public IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -133,8 +132,8 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         ShortName = introspector.ShortName;
         Superclass = introspector.Superclass;
         interfaces = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList());
-        unorderedFields = introspector.UnorderedFields.ToList();
-        unorderedObjectActions = introspector.UnorderedObjectActions.ToList();
+        workingData.Fields = introspector.UnorderedFields.ToList();
+        workingData.ObjectActions = introspector.UnorderedObjectActions.ToList();
         DecorateAllFacets(decorator);
         typeWrapper = new TypeSerializationWrapper(introspector.SpecificationType);
         ReflectionStatus = ReflectionStatus.Introspected;
@@ -142,8 +141,8 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     }
 
     public void AddSubclass(ITypeSpecImmutable subclass) {
-        lock (unorderedSubclasses) {
-            unorderedSubclasses.Add(subclass);
+        lock (workingData) {
+            workingData.Subclasses.Add(subclass);
         }
     }
 
@@ -202,7 +201,7 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     }
 
     private ImmutableList<IActionSpecImmutable> CreateOrderedContributedActions() {
-        return Order(unorderedContributedActions).GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new { service, actions }).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToImmutableList();
+        return Order(workingData.ContributedActions).GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new { service, actions }).OrderBy(a => Array.IndexOf(workingData.Services, a.service)).SelectMany(a => a.actions).ToImmutableList();
     }
 
     private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
@@ -221,13 +220,13 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     }
 
     public void AddContributedActions(IList<IActionSpecImmutable> contributedActions, Type[] services) {
-        unorderedContributedActions = contributedActions.ToList();
-        this.services = services;
+        workingData.ContributedActions = contributedActions.ToList();
+        workingData.Services = services;
     }
 
-    public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) => unorderedCollectionContributedActions.AddRange(collectionContributedActions);
+    public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) => workingData.CollectionContributedActions.AddRange(collectionContributedActions);
 
-    public void AddFinderActions(IList<IActionSpecImmutable> finderActions) => unorderedFinderActions.AddRange(finderActions);
+    public void AddFinderActions(IList<IActionSpecImmutable> finderActions) => workingData.FinderActions.AddRange(finderActions);
 
     private void DecorateAllFacets(IFacetDecoratorSet decorator) {
         decorator.DecorateAllHoldersFacets(this);
@@ -246,13 +245,5 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     private static IEnumerable<T> Order<T>(IEnumerable<T> members) where T : IMemberSpecImmutable => members.OrderBy(m => m, new MemberOrderComparator<T>());
 
-    private void ClearUnorderedCollections() {
-        unorderedFields = null;
-        unorderedObjectActions = null;
-        unorderedContributedActions = null;
-        unorderedCollectionContributedActions = null;
-        unorderedFinderActions = null;
-        services = null;
-        unorderedSubclasses = null;
-    }
+    private void ClearWorkingData() => workingData = null;
 }

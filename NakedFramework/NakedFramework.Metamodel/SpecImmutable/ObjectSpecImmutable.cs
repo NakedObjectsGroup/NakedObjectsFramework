@@ -14,6 +14,4 @@ namespace NakedFramework.Metamodel.SpecImmutable;
 [Serializable]
 public sealed class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {
     public ObjectSpecImmutable(Type type, bool isRecognized) : base(type, isRecognized) { }
-
-    public IList<IActionSpecImmutable> UnorderedContributedActions => unorderedContributedActions;
 }
