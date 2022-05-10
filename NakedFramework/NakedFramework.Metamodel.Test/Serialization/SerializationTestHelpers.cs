@@ -165,7 +165,7 @@ public static class SerializationTestHelpers {
         Assert.AreEqual(m.Grouping, dsm.Grouping);
     }
 
-    public static void AssertMenu(MenuImmutable m, MenuImmutable dsm)
+    public static void AssertMenu(IMenuImmutable m, IMenuImmutable dsm)
     {
         AssertMenuItem(m, dsm);
         AssertArrayAreEqual(m.MenuItems, dsm.MenuItems);

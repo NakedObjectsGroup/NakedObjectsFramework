@@ -24,7 +24,6 @@ using NakedFramework.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Value;
 using NakedObjects.Reflector.Extensions;
-
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
 namespace NakedObjects.Reflector.Test.Serialization;
@@ -43,6 +42,18 @@ public class TestSimpleDomainObject {
     public virtual IList<TestSimpleDomainObject> TestCollection { get; set; } = new List<TestSimpleDomainObject>();
 
     public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) => this;
+}
+
+public class TestSimpleDomainObjectWithMenu {
+    public virtual TestSimpleDomainObject TestProperty { get; set; }
+
+    public virtual IList<TestSimpleDomainObject> TestCollection { get; set; } = new List<TestSimpleDomainObject>();
+
+    public virtual TestSimpleDomainObjectWithMenu TestAction(TestSimpleDomainObjectWithMenu testParm) => this;
+
+    public static void Menu(IMenu menu) {
+        menu.AddAction("TestAction");
+    }
 }
 
 [Named("Test")]
@@ -178,16 +189,13 @@ public class CacheTest {
     }
 
     [TestMethod]
-    public void BinarySerializeBaTypes()
-    {
+    public void BinarySerializeBaTypes() {
         RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadataba.bin");
 
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.SupportedSystemTypes = t => t;
-            coreOptions.AddNakedObjects(options =>
-            {
+            coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = new[] { typeof(AbstractTestWithByteArray) };
                 options.DomainModelServices = Array.Empty<Type>();
                 options.NoValidate = true;
@@ -196,23 +204,19 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             CompareCaches(container, file);
         }
     }
 
     [TestMethod]
-    public void BinarySerializeEnumTypes()
-    {
+    public void BinarySerializeEnumTypes() {
         RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadataenum.bin");
 
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.SupportedSystemTypes = t => t;
-            coreOptions.AddNakedObjects(options =>
-            {
+            coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = new[] { typeof(TestEnum) };
                 options.DomainModelServices = Array.Empty<Type>();
                 options.NoValidate = true;
@@ -221,23 +225,19 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             CompareCaches(container, file);
         }
     }
 
     [TestMethod]
-    public void BinarySerializeSimpleDomainObjectTypes()
-    {
+    public void BinarySerializeSimpleDomainObjectTypes() {
         RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadatatsdo.bin");
 
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.SupportedSystemTypes = t => t;
-            coreOptions.AddNakedObjects(options =>
-            {
+            coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = new[] { typeof(TestSimpleDomainObject) };
                 options.DomainModelServices = new[] { typeof(TestService) };
                 options.NoValidate = true;
@@ -246,23 +246,19 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             CompareCaches(container, file);
         }
     }
 
     [TestMethod]
-    public void BinarySerializeAnnotatedDomainObjectTypes()
-    {
+    public void BinarySerializeAnnotatedDomainObjectTypes() {
         RecurseCheck = new HashSet<ISpecification>();
         var file = Path.Combine(testDir, "metadatatado.bin");
 
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.SupportedSystemTypes = t => t;
-            coreOptions.AddNakedObjects(options =>
-            {
+            coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = new[] { typeof(TestAnnotatedDomainObject) };
                 options.DomainModelServices = new[] { typeof(TestService) };
                 options.NoValidate = true;
@@ -271,8 +267,29 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
+            CompareCaches(container, file);
+        }
+    }
+
+    [TestMethod]
+    public void BinarySerializeMenus() {
+        RecurseCheck = new HashSet<ISpecification>();
+        var file = Path.Combine(testDir, "metadatamenu.bin");
+
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.SupportedSystemTypes = t => t;
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = new[] { typeof(TestSimpleDomainObjectWithMenu) };
+                options.DomainModelServices = new[] { typeof(TestService) };
+                options.NoValidate = true;
+            });
+            coreOptions.MainMenus = f => new[] { f.NewMenu(typeof(TestService)) };
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
             CompareCaches(container, file);
         }
     }
@@ -304,10 +321,16 @@ public class CacheTest {
 
         Assert.IsTrue(newCache.AllSpecifications().Select(s => s.OrderedObjectActions).All(fs => !fs.Any() || fs.All(f => f != null)), error);
 
-        var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
+        var zippedSpecs = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
 
-        foreach (var item in zipped) {
+        foreach (var item in zippedSpecs) {
             AssertSpecification(item.a, item.b);
+        }
+
+        var zippedMenus = cache.MainMenus().Zip(newCache.MainMenus(), (a, b) => new { a, b });
+
+        foreach (var item in zippedMenus) {
+            AssertMenu(item.a, item.b);
         }
     }
 
