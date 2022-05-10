@@ -23,7 +23,6 @@ using NakedFramework.Metamodel.Utils;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
-
 // all unordered
 internal class ReflectionWorkingData {
     internal Type[] Services { get; set; }
@@ -34,7 +33,6 @@ internal class ReflectionWorkingData {
     internal List<IActionSpecImmutable> ObjectActions { get; set; }
     internal List<ITypeSpecImmutable> Subclasses { get; } = new();
 }
-
 
 [Serializable]
 public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
@@ -60,6 +58,8 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     private ReflectionStatus ReflectionStatus { get; set; }
 
+    public IList<IActionSpecImmutable> UnorderedContributedActions => workingData.ContributedActions;
+
     public Type Type => typeWrapper.Type;
 
     public string FullName { get; private set; }
@@ -80,11 +80,9 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     public IReadOnlyList<ITypeSpecImmutable> Subclasses => subclasses.ImmutableList;
 
-    public IList<IAssociationSpecImmutable> UnorderedFields =>  workingData.Fields;
+    public IList<IAssociationSpecImmutable> UnorderedFields => workingData.Fields;
 
     public IList<IActionSpecImmutable> UnorderedObjectActions => workingData.ObjectActions;
-
-    public IList<IActionSpecImmutable> UnorderedContributedActions => workingData.ContributedActions;
 
     public ITypeSpecImmutable Superclass { get; private set; }
 

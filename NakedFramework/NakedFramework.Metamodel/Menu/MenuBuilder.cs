@@ -185,8 +185,8 @@ public class MenuBuilder : IMenu {
 
     private bool HasActionOrSuperMenuHasAction(IActionSpecImmutable action) =>
         HasAction(action) ||
-        SuperMenu is MenuBuilder superMenu &&
-        superMenu.HasActionOrSuperMenuHasAction(action);
+        (SuperMenu is MenuBuilder superMenu &&
+         superMenu.HasActionOrSuperMenuHasAction(action));
 
     private MenuBuilder GetSubMenuIfExists(string menuName) => MenuItems.FirstOrDefault(a => a.Name == menuName);
 

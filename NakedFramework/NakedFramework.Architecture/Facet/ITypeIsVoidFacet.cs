@@ -7,4 +7,4 @@
 
 namespace NakedFramework.Architecture.Facet;
 
-public interface ITypeIsVoidFacet : IFacet  { }
+public interface ITypeIsVoidFacet : IFacet { }

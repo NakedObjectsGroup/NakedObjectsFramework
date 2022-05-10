@@ -15,11 +15,11 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class RangeFacet : FacetAbstract, IRangeFacet {
+    private readonly object max;
 
     // storing properties as IConvertible causes BinaryDeserialization to fail (eg with int). 
     // so store as object and cast. 
     private readonly object min;
-    private readonly object max;
 
     public RangeFacet(IConvertible min, IConvertible max, bool isDateRange) {
         this.min = min;
@@ -59,9 +59,9 @@ public sealed class RangeFacet : FacetAbstract, IRangeFacet {
 
     public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRangeException(ic, Min, Max, Invalidates(ic));
 
-    public IConvertible Min => (IConvertible) min;
+    public IConvertible Min => (IConvertible)min;
 
-    public IConvertible Max => (IConvertible) max;
+    public IConvertible Max => (IConvertible)max;
 
     public override Type FacetType => typeof(IRangeFacet);
 

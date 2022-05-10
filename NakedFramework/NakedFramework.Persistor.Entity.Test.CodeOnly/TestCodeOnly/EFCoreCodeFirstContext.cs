@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace TestCodeOnly;
 
 public class EFCoreCodeFirstContext : DbContext {
@@ -29,7 +28,7 @@ public class EFCoreCodeFirstContext : DbContext {
 
     public DbSet<Squad> Squads { get; set; }
 
-    public DbSet<TestCodeOnly.System> Systems { get; set; }
+    public DbSet<System> Systems { get; set; }
 
     public void Delete() => Database.EnsureDeleted();
 
@@ -44,7 +43,7 @@ public class EFCoreCodeFirstContext : DbContext {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<CountryCode>().HasKey(cc => new {cc.Code, cc.ISOCode});
+        modelBuilder.Entity<CountryCode>().HasKey(cc => new { cc.Code, cc.ISOCode });
 
         var food = new Category { ID = 1, Name = "Food" };
         modelBuilder.Entity<Category>().HasData(food);
@@ -53,34 +52,29 @@ public class EFCoreCodeFirstContext : DbContext {
         modelBuilder.Entity<CountryCode>().HasData(new CountryCode { Code = "UK", ISOCode = 101, Name = "Great Britain" });
         modelBuilder.Entity<CountryCode>().HasData(new CountryCode { Code = "FR", ISOCode = 102, Name = "France" });
 
-
         modelBuilder.Entity<Product>().HasData(new { ID = 1, Name = "Bovril", OwningcategoryID = 1 });
         modelBuilder.Entity<Product>().HasData(new { ID = 2, Name = "Marmite", OwningcategoryID = 1 });
         modelBuilder.Entity<Product>().HasData(new { ID = 3, Name = "Vegemite", OwningcategoryID = 1 });
 
         modelBuilder.Entity<DomesticAddress>().HasData(new DomesticAddress { ID = 1, Lines = "22 Westleigh Drive", Postcode = "RG4 9LB" });
         modelBuilder.Entity<DomesticAddress>().HasData(new DomesticAddress { ID = 2, Lines = "BNR Park, Concorde Road", Postcode = "SL6 4AG" });
-        modelBuilder.Entity<InternationalAddress>().HasData(new { ID = 3, Lines = "1 Madison Avenue, New York", CountryCode = "USA", CountryISOCode= 100 });
+        modelBuilder.Entity<InternationalAddress>().HasData(new { ID = 3, Lines = "1 Madison Avenue, New York", CountryCode = "USA", CountryISOCode = 100 });
 
         modelBuilder.Entity<Person>().HasData(new { ID = 1, Name = "Ted", FavouriteID = 1, AddressID = 1 });
         modelBuilder.Entity<Person>().HasData(new { ID = 2, Name = "Bob", FavouriteID = 2, AddressID = 2 });
         modelBuilder.Entity<Person>().HasData(new { ID = 3, Name = "Jane", FavouriteID = 3, AddressID = 3 });
 
-        modelBuilder.Entity<Squad>().HasData(new Squad() { Id = 1, Name= "squad1"});
-        modelBuilder.Entity<System>().HasData(new System() { Id = 1, Name = "system1" });
+        modelBuilder.Entity<Squad>().HasData(new Squad { Id = 1, Name = "squad1" });
+        modelBuilder.Entity<System>().HasData(new System { Id = 1, Name = "system1" });
 
-
-        modelBuilder.Entity<TestCodeOnly.System>(entity =>
-        {
-
+        modelBuilder.Entity<System>(entity => {
             entity.HasMany(d => d.Squads)
                   .WithMany(p => p.Systems)
                   .UsingEntity<Dictionary<string, object>>(
                       "SystemSquadAssignment",
                       l => l.HasOne<Squad>().WithMany().HasForeignKey("SquadId").HasConstraintName("system_squad_assignment_fk_squad_id"),
-                      r => r.HasOne<TestCodeOnly.System>().WithMany().HasForeignKey("SystemId").HasConstraintName("system_squad_assignment_fk_system_id"),
-                      j =>
-                      {
+                      r => r.HasOne<System>().WithMany().HasForeignKey("SystemId").HasConstraintName("system_squad_assignment_fk_system_id"),
+                      j => {
                           j.HasKey("SystemId", "SquadId").HasName("system_squad_assignment_pk");
 
                           j.ToTable("system_squad_assignment", "tracking").HasComment("Associates a system to it's assigned squads");

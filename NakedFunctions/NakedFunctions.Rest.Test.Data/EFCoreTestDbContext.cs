@@ -91,10 +91,8 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<MaskRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
         modelBuilder.Entity<HiddenRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
 
-
         modelBuilder.Entity<AlternateKeyRecord>().HasAlternateKey(k => k.Name);
         modelBuilder.Entity<AlternateKeyRecord>().HasData(new AlternateKeyRecord { Id = 1, Name = "AK1" });
-
     }
 }
 

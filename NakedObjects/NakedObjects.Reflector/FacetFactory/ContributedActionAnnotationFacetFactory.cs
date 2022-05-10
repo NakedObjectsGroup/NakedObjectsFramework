@@ -9,7 +9,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Metadata;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
@@ -53,7 +52,7 @@ public sealed class ContributedActionAnnotationFacetFactory : DomainObjectFacetF
         }
 
         var facet = new ContributedActionIntegrationFacet();
-        foreach (var (p, attribute) in  paramsWithAttribute) {
+        foreach (var (p, attribute) in paramsWithAttribute) {
             var parameterType = p.ParameterType;
             (var type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(parameterType, metamodel);
 

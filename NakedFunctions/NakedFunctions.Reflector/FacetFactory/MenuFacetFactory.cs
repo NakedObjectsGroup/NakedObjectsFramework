@@ -35,7 +35,7 @@ public sealed class MenuFacetFactory : FunctionalFacetFactoryProcessor, IMethodP
     public string[] Prefixes => FixedPrefixes;
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, typeof(void), new [] {typeof(IMenu)});
+        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, typeof(void), new[] { typeof(IMenu) });
         if (method is not null) {
             FacetUtils.AddFacet(new MenuFacetViaMethod(method, Logger<MenuFacetViaMethod>()), specification);
         }

@@ -144,6 +144,4 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeProfilePropertySetterFacet() => TestSerializeProfilePropertySetterFacet(BinaryRoundTrip);
-
-    
 }

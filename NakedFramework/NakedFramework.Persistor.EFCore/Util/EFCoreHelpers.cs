@@ -20,7 +20,6 @@ using NakedFramework.Core.Util;
 namespace NakedFramework.Persistor.EFCore.Util;
 
 public static class EFCoreHelpers {
-
     public static bool IsNotMappingObject(this DbContext context, Type type) => context.GetEntityType(type) is not null;
 
     private static IEntityType GetEntityType(this DbContext context, Type type) => context.Model.FindEntityType(type.GetProxiedType());

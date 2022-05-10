@@ -956,8 +956,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeMenuActionThatReturnsAlternateKeyObject()
-    {
+    public void TestInvokeMenuActionThatReturnsAlternateKeyObject() {
         var api = Api();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.GetInvokeOnMenu(nameof(MenuTestFunctions), nameof(MenuTestFunctions.AlternateKey), map);
@@ -970,8 +969,5 @@ public class MenuTestEF6 : AcceptanceTestCase {
 
         Assert.AreEqual("1", resultObj["instanceId"].ToString());
         Assert.AreEqual("http://localhost/objects/NakedFunctions.Rest.Test.Data.AlternateKeyRecord/1", resultObj["links"][0]["href"].ToString());
-
     }
-
-
 }

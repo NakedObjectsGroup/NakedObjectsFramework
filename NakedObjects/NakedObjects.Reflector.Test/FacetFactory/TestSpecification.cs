@@ -39,8 +39,6 @@ internal class TestSpecification : Specification, IObjectSpecBuilder {
     public bool IsOfType(ITypeSpecImmutable otherSpecification) => throw new NotImplementedException();
     public string[] GetLocallyContributedActionNames(string id) => throw new NotImplementedException();
 
-    public IReadOnlyList<IActionSpecImmutable> GetLocallyContributedActions(string id) => throw new NotImplementedException();
-
     public bool IsPlaceHolder { get; }
     public bool IsPendingIntrospection { get; }
     public IList<IAssociationSpecImmutable> UnorderedFields { get; }
@@ -80,4 +78,6 @@ internal class TestSpecification : Specification, IObjectSpecBuilder {
     public void AddFinderActions(IList<IActionSpecImmutable> finderActions) {
         throw new NotImplementedException();
     }
+
+    public IReadOnlyList<IActionSpecImmutable> GetLocallyContributedActions(string id) => throw new NotImplementedException();
 }

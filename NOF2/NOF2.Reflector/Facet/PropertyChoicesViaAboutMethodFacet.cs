@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
 using NOF2.About;
 using NOF2.Reflector.Helpers;

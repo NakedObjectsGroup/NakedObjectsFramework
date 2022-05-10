@@ -27,7 +27,7 @@ internal class MemberPeerStub : Specification, IMemberSpecImmutable {
     public MemberPeerStub(string name)
         : this(name, null) { }
 
-    public MemberPeerStub(string name, string description) :base(null) {
+    public MemberPeerStub(string name, string description) : base(null) {
         this.name = name;
         this.description = description;
     }

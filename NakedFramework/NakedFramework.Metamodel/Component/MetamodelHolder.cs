@@ -19,7 +19,7 @@ public sealed class MetamodelHolder : IMetamodelBuilder {
     private readonly ILogger<MetamodelHolder> logger;
 
     public MetamodelHolder(ISpecificationCache cache, ILogger<MetamodelHolder> logger) {
-        this.Cache = cache;
+        Cache = cache;
         this.logger = logger;
     }
 

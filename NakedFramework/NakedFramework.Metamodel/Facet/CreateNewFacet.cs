@@ -22,9 +22,9 @@ public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
 
     public CreateNewFacet(Type toCreate) => this.toCreate = new TypeSerializationWrapper(toCreate, ReflectorDefaults.JitSerialization);
 
-    public override Type FacetType => typeof(ICreateNewFacet);
+    public Type Type => toCreate.Type;
 
-    public Type Type => toCreate.Type; 
+    public override Type FacetType => typeof(ICreateNewFacet);
 
     public string[] OrderedProperties(INakedObjectAdapter adapter, INakedFramework framework) {
         if (framework.MetamodelManager.GetSpecification(Type) is IObjectSpec spec) {

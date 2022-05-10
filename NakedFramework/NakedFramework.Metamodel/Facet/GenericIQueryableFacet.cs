@@ -8,6 +8,7 @@
 using System;
 
 namespace NakedFramework.Metamodel.Facet;
+
 [Serializable]
 public sealed class GenericIQueryableFacet : GenericIQueryableFacetAbstract {
     private static GenericIQueryableFacet instance;

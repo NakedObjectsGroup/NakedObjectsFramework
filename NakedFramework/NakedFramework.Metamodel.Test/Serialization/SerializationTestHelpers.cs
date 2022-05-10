@@ -28,6 +28,8 @@ using NakedFramework.Metamodel.SpecImmutable;
 namespace NakedFramework.Metamodel.Test.Serialization;
 
 public static class SerializationTestHelpers {
+    public static HashSet<ISpecification> RecurseCheck = new();
+
     public static void AssertIFacet(IFacet facet, IFacet facet1) {
         Assert.AreNotEqual(facet, facet1);
         Assert.AreEqual(facet.GetType(), facet1.GetType());
@@ -59,8 +61,6 @@ public static class SerializationTestHelpers {
             }
         }
     }
-
-    public static HashSet<ISpecification> RecurseCheck = new();
 
     public static void AssertSpecification(ISpecification s1, ISpecification s2) {
         if (s1 is null && s2 is null) {
@@ -113,7 +113,6 @@ public static class SerializationTestHelpers {
         }
     }
 
-
     public static void AssertISpecification(ISpecification spec, ISpecification spec1) {
         Assert.AreNotEqual(spec, spec1);
         Assert.AreEqual(spec.Identifier, spec1.Identifier);
@@ -158,21 +157,18 @@ public static class SerializationTestHelpers {
         AssertSpecification(s.OwnerSpec, dss.OwnerSpec);
     }
 
-    private static void AssertMenuItem(IMenuItemImmutable m, IMenuItemImmutable dsm)
-    {
+    private static void AssertMenuItem(IMenuItemImmutable m, IMenuItemImmutable dsm) {
         Assert.AreEqual(m.Name, dsm.Name);
         Assert.AreEqual(m.Id, dsm.Id);
         Assert.AreEqual(m.Grouping, dsm.Grouping);
     }
 
-    public static void AssertMenu(IMenuImmutable m, IMenuImmutable dsm)
-    {
+    public static void AssertMenu(IMenuImmutable m, IMenuImmutable dsm) {
         AssertMenuItem(m, dsm);
         AssertArrayAreEqual(m.MenuItems, dsm.MenuItems);
     }
 
-    public static void AssertMenuAction(MenuAction m, MenuAction dsm)
-    {
+    public static void AssertMenuAction(MenuAction m, MenuAction dsm) {
         AssertMenuItem(m, dsm);
         AssertSpecification(m.Action, dsm.Action);
     }

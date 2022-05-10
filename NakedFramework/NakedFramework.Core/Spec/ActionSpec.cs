@@ -174,7 +174,6 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
     public INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) =>
         parameterSet ?? (IsContributedMethod ? new[] { target } : Array.Empty<INakedObjectAdapter>());
 
-
     public string GetFinderMethodPrefix() => actionSpecImmutable.GetFacet<IFinderActionFacet>()?.Value;
 
     #endregion

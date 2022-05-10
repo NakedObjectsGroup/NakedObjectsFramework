@@ -15,7 +15,6 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class SaveNullFacet : SaveFacetAbstract, ISaveFacet {
-
     private static SaveNullFacet instance;
 
     private SaveNullFacet() { }

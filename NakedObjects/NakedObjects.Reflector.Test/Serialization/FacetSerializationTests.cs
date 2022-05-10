@@ -12,7 +12,6 @@ using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Profile;
-using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Test.Serialization;
 using NakedFramework.Profile;
 using NakedObjects.Reflector.Facet;

@@ -85,7 +85,7 @@ public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociation
             }
 
             var tgtSpec = target.Spec;
-            if (tgtSpec.IsAlwaysImmutable() || tgtSpec.IsImmutableOncePersisted() && isPersistent) {
+            if (tgtSpec.IsAlwaysImmutable() || (tgtSpec.IsImmutableOncePersisted() && isPersistent)) {
                 return new Veto(NakedObjects.Resources.NakedObjects.FieldDisabled);
             }
         }

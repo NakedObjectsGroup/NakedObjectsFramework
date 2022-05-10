@@ -40,6 +40,6 @@ public class PropertyWithDetailsRepresentationStrategy : AbstractPropertyReprese
 
     protected override bool AddChoices(IObjectFacade objectFacade) =>
         PropertyContext.Property.IsChoicesEnabled(objectFacade) != Choices.NotEnabled &&
-        (PropertyContext.Property.Specification.IsParseable || PropertyContext.Property.Specification.IsCollection && PropertyContext.Property.ElementSpecification.IsParseable) &&
+        (PropertyContext.Property.Specification.IsParseable || (PropertyContext.Property.Specification.IsCollection && PropertyContext.Property.ElementSpecification.IsParseable)) &&
         !PropertyContext.Property.GetChoicesParameters().Any();
 }

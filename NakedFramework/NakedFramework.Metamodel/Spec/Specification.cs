@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
@@ -22,12 +21,9 @@ namespace NakedFramework.Metamodel.Spec;
 /// </summary>
 [Serializable]
 public abstract class Specification : ISpecificationBuilder {
-
-    protected Specification(IIdentifier identifier) {
-        Identifier = identifier;
-    }
-
     private readonly FacetDictionarySerializationWrapper facetDictionary = new();
+
+    protected Specification(IIdentifier identifier) => Identifier = identifier;
 
     private void AddFacet(Type facetType, IFacet facet) {
         var existingFacet = GetFacet(facetType);
@@ -44,7 +40,6 @@ public abstract class Specification : ISpecificationBuilder {
             facetDictionary.AddFacet(facet);
         }
     }
-
 
     #region ISpecificationBuilder Members
 

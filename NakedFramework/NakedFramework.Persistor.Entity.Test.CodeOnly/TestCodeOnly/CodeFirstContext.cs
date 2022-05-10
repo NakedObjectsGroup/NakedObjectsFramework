@@ -21,5 +21,4 @@ public class CodeFirstContext : DbContext {
     public DbSet<InternationalAddress> InternationalAddresses { get; set; }
     public DbSet<Person> People { get; set; }
     public DbSet<Product> Products { get; set; }
-
 }

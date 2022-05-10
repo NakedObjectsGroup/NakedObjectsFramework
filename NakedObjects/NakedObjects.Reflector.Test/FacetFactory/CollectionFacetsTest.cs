@@ -316,7 +316,7 @@ public class CollectionFacetsTest {
     public void GenericCollectionIsSet() {
         ICollectionFacet testCollectionFacet = GenericCollectionSetFacet.Instance;
         Assert.IsTrue(testCollectionFacet.IsASet);
-        testCollectionFacet =  GenericIEnumerableSetFacet.Instance;
+        testCollectionFacet = GenericIEnumerableSetFacet.Instance;
         Assert.IsTrue(testCollectionFacet.IsASet);
         testCollectionFacet = GenericIQueryableSetFacet.Instance;
         Assert.IsTrue(testCollectionFacet.IsASet);
@@ -328,7 +328,7 @@ public class CollectionFacetsTest {
         Assert.IsFalse(testCollectionFacet.IsASet);
         testCollectionFacet = GenericIEnumerableFacet.Instance;
         Assert.IsFalse(testCollectionFacet.IsASet);
-        testCollectionFacet =  GenericIQueryableFacet.Instance;
+        testCollectionFacet = GenericIQueryableFacet.Instance;
         Assert.IsFalse(testCollectionFacet.IsASet);
     }
 

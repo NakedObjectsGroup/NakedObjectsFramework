@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Facet;
 

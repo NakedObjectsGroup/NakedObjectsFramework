@@ -43,7 +43,7 @@ public abstract class AbstractClassStrategy : IClassStrategy {
         var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
         return IsTypeIgnored(returnType) ||
                IsTypeUnsupportedBySystem(returnType) ||
-               FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().Any(IsIgnored);
+               (FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().Any(IsIgnored));
     }
 
     public virtual bool IsTypeRecognizedByReflector(Type type) {
@@ -61,7 +61,7 @@ public abstract class AbstractClassStrategy : IClassStrategy {
         return !IsTypeIgnored(returnType) &&
                !IsTypeUnsupportedBySystem(returnType) &&
                (TypeIsRegistered(returnType) ||
-                FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().All(TypeIsRegistered));
+                (FasterTypeUtils.IsGenericCollection(type) && type.GetGenericArguments().All(TypeIsRegistered)));
     }
 
     public abstract bool IsIgnored(MemberInfo member);

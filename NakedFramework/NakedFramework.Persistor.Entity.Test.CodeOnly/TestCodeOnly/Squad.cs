@@ -2,8 +2,7 @@
 
 namespace TestCodeOnly;
 
-public partial class Squad
-{
+public class Squad {
     public virtual int Id { get; set; }
 
     public virtual string Name { get; set; } = null!;

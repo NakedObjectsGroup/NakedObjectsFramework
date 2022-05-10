@@ -304,7 +304,7 @@ public sealed class ActionMethodsFacetFactory : DomainObjectFacetFactoryProcesso
 
         Type elementType = null;
         var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
-        if (returnSpec is not null && IsCollection(actionMethod.ReturnType)) { 
+        if (returnSpec is not null && IsCollection(actionMethod.ReturnType)) {
             elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
             (var elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
         }

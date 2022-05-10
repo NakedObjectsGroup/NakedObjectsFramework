@@ -405,5 +405,4 @@ public class FacetBinarySerializationTests {
 
     [TestMethod]
     public void TestBinarySerializeUShortValueSemanticsProvider() => TestSerializeUShortValueSemanticsProvider(BinaryRoundTrip);
-
 }

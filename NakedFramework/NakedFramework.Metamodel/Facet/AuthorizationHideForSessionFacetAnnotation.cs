@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 [Serializable]
 public sealed class AuthorizationHideForSessionFacetAnnotation : HideForSessionFacetAbstract {
     public AuthorizationHideForSessionFacetAnnotation(string roles,
-                                            string users) {
+                                                      string users) {
         Roles = FacetUtils.SplitOnComma(roles);
         Users = FacetUtils.SplitOnComma(users);
     }

@@ -127,8 +127,8 @@ public static class ModelBinderUtils {
             case JObject jObject:
                 try {
                     arg.Value = GetValue(jObject, "Single");
-                    arg.IsMalformed = !arg.HasValue && GetNonReservedProperties(jObject).Any() ||
-                                      arg.HasValue && GetNonReservedProperties(jObject).Count() > 1;
+                    arg.IsMalformed = (!arg.HasValue && GetNonReservedProperties(jObject).Any()) ||
+                                      (arg.HasValue && GetNonReservedProperties(jObject).Count() > 1);
 
                     if (includeReservedArgs) {
                         arg.ReservedArguments = new ReservedArguments { ValidateOnly = GetValidateOnlyFlag(jObject) };

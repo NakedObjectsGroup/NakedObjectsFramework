@@ -500,7 +500,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
         }
 
         if (nakedObjectAdapter.Spec is IObjectSpec spec) {
-             INakedObjectAdapter GetCollection(IOneToManyAssociationSpec assoc, INakedObjectAdapter owner) =>
+            INakedObjectAdapter GetCollection(IOneToManyAssociationSpec assoc, INakedObjectAdapter owner) =>
                 assoc.GetNakedObject(owner) ?? throw new PersistFailedException($"Unexpected null collection {assoc.Name(nakedObjectAdapter)} on {owner.Spec.FullName}");
 
             // testing check 

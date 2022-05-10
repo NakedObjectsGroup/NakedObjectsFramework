@@ -126,7 +126,7 @@ public class ParameterRepresentation : Representation {
 
     private static bool IsUnconditionalChoices(FieldFacadeAdapter parameter, IObjectFacade objectFacade) =>
         parameter.IsChoicesEnabled(objectFacade) != Choices.NotEnabled &&
-        (parameter.Specification.IsParseable || parameter.Specification.IsCollection && parameter.ElementType.IsParseable) &&
+        (parameter.Specification.IsParseable || (parameter.Specification.IsCollection && parameter.ElementType.IsParseable)) &&
         !parameter.GetChoicesParameters().Any();
 
     private static LinkRepresentation CreateDefaultLink(IOidStrategy oidStrategy, HttpRequest req, FieldFacadeAdapter parameter, IActionFacade action, IObjectFacade defaultNakedObject, string title, RestControlFlags flags) {
@@ -157,12 +157,12 @@ public class ParameterRepresentation : Representation {
         var adapter = new FieldFacadeAdapter(parameter) { MenuId = parameterContext.MenuId };
 
         // include default value for for non-nullable boolean so we can distinguish from nullable on client 
-        if (parameter.DefaultTypeIsExplicit(objectFacade) || parameter.Specification.IsBoolean && !parameter.IsNullable) {
+        if (parameter.DefaultTypeIsExplicit(objectFacade) || (parameter.Specification.IsBoolean && !parameter.IsNullable)) {
             var defaultNakedObject = parameter.GetDefault(objectFacade);
             if (defaultNakedObject != null) {
                 var title = defaultNakedObject.TitleString;
                 var value = RestUtils.ObjectToPredefinedType(defaultNakedObject, true);
-                var isValue = defaultNakedObject.Specification.IsParseable || defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable;
+                var isValue = defaultNakedObject.Specification.IsParseable || (defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable);
                 var defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy, req, adapter, parameter.Action, defaultNakedObject, title, flags);
 
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));
@@ -194,7 +194,7 @@ public class ParameterRepresentation : Representation {
         if (defaultNakedObject != null) {
             var title = defaultNakedObject.TitleString;
             var value = RestUtils.ObjectToPredefinedType(defaultNakedObject, true);
-            var isValue = defaultNakedObject.Specification.IsParseable || defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable;
+            var isValue = defaultNakedObject.Specification.IsParseable || (defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable);
             var defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy, req, adapter, actionContext.Action, defaultNakedObject, title, flags);
 
             optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));

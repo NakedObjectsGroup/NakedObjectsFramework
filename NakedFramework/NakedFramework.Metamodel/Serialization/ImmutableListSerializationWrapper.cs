@@ -11,10 +11,10 @@ namespace NakedFramework.Metamodel.Serialization;
 public class ImmutableListSerializationWrapper<T> where T : ISpecification {
     private readonly bool jit;
 
+    private readonly List<T> list;
+
     [NonSerialized]
     private ImmutableList<T> immutableList;
-
-    private readonly List<T> list;
 
     public ImmutableListSerializationWrapper(ImmutableList<T> immutableList, bool jit) {
         this.jit = jit;

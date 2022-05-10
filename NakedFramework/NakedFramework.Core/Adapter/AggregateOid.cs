@@ -34,7 +34,7 @@ public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {
         }
     }
 
-    public override bool Equals(object obj) => obj == this || obj is AggregateOid otherOid && Equals(otherOid);
+    public override bool Equals(object obj) => obj == this || (obj is AggregateOid otherOid && Equals(otherOid));
 
     private bool Equals(AggregateOid otherOid) =>
         otherOid.ParentOid.Equals(ParentOid) &&

@@ -67,7 +67,7 @@ public class TypeMarkerFacetFactoryTest : AbstractFacetFactoryTest {
 
     private void AssertStatic(bool isStatic) {
         var facet = Specification.GetFacet<ITypeIsStaticFacet>();
-        Assert.AreEqual(isStatic,facet is not null);
+        Assert.AreEqual(isStatic, facet is not null);
     }
 
     private void Process(Type type) {

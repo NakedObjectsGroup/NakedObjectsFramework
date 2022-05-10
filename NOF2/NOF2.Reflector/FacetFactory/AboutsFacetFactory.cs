@@ -76,7 +76,6 @@ public sealed class AboutsFacetFactory : AbstractNOF2FacetFactoryProcessor, IMet
     #region IMethodIdentifyingFacetFactory Members
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        
         var facets = new List<IFacet>();
         var onType = actionMethod.DeclaringType;
         var returnType = actionMethod.ReturnType;

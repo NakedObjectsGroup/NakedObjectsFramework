@@ -219,8 +219,7 @@ public static class FacetSerializationTests {
         AssertIFacet(f, dsf);
     }
 
-    public static void TestSerializeTitleFacetViaTitleMethod(Func<TitleFacetViaTitleMethod, TitleFacetViaTitleMethod> roundTripper)
-    {
+    public static void TestSerializeTitleFacetViaTitleMethod(Func<TitleFacetViaTitleMethod, TitleFacetViaTitleMethod> roundTripper) {
         var m = typeof(NOF2TestSerializationClass).GetMethod(nameof(NOF2TestSerializationClass.Title));
         var f = new TitleFacetViaTitleMethod(m, null);
         var dsf = roundTripper(f);
@@ -230,8 +229,7 @@ public static class FacetSerializationTests {
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
 
-    public static void TestSerializeValueHolderWrappingValueSemanticsProvider(Func<ValueHolderWrappingValueSemanticsProvider<Logical, bool>, ValueHolderWrappingValueSemanticsProvider<Logical, bool>> roundTripper)
-    {
+    public static void TestSerializeValueHolderWrappingValueSemanticsProvider(Func<ValueHolderWrappingValueSemanticsProvider<Logical, bool>, ValueHolderWrappingValueSemanticsProvider<Logical, bool>> roundTripper) {
         var f = new ValueHolderWrappingValueSemanticsProvider<Logical, bool>();
         var dsf = roundTripper(f);
 

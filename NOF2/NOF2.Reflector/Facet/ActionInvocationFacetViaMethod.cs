@@ -26,12 +26,11 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-    private readonly MethodSerializationWrapper methodWrapper;
     private readonly TypeSerializationWrapper elementType;
-    private readonly TypeSerializationWrapper returnType;
+    private readonly MethodSerializationWrapper methodWrapper;
     private readonly TypeSerializationWrapper onType;
     private readonly int paramCount;
-    
+    private readonly TypeSerializationWrapper returnType;
 
     public ActionInvocationFacetViaMethod(MethodInfo method, Type onType, Type returnType, Type elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
         methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);

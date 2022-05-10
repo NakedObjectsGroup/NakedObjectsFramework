@@ -83,16 +83,14 @@ public static class FacetSerializationTests {
         Assert.AreEqual(f.GetMethodDelegate().GetType(), dsf.GetMethodDelegate().GetType());
     }
 
-    public static void TestSerializeContributedToCollectionFacet(Func<ContributedToCollectionFacet, ContributedToCollectionFacet> roundTripper)
-    {
+    public static void TestSerializeContributedToCollectionFacet(Func<ContributedToCollectionFacet, ContributedToCollectionFacet> roundTripper) {
         var f = ContributedToCollectionFacet.Instance;
         var dsf = roundTripper(f);
 
         AssertIFacet(f, dsf);
     }
 
-    public static void TestSerializeContributedToObjectFacet(Func<ContributedToObjectFacet, ContributedToObjectFacet> roundTripper)
-    {
+    public static void TestSerializeContributedToObjectFacet(Func<ContributedToObjectFacet, ContributedToObjectFacet> roundTripper) {
         var f = ContributedToObjectFacet.Instance;
         var dsf = roundTripper(f);
 

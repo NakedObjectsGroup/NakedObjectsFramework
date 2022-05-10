@@ -26,11 +26,7 @@ public static class MenuTestFunctions {
         return instances.Skip(context.RandomSeed().ValueInRange(instances.Count())).FirstOrDefault();
     }
 
-    public static AlternateKeyRecord AlternateKey(IContext context)
-    {
-        return context.Instances<AlternateKeyRecord>().FirstOrDefault();
-    }
-
+    public static AlternateKeyRecord AlternateKey(IContext context) => context.Instances<AlternateKeyRecord>().FirstOrDefault();
 
     internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) where T : class => (obj, context.WithNew(obj));
 

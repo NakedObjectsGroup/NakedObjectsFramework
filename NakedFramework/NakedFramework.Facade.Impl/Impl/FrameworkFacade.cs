@@ -589,7 +589,7 @@ public class FrameworkFacade : IFrameworkFacade {
 
             var stringValue = value as string;
 
-            if (parm.IsMandatory && (value == null || value is string && string.IsNullOrEmpty(stringValue))) {
+            if (parm.IsMandatory && (value == null || (value is string && string.IsNullOrEmpty(stringValue)))) {
                 isValid = false;
                 orderedParms[parm.Id].Reason = "Mandatory"; // i18n
             }
@@ -726,7 +726,7 @@ public class FrameworkFacade : IFrameworkFacade {
             }
 
             var tgtSpec = target.Spec;
-            if (tgtSpec.IsAlwaysImmutable() || tgtSpec.IsImmutableOncePersisted() && isPersistent) {
+            if (tgtSpec.IsAlwaysImmutable() || (tgtSpec.IsImmutableOncePersisted() && isPersistent)) {
                 return new Veto(NakedObjects.Resources.NakedObjects.FieldDisabled);
             }
         }

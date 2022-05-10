@@ -29,7 +29,7 @@ public class ObjectClassStrategy : AbstractClassStrategy {
         var services = config.Services.ToArray();
         return config.TypesToIntrospect.Any(t => t == type) ||
                services.Any(t => t == type) ||
-               type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
+               (type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition()));
     }
 
     #region IClassStrategy Members

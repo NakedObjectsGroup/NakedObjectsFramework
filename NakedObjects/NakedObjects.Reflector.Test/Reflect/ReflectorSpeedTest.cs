@@ -136,10 +136,8 @@ public class ReflectorSpeedTest {
     }
 
     [TestMethod]
-    public void SerializeAWTypesBenchMark()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void SerializeAWTypesBenchMark() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = NakedObjectsRunSettings.Types;
                 options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -150,8 +148,7 @@ public class ReflectorSpeedTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             var curDir = Directory.GetCurrentDirectory();
             var testDir = Path.Combine(curDir, "testserialize");
             Directory.CreateDirectory(testDir);
@@ -159,7 +156,7 @@ public class ReflectorSpeedTest {
             var file = Path.Combine(testDir, "metadata.bin");
 
             var mb = container.GetService<IModelBuilder>();
-          
+
             mb.Build(file);
 
             var stopWatch = new Stopwatch();
@@ -176,10 +173,8 @@ public class ReflectorSpeedTest {
     }
 
     [TestMethod]
-    public void SerializeAWTypesBenchMarkWithJit()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void SerializeAWTypesBenchMarkWithJit() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = NakedObjectsRunSettings.Types;
                 options.DomainModelServices = NakedObjectsRunSettings.Services;

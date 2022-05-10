@@ -19,9 +19,9 @@ public interface ICoreConfiguration : ITypeList {
     /// </summary>
     Func<IMenuFactory, IMenu[]> MainMenus { get; }
 
-    void AddMainMenu(Func<IMenuFactory, IMenu[]> mainMenu);
-
     List<Type> SupportedSystemTypes { get; }
 
     int HashMapCapacity { get; }
+
+    void AddMainMenu(Func<IMenuFactory, IMenu[]> mainMenu);
 }

@@ -135,7 +135,7 @@ public class TypeFacade : ITypeFacade {
 
     public IMenuFacade Menu => cachedMenu ??= new MenuFacade(WrappedValue.Menu, FrameworkFacade, framework);
 
-    public bool IsImmutable(IObjectFacade objectFacade) => IsAlwaysImmutable || WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient;
+    public bool IsImmutable(IObjectFacade objectFacade) => IsAlwaysImmutable || (WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient);
 
     public IActionFacade[] GetActionLeafNodes() =>
         cachedActionLeafNodes ??= FacadeUtils.GetActionsFromSpec(WrappedValue).Select(a => new ActionFacade(a, FrameworkFacade, framework)).Cast<IActionFacade>().ToArray();

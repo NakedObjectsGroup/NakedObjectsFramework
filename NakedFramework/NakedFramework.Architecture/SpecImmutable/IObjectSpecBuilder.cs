@@ -11,7 +11,6 @@ using System.Collections.Generic;
 namespace NakedFramework.Architecture.SpecImmutable;
 
 public interface IObjectSpecBuilder : IObjectSpecImmutable, ITypeSpecBuilder {
-
     IList<IActionSpecImmutable> UnorderedContributedActions { get; }
 
     void AddContributedActions(IList<IActionSpecImmutable> contributedActions, Type[] services);

@@ -16,9 +16,6 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public abstract class SaveFacetAbstract : FacetAbstract, ISaveFacet {
-
-    protected SaveFacetAbstract() { }
-
     public override Type FacetType => typeof(ISaveFacet);
 
     public abstract string Save(INakedFramework framework, INakedObjectAdapter nakedObject, ILogger logger);

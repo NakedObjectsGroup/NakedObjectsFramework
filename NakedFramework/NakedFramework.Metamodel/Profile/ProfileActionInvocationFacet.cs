@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Profile;
 
@@ -28,15 +27,15 @@ public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {
     }
 
     public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;
-    public override MethodInfo GetMethod() => underlyingFacet.GetMethod();
-
-    public override Func<object, object[], object> GetMethodDelegate() => underlyingFacet.GetMethodDelegate();
 
     public override Type ReturnType => underlyingFacet.ReturnType;
 
     public override Type ElementType => underlyingFacet.ElementType;
 
     public override Type OnType => underlyingFacet.OnType;
+    public override MethodInfo GetMethod() => underlyingFacet.GetMethod();
+
+    public override Func<object, object[], object> GetMethodDelegate() => underlyingFacet.GetMethodDelegate();
 
     public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedFramework framework) {
         var profileManager = framework.ServiceProvider.GetService<IProfileManager>();

@@ -18,7 +18,7 @@ internal static class FrameworkHelper {
     public static INakedObjectAdapter GetNakedObject(this INakedFramework framework, object domainObject) => framework.NakedObjectManager.CreateAdapter(domainObject, null, null);
 
     public static bool IsNotPersistent(this INakedObjectAdapter nakedObject) =>
-        nakedObject.ResolveState.IsTransient() && nakedObject.Spec.Persistable == PersistableType.ProgramPersistable ||
+        (nakedObject.ResolveState.IsTransient() && nakedObject.Spec.Persistable == PersistableType.ProgramPersistable) ||
         nakedObject.Spec.Persistable == PersistableType.Transient;
 
     public static bool IsImage(this ITypeSpec spec, INakedFramework framework) {

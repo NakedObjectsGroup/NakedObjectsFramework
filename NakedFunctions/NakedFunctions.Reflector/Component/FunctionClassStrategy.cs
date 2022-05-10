@@ -29,7 +29,7 @@ public class FunctionClassStrategy : AbstractClassStrategy {
     protected override bool IsTypeExplicitlyRequested(Type type) {
         var types = config.Types.Union(config.Functions).ToArray();
         return types.Any(t => t == type) ||
-               type.IsGenericType && types.Any(t => t == type.GetGenericTypeDefinition());
+               (type.IsGenericType && types.Any(t => t == type.GetGenericTypeDefinition()));
     }
 
     private static bool IsTuple(Type type) => type.GetInterfaces().Any(i => i == typeof(ITuple));

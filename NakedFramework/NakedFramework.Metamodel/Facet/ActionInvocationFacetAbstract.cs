@@ -10,13 +10,15 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvocationFacet {
     public override Type FacetType => typeof(IActionInvocationFacet);
+
+    public abstract MethodInfo GetMethod();
+    public abstract Func<object, object[], object> GetMethodDelegate();
 
     #region IActionInvocationFacet Members
 
@@ -30,7 +32,4 @@ public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvo
     public abstract bool IsQueryOnly { get; }
 
     #endregion
-
-    public abstract MethodInfo GetMethod();
-    public abstract Func<object, object[], object> GetMethodDelegate();
 }

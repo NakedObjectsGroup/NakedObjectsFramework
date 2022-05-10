@@ -36,9 +36,6 @@ public class PropertySerializationWrapper {
         set => property = value;
     }
 
-    public T GetValue<T>(object target) => (T)PropertyInfo.GetValue(target);
-
-
     public Func<object, object[], object> GetMethodDelegate {
         get => getMethodDelegate ??= CreateGetDelegate();
         set => getMethodDelegate = value;
@@ -49,6 +46,8 @@ public class PropertySerializationWrapper {
         set => setMethodDelegate = value;
     }
 
+    public T GetValue<T>(object target) => (T)PropertyInfo.GetValue(target);
+
     private Func<object, object[], object> CreateGetDelegate() {
         var getMethod = GetMethod();
         return getMethod is not null ? DelegateUtils.CreateDelegate(getMethod).Item1 : null;
@@ -56,7 +55,7 @@ public class PropertySerializationWrapper {
 
     private Func<object, object[], object> CreateSetDelegate() {
         var setMethod = SetMethod();
-        return setMethod is not null ?  DelegateUtils.CreateDelegate(setMethod).Item1 : null;
+        return setMethod is not null ? DelegateUtils.CreateDelegate(setMethod).Item1 : null;
     }
 
     [OnDeserialized]

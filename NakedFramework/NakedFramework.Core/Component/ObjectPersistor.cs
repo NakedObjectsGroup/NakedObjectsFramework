@@ -147,7 +147,7 @@ public sealed class ObjectPersistor : IObjectPersistor {
             }
             else {
                 var spec = nakedObjectAdapter.Spec;
-                if (spec.IsAlwaysImmutable() || spec.IsImmutableOncePersisted() && nakedObjectAdapter.ResolveState.IsPersistent()) {
+                if (spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && nakedObjectAdapter.ResolveState.IsPersistent())) {
                     throw new NotPersistableException(logger.LogAndReturn("cannot change immutable object"));
                 }
 

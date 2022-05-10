@@ -1181,8 +1181,7 @@ public class ObjectTestEF6 : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestGetObjectAlternateKey()
-    {
+    public void TestGetObjectAlternateKey() {
         var api = Api();
         var result = api.GetObject(FullName<AlternateKeyRecord>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);

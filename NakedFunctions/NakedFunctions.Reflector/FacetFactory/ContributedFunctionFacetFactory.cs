@@ -55,7 +55,7 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
             }
             else {
                 var elementType = parameterType.GetGenericArguments()[0];
-                (IObjectSpecBuilder elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+                (var elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
                 var facet = new ContributedFunctionFacet();
                 facet.AddCollectionContributee(elementSpec);
                 FacetUtils.AddFacet(facet, specification);
@@ -103,6 +103,7 @@ public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProc
         if (IsContributedToObject(methodInfo)) {
             FacetUtils.AddFacet(ContributedToObjectFacet.Instance, specification);
         }
+
         (ITypeSpecImmutable parameterSpec, metamodel) = reflector.LoadSpecification(parameterType, metamodel);
         var facet = new ContributedFunctionFacet();
         facet.AddContributee(parameterSpec);

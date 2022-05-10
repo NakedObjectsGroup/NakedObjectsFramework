@@ -36,7 +36,7 @@ public sealed class MenuFacetFactory : DomainObjectFacetFactoryProcessor, IMetho
     public string[] Prefixes => FixedPrefixes;
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, typeof(void), new[] { typeof(IMenu)} );
+        var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, typeof(void), new[] { typeof(IMenu) });
         methodRemover.SafeRemoveMethod(method);
         IFacet facet = method is not null ? new MenuFacetViaMethod(method, Logger<MenuFacetViaMethod>()) : new MenuFacetDefault();
         FacetUtils.AddFacet(facet, specification);

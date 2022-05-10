@@ -16,7 +16,6 @@ namespace NakedFramework.Architecture.Facet;
 /// <seealso cref="IUpdatedCallbackFacet" />
 /// <seealso cref="IPersistedCallbackFacet" />
 public interface IUpdatingCallbackFacet : ICallbackFacet {
-
     public bool IsActive { get; }
 }
 

@@ -12,8 +12,12 @@ namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
 public class MethodSerializationWrapper {
-    private readonly TypeSerializationWrapper[] methodArgsWrapper;
     private readonly bool jit;
+
+    [NonSerialized]
+    private readonly Type[] methodArgs;
+
+    private readonly TypeSerializationWrapper[] methodArgsWrapper;
     private readonly string methodName;
     private readonly TypeSerializationWrapper typeWrapper;
 
@@ -22,9 +26,6 @@ public class MethodSerializationWrapper {
 
     [NonSerialized]
     private Func<object, object[], object> methodDelegate;
-
-    [NonSerialized]
-    private readonly Type[] methodArgs;
 
     public MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, bool jit) {
         this.jit = jit;

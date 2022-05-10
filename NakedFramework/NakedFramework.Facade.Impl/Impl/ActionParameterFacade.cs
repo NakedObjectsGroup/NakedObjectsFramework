@@ -41,7 +41,7 @@ public class ActionParameterFacade : AbstractCommonFacade, IActionParameterFacad
     }
 
     private INakedObjectAdapter GetValue(IActionParameterFacade parm, object rawValue) {
-        if (rawValue is null || rawValue is string s && string.IsNullOrEmpty(s)) {
+        if (rawValue is null || (rawValue is string s && string.IsNullOrEmpty(s))) {
             return null;
         }
 

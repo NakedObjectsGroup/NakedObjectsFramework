@@ -11,12 +11,12 @@ namespace NakedFramework.Architecture.SpecImmutable;
 
 public interface IActionSpecImmutable : IMemberSpecImmutable {
     ITypeSpecImmutable OwnerSpec { get; }
-    IObjectSpecImmutable GetElementSpec(IMetamodel metamodel);
     IActionParameterSpecImmutable[] Parameters { get; }
     bool IsContributedMethod { get; }
     bool IsStaticFunction { get; }
     bool IsFinderMethod { get; }
     string StaticName { get; }
+    IObjectSpecImmutable GetElementSpec(IMetamodel metamodel);
 
     bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel);
 }

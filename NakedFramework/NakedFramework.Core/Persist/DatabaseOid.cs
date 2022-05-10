@@ -154,9 +154,9 @@ public sealed class DatabaseOid : IEncodedToStrings, IDatabaseOid {
 
     public override bool Equals(object obj) =>
         obj == this ||
-        obj is DatabaseOid oid &&
-        TypeName.Equals(oid.TypeName) &&
-        Key.SequenceEqual(oid.Key);
+        (obj is DatabaseOid oid &&
+         TypeName.Equals(oid.TypeName) &&
+         Key.SequenceEqual(oid.Key));
 
     // ReSharper disable once NonReadonlyFieldInGetHashCode
     public override int GetHashCode() => cachedHashCode;
