@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
     private static ActionChoicesFacetNone instance;
 
-    private ActionChoicesFacetNone() { }
+    public ActionChoicesFacetNone() { }
 
     public static ActionChoicesFacetNone Instance => instance ??= new ActionChoicesFacetNone();
 
