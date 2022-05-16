@@ -186,7 +186,7 @@ public static class SerializationTestHelpers {
     }
 
     private static T JsonDeserialize<T>(Stream stream) {
-        var deserializer = new BinaryFormatter();
+        DebugJson(stream);
         return JsonSerializer.Deserialize<T>(stream);
     }
 
@@ -210,7 +210,18 @@ public static class SerializationTestHelpers {
         return memoryStream;
     }
 
+    private static void DebugJson(Stream s) {
+        s.Position = 0;
+        var sw = new StreamReader(s);
+        var ss = sw.ReadToEnd();
+        Console.WriteLine(ss);
+        s.Position = 0;
+    }
+
+
     private static T NsJsonDeserialize<T>(Stream stream) {
+        DebugJson(stream);
+
         var serializer = new NsJsonSerializer {
             TypeNameHandling = TypeNameHandling.All
         };
