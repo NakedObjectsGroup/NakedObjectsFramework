@@ -9,7 +9,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-		<PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0-beta04" />
+		<PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0-beta05" />
 	</ItemGroup>
 
 	<ItemGroup>
