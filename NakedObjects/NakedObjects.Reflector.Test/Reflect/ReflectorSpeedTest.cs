@@ -24,10 +24,14 @@ using NakedFramework.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Reflector.Extensions;
 
+using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
+
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Reflector.Test.Reflect;
+
 
 public static class NakedObjectsRunSettings {
     // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
@@ -83,6 +87,38 @@ public static class NakedObjectsRunSettings {
 
 [TestClass]
 public class ReflectorSpeedTest {
+
+    private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache)
+    {
+        Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
+
+        // checks for fields and Objects actions 
+
+        var error = newCache.AllSpecifications().Where(s => s.OrderedFields.Any() && s.OrderedFields.Any(f => f == null)).Select(s => s.FullName).Aggregate("", (s, t) => s + " " + t);
+
+        Assert.IsTrue(newCache.AllSpecifications().Select(s => s.OrderedFields).All(fs => !fs.Any() || fs.All(f => f != null)), error);
+
+        error = newCache.AllSpecifications().Where(s => s.OrderedObjectActions.Any() && s.OrderedObjectActions.Any(f => f == null)).Select(s => s.FullName).Aggregate("", (s, t) => s + " " + t);
+
+        Assert.IsTrue(newCache.AllSpecifications().Select(s => s.OrderedObjectActions).All(fs => !fs.Any() || fs.All(f => f != null)), error);
+
+        var zippedSpecs = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
+
+        foreach (var item in zippedSpecs)
+        {
+            AssertSpecification(item.a, item.b);
+        }
+
+        var zippedMenus = cache.MainMenus().Zip(newCache.MainMenus(), (a, b) => new { a, b });
+
+        foreach (var item in zippedMenus)
+        {
+            AssertMenu(item.a, item.b);
+        }
+    }
+
+
+
     private Action<IServiceCollection> TestHook { get; } = services => { };
 
     private IHostBuilder CreateHostBuilder(string[] args, Action<NakedFrameworkOptions> setup) {
@@ -155,9 +191,11 @@ public class ReflectorSpeedTest {
             Directory.GetFiles(testDir).ForEach(File.Delete);
             var file = Path.Combine(testDir, "metadata.bin");
 
+            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
             var mb = container.GetService<IModelBuilder>();
 
             mb.Build(file);
+            var cache1 = metamodelBuilder?.Cache;
 
             var stopWatch = new Stopwatch();
 
@@ -165,10 +203,16 @@ public class ReflectorSpeedTest {
             mb.RestoreFromFile(file);
             stopWatch.Stop();
             var time = stopWatch.ElapsedMilliseconds;
+            var cache2 = metamodelBuilder?.Cache;
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
+
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+            Assert.IsNotNull(cache1);
+            Assert.IsNotNull(cache2);
+            Assert.AreNotEqual(cache1, cache2);
+            CompareCaches(cache1, cache2);
         }
     }
 
@@ -193,9 +237,11 @@ public class ReflectorSpeedTest {
             Directory.GetFiles(testDir).ForEach(File.Delete);
             var file = Path.Combine(testDir, "metadata.bin");
 
+            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
             var mb = container.GetService<IModelBuilder>();
 
             mb.Build(file);
+            var cache1 = metamodelBuilder?.Cache;
 
             var stopWatch = new Stopwatch();
 
@@ -203,10 +249,16 @@ public class ReflectorSpeedTest {
             mb.RestoreFromFile(file);
             stopWatch.Stop();
             var time = stopWatch.ElapsedMilliseconds;
+            var cache2 = metamodelBuilder?.Cache;
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
+
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+            Assert.IsNotNull(cache1);
+            Assert.IsNotNull(cache2);
+            Assert.AreNotEqual(cache1, cache2);
+            CompareCaches(cache1, cache2);
         }
     }
 }
