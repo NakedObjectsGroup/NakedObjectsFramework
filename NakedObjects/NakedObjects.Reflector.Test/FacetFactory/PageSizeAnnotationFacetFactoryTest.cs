@@ -16,7 +16,7 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global

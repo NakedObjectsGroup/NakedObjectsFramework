@@ -12,7 +12,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using static NakedFramework.Metamodel.SemanticsProvider.ValueTypeHelpers;
+using static NakedFramework.Metamodel.NonSerializedSemanticsProvider.ValueTypeHelpers;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory;
 

@@ -31,7 +31,7 @@ public class ModelBuilder : IModelBuilder {
         this.logger = logger;
     }
 
-    public void Build(string filePath = null) {
+    public void Build(string filePath = null, Type[] additionalKnownTypes = null) {
         IImmutableDictionary<string, ITypeSpecBuilder> specDictionary = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
         specDictionary = reflectors.OrderBy(r => r.Order).Aggregate(specDictionary, (current, reflector) => reflector.Reflect(current));
         Validate(specDictionary);
@@ -40,7 +40,7 @@ public class ModelBuilder : IModelBuilder {
 
         if (filePath is not null) {
             try {
-                initialMetamodel.SaveToFile(filePath);
+                initialMetamodel.SaveToFile(filePath, additionalKnownTypes);
             }
             catch (Exception e) {
                 logger.LogError($"Failed to save metamodel to file: {filePath} : {e}");

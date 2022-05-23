@@ -24,15 +24,6 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 // all unordered
-internal class ReflectionWorkingData {
-    internal Type[] Services { get; set; }
-    internal List<IActionSpecImmutable> CollectionContributedActions { get; } = new();
-    internal List<IActionSpecImmutable> ContributedActions { get; set; } = new();
-    internal List<IAssociationSpecImmutable> Fields { get; set; }
-    internal List<IActionSpecImmutable> FinderActions { get; } = new();
-    internal List<IActionSpecImmutable> ObjectActions { get; set; }
-    internal List<ITypeSpecImmutable> Subclasses { get; } = new();
-}
 
 [Serializable]
 public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {

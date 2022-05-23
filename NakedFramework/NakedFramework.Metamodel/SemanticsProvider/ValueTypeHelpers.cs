@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.NonSerializedSemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.SemanticsProvider;
+namespace NakedFramework.Metamodel.NonSerializedSemanticsProvider;
 
 public static class ValueTypeHelpers {
     private static readonly List<KeyValuePair<Type, IValueSemanticsProvider>> Factories = new() {

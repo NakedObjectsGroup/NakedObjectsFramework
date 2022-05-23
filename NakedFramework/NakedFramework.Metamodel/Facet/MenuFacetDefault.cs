@@ -10,6 +10,7 @@ using System.Linq;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Menu;
+using NakedFramework.Metamodel.NonSerialiZedMenu;
 
 namespace NakedFramework.Metamodel.Facet;
 

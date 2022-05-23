@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Error;
@@ -15,6 +16,7 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Adapter;
 
+[KnownType(typeof(IdentifierImpl))]
 [Serializable]
 public class IdentifierImpl : IIdentifier {
     private readonly string className;

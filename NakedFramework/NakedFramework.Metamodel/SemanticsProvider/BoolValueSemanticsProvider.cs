@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Core.Error;
+using NakedFramework.Metamodel.NonSerializedSemanticsProvider;
 
 [assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 

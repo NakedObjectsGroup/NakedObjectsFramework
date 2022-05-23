@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Core.Error;
+using NakedFramework.Metamodel.NonSerializedSemanticsProvider;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
 

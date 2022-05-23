@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.NonSerializedFacet;
 
 namespace NakedFunctions.Reflector.Test.Facet;
 

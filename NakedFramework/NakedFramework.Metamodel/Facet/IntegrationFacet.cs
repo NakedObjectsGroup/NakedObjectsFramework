@@ -7,8 +7,9 @@
 
 using System;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.Facet;
+namespace NakedFramework.Metamodel.NonSerializedFacet;
 
 // Not Serializable. Should be removed from metamodel at end of model integration. 
 

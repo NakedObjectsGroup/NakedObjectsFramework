@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Metamodel.Menu;
+using NakedFramework.Metamodel.NonSerialiZedMenu;
 using NOF2.Container;
 using NOF2.Menu;
 using NOF2.ValueHolder;

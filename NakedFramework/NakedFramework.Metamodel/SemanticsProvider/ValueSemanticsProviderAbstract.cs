@@ -11,6 +11,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.NonSerializedSemanticsProvider;
 
 namespace NakedFramework.Metamodel.SemanticsProvider;
 

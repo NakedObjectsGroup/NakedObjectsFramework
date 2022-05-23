@@ -10,8 +10,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
@@ -20,8 +22,12 @@ using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.Adapter;
+using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Menu;
+using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.SpecImmutable;
+using NakedObjects.Reflector.Facet;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -274,6 +280,68 @@ public static class SerializationTestHelpers {
         using var stream = BinarySerialize(cache);
         return (T)BinaryDeserialize(stream);
     }
+
+    private static Type[] KnownTypes => new[] {
+        typeof(IdentifierImpl),
+        typeof(BooleanValueSemanticsProvider),
+        typeof(ImageValueSemanticsProvider),
+        typeof(ActionInvocationFacetViaMethod),
+        typeof(PersistedCallbackFacetNull),
+        typeof(UpdatedCallbackFacetNull),
+        typeof(UpdatedCallbackFacetViaMethod),
+        typeof(PropertySetterFacetViaSetterMethod),
+        typeof(ActionSpecImmutable)
+    };
+
+
+    private static Stream XmlSerialize(object graph)
+    {
+        Stream memoryStream = new MemoryStream();
+        var serializer = new DataContractSerializer(graph.GetType(), KnownTypes);
+        serializer.WriteObject(memoryStream, graph);
+        memoryStream.Position = 0;
+        return memoryStream;
+    }
+
+    private static T XmlDeserialize<T>(Stream stream)
+    {
+        var deserializer = new DataContractSerializer(typeof(T), KnownTypes);
+        var reader =  XmlDictionaryReader.CreateTextReader(stream, new XmlDictionaryReaderQuotas());
+        return (T) deserializer.ReadObject(reader, true);
+    }
+
+    public static T XmlRoundTrip<T>(T facet) where T : IFacet
+    {
+        using var stream = XmlSerialize(facet);
+        return XmlDeserialize<T>(stream);
+    }
+
+    public static T XmlRoundTripSpec<T>(T spec) where T : ISpecification
+    {
+        using var stream = XmlSerialize(spec);
+        return XmlDeserialize<T>(stream);
+    }
+
+    public static T XmlRoundTripId<T>(T id) where T : IIdentifier
+    {
+        using var stream = XmlSerialize(id);
+        return XmlDeserialize<T>(stream);
+    }
+
+    public static T XmlRoundTripMenu<T>(T menu) where T : IMenuItemImmutable
+    {
+        using var stream = XmlSerialize(menu);
+        return XmlDeserialize<T>(stream);
+    }
+
+    public static T XmlRoundTripCache<T>(T cache) where T : ISpecificationCache
+    {
+        using var stream = XmlSerialize(cache);
+        return XmlDeserialize<T>(stream);
+    }
+
+
+
 
     public static PropertyInfo GetProperty() => typeof(TestSerializationClass).GetProperty(nameof(TestSerializationClass.TestProperty));
 

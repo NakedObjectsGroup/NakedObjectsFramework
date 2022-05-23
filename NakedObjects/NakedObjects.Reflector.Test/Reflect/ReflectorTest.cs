@@ -27,7 +27,8 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Metamodel.NonSerializedFacet;
+using NakedFramework.Metamodel.Utils;
 using NakedObjects;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.FacetFactory;
@@ -36,7 +37,8 @@ using TestData;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace TestData {
+namespace TestData
+{
     public class WithDuplicates {
         [Key]
         [Title]
@@ -62,7 +64,8 @@ namespace TestData {
     }
 }
 
-namespace NakedObjects.Reflector.Test.Reflect {
+namespace NakedObjects.Reflector.Test.Reflect
+{
     public class NullMenuFactory : IMenuFactory {
         public IMenu NewMenu(string name) => null;
 

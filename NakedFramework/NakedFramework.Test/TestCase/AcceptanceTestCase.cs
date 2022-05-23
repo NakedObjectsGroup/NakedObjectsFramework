@@ -28,7 +28,7 @@ using NakedFramework.Menu;
 using NakedFramework.Metamodel.Audit;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Metamodel.Profile;
-using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Metamodel.Utils;
 using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.Rest.Extensions;
 using NakedFramework.Test.Interface;

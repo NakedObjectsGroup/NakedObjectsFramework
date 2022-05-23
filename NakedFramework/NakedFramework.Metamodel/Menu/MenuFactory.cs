@@ -8,8 +8,9 @@
 using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.NonSerialiZedMenu;
 
-namespace NakedFramework.Metamodel.Menu;
+namespace NakedFramework.Metamodel.NonSerializedMenu;
 
 public class MenuFactory : IMenuFactory {
     #region Injected ServicesManager

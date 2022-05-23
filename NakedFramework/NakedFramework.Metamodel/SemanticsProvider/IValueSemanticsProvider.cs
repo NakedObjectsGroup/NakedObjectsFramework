@@ -8,7 +8,7 @@
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 
-namespace NakedFramework.Metamodel.SemanticsProvider;
+namespace NakedFramework.Metamodel.NonSerializedSemanticsProvider;
 
 public interface IValueSemanticsProvider {
     bool IsImmutable { get; }

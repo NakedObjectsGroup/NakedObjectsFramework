@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Menu;
+using NakedFramework.Metamodel.NonSerialiZedMenu;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;

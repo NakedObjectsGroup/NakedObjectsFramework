@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
@@ -18,8 +19,7 @@ public interface ISpecificationCache {
     void Cache(string key, ITypeSpecImmutable spec);
     void Cache(IMenuImmutable mainMenu);
     IMenuImmutable[] MainMenus();
-    void Serialize(string file);
-    void Serialize(string file, IFormatter formatter);
+    void Serialize(string file, Type[] additionalKnownTypes);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

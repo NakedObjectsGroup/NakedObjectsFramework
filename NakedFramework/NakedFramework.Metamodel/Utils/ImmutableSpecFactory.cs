@@ -10,10 +10,12 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Metamodel.SpecImmutable;
 
-namespace NakedFramework.Metamodel.SpecImmutable;
+namespace NakedFramework.Metamodel.Utils;
 
-public static class ImmutableSpecFactory {
+public static class ImmutableSpecFactory
+{
     private static readonly Dictionary<Type, ITypeSpecBuilder> SpecCache = new();
 
     public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) => new ActionParameterSpecImmutable(spec, identifier);
@@ -24,9 +26,12 @@ public static class ImmutableSpecFactory {
 
     public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) => new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
 
-    private static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, bool isRecognized) {
-        lock (SpecCache) {
-            if (!SpecCache.ContainsKey(type)) {
+    private static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, bool isRecognized)
+    {
+        lock (SpecCache)
+        {
+            if (!SpecCache.ContainsKey(type))
+            {
                 SpecCache.Add(type, new ObjectSpecImmutable(type, isRecognized));
             }
 
@@ -34,9 +39,12 @@ public static class ImmutableSpecFactory {
         }
     }
 
-    private static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, bool isRecognized) {
-        lock (SpecCache) {
-            if (!SpecCache.ContainsKey(type)) {
+    private static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, bool isRecognized)
+    {
+        lock (SpecCache)
+        {
+            if (!SpecCache.ContainsKey(type))
+            {
                 SpecCache.Add(type, new ServiceSpecImmutable(type, isRecognized));
             }
 
@@ -54,8 +62,10 @@ public static class ImmutableSpecFactory {
             ? new ActionToCollectionSpecAdapter(actionSpecImmutable)
             : new ActionToAssociationSpecAdapter(actionSpecImmutable);
 
-    public static void ClearCache() {
-        lock (SpecCache) {
+    public static void ClearCache()
+    {
+        lock (SpecCache)
+        {
             SpecCache.Clear();
         }
     }

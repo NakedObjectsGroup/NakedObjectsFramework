@@ -7,7 +7,7 @@
 
 using System.IO;
 
-namespace NakedFramework.Metamodel.SemanticsProvider;
+namespace NakedFramework.Metamodel.NonSerializedSemanticsProvider;
 
 public interface IFromStream {
     object ParseFromStream(Stream stream, string mimeType = null, string name = null);
