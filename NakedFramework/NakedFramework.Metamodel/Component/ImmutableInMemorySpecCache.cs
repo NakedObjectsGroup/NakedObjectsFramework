@@ -16,6 +16,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using System.Xml.Serialization;
+using Apex.Serialization;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
@@ -44,8 +45,12 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         if (file.EndsWith(".bin")) {
             BinaryDeserialize(file);
         }
-        else {
+        else if (file.EndsWith(".xml"))
+        {
             XmlDeserialize(file, additionalKnownTypes);
+        }
+        else {
+            ApexDeserialize(file);
         }
     }
 
@@ -123,7 +128,18 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
     }
 
 
-   
+    private void ApexDeserialize(string file)
+    {
+        var binarySerializer = Binary.Create(ApexSettings());
+        using var fs = File.Open(file, FileMode.Open);
+        var data = binarySerializer.Read<SerializedData>(fs);
+        specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new { k, v }).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+
+        mainMenus = data.MenuValues.ToImmutableList();
+    }
+
+
+
 
     private DataContractSerializerSettings Settings(Type[] additionalKnownTypes) {
         return  new DataContractSerializerSettings() {
@@ -132,6 +148,15 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         };
     }
 
+    private Settings ApexSettings()
+    {
+        var s = new Settings();
+        s.MarkSerializable(t => true);
+        s.SerializationMode = Mode.Graph;
+        s.SupportSerializationHooks = true;
+        s.RegisterCustomSerializer<FacetDictionarySerializationWrapper>(FacetDictionarySerializationWrapper.Write, FacetDictionarySerializationWrapper.Read);
+        return s;
+    }
 
 
     private void XmlDeserialize(string file, Type[] additionalKnownTypes)
@@ -157,8 +182,12 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         if (file.EndsWith(".bin")) {
             BinarySerialize(file);
         }
-        else {
+        else if (file.EndsWith(".xml"))
+        {
             XmlSerialize(file, additionalKnownTypes);
+        }
+        else {
+            ApexSerialize(file);
         }
 
     }
@@ -169,6 +198,16 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         var data = new SerializedData { SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList() };
         formatter.Serialize(fs, data);
     }
+
+    private void ApexSerialize(string file)
+    {
+        var binarySerializer = Binary.Create(ApexSettings());
+        using var fs = File.Open(file, FileMode.OpenOrCreate);
+        var data = new SerializedData { SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList() };
+       
+        binarySerializer.Write(data, fs);
+    }
+
 
     private void XmlSerialize(string file, Type[] additionalKnownTypes) {
         var formatter = new DataContractSerializer(typeof(SerializedData), Settings(additionalKnownTypes));

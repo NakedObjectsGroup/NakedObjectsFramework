@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
+using Apex.Serialization.Extensions;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Core.Configuration;
 
@@ -37,5 +38,24 @@ public sealed class FacetDictionarySerializationWrapper {
     private void OnSerializing(StreamingContext context) {
         serializeKeyList = facetsByClass.Keys.Select(k => TypeSerializationWrapper.Wrap(k)).ToList();
         serializeValueList = facetsByClass.Values.ToList();
+    }
+
+    public static void Write(FacetDictionarySerializationWrapper obj, IBinaryWriter writer)
+    {
+        obj.OnSerializing(new StreamingContext(StreamingContextStates.All));
+        writer.WriteObject(obj.serializeKeyList);
+        writer.WriteObject(obj.serializeValueList);
+    }
+
+    public static void Read(FacetDictionarySerializationWrapper obj, IBinaryReader reader)
+    {
+        
+        var keylist = reader.ReadObject<List<TypeSerializationWrapper>>();
+        var valuelist = reader.ReadObject<List<IFacet>>();
+
+        obj.serializeKeyList = keylist;
+        obj.serializeValueList = valuelist;
+
+        obj.OnDeserialized(new StreamingContext(StreamingContextStates.All));
     }
 }
