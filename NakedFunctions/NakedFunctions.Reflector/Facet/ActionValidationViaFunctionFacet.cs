@@ -26,7 +26,7 @@ public sealed class ActionValidationViaFunctionFacet : FacetAbstract, IActionVal
 
     public ActionValidationViaFunctionFacet(MethodInfo method,
                                             ILogger<ActionValidationViaFunctionFacet> logger) =>
-        methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+        methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override Type FacetType => typeof(IActionValidationFacet);
 

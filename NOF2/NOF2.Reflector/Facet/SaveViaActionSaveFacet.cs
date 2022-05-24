@@ -21,7 +21,7 @@ namespace NOF2.Reflector.Facet;
 public sealed class SaveViaActionSaveFacet : SaveFacetAbstract, ISaveFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger) => methodWrapper = new MethodSerializationWrapper(saveMethod, logger, ReflectorDefaults.JitSerialization);
+    public SaveViaActionSaveFacet(MethodInfo saveMethod, ILogger<SaveViaActionSaveFacet> logger) => methodWrapper = MethodSerializationWrapper.Wrap(saveMethod, logger);
 
     public override string Save(INakedFramework framework, INakedObjectAdapter nakedObject, ILogger logger) {
         methodWrapper.Invoke(nakedObject.GetDomainObject());

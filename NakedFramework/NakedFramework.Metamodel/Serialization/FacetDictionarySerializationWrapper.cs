@@ -35,7 +35,7 @@ public sealed class FacetDictionarySerializationWrapper {
 
     [OnSerializing]
     private void OnSerializing(StreamingContext context) {
-        serializeKeyList = facetsByClass.Keys.Select(k => new TypeSerializationWrapper(k, ReflectorDefaults.JitSerialization)).ToList();
+        serializeKeyList = facetsByClass.Keys.Select(k => TypeSerializationWrapper.Wrap(k)).ToList();
         serializeValueList = facetsByClass.Values.ToList();
     }
 }

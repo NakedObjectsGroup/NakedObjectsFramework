@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class OnUpdatingErrorCallbackFacetViaMethod : OnUpdatingErrorCallbackFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+    public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => methodWrapper.Invoke<string>(nakedObjectAdapter.GetDomainObject(), new object[] { exception });
 

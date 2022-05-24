@@ -29,9 +29,9 @@ public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, II
     private readonly (string name, TypeSerializationWrapper typeWrapper)[] parameterNamesAndTypes;
 
     public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string name, Type type)[] parameterNamesAndTypes, ILogger<ActionChoicesFacetViaMethod> logger, bool isMultiple) {
-        methodWrapper = new MethodSerializationWrapper(choicesMethod, logger, ReflectorDefaults.JitSerialization);
+        methodWrapper = MethodSerializationWrapper.Wrap(choicesMethod, logger);
         IsMultiple = isMultiple;
-        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, new TypeSerializationWrapper(t.type, ReflectorDefaults.JitSerialization))).ToArray();
+        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, TypeSerializationWrapper.Wrap(t.type))).ToArray();
         parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
     }
 

@@ -22,7 +22,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+    public TitleFacetViaTitleFunction(MethodInfo method, ILogger<TitleFacetViaTitleFunction> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) =>
         methodWrapper.Invoke<string>(GetMethod().GetParameterValues(nakedObjectAdapter, framework));

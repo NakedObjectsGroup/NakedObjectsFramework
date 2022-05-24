@@ -26,8 +26,8 @@ public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstrac
     public ViewModelFacetViaFunctionsConvention(MethodInfo deriveFunction,
                                                 MethodInfo populateFunction,
                                                 ILogger<ViewModelFacetViaFunctionsConvention> logger) {
-        deriveWrapper = new MethodSerializationWrapper(deriveFunction, logger, ReflectorDefaults.JitSerialization);
-        populateWrapper = new MethodSerializationWrapper(populateFunction, logger, ReflectorDefaults.JitSerialization);
+        deriveWrapper = MethodSerializationWrapper.Wrap(deriveFunction, logger);
+        populateWrapper = MethodSerializationWrapper.Wrap(populateFunction, logger);
     }
 
     public int Count => 2;

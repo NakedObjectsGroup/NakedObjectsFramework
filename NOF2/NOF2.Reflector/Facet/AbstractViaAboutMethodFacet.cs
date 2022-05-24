@@ -25,7 +25,7 @@ public abstract class AbstractViaAboutMethodFacet : FacetAbstract, IImperativeFa
     private readonly MethodSerializationWrapper methodWrapper;
 
     protected AbstractViaAboutMethodFacet(MethodInfo method, AboutHelpers.AboutType aboutType, ILogger logger) {
-        methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+        methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
         AboutType = aboutType;
     }
 

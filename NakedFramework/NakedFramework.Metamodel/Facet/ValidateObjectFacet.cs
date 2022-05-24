@@ -21,7 +21,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet, IMultipleImperativeFacet {
-    public ValidateObjectFacet(IList<MethodInfo> validateMethods, ILogger logger) => ValidateMethods = validateMethods.Select(m => new MethodSerializationWrapper(m, logger, ReflectorDefaults.JitSerialization)).ToList();
+    public ValidateObjectFacet(IList<MethodInfo> validateMethods, ILogger logger) => ValidateMethods = validateMethods.Select(m =>  MethodSerializationWrapper.Wrap(m, logger)).ToList();
 
     private List<MethodSerializationWrapper> ValidateMethods { get; set; }
 

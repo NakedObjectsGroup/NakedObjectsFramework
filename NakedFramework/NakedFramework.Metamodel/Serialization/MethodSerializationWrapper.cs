@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Utils;
@@ -12,6 +14,7 @@ namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
 public sealed class MethodSerializationWrapper {
+    private static Dictionary<MethodInfo, MethodSerializationWrapper> cache = new();
     private readonly bool jit;
 
     [NonSerialized]
@@ -27,17 +30,17 @@ public sealed class MethodSerializationWrapper {
     [NonSerialized]
     private Func<object, object[], object> methodDelegate;
 
-    public MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, bool jit) {
+    private MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, bool jit) {
         this.jit = jit;
         MethodInfo = methodInfo;
-        typeWrapper = new TypeSerializationWrapper(methodInfo.DeclaringType, jit);
+        typeWrapper = TypeSerializationWrapper.Wrap(methodInfo.DeclaringType);
         methodName = methodInfo.Name;
         methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(methodInfo), logger);
     }
 
-    public MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, Type[] methodArgs, bool jit) : this(methodInfo, logger, jit) {
+    private MethodSerializationWrapper(MethodInfo methodInfo, Type[] methodArgs, ILogger logger, bool jit) : this(methodInfo, logger, jit) {
         this.methodArgs = methodArgs;
-        methodArgsWrapper = methodArgs.Select(a => new TypeSerializationWrapper(a, jit)).ToArray();
+        methodArgsWrapper = methodArgs.Select(a => TypeSerializationWrapper.Wrap(a)).ToArray();
     }
 
     public MethodInfo MethodInfo {
@@ -90,4 +93,24 @@ public sealed class MethodSerializationWrapper {
     public void Invoke(object target) => MethodDelegate.Invoke(MethodInfo, target, null);
 
     public void Invoke(object[] args) => MethodDelegate.InvokeStatic(MethodInfo, args);
+
+    public static MethodSerializationWrapper Wrap(MethodInfo method, ILogger logger) {
+        lock (cache) {
+            if (!cache.ContainsKey(method)) {
+                cache[method] = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+            }
+
+            return cache[method];
+        }
+    }
+
+    public static MethodSerializationWrapper Wrap(MethodInfo method, Type[] methodArgs, ILogger logger) {
+        lock (cache) {
+            if (!cache.ContainsKey(method)) {
+                cache[method] = new MethodSerializationWrapper(method, methodArgs, logger, ReflectorDefaults.JitSerialization);
+            }
+
+            return cache[method];
+        }
+    }
 }

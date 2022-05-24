@@ -43,7 +43,7 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     private ReflectionWorkingData workingData = new();
 
     protected TypeSpecImmutable(Type type, bool isRecognized) : base(null) {
-        typeWrapper = new TypeSerializationWrapper(type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type, ReflectorDefaults.JitSerialization);
+        typeWrapper = TypeSerializationWrapper.Wrap(type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type);
         ReflectionStatus = isRecognized ? ReflectionStatus.PlaceHolder : ReflectionStatus.PendingIntrospection;
     }
 
@@ -125,7 +125,7 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         workingData.Fields = introspector.UnorderedFields.ToList();
         workingData.ObjectActions = introspector.UnorderedObjectActions.ToList();
         DecorateAllFacets(decorator);
-        typeWrapper = new TypeSerializationWrapper(introspector.SpecificationType, ReflectorDefaults.JitSerialization);
+        typeWrapper = TypeSerializationWrapper.Wrap(introspector.SpecificationType);
         ReflectionStatus = ReflectionStatus.Introspected;
         return metamodel;
     }

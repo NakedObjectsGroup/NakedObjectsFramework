@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class CreatedCallbackFacetViaMethod : CreatedCallbackFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public CreatedCallbackFacetViaMethod(MethodInfo method, ILogger<CreatedCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+    public CreatedCallbackFacetViaMethod(MethodInfo method, ILogger<CreatedCallbackFacetViaMethod> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodWrapper.Invoke(nakedObjectAdapter.GetDomainObject());
 

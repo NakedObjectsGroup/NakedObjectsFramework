@@ -25,7 +25,7 @@ public sealed class SaveViaActionSaveWithAboutFacet : AbstractViaAboutMethodFace
 
     public SaveViaActionSaveWithAboutFacet(MethodInfo saveMethod, MethodInfo aboutMethod, ILogger<SaveViaActionSaveWithAboutFacet> logger)
         : base(aboutMethod, AboutHelpers.AboutType.Action, logger) =>
-        methodWrapper = new MethodSerializationWrapper(saveMethod, logger, ReflectorDefaults.JitSerialization);
+        methodWrapper = MethodSerializationWrapper.Wrap(saveMethod, logger);
 
     public int Count => 2;
 

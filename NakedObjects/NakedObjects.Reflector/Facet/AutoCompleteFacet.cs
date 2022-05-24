@@ -28,7 +28,7 @@ public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImpe
     private readonly MethodSerializationWrapper methodWrapper;
 
     public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ILogger<AutoCompleteFacet> logger) {
-        methodWrapper = new MethodSerializationWrapper(autoCompleteMethod, logger, ReflectorDefaults.JitSerialization);
+        methodWrapper = MethodSerializationWrapper.Wrap(autoCompleteMethod, logger);
 
         PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
         MinLength = minLength;

@@ -24,7 +24,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public HideForContextViaFunctionFacet(MethodInfo method, ILogger<HideForContextViaFunctionFacet> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+    public HideForContextViaFunctionFacet(MethodInfo method, ILogger<HideForContextViaFunctionFacet> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override Type FacetType => typeof(IHideForContextFacet);
 

@@ -23,7 +23,7 @@ public sealed class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbst
     private readonly MethodSerializationWrapper methodWrapper;
 
     public PropertySetterFacetViaModifyMethod(MethodInfo method, string name, ILogger<PropertySetterFacetViaModifyMethod> logger) {
-        methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+        methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
         PropertyName = name;
     }
 

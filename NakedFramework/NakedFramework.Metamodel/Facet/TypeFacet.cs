@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 public class TypeFacet : FacetAbstract, ITypeFacet {
     private readonly TypeSerializationWrapper typeOrUnderlyingType;
 
-    public TypeFacet(Type type) => typeOrUnderlyingType = new TypeSerializationWrapper(typeof(Enum).IsAssignableFrom(type) ? Enum.GetUnderlyingType(type) : type, ReflectorDefaults.JitSerialization);
+    public TypeFacet(Type type) => typeOrUnderlyingType = TypeSerializationWrapper.Wrap(typeof(Enum).IsAssignableFrom(type) ? Enum.GetUnderlyingType(type) : type);
 
     public override Type FacetType => typeof(ITypeFacet);
 

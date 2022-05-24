@@ -22,7 +22,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class MenuFacetViaMethod : MenuFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+    public MenuFacetViaMethod(MethodInfo method, ILogger<MenuFacetViaMethod> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public MethodInfo GetMethod() => methodWrapper.GetMethod();
 

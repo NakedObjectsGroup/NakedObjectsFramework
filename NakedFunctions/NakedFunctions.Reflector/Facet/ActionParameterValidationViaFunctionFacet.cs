@@ -24,7 +24,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class ActionParameterValidationViaFunctionFacet : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public ActionParameterValidationViaFunctionFacet(MethodInfo method, ILogger<ActionParameterValidationViaFunctionFacet> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+    public ActionParameterValidationViaFunctionFacet(MethodInfo method, ILogger<ActionParameterValidationViaFunctionFacet> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override Type FacetType => typeof(IActionParameterValidationFacet);
 

@@ -24,7 +24,7 @@ public sealed class PropertyAccessorFacetViaFunction : FacetAbstract, IPropertyA
     private readonly MethodSerializationWrapper methodWrapper;
 
     public PropertyAccessorFacetViaFunction(MethodInfo method, ILogger<PropertyAccessorFacetViaFunction> logger) =>
-        methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+        methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);
 

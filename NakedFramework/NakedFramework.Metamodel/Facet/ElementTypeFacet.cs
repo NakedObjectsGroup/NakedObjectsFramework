@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
     private readonly TypeSerializationWrapper typeWrapper;
 
-    public ElementTypeFacet(Type type) => typeWrapper = new TypeSerializationWrapper(type, ReflectorDefaults.JitSerialization);
+    public ElementTypeFacet(Type type) => typeWrapper = TypeSerializationWrapper.Wrap(type);
 
     public override Type FacetType => typeof(IElementTypeFacet);
 
