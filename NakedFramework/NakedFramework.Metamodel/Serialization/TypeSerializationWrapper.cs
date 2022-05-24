@@ -6,7 +6,7 @@ using NakedFramework.Core.Error;
 namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
-public class TypeSerializationWrapper {
+public sealed class TypeSerializationWrapper  {
     private readonly string assemblyName;
     private readonly bool jit;
     private readonly string typeName;
@@ -26,6 +26,8 @@ public class TypeSerializationWrapper {
         set => type = value;
     }
 
+   
+
     [OnDeserialized]
     private void OnDeserialized(StreamingContext context) {
         if (!jit) {
@@ -43,4 +45,7 @@ public class TypeSerializationWrapper {
             throw new ReflectionException($"Failed to find {an}:{tn}");
         }
     }
+
+  
+
 }

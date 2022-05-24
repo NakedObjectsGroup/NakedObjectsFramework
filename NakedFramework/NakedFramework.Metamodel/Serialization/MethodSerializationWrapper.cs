@@ -11,7 +11,7 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
-public class MethodSerializationWrapper {
+public sealed class MethodSerializationWrapper {
     private readonly bool jit;
 
     [NonSerialized]

@@ -9,7 +9,7 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
-public class PropertySerializationWrapper {
+public sealed class PropertySerializationWrapper {
     private readonly bool jit;
     private readonly string propertyName;
     private readonly TypeSerializationWrapper typeWrapper;
