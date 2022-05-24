@@ -48,9 +48,9 @@ public class ModelBuilder : IModelBuilder {
         }
     }
 
-    public void RestoreFromFile(string filePath) {
+    public void RestoreFromFile(string filePath, Type[] additionalKnownTypes) {
         try {
-            ISpecificationCache cache = new ImmutableInMemorySpecCache(filePath);
+            ISpecificationCache cache = new ImmutableInMemorySpecCache(filePath, additionalKnownTypes);
             initialMetamodel.ReplaceCache(cache);
         }
         catch (Exception e) {

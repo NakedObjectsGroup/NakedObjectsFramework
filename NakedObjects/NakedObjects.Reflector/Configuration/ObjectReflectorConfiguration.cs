@@ -12,7 +12,6 @@ using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.Configuration;
 
-[Serializable]
 public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
     public ObjectReflectorConfiguration(Type[] typesToIntrospect,
                                         Type[] services,

@@ -40,16 +40,16 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
     // constructor to use when loading metadata from file
   
 
-    public ImmutableInMemorySpecCache(string file) {
+    public ImmutableInMemorySpecCache(string file, Type[] additionalKnownTypes) {
         if (file.EndsWith(".bin")) {
             BinaryDeserialize(file);
         }
         else {
-            XmlDeserialize(file, Array.Empty<Type>());
+            XmlDeserialize(file, additionalKnownTypes);
         }
     }
 
-    private Type[] createTypes() {
+    private Type[] CreateTypes() {
 
         var types = new List<Type>();
 
@@ -104,7 +104,7 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
 
 
 
-        var createdTypes = createTypes();
+        var createdTypes = CreateTypes();
 
         tt = tt.Union(createdTypes).ToArray();
 
@@ -122,11 +122,13 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         mainMenus = data.MenuValues.ToImmutableList();
     }
 
+
+   
+
     private DataContractSerializerSettings Settings(Type[] additionalKnownTypes) {
-        return new DataContractSerializerSettings() {
+        return  new DataContractSerializerSettings() {
             KnownTypes = KnownTypes().Union(additionalKnownTypes),
             PreserveObjectReferences = true,
-            
         };
     }
 
@@ -138,8 +140,8 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         using var fs = File.Open(file, FileMode.Open);
       
 
-        var deserializer = new DataContractSerializer(typeof(SerializedData),  Settings(additionalKnownTypes));
-        var reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas() {MaxDepth = 100});
+        var deserializer = new DataContractSerializer(typeof(SerializedData),  Settings(additionalKnownTypes ?? Array.Empty<Type>()));
+        var reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas() {MaxDepth = 1000});
         var data = (SerializedData)deserializer.ReadObject(reader, true);
 
 

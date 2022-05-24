@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -21,9 +22,12 @@ using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.Extensions;
-
+using NakedObjects.Reflector.Facet;
+using NakedObjects.Reflector.Test.Serialization;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
 
@@ -216,6 +220,94 @@ public class ReflectorSpeedTest {
         }
     }
 
+    private Type[] CreateTypes()
+    {
+
+        var types = new List<Type>();
+
+        var ett = new[] { typeof(Ordering), typeof(EmailStatus), typeof(EmailPromotion), typeof(ProductLineEnum), typeof(ProductClassEnum), typeof(SalesOrderHeader.SalesReasonCategories), typeof(OrderStatus) };
+
+        var gtt = new[] { 
+            typeof(DefaultedFacetUsingDefaultsProvider<>),
+            typeof(ParseableFacetUsingParser<>), 
+            typeof(TitleFacetUsingParser<>),
+            typeof(ValueFacetFromSemanticProvider<>),
+            typeof(EnumValueSemanticsProvider<>),
+            typeof(ArrayValueSemanticsProvider<>) };
+
+        foreach (var et in ett)
+        {
+            foreach (var gt in gtt)
+            {
+                var t = gt.MakeGenericType(et);
+                types.Add(t);
+            }
+        }
+
+        return types.ToArray();
+    }
+
+
+    private Type[] AdditionalKnownTypes()
+    {
+        var a = Assembly.GetAssembly(typeof(LoadingCallbackFacetNull));
+        var tt = a.GetTypes().Where(t => t is { IsSerializable: true, IsPublic: true }).ToArray();
+
+        tt = tt.Union(CreateTypes()).ToArray();
+
+        return tt;
+    }
+
+    [TestMethod]
+    public void XmlSerializeAWTypesBenchMark()
+    {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = NakedObjectsRunSettings.Types;
+                options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host)
+        {
+            var curDir = Directory.GetCurrentDirectory();
+            var testDir = Path.Combine(curDir, "testserialize");
+            Directory.CreateDirectory(testDir);
+            Directory.GetFiles(testDir).ForEach(File.Delete);
+            var file = Path.Combine(testDir, "metadata.xml");
+
+            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
+            var mb = container.GetService<IModelBuilder>();
+
+            mb.Build(file, AdditionalKnownTypes());
+            var cache1 = metamodelBuilder?.Cache;
+
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            mb.RestoreFromFile(file, AdditionalKnownTypes());
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+            var cache2 = metamodelBuilder?.Cache;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+
+            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+            Assert.IsNotNull(cache1);
+            Assert.IsNotNull(cache2);
+            Assert.AreNotEqual(cache1, cache2);
+            CompareCaches(cache1, cache2);
+        }
+    }
+
+
+
     [TestMethod]
     public void SerializeAWTypesBenchMarkWithJit() {
         static void Setup(NakedFrameworkOptions coreOptions) {
@@ -261,4 +353,54 @@ public class ReflectorSpeedTest {
             CompareCaches(cache1, cache2);
         }
     }
+
+    [TestMethod]
+    public void XmlSerializeAWTypesBenchMarkWithJit()
+    {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = NakedObjectsRunSettings.Types;
+                options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host)
+        {
+            ReflectorDefaults.JitSerialization = true;
+            var curDir = Directory.GetCurrentDirectory();
+            var testDir = Path.Combine(curDir, "testserialize");
+            Directory.CreateDirectory(testDir);
+            Directory.GetFiles(testDir).ForEach(File.Delete);
+            var file = Path.Combine(testDir, "metadata.xml");
+
+            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
+            var mb = container.GetService<IModelBuilder>();
+
+            mb.Build(file, AdditionalKnownTypes());
+            var cache1 = metamodelBuilder?.Cache;
+
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            mb.RestoreFromFile(file, AdditionalKnownTypes());
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+            var cache2 = metamodelBuilder?.Cache;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+
+            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+            Assert.IsNotNull(cache1);
+            Assert.IsNotNull(cache2);
+            Assert.AreNotEqual(cache1, cache2);
+            CompareCaches(cache1, cache2);
+        }
+    }
+
 }

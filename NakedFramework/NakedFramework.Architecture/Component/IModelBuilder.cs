@@ -12,5 +12,5 @@ namespace NakedFramework.Architecture.Component;
 public interface IModelBuilder {
     public void Build(string filePath = null, Type[] additionalKnownTypes = null);
 
-    public void RestoreFromFile(string filePath);
+    public void RestoreFromFile(string filePath, Type[] additionalKnownTypes = null);
 }

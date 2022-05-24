@@ -23,6 +23,8 @@ using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Adapter;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.Value;
 using NakedObjects.Reflector.Extensions;
@@ -152,11 +154,15 @@ public class CacheTest {
     private Type[] AdditionalKnownTypes()
     {
         var a = Assembly.GetAssembly(typeof(LoadingCallbackFacetNull));
-        var tt = a.GetTypes().Where(t => t.Namespace?.Equals("NakedObjects.Reflector.Facet") == true).ToArray();
+        var tt = a.GetTypes().Where(t => t is { IsSerializable: true, IsPublic: true }).ToArray();
 
+        tt = tt.Append(typeof(EnumValueSemanticsProvider<TestEnum>)).ToArray();
+        tt = tt.Append(typeof(ParseableFacetUsingParser<TestEnum>)).ToArray();
+        tt = tt.Append(typeof(ValueFacetFromSemanticProvider<TestEnum>)).ToArray();
+        tt = tt.Append(typeof(DefaultedFacetUsingDefaultsProvider<TestEnum>)).ToArray();
+        tt = tt.Append(typeof(TitleFacetUsingParser<TestEnum>)).ToArray();
 
-
-        return tt.Where(t => t.IsPublic).ToArray();
+        return tt;
     }
 
 
@@ -414,7 +420,7 @@ public class CacheTest {
         var modelBuilder = container.GetService<IModelBuilder>();
         modelBuilder?.Build(file, additionalKnownTypes ?? Array.Empty<Type>());
         var cache1 = metamodelBuilder?.Cache;
-        modelBuilder?.RestoreFromFile(file);
+        modelBuilder?.RestoreFromFile(file, additionalKnownTypes ?? Array.Empty<Type>());
         var cache2 = metamodelBuilder?.Cache;
 
         Assert.IsNotNull(cache1);

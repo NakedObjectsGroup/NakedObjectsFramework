@@ -16,7 +16,7 @@ namespace NakedFramework.ParallelReflector.Component;
 /// <summary>
 ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
 /// </summary>
-[Serializable]
+
 public abstract class AbstractClassStrategy : IClassStrategy {
     private readonly IAllTypeList allTypeList;
 
