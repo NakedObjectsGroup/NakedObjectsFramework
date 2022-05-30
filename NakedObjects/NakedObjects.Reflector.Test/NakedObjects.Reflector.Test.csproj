@@ -28,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.Metamodel.Test\NakedFramework.Metamodel.Test.csproj" />
     <ProjectReference Include="..\..\Test\AdventureWorksModel\AdventureWorksModel.csproj" />
+    <ProjectReference Include="..\..\Test\TestModels\TestModels.csproj" />
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 

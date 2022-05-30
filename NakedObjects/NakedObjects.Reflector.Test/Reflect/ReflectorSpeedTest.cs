@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
+using Long.Name.Space.N0;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,15 +28,12 @@ using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.Facet;
-using NakedObjects.Reflector.Test.Serialization;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
-
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Reflector.Test.Reflect;
-
 
 public static class NakedObjectsRunSettings {
     // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
@@ -91,9 +89,9 @@ public static class NakedObjectsRunSettings {
 
 [TestClass]
 public class ReflectorSpeedTest {
+    private Action<IServiceCollection> TestHook { get; } = services => { };
 
-    private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache)
-    {
+    private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
         Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
         // checks for fields and Objects actions 
@@ -108,22 +106,16 @@ public class ReflectorSpeedTest {
 
         var zippedSpecs = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
 
-        foreach (var item in zippedSpecs)
-        {
+        foreach (var item in zippedSpecs) {
             AssertSpecification(item.a, item.b);
         }
 
         var zippedMenus = cache.MainMenus().Zip(newCache.MainMenus(), (a, b) => new { a, b });
 
-        foreach (var item in zippedMenus)
-        {
+        foreach (var item in zippedMenus) {
             AssertMenu(item.a, item.b);
         }
     }
-
-
-
-    private Action<IServiceCollection> TestHook { get; } = services => { };
 
     private IHostBuilder CreateHostBuilder(string[] args, Action<NakedFrameworkOptions> setup) {
         return Host.CreateDefaultBuilder(args)
@@ -211,7 +203,6 @@ public class ReflectorSpeedTest {
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
-
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
@@ -220,25 +211,22 @@ public class ReflectorSpeedTest {
         }
     }
 
-    private Type[] CreateTypes()
-    {
-
+    private Type[] CreateTypes() {
         var types = new List<Type>();
 
         var ett = new[] { typeof(Ordering), typeof(EmailStatus), typeof(EmailPromotion), typeof(ProductLineEnum), typeof(ProductClassEnum), typeof(SalesOrderHeader.SalesReasonCategories), typeof(OrderStatus) };
 
-        var gtt = new[] { 
+        var gtt = new[] {
             typeof(DefaultedFacetUsingDefaultsProvider<>),
-            typeof(ParseableFacetUsingParser<>), 
+            typeof(ParseableFacetUsingParser<>),
             typeof(TitleFacetUsingParser<>),
             typeof(ValueFacetFromSemanticProvider<>),
             typeof(EnumValueSemanticsProvider<>),
-            typeof(ArrayValueSemanticsProvider<>) };
+            typeof(ArrayValueSemanticsProvider<>)
+        };
 
-        foreach (var et in ett)
-        {
-            foreach (var gt in gtt)
-            {
+        foreach (var et in ett) {
+            foreach (var gt in gtt) {
                 var t = gt.MakeGenericType(et);
                 types.Add(t);
             }
@@ -247,9 +235,7 @@ public class ReflectorSpeedTest {
         return types.ToArray();
     }
 
-
-    private Type[] AdditionalKnownTypes()
-    {
+    private Type[] AdditionalKnownTypes() {
         var a = Assembly.GetAssembly(typeof(LoadingCallbackFacetNull));
         var tt = a.GetTypes().Where(t => t is { IsSerializable: true, IsPublic: true }).ToArray();
 
@@ -259,10 +245,8 @@ public class ReflectorSpeedTest {
     }
 
     [TestMethod]
-    public void XmlSerializeAWTypesBenchMark()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void XmlSerializeAWTypesBenchMark() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = NakedObjectsRunSettings.Types;
                 options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -273,8 +257,7 @@ public class ReflectorSpeedTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             var curDir = Directory.GetCurrentDirectory();
             var testDir = Path.Combine(curDir, "testserialize");
             Directory.CreateDirectory(testDir);
@@ -297,7 +280,6 @@ public class ReflectorSpeedTest {
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
-
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
@@ -307,10 +289,8 @@ public class ReflectorSpeedTest {
     }
 
     [TestMethod]
-    public void ApexSerializeAWTypesBenchMark()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void ApexSerializeAWTypesBenchMark() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = NakedObjectsRunSettings.Types;
                 options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -321,8 +301,7 @@ public class ReflectorSpeedTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             var curDir = Directory.GetCurrentDirectory();
             var testDir = Path.Combine(curDir, "testserialize");
             Directory.CreateDirectory(testDir);
@@ -345,7 +324,6 @@ public class ReflectorSpeedTest {
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
-
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
@@ -353,8 +331,6 @@ public class ReflectorSpeedTest {
             CompareCaches(cache1, cache2);
         }
     }
-
-
 
     [TestMethod]
     public void SerializeAWTypesBenchMarkWithJit() {
@@ -393,7 +369,6 @@ public class ReflectorSpeedTest {
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
-
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
@@ -402,12 +377,9 @@ public class ReflectorSpeedTest {
         }
     }
 
-
     [TestMethod]
-    public void XmlSerializeAWTypesBenchMarkWithJit()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void XmlSerializeAWTypesBenchMarkWithJit() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = NakedObjectsRunSettings.Types;
                 options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -418,8 +390,7 @@ public class ReflectorSpeedTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             ReflectorDefaults.JitSerialization = true;
             var curDir = Directory.GetCurrentDirectory();
             var testDir = Path.Combine(curDir, "testserialize");
@@ -443,7 +414,6 @@ public class ReflectorSpeedTest {
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
-
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
@@ -453,10 +423,8 @@ public class ReflectorSpeedTest {
     }
 
     [TestMethod]
-    public void ApexSerializeAWTypesBenchMarkWithJit()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void ApexSerializeAWTypesBenchMarkWithJit() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = NakedObjectsRunSettings.Types;
                 options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -467,8 +435,7 @@ public class ReflectorSpeedTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             ReflectorDefaults.JitSerialization = true;
             var curDir = Directory.GetCurrentDirectory();
             var testDir = Path.Combine(curDir, "testserialize");
@@ -492,7 +459,6 @@ public class ReflectorSpeedTest {
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
-
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
@@ -501,6 +467,125 @@ public class ReflectorSpeedTest {
         }
     }
 
+    private static Type[] TestModelTypes() {
+        return Assembly.GetAssembly(typeof(Type0)).GetTypes().Where(t => t.IsPublic).ToArray();
+    }
 
+    [TestMethod]
+    public void ReflectTestModel1000TypesBenchMark() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = TestModelTypes();
+                //options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            //coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
 
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
+            var stopWatch = new Stopwatch();
+            var mb = container.GetService<IModelBuilder>();
+            stopWatch.Start();
+            mb.Build();
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+            //Assert.IsTrue(time < 500, $"Elapsed time was {time} milliseconds");
+
+            Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
+        }
+    }
+
+    [TestMethod]
+    public void SerializeTestModel1000TypesBenchMark() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = TestModelTypes();
+                //options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            //coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
+            var curDir = Directory.GetCurrentDirectory();
+            var testDir = Path.Combine(curDir, "testserialize");
+            Directory.CreateDirectory(testDir);
+            Directory.GetFiles(testDir).ForEach(File.Delete);
+            var file = Path.Combine(testDir, "metadata.bin");
+
+            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
+            var mb = container.GetService<IModelBuilder>();
+
+            mb.Build(file);
+            var cache1 = metamodelBuilder?.Cache;
+
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            mb.RestoreFromFile(file);
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+            var cache2 = metamodelBuilder?.Cache;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+            Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
+            Assert.IsNotNull(cache1);
+            Assert.IsNotNull(cache2);
+            Assert.AreNotEqual(cache1, cache2);
+            CompareCaches(cache1, cache2);
+        }
+    }
+
+    [TestMethod]
+    public void SerializeTestModel1000TypesBenchMarkWithJit() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = TestModelTypes();
+                //options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            //coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
+            ReflectorDefaults.JitSerialization = true;
+            var curDir = Directory.GetCurrentDirectory();
+            var testDir = Path.Combine(curDir, "testserialize");
+            Directory.CreateDirectory(testDir);
+            Directory.GetFiles(testDir).ForEach(File.Delete);
+            var file = Path.Combine(testDir, "metadata.bin");
+
+            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
+            var mb = container.GetService<IModelBuilder>();
+
+            mb.Build(file);
+            var cache1 = metamodelBuilder?.Cache;
+
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            mb.RestoreFromFile(file);
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+            var cache2 = metamodelBuilder?.Cache;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+            Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
+            Assert.IsNotNull(cache1);
+            Assert.IsNotNull(cache2);
+            Assert.AreNotEqual(cache1, cache2);
+            CompareCaches(cache1, cache2);
+        }
+    }
 }
