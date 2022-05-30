@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
+using Long.Name.Space.N0;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -142,6 +143,10 @@ public class ReflectorSpeedTest {
         return metaModel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
     }
 
+
+
+
+
     [TestMethod]
     public void ReflectAWTypesBenchMark() {
         static void Setup(NakedFrameworkOptions coreOptions) {
@@ -170,6 +175,45 @@ public class ReflectorSpeedTest {
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
         }
     }
+
+    private static Type[] TestModelTypes() {
+        return Assembly.GetAssembly(typeof(Type0)).GetTypes().Where(t => t.IsPublic).ToArray();
+    }
+
+
+
+    [TestMethod]
+    public void ReflectTestModel1000TypesBenchMark()
+    {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = TestModelTypes();
+                //options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            //coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host)
+        {
+            var stopWatch = new Stopwatch();
+            var mb = container.GetService<IModelBuilder>();
+            stopWatch.Start();
+            mb.Build();
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+            //Assert.IsTrue(time < 500, $"Elapsed time was {time} milliseconds");
+
+            Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
+        }
+    }
+
 
     [TestMethod]
     public void SerializeAWTypesBenchMark() {
@@ -217,6 +261,54 @@ public class ReflectorSpeedTest {
     }
 
     [TestMethod]
+    public void SerializeTestModel1000TypesBenchMark()
+    {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = TestModelTypes();
+                //options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            //coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host)
+        {
+            var curDir = Directory.GetCurrentDirectory();
+            var testDir = Path.Combine(curDir, "testserialize");
+            Directory.CreateDirectory(testDir);
+            Directory.GetFiles(testDir).ForEach(File.Delete);
+            var file = Path.Combine(testDir, "metadata.bin");
+
+            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
+            var mb = container.GetService<IModelBuilder>();
+
+            mb.Build(file);
+            var cache1 = metamodelBuilder?.Cache;
+
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            mb.RestoreFromFile(file);
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+            var cache2 = metamodelBuilder?.Cache;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+
+            Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
+            Assert.IsNotNull(cache1);
+            Assert.IsNotNull(cache2);
+            Assert.AreNotEqual(cache1, cache2);
+            CompareCaches(cache1, cache2);
+        }
+    }
+
+    [TestMethod]
     public void SerializeAWTypesBenchMarkWithJit() {
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
@@ -255,6 +347,55 @@ public class ReflectorSpeedTest {
 
 
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+            Assert.IsNotNull(cache1);
+            Assert.IsNotNull(cache2);
+            Assert.AreNotEqual(cache1, cache2);
+            CompareCaches(cache1, cache2);
+        }
+    }
+
+    [TestMethod]
+    public void SerializeTestModel1000TypesBenchMarkWithJit()
+    {
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = TestModelTypes();
+                //options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            //coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host)
+        {
+            ReflectorDefaults.JitSerialization = true;
+            var curDir = Directory.GetCurrentDirectory();
+            var testDir = Path.Combine(curDir, "testserialize");
+            Directory.CreateDirectory(testDir);
+            Directory.GetFiles(testDir).ForEach(File.Delete);
+            var file = Path.Combine(testDir, "metadata.bin");
+
+            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
+            var mb = container.GetService<IModelBuilder>();
+
+            mb.Build(file);
+            var cache1 = metamodelBuilder?.Cache;
+
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            mb.RestoreFromFile(file);
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+            var cache2 = metamodelBuilder?.Cache;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+
+            Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
             Assert.AreNotEqual(cache1, cache2);
