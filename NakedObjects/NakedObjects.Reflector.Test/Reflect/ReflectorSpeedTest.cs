@@ -90,6 +90,7 @@ public static class NakedObjectsRunSettings {
 
 [TestClass]
 public class ReflectorSpeedTest {
+    private static readonly Dictionary<string, long> Stats = new();
     private Action<IServiceCollection> TestHook { get; } = services => { };
 
     private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
@@ -139,7 +140,7 @@ public class ReflectorSpeedTest {
         return metaModel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
     }
 
-    private Type[] CreateTypes() {
+    private static Type[] CreateTypes() {
         var types = new List<Type>();
 
         var ett = new[] { typeof(Ordering), typeof(EmailStatus), typeof(EmailPromotion), typeof(ProductLineEnum), typeof(ProductClassEnum), typeof(SalesOrderHeader.SalesReasonCategories), typeof(OrderStatus) };
@@ -163,7 +164,7 @@ public class ReflectorSpeedTest {
         return types.ToArray();
     }
 
-    private Type[] AdditionalKnownTypes() {
+    private static Type[] AdditionalKnownTypes() {
         var a = Assembly.GetAssembly(typeof(LoadingCallbackFacetNull));
         var tt = a.GetTypes().Where(t => t is { IsSerializable: true, IsPublic: true }).ToArray();
 
@@ -172,6 +173,19 @@ public class ReflectorSpeedTest {
         return tt;
     }
 
+    [TestCleanup]
+    public void OutputStats() {
+        if (Stats.Count == 11) {
+            Console.WriteLine("Stats:");
+            var longest = Stats.Max(kvp => kvp.Key.Length);
+
+            foreach (var kvp in Stats.OrderByDescending(kvp => kvp.Key)) {
+                Console.WriteLine($"Test: {kvp.Key.PadRight(longest) } \tElapsedTime: {kvp.Value}ms");
+            }
+        }
+    }
+
+    private static void Record(string test, long elapsed) => Stats[test] = elapsed;
 
     [TestMethod]
     public void ReflectAWTypesBenchMark() {
@@ -195,6 +209,7 @@ public class ReflectorSpeedTest {
             var time = stopWatch.ElapsedMilliseconds;
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
+            Record(MethodBase.GetCurrentMethod().Name, time);
 
             //Assert.IsTrue(time < 500, $"Elapsed time was {time} milliseconds");
 
@@ -202,7 +217,7 @@ public class ReflectorSpeedTest {
         }
     }
 
-    public void ReflectTestModelTypesBenchMark(Type[] testModelTypes) {
+    public void ReflectTestModelTypesBenchMark(Type[] testModelTypes, string test) {
         void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = testModelTypes;
@@ -223,6 +238,7 @@ public class ReflectorSpeedTest {
             var time = stopWatch.ElapsedMilliseconds;
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
+            Record(test, time);
 
             //Assert.IsTrue(time < 500, $"Elapsed time was {time} milliseconds");
 
@@ -232,15 +248,15 @@ public class ReflectorSpeedTest {
 
     [TestMethod]
     public void ReflectTestModel1000TypesBenchMark() {
-        ReflectTestModelTypesBenchMark(model1000_Config.Types());
+        ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
 
     [TestMethod]
     public void ReflectTestModel500TypesBenchMark() {
-        ReflectTestModelTypesBenchMark(model500_Config.Types());
+        ReflectTestModelTypesBenchMark(model500_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
 
-    public void SerializeAWTypesBenchMark(string fileName) {
+    public void SerializeAWTypesBenchMark(string fileName, string test) {
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = NakedObjectsRunSettings.Types;
@@ -274,6 +290,7 @@ public class ReflectorSpeedTest {
             var cache2 = metamodelBuilder?.Cache;
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
+            Record(test, time);
 
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
@@ -285,21 +302,21 @@ public class ReflectorSpeedTest {
 
     [TestMethod]
     public void BinarySerializeAWTypesBenchMark() {
-        SerializeAWTypesBenchMark("metadata.bin");
+        SerializeAWTypesBenchMark("metadata.bin", MethodBase.GetCurrentMethod().Name);
     }
 
     [TestMethod]
     public void BinarySerializeAWTypesBenchMarkWithJit() {
         ReflectorDefaults.JitSerialization = true;
         try {
-            BinarySerializeAWTypesBenchMark();
+            SerializeAWTypesBenchMark("metadata.bin", MethodBase.GetCurrentMethod().Name);
         }
         finally {
             ReflectorDefaults.JitSerialization = false;
         }
     }
 
-    public void SerializeTestModelTypesBenchMark(string fileName, Type[] testModelTypes) {
+    public void SerializeTestModelTypesBenchMark(string fileName, Type[] testModelTypes, string test) {
         void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = testModelTypes;
@@ -333,6 +350,7 @@ public class ReflectorSpeedTest {
             var cache2 = metamodelBuilder?.Cache;
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
+            Record(test, time);
 
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
@@ -343,14 +361,14 @@ public class ReflectorSpeedTest {
 
     [TestMethod]
     public void BinarySerializeTestModel1000TypesBenchMark() {
-        SerializeTestModelTypesBenchMark("metadata.bin", model1000_Config.Types());
+        SerializeTestModelTypesBenchMark("metadata.bin", model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
 
     [TestMethod]
     public void BinarySerializeTestModel1000TypesBenchMarkWithJit() {
         ReflectorDefaults.JitSerialization = true;
         try {
-            BinarySerializeTestModel1000TypesBenchMark();
+            SerializeTestModelTypesBenchMark("metadata.bin", model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
         }
         finally {
             ReflectorDefaults.JitSerialization = false;
@@ -359,50 +377,46 @@ public class ReflectorSpeedTest {
 
     [TestMethod]
     public void BinarySerializeTestModel500TypesBenchMark() {
-        SerializeTestModelTypesBenchMark("metadata.bin", model500_Config.Types());
+        SerializeTestModelTypesBenchMark("metadata.bin", model500_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
 
     [TestMethod]
     public void BinarySerializeTestModel500TypesBenchMarkWithJit() {
         ReflectorDefaults.JitSerialization = true;
         try {
-            BinarySerializeTestModel500TypesBenchMark();
+            SerializeTestModelTypesBenchMark("metadata.bin", model500_Config.Types(), MethodBase.GetCurrentMethod().Name);
         }
         finally {
             ReflectorDefaults.JitSerialization = false;
         }
     }
 
-    [TestMethod]
-    public void XmlSerializeTestModel100TypesBenchMark()
-    {
-        SerializeTestModelTypesBenchMark("metadata.xml", model1000_Config.Types());
-    }
+    //[TestMethod]
+    //public void XmlSerializeTestModel100TypesBenchMark() {
+    //    SerializeTestModelTypesBenchMark("metadata.xml", model1000_Config.Types());
+    //}
 
-    [TestMethod]
-    public void XmlSerializeTestModel100TypesBenchMarkWithJit()
-    {
-        ReflectorDefaults.JitSerialization = true;
-        try
-        {
-            XmlSerializeTestModel100TypesBenchMark();
-        }
-        finally
-        {
-            ReflectorDefaults.JitSerialization = false;
-        }
-    }
+    //[TestMethod]
+    //public void XmlSerializeTestModel100TypesBenchMarkWithJit() {
+    //    ReflectorDefaults.JitSerialization = true;
+    //    try {
+    //        XmlSerializeTestModel100TypesBenchMark();
+    //    }
+    //    finally {
+    //        ReflectorDefaults.JitSerialization = false;
+    //    }
+    //}
 
     [TestMethod]
     public void XmlSerializeAWTypesBenchMark() {
-        SerializeAWTypesBenchMark("metadata.xml");
+        SerializeAWTypesBenchMark("metadata.xml", MethodBase.GetCurrentMethod().Name);
     }
 
     [TestMethod]
     public void XmlSerializeAWTypesBenchMarkWithJit() {
         ReflectorDefaults.JitSerialization = true;
         try {
-            XmlSerializeAWTypesBenchMark();
+            SerializeAWTypesBenchMark("metadata.xml", MethodBase.GetCurrentMethod().Name);
         }
         finally {
             ReflectorDefaults.JitSerialization = false;
