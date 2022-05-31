@@ -17,10 +17,9 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.Utils;
 
-namespace NakedFramework.Metamodel.NonSerialiZedMenu;
+namespace NakedFramework.Metamodel.Menu;
 
 public class MenuBuilder : IMenu {
     private ImmutableList<MenuBuilder> items = ImmutableList<MenuBuilder>.Empty;

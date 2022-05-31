@@ -13,7 +13,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
-using NakedFramework.Metamodel.NonSerializedSemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedFramework.Metamodel.Test.SemanticsProvider;
 

@@ -17,7 +17,7 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.NonSerializedSemanticsProvider;
+using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.TypeFacetFactory;
 using NOF2.Reflector.Helpers;

@@ -13,7 +13,6 @@ using NakedFramework.Architecture.FacetFactory;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
-using NakedFramework.Metamodel.NonSerializedSemanticsProvider;
 using NakedFramework.Metamodel.SemanticsProvider;
 
 namespace NakedFramework.ParallelReflector.TypeFacetFactory;
