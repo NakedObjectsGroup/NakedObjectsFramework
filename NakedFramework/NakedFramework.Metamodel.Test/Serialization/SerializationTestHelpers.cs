@@ -12,7 +12,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.Json;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Architecture.Adapter;
@@ -28,9 +27,6 @@ using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Reflector.Facet;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
-using NsJsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 #pragma warning disable CS0618
 #pragma warning disable SYSLIB0011
@@ -193,63 +189,6 @@ public static class SerializationTestHelpers {
     public static void AssertMenuAction(MenuAction m, MenuAction dsm) {
         AssertMenuItem(m, dsm);
         AssertSpecification(m.Action, dsm.Action);
-    }
-
-    private static Stream JsonSerialize(object graph) {
-        Stream memoryStream = new MemoryStream();
-        JsonSerializer.Serialize(memoryStream, graph, new JsonSerializerOptions { IgnoreReadOnlyProperties = true });
-        memoryStream.Position = 0;
-        return memoryStream;
-    }
-
-    private static T JsonDeserialize<T>(Stream stream) {
-        DebugJson(stream);
-        return JsonSerializer.Deserialize<T>(stream);
-    }
-
-    public static T JsonRoundTrip<T>(T facet) where T : IFacet {
-        using var stream = JsonSerialize(facet);
-        return JsonDeserialize<T>(stream);
-    }
-
-    private static Stream NsJsonSerialize(object graph) {
-        var memoryStream = new MemoryStream();
-
-        var serializer = new NsJsonSerializer {
-            TypeNameHandling = TypeNameHandling.All
-        };
-
-        var sw = new StreamWriter(memoryStream);
-        var writer = new JsonTextWriter(sw);
-        serializer.Serialize(writer, graph);
-        writer.Flush();
-        memoryStream.Position = 0;
-        return memoryStream;
-    }
-
-    private static void DebugJson(Stream s) {
-        s.Position = 0;
-        var sw = new StreamReader(s);
-        var ss = sw.ReadToEnd();
-        Console.WriteLine(ss);
-        s.Position = 0;
-    }
-
-    private static T NsJsonDeserialize<T>(Stream stream) {
-        DebugJson(stream);
-
-        var serializer = new NsJsonSerializer {
-            TypeNameHandling = TypeNameHandling.All
-        };
-
-        var sw = new StreamReader(stream);
-        var reader = new JsonTextReader(sw);
-        return serializer.Deserialize<T>(reader);
-    }
-
-    public static T NsJsonRoundTrip<T>(T facet) where T : IFacet {
-        using var stream = NsJsonSerialize(facet);
-        return NsJsonDeserialize<T>(stream);
     }
 
     private static Stream BinarySerialize(object graph) {
