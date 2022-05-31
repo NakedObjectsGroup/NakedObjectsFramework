@@ -2,10 +2,10 @@
 
 public class Generator
 {
-    public Generator(string nameSpacePrefix, int numTypes)
+    public Generator(string nameSpace, int numTypes)
     {
         this.numTypes = numTypes;
-        this.nameSpacePrefix = nameSpacePrefix;
+        this.nameSpacePrefix = nameSpace;
         rand = new Random();
     }
     Random rand;
@@ -13,13 +13,13 @@ public class Generator
     const int maxMembers = 20;
     const int maxParams = 5;
     const int nameRange = maxMembers * 100000;
-    public string nameSpacePrefix = "Long.Name.Space";
+    public string nameSpacePrefix;
     const string typeNamePrefix = "Type";
     const string propNamePrefix = "Prop";
     const string actionNamePrefix = "Action";
     const string paramNamePrefix = "param";
 
-    public string GenerateClass(int i) => $"namespace {nameSpacePrefix}.N{i}\n{{\n{AddAttributesFrom(classAttrbutes)}\npublic class {typeNamePrefix}{i}\n{{\n{Members()}}}\n}}\n";
+    public string GenerateClass(int i) => $"namespace {nameSpacePrefix}\n{{\n{AddAttributesFrom(classAttrbutes)}\npublic class {typeNamePrefix}{i}\n{{\n{Members()}}}\n}}\n";
 
     string Members()
     {
@@ -98,7 +98,7 @@ public class Generator
     string DomainType()
     {
         int n = rand.Next(numTypes);
-        return $"{nameSpacePrefix}.N{n}.{typeNamePrefix}{n}";
+        return $"{nameSpacePrefix}.{typeNamePrefix}{n}";
     } 
 
     string[] valueTypes = new[] { "int", "double", "string", "DateTime" };
