@@ -138,79 +138,6 @@ public class ReflectorSpeedTest {
         return metaModel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
     }
 
-    [TestMethod]
-    public void ReflectAWTypesBenchMark() {
-        static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedObjects(options => {
-                options.DomainModelTypes = NakedObjectsRunSettings.Types;
-                options.DomainModelServices = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
-            });
-            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
-        }
-
-        var (container, host) = GetContainer(Setup);
-
-        using (host) {
-            var stopWatch = new Stopwatch();
-            var mb = container.GetService<IModelBuilder>();
-            stopWatch.Start();
-            mb.Build();
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-
-            Console.WriteLine($"Elapsed time was {time} milliseconds");
-
-            //Assert.IsTrue(time < 500, $"Elapsed time was {time} milliseconds");
-
-            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
-        }
-    }
-
-    [TestMethod]
-    public void SerializeAWTypesBenchMark() {
-        static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedObjects(options => {
-                options.DomainModelTypes = NakedObjectsRunSettings.Types;
-                options.DomainModelServices = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
-            });
-            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
-        }
-
-        var (container, host) = GetContainer(Setup);
-
-        using (host) {
-            var curDir = Directory.GetCurrentDirectory();
-            var testDir = Path.Combine(curDir, "testserialize");
-            Directory.CreateDirectory(testDir);
-            Directory.GetFiles(testDir).ForEach(File.Delete);
-            var file = Path.Combine(testDir, "metadata.bin");
-
-            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
-            var mb = container.GetService<IModelBuilder>();
-
-            mb.Build(file);
-            var cache1 = metamodelBuilder?.Cache;
-
-            var stopWatch = new Stopwatch();
-
-            stopWatch.Start();
-            mb.RestoreFromFile(file);
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            var cache2 = metamodelBuilder?.Cache;
-
-            Console.WriteLine($"Elapsed time was {time} milliseconds");
-
-            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
-            Assert.IsNotNull(cache1);
-            Assert.IsNotNull(cache2);
-            Assert.AreNotEqual(cache1, cache2);
-            CompareCaches(cache1, cache2);
-        }
-    }
-
     private Type[] CreateTypes() {
         var types = new List<Type>();
 
@@ -244,144 +171,37 @@ public class ReflectorSpeedTest {
         return tt;
     }
 
-    [TestMethod]
-    public void XmlSerializeAWTypesBenchMark() {
-        static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedObjects(options => {
-                options.DomainModelTypes = NakedObjectsRunSettings.Types;
-                options.DomainModelServices = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
-            });
-            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
-        }
-
-        var (container, host) = GetContainer(Setup);
-
-        using (host) {
-            var curDir = Directory.GetCurrentDirectory();
-            var testDir = Path.Combine(curDir, "testserialize");
-            Directory.CreateDirectory(testDir);
-            Directory.GetFiles(testDir).ForEach(File.Delete);
-            var file = Path.Combine(testDir, "metadata.xml");
-
-            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
-            var mb = container.GetService<IModelBuilder>();
-
-            mb.Build(file, AdditionalKnownTypes());
-            var cache1 = metamodelBuilder?.Cache;
-
-            var stopWatch = new Stopwatch();
-
-            stopWatch.Start();
-            mb.RestoreFromFile(file, AdditionalKnownTypes());
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            var cache2 = metamodelBuilder?.Cache;
-
-            Console.WriteLine($"Elapsed time was {time} milliseconds");
-
-            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
-            Assert.IsNotNull(cache1);
-            Assert.IsNotNull(cache2);
-            Assert.AreNotEqual(cache1, cache2);
-            CompareCaches(cache1, cache2);
-        }
-    }
-
-  
-
-    [TestMethod]
-    public void SerializeAWTypesBenchMarkWithJit() {
-        static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedObjects(options => {
-                options.DomainModelTypes = NakedObjectsRunSettings.Types;
-                options.DomainModelServices = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
-            });
-            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
-        }
-
-        var (container, host) = GetContainer(Setup);
-
-        using (host) {
-            ReflectorDefaults.JitSerialization = true;
-            var curDir = Directory.GetCurrentDirectory();
-            var testDir = Path.Combine(curDir, "testserialize");
-            Directory.CreateDirectory(testDir);
-            Directory.GetFiles(testDir).ForEach(File.Delete);
-            var file = Path.Combine(testDir, "metadata.bin");
-
-            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
-            var mb = container.GetService<IModelBuilder>();
-
-            mb.Build(file);
-            var cache1 = metamodelBuilder?.Cache;
-
-            var stopWatch = new Stopwatch();
-
-            stopWatch.Start();
-            mb.RestoreFromFile(file);
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            var cache2 = metamodelBuilder?.Cache;
-
-            Console.WriteLine($"Elapsed time was {time} milliseconds");
-
-            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
-            Assert.IsNotNull(cache1);
-            Assert.IsNotNull(cache2);
-            Assert.AreNotEqual(cache1, cache2);
-            CompareCaches(cache1, cache2);
-        }
-    }
-
-    [TestMethod]
-    public void XmlSerializeAWTypesBenchMarkWithJit() {
-        static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedObjects(options => {
-                options.DomainModelTypes = NakedObjectsRunSettings.Types;
-                options.DomainModelServices = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
-            });
-            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
-        }
-
-        var (container, host) = GetContainer(Setup);
-
-        using (host) {
-            ReflectorDefaults.JitSerialization = true;
-            var curDir = Directory.GetCurrentDirectory();
-            var testDir = Path.Combine(curDir, "testserialize");
-            Directory.CreateDirectory(testDir);
-            Directory.GetFiles(testDir).ForEach(File.Delete);
-            var file = Path.Combine(testDir, "metadata.xml");
-
-            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
-            var mb = container.GetService<IModelBuilder>();
-
-            mb.Build(file, AdditionalKnownTypes());
-            var cache1 = metamodelBuilder?.Cache;
-
-            var stopWatch = new Stopwatch();
-
-            stopWatch.Start();
-            mb.RestoreFromFile(file, AdditionalKnownTypes());
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            var cache2 = metamodelBuilder?.Cache;
-
-            Console.WriteLine($"Elapsed time was {time} milliseconds");
-
-            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
-            Assert.IsNotNull(cache1);
-            Assert.IsNotNull(cache2);
-            Assert.AreNotEqual(cache1, cache2);
-            CompareCaches(cache1, cache2);
-        }
-    }
-
     private static Type[] TestModelTypes() {
         return Assembly.GetAssembly(typeof(Type0)).GetTypes().Where(t => t.IsPublic).ToArray();
+    }
+
+    [TestMethod]
+    public void ReflectAWTypesBenchMark() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = NakedObjectsRunSettings.Types;
+                options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
+            var stopWatch = new Stopwatch();
+            var mb = container.GetService<IModelBuilder>();
+            stopWatch.Start();
+            mb.Build();
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+            //Assert.IsTrue(time < 500, $"Elapsed time was {time} milliseconds");
+
+            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+        }
     }
 
     [TestMethod]
@@ -413,8 +233,66 @@ public class ReflectorSpeedTest {
         }
     }
 
+    public void SerializeAWTypesBenchMark(string fileName) {
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = NakedObjectsRunSettings.Types;
+                options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
+            var curDir = Directory.GetCurrentDirectory();
+            var testDir = Path.Combine(curDir, "testserialize");
+            Directory.CreateDirectory(testDir);
+            Directory.GetFiles(testDir).ForEach(File.Delete);
+            var file = Path.Combine(testDir, fileName);
+
+            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
+            var mb = container.GetService<IModelBuilder>();
+
+            mb.Build(file, AdditionalKnownTypes());
+            var cache1 = metamodelBuilder?.Cache;
+
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            mb.RestoreFromFile(file, AdditionalKnownTypes());
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+            var cache2 = metamodelBuilder?.Cache;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+            Assert.IsNotNull(cache1);
+            Assert.IsNotNull(cache2);
+            Assert.AreNotEqual(cache1, cache2);
+            CompareCaches(cache1, cache2);
+        }
+    }
+
     [TestMethod]
-    public void SerializeTestModel1000TypesBenchMark() {
+    public void BinarySerializeAWTypesBenchMark() {
+        SerializeAWTypesBenchMark("metadata.bin");
+    }
+
+    [TestMethod]
+    public void BinarySerializeAWTypesBenchMarkWithJit() {
+        ReflectorDefaults.JitSerialization = true;
+        try {
+            BinarySerializeAWTypesBenchMark();
+        }
+        finally {
+            ReflectorDefaults.JitSerialization = false;
+        }
+    }
+
+    public void SerializeTestModel1000TypesBenchMark(string fileName) {
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = TestModelTypes();
@@ -431,7 +309,7 @@ public class ReflectorSpeedTest {
             var testDir = Path.Combine(curDir, "testserialize");
             Directory.CreateDirectory(testDir);
             Directory.GetFiles(testDir).ForEach(File.Delete);
-            var file = Path.Combine(testDir, "metadata.bin");
+            var file = Path.Combine(testDir, fileName);
 
             var metamodelBuilder = container.GetService<IMetamodelBuilder>();
             var mb = container.GetService<IModelBuilder>();
@@ -458,47 +336,34 @@ public class ReflectorSpeedTest {
     }
 
     [TestMethod]
-    public void SerializeTestModel1000TypesBenchMarkWithJit() {
-        static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedObjects(options => {
-                options.DomainModelTypes = TestModelTypes();
-                //options.DomainModelServices = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
-            });
-            //coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+    public void BinarySerializeTestModel1000TypesBenchMark() {
+        SerializeTestModel1000TypesBenchMark("metadata.bin");
+    }
+
+    [TestMethod]
+    public void BinarySerializeTestModel1000TypesBenchMarkWithJit() {
+        ReflectorDefaults.JitSerialization = true;
+        try {
+            BinarySerializeTestModel1000TypesBenchMark();
         }
+        finally {
+            ReflectorDefaults.JitSerialization = false;
+        }
+    }
 
-        var (container, host) = GetContainer(Setup);
+    [TestMethod]
+    public void XmlSerializeAWTypesBenchMark() {
+        SerializeAWTypesBenchMark("metadata.xml");
+    }
 
-        using (host) {
-            ReflectorDefaults.JitSerialization = true;
-            var curDir = Directory.GetCurrentDirectory();
-            var testDir = Path.Combine(curDir, "testserialize");
-            Directory.CreateDirectory(testDir);
-            Directory.GetFiles(testDir).ForEach(File.Delete);
-            var file = Path.Combine(testDir, "metadata.bin");
-
-            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
-            var mb = container.GetService<IModelBuilder>();
-
-            mb.Build(file);
-            var cache1 = metamodelBuilder?.Cache;
-
-            var stopWatch = new Stopwatch();
-
-            stopWatch.Start();
-            mb.RestoreFromFile(file);
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            var cache2 = metamodelBuilder?.Cache;
-
-            Console.WriteLine($"Elapsed time was {time} milliseconds");
-
-            Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
-            Assert.IsNotNull(cache1);
-            Assert.IsNotNull(cache2);
-            Assert.AreNotEqual(cache1, cache2);
-            CompareCaches(cache1, cache2);
+    [TestMethod]
+    public void XmlSerializeAWTypesBenchMarkWithJit() {
+        ReflectorDefaults.JitSerialization = true;
+        try {
+            XmlSerializeAWTypesBenchMark();
+        }
+        finally {
+            ReflectorDefaults.JitSerialization = false;
         }
     }
 }
