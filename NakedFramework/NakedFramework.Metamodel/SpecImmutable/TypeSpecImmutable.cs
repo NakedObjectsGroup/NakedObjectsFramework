@@ -24,15 +24,6 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 // all unordered
-internal class ReflectionWorkingData {
-    internal Type[] Services { get; set; }
-    internal List<IActionSpecImmutable> CollectionContributedActions { get; } = new();
-    internal List<IActionSpecImmutable> ContributedActions { get; set; } = new();
-    internal List<IAssociationSpecImmutable> Fields { get; set; }
-    internal List<IActionSpecImmutable> FinderActions { get; } = new();
-    internal List<IActionSpecImmutable> ObjectActions { get; set; }
-    internal List<ITypeSpecImmutable> Subclasses { get; } = new();
-}
 
 [Serializable]
 public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
@@ -52,7 +43,7 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     private ReflectionWorkingData workingData = new();
 
     protected TypeSpecImmutable(Type type, bool isRecognized) : base(null) {
-        typeWrapper = new TypeSerializationWrapper(type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type, ReflectorDefaults.JitSerialization);
+        typeWrapper = TypeSerializationWrapper.Wrap(type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type);
         ReflectionStatus = isRecognized ? ReflectionStatus.PlaceHolder : ReflectionStatus.PendingIntrospection;
     }
 
@@ -134,7 +125,7 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         workingData.Fields = introspector.UnorderedFields.ToList();
         workingData.ObjectActions = introspector.UnorderedObjectActions.ToList();
         DecorateAllFacets(decorator);
-        typeWrapper = new TypeSerializationWrapper(introspector.SpecificationType, ReflectorDefaults.JitSerialization);
+        typeWrapper = TypeSerializationWrapper.Wrap(introspector.SpecificationType);
         ReflectionStatus = ReflectionStatus.Introspected;
         return metamodel;
     }

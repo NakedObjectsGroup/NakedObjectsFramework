@@ -17,10 +17,10 @@ namespace NakedFramework.Metamodel.Adapter;
 
 [Serializable]
 public class IdentifierImpl : IIdentifier {
-    private readonly string className;
-    private readonly string name;
-    private readonly string[] parameterTypes;
+    [NonSerialized]
     private string asString;
+
+    [NonSerialized]
     private string identityString;
 
     public IdentifierImpl(string className)
@@ -36,9 +36,9 @@ public class IdentifierImpl : IIdentifier {
         : this(className, methodName, parameterTypeNames.Select(p => "").ToArray(), parameterTypeNames, false) { }
 
     private IdentifierImpl(string className, string fieldName, string[] parameterNames, string[] parameterTypeNames, bool isField) {
-        this.className = className;
-        name = fieldName;
-        parameterTypes = parameterTypeNames;
+        ClassName = className;
+        MemberName = fieldName;
+        MemberParameterTypeNames = parameterTypeNames;
         MemberParameterNames = parameterNames;
         IsField = isField;
     }
@@ -60,11 +60,11 @@ public class IdentifierImpl : IIdentifier {
     private static string[] ToParameterStringArray(Type[] fromArray) => fromArray.Select(FullName).ToArray();
 
     private static bool Equals(string[] a, string[] b) {
-        if (a == null && b == null) {
+        if (a is null && b is null) {
             return true;
         }
 
-        if (a == null || b == null) {
+        if (a is null || b is null) {
             // since not both null must be different
             return false;
         }
@@ -76,51 +76,47 @@ public class IdentifierImpl : IIdentifier {
         return !b.Where((t, i) => !string.Equals(a[i], t)).Any();
     }
 
-    private string ToClassIdentityString() => className;
+    private string ToClassAndNameIdentityString() => $"{ClassName}#{MemberName}";
 
-    private string ToNameIdentityString() => name;
-
-    private string ToClassAndNameIdentityString() => $"{ToClassIdentityString()}#{name}";
-
-    private string ToParmsIdentityString() => !IsField ? $"({string.Join(",", parameterTypes)})" : "";
+    private string ToParmsIdentityString() => !IsField ? $"({string.Join(",", MemberParameterTypeNames)})" : "";
 
     private string ToFullIdentityString() =>
-        identityString ??= name.Length == 0
-            ? ToClassIdentityString()
+        identityString ??= MemberName.Length is 0
+            ? ClassName
             : $"{ToClassAndNameIdentityString()}{ToParmsIdentityString()}";
 
-    public static IdentifierImpl FromIdentityString(IMetamodel metamodel, string asString) {
-        if (asString == null) {
-            throw new NakedObjectSystemException("asString cannot be null");
+    public static IdentifierImpl FromIdentityString(IMetamodel metamodel, string idString) {
+        if (idString is null) {
+            throw new NakedObjectSystemException("idString cannot be null");
         }
 
-        var indexOfHash = asString.IndexOf("#", StringComparison.InvariantCulture);
-        var indexOfOpenBracket = asString.IndexOf("(", StringComparison.InvariantCulture);
-        var indexOfCloseBracket = asString.IndexOf(")", StringComparison.InvariantCulture);
-        var className = asString[..(indexOfHash == -1 ? asString.Length : indexOfHash)];
-        if (indexOfHash == -1 || indexOfHash == asString.Length - 1) {
+        var indexOfHash = idString.IndexOf("#", StringComparison.InvariantCulture);
+        var indexOfOpenBracket = idString.IndexOf("(", StringComparison.InvariantCulture);
+        var indexOfCloseBracket = idString.IndexOf(")", StringComparison.InvariantCulture);
+        var className = idString[..(indexOfHash == -1 ? idString.Length : indexOfHash)];
+        if (indexOfHash == -1 || indexOfHash == idString.Length - 1) {
             return new IdentifierImpl(className);
         }
 
         string name;
         if (indexOfOpenBracket == -1) {
-            name = asString[(indexOfHash + 1)..];
+            name = idString[(indexOfHash + 1)..];
             return new IdentifierImpl(className, name);
         }
 
-        name = asString[(indexOfHash + 1)..indexOfOpenBracket];
-        var allParms = asString[(indexOfOpenBracket + 1)..indexOfCloseBracket].Trim();
+        name = idString[(indexOfHash + 1)..indexOfOpenBracket];
+        var allParms = idString[(indexOfOpenBracket + 1)..indexOfCloseBracket].Trim();
         var parms = allParms.Length > 0 ? allParms.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
         return new IdentifierImpl(className, name, parms);
     }
 
     #region IIdentifier Members
 
-    public virtual string ClassName => className;
+    public virtual string ClassName { get; }
 
-    public virtual string MemberName => name;
+    public virtual string MemberName { get; }
 
-    public virtual string[] MemberParameterTypeNames => parameterTypes;
+    public virtual string[] MemberParameterTypeNames { get; }
 
     public virtual string[] MemberParameterNames { get; }
 
@@ -128,10 +124,10 @@ public class IdentifierImpl : IIdentifier {
 
     public virtual string ToIdentityString(IdentifierDepth depth) =>
         depth switch {
-            IdentifierDepth.Class => ToClassIdentityString(),
+            IdentifierDepth.Class => ClassName,
             IdentifierDepth.ClassName => ToClassAndNameIdentityString(),
             IdentifierDepth.ClassNameParams => ToFullIdentityString(),
-            IdentifierDepth.Name => ToNameIdentityString(),
+            IdentifierDepth.Name => MemberName,
             IdentifierDepth.Parms => ToParmsIdentityString(),
             _ => throw new NakedObjectSystemException($"depth out of bounds: {depth}")
         };
@@ -150,14 +146,14 @@ public class IdentifierImpl : IIdentifier {
         }
 
         return obj is IdentifierImpl other &&
-               string.Equals(other.className, className) &&
-               string.Equals(other.name, name) &&
-               Equals(other.parameterTypes, parameterTypes);
+               string.Equals(other.ClassName, ClassName) &&
+               string.Equals(other.MemberName, MemberName) &&
+               Equals(other.MemberParameterTypeNames, MemberParameterTypeNames);
     }
 
-    public override string ToString() => asString ??= $"{className}#{name}({string.Join(", ", parameterTypes)})";
+    public override string ToString() => asString ??= $"{ClassName}#{MemberName}({string.Join(", ", MemberParameterTypeNames)})";
 
-    public override int GetHashCode() => (className + name + parameterTypes.Aggregate("", (s, t) => $"{s}{t}")).GetHashCode();
+    public override int GetHashCode() => (ClassName + MemberName + MemberParameterTypeNames.Aggregate("", (s, t) => $"{s}{t}")).GetHashCode();
 
     #endregion
 }

@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -23,7 +22,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class ActionParameterValidation : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public ActionParameterValidation(MethodInfo method, ILogger<ActionParameterValidation> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+    public ActionParameterValidation(MethodInfo method, ILogger<ActionParameterValidation> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override Type FacetType => typeof(IActionParameterValidationFacet);
 

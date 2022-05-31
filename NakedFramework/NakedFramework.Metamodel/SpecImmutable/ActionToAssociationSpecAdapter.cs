@@ -11,6 +11,6 @@ using NakedFramework.Architecture.SpecImmutable;
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
-public class ActionToAssociationSpecAdapter : AbstractSpecAdapter, IOneToOneAssociationSpecImmutable {
+public sealed class ActionToAssociationSpecAdapter : AbstractSpecAdapter, IOneToOneAssociationSpecImmutable {
     public ActionToAssociationSpecAdapter(IActionSpecImmutable action) : base(action) { }
 }

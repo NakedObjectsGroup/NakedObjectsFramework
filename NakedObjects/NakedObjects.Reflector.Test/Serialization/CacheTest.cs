@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,9 +22,12 @@ using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Value;
 using NakedObjects.Reflector.Extensions;
+using NakedObjects.Reflector.Facet;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
 namespace NakedObjects.Reflector.Test.Serialization;
@@ -146,12 +150,31 @@ public class CacheTest {
         TestHook(services);
     }
 
-    [TestMethod]
-    public void BinarySerializeIntTypes() {
-        RecurseCheck = new HashSet<ISpecification>();
-        var file = Path.Combine(testDir, "metadataint.bin");
+    private Type[] AdditionalKnownTypes()
+    {
+        var a = Assembly.GetAssembly(typeof(LoadingCallbackFacetNull));
+        var tt = a.GetTypes().Where(t => t is { IsSerializable: true, IsPublic: true }).ToArray();
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+        tt = tt.Append(typeof(EnumValueSemanticsProvider<TestEnum>)).ToArray();
+        tt = tt.Append(typeof(ParseableFacetUsingParser<TestEnum>)).ToArray();
+        tt = tt.Append(typeof(ValueFacetFromSemanticProvider<TestEnum>)).ToArray();
+        tt = tt.Append(typeof(DefaultedFacetUsingDefaultsProvider<TestEnum>)).ToArray();
+        tt = tt.Append(typeof(TitleFacetUsingParser<TestEnum>)).ToArray();
+
+        return tt;
+    }
+
+
+
+
+
+    public void SerializeIntTypes(string fileName)
+    {
+        RecurseCheck = new HashSet<ISpecification>();
+        var file = Path.Combine(testDir, fileName);
+
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => new[] { typeof(int) };
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = Array.Empty<Type>();
@@ -162,17 +185,31 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
-            CompareCaches(container, file);
+        using (host)
+        {
+            CompareCaches(container, file, AdditionalKnownTypes());
         }
     }
 
     [TestMethod]
-    public void BinarySerializeImageTypes() {
-        RecurseCheck = new HashSet<ISpecification>();
-        var file = Path.Combine(testDir, "metadataimg.bin");
+    public void BinarySerializeIntTypes()
+    {
+        SerializeIntTypes("metadataint.bin");
+    }
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+    [TestMethod]
+    public void XmlSerializeIntTypes()
+    {
+        SerializeIntTypes("metadataint.xml");
+    }
+
+    public void SerializeImageTypes(string fileName)
+    {
+        RecurseCheck = new HashSet<ISpecification>();
+        var file = Path.Combine(testDir, fileName);
+
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => new[] { typeof(Image) };
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = Array.Empty<Type>();
@@ -183,17 +220,31 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
-            CompareCaches(container, file);
+        using (host)
+        {
+            CompareCaches(container, file, AdditionalKnownTypes());
         }
     }
 
     [TestMethod]
-    public void BinarySerializeBaTypes() {
-        RecurseCheck = new HashSet<ISpecification>();
-        var file = Path.Combine(testDir, "metadataba.bin");
+    public void BinarySerializeImageTypes()
+    {
+        SerializeImageTypes("metadataimg.bin");
+    }
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+    [TestMethod]
+    public void XmlSerializeImageTypes()
+    {
+        SerializeImageTypes("metadataimg.xml");
+    }
+
+    public void SerializeBaTypes(string fileName)
+    {
+        RecurseCheck = new HashSet<ISpecification>();
+        var file = Path.Combine(testDir, fileName);
+
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => t;
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = new[] { typeof(AbstractTestWithByteArray) };
@@ -204,17 +255,31 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
-            CompareCaches(container, file);
+        using (host)
+        {
+            CompareCaches(container, file, AdditionalKnownTypes());
         }
     }
 
     [TestMethod]
-    public void BinarySerializeEnumTypes() {
-        RecurseCheck = new HashSet<ISpecification>();
-        var file = Path.Combine(testDir, "metadataenum.bin");
+    public void BinarySerializeBaTypes()
+    {
+        SerializeBaTypes("metadataba.bin");
+    }
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+    [TestMethod]
+    public void XmlSerializeBaTypes()
+    {
+        SerializeBaTypes("metadataba.xml");
+    }
+
+    public void SerializeEnumTypes(string fileName)
+    {
+        RecurseCheck = new HashSet<ISpecification>();
+        var file = Path.Combine(testDir, fileName);
+
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => t;
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = new[] { typeof(TestEnum) };
@@ -225,17 +290,31 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
-            CompareCaches(container, file);
+        using (host)
+        {
+            CompareCaches(container, file, AdditionalKnownTypes());
         }
     }
 
     [TestMethod]
-    public void BinarySerializeSimpleDomainObjectTypes() {
-        RecurseCheck = new HashSet<ISpecification>();
-        var file = Path.Combine(testDir, "metadatatsdo.bin");
+    public void BinarySerializeEnumTypes()
+    {
+        SerializeEnumTypes("metadataenum.bin");
+    }
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+    [TestMethod]
+    public void XmlSerializeEnumTypes()
+    {
+        SerializeEnumTypes("metadataenum.xml");
+    }
+
+    public void SerializeSimpleDomainObjectTypes(string fileName)
+    {
+        RecurseCheck = new HashSet<ISpecification>();
+        var file = Path.Combine(testDir, fileName);
+
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => t;
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = new[] { typeof(TestSimpleDomainObject) };
@@ -246,17 +325,31 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
-            CompareCaches(container, file);
+        using (host)
+        {
+            CompareCaches(container, file, AdditionalKnownTypes());
         }
     }
 
     [TestMethod]
-    public void BinarySerializeAnnotatedDomainObjectTypes() {
-        RecurseCheck = new HashSet<ISpecification>();
-        var file = Path.Combine(testDir, "metadatatado.bin");
+    public void BinarySerializeSimpleDomainObjectTypes()
+    {
+        SerializeSimpleDomainObjectTypes("metadatatsdo.bin");
+    }
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+    [TestMethod]
+    public void XmlSerializeSimpleDomainObjectTypes()
+    {
+        SerializeSimpleDomainObjectTypes("metadatatsdo.xml");
+    }
+
+    public void SerializeAnnotatedDomainObjectTypes(string fileName)
+    {
+        RecurseCheck = new HashSet<ISpecification>();
+        var file = Path.Combine(testDir, fileName);
+
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => t;
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = new[] { typeof(TestAnnotatedDomainObject) };
@@ -267,17 +360,31 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
-            CompareCaches(container, file);
+        using (host)
+        {
+            CompareCaches(container, file, AdditionalKnownTypes());
         }
     }
 
     [TestMethod]
-    public void BinarySerializeMenus() {
-        RecurseCheck = new HashSet<ISpecification>();
-        var file = Path.Combine(testDir, "metadatamenu.bin");
+    public void BinarySerializeAnnotatedDomainObjectTypes()
+    {
+        SerializeAnnotatedDomainObjectTypes("metadatatado.bin");
+    }
 
-        static void Setup(NakedFrameworkOptions coreOptions) {
+    [TestMethod]
+    public void XmlSerializeAnnotatedDomainObjectTypes()
+    {
+        SerializeAnnotatedDomainObjectTypes("metadatatado.xml");
+    }
+
+    public void SerializeMenus(string fileName)
+    {
+        RecurseCheck = new HashSet<ISpecification>();
+        var file = Path.Combine(testDir, fileName);
+
+        static void Setup(NakedFrameworkOptions coreOptions)
+        {
             coreOptions.SupportedSystemTypes = t => t;
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = new[] { typeof(TestSimpleDomainObjectWithMenu) };
@@ -289,17 +396,30 @@ public class CacheTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host) {
-            CompareCaches(container, file);
+        using (host)
+        {
+            CompareCaches(container, file, AdditionalKnownTypes());
         }
     }
 
-    private static void CompareCaches(IServiceProvider container, string file) {
+    [TestMethod]
+    public void BinarySerializeMenus()
+    {
+        SerializeMenus("metadatamenu.bin");
+    }
+
+    [TestMethod]
+    public void XmlSerializeMenus()
+    {
+        SerializeMenus("metadatamenu.xml");
+    }
+
+    private static void CompareCaches(IServiceProvider container, string file, Type[] additionalKnownTypes = null) {
         var metamodelBuilder = container.GetService<IMetamodelBuilder>();
         var modelBuilder = container.GetService<IModelBuilder>();
-        modelBuilder?.Build(file);
+        modelBuilder?.Build(file, additionalKnownTypes ?? Array.Empty<Type>());
         var cache1 = metamodelBuilder?.Cache;
-        modelBuilder?.RestoreFromFile(file);
+        modelBuilder?.RestoreFromFile(file, additionalKnownTypes ?? Array.Empty<Type>());
         var cache2 = metamodelBuilder?.Cache;
 
         Assert.IsNotNull(cache1);

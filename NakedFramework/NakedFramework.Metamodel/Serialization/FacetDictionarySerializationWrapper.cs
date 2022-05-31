@@ -4,16 +4,16 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Core.Configuration;
 
 namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
-public class FacetDictionarySerializationWrapper {
+public sealed class FacetDictionarySerializationWrapper {
     [NonSerialized]
     private IImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
 
-    private List<(TypeSerializationWrapper key, IFacet value)> serializeList;
+    private List<TypeSerializationWrapper> serializeKeyList;
+    private List<IFacet> serializeValueList;
 
     public IEnumerable<Type> Keys => facetsByClass.Keys;
 
@@ -28,8 +28,13 @@ public class FacetDictionarySerializationWrapper {
     public void RemoveFacet(IFacet facet) => facetsByClass = facetsByClass.Remove(facet.FacetType);
 
     [OnDeserialized]
-    private void OnDeserialized(StreamingContext context) => facetsByClass = serializeList.ToDictionary(t => t.key.Type, t => t.value).ToImmutableDictionary();
+    private void OnDeserialized(StreamingContext context) {
+        facetsByClass = serializeKeyList.Zip(serializeValueList).ToDictionary(t => t.First.Type, t => t.Second).ToImmutableDictionary();
+    }
 
     [OnSerializing]
-    private void OnSerializing(StreamingContext context) => serializeList = facetsByClass.Select(kvp => (new TypeSerializationWrapper(kvp.Key, ReflectorDefaults.JitSerialization), kvp.Value)).ToList();
+    private void OnSerializing(StreamingContext context) {
+        serializeKeyList = facetsByClass.Keys.Select(k => TypeSerializationWrapper.Wrap(k)).ToList();
+        serializeValueList = facetsByClass.Values.ToList();
+    }
 }

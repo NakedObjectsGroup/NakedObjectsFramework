@@ -14,7 +14,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
@@ -30,9 +29,9 @@ public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet,
     private readonly (string name, TypeSerializationWrapper typeWrapper)[] parameterNamesAndTypes;
 
     public PropertyChoicesFacet(MethodInfo method, (string name, Type type)[] parameterNamesAndTypes, ILogger<PropertyChoicesFacet> logger) {
-        methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+        methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
-        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, new TypeSerializationWrapper(t.type, ReflectorDefaults.JitSerialization))).ToArray();
+        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, TypeSerializationWrapper.Wrap(t.type))).ToArray();
         parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
     }
 

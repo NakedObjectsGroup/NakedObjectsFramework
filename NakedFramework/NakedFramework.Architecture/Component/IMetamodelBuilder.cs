@@ -16,5 +16,5 @@ public interface IMetamodelBuilder : IMetamodel {
     void Add(Type type, ITypeSpecBuilder spec);
     void AddMainMenu(IMenuImmutable menu);
     void ReplaceCache(ISpecificationCache cache);
-    public void SaveToFile(string filePath);
+    public void SaveToFile(string filePath, Type[] additionalKnownTypes);
 }

@@ -13,7 +13,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
 
@@ -26,7 +25,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public ActionDefaultsFacetViaMethod(MethodInfo defaultMethod, ILogger<ActionDefaultsFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(defaultMethod, logger, ReflectorDefaults.JitSerialization);
+    public ActionDefaultsFacetViaMethod(MethodInfo defaultMethod, ILogger<ActionDefaultsFacetViaMethod> logger) => methodWrapper = MethodSerializationWrapper.Wrap(defaultMethod, logger);
 
     public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         // type safety is given by the reflector only identifying methods that match the 

@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -24,7 +23,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public DisableForContextFacet(MethodInfo method, ILogger<DisableForContextFacet> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+    public DisableForContextFacet(MethodInfo method, ILogger<DisableForContextFacet> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override Type FacetType => typeof(IDisableForContextFacet);
 

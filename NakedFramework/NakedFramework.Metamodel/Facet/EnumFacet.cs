@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
@@ -19,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class EnumFacet : FacetAbstract, IEnumFacet, IMarkerFacet {
     private readonly TypeSerializationWrapper typeWrapper;
 
-    public EnumFacet(Type typeOfEnum) => typeWrapper = new TypeSerializationWrapper(typeOfEnum, ReflectorDefaults.JitSerialization);
+    public EnumFacet(Type typeOfEnum) => typeWrapper = TypeSerializationWrapper.Wrap(typeOfEnum);
 
     public Type TypeOfEnum => typeWrapper.Type;
 

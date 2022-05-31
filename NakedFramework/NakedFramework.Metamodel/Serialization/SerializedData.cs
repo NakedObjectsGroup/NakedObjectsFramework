@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
 public sealed class SerializedData {
-    public IList<string> SpecKeys { get; set; }
-    public IList<ITypeSpecImmutable> SpecValues { get; set; }
-    public IList<IMenuImmutable> MenuValues { get; set; }
+    public List<string> SpecKeys { get; set; }
+    public List<ITypeSpecImmutable> SpecValues { get; set; }
+    public List<IMenuImmutable> MenuValues { get; set; }
 }

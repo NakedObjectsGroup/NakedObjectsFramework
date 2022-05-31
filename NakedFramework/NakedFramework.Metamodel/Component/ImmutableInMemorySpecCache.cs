@@ -5,15 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Metamodel.Adapter;
+using NakedFramework.Metamodel.Facet;
+using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.Serialization;
+using NakedFramework.Value;
 
 #pragma warning disable 618
 #pragma warning disable SYSLIB0011
@@ -28,9 +37,73 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
     public ImmutableInMemorySpecCache() { }
 
     // constructor to use when loading metadata from file
-    public ImmutableInMemorySpecCache(string file) : this(file, new BinaryFormatter()) { }
+  
 
-    public ImmutableInMemorySpecCache(string file, IFormatter formatter) {
+    public ImmutableInMemorySpecCache(string file, Type[] additionalKnownTypes) {
+        if (file.EndsWith(".bin")) {
+            BinaryDeserialize(file);
+        }
+        else if (file.EndsWith(".xml"))
+        {
+            XmlDeserialize(file, additionalKnownTypes);
+        }
+    }
+
+    private Type[] CreateTypes() {
+
+        var types = new List<Type>();
+
+        var vtt = new[] { typeof(int),
+            typeof(long),
+            typeof(string),
+            typeof(byte[]),
+            typeof(byte),
+            typeof(FileAttachment),
+            typeof(Image),
+            typeof(short),
+            typeof(decimal),
+            typeof(sbyte),
+            typeof(uint),
+            typeof(ulong),
+            typeof(float),
+            typeof(ushort),
+            typeof(bool),
+            typeof(DateTime),
+            typeof(Guid),
+            typeof(TimeSpan),
+            typeof(char),
+            typeof(Color),
+            typeof(double),
+        };
+
+        var gtt = new[] { typeof(DefaultedFacetUsingDefaultsProvider<>), typeof(ParseableFacetUsingParser<>), typeof(TitleFacetUsingParser<>), typeof(ValueFacetFromSemanticProvider<>), typeof(ArrayValueSemanticsProvider<>) };
+
+        foreach (var vt in vtt) {
+            foreach (var gt in gtt) {
+                var t = gt.MakeGenericType(vt);
+                types.Add(t);
+            }
+        }
+
+        return types.ToArray();
+    }
+
+
+    private Type[] KnownTypes() {
+        var a = Assembly.GetAssembly(typeof(IdentifierImpl));
+        var tt = a.GetTypes().Where(t => t is { IsSerializable: true, IsPublic: true }).ToArray();
+
+        var createdTypes = CreateTypes();
+
+        tt = tt.Union(createdTypes).ToArray();
+
+        return tt.Where(t => t.IsPublic).ToArray();
+    }
+
+
+
+    private void BinaryDeserialize(string file) {
+        var formatter = new BinaryFormatter();
         using var fs = File.Open(file, FileMode.Open);
         var data = (SerializedData)formatter.Deserialize(fs);
         specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new { k, v }).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
@@ -38,14 +111,59 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         mainMenus = data.MenuValues.ToImmutableList();
     }
 
+    private DataContractSerializerSettings Settings(Type[] additionalKnownTypes) {
+        return  new DataContractSerializerSettings() {
+            KnownTypes = KnownTypes().Union(additionalKnownTypes),
+            PreserveObjectReferences = true,
+        };
+    }
+
+    private void XmlDeserialize(string file, Type[] additionalKnownTypes)
+    {
+       
+        using var fs = File.Open(file, FileMode.Open);
+      
+
+        var deserializer = new DataContractSerializer(typeof(SerializedData),  Settings(additionalKnownTypes ?? Array.Empty<Type>()));
+        var reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas() {MaxDepth = 1000});
+        var data = (SerializedData)deserializer.ReadObject(reader, true);
+
+
+        specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new { k, v }).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+
+        mainMenus = data.MenuValues.ToImmutableList();
+    }
+
+
     #region ISpecificationCache Members
 
-    public void Serialize(string file) => Serialize(file, new BinaryFormatter());
+    public void Serialize(string file, Type[] additionalKnownTypes) {
+        if (file.EndsWith(".bin")) {
+            BinarySerialize(file);
+        }
+        else if (file.EndsWith(".xml"))
+        {
+            XmlSerialize(file, additionalKnownTypes);
+        }
+       
 
-    public void Serialize(string file, IFormatter formatter) {
+    }
+
+    private void BinarySerialize(string file) {
+        var formatter = new BinaryFormatter();
         using var fs = File.Open(file, FileMode.OpenOrCreate);
         var data = new SerializedData { SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList() };
         formatter.Serialize(fs, data);
+    }
+
+   
+
+
+    private void XmlSerialize(string file, Type[] additionalKnownTypes) {
+        var formatter = new DataContractSerializer(typeof(SerializedData), Settings(additionalKnownTypes));
+        using var fs = File.Open(file, FileMode.OpenOrCreate);
+        var data = new SerializedData { SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList() };
+        formatter.WriteObject(fs, data);
     }
 
     public ITypeSpecImmutable GetSpecification(string key) => specs.ContainsKey(key) ? specs[key] : null;

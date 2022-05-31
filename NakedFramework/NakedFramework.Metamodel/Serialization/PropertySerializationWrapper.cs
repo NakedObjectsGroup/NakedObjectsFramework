@@ -9,7 +9,7 @@ using NakedFramework.Metamodel.Utils;
 namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
-public class PropertySerializationWrapper {
+public sealed class PropertySerializationWrapper {
     private readonly bool jit;
     private readonly string propertyName;
     private readonly TypeSerializationWrapper typeWrapper;
@@ -26,7 +26,7 @@ public class PropertySerializationWrapper {
     public PropertySerializationWrapper(PropertyInfo propertyInfo, ILogger logger, bool jit) {
         this.jit = jit;
         PropertyInfo = propertyInfo;
-        typeWrapper = new TypeSerializationWrapper(propertyInfo.DeclaringType, jit);
+        typeWrapper = TypeSerializationWrapper.Wrap(propertyInfo.DeclaringType);
         propertyName = propertyInfo.Name;
         getMethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(propertyInfo.GetGetMethod()), logger);
     }

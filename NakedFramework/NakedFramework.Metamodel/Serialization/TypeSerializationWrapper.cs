@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
-public class TypeSerializationWrapper {
+public sealed class TypeSerializationWrapper {
+    private static Dictionary<Type, TypeSerializationWrapper> cache = new();
     private readonly string assemblyName;
     private readonly bool jit;
     private readonly string typeName;
@@ -14,7 +17,7 @@ public class TypeSerializationWrapper {
     [NonSerialized]
     private Type type;
 
-    public TypeSerializationWrapper(Type type, bool jit) {
+    private TypeSerializationWrapper(Type type, bool jit) {
         this.jit = jit;
         this.type = type;
         assemblyName = type.Assembly.FullName;
@@ -41,6 +44,16 @@ public class TypeSerializationWrapper {
         }
         catch (NullReferenceException) {
             throw new ReflectionException($"Failed to find {an}:{tn}");
+        }
+    }
+
+    public static TypeSerializationWrapper Wrap(Type type) {
+        lock (cache) {
+            if (!cache.ContainsKey(type)) {
+                cache[type] = new TypeSerializationWrapper(type, ReflectorDefaults.JitSerialization);
+            }
+
+            return cache[type];
         }
     }
 }

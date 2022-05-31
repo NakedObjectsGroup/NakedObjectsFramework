@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Serialization;
 
@@ -21,7 +20,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public DeletingCallbackFacetViaMethod(MethodInfo method, ILogger<DeletingCallbackFacetViaMethod> logger) => methodWrapper = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
+    public DeletingCallbackFacetViaMethod(MethodInfo method, ILogger<DeletingCallbackFacetViaMethod> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodWrapper.Invoke(nakedObjectAdapter.GetDomainObject());
 

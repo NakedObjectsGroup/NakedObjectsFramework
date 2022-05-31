@@ -7,14 +7,13 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
-    public DisplayAsPropertyFacet(Type type) => ContributedToWrapper = new TypeSerializationWrapper(type, ReflectorDefaults.JitSerialization);
+    public DisplayAsPropertyFacet(Type type) => ContributedToWrapper = TypeSerializationWrapper.Wrap(type);
 
     public DisplayAsPropertyFacet() { }
     private TypeSerializationWrapper ContributedToWrapper { get; }

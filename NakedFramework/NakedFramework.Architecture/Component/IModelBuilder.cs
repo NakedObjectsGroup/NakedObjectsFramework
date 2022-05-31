@@ -5,10 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+
 namespace NakedFramework.Architecture.Component;
 
 public interface IModelBuilder {
-    public void Build(string filePath = null);
+    public void Build(string filePath = null, Type[] additionalKnownTypes = null);
 
-    public void RestoreFromFile(string filePath);
+    public void RestoreFromFile(string filePath, Type[] additionalKnownTypes = null);
 }
