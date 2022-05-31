@@ -13,10 +13,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Apex.Serialization" Version="4.0.2" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
 		<ProjectReference Include="..\NakedFramework.Core\NakedFramework.Core.csproj" />
 	</ItemGroup>

@@ -288,49 +288,7 @@ public class ReflectorSpeedTest {
         }
     }
 
-    [TestMethod]
-    public void ApexSerializeAWTypesBenchMark() {
-        static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedObjects(options => {
-                options.DomainModelTypes = NakedObjectsRunSettings.Types;
-                options.DomainModelServices = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
-            });
-            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
-        }
-
-        var (container, host) = GetContainer(Setup);
-
-        using (host) {
-            var curDir = Directory.GetCurrentDirectory();
-            var testDir = Path.Combine(curDir, "testserialize");
-            Directory.CreateDirectory(testDir);
-            Directory.GetFiles(testDir).ForEach(File.Delete);
-            var file = Path.Combine(testDir, "metadata.apex");
-
-            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
-            var mb = container.GetService<IModelBuilder>();
-
-            mb.Build(file, AdditionalKnownTypes());
-            var cache1 = metamodelBuilder?.Cache;
-
-            var stopWatch = new Stopwatch();
-
-            stopWatch.Start();
-            mb.RestoreFromFile(file, AdditionalKnownTypes());
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            var cache2 = metamodelBuilder?.Cache;
-
-            Console.WriteLine($"Elapsed time was {time} milliseconds");
-
-            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
-            Assert.IsNotNull(cache1);
-            Assert.IsNotNull(cache2);
-            Assert.AreNotEqual(cache1, cache2);
-            CompareCaches(cache1, cache2);
-        }
-    }
+  
 
     [TestMethod]
     public void SerializeAWTypesBenchMarkWithJit() {
@@ -397,51 +355,6 @@ public class ReflectorSpeedTest {
             Directory.CreateDirectory(testDir);
             Directory.GetFiles(testDir).ForEach(File.Delete);
             var file = Path.Combine(testDir, "metadata.xml");
-
-            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
-            var mb = container.GetService<IModelBuilder>();
-
-            mb.Build(file, AdditionalKnownTypes());
-            var cache1 = metamodelBuilder?.Cache;
-
-            var stopWatch = new Stopwatch();
-
-            stopWatch.Start();
-            mb.RestoreFromFile(file, AdditionalKnownTypes());
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            var cache2 = metamodelBuilder?.Cache;
-
-            Console.WriteLine($"Elapsed time was {time} milliseconds");
-
-            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
-            Assert.IsNotNull(cache1);
-            Assert.IsNotNull(cache2);
-            Assert.AreNotEqual(cache1, cache2);
-            CompareCaches(cache1, cache2);
-        }
-    }
-
-    [TestMethod]
-    public void ApexSerializeAWTypesBenchMarkWithJit() {
-        static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedObjects(options => {
-                options.DomainModelTypes = NakedObjectsRunSettings.Types;
-                options.DomainModelServices = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
-            });
-            coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
-        }
-
-        var (container, host) = GetContainer(Setup);
-
-        using (host) {
-            ReflectorDefaults.JitSerialization = true;
-            var curDir = Directory.GetCurrentDirectory();
-            var testDir = Path.Combine(curDir, "testserialize");
-            Directory.CreateDirectory(testDir);
-            Directory.GetFiles(testDir).ForEach(File.Delete);
-            var file = Path.Combine(testDir, "metadata.apex");
 
             var metamodelBuilder = container.GetService<IMetamodelBuilder>();
             var mb = container.GetService<IModelBuilder>();
