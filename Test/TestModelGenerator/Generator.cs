@@ -2,9 +2,10 @@
 
 public class Generator
 {
-    public Generator(int numTypes)
+    public Generator(string nameSpacePrefix, int numTypes)
     {
         this.numTypes = numTypes;
+        this.nameSpacePrefix = nameSpacePrefix;
         rand = new Random();
     }
     Random rand;
@@ -12,13 +13,13 @@ public class Generator
     const int maxMembers = 20;
     const int maxParams = 5;
     const int nameRange = maxMembers * 100000;
-    public string nameSpacePrefix = "Long.Name.Space.N";
+    public string nameSpacePrefix = "Long.Name.Space";
     const string typeNamePrefix = "Type";
     const string propNamePrefix = "Prop";
     const string actionNamePrefix = "Action";
     const string paramNamePrefix = "param";
 
-    public string GenerateClass(int i) => $"namespace {nameSpacePrefix}{i}\n{{\npublic class {typeNamePrefix}{i}\n{{\n{Members()}}}\n}}\n";
+    public string GenerateClass(int i) => $"namespace {nameSpacePrefix}.N{i}\n{{\n{AddAttributesFrom(classAttrbutes)}\npublic class {typeNamePrefix}{i}\n{{\n{Members()}}}\n}}\n";
 
     string Members()
     {
@@ -33,11 +34,32 @@ public class Generator
 
     string Member() => rand.Next(2) > 0 ? Action() : Property();
 
-    string Property() => $"  public {ValueOrDomainTypeOrColl()} {PropertyName()} {{ get; set; }}\n";
+    string Property() => $"  {AddAttributesFrom(propertyAttributes)}\n  public {ValueOrDomainTypeOrColl()} {PropertyName()} {{ get; set; }}\n";
 
     string PropertyName() => $"{propNamePrefix}{NameSuffix()}";
 
-    string Action() => $"  public {ReturnType()} {ActionName()} ({ParamList()}) {{throw new NotImplementedException();}}\n";
+    string AddAttributesFrom(string[] attributes)
+    {
+        var sb = new StringBuilder();
+        var n = rand.Next(attributes.Count()+1);
+        if (n > 0)
+        {
+            sb.Append("[");
+            for (int i = 0; i < n; i++)
+            {
+                sb.Append(attributes[i]);
+                if (i < n - 1) sb.Append(",");
+            }
+            sb.Append("]");
+        }
+        return sb.ToString();
+    }
+
+    string[] propertyAttributes = new[] { "MemberOrder(1)", "Disabled" };
+
+    string Action() => $"  {AddAttributesFrom(actionAttributes)}\n  public {ReturnType()} {ActionName()} ({ParamList()}) {{throw new NotImplementedException();}}\n";
+
+    string[] actionAttributes = new[] { "MemberOrder(1)", "DescribedAs(\"Foo\")", "QueryOnly" };
 
     string ActionName() => $"{actionNamePrefix}{NameSuffix()}";
 
@@ -53,7 +75,7 @@ public class Generator
         return sb.ToString();
     }
 
-    string Param() => $"{ValueOrDomainTypeOrColl()} {ParamName()}";
+    string Param() => $"{AddAttributesFrom(paramAttrbutes)} {ValueOrDomainTypeOrColl()} {ParamName()}";
 
     string ParamName() => $"{paramNamePrefix}{NameSuffix()}";
 
@@ -76,7 +98,7 @@ public class Generator
     string DomainType()
     {
         int n = rand.Next(numTypes);
-        return $"{nameSpacePrefix}{n}.{typeNamePrefix}{n}";
+        return $"{nameSpacePrefix}.N{n}.{typeNamePrefix}{n}";
     } 
 
     string[] valueTypes = new[] { "int", "double", "string", "DateTime" };
@@ -90,5 +112,10 @@ public class Generator
     string Collection() => $"{CollType()}<{DomainType()}>";
 
     string NameSuffix() => $"{rand.Next(nameRange)}";
+
+    string[] classAttrbutes = new[] { "Bounded", "Immutable" };
+
+    string[] paramAttrbutes = new[] { "Optionally", };
+
 
 }
