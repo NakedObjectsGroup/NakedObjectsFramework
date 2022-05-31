@@ -110,7 +110,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Server.Package
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksModel", "Test\AdventureWorksModel\AdventureWorksModel.csproj", "{49A2CC20-C5BE-460A-ACD0-715C65DE5CC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestModels", "Test\TestModels\TestModels.csproj", "{C3DD263B-BB14-4F5D-A660-E75568DE7A93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestModels", "Test\TestModels\TestModels.csproj", "{22C777EC-3AC1-44F5-A882-5AC28FDACA57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -314,10 +314,10 @@ Global
 		{49A2CC20-C5BE-460A-ACD0-715C65DE5CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49A2CC20-C5BE-460A-ACD0-715C65DE5CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49A2CC20-C5BE-460A-ACD0-715C65DE5CC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3DD263B-BB14-4F5D-A660-E75568DE7A93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3DD263B-BB14-4F5D-A660-E75568DE7A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3DD263B-BB14-4F5D-A660-E75568DE7A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3DD263B-BB14-4F5D-A660-E75568DE7A93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22C777EC-3AC1-44F5-A882-5AC28FDACA57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22C777EC-3AC1-44F5-A882-5AC28FDACA57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22C777EC-3AC1-44F5-A882-5AC28FDACA57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22C777EC-3AC1-44F5-A882-5AC28FDACA57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

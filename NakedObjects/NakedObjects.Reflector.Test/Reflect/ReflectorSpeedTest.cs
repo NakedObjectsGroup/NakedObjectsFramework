@@ -28,6 +28,7 @@ using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.Facet;
+
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
 // ReSharper disable UnusedMember.Global
@@ -204,6 +205,39 @@ public class ReflectorSpeedTest {
         }
     }
 
+    private static Type[] TestModelTypes() {
+        return Assembly.GetAssembly(typeof(Type0)).GetTypes().Where(t => t.IsPublic).ToArray();
+    }
+
+    [TestMethod]
+    public void ReflectTestModel1000TypesBenchMark() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddNakedObjects(options => {
+                options.DomainModelTypes = TestModelTypes();
+                //options.DomainModelServices = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
+            //coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
+        }
+
+        var (container, host) = GetContainer(Setup);
+
+        using (host) {
+            var stopWatch = new Stopwatch();
+            var mb = container.GetService<IModelBuilder>();
+            stopWatch.Start();
+            mb.Build();
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+
+            Console.WriteLine($"Elapsed time was {time} milliseconds");
+
+            //Assert.IsTrue(time < 500, $"Elapsed time was {time} milliseconds");
+
+            Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
+        }
+    }
+
     [TestMethod]
     public void ReflectTestModel1000TypesBenchMark() {
         static void Setup(NakedFrameworkOptions coreOptions) {
@@ -364,6 +398,7 @@ public class ReflectorSpeedTest {
         }
         finally {
             ReflectorDefaults.JitSerialization = false;
+
         }
     }
 }
