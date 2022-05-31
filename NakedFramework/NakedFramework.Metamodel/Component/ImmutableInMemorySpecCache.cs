@@ -115,6 +115,7 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         return  new DataContractSerializerSettings() {
             KnownTypes = KnownTypes().Union(additionalKnownTypes),
             PreserveObjectReferences = true,
+            SerializeReadOnlyTypes = false
         };
     }
 
