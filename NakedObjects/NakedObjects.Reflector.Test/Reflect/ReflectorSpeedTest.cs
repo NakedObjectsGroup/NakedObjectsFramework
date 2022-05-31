@@ -24,15 +24,12 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Reflector.Extensions;
-
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
-
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Reflector.Test.Reflect;
-
 
 public static class NakedObjectsRunSettings {
     // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
@@ -88,9 +85,9 @@ public static class NakedObjectsRunSettings {
 
 [TestClass]
 public class ReflectorSpeedTest {
+    private Action<IServiceCollection> TestHook { get; } = services => { };
 
-    private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache)
-    {
+    private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
         Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
         // checks for fields and Objects actions 
@@ -105,22 +102,16 @@ public class ReflectorSpeedTest {
 
         var zippedSpecs = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
 
-        foreach (var item in zippedSpecs)
-        {
+        foreach (var item in zippedSpecs) {
             AssertSpecification(item.a, item.b);
         }
 
         var zippedMenus = cache.MainMenus().Zip(newCache.MainMenus(), (a, b) => new { a, b });
 
-        foreach (var item in zippedMenus)
-        {
+        foreach (var item in zippedMenus) {
             AssertMenu(item.a, item.b);
         }
     }
-
-
-
-    private Action<IServiceCollection> TestHook { get; } = services => { };
 
     private IHostBuilder CreateHostBuilder(string[] args, Action<NakedFrameworkOptions> setup) {
         return Host.CreateDefaultBuilder(args)
@@ -142,10 +133,6 @@ public class ReflectorSpeedTest {
         var metaModel = provider.GetService<IMetamodel>();
         return metaModel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
     }
-
-
-
-
 
     [TestMethod]
     public void ReflectAWTypesBenchMark() {
@@ -180,13 +167,9 @@ public class ReflectorSpeedTest {
         return Assembly.GetAssembly(typeof(Type0)).GetTypes().Where(t => t.IsPublic).ToArray();
     }
 
-
-
     [TestMethod]
-    public void ReflectTestModel1000TypesBenchMark()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void ReflectTestModel1000TypesBenchMark() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = TestModelTypes();
                 //options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -197,8 +180,7 @@ public class ReflectorSpeedTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             var stopWatch = new Stopwatch();
             var mb = container.GetService<IModelBuilder>();
             stopWatch.Start();
@@ -213,7 +195,6 @@ public class ReflectorSpeedTest {
             Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
         }
     }
-
 
     [TestMethod]
     public void SerializeAWTypesBenchMark() {
@@ -251,7 +232,6 @@ public class ReflectorSpeedTest {
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
-
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
@@ -261,10 +241,8 @@ public class ReflectorSpeedTest {
     }
 
     [TestMethod]
-    public void SerializeTestModel1000TypesBenchMark()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void SerializeTestModel1000TypesBenchMark() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = TestModelTypes();
                 //options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -275,8 +253,7 @@ public class ReflectorSpeedTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             var curDir = Directory.GetCurrentDirectory();
             var testDir = Path.Combine(curDir, "testserialize");
             Directory.CreateDirectory(testDir);
@@ -298,7 +275,6 @@ public class ReflectorSpeedTest {
             var cache2 = metamodelBuilder?.Cache;
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
-
 
             Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
@@ -345,7 +321,6 @@ public class ReflectorSpeedTest {
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
 
-
             Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
@@ -355,10 +330,8 @@ public class ReflectorSpeedTest {
     }
 
     [TestMethod]
-    public void SerializeTestModel1000TypesBenchMarkWithJit()
-    {
-        static void Setup(NakedFrameworkOptions coreOptions)
-        {
+    public void SerializeTestModel1000TypesBenchMarkWithJit() {
+        static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = TestModelTypes();
                 //options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -369,8 +342,7 @@ public class ReflectorSpeedTest {
 
         var (container, host) = GetContainer(Setup);
 
-        using (host)
-        {
+        using (host) {
             ReflectorDefaults.JitSerialization = true;
             var curDir = Directory.GetCurrentDirectory();
             var testDir = Path.Combine(curDir, "testserialize");
@@ -393,7 +365,6 @@ public class ReflectorSpeedTest {
             var cache2 = metamodelBuilder?.Cache;
 
             Console.WriteLine($"Elapsed time was {time} milliseconds");
-
 
             Assert.AreEqual(1055, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);

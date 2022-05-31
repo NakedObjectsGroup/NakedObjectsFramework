@@ -15,8 +15,6 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoicesFacet {
-    
-   
     public override Type FacetType => typeof(IActionChoicesFacet);
 
     #region IActionChoicesFacet Members
