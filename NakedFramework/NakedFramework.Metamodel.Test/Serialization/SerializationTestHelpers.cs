@@ -29,7 +29,6 @@ using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Reflector.Facet;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using NsJsonSerializer = Newtonsoft.Json.JsonSerializer;
 
@@ -40,6 +39,18 @@ namespace NakedFramework.Metamodel.Test.Serialization;
 
 public static class SerializationTestHelpers {
     public static HashSet<ISpecification> RecurseCheck = new();
+
+    private static Type[] KnownTypes => new[] {
+        typeof(IdentifierImpl),
+        typeof(BooleanValueSemanticsProvider),
+        typeof(ImageValueSemanticsProvider),
+        typeof(ActionInvocationFacetViaMethod),
+        typeof(PersistedCallbackFacetNull),
+        typeof(UpdatedCallbackFacetNull),
+        typeof(UpdatedCallbackFacetViaMethod),
+        typeof(PropertySetterFacetViaSetterMethod),
+        typeof(ActionSpecImmutable)
+    };
 
     public static void AssertIFacet(IFacet facet, IFacet facet1) {
         Assert.AreNotEqual(facet, facet1);
@@ -224,7 +235,6 @@ public static class SerializationTestHelpers {
         s.Position = 0;
     }
 
-
     private static T NsJsonDeserialize<T>(Stream stream) {
         DebugJson(stream);
 
@@ -237,8 +247,7 @@ public static class SerializationTestHelpers {
         return serializer.Deserialize<T>(reader);
     }
 
-    public static T NsJsonRoundTrip<T>(T facet) where T : IFacet
-    {
+    public static T NsJsonRoundTrip<T>(T facet) where T : IFacet {
         using var stream = NsJsonSerialize(facet);
         return NsJsonDeserialize<T>(stream);
     }
@@ -281,21 +290,7 @@ public static class SerializationTestHelpers {
         return (T)BinaryDeserialize(stream);
     }
 
-    private static Type[] KnownTypes => new[] {
-        typeof(IdentifierImpl),
-        typeof(BooleanValueSemanticsProvider),
-        typeof(ImageValueSemanticsProvider),
-        typeof(ActionInvocationFacetViaMethod),
-        typeof(PersistedCallbackFacetNull),
-        typeof(UpdatedCallbackFacetNull),
-        typeof(UpdatedCallbackFacetViaMethod),
-        typeof(PropertySetterFacetViaSetterMethod),
-        typeof(ActionSpecImmutable)
-    };
-
-
-    private static Stream XmlSerialize(object graph)
-    {
+    private static Stream XmlSerialize(object graph) {
         Stream memoryStream = new MemoryStream();
         var serializer = new DataContractSerializer(graph.GetType(), KnownTypes);
         serializer.WriteObject(memoryStream, graph);
@@ -303,45 +298,36 @@ public static class SerializationTestHelpers {
         return memoryStream;
     }
 
-    private static T XmlDeserialize<T>(Stream stream)
-    {
+    private static T XmlDeserialize<T>(Stream stream) {
         var deserializer = new DataContractSerializer(typeof(T), KnownTypes);
-        var reader =  XmlDictionaryReader.CreateTextReader(stream, new XmlDictionaryReaderQuotas());
-        return (T) deserializer.ReadObject(reader, true);
+        var reader = XmlDictionaryReader.CreateTextReader(stream, new XmlDictionaryReaderQuotas());
+        return (T)deserializer.ReadObject(reader, true);
     }
 
-    public static T XmlRoundTrip<T>(T facet) where T : IFacet
-    {
+    public static T XmlRoundTrip<T>(T facet) where T : IFacet {
         using var stream = XmlSerialize(facet);
         return XmlDeserialize<T>(stream);
     }
 
-    public static T XmlRoundTripSpec<T>(T spec) where T : ISpecification
-    {
+    public static T XmlRoundTripSpec<T>(T spec) where T : ISpecification {
         using var stream = XmlSerialize(spec);
         return XmlDeserialize<T>(stream);
     }
 
-    public static T XmlRoundTripId<T>(T id) where T : IIdentifier
-    {
+    public static T XmlRoundTripId<T>(T id) where T : IIdentifier {
         using var stream = XmlSerialize(id);
         return XmlDeserialize<T>(stream);
     }
 
-    public static T XmlRoundTripMenu<T>(T menu) where T : IMenuItemImmutable
-    {
+    public static T XmlRoundTripMenu<T>(T menu) where T : IMenuItemImmutable {
         using var stream = XmlSerialize(menu);
         return XmlDeserialize<T>(stream);
     }
 
-    public static T XmlRoundTripCache<T>(T cache) where T : ISpecificationCache
-    {
+    public static T XmlRoundTripCache<T>(T cache) where T : ISpecificationCache {
         using var stream = XmlSerialize(cache);
         return XmlDeserialize<T>(stream);
     }
-
-
-
 
     public static PropertyInfo GetProperty() => typeof(TestSerializationClass).GetProperty(nameof(TestSerializationClass.TestProperty));
 

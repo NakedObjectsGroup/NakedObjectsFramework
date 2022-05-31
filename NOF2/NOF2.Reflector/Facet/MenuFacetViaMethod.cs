@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
 using NOF2.Menu;

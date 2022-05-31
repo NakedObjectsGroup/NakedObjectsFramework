@@ -12,7 +12,6 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.NonSerializedSemanticsProvider;
-using NakedFramework.Metamodel.SemanticsProvider;
 using NOF2.ValueHolder;
 
 namespace NOF2.Reflector.SemanticsProvider;

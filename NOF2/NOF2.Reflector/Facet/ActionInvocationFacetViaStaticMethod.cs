@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
@@ -39,9 +38,9 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                 ILogger<ActionInvocationFacetViaStaticMethod> logger) {
         methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
         (injected, paramCount) = ParameterCount(method);
-        this.onType = onType is not null ?TypeSerializationWrapper.Wrap(onType) : null;
-        this.returnType = returnType is not null ?TypeSerializationWrapper.Wrap(returnType) : null;
-        this.elementType = elementType is not null ?TypeSerializationWrapper.Wrap(elementType) : null;
+        this.onType = onType is not null ? TypeSerializationWrapper.Wrap(onType) : null;
+        this.returnType = returnType is not null ? TypeSerializationWrapper.Wrap(returnType) : null;
+        this.elementType = elementType is not null ? TypeSerializationWrapper.Wrap(elementType) : null;
         IsQueryOnly = isQueryOnly;
     }
 

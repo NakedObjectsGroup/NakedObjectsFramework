@@ -17,7 +17,6 @@ using NakedFramework.DependencyInjection.FacetFactory;
 using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Component;
-using NakedFramework.Metamodel.Menu;
 using NakedFramework.Metamodel.NonSerializedMenu;
 using NakedFramework.ModelBuilding.Component;
 

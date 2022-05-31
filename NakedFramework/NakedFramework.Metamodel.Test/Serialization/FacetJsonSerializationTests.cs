@@ -11,7 +11,7 @@ using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelper
 
 namespace NakedFramework.Metamodel.Test.Serialization;
 
-[TestClass, Ignore]
+[TestClass] [Ignore]
 public class FacetJsonSerializationTests {
     [TestMethod]
     public void TestJsonSerializeActionChoicesFacetNone() => TestSerializeActionChoicesFacetNone(JsonRoundTrip);

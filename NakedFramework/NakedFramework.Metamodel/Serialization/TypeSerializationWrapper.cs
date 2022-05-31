@@ -8,7 +8,8 @@ using NakedFramework.Core.Error;
 namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
-public sealed class TypeSerializationWrapper  {
+public sealed class TypeSerializationWrapper {
+    private static Dictionary<Type, TypeSerializationWrapper> cache = new();
     private readonly string assemblyName;
     private readonly bool jit;
     private readonly string typeName;
@@ -28,8 +29,6 @@ public sealed class TypeSerializationWrapper  {
         set => type = value;
     }
 
-   
-
     [OnDeserialized]
     private void OnDeserialized(StreamingContext context) {
         if (!jit) {
@@ -48,20 +47,13 @@ public sealed class TypeSerializationWrapper  {
         }
     }
 
-    private static Dictionary<Type, TypeSerializationWrapper> cache = new();
-
-
     public static TypeSerializationWrapper Wrap(Type type) {
         lock (cache) {
             if (!cache.ContainsKey(type)) {
                 cache[type] = new TypeSerializationWrapper(type, ReflectorDefaults.JitSerialization);
             }
+
             return cache[type];
         }
     }
-
-
-
-
-
 }

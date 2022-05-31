@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
 using NOF2.About;

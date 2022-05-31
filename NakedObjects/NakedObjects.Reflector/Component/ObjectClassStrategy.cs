@@ -17,7 +17,6 @@ namespace NakedObjects.Reflector.Component;
 /// <summary>
 ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
 /// </summary>
-
 public class ObjectClassStrategy : AbstractClassStrategy {
     private readonly IObjectReflectorConfiguration config;
 
