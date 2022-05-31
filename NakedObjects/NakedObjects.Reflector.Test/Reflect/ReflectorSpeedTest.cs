@@ -13,10 +13,11 @@ using System.Linq;
 using System.Reflection;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
-using Long.Name.Space.N0;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using model1000;
+using model500;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Configuration;
@@ -171,13 +172,6 @@ public class ReflectorSpeedTest {
         return tt;
     }
 
-    private static Type[] TestModel1000Types() {
-        return Assembly.GetAssembly(typeof(Type0)).GetTypes().Where(t => t.Namespace.StartsWith("Long") && t.IsPublic).ToArray();
-    }
-
-    private static Type[] TestModel500Types() {
-        return Assembly.GetAssembly(typeof(Type0)).GetTypes().Where(t => t.Namespace.StartsWith("Model500") && t.IsPublic).ToArray();
-    }
 
     [TestMethod]
     public void ReflectAWTypesBenchMark() {
@@ -238,12 +232,12 @@ public class ReflectorSpeedTest {
 
     [TestMethod]
     public void ReflectTestModel1000TypesBenchMark() {
-        ReflectTestModelTypesBenchMark(TestModel1000Types());
+        ReflectTestModelTypesBenchMark(model1000_Config.Types());
     }
 
     [TestMethod]
     public void ReflectTestModel500TypesBenchMark() {
-        ReflectTestModelTypesBenchMark(TestModel500Types());
+        ReflectTestModelTypesBenchMark(model500_Config.Types());
     }
 
     public void SerializeAWTypesBenchMark(string fileName) {
@@ -305,48 +299,6 @@ public class ReflectorSpeedTest {
         }
     }
 
-    public void SerializeTestModel1000TypesBenchMark(string fileName) {
-        static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedObjects(options => {
-                options.DomainModelTypes = TestModel1000Types();
-                //options.DomainModelServices = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
-            });
-            //coreOptions.MainMenus = NakedObjectsRunSettings.MainMenus;
-        }
-
-        var (container, host) = GetContainer(Setup);
-
-        using (host) {
-            var curDir = Directory.GetCurrentDirectory();
-            var testDir = Path.Combine(curDir, "testserialize");
-            Directory.CreateDirectory(testDir);
-            Directory.GetFiles(testDir).ForEach(File.Delete);
-            var file = Path.Combine(testDir, fileName);
-
-            var metamodelBuilder = container.GetService<IMetamodelBuilder>();
-            var mb = container.GetService<IModelBuilder>();
-
-            mb.Build(file, AdditionalKnownTypes());
-            var cache1 = metamodelBuilder?.Cache;
-
-            var stopWatch = new Stopwatch();
-
-            stopWatch.Start();
-            mb.RestoreFromFile(file, AdditionalKnownTypes());
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            var cache2 = metamodelBuilder?.Cache;
-
-            Console.WriteLine($"Elapsed time was {time} milliseconds");
-
-            Assert.IsNotNull(cache1);
-            Assert.IsNotNull(cache2);
-            Assert.AreNotEqual(cache1, cache2);
-            CompareCaches(cache1, cache2);
-        }
-    }
-
     public void SerializeTestModelTypesBenchMark(string fileName, Type[] testModelTypes) {
         void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddNakedObjects(options => {
@@ -391,7 +343,7 @@ public class ReflectorSpeedTest {
 
     [TestMethod]
     public void BinarySerializeTestModel1000TypesBenchMark() {
-        SerializeTestModelTypesBenchMark("metadata.bin", TestModel1000Types());
+        SerializeTestModelTypesBenchMark("metadata.bin", model1000_Config.Types());
     }
 
     [TestMethod]
@@ -407,7 +359,7 @@ public class ReflectorSpeedTest {
 
     [TestMethod]
     public void BinarySerializeTestModel500TypesBenchMark() {
-        SerializeTestModelTypesBenchMark("metadata.bin", TestModel500Types());
+        SerializeTestModelTypesBenchMark("metadata.bin", model500_Config.Types());
     }
 
     [TestMethod]
@@ -421,21 +373,25 @@ public class ReflectorSpeedTest {
         }
     }
 
-    //[TestMethod]
-    //public void XmlSerializeTestModel500TypesBenchMark() {
-    //    SerializeTestModelTypesBenchMark("metadata.xml", TestModel500Types());
-    //}
+    [TestMethod]
+    public void XmlSerializeTestModel100TypesBenchMark()
+    {
+        SerializeTestModelTypesBenchMark("metadata.xml", model1000_Config.Types());
+    }
 
-    //[TestMethod]
-    //public void XmlSerializeTestModel500TypesBenchMarkWithJit() {
-    //    ReflectorDefaults.JitSerialization = true;
-    //    try {
-    //        XmlSerializeTestModel500TypesBenchMark();
-    //    }
-    //    finally {
-    //        ReflectorDefaults.JitSerialization = false;
-    //    }
-    //}
+    [TestMethod]
+    public void XmlSerializeTestModel100TypesBenchMarkWithJit()
+    {
+        ReflectorDefaults.JitSerialization = true;
+        try
+        {
+            XmlSerializeTestModel100TypesBenchMark();
+        }
+        finally
+        {
+            ReflectorDefaults.JitSerialization = false;
+        }
+    }
 
     [TestMethod]
     public void XmlSerializeAWTypesBenchMark() {
