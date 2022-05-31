@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;

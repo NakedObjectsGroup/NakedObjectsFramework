@@ -9,7 +9,6 @@ using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;

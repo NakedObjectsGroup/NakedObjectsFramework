@@ -15,7 +15,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
-using System.Xml.Serialization;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
@@ -90,20 +89,9 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
     }
 
 
-
     private Type[] KnownTypes() {
         var a = Assembly.GetAssembly(typeof(IdentifierImpl));
-        var tt = a.GetTypes().Where(t => t.Namespace?.StartsWith("NakedFramework.Metamodel.Facet") == true ||
-                                         t.Namespace?.StartsWith("NakedFramework.Metamodel.Adapter") == true ||
-                                         t.Namespace?.StartsWith("NakedFramework.Metamodel.Spec") == true ||
-                                         t.Namespace?.StartsWith("NakedFramework.Metamodel.SpecImmutable") == true ||
-                                         t.Namespace?.StartsWith("NakedFramework.Metamodel.Menu") == true ||
-                                         t.Namespace?.StartsWith("NakedFramework.Metamodel.Serialization") == true ||
-                                         t.Namespace?.StartsWith("NakedFramework.Metamodel.SemanticsProvider") == true).ToArray();
-
-       
-
-
+        var tt = a.GetTypes().Where(t => t is { IsSerializable: true, IsPublic: true }).ToArray();
 
         var createdTypes = CreateTypes();
 
@@ -123,19 +111,12 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         mainMenus = data.MenuValues.ToImmutableList();
     }
 
-
-   
-
-
-
     private DataContractSerializerSettings Settings(Type[] additionalKnownTypes) {
         return  new DataContractSerializerSettings() {
             KnownTypes = KnownTypes().Union(additionalKnownTypes),
             PreserveObjectReferences = true,
         };
     }
-
-   
 
     private void XmlDeserialize(string file, Type[] additionalKnownTypes)
     {

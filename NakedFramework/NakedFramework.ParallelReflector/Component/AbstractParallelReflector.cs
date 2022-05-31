@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
-using NakedFramework.Metamodel.Utils;
+using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.ParallelReflector.Reflect;
 
 namespace NakedFramework.ParallelReflector.Component;

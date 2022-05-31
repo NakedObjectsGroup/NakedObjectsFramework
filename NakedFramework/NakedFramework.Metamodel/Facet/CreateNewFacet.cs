@@ -11,7 +11,6 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;

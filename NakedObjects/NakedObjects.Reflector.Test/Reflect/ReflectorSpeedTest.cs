@@ -25,7 +25,7 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
-using NakedFramework.Metamodel.Utils;
+using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.Facet;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;

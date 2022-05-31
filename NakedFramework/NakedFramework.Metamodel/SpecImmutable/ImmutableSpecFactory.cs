@@ -10,9 +10,8 @@ using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Metamodel.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Utils;
+namespace NakedFramework.Metamodel.SpecImmutable;
 
 public static class ImmutableSpecFactory
 {

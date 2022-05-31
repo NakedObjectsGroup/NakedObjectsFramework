@@ -7,7 +7,6 @@
 
 using System;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;

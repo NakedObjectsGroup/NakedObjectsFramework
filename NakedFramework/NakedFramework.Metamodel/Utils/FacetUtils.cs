@@ -20,7 +20,6 @@ using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Facet;
-using NakedFramework.Metamodel.NonSerializedFacet;
 
 namespace NakedFramework.Metamodel.Utils;
 

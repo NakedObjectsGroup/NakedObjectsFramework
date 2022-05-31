@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Core.Configuration;
 
 namespace NakedFramework.Metamodel.Serialization;
 

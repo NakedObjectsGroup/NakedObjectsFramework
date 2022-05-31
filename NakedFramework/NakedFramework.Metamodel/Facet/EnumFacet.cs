@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.Facet;

@@ -9,9 +9,8 @@ using System;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Metamodel.Facet;
 
-namespace NakedFramework.Metamodel.NonSerializedFacet;
+namespace NakedFramework.Metamodel.Facet;
 
 public abstract class IntegrationFacetAbstract : FacetAbstract, IIntegrationFacet {
     protected internal IntegrationFacetAbstract() { }

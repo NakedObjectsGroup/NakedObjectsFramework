@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedFramework.Architecture.SpecImmutable;
 
-namespace NakedFramework.Metamodel.Utils;
+namespace NakedFramework.Metamodel.SpecImmutable;
 
 internal class ReflectionWorkingData
 {

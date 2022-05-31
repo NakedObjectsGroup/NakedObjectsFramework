@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Serialization;
 

@@ -20,7 +20,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Component;
 using NakedFramework.Metamodel.Adapter;
 using NakedFramework.Metamodel.Component;
-using NakedFramework.Metamodel.Utils;
+using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
 using NakedFramework.ParallelReflector.FacetFactory;
 using NakedFramework.ParallelReflector.Reflect;
