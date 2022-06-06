@@ -17,7 +17,7 @@ namespace NakedFramework.Architecture.Component;
 public interface IMetamodel {
     ITypeSpecImmutable[] AllSpecifications { get; }
     IMenuImmutable[] MainMenus { get; }
-    ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false);
+    ITypeSpecImmutable GetSpecification(Type type);
     ITypeSpecImmutable GetSpecification(string name);
 }
 

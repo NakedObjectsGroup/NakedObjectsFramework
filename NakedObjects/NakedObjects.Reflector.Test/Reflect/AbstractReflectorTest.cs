@@ -50,7 +50,7 @@ public abstract class AbstractReflectorTest {
         var cache = new ImmutableInMemorySpecCache();
         ObjectReflectorConfiguration.NoValidate = true;
 
-        var metamodel = new MetamodelHolder(cache, LoggerFactory.CreateLogger<MetamodelHolder>());
+        var metamodel = new MetamodelHolder(cache, null, LoggerFactory.CreateLogger<MetamodelHolder>());
 
         var reflector = Reflector(metamodel, LoggerFactory);
 

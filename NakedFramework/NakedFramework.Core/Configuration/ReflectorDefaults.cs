@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Linq;
+using NakedFramework.Core.Error;
 using NakedFramework.Value;
 
 namespace NakedFramework.Core.Configuration;
@@ -74,7 +75,8 @@ public static class ReflectorDefaults {
         new List<int>().Where(i => true).Select(i => i).GetType().GetGenericTypeDefinition(),
         // UnionIterator
         new List<int>().Union(new List<int>()).GetType().GetGenericTypeDefinition(),
-        typeof(Action<>)
+        typeof(Action<>),
+        typeof(UnreflectedTypePlaceholder)
     };
 
     public static bool JitSerialization { get; set; } = false;

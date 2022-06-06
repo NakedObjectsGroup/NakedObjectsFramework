@@ -22,6 +22,7 @@ public interface ICoreConfiguration : ITypeList {
     List<Type> SupportedSystemTypes { get; }
 
     int HashMapCapacity { get; }
+    bool UsePlaceholderForUnreflectedType { get; }
 
     void AddMainMenu(Func<IMenuFactory, IMenu[]> mainMenu);
 }

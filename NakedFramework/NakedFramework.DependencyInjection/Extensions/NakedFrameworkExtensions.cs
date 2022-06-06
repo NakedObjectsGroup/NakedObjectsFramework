@@ -36,6 +36,8 @@ public static class NakedFrameworkExtensions {
         config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).Union(options.AdditionalSystemTypes).ToList();
 
         config.HashMapCapacity = options.HashMapCapacity;
+
+        config.UsePlaceholderForUnreflectedType = options.UsePlaceholderForUnreflectedType;
         return config;
     }
 

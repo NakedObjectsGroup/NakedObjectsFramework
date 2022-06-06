@@ -95,7 +95,7 @@ public class RemoveIgnoredMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         var objectFactFactorySet = new ObjectFacetFactorySet(new IDomainObjectFacetFactoryProcessor[] { facetFactory });
         var allTypeList = new AllTypeList(new[] { reflectorConfiguration });
         var classStrategy = new ObjectClassStrategy(reflectorConfiguration, allTypeList);
-        var metamodel = new MetamodelHolder(cache, null);
+        var metamodel = new MetamodelHolder(cache,null, null);
         var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
         var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
         var order = new ObjectReflectorOrder<ObjectReflector>();

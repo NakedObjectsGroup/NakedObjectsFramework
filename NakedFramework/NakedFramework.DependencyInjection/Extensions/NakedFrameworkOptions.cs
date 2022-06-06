@@ -31,6 +31,7 @@ public class NakedFrameworkOptions {
     public Func<Type[], Type[]> SupportedSystemTypes { get; set; } = t => t;
     public IServiceCollection Services { get; }
     public int HashMapCapacity { get; set; } = 10;
+    public bool UsePlaceholderForUnreflectedType { get; set; }
     internal Type[] AdditionalSystemTypes { get; set; } = Array.Empty<Type>();
     internal Type[] AdditionalUnpersistedTypes { get; set; } = Array.Empty<Type>();
 }

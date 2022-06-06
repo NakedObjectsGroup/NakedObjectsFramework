@@ -527,6 +527,62 @@ namespace NakedObjects.Reflector.Test.Reflect
             }
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(NakedObjectSystemException), "Failed to Load Specification for: NakedObjects.Reflector.Test.Reflect.ReflectorTest+SimpleDomainObject error: unexpected null")]
+        public void UnreflectedTypeTest()
+        {
+            static void Setup(NakedFrameworkOptions coreOptions)
+            {
+                coreOptions.UsePlaceholderForUnreflectedType = false;
+                coreOptions.AddNakedObjects(options => {
+                    options.DomainModelTypes = Array.Empty<Type>();
+                    options.DomainModelServices = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+
+                var mm = container.GetService<IMetamodel>();
+                mm.GetSpecification(typeof(SimpleDomainObject));
+            }
+        }
+
+        [TestMethod]
+        public void UnreflectedTypeTestWithPlaceHolder()
+        {
+            static void Setup(NakedFrameworkOptions coreOptions)
+            {
+                coreOptions.UsePlaceholderForUnreflectedType = true;
+                coreOptions.AddNakedObjects(options => {
+                    options.DomainModelTypes = Array.Empty<Type>();
+                    options.DomainModelServices = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host)
+            {
+                container.GetService<IModelBuilder>()?.Build();
+
+                var mm = container.GetService<IMetamodel>();
+
+                var spec = mm.GetSpecification(typeof(SimpleDomainObject));
+
+                Assert.AreEqual("Unknown type: ", spec.GetFacet<ITitleFacet>().GetTitle(null, null));
+
+            }
+        }
+
+
+
+
         #region Nested type: ReplacementBoundedAnnotationFacetFactory
 
         public sealed class ReplacementBoundedAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {

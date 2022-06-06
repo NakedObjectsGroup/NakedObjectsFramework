@@ -8,6 +8,7 @@
 using System;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
@@ -16,10 +17,12 @@ using NakedFramework.Core.Util;
 namespace NakedFramework.Metamodel.Component;
 
 public sealed class MetamodelHolder : IMetamodelBuilder {
+    private readonly ICoreConfiguration coreConfiguration;
     private readonly ILogger<MetamodelHolder> logger;
 
-    public MetamodelHolder(ISpecificationCache cache, ILogger<MetamodelHolder> logger) {
+    public MetamodelHolder(ISpecificationCache cache, ICoreConfiguration coreConfiguration, ILogger<MetamodelHolder> logger) {
         Cache = cache;
+        this.coreConfiguration = coreConfiguration;
         this.logger = logger;
     }
 
@@ -33,28 +36,23 @@ public sealed class MetamodelHolder : IMetamodelBuilder {
 
     public ITypeSpecImmutable[] AllSpecifications => Cache.AllSpecifications();
 
-    public ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false) {
-        try {
-            var spec = GetSpecificationFromCache(TypeKeyUtils.FilterNullableAndProxies(type));
-            if (spec == null && !allowNull) {
-                throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: unexpected null"));
-            }
+    private ITypeSpecImmutable ReturnOrError(ITypeSpecImmutable spec, Type type) =>
+        spec switch {
+            { } => spec,
+            null when coreConfiguration.UsePlaceholderForUnreflectedType => GetSpecification(typeof(NakedFramework.Core.Error.UnreflectedTypePlaceholder)),
+            _ => throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: unexpected null"))
+        };
 
-            return spec;
+    public ITypeSpecImmutable GetSpecification(Type type) {
+        try {
+            return ReturnOrError(GetSpecificationFromCache(TypeKeyUtils.FilterNullableAndProxies(type)), type);
         }
-        catch (NakedObjectSystemException e) {
-            logger.LogError($"Failed to Load Specification for: {(type == null ? "null" : type.FullName)} error: {e}");
-            throw;
-        }
-        catch (Exception e) {
+        catch (Exception e) when (e is not NakedObjectSystemException) {
             throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: {e}"));
         }
     }
 
-    public ITypeSpecImmutable GetSpecification(string name) {
-        var type = TypeUtils.GetType(name);
-        return GetSpecification(type);
-    }
+    public ITypeSpecImmutable GetSpecification(string name) => GetSpecification(TypeUtils.GetType(name));
 
     public void Add(Type type, ITypeSpecBuilder spec) => Cache.Cache(TypeKeyUtils.GetKeyForType(type), spec);
 

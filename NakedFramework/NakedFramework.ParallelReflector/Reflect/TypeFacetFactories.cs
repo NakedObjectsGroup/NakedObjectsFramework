@@ -23,6 +23,7 @@ public static class TypeFacetFactories {
             typeof(ValueTypeFacetFactory),
             typeof(EnumValueTypeFacetFactory),
             typeof(ArrayValueTypeFacetFactory<byte>),
-            typeof(CollectionFacetFactory)
+            typeof(CollectionFacetFactory),
+            typeof(UnreflectedTypeFacetFactory)
         };
 }

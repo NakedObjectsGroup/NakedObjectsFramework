@@ -44,4 +44,5 @@ public class CoreConfiguration : ICoreConfiguration {
 
     public int HashMapCapacity { get; set; }
     public Type[] Types => SupportedSystemTypes.ToArray();
+    public bool UsePlaceholderForUnreflectedType { get; set; }
 }
