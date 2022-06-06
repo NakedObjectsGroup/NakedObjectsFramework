@@ -17,11 +17,10 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
     private const bool Immutable = true;
-    private static ColorValueSemanticsProvider instance;
     private static readonly Color DefaultValueConst = Color.Black;
 
     private ColorValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static ColorValueSemanticsProvider Instance => instance ??= new ColorValueSemanticsProvider();
+    internal static ColorValueSemanticsProvider Instance { get; } = new ColorValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(Color);
 

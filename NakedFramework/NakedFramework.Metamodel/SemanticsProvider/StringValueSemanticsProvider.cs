@@ -15,10 +15,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstract<string>, IStringValueFacet {
     private const string DefaultValueConst = null;
     private const bool Immutable = true;
-    private static StringValueSemanticsProvider instance;
 
     private StringValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static StringValueSemanticsProvider Instance => instance ??= new StringValueSemanticsProvider();
+    internal static StringValueSemanticsProvider Instance { get; } = new StringValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(string);
 

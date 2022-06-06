@@ -213,7 +213,7 @@ public class ReflectorSpeedTest {
 
             //Assert.IsTrue(time < 500, $"Elapsed time was {time} milliseconds");
 
-            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+            Assert.AreEqual(163, AllObjectSpecImmutables(container).Length);
         }
     }
 
@@ -298,7 +298,7 @@ public class ReflectorSpeedTest {
             Console.WriteLine($"Elapsed time was {time} milliseconds");
             Record(test, time);
 
-            Assert.AreEqual(162, AllObjectSpecImmutables(container).Length);
+            Assert.AreEqual(163, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
             Assert.AreNotEqual(cache1, cache2);

@@ -12,11 +12,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class NullableFacetAlways : FacetAbstract, INullableFacet, IMarkerFacet {
-    private static NullableFacetAlways instance;
-
     private NullableFacetAlways() { }
 
-    public static NullableFacetAlways Instance => instance ??= new NullableFacetAlways();
+    public static NullableFacetAlways Instance { get; } = new NullableFacetAlways();
 
     public override Type FacetType => typeof(INullableFacet);
 }

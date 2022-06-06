@@ -13,11 +13,9 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class DeletingCallbackFacetNull : DeletingCallbackFacetAbstract {
-    private static DeletingCallbackFacetNull instance;
-
     private DeletingCallbackFacetNull() { }
 
-    public static DeletingCallbackFacetNull Instance => instance ??= new DeletingCallbackFacetNull();
+    public static DeletingCallbackFacetNull Instance { get; } = new DeletingCallbackFacetNull();
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }

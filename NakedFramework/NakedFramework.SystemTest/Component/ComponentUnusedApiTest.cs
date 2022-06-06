@@ -58,7 +58,7 @@ public class ComponentUnusedApiTest : AbstractSystemTest<FooContext> {
     [Test]
     public virtual void MetamodelManagerAllSpecs() {
         var allSpecs = NakedFramework.MetamodelManager.AllSpecs;
-        Assert.AreEqual(59, allSpecs.Length);
+        Assert.AreEqual(60, allSpecs.Length);
     }
 
     [Test]

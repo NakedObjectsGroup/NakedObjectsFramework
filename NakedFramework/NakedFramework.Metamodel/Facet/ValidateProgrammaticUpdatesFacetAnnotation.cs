@@ -12,11 +12,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ValidateProgrammaticUpdatesFacetAnnotation : FacetAbstract, IValidateProgrammaticUpdatesFacet {
-    private static ValidateProgrammaticUpdatesFacetAnnotation instance;
-
     private ValidateProgrammaticUpdatesFacetAnnotation() { }
 
-    public static ValidateProgrammaticUpdatesFacetAnnotation Instance => instance ??= new ValidateProgrammaticUpdatesFacetAnnotation();
+    public static ValidateProgrammaticUpdatesFacetAnnotation Instance { get; } = new ValidateProgrammaticUpdatesFacetAnnotation();
 
     public override Type FacetType => typeof(IValidateProgrammaticUpdatesFacet);
 }

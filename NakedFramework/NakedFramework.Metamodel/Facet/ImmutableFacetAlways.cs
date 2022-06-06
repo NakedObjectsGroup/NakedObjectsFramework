@@ -11,11 +11,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ImmutableFacetAlways : ImmutableFacetAbstract {
-    private static ImmutableFacetAlways instance;
-
     private ImmutableFacetAlways() : base(WhenTo.Always) { }
 
-    public static ImmutableFacetAlways Instance => instance ??= new ImmutableFacetAlways();
+    public static ImmutableFacetAlways Instance { get; } = new ImmutableFacetAlways();
 }
 
 // Copyright (c) Naked Objects Group Ltd.

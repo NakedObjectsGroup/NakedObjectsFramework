@@ -13,11 +13,9 @@ namespace NakedFunctions.Reflector.Facet;
 
 [Serializable]
 public sealed class ContributedToObjectFacet : FacetAbstract, IContributedToObjectFacet, IMarkerFacet {
-    private static ContributedToObjectFacet instance;
-
     private ContributedToObjectFacet() { }
 
-    public static ContributedToObjectFacet Instance => instance ??= new ContributedToObjectFacet();
+    public static ContributedToObjectFacet Instance { get; } = new ContributedToObjectFacet();
 
     public override Type FacetType => typeof(IContributedToObjectFacet);
 }

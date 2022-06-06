@@ -13,11 +13,9 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class UpdatingCallbackFacetNull : UpdatingCallbackFacetAbstract {
-    private static UpdatingCallbackFacetNull instance;
-
     private UpdatingCallbackFacetNull() { }
 
-    public static UpdatingCallbackFacetNull Instance => instance ??= new UpdatingCallbackFacetNull();
+    public static UpdatingCallbackFacetNull Instance { get; } = new UpdatingCallbackFacetNull();
 
     public override bool IsActive => false;
 

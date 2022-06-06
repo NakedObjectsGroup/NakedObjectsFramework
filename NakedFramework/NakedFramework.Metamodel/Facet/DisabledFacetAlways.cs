@@ -13,11 +13,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisabledFacetAlways : DisabledFacetAbstract, IMarkerFacet {
-    private static DisabledFacetAlways instance;
-
     private DisabledFacetAlways() : base(WhenTo.Always) { }
 
-    public static DisabledFacetAlways Instance => instance ??= new DisabledFacetAlways();
+    public static DisabledFacetAlways Instance { get; } = new DisabledFacetAlways();
 
     /// <summary>
     ///     Always returns <i>Always disabled</i>

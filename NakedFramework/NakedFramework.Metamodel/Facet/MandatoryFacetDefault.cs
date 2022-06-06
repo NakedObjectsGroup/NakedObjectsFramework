@@ -23,10 +23,9 @@ namespace NakedFramework.Metamodel.Facet;
 /// </para>
 [Serializable]
 public sealed class MandatoryFacetDefault : MandatoryFacetAbstract {
-    private static MandatoryFacetDefault instance;
     private MandatoryFacetDefault() { }
 
-    public static MandatoryFacetDefault Instance => instance ??= new MandatoryFacetDefault();
+    public static MandatoryFacetDefault Instance { get; } = new MandatoryFacetDefault();
 
     public override bool IsMandatory => true;
 

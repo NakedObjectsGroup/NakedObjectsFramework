@@ -17,11 +17,10 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeSpan>, ITimeValueFacet {
     private const bool Immutable = false;
-    private static TimeValueSemanticsProvider instance;
     private static readonly TimeSpan DefaultValueConst = new();
 
     private TimeValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static TimeValueSemanticsProvider Instance => instance ??= new TimeValueSemanticsProvider();
+    internal static TimeValueSemanticsProvider Instance { get; } = new TimeValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(TimeSpan);
 

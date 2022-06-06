@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstract<ushort>, IUnsignedShortValueFacet {
     private const ushort DefaultValueConst = 0;
     private const bool Immutable = true;
-    private static UShortValueSemanticsProvider instance;
 
     private UShortValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static UShortValueSemanticsProvider Instance => instance ??= new UShortValueSemanticsProvider();
+    internal static UShortValueSemanticsProvider Instance { get; } = new UShortValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(ushort);
 

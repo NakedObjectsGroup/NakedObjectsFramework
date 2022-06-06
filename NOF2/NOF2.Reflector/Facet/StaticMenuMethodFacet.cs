@@ -17,7 +17,7 @@ public sealed class StaticMenuMethodFacet : FacetAbstract, IStaticMenuFunctionFa
 
     private StaticMenuMethodFacet() { }
 
-    public static StaticMenuMethodFacet Instance => instance ??= new StaticMenuMethodFacet();
+    public static StaticMenuMethodFacet Instance { get; } = new StaticMenuMethodFacet();
 
     public override Type FacetType => typeof(IStaticMenuFunctionFacet);
 }

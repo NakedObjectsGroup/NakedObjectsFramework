@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<int>, IIntegerValueFacet {
     private const int DefaultValueConst = 0;
     private const bool Immutable = true;
-    private static IntValueSemanticsProvider instance;
 
     private IntValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static IntValueSemanticsProvider Instance => instance ??= new IntValueSemanticsProvider();
+    internal static IntValueSemanticsProvider Instance { get; } = new IntValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(int);
 

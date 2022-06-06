@@ -16,11 +16,10 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstract<DateTime>, IDateValueFacet {
     private const bool Immutable = false;
-    private static DateTimeValueSemanticsProvider instance;
     private static readonly DateTime DefaultValueConst = new();
 
     private DateTimeValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static DateTimeValueSemanticsProvider Instance => instance ??= new DateTimeValueSemanticsProvider();
+    internal static DateTimeValueSemanticsProvider Instance { get; } = new DateTimeValueSemanticsProvider();
 
     // inject for testing 
     public static DateTime? TestDateTime { get; set; }

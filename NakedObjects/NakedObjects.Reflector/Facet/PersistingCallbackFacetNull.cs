@@ -13,11 +13,9 @@ namespace NakedObjects.Reflector.Facet;
 
 [Serializable]
 public sealed class PersistingCallbackFacetNull : PersistingCallbackFacetAbstract {
-    private static PersistingCallbackFacetNull instance;
-
     private PersistingCallbackFacetNull() { }
 
-    public static PersistingCallbackFacetNull Instance => instance ??= new PersistingCallbackFacetNull();
+    public static PersistingCallbackFacetNull Instance { get; } = new PersistingCallbackFacetNull();
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }

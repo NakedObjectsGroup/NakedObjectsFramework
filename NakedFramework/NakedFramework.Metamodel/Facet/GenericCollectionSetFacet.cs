@@ -11,9 +11,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class GenericCollectionSetFacet : GenericCollectionFacetAbstract {
-    private static GenericCollectionSetFacet instance;
-
     private GenericCollectionSetFacet() : base(true) { }
 
-    public static GenericCollectionSetFacet Instance => instance ??= new GenericCollectionSetFacet();
+    public static GenericCollectionSetFacet Instance { get; } = new GenericCollectionSetFacet();
 }

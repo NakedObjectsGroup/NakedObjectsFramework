@@ -19,10 +19,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstract<bool>, IBooleanValueFacet {
     private const bool DefaultValueConst = false;
     private const bool Immutable = true;
-    private static BooleanValueSemanticsProvider instance;
 
     private BooleanValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static BooleanValueSemanticsProvider Instance => instance ??= new BooleanValueSemanticsProvider();
+    internal static BooleanValueSemanticsProvider Instance { get; } = new BooleanValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(bool);
 

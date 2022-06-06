@@ -11,11 +11,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class MultiLineFacetNone : MultiLineFacetAbstract {
-    private static MultiLineFacetNone instance;
-
     private MultiLineFacetNone() : base(1, 0) { }
 
-    public static MultiLineFacetNone Instance => instance ??= new MultiLineFacetNone();
+    public static MultiLineFacetNone Instance { get; } = new MultiLineFacetNone();
 
     public override bool IsNoOp => true;
 }

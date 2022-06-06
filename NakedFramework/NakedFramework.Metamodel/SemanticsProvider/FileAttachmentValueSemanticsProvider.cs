@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFileAttachmentValueFacet, IFromStream {
     private const bool Immutable = true;
-    private static FileAttachmentValueSemanticsProvider instance;
 
     private FileAttachmentValueSemanticsProvider() : base(Immutable, null) { }
-    internal static FileAttachmentValueSemanticsProvider Instance => instance ??= new FileAttachmentValueSemanticsProvider();
+    internal static FileAttachmentValueSemanticsProvider Instance { get; } = new FileAttachmentValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(FileAttachment);
 

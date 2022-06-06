@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, ILongValueFacet {
     private const bool Immutable = true;
     private const long DefaultValueConst = 0;
-    private static LongValueSemanticsProvider instance;
 
     private LongValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static LongValueSemanticsProvider Instance => instance ??= new LongValueSemanticsProvider();
+    internal static LongValueSemanticsProvider Instance { get; } = new LongValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(long);
 

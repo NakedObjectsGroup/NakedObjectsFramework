@@ -16,10 +16,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract<sbyte>, ISbyteValueFacet {
     private const sbyte DefaultValueConst = 0;
     private const bool Immutable = true;
-    private static SbyteValueSemanticsProvider instance;
 
     private SbyteValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static SbyteValueSemanticsProvider Instance => instance ??= new SbyteValueSemanticsProvider();
+    internal static SbyteValueSemanticsProvider Instance { get; } = new SbyteValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(sbyte);
 

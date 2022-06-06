@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract<ulong>, IUnsignedLongValueFacet {
     private const ulong DefaultValueConst = 0;
     private const bool Immutable = true;
-    private static ULongValueSemanticsProvider instance;
 
     private ULongValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static ULongValueSemanticsProvider Instance => instance ??= new ULongValueSemanticsProvider();
+    internal static ULongValueSemanticsProvider Instance { get; } = new ULongValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(ulong);
 

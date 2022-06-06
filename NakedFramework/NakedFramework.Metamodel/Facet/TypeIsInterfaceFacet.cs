@@ -12,11 +12,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class TypeIsInterfaceFacet : FacetAbstract, ITypeIsInterfaceFacet, IMarkerFacet {
-    private static TypeIsInterfaceFacet instance;
-
     private TypeIsInterfaceFacet() { }
 
-    public static TypeIsInterfaceFacet Instance => instance ??= new TypeIsInterfaceFacet();
+    public static TypeIsInterfaceFacet Instance { get; } = new TypeIsInterfaceFacet();
 
     public override Type FacetType => typeof(ITypeIsInterfaceFacet);
 }

@@ -15,11 +15,10 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<Guid>, IGuidValueFacet {
     private const bool Immutable = true;
-    private static GuidValueSemanticsProvider instance;
     private static readonly Guid DefaultValueConst = Guid.Empty;
 
     private GuidValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static GuidValueSemanticsProvider Instance => instance ??= new GuidValueSemanticsProvider();
+    internal static GuidValueSemanticsProvider Instance { get; } = new GuidValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(Guid);
 

@@ -11,9 +11,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class GenericIEnumerableFacet : GenericIEnumerableFacetAbstract {
-    private static GenericIEnumerableFacet instance;
-
     private GenericIEnumerableFacet() : base(false) { }
 
-    public static GenericIEnumerableFacet Instance => instance ??= new GenericIEnumerableFacet();
+    public static GenericIEnumerableFacet Instance { get; } = new GenericIEnumerableFacet();
 }

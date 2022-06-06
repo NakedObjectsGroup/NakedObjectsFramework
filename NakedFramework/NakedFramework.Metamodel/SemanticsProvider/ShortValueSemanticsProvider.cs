@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract<short>, IShortValueFacet {
     private const short DefaultValueConst = 0;
     private const bool Immutable = true;
-    private static ShortValueSemanticsProvider instance;
 
     private ShortValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static ShortValueSemanticsProvider Instance => instance ??= new ShortValueSemanticsProvider();
+    internal static ShortValueSemanticsProvider Instance { get; } = new ShortValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(short);
 

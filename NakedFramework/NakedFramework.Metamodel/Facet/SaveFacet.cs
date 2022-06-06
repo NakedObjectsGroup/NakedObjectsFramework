@@ -15,11 +15,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class SaveFacet : FacetAbstract, ISaveFacet {
-    private static SaveFacet instance;
-
     private SaveFacet() { }
 
-    public static SaveFacet Instance => instance ??= new SaveFacet();
+    public static SaveFacet Instance { get; } = new SaveFacet();
 
     public override Type FacetType => typeof(ISaveFacet);
 

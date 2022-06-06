@@ -11,9 +11,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class GenericIQueryableSetFacet : GenericIQueryableFacetAbstract {
-    private static GenericIQueryableSetFacet instance;
-
     private GenericIQueryableSetFacet() : base(true) { }
 
-    public static GenericIQueryableSetFacet Instance => instance ??= new GenericIQueryableSetFacet();
+    public static GenericIQueryableSetFacet Instance { get; } = new GenericIQueryableSetFacet();
 }

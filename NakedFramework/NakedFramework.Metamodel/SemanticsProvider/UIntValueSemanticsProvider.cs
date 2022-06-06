@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<uint>, IUnsignedIntegerValueFacet {
     private const uint DefaultValueConst = 0;
     private const bool Immutable = true;
-    private static UIntValueSemanticsProvider instance;
 
     private UIntValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static UIntValueSemanticsProvider Instance => instance ??= new UIntValueSemanticsProvider();
+    internal static UIntValueSemanticsProvider Instance { get; } = new UIntValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(uint);
 

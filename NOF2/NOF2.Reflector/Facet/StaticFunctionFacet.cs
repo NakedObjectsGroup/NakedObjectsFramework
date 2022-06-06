@@ -17,7 +17,7 @@ public sealed class StaticMethodFacet : FacetAbstract, IStaticFunctionFacet, IMa
 
     private StaticMethodFacet() { }
 
-    public static StaticMethodFacet Instance => instance ??= new StaticMethodFacet();
+    public static StaticMethodFacet Instance { get; } = new StaticMethodFacet();
 
     public override Type FacetType => typeof(IStaticFunctionFacet);
 }

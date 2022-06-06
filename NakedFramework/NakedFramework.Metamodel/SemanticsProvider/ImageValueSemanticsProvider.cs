@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 [Serializable]
 public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IImageValueFacet, IFromStream {
     private const bool Immutable = true;
-    private static ImageValueSemanticsProvider instance;
 
     private ImageValueSemanticsProvider() : base(Immutable, null) { }
-    internal static ImageValueSemanticsProvider Instance => instance ??= new ImageValueSemanticsProvider();
+    internal static ImageValueSemanticsProvider Instance { get; } = new ImageValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(Image);
 

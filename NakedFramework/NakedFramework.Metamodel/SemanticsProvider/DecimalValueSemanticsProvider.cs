@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstract<decimal>, IDecimalValueFacet {
     private const decimal DefaultValueConst = 0;
     private const bool Immutable = true;
-    private static DecimalValueSemanticsProvider instance;
 
     private DecimalValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static DecimalValueSemanticsProvider Instance => instance ??= new DecimalValueSemanticsProvider();
+    internal static DecimalValueSemanticsProvider Instance { get; } = new DecimalValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(decimal);
 

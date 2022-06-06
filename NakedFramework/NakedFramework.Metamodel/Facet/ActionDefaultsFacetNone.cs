@@ -14,11 +14,9 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class ActionDefaultsFacetNone : ActionDefaultsFacetAbstract {
-    private static ActionDefaultsFacetNone instance;
-
     private ActionDefaultsFacetNone() { }
 
-    public static ActionDefaultsFacetNone Instance => instance ??= new ActionDefaultsFacetNone();
+    public static ActionDefaultsFacetNone Instance { get; } = new ActionDefaultsFacetNone();
 
     public override bool IsNoOp => true;
 

@@ -17,10 +17,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<char>, ICharValueFacet {
     private const char DefaultValueConst = ' ';
     private const bool Immutable = true;
-    private static CharValueSemanticsProvider instance;
 
     private CharValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static CharValueSemanticsProvider Instance => instance ??= new CharValueSemanticsProvider();
+    internal static CharValueSemanticsProvider Instance { get; } = new CharValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(char);
 

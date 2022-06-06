@@ -16,10 +16,9 @@ namespace NakedFramework.Metamodel.SemanticsProvider;
 public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<byte>, IByteValueFacet {
     private const byte DefaultValueConst = 0;
     private const bool Immutable = true;
-    private static ByteValueSemanticsProvider instance;
 
     private ByteValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static ByteValueSemanticsProvider Instance => instance ??= new ByteValueSemanticsProvider();
+    internal static ByteValueSemanticsProvider Instance { get; } = new ByteValueSemanticsProvider();
 
     public static Type AdaptedType => typeof(byte);
 
