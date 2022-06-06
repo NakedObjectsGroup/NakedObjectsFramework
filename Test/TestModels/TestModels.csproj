@@ -1,8 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="model5000.cs" />
+    <Compile Remove="model5000_Model.cs" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta05" />

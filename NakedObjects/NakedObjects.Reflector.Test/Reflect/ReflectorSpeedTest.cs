@@ -246,6 +246,12 @@ public class ReflectorSpeedTest {
         }
     }
 
+    //[TestMethod]
+    //public void ReflectTestModel5000TypesBenchMark()
+    //{
+    //    ReflectTestModelTypesBenchMark(model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    //}
+
     [TestMethod]
     public void ReflectTestModel1000TypesBenchMark() {
         ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
@@ -374,6 +380,26 @@ public class ReflectorSpeedTest {
             ReflectorDefaults.JitSerialization = false;
         }
     }
+
+    //[TestMethod]
+    //public void BinarySerializeTestModel5000TypesBenchMark()
+    //{
+    //    SerializeTestModelTypesBenchMark("metadata.bin", model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    //}
+
+    //[TestMethod]
+    //public void BinarySerializeTestModel5000TypesBenchMarkWithJit()
+    //{
+    //    ReflectorDefaults.JitSerialization = true;
+    //    try
+    //    {
+    //        SerializeTestModelTypesBenchMark("metadata.bin", model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    //    }
+    //    finally
+    //    {
+    //        ReflectorDefaults.JitSerialization = false;
+    //    }
+    //}
 
     [TestMethod]
     public void BinarySerializeTestModel500TypesBenchMark() {
