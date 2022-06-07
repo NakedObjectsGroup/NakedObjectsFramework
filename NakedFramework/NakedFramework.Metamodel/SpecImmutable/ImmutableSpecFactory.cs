@@ -6,16 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
-public static class ImmutableSpecFactory
-{
-    private static readonly Dictionary<Type, ITypeSpecBuilder> SpecCache = new();
+public static class ImmutableSpecFactory {
+    private static readonly ConcurrentDictionary<Type, ITypeSpecBuilder> SpecCache = new();
 
     public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) => new ActionParameterSpecImmutable(spec, identifier);
 
@@ -25,30 +24,12 @@ public static class ImmutableSpecFactory
 
     public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) => new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
 
-    private static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, bool isRecognized)
-    {
-        lock (SpecCache)
-        {
-            if (!SpecCache.ContainsKey(type))
-            {
-                SpecCache.Add(type, new ObjectSpecImmutable(type, isRecognized));
-            }
-
-            return SpecCache[type] as IObjectSpecBuilder;
-        }
+    private static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, bool isRecognized) {
+        return (IObjectSpecBuilder)SpecCache.GetOrAdd(type, t => new ObjectSpecImmutable(t, isRecognized));
     }
 
-    private static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, bool isRecognized)
-    {
-        lock (SpecCache)
-        {
-            if (!SpecCache.ContainsKey(type))
-            {
-                SpecCache.Add(type, new ServiceSpecImmutable(type, isRecognized));
-            }
-
-            return SpecCache[type] as IServiceSpecBuilder;
-        }
+    private static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, bool isRecognized) {
+        return (IServiceSpecBuilder)SpecCache.GetOrAdd(type, t => new ServiceSpecImmutable(t, isRecognized));
     }
 
     public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, bool isRecognized) =>
@@ -61,11 +42,7 @@ public static class ImmutableSpecFactory
             ? new ActionToCollectionSpecAdapter(actionSpecImmutable)
             : new ActionToAssociationSpecAdapter(actionSpecImmutable);
 
-    public static void ClearCache()
-    {
-        lock (SpecCache)
-        {
-            SpecCache.Clear();
-        }
+    public static void ClearCache() {
+        SpecCache.Clear();
     }
 }

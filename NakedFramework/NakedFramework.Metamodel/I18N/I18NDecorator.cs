@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Resources;
 using System.Threading;
@@ -24,7 +25,7 @@ public class I18NDecorator : IFacetDecorator {
     private const string Name = "name";
     private const string Parameter = "parameter";
     private const string Property = "property";
-    private readonly IDictionary<string, string> keyCache = new Dictionary<string, string>();
+    private readonly ConcurrentDictionary<string, string> keyCache = new ConcurrentDictionary<string, string>();
     private readonly ILogger<I18NDecorator> logger;
 
     private ResourceManager resources;
@@ -72,19 +73,9 @@ public class I18NDecorator : IFacetDecorator {
         }
     }
 
-    private string CreateKey(string key) {
-        lock (keyCache) {
-            if (keyCache.ContainsKey(key)) {
-                return keyCache[key];
-            }
+    private static string MakeKey(string rawKey) => rawKey.Replace('.', '_').Replace(':', '_').Replace('#', '_').Replace('/', '_').Replace('(', '_').Replace(')', '_').Replace(',', '_').Replace('?', '_');
 
-            var newKey = key.Replace('.', '_').Replace(':', '_').Replace('#', '_').Replace('/', '_').Replace('(', '_').Replace(')', '_').Replace(',', '_').Replace('?', '_');
-
-            keyCache[key] = newKey;
-
-            return newKey;
-        }
-    }
+    private string CreateKey(string key) => keyCache.GetOrAdd(key, MakeKey);
 
     private string GetName(IIdentifier identifier) => GetText(identifier, Name);
 
