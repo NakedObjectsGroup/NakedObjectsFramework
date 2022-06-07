@@ -25,13 +25,8 @@ public sealed class SystemTypeReflector : AbstractParallelReflector {
                                IEnumerable<IFacetDecorator> facetDecorators,
                                IReflectorOrder<SystemTypeReflector> reflectorOrder,
                                ILoggerFactory loggerFactory,
-                               ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
-        CoreConfiguration = coreConfiguration;
-        FacetFactorySet = systemTypeFacetFactorySet;
-        ClassStrategy = systemTypeClassStrategy;
-    }
-
-    private ICoreConfiguration CoreConfiguration { get; }
+                               ILogger<AbstractParallelReflector> logger) :
+        base(facetDecorators, systemTypeClassStrategy, systemTypeFacetFactorySet, reflectorOrder, coreConfiguration, loggerFactory, logger) { }
 
     public override bool ConcurrencyChecking => false;
     public override string Name => "Naked Framework";

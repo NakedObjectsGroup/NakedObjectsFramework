@@ -24,7 +24,7 @@ namespace NakedFramework.Metamodel.Menu;
 public class MenuBuilder : IMenu {
     private ImmutableList<MenuBuilder> items = ImmutableList<MenuBuilder>.Empty;
 
-    public MenuBuilder(IMetamodel metamodel, Type defaultType, bool addAllActions, string name, string id = null) {
+    public MenuBuilder(IMetamodelBuilder metamodel, Type defaultType, bool addAllActions, string name, string id = null) {
         Metamodel = metamodel;
         Type = defaultType;
         Name = name ?? ObjectSpec.GetFacet<INamedFacet>().FriendlyName;
@@ -35,7 +35,7 @@ public class MenuBuilder : IMenu {
         }
     }
 
-    public MenuBuilder(IMetamodel metamodel, string name, string id = null) {
+    public MenuBuilder(IMetamodelBuilder metamodel, string name, string id = null) {
         Metamodel = metamodel;
         if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(id)) {
             throw new Exception("Menu Name and Id must not be null, unless a default type is specified");
@@ -45,7 +45,7 @@ public class MenuBuilder : IMenu {
         Id = id;
     }
 
-    private MenuBuilder(IMetamodel metamodel, IActionSpecImmutable action) {
+    private MenuBuilder(IMetamodelBuilder metamodel, IActionSpecImmutable action) {
         Metamodel = metamodel;
         Action = action;
     }
@@ -80,7 +80,7 @@ public class MenuBuilder : IMenu {
     //Includes both actions and sub-menus
     private IList<MenuBuilder> MenuItems => items;
 
-    private IMetamodel Metamodel { get; }
+    private IMetamodelBuilder Metamodel { get; }
 
     public IMenu WithMenuName(string name) {
         Name = name;
@@ -98,14 +98,13 @@ public class MenuBuilder : IMenu {
         }
 
         var actionSpec = GetAction(actionName, ignoreCase);
-        if (actionSpec is null) {
-            throw new ReflectionException($"No such action: {actionName} on {Type}");
-        }
+        return AddAction(actionName, friendlyName, Type, actionSpec);
+    }
 
-        AddFriendlyName(friendlyName, actionSpec);
-
-        AddMenuItem(new MenuBuilder(Metamodel, actionSpec));
-        return this;
+    public IMenu AddAction(Type fromType, string actionName, string friendlyName = null, bool ignoreCase = false) {
+        var compare = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
+        var actionSpec = ActionsForType(fromType).FirstOrDefault(a => string.Equals(a.Identifier.MemberName, actionName, compare));
+        return AddAction(actionName, friendlyName, fromType, actionSpec);
     }
 
     public IMenu CreateSubMenu(string subMenuName) => CreateMenuImmutableAsSubMenu(subMenuName);
@@ -137,22 +136,19 @@ public class MenuBuilder : IMenu {
         return this;
     }
 
-    public IMenu AddAction(Type fromType, string actionName, string friendlyName = null, bool ignoreCase = false) {
-        var compare = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
-        var actionSpec = ActionsForType(fromType).FirstOrDefault(a => string.Equals(a.Identifier.MemberName, actionName, compare));
-        if (actionSpec == null) {
-            throw new ReflectionException($"No such action: {actionName} on {fromType}");
-        }
-
-        AddFriendlyName(friendlyName, actionSpec);
-
-        AddMenuItem(new MenuBuilder(Metamodel, actionSpec));
-        return this;
-    }
-
     public IMenu AddRemainingActions(Type fromType) {
         AddOrderableElementsToMenu(ActionsForType(fromType), this);
         return this;
+    }
+
+    private IMenu AddAction(string actionName, string friendlyName, Type fromType, IActionSpecImmutable actionSpec) {
+        if (actionSpec is not null) {
+            AddFriendlyName(friendlyName, actionSpec);
+            AddMenuItem(new MenuBuilder(Metamodel, actionSpec));
+            return this;
+        }
+
+        return Metamodel.CoreConfiguration.UsePlaceholderForUnreflectedType ? this : throw new ReflectionException($"No such action: {actionName} on {fromType}");
     }
 
     private IActionSpecImmutable GetAction(string actionName, bool ignoreCase) {

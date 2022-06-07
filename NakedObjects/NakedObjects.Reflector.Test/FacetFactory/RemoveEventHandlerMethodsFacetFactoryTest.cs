@@ -16,6 +16,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Component;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Metamodel.Component;
 using NakedFramework.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
@@ -101,6 +102,7 @@ public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTes
         ObjectReflectorConfiguration.NoValidate = true;
 
         var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
+        var coreConfiguration = new CoreConfiguration();
 
         facetFactory = new RemoveEventHandlerMethodsFacetFactory(GetOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);
         var menuFactory = new NullMenuFactory();
@@ -111,7 +113,7 @@ public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTes
         var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
         var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
         var order = new ObjectReflectorOrder<ObjectReflector>();
-        Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, reflectorConfiguration, Array.Empty<IFacetDecorator>(), order, mockLoggerFactory, mockLogger);
+        Reflector = new ObjectReflector(objectFactFactorySet, classStrategy, reflectorConfiguration, coreConfiguration, Array.Empty<IFacetDecorator>(), order, mockLoggerFactory, mockLogger);
     }
 
     [TestCleanup]

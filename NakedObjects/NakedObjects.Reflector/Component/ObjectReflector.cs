@@ -11,6 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
@@ -25,14 +26,12 @@ public sealed class ObjectReflector : AbstractParallelReflector {
     public ObjectReflector(ObjectFacetFactorySet objectFacetFactorySet,
                            ObjectClassStrategy objectClassStrategy,
                            IObjectReflectorConfiguration objectReflectorConfiguration,
+                           ICoreConfiguration coreConfiguration,
                            IEnumerable<IFacetDecorator> facetDecorators,
                            IReflectorOrder<ObjectReflector> reflectorOrder,
                            ILoggerFactory loggerFactory,
-                           ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
+                           ILogger<AbstractParallelReflector> logger) : base(facetDecorators, objectClassStrategy, objectFacetFactorySet, reflectorOrder, coreConfiguration, loggerFactory, logger) =>
         this.objectReflectorConfiguration = objectReflectorConfiguration;
-        FacetFactorySet = objectFacetFactorySet;
-        ClassStrategy = objectClassStrategy;
-    }
 
     public override bool ConcurrencyChecking => objectReflectorConfiguration.ConcurrencyChecking;
     public override string Name => "Naked Objects";

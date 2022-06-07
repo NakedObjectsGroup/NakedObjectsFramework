@@ -13,7 +13,7 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class StaticMenuMethodFacet : FacetAbstract, IStaticMenuFunctionFacet, IMarkerFacet {
-    private static StaticMenuMethodFacet instance;
+ 
 
     private StaticMenuMethodFacet() { }
 

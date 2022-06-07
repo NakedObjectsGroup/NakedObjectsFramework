@@ -291,7 +291,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     }
 
     [TestMethod]
-    public void TestInstallsParameterAutoCompleteMethodAttrributes() {
+    public void TestInstallsParameterAutoCompleteMethodAttributes() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var actionMethod = FindMethodIgnoreParms(typeof(Customer28), "SomeAction");
@@ -581,7 +581,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     }
 
     [TestMethod]
-    public void TestPickUpDisableMethodOverriddingDefault() {
+    public void TestPickUpDisableMethodOverridingDefault() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var actionMethod = FindMethodIgnoreParms(typeof(Customer18), "SomeActionTwo");
@@ -641,7 +641,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     }
 
     [TestMethod]
-    public void TestPickUpHideMethodOverriddingDefault() {
+    public void TestPickUpHideMethodOverridingDefault() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var actionMethod = FindMethodIgnoreParms(typeof(Customer19), "SomeActionTwo");

@@ -25,14 +25,12 @@ public sealed class FunctionalReflector : AbstractParallelReflector {
     public FunctionalReflector(FunctionalFacetFactorySet functionalFacetFactorySet,
                                FunctionClassStrategy functionClassStrategy,
                                IFunctionalReflectorConfiguration functionalReflectorConfiguration,
+                               ICoreConfiguration coreConfiguration,
                                IEnumerable<IFacetDecorator> facetDecorators,
                                IReflectorOrder<FunctionalReflector> reflectorOrder,
                                ILoggerFactory loggerFactory,
-                               ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
+                               ILogger<AbstractParallelReflector> logger) : base(facetDecorators, functionClassStrategy, functionalFacetFactorySet, reflectorOrder, coreConfiguration, loggerFactory, logger) =>
         this.functionalReflectorConfiguration = functionalReflectorConfiguration;
-        ClassStrategy = functionClassStrategy;
-        FacetFactorySet = functionalFacetFactorySet;
-    }
 
     public override bool IgnoreCase => functionalReflectorConfiguration.IgnoreCase;
 

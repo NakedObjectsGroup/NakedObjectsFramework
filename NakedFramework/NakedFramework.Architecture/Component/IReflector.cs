@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Immutable;
+using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 
@@ -37,6 +38,7 @@ public interface IReflector {
     bool ConcurrencyChecking { get; }
     IClassStrategy ClassStrategy { get; }
     IFacetFactorySet FacetFactorySet { get; }
+    ICoreConfiguration CoreConfiguration { get; }
 
     IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
 

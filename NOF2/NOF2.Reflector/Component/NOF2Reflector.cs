@@ -11,6 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.ParallelReflector.Component;
@@ -25,14 +26,12 @@ public sealed class NOF2Reflector : AbstractParallelReflector {
     public NOF2Reflector(NOF2FacetFactorySet nof2FacetFactorySet,
                          NOF2ObjectClassStrategy nof2ObjectClassStrategy,
                          INOF2ReflectorConfiguration nof2ReflectorConfiguration,
+                         ICoreConfiguration coreConfiguration,
                          IEnumerable<IFacetDecorator> facetDecorators,
                          IReflectorOrder<NOF2Reflector> reflectorOrder,
                          ILoggerFactory loggerFactory,
-                         ILogger<AbstractParallelReflector> logger) : base(facetDecorators, reflectorOrder, loggerFactory, logger) {
+                         ILogger<AbstractParallelReflector> logger) : base(facetDecorators, nof2ObjectClassStrategy, nof2FacetFactorySet, reflectorOrder, coreConfiguration, loggerFactory, logger) =>
         this.nof2ReflectorConfiguration = nof2ReflectorConfiguration;
-        FacetFactorySet = nof2FacetFactorySet;
-        ClassStrategy = nof2ObjectClassStrategy;
-    }
 
     public override bool ConcurrencyChecking => nof2ReflectorConfiguration.ConcurrencyChecking;
     public override string Name => "NOF2";

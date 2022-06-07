@@ -11,6 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Error;
@@ -26,17 +27,25 @@ public abstract class AbstractParallelReflector : IReflector {
     protected readonly ILoggerFactory LoggerFactory;
 
     protected AbstractParallelReflector(IEnumerable<IFacetDecorator> facetDecorators,
+                                        IClassStrategy classStrategy,
+                                        IFacetFactorySet facetFactorySet,
                                         IReflectorOrder reflectorOrder,
+                                        ICoreConfiguration coreConfiguration,
                                         ILoggerFactory loggerFactory,
                                         ILogger<AbstractParallelReflector> logger) {
+        ClassStrategy = classStrategy;
+        FacetFactorySet = facetFactorySet;
+        CoreConfiguration = coreConfiguration;
         LoggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
         this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
         Order = reflectorOrder.Order;
     }
 
-    public IClassStrategy ClassStrategy { get; protected init; }
-    public IFacetFactorySet FacetFactorySet { get; protected init; }
+    public ICoreConfiguration CoreConfiguration { get; }
+
+    public IClassStrategy ClassStrategy { get; }
+    public IFacetFactorySet FacetFactorySet { get; }
 
     protected abstract IIntrospector GetNewIntrospector();
 

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.SpecImmutable;
 
@@ -13,6 +14,7 @@ namespace NakedFramework.Architecture.Component;
 
 public interface IMetamodelBuilder : IMetamodel {
     public ISpecificationCache Cache { get; }
+    ICoreConfiguration CoreConfiguration { get; }
     void Add(Type type, ITypeSpecBuilder spec);
     void AddMainMenu(IMenuImmutable menu);
     void ReplaceCache(ISpecificationCache cache);

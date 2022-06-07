@@ -97,8 +97,7 @@ public abstract class Introspector : IIntrospector {
         var interfaces = new List<ITypeSpecBuilder>();
         foreach (var interfaceType in InterfacesTypes) {
             if (interfaceType != null && ClassStrategy.IsTypeRecognizedByReflector(interfaceType)) {
-                ITypeSpecBuilder interfaceSpec;
-                (interfaceSpec, metamodel) = Reflector.LoadSpecification(interfaceType, metamodel);
+                (var interfaceSpec, metamodel) = Reflector.LoadSpecification(interfaceType, metamodel);
                 interfaceSpec.AddSubclass(spec);
                 interfaces.Add(interfaceSpec);
             }
@@ -154,15 +153,13 @@ public abstract class Introspector : IIntrospector {
     private (IAssociationSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindAndCreateFieldSpecs(IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         // now create fieldSpecs for value properties, for collections and for reference properties
         var collectionProperties = FacetFactorySet.FindCollectionProperties(Properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
-        IEnumerable<IAssociationSpecImmutable> collectionSpecs;
-        (collectionSpecs, metamodel) = CreateCollectionSpecs(collectionProperties, spec, metamodel);
+        (var collectionSpecs, metamodel) = CreateCollectionSpecs(collectionProperties, spec, metamodel);
 
         // every other accessor is assumed to be a reference property.
         var allProperties = FacetFactorySet.FindProperties(Properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
         var refProperties = allProperties.Except(collectionProperties);
 
-        IEnumerable<IAssociationSpecImmutable> refSpecs;
-        (refSpecs, metamodel) = CreateRefPropertySpecs(refProperties, spec, metamodel);
+        (var refSpecs, metamodel) = CreateRefPropertySpecs(refProperties, spec, metamodel);
 
         return (collectionSpecs.Union(refSpecs).ToArray(), metamodel);
     }
@@ -177,12 +174,10 @@ public abstract class Introspector : IIntrospector {
 
             // create a collection property spec
 
-            IObjectSpecImmutable returnSpec;
-            (returnSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
+            (var returnSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
 
             var defaultType = typeof(object);
-            IObjectSpecImmutable defaultSpec;
-            (defaultSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, metamodel);
+            (var defaultSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, metamodel);
 
             var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
@@ -202,8 +197,7 @@ public abstract class Introspector : IIntrospector {
             // create a reference property spec
             var identifier = new IdentifierImpl(FullName, property.Name);
 
-            IObjectSpecImmutable propertySpec;
-            (propertySpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, metamodel);
+            (var propertySpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, metamodel);
 
             if (propertySpec == null) {
                 throw new ReflectionException($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get.");
@@ -229,6 +223,8 @@ public abstract class Introspector : IIntrospector {
     //TODO use this for NF Context ? 
     protected virtual bool KeepParameter(Type parameterType) => true;
 
+    private bool IgnoreRecognizedMethod(MethodInfo method) => Reflector.CoreConfiguration.UsePlaceholderForUnreflectedType && FacetFactorySet.Recognizes(method);
+
     private (IActionSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindActionMethods(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var actionSpecs = new List<IActionSpecImmutable>();
         var actions = FacetFactorySet.FindActions(Methods.Where(m => m != null).ToArray(), ClassStrategy).Where(a => !FacetFactorySet.Filters(a, ClassStrategy)).ToArray();
@@ -241,6 +237,11 @@ public abstract class Introspector : IIntrospector {
 
             // actions are potentially being nulled within this loop
             if (actionMethod != null) {
+
+                if (IgnoreRecognizedMethod(actionMethod)) {
+                    break;
+                }
+
                 var fullMethodName = actionMethod.Name;
 
                 var parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
@@ -256,8 +257,7 @@ public abstract class Introspector : IIntrospector {
                 var actionParams = new List<IActionParameterSpecImmutable>();
 
                 foreach (var pt in parameterTypes.Where(KeepParameter)) {
-                    IObjectSpecBuilder oSpec;
-                    (oSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecBuilder>(pt, metamodel);
+                    (var oSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecBuilder>(pt, metamodel);
                     var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(oSpec, identifier);
                     actionParams.Add(actionSpec);
                 }

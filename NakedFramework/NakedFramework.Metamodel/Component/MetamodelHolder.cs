@@ -17,14 +17,15 @@ using NakedFramework.Core.Util;
 namespace NakedFramework.Metamodel.Component;
 
 public sealed class MetamodelHolder : IMetamodelBuilder {
-    private readonly ICoreConfiguration coreConfiguration;
     private readonly ILogger<MetamodelHolder> logger;
 
     public MetamodelHolder(ISpecificationCache cache, ICoreConfiguration coreConfiguration, ILogger<MetamodelHolder> logger) {
         Cache = cache;
-        this.coreConfiguration = coreConfiguration;
+        CoreConfiguration = coreConfiguration;
         this.logger = logger;
     }
+
+    public ICoreConfiguration CoreConfiguration { get; }
 
     private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
         var key = TypeKeyUtils.GetKeyForType(type);
@@ -39,7 +40,7 @@ public sealed class MetamodelHolder : IMetamodelBuilder {
     private ITypeSpecImmutable ReturnOrError(ITypeSpecImmutable spec, Type type) =>
         spec switch {
             { } => spec,
-            null when coreConfiguration.UsePlaceholderForUnreflectedType => GetSpecification(typeof(NakedFramework.Core.Error.UnreflectedTypePlaceholder)),
+            null when CoreConfiguration.UsePlaceholderForUnreflectedType => GetSpecification(typeof(UnreflectedTypePlaceholder)),
             _ => throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: unexpected null"))
         };
 
