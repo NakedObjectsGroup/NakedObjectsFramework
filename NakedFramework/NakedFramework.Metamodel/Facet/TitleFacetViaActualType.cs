@@ -8,6 +8,7 @@
 using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Framework;
+using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -15,9 +16,9 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class TitleFacetViaActualType : TitleFacetAbstract {
     private TitleFacetViaActualType() { }
 
-    public static TitleFacetViaActualType Instance { get; } = new TitleFacetViaActualType();
+    public static TitleFacetViaActualType Instance { get; } = new();
 
-    public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => $"Unknown type: {nakedObjectAdapter?.Object?.GetType()}";
+    public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => $"Unknown type: {FasterTypeUtils.GetProxiedType(nakedObjectAdapter?.Object?.GetType())}";
 }
 
 // Copyright (c) Naked Objects Group Ltd.
