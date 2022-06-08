@@ -47,13 +47,9 @@ public static class CollectionUtils {
 
     public static bool IsBlobOrClob(Type type) => type.IsArray && (type.GetElementType() == typeof(byte) || type.GetElementType() == typeof(sbyte) || type.GetElementType() == typeof(char));
 
-    public static bool IsGenericOfEnum(Type type) {
-        return type.GetGenericArguments().Length == 1 && type.GetGenericArguments().All(t => t.IsEnum);
-    }
+    public static bool IsGenericOfEnum(Type type) => type.GetGenericArguments().Length == 1 && type.GetGenericArguments().All(t => t.IsEnum);
 
-    public static void ForEach<T>(this T[] toIterate, Action<T> action) {
-        Array.ForEach(toIterate, action);
-    }
+    public static void ForEach<T>(this T[] toIterate, Action<T> action) => Array.ForEach(toIterate, action);
 
     public static void ForEach<T>(this IEnumerable<T> toIterate, Action<T> action) {
         foreach (var item in toIterate) {
@@ -111,34 +107,31 @@ public static class CollectionUtils {
         return genericCollectionType.MakeGenericType(itemType);
     }
 
-    public static bool IsGenericType(Type type, Type toMatch) {
-        return type.IsGenericType
-               && type.GetGenericArguments().Length == 1
-               && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
-    }
+    public static bool IsGenericType(Type type, Type toMatch) =>
+        type.IsGenericType
+        && type.GetGenericArguments().Length == 1
+        && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
 
     private static Type GetGenericEnumerableType(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable) : null;
 
     public static Type GetGenericType(Type type) => type.IsGenericType ?  type : type.GetInterfaces().FirstOrDefault(i => i.IsGenericType);
 
 
-    private static string CollectionTitleStringKnownType(IObjectSpec elementSpec, int size) {
-        return size switch {
+    private static string CollectionTitleStringKnownType(IObjectSpec elementSpec, int size) =>
+        size switch {
             IncompleteCollection => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleUnloaded, elementSpec.PluralName),
             0 => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleEmpty, elementSpec.PluralName),
             1 => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleOne, elementSpec.SingularName),
             _ => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleMany, size, elementSpec.PluralName)
         };
-    }
 
-    private static string CollectionTitleStringUnknownType(int size) {
-        return size switch {
+    private static string CollectionTitleStringUnknownType(int size) =>
+        size switch {
             IncompleteCollection => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleUnloaded, ""),
             0 => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleEmpty, NakedObjects.Resources.NakedObjects.Objects),
             1 => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleOne, NakedObjects.Resources.NakedObjects.Object),
             _ => string.Format(NakedObjects.Resources.NakedObjects.CollectionTitleMany, size, NakedObjects.Resources.NakedObjects.Objects)
         };
-    }
 
     #endregion
 }

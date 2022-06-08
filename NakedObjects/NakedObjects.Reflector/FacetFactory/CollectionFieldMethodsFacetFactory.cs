@@ -70,11 +70,10 @@ public sealed class CollectionFieldMethodsFacetFactory : DomainObjectFacetFactor
         }
     }
 
-    public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties, IClassStrategy classStrategy) {
-        return properties.Where(property => property.HasPublicGetter() &&
-                                            CollectionUtils.IsCollection(property.PropertyType) &&
-                                            !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
-                                            !classStrategy.IsIgnored(property) &&
-                                            !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToArray();
-    }
+    public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties, IClassStrategy classStrategy) =>
+        properties.Where(property => property.HasPublicGetter() &&
+                                     CollectionUtils.IsCollection(property.PropertyType) &&
+                                     !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
+                                     !classStrategy.IsIgnored(property) &&
+                                     !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToArray();
 }

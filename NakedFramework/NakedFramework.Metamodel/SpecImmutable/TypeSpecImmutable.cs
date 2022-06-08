@@ -136,35 +136,6 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         }
     }
 
-    public override IFacet GetFacet(Type facetType) {
-        var facet = base.GetFacet(facetType);
-        if (FacetUtils.IsNotANoopFacet(facet)) {
-            return facet;
-        }
-
-        var noopFacet = facet;
-
-        //if (Superclass != null) {
-        //    var superClassFacet = Superclass.GetFacet(facetType);
-        //    if (FacetUtils.IsNotANoopFacet(superClassFacet)) {
-        //        return superClassFacet;
-        //    }
-
-        //    noopFacet ??= superClassFacet;
-        //}
-
-        //foreach (var interfaceSpec in Interfaces) {
-        //    var interfaceFacet = interfaceSpec.GetFacet(facetType);
-        //    if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
-        //        return interfaceFacet;
-        //    }
-
-        //    noopFacet ??= interfaceFacet;
-        //}
-
-        return noopFacet;
-    }
-
     public bool IsOfType(ITypeSpecImmutable otherSpecification) {
         if (otherSpecification == this) {
             return true;
@@ -186,13 +157,9 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         return false;
     }
 
-    public string[] GetLocallyContributedActionNames(string id) {
-        return OrderedFields.OfType<IOneToManyAssociationSpecImmutable>().SingleOrDefault(a => a.Identifier.MemberName == id)?.ContributedActionNames ?? Array.Empty<string>();
-    }
+    public string[] GetLocallyContributedActionNames(string id) => OrderedFields.OfType<IOneToManyAssociationSpecImmutable>().SingleOrDefault(a => a.Identifier.MemberName == id)?.ContributedActionNames ?? Array.Empty<string>();
 
-    private ImmutableList<IActionSpecImmutable> CreateOrderedContributedActions() {
-        return Order(workingData.ContributedActions).GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new { service, actions }).OrderBy(a => Array.IndexOf(workingData.Services, a.service)).SelectMany(a => a.actions).ToImmutableList();
-    }
+    private ImmutableList<IActionSpecImmutable> CreateOrderedContributedActions() => Order(workingData.ContributedActions).GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new { service, actions }).OrderBy(a => Array.IndexOf(workingData.Services, a.service)).SelectMany(a => a.actions).ToImmutableList();
 
     private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
         var interfaceTypes = givenType.GetInterfaces();

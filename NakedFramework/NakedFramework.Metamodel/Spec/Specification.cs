@@ -25,8 +25,8 @@ public abstract class Specification : ISpecificationBuilder {
 
     protected Specification(IIdentifier identifier) => Identifier = identifier;
 
-    private void AddFacet(Type facetType, IFacet facet) {
-        var existingFacet = GetFacet(facetType);
+    public virtual void AddFacet(IFacet facet) {
+        var existingFacet = GetFacet(facet.FacetType);
 
         if (facet.IsNoOp && existingFacet is { IsNoOp: false }) {
             return;
@@ -56,8 +56,6 @@ public abstract class Specification : ISpecificationBuilder {
     public T GetFacet<T>() where T : IFacet => (T)GetFacet(typeof(T));
 
     public virtual IEnumerable<IFacet> GetFacets() => facetDictionary.Values;
-
-    public virtual void AddFacet(IFacet facet) => AddFacet(facet.FacetType, facet);
 
     public void RemoveFacet(IFacet facet) {
         if (ContainsFacet(facet.FacetType)) {
