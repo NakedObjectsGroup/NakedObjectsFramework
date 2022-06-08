@@ -62,13 +62,13 @@ public sealed class CollectionFacetFactory : SystemTypeFacetFactoryProcessor {
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        if (CollectionUtils.IsGenericEnumerable(type)) {
-            ProcessGenericEnumerable(type, specification);
-            return metamodel;
-        }
-
         if (type.IsArray) {
             return ProcessArray(reflector, type, specification, metamodel);
+        }
+
+        if (CollectionUtils.IsOrImplementsGenericEnumerable(type)) {
+            ProcessGenericEnumerable(type, specification);
+            return metamodel;
         }
 
         return CollectionUtils.IsCollectionButNotArray(type)

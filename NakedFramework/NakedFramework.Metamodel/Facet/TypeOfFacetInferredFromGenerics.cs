@@ -11,6 +11,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -22,7 +23,7 @@ public sealed class TypeOfFacetInferredFromGenerics : TypeOfFacetInferredAbstrac
 
     #region ITypeOfFacet Members
 
-    public override Type GetValue(INakedObjectAdapter collection) => collection.Object.GetType().GenericTypeArguments.First();
+    public override Type GetValue(INakedObjectAdapter collection) =>  CollectionUtils.GetGenericType(collection.Object.GetType()).GenericTypeArguments.First();
 
     public override IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => (IObjectSpecImmutable)metamodel.GetSpecification(GetValue(collection));
 

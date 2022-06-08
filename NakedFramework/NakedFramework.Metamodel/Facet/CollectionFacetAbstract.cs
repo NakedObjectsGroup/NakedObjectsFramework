@@ -12,6 +12,7 @@ using System.Reflection;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
+using NakedFramework.Core.Util;
 
 namespace NakedFramework.Metamodel.Facet;
 
@@ -24,7 +25,7 @@ public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet 
 
     protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {
         var m = GetType().GetMethod(name, BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static);
-        var t = collection.Object.GetType().GenericTypeArguments.First();
+        var t = CollectionUtils.GetGenericType(collection.Object.GetType()).GenericTypeArguments.First();
 
         return m.MakeGenericMethod(t).Invoke(this, pp);
     }

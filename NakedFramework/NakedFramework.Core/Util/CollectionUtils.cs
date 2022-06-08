@@ -25,6 +25,10 @@ public static class CollectionUtils {
 
     public static bool IsGenericEnumerable(Type type) => IsGenericType(type, typeof(IEnumerable<>)) && type.GetGenericArguments().Length == 1;
 
+    public static bool IsOrImplementsGenericEnumerable(Type type) =>
+        (IsGenericType(type, typeof(IEnumerable<>)) && type.GetGenericArguments().Length == 1) || type.GetInterfaces().Any(IsOrImplementsGenericEnumerable);
+
+
     public static bool IsGenericCollection(Type type) => IsGenericType(type, typeof(ICollection<>)) && type.GetGenericArguments().Length == 1;
 
     /// <summary>IEnumerable of T where T is not a value type</summary>
@@ -114,6 +118,9 @@ public static class CollectionUtils {
     }
 
     private static Type GetGenericEnumerableType(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable) : null;
+
+    public static Type GetGenericType(Type type) => type.IsGenericType ?  type : type.GetInterfaces().FirstOrDefault(i => i.IsGenericType);
+
 
     private static string CollectionTitleStringKnownType(IObjectSpec elementSpec, int size) {
         return size switch {

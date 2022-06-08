@@ -34,7 +34,7 @@ public class ReflectorValueTest : SystemTypeReflectorTest {
 
     [TestMethod]
     public void TestFacets() {
-        Assert.AreEqual(6, Specification.FacetTypes.Length);
+        Assert.AreEqual(8, Specification.FacetTypes.Length);
     }
 
     [TestMethod]

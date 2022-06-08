@@ -144,23 +144,23 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
         var noopFacet = facet;
 
-        if (Superclass != null) {
-            var superClassFacet = Superclass.GetFacet(facetType);
-            if (FacetUtils.IsNotANoopFacet(superClassFacet)) {
-                return superClassFacet;
-            }
+        //if (Superclass != null) {
+        //    var superClassFacet = Superclass.GetFacet(facetType);
+        //    if (FacetUtils.IsNotANoopFacet(superClassFacet)) {
+        //        return superClassFacet;
+        //    }
 
-            noopFacet ??= superClassFacet;
-        }
+        //    noopFacet ??= superClassFacet;
+        //}
 
-        foreach (var interfaceSpec in Interfaces) {
-            var interfaceFacet = interfaceSpec.GetFacet(facetType);
-            if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
-                return interfaceFacet;
-            }
+        //foreach (var interfaceSpec in Interfaces) {
+        //    var interfaceFacet = interfaceSpec.GetFacet(facetType);
+        //    if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
+        //        return interfaceFacet;
+        //    }
 
-            noopFacet ??= interfaceFacet;
-        }
+        //    noopFacet ??= interfaceFacet;
+        //}
 
         return noopFacet;
     }
