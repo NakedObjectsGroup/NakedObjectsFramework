@@ -41,3 +41,4 @@ ServerDebug.sln
 Test/NakedFunctions.Rest.App.Demo/appsettings.json
 Test/RichardsSeleniumTest.sln
 NakedObjects/NakedObjects.Reflector.Test/benchmarks.txt
+benchmarks.txt

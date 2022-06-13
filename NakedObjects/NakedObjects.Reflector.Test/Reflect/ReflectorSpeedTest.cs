@@ -174,10 +174,13 @@ public class ReflectorSpeedTest {
     }
 
     [TestCleanup]
-    public void OutputStats() {
-        if (Stats.Count == 11) {
-          
+    public void CleanUp() {
+        ReflectorDefaults.ParallelDegree = 0;
+        OutputStats();
+    }
 
+    public void OutputStats() {
+        if (Stats.Count == GetType().GetMethods().Count(m => m.GetCustomAttribute(typeof(TestMethodAttribute)) is not null)) {
             Console.WriteLine("Stats:");
             var longest = Stats.Max(kvp => kvp.Key.Length);
 
@@ -189,6 +192,8 @@ public class ReflectorSpeedTest {
             }
         }
     }
+
+
 
     private static void Record(string test, long elapsed) => Stats[test] = elapsed;
 
@@ -259,9 +264,33 @@ public class ReflectorSpeedTest {
     //}
 
     [TestMethod]
-    public void ReflectTestModel1000TypesBenchMark() {
+    public void ReflectTestModel1000TypesBenchMarkParallelDefault() {
         ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
+    [TestMethod]
+    public void ReflectTestModel1000TypesBenchMarkParallel1() {
+        ReflectorDefaults.ParallelDegree = 1;
+        ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    }
+    [TestMethod]
+    public void ReflectTestModel1000TypesBenchMarkParallel2()
+    {
+        ReflectorDefaults.ParallelDegree = 2;
+        ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    }
+    [TestMethod]
+    public void ReflectTestModel1000TypesBenchMarkParallel3()
+    {
+        ReflectorDefaults.ParallelDegree = 3;
+        ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    }
+    [TestMethod]
+    public void ReflectTestModel1000TypesBenchMarkParallel4()
+    {
+        ReflectorDefaults.ParallelDegree = 3;
+        ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    }
+
 
     [TestMethod]
     public void ReflectTestModel500TypesBenchMark() {
