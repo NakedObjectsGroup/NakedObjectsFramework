@@ -26,18 +26,20 @@ public abstract class Specification : ISpecificationBuilder {
     protected Specification(IIdentifier identifier) => Identifier = identifier;
 
     public virtual void AddFacet(IFacet facet) {
-        var existingFacet = GetFacet(facet.FacetType);
+        lock (facetDictionary) {
+            var existingFacet = GetFacet(facet.FacetType);
 
-        if (facet.IsNoOp && existingFacet is { IsNoOp: false }) {
-            return;
-        }
-
-        if (existingFacet is null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
-            if (existingFacet is { CanNeverBeReplaced : true }) {
-                throw new ReflectionException($"Attempting to replace non-replaceable {existingFacet} with {facet}");
+            if (facet.IsNoOp && existingFacet is { IsNoOp: false }) {
+                return;
             }
 
-            facetDictionary.AddFacet(facet);
+            if (existingFacet is null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
+                if (existingFacet is { CanNeverBeReplaced : true }) {
+                    throw new ReflectionException($"Attempting to replace non-replaceable {existingFacet} with {facet}");
+                }
+
+                facetDictionary.AddFacet(facet);
+            }
         }
     }
 
@@ -58,10 +60,12 @@ public abstract class Specification : ISpecificationBuilder {
     public virtual IEnumerable<IFacet> GetFacets() => facetDictionary.Values;
 
     public void RemoveFacet(IFacet facet) {
+        lock (facetDictionary) { }
+
         if (ContainsFacet(facet.FacetType)) {
             facetDictionary.RemoveFacet(facet);
         }
     }
-
-    #endregion
 }
+
+#endregion
