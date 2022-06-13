@@ -8,6 +8,8 @@
 using System;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using NakedObjects.Services;
 using NUnit.Framework;
 
@@ -56,7 +58,7 @@ public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
     }
 
     [Test]
-    public virtual void BenchMark() {
+    public virtual void GetRandomBenchMark() {
         var stopWatch = new Stopwatch();
         stopWatch.Start();
         for (var i = 0; i < 1000; i++) {
@@ -69,8 +71,11 @@ public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
         var time = stopWatch.ElapsedMilliseconds;
         // with dynamic 2929 ms
         // without dynamic 2918 ms
+        var t = $"Test: {MethodBase.GetCurrentMethod().Name} \tElapsedTime: {time}ms\r\n";
+
+        File.AppendAllText(@"..\..\..\..\..\benchmarks.txt", t);
+
         Assert.IsTrue(time < 3000, $"Elapsed time was {time} milliseconds");
-        Console.WriteLine($"Elapsed time was {time} milliseconds");
     }
 }
 
