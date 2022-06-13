@@ -15,6 +15,8 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Configuration;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
 
@@ -49,7 +51,7 @@ public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProces
     private static bool IsStatic(ITypeSpecImmutable spec) => spec.ContainsFacet<ITypeIsStaticFacet>();
 
     private static void PopulateContributedFunctions(IObjectSpecBuilder spec, ITypeSpecBuilder[] functions, IModelIntegrator modelIntegrator) {
-        var objectContribActions = functions.AsParallel().SelectMany(functionsSpec => {
+        var objectContribActions = functions.AsCustomParallel().SelectMany(functionsSpec => {
             var serviceActions = functionsSpec.UnorderedObjectActions.Where(sa => sa != null).ToArray();
 
             var matchingActionsForObject = new List<IActionSpecImmutable>();
@@ -68,7 +70,7 @@ public sealed class RecordIntegrationFacetFactory : FunctionalFacetFactoryProces
             spec.AddContributedFunctions(objectContribActions);
         }
 
-        var collectionContribActions = functions.AsParallel().SelectMany(functionsSpec => {
+        var collectionContribActions = functions.AsCustomParallel().SelectMany(functionsSpec => {
             var serviceActions = functionsSpec.UnorderedObjectActions.Where(sa => sa != null).ToArray();
 
             var matchingActionsForCollection = new List<IActionSpecImmutable>();

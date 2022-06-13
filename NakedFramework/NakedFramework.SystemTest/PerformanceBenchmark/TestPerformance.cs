@@ -70,6 +70,7 @@ public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
         // with dynamic 2929 ms
         // without dynamic 2918 ms
         Assert.IsTrue(time < 3000, $"Elapsed time was {time} milliseconds");
+        Console.WriteLine($"Elapsed time was {time} milliseconds");
     }
 }
 

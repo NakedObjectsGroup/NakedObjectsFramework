@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Spec;
+using NakedFramework.Core.Configuration;
 
 namespace NakedFramework.Core.Util;
 
@@ -91,6 +92,16 @@ public static class CollectionUtils {
 
         return CollectionTitleStringKnownType(elementSpec, size);
     }
+
+
+
+    public static ParallelQuery<TSource> AsCustomParallel<TSource>(this IEnumerable<TSource> source)
+    {
+        var pSource = source.AsParallel();
+        return ReflectorDefaults.ParallelDegree > 0 ? pSource.WithDegreeOfParallelism(ReflectorDefaults.ParallelDegree) : pSource;
+    }
+
+
 
     #endregion
 

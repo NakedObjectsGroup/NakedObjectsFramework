@@ -15,6 +15,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Menu;
@@ -60,9 +61,9 @@ public class ModelIntegrator : IModelIntegrator {
 
         integrationFacets.ForEach(Execute);
 
-        metamodelBuilder.AllSpecifications.OfType<IObjectSpecBuilder>().AsParallel().ForEach(spec => PopulateLocalCollectionContributedActions(spec, metamodelBuilder));
+        metamodelBuilder.AllSpecifications.OfType<IObjectSpecBuilder>().AsCustomParallel().ForEach(spec => PopulateLocalCollectionContributedActions(spec, metamodelBuilder));
 
-        metamodelBuilder.AllSpecifications.OfType<ITypeSpecBuilder>().AsParallel().ForEach(spec => spec.CompleteIntegration());
+        metamodelBuilder.AllSpecifications.OfType<ITypeSpecBuilder>().AsCustomParallel().ForEach(spec => spec.CompleteIntegration());
 
         //Menus installed once rest of metamodel has been built:
         InstallMainMenus(metamodelBuilder);
@@ -91,11 +92,11 @@ public class ModelIntegrator : IModelIntegrator {
     private static FacetUtils.ActionHolder ToActionHolder(IActionSpecImmutable a) => new(a);
 
     private void ValidateModel(IMetamodelBuilder builder) {
-        foreach (var menu in metamodelBuilder.MainMenus.AsParallel()) {
+        foreach (var menu in metamodelBuilder.MainMenus.AsCustomParallel()) {
             menu.MenuItems.SelectMany(GetMenuActions).Select(ToActionHolder).ErrorOnDuplicates();
         }
 
-        foreach (var spec in metamodelBuilder.AllSpecifications.AsParallel()) {
+        foreach (var spec in metamodelBuilder.AllSpecifications.AsCustomParallel()) {
             spec.OrderedObjectActions.Union(spec.OrderedContributedActions).Select(ToActionHolder).ErrorOnDuplicates();
         }
     }
@@ -148,7 +149,7 @@ public class ModelIntegrator : IModelIntegrator {
         integrationFacet.IsContributedToCollectionOf(objectSpec);
 
     private void PopulateContributedActions(IObjectSpecBuilder objectSpec, Type[] services, IMetamodel metamodel) {
-        var (contribActions, collContribActions, finderActions) = services.AsParallel().Select(serviceType => {
+        var (contribActions, collContribActions, finderActions) = services.AsCustomParallel().Select(serviceType => {
             var serviceSpecification = (ITypeSpecBuilder)metamodel.GetSpecification(serviceType);
             var serviceActions = serviceSpecification.UnorderedObjectActions.Where(sa => sa is not null).ToArray();
 

@@ -176,11 +176,18 @@ public class ReflectorSpeedTest {
     [TestCleanup]
     public void OutputStats() {
         if (Stats.Count == 11) {
+            var f = File.Create(@"..\..\..\benchmarks.txt");
+            using var fw = new StreamWriter(f);
+
+
             Console.WriteLine("Stats:");
             var longest = Stats.Max(kvp => kvp.Key.Length);
 
             foreach (var kvp in Stats.OrderByDescending(kvp => kvp.Key)) {
-                Console.WriteLine($"Test: {kvp.Key.PadRight(longest) } \tElapsedTime: {kvp.Value}ms");
+                var t = $"Test: {kvp.Key.PadRight(longest)} \tElapsedTime: {kvp.Value}ms";
+
+                Console.WriteLine(t);
+                fw.WriteLine(t);
             }
         }
     }
@@ -232,6 +239,7 @@ public class ReflectorSpeedTest {
         using (host) {
             var stopWatch = new Stopwatch();
             var mb = container.GetService<IModelBuilder>();
+            GC.Collect(4, GCCollectionMode.Forced, true);
             stopWatch.Start();
             mb.Build();
             stopWatch.Stop();

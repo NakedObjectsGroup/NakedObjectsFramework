@@ -80,4 +80,7 @@ public static class ReflectorDefaults {
     };
 
     public static bool JitSerialization { get; set; } = false;
+
+    public static int ParallelDegree { get; set; } = 0;
+
 }

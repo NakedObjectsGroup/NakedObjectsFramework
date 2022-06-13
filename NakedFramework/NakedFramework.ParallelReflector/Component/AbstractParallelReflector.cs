@@ -14,10 +14,12 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Configuration;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.ParallelReflector.Reflect;
+using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedFramework.ParallelReflector.Component;
 
@@ -63,7 +65,7 @@ public abstract class AbstractParallelReflector : IReflector {
 
     protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectTypes(Type[] toIntrospect, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
         var introspectedDictionary = toIntrospect.Any()
-            ? toIntrospect.AsParallel().SelectMany(type => IntrospectSpecification(type, specDictionary).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary()
+            ? toIntrospect.AsCustomParallel().SelectMany(type => IntrospectSpecification(type, specDictionary).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary()
             : specDictionary;
 
         if (introspectedDictionary.Any(i => i.Value.IsPlaceHolder)) {

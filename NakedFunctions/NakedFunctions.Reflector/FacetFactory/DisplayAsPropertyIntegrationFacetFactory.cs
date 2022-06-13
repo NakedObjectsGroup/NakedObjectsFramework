@@ -14,6 +14,8 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Configuration;
+using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Metamodel.Utils;
 using NakedFramework.ParallelReflector.Utils;
@@ -36,8 +38,8 @@ public sealed class DisplayAsPropertyIntegrationFacetFactory : FunctionalFacetFa
     }
 
     private static void PopulateDisplayAsPropertyFunctions(ITypeSpecBuilder spec, ITypeSpecBuilder[] functions, IMetamodel metamodel) {
-        var result = functions.AsParallel().SelectMany(functionsSpec =>
-                                                           functionsSpec.UnorderedObjectActions.Where(sa => sa is not null && IsContributedProperty(sa, spec, metamodel))).ToList();
+        var result = functions.AsCustomParallel().SelectMany(functionsSpec =>
+                                                                 functionsSpec.UnorderedObjectActions.Where(sa => sa is not null && IsContributedProperty(sa, spec, metamodel))).ToList();
 
         if (result.Any()) {
             var adaptedMembers = result.Select(r => ImmutableSpecFactory.CreateSpecAdapter(r, metamodel)).ToList();
