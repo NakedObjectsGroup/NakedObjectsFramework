@@ -24,6 +24,7 @@ using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
+using NakedFramework.Metamodel.Component;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.SpecImmutable;
@@ -176,6 +177,7 @@ public class ReflectorSpeedTest {
     [TestCleanup]
     public void CleanUp() {
         ReflectorDefaults.ParallelDegree = 0;
+        ImmutableSpecFactory.ClearCache();
         OutputStats();
     }
 
