@@ -19,9 +19,9 @@ public static class CollectionUtils {
 
     public const int IncompleteCollection = -1;
 
-    public static bool IsDictionary(Type type) => IsGenericEnumerable(type) && IsGenericOfKeyValuePair(type);
+    public static bool IsDictionary(Type type) => IsGenericType(type, typeof(IDictionary<,>));
 
-    /// <summary>IEnumerable of T where T is not a value type</summary>
+
     public static bool IsGenericEnumerableOfRefType(Type type) => IsGenericEnumerable(type) && IsGenericOfRefType(type);
 
     public static bool IsGenericEnumerable(Type type) => IsGenericType(type, typeof(IEnumerable<>));
@@ -30,16 +30,16 @@ public static class CollectionUtils {
 
     public static bool IsGenericCollection(Type type) => IsGenericType(type, typeof(ICollection<>));
 
-    /// <summary>IEnumerable of T where T is not a value type</summary>
+    
     public static bool IsGenericQueryable(Type type) => IsGenericType(type, typeof(IQueryable<>));
 
-    /// <summary>IQueryable or IQueryable of T</summary>
+   
     public static bool IsQueryable(Type type) => typeof(IQueryable).IsAssignableFrom(type);
 
-    /// <summary> ICollection but not Array or IEnumerable of T where T is not a value type </summary>
+    
     public static bool IsCollectionButNotArray(Type type) => IsCollection(type) && !type.IsArray;
 
-    /// <summary> ICollection or IEnumerable of T or Array of T where T is not a value type </summary>
+    
     public static bool IsCollection(Type type) => IsNonGenericCollection(type) || IsGenericCollection(type);
 
     public static Type ElementType(Type type) => IsGenericEnumerable(type) ? GetGenericEnumerableType(type).GetGenericArguments().Single() : typeof(object);
@@ -63,10 +63,7 @@ public static class CollectionUtils {
         }
     }
 
-    public static IList CloneCollection(object toClone) {
-        var collectionType = MakeCollectionType(toClone, typeof(List<>));
-        return Activator.CreateInstance(collectionType) as IList;
-    }
+    
 
     public static IList CloneCollectionAndPopulate(object toClone, IEnumerable<object> contents) {
         var newCollection = CloneCollection(toClone);
@@ -100,9 +97,18 @@ public static class CollectionUtils {
         CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
         CollectionUtils.IsGenericType(type, typeof(ISet<>));
 
+    public static Type GetGenericType(Type type) => type.IsGenericType ? type : type.GetInterfaces().FirstOrDefault(i => i.IsGenericType);
+
+
     #endregion
 
     #region private
+
+    private static IList CloneCollection(object toClone)
+    {
+        var collectionType = MakeCollectionType(toClone, typeof(List<>));
+        return Activator.CreateInstance(collectionType) as IList;
+    }
 
     private static bool IsGenericOfKeyValuePair(Type type) => type.GetGenericArguments().Any(t => IsGenericType(t, typeof(KeyValuePair<,>)));
 
@@ -115,14 +121,12 @@ public static class CollectionUtils {
         return genericCollectionType.MakeGenericType(itemType);
     }
 
-    public static bool IsGenericType(Type type, Type toMatch) =>
+    private static bool IsGenericType(Type type, Type toMatch) =>
         type.IsGenericType
-        && type.GetGenericArguments().Length == 1
         && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
 
     private static Type GetGenericEnumerableType(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable) : null;
 
-    public static Type GetGenericType(Type type) => type.IsGenericType ? type : type.GetInterfaces().FirstOrDefault(i => i.IsGenericType);
 
     private static string CollectionTitleStringKnownType(IObjectSpec elementSpec, int size) =>
         size switch {
