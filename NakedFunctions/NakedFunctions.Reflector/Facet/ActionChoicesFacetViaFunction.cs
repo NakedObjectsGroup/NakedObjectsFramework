@@ -30,9 +30,9 @@ public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, 
                                          (string name, Type type)[] parameterNamesAndTypes,
                                          ILogger<ActionChoicesFacetViaFunction> logger,
                                          bool isMultiple = false) {
-        methodWrapper = MethodSerializationWrapper.Wrap(choicesMethod, logger);
+        methodWrapper = SerializationFactory.Wrap(choicesMethod, logger);
         IsMultiple = isMultiple;
-        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, TypeSerializationWrapper.Wrap(t.type))).ToArray();
+        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, SerializationFactory.Wrap(t.type))).ToArray();
     }
 
     public override (string, Type)[] ParameterNamesAndTypes => parameterNamesAndTypes.Select(t => (t.name, t.typeWrapper.Type)).ToArray();

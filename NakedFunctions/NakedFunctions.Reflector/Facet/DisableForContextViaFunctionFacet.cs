@@ -23,7 +23,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class DisableForContextViaFunctionFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public DisableForContextViaFunctionFacet(MethodInfo method, ILogger<DisableForContextViaFunctionFacet> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+    public DisableForContextViaFunctionFacet(MethodInfo method, ILogger<DisableForContextViaFunctionFacet> logger) => methodWrapper = SerializationFactory.Wrap(method, logger);
 
     public override Type FacetType => typeof(IDisableForContextFacet);
 

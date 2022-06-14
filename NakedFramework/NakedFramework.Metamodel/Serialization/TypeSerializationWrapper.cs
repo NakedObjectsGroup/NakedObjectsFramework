@@ -17,7 +17,7 @@ public sealed class TypeSerializationWrapper {
     [NonSerialized]
     private Type type;
 
-    private TypeSerializationWrapper(Type type, bool jit) {
+    internal TypeSerializationWrapper(Type type, bool jit) {
         this.jit = jit;
         this.type = type;
         assemblyName = type.Assembly.FullName;
@@ -44,16 +44,6 @@ public sealed class TypeSerializationWrapper {
         }
         catch (NullReferenceException) {
             throw new ReflectionException($"Failed to find {an}:{tn}");
-        }
-    }
-
-    public static TypeSerializationWrapper Wrap(Type type) {
-        lock (cache) {
-            if (!cache.ContainsKey(type)) {
-                cache[type] = new TypeSerializationWrapper(type, ReflectorDefaults.JitSerialization);
-            }
-
-            return cache[type];
         }
     }
 }

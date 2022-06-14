@@ -19,7 +19,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class CreateNewFacet : FacetAbstract, ICreateNewFacet {
     private readonly TypeSerializationWrapper toCreate;
 
-    public CreateNewFacet(Type toCreate) => this.toCreate = TypeSerializationWrapper.Wrap(toCreate);
+    public CreateNewFacet(Type toCreate) => this.toCreate = SerializationFactory.Wrap(toCreate);
 
     public Type Type => toCreate.Type;
 

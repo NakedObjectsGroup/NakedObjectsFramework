@@ -35,17 +35,19 @@ public static class DelegateUtils {
                 return (null, CreationFailed("property 'ContainsGenericParameters' is true", method));
             }
 
-            if (method.DeclaringType is not null && !method.DeclaringType.IsClass) {
+            if (method.DeclaringType?.IsClass == false) {
                 // don't seem to be able to bind delegates to these just return null
                 return (null, CreationFailed("property 'DeclaringType.IsClass' is false", method));
             }
 
-            if (method.GetParameters().Length > MaxParameters) {
+            var parameters = method.GetParameters();
+
+            if (parameters.Length > MaxParameters) {
                 // only support 6 parameters via delegates - return null and default to reflection
                 return (null, CreationFailed($"it has more than {MaxParameters} parameters. Suggest: reducing the number of parameters if possible.", method));
             }
 
-            var delegateHelper = MakeDelegateHelper(method.DeclaringType, method);
+            var delegateHelper = MakeDelegateHelper(method.DeclaringType, method, parameters);
 
             // Now call it. The null argument is because it’s a static method.
             // Cast the result to the right kind of delegate
@@ -96,10 +98,10 @@ public static class DelegateUtils {
         return (Func<object, IPrincipal, object, string, bool>)ret;
     }
 
-    private static MethodInfo MakeDelegateHelper(Type targetType, MethodInfo method) {
+    private static MethodInfo MakeDelegateHelper(Type targetType, MethodInfo method, ParameterInfo[] parameters) {
         var prefix = method.IsStatic ? "Static" : "";
         var name = method.ReturnType == typeof(void) ? "ActionHelper" : "FuncHelper";
-        var postfix = method.GetParameters().Length;
+        var postfix = parameters.Length;
 
         var helperName = $"{prefix}{name}{postfix}";
 
@@ -108,9 +110,9 @@ public static class DelegateUtils {
 
         // Now supply the type arguments
         var typeArgs = new List<Type> { targetType };
-        typeArgs.AddRange(method.GetParameters().Select(p => p.ParameterType));
+        typeArgs.AddRange(parameters.Select(p => p.ParameterType));
 
-        if (method.ReturnType != typeof(void)) {
+        if (name is "FuncHelper") {
             typeArgs.Add(method.ReturnType);
         }
 

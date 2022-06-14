@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class DeletedCallbackFacetViaMethod : DeletedCallbackFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public DeletedCallbackFacetViaMethod(MethodInfo method, ILogger<DeletedCallbackFacetViaMethod> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+    public DeletedCallbackFacetViaMethod(MethodInfo method, ILogger<DeletedCallbackFacetViaMethod> logger) => methodWrapper = SerializationFactory.Wrap(method, logger);
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => methodWrapper.Invoke(nakedObjectAdapter.GetDomainObject());
 

@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.Facet;
 [Serializable]
 public sealed class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
-    public UpdatingCallbackFacetViaMethod(MethodInfo method, ILogger<UpdatingCallbackFacetViaMethod> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+    public UpdatingCallbackFacetViaMethod(MethodInfo method, ILogger<UpdatingCallbackFacetViaMethod> logger) => methodWrapper = SerializationFactory.Wrap(method, logger);
 
     public override bool IsActive => true;
 

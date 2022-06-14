@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public PropertyDefaultFacetViaMethod(MethodInfo method, ILogger<PropertyDefaultFacetViaMethod> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+    public PropertyDefaultFacetViaMethod(MethodInfo method, ILogger<PropertyDefaultFacetViaMethod> logger) => methodWrapper = SerializationFactory.Wrap(method, logger);
 
     public override object GetDefault(INakedObjectAdapter inObjectAdapter) => methodWrapper.Invoke<object>(inObjectAdapter.GetDomainObject());
 

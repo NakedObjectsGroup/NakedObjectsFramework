@@ -23,10 +23,10 @@ public sealed class PropertySerializationWrapper {
     [NonSerialized]
     private Func<object, object[], object> setMethodDelegate;
 
-    public PropertySerializationWrapper(PropertyInfo propertyInfo, ILogger logger, bool jit) {
+    internal PropertySerializationWrapper(PropertyInfo propertyInfo, ILogger logger, bool jit) {
         this.jit = jit;
         PropertyInfo = propertyInfo;
-        typeWrapper = TypeSerializationWrapper.Wrap(propertyInfo.DeclaringType);
+        typeWrapper = SerializationFactory.Wrap(propertyInfo.DeclaringType);
         propertyName = propertyInfo.Name;
         getMethodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(propertyInfo.GetGetMethod()), logger);
     }

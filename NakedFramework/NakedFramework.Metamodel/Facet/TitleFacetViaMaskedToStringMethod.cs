@@ -22,7 +22,7 @@ public sealed class TitleFacetViaMaskedToStringMethod : TitleFacetAbstract, IImp
     private readonly MethodSerializationWrapper method;
 
     public TitleFacetViaMaskedToStringMethod(MethodInfo method, ILogger<TitleFacetViaMaskedToStringMethod> logger) {
-        this.method = MethodSerializationWrapper.Wrap(method, method.GetParameters().Select(p => p.ParameterType).ToArray(), logger);
+        this.method = SerializationFactory.Wrap(method, method.GetParameters().Select(p => p.ParameterType).ToArray(), logger);
     }
 
     public MethodInfo GetMethod() => method.GetMethod();

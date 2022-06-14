@@ -30,12 +30,12 @@ public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstra
     private readonly TypeSerializationWrapper returnType;
 
     public ActionInvocationFacetViaMethod(MethodInfo method, Type onType, Type returnType, Type elementType, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger) {
-        methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+        methodWrapper = SerializationFactory.Wrap(method, logger);
 
         paramCount = method.GetParameters().Length;
-        this.onType = onType is not null ? TypeSerializationWrapper.Wrap(onType) : null;
-        this.returnType = returnType is not null ? TypeSerializationWrapper.Wrap(returnType) : null;
-        this.elementType = elementType is not null ? TypeSerializationWrapper.Wrap(elementType) : null;
+        this.onType = onType is not null ? SerializationFactory.Wrap(onType) : null;
+        this.returnType = returnType is not null ? SerializationFactory.Wrap(returnType) : null;
+        this.elementType = elementType is not null ? SerializationFactory.Wrap(elementType) : null;
         IsQueryOnly = isQueryOnly;
     }
 

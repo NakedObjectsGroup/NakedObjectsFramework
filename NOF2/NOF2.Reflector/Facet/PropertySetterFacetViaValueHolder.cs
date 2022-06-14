@@ -24,7 +24,7 @@ public sealed class PropertySetterFacetViaValueHolder<T, TU> : PropertySetterFac
     private readonly PropertySerializationWrapper propertyWrapper;
 
     public PropertySetterFacetViaValueHolder(PropertyInfo property, ILogger logger) =>
-        propertyWrapper = new PropertySerializationWrapper(property, logger, ReflectorDefaults.JitSerialization);
+        propertyWrapper = SerializationFactory.Wrap(property, logger);
 
     public override string PropertyName {
         get => propertyWrapper.PropertyInfo.Name;

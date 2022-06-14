@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class TitleFacetViaProperty : TitleFacetAbstract, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public TitleFacetViaProperty(MethodInfo method, ILogger<TitleFacetViaProperty> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+    public TitleFacetViaProperty(MethodInfo method, ILogger<TitleFacetViaProperty> logger) => methodWrapper = SerializationFactory.Wrap(method, logger);
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) {
         var obj = methodWrapper.Invoke<object>(nakedObjectAdapter.GetDomainObject());

@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class HideForContextFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public HideForContextFacet(MethodInfo method, ILogger<HideForContextFacet> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+    public HideForContextFacet(MethodInfo method, ILogger<HideForContextFacet> logger) => methodWrapper = SerializationFactory.Wrap(method, logger);
 
     public override Type FacetType => typeof(IHideForContextFacet);
 

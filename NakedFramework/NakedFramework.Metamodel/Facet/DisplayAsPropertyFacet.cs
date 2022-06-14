@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 
 [Serializable]
 public sealed class DisplayAsPropertyFacet : FacetAbstract, IDisplayAsPropertyFacet {
-    public DisplayAsPropertyFacet(Type type) => ContributedToWrapper = TypeSerializationWrapper.Wrap(type);
+    public DisplayAsPropertyFacet(Type type) => ContributedToWrapper = SerializationFactory.Wrap(type);
 
     public DisplayAsPropertyFacet() { }
     private TypeSerializationWrapper ContributedToWrapper { get; }

@@ -30,17 +30,17 @@ public sealed class MethodSerializationWrapper {
     [NonSerialized]
     private Func<object, object[], object> methodDelegate;
 
-    private MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, bool jit) {
+    internal MethodSerializationWrapper(MethodInfo methodInfo, ILogger logger, bool jit) {
         this.jit = jit;
         MethodInfo = methodInfo;
-        typeWrapper = TypeSerializationWrapper.Wrap(methodInfo.DeclaringType);
+        typeWrapper = SerializationFactory.Wrap(methodInfo.DeclaringType);
         methodName = methodInfo.Name;
         methodDelegate = FacetUtils.LogNull(DelegateUtils.CreateDelegate(methodInfo), logger);
     }
 
-    private MethodSerializationWrapper(MethodInfo methodInfo, Type[] methodArgs, ILogger logger, bool jit) : this(methodInfo, logger, jit) {
+    internal MethodSerializationWrapper(MethodInfo methodInfo, Type[] methodArgs, ILogger logger, bool jit) : this(methodInfo, logger, jit) {
         this.methodArgs = methodArgs;
-        methodArgsWrapper = methodArgs.Select(a => TypeSerializationWrapper.Wrap(a)).ToArray();
+        methodArgsWrapper = methodArgs.Select(a => SerializationFactory.Wrap(a)).ToArray();
     }
 
     public MethodInfo MethodInfo {
@@ -94,23 +94,4 @@ public sealed class MethodSerializationWrapper {
 
     public void Invoke(object[] args) => MethodDelegate.InvokeStatic(MethodInfo, args);
 
-    public static MethodSerializationWrapper Wrap(MethodInfo method, ILogger logger) {
-        lock (cache) {
-            if (!cache.ContainsKey(method)) {
-                cache[method] = new MethodSerializationWrapper(method, logger, ReflectorDefaults.JitSerialization);
-            }
-
-            return cache[method];
-        }
-    }
-
-    public static MethodSerializationWrapper Wrap(MethodInfo method, Type[] methodArgs, ILogger logger) {
-        lock (cache) {
-            if (!cache.ContainsKey(method)) {
-                cache[method] = new MethodSerializationWrapper(method, methodArgs, logger, ReflectorDefaults.JitSerialization);
-            }
-
-            return cache[method];
-        }
-    }
 }

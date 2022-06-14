@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public ActionValidationFacet(MethodInfo method, ILogger<ActionValidationFacet> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+    public ActionValidationFacet(MethodInfo method, ILogger<ActionValidationFacet> logger) => methodWrapper = SerializationFactory.Wrap(method, logger);
 
     public override Type FacetType => typeof(IActionValidationFacet);
 

@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class EnumFacet : FacetAbstract, IEnumFacet, IMarkerFacet {
     private readonly TypeSerializationWrapper typeWrapper;
 
-    public EnumFacet(Type typeOfEnum) => typeWrapper = TypeSerializationWrapper.Wrap(typeOfEnum);
+    public EnumFacet(Type typeOfEnum) => typeWrapper = SerializationFactory.Wrap(typeOfEnum);
 
     public Type TypeOfEnum => typeWrapper.Type;
 

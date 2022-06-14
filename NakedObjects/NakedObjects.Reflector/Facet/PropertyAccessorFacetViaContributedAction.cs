@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class PropertyAccessorFacetViaContributedAction : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public PropertyAccessorFacetViaContributedAction(MethodInfo method, ILogger<PropertyAccessorFacetViaContributedAction> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+    public PropertyAccessorFacetViaContributedAction(MethodInfo method, ILogger<PropertyAccessorFacetViaContributedAction> logger) => methodWrapper = SerializationFactory.Wrap(method, logger);
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);
 

@@ -29,9 +29,9 @@ public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet,
     private readonly (string name, TypeSerializationWrapper typeWrapper)[] parameterNamesAndTypes;
 
     public PropertyChoicesFacet(MethodInfo method, (string name, Type type)[] parameterNamesAndTypes, ILogger<PropertyChoicesFacet> logger) {
-        methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+        methodWrapper = SerializationFactory.Wrap(method, logger);
 
-        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, TypeSerializationWrapper.Wrap(t.type))).ToArray();
+        this.parameterNamesAndTypes = parameterNamesAndTypes.Select(t => (t.name, SerializationFactory.Wrap(t.type))).ToArray();
         parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
     }
 

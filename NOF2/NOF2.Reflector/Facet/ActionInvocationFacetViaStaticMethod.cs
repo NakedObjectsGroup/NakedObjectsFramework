@@ -36,11 +36,11 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
                                                 Type elementType,
                                                 bool isQueryOnly,
                                                 ILogger<ActionInvocationFacetViaStaticMethod> logger) {
-        methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+        methodWrapper = SerializationFactory.Wrap(method, logger);
         (injected, paramCount) = ParameterCount(method);
-        this.onType = onType is not null ? TypeSerializationWrapper.Wrap(onType) : null;
-        this.returnType = returnType is not null ? TypeSerializationWrapper.Wrap(returnType) : null;
-        this.elementType = elementType is not null ? TypeSerializationWrapper.Wrap(elementType) : null;
+        this.onType = onType is not null ? SerializationFactory.Wrap(onType) : null;
+        this.returnType = returnType is not null ? SerializationFactory.Wrap(returnType) : null;
+        this.elementType = elementType is not null ? SerializationFactory.Wrap(elementType) : null;
         IsQueryOnly = isQueryOnly;
     }
 

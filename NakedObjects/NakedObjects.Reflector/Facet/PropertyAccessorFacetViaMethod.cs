@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class PropertyAccessorFacetViaMethod : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
     private readonly MethodSerializationWrapper methodWrapper;
 
-    public PropertyAccessorFacetViaMethod(MethodInfo method, ILogger<PropertyAccessorFacetViaMethod> logger) => methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+    public PropertyAccessorFacetViaMethod(MethodInfo method, ILogger<PropertyAccessorFacetViaMethod> logger) => methodWrapper = SerializationFactory.Wrap(method, logger);
 
     public override Type FacetType => typeof(IPropertyAccessorFacet);
 

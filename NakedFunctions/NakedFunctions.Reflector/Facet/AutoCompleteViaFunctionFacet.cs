@@ -32,7 +32,7 @@ public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteF
                                         ILogger<AutoCompleteViaFunctionFacet> logger) {
         PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
         MinLength = minLength;
-        methodWrapper = MethodSerializationWrapper.Wrap(method, logger);
+        methodWrapper = SerializationFactory.Wrap(method, logger);
     }
 
     public int PageSize { get; }
