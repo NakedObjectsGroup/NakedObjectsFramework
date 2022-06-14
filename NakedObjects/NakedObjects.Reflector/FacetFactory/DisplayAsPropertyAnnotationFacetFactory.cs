@@ -54,7 +54,7 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
     private static bool IsContributedMethod(MethodInfo method) => method.GetCustomAttribute<DisplayAsPropertyAttribute>() is not null
                                                                   && method.GetParameters().Length == 1
                                                                   && method.GetParameters().First().GetCustomAttribute<ContributedActionAttribute>() is not null
-                                                                  && !FasterTypeUtils.IsGenericCollection(method.GetParameters().First().ParameterType);
+                                                                  && !CollectionUtils.IsGenericIEnumerableOrISet(method.GetParameters().First().ParameterType);
 
     private static bool MatchesPropertySignature(MethodInfo method) => method.ReturnType != typeof(void);
 

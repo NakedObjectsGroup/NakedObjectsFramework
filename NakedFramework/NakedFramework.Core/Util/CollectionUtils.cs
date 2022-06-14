@@ -96,6 +96,10 @@ public static class CollectionUtils {
         return ReflectorDefaults.ParallelDegree > 0 ? pSource.WithDegreeOfParallelism(ReflectorDefaults.ParallelDegree) : pSource;
     }
 
+    public static bool IsGenericIEnumerableOrISet(Type type) =>
+        CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
+        CollectionUtils.IsGenericType(type, typeof(ISet<>));
+
     #endregion
 
     #region private

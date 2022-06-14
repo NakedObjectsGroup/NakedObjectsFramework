@@ -32,9 +32,7 @@ public static class FasterTypeUtils {
 
     public static bool IsObjectArray(Type type) => type.IsArray && !(type.GetElementType()?.IsValueType == true || type.GetElementType() == typeof(string));
 
-    public static bool IsGenericCollection(Type type) =>
-        CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
-        CollectionUtils.IsGenericType(type, typeof(ISet<>));
+   
 
     public static string GetProxiedTypeFullName(Type type) => !IsAnyProxy(type) ? type?.FullName : type.BaseType?.FullName;
 

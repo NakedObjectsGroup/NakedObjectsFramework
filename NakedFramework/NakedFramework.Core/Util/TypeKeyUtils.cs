@@ -11,10 +11,7 @@ using System.Collections.Generic;
 namespace NakedFramework.Core.Util;
 
 public static class TypeKeyUtils {
-    // because Sets don't implement IEnumerable<>
-    private static bool IsGenericCollection(Type type) =>
-        CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
-        CollectionUtils.IsGenericType(type, typeof(ISet<>));
+  
 
     public static Type FilterNullableAndProxies(Type type) {
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
@@ -26,7 +23,7 @@ public static class TypeKeyUtils {
     }
 
     public static string GetKeyForType(Type type) =>
-        FasterTypeUtils.IsGenericCollection(type)
+        CollectionUtils.IsGenericIEnumerableOrISet(type)
             ? $"{type.Namespace}.{type.Name}"
             : FasterTypeUtils.IsObjectArray(type)
                 ? "System.Array"

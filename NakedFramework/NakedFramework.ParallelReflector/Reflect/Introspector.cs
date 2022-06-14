@@ -214,7 +214,7 @@ public abstract class Introspector : IIntrospector {
     }
 
     private static Type GetSpecificationType(Type type) =>
-        FasterTypeUtils.IsGenericCollection(type)
+        CollectionUtils.IsGenericIEnumerableOrISet(type)
             ? type.GetGenericTypeDefinition()
             : FasterTypeUtils.IsObjectArray(type)
                 ? typeof(Array)
