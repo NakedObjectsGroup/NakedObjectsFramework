@@ -24,16 +24,14 @@ public static class CollectionUtils {
     /// <summary>IEnumerable of T where T is not a value type</summary>
     public static bool IsGenericEnumerableOfRefType(Type type) => IsGenericEnumerable(type) && IsGenericOfRefType(type);
 
-    public static bool IsGenericEnumerable(Type type) => IsGenericType(type, typeof(IEnumerable<>)) && type.GetGenericArguments().Length == 1;
+    public static bool IsGenericEnumerable(Type type) => IsGenericType(type, typeof(IEnumerable<>));
 
-    public static bool IsOrImplementsGenericEnumerable(Type type) =>
-        (IsGenericType(type, typeof(IEnumerable<>)) && type.GetGenericArguments().Length == 1) || type.GetInterfaces().Any(IsOrImplementsGenericEnumerable);
+    public static bool IsOrImplementsGenericEnumerable(Type type) => IsGenericType(type, typeof(IEnumerable<>)) || type.GetInterfaces().Any(IsOrImplementsGenericEnumerable);
 
-
-    public static bool IsGenericCollection(Type type) => IsGenericType(type, typeof(ICollection<>)) && type.GetGenericArguments().Length == 1;
+    public static bool IsGenericCollection(Type type) => IsGenericType(type, typeof(ICollection<>));
 
     /// <summary>IEnumerable of T where T is not a value type</summary>
-    public static bool IsGenericQueryable(Type type) => IsGenericType(type, typeof(IQueryable<>)) && type.GetGenericArguments().Length == 1;
+    public static bool IsGenericQueryable(Type type) => IsGenericType(type, typeof(IQueryable<>));
 
     /// <summary>IQueryable or IQueryable of T</summary>
     public static bool IsQueryable(Type type) => typeof(IQueryable).IsAssignableFrom(type);
@@ -93,15 +91,10 @@ public static class CollectionUtils {
         return CollectionTitleStringKnownType(elementSpec, size);
     }
 
-
-
-    public static ParallelQuery<TSource> AsCustomParallel<TSource>(this IEnumerable<TSource> source)
-    {
+    public static ParallelQuery<TSource> AsCustomParallel<TSource>(this IEnumerable<TSource> source) {
         var pSource = source.AsParallel();
         return ReflectorDefaults.ParallelDegree > 0 ? pSource.WithDegreeOfParallelism(ReflectorDefaults.ParallelDegree) : pSource;
     }
-
-
 
     #endregion
 
@@ -125,8 +118,7 @@ public static class CollectionUtils {
 
     private static Type GetGenericEnumerableType(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable) : null;
 
-    public static Type GetGenericType(Type type) => type.IsGenericType ?  type : type.GetInterfaces().FirstOrDefault(i => i.IsGenericType);
-
+    public static Type GetGenericType(Type type) => type.IsGenericType ? type : type.GetInterfaces().FirstOrDefault(i => i.IsGenericType);
 
     private static string CollectionTitleStringKnownType(IObjectSpec elementSpec, int size) =>
         size switch {
