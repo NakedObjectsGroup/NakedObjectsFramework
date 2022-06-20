@@ -181,6 +181,10 @@
     <Compile Include="Reflect\ReflectorValueTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Samples\AdventureWorksModel\AdventureWorksModel.csproj">
+      <Project>{fddba108-8b58-40c6-a375-ffb92b1933dd}</Project>
+      <Name>AdventureWorksModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">
       <Project>{BF6D9655-B873-4980-ACE7-A122EA45F045}</Project>
       <Name>NakedObjects.Architecture</Name>

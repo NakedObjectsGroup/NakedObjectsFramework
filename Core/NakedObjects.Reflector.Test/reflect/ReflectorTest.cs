@@ -10,7 +10,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
+using System.Diagnostics;
 using System.Linq;
+using AdventureWorksModel;
+using AdventureWorksModel.Sales;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
@@ -405,6 +410,88 @@ namespace NakedObjects.Reflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(IEnumerable<>), specs[17]);
             AbstractReflectorTest.AssertSpec(typeof(IEnumerable), specs[18]);
         }
+
+
+        private static Type[] Types
+        {
+            get
+            {
+                return new[] {
+                    typeof (EnumerableQuery<object>),
+                    typeof (EntityCollection<object>),
+                    typeof (ObjectQuery<object>),
+                    //typeof (ActionResultModelQ<object>),
+                    typeof (CustomerCollectionViewModel),
+                    typeof (OrderLine),
+                    typeof (QuickOrderForm),
+                    //typeof (ActionResultModelQ<>),
+                    //typeof (ActionResultModel<>)
+                };
+            }
+        }
+
+        private static Type[] Services
+        {
+            get
+            {
+                return new[] {
+                    typeof (CustomerRepository),
+                    typeof (OrderRepository),
+                    typeof (ProductRepository),
+                    typeof (EmployeeRepository),
+                    typeof (SalesRepository),
+                    typeof (SpecialOfferRepository),
+                    typeof (ContactRepository),
+                    typeof (VendorRepository),
+                    typeof (PurchaseOrderRepository),
+                    typeof (WorkOrderRepository),
+                    typeof (OrderContributedActions),
+                    typeof (CustomerContributedActions)
+                };
+            }
+        }
+
+        
+        public static ReflectorConfiguration ReflectorConfig()
+        {
+            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+        }
+
+     
+
+       
+        public static IMenu[] MainMenus(IMenuFactory factory)
+        {
+            return new IMenu[] { };
+        }
+
+
+
+        [TestMethod]
+        public void ReflectAWBenchmark()
+        {
+            IUnityContainer container = GetContainer();
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = ReflectorConfig();
+          
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            var sw = new Stopwatch();
+
+            sw.Start();
+            reflector.Reflect();
+            sw.Stop();
+
+            Console.WriteLine("AW reflect time= " + sw.ElapsedMilliseconds.ToString() + "ms");
+
+            var specs = reflector.AllObjectSpecImmutables;
+            
+        }
+
+
+
 
         #region Nested type: SetWrapper
 

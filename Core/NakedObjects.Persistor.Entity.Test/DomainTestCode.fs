@@ -529,8 +529,8 @@ let CanGetObjectByDateKey persistor =
 let CanGetManyToOneReference(persistor : EntityObjectStore) = 
     let header = persistor.GetInstances<SalesOrderHeader>() |> Seq.head
     let details = persistor.GetInstances<SalesOrderDetail>() |> Seq.filter (fun d -> d.SalesOrderID = header.SalesOrderID)
-    let detail1 = details |> Seq.nth 0
-    let detail2 = details |> Seq.nth 1
+    let detail1 = details |> Seq.item 0
+    let detail2 = details |> Seq.item 1
     let header1 = detail1.SalesOrderHeader
     let header2 = detail2.SalesOrderHeader
     Assert.AreSame(header, header1)

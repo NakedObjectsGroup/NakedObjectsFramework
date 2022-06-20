@@ -90,7 +90,7 @@ let checkCountAndType classes (typ : Type) =
     Assert.IsTrue(classes |> Seq.forall (fun i -> typ.IsAssignableFrom(i.GetType())))
 
 let First<'t when 't : not struct>(p : EntityObjectStore) = p.GetInstances<'t>() |> Seq.head
-let Second<'t when 't : not struct>(p : EntityObjectStore) = p.GetInstances<'t>() |> Seq.nth 1
+let Second<'t when 't : not struct>(p : EntityObjectStore) = p.GetInstances<'t>() |> Seq.item 1
 
 let GetMaxID<'t when 't : not struct> (p : EntityObjectStore) fGetID = 
     (p.GetInstances<'t>()
