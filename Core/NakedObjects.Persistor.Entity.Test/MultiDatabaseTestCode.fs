@@ -90,7 +90,7 @@ let CrossContextTransactionOK(multiDatabasePersistor : EntityObjectStore) =
 let CrossContextTransactionRollback(multiDatabasePersistor : EntityObjectStore) = 
     let pr = multiDatabasePersistor.GetInstances<TestCodeOnly.Product>() |> Seq.head
     let sr = multiDatabasePersistor.GetInstances<ScrapReason>() |> Seq.head
-    let sr1 = multiDatabasePersistor.GetInstances<ScrapReason>() |> Seq.item 1
+    let sr1 = multiDatabasePersistor.GetInstances<ScrapReason>() |> Seq.nth 1
     let origPrName = pr.Name
     let origSrName = sr.Name
     pr.Name <- uniqueName()
