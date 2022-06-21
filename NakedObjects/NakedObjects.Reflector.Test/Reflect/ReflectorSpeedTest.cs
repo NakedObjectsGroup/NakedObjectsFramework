@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using model1000;
 using model500;
+using model5000;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Configuration;
@@ -181,7 +182,8 @@ public class ReflectorSpeedTest {
     }
 
     public void OutputStats() {
-        if (Stats.Count == GetType().GetMethods().Count(m => m.GetCustomAttribute(typeof(TestMethodAttribute)) is not null)) {
+        var testCount = GetType().GetMethods().Count(m => m.GetCustomAttribute(typeof(TestMethodAttribute)) is not null);
+        if (Stats.Count == testCount) {
             Console.WriteLine("Stats:");
             var longest = Stats.Max(kvp => kvp.Key.Length);
 
@@ -256,11 +258,10 @@ public class ReflectorSpeedTest {
         }
     }
 
-    //[TestMethod]
-    //public void ReflectTestModel5000TypesBenchMark()
-    //{
-    //    ReflectTestModelTypesBenchMark(model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
-    //}
+    [TestMethod]
+    public void ReflectTestModel5000TypesBenchMark() {
+        ReflectTestModelTypesBenchMark(model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    }
 
     [TestMethod]
     public void ReflectTestModel1000TypesBenchMarkParallelDefault() {
@@ -415,25 +416,21 @@ public class ReflectorSpeedTest {
         }
     }
 
-    //[TestMethod]
-    //public void BinarySerializeTestModel5000TypesBenchMark()
-    //{
-    //    SerializeTestModelTypesBenchMark("metadata.bin", model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
-    //}
+    [TestMethod]
+    public void BinarySerializeTestModel5000TypesBenchMark() {
+        SerializeTestModelTypesBenchMark("metadata.bin", model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    }
 
-    //[TestMethod]
-    //public void BinarySerializeTestModel5000TypesBenchMarkWithJit()
-    //{
-    //    ReflectorDefaults.JitSerialization = true;
-    //    try
-    //    {
-    //        SerializeTestModelTypesBenchMark("metadata.bin", model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
-    //    }
-    //    finally
-    //    {
-    //        ReflectorDefaults.JitSerialization = false;
-    //    }
-    //}
+    [TestMethod]
+    public void BinarySerializeTestModel5000TypesBenchMarkWithJit() {
+        ReflectorDefaults.JitSerialization = true;
+        try {
+            SerializeTestModelTypesBenchMark("metadata.bin", model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+        }
+        finally {
+            ReflectorDefaults.JitSerialization = false;
+        }
+    }
 
     [TestMethod]
     public void BinarySerializeTestModel500TypesBenchMark() {
@@ -460,7 +457,7 @@ public class ReflectorSpeedTest {
     public void XmlSerializeTestModel100TypesBenchMarkWithJit() {
         ReflectorDefaults.JitSerialization = true;
         try {
-            XmlSerializeTestModel100TypesBenchMark();
+            SerializeTestModelTypesBenchMark("metadata.xml", model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
         }
         finally {
             ReflectorDefaults.JitSerialization = false;
