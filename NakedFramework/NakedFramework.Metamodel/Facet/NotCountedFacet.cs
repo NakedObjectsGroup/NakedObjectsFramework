@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class NotCountedFacet : FacetAbstract, INotCountedFacet, IMarkerFacet {
     private NotCountedFacet() { }
 
-    public static NotCountedFacet Instance { get; } = new NotCountedFacet();
+    public static NotCountedFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(INotCountedFacet);
 }

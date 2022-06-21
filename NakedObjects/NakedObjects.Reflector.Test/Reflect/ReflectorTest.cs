@@ -36,8 +36,7 @@ using TestData;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace TestData
-{
+namespace TestData {
     public class WithDuplicates {
         [Key]
         [Title]
@@ -63,8 +62,7 @@ namespace TestData
     }
 }
 
-namespace NakedObjects.Reflector.Test.Reflect
-{
+namespace NakedObjects.Reflector.Test.Reflect {
     public class NullMenuFactory : IMenuFactory {
         public IMenu NewMenu(string name) => null;
 
@@ -529,10 +527,8 @@ namespace NakedObjects.Reflector.Test.Reflect
 
         [TestMethod]
         [ExpectedException(typeof(NakedObjectSystemException), "Failed to Load Specification for: NakedObjects.Reflector.Test.Reflect.ReflectorTest+SimpleDomainObject error: unexpected null")]
-        public void UnreflectedTypeTest()
-        {
-            static void Setup(NakedFrameworkOptions coreOptions)
-            {
+        public void UnreflectedTypeTest() {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.UsePlaceholderForUnreflectedType = false;
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
@@ -543,8 +539,7 @@ namespace NakedObjects.Reflector.Test.Reflect
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
 
                 var mm = container.GetService<IMetamodel>();
@@ -553,10 +548,8 @@ namespace NakedObjects.Reflector.Test.Reflect
         }
 
         [TestMethod]
-        public void UnreflectedTypeTestWithPlaceHolder()
-        {
-            static void Setup(NakedFrameworkOptions coreOptions)
-            {
+        public void UnreflectedTypeTestWithPlaceHolder() {
+            static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.UsePlaceholderForUnreflectedType = true;
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
@@ -567,8 +560,7 @@ namespace NakedObjects.Reflector.Test.Reflect
 
             var (container, host) = GetContainer(Setup);
 
-            using (host)
-            {
+            using (host) {
                 container.GetService<IModelBuilder>()?.Build();
 
                 var mm = container.GetService<IMetamodel>();
@@ -576,12 +568,8 @@ namespace NakedObjects.Reflector.Test.Reflect
                 var spec = mm.GetSpecification(typeof(SimpleDomainObject));
 
                 Assert.AreEqual("Unknown type: ", spec.GetFacet<ITitleFacet>().GetTitle(null, null));
-
             }
         }
-
-
-
 
         #region Nested type: ReplacementBoundedAnnotationFacetFactory
 

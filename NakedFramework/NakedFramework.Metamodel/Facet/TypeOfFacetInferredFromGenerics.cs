@@ -19,11 +19,11 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class TypeOfFacetInferredFromGenerics : TypeOfFacetInferredAbstract, ITypeOfFacet {
     private TypeOfFacetInferredFromGenerics() { }
 
-    public static TypeOfFacetInferredFromGenerics Instance { get; } = new TypeOfFacetInferredFromGenerics();
+    public static TypeOfFacetInferredFromGenerics Instance { get; } = new();
 
     #region ITypeOfFacet Members
 
-    public override Type GetValue(INakedObjectAdapter collection) =>  CollectionUtils.GetGenericType(collection.Object.GetType()).GenericTypeArguments.First();
+    public override Type GetValue(INakedObjectAdapter collection) => CollectionUtils.GetGenericType(collection.Object.GetType()).GenericTypeArguments.First();
 
     public override IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) => (IObjectSpecImmutable)metamodel.GetSpecification(GetValue(collection));
 

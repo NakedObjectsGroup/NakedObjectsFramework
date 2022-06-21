@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class NullableFacetAlways : FacetAbstract, INullableFacet, IMarkerFacet {
     private NullableFacetAlways() { }
 
-    public static NullableFacetAlways Instance { get; } = new NullableFacetAlways();
+    public static NullableFacetAlways Instance { get; } = new();
 
     public override Type FacetType => typeof(INullableFacet);
 }

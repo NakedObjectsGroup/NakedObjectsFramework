@@ -18,7 +18,7 @@ public sealed class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const bool Immutable = true;
 
     private ByteValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static ByteValueSemanticsProvider Instance { get; } = new ByteValueSemanticsProvider();
+    internal static ByteValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(byte);
 

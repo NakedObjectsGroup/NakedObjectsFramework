@@ -20,7 +20,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class OptionalFacet : MandatoryFacetAbstract {
     private OptionalFacet() { }
 
-    public static OptionalFacet Instance { get; } = new OptionalFacet();
+    public static OptionalFacet Instance { get; } = new();
 
     /// <summary>
     ///     Always returns <c>false</c>, indicating that the facet holder is in fact optional.

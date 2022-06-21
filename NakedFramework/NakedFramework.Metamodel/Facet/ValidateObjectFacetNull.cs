@@ -16,7 +16,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFacet {
     private ValidateObjectFacetNull() { }
 
-    public static ValidateObjectFacetNull Instance { get; } = new ValidateObjectFacetNull();
+    public static ValidateObjectFacetNull Instance { get; } = new();
 
     public override Type FacetType => typeof(IValidateObjectFacet);
 

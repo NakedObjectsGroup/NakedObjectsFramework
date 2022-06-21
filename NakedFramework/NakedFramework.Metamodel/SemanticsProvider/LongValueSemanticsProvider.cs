@@ -19,7 +19,7 @@ public sealed class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const long DefaultValueConst = 0;
 
     private LongValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static LongValueSemanticsProvider Instance { get; } = new LongValueSemanticsProvider();
+    internal static LongValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(long);
 

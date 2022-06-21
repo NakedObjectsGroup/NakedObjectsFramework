@@ -129,8 +129,7 @@ public static class FacetUtils {
             _ => ""
         };
 
-        public Type OwnerType => wrapped switch
-        {
+        public Type OwnerType => wrapped switch {
             IActionSpecImmutable action => action.OwnerType,
             IAssociationSpecImmutable association => association.OwnerType,
             IMenuActionImmutable menu => menu.Action.OwnerType,

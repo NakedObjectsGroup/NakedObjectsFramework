@@ -18,7 +18,7 @@ public sealed class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const bool Immutable = true;
 
     private SbyteValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static SbyteValueSemanticsProvider Instance { get; } = new SbyteValueSemanticsProvider();
+    internal static SbyteValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(sbyte);
 

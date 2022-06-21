@@ -11,8 +11,7 @@ using NakedFramework.Architecture.SpecImmutable;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
-internal class ReflectionWorkingData
-{
+internal class ReflectionWorkingData {
     internal Type[] Services { get; set; }
     internal List<IActionSpecImmutable> CollectionContributedActions { get; } = new();
     internal List<IActionSpecImmutable> ContributedActions { get; set; } = new();

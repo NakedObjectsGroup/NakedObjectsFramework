@@ -13,5 +13,5 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class GenericCollectionFacet : GenericCollectionFacetAbstract {
     private GenericCollectionFacet() : base(false) { }
 
-    public static GenericCollectionFacet Instance { get; } = new GenericCollectionFacet();
+    public static GenericCollectionFacet Instance { get; } = new();
 }

@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class LoadingCallbackFacetNull : LoadingCallbackFacetAbstract {
     private LoadingCallbackFacetNull() { }
 
-    public static LoadingCallbackFacetNull Instance { get; } = new LoadingCallbackFacetNull();
+    public static LoadingCallbackFacetNull Instance { get; } = new();
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }

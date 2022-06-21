@@ -18,7 +18,7 @@ public sealed class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstrac
     private const bool Immutable = true;
 
     private DoubleValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static DoubleValueSemanticsProvider Instance { get; } = new DoubleValueSemanticsProvider();
+    internal static DoubleValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(double);
 

@@ -19,7 +19,7 @@ public sealed class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const bool Immutable = true;
 
     private ImageValueSemanticsProvider() : base(Immutable, null) { }
-    internal static ImageValueSemanticsProvider Instance { get; } = new ImageValueSemanticsProvider();
+    internal static ImageValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(Image);
 

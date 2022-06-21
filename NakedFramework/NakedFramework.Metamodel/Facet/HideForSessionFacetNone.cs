@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class HideForSessionFacetNone : HideForSessionFacetAbstract {
     private HideForSessionFacetNone() { }
 
-    public static HideForSessionFacetNone Instance { get; } = new HideForSessionFacetNone();
+    public static HideForSessionFacetNone Instance { get; } = new();
 
     public override bool IsNoOp => true;
 

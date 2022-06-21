@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Resources;
 using System.Threading;
 using Microsoft.Extensions.Logging;
@@ -25,7 +24,7 @@ public class I18NDecorator : IFacetDecorator {
     private const string Name = "name";
     private const string Parameter = "parameter";
     private const string Property = "property";
-    private readonly ConcurrentDictionary<string, string> keyCache = new ConcurrentDictionary<string, string>();
+    private readonly ConcurrentDictionary<string, string> keyCache = new();
     private readonly ILogger<I18NDecorator> logger;
 
     private ResourceManager resources;

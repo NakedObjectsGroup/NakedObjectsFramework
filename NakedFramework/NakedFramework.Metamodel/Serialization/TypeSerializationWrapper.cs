@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 
 namespace NakedFramework.Metamodel.Serialization;

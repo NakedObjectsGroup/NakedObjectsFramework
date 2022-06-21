@@ -19,7 +19,7 @@ public sealed class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const bool Immutable = true;
 
     private CharValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static CharValueSemanticsProvider Instance { get; } = new CharValueSemanticsProvider();
+    internal static CharValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(char);
 

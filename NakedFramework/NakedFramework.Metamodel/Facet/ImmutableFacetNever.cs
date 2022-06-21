@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ImmutableFacetNever : ImmutableFacetAbstract {
     private ImmutableFacetNever() : base(WhenTo.Never) { }
 
-    public static ImmutableFacetNever Instance { get; } = new ImmutableFacetNever();
+    public static ImmutableFacetNever Instance { get; } = new();
 
     public override bool IsNoOp => true;
 

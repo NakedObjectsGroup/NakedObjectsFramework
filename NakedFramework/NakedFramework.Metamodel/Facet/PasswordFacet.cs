@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PasswordFacet : FacetAbstract, IPasswordFacet {
     private PasswordFacet() { }
 
-    public static PasswordFacet Instance { get; } = new PasswordFacet();
+    public static PasswordFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(IPasswordFacet);
 

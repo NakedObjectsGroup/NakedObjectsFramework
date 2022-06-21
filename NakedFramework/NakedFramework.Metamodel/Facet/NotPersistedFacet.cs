@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class NotPersistedFacet : FacetAbstract, INotPersistedFacet, IMarkerFacet {
     private NotPersistedFacet() { }
 
-    public static NotPersistedFacet Instance { get; } = new NotPersistedFacet();
+    public static NotPersistedFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(INotPersistedFacet);
 }

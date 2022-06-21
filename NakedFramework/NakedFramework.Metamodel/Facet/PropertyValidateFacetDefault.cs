@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
     private PropertyValidateFacetDefault() { }
 
-    public static PropertyValidateFacetDefault Instance { get; } = new PropertyValidateFacetDefault();
+    public static PropertyValidateFacetDefault Instance { get; } = new();
 
     public override Type FacetType => typeof(IPropertyValidateFacet);
 

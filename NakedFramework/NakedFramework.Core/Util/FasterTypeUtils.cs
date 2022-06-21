@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 
 namespace NakedFramework.Core.Util;
 
@@ -31,8 +30,6 @@ public static class FasterTypeUtils {
     public static bool IsEF6Proxy(Type type) => IsEF6Proxy(type?.FullName ?? "");
 
     public static bool IsObjectArray(Type type) => type.IsArray && !(type.GetElementType()?.IsValueType == true || type.GetElementType() == typeof(string));
-
-   
 
     public static string GetProxiedTypeFullName(Type type) => !IsAnyProxy(type) ? type?.FullName : type.BaseType?.FullName;
 

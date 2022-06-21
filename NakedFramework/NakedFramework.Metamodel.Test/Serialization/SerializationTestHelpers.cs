@@ -28,7 +28,6 @@ using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedObjects.Reflector.Facet;
 
-
 #pragma warning disable CS0618
 #pragma warning disable SYSLIB0011
 

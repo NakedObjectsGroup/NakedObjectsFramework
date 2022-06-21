@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class PropertyValidateFacetNone : PropertyValidateFacetAbstract {
     private PropertyValidateFacetNone() { }
 
-    public static PropertyValidateFacetNone Instance { get; } = new PropertyValidateFacetNone();
+    public static PropertyValidateFacetNone Instance { get; } = new();
 
     public override bool IsNoOp => true;
 

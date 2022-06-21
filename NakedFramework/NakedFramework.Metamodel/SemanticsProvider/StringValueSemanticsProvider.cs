@@ -17,7 +17,7 @@ public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstrac
     private const bool Immutable = true;
 
     private StringValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static StringValueSemanticsProvider Instance { get; } = new StringValueSemanticsProvider();
+    internal static StringValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(string);
 

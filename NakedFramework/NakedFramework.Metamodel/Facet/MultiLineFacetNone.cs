@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class MultiLineFacetNone : MultiLineFacetAbstract {
     private MultiLineFacetNone() : base(1, 0) { }
 
-    public static MultiLineFacetNone Instance { get; } = new MultiLineFacetNone();
+    public static MultiLineFacetNone Instance { get; } = new();
 
     public override bool IsNoOp => true;
 }

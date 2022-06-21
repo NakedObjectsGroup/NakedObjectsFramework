@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFacet, IMarkerFacet {
     private ContributedActionFacet() { }
 
-    public static ContributedActionFacet Instance { get; } = new ContributedActionFacet();
+    public static ContributedActionFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(IContributedActionFacet);
 }

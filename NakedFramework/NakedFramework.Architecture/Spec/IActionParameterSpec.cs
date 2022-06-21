@@ -45,14 +45,14 @@ public interface IActionParameterSpec : IFeatureSpec {
     string Id { get; }
 
     /// <summary>
-    ///     Whether the parameter has a bounded set associated or a set of options coded.
-    /// </summary>
-    bool GetIsMultipleChoicesEnabled(IMetamodel metamodel);
-
-    /// <summary>
     ///     Whether the parameter has a autocomplete method associated.
     /// </summary>
     bool IsAutoCompleteEnabled { get; }
+
+    /// <summary>
+    ///     Whether the parameter has a bounded set associated or a set of options coded.
+    /// </summary>
+    bool GetIsMultipleChoicesEnabled(IMetamodel metamodel);
 
     /// <summary>
     ///     Whether the parameter has a bounded set associated or a set of options coded.

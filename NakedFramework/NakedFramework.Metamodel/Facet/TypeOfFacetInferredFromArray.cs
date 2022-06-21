@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class TypeOfFacetInferredFromArray : TypeOfFacetInferredAbstract, ITypeOfFacet {
     private TypeOfFacetInferredFromArray() { }
 
-    public static TypeOfFacetInferredFromArray Instance { get; } = new TypeOfFacetInferredFromArray();
+    public static TypeOfFacetInferredFromArray Instance { get; } = new();
 
     #region ITypeOfFacet Members
 

@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class TypeIsStaticFacet : FacetAbstract, ITypeIsStaticFacet, IMarkerFacet {
     private TypeIsStaticFacet() { }
 
-    public static TypeIsStaticFacet Instance { get; } = new TypeIsStaticFacet();
+    public static TypeIsStaticFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(ITypeIsStaticFacet);
 }

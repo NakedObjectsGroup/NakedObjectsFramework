@@ -19,7 +19,7 @@ public sealed class UShortValueSemanticsProvider : ValueSemanticsProviderAbstrac
     private const bool Immutable = true;
 
     private UShortValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static UShortValueSemanticsProvider Instance { get; } = new UShortValueSemanticsProvider();
+    internal static UShortValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(ushort);
 

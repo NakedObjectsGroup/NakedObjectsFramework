@@ -21,7 +21,7 @@ public sealed class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstra
     private const bool Immutable = true;
 
     private BooleanValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static BooleanValueSemanticsProvider Instance { get; } = new BooleanValueSemanticsProvider();
+    internal static BooleanValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(bool);
 

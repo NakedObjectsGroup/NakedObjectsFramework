@@ -13,11 +13,9 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class StaticMenuMethodFacet : FacetAbstract, IStaticMenuFunctionFacet, IMarkerFacet {
- 
-
     private StaticMenuMethodFacet() { }
 
-    public static StaticMenuMethodFacet Instance { get; } = new StaticMenuMethodFacet();
+    public static StaticMenuMethodFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(IStaticMenuFunctionFacet);
 }

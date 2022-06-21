@@ -18,7 +18,7 @@ public sealed class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private static readonly Guid DefaultValueConst = Guid.Empty;
 
     private GuidValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static GuidValueSemanticsProvider Instance { get; } = new GuidValueSemanticsProvider();
+    internal static GuidValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(Guid);
 

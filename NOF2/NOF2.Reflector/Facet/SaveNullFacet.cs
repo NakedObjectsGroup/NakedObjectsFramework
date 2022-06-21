@@ -15,11 +15,9 @@ namespace NOF2.Reflector.Facet;
 
 [Serializable]
 public sealed class SaveNullFacet : SaveFacetAbstract, ISaveFacet {
-    
-
     private SaveNullFacet() { }
 
-    public static SaveNullFacet Instance { get; } = new SaveNullFacet();
+    public static SaveNullFacet Instance { get; } = new();
 
     public override string Save(INakedFramework framework, INakedObjectAdapter nakedObject, ILogger logger) {
         var msg = $"Attempt to save an object without an ActionSave: {nakedObject.Spec.FullName}";

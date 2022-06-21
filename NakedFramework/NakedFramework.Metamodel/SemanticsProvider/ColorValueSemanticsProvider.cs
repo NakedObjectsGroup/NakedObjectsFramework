@@ -20,7 +20,7 @@ public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract
     private static readonly Color DefaultValueConst = Color.Black;
 
     private ColorValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static ColorValueSemanticsProvider Instance { get; } = new ColorValueSemanticsProvider();
+    internal static ColorValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(Color);
 

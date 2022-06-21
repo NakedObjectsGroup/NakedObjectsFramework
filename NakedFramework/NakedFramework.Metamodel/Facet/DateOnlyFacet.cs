@@ -14,6 +14,6 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class DateOnlyFacet : FacetAbstract, IDateOnlyFacet, IMarkerFacet {
     private DateOnlyFacet() { }
 
-    public static DateOnlyFacet Instance { get; } = new DateOnlyFacet();
+    public static DateOnlyFacet Instance { get; } = new();
     public override Type FacetType => typeof(IDateOnlyFacet);
 }

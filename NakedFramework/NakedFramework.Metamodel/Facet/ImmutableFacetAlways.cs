@@ -13,7 +13,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ImmutableFacetAlways : ImmutableFacetAbstract {
     private ImmutableFacetAlways() : base(WhenTo.Always) { }
 
-    public static ImmutableFacetAlways Instance { get; } = new ImmutableFacetAlways();
+    public static ImmutableFacetAlways Instance { get; } = new();
 }
 
 // Copyright (c) Naked Objects Group Ltd.

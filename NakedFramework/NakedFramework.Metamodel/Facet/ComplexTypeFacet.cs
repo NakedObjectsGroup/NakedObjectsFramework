@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ComplexTypeFacet : FacetAbstract, IComplexTypeFacet, IMarkerFacet {
     private ComplexTypeFacet() { }
 
-    public static ComplexTypeFacet Instance { get; } = new ComplexTypeFacet();
+    public static ComplexTypeFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(IComplexTypeFacet);
 }

@@ -29,11 +29,9 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
         : base(order.Order, loggerFactory, FeatureType.Actions) =>
         loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();
 
-  
-        private void RemoveAction(IActionSpecImmutable actionSpec, IMetamodelBuilder metamodelBuilder)
-        {
-            var tsb = (ITypeSpecBuilder)actionSpec.GetOwnerSpec(metamodelBuilder);
-            tsb.RemoveAction(actionSpec, Logger<DisplayAsPropertyAnnotationFacetFactory>());
+    private void RemoveAction(IActionSpecImmutable actionSpec, IMetamodelBuilder metamodelBuilder) {
+        var tsb = (ITypeSpecBuilder)actionSpec.GetOwnerSpec(metamodelBuilder);
+        tsb.RemoveAction(actionSpec, Logger<DisplayAsPropertyAnnotationFacetFactory>());
     }
 
     private IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, ISpecificationBuilder specification, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

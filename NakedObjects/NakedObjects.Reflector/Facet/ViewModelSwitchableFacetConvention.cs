@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract {
     private ViewModelSwitchableFacetConvention() { }
 
-    public static ViewModelSwitchableFacetConvention Instance { get; } = new ViewModelSwitchableFacetConvention();
+    public static ViewModelSwitchableFacetConvention Instance { get; } = new();
 
     public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 

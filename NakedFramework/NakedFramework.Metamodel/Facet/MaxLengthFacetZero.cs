@@ -16,7 +16,7 @@ public sealed class MaxLengthFacetZero : MaxLengthFacetAbstract {
 
     private MaxLengthFacetZero() : base(NoLimit) { }
 
-    public static MaxLengthFacetZero Instance { get; } = new MaxLengthFacetZero();
+    public static MaxLengthFacetZero Instance { get; } = new();
 
     public override bool IsNoOp => true;
 

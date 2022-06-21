@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class TypeIsVoidFacet : FacetAbstract, ITypeIsVoidFacet, IMarkerFacet {
     private TypeIsVoidFacet() { }
 
-    public static TypeIsVoidFacet Instance { get; } = new TypeIsVoidFacet();
+    public static TypeIsVoidFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(ITypeIsVoidFacet);
 }

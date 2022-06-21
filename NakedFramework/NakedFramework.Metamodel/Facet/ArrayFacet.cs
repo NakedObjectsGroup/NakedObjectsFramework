@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ArrayFacet : CollectionFacet {
     private ArrayFacet() { }
 
-    public new static ArrayFacet Instance { get; } = new ArrayFacet();
+    public new static ArrayFacet Instance { get; } = new();
 
     public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
         var newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);

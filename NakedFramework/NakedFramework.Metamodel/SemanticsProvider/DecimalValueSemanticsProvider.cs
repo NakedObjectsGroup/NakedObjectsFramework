@@ -19,7 +19,7 @@ public sealed class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstra
     private const bool Immutable = true;
 
     private DecimalValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static DecimalValueSemanticsProvider Instance { get; } = new DecimalValueSemanticsProvider();
+    internal static DecimalValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(decimal);
 

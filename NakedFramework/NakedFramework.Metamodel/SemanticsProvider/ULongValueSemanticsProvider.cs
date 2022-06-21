@@ -19,7 +19,7 @@ public sealed class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const bool Immutable = true;
 
     private ULongValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static ULongValueSemanticsProvider Instance { get; } = new ULongValueSemanticsProvider();
+    internal static ULongValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(ulong);
 

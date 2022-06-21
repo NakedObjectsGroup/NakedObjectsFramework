@@ -30,11 +30,6 @@ public interface IActionSpec : IMemberSpec {
     bool IsStaticFunction { get; }
 
     /// <summary>
-    ///     Return true if the action is run on a service object and can be used as a finder
-    /// </summary>
-    bool GetIsFinderMethod(IMetamodel metamodel);
-
-    /// <summary>
     ///     Returns the number of parameters used by this method
     /// </summary>
     int ParameterCount { get; }
@@ -51,6 +46,11 @@ public interface IActionSpec : IMemberSpec {
     ///     Returns true if the represented action returns something, else returns false
     /// </summary>
     bool HasReturn { get; }
+
+    /// <summary>
+    ///     Return true if the action is run on a service object and can be used as a finder
+    /// </summary>
+    bool GetIsFinderMethod(IMetamodel metamodel);
 
     /// <summary>
     ///     Determine the real target for this action. If this action represents an object action than the target

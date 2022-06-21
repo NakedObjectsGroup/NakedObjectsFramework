@@ -15,7 +15,7 @@ public sealed class PageSizeFacetDefault : PageSizeFacetAbstract {
 
     private PageSizeFacetDefault() : base(DefaultPageSize) { }
 
-    public static PageSizeFacetDefault Instance { get; } = new PageSizeFacetDefault();
+    public static PageSizeFacetDefault Instance { get; } = new();
 
     public override bool IsNoOp => true;
 }

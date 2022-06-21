@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract {
     private TitleFacetViaToStringMethod() { }
 
-    public static TitleFacetViaToStringMethod Instance { get; } = new TitleFacetViaToStringMethod();
+    public static TitleFacetViaToStringMethod Instance { get; } = new();
 
     public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) => nakedObjectAdapter.Object.ToString();
 }

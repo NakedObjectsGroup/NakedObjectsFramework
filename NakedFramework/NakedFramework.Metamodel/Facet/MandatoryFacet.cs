@@ -21,7 +21,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class MandatoryFacet : MandatoryFacetAbstract {
     private MandatoryFacet() { }
 
-    public static MandatoryFacet Instance { get; } = new MandatoryFacet();
+    public static MandatoryFacet Instance { get; } = new();
 
     /// <summary>
     ///     Always returns <c>true</c>, indicating that the facet holder is in fact mandatory.

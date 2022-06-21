@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
-using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
-public sealed class ImmutableListSerializationWrapper<T>  {
+public sealed class ImmutableListSerializationWrapper<T> {
     private readonly bool jit;
 
     private readonly List<T> list;

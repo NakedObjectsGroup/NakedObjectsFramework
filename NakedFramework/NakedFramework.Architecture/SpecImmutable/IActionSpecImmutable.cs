@@ -14,8 +14,8 @@ public interface IActionSpecImmutable : IMemberSpecImmutable {
     Type OwnerType { get; }
     IActionParameterSpecImmutable[] Parameters { get; }
     bool IsStaticFunction { get; }
-    bool GetIsFinderMethod(IMetamodel metamodel);
     string StaticName { get; }
+    bool GetIsFinderMethod(IMetamodel metamodel);
     IObjectSpecImmutable GetElementSpec(IMetamodel metamodel);
     ITypeSpecImmutable GetOwnerSpec(IMetamodel metamodel);
     bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel);

@@ -19,7 +19,7 @@ public sealed class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private const bool Immutable = true;
 
     private UIntValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static UIntValueSemanticsProvider Instance { get; } = new UIntValueSemanticsProvider();
+    internal static UIntValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(uint);
 

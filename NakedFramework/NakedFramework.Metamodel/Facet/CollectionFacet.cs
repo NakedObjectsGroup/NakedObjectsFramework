@@ -18,7 +18,7 @@ namespace NakedFramework.Metamodel.Facet;
 public class CollectionFacet : CollectionFacetAbstract {
     protected CollectionFacet() : base(false) { }
 
-    public static CollectionFacet Instance { get; } = new CollectionFacet();
+    public static CollectionFacet Instance { get; } = new();
 
     public override bool IsQueryable => false;
 

@@ -19,7 +19,7 @@ public sealed class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstr
     private static readonly DateTime DefaultValueConst = new();
 
     private DateTimeValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static DateTimeValueSemanticsProvider Instance { get; } = new DateTimeValueSemanticsProvider();
+    internal static DateTimeValueSemanticsProvider Instance { get; } = new();
 
     // inject for testing 
     public static DateTime? TestDateTime { get; set; }

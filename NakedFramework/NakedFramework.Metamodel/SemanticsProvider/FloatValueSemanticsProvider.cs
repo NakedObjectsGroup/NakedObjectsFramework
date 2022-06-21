@@ -18,7 +18,7 @@ public sealed class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract
     private const bool Immutable = true;
 
     private FloatValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static FloatValueSemanticsProvider Instance { get; } = new FloatValueSemanticsProvider();
+    internal static FloatValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(float);
 

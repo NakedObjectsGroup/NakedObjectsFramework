@@ -17,7 +17,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class TypeOfFacetDefaultToObject : TypeOfFacetInferredAbstract, ITypeOfFacet {
     private TypeOfFacetDefaultToObject() { }
 
-    public static TypeOfFacetDefaultToObject Instance { get; } = new TypeOfFacetDefaultToObject();
+    public static TypeOfFacetDefaultToObject Instance { get; } = new();
 
     private static Type DefaultType => typeof(object);
 

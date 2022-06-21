@@ -14,7 +14,6 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Metamodel.Utils;

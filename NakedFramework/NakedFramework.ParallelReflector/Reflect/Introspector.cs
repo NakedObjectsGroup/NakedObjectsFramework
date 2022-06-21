@@ -237,7 +237,6 @@ public abstract class Introspector : IIntrospector {
 
             // actions are potentially being nulled within this loop
             if (actionMethod != null) {
-
                 if (IgnoreRecognizedMethod(actionMethod)) {
                     // If method has recognized prefix but we are using unreflected type placeholders for debug
                     // do not process this or it potentially will show as an action.

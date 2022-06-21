@@ -15,7 +15,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class TitleFacetNone : TitleFacetAbstract {
     private TitleFacetNone() { }
 
-    public static TitleFacetNone Instance { get; } = new TitleFacetNone();
+    public static TitleFacetNone Instance { get; } = new();
 
     public override bool IsNoOp => true;
 

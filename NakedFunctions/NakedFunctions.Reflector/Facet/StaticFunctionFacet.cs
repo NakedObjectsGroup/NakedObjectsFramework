@@ -15,7 +15,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class StaticFunctionFacet : FacetAbstract, IStaticFunctionFacet, IMarkerFacet {
     private StaticFunctionFacet() { }
 
-    public static StaticFunctionFacet Instance { get; } = new StaticFunctionFacet();
+    public static StaticFunctionFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(IStaticFunctionFacet);
 }

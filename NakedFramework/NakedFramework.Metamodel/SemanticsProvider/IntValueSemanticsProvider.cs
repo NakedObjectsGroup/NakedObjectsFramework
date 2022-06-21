@@ -19,7 +19,7 @@ public sealed class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<i
     private const bool Immutable = true;
 
     private IntValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static IntValueSemanticsProvider Instance { get; } = new IntValueSemanticsProvider();
+    internal static IntValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(int);
 

@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
-using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Utils;
@@ -93,5 +92,4 @@ public sealed class MethodSerializationWrapper {
     public void Invoke(object target) => MethodDelegate.Invoke(MethodInfo, target, null);
 
     public void Invoke(object[] args) => MethodDelegate.InvokeStatic(MethodInfo, args);
-
 }

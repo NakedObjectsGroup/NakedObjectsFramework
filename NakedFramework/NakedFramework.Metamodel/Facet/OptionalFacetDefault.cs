@@ -26,7 +26,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class OptionalFacetDefault : MandatoryFacetAbstract {
     private OptionalFacetDefault() { }
 
-    public static OptionalFacetDefault Instance { get; } = new OptionalFacetDefault();
+    public static OptionalFacetDefault Instance { get; } = new();
 
     public override bool IsMandatory => false;
 

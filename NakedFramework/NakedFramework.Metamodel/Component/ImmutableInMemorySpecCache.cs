@@ -37,23 +37,21 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
     public ImmutableInMemorySpecCache() { }
 
     // constructor to use when loading metadata from file
-  
 
     public ImmutableInMemorySpecCache(string file, Type[] additionalKnownTypes) {
         if (file.EndsWith(".bin")) {
             BinaryDeserialize(file);
         }
-        else if (file.EndsWith(".xml"))
-        {
+        else if (file.EndsWith(".xml")) {
             XmlDeserialize(file, additionalKnownTypes);
         }
     }
 
     private Type[] CreateTypes() {
-
         var types = new List<Type>();
 
-        var vtt = new[] { typeof(int),
+        var vtt = new[] {
+            typeof(int),
             typeof(long),
             typeof(string),
             typeof(byte[]),
@@ -73,7 +71,7 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
             typeof(TimeSpan),
             typeof(char),
             typeof(Color),
-            typeof(double),
+            typeof(double)
         };
 
         var gtt = new[] { typeof(DefaultedFacetUsingDefaultsProvider<>), typeof(ParseableFacetUsingParser<>), typeof(TitleFacetUsingParser<>), typeof(ValueFacetFromSemanticProvider<>), typeof(ArrayValueSemanticsProvider<>) };
@@ -88,7 +86,6 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         return types.ToArray();
     }
 
-
     private Type[] KnownTypes() {
         var a = Assembly.GetAssembly(typeof(IdentifierImpl));
         var tt = a.GetTypes().Where(t => t is { IsSerializable: true, IsPublic: true }).ToArray();
@@ -100,8 +97,6 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         return tt.Where(t => t.IsPublic).ToArray();
     }
 
-
-
     private void BinaryDeserialize(string file) {
         var formatter = new BinaryFormatter();
         using var fs = File.Open(file, FileMode.Open);
@@ -111,30 +106,24 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         mainMenus = data.MenuValues.ToImmutableList();
     }
 
-    private DataContractSerializerSettings Settings(Type[] additionalKnownTypes) {
-        return  new DataContractSerializerSettings() {
+    private DataContractSerializerSettings Settings(Type[] additionalKnownTypes) =>
+        new DataContractSerializerSettings {
             KnownTypes = KnownTypes().Union(additionalKnownTypes),
             PreserveObjectReferences = true,
             SerializeReadOnlyTypes = false
         };
-    }
 
-    private void XmlDeserialize(string file, Type[] additionalKnownTypes)
-    {
-       
+    private void XmlDeserialize(string file, Type[] additionalKnownTypes) {
         using var fs = File.Open(file, FileMode.Open);
-      
 
-        var deserializer = new DataContractSerializer(typeof(SerializedData),  Settings(additionalKnownTypes ?? Array.Empty<Type>()));
-        var reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas() {MaxDepth = 1000});
+        var deserializer = new DataContractSerializer(typeof(SerializedData), Settings(additionalKnownTypes ?? Array.Empty<Type>()));
+        var reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas { MaxDepth = 1000 });
         var data = (SerializedData)deserializer.ReadObject(reader, true);
-
 
         specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new { k, v }).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
 
         mainMenus = data.MenuValues.ToImmutableList();
     }
-
 
     #region ISpecificationCache Members
 
@@ -142,12 +131,9 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         if (file.EndsWith(".bin")) {
             BinarySerialize(file);
         }
-        else if (file.EndsWith(".xml"))
-        {
+        else if (file.EndsWith(".xml")) {
             XmlSerialize(file, additionalKnownTypes);
         }
-       
-
     }
 
     private void BinarySerialize(string file) {
@@ -156,9 +142,6 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
         var data = new SerializedData { SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList() };
         formatter.Serialize(fs, data);
     }
-
-   
-
 
     private void XmlSerialize(string file, Type[] additionalKnownTypes) {
         var formatter = new DataContractSerializer(typeof(SerializedData), Settings(additionalKnownTypes));

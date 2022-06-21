@@ -14,7 +14,7 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class ConcurrencyCheckFacet : FacetAbstract, IConcurrencyCheckFacet, IMarkerFacet {
     private ConcurrencyCheckFacet() { }
 
-    public static ConcurrencyCheckFacet Instance { get; } = new ConcurrencyCheckFacet();
+    public static ConcurrencyCheckFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(IConcurrencyCheckFacet);
 }

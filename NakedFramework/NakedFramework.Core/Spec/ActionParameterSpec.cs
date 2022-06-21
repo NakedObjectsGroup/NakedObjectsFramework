@@ -101,14 +101,12 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
         return isChoicesEnabled.Value;
     }
 
-    public bool GetIsMultipleChoicesEnabled(IMetamodel metamodel)
-    {
+    public bool GetIsMultipleChoicesEnabled(IMetamodel metamodel) {
         isMultipleChoicesEnabled ??= Spec.IsCollectionOfBoundedSet(ElementSpec) ||
                                      Spec.IsCollectionOfEnum(ElementSpec) ||
                                      actionParameterSpecImmutable.GetIsMultipleChoicesEnabled(metamodel);
 
         return isMultipleChoicesEnabled.Value;
-        
     }
 
     public virtual int Number { get; }

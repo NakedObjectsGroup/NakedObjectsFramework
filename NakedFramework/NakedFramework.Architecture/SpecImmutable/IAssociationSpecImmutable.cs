@@ -14,7 +14,6 @@ namespace NakedFramework.Architecture.SpecImmutable;
 ///     Additional reflective details about field members
 /// </summary>
 public interface IAssociationSpecImmutable : IMemberSpecImmutable {
-
     Type OwnerType { get; }
     IObjectSpecImmutable GetOwnerSpec(IMetamodel metamodel);
 }

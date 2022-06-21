@@ -15,6 +15,6 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class InjectedFacet : FacetAbstract, IInjectedFacet, IMarkerFacet {
     private InjectedFacet() { }
 
-    public static InjectedFacet Instance { get; } = new InjectedFacet();
+    public static InjectedFacet Instance { get; } = new();
     public override Type FacetType => typeof(IInjectedFacet);
 }

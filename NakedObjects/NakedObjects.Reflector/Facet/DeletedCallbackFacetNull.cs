@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.Facet;
 public sealed class DeletedCallbackFacetNull : DeletedCallbackFacetAbstract {
     private DeletedCallbackFacetNull() { }
 
-    public static DeletedCallbackFacetNull Instance { get; } = new DeletedCallbackFacetNull();
+    public static DeletedCallbackFacetNull Instance { get; } = new();
 
     public override void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedFramework framework) { }
 }

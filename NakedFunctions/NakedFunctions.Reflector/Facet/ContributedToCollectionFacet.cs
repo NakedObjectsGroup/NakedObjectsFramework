@@ -15,7 +15,7 @@ namespace NakedFunctions.Reflector.Facet;
 public sealed class ContributedToCollectionFacet : FacetAbstract, IContributedToCollectionFacet, IMarkerFacet {
     private ContributedToCollectionFacet() { }
 
-    public static ContributedToCollectionFacet Instance { get; } = new ContributedToCollectionFacet();
+    public static ContributedToCollectionFacet Instance { get; } = new();
 
     public override Type FacetType => typeof(IContributedToCollectionFacet);
 }

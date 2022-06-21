@@ -19,7 +19,7 @@ public sealed class FileAttachmentValueSemanticsProvider : ValueSemanticsProvide
     private const bool Immutable = true;
 
     private FileAttachmentValueSemanticsProvider() : base(Immutable, null) { }
-    internal static FileAttachmentValueSemanticsProvider Instance { get; } = new FileAttachmentValueSemanticsProvider();
+    internal static FileAttachmentValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(FileAttachment);
 

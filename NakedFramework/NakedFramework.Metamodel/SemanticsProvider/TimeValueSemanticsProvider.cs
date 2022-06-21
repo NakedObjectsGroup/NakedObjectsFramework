@@ -20,7 +20,7 @@ public sealed class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<
     private static readonly TimeSpan DefaultValueConst = new();
 
     private TimeValueSemanticsProvider() : base(Immutable, DefaultValueConst) { }
-    internal static TimeValueSemanticsProvider Instance { get; } = new TimeValueSemanticsProvider();
+    internal static TimeValueSemanticsProvider Instance { get; } = new();
 
     public static Type AdaptedType => typeof(TimeSpan);
 

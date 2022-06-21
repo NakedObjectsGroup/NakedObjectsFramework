@@ -14,6 +14,6 @@ namespace NakedFramework.Metamodel.Facet;
 public sealed class IdempotentFacet : FacetAbstract, IIdempotentFacet, IMarkerFacet {
     private IdempotentFacet() { }
 
-    public static IdempotentFacet Instance { get; } = new IdempotentFacet();
+    public static IdempotentFacet Instance { get; } = new();
     public override Type FacetType => typeof(IIdempotentFacet);
 }

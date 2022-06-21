@@ -37,8 +37,8 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedObjectActions;
 
     private ImmutableListSerializationWrapper<TypeSerializationWrapper> subclasses;
-    private TypeSerializationWrapper typeWrapper;
     private TypeSerializationWrapper superClassWrapper;
+    private TypeSerializationWrapper typeWrapper;
 
     [NonSerialized]
     private ReflectionWorkingData workingData = new();
@@ -160,9 +160,10 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     public string[] GetLocallyContributedActionNames(string id) => OrderedFields.OfType<IOneToManyAssociationSpecImmutable>().SingleOrDefault(a => a.Identifier.MemberName == id)?.ContributedActionNames ?? Array.Empty<string>();
 
-    private ImmutableList<IActionSpecImmutable> CreateOrderedContributedActions() => 
-        Order(workingData.ContributedActions).GroupBy(i => i.OwnerType, i => i, (service, actions) => new { service, actions
-    }).OrderBy(a => Array.IndexOf(workingData.Services, a.service)).SelectMany(a => a.actions).ToImmutableList();
+    private ImmutableList<IActionSpecImmutable> CreateOrderedContributedActions() =>
+        Order(workingData.ContributedActions).GroupBy(i => i.OwnerType, i => i, (service, actions) => new {
+            service, actions
+        }).OrderBy(a => Array.IndexOf(workingData.Services, a.service)).SelectMany(a => a.actions).ToImmutableList();
 
     private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
         var interfaceTypes = givenType.GetInterfaces();
