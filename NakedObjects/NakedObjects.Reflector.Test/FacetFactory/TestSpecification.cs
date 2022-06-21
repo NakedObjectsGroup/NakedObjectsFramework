@@ -29,9 +29,9 @@ internal class TestSpecification : Specification, IObjectSpecBuilder {
     public IReadOnlyList<IActionSpecImmutable> OrderedCollectionContributedActions { get; }
     public IReadOnlyList<IActionSpecImmutable> OrderedFinderActions { get; }
     public IReadOnlyList<IAssociationSpecImmutable> OrderedFields { get; }
-    public IReadOnlyList<ITypeSpecImmutable> Interfaces { get; }
-    public IReadOnlyList<ITypeSpecImmutable> Subclasses { get; }
-    public ITypeSpecImmutable Superclass { get; }
+    public IReadOnlyList<Type> Interfaces { get; }
+    public IReadOnlyList<Type> Subclasses { get; }
+    public Type Superclass { get; }
     public bool IsObject { get; }
     public bool IsCollection { get; }
     public bool IsQueryable { get; }

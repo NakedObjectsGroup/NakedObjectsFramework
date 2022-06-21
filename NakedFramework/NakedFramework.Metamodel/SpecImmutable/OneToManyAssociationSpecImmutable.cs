@@ -11,22 +11,24 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable, IOneToManyAssociationSpecBuilder {
-    private readonly IObjectSpecImmutable defaultElementSpec;
+    private readonly TypeSerializationWrapper defaultElementType;
+    private readonly TypeSerializationWrapper ownerType;
 
-    public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
-        : base(name, returnSpec) {
-        OwnerSpec = ownerSpec;
-        this.defaultElementSpec = defaultElementSpec;
+    public OneToManyAssociationSpecImmutable(IIdentifier name, Type ownerType, Type returnType, Type defaultElementType)
+        : base(name, returnType) {
+        this.ownerType = ownerType is null ? null : SerializationFactory.Wrap(ownerType);
+        this.defaultElementType = defaultElementType is null ? null : SerializationFactory.Wrap(defaultElementType);
     }
 
     public string[] ContributedActionNames { get; private set; } = Array.Empty<string>();
 
-    public override string ToString() => $"OneToManyAssociation [name=\"{Identifier}\",Type={ReturnSpec} ]";
+    public override string ToString() => $"OneToManyAssociation [name=\"{Identifier}\",Type={ReturnType} ]";
 
     #region IOneToManyAssociationSpecImmutable Members
 
@@ -35,12 +37,12 @@ public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable
     /// </summary>
     public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) {
         var typeOfFacet = GetFacet<IElementTypeFacet>();
-        return typeOfFacet != null ? typeOfFacet.GetElementSpec(metamodel) : defaultElementSpec;
+        return typeOfFacet != null ? typeOfFacet.GetElementSpec(metamodel) : metamodel.GetSpecification(defaultElementType.Type) as IObjectSpecImmutable;
     }
 
     public void AddLocalContributedActions(string[] contributedActionNames) => ContributedActionNames = contributedActionNames;
 
-    public override IObjectSpecImmutable OwnerSpec { get; }
+    public override Type OwnerType => ownerType?.Type;
 
     #endregion
 }

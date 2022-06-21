@@ -29,9 +29,9 @@ public interface ITypeSpecImmutable : ISpecificationBuilder {
     IReadOnlyList<IActionSpecImmutable> OrderedCollectionContributedActions { get; }
     IReadOnlyList<IActionSpecImmutable> OrderedFinderActions { get; }
     IReadOnlyList<IAssociationSpecImmutable> OrderedFields { get; }
-    IReadOnlyList<ITypeSpecImmutable> Interfaces { get; }
-    IReadOnlyList<ITypeSpecImmutable> Subclasses { get; }
-    ITypeSpecImmutable Superclass { get; }
+    IReadOnlyList<Type> Interfaces { get; }
+    IReadOnlyList<Type> Subclasses { get; }
+    Type Superclass { get; }
     bool IsObject { get; }
     bool IsCollection { get; }
     bool IsQueryable { get; }

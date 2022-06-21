@@ -11,16 +11,19 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
+    private TypeSerializationWrapper typeWrapper;
+
     public ActionSpecImmutable(IIdentifier identifier,
-                               ITypeSpecImmutable ownerSpec,
+                               Type ownerType,
                                IActionParameterSpecImmutable[] parameters)
         : base(identifier) {
-        OwnerSpec = ownerSpec;
+        typeWrapper = ownerType is null ? null : SerializationFactory.Wrap(ownerType);
         Parameters = parameters;
     }
 
@@ -33,7 +36,12 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
         return type is null ? null : metamodel.GetSpecification(type) as IObjectSpecImmutable;
     }
 
-    public ITypeSpecImmutable OwnerSpec { get; }
+    public ITypeSpecImmutable GetOwnerSpec(IMetamodel metamodel) {
+        var type = OwnerType;
+        return type is null ? null : metamodel.GetSpecification(type);
+    }
+
+    public Type OwnerType => typeWrapper?.Type;
 
     public IActionParameterSpecImmutable[] Parameters { get; }
 
@@ -42,16 +50,14 @@ public sealed class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmuta
         return type is null ? null : metamodel.GetSpecification(type) as IObjectSpecImmutable;
     }
 
-    public bool IsFinderMethod =>
+    public bool GetIsFinderMethod(IMetamodel metamodel) =>
         HasReturn() &&
         ContainsFacet(typeof(IFinderActionFacet)) &&
-        Parameters.All(p => p.Specification.IsParseable || p.IsChoicesDefined || p.IsMultipleChoicesEnabled);
+        Parameters.All(p => p.GetSpecification(metamodel).IsParseable || p.GetIsChoicesDefined(metamodel) || p.GetIsMultipleChoicesEnabled(metamodel));
 
-    public bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel) => IsFinderMethod && (GetReturnSpec(metamodel).IsOfType(spec) || (GetReturnSpec(metamodel).IsCollection && GetElementSpec(metamodel).IsOfType(spec)));
+    public bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel) => GetIsFinderMethod(metamodel) && (GetReturnSpec(metamodel).IsOfType(spec) || (GetReturnSpec(metamodel).IsCollection && GetElementSpec(metamodel).IsOfType(spec)));
+
     public string StaticName => GetFacet<IMemberNamedFacet>().FriendlyName();
-
-    public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && Parameters.Any() &&
-                                       ContainsFacet(typeof(IContributedActionFacet));
 
     public bool IsStaticFunction => ContainsFacet<IStaticFunctionFacet>();
 

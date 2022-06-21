@@ -14,6 +14,6 @@ public interface IObjectSpecBuilder : IObjectSpecImmutable, ITypeSpecBuilder {
     IList<IActionSpecImmutable> UnorderedContributedActions { get; }
 
     void AddContributedActions(IList<IActionSpecImmutable> contributedActions, Type[] services);
-    void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionCntributedActions);
+    void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions);
     void AddFinderActions(IList<IActionSpecImmutable> finderActions);
 }

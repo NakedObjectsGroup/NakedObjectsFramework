@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
@@ -96,18 +97,18 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
     }
 
     public bool IsChoicesEnabled(INakedObjectAdapter adapter) {
-        isChoicesEnabled ??= !IsMultipleChoicesEnabled && actionParameterSpecImmutable.IsChoicesEnabled(adapter, Framework);
+        isChoicesEnabled ??= !GetIsMultipleChoicesEnabled(Framework.MetamodelManager.Metamodel) && actionParameterSpecImmutable.IsChoicesEnabled(adapter, Framework);
         return isChoicesEnabled.Value;
     }
 
-    public bool IsMultipleChoicesEnabled {
-        get {
-            isMultipleChoicesEnabled ??= Spec.IsCollectionOfBoundedSet(ElementSpec) ||
-                                         Spec.IsCollectionOfEnum(ElementSpec) ||
-                                         actionParameterSpecImmutable.IsMultipleChoicesEnabled;
+    public bool GetIsMultipleChoicesEnabled(IMetamodel metamodel)
+    {
+        isMultipleChoicesEnabled ??= Spec.IsCollectionOfBoundedSet(ElementSpec) ||
+                                     Spec.IsCollectionOfEnum(ElementSpec) ||
+                                     actionParameterSpecImmutable.GetIsMultipleChoicesEnabled(metamodel);
 
-            return isMultipleChoicesEnabled.Value;
-        }
+        return isMultipleChoicesEnabled.Value;
+        
     }
 
     public virtual int Number { get; }
@@ -115,7 +116,7 @@ public abstract class ActionParameterSpec : IActionParameterSpec {
 
     public virtual IActionSpec Action => parentAction;
 
-    public virtual IObjectSpec Spec => spec ??= Framework.MetamodelManager.GetSpecification(actionParameterSpecImmutable.Specification);
+    public virtual IObjectSpec Spec => spec ??= Framework.MetamodelManager.GetSpecification(actionParameterSpecImmutable.Type) as IObjectSpec;
 
     public string Name(INakedObjectAdapter nakedObjectAdapter) => name ??= GetFacet<IMemberNamedFacet>().FriendlyName(nakedObjectAdapter, Framework);
 

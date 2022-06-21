@@ -5,13 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using NakedFramework.Architecture.Component;
+
 namespace NakedFramework.Architecture.SpecImmutable;
 
 /// <summary>
 ///     Additional reflective details about field members
 /// </summary>
 public interface IAssociationSpecImmutable : IMemberSpecImmutable {
-    IObjectSpecImmutable OwnerSpec { get; }
+
+    Type OwnerType { get; }
+    IObjectSpecImmutable GetOwnerSpec(IMetamodel metamodel);
 }
 
 // Copyright (c) Naked Objects Group Ltd.

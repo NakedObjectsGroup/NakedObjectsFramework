@@ -9,24 +9,29 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public sealed class OneToOneAssociationSpecImmutable : AssociationSpecImmutable, IOneToOneAssociationSpecImmutable {
-    public OneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec)
-        : base(identifier, returnSpec) =>
-        OwnerSpec = ownerSpec;
+    private readonly TypeSerializationWrapper typeWrapper;
+
+    public OneToOneAssociationSpecImmutable(IIdentifier identifier, Type ownerType, Type returnType)
+        : base(identifier, returnType) =>
+        typeWrapper = OwnerType is null ? null : SerializationFactory.Wrap(ownerType);
 
     #region IOneToOneAssociationSpecImmutable Members
 
-    public override IObjectSpecImmutable OwnerSpec { get; }
+    public override Type OwnerType => typeWrapper?.Type;
 
     #endregion
 
+    public override IObjectSpecImmutable GetOwnerSpec(IMetamodel metamodel) => metamodel.GetSpecification(OwnerType) as IObjectSpecImmutable;
+
     public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => null;
 
-    public override string ToString() => $"Reference Association [name=\"{Identifier}\", Type={ReturnSpec} ]";
+    public override string ToString() => $"Reference Association [name=\"{Identifier}\", Type={ReturnType} ]";
 }
 
 // Copyright (c) Naked Objects Group Ltd.

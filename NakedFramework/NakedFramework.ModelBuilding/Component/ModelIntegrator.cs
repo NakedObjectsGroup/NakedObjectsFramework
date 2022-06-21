@@ -142,8 +142,9 @@ public class ModelIntegrator : IModelIntegrator {
     private static bool IsContributedTo(IContributedActionIntegrationFacet integrationFacet, IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) =>
         integrationFacet.IsContributedTo(contributeeSpec) && contributeeSpec.IsOfType(parmSpec);
 
-    private static bool IsContributedTo(IContributedActionIntegrationFacet integrationFacet, IActionSpecImmutable actionSpec, IObjectSpecImmutable objectSpec) =>
-        actionSpec.Parameters.Any(p => IsContributedTo(integrationFacet, p.Specification, objectSpec));
+    private static bool IsContributedTo(IContributedActionIntegrationFacet integrationFacet, IActionSpecImmutable actionSpec, IObjectSpecImmutable objectSpec, IMetamodel metamodel) =>
+        actionSpec.Parameters.Any(p => IsContributedTo(integrationFacet, p.GetSpecification(metamodel), objectSpec));
+
 
     private static bool IsContributedToCollectionOf(IContributedActionIntegrationFacet integrationFacet, IObjectSpecImmutable objectSpec) =>
         integrationFacet.IsContributedToCollectionOf(objectSpec);
@@ -161,7 +162,8 @@ public class ModelIntegrator : IModelIntegrator {
                 var contributedActionFacet = actionSpec.GetFacet<IContributedActionIntegrationFacet>();
 
                 if (contributedActionFacet is not null && serviceType != objectSpec.Type) {
-                    if (IsContributedTo(contributedActionFacet, actionSpec, objectSpec)) {
+                    if (IsContributedTo(contributedActionFacet, actionSpec, objectSpec, metamodel))
+                    {
                         matchingActionsForObject.Add(actionSpec);
                     }
 

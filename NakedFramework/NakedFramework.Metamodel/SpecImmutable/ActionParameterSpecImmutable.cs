@@ -7,27 +7,32 @@
 
 using System;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Core.Util;
+using NakedFramework.Metamodel.Serialization;
 using NakedFramework.Metamodel.Spec;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public sealed class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {
-    public ActionParameterSpecImmutable(IObjectSpecImmutable specification, IIdentifier identifier) : base(identifier) => Specification = specification;
+    private TypeSerializationWrapper typeWrapper;
+
+    public ActionParameterSpecImmutable(Type type, IIdentifier identifier) : base(identifier) => typeWrapper = type is null ? null : SerializationFactory.Wrap(type);
 
     #region IActionParameterSpecImmutable Members
 
-    public IObjectSpecImmutable Specification { get; }
+    public Type Type => typeWrapper?.Type;
 
-    public bool IsChoicesEnabled(INakedObjectAdapter adapter, INakedFramework framework) => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || GetFacet<IActionChoicesFacet>()?.IsEnabled(adapter, framework) == true || ContainsFacet<IEnumFacet>());
+    public bool IsChoicesEnabled(INakedObjectAdapter adapter, INakedFramework framework) => !GetIsMultipleChoicesEnabled(framework.MetamodelManager.Metamodel) && (GetSpecification(framework.MetamodelManager.Metamodel).IsBoundedSet() || GetFacet<IActionChoicesFacet>()?.IsEnabled(adapter, framework) == true || ContainsFacet<IEnumFacet>());
+    public IObjectSpecImmutable GetSpecification(IMetamodel metamodel) => metamodel.GetSpecification(Type) as IObjectSpecImmutable;
 
-    public bool IsChoicesDefined => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
+    public bool GetIsChoicesDefined(IMetamodel metamodel) => !GetIsMultipleChoicesEnabled(metamodel) && (GetSpecification(metamodel).IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
 
-    public bool IsMultipleChoicesEnabled => ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple;
+    public bool GetIsMultipleChoicesEnabled(IMetamodel metamodel) => ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple;
 
     #endregion
 }

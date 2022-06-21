@@ -29,9 +29,11 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
         : base(order.Order, loggerFactory, FeatureType.Actions) =>
         loggerFactory.CreateLogger<DisplayAsPropertyAnnotationFacetFactory>();
 
-    private void RemoveAction(IActionSpecImmutable actionSpec) {
-        var tsb = (ITypeSpecBuilder)actionSpec.OwnerSpec;
-        tsb.RemoveAction(actionSpec, Logger<DisplayAsPropertyAnnotationFacetFactory>());
+  
+        private void RemoveAction(IActionSpecImmutable actionSpec, IMetamodelBuilder metamodelBuilder)
+        {
+            var tsb = (ITypeSpecBuilder)actionSpec.GetOwnerSpec(metamodelBuilder);
+            tsb.RemoveAction(actionSpec, Logger<DisplayAsPropertyAnnotationFacetFactory>());
     }
 
     private IImmutableDictionary<string, ITypeSpecBuilder> AddIntegrationFacet(IReflector reflector, ISpecificationBuilder specification, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -40,7 +42,7 @@ public sealed class DisplayAsPropertyAnnotationFacetFactory : DomainObjectFacetF
                 var displayOnTypeSpec = b.GetSpecification(type) as ITypeSpecBuilder;
                 var adaptedMember = ImmutableSpecFactory.CreateSpecAdapter(actionSpec, b);
                 displayOnTypeSpec.AddContributedFields(new[] { adaptedMember });
-                RemoveAction(actionSpec);
+                RemoveAction(actionSpec, b);
             }
 
             metamodel = FacetUtils.AddIntegrationFacet(reflector, type, Action, metamodel);

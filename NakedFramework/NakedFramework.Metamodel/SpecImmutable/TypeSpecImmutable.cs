@@ -28,7 +28,7 @@ namespace NakedFramework.Metamodel.SpecImmutable;
 [Serializable]
 public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
     private IIdentifier identifier;
-    private ImmutableListSerializationWrapper<ITypeSpecImmutable> interfaces;
+    private ImmutableListSerializationWrapper<TypeSerializationWrapper> interfaces;
     private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedCollectionContributedActions;
     private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedContributedActions;
     private ImmutableListSerializationWrapper<IAssociationSpecImmutable> orderedFields;
@@ -36,8 +36,9 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     private ImmutableListSerializationWrapper<IActionSpecImmutable> orderedObjectActions;
 
-    private ImmutableListSerializationWrapper<ITypeSpecImmutable> subclasses;
+    private ImmutableListSerializationWrapper<TypeSerializationWrapper> subclasses;
     private TypeSerializationWrapper typeWrapper;
+    private TypeSerializationWrapper superClassWrapper;
 
     [NonSerialized]
     private ReflectionWorkingData workingData = new();
@@ -67,15 +68,15 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     public IReadOnlyList<IAssociationSpecImmutable> OrderedFields => orderedFields.ImmutableList;
 
-    public IReadOnlyList<ITypeSpecImmutable> Interfaces => interfaces?.ImmutableList ?? ImmutableList<ITypeSpecImmutable>.Empty;
+    public IReadOnlyList<Type> Interfaces => interfaces?.ImmutableList.Select(w => w.Type).ToList().ToImmutableList() ?? ImmutableList<Type>.Empty;
 
-    public IReadOnlyList<ITypeSpecImmutable> Subclasses => subclasses.ImmutableList;
+    public IReadOnlyList<Type> Subclasses => subclasses.ImmutableList.Select(w => w.Type).ToList().ToImmutableList();
 
     public IList<IAssociationSpecImmutable> UnorderedFields => workingData.Fields;
 
     public IList<IActionSpecImmutable> UnorderedObjectActions => workingData.ObjectActions;
 
-    public ITypeSpecImmutable Superclass { get; private set; }
+    public Type Superclass => superClassWrapper?.Type;
 
     public override IIdentifier Identifier => identifier;
 
@@ -110,7 +111,7 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         orderedContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedContributedActions(), ReflectorDefaults.JitSerialization);
         orderedCollectionContributedActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(workingData.CollectionContributedActions), ReflectorDefaults.JitSerialization);
         orderedFinderActions = new ImmutableListSerializationWrapper<IActionSpecImmutable>(CreateOrderedImmutableList(workingData.FinderActions), ReflectorDefaults.JitSerialization);
-        subclasses = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(workingData.Subclasses.ToImmutableList(), ReflectorDefaults.JitSerialization);
+        subclasses = new ImmutableListSerializationWrapper<TypeSerializationWrapper>(workingData.Subclasses.Select(i => SerializationFactory.Wrap(i.Type)).ToImmutableList(), ReflectorDefaults.JitSerialization);
 
         ClearWorkingData();
     }
@@ -120,8 +121,8 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         identifier = introspector.Identifier;
         FullName = introspector.FullName;
         ShortName = introspector.ShortName;
-        Superclass = introspector.Superclass;
-        interfaces = new ImmutableListSerializationWrapper<ITypeSpecImmutable>(introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList(), ReflectorDefaults.JitSerialization);
+        superClassWrapper = introspector.Superclass?.Type is null ? null : SerializationFactory.Wrap(introspector.Superclass.Type);
+        interfaces = new ImmutableListSerializationWrapper<TypeSerializationWrapper>(introspector.Interfaces.Select(i => SerializationFactory.Wrap(i.Type)).ToImmutableList(), ReflectorDefaults.JitSerialization);
         workingData.Fields = introspector.UnorderedFields.ToList();
         workingData.ObjectActions = introspector.UnorderedObjectActions.ToList();
         DecorateAllFacets(decorator);
@@ -159,7 +160,9 @@ public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
 
     public string[] GetLocallyContributedActionNames(string id) => OrderedFields.OfType<IOneToManyAssociationSpecImmutable>().SingleOrDefault(a => a.Identifier.MemberName == id)?.ContributedActionNames ?? Array.Empty<string>();
 
-    private ImmutableList<IActionSpecImmutable> CreateOrderedContributedActions() => Order(workingData.ContributedActions).GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new { service, actions }).OrderBy(a => Array.IndexOf(workingData.Services, a.service)).SelectMany(a => a.actions).ToImmutableList();
+    private ImmutableList<IActionSpecImmutable> CreateOrderedContributedActions() => 
+        Order(workingData.ContributedActions).GroupBy(i => i.OwnerType, i => i, (service, actions) => new { service, actions
+    }).OrderBy(a => Array.IndexOf(workingData.Services, a.service)).SelectMany(a => a.actions).ToImmutableList();
 
     private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
         var interfaceTypes = givenType.GetInterfaces();

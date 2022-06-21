@@ -9,22 +9,27 @@ using System;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Metamodel.Serialization;
 
 namespace NakedFramework.Metamodel.SpecImmutable;
 
 [Serializable]
 public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
-    protected AssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)
-        : base(identifier) =>
-        ReturnSpec = returnSpec;
+    private TypeSerializationWrapper returnType;
 
-    protected IObjectSpecImmutable ReturnSpec { get; }
+    protected AssociationSpecImmutable(IIdentifier identifier, Type returnType)
+        : base(identifier) =>
+        this.returnType = returnType is null ? null : SerializationFactory.Wrap(returnType);
+
+    protected Type ReturnType => returnType?.Type;
 
     #region IAssociationSpecImmutable Members
 
-    public abstract IObjectSpecImmutable OwnerSpec { get; }
+    public abstract Type OwnerType { get; }
 
-    public override IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel) => ReturnSpec;
+    public override IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel) => metamodel.GetSpecification(ReturnType) as IObjectSpecImmutable;
+
+    public virtual IObjectSpecImmutable GetOwnerSpec(IMetamodel metamodel) => metamodel.GetSpecification(OwnerType) as IObjectSpecImmutable;
 
     #endregion
 }

@@ -67,7 +67,7 @@ public class TestObjectFactory : ITestObjectFactory {
     }
 
     public ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm) {
-        var objectIm = actionSpecImm.OwnerSpec; //This is the spec for the service
+        var objectIm = actionSpecImm.GetOwnerSpec(framework.MetamodelManager.Metamodel); //This is the spec for the service
 
         if (objectIm is not IServiceSpecImmutable) {
             throw new Exception("Action is not on a known service");

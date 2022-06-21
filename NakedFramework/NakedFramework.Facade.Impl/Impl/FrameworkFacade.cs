@@ -245,7 +245,7 @@ public class FrameworkFacade : IFrameworkFacade {
         };
 
     private bool IsVisible(IActionSpecImmutable specIm) {
-        var serviceSpec = specIm.OwnerSpec;
+        var serviceSpec = specIm.GetOwnerSpec(Framework.MetamodelManager.Metamodel);
         var objectSpec = Framework.MetamodelManager.GetSpecification(serviceSpec);
         var no = Framework.ServicesManager.GetServices().SingleOrDefault(s => ReferenceEquals(s.Spec, objectSpec));
         var actionSpec = Framework.MetamodelManager.GetActionSpec(specIm);

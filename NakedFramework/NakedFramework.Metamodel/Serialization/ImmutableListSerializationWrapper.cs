@@ -8,7 +8,7 @@ using NakedFramework.Architecture.Spec;
 namespace NakedFramework.Metamodel.Serialization;
 
 [Serializable]
-public sealed class ImmutableListSerializationWrapper<T> where T : ISpecification {
+public sealed class ImmutableListSerializationWrapper<T>  {
     private readonly bool jit;
 
     private readonly List<T> list;

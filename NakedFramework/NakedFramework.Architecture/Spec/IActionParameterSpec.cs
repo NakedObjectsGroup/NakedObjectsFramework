@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
 namespace NakedFramework.Architecture.Spec;
@@ -46,7 +47,7 @@ public interface IActionParameterSpec : IFeatureSpec {
     /// <summary>
     ///     Whether the parameter has a bounded set associated or a set of options coded.
     /// </summary>
-    bool IsMultipleChoicesEnabled { get; }
+    bool GetIsMultipleChoicesEnabled(IMetamodel metamodel);
 
     /// <summary>
     ///     Whether the parameter has a autocomplete method associated.

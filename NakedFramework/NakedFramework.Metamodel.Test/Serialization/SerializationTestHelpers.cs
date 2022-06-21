@@ -157,23 +157,23 @@ public static class SerializationTestHelpers {
 
     public static void AssertActionParameterSpec(ActionParameterSpecImmutable s, ActionParameterSpecImmutable dss) {
         AssertISpecification(s, dss);
-        AssertSpecification(s.Specification, dss.Specification);
+        Assert.AreEqual(s.Type, dss.Type);
     }
 
     public static void AssertActionSpec(ActionSpecImmutable s, ActionSpecImmutable dss) {
         AssertISpecification(s, dss);
-        AssertSpecification(s.OwnerSpec, dss.OwnerSpec);
+        Assert.AreEqual(s.OwnerType, dss.OwnerType);
         AssertArrayAreEqual(s.Parameters, dss.Parameters);
     }
 
     public static void AssertActionSpecAdapter(AbstractSpecAdapter s, AbstractSpecAdapter dss) {
         AssertISpecification(s, dss);
-        AssertSpecification(s.OwnerSpec, dss.OwnerSpec);
+        Assert.AreEqual(s.OwnerType, dss.OwnerType);
     }
 
     public static void AssertAssociationSpec(AssociationSpecImmutable s, AssociationSpecImmutable dss) {
         AssertISpecification(s, dss);
-        AssertSpecification(s.OwnerSpec, dss.OwnerSpec);
+        Assert.AreEqual(s.OwnerType, dss.OwnerType);
     }
 
     private static void AssertMenuItem(IMenuItemImmutable m, IMenuItemImmutable dsm) {

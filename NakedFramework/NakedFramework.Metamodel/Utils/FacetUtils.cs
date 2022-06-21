@@ -71,8 +71,8 @@ public static class FacetUtils {
             var errors = new List<string>();
 
             foreach (var name in duplicates) {
-                var duplicateActions = actions.OrderBy(a => a.OwnerSpec.FullName).Where(s => s.Name == name);
-                var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerSpec.FullName}.{a.Name}");
+                var duplicateActions = actions.OrderBy(a => a.OwnerType.FullName).Where(s => s.Name == name);
+                var error = duplicateActions.Aggregate("Name clash between user actions defined on", (s, a) => $"{s}{(s.EndsWith("defined on") ? " " : " and ")}{a.OwnerType.FullName}.{a.Name}");
                 error += ": actions on and/or contributed to a menu or object must have unique names.";
                 errors.Add(error);
             }
@@ -129,10 +129,11 @@ public static class FacetUtils {
             _ => ""
         };
 
-        public ITypeSpecImmutable OwnerSpec => wrapped switch {
-            IActionSpecImmutable action => action.OwnerSpec,
-            IAssociationSpecImmutable association => association.OwnerSpec,
-            IMenuActionImmutable menu => menu.Action.OwnerSpec,
+        public Type OwnerType => wrapped switch
+        {
+            IActionSpecImmutable action => action.OwnerType,
+            IAssociationSpecImmutable association => association.OwnerType,
+            IMenuActionImmutable menu => menu.Action.OwnerType,
             _ => null
         };
     }

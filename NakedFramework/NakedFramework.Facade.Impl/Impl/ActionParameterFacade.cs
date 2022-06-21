@@ -110,7 +110,7 @@ public class ActionParameterFacade : AbstractCommonFacade, IActionParameterFacad
     public string Id => WrappedActionParameterSpec.Id;
 
     public Choices IsChoicesEnabled(IObjectFacade objectFacade) =>
-        cachedIsChoicesEnabled ??= WrappedActionParameterSpec.IsMultipleChoicesEnabled
+        cachedIsChoicesEnabled ??= WrappedActionParameterSpec.GetIsMultipleChoicesEnabled(framework.MetamodelManager.Metamodel)
             ? Choices.Multiple
             : WrappedActionParameterSpec.IsChoicesEnabled(objectFacade.WrappedAdapter())
                 ? Choices.Single

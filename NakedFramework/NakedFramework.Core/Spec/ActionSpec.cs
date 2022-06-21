@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Interactions;
@@ -27,16 +28,12 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
     private readonly IActionSpecImmutable actionSpecImmutable;
     private readonly ILogger<ActionSpec> logger;
     private readonly ILoggerFactory loggerFactory;
-
     private string asString;
-
     private IObjectSpec elementSpec;
     private bool? hasReturn;
     private bool? isFinderMethod;
-
     private ITypeSpec onSpec;
-
-    // cached values     
+    private ITypeSpec ownerSpec;
     private IObjectSpec returnSpec;
 
     public ActionSpec(INakedFramework framework,
@@ -82,6 +79,8 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
 
     public override IObjectSpec ElementSpec => elementSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.GetElementSpec(Framework.MetamodelManager.Metamodel));
 
+    private ITypeSpec OwnerSpec => ownerSpec ??= Framework.MetamodelManager.GetSpecification(actionSpecImmutable.GetOwnerSpec(Framework.MetamodelManager.Metamodel));
+
     public ITypeSpec OnSpec => onSpec ??= Framework.MetamodelManager.GetSpecification(ActionInvocationFacet.OnType);
 
     public override Type[] FacetTypes => actionSpecImmutable.FacetTypes;
@@ -90,16 +89,17 @@ public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
 
     public int ParameterCount => actionSpecImmutable.Parameters.Length;
 
-    public bool IsContributedMethod => actionSpecImmutable.IsContributedMethod;
+    public bool IsContributedMethod =>
+        OwnerSpec is IServiceSpec &&
+        Parameters.Any() &&
+        ContainsFacet(typeof(IContributedActionFacet));
 
     public bool IsStaticFunction => actionSpecImmutable.IsStaticFunction;
 
-    public bool IsFinderMethod {
-        get {
-            isFinderMethod ??= actionSpecImmutable.IsFinderMethod;
+    public bool GetIsFinderMethod(IMetamodel metamodel) {
+        isFinderMethod ??= actionSpecImmutable.GetIsFinderMethod(metamodel);
 
-            return isFinderMethod.Value;
-        }
+        return isFinderMethod.Value;
     }
 
     public INakedObjectAdapter Execute(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet) {

@@ -24,7 +24,6 @@ using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
-using NakedFramework.Metamodel.Component;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.SpecImmutable;
@@ -195,8 +194,6 @@ public class ReflectorSpeedTest {
         }
     }
 
-
-
     private static void Record(string test, long elapsed) => Stats[test] = elapsed;
 
     [TestMethod]
@@ -269,30 +266,30 @@ public class ReflectorSpeedTest {
     public void ReflectTestModel1000TypesBenchMarkParallelDefault() {
         ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
+
     [TestMethod]
     public void ReflectTestModel1000TypesBenchMarkParallel1() {
         ReflectorDefaults.ParallelDegree = 1;
         ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
+
     [TestMethod]
-    public void ReflectTestModel1000TypesBenchMarkParallel2()
-    {
+    public void ReflectTestModel1000TypesBenchMarkParallel2() {
         ReflectorDefaults.ParallelDegree = 2;
         ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
+
     [TestMethod]
-    public void ReflectTestModel1000TypesBenchMarkParallel3()
-    {
-        ReflectorDefaults.ParallelDegree = 3;
-        ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
-    }
-    [TestMethod]
-    public void ReflectTestModel1000TypesBenchMarkParallel4()
-    {
+    public void ReflectTestModel1000TypesBenchMarkParallel3() {
         ReflectorDefaults.ParallelDegree = 3;
         ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
 
+    [TestMethod]
+    public void ReflectTestModel1000TypesBenchMarkParallel4() {
+        ReflectorDefaults.ParallelDegree = 3;
+        ReflectTestModelTypesBenchMark(model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    }
 
     [TestMethod]
     public void ReflectTestModel500TypesBenchMark() {
@@ -454,21 +451,21 @@ public class ReflectorSpeedTest {
         }
     }
 
-    //[TestMethod]
-    //public void XmlSerializeTestModel100TypesBenchMark() {
-    //    SerializeTestModelTypesBenchMark("metadata.xml", model1000_Config.Types());
-    //}
+    [TestMethod]
+    public void XmlSerializeTestModel100TypesBenchMark() {
+        SerializeTestModelTypesBenchMark("metadata.xml", model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
+    }
 
-    //[TestMethod]
-    //public void XmlSerializeTestModel100TypesBenchMarkWithJit() {
-    //    ReflectorDefaults.JitSerialization = true;
-    //    try {
-    //        XmlSerializeTestModel100TypesBenchMark();
-    //    }
-    //    finally {
-    //        ReflectorDefaults.JitSerialization = false;
-    //    }
-    //}
+    [TestMethod]
+    public void XmlSerializeTestModel100TypesBenchMarkWithJit() {
+        ReflectorDefaults.JitSerialization = true;
+        try {
+            XmlSerializeTestModel100TypesBenchMark();
+        }
+        finally {
+            ReflectorDefaults.JitSerialization = false;
+        }
+    }
 
     [TestMethod]
     public void XmlSerializeAWTypesBenchMark() {

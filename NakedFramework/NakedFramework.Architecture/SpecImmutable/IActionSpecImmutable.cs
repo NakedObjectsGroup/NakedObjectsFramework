@@ -5,19 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedFramework.Architecture.Component;
 
 namespace NakedFramework.Architecture.SpecImmutable;
 
 public interface IActionSpecImmutable : IMemberSpecImmutable {
-    ITypeSpecImmutable OwnerSpec { get; }
+    Type OwnerType { get; }
     IActionParameterSpecImmutable[] Parameters { get; }
-    bool IsContributedMethod { get; }
     bool IsStaticFunction { get; }
-    bool IsFinderMethod { get; }
+    bool GetIsFinderMethod(IMetamodel metamodel);
     string StaticName { get; }
     IObjectSpecImmutable GetElementSpec(IMetamodel metamodel);
-
+    ITypeSpecImmutable GetOwnerSpec(IMetamodel metamodel);
     bool IsFinderMethodFor(IObjectSpecImmutable spec, IMetamodel metamodel);
 }
 

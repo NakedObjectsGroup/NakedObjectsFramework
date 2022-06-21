@@ -39,7 +39,7 @@ public class SpecFactory {
 
     public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
         CheckInitialised();
-        var specification = parameterSpecImmutable.Specification;
+        var specification = parameterSpecImmutable.GetSpecification(framework.MetamodelManager.Metamodel);
         return specification switch {
             _ when specification.IsParseable => new ActionParseableParameterSpec(index, actionSpec, parameterSpecImmutable, framework),
             _ when specification.IsObject => new OneToOneActionParameter(index, actionSpec, parameterSpecImmutable, framework),

@@ -18,12 +18,14 @@ public abstract class AbstractSpecAdapter : MemberSpecImmutable {
     private readonly IActionSpecImmutable action;
 
     protected AbstractSpecAdapter(IActionSpecImmutable action) : base(action.Identifier) => this.action = action;
-    public IObjectSpecImmutable OwnerSpec => action.OwnerSpec as IObjectSpecImmutable;
+    public Type OwnerType => action.OwnerType;
 
     public override Type[] FacetTypes => action.FacetTypes;
 
     public override IObjectSpecImmutable GetElementSpec(IMetamodel metamodel) => action.GetElementSpec(metamodel);
     public override IObjectSpecImmutable GetReturnSpec(IMetamodel metamodel) => action.GetReturnSpec(metamodel);
+
+    public IObjectSpecImmutable GetOwnerSpec(IMetamodel metamodel) => action.GetOwnerSpec(metamodel) as IObjectSpecImmutable;
 
     public override IFacet GetFacet(Type facetType) => action.GetFacet(facetType);
 

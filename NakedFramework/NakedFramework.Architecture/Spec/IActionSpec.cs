@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Reflect;
 
 namespace NakedFramework.Architecture.Spec;
@@ -31,7 +32,7 @@ public interface IActionSpec : IMemberSpec {
     /// <summary>
     ///     Return true if the action is run on a service object and can be used as a finder
     /// </summary>
-    bool IsFinderMethod { get; }
+    bool GetIsFinderMethod(IMetamodel metamodel);
 
     /// <summary>
     ///     Returns the number of parameters used by this method
