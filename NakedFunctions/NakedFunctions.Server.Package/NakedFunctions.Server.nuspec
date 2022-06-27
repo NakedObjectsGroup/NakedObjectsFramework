@@ -12,26 +12,18 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<summary>Initial version of Naked Functions</summary>
 		<description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
-		<tags>naked functions functional progamming ddd domain driven design</tags>
+		<tags>naked functions functional programming ddd domain driven design</tags>
 		<dependencies>
 			<group targetFramework="net6.0">
 				<dependency id="NakedFunctions.ProgrammingModel" version="[1.1.0, 2)" />
 				<dependency id="NakedFramework" version="[13.0.0, 14)" />
-				<dependency id="EntityFramework" version="[6.4.4, 7)" />
-				<dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[6.0.0, 7)" />
-				<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[6.0.0, 7)" />
-				<dependency id="Microsoft.Extensions.Configuration" version="[6.0.0, 7)" />
-				<dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.7, 6)" />
-				<dependency id="System.Reflection.Emit" version="[4.7.0, 5)" />
 			</group>
 		</dependencies>
 	</metadata>
 	<files>
 		<file src="icon.png" target="images\" />
-
 		<file src="..\NakedFunctions.Reflector\bin\Debug\**\NakedFunctions.Reflector.dll" target="lib" />
 		<file src="..\NakedFunctions.Services\bin\Debug\**\NakedFunctions.Services.dll" target="lib" />
-
 		<file src="..\NakedFunctions.Reflector\bin\Debug\**\NakedFunctions.Reflector.pdb" target="lib" />
 		<file src="..\NakedFunctions.Services\bin\Debug\**\NakedFunctions.Services.pdb" target="lib" />
 	</files>

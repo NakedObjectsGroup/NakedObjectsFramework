@@ -17,10 +17,10 @@
 			<group targetFramework="net6.0">
 				<dependency id="NakedFramework.ProgrammingModel" version="[13.1.0, 14)" />
 				<dependency id="EntityFramework" version="[6.4.4, 7)" />
-				<dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[6.0.0, 7)" />
-				<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[6.0.0, 7)" />
-				<dependency id="Microsoft.Extensions.Configuration" version="[6.0.0, 7)" />
-				<dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.7, 6)" />
+				<dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[6.0.6, 7)" />
+				<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[6.0.6, 7)" />
+				<dependency id="Microsoft.Extensions.Configuration" version="[6.0.1, 7)" />
+				<dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.9, 6)" />
 				<dependency id="System.Reflection.Emit" version="[4.7.0, 5)" />
 			</group>
 		</dependencies>
@@ -32,8 +32,7 @@
 		<file src="..\..\NakedFramework\NakedFramework.Architecture\bin\Debug\**\NakedFramework.Architecture.dll"
 		      target="lib" />
 		<file src="..\..\NakedFramework\NakedFramework.Core\bin\Debug\**\NakedFramework.Core.dll" target="lib" />
-		<file
-			src="..\..\NakedFramework\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.dll"
+		<file src="..\..\NakedFramework\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.dll"
 			target="lib" />
 		<file src="..\..\NakedFramework\NakedFramework.Facade\bin\Debug\**\NakedFramework.Facade.dll" target="lib" />
 		<file src="..\..\NakedFramework\NakedFramework.Facade.Impl\bin\Debug\**\NakedFramework.Facade.Impl.dll" target="lib" />
@@ -48,15 +47,12 @@
 		<file src="..\..\NakedFramework\NakedFramework.Rest\bin\Debug\**\NakedFramework.Rest.dll" target="lib" />
 		<file src="..\..\NakedFramework\NakedFramework.Rest.Snapshot\bin\Debug\**\NakedFramework.Rest.Snapshot.dll"
 		      target="lib" />
-
-
 		<file src="..\..\NakedFramework\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.pdb"
 		      target="lib" />
 		<file src="..\..\NakedFramework\NakedFramework.Architecture\bin\Debug\**\NakedFramework.Architecture.pdb"
 		      target="lib" />
 		<file src="..\..\NakedFramework\NakedFramework.Core\bin\Debug\**\NakedFramework.Core.pdb" target="lib" />
-		<file
-			src="..\..\NakedFramework\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.pdb"
+		<file src="..\..\NakedFramework\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.pdb"
 			target="lib" />
 		<file src="..\..\NakedFramework\NakedFramework.Facade\bin\Debug\**\NakedFramework.Facade.pdb" target="lib" />
 		<file src="..\..\NakedFramework\NakedFramework.Facade.Impl\bin\Debug\**\NakedFramework.Facade.Impl.pdb" target="lib" />
@@ -71,6 +67,5 @@
 		<file src="..\..\NakedFramework\NakedFramework.Rest\bin\Debug\**\NakedFramework.Rest.pdb" target="lib" />
 		<file src="..\..\NakedFramework\NakedFramework.Rest.Snapshot\bin\Debug\**\NakedFramework.Rest.Snapshot.pdb"
 		      target="lib" />
-
 	</files>
 </package>

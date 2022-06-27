@@ -15,20 +15,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.6" />
 		<PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0" />
-		<PackageReference Include="NUnit" Version="3.13.2" />
-		<PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+		<PackageReference Include="NUnit" Version="3.13.3" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
 		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Core\NakedFramework.Core.csproj" />
-		<ProjectReference
-			Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
-		<ProjectReference
-			Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
+		<ProjectReference Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
+		<ProjectReference Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
 	</ItemGroup>
 
 

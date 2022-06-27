@@ -17,12 +17,6 @@
 			<group targetFramework="net6.0">
 				<dependency id="NakedObjects.ProgrammingModel" version="[13.0.0, 14)" />
 				<dependency id="NakedFramework" version="[13.0.0, 14)" />
-				<dependency id="EntityFramework" version="[6.4.4, 7)" />
-				<dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[6.0.0, 7)" />
-				<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[6.0.0, 7)" />
-				<dependency id="Microsoft.Extensions.Configuration" version="[6.0.0, 7)" />
-				<dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.7, 6)" />
-				<dependency id="System.Reflection.Emit" version="[4.7.0, 5)" />
 			</group>
 		</dependencies>
 	</metadata>
@@ -31,7 +25,6 @@
 		<file src="..\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.dll" target="lib" />
 		<file src="..\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.dll" target="lib" />
 		<file src="..\NakedObjects.Snapshot.Xml\bin\Debug\**\NakedObjects.Snapshot.Xml.dll" target="lib" />
-
 		<file src="..\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.pdb" target="lib" />
 		<file src="..\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
 		<file src="..\NakedObjects.Snapshot.Xml\bin\Debug\**\NakedObjects.Snapshot.Xml.pdb" target="lib" />
