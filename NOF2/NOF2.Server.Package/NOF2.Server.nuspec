@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>NOF2.Server</id>
-		<version>1.0.0-beta05</version>
+		<version>1.0.0</version>
 		<authors>Naked Objects Group Ltd</authors>
 		<owners>Naked Objects Group Ltd</owners>
 		<license type="expression">Apache-2.0</license>
@@ -15,10 +15,10 @@
 		<tags>naked objects nakedobjects ddd domain driven design</tags>
 		<dependencies>
 			<group targetFramework="net35">
-				<dependency id="NOF2.ProgrammingModel" version="[1.0.0-beta05, 2)" />
+				<dependency id="NOF2.ProgrammingModel" version="[1.0.0, 2)" />
 			</group>
 			<group targetFramework="net6.0">
-				<dependency id="NakedFramework" version="[13.0.0-beta05, 14)" />
+				<dependency id="NakedFramework" version="[13.0.0, 14)" />
 				<dependency id="EntityFramework" version="[6.4.4, 7)" />
 				<dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[6.0.0, 7)" />
 				<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[6.0.0, 7)" />

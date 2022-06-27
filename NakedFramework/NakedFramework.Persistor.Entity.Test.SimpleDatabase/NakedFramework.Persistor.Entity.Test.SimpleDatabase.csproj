@@ -16,7 +16,7 @@
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
-    <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0-beta05" />
+    <PackageReference Include="NakedObjects.ProgrammingModel" Version="13.0.0" />
   </ItemGroup>
 
 </Project>
