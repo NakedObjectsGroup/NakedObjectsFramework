@@ -12,7 +12,8 @@ import { Command } from './Command';
 import { CommandResult } from './command-result';
 import * as Commandresult from './command-result';
 import * as Usermessages from '../user-messages';
-import { supportedDateFormats, validateDate, validateMandatory, validateMandatoryAgainstType } from '../validate';
+import { validateDate, validateMandatory, validateMandatoryAgainstType } from '../validate';
+import { supportedDateFormats } from '@nakedobjects/services';
 
 export class Enter extends Command {
 
@@ -165,7 +166,7 @@ export class Enter extends Command {
                 const dt = validateDate(fieldEntry, supportedDateFormats);
 
                 if (dt) {
-                    value = new Ro.Value(Ro.toDateString(dt.toDate()));
+                    value = new Ro.Value(Ro.toDateString(dt.toJSDate()));
                 }
             }
 

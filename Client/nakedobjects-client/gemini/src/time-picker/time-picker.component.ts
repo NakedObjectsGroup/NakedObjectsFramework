@@ -9,10 +9,11 @@ import {
     ViewChild
 } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
-import { utc, Moment } from 'moment';
+import { DateTime } from 'luxon';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';
 import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
+import { defaultShortTimeFormat, defaultTimeFormat } from '@nakedobjects/services';
 
 export interface ITimePickerOutputEvent {
     type: 'timeChanged' | 'timeCleared' | 'timeInvalid';
@@ -47,7 +48,7 @@ export class TimePickerComponent implements OnInit, OnDestroy {
         this.outputEvents = new EventEmitter<ITimePickerOutputEvent>();
     }
 
-    private timeValue: Moment | null;
+    private timeValue: DateTime | null;
     private modelValue: string;
     private eventsSub: ISubscription;
     private bSubject: BehaviorSubject<string>;
@@ -65,25 +66,25 @@ export class TimePickerComponent implements OnInit, OnDestroy {
         return this.modelValue;
     }
 
-    get time(): Moment | null {
+    get time(): DateTime | null {
         return this.timeValue;
     }
 
-    set time(time: Moment | null) {
-        if (time && time.isValid()) {
+    set time(time: DateTime | null) {
+        if (time && time.isValid) {
             this.timeValue = time;
-            this.outputEvents.emit({ type: 'timeChanged', data: time.format('HH:mm:ss') });
+            this.outputEvents.emit({ type: 'timeChanged', data: time.toFormat(defaultTimeFormat) });
         }
     }
 
-    private validInputFormats = ['HH:mm:ss', 'HH:mm', 'HHmm'];
+    private validInputFormats = [defaultTimeFormat, defaultShortTimeFormat];
 
     private validateTime(newValue: string) {
-        let dt: Moment = utc();
+        let dt = DateTime.now();
 
         for (const f of this.validInputFormats) {
-            dt = utc(newValue, f, true);
-            if (dt.isValid()) {
+            dt = DateTime.fromFormat(newValue, f);
+            if (dt.isValid) {
                 break;
             }
         }
@@ -91,10 +92,17 @@ export class TimePickerComponent implements OnInit, OnDestroy {
         return dt;
     }
 
-    setTimeIfChanged(newTime: Moment) {
-        if (!newTime.isSame(Ro.withUndefined(this.time))) {
+    private sameTime(t1 : DateTime, t2 : DateTime | null) {
+        return t2 &&
+               t1.hour === t2.hour &&
+               t1.minute === t2.minute &&
+               t1.second === t2.second;
+    }
+
+    setTimeIfChanged(newTime: DateTime) {
+        if (!this.sameTime(newTime, this.time)) {
             this.time = newTime;
-            setTimeout(() => this.model = newTime.format('HH:mm'));
+            setTimeout(() => this.model = newTime.toFormat(defaultShortTimeFormat));
         }
     }
 
@@ -106,7 +114,7 @@ export class TimePickerComponent implements OnInit, OnDestroy {
         } else {
             const dt = this.validateTime(newValue);
 
-            if (dt.isValid()) {
+            if (dt.isValid) {
                 this.setTimeIfChanged(dt);
             } else {
                 this.timeValue = null;

@@ -2,10 +2,11 @@ import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, EventEmitter, Input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { ConfigService } from '@nakedobjects/services';
-import { FieldViewModel, fixedDateFormat, PropertyViewModel } from '@nakedobjects/view-models';
-import { Moment } from 'moment';
+import { FieldViewModel, PropertyViewModel } from '@nakedobjects/view-models';
+import { DateTime } from 'luxon';
 import { DatePickerComponent, DatePickerOptions } from '../date-picker/date-picker.component';
 import { IDatePickerInputEvent, IDatePickerOutputEvent } from '../date-picker/date-picker.component';
+import { fixedDateFormat } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-date-picker-facade',
@@ -52,9 +53,9 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         return this.model.description;
     }
 
-    setValueIfChanged(dateModel: Moment | null) {
+    setValueIfChanged(dateModel: DateTime | null) {
         const oldValue = this.control.value;
-        const newValue = dateModel ? dateModel.format(fixedDateFormat) : '';
+        const newValue = dateModel ? dateModel.toFormat(fixedDateFormat) : '';
 
         if (newValue !== oldValue) {
             this.model.resetMessage();
@@ -72,7 +73,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         }
     }
 
-    handleDateChangedEvent(dateModel: Moment) {
+    handleDateChangedEvent(dateModel: DateTime) {
         if (this.control) {
             this.setValueIfChanged(dateModel);
         }

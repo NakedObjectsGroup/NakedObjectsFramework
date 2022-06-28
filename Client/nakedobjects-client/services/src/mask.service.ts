@@ -2,13 +2,14 @@
 import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import forEach from 'lodash-es/forEach';
-import { utc } from 'moment';
+import { DateTime } from 'luxon';
 import { ConfigService } from './config.service';
+import { defaultDateFormat, defaultShortTimeFormat, defaultTimeFormat } from './date-constants';
 
 export interface IMaskServiceConfigurator {
     setNumberMaskMapping: (customMask: string, format: Ro.FormatType, digits?: string, locale?: string) => void;
 
-    // date masks now use moment mask conventions https://momentjs.com/docs/#/displaying/
+    // date masks now use luxon mask conventions https://moment.github.io/luxon/#/formatting
     setDateMaskMapping: (customMask: string, format: Ro.FormatType, mask: string, tz?: string, locale?: string) => void;
 
     setCurrencyMaskMapping: (customMask: string, format: Ro.FormatType, symbol?: string, digits?: string, locale?: string) => void;
@@ -67,16 +68,16 @@ class LocalDateFilter implements ILocalFilter {
         if (!val) {
             return '';
         }
-        // Angular date pipes no longer support timezones so we need to use moment here
+        // Angular date pipes no longer support timezones so we need to use luxon here
 
         // date or time
-        let mmt = val.length > 8 ? utc(val) : utc(val, 'HH:mm:ss');
+        let mmt = val.length > 8 ? DateTime.fromISO(val) : DateTime.fromFormat(val, defaultTimeFormat);
 
-        if (mmt.isValid()) {
+        if (mmt.isValid) {
             if (this.tz) {
-                mmt = mmt.utcOffset(this.tz);
+                mmt = mmt.setZone(this.tz);
             }
-            return mmt.format(this.mask);
+            return this.mask ? mmt.toFormat(this.mask) : mmt.toLocaleString();
         }
         return '';
     }
@@ -130,11 +131,11 @@ export class MaskService implements IMaskServiceConfigurator {
             case ('string'):
                 return new LocalStringFilter();
             case ('date-time'):
-                return new LocalDateFilter(this.defaultLocale, 'D MMM YYYY HH:mm:ss');
+                return new LocalDateFilter(this.defaultLocale, `${defaultDateFormat} ${defaultTimeFormat}`, "utc");
             case ('date'):
-                return new LocalDateFilter(this.defaultLocale, 'D MMM YYYY', '+0000');
+                return new LocalDateFilter(this.defaultLocale, defaultDateFormat);
             case ('time'):
-                return new LocalDateFilter(this.defaultLocale, 'HH:mm', '+0000');
+                return new LocalDateFilter(this.defaultLocale, defaultShortTimeFormat);
             case ('utc-millisec'):
                 return new LocalNumberFilter(this.defaultLocale);
             case ('big-integer'):

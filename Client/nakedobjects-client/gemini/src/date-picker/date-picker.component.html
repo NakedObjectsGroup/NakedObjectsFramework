@@ -50,7 +50,7 @@
                     </g>
                 </svg>
             </i>
-            <span class="year-title">{{ currentDate.format('YYYY') }}</span>
+            <span class="year-title">{{ currentDate.toFormat('yyyy') }}</span>
             <i (click)="nextYear()">
                 <svg class = "nextYear" width="190px" height="306px" viewBox="58 0 190 306" version="1.1">
                     <g id="keyboard-right-arrow-button" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(58.000000, 0.000000)">
@@ -73,7 +73,7 @@
                             </g>
                         </svg>
                     </i>
-                    <span class="month-title">{{ currentDate.format('MMMM') }}</span>
+                    <span class="month-title">{{ currentDate.toFormat('MMMM') }}</span>
                     <i (click)="nextMonth()">
                         <svg width="190px" height="306px" viewBox="58 0 190 306" version="1.1">
                             <g id="keyboard-right-arrow-button" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(58.000000, 0.000000)">
@@ -94,7 +94,7 @@
                     <span>S</span>
                 </div>
                 <div class="datepicker-calendar-days-container">
-                    <span class="day" *ngFor="let d of days; let i = index" (click)="selectDate(d.momentObj, $event)" [ngClass]="{ 'disabled': !d.enabled, 'today': d.today, 'selected': d.selected }">
+                    <span class="day" *ngFor="let d of days; let i = index" (click)="selectDate(d.dateTime, $event)" [ngClass]="{ 'disabled': !d.enabled, 'today': d.today, 'selected': d.selected }">
                         {{ d.day }}
                     </span>
                 </div>

@@ -2,11 +2,10 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import * as Ro from '@nakedobjects/restful-objects';
-import { utc, Moment } from 'moment';
+import { defaultDateFormat, defaultTimeFormat, supportedDateFormats } from './date-constants';
+import { DateTime } from 'luxon';
 import { ConfigService } from './config.service';
 import { MaskService } from './mask.service';
-
-const supportedDateFormats = ['D/M/YYYY', 'D/M/YY', 'D MMM YYYY', 'D MMMM YYYY', 'D MMM YY', 'D MMMM YY'];
 
 describe('MaskService', () => {
 
@@ -84,7 +83,7 @@ describe('MaskService', () => {
         let ts3: string;
 
         beforeEach(inject([MaskService], (maskService: MaskService) => {
-            maskService.setDateMaskMapping('test', 'date-time', 'D MMM YYYY HH:mm:ss');
+            maskService.setDateMaskMapping('test', 'date-time', `${defaultDateFormat} ${defaultTimeFormat}`);
 
             const f = maskService.toLocalFilter('test', 'date-time');
 
@@ -159,14 +158,30 @@ describe('MaskService', () => {
 
     describe('Moment', () => {
 
+        function format(toTest: string, formats: string[]) {
+
+            let dt: DateTime | null = null;
+
+            for (const f of formats) {
+                dt = DateTime.fromFormat(toTest, f).toLocal();
+                if (dt.isValid) {
+                    return dt;
+                }
+            }
+
+            return dt;
+        }
+
+
+
         function testFormat(toTest: string, valid: boolean, expected: Date) {
 
-            const m = utc(toTest, supportedDateFormats, 'en-GB', true).local(true);
+            const m = format(toTest, supportedDateFormats);
 
-            expect(m.isValid()).toBe(valid);
+            expect(m.isValid).toBe(valid);
 
             if (valid) {
-                expect(m.toDate().toISOString()).toBe(expected.toISOString());
+                expect(m.toJSDate().toISOString()).toBe(expected.toISOString());
             }
         }
 

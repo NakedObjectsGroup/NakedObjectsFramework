@@ -9,13 +9,14 @@ import {
     ViewChild
 } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
-import { validateDate, fixedDateFormat } from '@nakedobjects/view-models';
+import { validateDate } from '@nakedobjects/view-models';
 import concat from 'lodash-es/concat';
-import { utc,  Moment}  from 'moment';
+import { DateTime }  from 'luxon';
 import { BehaviorSubject, Observable, SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';
 import { Dictionary } from 'lodash';
+import { fixedDateFormat, supportedDateFormats } from '@nakedobjects/services';
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 
@@ -40,7 +41,7 @@ export interface IDatePickerOutputDefaultEvent {
 
 export interface IDatePickerOutputChangedEvent {
     type: 'dateChanged';
-    data: Moment;
+    data: DateTime;
 }
 
 export interface IDatePickerOutputInvalidEvent {
@@ -55,12 +56,12 @@ export interface IDatePickerOutputClearedEvent {
 
 export class DatePickerOptions {
     firstWeekdaySunday?: boolean;
-    format?: string;
+    format: string;
     class?: string;
 
     constructor(obj?: DatePickerOptions) {
         this.firstWeekdaySunday = obj && obj.firstWeekdaySunday ? obj.firstWeekdaySunday : false;
-        this.format = obj && obj.format ? obj.format : 'YYYY-MM-DD';
+        this.format = obj && obj.format ? obj.format : fixedDateFormat;
         this.class = obj && obj.class;
     }
 }
@@ -72,7 +73,7 @@ export interface ICalendarDate {
     enabled: boolean;
     today: boolean;
     selected: boolean;
-    momentObj: Moment;
+    dateTime: DateTime;
 }
 
 @Component({
@@ -105,16 +106,16 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
     constructor() {
         this.opened = false;
-        this.options = this.options || {};
+        this.options = {format : fixedDateFormat};
         this.days = [];
         this.dateModelValue = null;
 
         this.outputEvents = new EventEmitter<IDatePickerOutputEvent>();
     }
 
-    private validInputFormats = ['DD/MM/YYYY', 'DD/MM/YY', 'D/M/YY', 'D/M/YYYY', 'D MMM YYYY', 'D MMMM YYYY', fixedDateFormat];
+    private validInputFormats = supportedDateFormats.concat(fixedDateFormat);
 
-    private dateModelValue: Moment | null;
+    private dateModelValue: DateTime | null;
     private modelValue: string;
 
     private bSubject: BehaviorSubject<string>;
@@ -132,15 +133,15 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         return this.modelValue;
     }
 
-    get dateModel(): Moment | null {
+    get dateModel(): DateTime | null {
         return this.dateModelValue;
     }
 
-    get currentDate(): Moment {
-        return this.dateModelValue || utc();
+    get currentDate(): DateTime {
+        return this.dateModelValue || DateTime.now();
     }
 
-    set dateModel(date: Moment | null) {
+    set dateModel(date: DateTime | null) {
         if (date) {
             this.dateModelValue = date;
             this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel! });
@@ -156,9 +157,9 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         return validateDate(newValue, this.validInputFormats);
     }
 
-    setDateIfChanged(newDate: Moment) {
+    setDateIfChanged(newDate: DateTime) {
         const currentDate = this.dateModel;
-        if (!newDate.isSame(Ro.withUndefined(currentDate))) {
+        if (!currentDate || !newDate.equals(currentDate)) {
             this.setValue(newDate);
             setTimeout(() => this.model = this.formatDate(this.dateModel));
         }
@@ -168,7 +169,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
         const dt = this.validateDate(newValue);
 
-        if (dt && dt.isValid()) {
+        if (dt && dt.isValid) {
             this.setDateIfChanged(dt);
         } else {
             this.setValue(null);
@@ -202,7 +203,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
                     }
                     case 'setDate': {
                         const date = this.validateDate(e.data);
-                        if (date && date.isValid()) {
+                        if (date && date.isValid) {
                             this.selectDate(date);
                         } else {
                             throw new Error(`Invalid date: ${e.data}`);
@@ -215,12 +216,22 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         }
     }
 
+    private isSame (dt1 : DateTime, dt2 : DateTime) {
+        return dt1.day === dt2.day && dt1.month === dt2.month && dt1.year === dt2.year;
+    }
+
+
     generateCalendar() {
-        const currentDate = this.currentDate.clone() ; // clone so not mutated
-        const month = currentDate.month();
-        const year = currentDate.year();
+    
+        const month = this.currentDate.month;
+        const year = this.currentDate.year;
         let n = 1;
-        const firstWeekDay = (this.options.firstWeekdaySunday) ? currentDate.date(2).day() : currentDate.date(1).day();
+        let firstdow = this.currentDate.startOf("month").weekday;
+        let firstWeekDay = firstdow + 1;
+
+        if (firstWeekDay === 8) {
+            firstWeekDay = 1;
+        }
 
         if (firstWeekDay !== 1) {
             n -= (firstWeekDay + 6) % 7;
@@ -228,11 +239,11 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
         this.days = [];
 
-        const endOfMonth = currentDate.clone().endOf('month');
-        for (let i = n; i <= endOfMonth.date(); i += 1) {
-            const date: Moment = utc(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
-            const today: boolean = utc().isSame(date, 'day') && utc().isSame(date, 'month');
-            const selected: boolean = this.currentDate.isSame(date, 'day');
+        const endOfMonth = this.currentDate.endOf('month');
+        for (let i = n; i <= endOfMonth.day; i += 1) {
+            const date: DateTime = DateTime.local(year, month, i);
+            const today: boolean = this.isSame(DateTime.now(), date);
+            const selected: boolean = !!this.dateModel && this.isSame(this.dateModel, date);
 
             const day: ICalendarDate = {
                 day: i > 0 ? i : null,
@@ -241,22 +252,22 @@ export class DatePickerComponent implements OnInit, OnDestroy {
                 enabled: i > 0,
                 today: i > 0 && today,
                 selected: i > 0 && selected,
-                momentObj: date
+                dateTime: date
             };
 
             this.days.push(day);
         }
     }
 
-    setValue(date: Moment | null) {
+    setValue(date: DateTime | null) {
         this.dateModel = date;
     }
 
-    private formatDate(date: Moment | null) {
-        return this.dateModel ? this.dateModel.format(this.options.format) : '';
+    private formatDate(date: DateTime | null) {
+        return this.dateModel ? this.dateModel.toFormat(this.options.format) : '';
     }
 
-    selectDate(date: Moment | null, e?: MouseEvent, ) {
+    selectDate(date: DateTime | null, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
             this.setValue(date);
@@ -265,41 +276,41 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         this.opened = false;
     }
 
-    writeValue(date: Moment) {
+    writeValue(date: DateTime) {
         if (!date) { return; }
         this.dateModelValue = date;
     }
 
     prevMonth() {
-        const date = this.currentDate.subtract(1, 'month');
+        const date = this.currentDate.minus({month :1});
         this.setValue(date);
         this.model = this.formatDate(this.dateModel);
         this.generateCalendar();
     }
 
     nextMonth() {
-        const date = this.currentDate.add(1, 'month');
+        const date = this.currentDate.plus({month:1});
         this.setValue(date);
         this.model = this.formatDate(this.dateModel);
         this.generateCalendar();
     }
 
     prevYear() {
-        const date = this.currentDate.subtract(1, 'year');
+        const date = this.currentDate.minus({year:1});
         this.setValue(date);
         this.model = this.formatDate(this.dateModel);
         this.generateCalendar();
     }
 
     nextYear() {
-        const date = this.currentDate.add(1, 'year');
+        const date = this.currentDate.plus({year:1});
         this.setValue(date);
         this.model = this.formatDate(this.dateModel);
         this.generateCalendar();
     }
 
     today() {
-        this.selectDate(utc());
+        this.selectDate(DateTime.now());
     }
 
     toggle() {

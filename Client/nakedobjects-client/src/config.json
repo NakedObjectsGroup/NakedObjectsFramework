@@ -67,7 +67,7 @@
             "d": {
                 "format": "date-time",
                 "mask": "D MMM YYYY",
-                "tz": "+0000"
+                "tz": "UTC+0"
             },
             "D": {
                 "format": "date",
@@ -76,7 +76,7 @@
             "T": {
                 "format": "time",
                 "mask": "HH:mm",
-                "tz": "+0000"
+                "tz": "UTC+0"
             }
         }
     },

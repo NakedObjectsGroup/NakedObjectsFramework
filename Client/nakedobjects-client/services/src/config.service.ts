@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import assign from 'lodash-es/assign';
+import { defaultDateFormat } from './date-constants';
 
 export enum ConfigState {
     pending,
@@ -67,7 +68,7 @@ export interface IAppConfig {
 
     // Note: "D" is the default mask for anything sent to the client as a date+time,
     // where no other mask is specified.
-    // This mask deliberately does not specify the timezone as "+0000", unlike the other masks,
+    // This mask deliberately does not specify the timezone as "UTC+0", unlike the other masks,
     // with the result that the date+time will be transformed to the timezone of the client.
     masks?: {
         currencyMasks?: {
@@ -131,7 +132,7 @@ export class ConfigService {
         doUrlValidation: false,
         leftClickHomeAlwaysGoesToSinglePane: true,
         logLevel: 'error',
-        dateInputFormat: 'D MMM YYYY'
+        dateInputFormat: defaultDateFormat
     };
 
     constructor(private readonly http: HttpClient) {

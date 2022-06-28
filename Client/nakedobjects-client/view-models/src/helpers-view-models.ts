@@ -170,18 +170,7 @@ export function validate(rep: Ro.IHasExtensions, vm: FieldViewModel, modelValue:
 }
 
 export function setScalarValueInView(vm: { value: string | number | boolean | Date | null }, propertyRep: Ro.PropertyMember, value: Ro.Value) {
-    if (Ro.isDate(propertyRep)) {
-        const date = Ro.toUtcDate(value);
-        vm.value = date ? Ro.toDateString(date) : '';
-    } else if (Ro.isDateTime(propertyRep)) {
-        const date = Ro.toUtcDate(value);
-        vm.value = date ? Ro.toDateTimeString(date) : '';
-    } else if (Ro.isTime(propertyRep)) {
-        const time = Ro.toTime(value);
-        vm.value = time ? Ro.toTimeString(time) : '';
-    } else {
-        vm.value = value.scalar();
-    }
+    vm.value = value.scalar();
 }
 
 export function dirtyMarker(context: ContextService, configService: ConfigService, oid: Ro.ObjectIdWrapper) {

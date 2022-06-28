@@ -1,19 +1,17 @@
 ﻿import * as Models from '@nakedobjects/restful-objects';
-import { utc } from 'moment';
+import { DateTime } from 'luxon';
 import { ILocalFilter } from '@nakedobjects/services';
 import * as Msg from './user-messages';
+import { fixedDateFormat } from '@nakedobjects/services';
 
-export const supportedDateFormats = ['D/M/YYYY', 'D/M/YY', 'D MMM YYYY', 'D MMMM YYYY', 'D MMM YY', 'D MMMM YY'];
-
-export const fixedDateFormat = 'YYYY-MM-DD';
 
 function isInteger(value: number) {
     return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 }
 
 function getDate(val: string): Date | null {
-    const dt1 = utc(val, fixedDateFormat, true);
-    return dt1.isValid() ? dt1.toDate() : null;
+    const dt1 = DateTime.fromFormat(val, fixedDateFormat); 
+    return dt1.isValid ? dt1.toJSDate() : null;
 }
 
 export function validateNumber(model: Models.IHasExtensions, newValue: number, filter: ILocalFilter): string {
@@ -61,13 +59,13 @@ export function validateStringFormat(model: Models.IHasExtensions, newValue: str
     return '';
 }
 
-export function validateDateTimeFormat(model: Models.IHasExtensions, newValue: Date): string {
+export function validateDateTimeFormat(model: Models.IHasExtensions, newValue: string): string {
     return '';
 }
 
-export function validateDateFormat(model: Models.IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
+export function validateDateFormat(model: Models.IHasExtensions, newValue: string, filter: ILocalFilter): string {
     const range = model.extensions().range();
-    const newDate = (newValue instanceof Date) ? newValue : getDate(newValue);
+    const newDate = getDate(newValue);
 
     if (range && newDate) {
         const min = range.min ? getDate(range.min as string) : null;
@@ -85,22 +83,22 @@ export function validateDateFormat(model: Models.IHasExtensions, newValue: Date 
     return '';
 }
 
-export function validateTimeFormat(model: Models.IHasExtensions, newValue: Date): string {
+export function validateTimeFormat(model: Models.IHasExtensions, newValue: string): string {
     return '';
 }
 
-export function validateString(model: Models.IHasExtensions, newValue: any, filter: ILocalFilter): string {
+export function validateString(model: Models.IHasExtensions, newValue: string, filter: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
         case ('string'):
-            return validateStringFormat(model, newValue as string);
+            return validateStringFormat(model, newValue);
         case ('date-time'):
-            return validateDateTimeFormat(model, newValue as Date);
+            return validateDateTimeFormat(model, newValue);
         case ('date'):
-            return validateDateFormat(model, newValue as Date | string, filter);
+            return validateDateFormat(model, newValue, filter);
         case ('time'):
-            return validateTimeFormat(model, newValue as Date);
+            return validateTimeFormat(model, newValue);
         default:
             return '';
     }
@@ -140,10 +138,12 @@ export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewV
 
 export function validateDate(newValue: string, validInputFormats: string[]) {
 
-    for (const f of validInputFormats) {
-        const dt = utc(newValue, f, true);
-        if (dt.isValid()) {
-            return dt;
+    if (newValue) {
+        for (const f of validInputFormats) {
+            const dt = DateTime.fromFormat(newValue, f);
+            if (dt.isValid) {
+                return dt;
+            }
         }
     }
 
