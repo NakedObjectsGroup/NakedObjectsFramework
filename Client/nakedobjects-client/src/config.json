@@ -66,8 +66,7 @@
         "dateMasks": {
             "d": {
                 "format": "date-time",
-                "mask": "D MMM YYYY",
-                "tz": "UTC+0"
+                "mask": "D MMM YYYY"
             },
             "D": {
                 "format": "date",
