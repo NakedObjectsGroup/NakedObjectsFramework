@@ -391,7 +391,7 @@ function linkByNamespacedRel(links: Link[], rel: string) {
 // interfaces
 
 export interface IHateoasModel {
-    keySeparator: string;
+    keySeparator?: string;
     etagDigest?: string;
     hateoasUrl: string;
     method: Ro.HttpMethodsType;
@@ -482,8 +482,8 @@ export abstract class HateosModel implements IHateoasModel {
     etagDigest?: string;
     hateoasUrl = '';
     method: Ro.HttpMethodsType = 'GET';
-    urlParms: Dictionary<Object>;
-    keySeparator: string;
+    protected urlParms: Dictionary<unknown> = {};
+    keySeparator?: string;
 
     protected constructor(protected model?: Ro.IRepresentation) {
     }
@@ -531,8 +531,7 @@ export abstract class HateosModel implements IHateoasModel {
         return url;
     }
 
-    setUrlParameter(name: string, value: Object) {
-        this.urlParms = this.urlParms || {};
+    setUrlParameter(name: string, value: unknown) {
         this.urlParms[name] = value;
     }
 }
@@ -642,12 +641,12 @@ export class MediaType {
         for (let i = 1; i < parms.length; i++) {
             if (parms[i].trim().substring(0, 7) === 'profile') {
                 this.profile = parms[i].trim();
-                const profileValue = (this.profile.split('=')[1].replace(/\"/g, '')).trim();
+                const profileValue = (this.profile.split('=')[1].replace(/"/g, '')).trim();
                 this.representationType = (profileValue.split('/')[1]).trim();
             }
             if (parms[i].trim().substring(0, 16) === roDomainType) {
                 this.xRoDomainType = (parms[i]).trim();
-                this.domainType = (this.xRoDomainType.split('=')[1].replace(/\"/g, '')).trim();
+                this.domainType = (this.xRoDomainType.split('=')[1].replace(/"/g, '')).trim();
             }
         }
     }
@@ -898,7 +897,7 @@ export class ErrorMap {
 }
 
 export class UpdateMap extends ArgumentMap implements IHateoasModel {
-    constructor(private readonly domainObject: DomainObjectRepresentation, valueMap: Ro.IValueMap) {
+    constructor(domainObject: DomainObjectRepresentation, valueMap: Ro.IValueMap) {
         super(valueMap, checkNotNull(domainObject.instanceId()));
         const link = domainObject.updateLink();
 
@@ -914,9 +913,8 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
     }
 
     properties(): Dictionary<Value> {
-        // TODO fix any cast - broken by 'setValidateOnly below
-        return mapValues(this.valueMap, (v: any) => new Value(v.value));
-        //return mapValues(this.valueMap, (v: Ro.IValue) => new Value(v.value));
+        const props = pickBy(this.valueMap, v => isIValue(v)) as Dictionary<Ro.IValue>;
+        return mapValues(props, v => new Value(v.value));
     }
 
     setProperty(name: string, value: Value) {
@@ -1225,7 +1223,7 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
 
         if (!this.parameterMap) {
             const parameters = this.wrapped().parameters;
-            this.parameterMap = mapValues(parameters, (p, id) => new Parameter(p, this, id!));
+            this.parameterMap = mapValues(parameters, (p, id) => new Parameter(p, this, id));
         }
     }
 
@@ -1279,7 +1277,7 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
     }
 
     setArguments(args: Dictionary<Value>) {
-        each(args, (arg, key) => this.setArgument(key!, arg));
+        each(args, (arg, key) => this.setArgument(key, arg));
     }
 
     setMember(name: string, value: Value) {
@@ -1288,7 +1286,7 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
 
     setMembers(objectValues: () => Dictionary<Value>) {
         if (this.valueMap[roNofMembers]) {
-            forEach(objectValues(), (v, k) => this.setMember(k!, v));
+            forEach(objectValues(), (v, k) => this.setMember(k, v));
         }
     }
 }
@@ -1409,8 +1407,8 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     }
 
     value(): Link[] {
-        this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value!);
-        return this.lazyValue!;
+        this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value);
+        return this.lazyValue;
     }
 
     disabledReason(): string {
@@ -1423,12 +1421,12 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     }
 
     actionMembers() {
-        this.actionMemberMap = this.actionMemberMap || mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id!)) as Dictionary<ActionMember>;
+        this.actionMemberMap = this.actionMemberMap || mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id)) as Dictionary<ActionMember>;
         return this.actionMemberMap;
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.collectionId())!;
+        return getMember(this.actionMembers(), id, this.collectionId());
     }
 
     hasActionMember(id: string): boolean {
@@ -1584,7 +1582,7 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
 
     wrapped = () => this.resource() as Ro.IMember;
 
-    update(newValue: Ro.IMember) {
+    override update(newValue: Ro.IMember) {
         super.update(newValue);
     }
 
@@ -1608,7 +1606,7 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
 // matches 14.4.1
 export class PropertyMember extends Member<Ro.IPropertyMember> implements IField {
 
-    wrapped = () => this.resource() as Ro.IPropertyMember;
+    override wrapped = () => this.resource() as Ro.IPropertyMember;
 
     constructor(wrapped: Ro.IPropertyMember, public parent: DomainObjectRepresentation | Link, private readonly propId: string) {
         super(wrapped);
@@ -1635,16 +1633,16 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
 
     setFromModifyMap(modifyMap: ModifyMap) {
         forOwn(modifyMap.valueMap, (v, k) => {
-            (<any>this.wrapped)[k!] = v;
+            this.wrapped[k] = v;
         });
     }
 
-    getModifyMap(id: string): ModifyMap | null {
+    getModifyMap(): ModifyMap | null {
         const modifyMap = this.modifyMap();
         return modifyMap ? new ModifyMap(this, modifyMap) : null;
     }
 
-    getClearMap(id: string): ClearMap | null {
+    getClearMap(): ClearMap | null {
         return this.clearLink() ? new ClearMap(this) : null;
     }
 
@@ -1661,7 +1659,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
         return new Value(withNull(this.wrapped().value));
     }
 
-    isScalar(): boolean {
+    override isScalar(): boolean {
         return isScalarType(this.extensions().returnType());
     }
 
@@ -1741,7 +1739,7 @@ export class CollectionMember
     private actionMemberMap: Dictionary<ActionMember>;
     etagDigest?: string;
 
-    wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
+    override wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
 
     constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation | Link, private readonly id: string) {
         super(wrapped);
@@ -1753,7 +1751,7 @@ export class CollectionMember
     }
 
     value(): Link[] | null {
-        this.lazyValue = this.lazyValue || (this.wrapped().value ? wrapLinks(this.wrapped().value!) : null);
+        this.lazyValue = this.lazyValue || (this.wrapped().value ? wrapLinks(this.wrapped().value) : null);
         return this.lazyValue;
     }
 
@@ -1774,7 +1772,7 @@ export class CollectionMember
     actionMembers(): Dictionary<ActionMember> {
         const members = this.wrapped().members;
         if (members) {
-            return this.actionMemberMap || mapValues(members, (m, id) => Member.wrapMember(m, this, id!)) as Dictionary<ActionMember>;
+            return this.actionMemberMap || mapValues(members, (m, id) => Member.wrapMember(m, this, id)) as Dictionary<ActionMember>;
         }
         return {};
     }
@@ -1784,14 +1782,14 @@ export class CollectionMember
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.collectionId())!;
+        return getMember(this.actionMembers(), id, this.collectionId());
     }
 }
 
 // matches 14.4.3
 export class ActionMember extends Member<Ro.IActionMember> {
 
-    wrapped = () => this.resource() as Ro.IActionMember;
+    override wrapped = () => this.resource() as Ro.IActionMember;
 
     constructor(wrapped: Ro.IActionMember, public parent: IHasActions, private readonly id: string) {
         super(wrapped);
@@ -1817,7 +1815,7 @@ export class ActionMember extends Member<Ro.IActionMember> {
         return linkByNamespacedRel(this.links(), 'invoke') || null;
     }
 
-    disabledReason(): string {
+    override disabledReason(): string {
         return this.wrapped().disabledReason || '';
     }
 
@@ -1859,7 +1857,7 @@ export class InvokableActionMember extends ActionMember {
 
         if (!this.parameterMap) {
             const parameters = this.wrapped().parameters;
-            this.parameterMap = mapValues(parameters, (p, id) => new Parameter(p, this, id!));
+            this.parameterMap = mapValues(parameters, (p, id) => new Parameter(p, this, id));
         }
     }
 
@@ -1905,7 +1903,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
-        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!)!);
+        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id));
         this.propertyMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === 'property') as Dictionary<PropertyMember>;
         this.collectionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === 'collection') as Dictionary<CollectionMember>;
         this.actionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === 'action') as Dictionary<ActionMember>;
@@ -1954,7 +1952,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.id())!;
+        return getMember(this.actionMembers(), id, this.id());
     }
 
     updateLink(): Link | null {
@@ -2040,7 +2038,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
-        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!));
+        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id));
         this.actionMemberMap = pickBy(this.memberMap, m => m.memberType() === 'action') as Dictionary<ActionMember>;
     }
 
@@ -2069,7 +2067,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.menuId())!;
+        return getMember(this.actionMembers(), id, this.menuId());
     }
 
     selfLink(): Link {
@@ -2130,12 +2128,12 @@ export class ListRepresentation
     }
 
     actionMembers() {
-        this.actionMemberMap = this.actionMemberMap || mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id!)) as Dictionary<ActionMember>;
+        this.actionMemberMap = this.actionMemberMap || mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id)) as Dictionary<ActionMember>;
         return this.actionMemberMap;
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, 'list')!;
+        return getMember(this.actionMembers(), id, 'list');
     }
 
     hasActionMember(id: string): boolean {
@@ -2162,7 +2160,7 @@ export class ErrorRepresentation extends ResourceRepresentation<Ro.IErrorReprese
 
     static create(message: string, stackTrace?: string[], causedBy?: Ro.IErrorDetailsRepresentation) {
         const rawError = {
-            links: [] as any[],
+            links: [] as Ro.ILink[],
             extensions: {},
             message: message,
             stackTrace: stackTrace,
@@ -2211,7 +2209,7 @@ export class PersistMap extends HateosModel implements IHateoasModel {
     }
 
     setValidateOnly() {
-        (<any>this.objectOfType)[roValidateOnly] = true;
+        this.objectOfType[roValidateOnly] = true;
     }
 }
 
@@ -2255,7 +2253,7 @@ export class VersionRepresentation extends ResourceRepresentation<Ro.IVersionRep
 // matches Domain Services Representation 7.0
 export class DomainServicesRepresentation extends ListRepresentation {
 
-    wrapped = () => this.resource() as RoCustom.ICustomListRepresentation;
+    override wrapped = () => this.resource() as RoCustom.ICustomListRepresentation;
 
     // links
     upLink(): Link {
@@ -2263,7 +2261,7 @@ export class DomainServicesRepresentation extends ListRepresentation {
     }
 
     // linked representations
-    getSelf(): DomainServicesRepresentation {
+    override getSelf(): DomainServicesRepresentation {
         return this.selfLink().getTargetAs<DomainServicesRepresentation>();
     }
 
@@ -2280,7 +2278,7 @@ export class DomainServicesRepresentation extends ListRepresentation {
 // custom
 export class MenusRepresentation extends ListRepresentation {
 
-    wrapped = () => this.resource() as RoCustom.ICustomListRepresentation;
+    override wrapped = () => this.resource() as RoCustom.ICustomListRepresentation;
 
     // links
     upLink(): Link {
@@ -2288,7 +2286,7 @@ export class MenusRepresentation extends ListRepresentation {
     }
 
     // linked representations
-    getSelf(): MenusRepresentation {
+    override getSelf(): MenusRepresentation {
         return this.selfLink().getTargetAs<MenusRepresentation>();
     }
 
@@ -2312,11 +2310,11 @@ export class UserRepresentation extends ResourceRepresentation<Ro.IUserRepresent
 
     // links
     selfLink(): Link {
-        return linkByRel(this.links(), 'self')!; // mandatory
+        return linkByRel(this.links(), 'self'); // mandatory
     }
 
     upLink(): Link {
-        return linkByRel(this.links(), 'up')!; // mandatory
+        return linkByRel(this.links(), 'up'); // mandatory
     }
 
     // linked representations
@@ -2353,7 +2351,6 @@ export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation
     constructor(againstType: string, toCheckType: string, appPath: string) {
         super();
         this.hateoasUrl = `${appPath}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
-        this.urlParms = {};
         this.urlParms['supertype'] = againstType;
     }
 
@@ -2442,7 +2439,7 @@ export class HomePageRepresentation extends ResourceRepresentation<Ro.IHomePageR
 export class Link {
     private oid: ObjectIdWrapper;
     private lazyExtensions: Extensions;
-    private repTypeToModel: any = {
+    private repTypeToModel = {
         'homepage': HomePageRepresentation,
         'user': UserRepresentation,
         'version': VersionRepresentation,
@@ -2475,15 +2472,15 @@ export class Link {
     }
 
     method(): Ro.HttpMethodsType {
-        return this.wrapped.method!;
+        return this.wrapped.method;
     }
 
     rel(): Rel {
-        return new Rel(this.wrapped.rel!);
+        return new Rel(this.wrapped.rel);
     }
 
     type(): MediaType {
-        return new MediaType(this.wrapped.type!);
+        return new MediaType(this.wrapped.type);
     }
 
     title(): string | null {
@@ -2501,11 +2498,11 @@ export class Link {
 
     members(): Dictionary<PropertyMember | CollectionMember> | null {
         const members = (this.wrapped as RoCustom.ICustomLink).members;
-        return members ? mapValues(members, (m, id) => Member.wrapLinkMember(m, this, id!)) : null;
+        return members ? mapValues(members, (m, id) => Member.wrapLinkMember(m, this, id)) : null;
     }
 
     extensions(): Extensions {
-        this.lazyExtensions = this.lazyExtensions || new Extensions(this.wrapped.extensions!);
+        this.lazyExtensions = this.lazyExtensions || new Extensions(this.wrapped.extensions);
         return this.lazyExtensions;
     }
 
@@ -2514,7 +2511,7 @@ export class Link {
         hateoasModel.method = this.method();
     }
 
-    private getHateoasTarget(targetType: any): IHateoasModel {
+    private getHateoasTarget(targetType: string): IHateoasModel {
         const MatchingType = this.repTypeToModel[targetType];
         const target: IHateoasModel = new MatchingType();
         return target;

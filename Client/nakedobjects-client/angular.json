@@ -93,8 +93,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
+              "restful-objects/src/**/*.ts",
+              "restful-objects/src/**/*.html"
             ]
           }
         }
