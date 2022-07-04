@@ -17,6 +17,8 @@ export interface ICustomExtensions extends Ro.IExtensions {
     'x-ro-nof-notNavigable'?: boolean;
     'x-ro-nof-renderEagerly'?: boolean;
     'x-ro-nof-presentationHint'?: string;
+    'x-ro-nof-editProperties'?: string;
+    'x-ro-nof-createNew'?: string;
 }
 
 export interface IRange {

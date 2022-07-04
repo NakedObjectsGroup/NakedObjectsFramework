@@ -120,7 +120,9 @@ export function withUndefined<T>(v: T | undefined | null): T | undefined {
 }
 
 function validateExists<T>(obj: T | null | undefined, name: string) {
-    if (obj) { return obj!; }
+    if (obj) { 
+        return obj; 
+    }
     return error(`validateExists - Expected ${name} does not exist`);
 }
 
@@ -131,7 +133,9 @@ function getMember<T>(members: Dictionary<T>, id: string, owner: string) {
 }
 
 export function checkNotNull<T>(v: T | undefined | null) {
-    if (v != null) { return v!; }
+    if (v != null) { 
+        return v;
+     }
     return error('checkNotNull - Unexpected null');
 }
 
@@ -251,7 +255,7 @@ export function decompress(toDecompress: string, shortCutMarker: string, urlShor
     return toDecompress;
 }
 
-export function getClassName(obj: any) {
+export function getClassName(obj: { constructor : { toString() : string} }) {
     const funcNameRegex = /function (.{1,})\(/;
     const results = (funcNameRegex).exec(obj.constructor.toString());
     return (results && results.length > 1) ? results[1] : '';
@@ -545,15 +549,15 @@ export abstract class ArgumentMap extends HateosModel {
         super(valueMap);
     }
 
-    populate(wrapped: Ro.IValueMap) {
+    override populate(wrapped: Ro.IValueMap) {
         super.populate(wrapped);
     }
 }
 
 export abstract class NestedRepresentation<T extends Ro.IResourceRepresentation> {
 
-    private lazyLinks: Link[] | null;
-    private lazyExtensions: Extensions;
+    private lazyLinks: Link[] | null = null;
+    private lazyExtensions: Extensions | null = null;
 
     protected resource = () => this.model as T;
 
@@ -596,7 +600,7 @@ export class RelParm {
 export class Rel {
 
     ns = '';
-    uniqueValue: string;
+    uniqueValue!: string;
     parms: RelParm[] = [];
 
     constructor(public asString: string) {
@@ -625,11 +629,11 @@ export class Rel {
 
 export class MediaType {
 
-    applicationType: string;
-    profile: string;
-    xRoDomainType: string;
-    representationType: string;
-    domainType: string;
+    applicationType: string | undefined;
+    profile: string | undefined;
+    xRoDomainType: string | undefined;
+    representationType: string | undefined;
+    domainType: string | undefined;
 
     constructor(public asString: string) {
         this.decomposeMediaType();
@@ -729,10 +733,11 @@ export class Value {
 
     toString(): string {
         if (this.isReference()) {
-            return this.link()!.title() || ''; // know true
+            return this.link()?.title() || ''; // know true
         }
 
         if (this.isList()) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const list = this.list()!; // know true
             const ss = map(list, v => v.toString());
             return ss.length === 0 ? '' : reduce(ss, (m, s) => m + '-' + s, '');
@@ -743,10 +748,12 @@ export class Value {
 
     private compress(shortCutMarker: string, urlShortCuts: string[]): Value {
         if (this.isReference()) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const link = this.link()!.compress(shortCutMarker, urlShortCuts); // know true
             return new Value(link);
         }
         if (this.isList()) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const list = map(this.list()!, i => i.compress(shortCutMarker, urlShortCuts));
             return new Value(list);
         }
@@ -761,10 +768,12 @@ export class Value {
 
     private decompress(shortCutMarker: string, urlShortCuts: string[]): Value {
         if (this.isReference()) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const link = this.link()!.decompress(shortCutMarker, urlShortCuts);  // know true
             return new Value(link);
         }
         if (this.isList()) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const list = map(this.list()!, i => i.decompress(shortCutMarker, urlShortCuts));
             return new Value(list);
         }
@@ -779,6 +788,7 @@ export class Value {
 
     toValueString(): string {
         if (this.isReference()) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return this.link()!.href();  // know true
         }
         return (this.wrapped == null) ? '' : this.wrapped.toString();
@@ -794,12 +804,14 @@ export class Value {
 
     setValue(target: Ro.IValue) {
         if (this.isFileReference()) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             target.value = this.link()!.wrapped; // know true
         } else if (this.isReference()) {
 
             target.value = { 'href': (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
             const list = this.list() as Value[]; // know true
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             target.value = map(list, v => v.isReference() ? <Ro.ILink>{ 'href': v.link()!.href() } : v.scalar()) as Ro.ValueType[];
         } else if (this.isBlob()) {
             target.value = this.blob();
@@ -808,7 +820,7 @@ export class Value {
         }
     }
 
-    set(target: Dictionary<Ro.IValue | string>, name: string) {
+    set(target: Dictionary<Ro.IValue | string | boolean>, name: string) {
         const t = target[name] = <Ro.IValue>{ value: null };
         this.setValue(t);
     }
@@ -910,7 +922,7 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
     properties(): Dictionary<Value> {
         // TODO fix any cast - broken by 'setValidateOnly below
         return mapValues(this.valueMap, (v: any) => new Value(v.value));
-        // return mapValues(this.map, (v: Ro.IValue) => new Value(v.value));
+        //return mapValues(this.valueMap, (v: Ro.IValue) => new Value(v.value));
     }
 
     setProperty(name: string, value: Value) {
@@ -918,8 +930,7 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
     }
 
     setValidateOnly() {
-        // TODO a boolean is not assignable to an IValueMap - fix - confuses types system !
-        (<any>this.valueMap)[roValidateOnly] = true;
+        this.valueMap[roValidateOnly] = true;
     }
 }
 

@@ -119,7 +119,7 @@ export interface IValue {
 }
 
 export interface IValueMap {
-    [index: string]: IValue | string;
+    [index: string]: IValue | string | boolean;
 }
 
 export interface IObjectOfType {
