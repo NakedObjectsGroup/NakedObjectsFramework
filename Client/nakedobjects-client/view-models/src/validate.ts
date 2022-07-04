@@ -72,11 +72,11 @@ export function validateDateFormat(model: Models.IHasExtensions, newValue: strin
         const max = range.max ? getDate(range.max as string) : null;
 
         if (min && newDate < min) {
-            return Msg.outOfRange(Models.toDateString(newDate), Models.getUtcDate(range.min as string), Models.getUtcDate(range.max as string), filter);
+            return Msg.outOfRange(Models.toDateString(newDate), min.toISOString(), max?.toISOString(), filter);
         }
 
         if (max && newDate > max) {
-            return Msg.outOfRange(Models.toDateString(newDate), Models.getUtcDate(range.min as string), Models.getUtcDate(range.max as string), filter);
+            return Msg.outOfRange(Models.toDateString(newDate), min?.toISOString(), max.toISOString(), filter);
         }
     }
 
