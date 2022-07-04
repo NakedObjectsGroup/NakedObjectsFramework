@@ -75,8 +75,7 @@
             },
             "T": {
                 "format": "time",
-                "mask": "HH:mm",
-                "tz": "UTC+0"
+                "mask": "HH:mm"
             }
         }
     },

@@ -173,7 +173,7 @@ export function getTime(rawTime: string): Date | null {
     const mins = parseInt(rawTime.substring(3, 5), 10);
     const secs = parseInt(rawTime.substring(6, 8), 10);
 
-    return new Date(1970, 0, 1, hours, mins, secs);
+    return new Date(Date.UTC(1970, 0, 1, hours, mins, secs));
 }
 
 export function isDate(rep: IHasExtensions) {
@@ -298,7 +298,7 @@ export function typePlusTitle(obj: DomainObjectRepresentation) {
     return type + ': ' + title;
 }
 
-export function getPagingParms(page: number, pageSize: number): Dictionary<Object> {
+export function getPagingParms(page: number, pageSize: number): Dictionary<number> {
     return (page && pageSize) ? { [roPage]: page, [roPageSize]: pageSize } : {};
 }
 
