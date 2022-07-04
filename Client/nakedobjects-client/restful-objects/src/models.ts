@@ -262,13 +262,13 @@ export function getClassName(obj: { constructor : { toString() : string} }) {
 }
 
 export function typeFromUrl(url: string) {
-    const typeRegex = /(objects|services)\/([\w|\.]+)/;
+    const typeRegex = /(objects|services)\/([\w|.]+)/;
     const results = (typeRegex).exec(url);
     return (results && results.length > 2) ? results[2] : '';
 }
 
 export function idFromUrl(href: string) {
-    const urlRegex = /(objects|services)\/(.*?)\/([^\/]*)/;
+    const urlRegex = /(objects|services)\/(.*?)\/([^/]*)/;
     const results = (urlRegex).exec(href);
     return (results && results.length > 3) ? results[3] : '';
 }
@@ -281,7 +281,7 @@ export function propertyIdFromUrl(href: string) {
 
 export function friendlyTypeName(fullName: string) {
     // TODO Fix "!"
-    const shortName = last(fullName.split('.'))!;
+    const shortName = last(fullName.split('.')) || fullName;
     const result = shortName.replace(/([A-Z])/g, ' $1').trim();
     return result.charAt(0).toUpperCase() + result.slice(1);
 }
@@ -306,26 +306,26 @@ export function getPagingParms(page: number, pageSize: number): Dictionary<numbe
     return (page && pageSize) ? { [roPage]: page, [roPageSize]: pageSize } : {};
 }
 
-export function inlineCollectionItems(flag: boolean, parms?: Dictionary<Object>): Dictionary<Object> {
+export function inlineCollectionItems(flag: boolean, parms?: Dictionary<unknown>): Dictionary<unknown> {
     parms = parms || {};
     parms[roInlineCollectionItems] = flag;
     return parms;
 }
 
-export function inlinePropertyDetails(flag: boolean, parms?: Dictionary<Object>): Dictionary<Object> {
+export function inlinePropertyDetails(flag: boolean, parms?: Dictionary<unknown>): Dictionary<unknown> {
     parms = parms || {};
     parms[roInlinePropertyDetails] = flag;
     return parms;
 }
 
 export function urlWithInlinePropertyDetailsFalse(obj: DomainObjectRepresentation): string {
-    return `${obj.selfLink().href()}?${roInlinePropertyDetails}=false`;
+    return `${obj.selfLink()?.href()}?${roInlinePropertyDetails}=false`;
 }
 
 // helper functions
 
 function isAutoComplete(args: Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap | null) {
-    return args && args.hasOwnProperty(roSearchTerm);
+    return args &&  Object.prototype.hasOwnProperty.call(args, roSearchTerm);
 }
 
 function isScalarType(typeName: string | null) {
@@ -340,27 +340,27 @@ function emptyResource(): Ro.IResourceRepresentation {
     return { links: [] as Ro.ILink[], extensions: {} };
 }
 
-function isILink(object: any): object is Ro.ILink {
-    return object && object instanceof Object && 'href' in object;
+function isILink(object: unknown): object is Ro.ILink {
+    return !!object && object instanceof Object && 'href' in object;
 }
 
-function isIObjectOfType(object: any): object is Ro.IObjectOfType {
-    return object && object instanceof Object && 'members' in object;
+function isIObjectOfType(object: unknown): object is Ro.IObjectOfType {
+    return !!object && object instanceof Object && 'members' in object;
 }
 
-function isIValue(object: any): object is Ro.IValue {
-    return object && object instanceof Object && 'value' in object;
+function isIValue(object: unknown): object is Ro.IValue {
+    return !!object && object instanceof Object && 'value' in object;
 }
 
-export function isResourceRepresentation(object: any): object is Ro.IResourceRepresentation {
-    return object && object instanceof Object && 'links' in object && 'extensions' in object;
+export function isResourceRepresentation(object: unknown): object is Ro.IResourceRepresentation {
+    return !!object && object instanceof Object && 'links' in object && 'extensions' in object;
 }
 
-export function isErrorRepresentation(object: any): object is Ro.IErrorRepresentation {
+export function isErrorRepresentation(object: unknown): object is Ro.IErrorRepresentation {
     return isResourceRepresentation(object) && 'message' in object;
 }
 
-export function isIDomainObjectRepresentation(object: any): object is Ro.IDomainObjectRepresentation {
+export function isIDomainObjectRepresentation(object: unknown): object is Ro.IDomainObjectRepresentation {
     return isResourceRepresentation(object) && 'domainType' in object && 'instanceId' in object && 'members' in object;
 }
 
@@ -408,22 +408,16 @@ function toOid(id: string[], keySeparator: string) {
 
 export class ObjectIdWrapper {
 
-    domainType: string;
-    instanceId: string;
-    splitInstanceId: string[];
-    isService: boolean;
-
     static safeSplit(id: string, keySeparator: string): string[] {
         return id ? id.split(keySeparator) : [];
     }
 
     static fromObject(object: DomainObjectRepresentation) {
-        const oid = new ObjectIdWrapper(object.keySeparator);
-        oid.domainType = object.domainType() || '';
-        oid.instanceId = object.instanceId() || '';
-        oid.splitInstanceId = this.safeSplit(oid.instanceId, object.keySeparator);
-        oid.isService = !oid.instanceId;
-        return oid;
+        const domainType = object.domainType() || '';
+        const instanceId = object.instanceId() || '';
+        const splitInstanceId = this.safeSplit(instanceId, object.keySeparator);
+        const isService = !instanceId;
+        return new ObjectIdWrapper(object.keySeparator, domainType, instanceId, splitInstanceId, isService);
     }
 
     static fromLink(link: Link, keySeparator: string) {
@@ -432,43 +426,43 @@ export class ObjectIdWrapper {
     }
 
     static fromHref(href: string, keySeparator: string) {
-        const oid = new ObjectIdWrapper(keySeparator);
-        oid.domainType = typeFromUrl(href);
-        oid.instanceId = idFromUrl(href);
-        oid.splitInstanceId = this.safeSplit(oid.instanceId, keySeparator);
-        oid.isService = !oid.instanceId;
-        return oid;
+        const domainType = typeFromUrl(href);
+        const instanceId = idFromUrl(href);
+        const splitInstanceId = this.safeSplit(instanceId, keySeparator);
+        const isService = !instanceId;
+        return new ObjectIdWrapper(keySeparator, domainType, instanceId, splitInstanceId, isService);
     }
 
     static fromObjectId(objectId: string, keySeparator: string) {
-        const oid = new ObjectIdWrapper(keySeparator);
         const [dt, ...id] = objectId.split(keySeparator);
-        oid.domainType = dt;
-        oid.splitInstanceId = id;
-        oid.instanceId = toOid(id, keySeparator);
-        oid.isService = !oid.instanceId;
-        return oid;
+        const domainType = dt;
+        const splitInstanceId = id;
+        const instanceId = toOid(id, keySeparator);
+        const isService = !instanceId;
+        return new ObjectIdWrapper(keySeparator, domainType, instanceId, splitInstanceId, isService);
     }
 
     static fromRaw(dt: string, id: string, keySeparator: string) {
-        const oid = new ObjectIdWrapper(keySeparator);
-        oid.domainType = dt;
-        oid.instanceId = id;
-        oid.splitInstanceId = this.safeSplit(oid.instanceId, keySeparator);
-        oid.isService = !oid.instanceId;
-        return oid;
+        const domainType = dt;
+        const instanceId = id;
+        const splitInstanceId = this.safeSplit(instanceId, keySeparator);
+        const isService = !instanceId;
+        return new ObjectIdWrapper(keySeparator, domainType, instanceId, splitInstanceId, isService);
     }
 
     static fromSplitRaw(dt: string, id: string[], keySeparator: string) {
-        const oid = new ObjectIdWrapper(keySeparator);
-        oid.domainType = dt;
-        oid.splitInstanceId = id;
-        oid.instanceId = toOid(id, keySeparator);
-        oid.isService = !oid.instanceId;
-        return oid;
+        const domainType = dt;
+        const splitInstanceId = id;
+        const instanceId = toOid(id, keySeparator);
+        const isService = !instanceId;
+        return new ObjectIdWrapper(keySeparator, domainType, instanceId, splitInstanceId, isService);
     }
 
-    constructor(private readonly keySeparator: string) {
+    constructor(private readonly keySeparator: string,
+                public readonly domainType : string,
+                public readonly instanceId : string,
+                public readonly splitInstanceId : string[],
+                public readonly isService : boolean) {
         if (keySeparator == null) {
             error('ObjectIdWrapper must have a keySeparator');
         }
