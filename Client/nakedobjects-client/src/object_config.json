@@ -50,8 +50,7 @@
         "dateMasks": {
             "d": {
                 "format": "date-time",
-                "mask": "d LLL yyyy",
-                "tz": "UTC+0"
+                "mask": "d LLL yyyy"
             },
             "D": {
                 "format": "date",
@@ -59,8 +58,7 @@
             },
             "T": {
                 "format": "time",
-                "mask": "HH:mm",
-                "tz": "UTC+0"
+                "mask": "HH:mm"
             }
         }
     },
