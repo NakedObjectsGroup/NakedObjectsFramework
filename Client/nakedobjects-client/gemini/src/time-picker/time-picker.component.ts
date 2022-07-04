@@ -13,7 +13,7 @@ import { DateTime } from 'luxon';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';
 import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
-import { defaultShortTimeFormat, defaultTimeFormat } from '@nakedobjects/services';
+import { defaultShortTimeFormat, defaultTimeFormat, shortTimeFormat } from '@nakedobjects/services';
 
 export interface ITimePickerOutputEvent {
     type: 'timeChanged' | 'timeCleared' | 'timeInvalid';
@@ -77,7 +77,7 @@ export class TimePickerComponent implements OnInit, OnDestroy {
         }
     }
 
-    private validInputFormats = [defaultTimeFormat, defaultShortTimeFormat];
+    private validInputFormats = [defaultTimeFormat, defaultShortTimeFormat, shortTimeFormat];
 
     private validateTime(newValue: string) {
         let dt = DateTime.now();

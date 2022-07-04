@@ -6,4 +6,6 @@ export const defaultTimeFormat = 'HH:mm:ss'
 
 export const defaultShortTimeFormat = 'HH:mm'
 
+export const shortTimeFormat = 'HHmm'
+
 export const fixedDateFormat = 'yyyy-LL-dd';
