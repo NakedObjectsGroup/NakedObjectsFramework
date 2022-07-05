@@ -1,0 +1,13 @@
+{
+    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+    "lib": {
+        "entryFile": "src/public_api.ts"
+    },
+    "allowedNonPeerDependencies": [
+        "auth0-js",
+        "lodash",
+        "lodash-es",
+        "tslib"
+    ],
+    "dest": "../dist/nakedobjects-services"
+}

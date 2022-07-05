@@ -1,16 +1,4 @@
 {
-    "ngPackage": {
-        "$schema": "./node_modules/ng-packagr/package.schema.json",
-        "lib": {
-            "entryFile": "src/public_api.ts"
-        },
-        "allowedNonPeerDependencies": [
-            "lodash",
-            "lodash-es",
-            "tslib"
-        ],
-        "dest": "../dist/nakedobjects-cicero"
-    },
     "name": "@nakedobjects/cicero",
     "version": "13.0.0-beta03",
     "description": "Single Page Application client for a Naked Objects application.",
@@ -75,7 +63,7 @@
         "karma-jasmine": "~4.0.1",
         "karma-jasmine-html-reporter": "~1.7.0",
         "typescript": "~4.7.4",
-         "ng-packagr": "~14.0.2",
+        "ng-packagr": "~14.0.2",
         "@types/lodash": "~4.14.179",
         "@types/lodash-es": "~4.17.6",
         "cpr": "^3.0.1",

@@ -1,30 +1,4 @@
 {
-    "ngPackage": {
-        "$schema": "./node_modules/ng-packagr/package.schema.json",
-        "lib": {
-            "entryFile": "src/public_api.ts"
-        },
-        "allowedNonPeerDependencies": [
-            "lodash",
-            "lodash-es/assign",
-            "lodash-es/clone",
-            "lodash-es/concat",
-            "lodash-es/each",
-            "lodash-es/find",
-            "lodash-es/forEach",
-            "lodash-es/forOwn",
-            "lodash-es/fromPairs",
-            "lodash-es/keys",
-            "lodash-es/last",
-            "lodash-es/map",
-            "lodash-es/mapValues",
-            "lodash-es/merge",
-            "lodash-es/pickBy",
-            "lodash-es/reduce",
-            "lodash-es/some"
-        ],
-        "dest": "../dist/nakedobjects-restful-objects"
-    },
     "name": "@nakedobjects/restful-objects",
     "version": "13.0.0-beta03",
     "description": "Single Page Application client for a Naked Objects application.",

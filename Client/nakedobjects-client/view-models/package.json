@@ -1,16 +1,4 @@
 {
-    "ngPackage": {
-        "$schema": "./node_modules/ng-packagr/package.schema.json",
-        "lib": {
-            "entryFile": "src/public_api.ts"
-        },
-        "allowedNonPeerDependencies": [
-            "lodash",
-            "lodash-es",
-            "tslib"
-        ],
-        "dest": "../dist/nakedobjects-view-models"
-    },
     "name": "@nakedobjects/view-models",
     "version": "13.0.0-beta03",
     "description": "Single Page Application client for a Naked Objects application.",
