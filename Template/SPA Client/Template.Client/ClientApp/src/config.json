@@ -26,17 +26,15 @@
         "dateMasks?": {
             "d": {
                 "format": "date-time",
-                "mask": "D MMM YYYY",
-                "tz": "UTC+0"
+                "mask": "d LLL yyyy"
             },
-            "D": {
-                "format": "date",
-                "mask": "D MMM YYYY hh:mm:ss"
-            },
+          "D": {
+            "format": "date",
+            "mask": "d LLL yyyy HH:mm:ss"
+          },
             "T": {
                 "format": "time",
-                "mask": "HH:mm",
-                "tz": "UTC+0"
+                "mask": "HH:mm"
             }
         }
     }
