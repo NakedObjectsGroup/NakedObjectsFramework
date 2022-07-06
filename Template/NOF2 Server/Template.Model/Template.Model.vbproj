@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0-beta01" />
+    <PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

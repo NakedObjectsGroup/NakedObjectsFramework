@@ -1,4 +1,4 @@
-﻿using NakedFramework;
+﻿using NOF2.Enum;
 
 namespace Template.AppLib;
 

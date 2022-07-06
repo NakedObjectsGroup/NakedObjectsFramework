@@ -1,4 +1,4 @@
-﻿using NakedFramework;
+﻿
 
 [AttributeUsage(AttributeTargets.Property|AttributeTargets.Method)]
 public class TableViewAttribute : Attribute,ITableViewAttribute
