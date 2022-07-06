@@ -1,4 +1,4 @@
-var cpx = require('cpx');
+var cpx = require('cpx2');
 var mv = require('mv');
 
 var copyCode = "../nakedobjects-client/src/app/*.{ts,css,html}";
