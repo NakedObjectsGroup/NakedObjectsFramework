@@ -3,223 +3,219 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class ObjectActionDetails : AbstractActionDetails {
-        protected override string BaseUrl {
-            get { return Urls.Objects + Urls.WithActionObject1 + Urls.Actions; }
-        }
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string FilePrefix {
-            get { return "Object-Action-Details-"; }
-        }
+[TestClass]
+public class ObjectActionDetails : AbstractActionDetails {
+    protected override string BaseUrl => Urls.Objects + Urls.WithActionObject1 + Urls.Actions;
 
-        [TestMethod]
-        public void AnActionReturnsVoidWithParameters() {
-            DoAnActionReturnsVoidWithParameters();
-        }
+    protected override string FilePrefix => "Object-Action-Details-";
 
-        [TestMethod]
-        public void ADisabledAction() {
-            DoADisabledAction();
-        }
+    [TestMethod]
+    public void AnActionReturnsVoidWithParameters() {
+        DoAnActionReturnsVoidWithParameters();
+    }
 
-        [TestMethod]
-        public void ADisabledCollectionAction() {
-            DoADisabledCollectionAction();
-        }
+    [TestMethod]
+    public void ADisabledAction() {
+        DoADisabledAction();
+    }
 
-        [TestMethod]
-        public void ADisabledQueryAction() {
-            DoADisabledQueryAction();
-        }
+    [TestMethod]
+    public void ADisabledCollectionAction() {
+        DoADisabledCollectionAction();
+    }
 
-        [TestMethod]
-        public void AnAction() {
-            DoAnAction();
-        }
+    [TestMethod]
+    public void ADisabledQueryAction() {
+        DoADisabledQueryAction();
+    }
 
-        [TestMethod]
-        public void AnActionAnnotatedIdempotent() {
-            DoAnActionAnnotatedIdempotent();
-        }
+    [TestMethod]
+    public void AnAction() {
+        DoAnAction();
+    }
 
-        [TestMethod]
-        public void AnActionAnnotatedIdempotentReturnsNull() {
-            DoAnActionAnnotatedIdempotentReturnsNull();
-        }
+    [TestMethod]
+    public void AnActionAnnotatedIdempotent() {
+        DoAnActionAnnotatedIdempotent();
+    }
 
-        [TestMethod]
-        public void AnActionAnnotatedQueryOnly() {
-            DoAnActionAnnotatedQueryOnly();
-        }
+    [TestMethod]
+    public void AnActionAnnotatedIdempotentReturnsNull() {
+        DoAnActionAnnotatedIdempotentReturnsNull();
+    }
 
-        [TestMethod]
-        public void AnActionAnnotatedQueryOnlyReturnsNull() {
-            DoAnActionAnnotatedQueryOnlyReturnsNull();
-        }
+    [TestMethod]
+    public void AnActionAnnotatedQueryOnly() {
+        DoAnActionAnnotatedQueryOnly();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollection() {
-            DoAnActionReturnsCollection();
-        }
+    [TestMethod]
+    public void AnActionAnnotatedQueryOnlyReturnsNull() {
+        DoAnActionAnnotatedQueryOnlyReturnsNull();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollectionEmpty() {
-            DoAnActionReturnsCollectionEmpty();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollection() {
+        DoAnActionReturnsCollection();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollectionNull() {
-            DoAnActionReturnsCollectionNull();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollectionEmpty() {
+        DoAnActionReturnsCollectionEmpty();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollectionWithParameters() {
-            DoAnActionReturnsCollectionWithParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollectionNull() {
+        DoAnActionReturnsCollectionNull();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollectionWithScalarParameters() {
-            DoAnActionReturnsCollectionWithScalarParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollectionWithParameters() {
+        DoAnActionReturnsCollectionWithParameters();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsNull() {
-            DoAnActionReturnsNull();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollectionWithScalarParameters() {
+        DoAnActionReturnsCollectionWithScalarParameters();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsObjectWithParameters() {
-            DoAnActionReturnsObjectWithParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsNull() {
+        DoAnActionReturnsNull();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsObjectWithParametersAnnotatedIdempotent() {
-            DoAnActionReturnsObjectWithParametersAnnotatedIdempotent();
-        }
+    [TestMethod]
+    public void AnActionReturnsObjectWithParameters() {
+        DoAnActionReturnsObjectWithParameters();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsObjectWithParametersAnnotatedQueryOnly() {
-            DoAnActionReturnsObjectWithParametersAnnotatedQueryOnly();
-        }
+    [TestMethod]
+    public void AnActionReturnsObjectWithParametersAnnotatedIdempotent() {
+        DoAnActionReturnsObjectWithParametersAnnotatedIdempotent();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsQueryable() {
-            DoAnActionReturnsQueryable();
-        }
+    [TestMethod]
+    public void AnActionReturnsObjectWithParametersAnnotatedQueryOnly() {
+        DoAnActionReturnsObjectWithParametersAnnotatedQueryOnly();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsQueryableWithParameters() {
-            DoAnActionReturnsQueryableWithParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsQueryable() {
+        DoAnActionReturnsQueryable();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsQueryableWithScalarParameters() {
-            DoAnActionReturnsQueryableWithScalarParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsQueryableWithParameters() {
+        DoAnActionReturnsQueryableWithParameters();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsScalar() {
-            DoAnActionReturnsScalar();
-        }
+    [TestMethod]
+    public void AnActionReturnsQueryableWithScalarParameters() {
+        DoAnActionReturnsQueryableWithScalarParameters();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsScalarEmpty() {
-            DoAnActionReturnsScalarEmpty();
-        }
+    [TestMethod]
+    public void AnActionReturnsScalar() {
+        DoAnActionReturnsScalar();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsScalarNull() {
-            DoAnActionReturnsScalarNull();
-        }
+    [TestMethod]
+    public void AnActionReturnsScalarEmpty() {
+        DoAnActionReturnsScalarEmpty();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsScalarWithParameters() {
-            DoAnActionReturnsScalarWithParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsScalarNull() {
+        DoAnActionReturnsScalarNull();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsVoid() {
-            DoAnActionReturnsVoid();
-        }
+    [TestMethod]
+    public void AnActionReturnsScalarWithParameters() {
+        DoAnActionReturnsScalarWithParameters();
+    }
 
-        [TestMethod]
-        public void AnActionWithDateTimeParm() {
-            DoAnActionWithDateTimeParm();
-        }
+    [TestMethod]
+    public void AnActionReturnsVoid() {
+        DoAnActionReturnsVoid();
+    }
 
-        [TestMethod]
-        public void AnActionWithOptionalParm() {
-            DoAnActionWithOptionalParm();
-        }
+    [TestMethod]
+    public void AnActionWithDateTimeParm() {
+        DoAnActionWithDateTimeParm();
+    }
 
+    [TestMethod]
+    public void AnActionWithOptionalParm() {
+        DoAnActionWithOptionalParm();
+    }
 
-        [TestMethod]
-        public void AnActionWithReferenceParameter() {
-            DoAnActionWithReferenceParameter();
-        }
+    [TestMethod]
+    public void AnActionWithReferenceParameter() {
+        DoAnActionWithReferenceParameter();
+    }
 
-        [TestMethod]
-        public void AnActionWithValueParameter() {
-            DoAnActionWithValueParameter();
-        }
+    [TestMethod]
+    public void AnActionWithValueParameter() {
+        DoAnActionWithValueParameter();
+    }
 
-        [TestMethod]
-        public void AnActionWithValueParameterWithChoices() {
-            DoAnActionWithValueParameterWithChoices();
-        }
+    [TestMethod]
+    public void AnActionWithValueParameterWithChoices() {
+        DoAnActionWithValueParameterWithChoices();
+    }
 
-        //Tests specific to object-actions
-        [TestMethod]
-        public void AttemptToGetAPropertyAsAnAction() {
-            TestActionDetails("Id", Methods.Get, Codes.NotFound);
-        }
+    //Tests specific to object-actions
+    [TestMethod]
+    public void AttemptToGetAPropertyAsAnAction() {
+        TestActionDetails("Id", Methods.Get, Codes.NotFound);
+    }
 
-        [TestMethod]
-        public void AttemptPutActionDetails() {
-            DoAttemptPutActionDetails();
-        }
+    [TestMethod]
+    public void AttemptPutActionDetails() {
+        DoAttemptPutActionDetails();
+    }
 
-        [TestMethod]
-        public void AttemptPostActionDetails() {
-            DoAttemptPostActionDetails();
-        }
+    [TestMethod]
+    public void AttemptPostActionDetails() {
+        DoAttemptPostActionDetails();
+    }
 
-        [TestMethod]
-        public void AttemptDeleteActionDetails() {
-            DoAttemptDeleteActionDetails();
-        }
+    [TestMethod]
+    public void AttemptDeleteActionDetails() {
+        DoAttemptDeleteActionDetails();
+    }
 
-        [TestMethod]
-        public void WithGenericAcceptHeader() {
-            DoWithGenericAcceptHeader();
-        }
+    [TestMethod]
+    public void WithGenericAcceptHeader() {
+        DoWithGenericAcceptHeader();
+    }
 
-        [TestMethod]
-        public void WithProfileAcceptHeader() {
-            DoWithProfileAcceptHeader();
-        }
+    [TestMethod]
+    public void WithProfileAcceptHeader() {
+        DoWithProfileAcceptHeader();
+    }
 
-        [TestMethod]
-        public void AttemptWithInvalidProfileAcceptHeader() {
-            DoAttemptWithInvalidProfileAcceptHeader();
-        }
+    [TestMethod]
+    public void AttemptWithInvalidProfileAcceptHeader() {
+        DoAttemptWithInvalidProfileAcceptHeader();
+    }
 
-        [TestMethod]
-        public void WithFormalDomainModel() {
-            DoWithFormalDomainModel();
-        }
+    [TestMethod]
+    public void WithFormalDomainModel() {
+        DoWithFormalDomainModel();
+    }
 
-        [TestMethod]
-        public void WithSimpleDomainModel() {
-            DoWithSimpleDomainModel();
-        }
+    [TestMethod]
+    public void WithSimpleDomainModel() {
+        DoWithSimpleDomainModel();
+    }
 
-        [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
-        public void AttemptWithMalformedDomainModel() {
-            DoAttemptWithMalformedDomainModel();
-        }
+    [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
+    public void AttemptWithMalformedDomainModel() {
+        DoAttemptWithMalformedDomainModel();
     }
 }

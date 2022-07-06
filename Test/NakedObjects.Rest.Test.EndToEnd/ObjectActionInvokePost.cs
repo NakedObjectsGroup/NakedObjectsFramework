@@ -3,189 +3,183 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class ObjectActionInvokePost : AbstractActionInvokePost {
-        protected override string BaseUrl {
-            get { return Urls.Objects + Urls.WithActionObject1 + Urls.Actions; }
-        }
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string FilePrefix {
-            get { return "Object-Action-Invoke-Post-"; }
-        }
+[TestClass]
+public class ObjectActionInvokePost : AbstractActionInvokePost {
+    protected override string BaseUrl => Urls.Objects + Urls.WithActionObject1 + Urls.Actions;
 
-        [TestMethod]
-        public void AnActionReturnsVoidWithParameters() {
-            DoAnActionReturnsVoidWithParameters();
-        }
+    protected override string FilePrefix => "Object-Action-Invoke-Post-";
 
-        [TestMethod]
-        public void SyntacticallyMalformedParameters() {
-            DoSyntacticallyMalformedParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsVoidWithParameters() {
+        DoAnActionReturnsVoidWithParameters();
+    }
 
-        [TestMethod]
-        public void SemanticallyMalformedParameters() {
-            DoSemanticallyMalformedParameters();
-        }
+    [TestMethod]
+    public void SyntacticallyMalformedParameters() {
+        DoSyntacticallyMalformedParameters();
+    }
 
-        [TestMethod]
-        public void ADisabledAction() {
-            DoADisabledAction();
-        }
+    [TestMethod]
+    public void SemanticallyMalformedParameters() {
+        DoSemanticallyMalformedParameters();
+    }
 
-        [TestMethod]
-        public void ADisabledCollectionAction() {
-            DoADisabledCollectionAction();
-        }
+    [TestMethod]
+    public void ADisabledAction() {
+        DoADisabledAction();
+    }
 
-        [TestMethod]
-        public void AnAction() {
-            DoAnAction();
-        }
+    [TestMethod]
+    public void ADisabledCollectionAction() {
+        DoADisabledCollectionAction();
+    }
 
-        [TestMethod]
-        public void AttemptInvokePostActionWithGet() {
-            DoAttemptInvokePostActionWithGet();
-        }
+    [TestMethod]
+    public void AnAction() {
+        DoAnAction();
+    }
 
-        [TestMethod]
-        public void AttemptInvokePostActionWithPut() {
-            DoAttemptInvokePostActionWithPut();
-        }
+    [TestMethod]
+    public void AttemptInvokePostActionWithGet() {
+        DoAttemptInvokePostActionWithGet();
+    }
 
-        [TestMethod]
-        public void AttemptInvokePutActionWithPost() {
-            DoAttemptInvokePutActionWithPost();
-        }
+    [TestMethod]
+    public void AttemptInvokePostActionWithPut() {
+        DoAttemptInvokePostActionWithPut();
+    }
 
-        [TestMethod]
-        public void AttemptInvokeGetActionWithPost() {
-            DoAttemptInvokeGetActionWithPost();
-        }
+    [TestMethod]
+    public void AttemptInvokePutActionWithPost() {
+        DoAttemptInvokePutActionWithPost();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollection() {
-            DoAnActionReturnsCollection();
-        }
+    [TestMethod]
+    public void AttemptInvokeGetActionWithPost() {
+        DoAttemptInvokeGetActionWithPost();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollectionEmpty() {
-            DoAnActionReturnsCollectionEmpty();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollection() {
+        DoAnActionReturnsCollection();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollectionNull() {
-            DoAnActionReturnsCollectionNull();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollectionEmpty() {
+        DoAnActionReturnsCollectionEmpty();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollectionWithParameters() {
-            DoAnActionReturnsCollectionWithParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollectionNull() {
+        DoAnActionReturnsCollectionNull();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsCollectionWithScalarParameters() {
-            DoAnActionReturnsCollectionWithScalarParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollectionWithParameters() {
+        DoAnActionReturnsCollectionWithParameters();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsNull() {
-            DoAnActionReturnsNull();
-        }
+    [TestMethod]
+    public void AnActionReturnsCollectionWithScalarParameters() {
+        DoAnActionReturnsCollectionWithScalarParameters();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsObjectWithParameters() {
-            DoAnActionReturnsObjectWithParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsNull() {
+        DoAnActionReturnsNull();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsScalar() {
-            DoAnActionReturnsScalar();
-        }
+    [TestMethod]
+    public void AnActionReturnsObjectWithParameters() {
+        DoAnActionReturnsObjectWithParameters();
+    }
 
-        [TestMethod]  // Must FIX !!
-        public void AnActionReturnsScalarEmpty() {
-            DoAnActionReturnsScalarEmpty();
-        }
+    [TestMethod]
+    public void AnActionReturnsScalar() {
+        DoAnActionReturnsScalar();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsScalarNull() {
-            DoAnActionReturnsScalarNull();
-        }
+    [TestMethod] // Must FIX !!
+    public void AnActionReturnsScalarEmpty() {
+        DoAnActionReturnsScalarEmpty();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsScalarWithParameters() {
-            DoAnActionReturnsScalarWithParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsScalarNull() {
+        DoAnActionReturnsScalarNull();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsVoid() {
-            DoAnActionReturnsVoid();
-        }
+    [TestMethod]
+    public void AnActionReturnsScalarWithParameters() {
+        DoAnActionReturnsScalarWithParameters();
+    }
 
-        [TestMethod]
-        public void AnActionWithDateTimeParm() {
-            DoAnActionWithDateTimeParm();
-        }
+    [TestMethod]
+    public void AnActionReturnsVoid() {
+        DoAnActionReturnsVoid();
+    }
 
-        [TestMethod]
-        public void AnActionWithOptionalParm() {
-            DoAnActionWithOptionalParm();
-        }
+    [TestMethod]
+    public void AnActionWithDateTimeParm() {
+        DoAnActionWithDateTimeParm();
+    }
 
+    [TestMethod]
+    public void AnActionWithOptionalParm() {
+        DoAnActionWithOptionalParm();
+    }
 
-        [TestMethod]
-        public void AnActionWithReferenceParameter() {
-            DoAnActionWithReferenceParameter();
-        }
+    [TestMethod]
+    public void AnActionWithReferenceParameter() {
+        DoAnActionWithReferenceParameter();
+    }
 
-        [TestMethod]
-        public void AnActionWithValueParameter() {
-            DoAnActionWithValueParameter();
-        }
+    [TestMethod]
+    public void AnActionWithValueParameter() {
+        DoAnActionWithValueParameter();
+    }
 
-        [TestMethod]
-        public void AnActionWithValueParameterWithChoices() {
-            DoAnActionWithValueParameterWithChoices();
-        }
+    [TestMethod]
+    public void AnActionWithValueParameterWithChoices() {
+        DoAnActionWithValueParameterWithChoices();
+    }
 
-        [TestMethod]
-        public void AnError() {
-            DoAnError();
-        }
+    [TestMethod]
+    public void AnError() {
+        DoAnError();
+    }
 
-        [TestMethod]
-        public void AnErrorCollection() {
-            DoAnErrorCollection();
-        }
+    [TestMethod]
+    public void AnErrorCollection() {
+        DoAnErrorCollection();
+    }
 
+    [TestMethod]
+    public void ParameterValidateOnlyGood() {
+        DoParameterValidateOnlyGood();
+    }
 
-        [TestMethod]
-        public void ParameterValidateOnlyGood() {
-            DoParameterValidateOnlyGood();
-        }
+    [TestMethod]
+    public void ParameterValidateOnlyBad() {
+        DoParameterValidateOnlyBad();
+    }
 
-        [TestMethod]
-        public void ParameterValidateOnlyBad() {
-            DoParameterValidateOnlyBad();
-        }
+    [TestMethod]
+    public void AttemptInvalidParameters() {
+        DoAttemptInvalidParameters();
+    }
 
-        [TestMethod]
-        public void AttemptInvalidParameters() {
-            DoAttemptInvalidParameters();
-        }
+    [TestMethod]
+    public void AttemptInvalidJson() {
+        DoAttemptInvalidJson();
+    }
 
-
-        [TestMethod]
-        public void AttemptInvalidJson() {
-            DoAttemptInvalidJson();
-        }
-
-        [TestMethod]
-        public void ValidateOnlyParameters() {
-            DoValidateOnlyParameters();
-        }
+    [TestMethod]
+    public void ValidateOnlyParameters() {
+        DoValidateOnlyParameters();
     }
 }

@@ -3,31 +3,28 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class ServiceActionInvokeDelete : AbstractActionInvokeDelete {
-        protected override string BaseUrl {
-            get { return Urls.Services + Urls.WithActionService + Urls.Actions; }
-        }
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string FilePrefix {
-            get { return "Service-Action-Invoke-Delete-"; }
-        }
+[TestClass]
+public class ServiceActionInvokeDelete : AbstractActionInvokeDelete {
+    protected override string BaseUrl => Urls.Services + Urls.WithActionService + Urls.Actions;
 
-        [TestMethod]
-        public void AttemptInvokePostActionWithDelete() {
-            DoAttemptInvokePostActionWithDelete();
-        }
+    protected override string FilePrefix => "Service-Action-Invoke-Delete-";
 
-        [TestMethod]
-        public void AttemptInvokePutActionWithDelete() {
-            DoAttemptInvokePutActionWithDelete();
-        }
+    [TestMethod]
+    public void AttemptInvokePostActionWithDelete() {
+        DoAttemptInvokePostActionWithDelete();
+    }
 
-        [TestMethod]
-        public void AttemptInvokeGetActionWithDelete() {
-            DoAttemptInvokeGetActionWithDelete();
-        }
+    [TestMethod]
+    public void AttemptInvokePutActionWithDelete() {
+        DoAttemptInvokePutActionWithDelete();
+    }
+
+    [TestMethod]
+    public void AttemptInvokeGetActionWithDelete() {
+        DoAttemptInvokeGetActionWithDelete();
     }
 }

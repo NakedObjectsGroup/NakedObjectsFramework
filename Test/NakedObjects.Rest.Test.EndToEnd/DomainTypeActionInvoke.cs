@@ -3,86 +3,87 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class DomainTypeActionInvokeTests {
-        private static string withActionObjectTypeActions = Urls.DomainTypes + Urls.NameSpace + @"WithActionObject" + Urls.TypeActions;
-        private static string withActionTypeActions = Urls.DomainTypes + Urls.NameSpace + @"WithAction" + Urls.TypeActions;
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        private static string isSubtypeOf = withActionObjectTypeActions + @"isSubtypeOf/invoke?supertype=" + Urls.NameSpace;
-        private static string isSupertypeOf = withActionTypeActions + @"isSupertypeOf/invoke?subtype=" + Urls.NameSpace;
+[TestClass]
+public class DomainTypeActionInvokeTests {
+    private static readonly string withActionObjectTypeActions = $@"{Urls.DomainTypes}{Urls.NameSpace}WithActionObject{Urls.TypeActions}";
+    private static readonly string withActionTypeActions = $@"{Urls.DomainTypes}{Urls.NameSpace}WithAction{Urls.TypeActions}";
 
-        [TestMethod]
-        public void IsSubtypeOf() {
-            Helpers.TestResponse(isSubtypeOf + "WithAction", "IsSubtypeOf");
-        }
+    private static readonly string isSubtypeOf = $@"{withActionObjectTypeActions}isSubtypeOf/invoke?supertype={Urls.NameSpace}";
+    private static readonly string isSupertypeOf = $@"{withActionTypeActions}isSupertypeOf/invoke?subtype={Urls.NameSpace}";
 
-        [TestMethod]
-        public void IsSubtypeOfFalse() {
-            Helpers.TestResponse(isSubtypeOf + "MostSimple", "IsSubtypeOfFalse");
-        }
+    [TestMethod]
+    public void IsSubtypeOf() {
+        Helpers.Helpers.TestResponse($"{isSubtypeOf}WithAction", "IsSubtypeOf");
+    }
 
-        [TestMethod]
-        public void IsSubtypeOfNonExistentType() {
-            Helpers.TestResponse(isSubtypeOf + "NoSuchClass", null, null, Methods.Get, Codes.NotFound);
-        }
+    [TestMethod]
+    public void IsSubtypeOfFalse() {
+        Helpers.Helpers.TestResponse($"{isSubtypeOf}MostSimple", "IsSubtypeOfFalse");
+    }
 
-        [TestMethod]
-        public void IsSubtypeOfMalformed() {
-            string url = withActionObjectTypeActions + @"isSubtypeOf/invoke?subtype=" + Urls.NameSpace + "MostSimple";
-            Helpers.TestResponse(url, null, null, Methods.Get, Codes.SyntacticallyInvalid);
-        }
+    [TestMethod]
+    public void IsSubtypeOfNonExistentType() {
+        Helpers.Helpers.TestResponse($"{isSubtypeOf}NoSuchClass", null, null, Methods.Get, Codes.NotFound);
+    }
 
-        [TestMethod]
-        public void IsSubtypeOfNoArgs() {
-            string url = withActionObjectTypeActions + @"isSubtypeOf/invoke";
-            Helpers.TestResponse(url, null, null, Methods.Get, Codes.SyntacticallyInvalid);
-        }
+    [TestMethod]
+    public void IsSubtypeOfMalformed() {
+        var url = $@"{withActionObjectTypeActions}isSubtypeOf/invoke?subtype={Urls.NameSpace}MostSimple";
+        Helpers.Helpers.TestResponse(url, null, null, Methods.Get, Codes.SyntacticallyInvalid);
+    }
 
-        [TestMethod]
-        public void IsSupertypeOf() {
-            Helpers.TestResponse(isSupertypeOf + @"WithActionObject", "IsSupertypeOf");
-        }
+    [TestMethod]
+    public void IsSubtypeOfNoArgs() {
+        var url = $@"{withActionObjectTypeActions}isSubtypeOf/invoke";
+        Helpers.Helpers.TestResponse(url, null, null, Methods.Get, Codes.SyntacticallyInvalid);
+    }
 
-        [TestMethod]
-        public void IsSupertypeOfFalse() {
-            Helpers.TestResponse(isSupertypeOf + @"MostSimple", "IsSupertypeOfFalse");
-        }
+    [TestMethod]
+    public void IsSupertypeOf() {
+        Helpers.Helpers.TestResponse($@"{isSupertypeOf}WithActionObject", "IsSupertypeOf");
+    }
 
-        [TestMethod]
-        public void IsSupertypeOfNonExistentType() {
-            Helpers.TestResponse(isSupertypeOf + "NoSuchClass", null, null, Methods.Get, Codes.NotFound);
-        }
+    [TestMethod]
+    public void IsSupertypeOfFalse() {
+        Helpers.Helpers.TestResponse($@"{isSupertypeOf}MostSimple", "IsSupertypeOfFalse");
+    }
 
-        [TestMethod]
-        public void IsSupertypeOfMalformed() {
-            string url = withActionObjectTypeActions + @"isSupertypeOf/invoke?supertype=" + Urls.NameSpace + "WithActionObject";
-            Helpers.TestResponse(url, null, null, Methods.Get, Codes.SyntacticallyInvalid);
-        }
+    [TestMethod]
+    public void IsSupertypeOfNonExistentType() {
+        Helpers.Helpers.TestResponse($"{isSupertypeOf}NoSuchClass", null, null, Methods.Get, Codes.NotFound);
+    }
 
-        [TestMethod]
-        public void IsSupertypeOfNoArgs() {
-            string url = withActionObjectTypeActions + @"isSupertypeOf/invoke";
-            Helpers.TestResponse(url, null, null, Methods.Get, Codes.SyntacticallyInvalid);
-        }
+    [TestMethod]
+    public void IsSupertypeOfMalformed() {
+        var url = $@"{withActionObjectTypeActions}isSupertypeOf/invoke?supertype={Urls.NameSpace}WithActionObject";
+        Helpers.Helpers.TestResponse(url, null, null, Methods.Get, Codes.SyntacticallyInvalid);
+    }
 
-        [TestMethod]
-        public void AttemptPut() {
-            Helpers.TestResponse(isSubtypeOf, null, null, Methods.Put, Codes.MethodNotValid);
-            Helpers.TestResponse(isSupertypeOf, null, null, Methods.Put, Codes.MethodNotValid);
-        }
+    [TestMethod]
+    public void IsSupertypeOfNoArgs() {
+        var url = $@"{withActionObjectTypeActions}isSupertypeOf/invoke";
+        Helpers.Helpers.TestResponse(url, null, null, Methods.Get, Codes.SyntacticallyInvalid);
+    }
 
-        [TestMethod]
-        public void AttemptPost() {
-            Helpers.TestResponse(isSubtypeOf, null, null, Methods.Put, Codes.MethodNotValid);
-            Helpers.TestResponse(isSupertypeOf, null, null, Methods.Put, Codes.MethodNotValid);
-        }
+    [TestMethod]
+    public void AttemptPut() {
+        Helpers.Helpers.TestResponse(isSubtypeOf, null, null, Methods.Put, Codes.MethodNotValid);
+        Helpers.Helpers.TestResponse(isSupertypeOf, null, null, Methods.Put, Codes.MethodNotValid);
+    }
 
-        [TestMethod]
-        public void AttemptDelete() {
-            Helpers.TestResponse(isSubtypeOf, null, null, Methods.Put, Codes.MethodNotValid);
-            Helpers.TestResponse(isSupertypeOf, null, null, Methods.Put, Codes.MethodNotValid);
-        }
+    [TestMethod]
+    public void AttemptPost() {
+        Helpers.Helpers.TestResponse(isSubtypeOf, null, null, Methods.Put, Codes.MethodNotValid);
+        Helpers.Helpers.TestResponse(isSupertypeOf, null, null, Methods.Put, Codes.MethodNotValid);
+    }
+
+    [TestMethod]
+    public void AttemptDelete() {
+        Helpers.Helpers.TestResponse(isSubtypeOf, null, null, Methods.Put, Codes.MethodNotValid);
+        Helpers.Helpers.TestResponse(isSupertypeOf, null, null, Methods.Put, Codes.MethodNotValid);
     }
 }

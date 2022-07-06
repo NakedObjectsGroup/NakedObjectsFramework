@@ -6,24 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class ObjectPostAndDelete : AbstractActionInvokePost {
-        #region Helpers
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string BaseUrl => Urls.Objects;
+[TestClass]
+public class ObjectPostAndDelete : AbstractActionInvokePost {
+    #region Helpers
 
-        #endregion
+    protected override string BaseUrl => Urls.Objects;
 
-        [TestMethod]
-        public void AttemptPost() {
-            Helpers.TestResponse(BaseUrl + @"RestfulObjects.Test.Data.MostSimple/1", null, JsonRep.Empty(), Methods.Post, Codes.MethodNotValid);
-        }
+    #endregion
 
-        [TestMethod]
-        public void AttemptDelete() {
-            Helpers.TestResponse(BaseUrl + @"RestfulObjects.Test.Data.MostSimple/1", null, null, Methods.Delete, Codes.MethodNotValid);
-        }
+    [TestMethod]
+    public void AttemptPost() {
+        Helpers.Helpers.TestResponse($@"{BaseUrl}RestfulObjects.Test.Data.MostSimple/1", null, JsonRep.Empty(), Methods.Post, Codes.MethodNotValid);
+    }
+
+    [TestMethod]
+    public void AttemptDelete() {
+        Helpers.Helpers.TestResponse($@"{BaseUrl}RestfulObjects.Test.Data.MostSimple/1", null, null, Methods.Delete, Codes.MethodNotValid);
     }
 }

@@ -3,13 +3,14 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class PropertyPost : PropertyAbstract {
-        [TestMethod]
-        public void AttemptPropertyPost() {
-            WithValue("AValue", null, JsonRep.Empty(), Methods.Post, Codes.MethodNotValid);
-        }
+namespace NakedObjects.Rest.Test.EndToEnd;
+
+[TestClass]
+public class PropertyPost : PropertyAbstract {
+    [TestMethod]
+    public void AttemptPropertyPost() {
+        WithValue("AValue", null, JsonRep.Empty(), Methods.Post, Codes.MethodNotValid);
     }
 }

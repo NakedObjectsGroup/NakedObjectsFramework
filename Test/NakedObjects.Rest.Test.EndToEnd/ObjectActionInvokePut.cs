@@ -3,38 +3,33 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class ObjectActionInvokePut : AbstractActionInvokePut {
-        protected override string BaseUrl {
-            get { return Urls.Objects + Urls.WithActionObject1 + Urls.Actions; }
-        }
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string FilePrefix {
-            get { return "Object-Action-Invoke-Put-"; }
-        }
+[TestClass]
+public class ObjectActionInvokePut : AbstractActionInvokePut {
+    protected override string BaseUrl => Urls.Objects + Urls.WithActionObject1 + Urls.Actions;
 
+    protected override string FilePrefix => "Object-Action-Invoke-Put-";
 
-        [TestMethod]
-        public void AnActionAnnotatedIdempotent() {
-            DoAnActionAnnotatedIdempotent();
-        }
+    [TestMethod]
+    public void AnActionAnnotatedIdempotent() {
+        DoAnActionAnnotatedIdempotent();
+    }
 
-        [TestMethod]
-        public void AnActionAnnotatedIdempotentReturnsNull() {
-            DoAnActionAnnotatedIdempotentReturnsNull();
-        }
+    [TestMethod]
+    public void AnActionAnnotatedIdempotentReturnsNull() {
+        DoAnActionAnnotatedIdempotentReturnsNull();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsObjectWithParametersAnnotatedIdempotent() {
-            DoAnActionReturnsObjectWithParametersAnnotatedIdempotent();
-        }
+    [TestMethod]
+    public void AnActionReturnsObjectWithParametersAnnotatedIdempotent() {
+        DoAnActionReturnsObjectWithParametersAnnotatedIdempotent();
+    }
 
-
-        [TestMethod]
-        public void AttemptInvokePutActionWithGet() {
-            DoAttemptInvokePutActionWithGet();
-        }
+    [TestMethod]
+    public void AttemptInvokePutActionWithGet() {
+        DoAttemptInvokePutActionWithGet();
     }
 }

@@ -3,86 +3,85 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class CollectionGet : CollectionAbstract {
-        #region Helpers
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string FilePrefix {
-            get { return "Collection-Get-"; }
-        }
+[TestClass]
+public class CollectionGet : CollectionAbstract {
+    #region Helpers
 
-        #endregion
+    protected override string FilePrefix => "Collection-Get-";
 
-        [TestMethod]
-        public void ACollection() {
-            Collection("ACollection", "ACollection");
-        }
+    #endregion
 
-        [TestMethod]
-        public void ASet() {
-            Collection("ASet", "ASet");
-        }
+    [TestMethod]
+    public void ACollection() {
+        Collection("ACollection", "ACollection");
+    }
 
-        [TestMethod]
-        public void ADisabledCollection() {
-            Collection("ADisabledCollection", "ADisabledCollection");
-        }
+    [TestMethod]
+    public void ASet() {
+        Collection("ASet", "ASet");
+    }
 
-        [TestMethod]
-        public void AnEmptyCollection() {
-            Collection("AnEmptyCollection", "AnEmptyCollection");
-        }
+    [TestMethod]
+    public void ADisabledCollection() {
+        Collection("ADisabledCollection", "ADisabledCollection");
+    }
 
-        [TestMethod]
-        public void AnEmptySet() {
-            Collection("AnEmptySet", "AnEmptySet");
-        }
+    [TestMethod]
+    public void AnEmptyCollection() {
+        Collection("AnEmptyCollection", "AnEmptyCollection");
+    }
 
-        [TestMethod]
-        public void AttemptToGetHiddenCollection() {
-            Collection("AHiddenCollection", null, null, Methods.Get, Codes.NotFound);
-        }
+    [TestMethod]
+    public void AnEmptySet() {
+        Collection("AnEmptySet", "AnEmptySet");
+    }
 
-        [TestMethod]
-        public void AttemptToGetANonExistentCollection() {
-            Collection("ANonExistentCollection", null, null, Methods.Get, Codes.NotFound);
-        }
+    [TestMethod]
+    public void AttemptToGetHiddenCollection() {
+        Collection("AHiddenCollection", null, null, Methods.Get, Codes.NotFound);
+    }
 
-        [TestMethod] //Fails!  Retrieves the property!
-        public void AttemptToGetAPropertyAsACollection() {
-            Collection("Id", null, null, Methods.Get, Codes.NotFound);
-        }
+    [TestMethod]
+    public void AttemptToGetANonExistentCollection() {
+        Collection("ANonExistentCollection", null, null, Methods.Get, Codes.NotFound);
+    }
 
-        [TestMethod]
-        public void WithGenericAcceptHeader() {
-            Collection("ACollection", "ACollection", null, Methods.Get, Codes.Succeeded, MediaTypes.Json);
-        }
+    [TestMethod] //Fails!  Retrieves the property!
+    public void AttemptToGetAPropertyAsACollection() {
+        Collection("Id", null, null, Methods.Get, Codes.NotFound);
+    }
 
-        [TestMethod]
-        public void WithProfileAcceptHeader() {
-            Collection("ACollection", "ACollection", null, Methods.Get, Codes.Succeeded, MediaTypes.ObjectCollection);
-        }
+    [TestMethod]
+    public void WithGenericAcceptHeader() {
+        Collection("ACollection", "ACollection", null, Methods.Get, Codes.Succeeded, MediaTypes.Json);
+    }
 
-        [TestMethod]
-        public void AttemptWithInvalidProfileAcceptHeader() {
-            Collection("ACollection", null, null, Methods.Get, Codes.WrongMediaType, MediaTypes.ObjectProfile);
-        }
+    [TestMethod]
+    public void WithProfileAcceptHeader() {
+        Collection("ACollection", "ACollection", null, Methods.Get, Codes.Succeeded, MediaTypes.ObjectCollection);
+    }
 
-        [TestMethod]
-        public void WithFormalDomainModel() {
-            Collection("ACollection" + JsonRep.FormalDomainModeAsQueryString, "WithFormalDomainModel");
-        }
+    [TestMethod]
+    public void AttemptWithInvalidProfileAcceptHeader() {
+        Collection("ACollection", null, null, Methods.Get, Codes.WrongMediaType, MediaTypes.ObjectProfile);
+    }
 
-        [TestMethod]
-        public void WithSimpleDomainModel() {
-            Collection("ACollection" + JsonRep.SimpleDomainModeAsQueryString, "WithSimpleDomainModel");
-        }
+    [TestMethod]
+    public void WithFormalDomainModel() {
+        Collection($"ACollection{JsonRep.FormalDomainModeAsQueryString}", "WithFormalDomainModel");
+    }
 
-        [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
-        public void AttemptWithMalformedDomainModel() {
-            Collection("ACollection" + JsonRep.DomainModeQueryStringMalformed, null, null, Methods.Get, Codes.SyntacticallyInvalid);
-        }
+    [TestMethod]
+    public void WithSimpleDomainModel() {
+        Collection($"ACollection{JsonRep.SimpleDomainModeAsQueryString}", "WithSimpleDomainModel");
+    }
+
+    [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
+    public void AttemptWithMalformedDomainModel() {
+        Collection($"ACollection{JsonRep.DomainModeQueryStringMalformed}", null, null, Methods.Get, Codes.SyntacticallyInvalid);
     }
 }

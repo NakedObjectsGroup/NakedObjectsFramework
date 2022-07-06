@@ -3,70 +3,65 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class Services : AbstractSecondaryResource {
-        protected override string Filename() {
-            return "Services";
-        }
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string ResourceUrl() {
-            return Urls.Services;
-        }
+[TestClass]
+public class Services : AbstractSecondaryResource {
+    protected override string Filename() => "Services";
 
-        protected override string ProfileType() {
-            return MediaTypes.List;
-        }
+    protected override string ResourceUrl() => Urls.Services;
 
-        [TestMethod]
-        public override void GetResource() {
-            DoGetResource();
-        }
+    protected override string ProfileType() => MediaTypes.List;
 
-        [TestMethod]
-        public override void WithGenericAcceptHeader() {
-            DoWithGenericAcceptHeader();
-        }
+    [TestMethod]
+    public override void GetResource() {
+        DoGetResource();
+    }
 
-        [TestMethod]
-        public override void WithProfileAcceptHeader() {
-            DoWithProfileAcceptHeader();
-        }
+    [TestMethod]
+    public override void WithGenericAcceptHeader() {
+        DoWithGenericAcceptHeader();
+    }
 
-        [TestMethod]
-        public override void AttemptWithInvalidProfileAcceptHeader() {
-            DoAttemptWithInvalidProfileAcceptHeader();
-        }
+    [TestMethod]
+    public override void WithProfileAcceptHeader() {
+        DoWithProfileAcceptHeader();
+    }
 
-        [TestMethod]
-        public override void AttemptPost() {
-            DoAttemptPost();
-        }
+    [TestMethod]
+    public override void AttemptWithInvalidProfileAcceptHeader() {
+        DoAttemptWithInvalidProfileAcceptHeader();
+    }
 
-        [TestMethod]
-        public override void AttemptPut() {
-            DoAttemptPut();
-        }
+    [TestMethod]
+    public override void AttemptPost() {
+        DoAttemptPost();
+    }
 
-        [TestMethod]
-        public override void AttemptDelete() {
-            DoAttemptDelete();
-        }
+    [TestMethod]
+    public override void AttemptPut() {
+        DoAttemptPut();
+    }
 
-        [TestMethod]
-        public override void WithFormalDomainModel() {
-            DoWithFormalDomainModel();
-        }
+    [TestMethod]
+    public override void AttemptDelete() {
+        DoAttemptDelete();
+    }
 
-        [TestMethod]
-        public override void WithSimpleDomainModel() {
-            DoWithSimpleDomainModel();
-        }
+    [TestMethod]
+    public override void WithFormalDomainModel() {
+        DoWithFormalDomainModel();
+    }
 
-        [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
-        public override void AttemptWithDomainModelMalformed() {
-            DoAttemptWithDomainModelMalformed();
-        }
+    [TestMethod]
+    public override void WithSimpleDomainModel() {
+        DoWithSimpleDomainModel();
+    }
+
+    [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
+    public override void AttemptWithDomainModelMalformed() {
+        DoAttemptWithDomainModelMalformed();
     }
 }

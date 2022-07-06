@@ -2,25 +2,25 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
-using Newtonsoft.Json.Linq;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    public class AbstractActionInvokePut : AbstractAction {
-        public void DoAnActionAnnotatedIdempotent() {
-            TestActionInvoke("AnActionAnnotatedIdempotent", JsonRep.Empty(), Methods.Put);
-        }
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        public void DoAnActionAnnotatedIdempotentReturnsNull() {
-            TestActionInvoke("AnActionAnnotatedIdempotentReturnsNull", JsonRep.Empty(), Methods.Put);
-        }
+public class AbstractActionInvokePut : AbstractAction {
+    protected void DoAnActionAnnotatedIdempotent() {
+        TestActionInvoke("AnActionAnnotatedIdempotent", JsonRep.Empty(), Methods.Put);
+    }
 
-        public void DoAnActionReturnsObjectWithParametersAnnotatedIdempotent() {
-            JObject parms = Parm1Is101Parm2IsMostSimple1();
-            TestActionInvoke("AnActionReturnsObjectWithParametersAnnotatedIdempotent", parms.ToString(), Methods.Put);
-        }
+    protected void DoAnActionAnnotatedIdempotentReturnsNull() {
+        TestActionInvoke("AnActionAnnotatedIdempotentReturnsNull", JsonRep.Empty(), Methods.Put);
+    }
 
-        public void DoAttemptInvokePutActionWithGet() {
-            TestActionInvoke("AnActionAnnotatedIdempotent", JsonRep.Empty(), Methods.Get, Codes.MethodNotValid);
-        }
+    protected void DoAnActionReturnsObjectWithParametersAnnotatedIdempotent() {
+        var parms = Parm1Is101Parm2IsMostSimple1();
+        TestActionInvoke("AnActionReturnsObjectWithParametersAnnotatedIdempotent", parms.ToString(), Methods.Put);
+    }
+
+    protected void DoAttemptInvokePutActionWithGet() {
+        TestActionInvoke("AnActionAnnotatedIdempotent", JsonRep.Empty(), Methods.Get, Codes.MethodNotValid);
     }
 }

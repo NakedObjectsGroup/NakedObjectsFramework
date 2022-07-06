@@ -3,121 +3,118 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class ObjectActionInvokeGet : AbstractActionInvokeGet {
-        protected override string BaseUrl {
-            get { return Urls.Objects + Urls.WithActionObject1 + Urls.Actions; }
-        }
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string FilePrefix {
-            get { return "Object-Action-Invoke-Get-"; }
-        }
+[TestClass]
+public class ObjectActionInvokeGet : AbstractActionInvokeGet {
+    protected override string BaseUrl => Urls.Objects + Urls.WithActionObject1 + Urls.Actions;
 
-        [TestMethod]
-        public void ADisabledQueryAction() {
-            DoADisabledQueryAction();
-        }
+    protected override string FilePrefix => "Object-Action-Invoke-Get-";
 
-        [TestMethod]
-        public void InvokeGetActionWithPut() {
-            DoInvokeGetActionWithPut();
-        }
+    [TestMethod]
+    public void ADisabledQueryAction() {
+        DoADisabledQueryAction();
+    }
 
-        [TestMethod]
-        public void AnActionAnnotatedQueryOnly() {
-            DoAnActionAnnotatedQueryOnly();
-        }
+    [TestMethod]
+    public void InvokeGetActionWithPut() {
+        DoInvokeGetActionWithPut();
+    }
 
-        [TestMethod]
-        public void AnActionAnnotatedQueryOnlyReturnsNull() {
-            DoAnActionAnnotatedQueryOnlyReturnsNull();
-        }
+    [TestMethod]
+    public void AnActionAnnotatedQueryOnly() {
+        DoAnActionAnnotatedQueryOnly();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsObjectWithParametersAnnotatedQueryOnly() {
-            DoAnActionReturnsObjectWithParametersAnnotatedQueryOnly();
-        }
+    [TestMethod]
+    public void AnActionAnnotatedQueryOnlyReturnsNull() {
+        DoAnActionAnnotatedQueryOnlyReturnsNull();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsObjectWithParameterAnnotatedQueryOnly() {
-            DoAnActionReturnsObjectWithParameterAnnotatedQueryOnly();
-        }
+    [TestMethod]
+    public void AnActionReturnsObjectWithParametersAnnotatedQueryOnly() {
+        DoAnActionReturnsObjectWithParametersAnnotatedQueryOnly();
+    }
 
-        [TestMethod] //https://restfulobjects.codeplex.com/workitem/25
-        public void SyntacticallyMalformedParamsAsEncodedMap1() {
-            DoSyntacticallyMalformedParamsAsEncodedMap1();
-        }
+    [TestMethod]
+    public void AnActionReturnsObjectWithParameterAnnotatedQueryOnly() {
+        DoAnActionReturnsObjectWithParameterAnnotatedQueryOnly();
+    }
 
-        [TestMethod]
-        public void SyntacticallyMalformedParamsAsEncodedMap2() {
-            DoSyntacticallyMalformedParamsAsEncodedMap2();
-        }
+    [TestMethod] //https://restfulobjects.codeplex.com/workitem/25
+    public void SyntacticallyMalformedParamsAsEncodedMap1() {
+        DoSyntacticallyMalformedParamsAsEncodedMap1();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsQueryable() {
-            DoAnActionReturnsQueryable();
-        }
+    [TestMethod]
+    public void SyntacticallyMalformedParamsAsEncodedMap2() {
+        DoSyntacticallyMalformedParamsAsEncodedMap2();
+    }
 
-        [TestMethod]
-        public void WithFormalDomainModel() {
-            DoWithFormalDomainModel();
-        }
+    [TestMethod]
+    public void AnActionReturnsQueryable() {
+        DoAnActionReturnsQueryable();
+    }
 
-        [TestMethod]
-        public void WithSimpleDomainModel() {
-            DoWithSimpleDomainModel();
-        }
+    [TestMethod]
+    public void WithFormalDomainModel() {
+        DoWithFormalDomainModel();
+    }
 
-        [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
-        public void AttemptWithMalformedDomainModel() {
-            DoAttemptWithMalformedDomainModel();
-        }
+    [TestMethod]
+    public void WithSimpleDomainModel() {
+        DoWithSimpleDomainModel();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsQueryableWithParameters() {
-            DoAnActionReturnsQueryableWithParameters();
-        }
+    [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
+    public void AttemptWithMalformedDomainModel() {
+        DoAttemptWithMalformedDomainModel();
+    }
 
-        [TestMethod]
-        public void AnActionReturnsQueryableWithScalarParameters() {
-            DoAnActionReturnsQueryableWithScalarParameters();
-        }
+    [TestMethod]
+    public void AnActionReturnsQueryableWithParameters() {
+        DoAnActionReturnsQueryableWithParameters();
+    }
 
-        [TestMethod]
-        public void ScalarParametersAsQueryString() {
-            DoScalarParametersAsQueryString();
-        }
+    [TestMethod]
+    public void AnActionReturnsQueryableWithScalarParameters() {
+        DoAnActionReturnsQueryableWithScalarParameters();
+    }
 
-        [TestMethod]
-        public void SyntacticallyMalformedQueryString() {
-            DoSyntacticallyMalformedQueryString();
-        }
+    [TestMethod]
+    public void ScalarParametersAsQueryString() {
+        DoScalarParametersAsQueryString();
+    }
 
-        [TestMethod]
-        public void SemanticallyMalformedQueryString() {
-            DoSemanticallyMalformedQueryString();
-        }
+    [TestMethod]
+    public void SyntacticallyMalformedQueryString() {
+        DoSyntacticallyMalformedQueryString();
+    }
 
-        [TestMethod]
-        public void AnErrorQuery() {
-            DoAnErrorQuery();
-        }
+    [TestMethod]
+    public void SemanticallyMalformedQueryString() {
+        DoSemanticallyMalformedQueryString();
+    }
 
-        [TestMethod]
-        public override void WithGenericAcceptHeader() {
-            DoWithGenericAcceptHeader();
-        }
+    [TestMethod]
+    public void AnErrorQuery() {
+        DoAnErrorQuery();
+    }
 
-        [TestMethod]
-        public override void WithProfileAcceptHeader() {
-            DoWithProfileAcceptHeader();
-        }
+    [TestMethod]
+    public override void WithGenericAcceptHeader() {
+        DoWithGenericAcceptHeader();
+    }
 
-        [TestMethod]
-        public override void AttemptWithInvalidProfileAcceptHeader() {
-            DoAttemptWithInvalidProfileAcceptHeader();
-        }
+    [TestMethod]
+    public override void WithProfileAcceptHeader() {
+        DoWithProfileAcceptHeader();
+    }
+
+    [TestMethod]
+    public override void AttemptWithInvalidProfileAcceptHeader() {
+        DoAttemptWithInvalidProfileAcceptHeader();
     }
 }

@@ -4,69 +4,45 @@
 
 using Newtonsoft.Json.Linq;
 
-namespace RestfulObjects.Test.EndToEnd {
-    /// <summary>
-    /// 
-    /// </summary>
-    public static class JsonRep {
-        //Factored out so that we can test this returning a Null instead
+namespace NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-        public const string FormalDomainModeAsQueryString = @"?" + XRoDomainModel + "=" + Formal;
-        public const string DomainModeQueryStringMalformed = @"?" + XRoDomainModel + "=" + "foo";
-        public const string SimpleDomainModeAsQueryString = @"?" + XRoDomainModel + "=" + Simple;
-        public const string Href = "href";
-        public const string Members = "members";
-        public const string DomainType = "domainType";
-        public const string XRoDomainModel = "x-ro-domain-model";
-        public const string XRoValidateOnly = "x-ro-validate-only";
-        public const string Formal = "formal";
-        public const string Simple = "simple";
+/// <summary>
+/// </summary>
+public static class JsonRep {
+    //Factored out so that we can test this returning a Null instead
 
-        private static int nextId = 10000;
+    public const string FormalDomainModeAsQueryString = $@"?{XRoDomainModel}={Formal}";
+    public const string DomainModeQueryStringMalformed = $@"?{XRoDomainModel}=foo";
+    public const string SimpleDomainModeAsQueryString = $@"?{XRoDomainModel}={Simple}";
+    public const string Href = "href";
+    public const string Members = "members";
+    public const string DomainType = "domainType";
+    private const string XRoDomainModel = "x-ro-domain-model";
+    private const string XRoValidateOnly = "x-ro-validate-only";
+    private const string Formal = "formal";
+    private const string Simple = "simple";
 
-        public static int NextId {
-            get { return ++nextId; }
-        }
+    public static int NextId => ++CurrentId;
 
-        public static int CurrentId {
-            get { return nextId; }
-        }
+    public static int CurrentId { get; private set; } = 10000;
 
-        public static string Empty() {
-            //return (new JObject()).ToString();
-            return null;
-        }
+    public static string Empty() =>
+        //return (new JObject()).ToString();
+        null;
 
-        public static JObject MostSimple1AsRef() {
-            return ObjectAsRef(@"MostSimple/1");
-        }
+    public static JObject MostSimple1AsRef() => ObjectAsRef(@"MostSimple/1");
 
-        public static JObject MostSimple2AsRef() {
-            return ObjectAsRef(@"MostSimple/2");
-        }
+    public static JObject MostSimple2AsRef() => ObjectAsRef(@"MostSimple/2");
 
-        public static JObject MostSimple3AsRef() {
-            return ObjectAsRef(@"MostSimple/3");
-        }
+    public static JObject MostSimple3AsRef() => ObjectAsRef(@"MostSimple/3");
 
-        public static JObject WithValue1AsRef() {
-            return ObjectAsRef(@"WithValue/1");
-        }
+    public static JObject WithValue1AsRef() => ObjectAsRef(@"WithValue/1");
 
-        private static JObject ObjectAsRef(string oid) {
-            return new JObject(new JProperty(Href, Urls.Objects + Urls.NameSpace + oid));
-        }
+    private static JObject ObjectAsRef(string oid) => new(new JProperty(Href, Urls.Objects + Urls.NameSpace + oid));
 
-        public static JProperty ValidateOnly() {
-            return new JProperty(XRoValidateOnly, true);
-        }
+    public static JProperty ValidateOnly() => new(XRoValidateOnly, true);
 
-        public static JProperty FormalDomainModel() {
-            return new JProperty(XRoDomainModel, Formal);
-        }
+    public static JProperty FormalDomainModel() => new(XRoDomainModel, Formal);
 
-        public static JProperty SimpleDomainModel() {
-            return new JProperty(XRoDomainModel, Simple);
-        }
-    }
+    public static JProperty SimpleDomainModel() => new(XRoDomainModel, Simple);
 }

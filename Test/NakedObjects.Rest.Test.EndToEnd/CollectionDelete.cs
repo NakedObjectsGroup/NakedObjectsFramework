@@ -3,26 +3,25 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class CollectionDelete : CollectionAbstract {
-        #region Helpers
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string FilePrefix {
-            get { return "Collection-Delete-"; }
-        }
+[TestClass]
+public class CollectionDelete : CollectionAbstract {
+    #region Helpers
 
-        #endregion
+    protected override string FilePrefix => "Collection-Delete-";
 
-        [TestInitialize]
-        public void AddItemsToCollections() {
-            base.InitializeVerySimple1();
-        }
+    #endregion
 
-        [TestMethod]
-        public void DeleteItemFromList() {
-            Helpers.TestResponse(simpleList, FilePrefix + "DeleteItemFromList", simple1AsArgument.ToString(), Methods.Delete, Codes.Forbidden);
-        }
+    [TestInitialize]
+    public void AddItemsToCollections() {
+        InitializeVerySimple1();
+    }
+
+    [TestMethod]
+    public void DeleteItemFromList() {
+        Helpers.Helpers.TestResponse(SimpleList, $"{FilePrefix}DeleteItemFromList", Simple1AsArgument.ToString(), Methods.Delete, Codes.Forbidden);
     }
 }

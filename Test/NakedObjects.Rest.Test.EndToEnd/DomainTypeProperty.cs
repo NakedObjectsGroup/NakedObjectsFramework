@@ -3,31 +3,31 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class DomainTypePropertyTests {
-        private static string dtp = Urls.DomainTypes + Urls.NameSpace + @"MostSimple/properties/Id";
-     
-        [TestMethod]
-        public void DomainTypeProperty() {
-            Helpers.TestResponse(dtp, null, null, Methods.Put, Codes.MethodNotValid);
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        }
+[TestClass]
+public class DomainTypePropertyTests {
+    private static readonly string dtp = $@"{Urls.DomainTypes}{Urls.NameSpace}MostSimple/properties/Id";
 
-        [TestMethod]
-        public void AttemptPut() {
-            Helpers.TestResponse(dtp, null, null, Methods.Put, Codes.MethodNotValid);
-        }
+    [TestMethod]
+    public void DomainTypeProperty() {
+        Helpers.Helpers.TestResponse(dtp, null, null, Methods.Put, Codes.MethodNotValid);
+    }
 
-        [TestMethod]
-        public void AttemptPost() {
-            Helpers.TestResponse(dtp, null, null, Methods.Put, Codes.MethodNotValid);
-        }
+    [TestMethod]
+    public void AttemptPut() {
+        Helpers.Helpers.TestResponse(dtp, null, null, Methods.Put, Codes.MethodNotValid);
+    }
 
-        [TestMethod]
-        public void AttemptDelete() {
-            Helpers.TestResponse(dtp, null, null, Methods.Put, Codes.MethodNotValid);
-        }
+    [TestMethod]
+    public void AttemptPost() {
+        Helpers.Helpers.TestResponse(dtp, null, null, Methods.Put, Codes.MethodNotValid);
+    }
+
+    [TestMethod]
+    public void AttemptDelete() {
+        Helpers.Helpers.TestResponse(dtp, null, null, Methods.Put, Codes.MethodNotValid);
     }
 }

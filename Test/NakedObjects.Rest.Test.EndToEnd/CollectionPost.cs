@@ -3,21 +3,20 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
-    public class CollectionPost : CollectionAbstract {
-        #region Helpers
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        protected override string FilePrefix {
-            get { return "Collection-Post-"; }
-        }
+[TestClass]
+public class CollectionPost : CollectionAbstract {
+    #region Helpers
 
-        #endregion
+    protected override string FilePrefix => "Collection-Post-";
 
-        [TestMethod]
-        public void PostItemIntoList() {
-            Helpers.TestResponse(simpleList, FilePrefix + "PostItemIntoList", simple1AsArgument.ToString(), Methods.Post, Codes.Forbidden);
-        }
+    #endregion
+
+    [TestMethod]
+    public void PostItemIntoList() {
+        Helpers.Helpers.TestResponse(SimpleList, $"{FilePrefix}PostItemIntoList", Simple1AsArgument.ToString(), Methods.Post, Codes.Forbidden);
     }
 }

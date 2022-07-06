@@ -2,18 +2,20 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
-namespace RestfulObjects.Test.EndToEnd {
-    public class AbstractActionInvokeDelete : AbstractAction {
-        public void DoAttemptInvokePostActionWithDelete() {
-            TestActionInvoke("AnAction", JsonRep.Empty(), Methods.Delete, Codes.MethodNotValid);
-        }
+using NakedObjects.Rest.Test.EndToEnd.Helpers;
 
-        public void DoAttemptInvokePutActionWithDelete() {
-            TestActionInvoke("AnActionAnnotatedIdempotent", JsonRep.Empty(), Methods.Delete, Codes.MethodNotValid);
-        }
+namespace NakedObjects.Rest.Test.EndToEnd;
 
-        public void DoAttemptInvokeGetActionWithDelete() {
-            TestActionInvoke("AnActionAnnotatedQueryOnly", JsonRep.Empty(), Methods.Delete, Codes.MethodNotValid);
-        }
+public class AbstractActionInvokeDelete : AbstractAction {
+    protected void DoAttemptInvokePostActionWithDelete() {
+        TestActionInvoke("AnAction", JsonRep.Empty(), Methods.Delete, Codes.MethodNotValid);
+    }
+
+    protected void DoAttemptInvokePutActionWithDelete() {
+        TestActionInvoke("AnActionAnnotatedIdempotent", JsonRep.Empty(), Methods.Delete, Codes.MethodNotValid);
+    }
+
+    protected void DoAttemptInvokeGetActionWithDelete() {
+        TestActionInvoke("AnActionAnnotatedQueryOnly", JsonRep.Empty(), Methods.Delete, Codes.MethodNotValid);
     }
 }
