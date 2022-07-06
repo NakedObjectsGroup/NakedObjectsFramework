@@ -9,179 +9,178 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests {
-    public abstract class CustomTemplateTestsRoot : AWTest {
+namespace NakedObjects.Selenium.Test.ObjectTests; 
 
-        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+public abstract class CustomTemplateTestsRoot : AWTest {
+    protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
-        public virtual void CustomViewTemplate() {
-            GeminiUrl("object?i1=View&o1=___1.Location--60");
-            WaitForView(Pane.Single, PaneType.Object, "Location - custom view");
-            Assert.AreEqual("Topaz", WaitForCss(".presentationHint").Text);
-        }
-
-        public virtual void CustomEditTemplate() {
-            GeminiUrl("object?i1=Edit&o1=___1.WorkOrderRouting--43375--980--7");
-            WaitForView(Pane.Single, PaneType.Object, "Work Order Routing - custom edit");
-        }
-
-        public virtual void CustomListTemplate() {
-            GeminiUrl("list?m1=WorkOrderRepository&a1=AllLocations&pg1=1&ps1=20&s1_=0&c1=List");
-            Reload();
-            WaitForView(Pane.Single, PaneType.List, "Location - custom list");
-        }
-
-        public virtual void CustomErrorHandling() {
-            Url(CustomersMenuUrl);
-            WaitForCss(".actions nof-action", CustomerServiceActions);
-            Click(GetObjectEnabledAction("Throw Domain Exception"));
-            WaitForView(Pane.Single, PaneType.Error);
-            Assert.AreEqual("Internal Server Error", WaitForCss(".title").Text);
-            Assert.AreEqual("Foo", WaitForCss(".message").Text);
-        }
+    public virtual void CustomViewTemplate() {
+        GeminiUrl("object?i1=View&o1=___1.Location--60");
+        WaitForView(Pane.Single, PaneType.Object, "Location - custom view");
+        Assert.AreEqual("Topaz", WaitForCss(".presentationHint").Text);
     }
 
-    public abstract class CustomTemplateTests : CustomTemplateTestsRoot {
-        [TestMethod]
-        public override void CustomViewTemplate() {
-            base.CustomViewTemplate();
-        }
-
-        [TestMethod]
-        public override void CustomEditTemplate() {
-            base.CustomEditTemplate();
-        }
-
-        [TestMethod]
-        public override void CustomListTemplate() {
-            base.CustomListTemplate();
-        }
-
-        [TestMethod]
-        public override void CustomErrorHandling() {
-            base.CustomErrorHandling();
-        }
+    public virtual void CustomEditTemplate() {
+        GeminiUrl("object?i1=Edit&o1=___1.WorkOrderRouting--43375--980--7");
+        WaitForView(Pane.Single, PaneType.Object, "Work Order Routing - custom edit");
     }
 
-    #region browsers specific subclasses
-
-    public class CustomTemplateTestsIe : CustomTemplateTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
+    public virtual void CustomListTemplate() {
+        GeminiUrl("list?m1=WorkOrderRepository&a1=AllLocations&pg1=1&ps1=20&s1_=0&c1=List");
+        Reload();
+        WaitForView(Pane.Single, PaneType.List, "Location - custom list");
     }
 
-    //[TestClass] //Firefox Individual
-    public class CustomTemplateFirefox : CustomTemplateTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
+    public virtual void CustomErrorHandling() {
+        Url(CustomersMenuUrl);
+        WaitForCss(".actions nof-action", CustomerServiceActions);
+        Click(GetObjectEnabledAction("Throw Domain Exception"));
+        WaitForView(Pane.Single, PaneType.Error);
+        Assert.AreEqual("Internal Server Error", WaitForCss(".title").Text);
+        Assert.AreEqual("Foo", WaitForCss(".message").Text);
     }
-
-    public class CustomTemplateTestsChrome : CustomTemplateTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
-
-    #region Mega tests
-
-    public abstract class MegaCustomTemplateTestsRoot : CustomTemplateTestsRoot {
-        [TestMethod] //Mega
-        [Priority(0)]
-        public void MegaCustomTemplateTests() {
-            CustomViewTemplate();
-            CustomEditTemplate();
-            CustomListTemplate();
-            CustomErrorHandling();
-        }
-
-        [TestMethod]
-        [Priority(-1)]
-        public void ProblematicTests() { }
-    }
-
-    //[TestClass]
-    public class MegaCustomTemplateTestsFirefox : MegaCustomTemplateTestsRoot {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    //[TestClass]
-    public class MegaCustomTemplateTestsIe : MegaCustomTemplateTestsRoot {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
 }
+
+public abstract class CustomTemplateTests : CustomTemplateTestsRoot {
+    [TestMethod]
+    public override void CustomViewTemplate() {
+        base.CustomViewTemplate();
+    }
+
+    [TestMethod]
+    public override void CustomEditTemplate() {
+        base.CustomEditTemplate();
+    }
+
+    [TestMethod]
+    public override void CustomListTemplate() {
+        base.CustomListTemplate();
+    }
+
+    [TestMethod]
+    public override void CustomErrorHandling() {
+        base.CustomErrorHandling();
+    }
+}
+
+#region browsers specific subclasses
+
+public class CustomTemplateTestsIe : CustomTemplateTests {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        FilePath(@"drivers.IEDriverServer.exe");
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitIeDriver();
+        Url(BaseUrl);
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+//[TestClass] //Firefox Individual
+public class CustomTemplateFirefox : CustomTemplateTests {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitFirefoxDriver();
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+
+    protected override void ScrollTo(IWebElement element) {
+        var script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
+        ((IJavaScriptExecutor)br).ExecuteScript(script);
+    }
+}
+
+public class CustomTemplateTestsChrome : CustomTemplateTests {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        FilePath(@"drivers.chromedriver.exe");
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitChromeDriver();
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+#endregion
+
+#region Mega tests
+
+public abstract class MegaCustomTemplateTestsRoot : CustomTemplateTestsRoot {
+    [TestMethod] //Mega
+    [Priority(0)]
+    public void MegaCustomTemplateTests() {
+        CustomViewTemplate();
+        CustomEditTemplate();
+        CustomListTemplate();
+        CustomErrorHandling();
+    }
+
+    [TestMethod]
+    [Priority(-1)]
+    public void ProblematicTests() { }
+}
+
+//[TestClass]
+public class MegaCustomTemplateTestsFirefox : MegaCustomTemplateTestsRoot {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitFirefoxDriver();
+        Url(BaseUrl);
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+//[TestClass]
+public class MegaCustomTemplateTestsIe : MegaCustomTemplateTestsRoot {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        FilePath(@"drivers.IEDriverServer.exe");
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitIeDriver();
+        Url(BaseUrl);
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+#endregion

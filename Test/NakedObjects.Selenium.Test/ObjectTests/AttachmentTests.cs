@@ -10,120 +10,119 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests {
-    public abstract class AttachmentTestsRoot : AWTest {
+namespace NakedObjects.Selenium.Test.ObjectTests; 
 
-        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+public abstract class AttachmentTestsRoot : AWTest {
+    protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
-        public virtual void ImageAsProperty() {
-            Debug.WriteLine(nameof(ImageAsProperty));
-            GeminiUrl("object?o1=___1.Product--968");
-            wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".property img")).GetAttribute("src").Length > 0);
-        }
-
-        public virtual void EmptyImageProperty() {
-            Debug.WriteLine(nameof(EmptyImageProperty));
-            GeminiUrl("object?i1=View&o1=___1.Person--13742");
-            wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:\r\nNo image");
-        }
-
-        public virtual void ClickOnImage() {
-            Debug.WriteLine(nameof(ClickOnImage));
-            GeminiUrl("object?o1=___1.Product--779");
-            Click(WaitForCss(".property img"));
-            WaitForView(Pane.Single, PaneType.Attachment);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".attachment .reference img")).GetAttribute("src").Length > 0);
-        }
-
-        public virtual void RightClickOnImage() {
-            Debug.WriteLine(nameof(RightClickOnImage));
-            GeminiUrl("object?o1=___1.Product--780");
-            RightClick(WaitForCss(".property img"));
-            WaitForView(Pane.Left, PaneType.Object);
-            wait.Until(dr => dr.FindElement(By.CssSelector("#pane1 .property img")).GetAttribute("src").Length > 0);
-            WaitForView(Pane.Right, PaneType.Attachment);
-            wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 .attachment .reference img")).GetAttribute("src").Length > 0);
-        }
+    public virtual void ImageAsProperty() {
+        Debug.WriteLine(nameof(ImageAsProperty));
+        GeminiUrl("object?o1=___1.Product--968");
+        wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
+        wait.Until(dr => dr.FindElement(By.CssSelector(".property img")).GetAttribute("src").Length > 0);
     }
 
-    #region Mega tests
-
-    public abstract class MegaAttachmentTestsRoot : AttachmentTestsRoot {
-        [TestMethod] //Mega
-        [Priority(0)]
-        public void AttachmentTests() {
-            ImageAsProperty();
-            EmptyImageProperty();
-            ClickOnImage();
-            RightClickOnImage();
-        }
-
-        [TestMethod]
-        [Priority(-1)]
-        public void ProblematicTests() {
-            EmptyImageProperty();
-        }
+    public virtual void EmptyImageProperty() {
+        Debug.WriteLine(nameof(EmptyImageProperty));
+        GeminiUrl("object?i1=View&o1=___1.Person--13742");
+        wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:\r\nNo image");
     }
 
-    //[TestClass]
-    public class MegaAttachmentTestsFirefox : MegaAttachmentTestsRoot {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
+    public virtual void ClickOnImage() {
+        Debug.WriteLine(nameof(ClickOnImage));
+        GeminiUrl("object?o1=___1.Product--779");
+        Click(WaitForCss(".property img"));
+        WaitForView(Pane.Single, PaneType.Attachment);
+        wait.Until(dr => dr.FindElement(By.CssSelector(".attachment .reference img")).GetAttribute("src").Length > 0);
     }
 
-    //[TestClass]
-    public class MegaAttachmentTestsIe : MegaAttachmentTestsRoot {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
+    public virtual void RightClickOnImage() {
+        Debug.WriteLine(nameof(RightClickOnImage));
+        GeminiUrl("object?o1=___1.Product--780");
+        RightClick(WaitForCss(".property img"));
+        WaitForView(Pane.Left, PaneType.Object);
+        wait.Until(dr => dr.FindElement(By.CssSelector("#pane1 .property img")).GetAttribute("src").Length > 0);
+        WaitForView(Pane.Right, PaneType.Attachment);
+        wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 .attachment .reference img")).GetAttribute("src").Length > 0);
     }
-
-    [TestClass] //toggle
-    public class MegaAttachmentTestsChrome : MegaAttachmentTestsRoot {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
 }
+
+#region Mega tests
+
+public abstract class MegaAttachmentTestsRoot : AttachmentTestsRoot {
+    [TestMethod] //Mega
+    [Priority(0)]
+    public void AttachmentTests() {
+        ImageAsProperty();
+        EmptyImageProperty();
+        ClickOnImage();
+        RightClickOnImage();
+    }
+
+    [TestMethod]
+    [Priority(-1)]
+    public void ProblematicTests() {
+        EmptyImageProperty();
+    }
+}
+
+//[TestClass]
+public class MegaAttachmentTestsFirefox : MegaAttachmentTestsRoot {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitFirefoxDriver();
+        Url(BaseUrl);
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+//[TestClass]
+public class MegaAttachmentTestsIe : MegaAttachmentTestsRoot {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        FilePath(@"drivers.IEDriverServer.exe");
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitIeDriver();
+        Url(BaseUrl);
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+[TestClass] //toggle
+public class MegaAttachmentTestsChrome : MegaAttachmentTestsRoot {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        FilePath(@"drivers.chromedriver.exe");
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitChromeDriver();
+        Url(BaseUrl);
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+#endregion

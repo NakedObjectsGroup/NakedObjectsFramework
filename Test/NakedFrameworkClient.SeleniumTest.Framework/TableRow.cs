@@ -1,34 +1,28 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
-using System;
+﻿using System;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 
-namespace NakedFrameworkClient.TestFramework
-{
-    public class TableRow : SubView
-    {
-        public TableRow(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+namespace NakedFrameworkClient.TestFramework; 
 
-        public TableRow AssertColumnValuesAre(params string[] textValues) => throw new NotImplementedException();
+public class TableRow : SubView {
+    public TableRow(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
 
-        public TableRow AssertColumnValueIs(int col, string textValue)
-        {
-           
-            Assert.AreEqual(textValue, GetColumnValue(col));
-            return this;
-        }
+    public TableRow AssertColumnValuesAre(params string[] textValues) => throw new NotImplementedException();
 
-        public ObjectView Click(MouseClick button = MouseClick.MainButton) => throw new NotImplementedException();
-
-        public TableRow DragAndDropOnto(ReferenceInputField field)
-        {
-            helper.CopyToClipboard(element);
-            field.PasteReferenceFromClipboard();
-            return this;
-        }
-
-        public string GetColumnValue(int col) =>
-            element.FindElements(By.CssSelector("td")).ElementAt(col).Text;
-
+    public TableRow AssertColumnValueIs(int col, string textValue) {
+        Assert.AreEqual(textValue, GetColumnValue(col));
+        return this;
     }
+
+    public ObjectView Click(MouseClick button = MouseClick.MainButton) => throw new NotImplementedException();
+
+    public TableRow DragAndDropOnto(ReferenceInputField field) {
+        helper.CopyToClipboard(element);
+        field.PasteReferenceFromClipboard();
+        return this;
+    }
+
+    public string GetColumnValue(int col) =>
+        element.FindElements(By.CssSelector("td")).ElementAt(col).Text;
 }

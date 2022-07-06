@@ -9,117 +9,116 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests {
-    /// <summary>
-    /// Tests content and operations within from Home representation
-    /// </summary>
-    public abstract class RedirectTestsRoot : AWTest {
+namespace NakedObjects.Selenium.Test.ObjectTests; 
 
-        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+/// <summary>
+///     Tests content and operations within from Home representation
+/// </summary>
+public abstract class RedirectTestsRoot : AWTest {
+    protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
-        public virtual void RedirectFromActionResult() {
-            GeminiUrl("home?m1=SalesRepository");
-            Click(GetObjectEnabledAction("Random Sales Tax Rate"));
-            WaitForView(Pane.Single, PaneType.Object);
-            //Redirected from a SalesTaxRate to corresponding StateProvice
-            wait.Until(dr => dr.FindElement(By.CssSelector(".properties")).Text.Contains("Is Only State Province"));
-        }
-
-        public virtual void RedirectFromLink() {
-            GeminiUrl("home?m1=SalesRepository");
-            Click(GetObjectEnabledAction("Sales Tax Rates"));
-            WaitForView(Pane.Single, PaneType.List);
-            WaitForCss(".reference", 20);
-            var row = WaitForCssNo(".reference", 0);
-            Assert.AreEqual("Tax Rate for: Alberta", row.Text);
-            Click(row);
-            //Redirected from a SalesTaxeRate to corresponding StateProvice
-            WaitForView(Pane.Single, PaneType.Object, "Alberta");
-        }
+    public virtual void RedirectFromActionResult() {
+        GeminiUrl("home?m1=SalesRepository");
+        Click(GetObjectEnabledAction("Random Sales Tax Rate"));
+        WaitForView(Pane.Single, PaneType.Object);
+        //Redirected from a SalesTaxRate to corresponding StateProvice
+        wait.Until(dr => dr.FindElement(By.CssSelector(".properties")).Text.Contains("Is Only State Province"));
     }
 
-    public abstract class RedirectTests : RedirectTestsRoot {
-        [TestMethod]
-        public override void RedirectFromActionResult() {
-            base.RedirectFromActionResult();
-        }
+    public virtual void RedirectFromLink() {
+        GeminiUrl("home?m1=SalesRepository");
+        Click(GetObjectEnabledAction("Sales Tax Rates"));
+        WaitForView(Pane.Single, PaneType.List);
+        WaitForCss(".reference", 20);
+        var row = WaitForCssNo(".reference", 0);
+        Assert.AreEqual("Tax Rate for: Alberta", row.Text);
+        Click(row);
+        //Redirected from a SalesTaxeRate to corresponding StateProvice
+        WaitForView(Pane.Single, PaneType.Object, "Alberta");
+    }
+}
 
-        [TestMethod]
-        public override void RedirectFromLink() {
-            base.RedirectFromLink();
-        }
+public abstract class RedirectTests : RedirectTestsRoot {
+    [TestMethod]
+    public override void RedirectFromActionResult() {
+        base.RedirectFromActionResult();
     }
 
-    public class MegaRedirectTestBase : RedirectTestsRoot {
-        [TestMethod] //Mega
-        [Priority(0)]
-        public virtual void RedirectTests() {
-            // todo look into is it just config ?
-            //RedirectFromActionResult();
-            //RedirectFromLink();
-        }
+    [TestMethod]
+    public override void RedirectFromLink() {
+        base.RedirectFromLink();
+    }
+}
 
-        //[TestMethod]
-        [Priority(-1)]
-        public void ProblematicTests() { }
+public class MegaRedirectTestBase : RedirectTestsRoot {
+    [TestMethod] //Mega
+    [Priority(0)]
+    public virtual void RedirectTests() {
+        // todo look into is it just config ?
+        //RedirectFromActionResult();
+        //RedirectFromLink();
     }
 
-    //[TestClass]
-    public class MegaRedirectTestFirefox : MegaRedirectTestBase {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
-        }
+    //[TestMethod]
+    [Priority(-1)]
+    public void ProblematicTests() { }
+}
 
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
+//[TestClass]
+public class MegaRedirectTestFirefox : MegaRedirectTestBase {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        GeminiTest.InitialiseClass(context);
     }
 
-    //[TestClass]
-    public class MegaRedirectTestIe : MegaRedirectTestBase {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitFirefoxDriver();
+        Url(BaseUrl);
     }
 
-    [TestClass] //toggle
-    public class MegaRedirectTestChrome : MegaRedirectTestBase {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
-        }
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
 
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-            Url(BaseUrl);
-        }
+//[TestClass]
+public class MegaRedirectTestIe : MegaRedirectTestBase {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        FilePath(@"drivers.IEDriverServer.exe");
+        GeminiTest.InitialiseClass(context);
+    }
 
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitIeDriver();
+        Url(BaseUrl);
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+[TestClass] //toggle
+public class MegaRedirectTestChrome : MegaRedirectTestBase {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        FilePath(@"drivers.chromedriver.exe");
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitChromeDriver();
+        Url(BaseUrl);
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
     }
 }

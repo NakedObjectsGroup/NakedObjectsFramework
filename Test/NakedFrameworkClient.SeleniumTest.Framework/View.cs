@@ -1,44 +1,33 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
-namespace NakedFrameworkClient.TestFramework
-{
-    public abstract class View
-    {
-        internal readonly IWebElement element;
-        internal readonly Helper helper;
-        internal readonly Pane pane;
+namespace NakedFrameworkClient.TestFramework; 
 
-        public View(IWebElement element, Helper helper, Pane pane = Pane.Single)
-        {
-            this.element = element;
-            this.helper = helper;
-            this.pane = pane;
-        }
+public abstract class View {
+    internal readonly IWebElement element;
+    internal readonly Helper helper;
+    internal readonly Pane pane;
 
-        //Works only when there is already an open dialog in view - otherwise open one through action menu
-        public Dialog GetOpenedDialog()
-        {
-            var we = helper.WaitForChildElement(element, ".dialog");
-            return new Dialog(we, helper, this);
-        }
+    public View(IWebElement element, Helper helper, Pane pane = Pane.Single) {
+        this.element = element;
+        this.helper = helper;
+        this.pane = pane;
+    }
 
-        public void WaitForMessage(string msg)
-        {
-            helper.wait.Until(e => e.FindElement(By.CssSelector(".header .messages")).Text == msg);
-        }
+    //Works only when there is already an open dialog in view - otherwise open one through action menu
+    public Dialog GetOpenedDialog() {
+        var we = helper.WaitForChildElement(element, ".dialog");
+        return new Dialog(we, helper, this);
+    }
 
-        public void WaitForFooterMessage(string msg)
-        {
-            helper.wait.Until(e => e.FindElement(By.CssSelector(".footer .messages")).Text == msg);
+    public void WaitForMessage(string msg) {
+        helper.wait.Until(e => e.FindElement(By.CssSelector(".header .messages")).Text == msg);
+    }
 
-        }
+    public void WaitForFooterMessage(string msg) {
+        helper.wait.Until(e => e.FindElement(By.CssSelector(".footer .messages")).Text == msg);
+    }
 
-        public void WaitForFooterWarning(string msg)
-        {
-            helper.wait.Until(e => e.FindElement(By.CssSelector(".footer .warnings")).Text == msg);
-        }
-
-
+    public void WaitForFooterWarning(string msg) {
+        helper.wait.Until(e => e.FindElement(By.CssSelector(".footer .warnings")).Text == msg);
     }
 }

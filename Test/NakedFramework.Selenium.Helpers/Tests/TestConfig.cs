@@ -5,12 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Selenium.Helpers.Tests {
-    public static class TestConfig {
-        //public const string BaseObjectUrl = "http://localhost:49998/";
+namespace NakedFramework.Selenium.Helpers.Tests; 
 
-        public const string BaseObjectUrl = "http://nakedobjectstest2.azurewebsites.net/";
+public static class TestConfig {
+    //public const string BaseObjectUrl = "http://localhost:49998/";
 
-        public const string BaseFunctionalUrl = "http://nakedfunctionstest.azurewebsites.net/";
-    }
+    public const string BaseObjectUrl = "http://nakedobjectstest2.azurewebsites.net/";
+
+    public const string BaseFunctionalUrl = "http://nakedfunctionstest.azurewebsites.net/";
 }

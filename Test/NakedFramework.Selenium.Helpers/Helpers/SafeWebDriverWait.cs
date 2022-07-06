@@ -10,60 +10,54 @@ using System.Diagnostics;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedFramework.Selenium.Helpers.Helpers {
-    public class SafeWebDriverWait : IWait<IWebDriver> {
-        private readonly WebDriverWait wait;
+namespace NakedFramework.Selenium.Helpers.Helpers; 
 
-        public SafeWebDriverWait(IWebDriver driver, TimeSpan timeout) {
-            wait = new WebDriverWait(driver, timeout);
-            Driver = driver;
-        }
+public class SafeWebDriverWait : IWait<IWebDriver> {
+    private readonly WebDriverWait wait;
 
-        public IWebDriver Driver { get; private set; }
-
-        #region IWait<IWebDriver> Members
-
-        public void IgnoreExceptionTypes(params Type[] exceptionTypes) {
-            wait.IgnoreExceptionTypes(exceptionTypes);
-        }
-
-        private void DebugDumpPage() {
-            var page = Driver.PageSource;
-            Debug.WriteLine(page);
-        }
-
-
-        public TResult Until<TResult>(Func<IWebDriver, TResult> condition) {
-            try {
-                return wait.Until(d => {
-                    try {
-                        return condition(d);
-                    }
-                    catch { }
-                    return default(TResult);
-                });
-            }
-            catch  {
-                //DebugDumpPage();
-                throw;
-            }
-        }
-
-        public TimeSpan Timeout {
-            get { return wait.Timeout; }
-            set { wait.Timeout = value; }
-        }
-
-        public TimeSpan PollingInterval {
-            get { return wait.PollingInterval; }
-            set { wait.PollingInterval = value; }
-        }
-
-        public string Message {
-            get { return wait.Message; }
-            set { wait.Message = value; }
-        }
-
-        #endregion
+    public SafeWebDriverWait(IWebDriver driver, TimeSpan timeout) {
+        wait = new WebDriverWait(driver, timeout);
+        Driver = driver;
     }
+
+    public IWebDriver Driver { get; }
+
+    #region IWait<IWebDriver> Members
+
+    public void IgnoreExceptionTypes(params Type[] exceptionTypes) {
+        wait.IgnoreExceptionTypes(exceptionTypes);
+    }
+
+    private void DebugDumpPage() {
+        var page = Driver.PageSource;
+        Debug.WriteLine(page);
+    }
+
+    public TResult Until<TResult>(Func<IWebDriver, TResult> condition) {
+        return wait.Until(d => {
+            try {
+                return condition(d);
+            }
+            catch { }
+
+            return default;
+        });
+    }
+
+    public TimeSpan Timeout {
+        get => wait.Timeout;
+        set => wait.Timeout = value;
+    }
+
+    public TimeSpan PollingInterval {
+        get => wait.PollingInterval;
+        set => wait.PollingInterval = value;
+    }
+
+    public string Message {
+        get => wait.Message;
+        set => wait.Message = value;
+    }
+
+    #endregion
 }

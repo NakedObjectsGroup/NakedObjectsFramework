@@ -10,105 +10,105 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests {
-    public abstract class PerformanceTestsRoot : AWTest {
+namespace NakedObjects.Selenium.Test.ObjectTests; 
 
-        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+public abstract class PerformanceTestsRoot : AWTest {
+    protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
-        public virtual void RetrieveRandomEmployees() {
-            Debug.WriteLine(nameof(RetrieveRandomEmployees));
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            GeminiUrl("home?m1=EmployeeRepository");
+    public virtual void RetrieveRandomEmployees() {
+        Debug.WriteLine(nameof(RetrieveRandomEmployees));
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        GeminiUrl("home?m1=EmployeeRepository");
+        WaitForView(Pane.Single, PaneType.Home);
+        for (var i = 0; i < 100; i++) {
+            Click(GetObjectEnabledAction("Random Employee"));
+            WaitForView(Pane.Single, PaneType.Object);
+            ClickBackButton();
             WaitForView(Pane.Single, PaneType.Home);
-            for (int i = 0; i < 100; i++) {
-                Click(GetObjectEnabledAction("Random Employee"));
-                WaitForView(Pane.Single, PaneType.Object);
-                ClickBackButton();
-                WaitForView(Pane.Single, PaneType.Home);
-            }
-            stopWatch.Stop();
-            var time = stopWatch.ElapsedMilliseconds;
-            var limit = 150000;
-            Assert.IsTrue(time < limit, $"Elapsed time was {time} milliseconds limit {limit}");
         }
+
+        stopWatch.Stop();
+        var time = stopWatch.ElapsedMilliseconds;
+        var limit = 150000;
+        Assert.IsTrue(time < limit, $"Elapsed time was {time} milliseconds limit {limit}");
     }
-
-    public abstract class MegaPerformanceTest : PerformanceTestsRoot {
-        [TestMethod] //Mega
-        [Priority(0)]
-        public void PerformanceTests() {
-            RetrieveRandomEmployees();
-        }
-
-        //[TestMethod]
-        [Priority(-1)]
-        public void ProblematicTests() { }
-    }
-
-    #region browsers specific subclasses
-
-    //[TestClass]
-    public class MegaPerformanceTestIe : MegaPerformanceTest {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    //[TestClass]
-    public class MegaPerformanceTestFirefox : MegaPerformanceTest {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    [TestClass] //toggle
-    public class MegaPerformanceTestChrome : MegaPerformanceTest {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
 }
+
+public abstract class MegaPerformanceTest : PerformanceTestsRoot {
+    [TestMethod] //Mega
+    [Priority(0)]
+    public void PerformanceTests() {
+        RetrieveRandomEmployees();
+    }
+
+    //[TestMethod]
+    [Priority(-1)]
+    public void ProblematicTests() { }
+}
+
+#region browsers specific subclasses
+
+//[TestClass]
+public class MegaPerformanceTestIe : MegaPerformanceTest {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        FilePath(@"drivers.IEDriverServer.exe");
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitIeDriver();
+        Url(BaseUrl);
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+//[TestClass]
+public class MegaPerformanceTestFirefox : MegaPerformanceTest {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitFirefoxDriver();
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+
+    protected override void ScrollTo(IWebElement element) {
+        var script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
+        ((IJavaScriptExecutor)br).ExecuteScript(script);
+    }
+}
+
+[TestClass] //toggle
+public class MegaPerformanceTestChrome : MegaPerformanceTest {
+    [ClassInitialize]
+    public new static void InitialiseClass(TestContext context) {
+        FilePath(@"drivers.chromedriver.exe");
+        GeminiTest.InitialiseClass(context);
+    }
+
+    [TestInitialize]
+    public virtual void InitializeTest() {
+        InitChromeDriver();
+    }
+
+    [TestCleanup]
+    public virtual void CleanupTest() {
+        CleanUpTest();
+    }
+}
+
+#endregion
