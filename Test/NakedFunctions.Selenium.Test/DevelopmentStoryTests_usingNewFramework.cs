@@ -319,7 +319,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
         dialog.GetTextField("End Date").Clear().Enter(endDate);
 
-        var now = DateTime.Now.ToString("d MMM yyyy HH:mm:").Substring(0, 16);
+        var now = DateTime.UtcNow.ToString("d MMM yyyy HH:mm:").Substring(0, 16);
         var modified = dialog.ClickOKToViewObject().AssertTitleIs("Manager's Special")
                              .GetProperty("Modified Date").GetValue();
         Assert.AreEqual(now, modified.Substring(0, 16));
