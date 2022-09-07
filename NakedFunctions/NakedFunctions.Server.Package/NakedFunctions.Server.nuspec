@@ -16,7 +16,7 @@
 		<dependencies>
 			<group targetFramework="net6.0">
 				<dependency id="NakedFunctions.ProgrammingModel" version="[1.1.0, 2)" />
-				<dependency id="NakedFramework" version="[13.0.0, 14)" />
+				<dependency id="NakedFramework" version="[13.1.0, 14)" />
 			</group>
 		</dependencies>
 	</metadata>
