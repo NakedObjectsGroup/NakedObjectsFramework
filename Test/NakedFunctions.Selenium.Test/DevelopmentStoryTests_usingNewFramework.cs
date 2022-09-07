@@ -40,7 +40,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         HideFunction();
         AutoCompleteFunction();
         ViewModel1();
-        CreateNewObectWithOnlyValueProperties();
+        //CreateNewObectWithOnlyValueProperties();
         CreateNewObjectWithAReferenceToAnotherExistingObject();
         CreateNewObjectWithAReferenceToMultipleExistingObjects();
         CreateAGraphOfTwoNewRelatedObjects();

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -184,10 +185,10 @@ public abstract class ObjectEditTestsRoot : AWTest {
         var outmask = "d MMM yyyy";
         var inmask = "dd/MM/yyyy";
         var intoday = DateTime.Today.ToString(inmask);
-        var outtoday = DateTime.Today.ToString(outmask);
+        var outtoday = DateTime.Today.ToString(outmask, CultureInfo.InvariantCulture);
         var inyesterday = DateTime.Today.AddDays(-1).ToString(inmask);
         var ind10 = DateTime.Today.AddDays(10).ToString(inmask);
-        var outd10 = DateTime.Today.AddDays(10).ToString(outmask);
+        var outd10 = DateTime.Today.AddDays(10).ToString(outmask, CultureInfo.InvariantCulture);
         var ind11 = DateTime.Today.AddDays(11).ToString(inmask);
         var message = $"Value is outside the range {outtoday} to {outd10}";
         ClearDateFieldThenType("#discontinueddate1", inyesterday);
@@ -241,7 +242,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         var properties = br.FindElements(By.CssSelector(".property"));
 
         Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
-        Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy"), properties[18].Text);
+        Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy", CultureInfo.InvariantCulture), properties[18].Text);
         Assert.AreEqual("Sell End Date:\r\n" + sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
     }
 
