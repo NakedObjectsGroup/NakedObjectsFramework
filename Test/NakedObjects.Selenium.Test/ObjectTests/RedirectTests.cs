@@ -103,7 +103,7 @@ public class MegaRedirectTestIe : MegaRedirectTestBase {
     }
 }
 
-[TestClass] //toggle
+//[TestClass] //toggle
 public class MegaRedirectTestChrome : MegaRedirectTestBase {
     [ClassInitialize]
     public new static void InitialiseClass(TestContext context) {
