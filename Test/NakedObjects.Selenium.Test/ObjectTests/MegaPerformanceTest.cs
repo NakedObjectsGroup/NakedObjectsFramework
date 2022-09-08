@@ -30,7 +30,7 @@ public abstract class PerformanceTestsRoot : AWTest {
 
         stopWatch.Stop();
         var time = stopWatch.ElapsedMilliseconds;
-        var limit =20000;
+        var limit =200000;
         Assert.IsTrue(time < limit, $"Elapsed time was {time} milliseconds limit {limit}");
     }
 }
