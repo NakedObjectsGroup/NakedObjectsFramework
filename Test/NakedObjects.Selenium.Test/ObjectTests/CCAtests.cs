@@ -359,7 +359,7 @@ public abstract class MegaCCATests : CCATestsRoot {
         ReloadingAQueryableClearsSelection();
         IfNoCCAs();
         SelectionClearedWhenPageChanged();
-        TableViewWithParmDialogNotOpen();
+        //TableViewWithParmDialogNotOpen();
     }
 
     [TestMethod]
