@@ -228,7 +228,7 @@ public abstract class MegaMultiLineDialogTestsRoot : MultiLineDialogTestsRoot {
     [TestMethod]
     [Priority(-1)]
     public void ProblematicMultiLineDialogTests() {
-        MultiLineObjectActionInCollection();
+        //MultiLineObjectActionInCollection();
     }
 }
 
