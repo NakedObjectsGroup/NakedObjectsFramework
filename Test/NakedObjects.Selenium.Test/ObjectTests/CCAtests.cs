@@ -366,7 +366,7 @@ public abstract class MegaCCATests : CCATestsRoot {
     [Priority(-1)]
     public void ProblematicCCATests() {
         EmptyParam();
-        ZeroParamAction();
+        //ZeroParamAction();
     }
 }
 
