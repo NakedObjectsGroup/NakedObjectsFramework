@@ -355,7 +355,7 @@ public abstract class MegaCCATests : CCATestsRoot {
         TestSelectAll();
         SelectAllTableView();
         SelectionRetainedWhenNavigatingAwayAndBack();
-        TableViewWithParmDialogAlreadyOpen();
+        //TableViewWithParmDialogAlreadyOpen();
         ReloadingAQueryableClearsSelection();
         IfNoCCAs();
         SelectionClearedWhenPageChanged();
