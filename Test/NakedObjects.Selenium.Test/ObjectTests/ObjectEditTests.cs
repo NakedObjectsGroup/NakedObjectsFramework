@@ -562,7 +562,7 @@ public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot {
     public void ObjectEditTest() {
         EditAttribute_ValidateOnMultipleProperties();
         EditAttributeHonoursValidationMethod();
-        EditPropertyInline_usingEditAttribute();
+        //EditPropertyInline_usingEditAttribute();
         ObjectEditChangeScalar();
         LocalValidationOfMandatoryFields();
         LocalValidationOfMaxLength();
