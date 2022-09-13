@@ -147,7 +147,7 @@ export class CiceroComponent implements OnInit, OnDestroy {
         }
     }
 
-    selectPreviousInput = () => setTimeout(() => this.inputText = this.previousInput);
+    selectPreviousInput : () => number = () => setTimeout(() => this.inputText = this.previousInput) as unknown as number;
 
     clearInput = () => this.inputText = '';
 
