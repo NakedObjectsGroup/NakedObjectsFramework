@@ -942,12 +942,14 @@ export class UrlManagerService {
     isGemini = () => this.getMode() === geminiPath;
 
     applicationProperties = () => {
-        const newPath = `/${geminiPath}/${applicationPropertiesPath}`;
+        const mode = this.getMode() || geminiPath;
+        const newPath = `/${mode}/${applicationPropertiesPath}`;
         this.router.navigateByUrl(newPath);
     }
 
     logoff = () => {
-        const newPath = `/${geminiPath}/${logoffPath}`;
+        const mode = this.getMode() || geminiPath;
+        const newPath = `/${mode}/${logoffPath}`;
         this.router.navigateByUrl(newPath);
     }
 
@@ -956,9 +958,7 @@ export class UrlManagerService {
     setHomeSinglePane = () => {
         this.currentPaneId = Pane.Pane1;
 
-        const path = this.getPath();
-        const segments = path.split('/');
-        const mode = segments[1] || geminiPath;
+        const mode = this.getMode() || geminiPath;
         const newPath = `/${mode}/${homePath}`;
 
         const tree = this.router.createUrlTree([newPath]);

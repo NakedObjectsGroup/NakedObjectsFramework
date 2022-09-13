@@ -4,7 +4,7 @@
     "authDomain" : "nakedobjects.eu.auth0.com",
     "appPath": "https://nakedobjectsrodemo.azurewebsites.net/",
     "logoffUrl": "",
-    "urlShortCuts": [ "http://localhost:5000", "AdventureWorksModel" ],
+    "urlShortCuts": [ "http://localhost:49998", "AdventureWorksModel" ],
     "doUrlValidation": true,
     "applicationName" : "Adventureworks Demo",
     "clearCacheOnChange": true,
