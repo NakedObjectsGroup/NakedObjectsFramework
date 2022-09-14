@@ -197,3 +197,11 @@ gemini {
     background-color: var(--link-color12, var(--default-link-color));
     color: var(--link-text-color12, var(--default-link-text-color));
 }
+
+div.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--footer-background-color);
+}
