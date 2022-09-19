@@ -21,7 +21,7 @@ using NakedFramework.Persistor.EFCore.Configuration;
 namespace NakedFramework.Persistor.EFCore.Extensions;
 
 public static class EFCorePersistorExtensions {
-    private static EFCorePersistorConfiguration EF6ObjectStoreConfiguration(IConfiguration configuration, EFCorePersistorOptions options) {
+    private static EFCorePersistorConfiguration EFCoreObjectStoreConfiguration(IConfiguration configuration, EFCorePersistorOptions options) {
         var config = new EFCorePersistorConfiguration {
             MaximumCommitCycles = options.MaximumCommitCycles
         };
@@ -38,7 +38,7 @@ public static class EFCorePersistorExtensions {
         frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Append(typeof(InternalDbSet<>)).Append(typeof(EntityQueryable<>)).ToArray();
 #pragma warning restore EF1001 // Internal EF Core API usage.
 
-        frameworkOptions.Services.AddSingleton(p => EF6ObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
+        frameworkOptions.Services.AddSingleton(p => EFCoreObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
         frameworkOptions.Services.AddScoped<IOidGenerator, DatabaseOidGenerator>();
         frameworkOptions.Services.AddScoped<IObjectStore, EFCoreObjectStore>();
     }

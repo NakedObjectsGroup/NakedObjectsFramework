@@ -46,7 +46,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
     private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
     internal Action<INakedObjectAdapter> HandleLoaded;
     private IDomainObjectInjector injector;
-    private readonly DbContext[] injectedContexts;
+    private readonly IEnumerable<DbContext> injectedContexts;
     internal Action<INakedObjectAdapter> RemoveAdapter;
     internal Action<INakedObjectAdapter, object> ReplacePoco;
     private Action<object> savingChanges;
@@ -58,7 +58,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
                              IMetamodelManager metamodelManager,
                              IDomainObjectInjector injector,
                              ILogger<EFCoreObjectStore> logger,
-                             DbContext[] dbContexts = null) {
+                             IEnumerable<DbContext> dbContexts = null) {
         this.config = config;
         this.oidGenerator = oidGenerator;
         this.nakedObjectManager = nakedObjectManager;
