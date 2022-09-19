@@ -12,9 +12,6 @@ namespace AW {
         public static Func<IConfiguration, DbContext> DbContextCreator => 
             c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFCDbContextCreator => 
-            c => new AdventureWorksEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
-
         //IsAbstract && IsSealed defines a static class. Not really necessary here, just extra safety check.
         public static Type[] FunctionalTypes() =>
             DomainClasses.Where(t => t.Namespace == "AW.Types" && !(t.IsAbstract && t.IsSealed)).ToArray();

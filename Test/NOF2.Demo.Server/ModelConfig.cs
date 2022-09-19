@@ -32,6 +32,5 @@ namespace NOF2.Rest.App.Demo
 
         public static Type[] DomainServices => new Type[] {typeof(PersonRepository) };//AllModelTypes.Where(t => t.Namespace.EndsWith("AW.Services")).ToArray();
 
-        public static Func<IConfiguration, Microsoft.EntityFrameworkCore.DbContext> EFDbContextCreator => c => new DemoEFCoreContext(c.GetConnectionString("AdventureWorksContext"));
     }
 }

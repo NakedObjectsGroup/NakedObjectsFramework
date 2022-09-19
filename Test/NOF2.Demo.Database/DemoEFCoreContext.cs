@@ -9,11 +9,9 @@ namespace NOF2.Demo.Model
 {
     public class DemoEFCoreContext : DbContext
     {
-        private readonly string _cs;
 
-        public DemoEFCoreContext(string cs) {
-            _cs = cs;
-        }
+        public DemoEFCoreContext(DbContextOptions<DemoEFCoreContext> options)
+            : base(options) { }
 
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
@@ -83,14 +81,6 @@ namespace NOF2.Demo.Model
         public DbSet<SpecialOffer> SpecialOffers { get; set; }
         public DbSet<SpecialOfferProduct> SpecialOfferProducts { get; set; }
         public DbSet<Store> Stores { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_cs);
-            optionsBuilder.UseLazyLoadingProxies();
-            optionsBuilder.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
-        }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

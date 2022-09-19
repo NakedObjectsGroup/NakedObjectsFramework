@@ -21,12 +21,20 @@ using Newtonsoft.Json;
 using NOF2.Demo.AppLib;
 using Microsoft.AspNetCore.Http;
 using NOF2.Reflector.Extensions;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using NOF2.Demo.Model;
 
 namespace NOF2.Rest.App.Demo {
     public class Startup {
         private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-        public Startup(IConfiguration configuration) { }
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        private IConfiguration Configuration { get; }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -37,7 +45,6 @@ namespace NOF2.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
-                builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { ModelConfig.EFDbContextCreator }; });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;
@@ -51,6 +58,11 @@ namespace NOF2.Rest.App.Demo {
                     options.DomainModelServices = ModelConfig.DomainServices;
                     options.ValueHolderTypes = AppLibConfig.ValueHolderTypes;
                 });
+            });
+            services.AddDbContext<DbContext, DemoEFCoreContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("AdventureWorksContext"));
+                options.UseLazyLoadingProxies();
+                //options.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
             });
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {

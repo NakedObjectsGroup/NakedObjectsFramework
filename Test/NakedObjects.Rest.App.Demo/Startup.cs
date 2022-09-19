@@ -5,8 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Configuration;
+using AdventureWorksModel.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,8 +30,11 @@ namespace NakedObjects.Rest.App.Demo {
     public class Startup {
         private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-        public Startup(IConfiguration configuration) { }
+        public Startup(IConfiguration configuration) {
+            this.Configuration = configuration;
+        }
 
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
@@ -39,7 +45,6 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddNakedFramework(builder => {
                 builder.MainMenus = NakedObjectsRunSettings.MainMenus;
                 //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
-                builder.AddEFCorePersistor(options => { options.ContextCreators = new[] { NakedObjectsRunSettings.EFDbContextCreator }; });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;
@@ -57,6 +62,11 @@ namespace NakedObjects.Rest.App.Demo {
                         services.AddSingleton(typeof(IDomainObjectFacetFactoryProcessor), typeof(AWNotNavigableFacetFactoryParallel));
                     };
                 });
+            });
+            services.AddDbContext<DbContext, AdventureWorksEFCoreContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("AdventureWorksContext"));
+                options.UseLazyLoadingProxies();
+                //options.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
             });
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {

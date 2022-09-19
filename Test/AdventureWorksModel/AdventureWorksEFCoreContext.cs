@@ -7,11 +7,8 @@ namespace AdventureWorksModel.Context
 {
     public class AdventureWorksEFCoreContext : DbContext
     {
-        private readonly string _cs;
-
-        public AdventureWorksEFCoreContext(string cs) {
-            _cs = cs;
-        }
+        public AdventureWorksEFCoreContext(DbContextOptions<AdventureWorksEFCoreContext> options)
+            : base(options) { }
 
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
@@ -81,13 +78,6 @@ namespace AdventureWorksModel.Context
         public DbSet<SpecialOffer> SpecialOffers { get; set; }
         public DbSet<SpecialOfferProduct> SpecialOfferProducts { get; set; }
         public DbSet<Store> Stores { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_cs);
-            optionsBuilder.UseLazyLoadingProxies();
-            //optionsBuilder.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
-        }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

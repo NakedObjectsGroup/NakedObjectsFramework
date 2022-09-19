@@ -8,6 +8,7 @@
 using AW;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +30,7 @@ namespace NakedFunctions.Rest.App.Demo {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -40,7 +41,6 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
                 builder.MainMenus = MenuHelper.GenerateMenus(AWModelConfig.MainMenuTypes());
-                builder.AddEFCorePersistor(options => { options.ContextCreators = new[] {AWModelConfig.EFCDbContextCreator}; });
                 builder.AddNakedFunctions(options => {
                     options.DomainTypes = AWModelConfig.FunctionalTypes();
                     options.DomainFunctions = AWModelConfig.Functions();
@@ -48,6 +48,11 @@ namespace NakedFunctions.Rest.App.Demo {
                 builder.AddRestfulObjects(options => options.BlobsClobs = true);
             });
             services.AddScoped<IPrincipalProvider, MockPrincipalProvider>();
+            services.AddDbContext<DbContext, AdventureWorksEFCoreContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("AdventureWorksContext"));
+                options.UseLazyLoadingProxies();
+                //options.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
+            });
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder

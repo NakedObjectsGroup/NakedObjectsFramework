@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AW {
     public class AdventureWorksEFCoreContext : DbContext {
-        private readonly string _nameOrConnectionString;
+        public AdventureWorksEFCoreContext(DbContextOptions<AdventureWorksEFCoreContext> options)
+            : base(options) { }
 
-        public AdventureWorksEFCoreContext(string nameOrConnectionString) => _nameOrConnectionString = nameOrConnectionString;
         public DbSet<Department>? Departments { get; init; }
         public DbSet<Shift>? Shifts { get; init; }
         public DbSet<AddressType>? AddressTypes { get; init; }
@@ -43,12 +43,6 @@ namespace AW {
         public DbSet<SalesTerritory>? SalesTerritories { get; init; }
         public DbSet<SpecialOffer>? SpecialOffers { get; init; }
         public DbSet<SpecialOfferProduct>? SpecialOfferProducts { get; init; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseSqlServer(_nameOrConnectionString);
-            optionsBuilder.UseLazyLoadingProxies();
-            //optionsBuilder.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Department>().Map();
