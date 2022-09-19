@@ -33,9 +33,9 @@ public static class EFCorePersistorExtensions {
         return config;
     }
 
-    public static void AddEFCorePersistor(this NakedFrameworkOptions frameworkOptions, Action<EFCorePersistorOptions> setupAction) {
+    public static void AddEFCorePersistor(this NakedFrameworkOptions frameworkOptions, Action<EFCorePersistorOptions> setupAction = null) {
         var options = new EFCorePersistorOptions();
-        setupAction(options);
+        setupAction?.Invoke(options);
 #pragma warning disable EF1001 // Internal EF Core API usage.
         frameworkOptions.AdditionalSystemTypes = frameworkOptions.AdditionalSystemTypes.Append(typeof(InternalDbSet<>)).Append(typeof(EntityQueryable<>)).ToArray();
 #pragma warning restore EF1001 // Internal EF Core API usage.

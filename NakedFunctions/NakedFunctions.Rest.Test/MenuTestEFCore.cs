@@ -7,7 +7,6 @@
 
 using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
@@ -16,26 +15,18 @@ using NakedFunctions.Rest.Test.Data;
 namespace NakedFunctions.Rest.Test;
 
 public class MenuTestEFCore : MenuTestEF6 {
+    protected override Action<NakedFrameworkOptions> AddPersistor => builder => { builder.AddEFCorePersistor(); };
 
-    protected override void RegisterTypes(IServiceCollection services)
-    {
+    protected override void RegisterTypes(IServiceCollection services) {
         base.RegisterTypes(services);
         services.AddDbContext<DbContext, EFCoreMenuDbContext>();
     }
-
-    
-
-    protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
-        options => {  };
-
-    protected override Action<NakedFrameworkOptions> AddPersistor => builder => { builder.AddEFCorePersistor(EFCorePersistorOptions); };
 
     protected override void CleanUpDatabase() {
         new EFCoreMenuDbContext().Delete();
     }
 
-    protected override void CreateDatabase()
-    {
+    protected override void CreateDatabase() {
         new EFCoreMenuDbContext().Create();
     }
 }
