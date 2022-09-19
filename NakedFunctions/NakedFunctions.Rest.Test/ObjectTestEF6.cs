@@ -79,6 +79,11 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         ObjectDbContext.Delete();
     }
 
+    protected virtual void CreateDatabase()
+    {
+
+    }
+
     protected override void RegisterTypes(IServiceCollection services) {
         base.RegisterTypes(services);
         services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
@@ -87,7 +92,10 @@ public class ObjectTestEF6 : AcceptanceTestCase {
     }
 
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        CreateDatabase();
+        StartTest();
+    }
 
     [TearDown]
     public void TearDown() => EndTest();

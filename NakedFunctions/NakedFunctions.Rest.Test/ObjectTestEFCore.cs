@@ -8,6 +8,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFunctions.Rest.Test.Data;
@@ -15,20 +16,24 @@ using NakedFunctions.Rest.Test.Data;
 namespace NakedFunctions.Rest.Test;
 
 public class ObjectTestEFCore : ObjectTestEF6 {
-    protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
-        config => {
-            var context = new EFCoreObjectDbContext();
-            context.Create();
-            return context;
-        }
-    };
+
+    protected override void RegisterTypes(IServiceCollection services)
+    {
+        base.RegisterTypes(services);
+        services.AddDbContext<DbContext, EFCoreObjectDbContext>();
+    }
 
     protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
-        options => { options.ContextCreators = ContextCreators; };
+        options => {  };
 
     protected override Action<NakedFrameworkOptions> AddPersistor => builder => { builder.AddEFCorePersistor(EFCorePersistorOptions); };
 
     protected override void CleanUpDatabase() {
         new EFCoreObjectDbContext().Delete();
+    }
+
+    protected override void CreateDatabase()
+    {
+        new EFCoreObjectDbContext().Create();
     }
 }

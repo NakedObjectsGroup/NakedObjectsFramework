@@ -13,5 +13,7 @@ namespace NakedFramework.Persistor.EFCore.Extensions;
 
 public class EFCorePersistorOptions {
     public int MaximumCommitCycles { get; } = 10;
-    public Func<IConfiguration, DbContext>[] ContextCreators { get; set; }
+
+    [Obsolete("Use AddDbContext")]
+    public Func<IConfiguration, DbContext>[] ContextCreators { get; set; } = Array.Empty<Func<IConfiguration, DbContext>>();
 }

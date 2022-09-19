@@ -26,7 +26,9 @@ public static class EFCorePersistorExtensions {
             MaximumCommitCycles = options.MaximumCommitCycles
         };
 
+#pragma warning disable CS0618
         var contexts = options.ContextCreators.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(ci => () => ci(configuration)).ToArray();
+#pragma warning restore CS0618
         config.Contexts = contexts;
         return config;
     }

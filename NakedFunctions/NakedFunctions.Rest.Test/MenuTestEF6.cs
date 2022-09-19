@@ -70,6 +70,11 @@ public class MenuTestEF6 : AcceptanceTestCase {
         MenuDbContext.Delete();
     }
 
+    protected virtual void CreateDatabase()
+    {
+        
+    }
+
     private static string FullName<T>() => typeof(T).FullName;
 
     protected override IMenu[] MainMenus(IMenuFactory factory) => Functions.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
@@ -82,7 +87,10 @@ public class MenuTestEF6 : AcceptanceTestCase {
     }
 
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        CreateDatabase();
+        StartTest();
+    }
 
     [TearDown]
     public void TearDown() => EndTest();
@@ -91,6 +99,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
     public void FixtureSetUp() {
         ObjectReflectorConfiguration.NoValidate = true;
         InitializeNakedObjectsFramework(this);
+        
     }
 
     [OneTimeTearDown]
