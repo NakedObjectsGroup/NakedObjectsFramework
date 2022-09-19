@@ -59,7 +59,7 @@ let getEFCoreObjectStore (config) =
     let m = mockMetamodelManager.Object
     let nom = (new Mock<INakedObjectManager>()).Object
     let log = (new Mock<ILogger<EFCoreObjectStore>>()).Object;
-    new EFCoreObjectStore(config, new DatabaseOidGenerator(m, mlf.Object), nom,  s, m, i, log)
+    new EFCoreObjectStore(config, new DatabaseOidGenerator(m, mlf.Object), nom,  s, m, i, log, [||])
 
 let CreateAndSetup<'t when 't : not struct> (p : IObjectStore) setter = 
     let inst = p.CreateInstance<'t>(null)

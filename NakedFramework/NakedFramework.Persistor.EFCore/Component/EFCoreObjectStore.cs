@@ -46,6 +46,7 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
     private IDictionary<object, object> functionalProxyMap = new Dictionary<object, object>();
     internal Action<INakedObjectAdapter> HandleLoaded;
     private IDomainObjectInjector injector;
+    private readonly DbContext[] injectedContexts;
     internal Action<INakedObjectAdapter> RemoveAdapter;
     internal Action<INakedObjectAdapter, object> ReplacePoco;
     private Action<object> savingChanges;
@@ -56,13 +57,15 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
                              ISession session,
                              IMetamodelManager metamodelManager,
                              IDomainObjectInjector injector,
-                             ILogger<EFCoreObjectStore> logger) {
+                             ILogger<EFCoreObjectStore> logger,
+                             DbContext[] dbContexts = null) {
         this.config = config;
         this.oidGenerator = oidGenerator;
         this.nakedObjectManager = nakedObjectManager;
         this.session = session;
         this.metamodelManager = metamodelManager;
         this.injector = injector;
+        this.injectedContexts = dbContexts;
         Logger = logger;
         MaximumCommitCycles = config.MaximumCommitCycles;
 
@@ -274,7 +277,10 @@ public class EFCoreObjectStore : IObjectStore, IDisposable {
     public T ValidateProxy<T>(T toCheck) where T : class => toCheck;
 
     internal void SetupContexts() {
-        contexts = config.Contexts.Select(c => new EFCoreLocalContext(c, config, session, this)).ToArray();
+        var dbContexts = injectedContexts?.Any() == true ? this.injectedContexts : config.Contexts.Select(c => c()).ToArray();
+
+        contexts = dbContexts.Select(c => new EFCoreLocalContext(c, config, session, this)).ToArray();
+        
         foreach (var context in contexts) {
             context.WrappedDbContext.ChangeTracker.StateChanged += (_, args) => {
                 if (args.OldState == EntityState.Added) {

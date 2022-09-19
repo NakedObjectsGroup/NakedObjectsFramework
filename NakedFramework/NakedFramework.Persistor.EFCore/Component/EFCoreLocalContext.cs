@@ -39,9 +39,10 @@ public class EFCoreLocalContext : IDisposable {
         notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
     }
 
-    public EFCoreLocalContext(Func<DbContext> context, EFCorePersistorConfiguration config, ISession session, EFCoreObjectStore parent)
-        : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, parent) {
-        WrappedDbContext = context();
+    public EFCoreLocalContext(DbContext context, EFCorePersistorConfiguration config, ISession session, EFCoreObjectStore parent)
+        : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, parent)
+    {
+        WrappedDbContext = context;
         Name = WrappedDbContext.ToString();
     }
 
