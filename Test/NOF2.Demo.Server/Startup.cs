@@ -44,7 +44,7 @@ namespace NOF2.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
+                builder.AddEFCorePersistor(options => { });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;

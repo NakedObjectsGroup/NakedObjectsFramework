@@ -45,6 +45,7 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddNakedFramework(builder => {
                 builder.MainMenus = NakedObjectsRunSettings.MainMenus;
                 //builder.AddEF6Persistor(options => { options.ContextCreators = new[] {NakedObjectsRunSettings.DbContextCreator}; });
+                builder.AddEFCorePersistor(options => {});
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;

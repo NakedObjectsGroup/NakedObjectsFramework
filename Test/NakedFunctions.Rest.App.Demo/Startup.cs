@@ -45,6 +45,7 @@ namespace NakedFunctions.Rest.App.Demo {
                     options.DomainTypes = AWModelConfig.FunctionalTypes();
                     options.DomainFunctions = AWModelConfig.Functions();
                 });
+                builder.AddEFCorePersistor(options => { });
                 builder.AddRestfulObjects(options => options.BlobsClobs = true);
             });
             services.AddScoped<IPrincipalProvider, MockPrincipalProvider>();
