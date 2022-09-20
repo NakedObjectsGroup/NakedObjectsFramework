@@ -15,7 +15,7 @@
 		<tags>naked objects nakedobjects ddd domain driven design</tags>
 		<dependencies>
 			<group targetFramework="net6.0">
-				<dependency id="NakedFramework.ProgrammingModel" version="[13.1.0, 14)" />
+				<dependency id="NakedFramework.ProgrammingModel" version="[13.2.0, 14)" />
 				<dependency id="EntityFramework" version="[6.4.4, 7)" />
 				<dependency id="Microsoft.EntityFrameworkCore.Proxies" version="[6.0.6, 7)" />
 				<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[6.0.6, 7)" />

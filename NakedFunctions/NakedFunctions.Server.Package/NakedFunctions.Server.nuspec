@@ -15,7 +15,7 @@
 		<tags>naked functions functional programming ddd domain driven design</tags>
 		<dependencies>
 			<group targetFramework="net6.0">
-				<dependency id="NakedFunctions.ProgrammingModel" version="[1.1.0, 2)" />
+				<dependency id="NakedFunctions.ProgrammingModel" version="[1.2.0, 2)" />
 				<dependency id="NakedFramework" version="[13.1.0, 14)" />
 			</group>
 		</dependencies>
