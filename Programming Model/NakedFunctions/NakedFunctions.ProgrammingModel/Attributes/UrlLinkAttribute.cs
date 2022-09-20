@@ -8,4 +8,4 @@
 using NakedFramework;
 
 namespace NakedFunctions;
-internal class UrlLinkAttribute : AbstractUrlLinkAttribute { }
+public class UrlLinkAttribute : AbstractUrlLinkAttribute { }
