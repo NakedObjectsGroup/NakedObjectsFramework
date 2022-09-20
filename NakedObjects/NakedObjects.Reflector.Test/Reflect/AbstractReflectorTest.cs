@@ -143,6 +143,7 @@ public abstract class ObjectReflectorTest : AbstractReflectorTest {
             NewFacetFactory<TableViewAnnotationFacetFactory>(),
             NewFacetFactory<EagerlyAnnotationFacetFactory>(),
             NewFacetFactory<PresentationHintAnnotationFacetFactory>(),
+            NewFacetFactory<UrlLinkAnnotationFacetFactory>(),
             NewFacetFactory<RestExtensionAnnotationFacetFactory>()
         };
 
