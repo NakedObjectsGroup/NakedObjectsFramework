@@ -68,6 +68,7 @@ public static class FunctionalFacetFactories {
             typeof(TypeOfAnnotationFacetFactory),
             typeof(TableViewAnnotationFacetFactory),
             typeof(PresentationHintAnnotationFacetFactory),
+            typeof(UrlLinkAnnotationFacetFactory),
             typeof(RestExtensionAnnotationFacetFactory),
             typeof(EditAnnotationFacetFactory)
         };

@@ -11,13 +11,13 @@ namespace NakedFramework;
 
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
 public abstract class AbstractUrlLinkAttribute : Attribute {
-    public AbstractUrlLinkAttribute() { }
+    protected AbstractUrlLinkAttribute() { }
 
-    public AbstractUrlLinkAttribute(bool alwaysOpenInNewTab) => AlwaysOpenInNewTab = alwaysOpenInNewTab;
+    protected AbstractUrlLinkAttribute(bool alwaysOpenInNewTab) => AlwaysOpenInNewTab = alwaysOpenInNewTab;
 
-    public AbstractUrlLinkAttribute(string displayAs) => DisplayAs = displayAs;
+    protected AbstractUrlLinkAttribute(string displayAs) => DisplayAs = displayAs;
 
-    public AbstractUrlLinkAttribute(bool alwaysOpenInNewTab, string displayAs) : this(alwaysOpenInNewTab) => DisplayAs = displayAs;
+    protected AbstractUrlLinkAttribute(bool alwaysOpenInNewTab, string displayAs) : this(alwaysOpenInNewTab) => DisplayAs = displayAs;
 
     public bool AlwaysOpenInNewTab { get; }
     public string DisplayAs { get; }

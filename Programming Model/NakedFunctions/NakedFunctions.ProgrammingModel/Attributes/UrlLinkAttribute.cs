@@ -8,4 +8,13 @@
 using NakedFramework;
 
 namespace NakedFunctions;
-public class UrlLinkAttribute : AbstractUrlLinkAttribute { }
+
+public class UrlLinkAttribute : AbstractUrlLinkAttribute {
+    public UrlLinkAttribute() { }
+
+    public UrlLinkAttribute(bool alwaysOpenInNewTab) : base(alwaysOpenInNewTab) { }
+
+    public UrlLinkAttribute(string displayAs) : base(displayAs) { }
+
+    public UrlLinkAttribute(bool alwaysOpenInNewTab, string displayAs) : base(alwaysOpenInNewTab, displayAs) { }
+}
