@@ -37,4 +37,5 @@ public interface IAssociationFacade : IFieldFacade, IMemberFacade {
     int Count(IObjectFacade target);
 
     bool IsSetToImplicitDefault(IObjectFacade objectFacade);
+    (bool, string)? UrlLink();
 }

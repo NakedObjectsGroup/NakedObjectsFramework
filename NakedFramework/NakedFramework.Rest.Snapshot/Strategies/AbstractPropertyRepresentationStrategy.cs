@@ -16,6 +16,7 @@ using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Representation;
 using NakedFramework.Rest.Snapshot.Utility;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NakedFramework.Rest.Snapshot.Strategies;
 
@@ -133,6 +134,14 @@ public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentat
 
             if (!string.IsNullOrEmpty(grouping)) {
                 AddCustomExtension(JsonPropertyNames.CustomPropertyGrouping, grouping);
+            }
+
+            var urlLink = PropertyContext.Property.UrlLink();
+
+            if (urlLink is not null) {
+                var linkVal = urlLink.Value;
+                var val = string.Join(',', linkVal.Item1, linkVal.Item2);
+                AddCustomExtension(JsonPropertyNames.CustomUrlLink, val);
             }
 
             CustomExtensions = RestUtils.AddRangeExtension(PropertyContext.Property, CustomExtensions);

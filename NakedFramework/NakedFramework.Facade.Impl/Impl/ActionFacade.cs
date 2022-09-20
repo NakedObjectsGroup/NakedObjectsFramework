@@ -119,5 +119,7 @@ public class ActionFacade : IActionFacade {
 
     public int? NumberOfLines => (cachedNumberOfLines ??= FacadeUtils.NullCache(WrappedSpec.GetNumberOfLines())).Value;
 
+    public (bool, string)? UrlLink() => WrappedSpec.GetFacet<IUrlLinkFacet>() is { } f ? (f.OpenInNewTab, f.DisplayAs) : null;
+
     #endregion
 }

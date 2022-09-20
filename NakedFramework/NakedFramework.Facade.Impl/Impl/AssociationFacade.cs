@@ -175,5 +175,7 @@ public class AssociationFacade : AbstractCommonFacade, IAssociationFacade {
 
     public string Grouping => cachedGrouping ??= WrappedAssocSpec.GetFacet<IMemberOrderFacet>()?.Grouping ?? "";
 
+    public (bool, string)? UrlLink() => WrappedAssocSpec.GetFacet<IUrlLinkFacet>() is { } f ? (f.OpenInNewTab, f.DisplayAs) : null;
+
     #endregion
 }

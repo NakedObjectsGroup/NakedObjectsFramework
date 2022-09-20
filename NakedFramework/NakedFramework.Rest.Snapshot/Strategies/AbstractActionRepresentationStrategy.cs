@@ -145,6 +145,14 @@ public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
             ext[JsonPropertyNames.CustomFinderAction] = finderMethodPrefix;
         }
 
+        var urlLink = ActionContext.Action.UrlLink();
+
+        if (urlLink is not null) {
+            ext ??= new Dictionary<string, object>();
+            var linkVal = urlLink.Value;
+            ext[JsonPropertyNames.CustomUrlLink] = string.Join(',', linkVal.Item1, linkVal.Item2);
+        }
+
         return ext;
     }
 

@@ -195,6 +195,20 @@ public record MaskRecord {
     public override int GetHashCode() => base.GetHashCode();
 }
 
+public record UrlLinkRecord
+{
+    [Key]
+    public int Id { get; init; }
+
+    public string Name { get; init; }
+
+    public virtual bool Equals(MaskRecord other) => ReferenceEquals(this, other);
+    public override string ToString() => Name;
+    public string ToString(string mask) => $"{Name} {mask}";
+    public override int GetHashCode() => base.GetHashCode();
+}
+
+
 public record HiddenRecord {
     [Key]
     public int Id { get; init; }
