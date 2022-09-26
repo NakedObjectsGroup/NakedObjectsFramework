@@ -52,6 +52,7 @@ let GetValueProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
@@ -264,6 +265,7 @@ let GetValuePropertyViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
@@ -350,6 +352,7 @@ let GetValuePropertySimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
@@ -515,6 +518,7 @@ let GetValuePropertyWithMediaType(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
@@ -1432,6 +1436,7 @@ let PutValuePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
@@ -1579,6 +1584,7 @@ let PutValuePropertyConcurrencySuccess(api1 : RestfulObjectsControllerBase) (api
                                   TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
@@ -1687,6 +1693,7 @@ let DeleteValuePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
@@ -1751,6 +1758,7 @@ let PutNullValuePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult

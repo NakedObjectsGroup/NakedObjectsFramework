@@ -38,6 +38,7 @@ let VerifyActionProperty refType oType oName f (api : RestfulObjectsControllerBa
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
@@ -334,6 +335,7 @@ let VerifyUserDisabledActionProperty refType oType oName f (api : RestfulObjects
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
@@ -625,6 +627,7 @@ let VerifyActionPropertyWithMediaType refType oType oName f (api : RestfulObject
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6"))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")

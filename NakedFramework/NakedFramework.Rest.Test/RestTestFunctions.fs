@@ -402,6 +402,8 @@ let internal makeActionMember oType  mName (oName : string) fName desc rType par
 
         let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6")) :: extArray else extArray
 
+        let extArray = if presHint then  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name")) :: extArray else extArray
+
         let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
 
         let extArray = if createNew then TProperty(JsonPropertyNames.CustomCreateNew, TObjectVal(wvProperties)) :: extArray else extArray
@@ -438,6 +440,8 @@ let internal makeActionMemberSimple oType  mName (oName : string) fName desc rTy
                         TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]
 
         let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6")) :: extArray else extArray
+
+        let extArray = if presHint then TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name")) :: extArray else extArray
 
         let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
 
@@ -851,6 +855,8 @@ let internal makePropertyMemberFull oType mName  (oName : string) fName desc opt
       let extArray = if choices then TProperty(JsonPropertyNames.CustomChoices, TObjectJson([TProperty("1", TObjectVal(1)); TProperty("2", TObjectVal(2)); TProperty("3", TObjectVal(3))])) :: extArray else extArray;
       
       let extArray = if presHint then TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4")) :: extArray else extArray
+
+      let extArray = if presHint then TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name")) :: extArray else extArray
 
       let exts = TObjectJson(extArray);
 

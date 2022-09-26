@@ -27,6 +27,7 @@ public class WithValuePersist {
     public virtual int Id { get; set; }
 
     [PresentationHint("class3 class4")]
+    [UrlLink(true, "Name")]
     public virtual int AValue { get; set; }
 
     [Disabled]

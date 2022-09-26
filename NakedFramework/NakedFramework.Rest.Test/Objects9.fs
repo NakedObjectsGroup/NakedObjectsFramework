@@ -538,6 +538,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                                          
                                                                                          TProperty
                                                                                              (JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                                                                         TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                                                                          TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]))
                                          TProperty("Id", 
                                                    TObjectJson([ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property))
@@ -999,7 +1000,7 @@ let PersistWithValueTransientObject(api1 : RestfulObjectsControllerBase) (api2 :
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value Persist"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Value Persists"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
+                                  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))                                  
                                   TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
