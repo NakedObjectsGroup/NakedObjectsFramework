@@ -45,6 +45,8 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<MaskRecord> MaskRecords { get; set; }
     public DbSet<HiddenRecord> HiddenRecords { get; set; }
     public DbSet<AlternateKeyRecord> AlternateKeyRecords { get; set; }
+    public DbSet<UrlLinkRecord> UrlLinkRecords { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
@@ -93,6 +95,8 @@ public abstract class EFCoreTestDbContext : DbContext {
 
         modelBuilder.Entity<AlternateKeyRecord>().HasAlternateKey(k => k.Name);
         modelBuilder.Entity<AlternateKeyRecord>().HasData(new AlternateKeyRecord { Id = 1, Name = "AK1" });
+
+        modelBuilder.Entity<UrlLinkRecord>().HasData(new UrlLinkRecord() { Id = 1, Link1 = "Link1Name", Link2 = "Link2Name", Link3 = "Link3Name", Link4 = "Link4Name" });
     }
 }
 

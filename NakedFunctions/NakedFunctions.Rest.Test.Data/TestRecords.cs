@@ -200,11 +200,21 @@ public record UrlLinkRecord
     [Key]
     public int Id { get; init; }
 
-    public string Name { get; init; }
+    [UrlLink]
+    public string Link1 { get; init; }
+
+    [UrlLink(true)]
+    public string Link2 { get; init; }
+
+    [UrlLink("Name")]
+    public string Link3 { get; init; }
+
+    [UrlLink(true, "Name1")]
+    public string Link4 { get; init; }
 
     public virtual bool Equals(MaskRecord other) => ReferenceEquals(this, other);
-    public override string ToString() => Name;
-    public string ToString(string mask) => $"{Name} {mask}";
+    public override string ToString() => Link1;
+    public string ToString(string mask) => $"{Link1} {mask}";
     public override int GetHashCode() => base.GetHashCode();
 }
 

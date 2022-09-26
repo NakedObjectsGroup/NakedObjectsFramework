@@ -61,7 +61,8 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         typeof(ByteArrayRecord),
         typeof(MaskRecord),
         typeof(HiddenRecord),
-        typeof(AlternateKeyRecord)
+        typeof(AlternateKeyRecord),
+        typeof(UrlLinkRecord)
     };
 
     protected override Type[] ObjectTypes { get; } = { };
@@ -1195,5 +1196,21 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
+    }
+
+
+    [Test]
+    public void TestGetURLLinks()
+    {
+        var api = Api();
+        var result = api.GetObject(FullName<UrlLinkRecord>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("False,", parsedResult["members"]["Link1"]["extensions"]["x-ro-nof-urlLink"].ToString());
+        Assert.AreEqual("True,", parsedResult["members"]["Link2"]["extensions"]["x-ro-nof-urlLink"].ToString());
+        Assert.AreEqual("False,Name", parsedResult["members"]["Link3"]["extensions"]["x-ro-nof-urlLink"].ToString());
+        Assert.AreEqual("True,Name1", parsedResult["members"]["Link4"]["extensions"]["x-ro-nof-urlLink"].ToString());
     }
 }

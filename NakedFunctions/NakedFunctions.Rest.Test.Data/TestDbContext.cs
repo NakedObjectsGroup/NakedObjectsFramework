@@ -66,6 +66,9 @@ public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : Test
         context.MaskRecords.Add(new MaskRecord { Name = "Title" });
         context.HiddenRecords.Add(new HiddenRecord { Name = "Title" });
 
+        context.UrlLinkRecords.Add(new UrlLinkRecord() { Id = 1, Link1 = "Link1Name", Link2 = "Link2Name", Link3 = "Link3Name", Link4 = "Link4Name" });
+
+
         context.AlternateKeyRecords.Add(new AlternateKeyRecord { Name = "AK1" });
 
         context.SaveChanges();
@@ -101,6 +104,7 @@ public abstract class TestDbContext : DbContext {
     public DbSet<MaskRecord> MaskRecords { get; set; }
     public DbSet<HiddenRecord> HiddenRecords { get; set; }
     public DbSet<AlternateKeyRecord> AlternateKeyRecords { get; set; }
+    public DbSet<UrlLinkRecord> UrlLinkRecords { get; set; }
 
     protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
         Database.SetInitializer(new DatabaseInitializer<T>());
