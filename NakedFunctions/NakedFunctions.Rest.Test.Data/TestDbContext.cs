@@ -106,6 +106,10 @@ public abstract class TestDbContext : DbContext {
     public DbSet<AlternateKeyRecord> AlternateKeyRecords { get; set; }
     public DbSet<UrlLinkRecord> UrlLinkRecords { get; set; }
 
+    public DbSet<NToNCollectionRecord1> NToNCollectionRecord1 { get; set; }
+
+    public DbSet<NToNCollectionRecord2> NToNCollectionRecord2 { get; set; }
+
     protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
         Database.SetInitializer(new DatabaseInitializer<T>());
     }

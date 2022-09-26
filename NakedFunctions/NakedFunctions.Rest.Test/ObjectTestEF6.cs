@@ -62,7 +62,9 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         typeof(MaskRecord),
         typeof(HiddenRecord),
         typeof(AlternateKeyRecord),
-        typeof(UrlLinkRecord)
+        typeof(UrlLinkRecord),
+        typeof(NToNCollectionRecord1),
+        typeof(NToNCollectionRecord2)
     };
 
     protected override Type[] ObjectTypes { get; } = { };

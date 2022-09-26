@@ -52,7 +52,9 @@ public class MenuTestEF6 : AcceptanceTestCase {
         typeof(UpdatedRecord),
         typeof(CollectionRecord),
         typeof(OrderedRecord),
-        typeof(AlternateKeyRecord)
+        typeof(AlternateKeyRecord),
+        typeof(NToNCollectionRecord1),
+        typeof(NToNCollectionRecord2)
     };
 
     protected override Type[] ObjectTypes { get; } = { };
@@ -70,12 +72,9 @@ public class MenuTestEF6 : AcceptanceTestCase {
         MenuDbContext.Delete();
     }
 
-    protected virtual void CreateDatabase()
-    {
-        
-    }
+    protected virtual void CreateDatabase() { }
 
-    private static string FullName<T>() => typeof(T).FullName;
+    protected static string FullName<T>() => typeof(T).FullName;
 
     protected override IMenu[] MainMenus(IMenuFactory factory) => Functions.Select(t => factory.NewMenu(t, true, t.Name)).ToArray();
 
@@ -99,7 +98,6 @@ public class MenuTestEF6 : AcceptanceTestCase {
     public void FixtureSetUp() {
         ObjectReflectorConfiguration.NoValidate = true;
         InitializeNakedObjectsFramework(this);
-        
     }
 
     [OneTimeTearDown]
@@ -978,5 +976,19 @@ public class MenuTestEF6 : AcceptanceTestCase {
 
         Assert.AreEqual("1", resultObj["instanceId"].ToString());
         Assert.AreEqual("http://localhost/objects/NakedFunctions.Rest.Test.Data.AlternateKeyRecord/1", resultObj["links"][0]["href"].ToString());
+    }
+
+    [Test]
+    public void TestNtoN() {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+        var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNtoN), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        resultObj.AssertObject("name1-1-1", FullName<NToNCollectionRecord1>(), "1");
     }
 }

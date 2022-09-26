@@ -64,7 +64,7 @@ public static class EFCoreHelpers {
 
     public static PropertyInfo[] GetCollectionMembers(this DbContext context, Type type) {
         var eType = context.GetEntityType(type);
-        var properties = eType.GetNavigations();
+        var properties = eType.GetNavigations().Cast<INavigationBase>().Union(eType.GetSkipNavigations().Cast<INavigationBase>());
         var propertyInfos = properties.Select(p => p.PropertyInfo);
         return propertyInfos.Where(p => CollectionUtils.IsCollection(p.PropertyType)).ToArray();
     }

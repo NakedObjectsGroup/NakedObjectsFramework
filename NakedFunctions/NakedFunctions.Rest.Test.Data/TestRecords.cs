@@ -244,3 +244,33 @@ public record AlternateKeyRecord {
     public override string ToString() => Name;
     public override int GetHashCode() => base.GetHashCode();
 }
+
+public record NToNCollectionRecord1
+{
+    [Key]
+    public int Id { get; init; }
+
+    public string Name { get; init; }
+
+    public virtual IList<NToNCollectionRecord2> OtherRecord2s { get; init; } = new List<NToNCollectionRecord2>();
+    public virtual bool Equals(NToNCollectionRecord1 other) => ReferenceEquals(this, other);
+
+    public override string ToString() => $"{Name}-{Id}-{OtherRecord2s.Aggregate("", (i, a) => i + a.Id)}";
+
+    public override int GetHashCode() => base.GetHashCode();
+}
+
+public record NToNCollectionRecord2
+{
+    [Key]
+    public int Id { get; init; }
+
+    public string Name { get; init; }
+
+    public virtual IList<NToNCollectionRecord1> OtherRecord1s { get; init; } = new List<NToNCollectionRecord1>();
+    public virtual bool Equals(NToNCollectionRecord2 other) => ReferenceEquals(this, other);
+
+    public override string ToString() => $"{Name}-{Id}-{OtherRecord1s.Aggregate("", (i, a) => i + a.Id)}";
+
+    public override int GetHashCode() => base.GetHashCode();
+}

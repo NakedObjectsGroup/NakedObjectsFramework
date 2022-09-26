@@ -226,6 +226,17 @@ public static class ReferenceMenuFunctions {
 
         return (nrr, context);
     }
+
+    public static (NToNCollectionRecord1, IContext) CreateNtoN(IContext context) {
+        var n1 = new NToNCollectionRecord1() with { Name = "name1" };
+        var n2 = new NToNCollectionRecord2() with { Name = "name2" };
+
+        var nn1 = n1 with { OtherRecord2s = n1.OtherRecord2s.Union(new[] { n2 }).ToList() };
+
+        context = context.WithNew(nn1);
+
+        return (nn1, context);
+    }
 }
 
 public static class CollectionMenuFunctions {

@@ -47,6 +47,10 @@ public abstract class EFCoreTestDbContext : DbContext {
     public DbSet<AlternateKeyRecord> AlternateKeyRecords { get; set; }
     public DbSet<UrlLinkRecord> UrlLinkRecords { get; set; }
 
+    public DbSet<NToNCollectionRecord1> NToNCollectionRecord1 { get; set; }
+
+    public DbSet<NToNCollectionRecord2> NToNCollectionRecord2 { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
