@@ -47,6 +47,7 @@ import * as RoCustom from './ro-interfaces-custom';
  const roNofMembers = 'x-ro-nof-members';
  const roNofEditProperties = 'x-ro-nof-editProperties';
  const roNofCreateNewProperties = 'x-ro-nof-createNew';
+ const roNofUrlLink = 'x-ro-nof-urlLink';
 
 // do not couple this back to angular by imports
 
@@ -93,6 +94,7 @@ export class Extensions {
     presentationHint = () => this.wrapped[roNofPresentationHint] as string;
     editProperties = () => this.wrapped[roNofEditProperties] as string;
     createNewProperties = () => this.wrapped[roNofCreateNewProperties] as string;
+    urlLink = () => this.wrapped[roNofUrlLink] as string;
 }
 
 export interface IHasExtensions {
