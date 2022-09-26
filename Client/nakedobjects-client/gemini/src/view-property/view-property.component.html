@@ -21,10 +21,11 @@
 
             <nof-attachment-property *ngIf="isBlob" [attachment]="attachment"></nof-attachment-property>
             <ng-container *ngIf="!isBlob">
-                <div *ngIf="!isMultiline" class="value">
+                <div *ngIf="isLink" class="reference url-link" nofClick (leftClick)="doLinkClick()" (rightClick)="doLinkClick(true)">{{linkValue}}</div> 
+                <div *ngIf="!isMultiline && !isLink" class="value">
                     {{formattedValue}}
                 </div>
-                <div *ngIf="isMultiline" class="value multiline" [ngStyle]="{height : multilineHeight}">
+                <div *ngIf="isMultiline && !isLink" class="value multiline" [ngStyle]="{height : multilineHeight}">
                     <pre>{{formattedValue}}</pre>
                 </div>
             </ng-container>

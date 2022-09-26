@@ -96,6 +96,24 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
         return this.property.editActionTooltip;
     }
 
+    get isLink() {
+        return this.property.isLink;
+    }
+
+    get linkValue() {
+        const lp = this.property.linkProperties();
+        return lp?.[1] || this.value;
+    }
+
+    doLinkClick(newPane?: boolean) {
+        if (newPane || this.property.linkProperties()?.[0]) {
+            window.open(this.value as string, '_blank');
+        }
+        else {
+            window.location.href = this.value as string;
+        }
+    }
+
     doClick = (right?: boolean) => this.property.doClick(right);
 
     doEdit = () =>  {

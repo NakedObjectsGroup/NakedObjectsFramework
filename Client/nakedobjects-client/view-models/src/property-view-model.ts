@@ -27,6 +27,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     refType: 'null' | 'navigable' | 'notNavigable';
     // IDraggableViewModel
     readonly draggableType: string;
+    readonly isLink: boolean;
 
     constructor(
         public readonly propertyRep: Ro.PropertyMember,
@@ -92,6 +93,17 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         if (this.isEditByAction) {
             this.editAction = editActions[0];
         }
+
+        this.isLink = !!propertyRep.extensions().urlLink();
+    }
+
+    linkProperties() {
+        if (this.isLink) {
+            const [newPane, displayName] = this.propertyRep.extensions().urlLink().split(',');
+            const newPaneBool = newPane.toLowerCase() === 'true';
+            return [newPaneBool, displayName] as [boolean, string];
+        }
+        return null;
     }
 
     private editAction: ActionViewModel;
