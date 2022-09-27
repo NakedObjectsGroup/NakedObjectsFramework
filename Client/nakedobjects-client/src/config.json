@@ -66,11 +66,11 @@
         "dateMasks": {
             "d": {
                 "format": "date-time",
-                "mask": "D MMM YYYY"
+                "mask": "d LLL yyyy"
             },
             "D": {
                 "format": "date",
-                "mask": "D MMM YYYY hh:mm:ss"
+                "mask": "d LLL yyyy HH:mm:ss"
             },
             "T": {
                 "format": "time",
