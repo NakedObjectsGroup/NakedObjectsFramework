@@ -237,6 +237,17 @@ public static class ReferenceMenuFunctions {
 
         return (nn1, context);
     }
+
+    public static (NToNCollectionRecord1, IContext) UpdateNtoN(IContext context) {
+        var n1 = context.Instances<NToNCollectionRecord1>().First();
+        var n2 = new NToNCollectionRecord2() with { Name = "name3" };
+
+        var nn1 = n1 with { OtherRecord2s = n1.OtherRecord2s.Union(new[] { n2 }).ToList() };
+
+        context = context.WithUpdated(n1, nn1);
+
+        return (nn1, context);
+    }
 }
 
 public static class CollectionMenuFunctions {

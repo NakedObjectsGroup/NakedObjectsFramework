@@ -979,7 +979,7 @@ public class MenuTestEF6 : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestNtoN() {
+    public void TestNtoN1() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.CreateNtoN), map);
@@ -990,5 +990,20 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var resultObj = parsedResult["result"];
 
         resultObj.AssertObject("name1-1-1", FullName<NToNCollectionRecord1>(), "1");
+    }
+
+    [Test]
+    public void TestNtoN2()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+        var result = api.PostInvokeOnMenu(nameof(ReferenceMenuFunctions), nameof(ReferenceMenuFunctions.UpdateNtoN), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        resultObj.AssertObject("name1-1-12", FullName<NToNCollectionRecord1>(), "1");
     }
 }
