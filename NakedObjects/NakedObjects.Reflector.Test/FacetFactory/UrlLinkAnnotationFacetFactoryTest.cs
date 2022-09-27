@@ -34,71 +34,9 @@ public class UrlLinkAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var featureTypes = facetFactory.FeatureTypes;
         Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
         Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
-        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
         Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-    }
-
-    [TestMethod]
-    public void TestUrlLinkAnnotationPickedUpOnAction() {
-        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-        var method = FindMethod(typeof(Customer2), nameof(Customer2.SomeAction1), new[] { typeof(int) });
-        metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IUrlLinkFacet));
-        Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is UrlLinkFacet);
-        var hintFacet = (UrlLinkFacet)facet;
-        Assert.AreEqual("Action", hintFacet.DisplayAs);
-        Assert.AreEqual(true, hintFacet.OpenInNewTab);
-        Assert.IsNotNull(metamodel);
-    }
-
-    [TestMethod]
-    public void TestUrlLinkAnnotationPickedUpOnActionDefault()
-    {
-        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-        var method = FindMethod(typeof(Customer2), nameof(Customer2.SomeAction), new[] { typeof(int) });
-        metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IUrlLinkFacet));
-        Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is UrlLinkFacet);
-        var hintFacet = (UrlLinkFacet)facet;
-        Assert.AreEqual(null, hintFacet.DisplayAs);
-        Assert.AreEqual(false, hintFacet.OpenInNewTab);
-        Assert.IsNotNull(metamodel);
-    }
-
-    [TestMethod]
-    public void TestUrlLinkAnnotationPickedUpOnCollectionProperty() {
-        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-        var property = FindProperty(typeof(Customer1), nameof(Customer1.Customers1));
-        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IUrlLinkFacet));
-        Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is UrlLinkFacet);
-        var hintFacet = (UrlLinkFacet)facet;
-        Assert.AreEqual("Customers", hintFacet.DisplayAs);
-        Assert.AreEqual(true, hintFacet.OpenInNewTab);
-        Assert.IsNotNull(metamodel);
-    }
-
-    [TestMethod]
-    public void TestUrlLinkAnnotationPickedUpOnCollectionPropertyDefault()
-    {
-        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-        var property = FindProperty(typeof(Customer1), nameof(Customer1.Customers));
-        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IUrlLinkFacet));
-        Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is UrlLinkFacet);
-        var hintFacet = (UrlLinkFacet)facet;
-        Assert.AreEqual(null, hintFacet.DisplayAs);
-        Assert.AreEqual(false, hintFacet.OpenInNewTab);
-        Assert.IsNotNull(metamodel);
     }
 
     [TestMethod]
@@ -139,19 +77,7 @@ public class UrlLinkAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         [UrlLink(true, "Name")]
         public string SecondName => null;
 
-        [UrlLink]
-        public List<Customer2> Customers { get; set; }
-
-        [UrlLink(true, "Customers")]
-        public List<Customer2> Customers1 { get; set; }
-    }
-
-    private class Customer2 {
-        [UrlLink]
-        public string SomeAction(int foo) => foo.ToString();
-
-        [UrlLink(true, "Action")]
-        public string SomeAction1(int foo) => foo.ToString();
+       
     }
 
     #region Setup/Teardown

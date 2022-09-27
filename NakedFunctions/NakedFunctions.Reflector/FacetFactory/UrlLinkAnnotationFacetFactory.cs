@@ -22,7 +22,7 @@ namespace NakedFunctions.Reflector.FacetFactory;
 
 public sealed class UrlLinkAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public UrlLinkAnnotationFacetFactory(IFacetFactoryOrder<UrlLinkAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
+        : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<UrlLinkAttribute>();
@@ -33,11 +33,6 @@ public sealed class UrlLinkAnnotationFacetFactory : FunctionalFacetFactoryProces
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<UrlLinkAttribute>();
         FacetUtils.AddFacet(Create(attribute), holder);
-    }
-
-    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        Process(method, specification);
-        return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

@@ -24,7 +24,6 @@ public abstract class WithAction {
     public IDomainObjectContainer Container { set; protected get; }
 
     [PresentationHint("class5 class6")]
-    [UrlLink(true, "Name")]
     public virtual MostSimple AnAction() {
         return Container.Instances<MostSimple>().Single(x => x.Id == 1);
     }
