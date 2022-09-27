@@ -7,13 +7,13 @@
 
 using System;
 
-namespace NakedFramework {
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
-    public abstract class AbstractPresentationHintAttribute : Attribute {
-        protected const string HideInClient = "hide-in-client";
+namespace NakedFunctions; 
 
-        public AbstractPresentationHintAttribute(string s) => Value = s;
-
-        public string Value { get; }
-    }
+/// <summary>
+///     A hint added to the associated display element. For example to be rendered as a class on the html, and picked up by
+///     the CSS.
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+public class HideInClientAttribute : PresentationHintAttribute {
+    public HideInClientAttribute() : base(HideInClient) { }
 }
