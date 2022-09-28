@@ -160,6 +160,7 @@ public class ObjectTestEF6 : AcceptanceTestCase {
 
         Assert.AreEqual("Hint1", parsedResult["extensions"]["x-ro-nof-presentationHint"].ToString());
         Assert.AreEqual("Hint2", parsedResult["members"]["Name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
+        Assert.AreEqual("hide-in-client", parsedResult["members"]["HiddenInClient"]["extensions"]["x-ro-nof-presentationHint"].ToString());
     }
 
     [Test]
@@ -219,6 +220,19 @@ public class ObjectTestEF6 : AcceptanceTestCase {
 
         Assert.AreEqual("Hint3", parsedResult["extensions"]["x-ro-nof-presentationHint"].ToString());
         Assert.AreEqual("Hint4", parsedResult["parameters"]["name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
+    }
+
+    [Test]
+    public void TestGetObjectActionHideHints()
+    {
+        var api = Api();
+        var result = api.GetAction(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.CreateSimpleRecord));
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("hide-in-client", parsedResult["extensions"]["x-ro-nof-presentationHint"].ToString());
+        Assert.AreEqual("hide-in-client", parsedResult["parameters"]["name"]["extensions"]["x-ro-nof-presentationHint"].ToString());
     }
 
     [Test]

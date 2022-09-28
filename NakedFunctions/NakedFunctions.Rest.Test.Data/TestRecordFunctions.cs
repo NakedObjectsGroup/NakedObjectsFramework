@@ -57,7 +57,8 @@ public static class SimpleRecordFunctions {
         return (updated, context);
     }
 
-    public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, string name, IContext context) => Helpers.DisplayAndSave(new SimpleRecord { Name = name }, context);
+    [HideInClient]
+    public static (SimpleRecord, IContext) CreateSimpleRecord(this SimpleRecord sp, [HideInClient] string name, IContext context) => Helpers.DisplayAndSave(new SimpleRecord { Name = name }, context);
 
     public static (SimpleRecord, IContext) CreateSimpleRecordWithPostPersist(this SimpleRecord sp, string name, IContext context) {
         var newObj = new SimpleRecord { Name = name };

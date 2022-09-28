@@ -22,6 +22,9 @@ public record SimpleRecord {
     [RestExtension("Name2", "Value2")]
     public string Name { get; init; }
 
+    [HideInClient]
+    public string HiddenInClient { get; init; }
+
     public virtual bool Equals(SimpleRecord other) => ReferenceEquals(this, other);
     public override string ToString() => Name;
     public override int GetHashCode() => base.GetHashCode();
