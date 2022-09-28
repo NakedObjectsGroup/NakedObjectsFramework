@@ -28,7 +28,7 @@ export class AttachmentViewModel {
         this.mimeType === 'image/gif' ||
         this.mimeType === 'application/octet-stream'
 
-    setImage(setImageOn: { image: string, title: string }) {
+    setImage(setImageOn: { image?: string, title: string }) {
         this.downloadFile().then(blob => {
             if (blob.size > 0) {
                 const reader = new FileReader();
