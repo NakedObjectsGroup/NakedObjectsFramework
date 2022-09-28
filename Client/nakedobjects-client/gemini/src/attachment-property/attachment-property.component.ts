@@ -29,8 +29,8 @@ export class AttachmentPropertyComponent {
         return this.attach;
     }
 
-    title: string;
-    image: string;
+    title = "Empty";
+    image?: string;
 
     doAttachmentClick = (right?: boolean) => {
         if (this.attachment.displayInline()) {
@@ -38,13 +38,8 @@ export class AttachmentPropertyComponent {
         } else {
             this.attachment.downloadFile()
                 .then(blob => {
-                    // if (window.navigator.msSaveBlob) {
-                    //     // internet explorer
-                    //     window.navigator.msSaveBlob(blob, this.attachment.title);
-                    // } else {
-                        const burl = URL.createObjectURL(blob);
-                        window.open(burl);
-                    //}
+                    const burl = URL.createObjectURL(blob);
+                    window.open(burl);
                 })
                 .catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }

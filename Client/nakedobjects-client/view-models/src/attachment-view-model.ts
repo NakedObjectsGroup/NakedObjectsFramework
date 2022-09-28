@@ -40,7 +40,7 @@ export class AttachmentViewModel {
                 reader.readAsDataURL(blob);
             } else {
                 this.empty = true;
-                this.title = Msg.noImageMessage;
+                this.title = this.emptyMessage;
             }
             setImageOn.title = this.title;
         }).catch((reject: ErrorWrapper) => this.error.handleError(reject));
@@ -49,4 +49,9 @@ export class AttachmentViewModel {
     setTitle(setTitleOn: { title: string }) {
         setTitleOn.title = this.title;
     }
+
+    get emptyMessage() {
+        return this.displayInline() ? Msg.noImageMessage : Msg.noFileMessage; 
+    }
+
 }
