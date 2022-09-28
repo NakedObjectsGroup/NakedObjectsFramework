@@ -40,7 +40,6 @@ public class HideInClientAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
 
     private class Customer1 {
         [HideInClient]
-        [PresentationHint("a")]
         public string FirstName => null;
 
         [HideInClient]
