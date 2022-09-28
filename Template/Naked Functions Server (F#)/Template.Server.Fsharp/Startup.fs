@@ -24,6 +24,7 @@ open NakedFramework.Rest.Extensions
 open NakedFunctions.Reflector.Extensions
 open Newtonsoft.Json
 open Template.Model.Fsharp
+open Template.Model.FSharp.Db
 
 type Startup(configuration: IConfiguration) =
     let Configuration = configuration
@@ -60,12 +61,7 @@ type Startup(configuration: IConfiguration) =
         services.AddNakedFramework
             (fun frameworkOptions ->
                 frameworkOptions.MainMenus <- MenuHelper.GenerateMenus(ModelConfig.MainMenus())
-
-                frameworkOptions.AddEFCorePersistor
-                    (fun peristorOptions ->
-                        peristorOptions.ContextCreators <-
-                            [| Func<IConfiguration, DbContext> ModelConfig.EFCoreDbContextCreator |])
-
+                frameworkOptions.AddEFCorePersistor()
                 frameworkOptions.AddNakedFunctions
                     (fun appOptions ->
                         appOptions.DomainTypes <- ModelConfig.DomainTypes()
@@ -88,6 +84,12 @@ type Startup(configuration: IConfiguration) =
                 ))
         |> ignore
 
+        services.AddDbContext<DbContext, ExampleDbContext>
+            (fun options ->
+                options.UseSqlServer(Configuration.GetConnectionString("ExampleCS")) |> ignore
+                options.UseLazyLoadingProxies() |> ignore
+            )
+        |> ignore
 
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

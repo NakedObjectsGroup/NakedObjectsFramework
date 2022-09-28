@@ -41,11 +41,3 @@ module ModelConfig =
         TypesDefiningDomainFunctions()
             .Where(fun t -> t.FullName.Contains("MenuFunctions"))
             .ToArray()
-
-    let EFCoreDbContextCreator =
-        fun (c: IConfiguration) ->
-            let db =
-                new ExampleDbContext(c.GetConnectionString("ExampleCS"))
-
-            db.Create() |> ignore
-            db :> DbContext

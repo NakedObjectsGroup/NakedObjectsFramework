@@ -12,6 +12,8 @@ open System.Data.SqlClient
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
+open Microsoft.Extensions.DependencyInjection;
+open Template.Model.FSharp.Db
 
 module Program =
     let CreateHostBuilder (args: string []) : IHostBuilder =
@@ -24,5 +26,12 @@ module Program =
     [<EntryPoint>]
     let main args =
         DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance)
-        CreateHostBuilder(args).Build().Run()
+
+        let host = CreateHostBuilder(args).Build()
+
+        use scope = host.Services.CreateScope()
+        let db = scope.ServiceProvider.GetRequiredService<ExampleDbContext>()
+        db.Create() |> ignore
+       
+        host.Run();
         0

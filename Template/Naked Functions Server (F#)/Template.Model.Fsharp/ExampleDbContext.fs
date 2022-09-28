@@ -5,10 +5,8 @@ open Template.Model.Fsharp.Types
 
 module Db =
 
-    type ExampleDbContext(cs) =
-        inherit DbContext()
-
-        member this.cs: string = cs
+    type ExampleDbContext(options) =
+        inherit DbContext(options)
 
         [<DefaultValue>]
         val mutable _Students: DbSet<Student>
@@ -18,9 +16,6 @@ module Db =
             and public set value = this._Students <- value
 
         override this.OnConfiguring(optionsBuilder: DbContextOptionsBuilder) =
-            //optionsBuilder.LogTo(l => Debug.WriteLine(l));
-            optionsBuilder.UseSqlServer(this.cs) |> ignore
-            optionsBuilder.UseLazyLoadingProxies() |> ignore
             ()
 
         override this.OnModelCreating(modelBuilder: ModelBuilder) =
