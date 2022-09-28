@@ -8,22 +8,31 @@
 using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Template.Model;
 
-namespace NakedFunctions.Rest.App.Demo {
-    public class Program {
-        public static void Main(string[] args) {
-            DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
-            CreateHostBuilder(args).Build().Run();
+namespace NakedFunctions.Rest.App.Demo; 
+
+public class Program {
+    public static void Main(string[] args) {
+        DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
+        var host = CreateHostBuilder(args).Build();
+
+        using (var scope = host.Services.CreateScope()) {
+            var db = scope.ServiceProvider.GetRequiredService<ExampleDbContext>();
+            db.Create();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureLogging(logging => {
-                    // Clear default logging providers so we just log to log4net
-                    logging.ClearProviders();
-                })
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        host.Run();
     }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureLogging(logging => {
+                // Clear default logging providers so we just log to log4net
+                logging.ClearProviders();
+            })
+            .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 }

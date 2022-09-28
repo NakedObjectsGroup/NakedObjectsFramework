@@ -8,6 +8,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -54,13 +55,18 @@ namespace NakedFunctions.Rest.App.Demo
             services.AddNakedFramework(frameworkOptions =>
             {
                 frameworkOptions.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                frameworkOptions.AddEFCorePersistor(peristorOptions => { peristorOptions.ContextCreators = new[] { ModelConfig.EFCoreDbContextCreator }; });
+                frameworkOptions.AddEFCorePersistor();
                 frameworkOptions.AddNakedFunctions(appOptions =>
                 {
                     appOptions.DomainTypes = ModelConfig.DomainTypes();
                     appOptions.DomainFunctions = ModelConfig.TypesDefiningDomainFunctions();
                 });
                 frameworkOptions.AddRestfulObjects(_ => { });
+            });
+            services.AddDbContext<DbContext, ExampleDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("ExampleCS"));
+                options.UseLazyLoadingProxies();
+                //options.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
             });
             services.AddCors(corsOptions =>
             {

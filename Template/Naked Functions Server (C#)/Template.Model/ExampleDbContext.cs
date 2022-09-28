@@ -1,36 +1,23 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Template.Model.Types;
 
-namespace Template.Model
-{
-    public class ExampleDbContext : DbContext
-    {
+namespace Template.Model;
 
-        private readonly string cs;
+public class ExampleDbContext : DbContext {
+    public ExampleDbContext(DbContextOptions<ExampleDbContext> options)
+        : base(options) { }
 
-        public ExampleDbContext(string cs) => this.cs = cs;
+    public DbSet<Student> Students { get; set; }
 
-        public DbSet<Student> Students { get; set; }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder.LogTo(l => Debug.WriteLine(l));
-            optionsBuilder.UseSqlServer(cs);
-            optionsBuilder.UseLazyLoadingProxies();
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Student>().HasData(new Student { Id = 1, FullName = "Alie Algol" });
-            modelBuilder.Entity<Student>().HasData(new Student { Id = 2, FullName = "Forrest Fortran" });
-            modelBuilder.Entity<Student>().HasData(new Student { Id = 3, FullName = "James Java" });
-        }
-       
-            public void Delete() => Database.EnsureDeleted();
-
-            public void Create() => Database.EnsureCreated();
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<Student>().HasData(new Student { Id = 1, FullName = "Alie Algol" });
+        modelBuilder.Entity<Student>().HasData(new Student { Id = 2, FullName = "Forrest Fortran" });
+        modelBuilder.Entity<Student>().HasData(new Student { Id = 3, FullName = "James Java" });
     }
+
+    public void Delete() => Database.EnsureDeleted();
+
+    public void Create() => Database.EnsureCreated();
 }
