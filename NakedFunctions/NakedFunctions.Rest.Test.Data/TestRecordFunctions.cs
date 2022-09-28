@@ -255,7 +255,7 @@ public static class CollectionContributedFunctions {
 
     public static SimpleRecord ContributedFunction5(this IQueryable<SimpleRecord> sr, SimpleRecord psr, IContext context) => sr.FirstOrDefault();
 
-    public static IList<SimpleRecord> Choices1ContributedFunction5(this IQueryable<SimpleRecord> sr, IContext context) => context.Instances<SimpleRecord>().ToList();
+    public static IList<SimpleRecord> Choices1ContributedFunction5(this IQueryable<SimpleRecord> sr, SimpleRecord psr, IContext context) => context.Instances<SimpleRecord>().ToList();
 
     public static SimpleRecord ContributedFunction6(this IQueryable<SimpleRecord> sr, IContext context) => sr.FirstOrDefault();
 

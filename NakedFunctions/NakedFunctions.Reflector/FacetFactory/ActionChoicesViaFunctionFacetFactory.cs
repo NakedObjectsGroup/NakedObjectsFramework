@@ -38,6 +38,8 @@ public sealed class ActionChoicesViaFunctionFacetFactory : FunctionalFacetFactor
 
     public string[] Prefixes => FixedPrefixes;
 
+    private static bool IsCollectionContributed(MethodInfo actionMethod) => actionMethod.ContributedToType() is {} t && CollectionUtils.IsGenericQueryable(t);
+
     private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, MethodInfo actionMethod, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         for (var i = 0; i < paramTypes.Length; i++) {
             var paramType = paramTypes[i];
@@ -60,7 +62,12 @@ public sealed class ActionChoicesViaFunctionFacetFactory : FunctionalFacetFactor
                 var parameterNamesAndTypes = new List<(string, Type)>();
                 var mismatchedParm = false;
 
-                foreach (var parameterInfo in InjectUtils.FilterParms(methodToUse)) {
+                // if collection contributed action don't process parameters for prompts 
+                var parametersToProcess = IsCollectionContributed(actionMethod)
+                    ? Array.Empty<ParameterInfo>()
+                    : InjectUtils.FilterParms(methodToUse);
+
+                foreach (var parameterInfo in parametersToProcess) {
                     (var typeSpecBuilder, metamodel) = reflector.LoadSpecification(parameterInfo.ParameterType, metamodel);
                     var paramName = parameterInfo.Name?.ToLower();
                     if (typeSpecBuilder is IObjectSpecBuilder objectSpec && paramName is not null) {
