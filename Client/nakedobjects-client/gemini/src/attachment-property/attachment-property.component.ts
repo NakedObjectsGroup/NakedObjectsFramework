@@ -33,6 +33,10 @@ export class AttachmentPropertyComponent {
     image?: string;
 
     doAttachmentClick = (right?: boolean) => {
+        if (this.attachment.empty || !this.image) {
+            return;
+        }
+
         if (this.attachment.displayInline()) {
             this.urlManager.setAttachment(this.attachment.link, this.clickHandlerService.pane(this.attachment.onPaneId, right));
         } else {
