@@ -20,6 +20,7 @@ using NakedObjects.Reflector.Extensions;
 using NakedFramework.Architecture.Component;
 using Template.Model;
 using NakedFramework.Menu;
+using Microsoft.EntityFrameworkCore;
 
 namespace NakedObjects.Rest.App.Demo {
     public class Startup {
@@ -47,13 +48,17 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedFramework(frameworkOptions => {
                 frameworkOptions.MainMenus = MenuHelper.GenerateMenus(ModelConfig.MainMenus());
-                // frameworkOptions.AddEF6Persistor(persistorOptions => { persistorOptions.ContextInstallers = new[] { ModelConfig. }; });
-                frameworkOptions.AddEFCorePersistor(persistorOptions => { persistorOptions.ContextCreators = new[] { ModelConfig.EFCoreDbContextCreator }; });
+                frameworkOptions.AddEFCorePersistor();
                 frameworkOptions.AddRestfulObjects(restOptions => {  });
                 frameworkOptions.AddNakedObjects(appOptions => {
                     appOptions.DomainModelTypes = ModelConfig.DomainModelTypes();
                     appOptions.DomainModelServices = ModelConfig.DomainModelServices();
                 });
+            });
+            services.AddDbContext<DbContext, ExampleDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("ExampleCS"));
+                options.UseLazyLoadingProxies();
+                //options.LogTo(m => Debug.WriteLine(m), LogLevel.Trace);
             });
             services.AddCors(corsOptions => {
                 corsOptions.AddPolicy(MyAllowSpecificOrigins, policyBuilder => {
