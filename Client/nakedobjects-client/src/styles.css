@@ -205,3 +205,7 @@ div.footer {
     right: 0;
     background-color: var(--footer-background-color);
 }
+
+.hide-in-client {
+    display: none !important;
+}
