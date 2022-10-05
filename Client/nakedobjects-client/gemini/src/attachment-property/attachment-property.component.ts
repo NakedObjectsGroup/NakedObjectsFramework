@@ -33,7 +33,7 @@ export class AttachmentPropertyComponent {
     image?: string;
 
     doAttachmentClick = (right?: boolean) => {
-        if (this.attachment.empty || !this.image) {
+        if (this.attachment.empty && !this.image) {
             return;
         }
 
