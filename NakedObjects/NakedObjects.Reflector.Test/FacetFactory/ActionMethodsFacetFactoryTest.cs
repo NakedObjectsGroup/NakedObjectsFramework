@@ -128,7 +128,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestActionInvocationFacetIsInstalledAndMethodRemoved() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer), "SomeAction");
+        var actionMethod = FindMethod(typeof(Customer), nameof(Customer.SomeAction));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
         Assert.IsNotNull(facet);
@@ -145,7 +145,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestActionInvocationFacetQueryableByType() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction1");
+        var actionMethod = FindMethod(typeof(Customer33), nameof(Customer33.SomeQueryableAction1));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
         Assert.IsNotNull(facet);
@@ -162,7 +162,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestActionInvocationFacetQueryableByAnnotation() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction2");
+        var actionMethod = FindMethod(typeof(Customer33), nameof(Customer33.SomeQueryableAction2));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
         Assert.IsNotNull(facet);
@@ -180,7 +180,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
         var type = typeof(Customer16);
-        var actionMethod = FindMethod(type, "SomeAction");
+        var actionMethod = FindMethod(type, nameof(Customer16.SomeAction));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
         var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
@@ -193,7 +193,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestActionReturnTypeWhenNotVoid() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer15), "SomeAction");
+        var actionMethod = FindMethod(typeof(Customer15), nameof(Customer15.SomeAction));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
         var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
@@ -206,7 +206,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestActionReturnTypeWhenVoid() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer14), "SomeAction");
+        var actionMethod = FindMethod(typeof(Customer14), nameof(Customer14.SomeAction));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
         var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
@@ -219,7 +219,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestAddsNullableFacetToParm() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethodIgnoreParms(typeof(Customer1), "AnActionWithNullableParm");
+        var method = FindMethodIgnoreParms(typeof(Customer1), nameof(Customer1.AnActionWithNullableParm));
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(INullableFacet));
         Assert.IsNotNull(facet);
@@ -231,7 +231,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestDoesntAddNullableFacetToParm() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethodIgnoreParms(typeof(Customer1), "AnActionWithoutNullableParm");
+        var method = FindMethodIgnoreParms(typeof(Customer1), nameof(Customer1.AnActionWithoutNullableParm));
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(INullableFacet));
         Assert.IsNull(facet);
@@ -252,10 +252,10 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestIgnoresParameterAutoCompleteMethodByIndexNoArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer27), "SomeAction");
-        var autoComplete0Method = FindMethodIgnoreParms(typeof(Customer27), "AutoComplete0SomeAction");
-        var autoComplete1Method = FindMethodIgnoreParms(typeof(Customer27), "AutoComplete1SomeAction");
-        var autoComplete2Method = FindMethodIgnoreParms(typeof(Customer27), "AutoComplete2SomeAction");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer27), nameof(Customer27.SomeAction));
+        var autoComplete0Method = FindMethodIgnoreParms(typeof(Customer27), nameof(Customer27.AutoComplete0SomeAction));
+        var autoComplete1Method = FindMethodIgnoreParms(typeof(Customer27), nameof(Customer27.AutoComplete1SomeAction));
+        var autoComplete2Method = FindMethodIgnoreParms(typeof(Customer27), nameof(Customer27.AutoComplete2SomeAction));
 
         var facetHolderWithParms = CreateHolderWithParms();
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -270,7 +270,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsDisabledForSessionFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(CustomerStatic), "SomeAction", new[] { typeof(int), typeof(long) });
+        var actionMethod = FindMethod(typeof(CustomerStatic), nameof(CustomerStatic.SomeAction), new[] { typeof(int), typeof(long) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
         Assert.IsNotNull(facet);
@@ -282,7 +282,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsHiddenForSessionFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(CustomerStatic), "SomeAction", new[] { typeof(int), typeof(long) });
+        var actionMethod = FindMethod(typeof(CustomerStatic), nameof(CustomerStatic.SomeAction), new[] { typeof(int), typeof(long) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IHideForSessionFacet));
         Assert.IsNotNull(facet);
@@ -294,9 +294,9 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterAutoCompleteMethodAttributes() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer28), "SomeAction");
-        var autoComplete0Method = FindMethodIgnoreParms(typeof(Customer28), "AutoComplete0SomeAction");
-        var autoComplete1Method = FindMethodIgnoreParms(typeof(Customer28), "AutoComplete1SomeAction");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer28), nameof(Customer28.SomeAction));
+        var autoComplete0Method = FindMethodIgnoreParms(typeof(Customer28), nameof(Customer28.AutoComplete0SomeAction));
+        var autoComplete1Method = FindMethodIgnoreParms(typeof(Customer28), nameof(Customer28.AutoComplete1SomeAction));
 
         var facetHolderWithParms = CreateHolderWithParms();
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -310,10 +310,10 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterAutoCompleteMethodByIndexNoArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer26), "SomeAction");
-        var autoComplete0Method = FindMethodIgnoreParms(typeof(Customer26), "AutoComplete0SomeAction");
-        var autoComplete1Method = FindMethodIgnoreParms(typeof(Customer26), "AutoComplete1SomeAction");
-        var autoComplete2Method = FindMethodIgnoreParms(typeof(Customer26), "AutoComplete2SomeAction");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer26), nameof(Customer26.SomeAction));
+        var autoComplete0Method = FindMethodIgnoreParms(typeof(Customer26), nameof(Customer26.AutoComplete0SomeAction));
+        var autoComplete1Method = FindMethodIgnoreParms(typeof(Customer26), nameof(Customer26.AutoComplete1SomeAction));
+        var autoComplete2Method = FindMethodIgnoreParms(typeof(Customer26), nameof(Customer26.AutoComplete2SomeAction));
 
         var facetHolderWithParms = CreateHolderWithParms();
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -328,10 +328,10 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterAutoCompleteMethodByIndexNoArgsFacetAndRemovesMethodInterface() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer32), "SomeAction");
-        var autoComplete0Method = FindMethodIgnoreParms(typeof(Customer32), "AutoComplete0SomeAction");
-        var autoComplete1Method = FindMethodIgnoreParms(typeof(Customer32), "AutoComplete1SomeAction");
-        var autoComplete2Method = FindMethodIgnoreParms(typeof(Customer32), "AutoComplete2SomeAction");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer32), nameof(Customer32.SomeAction));
+        var autoComplete0Method = FindMethodIgnoreParms(typeof(Customer32), nameof(Customer32.AutoComplete0SomeAction));
+        var autoComplete1Method = FindMethodIgnoreParms(typeof(Customer32), nameof(Customer32.AutoComplete1SomeAction));
+        var autoComplete2Method = FindMethodIgnoreParms(typeof(Customer32), nameof(Customer32.AutoComplete2SomeAction));
 
         var facetHolderWithParms = CreateHolderWithParms();
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -346,10 +346,10 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterChoicesMethodByIndexNoArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer13), "SomeAction", new[] { typeof(int), typeof(long), typeof(long) });
-        var choices0Method = FindMethod(typeof(Customer13), "Choices0SomeAction", Array.Empty<Type>());
-        var choices1Method = FindMethod(typeof(Customer13), "Choices1SomeAction", Array.Empty<Type>());
-        var choices2Method = FindMethod(typeof(Customer13), "Choices2SomeAction", Array.Empty<Type>());
+        var actionMethod = FindMethod(typeof(Customer13), nameof(Customer13.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+        var choices0Method = FindMethod(typeof(Customer13), nameof(Customer13.Choices0SomeAction), Array.Empty<Type>());
+        var choices1Method = FindMethod(typeof(Customer13), nameof(Customer13.Choices1SomeAction), Array.Empty<Type>());
+        var choices2Method = FindMethod(typeof(Customer13), nameof(Customer13.Choices2SomeAction), Array.Empty<Type>());
 
         var facetHolderWithParms = CreateHolderWithParms();
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -364,10 +364,10 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterChoicesMethodByIndexNoArgsFacetAndRemovesMethodDuplicate() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer30), "SomeAction", new[] { typeof(int), typeof(long), typeof(long) });
-        var choices0Method1 = FindMethod(typeof(Customer30), "Choices0SomeAction", new[] { typeof(long), typeof(long) });
-        var choices0Method2 = FindMethod(typeof(Customer30), "Choices0SomeAction", new[] { typeof(long) });
-        var choices0Method3 = FindMethod(typeof(Customer30), "Choices0SomeAction", Array.Empty<Type>());
+        var actionMethod = FindMethod(typeof(Customer30), nameof(Customer30.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+        var choices0Method1 = FindMethod(typeof(Customer30), nameof(Customer30.Choices0SomeAction), new[] { typeof(long), typeof(long) });
+        var choices0Method2 = FindMethod(typeof(Customer30), nameof(Customer30.Choices0SomeAction), new[] { typeof(long) });
+        var choices0Method3 = FindMethod(typeof(Customer30), nameof(Customer30.Choices0SomeAction), Array.Empty<Type>());
 
         var facetHolderWithParms = CreateHolderWithParms();
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -382,10 +382,10 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterChoicesMethodByIndexNoArgsFacetAndRemovesMethodWithParms() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer30), "SomeAction", new[] { typeof(int), typeof(long), typeof(long) });
-        var choices0Method = FindMethod(typeof(Customer30), "Choices0SomeAction", new[] { typeof(long), typeof(long) });
-        var choices1Method = FindMethod(typeof(Customer30), "Choices1SomeAction", new[] { typeof(long) });
-        var choices2Method = FindMethod(typeof(Customer30), "Choices2SomeAction", Array.Empty<Type>());
+        var actionMethod = FindMethod(typeof(Customer30), nameof(Customer30.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+        var choices0Method = FindMethod(typeof(Customer30), nameof(Customer30.Choices0SomeAction), new[] { typeof(long), typeof(long) });
+        var choices1Method = FindMethod(typeof(Customer30), nameof(Customer30.Choices1SomeAction), new[] { typeof(long) });
+        var choices2Method = FindMethod(typeof(Customer30), nameof(Customer30.Choices2SomeAction), Array.Empty<Type>());
 
         var facetHolderWithParms = CreateHolderWithParms();
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -400,10 +400,10 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterChoicesMethodByNameNoArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer21), "SomeAction", new[] { typeof(int), typeof(long), typeof(long) });
-        var choices0Method = FindMethod(typeof(Customer21), "ChoicesSomeAction", new[] { typeof(int) });
-        var choices1Method = FindMethod(typeof(Customer21), "ChoicesSomeAction", new[] { typeof(long) });
-        var choices2Method = FindMethod(typeof(Customer21), "Choices2SomeAction", Array.Empty<Type>());
+        var actionMethod = FindMethod(typeof(Customer21), nameof(Customer21.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+        var choices0Method = FindMethod(typeof(Customer21), nameof(Customer21.ChoicesSomeAction), new[] { typeof(int) });
+        var choices1Method = FindMethod(typeof(Customer21), nameof(Customer21.ChoicesSomeAction), new[] { typeof(long) });
+        var choices2Method = FindMethod(typeof(Customer21), nameof(Customer21.Choices2SomeAction), Array.Empty<Type>());
 
         var facetHolderWithParms = CreateHolderWithParms();
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
@@ -418,10 +418,10 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterDefaultsMethodByIndexNoArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer11), "SomeAction", new[] { typeof(int), typeof(long), typeof(long) });
-        var default0Method = FindMethod(typeof(Customer11), "Default0SomeAction", Array.Empty<Type>());
-        var default1Method = FindMethod(typeof(Customer11), "Default1SomeAction", Array.Empty<Type>());
-        var default2Method = FindMethod(typeof(Customer11), "Default2SomeAction", Array.Empty<Type>());
+        var actionMethod = FindMethod(typeof(Customer11), nameof(Customer11.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+        var default0Method = FindMethod(typeof(Customer11), nameof(Customer11.Default0SomeAction), Array.Empty<Type>());
+        var default1Method = FindMethod(typeof(Customer11), nameof(Customer11.Default1SomeAction), Array.Empty<Type>());
+        var default2Method = FindMethod(typeof(Customer11), nameof(Customer11.Default2SomeAction), Array.Empty<Type>());
 
         var facetHolderWithParms = CreateHolderWithParms();
 
@@ -437,10 +437,10 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterDefaultsMethodByNameNoArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer22), "SomeAction", new[] { typeof(int), typeof(long), typeof(long) });
-        var default0Method = FindMethod(typeof(Customer22), "DefaultSomeAction", new[] { typeof(int) });
-        var default1Method = FindMethod(typeof(Customer22), "DefaultSomeAction", new[] { typeof(long) });
-        var default2Method = FindMethod(typeof(Customer22), "Default2SomeAction", Array.Empty<Type>());
+        var actionMethod = FindMethod(typeof(Customer22), nameof(Customer22.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+        var default0Method = FindMethod(typeof(Customer22), nameof(Customer22.DefaultSomeAction), new[] { typeof(int) });
+        var default1Method = FindMethod(typeof(Customer22), nameof(Customer22.DefaultSomeAction), new[] { typeof(long) });
+        var default2Method = FindMethod(typeof(Customer22), nameof(Customer22.Default2SomeAction), Array.Empty<Type>());
 
         var facetHolderWithParms = CreateHolderWithParms();
 
@@ -456,9 +456,9 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterValidationMethodByIndexNoArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer17), "SomeAction", new[] { typeof(int), typeof(long), typeof(long) });
-        var validateParameter0Method = FindMethod(typeof(Customer17), "Validate0SomeAction", new[] { typeof(int) });
-        var validateParameter1Method = FindMethod(typeof(Customer17), "Validate1SomeAction", new[] { typeof(long) });
+        var actionMethod = FindMethod(typeof(Customer17), nameof(Customer17.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+        var validateParameter0Method = FindMethod(typeof(Customer17), nameof(Customer17.Validate0SomeAction), new[] { typeof(int) });
+        var validateParameter1Method = FindMethod(typeof(Customer17), nameof(Customer17.Validate1SomeAction), new[] { typeof(long) });
 
         var facetHolderWithParms = CreateHolderWithParms();
 
@@ -473,9 +473,9 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsParameterValidationMethodByNameNoArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer20), "SomeAction", new[] { typeof(int), typeof(long), typeof(long) });
-        var validateParameter0Method = FindMethod(typeof(Customer20), "ValidateSomeAction", new[] { typeof(int) });
-        var validateParameter1Method = FindMethod(typeof(Customer20), "ValidateSomeAction", new[] { typeof(long) });
+        var actionMethod = FindMethod(typeof(Customer20), nameof(Customer20.SomeAction), new[] { typeof(int), typeof(long), typeof(long) });
+        var validateParameter0Method = FindMethod(typeof(Customer20), nameof(Customer20.ValidateSomeAction), new[] { typeof(int) });
+        var validateParameter1Method = FindMethod(typeof(Customer20), nameof(Customer20.ValidateSomeAction), new[] { typeof(long) });
 
         var facetHolderWithParms = CreateHolderWithParms();
 
@@ -490,8 +490,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsValidateMethodNoArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer8), "SomeAction");
-        var validateMethod = FindMethod(typeof(Customer8), "ValidateSomeAction");
+        var actionMethod = FindMethod(typeof(Customer8), nameof(Customer8.SomeAction));
+        var validateMethod = FindMethod(typeof(Customer8), nameof(Customer8.ValidateSomeAction));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionValidationFacet));
         Assert.IsNotNull(facet);
@@ -506,8 +506,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestInstallsValidateMethodSomeArgsFacetAndRemovesMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer9), "SomeAction", new[] { typeof(int), typeof(int) });
-        var validateMethod = FindMethod(typeof(Customer9), "ValidateSomeAction", new[] { typeof(int), typeof(int) });
+        var actionMethod = FindMethod(typeof(Customer9), nameof(Customer9.SomeAction), new[] { typeof(int), typeof(int) });
+        var validateMethod = FindMethod(typeof(Customer9), nameof(Customer9.ValidateSomeAction), new[] { typeof(int), typeof(int) });
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IActionValidationFacet));
         Assert.IsNotNull(facet);
@@ -522,8 +522,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpDefaultDisableMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer18), "SomeActionThree");
-        var disableMethod = FindMethodIgnoreParms(typeof(Customer18), "DisableActionDefault");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer18), nameof(Customer18.SomeActionThree));
+        var disableMethod = FindMethodIgnoreParms(typeof(Customer18), nameof(Customer18.DisableActionDefault));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IDisableForContextFacet>();
@@ -538,8 +538,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpDefaultHideMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer19), "SomeActionThree");
-        var disableMethod = FindMethodIgnoreParms(typeof(Customer19), "HideActionDefault");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer19), nameof(Customer19.SomeActionThree));
+        var disableMethod = FindMethodIgnoreParms(typeof(Customer19), nameof(Customer19.HideActionDefault));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IHideForContextFacet>();
@@ -554,8 +554,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpDisableMethodDifferentSignature() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer12), "SomeActionThree");
-        var hideMethod = FindMethodIgnoreParms(typeof(Customer12), "DisableSomeActionThree");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer12), nameof(Customer12.SomeActionThree));
+        var hideMethod = FindMethodIgnoreParms(typeof(Customer12), nameof(Customer12.DisableSomeActionThree));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IDisableForContextFacet>();
@@ -569,8 +569,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpDisableMethodNoParms() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer12), "SomeActionOne");
-        var hideMethod = FindMethod(typeof(Customer12), "DisableSomeActionOne");
+        var actionMethod = FindMethod(typeof(Customer12), nameof(Customer12.SomeActionOne));
+        var hideMethod = FindMethod(typeof(Customer12), nameof(Customer12.DisableSomeActionOne));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IDisableForContextFacet>();
@@ -584,8 +584,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpDisableMethodOverridingDefault() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer18), "SomeActionTwo");
-        var disableMethod = FindMethodIgnoreParms(typeof(Customer18), "DisableSomeActionTwo");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer18), nameof(Customer18.SomeActionTwo));
+        var disableMethod = FindMethodIgnoreParms(typeof(Customer18), nameof(Customer18.DisableSomeActionTwo));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IDisableForContextFacet>();
@@ -599,8 +599,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpDisableMethodSameSignature() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer12), "SomeActionTwo");
-        var hideMethod = FindMethodIgnoreParms(typeof(Customer12), "DisableSomeActionTwo");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer12), nameof(Customer12.SomeActionTwo));
+        var hideMethod = FindMethodIgnoreParms(typeof(Customer12), nameof(Customer12.DisableSomeActionTwo));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IDisableForContextFacet>();
@@ -614,8 +614,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpHideMethodDifferentSignature() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer10), "SomeActionThree");
-        var hideMethod = FindMethodIgnoreParms(typeof(Customer10), "HideSomeActionThree");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer10), nameof(Customer10.SomeActionThree));
+        var hideMethod = FindMethodIgnoreParms(typeof(Customer10), nameof(Customer10.HideSomeActionThree));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IHideForContextFacet>();
@@ -629,8 +629,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpHideMethodNoParms() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethod(typeof(Customer10), "SomeActionOne");
-        var hideMethod = FindMethod(typeof(Customer10), "HideSomeActionOne");
+        var actionMethod = FindMethod(typeof(Customer10), nameof(Customer10.SomeActionOne));
+        var hideMethod = FindMethod(typeof(Customer10), nameof(Customer10.HideSomeActionOne));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IHideForContextFacet>();
@@ -644,8 +644,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpHideMethodOverridingDefault() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer19), "SomeActionTwo");
-        var hideMethod = FindMethodIgnoreParms(typeof(Customer19), "HideSomeActionTwo");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer19), nameof(Customer19.SomeActionTwo));
+        var hideMethod = FindMethodIgnoreParms(typeof(Customer19), nameof(Customer19.HideSomeActionTwo));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IHideForContextFacet>();
@@ -659,8 +659,8 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestPickUpHideMethodSameSignature() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var actionMethod = FindMethodIgnoreParms(typeof(Customer10), "SomeActionTwo");
-        var hideMethod = FindMethodIgnoreParms(typeof(Customer10), "HideSomeActionTwo");
+        var actionMethod = FindMethodIgnoreParms(typeof(Customer10), nameof(Customer10.SomeActionTwo));
+        var hideMethod = FindMethodIgnoreParms(typeof(Customer10), nameof(Customer10.HideSomeActionTwo));
         metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
         var facet = Specification.GetFacet<IHideForContextFacet>();
@@ -674,7 +674,7 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestProvidesDefaultNameForActionButIgnoresAnyNamedAnnotation() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer1), "AnActionWithNamedAnnotation");
+        var method = FindMethod(typeof(Customer1), nameof(Customer1.AnActionWithNamedAnnotation));
         metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet<IMemberNamedFacet>();
         Assert.IsNotNull(facet);
@@ -930,26 +930,6 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         public string ValidateSomeAction(int x) => "failed";
 
         public string ValidateSomeAction(long y) => null;
-    }
-
-    private class Customer23 {
-        public void SomeAction(int x, long y, long z) { }
-
-        public string ValidateSomeAction(int x) => "failed";
-
-        public string ValidateSomeAction(long y) => null;
-    }
-
-    private class Customer24 {
-        public void SomeAction(int x, long y, long z) { }
-
-        public string ValidateSomeAction(int x) => "failed";
-
-        public string ValidateSomeAction(long y) => null;
-    }
-
-    private class Customer25 {
-        public void SomeAction(int x, long y, long z) { }
     }
 
     public interface ICustomer { }
