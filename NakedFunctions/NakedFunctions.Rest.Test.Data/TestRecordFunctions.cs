@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using NakedFramework.Value;
 using NakedFunctions.Reflector.Component;
 
 namespace NakedFunctions.Rest.Test.Data;
@@ -179,6 +180,12 @@ public static class ValidatedRecordFunctions {
 
     public static string ValidateWithCrossValidationNoContext(this SimpleRecord sp, int validate1, string validate2) =>
         validate1 == int.Parse(validate2) ? "" : $"invalid: {validate1}:{validate2}";
+
+
+    public static IContext FileAttachmentWithValidation(this SimpleRecord sp, FileAttachment fp, IContext context) => context;
+
+    public static string ValidateFileAttachmentWithValidation(this SimpleRecord sp, FileAttachment fp, IContext context) => fp.GetResourceAsByteArray().Length > 1 ? "" : "invalid";
+
 }
 
 public static class DisabledRecordFunctions {

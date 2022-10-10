@@ -44,6 +44,9 @@ public class ArgumentsRepresentation : MapRepresentation {
             var coll = proposedObjectFacade?.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();
             value = CreateMap(context, coll);
         }
+        else if (context.Specification.IsFileAttachment) {
+            value = CreateMap(context, null);
+        }
         else if (context.Specification.IsParseable ||
                  context.ProposedValue == null ||
                  context.ProposedObjectFacade == null ||

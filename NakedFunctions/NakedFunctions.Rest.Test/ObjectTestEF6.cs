@@ -865,6 +865,34 @@ public class ObjectTestEF6 : AcceptanceTestCase {
     }
 
     [Test]
+    public void TestInvokeRecordActionWithFileAttachmentValidateSuccess()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "fp", new FileValue(Convert.ToBase64String(new byte[] {127, 127}), "text/plain", "aFile") } } };
+        var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.FileAttachmentWithValidation), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        var resultObj = parsedResult["result"];
+
+        //resultObj.AssertObject("Fred", FullName<SimpleRecord>(), "1");
+    }
+
+    [Test]
+    public void TestInvokeRecordActionWithFileAttachmentValidateFail()
+    {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "fp", new FileValue(Convert.ToBase64String(new byte[] { 127 }), "text/plain", "aFile") } } };
+        var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.FileAttachmentWithValidation), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("invalid", parsedResult["x-ro-invalidReason"].ToString());
+    }
+
+    [Test]
     public void TestInvokeRecordActionWithCrossValidateFailNoContext() {
         var api = Api();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") }, { "validate2", new ScalarValue("1") } } };

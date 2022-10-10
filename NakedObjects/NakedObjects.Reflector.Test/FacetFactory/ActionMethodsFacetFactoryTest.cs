@@ -21,6 +21,7 @@ using NakedFramework.Architecture.Reflect;
 using NakedFramework.Architecture.SpecImmutable;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Value;
 using NakedObjects.Reflector.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
@@ -519,6 +520,25 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
     }
 
     [TestMethod]
+    public void TestInstallsValidateMethodFileAttachmentAndRemovesMethod()
+    {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var actionMethod = FindMethod(typeof(Customer37), nameof(Customer37.FileAttachmentAction), new[] { typeof(FileAttachment) });
+        var validateMethod = FindMethod(typeof(Customer37), nameof(Customer37.ValidateFileAttachmentAction), new[] { typeof(FileAttachment) });
+        metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IActionValidationFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is ActionValidationFacet);
+        var actionValidationFacetViaMethod = (ActionValidationFacet)facet;
+        Assert.AreEqual(validateMethod, actionValidationFacetViaMethod.GetMethod());
+        AssertMethodRemoved(validateMethod);
+        Assert.AreEqual(0, metamodel.Count);
+    }
+
+
+
+    [TestMethod]
     public void TestPickUpDefaultDisableMethod() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
@@ -991,6 +1011,14 @@ public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         public long[] Choices1SomeAction(long y) => Array.Empty<long>();
 
         public long[] Choices2SomeAction(string z) => Array.Empty<long>();
+    }
+
+
+    private class Customer37
+    {
+        public void FileAttachmentAction(FileAttachment fp) { }
+
+        public string ValidateFileAttachmentAction(FileAttachment fp) => "failed";
     }
 
     // ReSharper restore UnusedMember.Local
