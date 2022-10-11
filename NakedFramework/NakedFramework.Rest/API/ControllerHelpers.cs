@@ -27,27 +27,6 @@ namespace NakedFramework.Rest.API;
 public static class ControllerHelpers {
     public static string DebugFilter(Func<string> msgFunc) => RestSnapshot.DebugFilter(msgFunc);
 
-    public static ObjectContextFacade GetServiceByName(this IFrameworkFacade frameworkFacade, string serviceName) {
-        var oid = frameworkFacade.OidTranslator.GetOidTranslation(serviceName);
-        return frameworkFacade.GetService(oid);
-    }
-
-    public static IMenuFacade GetMenuByName(this IFrameworkFacade frameworkFacade, string menuName) {
-        if (string.IsNullOrEmpty(menuName)) {
-            throw new BadRequestNOSException();
-        }
-
-        var menu = frameworkFacade.GetMainMenus().List.SingleOrDefault(m => m.Id == menuName);
-        return menu ?? throw new MenuResourceNotFoundNOSException(menuName);
-    }
-
-    public static ActionContextFacade GetServiceActionByName(this IFrameworkFacade frameworkFacade, string serviceName, string actionName) {
-        var oid = frameworkFacade.OidTranslator.GetOidTranslation(serviceName);
-        return frameworkFacade.GetServiceAction(oid, actionName);
-    }
-
-    public static ActionContextFacade GetMenuActionByName(this IFrameworkFacade frameworkFacade, string menuName, string actionName) => frameworkFacade.GetMenuAction(menuName, actionName);
-
     public static ObjectContextFacade GetObjectByName(this IFrameworkFacade frameworkFacade, string domainType, string instanceId) {
         var oidTranslation = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
         return frameworkFacade.GetObject(oidTranslation);

@@ -126,19 +126,19 @@ public class RestfulObjectsControllerBase : ControllerBase {
 
     public virtual ActionResult GetUser() => InitAndHandleErrors(SnapshotFactory.UserSnapshot(FrameworkFacade, FrameworkFacade.GetUser, Request, GetFlags(this)));
 
-    public virtual ActionResult GetServices() => InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(FrameworkFacade, FrameworkFacade.GetServices, Request, GetFlags(this)));
+    public virtual ActionResult GetServices() => InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(FrameworkFacade, Request, GetFlags(this)));
 
     public virtual ActionResult GetMenus() => InitAndHandleErrors(SnapshotFactory.MenusSnapshot(FrameworkFacade, FrameworkFacade.GetMainMenus, Request, GetFlags(this)));
 
     public virtual ActionResult GetVersion() => InitAndHandleErrors(SnapshotFactory.VersionSnapshot(FrameworkFacade, GetOptionalCapabilities(), Request, GetFlags(this)));
 
-    public virtual ActionResult GetService(string serviceName) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(FrameworkFacade, () => FrameworkFacade.GetServiceByName(serviceName), Request, GetFlags(this)));
+    public virtual ActionResult GetService(string serviceName) => InitAndHandleErrors(SnapshotFactory.ServiceSnapshot(FrameworkFacade, serviceName, Request, GetFlags(this)));
 
-    public virtual ActionResult GetMenu(string menuName) => InitAndHandleErrors(SnapshotFactory.MenuSnapshot(FrameworkFacade, () => FrameworkFacade.GetMenuByName(menuName), Request, GetFlags(this)));
+    public virtual ActionResult GetMenu(string menuName) => InitAndHandleErrors(SnapshotFactory.MenuSnapshot(FrameworkFacade, menuName, Request, GetFlags(this)));
 
-    public virtual ActionResult GetServiceAction(string serviceName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(FrameworkFacade, () => FrameworkFacade.GetServiceActionByName(serviceName, actionName), Request, GetFlags(this)));
+    public virtual ActionResult GetServiceAction(string serviceName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(FrameworkFacade, serviceName, actionName, Request, GetFlags(this)));
 
-    public virtual ActionResult GetMenuAction(string menuName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(FrameworkFacade, () => FrameworkFacade.GetMenuActionByName(menuName, actionName), Request, GetFlags(this)));
+    public virtual ActionResult GetMenuAction(string menuName, string actionName) => InitAndHandleErrors(SnapshotFactory.MenuActionSnapshot(FrameworkFacade, menuName, actionName, Request, GetFlags(this)));
 
     public virtual ActionResult GetImage(string imageId) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(FrameworkFacade, () => FrameworkFacade.GetImage(imageId), Request, GetFlags(this)));
 
