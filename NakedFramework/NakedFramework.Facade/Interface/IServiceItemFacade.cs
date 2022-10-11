@@ -5,15 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using Microsoft.Extensions.DependencyInjection;
+namespace NakedFramework.Facade.Interface;
 
-namespace NakedFunctions.Reflector.Extensions;
-
-public class NakedFunctionsOptions {
-    public Type[] DomainTypes { get; set; } = Array.Empty<Type>();
-    public Type[] DomainFunctions { get; set; } = Array.Empty<Type>();
-    public Type[] DomainServices { get; set; } = Array.Empty<Type>();
-    public bool ConcurrencyCheck { get; set; } = true;
-    public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
+public interface IServiceItemFacade {
+    string Name { get; }
+    string Id { get; }
+    string Grouping { get; }
+    object Wrapped { get; }
 }

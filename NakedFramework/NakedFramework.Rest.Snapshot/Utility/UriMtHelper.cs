@@ -49,6 +49,11 @@ public class UriMtHelper {
 
     public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, IMenuFacade menuFacade) : this(oidStrategy, req) => CachedType = menuFacade.Id;
 
+    public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, IServiceFacade serviceFacade) : this(oidStrategy, req) {
+        spec = serviceFacade.Specification;
+        CachedType = serviceFacade.Specification.DomainTypeName(oidStrategy);
+    }
+
     public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade) : this(oidStrategy, req) {
         this.objectFacade = objectFacade;
         spec = objectFacade.Specification;

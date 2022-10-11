@@ -5,18 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFramework.Architecture.Adapter;
-using NakedFramework.Architecture.Spec;
+using NakedFramework.Facade.Interface;
 
-namespace NakedFramework.Architecture.Component;
+namespace NakedFramework.Facade.Contexts;
 
-/// <summary>
-///     Provides access to the domain services that have been registered as part of the application.
-/// </summary>
-public interface IServicesManager {
-    INakedObjectAdapter GetService(string id);
-    INakedObjectAdapter GetService(IServiceSpec spec);
-    INakedObjectAdapter[] GetServices();
-    INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager);
-    IServiceSpec[] GetServiceSpecsWithVisibleActions(ILifecycleManager lifecycleManager);
+public class ServiceContextFacade {
+    public ITypeFacade ElementType { get; init; }
+    public IServiceFacade[] List { get; init; }
 }

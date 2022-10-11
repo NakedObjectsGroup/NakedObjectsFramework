@@ -253,3 +253,12 @@ public static class ReferenceMenuFunctions {
 public static class CollectionMenuFunctions {
     public static IQueryable<SimpleRecord> GetQueryable(IContext context) => context.Instances<SimpleRecord>();
 }
+
+public static class ServiceTestFunctions
+{
+    public static IQueryable<SimpleRecord> FindByName(string searchString, IContext context)
+    {
+        return context.Instances<SimpleRecord>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
+    }
+
+}

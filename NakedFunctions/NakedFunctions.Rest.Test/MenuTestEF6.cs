@@ -59,7 +59,9 @@ public class MenuTestEF6 : AcceptanceTestCase {
 
     protected override Type[] ObjectTypes { get; } = { };
 
-    protected override Type[] Services { get; } = { };
+    protected override Type[] Services { get; } = {
+        //typeof(ServiceTestFunctions)
+    };
 
     protected override bool EnforceProxies => false;
 
@@ -111,6 +113,25 @@ public class MenuTestEF6 : AcceptanceTestCase {
         var api = sp.GetService<RestfulObjectsController>();
         return Helpers.SetMockContext(api, sp);
     }
+
+    //[Test]
+    //public void TestGetServices()
+    //{
+    //    var api = Api();
+    //    var result = api.GetServices();
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
+
+    //    var val = parsedResult.GetValue("value") as JArray;
+
+    //    Assert.IsNotNull(val);
+    //    Assert.AreEqual(13, val.Count);
+
+    //    var firstItem = val.First;
+
+    //    firstItem.AssertMenuLink(nameof(MenuTestFunctions), "GET", nameof(MenuTestFunctions));
+    //}
 
     [Test]
     public void TestGetMenus() {

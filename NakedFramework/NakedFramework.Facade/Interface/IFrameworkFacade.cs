@@ -24,6 +24,9 @@ public interface IFrameworkFacade {
     IPrincipal GetUser();
     ObjectContextFacade GetService(IOidTranslation serviceName);
     ListContextFacade GetServices();
+
+    ServiceContextFacade GetServicesNew();
+
     MenuContextFacade GetMainMenus();
     ObjectContextFacade GetObject(IObjectFacade objectFacade);
     ObjectContextFacade GetObject(IOidTranslation objectId);

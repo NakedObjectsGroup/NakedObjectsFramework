@@ -126,7 +126,7 @@ public class RestfulObjectsControllerBase : ControllerBase {
 
     public virtual ActionResult GetUser() => InitAndHandleErrors(SnapshotFactory.UserSnapshot(FrameworkFacade, FrameworkFacade.GetUser, Request, GetFlags(this)));
 
-    public virtual ActionResult GetServices() => InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(FrameworkFacade, FrameworkFacade.GetServices, Request, GetFlags(this)));
+    public virtual ActionResult GetServices() => InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(FrameworkFacade, FrameworkFacade.GetServicesNew, Request, GetFlags(this)));
 
     public virtual ActionResult GetMenus() => InitAndHandleErrors(SnapshotFactory.MenusSnapshot(FrameworkFacade, FrameworkFacade.GetMainMenus, Request, GetFlags(this)));
 
