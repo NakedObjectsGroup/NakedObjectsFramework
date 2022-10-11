@@ -101,8 +101,6 @@ public class FrameworkFacade : IFrameworkFacade {
 
     public ListContextFacade GetServices() => MapErrors(() => GetServicesInternal().ToListContextFacade(this, Framework));
 
-    public ServiceContextFacade GetServicesNew() => MapErrors(() => GetServicesNewInternal().ToServiceContextFacade(this, Framework));
-
     public MenuContextFacade GetMainMenus() => MapErrors(() => GetMenusInternal().ToMenuContextFacade(this, Framework));
 
     public ObjectContextFacade GetObject(IObjectFacade objectFacade) => MapErrors(() => GetObjectContext(((ObjectFacade)objectFacade).WrappedNakedObject).ToObjectContextFacade(this, Framework));
@@ -271,20 +269,6 @@ public class FrameworkFacade : IFrameworkFacade {
             List = menus.ToArray()
         };
     }
-
-    private ServiceContext GetServicesNewInternal() {
-        //var menus = GetMenusWithVisibleActions(Framework.MetamodelManager) ?? Framework.ServicesManager.GetServicesWithVisibleActions(Framework.LifecycleManager).Select(s => s.GetServiceSpec().Menu);
-
-        var specs = Framework.ServicesManager.GetServiceSpecsWithVisibleActions(Framework.LifecycleManager);
-        var elementType = (IObjectSpec)Framework.MetamodelManager.GetSpecification(typeof(object));
-
-        return new ServiceContext {
-            ElementType = elementType,
-            List = specs.ToArray()
-        };
-    }
-
-
 
     private static ListContext GetCompletions(PropParmAdapter propParm, INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
         var list = propParm.GetList(nakedObject, arguments);

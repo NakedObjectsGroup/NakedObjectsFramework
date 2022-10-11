@@ -11,8 +11,8 @@ using NakedFramework.Architecture.Component;
 namespace NakedFramework.Architecture.Configuration;
 
 public interface IFunctionalReflectorConfiguration : ITypeList {
+    //Type[] Types { get; }
     Type[] Functions { get; }
-    Type[] Services { get; }
     bool ConcurrencyChecking { get; }
     bool IgnoreCase { get; }
 }

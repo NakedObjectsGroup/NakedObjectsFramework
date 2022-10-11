@@ -18,5 +18,4 @@ public interface IServicesManager {
     INakedObjectAdapter GetService(IServiceSpec spec);
     INakedObjectAdapter[] GetServices();
     INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager);
-    IServiceSpec[] GetServiceSpecsWithVisibleActions(ILifecycleManager lifecycleManager);
 }

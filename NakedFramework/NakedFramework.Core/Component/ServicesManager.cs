@@ -56,7 +56,5 @@ public sealed class ServicesManager : IServicesManager {
 
     public INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) => GetServices().Where(no => no.Spec.GetActions().Any(a => a.IsVisible(no))).ToArray();
 
-    public IServiceSpec[] GetServiceSpecsWithVisibleActions(ILifecycleManager lifecycleManager) => GetServicesWithVisibleActions(lifecycleManager).Select(s => s.Spec as IServiceSpec).ToArray();
-
     #endregion
 }

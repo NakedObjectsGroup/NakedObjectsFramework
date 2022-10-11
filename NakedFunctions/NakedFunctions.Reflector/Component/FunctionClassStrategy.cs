@@ -42,7 +42,7 @@ public class FunctionClassStrategy : AbstractClassStrategy {
     #region IClassStrategy Members
 
     public override bool IsIgnored(MemberInfo member) => false;
-    public override bool IsService(Type type) => config.Services.Contains(type);
+    public override bool IsService(Type type) => false;
     public override bool LoadReturnType(MethodInfo method) => false;
 
     #endregion

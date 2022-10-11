@@ -90,15 +90,6 @@ public class RestSnapshot {
         };
     }
 
-    public RestSnapshot(IOidStrategy oidStrategy, ServiceContextFacade services, HttpRequest req, RestControlFlags flags)
-        : this(oidStrategy, req, true, flags)
-    {
-        populator = logger => {
-            Representation = ListRepresentation.Create(oidStrategy, services, req, flags);
-            SetHeaders(logger);
-        };
-    }
-
     public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags)
         : this(oidStrategy, req, true, flags) {
         populator = logger => {

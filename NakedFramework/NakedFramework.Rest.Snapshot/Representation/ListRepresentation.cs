@@ -39,15 +39,6 @@ public class ListRepresentation : Representation {
         SetHeader(true);
     }
 
-    protected ListRepresentation(IOidStrategy oidStrategy, ServiceContextFacade services, HttpRequest req, RestControlFlags flags)
-        : base(oidStrategy, flags) {
-        Value = services.List.Where(m => m.ServiceItems.Any()).Select(c => CreateServiceLink(oidStrategy, req, c)).ToArray();
-        SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(oidStrategy, req, services.ElementType));
-        SetLinks(req);
-        SetExtensions();
-        SetHeader(true);
-    }
-
     protected ListRepresentation(IFrameworkFacade frameworkFacade, IObjectFacade list, HttpRequest req, RestControlFlags flags, ActionContextFacade actionContext)
         : base(frameworkFacade.OidStrategy, flags) {
         Value = list.ToEnumerable().Select(no => CreateObjectLink(frameworkFacade, req, no, actionContext)).ToArray();
@@ -100,17 +91,7 @@ public class ListRepresentation : Representation {
         return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, menu.Name));
     }
 
-    private LinkRepresentation CreateServiceLink(IOidStrategy oidStrategy, HttpRequest req, IServiceFacade service)
-    {
-        var helper = new UriMtHelper(oidStrategy, req, service);
-        var rt = new ServiceRelType(helper);
-
-        return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, service.Name));
-    }
-
     public static ListRepresentation Create(IFrameworkFacade frameworkFacade, ListContextFacade listContext, HttpRequest req, RestControlFlags flags) => new(frameworkFacade, listContext, req, flags);
 
     public static ListRepresentation Create(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags) => new(oidStrategy, menus, req, flags);
-
-    public static ListRepresentation Create(IOidStrategy oidStrategy, ServiceContextFacade services, HttpRequest req, RestControlFlags flags) => new(oidStrategy, services, req, flags);
 }

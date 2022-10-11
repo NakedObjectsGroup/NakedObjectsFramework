@@ -113,7 +113,6 @@ public abstract class AcceptanceTestCase {
         options => {
             options.DomainTypes = Records;
             options.DomainFunctions = Functions;
-            options.DomainServices = Services;
         };
 
     protected virtual Action<RestfulObjectsOptions> RestfulObjectsOptions => options => { options.CacheSettings = (0, 3600, 86400); };

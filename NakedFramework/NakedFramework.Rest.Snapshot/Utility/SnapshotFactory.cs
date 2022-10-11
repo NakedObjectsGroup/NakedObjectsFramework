@@ -16,8 +16,8 @@ using NakedFramework.Facade.Interface;
 namespace NakedFramework.Rest.Snapshot.Utility;
 
 public static class SnapshotFactory {
-    public static Func<RestSnapshot> ServicesSnapshot(IFrameworkFacade frameworkFacade, Func<ServiceContextFacade> serviceContext, HttpRequest req, RestControlFlags flags)
-        => () => new RestSnapshot(frameworkFacade.OidStrategy, serviceContext(), req, flags);
+    public static Func<RestSnapshot> ServicesSnapshot(IFrameworkFacade frameworkFacade, Func<ListContextFacade> listContext, HttpRequest req, RestControlFlags flags)
+        => () => new RestSnapshot(frameworkFacade, listContext(), req, flags);
 
     public static Func<RestSnapshot> HomeSnapshot(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags)
         => () => new RestSnapshot(frameworkFacade, req, flags);
@@ -33,9 +33,6 @@ public static class SnapshotFactory {
 
     public static Func<RestSnapshot> MenusSnapshot(IFrameworkFacade frameworkFacade, Func<MenuContextFacade> menus, HttpRequest req, RestControlFlags flags)
         => () => new RestSnapshot(frameworkFacade.OidStrategy, menus(), req, flags);
-
-    public static Func<RestSnapshot> MenusSnapshot(IFrameworkFacade frameworkFacade, Func<ServiceContextFacade> services, HttpRequest req, RestControlFlags flags)
-        => () => new RestSnapshot(frameworkFacade.OidStrategy, services(), req, flags);
 
     public static Func<RestSnapshot> VersionSnapshot(IFrameworkFacade frameworkFacade, Func<IDictionary<string, string>> capabilities, HttpRequest req, RestControlFlags flags)
         => () => new RestSnapshot(frameworkFacade, capabilities(), req, flags);

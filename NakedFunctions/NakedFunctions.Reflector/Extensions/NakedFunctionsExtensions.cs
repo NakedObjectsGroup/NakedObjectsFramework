@@ -26,7 +26,7 @@ namespace NakedFunctions.Reflector.Extensions;
 
 public static class NakedFunctionsExtensions {
     public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
-        new(options.DomainTypes, options.DomainFunctions, options.DomainServices, options.ConcurrencyCheck);
+        new(options.DomainTypes, options.DomainFunctions, options.ConcurrencyCheck);
 
     public static void AddNakedFunctions(this NakedFrameworkOptions frameworkOptions, Action<NakedFunctionsOptions> setupAction) {
         var options = new NakedFunctionsOptions();
@@ -52,7 +52,7 @@ public static class NakedFunctionsExtensions {
         var functionalReflectorConfiguration = FunctionalReflectorConfig(options);
         frameworkOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => functionalReflectorConfiguration);
         frameworkOptions.Services.AddSingleton<ITypeList>(p => functionalReflectorConfiguration);
-        frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.DomainServices));
+        frameworkOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
 
         frameworkOptions.Services.AddDefaultScoped<IDomainObjectInjector, NoOpDomainObjectInjector>();
 
