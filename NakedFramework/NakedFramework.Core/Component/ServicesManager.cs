@@ -17,6 +17,21 @@ using NakedFramework.Core.Util;
 
 namespace NakedFramework.Core.Component;
 
+public class StaticServiceMenu : IMenuImmutable {
+    public StaticServiceMenu(IMenuImmutable fromMenu, string name, string id) {
+        MenuItems = fromMenu.MenuItems;
+        Grouping = fromMenu.Grouping;
+        Name = name;
+        Id = id;
+    }
+
+    public string Name { get; }
+    public string Id { get; }
+    public string Grouping { get; }
+    public IList<IMenuItemImmutable> MenuItems { get; }
+}
+
+
 public sealed class ServicesManager : IServicesManager {
     private readonly IDomainObjectInjector injector;
     private readonly INakedObjectManager nakedObjectManager;
@@ -57,6 +72,11 @@ public sealed class ServicesManager : IServicesManager {
         }
     }
 
+    private static IMenuImmutable GetAndUpdateMenu(ITypeSpec typeSpec) {
+        var menu = typeSpec.Menu;
+        return new StaticServiceMenu(menu, typeSpec.ShortName, typeSpec.FullName);
+    }
+
     #region IServicesManager Members
 
     public INakedObjectAdapter GetService(string id) => GetServices().FirstOrDefault(no => id.Equals(ServiceUtils.GetId(no.Object)));
@@ -65,7 +85,7 @@ public sealed class ServicesManager : IServicesManager {
 
     public INakedObjectAdapter[] GetServices() => serviceAdapters ??= Services.Select(service => nakedObjectManager.GetServiceAdapter(service)).ToArray();
 
-    public IMenuImmutable[] GetStaticServicesAsMenus() => serviceMenus ??= staticServices.Select(ss => metamodelManager.GetSpecification(ss).Menu).ToArray();
+    public IMenuImmutable[] GetStaticServicesAsMenus() => serviceMenus ??= staticServices.Select(ss => GetAndUpdateMenu(metamodelManager.GetSpecification(ss))).ToArray();
 
     public INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) => GetServices().Where(no => no.Spec.GetActions().Any(a => a.IsVisible(no))).ToArray();
 

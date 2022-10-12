@@ -17,7 +17,7 @@ public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguratio
                                             Type[] services,
                                             bool concurrencyChecking = true) {
         Types = types;
-        Functions = functions;
+        Functions = functions.Union(services).ToArray();
         Services = services;
         ConcurrencyChecking = concurrencyChecking;
         IgnoreCase = false;

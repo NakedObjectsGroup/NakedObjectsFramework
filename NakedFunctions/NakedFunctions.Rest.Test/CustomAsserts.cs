@@ -48,6 +48,16 @@ public static class CustomAsserts {
                         $"http://localhost/menus/{id}");
     }
 
+    public static void AssertServiceLink(this JToken link, string title, string method, string id)
+    {
+        Assert.AreEqual(5, link.Count());
+        Assert.AreEqual(title, link["title"].ToString());
+        link.AssertLink(method,
+                        $"urn:org.restfulobjects:rels/service;serviceId=\"{id}\"",
+                        "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8",
+                        $"http://localhost/services/{id}");
+    }
+
     public static void AssertInvokeLink(this JToken link, string arguments, string method, string id, string href) {
         Assert.AreEqual(5, link.Count());
         Assert.AreEqual(arguments, link["arguments"].ToString());
