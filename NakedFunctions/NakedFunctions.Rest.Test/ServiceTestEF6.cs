@@ -450,34 +450,34 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         Assert.AreEqual("Name,Name1,Id", parsedResult["extensions"]["x-ro-nof-createNew"].ToString());
     }
 
-    [Test]
-    public void TestGetServicePrompt() {
-        var api = Api();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
-        var result = api.GetParameterPromptOnMenu(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithChoicesWithParameters), "record", map);
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //[Test]
+    //public void TestGetServicePrompt() {
+    //    var api = Api();
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
+    //    var result = api.GetParameterPromptOnMenu(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithChoicesWithParameters), "record", map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("record", parsedResult["id"].ToString());
-        var choices = parsedResult["choices"];
-        Assert.AreEqual(1, choices.Count());
-        Assert.AreEqual("Jack", choices[0]["title"].ToString());
-    }
+    //    Assert.AreEqual("record", parsedResult["id"].ToString());
+    //    var choices = parsedResult["choices"];
+    //    Assert.AreEqual(1, choices.Count());
+    //    Assert.AreEqual("Jack", choices[0]["title"].ToString());
+    //}
 
-    [Test]
-    public void TestGetServicePromptNoContext() {
-        var api = Api();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
-        var result = api.GetParameterPromptOnMenu(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext), "record", map);
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //[Test]
+    //public void TestGetServicePromptNoContext() {
+    //    var api = Api();
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm1", new ScalarValue("1") }, { "parm2", new ScalarValue("J") } } };
+    //    var result = api.GetParameterPromptOnMenu(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext), "record", map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("record", parsedResult["id"].ToString());
-        var choices = parsedResult["choices"];
-        Assert.AreEqual(0, choices.Count());
-    }
+    //    Assert.AreEqual("record", parsedResult["id"].ToString());
+    //    var choices = parsedResult["choices"];
+    //    Assert.AreEqual(0, choices.Count());
+    //}
 
     //[Test]
     //public void TestGetMenuPromptWithMultipleChoices() {
@@ -614,7 +614,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestGetMenuActionWithHidden2() {
         var api = Api();
-        var result = api.GetMenu(typeof(HiddenMenuFunctions).FullName);
+        var result = api.GetService(typeof(HiddenMenuFunctions).FullName);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
@@ -637,24 +637,24 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var parameter = parameters["simpleRecord"];
         Assert.AreEqual("", parameter["links"][0]["arguments"]["x-ro-searchTerm"]["value"].ToString());
         Assert.AreEqual("2", parameter["links"][0]["extensions"]["minLength"].ToString());
-        Assert.AreEqual("http://localhost/menus/AutoCompleteMenuFunctions/actions/WithAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
+        Assert.AreEqual("http://localhost/menus/NakedFunctions.Rest.Test.Data.AutoCompleteMenuFunctions/actions/WithAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
     }
 
-    [Test]
-    public void TestInvokeMenuActionPromptWithAutoComplete() {
-        var api = Api();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments { SearchTerm = "Fr" } };
-        var result = api.GetParameterPromptOnMenu(typeof(AutoCompleteMenuFunctions).FullName, nameof(AutoCompleteMenuFunctions.WithAutoComplete), "simpleRecord", map);
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //[Test]
+    //public void TestInvokeMenuActionPromptWithAutoComplete() {
+    //    var api = Api();
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments { SearchTerm = "Fr" } };
+    //    var result = api.GetParameterPromptOnMenu(typeof(AutoCompleteMenuFunctions).FullName, nameof(AutoCompleteMenuFunctions.WithAutoComplete), "simpleRecord", map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("simpleRecord", parsedResult["id"].ToString());
-        var choices = parsedResult["choices"];
-        Assert.AreEqual(2, choices.Count()); // tests PageSize
-        Assert.AreEqual("Fred", choices[0]["title"].ToString());
-        Assert.AreEqual("Bill", choices[1]["title"].ToString());
-    }
+    //    Assert.AreEqual("simpleRecord", parsedResult["id"].ToString());
+    //    var choices = parsedResult["choices"];
+    //    Assert.AreEqual(2, choices.Count()); // tests PageSize
+    //    Assert.AreEqual("Fred", choices[0]["title"].ToString());
+    //    Assert.AreEqual("Bill", choices[1]["title"].ToString());
+    //}
 
     [Test]
     public void TestInvokeMenuActionWithAutoComplete() {
@@ -686,23 +686,23 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var parameter = parameters["simpleRecord"];
         Assert.AreEqual("", parameter["links"][0]["arguments"]["x-ro-searchTerm"]["value"].ToString());
         Assert.AreEqual("2", parameter["links"][0]["extensions"]["minLength"].ToString());
-        Assert.AreEqual("http://localhost/menus/AutoCompleteMenuFunctions/actions/WithSingleAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
+        Assert.AreEqual("http://localhost/menus/NakedFunctions.Rest.Test.Data.AutoCompleteMenuFunctions/actions/WithSingleAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
     }
 
-    [Test]
-    public void TestInvokeMenuActionPromptWithSingleAutoComplete() {
-        var api = Api();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments { SearchTerm = "Fr" } };
-        var result = api.GetParameterPromptOnMenu(typeof(AutoCompleteMenuFunctions).FullName, nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete), "simpleRecord", map);
-        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var parsedResult = JObject.Parse(json);
+    //[Test]
+    //public void TestInvokeMenuActionPromptWithSingleAutoComplete() {
+    //    var api = Api();
+    //    var map = new ArgumentMap { Map = new Dictionary<string, IValue>(), ReservedArguments = new ReservedArguments { SearchTerm = "Fr" } };
+    //    var result = api.GetParameterPromptOnMenu(typeof(AutoCompleteMenuFunctions).FullName, nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete), "simpleRecord", map);
+    //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+    //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+    //    var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("simpleRecord", parsedResult["id"].ToString());
-        var choices = parsedResult["choices"];
-        Assert.AreEqual(1, choices.Count()); // tests PageSize
-        Assert.AreEqual("Fred", choices[0]["title"].ToString());
-    }
+    //    Assert.AreEqual("simpleRecord", parsedResult["id"].ToString());
+    //    var choices = parsedResult["choices"];
+    //    Assert.AreEqual(1, choices.Count()); // tests PageSize
+    //    Assert.AreEqual("Fred", choices[0]["title"].ToString());
+    //}
 
     [Test]
     public void TestInvokeMActionWithSingleAutoComplete() {
