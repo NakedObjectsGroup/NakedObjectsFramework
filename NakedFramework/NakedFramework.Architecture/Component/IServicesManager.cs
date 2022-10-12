@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework.Architecture.Adapter;
+using NakedFramework.Architecture.Menu;
 using NakedFramework.Architecture.Spec;
 
 namespace NakedFramework.Architecture.Component;
@@ -18,4 +19,5 @@ public interface IServicesManager {
     INakedObjectAdapter GetService(IServiceSpec spec);
     INakedObjectAdapter[] GetServices();
     INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager);
+    IMenuImmutable[] GetStaticServicesAsMenus();
 }

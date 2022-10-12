@@ -10,6 +10,8 @@ using NakedFramework.Facade.Interface;
 namespace NakedFramework.Facade.Contexts;
 
 public class MenuContextFacade {
+
+    public bool IsStaticServices { get; set; }
     public ITypeFacade ElementType { get; init; }
     public IMenuFacade[] List { get; init; }
 }

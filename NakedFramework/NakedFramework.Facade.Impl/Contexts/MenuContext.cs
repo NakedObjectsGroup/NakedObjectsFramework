@@ -16,11 +16,14 @@ using NakedFramework.Facade.Interface;
 namespace NakedFramework.Facade.Impl.Contexts;
 
 public class MenuContext {
+
+    public bool IsStaticServices { get; init; }
     public IMenuImmutable[] List { get; init; }
     public IObjectSpec ElementType { get; init; }
 
     public MenuContextFacade ToMenuContextFacade(IFrameworkFacade facade, INakedFramework framework) {
         return new MenuContextFacade {
+            IsStaticServices = IsStaticServices,
             ElementType = new TypeFacade(ElementType, facade, framework),
             List = List.Select(m => new MenuFacade(m, facade, framework)).Cast<IMenuFacade>().ToArray()
         };

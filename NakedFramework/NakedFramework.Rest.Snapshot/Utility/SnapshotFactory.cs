@@ -44,13 +44,24 @@ public static class SnapshotFactory {
         return menu ?? throw new MenuResourceNotFoundNOSException(menuName);
     }
 
+    private static IMenuFacade GetStaticServiceByName(this IFrameworkFacade frameworkFacade, string menuName)
+    {
+        if (string.IsNullOrEmpty(menuName))
+        {
+            throw new BadRequestNOSException();
+        }
+
+        var menu = frameworkFacade.GetStaticServices().List.SingleOrDefault(m => m.Id == menuName);
+        return menu ?? throw new MenuResourceNotFoundNOSException(menuName);
+    }
+
 
     private static bool isNakedFunctions = false;
 
 
     public static Func<RestSnapshot> ServicesSnapshot(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags)
         =>  (isNakedFunctions) 
-            ? MenusSnapshot(frameworkFacade, frameworkFacade.GetMainMenus, req, flags)    
+            ? MenusSnapshot(frameworkFacade, frameworkFacade.GetStaticServices, req, flags)    
             : ServicesSnapshot(frameworkFacade, frameworkFacade.GetServices, req, flags);
 
     private static Func<RestSnapshot> ServicesSnapshot(IFrameworkFacade frameworkFacade, Func<ListContextFacade> listContext, HttpRequest req, RestControlFlags flags)
@@ -64,7 +75,7 @@ public static class SnapshotFactory {
 
     public static Func<RestSnapshot> ServiceSnapshot(IFrameworkFacade frameworkFacade, string name, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
         => (isNakedFunctions)
-            ? MenuSnapshot(frameworkFacade, name, req, flags)
+            ? StaticServiceSnapshot(frameworkFacade, name, req, flags)
             : ObjectSnapshot(frameworkFacade, () => frameworkFacade.GetServiceByName(name), req, flags, httpStatusCode);
 
     public static Func<RestSnapshot> ObjectSnapshot(IFrameworkFacade frameworkFacade, Func<ObjectContextFacade> objectContext, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
@@ -72,6 +83,9 @@ public static class SnapshotFactory {
 
     public static Func<RestSnapshot> MenuSnapshot(IFrameworkFacade frameworkFacade, string menuName, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
         => () => new RestSnapshot(frameworkFacade, frameworkFacade.GetMenuByName(menuName), req, flags, httpStatusCode);
+
+    private static Func<RestSnapshot> StaticServiceSnapshot(IFrameworkFacade frameworkFacade, string menuName, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+        => () => new RestSnapshot(frameworkFacade, frameworkFacade.GetStaticServiceByName(menuName), req, flags, httpStatusCode);
 
     public static Func<RestSnapshot> MenusSnapshot(IFrameworkFacade frameworkFacade, Func<MenuContextFacade> menus, HttpRequest req, RestControlFlags flags)
         => () => new RestSnapshot(frameworkFacade.OidStrategy, menus(), req, flags);

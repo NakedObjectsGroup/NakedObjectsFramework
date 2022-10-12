@@ -32,8 +32,8 @@ public class ListRepresentation : Representation {
 
     protected ListRepresentation(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags)
         : base(oidStrategy, flags) {
-        Value = menus.List.Where(m => m.MenuItems.Any()).Select(c => CreateMenuLink(oidStrategy, req, c)).ToArray();
-        SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Menus, new UriMtHelper(oidStrategy, req, menus.ElementType));
+        Value = menus.List.Where(m => m.MenuItems.Any()).Select(c => CreateLink(oidStrategy, req, c, menus.IsStaticServices)).ToArray();
+        SelfRelType = new ListRelType(RelValues.Self, Segment(menus), new UriMtHelper(oidStrategy, req, menus.ElementType));
         SetLinks(req);
         SetExtensions();
         SetHeader(true);
@@ -47,6 +47,12 @@ public class ListRepresentation : Representation {
         SetExtensions(frameworkFacade.OidStrategy, actionContext);
         SetHeader(false);
     }
+
+    private static string Segment(MenuContextFacade m) => m.IsStaticServices ? SegmentValues.Services : SegmentValues.Menus;
+
+    private LinkRepresentation CreateLink(IOidStrategy oidStrategy, HttpRequest req, IMenuFacade m, bool isStaticService) =>
+        isStaticService ? CreateStaticServiceLink(oidStrategy, req, m) : CreateMenuLink(oidStrategy, req, m);
+
 
     [DataMember(Name = JsonPropertyNames.Links)]
     public LinkRepresentation[] Links { get; set; }
@@ -90,6 +96,15 @@ public class ListRepresentation : Representation {
 
         return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, menu.Name));
     }
+
+    private LinkRepresentation CreateStaticServiceLink(IOidStrategy oidStrategy, HttpRequest req, IMenuFacade menu)
+    {
+        var helper = new UriMtHelper(oidStrategy, req, menu);
+        var rt = new ServiceRelType(helper);
+
+        return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, menu.Name));
+    }
+
 
     public static ListRepresentation Create(IFrameworkFacade frameworkFacade, ListContextFacade listContext, HttpRequest req, RestControlFlags flags) => new(frameworkFacade, listContext, req, flags);
 

@@ -244,12 +244,12 @@ public static class RestUtils {
     }
 
     public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy) {
-        if (spec.IsVoid) {
+        if (spec is null || spec.IsVoid) {
             return null;
         }
 
         var types = SpecToPredefinedTypes(spec, false);
-        return types != null ? types.Value.pdt.ToRoString() : spec.DomainTypeName(oidStrategy);
+        return types is not null ? types.Value.pdt.ToRoString() : spec.DomainTypeName(oidStrategy);
     }
 
     public static (string typeString, string formatString) SpecToTypeAndFormatString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime) {

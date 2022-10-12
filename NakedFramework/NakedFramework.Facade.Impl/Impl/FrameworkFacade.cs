@@ -101,6 +101,8 @@ public class FrameworkFacade : IFrameworkFacade {
 
     public ListContextFacade GetServices() => MapErrors(() => GetServicesInternal().ToListContextFacade(this, Framework));
 
+    public MenuContextFacade GetStaticServices() => MapErrors(() => GetStaticServicesInternal().ToMenuContextFacade(this, Framework));
+
     public MenuContextFacade GetMainMenus() => MapErrors(() => GetMenusInternal().ToMenuContextFacade(this, Framework));
 
     public ObjectContextFacade GetObject(IObjectFacade objectFacade) => MapErrors(() => GetObjectContext(((ObjectFacade)objectFacade).WrappedNakedObject).ToObjectContextFacade(this, Framework));
@@ -265,6 +267,18 @@ public class FrameworkFacade : IFrameworkFacade {
         var elementType = (IObjectSpec)Framework.MetamodelManager.GetSpecification(typeof(object));
 
         return new MenuContext {
+            IsStaticServices = false,
+            ElementType = elementType,
+            List = menus.ToArray()
+        };
+    }
+
+    private MenuContext GetStaticServicesInternal() {
+        var menus = Framework.ServicesManager.GetStaticServicesAsMenus();
+        var elementType = (IObjectSpec)Framework.MetamodelManager.GetSpecification(typeof(object));
+
+        return new MenuContext {
+            IsStaticServices = true,
             ElementType = elementType,
             List = menus.ToArray()
         };

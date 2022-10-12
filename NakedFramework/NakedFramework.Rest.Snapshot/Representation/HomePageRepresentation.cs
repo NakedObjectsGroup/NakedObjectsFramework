@@ -42,7 +42,7 @@ public class HomePageRepresentation : Representation {
             LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy, req)), Flags)
         };
 
-        if (frameworkFacade.GetServices().List.Any()) {
+        if (frameworkFacade.GetServices().List.Any() || frameworkFacade.GetStaticServices().List.Any()) {
             tempLinks.Add(LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(OidStrategy, req)), Flags));
         }
 
