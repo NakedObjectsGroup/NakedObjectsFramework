@@ -16,5 +16,6 @@ public class MenuIdHolder : IMenuFacade {
     public string Id { get; }
     public string Grouping => "";
     public object Wrapped => null;
+    public bool IsStaticService { get; set; }
     public IList<IMenuItemFacade> MenuItems => null;
 }

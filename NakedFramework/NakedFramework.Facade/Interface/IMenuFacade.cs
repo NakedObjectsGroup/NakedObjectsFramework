@@ -10,5 +10,7 @@ using System.Collections.Generic;
 namespace NakedFramework.Facade.Interface;
 
 public interface IMenuFacade : IMenuItemFacade {
+    public bool IsStaticService { get; set; }
+
     IList<IMenuItemFacade> MenuItems { get; }
 }

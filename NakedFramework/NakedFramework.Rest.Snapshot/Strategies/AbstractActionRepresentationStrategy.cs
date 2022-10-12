@@ -67,6 +67,11 @@ public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
             var parentHelper = new UriMtHelper(OidStrategy, Req, ActionContext.Target);
             parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, parentHelper) : new ObjectRelType(RelValues.Up, parentHelper);
         }
+        else if (ActionContext.IsStaticService && ActionContext.MenuId is not null)
+        {
+            var parentHelper = new UriMtHelper(OidStrategy, Req, new MenuIdHolder(ActionContext.MenuId));
+            parentRelType = new ServiceRelType(RelValues.Up, parentHelper);
+        }
         else if (ActionContext.MenuId is not null) {
             var parentHelper = new UriMtHelper(OidStrategy, Req, new MenuIdHolder(ActionContext.MenuId));
             parentRelType = new MenuRelType(RelValues.Up, parentHelper);

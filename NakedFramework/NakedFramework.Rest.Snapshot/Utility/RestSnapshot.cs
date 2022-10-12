@@ -61,7 +61,9 @@ public class RestSnapshot {
         : this(frameworkFacade.OidStrategy, req, true, flags) {
         populator = logger => {
             HttpStatusCode = httpStatusCode;
-            Representation = MenuRepresentation.Create(frameworkFacade, menu, req, flags);
+            Representation = menu.IsStaticService
+                ? StaticServiceRepresentation.Create(frameworkFacade, menu, req, flags)
+                : MenuRepresentation.Create(frameworkFacade, menu, req, flags);
             SetHeaders(logger);
         };
     }

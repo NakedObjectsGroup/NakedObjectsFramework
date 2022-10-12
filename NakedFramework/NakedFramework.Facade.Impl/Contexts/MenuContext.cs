@@ -25,7 +25,7 @@ public class MenuContext {
         return new MenuContextFacade {
             IsStaticServices = IsStaticServices,
             ElementType = new TypeFacade(ElementType, facade, framework),
-            List = List.Select(m => new MenuFacade(m, facade, framework)).Cast<IMenuFacade>().ToArray()
+            List = List.Select(m => new MenuFacade(m, facade, framework, IsStaticServices)).Cast<IMenuFacade>().ToArray()
         };
     }
 }

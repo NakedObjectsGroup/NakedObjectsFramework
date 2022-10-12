@@ -133,7 +133,7 @@ public class TypeFacade : ITypeFacade {
             ? objectSpec.Properties.Select(p => new AssociationFacade(p, FrameworkFacade, framework)).Cast<IAssociationFacade>().ToArray()
             : Array.Empty<IAssociationFacade>();
 
-    public IMenuFacade Menu => cachedMenu ??= new MenuFacade(WrappedValue.Menu, FrameworkFacade, framework);
+    public IMenuFacade Menu => cachedMenu ??= new MenuFacade(WrappedValue.Menu, FrameworkFacade, framework, false);
 
     public bool IsImmutable(IObjectFacade objectFacade) => IsAlwaysImmutable || (WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient);
 

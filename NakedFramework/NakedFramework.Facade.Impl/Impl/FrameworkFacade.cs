@@ -925,6 +925,8 @@ public class FrameworkFacade : IFrameworkFacade {
 
     private ActionContext GetActionOnMenu(string menuName, string actionName) {
         var menu = Framework.MetamodelManager.MainMenus().SingleOrDefault(m => m.Id == menuName);
+        var isStatic = menu is null;
+        menu ??= Framework.ServicesManager.GetStaticServicesAsMenus().SingleOrDefault(m => m.Id == menuName);
 
         if (menu is not null) {
             try {
@@ -936,6 +938,7 @@ public class FrameworkFacade : IFrameworkFacade {
                         Target = null,
                         Action = actionSpec,
                         MenuId = menu.Id,
+                        IsStaticService = isStatic,
                         VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec)
                     };
                 }

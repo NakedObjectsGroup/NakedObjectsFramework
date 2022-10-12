@@ -55,12 +55,8 @@ public static class SnapshotFactory {
         return menu ?? throw new MenuResourceNotFoundNOSException(menuName);
     }
 
-
-    private static bool isNakedFunctions = false;
-
-
     public static Func<RestSnapshot> ServicesSnapshot(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags)
-        =>  (isNakedFunctions) 
+        =>  (frameworkFacade.GetStaticServices().List.Any()) 
             ? MenusSnapshot(frameworkFacade, frameworkFacade.GetStaticServices, req, flags)    
             : ServicesSnapshot(frameworkFacade, frameworkFacade.GetServices, req, flags);
 
@@ -74,7 +70,7 @@ public static class SnapshotFactory {
         => () => new RestSnapshot(frameworkFacade.OidStrategy, user(), req, flags);
 
     public static Func<RestSnapshot> ServiceSnapshot(IFrameworkFacade frameworkFacade, string name, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
-        => (isNakedFunctions)
+        => (frameworkFacade.GetStaticServices().List.Any())
             ? StaticServiceSnapshot(frameworkFacade, name, req, flags)
             : ObjectSnapshot(frameworkFacade, () => frameworkFacade.GetServiceByName(name), req, flags, httpStatusCode);
 
@@ -94,7 +90,7 @@ public static class SnapshotFactory {
         => () => new RestSnapshot(frameworkFacade, capabilities(), req, flags);
 
     public static Func<RestSnapshot> ActionSnapshot(IFrameworkFacade frameworkFacade, string name, string actionName, HttpRequest req, RestControlFlags flags)
-        => isNakedFunctions
+        => frameworkFacade.GetStaticServices().List.Any()
         ? MenuActionSnapshot(frameworkFacade, name, actionName, req, flags)
         : ServiceActionSnapshot(frameworkFacade, name, actionName, req, flags);
 

@@ -22,4 +22,6 @@ public class ActionContextFacade : ContextFacade {
     public PropertyContextFacade[] VisibleProperties { get; init; }
     public string MenuPath { get; init; }
     public string MenuId { get; set; }
+
+    public bool IsStaticService { get; set; }
 }

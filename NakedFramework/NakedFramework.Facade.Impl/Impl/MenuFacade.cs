@@ -14,24 +14,26 @@ using NakedFramework.Facade.Interface;
 namespace NakedFramework.Facade.Impl.Impl;
 
 public class MenuFacade : IMenuFacade {
-    public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade facade, INakedFramework framework) {
+    public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade facade, INakedFramework framework, bool isStaticService) {
         Wrapped = wrapped;
-        MenuItems = wrapped.MenuItems.Select(i => Wrap(i, facade, framework)).ToList();
+        MenuItems = wrapped.MenuItems.Select(i => Wrap(i, facade, framework, isStaticService)).ToList();
         Name = wrapped.Name;
         Id = wrapped.Id;
         Grouping = wrapped.Grouping;
+        IsStaticService = isStaticService;
     }
 
-    private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedFramework framework) =>
+    private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedFramework framework, bool isStaticService) =>
         menu switch {
             IMenuActionImmutable immutable => new MenuActionFacade(immutable, facade, framework),
-            IMenuImmutable menuImmutable => new MenuFacade(menuImmutable, facade, framework),
+            IMenuImmutable menuImmutable => new MenuFacade(menuImmutable, facade, framework, isStaticService),
             _ => new MenuItemFacade(menu)
         };
 
     #region IMenuFacade Members
 
     public object Wrapped { get; }
+    public bool IsStaticService { get; set; }
     public IList<IMenuItemFacade> MenuItems { get; }
     public string Name { get; }
     public string Id { get; }
