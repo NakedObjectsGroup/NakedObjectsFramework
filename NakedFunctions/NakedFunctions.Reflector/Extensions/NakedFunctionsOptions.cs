@@ -13,6 +13,7 @@ namespace NakedFunctions.Reflector.Extensions;
 public class NakedFunctionsOptions {
     public Type[] DomainTypes { get; set; } = Array.Empty<Type>();
     public Type[] DomainFunctions { get; set; } = Array.Empty<Type>();
+    public Type[] DomainServices { get; set; } = Array.Empty<Type>();
     public bool ConcurrencyCheck { get; set; } = true;
     public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
 }

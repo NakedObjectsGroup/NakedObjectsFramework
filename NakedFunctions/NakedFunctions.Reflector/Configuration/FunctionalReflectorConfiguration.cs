@@ -14,9 +14,11 @@ namespace NakedFunctions.Reflector.Configuration;
 public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguration {
     public FunctionalReflectorConfiguration(Type[] types,
                                             Type[] functions,
+                                            Type[] services,
                                             bool concurrencyChecking = true) {
         Types = types;
         Functions = functions;
+        Services = services;
         ConcurrencyChecking = concurrencyChecking;
         IgnoreCase = false;
     }
@@ -27,6 +29,7 @@ public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguratio
 
     public Type[] Types { get; }
     public Type[] Functions { get; }
+    public Type[] Services { get; }
     public bool ConcurrencyChecking { get; }
     public bool IgnoreCase { get; }
 

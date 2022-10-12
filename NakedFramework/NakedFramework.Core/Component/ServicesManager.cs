@@ -32,7 +32,7 @@ public sealed class ServicesManager : IServicesManager {
         this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
         this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
 
-        services = serviceList.Services.Select(Activator.CreateInstance).ToList();
+        services = serviceList.Services.Where(s => !s.IsAbstract).Select(Activator.CreateInstance).ToList();
     }
 
     private IList<object> Services {
