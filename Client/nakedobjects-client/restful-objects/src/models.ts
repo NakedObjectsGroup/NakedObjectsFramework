@@ -586,7 +586,7 @@ export class RelParm {
     }
 
     private decomposeParm() {
-        const regex = /(\w+)\W+(\w+)\W+/;
+        const regex = /(\w+)\W+([\w.]+)\W+/;
         const result = regex.exec(this.asString) || [];
         [, this.name, this.value] = result;
     }
