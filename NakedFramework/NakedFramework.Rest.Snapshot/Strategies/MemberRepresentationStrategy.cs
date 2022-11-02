@@ -64,11 +64,14 @@ public abstract class MemberRepresentationStrategy : AbstractStrategy {
             tempLinks.Add(CreateSelfLink());
         }
         else if (!PropertyContext.Target.IsTransient) {
-            if (PropertyContext.Property.IsCollection && !PropertyContext.Property.IsEager(PropertyContext.Target)) {
+            // if inline collection items then table row so do not eagerly load collections within row objects.
+            var eager = PropertyContext.Property.IsEager(PropertyContext.Target) && !Flags.InlineCollectionItems;
+
+            if (PropertyContext.Property.IsCollection && !eager) {
                 tempLinks.Add(CreateCollectionValueLink());
             }
 
-            tempLinks.Add(CreateDetailsLink());
+            tempLinks.Add(CreateDetailsLink(eager));
         }
 
         if (!PropertyContext.Target.IsTransient && RestUtils.IsAttachment(PropertyContext.Specification)) {
@@ -78,10 +81,10 @@ public abstract class MemberRepresentationStrategy : AbstractStrategy {
         return tempLinks.ToArray();
     }
 
-    private LinkRepresentation CreateDetailsLink() {
+    private LinkRepresentation CreateDetailsLink(bool eager) {
         var opts = new List<OptionalProperty>();
 
-        if (PropertyContext.Property.IsEager(PropertyContext.Target)) {
+        if (eager) {
             opts.Add(new OptionalProperty(JsonPropertyNames.Value, MemberAbstractRepresentation.Create(frameworkFacade, Req, PropertyContext, Flags)));
         }
 
