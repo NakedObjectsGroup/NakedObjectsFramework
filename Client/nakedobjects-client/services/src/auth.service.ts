@@ -23,7 +23,7 @@ export class AuthService implements CanActivate {
         const clientID = this.configService.config.authClientId;
         const domain = this.configService.config.authDomain;
         const url = (window as any).location.origin;
-        const redirectUrl = `${url}/gemini/callback`;
+        const redirectUrl = this.redirectUrl || `${url}/gemini/callback`;
 
         return new auth0.WebAuth({
             clientID,
@@ -34,6 +34,9 @@ export class AuthService implements CanActivate {
             scope: 'openid email profile'
         });
     }
+
+    public redirectUrl?: string;
+    public timeout?: number;
 
     constructor(
         private readonly router: Router,
@@ -64,8 +67,9 @@ export class AuthService implements CanActivate {
 
     private setSession(authResult: any): void {
         if (this.authenticate) {
+            const expiresIn = this.timeout || authResult.expiresIn;
             // Set the time that the access token will expire at
-            const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+            const expiresAt = JSON.stringify((expiresIn * 1000) + new Date().getTime());
             localStorage.setItem('access_token', authResult.accessToken);
             localStorage.setItem('id_token', authResult.idToken);
             localStorage.setItem('expires_at', expiresAt);
