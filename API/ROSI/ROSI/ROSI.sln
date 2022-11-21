@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ROSI", "ROSI.csproj", "{0546C57C-5D7A-451C-BE23-E581ECD368EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ROSITest", "..\ROSITest\ROSITest.csproj", "{22495029-8724-4409-BD34-EF0CB0AF077A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0546C57C-5D7A-451C-BE23-E581ECD368EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0546C57C-5D7A-451C-BE23-E581ECD368EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0546C57C-5D7A-451C-BE23-E581ECD368EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0546C57C-5D7A-451C-BE23-E581ECD368EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22495029-8724-4409-BD34-EF0CB0AF077A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22495029-8724-4409-BD34-EF0CB0AF077A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22495029-8724-4409-BD34-EF0CB0AF077A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22495029-8724-4409-BD34-EF0CB0AF077A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2BF44A31-A790-42D7-9422-CA5111FDD0F1}
+	EndGlobalSection
+EndGlobal
