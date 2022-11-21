@@ -35,7 +35,7 @@ namespace AdventureWorksModel.Mapping
         {
             // Primary Key
             builder.HasKey(t => t.DepartmentID);
-
+          
             // Properties
             builder.Property(t => t.Name)
                    .IsRequired()

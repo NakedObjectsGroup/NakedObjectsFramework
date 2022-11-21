@@ -1,8 +1,31 @@
 using AW.Mapping;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace AW {
+
+    public class BlankTriggerAddingConvention : IModelFinalizingConvention {
+        public virtual void ProcessModelFinalizing(
+            IConventionModelBuilder modelBuilder,
+            IConventionContext<IConventionModelBuilder> context) {
+            foreach (var entityType in modelBuilder.Metadata.GetEntityTypes()) {
+                var table = StoreObjectIdentifier.Create(entityType, StoreObjectType.Table);
+                if (table != null
+                    && entityType.GetDeclaredTriggers().All(t => t.GetDatabaseName(table.Value) == null)) {
+                    entityType.Builder.HasTrigger(table.Value.Name + "_Trigger");
+                }
+
+                foreach (var fragment in entityType.GetMappingFragments(StoreObjectType.Table)) {
+                    if (entityType.GetDeclaredTriggers().All(t => t.GetDatabaseName(fragment.StoreObject) == null)) {
+                        entityType.Builder.HasTrigger(fragment.StoreObject.Name + "_Trigger");
+                    }
+                }
+            }
+        }
+    }
     public class AdventureWorksEFCoreContext : DbContext {
         public AdventureWorksEFCoreContext(DbContextOptions<AdventureWorksEFCoreContext> options)
             : base(options) { }
@@ -43,6 +66,10 @@ namespace AW {
         public DbSet<SalesTerritory>? SalesTerritories { get; init; }
         public DbSet<SpecialOffer>? SpecialOffers { get; init; }
         public DbSet<SpecialOfferProduct>? SpecialOfferProducts { get; init; }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
+            configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Department>().Map();
