@@ -77,7 +77,7 @@ public class EFCoreCodeFirstContext : DbContext {
                       j => {
                           j.HasKey("SystemId", "SquadId").HasName("system_squad_assignment_pk");
 
-                          j.ToTable("system_squad_assignment", "tracking").HasComment("Associates a system to it's assigned squads");
+                          j.ToTable("system_squad_assignment", "tracking").ToTable(t => t.HasComment("Associates a system to it's assigned squads"));
 
                           j.IndexerProperty<int>("SystemId").HasColumnName("system_id");
 
