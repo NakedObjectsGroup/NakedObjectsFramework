@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.11" />
-		<PackageReference Include="NOF2.ProgrammingModel" Version="1.0.0" />
+		<PackageReference Include="NOF2.ProgrammingModel" Version="1.1.0" />
 		<PackageReference Include="NUnit" Version="3.13.3" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
