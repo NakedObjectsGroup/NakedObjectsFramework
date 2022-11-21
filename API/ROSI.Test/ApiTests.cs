@@ -24,7 +24,7 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test;
 
-public class ROSITest : AcceptanceTestCase {
+public class ApiTests : AcceptanceTestCase {
     protected override Type[] Services { get; } = { typeof(SimpleService) };
 
     protected override Type[] ObjectTypes { get; } = {
@@ -114,6 +114,9 @@ public class ROSITest : AcceptanceTestCase {
 
         Assert.AreEqual("Ted", val);
     }
+
+
+
 
     
 }
