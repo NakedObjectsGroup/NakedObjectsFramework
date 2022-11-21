@@ -8,10 +8,32 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly;
+public class BlankTriggerAddingConvention : IModelFinalizingConvention {
+    public virtual void ProcessModelFinalizing(
+        IConventionModelBuilder modelBuilder,
+        IConventionContext<IConventionModelBuilder> context) {
+        foreach (var entityType in modelBuilder.Metadata.GetEntityTypes()) {
+            var table = StoreObjectIdentifier.Create(entityType, StoreObjectType.Table);
+            if (table != null
+                && entityType.GetDeclaredTriggers().All(t => t.GetDatabaseName(table.Value) == null)) {
+                entityType.Builder.HasTrigger(table.Value.Name + "_Trigger");
+            }
 
+            foreach (var fragment in entityType.GetMappingFragments(StoreObjectType.Table)) {
+                if (entityType.GetDeclaredTriggers().All(t => t.GetDatabaseName(fragment.StoreObject) == null)) {
+                    entityType.Builder.HasTrigger(fragment.StoreObject.Name + "_Trigger");
+                }
+            }
+        }
+    }
+}
 public class EFCoreAdventureWorksEntities : DbContext {
     private readonly string cs;
 
@@ -98,6 +120,10 @@ public class EFCoreAdventureWorksEntities : DbContext {
         //optionsBuilder.EnableDetailedErrors();
         //optionsBuilder.EnableSensitiveDataLogging();
         //optionsBuilder.LogTo(m => Console.WriteLine(m), LogLevel.Trace);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
+        configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {

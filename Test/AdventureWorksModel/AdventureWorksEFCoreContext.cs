@@ -1,5 +1,3 @@
-
-
 using System.Linq;
 using AdventureWorksModel.Mapping;
 using Microsoft.EntityFrameworkCore;
@@ -103,6 +101,7 @@ namespace AdventureWorksModel.Context
         public DbSet<SpecialOffer> SpecialOffers { get; set; }
         public DbSet<SpecialOfferProduct> SpecialOfferProducts { get; set; }
         public DbSet<Store> Stores { get; set; }
+
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
             configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());

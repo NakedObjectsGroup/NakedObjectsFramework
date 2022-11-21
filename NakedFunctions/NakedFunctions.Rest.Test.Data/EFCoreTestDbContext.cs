@@ -6,7 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace NakedFunctions.Rest.Test.Data;
 
@@ -22,6 +26,26 @@ public static class EFCoreConstants {
 
     public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;";
     public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;";
+}
+
+public class BlankTriggerAddingConvention : IModelFinalizingConvention {
+    public virtual void ProcessModelFinalizing(
+        IConventionModelBuilder modelBuilder,
+        IConventionContext<IConventionModelBuilder> context) {
+        foreach (var entityType in modelBuilder.Metadata.GetEntityTypes()) {
+            var table = StoreObjectIdentifier.Create(entityType, StoreObjectType.Table);
+            if (table != null
+                && entityType.GetDeclaredTriggers().All(t => t.GetDatabaseName(table.Value) == null)) {
+                entityType.Builder.HasTrigger(table.Value.Name + "_Trigger");
+            }
+
+            foreach (var fragment in entityType.GetMappingFragments(StoreObjectType.Table)) {
+                if (entityType.GetDeclaredTriggers().All(t => t.GetDatabaseName(fragment.StoreObject) == null)) {
+                    entityType.Builder.HasTrigger(fragment.StoreObject.Name + "_Trigger");
+                }
+            }
+        }
+    }
 }
 
 public abstract class EFCoreTestDbContext : DbContext {
@@ -55,6 +79,10 @@ public abstract class EFCoreTestDbContext : DbContext {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
         optionsBuilder.UseLazyLoadingProxies();
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
+        configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {

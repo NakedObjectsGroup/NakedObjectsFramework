@@ -6,7 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace NOF2.Rest.Test.Data;
 
@@ -21,6 +25,26 @@ public static class Constants {
 #endif
 
     public static readonly string CsNOF2 = @$"Data Source={Server};Initial Catalog={"NOF2Tests"};Integrated Security=True;";
+}
+
+public class BlankTriggerAddingConvention : IModelFinalizingConvention {
+    public virtual void ProcessModelFinalizing(
+        IConventionModelBuilder modelBuilder,
+        IConventionContext<IConventionModelBuilder> context) {
+        foreach (var entityType in modelBuilder.Metadata.GetEntityTypes()) {
+            var table = StoreObjectIdentifier.Create(entityType, StoreObjectType.Table);
+            if (table != null
+                && entityType.GetDeclaredTriggers().All(t => t.GetDatabaseName(table.Value) == null)) {
+                entityType.Builder.HasTrigger(table.Value.Name + "_Trigger");
+            }
+
+            foreach (var fragment in entityType.GetMappingFragments(StoreObjectType.Table)) {
+                if (entityType.GetDeclaredTriggers().All(t => t.GetDatabaseName(fragment.StoreObject) == null)) {
+                    entityType.Builder.HasTrigger(fragment.StoreObject.Name + "_Trigger");
+                }
+            }
+        }
+    }
 }
 
 public abstract class EFCoreTestDbContext : DbContext {
@@ -135,6 +159,10 @@ public abstract class EFCoreTestDbContext : DbContext {
     private static void MapClassWithAnnotations(ModelBuilder modelBuilder) {
         modelBuilder.Entity<ClassWithAnnotations>().Ignore(t => t.Name).Ignore(t => t.TestTableView);
         modelBuilder.Entity<ClassWithAnnotations>().Property("name").HasColumnName("Name");
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
+        configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
