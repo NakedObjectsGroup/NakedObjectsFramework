@@ -5,8 +5,8 @@ namespace ROSI.Apis;
 
 
 public static class ObjectApi {
-    public static JObject GetObject(Uri uri) {
-        var json = HttpHelpers.Execute(uri);
+    public static JObject GetObject(Uri uri, string? token = null) {
+        var json = HttpHelpers.Execute(uri, token);
         return JObject.Parse(json);
     }
 

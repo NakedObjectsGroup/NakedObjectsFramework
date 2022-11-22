@@ -8,8 +8,14 @@ namespace ROSI.Helpers;
 public static class HttpHelpers {
     private static readonly HttpClient Client = new();
 
-    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, HttpContent? content = null) {
+    public static string? GlobalToken { get; set; } = null; 
+
+    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, string? token, HttpContent? content) {
         var request = new HttpRequestMessage(method, path);
+
+        if ((token ?? GlobalToken) is not null) {
+            request.Headers.Add("Authorization", (token ?? GlobalToken));
+        }
 
         if (content is not null) {
             request.Content = content;
@@ -24,9 +30,9 @@ public static class HttpHelpers {
         return json ?? "";
     }
 
-    public static string Execute(Uri url, string? jsonContent = null) {
+    public static string Execute(Uri url, string? token = null, string? jsonContent = null) {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
-        var request = CreateMessage(HttpMethod.Get, url.ToString(), content);
+        var request = CreateMessage(HttpMethod.Get, url.ToString(), token, content);
 
         using var response = Client.SendAsync(request).Result;
 
@@ -37,13 +43,13 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
-    public static string Execute(JProperty action, string? jsonContent = null) {
+    public static string Execute(JProperty action, string? token = null, string? jsonContent = null) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var uri = invokeLink.GetHref();
         var method = invokeLink.GetMethod();
 
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
-        var request = CreateMessage(method, uri.ToString(), content);
+        var request = CreateMessage(method, uri.ToString(), token, content);
 
         using var response = Client.SendAsync(request).Result;
 
