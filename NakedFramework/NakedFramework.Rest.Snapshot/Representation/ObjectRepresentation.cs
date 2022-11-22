@@ -139,7 +139,13 @@ public class ObjectRepresentation : Representation {
 
         var allMembers = properties.Union(actions);
 
-        Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object)m));
+        try {
+            Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object)m));
+        }
+        catch (ArgumentException e) {
+            var msg = e.Message + ". This is probably because you have duplicate property/collection/action names. Each must have a unique name.";
+            throw new ArgumentException(msg, e);
+        }
     }
 
     private static ActionContextFacade[] FilterLocallyContributedActions(ActionContextFacade[] actions, PropertyContextFacade[] collections) {
