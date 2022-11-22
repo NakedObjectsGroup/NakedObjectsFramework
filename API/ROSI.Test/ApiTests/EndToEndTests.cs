@@ -25,6 +25,6 @@ internal class EndToEndTests
 
         var ar = jo.InvokeAction("OpenPurchaseOrdersForProduct");
 
-
+        Assert.IsNotNull(ar);
     }
 }

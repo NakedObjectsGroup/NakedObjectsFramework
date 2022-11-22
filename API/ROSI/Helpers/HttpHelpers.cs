@@ -3,38 +3,32 @@ using System.Net.Http.Json;
 
 namespace ROSI.Helpers;
 
-public static class HttpHelpers
-{
+public static class HttpHelpers {
     private static readonly HttpClient Client = new();
 
-    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, HttpContent? content = null)
-    {
+    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, HttpContent? content = null) {
         var request = new HttpRequestMessage(method, path);
 
-        if (content is not null)
-        {
+        if (content is not null) {
             request.Content = content;
         }
 
         return request;
     }
 
-    private static string ReadAsString(HttpResponseMessage response)
-    {
+    private static string ReadAsString(HttpResponseMessage response) {
         using var sr = new StreamReader(response.Content.ReadAsStream());
         var json = sr.ReadToEnd();
         return json ?? "";
     }
 
-    public static string Execute(string? jsonContent, string url)
-    {
+    public static string Execute(Uri url, string? jsonContent = null) {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
-        var request = CreateMessage(HttpMethod.Get, url, content);
+        var request = CreateMessage(HttpMethod.Get, url.ToString(), content);
 
         using var response = Client.SendAsync(request).Result;
 
-        if (response.IsSuccessStatusCode)
-        {
+        if (response.IsSuccessStatusCode) {
             return ReadAsString(response);
         }
 

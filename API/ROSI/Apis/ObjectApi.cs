@@ -3,39 +3,36 @@ using ROSI.Helpers;
 
 namespace ROSI.Apis;
 
-public static class ObjectApi
-{
-    public static JObject GetObject(Uri uri)
-    {
-        var json = HttpHelpers.Execute(null, uri.ToString());
+public static class ObjectApi {
+    public static JObject GetObject(Uri uri) {
+        var json = HttpHelpers.Execute(uri);
         return JObject.Parse(json);
     }
 
-    public static JObject InvokeAction(this JObject objectRepresentation, string actionName)
-    {
+    public static JObject InvokeAction(this JObject objectRepresentation, string actionName) {
         var action = objectRepresentation.GetAction(actionName);
+        var links = action.GetLinks();
+        var invokeLink = links.GetInvokeLink();
+        var uri = invokeLink.GetHref();
+        var json = HttpHelpers.Execute(uri);
 
-        return null;
+        return JObject.Parse(json);
     }
 
-    public static T? GetPropertyValue<T>(this JObject objectRepresentation, string propertyName)
-    {
+    public static T? GetPropertyValue<T>(this JObject objectRepresentation, string propertyName) {
         var valueObject = objectRepresentation.GetProperty(propertyName).Value as JObject;
 
-        if (valueObject is null)
-        {
+        if (valueObject is null) {
             throw new Exception("No such property value");
         }
 
         return valueObject["value"]!.Value<T>();
     }
 
-    public static IEnumerable<JProperty> GetMembers(this JObject objectRepresentation)
-    {
+    public static IEnumerable<JProperty> GetMembers(this JObject objectRepresentation) {
         var members = objectRepresentation["members"];
 
-        if (members is null)
-        {
+        if (members is null) {
             throw new Exception("No members");
         }
 
