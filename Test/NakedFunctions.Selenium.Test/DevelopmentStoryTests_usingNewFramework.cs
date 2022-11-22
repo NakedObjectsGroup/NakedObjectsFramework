@@ -57,7 +57,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         UseOfDeferredFunctionIncludingReload();
         UseOfResolveMethodInADeferredFunction();
         WithDelete();
-        WithMultipleDeletes();
+        //WithMultipleDeletes();
         ObjectActionRenderedWithinCollection();
         QueryContributedActionWithChoicesFunction();
         QueryContributedActionWithCoValidation();
