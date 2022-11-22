@@ -35,7 +35,8 @@ public abstract class EFCoreTestDbContext : DbContext {
     }
 
     private static void MapClass(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<Class>().Property("Name").HasColumnName("Name");
+        modelBuilder.Entity<Class>().Property("Property1").HasColumnName("Property1");
+        modelBuilder.Entity<Class>().Property("Property2").HasColumnName("Property2");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -45,7 +46,7 @@ public abstract class EFCoreTestDbContext : DbContext {
     }
 
     private static void Seed(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<Class>().HasData(new { Id = 1, Name = "Ted" });
+        modelBuilder.Entity<Class>().HasData(new Class { Id = 1, Property1 = "One", Property2 = 2 });
     }
 }
 

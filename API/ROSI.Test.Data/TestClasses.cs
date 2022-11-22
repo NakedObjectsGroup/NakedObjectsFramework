@@ -5,10 +5,10 @@
 // // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ROSI.Test.Data;
-
 
 public class SimpleService {
     public Class GetClass => null;
@@ -18,5 +18,13 @@ public class Class {
     [Key]
     public int Id { get; init; }
 
-    public string Name { get; set; }
+    public virtual string Property1 { get; set; }
+    public virtual int Property2 { get; set; }
+
+    public virtual IList<Class> Collection1 { get; set; } = new List<Class>();
+    public virtual IList<Class> Collection2 { get; set; } = new List<Class>();
+
+    public Class Action1() => this;
+
+    public Class Action2() => this;
 }
