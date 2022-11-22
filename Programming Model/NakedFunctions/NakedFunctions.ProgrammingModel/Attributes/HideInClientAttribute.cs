@@ -13,6 +13,7 @@ namespace NakedFunctions;
 ///     A hint added to the associated display element. For example to be rendered as a class on the html, and picked up by
 ///     the CSS.
 /// </summary>
+[Obsolete("Use PresentationHint")]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
 public class HideInClientAttribute : PresentationHintAttribute {
     public HideInClientAttribute() : base(HideInClient) { }

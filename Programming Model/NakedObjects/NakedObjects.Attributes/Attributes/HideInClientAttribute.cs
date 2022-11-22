@@ -5,11 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+
 namespace NakedObjects; 
 
 /// <summary>
 ///     A hint added to the associated display element. For example a class on the html.
 /// </summary>
+[Obsolete("Use PresentationHint")]
 public class HideInClientAttribute : PresentationHintAttribute {
     public HideInClientAttribute() : base(HideInClient) { }
 }
