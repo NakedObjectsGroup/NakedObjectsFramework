@@ -3,6 +3,7 @@ using ROSI.Helpers;
 
 namespace ROSI.Apis;
 
+
 public static class ObjectApi {
     public static JObject GetObject(Uri uri) {
         var json = HttpHelpers.Execute(uri);
@@ -11,11 +12,7 @@ public static class ObjectApi {
 
     public static JObject InvokeAction(this JObject objectRepresentation, string actionName) {
         var action = objectRepresentation.GetAction(actionName);
-        var links = action.GetLinks();
-        var invokeLink = links.GetInvokeLink();
-        var uri = invokeLink.GetHref();
-        var json = HttpHelpers.Execute(uri);
-
+        var json = HttpHelpers.Execute(action);
         return JObject.Parse(json);
     }
 

@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Newtonsoft.Json.Linq;
+using ROSI.Apis;
 
 namespace ROSI.Helpers;
 
@@ -25,6 +27,23 @@ public static class HttpHelpers {
     public static string Execute(Uri url, string? jsonContent = null) {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(HttpMethod.Get, url.ToString(), content);
+
+        using var response = Client.SendAsync(request).Result;
+
+        if (response.IsSuccessStatusCode) {
+            return ReadAsString(response);
+        }
+
+        throw new HttpRequestException("request failed", null, response.StatusCode);
+    }
+
+    public static string Execute(JProperty action, string? jsonContent = null) {
+        var invokeLink = action.GetLinks().GetInvokeLink();
+        var uri = invokeLink.GetHref();
+        var method = invokeLink.GetMethod();
+
+        using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
+        var request = CreateMessage(method, uri.ToString(), content);
 
         using var response = Client.SendAsync(request).Result;
 

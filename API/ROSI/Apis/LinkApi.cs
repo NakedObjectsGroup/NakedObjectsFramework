@@ -6,6 +6,8 @@ public static class LinkApi
 {
     public static string GetLinkProperty(this JObject linkRepresentation, string pName) => ((JValue)linkRepresentation[pName]).Value.ToString();
 
+    public static HttpMethod GetMethod(this JObject linkRepresentation) => new(linkRepresentation.GetLinkProperty("method"));
+
     public static Uri GetHref(this JObject linkRepresentation) => new(linkRepresentation.GetLinkProperty("href"));
 
     public static string GetRel(this JObject linkRepresentation) => linkRepresentation.GetLinkProperty("rel");
