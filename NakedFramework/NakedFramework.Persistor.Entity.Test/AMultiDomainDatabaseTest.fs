@@ -45,12 +45,12 @@ type AMultiDomainDatabaseTests() =
         [<OneTimeSetUp>]
         member x.Setup() = Setup()
         
-        [<Test>]
+        //[<Test>]
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor multiDomainDatabasePersistor
         
-        [<Test>]
+        //[<Test>]
         member x.TestCanQueryEachConnection() = CanQueryEachDomainConnection multiDomainDatabasePersistor
         
-        [<Test>]     
+        //[<Test>]     
         member x.TestCanQueryEachConnectionMultiTimes() = CanQueryEachDomainConnectionMultiTimes multiDomainDatabasePersistor
     end
