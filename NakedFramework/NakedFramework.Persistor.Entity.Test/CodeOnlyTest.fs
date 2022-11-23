@@ -41,125 +41,125 @@ type CodeOnlyTests() =
         [<Test>]
         member x.TestGetObjectBySingleKey() = CanGetObjectBySingleKey codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestCreateTransientObject() = CodeOnlyTestCode.CanCreateTransientObject codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestSaveTransientObjectWithScalarProperties() = CanSaveTransientObjectWithScalarProperties codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndReattempt() = CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndIgnore() = CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestNavigateReferences() = CanNavigateReferences codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestSaveTransientObjectWithPersistentReferenceProperty() = CanSaveTransientObjectWithPersistentReferenceProperty codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestSaveTransientObjectWithTransientReferenceProperty() = CanSaveTransientObjectWithTransientReferenceProperty codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestUpdatePersistentObjectWithScalarProperties() = CanUpdatePersistentObjectWithScalarProperties codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestUpdatePersistentObjectWithReferenceProperties() = CanUpdatePersistentObjectWithReferenceProperties codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestUpdatePersistentObjectWithCollectionProperties() = CanUpdatePersistentObjectWithCollectionProperties codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestPersistingPersistedCalledForCreateInstance() = CanPersistingPersistedCalledForCreateInstance codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestPersistingPersistedCalledForCreateInstanceWithReference() = CanPersistingPersistedCalledForCreateInstanceWithCollection codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestUpdatingUpdatedCalledForChange() = CanUpdatingUpdatedCalledForChange codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestGetKeyForType() = CanGetKeyForType codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestCreateDomesticSubclass() = CanCreateDomesticSubclass codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestCreateInternationalSubclass() = CanCreateInternationalSubclass codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestCreateBaseClass() = CanCreateBaseClass codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestGetBaseClassGeneric() = CanGetBaseClassGeneric codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestGetBaseClassByType() = CanGetBaseClassByType codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestGetDomesticSubclassClassGeneric() = CanGetDomesticSubclassClassGeneric codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestGetInternationalSubclassClassGeneric() = CanGetInternationalSubclassClassGeneric codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestGetDomesticSubclassClassByType() = CanGetDomesticSubclassClassByType codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestGetInternationalSubclassClassByType() = CanGetInternationalSubclassClassByType codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestNavigateToSubclass() = CanNavigateToSubclass codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestGetClassWithNonPersistedBase() = CanGetClassWithNonPersistedBase codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestGetNonPersistedClass() = CanGetNonPersistedClass codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestContainerInjectionCalledForNewInstance() = CanContainerInjectionCalledForNewInstance codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestContainerInjectionCalledForGetInstance() = CanContainerInjectionCalledForGetInstance codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestSaveTransientDomesticSubclasstWithScalarProperties() = CanSaveTransientDomesticSubclasstWithScalarProperties codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestSaveTransientIntlSubclassWithScalarProperties() = CanSaveTransientIntlSubclassWithScalarProperties codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestUpdatePersistentSubclassWithScalarProperties() = CanUpdatePersistentSubclassWithScalarProperties codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestSaveTransientObjectWithTransientCollection() = CanSaveTransientObjectWithTransientCollection codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestUpdatePersistentObjectWithScalarPropertiesAbort() = CanUpdatePersistentObjectWithScalarPropertiesAbort codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestUpdatePersistentObjectWithReferencePropertiesAbort() = CanUpdatePersistentObjectWithReferencePropertiesAbort codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestCanGetContextForCollection() = CodeOnlyCanGetContextForCollection codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestCanGetContextForNonGenericCollection() = CodeOnlyCanGetContextForNonGenericCollection codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestCanGetContextForArray() = CodeOnlyCanGetContextForArray codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.TestCanGetContextForType() = CodeOnlyCanGetContextForType codeOnlyPersistor
         
-        [<Test>]
+       //[<Test>]
         member x.GetKeysReturnsKey() = GetKeysReturnsKey codeOnlyPersistor
     end
 
