@@ -161,9 +161,10 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<ClassWithAnnotations>().Property("name").HasColumnName("Name");
     }
 
-    //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
-    //    configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
-    //}
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         MapClassWithTextString(modelBuilder);

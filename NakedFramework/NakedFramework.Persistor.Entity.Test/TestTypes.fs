@@ -28,15 +28,15 @@ let server = appveyorServer
 let server = appveyorServer
 #endif
 
-let csAW = server + @"Initial Catalog=AdventureWorks;Integrated Security=True;"
-let csAWMARS = server + @"initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
-let csMD = server + @"Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
-let csMF = server + @"Initial Catalog=ModelFirst;Integrated Security=True;"
-let csCO = server + @"Initial Catalog=CodeOnlyTests;Integrated Security=True;"
-let csEFCO = server + @"Initial Catalog=EFCodeOnlyTests;Integrated Security=True;"
-let csCOCE = server + @"Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
-let csCS = server + @"Initial Catalog=CodeSystemTest;Integrated Security=True;"
-let csTDCO = server + @"Initial Catalog=TestDataCodeOnly;Integrated Security=True;"
+let csAW = server + @"Initial Catalog=AdventureWorks;Integrated Security=True;Encrypt=False;"
+let csAWMARS = server + @"initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;Encrypt=False;"
+let csMD = server + @"Initial Catalog=AMultiDatabaseTests;Integrated Security=True;Encrypt=False;"
+let csMF = server + @"Initial Catalog=ModelFirst;Integrated Security=True;Encrypt=False;"
+let csCO = server + @"Initial Catalog=CodeOnlyTests;Integrated Security=True;Encrypt=False;"
+let csEFCO = server + @"Initial Catalog=EFCodeOnlyTests;Integrated Security=True;Encrypt=False;"
+let csCOCE = server + @"Initial Catalog=CodeOnlyCeTests;Integrated Security=True;Encrypt=False;"
+let csCS = server + @"Initial Catalog=CodeSystemTest;Integrated Security=True;Encrypt=False;"
+let csTDCO = server + @"Initial Catalog=TestDataCodeOnly;Integrated Security=True;Encrypt=False;"
 
 let injectedObjects = new List<Object>()
 let mockInjector = new Mock<IDomainObjectInjector>()

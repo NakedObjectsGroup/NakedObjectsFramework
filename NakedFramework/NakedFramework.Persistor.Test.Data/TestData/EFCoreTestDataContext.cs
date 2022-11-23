@@ -55,9 +55,10 @@ public class EFCoreTestDataContext : DbContext {
         optionsBuilder.UseLazyLoadingProxies();
     }
 
-    //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
-    //    configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
-    //}
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         int NewPerson(int id, string name, int productId, bool address = false, int? relatedTo = null) {
