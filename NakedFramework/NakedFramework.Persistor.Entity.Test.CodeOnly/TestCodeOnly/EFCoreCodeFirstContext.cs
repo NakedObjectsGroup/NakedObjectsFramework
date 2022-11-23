@@ -64,9 +64,9 @@ public class EFCoreCodeFirstContext : DbContext {
         //optionsBuilder.LogTo(m => Console.WriteLine(m), LogLevel.Trace);
     }
 
-    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
-        configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
-    }
+    //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
+    //    configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<CountryCode>().HasKey(cc => new { cc.Code, cc.ISOCode });

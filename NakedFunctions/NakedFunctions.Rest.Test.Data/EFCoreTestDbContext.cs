@@ -81,9 +81,9 @@ public abstract class EFCoreTestDbContext : DbContext {
         optionsBuilder.UseLazyLoadingProxies();
     }
 
-    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
-        configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
-    }
+    //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
+    //    configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         var fred = new SimpleRecord { Id = 1, Name = "Fred" };

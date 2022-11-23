@@ -55,9 +55,9 @@ public class EFCoreSimpleDatabaseDbContext : DbContext {
         optionsBuilder.UseLazyLoadingProxies();
     }
 
-    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
-        configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
-    }
+    //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
+    //    configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Person>().Ignore(p => p.Parent);
