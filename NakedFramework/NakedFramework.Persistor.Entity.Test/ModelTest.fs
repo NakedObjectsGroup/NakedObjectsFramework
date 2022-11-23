@@ -28,36 +28,36 @@ type ModelTests() =
         [<OneTimeSetUp>]
         member x.Setup() = ()
         
-        //[<Test>]
+        [<Test>]
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetInstanceWithComplexType() = CanGetInstanceWithComplexType persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanUpdateInstanceWithComplexType() = CanUpdateInstanceWithComplexType persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCreateInstanceWithComplexType() = CanCreateInstanceWithComplexType persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForCollection() = ModelCanGetContextForCollection persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForNonGenericCollection() = ModelCanGetContextForNonGenericCollection persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForArray() = ModelCanGetContextForArray persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForType() = ModelCanGetContextForType persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForComplexType() = ModelCanGetContextForComplexType persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanInjectContainerOnNewInstance() = CanInjectContainerOnNewInstance persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanInjectServiceOnNewInstance() = CanInjectServiceOnNewInstance persistor
     end
