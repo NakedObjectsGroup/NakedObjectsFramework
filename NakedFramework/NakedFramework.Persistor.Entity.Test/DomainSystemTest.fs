@@ -131,23 +131,23 @@ type DomainSystemTests() =
             psc.rowguid <- Guid.NewGuid()
         SystemTestCode.CreateAndSetup<ProductSubcategory> setter x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.GetService() = 
         let srService = x.NakedFramework.ServicesManager.GetService("SimpleRepository-ScrapReason")
         Assert.IsNotNull(srService.Object)
     
-    //[<Test>]
+    [<Test>]
     member x.GetCollectionDirectly() = 
         let srs = x.NakedFramework.Persistor.Instances<ScrapReason>()
         Assert.Greater(srs |> Seq.length, 0)
     
-    //[<Test>]
+    [<Test>]
     member x.CheckInstanceProperty() = 
         let sr = x.GetScrapReasonDomainObject()
         Assert.IsNotNull(sr)
         Assert.AreEqual("Color incorrect", sr.Name)
     
-    //[<Test>]
+    [<Test>]
     member x.CheckItemIdentities() = 
         let ctx = x.NakedFramework
         
@@ -162,28 +162,28 @@ type DomainSystemTests() =
         Assert.AreNotSame(sr1, sr2)
         Assert.AreNotSame(sr2, sr3)
     
-    //[<Test>]
+    [<Test>]
     member x.CheckPersistentResolveState() = 
         let sr = x.GetScrapReasonDomainObject()
         IsNotNullAndPersistent sr x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.CheckTransientResolveState() = 
         let pc = x.CreatePC()
         IsNotNullAndTransient pc x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.GetCollectionIndirectly() = 
         let sr = x.GetScrapReasonDomainObject()
         Assert.IsNotNull(sr)
         Assert.Greater(sr.WorkOrders |> Seq.length, 0)
     
-    //[<Test>]
+    [<Test>]
     member x.GetCollectionItemIndirectly() = 
         let wo = x.GetScrapReasonDomainObject().WorkOrders |> Seq.head
         IsNotNullAndPersistent wo x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.CheckReferenceIdentities() = 
         let wo = 
             x.NakedFramework.Persistor.Instances<WorkOrder>()
@@ -192,19 +192,19 @@ type DomainSystemTests() =
         Assert.IsNotNull(wo)
         IsNotNullAndPersistent wo.ScrapReason x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.CheckCollectionIdentities() = 
         let sr = x.GetScrapReasonDomainObject()
         let wo = sr.WorkOrders |> Seq.head
         Assert.AreSame(sr, wo.ScrapReason)
     
-    //[<Test>]
+    [<Test>]
     member x.CreateNewObjectWithScalars() = 
         let pc = x.CreatePC()
         save pc x.NakedFramework
         IsNotNullAndPersistent pc x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.CreateNewObjectWithPersistentReference() = 
         let pscNo = x.CreatePSC()
         let psc = box pscNo.Object :?> ProductSubcategory
@@ -213,7 +213,7 @@ type DomainSystemTests() =
         save pscNo x.NakedFramework
         IsNotNullAndPersistent pscNo x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.CreateNewObjectWithTransientReference() = 
         let pscNo = x.CreatePSC()
         let psc = pscNo.Object :?> ProductSubcategory
@@ -224,7 +224,7 @@ type DomainSystemTests() =
         IsNotNullAndPersistent pscNo x.NakedFramework
         IsNotNullAndPersistent pcNo x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.AddObjectToPersistentCollection() = 
         let psc = x.NakedFramework.Persistor.Instances<ProductSubcategory>() |> Seq.head
         let origPc = psc.ProductCategory
@@ -245,7 +245,7 @@ type DomainSystemTests() =
         swapSubcatsForCollection origPc replPc
         swapSubcatsForCollection replPc origPc
     
-    //[<Test>]
+    [<Test>]
     member x.AddObjectToPersistentCollectionNotifiesUI() = 
         let psc = x.NakedFramework.Persistor.Instances<ProductSubcategory>() |> Seq.head
         let origPc = psc.ProductCategory

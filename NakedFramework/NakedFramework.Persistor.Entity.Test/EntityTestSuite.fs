@@ -165,253 +165,253 @@ type EntityTestSuite() =
      
     member x.Tests = new PersistorTestSuite(x.NakedFramework)
     
-   //[<Test>]
+    [<Test>]
     member x.CanAccessCollectionProperty() = x.Tests.CanAccessCollectionProperty()
     
-   //[<Test>]
+    [<Test>]
     member x.GetInstanceFromInstancesOfT() = x.Tests.GetInstanceFromInstancesOfT()
     
-   //[<Test>]
+    [<Test>]
     member x.GetInstanceFromInstancesOfType() = x.Tests.GetInstanceFromInstancesOfType()
     
-   //[<Test>]
+    [<Test>]
     member x.GetInstanceFromInstancesOfSpecification() = x.Tests.GetInstanceFromInstancesOfSpecification()
     
-   //[<Test>]
+    [<Test>]
     member x.GetInstanceIsAlwaysSameObject() = x.Tests.GetInstanceIsAlwaysSameObject()
     
-   //[<Test>]
+    [<Test>]
     member x.GetInstanceResolveStateIsPersistent() = x.Tests.GetInstanceResolveStateIsPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.GetInstanceHasVersion() = x.Tests.GetInstanceHasVersion()
     
     
-   //[<Test>]
+    [<Test>]
     member x.ChangeScalarOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeScalarOnPersistentCallsUpdatingUpdated()
      
-   //[<Test>]
+    [<Test>]
     member x.ChangeReferenceOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeReferenceOnPersistentCallsUpdatingUpdated()
     
-   //[<Test>]
+    [<Test>]
     member x.UpdatedDoesntCallPersistedAtOnce() = x.Tests.UpdatedDoesntCallPersistedAtOnce()
     
-   //[<Test>]
+    [<Test>]
     member x.LoadObjectReturnSameObject() = x.Tests.LoadObjectReturnSameObject()
     
-   //[<Test>]
+    [<Test>]
     member x.PersistentObjectHasContainerInjected() = x.Tests.PersistentObjectHasContainerInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.PersistentObjectHasServiceInjected() = x.Tests.PersistentObjectHasServiceInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.PersistentObjectHasLoadingLoadedCalled() = x.Tests.PersistentObjectHasLoadingLoadedCalled()
     
-   //[<Test>]
+    [<Test>]
     member x.CanAccessReferenceProperty() = x.Tests.CanAccessReferenceProperty()
     
-   //[<Test>]
+    [<Test>]
     member x.ReferencePropertyHasLoadingLoadedCalled() = x.Tests.ReferencePropertyHasLoadingLoadedCalled()
     
-   //[<Test>]
+    [<Test>]
     member x.ReferencePropertyObjectHasContainerInjected() = x.Tests.ReferencePropertyObjectHasContainerInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.ReferencePropertyObjectHasServiceInjected() = x.Tests.ReferencePropertyObjectHasServiceInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.ReferencePropertyObjectResolveStateIsPersistent() = x.Tests.ReferencePropertyObjectResolveStateIsPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.ReferencePropertyObjectHasVersion() = x.Tests.ReferencePropertyObjectHasVersion()
     
-   //[<Test>]
+    [<Test>]
     member x.CollectionPropertyHasLoadingLoadedCalled() = x.Tests.CollectionPropertyHasLoadingLoadedCalled()
     
-   //[<Test>]
+    [<Test>]
     member x.CollectionPropertyObjectHasContainerInjected() = x.Tests.CollectionPropertyObjectHasContainerInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.CollectionPropertyObjectHasMenuServiceInjected() = x.Tests.CollectionPropertyObjectHasMenuServiceInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.CollectionPropertyObjectHasContributedServiceInjected() = x.Tests.CollectionPropertyObjectHasContributedServiceInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.CollectionPropertyObjectHasSystemServiceInjected() = x.Tests.CollectionPropertyObjectHasSystemServiceInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.CollectionPropertyObjectResolveStateIsPersistent() = x.Tests.CollectionPropertyObjectResolveStateIsPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.CollectionPropertyObjectHasVersion() = x.Tests.CollectionPropertyObjectHasVersion()
     
-   //[<Test>]
+    [<Test>]
     member x.CollectionPropertyCollectionResolveStateIsPersistent() = x.Tests.CollectionPropertyCollectionResolveStateIsPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.AddToCollectionOnPersistent() = x.Tests.AddToCollectionOnPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.AddToCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.AddToCollectionOnPersistentCallsUpdatingUpdated()
     
-   //[<Test>]
+    [<Test>]
     member x.RemoveFromCollectionOnPersistent() = x.Tests.RemoveFromCollectionOnPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.RemoveFromCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.RemoveFromCollectionOnPersistentCallsUpdatingUpdated()
       
-   //[<Test>]
+    [<Test>]
     member x.ClearCollectionOnPersistent() = x.Tests.ClearCollectionOnPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.ClearCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.ClearCollectionOnPersistentCallsUpdatingUpdated()
       
-   //[<Test>]
+    [<Test>]
     member x.NewObjectHasContainerInjected() = x.Tests.NewObjectHasContainerInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.NewObjectHasCreatedCalled() = x.Tests.NewObjectHasCreatedCalled()
     
-   //[<Test>]
+    [<Test>]
     member x.NewObjectHasServiceInjected() = x.Tests.NewObjectHasServiceInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.NewObjectHasVersion() = x.Tests.NewObjectHasVersion()
     
-   //[<Test>]
+    [<Test>]
     member x.NewObjectIsCreated() = x.Tests.NewObjectIsCreated()
     
-   //[<Test>]
+    [<Test>]
     member x.NewObjectIsTransient() = x.Tests.NewObjectIsTransient()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectCallsPersistingPersisted() = x.Tests.SaveNewObjectCallsPersistingPersisted()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectCallsPersistingPersistedRecursively() = x.Tests.SaveNewObjectCallsPersistingPersistedRecursively()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectCallsPersistingPersistedRecursivelyFails() = x.Tests.SaveNewObjectCallsPersistingPersistedRecursivelyFails()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax() = 
         EF6ObjectStore.MaximumCommitCycles <- 1
         x.Tests.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax()
         EF6ObjectStore.MaximumCommitCycles <- 10
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectTransientCollectionItemCallsPersistingPersisted() = x.Tests.SaveNewObjectTransientCollectionItemCallsPersistingPersisted()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectTransientReferenceCallsPersistingPersisted() = x.Tests.SaveNewObjectTransientReferenceCallsPersistingPersisted()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithPersistentItemCollectionItem() = x.Tests.SaveNewObjectWithPersistentItemCollectionItem()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithPersistentReference() = x.Tests.SaveNewObjectWithPersistentReference()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction() = x.Tests.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithPersistentReferenceInSeperateTransaction() = x.Tests.SaveNewObjectWithPersistentReferenceInSeperateTransaction()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithScalars() = x.Tests.SaveNewObjectWithScalars()
     
     // cross validate is done from facade
     //[<Test>]
     //member x.SaveNewObjectWithValidate() = x.Tests.SaveNewObjectWithValidate()
     
-   //[<Test>]
+    [<Test>]
     member x.ChangeObjectWithValidate() = x.Tests.ChangeObjectWithValidate()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithTransientCollectionItem() = x.Tests.SaveNewObjectWithTransientCollectionItem()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithTransientReference() = x.Tests.SaveNewObjectWithTransientReference()
     
-   //[<Test>]
+    [<Test>]
     member x.EmptyCollectionPropertyCollectionResolveStateIsPersistent() = x.Tests.EmptyCollectionPropertyCollectionResolveStateIsPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.GetInlineInstance() = x.Tests.GetInlineInstance()
     
-   //[<Test>]
+    [<Test>]
     member x.InlineObjectHasContainerInjected() = x.Tests.InlineObjectHasContainerInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.InlineObjectHasServiceInjected() = x.Tests.InlineObjectHasServiceInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.InlineObjectHasParentInjected() = x.Tests.InlineObjectHasParentInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.InlineObjectHasVersion() = x.Tests.InlineObjectHasVersion()
     
-   //[<Test>]
+    [<Test>]
     member x.InlineObjectHasLoadingLoadedCalled() = x.Tests.InlineObjectHasLoadingLoadedCalled()
     
-   //[<Test>]
+    [<Test>]
     member x.CreateTransientInlineInstance() = x.Tests.CreateTransientInlineInstance()
     
-   //[<Test>]
+    [<Test>]
     member x.TransientInlineObjectHasContainerInjected() = x.Tests.TransientInlineObjectHasContainerInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.TransientInlineObjectHasServiceInjected() = x.Tests.TransientInlineObjectHasServiceInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.TransientInlineObjectHasParentInjected() = x.Tests.TransientInlineObjectHasParentInjected()
     
-   //[<Test>]
+    [<Test>]
     member x.TransientInlineObjectHasVersion() = x.Tests.TrainsientInlineObjectHasVersion()
     
-   //[<Test>]
+    [<Test>]
     member x.InlineObjectCallsCreated() = x.Tests.InlineObjectCallsCreated()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveInlineObjectCallsPersistingPersisted() = x.Tests.SaveInlineObjectCallsPersistingPersisted()
     
-   //[<Test>]
+    [<Test>]
     member x.ChangeScalarOnInlineObjectCallsUpdatingUpdated() = x.Tests.ChangeScalarOnInlineObjectCallsUpdatingUpdated()
      
-   //[<Test>]
+    [<Test>]
     member x.RefreshResetsObject() = x.Tests.RefreshResetsObject()
     
-   //[<Test>]
+    [<Test>]
     member x.GetKeysReturnsKeys() = x.Tests.GetKeysReturnsKeys()
     
-   //[<Test>]
+    [<Test>]
     member x.FindByKey() = x.Tests.FindByKey()
     
-   //[<Test>]
+    [<Test>]
     member x.CreateAndDeleteNewObjectWithScalars() = x.Tests.CreateAndDeleteNewObjectWithScalars()
     
-   //[<Test>]
+    [<Test>]
     member x.DeleteObjectCallsDeletingDeleted() = x.Tests.DeleteObjectCallsDeletingDeleted()
     
-   //[<Test>]
+    [<Test>]
     member x.CountCollectionOnPersistent() = x.Tests.CountCollectionOnPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.CountUnResolvedCollectionOnPersistent() = x.Tests.CountUnResolvedCollectionOnPersistent()
     
-   //[<Test>]
+    [<Test>]
     member x.CountCollectionOnTransient() = x.Tests.CountCollectionOnTransient()
     
-   //[<Test>]
+    [<Test>]
     member x.CountEmptyCollectionOnTransient() = x.Tests.CountEmptyCollectionOnTransient()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithTransientReferenceInvalid() = x.Tests.SaveNewObjectWithTransientReferenceInvalid()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithTransientReferenceObjectInvalid() = x.Tests.SaveNewObjectWithTransientReferenceObjectInvalid()
     
-   //[<Test>]
+    [<Test>]
     member x.SaveNewObjectWithTransientReferenceValidateAssocInvalid() = x.Tests.SaveNewObjectWithTransientReferenceValidateAssocInvalid()

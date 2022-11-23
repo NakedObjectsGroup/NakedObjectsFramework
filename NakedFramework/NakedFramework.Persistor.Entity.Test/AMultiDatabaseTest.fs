@@ -41,306 +41,306 @@ type AMultiDatabaseTests() =
         [<OneTimeTearDown>]
         member x.TearDown() = multiDatabasePersistor.SetupContexts()
         
-        //[<Test>]
+        [<Test>]
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.CanQueryEachConnection() = CanQueryEachConnectionMulti multiDatabasePersistor
         
-        //[<Test>]     
+        [<Test>]     
         member x.TestCanCreateEachConnection() = CanCreateEachConnection multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanQueryEachConnectionMultiTimes() = CanQueryEachConnectionMultiTimes multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanCreateEachConnectionMultiTimes() = CanCreateEachConnectionMultiTimes multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         [<Ignore("https://github.com/dotnet/runtime/issues/715")>]
         member x.CrossContextTransactionOK() = CrossContextTransactionOK multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         [<Ignore("https://github.com/dotnet/runtime/issues/715")>]
         member x.CrossContextTransactionRollback() = CrossContextTransactionRollback multiDatabasePersistor
         
         // tests from Domainfirst 
-        //[<Test>]
+        [<Test>]
         member x.TestGetInstancesGeneric() = DomainTestCode.CanGetInstancesGeneric multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetInstancesByType() = DomainTestCode.CanGetInstancesByType multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetInstancesIsProxy() = DomainTestCode.CanGetInstancesIsProxy multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetManyToOneReference() = DomainTestCode.CanGetManyToOneReference multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetObjectBySingleKey() = DomainTestCode.CanGetObjectBySingleKey multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetObjectByMultiKey() = DomainTestCode.CanGetObjectByMultiKey multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetObjectByStringKey() = DomainTestCode.CanGetObjectByStringKey multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetObjectByDateKey() = DomainTestCode.CanGetObjectByDateKey multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCreateTransientObject() = DomainTestCode.CanCreateTransientObject multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestSaveTransientObjectWithScalarProperties() = DomainTestCode.CanSaveTransientObjectWithScalarProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestSaveTransientObjectWithPersistentReferenceProperty() = 
             DomainTestCode.CanSaveTransientObjectWithPersistentReferenceProperty multiDatabasePersistor
         
-        //[<Test>]       
+        [<Test>]       
         member x.TestSaveTransientObjectWithTransientReferenceProperty() = 
             DomainTestCode.CanSaveTransientObjectWithTransientReferenceProperty multiDatabasePersistor
         
-        //[<Test>]    
+        [<Test>]    
         member x.TestSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             DomainTestCode.CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithScalarProperties() = DomainTestCode.CanUpdatePersistentObjectWithScalarProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithReferenceProperties() = DomainTestCode.CanUpdatePersistentObjectWithReferenceProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithReferencePropertiesDoFixup() = 
             DomainTestCode.CanUpdatePersistentObjectWithReferencePropertiesDoFixup multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithCollectionProperties() = DomainTestCode.CanUpdatePersistentObjectWithCollectionProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithCollectionPropertiesDoFixup() = 
             DomainTestCode.CanUpdatePersistentObjectWithCollectionPropertiesDoFixup multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestNavigateReferences() = DomainTestCode.CanNavigateReferences multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt() = 
             DomainTestCode.CanUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithScalarPropertiesIgnore() = 
             DomainTestCode.CanUpdatePersistentObjectWithScalarPropertiesIgnore multiDatabasePersistor
         
-        //[<Test>]        
+        [<Test>]        
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndReattempt() = 
             DomainTestCode.CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt multiDatabasePersistor
         
-        //[<Test>]        
+        [<Test>]        
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndIgnore() = 
             DomainTestCode.CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore multiDatabasePersistor
         
-        //[<Test>]        
+        [<Test>]        
         member x.TestPersistingPersistedCalledForCreateInstance() = DomainTestCode.CanPersistingPersistedCalledForCreateInstance multiDatabasePersistor
         
-        //[<Test>]        
+        [<Test>]        
         member x.TestPersistingPersistedCalledForCreateInstanceWithReference() = 
             DomainTestCode.CanPersistingPersistedCalledForCreateInstanceWithReference multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatingUpdatedCalledForChange() = DomainTestCode.CanUpdatingUpdatedCalledForChange multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetKeyForType() = DomainTestCode.CanGetKeyForType multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetKeysForType() = DomainTestCode.CanGetKeysForType multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestContainerInjectionCalledForNewInstance() = DomainTestCode.CanContainerInjectionCalledForNewInstance multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestContainerInjectionCalledForGetInstance() = DomainTestCode.CanContainerInjectionCalledForGetInstance(resetPersistor multiDatabasePersistor)
         
-        //[<Test>]                
+        [<Test>]                
         member x.TestCreateManyToMany() = DomainTestCode.CanCreateManyToMany multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanUpdatePersistentObjectWithScalarPropertiesAbort() = 
             DomainTestCode.CanUpdatePersistentObjectWithScalarPropertiesAbort multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithReferencePropertiesAbort() = 
             DomainTestCode.CanUpdatePersistentObjectWithReferencePropertiesAbort multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithCollectionPropertiesAbort() = 
             DomainTestCode.CanUpdatePersistentObjectWithCollectionPropertiesAbort multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestRemoteResolve() = DomainTestCode.CanRemoteResolve(resetPersistor multiDatabasePersistor)
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForCollection() = DomainCanGetContextForCollection multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForNonGenericCollection() = DomainCanGetContextForNonGenericCollection multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForArray() = DomainCanGetContextForArray multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForType() = DomainCanGetContextForType multiDatabasePersistor
         
         // tests from codeonly 
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyCreateEntityPersistor() = CodeOnlyTestCode.CanCreateEntityPersistor multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetInstancesGeneric() = CodeOnlyTestCode.CanGetInstancesGeneric multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetInstancesByType() = CodeOnlyTestCode.CanGetInstancesByType multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetInstancesIsProxy() = CodeOnlyTestCode.CanGetInstancesIsProxy multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetObjectBySingleKey() = CodeOnlyTestCode.CanGetObjectBySingleKey multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyCreateTransientObject() = CodeOnlyTestCode.CanCreateTransientObject multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlySaveTransientObjectWithScalarProperties() = CodeOnlyTestCode.CanSaveTransientObjectWithScalarProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlySaveTransientObjectWithScalarPropertiesErrorAndReattempt() = 
             CodeOnlyTestCode.CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlySaveTransientObjectWithScalarPropertiesErrorAndIgnore() = 
             CodeOnlyTestCode.CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyNavigateReferences() = CodeOnlyTestCode.CanNavigateReferences multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlySaveTransientObjectWithPersistentReferenceProperty() = 
             CodeOnlyTestCode.CanSaveTransientObjectWithPersistentReferenceProperty multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlySaveTransientObjectWithTransientReferenceProperty() = 
             CodeOnlyTestCode.CanSaveTransientObjectWithTransientReferenceProperty multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyUpdatePersistentObjectWithScalarProperties() = 
             CodeOnlyTestCode.CanUpdatePersistentObjectWithScalarProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyUpdatePersistentObjectWithReferenceProperties() = 
             CodeOnlyTestCode.CanUpdatePersistentObjectWithReferenceProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyUpdatePersistentObjectWithCollectionProperties() = 
             CodeOnlyTestCode.CanUpdatePersistentObjectWithCollectionProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyPersistingPersistedCalledForCreateInstance() = 
             CodeOnlyTestCode.CanPersistingPersistedCalledForCreateInstance multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyPersistingPersistedCalledForCreateInstanceWithReference() = 
             CodeOnlyTestCode.CanPersistingPersistedCalledForCreateInstanceWithCollection multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyUpdatingUpdatedCalledForChange() = CodeOnlyTestCode.CanUpdatingUpdatedCalledForChange multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetKeyForType() = CodeOnlyTestCode.CanGetKeyForType multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyCreateDomesticSubclass() = CodeOnlyTestCode.CanCreateDomesticSubclass multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyCreateInternationalSubclass() = CodeOnlyTestCode.CanCreateInternationalSubclass multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyCreateBaseClass() = CodeOnlyTestCode.CanCreateBaseClass multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetBaseClassGeneric() = CodeOnlyTestCode.CanGetBaseClassGeneric multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetBaseClassByType() = CodeOnlyTestCode.CanGetBaseClassByType multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetDomesticSubclassClassGeneric() = CodeOnlyTestCode.CanGetDomesticSubclassClassGeneric multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetInternationalSubclassClassGeneric() = CodeOnlyTestCode.CanGetInternationalSubclassClassGeneric multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetDomesticSubclassClassByType() = CodeOnlyTestCode.CanGetDomesticSubclassClassByType multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetInternationalSubclassClassByType() = CodeOnlyTestCode.CanGetInternationalSubclassClassByType multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyNavigateToSubclass() = CodeOnlyTestCode.CanNavigateToSubclass multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetClassWithNonPersistedBase() = CodeOnlyTestCode.CanGetClassWithNonPersistedBase multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyGetNonPersistedClass() = CodeOnlyTestCode.CanGetNonPersistedClass multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyContainerInjectionCalledForNewInstance() = CodeOnlyTestCode.CanContainerInjectionCalledForNewInstance multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyContainerInjectionCalledForGetInstance() = CodeOnlyTestCode.CanContainerInjectionCalledForGetInstance multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlySaveTransientDomesticSubclasstWithScalarProperties() = 
             CodeOnlyTestCode.CanSaveTransientDomesticSubclasstWithScalarProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlySaveTransientIntlSubclassWithScalarProperties() = 
             CodeOnlyTestCode.CanSaveTransientIntlSubclassWithScalarProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyUpdatePersistentSubclassWithScalarProperties() = 
             CodeOnlyTestCode.CanUpdatePersistentSubclassWithScalarProperties multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlySaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             CodeOnlyTestCode.CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlySaveTransientObjectWithTransientCollection() = 
             CodeOnlyTestCode.CanSaveTransientObjectWithTransientCollection multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyUpdatePersistentObjectWithScalarPropertiesAbort() = 
             CodeOnlyTestCode.CanUpdatePersistentObjectWithScalarPropertiesAbort multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyUpdatePersistentObjectWithReferencePropertiesAbort() = 
             CodeOnlyTestCode.CanUpdatePersistentObjectWithReferencePropertiesAbort multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyCanGetContextForCollection() = CodeOnlyCanGetContextForCollection multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyCanGetContextForNonGenericCollection() = CodeOnlyCanGetContextForNonGenericCollection multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyCanGetContextForArray() = CodeOnlyCanGetContextForArray multiDatabasePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCodeOnlyCanGetContextForType() = CodeOnlyCanGetContextForType multiDatabasePersistor
     end

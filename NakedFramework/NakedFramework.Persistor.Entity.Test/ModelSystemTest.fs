@@ -75,54 +75,54 @@ type ModelSystemTests() =
          |> Seq.max)
         + 1
     
-    //[<Test>]
+    [<Test>]
     member x.GetService() = 
         let service = x.NakedFramework.ServicesManager.GetService("SimpleRepository-Person")
         Assert.IsNotNull(service.Object)
     
-    //[<Test>]
+    [<Test>]
     member x.GetCollectionDirectly() = 
         let pp = x.NakedFramework.Persistor.Instances<Person>()
         Assert.Greater(pp |> Seq.length, 0)
     
-    //[<Test>]
+    [<Test>]
     member x.GetInstanceDirectly() = 
         let sr = x.GetPersonDomainObject()
         IsNotNullAndPersistent sr x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.GetAggregateInstance() = 
         let n = x.GetPersonDomainObject().ComplexProperty
         IsNotNullAndPersistentAggregate n x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.GetTransientAggregateInstance() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
         let co = p.ComplexProperty
         IsNotNullAndTransientAggregate co x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.DirectlyLoadedObjectHasContainer() = 
         let p = x.GetPersonDomainObject()
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
     
-    //[<Test>]
+    [<Test>]
     member x.ComplexObjectHasContainer() = 
         let p = x.GetPersonDomainObject()
         let pr = p.ComplexProperty
         Assert.IsNotNull(pr.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, pr.ExposeContainerForTest())
     
-    //[<Test>]
+    [<Test>]
     member x.ComplexObjectHasParent() = 
         let p = x.GetPersonDomainObject()
         let pr = p.ComplexProperty
         Assert.IsNotNull(pr.Parent)
         Assert.IsInstanceOf(typeof<Person>, pr.Parent)
     
-    //[<Test>]
+    [<Test>]
     member x.CreateNewObjectWithComplexType() = 
         let pNo = x.CreatePerson()
         save pNo x.NakedFramework
@@ -131,7 +131,7 @@ type ModelSystemTests() =
         IsNotNullAndPersistentAggregate p.ComplexProperty x.NakedFramework
         IsNotNullAndPersistentAggregate p.ComplexProperty_1 x.NakedFramework
     
-    //[<Test>]
+    [<Test>]
     member x.CreatedObjectCallsCreatedPersistingPersisted() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
@@ -151,7 +151,7 @@ type ModelSystemTests() =
         Assert.AreEqual(0, findValue "Persisting", "persisting")
         Assert.AreEqual(1, findValue "Persisted", "persisted")
     
-    //[<Test>]
+    [<Test>]
     member x.ComplexTypeObjectCallsCreated() = 
         let pNo = x.CreatePerson()
         save pNo x.NakedFramework
@@ -163,7 +163,7 @@ type ModelSystemTests() =
             entry.Value
         Assert.AreEqual(1, findValue "Created", "created")
     
-    //[<Test>]
+    [<Test>]
     member x.CreatedObjectHasContainer() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
@@ -174,7 +174,7 @@ type ModelSystemTests() =
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
     
-    //[<Test>]
+    [<Test>]
     member x.CreatedComplexObjectHasContainer() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
@@ -186,7 +186,7 @@ type ModelSystemTests() =
         Assert.IsNotNull(co.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
     
-    //[<Test>]
+    [<Test>]
     member x.CreatedComplexObjectHasParent() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
@@ -198,7 +198,7 @@ type ModelSystemTests() =
         Assert.IsNotNull(co.Parent)
         Assert.IsInstanceOf(typeof<Person>, co.Parent)
     
-    //[<Test>]
+    [<Test>]
     member x.ComplexTypeObjectCallsPersistingPersisted() = 
         let pNo = x.CreatePerson()
         save pNo x.NakedFramework
@@ -212,7 +212,7 @@ type ModelSystemTests() =
         Assert.AreEqual(1, findValue "Persisted", "persisted")
     
    
-    //[<Test>]
+    [<Test>]
     member x.ComplexTypeObjectCallsLoadingLoaded() = 
         x.NakedFramework.TransactionManager.StartTransaction()
         let p = x.GetPersonDomainObject()
@@ -226,14 +226,14 @@ type ModelSystemTests() =
         Assert.AreEqual(1, findValue "Loading", "loading")
         Assert.AreEqual(1, findValue "Loaded", "loaded")
     
-    //[<Test>]
+    [<Test>]
     member x.LazyIntrospectionOfInheritedType() = 
         // this test is to cover bug #937
         let p = x.GetPersonDomainObject()
         let f = p.Food |> Seq.head
         Assert.IsInstanceOf(typeof<Fruit>, f)
     
-    //[<Test>]
+    [<Test>]
     member x.SavePersonWithInheritedTypeProperty() = 
         let ctx = x.NakedFramework
         
@@ -259,7 +259,7 @@ type ModelSystemTests() =
             p.Food.Add fruit
         save (SystemTestCode.CreateAndSetup<Person> setter ctx) ctx
     
-    //[<Test>]
+    [<Test>]
     member x.AddToCollectionNotifiesUI() = 
         let ctx = x.NakedFramework
         

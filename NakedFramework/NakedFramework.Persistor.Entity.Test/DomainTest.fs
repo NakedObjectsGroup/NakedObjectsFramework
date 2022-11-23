@@ -52,158 +52,158 @@ type DomainTests() =
             | :? EF6ObjectStore as eos -> eos.SetupContexts()
             | _ -> ()
         
-        //[<Test>]
+        [<Test>]
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetInstancesGeneric() = CanGetInstancesGeneric x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetInstancesByType() = CanGetInstancesByType x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetInstancesIsProxy() = CanGetInstancesIsProxy x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetManyToOneReference() = CanGetManyToOneReference x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetObjectBySingleKey() = CanGetObjectBySingleKey x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetObjectByMultiKey() = CanGetObjectByMultiKey x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetObjectByStringKey() = CanGetObjectByStringKey x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetObjectByDateKey() = CanGetObjectByDateKey x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCreateTransientObject() = DomainTestCode.CanCreateTransientObject x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestSaveTransientObjectWithScalarProperties() = CanSaveTransientObjectWithScalarProperties x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestSaveTransientObjectWithPersistentReferenceProperty() = CanSaveTransientObjectWithPersistentReferenceProperty x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanSaveTransientObjectWithPersistentReferencePropertyInSeperateTransaction() = 
             CanSaveTransientObjectWithPersistentReferencePropertyInSeperateTransaction x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestSaveTransientObjectWithTransientReferenceProperty() = CanSaveTransientObjectWithTransientReferenceProperty x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithScalarProperties() = CanUpdatePersistentObjectWithScalarProperties x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithReferenceProperties() = CanUpdatePersistentObjectWithReferenceProperties x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithReferencePropertiesDoFixup() = CanUpdatePersistentObjectWithReferencePropertiesDoFixup x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithCollectionProperties() = CanUpdatePersistentObjectWithCollectionProperties x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithCollectionPropertiesDoFixup() = CanUpdatePersistentObjectWithCollectionPropertiesDoFixup x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestNavigateReferences() = CanNavigateReferences x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt() = CanUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithScalarPropertiesIgnore() = CanUpdatePersistentObjectWithScalarPropertiesIgnore x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndReattempt() = CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndIgnore() = CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestPersistingPersistedCalledForCreateInstance() = CanPersistingPersistedCalledForCreateInstance x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestPersistingPersistedCalledForCreateInstanceWithReference() = CanPersistingPersistedCalledForCreateInstanceWithReference x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatingUpdatedCalledForChange() = CanUpdatingUpdatedCalledForChange x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetKeyForType() = CanGetKeyForType x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestGetKeysForType() = CanGetKeysForType x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestContainerInjectionCalledForNewInstance() = CanContainerInjectionCalledForNewInstance x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestContainerInjectionCalledForGetInstance() = CanContainerInjectionCalledForGetInstance(resetPersistor x.persistor)
         
-        //[<Test>]
+        [<Test>]
         member x.TestCreateManyToMany() = CanCreateManyToMany x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanUpdatePersistentObjectWithScalarPropertiesAbort() = CanUpdatePersistentObjectWithScalarPropertiesAbort x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithReferencePropertiesAbort() = CanUpdatePersistentObjectWithReferencePropertiesAbort x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestUpdatePersistentObjectWithCollectionPropertiesAbort() = CanUpdatePersistentObjectWithCollectionPropertiesAbort x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestRemoteResolve() = CanRemoteResolve(resetPersistor x.persistor)
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForCollection() = DomainCanGetContextForCollection x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForNonGenericCollection() = DomainCanGetContextForNonGenericCollection x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForArray() = DomainCanGetContextForArray x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.TestCanGetContextForType() = DomainCanGetContextForType x.persistor
         
-        //[<Test>]        
+        [<Test>]        
         member x.TestCanDetectConcurrency() = CanDetectConcurrency x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.DataUpdateNoCustomOnPersistingError() = DataUpdateNoCustomOnPersistingError x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.DataUpdateNoCustomOnUpdatingError() = DataUpdateNoCustomOnUpdatingError x.persistor
         
-        //[<Test>]        
+        [<Test>]        
         member x.ConcurrencyNoCustomOnUpdatingError() = ConcurrencyNoCustomOnUpdatingError x.persistor
         
-        //[<Test>]       
+        [<Test>]       
         member x.OverWriteChangesOptionRefreshesObject() = OverWriteChangesOptionRefreshesObject x.overwritePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.AppendOnlyOptionDoesNotRefreshObject() = AppendOnlyOptionDoesNotRefreshObject x.persistor
         
-        //[<Test>]        
+        [<Test>]        
         member x.OverWriteChangesOptionRefreshesObjectNonGenericGet() = OverWriteChangesOptionRefreshesObjectNonGenericGet x.overwritePersistor
         
-        //[<Test>]
+        [<Test>]
         member x.AppendOnlyOptionDoesNotRefreshObjectNonGenericGet() = AppendOnlyOptionDoesNotRefreshObjectNonGenericGet x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.ExplicitOverwriteChangesRefreshesObject() = ExplicitOverwriteChangesRefreshesObject x.persistor
         
-        //[<Test>]
+        [<Test>]
         member x.GetKeysReturnsKey() = GetKeysReturnsKey x.persistor
     end
