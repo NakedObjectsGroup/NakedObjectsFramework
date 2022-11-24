@@ -19,14 +19,14 @@ public class ServiceTestEFCore : ServiceTestEF6 {
 
     protected override void RegisterTypes(IServiceCollection services) {
         base.RegisterTypes(services);
-        services.AddDbContext<DbContext, EFCoreMenuDbContext>();
+        services.AddDbContext<DbContext, EFCoreServiceDbContext>();
     }
 
     protected override void CleanUpDatabase() {
-        new EFCoreMenuDbContext().Delete();
+        new EFCoreServiceDbContext().Delete();
     }
 
     protected override void CreateDatabase() {
-        new EFCoreMenuDbContext().Create();
+        new EFCoreServiceDbContext().Create();
     }
 }

@@ -140,6 +140,15 @@ public class EFCoreMenuDbContext : EFCoreTestDbContext {
     public void Create() => Database.EnsureCreated();
 }
 
+public class EFCoreServiceDbContext : EFCoreTestDbContext {
+    public EFCoreServiceDbContext() : base(Constants.CsService) { }
+    public void Delete() => Database.EnsureDeleted();
+
+    public void Create() => Database.EnsureCreated();
+}
+
+
+
 public class EFCoreObjectDbContext : EFCoreTestDbContext {
     public EFCoreObjectDbContext() : base(Constants.CsObject) { }
     public void Delete() => Database.EnsureDeleted();

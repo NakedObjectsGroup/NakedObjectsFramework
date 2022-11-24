@@ -22,6 +22,7 @@ public static class Constants {
 #endif
 
     public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;";
+    public static readonly string CsService = @$"Data Source={Server};Initial Catalog={"ServiceRestTests"};Integrated Security=True;";
     public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;";
     public static readonly string CsAuth = @$"Data Source={Server};Initial Catalog={"AuthRestTests"};Integrated Security=True;";
 }
@@ -119,6 +120,12 @@ public class MenuDbContext : TestDbContext {
     public MenuDbContext() : base(Constants.CsMenu) { }
     public static void Delete() => Database.Delete(Constants.CsMenu);
     protected override void OnModelCreating(DbModelBuilder modelBuilder) => OnModelCreating<MenuDbContext>(modelBuilder);
+}
+
+public class ServiceDbContext : TestDbContext {
+    public ServiceDbContext() : base(Constants.CsMenu) { }
+    public static void Delete() => Database.Delete(Constants.CsService);
+    protected override void OnModelCreating(DbModelBuilder modelBuilder) => OnModelCreating<ServiceDbContext>(modelBuilder);
 }
 
 public class ObjectDbContext : TestDbContext {
