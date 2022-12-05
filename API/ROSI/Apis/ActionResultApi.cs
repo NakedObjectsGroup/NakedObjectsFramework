@@ -13,18 +13,12 @@ public static class ActionResultApi {
     }
 
 
-    public static IEnumerable<Link> GetLinks(this ActionResult actionResultRepresentation) => actionResultRepresentation.Wrapped["links"].Select(t => new Link(t as JObject));
+    public static IEnumerable<Link> GetLinks(this ActionResult actionResultRepresentation) => actionResultRepresentation.Wrapped["links"].Select(t => new Link((JObject)t));
 
     public static ResultType GetResultType(this ActionResult actionResultRepresentation) => Enum.Parse<ResultType>(actionResultRepresentation.Wrapped["resultType"].ToString());
 
-    public static JObject GetResultInner(this ActionResult actionResultRepresentation) => actionResultRepresentation.Wrapped["result"] as JObject;
+    public static T GetScalarValue<T>(this ActionResult resultRepresentation) => resultRepresentation.Wrapped["result"].Value<T>();
 
-    public static object GetResult(this ActionResult actionResultRepresentation) =>
-        actionResultRepresentation.GetResultType() switch {
-            ResultType.@void => null,
-            ResultType.scalar => null,
-            ResultType.list => null,
-            ResultType.@object => null,
-        };
+    public static DomainObject GetObjectValue(this ActionResult resultRepresentation) => new DomainObject((JObject)resultRepresentation.Wrapped["result"]);
 
 }

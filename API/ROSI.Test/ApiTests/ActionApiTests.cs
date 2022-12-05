@@ -26,7 +26,7 @@ public class ActionApiTests : ApiTests
     }
 
     [Test]
-    public void TestInvokeNoParmAction()
+    public void TestInvokeNoParmReturnsObjectAction()
     {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsObject));
@@ -34,5 +34,9 @@ public class ActionApiTests : ApiTests
         var ar = action.Invoke();
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+
+        var o = ar.GetObjectValue();
+
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
     }
 }
