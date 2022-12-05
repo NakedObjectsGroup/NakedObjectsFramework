@@ -35,8 +35,23 @@ public class ActionApiTests : ApiTests
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
-        var o = ar.GetObjectValue();
+        var o = ar.GetObject();
 
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeNoParmReturnsListAction()
+    {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsList));
+
+        var ar = action.Invoke();
+
+        Assert.AreEqual(ActionResultApi.ResultType.list, ar.GetResultType());
+
+        var l = ar.GetList().GetValue();
+
+        Assert.AreEqual(1, l.Count());
     }
 }

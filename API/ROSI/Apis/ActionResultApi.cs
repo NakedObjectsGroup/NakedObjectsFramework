@@ -19,6 +19,8 @@ public static class ActionResultApi {
 
     public static T GetScalarValue<T>(this ActionResult resultRepresentation) => resultRepresentation.Wrapped["result"].Value<T>();
 
-    public static DomainObject GetObjectValue(this ActionResult resultRepresentation) => new DomainObject((JObject)resultRepresentation.Wrapped["result"]);
+    public static DomainObject GetObject(this ActionResult resultRepresentation) => new DomainObject((JObject)resultRepresentation.Wrapped["result"]);
+
+    public static List GetList(this ActionResult resultRepresentation) => new List((JObject)resultRepresentation.Wrapped["result"]);
 
 }

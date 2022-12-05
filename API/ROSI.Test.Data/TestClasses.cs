@@ -36,6 +36,10 @@ public class ClassWithActions {
     public int Id { get; init; }
 
     public IDomainObjectContainer Container { private get; set; }
+
     [QueryOnly]
     public Class ActionNoParmsReturnsObject() => Container.Instances<Class>().FirstOrDefault();
+
+    [QueryOnly]
+    public IQueryable<Class> ActionNoParmsReturnsList() => Container.Instances<Class>();
 }
