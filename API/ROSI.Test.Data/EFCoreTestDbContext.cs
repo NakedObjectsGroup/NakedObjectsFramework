@@ -49,6 +49,7 @@ public abstract class EFCoreTestDbContext : DbContext {
 
     private static void Seed(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Class>().HasData(new Class { Id = 1, Property1 = "One", Property2 = 2 });
+        modelBuilder.Entity<Class>().HasData(new Class { Id = 2, Property1 = "Three", Property2 = 4 });
         modelBuilder.Entity<ClassWithActions>().HasData(new ClassWithActions { Id = 1});
     }
 }

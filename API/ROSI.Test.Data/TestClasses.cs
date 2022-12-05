@@ -42,4 +42,15 @@ public class ClassWithActions {
 
     [QueryOnly]
     public IQueryable<Class> ActionNoParmsReturnsList() => Container.Instances<Class>();
+
+    [QueryOnly]
+    public void ActionNoParmsReturnsVoid() { }
+
+    [QueryOnly]
+    public Class ActionWithValueParmsReturnsObject(int index, string str) => Container.Instances<Class>().FirstOrDefault();
+
+    [QueryOnly]
+    public Class ActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
+
+  
 }

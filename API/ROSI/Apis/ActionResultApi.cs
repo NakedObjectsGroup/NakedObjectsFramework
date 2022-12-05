@@ -12,7 +12,6 @@ public static class ActionResultApi {
         @object
     }
 
-
     public static IEnumerable<Link> GetLinks(this ActionResult actionResultRepresentation) => actionResultRepresentation.Wrapped["links"].Select(t => new Link((JObject)t));
 
     public static ResultType GetResultType(this ActionResult actionResultRepresentation) => Enum.Parse<ResultType>(actionResultRepresentation.Wrapped["resultType"].ToString());

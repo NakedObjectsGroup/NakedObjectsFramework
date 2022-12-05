@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Reflection.Metadata;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Web;
+using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
@@ -73,20 +74,45 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
-    private static JObject GetHrefValue(Link l) => new JObject(new JProperty("href", l.GetHref()));
+    private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));
 
     private static object GetActualValue(object val) => val switch {
         Link l => GetHrefValue(l),
         DomainObject o => GetHrefValue(o.GetLinks().GetSelfLink()),
-        _ => val,
+        _ => val
     };
+
+    public static string ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
+        var uri = invokeLink.GetHref();
+        var properties = invokeLink.GetArguments().Properties();
+        var parameters = new Dictionary<string, string>();
+
+        var argValues = properties.Zip(pp);
+
+        foreach (var (p, v) in argValues) {
+            parameters[p.Name] = v.ToString();
+        }
+
+        var url = QueryHelpers.AddQueryString(uri.ToString(), parameters);
+
+        return SendAndRead(options, HttpMethod.Get, url);
+    }
 
     public static string Execute(Action action, InvokeOptions options, params object[] pp) {
         var invokeLink = action.GetLinks().GetInvokeLink();
-        var uri = invokeLink.GetHref();
         var method = invokeLink.GetMethod();
-        var arguments = invokeLink.GetArguments();
-        var properties = arguments.Properties();
+
+        if (method == HttpMethod.Get && !pp.OfType<Link>().Any() && !pp.OfType<DomainObject>().Any()) {
+            return ExecuteWithSimpleArguments(invokeLink, options, pp);
+        }
+
+        return ExecuteWithFormalArguments(invokeLink, options, pp, method);
+    }
+
+    private static string ExecuteWithFormalArguments(Link invokeLink, InvokeOptions options, object[] pp, HttpMethod method) {
+        var uri = invokeLink.GetHref();
+
+        var properties = invokeLink.GetArguments().Properties();
         var parameters = new JObject();
 
         var argValues = properties.Zip(pp);
@@ -96,8 +122,20 @@ public static class HttpHelpers {
             parameters.Add(new JProperty(p.Name, new JObject(new JProperty("value", av))));
         }
 
-        using var content = new StringContent(parameters.ToString(Formatting.None), Encoding.UTF8, "application/json");
-        var request = CreateMessage(method, uri.ToString(), options, content);
+        var parameterString = parameters.ToString(Formatting.None);
+        var url = uri.ToString();
+
+        if (method == HttpMethod.Get || method == HttpMethod.Delete) {
+            url = $"{url}?{HttpUtility.UrlEncode(parameterString)}";
+        }
+
+        using var content = method == HttpMethod.Post || method == HttpMethod.Put ?   new StringContent(parameterString, Encoding.UTF8, "application/json") : null;
+
+        return SendAndRead(options, method, url, content);
+    }
+
+    private static string SendAndRead(InvokeOptions options, HttpMethod method, string url, StringContent content = null) {
+        var request = CreateMessage(method, url, options, content);
 
         using var response = Client.SendAsync(request).Result;
 

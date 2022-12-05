@@ -4,8 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using Newtonsoft.Json.Linq;
@@ -28,10 +30,13 @@ namespace ROSI.Test.Helpers
             var key = segments[3].TrimEnd('/');
             var action = segments[5].TrimEnd('/');
 
-            var am = ModelBinderUtils.CreateArgumentMap(new JObject(), true);
+            var am = string.IsNullOrEmpty(url.Query)
+                ? ModelBinderUtils.CreateArgumentMap(new JObject(), true)
+                : (request.Method == HttpMethod.Get)
+                    ? ModelBinderUtils.CreateSimpleArgumentMap(url.Query)
+                    : ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(url.Query)), true);
 
             var ar = Api.GetInvoke(obj, key, action, am);
-
 
             var (json, sc, _) = TestHelpers.ReadActionResult(ar, Api.ControllerContext.HttpContext);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
