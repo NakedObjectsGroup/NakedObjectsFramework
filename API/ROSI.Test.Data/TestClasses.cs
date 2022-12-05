@@ -7,6 +7,8 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using NakedObjects;
 
 namespace ROSI.Test.Data;
 
@@ -27,4 +29,13 @@ public class Class {
     public Class Action1() => this;
 
     public Class Action2() => this;
+}
+
+public class ClassWithActions {
+    [Key]
+    public int Id { get; init; }
+
+    public IDomainObjectContainer Container { private get; set; }
+    [QueryOnly]
+    public Class ActionNoParmsReturnsObject() => Container.Instances<Class>().FirstOrDefault();
 }

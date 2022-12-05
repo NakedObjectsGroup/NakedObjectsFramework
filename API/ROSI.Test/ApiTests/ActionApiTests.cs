@@ -18,10 +18,21 @@ public class ActionApiTests : ApiTests
     public void TestGetLinks()
     {
         var parsedResult = GetObject(FullName<Class>(), "1");
-        var action = parsedResult.GetAction("Action1");
+        var action = parsedResult.GetAction(nameof(Class.Action1));
 
         var links = action.GetLinks();
 
         Assert.AreEqual(2, links.Count());
+    }
+
+    [Test]
+    public void TestInvokeNoParmAction()
+    {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsObject));
+
+        var ar = action.Invoke();
+
+        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
     }
 }

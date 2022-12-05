@@ -7,6 +7,7 @@
 
 using System;
 using System.Net;
+using System.Net.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using ROSI.Helpers;
 using ROSI.Records;
 using ROSI.Test.Data;
 using ROSI.Test.Helpers;
@@ -29,7 +31,8 @@ public abstract class ApiTests : AcceptanceTestCase
     protected override Type[] Services { get; } = { typeof(SimpleService) };
 
     protected override Type[] ObjectTypes { get; } = {
-        typeof(Class)
+        typeof(Class),
+        typeof(ClassWithActions)
     };
 
     protected override bool EnforceProxies => false;
@@ -72,7 +75,10 @@ public abstract class ApiTests : AcceptanceTestCase
     }
 
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        StartTest();
+        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(this.Api()));
+    }
 
     [TearDown]
     public void TearDown() => EndTest();

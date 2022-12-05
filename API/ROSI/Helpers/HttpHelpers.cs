@@ -12,7 +12,7 @@ using Action = ROSI.Records.Action;
 namespace ROSI.Helpers;
 
 public static class HttpHelpers {
-    private static readonly HttpClient Client = new();
+    public static HttpClient Client { private get; set; } = new();
 
     public static string GlobalToken { get; set; } = null;
 

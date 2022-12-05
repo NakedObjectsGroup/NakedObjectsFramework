@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
+using ROSI.Helpers;
 using ROSI.Records;
 
 namespace ROSI.Test.ApiTests;
 
 internal class EndToEndTests {
+    [SetUp]
+    public void SetUp() {
+        HttpHelpers.Client = new HttpClient();
+    }
+
     [Test]
     public void TestGetObject() {
         var jo = DomainObjectApi.GetObject(new Uri("https://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Product/373"));
@@ -32,7 +39,7 @@ internal class EndToEndTests {
 
         var action = jo.GetAction("EditStyle");
 
-        var ar = action.Invoke(new InvokeOptions() {Tag = tag}, "U");
+        var ar = action.Invoke(new InvokeOptions { Tag = tag }, "U");
 
         Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
     }
@@ -45,10 +52,9 @@ internal class EndToEndTests {
         var p = DomainObjectApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"));
         Assert.IsNotNull(p);
 
-
         var action = soh.GetAction("AddNewDetail");
 
-        var ar = action.Invoke(new InvokeOptions() {Tag = tag}, p, 1);
+        var ar = action.Invoke(new InvokeOptions { Tag = tag }, p, 1);
 
         Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
     }
@@ -62,10 +68,9 @@ internal class EndToEndTests {
         Assert.IsNotNull(p);
         var l = p.GetLinks().GetSelfLink();
 
-
         var action = soh.GetAction("AddNewDetail");
 
-        var ar = action.Invoke(new InvokeOptions() {Tag = tag}, l, 1);
+        var ar = action.Invoke(new InvokeOptions { Tag = tag }, l, 1);
 
         Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
     }
