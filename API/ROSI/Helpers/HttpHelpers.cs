@@ -1,9 +1,12 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection.Metadata;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
+using ROSI.Records;
 using Action = ROSI.Records.Action;
 
 namespace ROSI.Helpers;
@@ -70,21 +73,31 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
+    private static JObject GetHrefValue(Link l) => new JObject(new JProperty("href", l.GetHref()));
+
+    private static object GetActualValue(object val) => val switch {
+        Link l => GetHrefValue(l),
+        DomainObject o => GetHrefValue(o.GetLinks().GetSelfLink()),
+        _ => val,
+    };
+
+
     public static string Execute(Action action, EntityTagHeaderValue tag, string token = null, params object[] pp) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var uri = invokeLink.GetHref();
         var method = invokeLink.GetMethod();
         var arguments = invokeLink.GetArguments();
         var properties = arguments.Properties();
+        var parameters = new JObject();
 
         var argValues = properties.Zip(pp);
 
         foreach (var (p, v) in argValues) {
-            var t = (JValue)p.Value["value"];
-            t.Value = v;
+            var av = GetActualValue(v);
+            parameters.Add(new JProperty(p.Name, new JObject(new JProperty("value", av))));
         }
 
-        using var content = new StringContent(arguments.ToString(Formatting.None), Encoding.UTF8, "application/json");
+        using var content = new StringContent(parameters.ToString(Formatting.None), Encoding.UTF8, "application/json");
         var request = CreateMessage(method, uri.ToString(), token, tag, content);
 
         using var response = Client.SendAsync(request).Result;

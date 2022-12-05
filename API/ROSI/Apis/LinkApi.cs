@@ -16,9 +16,16 @@ public static class LinkApi {
 
     public static string GetRel(this Link linkRepresentation) => linkRepresentation.GetLinkPropertyValue("rel");
 
-    public static Link GetLinkOfRel(this IEnumerable<Link> linkRepresentations, RelApi.Rels rel) =>
+    public static Link GetLinkOfRoRel(this IEnumerable<Link> linkRepresentations, RelApi.Rels rel) =>
         linkRepresentations.Single(l => l.GetRel().GetRelType() == rel);
 
+    public static Link GetLinkOfRel(this IEnumerable<Link> linkRepresentations, string rel) =>
+        linkRepresentations.Single(l => l.GetRel() == rel);
+
     public static Link GetInvokeLink(this IEnumerable<Link> linkRepresentations) =>
-        linkRepresentations.GetLinkOfRel(RelApi.Rels.invoke);
+        linkRepresentations.GetLinkOfRoRel(RelApi.Rels.invoke);
+
+    public static Link GetSelfLink(this IEnumerable<Link> linkRepresentations) =>
+        linkRepresentations.GetLinkOfRel("self");
+
 }
