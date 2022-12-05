@@ -1,39 +1,29 @@
 ﻿using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using ROSI.Helpers;
+using ROSI.Records;
+using Action = ROSI.Records.Action;
 
 namespace ROSI.Apis;
 
-
 public static class ObjectApi {
-    public static JObject GetObject(Uri uri, string token = null) {
+    private static IEnumerable<JProperty> GetMembersOfType(this DomainObject objectRepresentation, string ofType) =>
+        objectRepresentation.GetMembers().Where(t => t.Value["memberType"]?.Value<string>() == ofType);
+
+    private static JProperty GetMemberOfType(this DomainObject objectRepresentation, string ofType, string memberName) => objectRepresentation.GetMembersOfType(ofType).Single(t => t.Name == memberName);
+
+    public static DomainObject GetObject(Uri uri, string token = null) {
         var json = HttpHelpers.Execute(uri, token);
-        return JObject.Parse(json);
+        return new DomainObject(JObject.Parse(json));
     }
 
-    public static (JObject, EntityTagHeaderValue tag) GetObjectWithTag(Uri uri, string token = null) {
+    public static (DomainObject, EntityTagHeaderValue tag) GetObjectWithTag(Uri uri, string token = null) {
         var (json, tag) = HttpHelpers.ExecuteWithTag(uri, token);
-        return (JObject.Parse(json), tag);
+        return (new DomainObject(JObject.Parse(json)), tag);
     }
 
-    public static JObject InvokeAction(this JObject objectRepresentation, string actionName) {
-        var action = objectRepresentation.GetAction(actionName);
-        var json = HttpHelpers.Execute(action);
-        return JObject.Parse(json);
-    }
-
-    public static T GetPropertyValue<T>(this JObject objectRepresentation, string propertyName) {
-        var valueObject = objectRepresentation.GetProperty(propertyName).Value as JObject;
-
-        if (valueObject is null) {
-            throw new Exception("No such property value");
-        }
-
-        return valueObject["value"]!.Value<T>();
-    }
-
-    public static IEnumerable<JProperty> GetMembers(this JObject objectRepresentation) {
-        var members = objectRepresentation["members"];
+    private static IEnumerable<JProperty> GetMembers(this DomainObject objectRepresentation) {
+        var members = objectRepresentation.Wrapped["members"];
 
         if (members is null) {
             throw new Exception("No members");
@@ -42,20 +32,15 @@ public static class ObjectApi {
         return members.Cast<JProperty>().ToList();
     }
 
-    private static IEnumerable<JProperty> GetMembersOfType(this JObject objectRepresentation, string ofType) =>
-        objectRepresentation.GetMembers().Where(t => t.Value["memberType"]?.Value<string>() == ofType);
+    public static IEnumerable<Action> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType("action").Select(p => new Action(p));
 
-    public static IEnumerable<JProperty> GetActions(this JObject objectRepresentation) => objectRepresentation.GetMembersOfType("action");
+    public static IEnumerable<Collection> GetCollections(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType("collection").Select(p => new Collection(p));
 
-    public static IEnumerable<JProperty> GetCollections(this JObject objectRepresentation) => objectRepresentation.GetMembersOfType("collection");
+    public static IEnumerable<Property> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType("property").Select(p => new Property(p));
 
-    public static IEnumerable<JProperty> GetProperties(this JObject objectRepresentation) => objectRepresentation.GetMembersOfType("property");
+    public static Property GetProperty(this DomainObject objectRepresentation, string propertyName) => new(objectRepresentation.GetMemberOfType("property", propertyName));
 
-    private static JProperty GetMemberOfType(this JObject objectRepresentation, string ofType, string memberName) => objectRepresentation.GetMembersOfType(ofType).Single(t => t.Name == memberName);
+    public static Action GetAction(this DomainObject objectRepresentation, string actionName) => new(objectRepresentation.GetMemberOfType("action", actionName));
 
-    public static JProperty GetProperty(this JObject objectRepresentation, string propertyName) => objectRepresentation.GetMemberOfType("property", propertyName);
-
-    public static JProperty GetAction(this JObject objectRepresentation, string actionName) => objectRepresentation.GetMemberOfType("action", actionName);
-
-    public static JProperty GetCollection(this JObject objectRepresentation, string collectionName) => objectRepresentation.GetMemberOfType("collection", collectionName);
+    public static Collection GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType("collection", collectionName));
 }

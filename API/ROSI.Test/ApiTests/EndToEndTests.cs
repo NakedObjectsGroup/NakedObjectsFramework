@@ -9,7 +9,7 @@ internal class EndToEndTests {
     public void TestGetObject() {
         var jo = ObjectApi.GetObject(new Uri("https://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Product/373"));
         Assert.IsNotNull(jo);
-        Assert.AreEqual("373", jo["instanceId"].ToString());
+        Assert.AreEqual("373", jo.Wrapped["instanceId"].ToString());
     }
 
     [Test]

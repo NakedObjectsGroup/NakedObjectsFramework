@@ -18,6 +18,7 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using ROSI.Records;
 using ROSI.Test.Data;
 using ROSI.Test.Helpers;
 
@@ -97,13 +98,13 @@ public abstract class ApiTests : AcceptanceTestCase
         return TestHelpers.SetMockContext(api, sp);
     }
 
-    protected JObject GetObject(string type, string id)
+    protected DomainObject GetObject(string type, string id)
     {
         var api = Api().AsGet();
         var result = api.GetObject(type, id);
         var (json, sc, _) = TestHelpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        return JObject.Parse(json);
+        return new DomainObject(JObject.Parse(json));
     }
 
     protected static string FullName<T>() => typeof(T).FullName;

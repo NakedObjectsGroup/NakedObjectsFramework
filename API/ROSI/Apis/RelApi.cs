@@ -2,10 +2,8 @@
 
 namespace ROSI.Apis;
 
-public static class RelApi
-{
-    public enum Rels
-    {
+public static class RelApi {
+    public enum Rels {
         action,
         action_param,
         add_to,
@@ -36,8 +34,7 @@ public static class RelApi
         version
     }
 
-    public static Rels GetRelType(this string rel)
-    {
+    public static Rels GetRelType(this string rel) {
         var regex = new Regex(@"urn:org.restfulobjects:rels\/(\w*);.*");
         var relType = regex.Match(rel).Groups.Values.Last().Value;
 

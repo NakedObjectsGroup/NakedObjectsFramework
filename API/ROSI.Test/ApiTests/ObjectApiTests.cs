@@ -14,14 +14,6 @@ namespace ROSI.Test.ApiTests;
 
 public class ObjectApiTests : ApiTests
 {
-    [Test]
-    public void TestGetMembers()
-    {
-        var objectRep = GetObject(FullName<Class>(), "1");
-        var val = objectRep.GetMembers();
-
-        Assert.AreEqual(7, val.Count());
-    }
 
     [Test]
     public void TestGetCollections()
@@ -54,7 +46,7 @@ public class ObjectApiTests : ApiTests
     public void TestPropertyValue()
     {
         var objectRep = GetObject(FullName<Class>(), "1");
-        var val = objectRep.GetPropertyValue<string>("Property1");
+        var val = objectRep.GetProperty("Property1").GetValue<string>();
 
         Assert.AreEqual("One", val);
     }

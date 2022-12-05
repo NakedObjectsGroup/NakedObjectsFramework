@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
+using Action = ROSI.Records.Action;
 
 namespace ROSI.Helpers;
 
@@ -52,7 +53,7 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
-    public static string Execute(JProperty action, string token = null, string jsonContent = null) {
+    public static string Execute(Action action, string token = null, string jsonContent = null) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var uri = invokeLink.GetHref();
         var method = invokeLink.GetMethod();
@@ -69,7 +70,7 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
-    public static string Execute(JProperty action, EntityTagHeaderValue tag, string token = null, params object[] pp) {
+    public static string Execute(Action action, EntityTagHeaderValue tag, string token = null, params object[] pp) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var uri = invokeLink.GetHref();
         var method = invokeLink.GetMethod();

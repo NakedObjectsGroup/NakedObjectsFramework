@@ -1,24 +1,24 @@
 ﻿using Newtonsoft.Json.Linq;
+using ROSI.Records;
 
 namespace ROSI.Apis;
 
-public static class LinkApi
-{
-    public static string GetLinkPropertyValue(this JObject linkRepresentation, string pName) => ((JValue)linkRepresentation[pName]).Value.ToString();
+public static class LinkApi {
+    public static string GetLinkPropertyValue(this Link linkRepresentation, string pName) => ((JValue)linkRepresentation.GetLinkProperty(pName)).Value.ToString();
 
-    public static JObject GetLinkProperty(this JObject linkRepresentation, string pName) => (JObject)linkRepresentation[pName];
+    public static JToken GetLinkProperty(this Link linkRepresentation, string pName) => linkRepresentation.Wrapped[pName];
 
-    public static HttpMethod GetMethod(this JObject linkRepresentation) => new(linkRepresentation.GetLinkPropertyValue("method"));
+    public static HttpMethod GetMethod(this Link linkRepresentation) => new(linkRepresentation.GetLinkPropertyValue("method"));
 
-    public static JObject GetArguments(this JObject linkRepresentation) => linkRepresentation.GetLinkProperty("arguments");
+    public static JObject GetArguments(this Link linkRepresentation) => linkRepresentation.GetLinkProperty("arguments") as JObject;
 
-    public static Uri GetHref(this JObject linkRepresentation) => new(linkRepresentation.GetLinkPropertyValue("href"));
+    public static Uri GetHref(this Link linkRepresentation) => new(linkRepresentation.GetLinkPropertyValue("href"));
 
-    public static string GetRel(this JObject linkRepresentation) => linkRepresentation.GetLinkPropertyValue("rel");
+    public static string GetRel(this Link linkRepresentation) => linkRepresentation.GetLinkPropertyValue("rel");
 
-    public static JObject GetLinkOfRel(this IEnumerable<JObject> linkRepresentations, RelApi.Rels rel) =>
+    public static Link GetLinkOfRel(this IEnumerable<Link> linkRepresentations, RelApi.Rels rel) =>
         linkRepresentations.Single(l => l.GetRel().GetRelType() == rel);
 
-    public static JObject GetInvokeLink(this IEnumerable<JObject> linkRepresentations) =>
+    public static Link GetInvokeLink(this IEnumerable<Link> linkRepresentations) =>
         linkRepresentations.GetLinkOfRel(RelApi.Rels.invoke);
 }
