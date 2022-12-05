@@ -1,13 +1,19 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 using ROSI.Helpers;
 
 namespace ROSI.Apis;
 
 
 public static class ObjectApi {
-    public static JObject GetObject(Uri uri, string? token = null) {
+    public static JObject GetObject(Uri uri, string token = null) {
         var json = HttpHelpers.Execute(uri, token);
         return JObject.Parse(json);
+    }
+
+    public static (JObject, EntityTagHeaderValue tag) GetObjectWithTag(Uri uri, string token = null) {
+        var (json, tag) = HttpHelpers.ExecuteWithTag(uri, token);
+        return (JObject.Parse(json), tag);
     }
 
     public static JObject InvokeAction(this JObject objectRepresentation, string actionName) {
@@ -16,7 +22,7 @@ public static class ObjectApi {
         return JObject.Parse(json);
     }
 
-    public static T? GetPropertyValue<T>(this JObject objectRepresentation, string propertyName) {
+    public static T GetPropertyValue<T>(this JObject objectRepresentation, string propertyName) {
         var valueObject = objectRepresentation.GetProperty(propertyName).Value as JObject;
 
         if (valueObject is null) {

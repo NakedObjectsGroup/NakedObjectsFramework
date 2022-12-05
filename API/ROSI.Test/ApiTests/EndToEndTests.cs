@@ -23,4 +23,16 @@ internal class EndToEndTests {
 
         Assert.IsNotNull(ar);
     }
+
+    [Test]
+    public void TestInvokeActionWithValueParams() {
+        var (jo, tag) = ObjectApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/426"));
+        Assert.IsNotNull(jo);
+
+        var action = jo.GetAction("EditStyle");
+
+        var ar = action.Invoke(tag, null, new object[] {"U"});
+
+        Assert.IsNotNull(ar);
+    }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
 
@@ -8,13 +10,17 @@ namespace ROSI.Helpers;
 public static class HttpHelpers {
     private static readonly HttpClient Client = new();
 
-    public static string? GlobalToken { get; set; } = null; 
+    public static string GlobalToken { get; set; } = null;
 
-    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, string? token, HttpContent? content) {
+    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, string token, EntityTagHeaderValue tag, HttpContent content) {
         var request = new HttpRequestMessage(method, path);
 
         if ((token ?? GlobalToken) is not null) {
-            request.Headers.Add("Authorization", (token ?? GlobalToken));
+            request.Headers.Add("Authorization", token ?? GlobalToken);
+        }
+
+        if (tag is not null) {
+            request.Headers.IfMatch.Add(tag);
         }
 
         if (content is not null) {
@@ -30,9 +36,29 @@ public static class HttpHelpers {
         return json ?? "";
     }
 
-    public static string Execute(Uri url, string? token = null, string? jsonContent = null) {
+    public static string Execute(Uri url, string token = null, string jsonContent = null) => ExecuteWithTag(url, token, jsonContent).Item1;
+
+    public static (string, EntityTagHeaderValue) ExecuteWithTag(Uri url, string token = null, string jsonContent = null) {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
-        var request = CreateMessage(HttpMethod.Get, url.ToString(), token, content);
+        var request = CreateMessage(HttpMethod.Get, url.ToString(), token, null, content);
+
+        using var response = Client.SendAsync(request).Result;
+        var tag = response.Headers.ETag;
+
+        if (response.IsSuccessStatusCode) {
+            return (ReadAsString(response), tag);
+        }
+
+        throw new HttpRequestException("request failed", null, response.StatusCode);
+    }
+
+    public static string Execute(JProperty action, string token = null, string jsonContent = null) {
+        var invokeLink = action.GetLinks().GetInvokeLink();
+        var uri = invokeLink.GetHref();
+        var method = invokeLink.GetMethod();
+
+        using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
+        var request = CreateMessage(method, uri.ToString(), token, null, content);
 
         using var response = Client.SendAsync(request).Result;
 
@@ -43,19 +69,30 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
-    public static string Execute(JProperty action, string? token = null, string? jsonContent = null) {
+    public static string Execute(JProperty action, EntityTagHeaderValue tag, string token = null, params object[] pp) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var uri = invokeLink.GetHref();
         var method = invokeLink.GetMethod();
+        var arguments = invokeLink.GetArguments();
+        var properties = arguments.Properties();
 
-        using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
-        var request = CreateMessage(method, uri.ToString(), token, content);
+        var argValues = properties.Zip(pp);
+
+        foreach (var (p, v) in argValues) {
+            var t = (JValue)p.Value["value"];
+            t.Value = v;
+        }
+
+        using var content = new StringContent(arguments.ToString(Formatting.None), Encoding.UTF8, "application/json");
+        var request = CreateMessage(method, uri.ToString(), token, tag, content);
 
         using var response = Client.SendAsync(request).Result;
 
         if (response.IsSuccessStatusCode) {
             return ReadAsString(response);
         }
+
+        var error = ReadAsString(response);
 
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
