@@ -6,7 +6,7 @@ namespace ROSI.Apis;
 public static class LinkApi {
     public static string GetLinkPropertyValue(this Link linkRepresentation, string pName) => ((JValue)linkRepresentation.GetLinkProperty(pName)).Value.ToString();
 
-    public static JToken GetLinkProperty(this Link linkRepresentation, string pName) => linkRepresentation.Wrapped[pName];
+    private static JToken GetLinkProperty(this Link linkRepresentation, string pName) => linkRepresentation.Wrapped[pName];
 
     public static HttpMethod GetMethod(this Link linkRepresentation) => new(linkRepresentation.GetLinkPropertyValue("method"));
 

@@ -6,7 +6,7 @@ using Action = ROSI.Records.Action;
 
 namespace ROSI.Apis;
 
-public static class ObjectApi {
+public static class DomainObjectApi {
     private static IEnumerable<JProperty> GetMembersOfType(this DomainObject objectRepresentation, string ofType) =>
         objectRepresentation.GetMembers().Where(t => t.Value["memberType"]?.Value<string>() == ofType);
 
@@ -44,5 +44,5 @@ public static class ObjectApi {
 
     public static Collection GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType("collection", collectionName));
 
-    public static IEnumerable<Link> GetLinks(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["links"].Select(t => new Link(t as JObject));
+    public static IEnumerable<Link> GetLinks(this DomainObject objectRepresentation) => objectRepresentation.Wrapped.GetLinks();
 }
