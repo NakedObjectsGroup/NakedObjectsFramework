@@ -12,13 +12,13 @@ public static class ObjectApi {
 
     private static JProperty GetMemberOfType(this DomainObject objectRepresentation, string ofType, string memberName) => objectRepresentation.GetMembersOfType(ofType).Single(t => t.Name == memberName);
 
-    public static DomainObject GetObject(Uri uri, string token = null) {
-        var json = HttpHelpers.Execute(uri, token);
+    public static DomainObject GetObject(Uri uri, InvokeOptions options = null) {
+        var json = HttpHelpers.Execute(uri, options ?? new InvokeOptions());
         return new DomainObject(JObject.Parse(json));
     }
 
-    public static (DomainObject, EntityTagHeaderValue tag) GetObjectWithTag(Uri uri, string token = null) {
-        var (json, tag) = HttpHelpers.ExecuteWithTag(uri, token);
+    public static (DomainObject, EntityTagHeaderValue tag) GetObjectWithTag(Uri uri, InvokeOptions options = null) {
+        var (json, tag) = HttpHelpers.ExecuteWithTag(uri, options ?? new InvokeOptions());
         return (new DomainObject(JObject.Parse(json)), tag);
     }
 

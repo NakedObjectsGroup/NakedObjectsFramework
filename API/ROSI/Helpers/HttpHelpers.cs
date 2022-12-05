@@ -16,15 +16,15 @@ public static class HttpHelpers {
 
     public static string GlobalToken { get; set; } = null;
 
-    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, string token, EntityTagHeaderValue tag, HttpContent content) {
+    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, InvokeOptions options, HttpContent content) {
         var request = new HttpRequestMessage(method, path);
 
-        if ((token ?? GlobalToken) is not null) {
-            request.Headers.Add("Authorization", token ?? GlobalToken);
+        if ((options.Token ?? GlobalToken) is not null) {
+            request.Headers.Add("Authorization", options.Token ?? GlobalToken);
         }
 
-        if (tag is not null) {
-            request.Headers.IfMatch.Add(tag);
+        if (options.Tag is not null) {
+            request.Headers.IfMatch.Add(options.Tag);
         }
 
         if (content is not null) {
@@ -40,11 +40,11 @@ public static class HttpHelpers {
         return json ?? "";
     }
 
-    public static string Execute(Uri url, string token = null, string jsonContent = null) => ExecuteWithTag(url, token, jsonContent).Item1;
+    public static string Execute(Uri url, InvokeOptions options, string jsonContent = null) => ExecuteWithTag(url, options, jsonContent).Item1;
 
-    public static (string, EntityTagHeaderValue) ExecuteWithTag(Uri url, string token = null, string jsonContent = null) {
+    public static (string, EntityTagHeaderValue) ExecuteWithTag(Uri url, InvokeOptions options, string jsonContent = null) {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
-        var request = CreateMessage(HttpMethod.Get, url.ToString(), token, null, content);
+        var request = CreateMessage(HttpMethod.Get, url.ToString(), options, content);
 
         using var response = Client.SendAsync(request).Result;
         var tag = response.Headers.ETag;
@@ -56,13 +56,13 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
-    public static string Execute(Action action, string token = null, string jsonContent = null) {
+    public static string Execute(Action action, InvokeOptions options, string jsonContent = null) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var uri = invokeLink.GetHref();
         var method = invokeLink.GetMethod();
 
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
-        var request = CreateMessage(method, uri.ToString(), token, null, content);
+        var request = CreateMessage(method, uri.ToString(), options, content);
 
         using var response = Client.SendAsync(request).Result;
 
@@ -81,8 +81,7 @@ public static class HttpHelpers {
         _ => val,
     };
 
-
-    public static string Execute(Action action, EntityTagHeaderValue tag, string token = null, params object[] pp) {
+    public static string Execute(Action action, InvokeOptions options, params object[] pp) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var uri = invokeLink.GetHref();
         var method = invokeLink.GetMethod();
@@ -98,7 +97,7 @@ public static class HttpHelpers {
         }
 
         using var content = new StringContent(parameters.ToString(Formatting.None), Encoding.UTF8, "application/json");
-        var request = CreateMessage(method, uri.ToString(), token, tag, content);
+        var request = CreateMessage(method, uri.ToString(), options, content);
 
         using var response = Client.SendAsync(request).Result;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using ROSI.Apis;
+using ROSI.Records;
 
 namespace ROSI.Test.ApiTests;
 
@@ -31,13 +32,13 @@ internal class EndToEndTests {
 
         var action = jo.GetAction("EditStyle");
 
-        var ar = action.Invoke(tag, null, new object[] {"U"});
+        var ar = action.Invoke(new InvokeOptions() {Tag = tag}, "U");
 
         Assert.IsNotNull(ar);
     }
 
     [Test]
-    public void TestInvokeActionWithRefParams() {
+    public void TestInvokeActionWithRefObjectParams() {
         var (soh, tag) = ObjectApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"));
         Assert.IsNotNull(soh);
 
@@ -47,7 +48,24 @@ internal class EndToEndTests {
 
         var action = soh.GetAction("AddNewDetail");
 
-        var ar = action.Invoke(tag, null, p, 1);
+        var ar = action.Invoke(new InvokeOptions() {Tag = tag}, p, 1);
+
+        Assert.IsNotNull(ar);
+    }
+
+    [Test]
+    public void TestInvokeActionWithRefLinkParams() {
+        var (soh, tag) = ObjectApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"));
+        Assert.IsNotNull(soh);
+
+        var p = ObjectApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"));
+        Assert.IsNotNull(p);
+        var l = p.GetLinks().GetSelfLink();
+
+
+        var action = soh.GetAction("AddNewDetail");
+
+        var ar = action.Invoke(new InvokeOptions() {Tag = tag}, l, 1);
 
         Assert.IsNotNull(ar);
     }
