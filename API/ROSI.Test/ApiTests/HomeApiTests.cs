@@ -11,6 +11,7 @@ using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Helpers;
+using ROSI.Records;
 using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
@@ -37,6 +38,8 @@ public class HomeApiTests : AbstractApiTests {
         var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
         HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
         var user = home.GetUserAsync().Result;
+
+        Assert.AreEqual(2, user.GetLinks().Count());
         Assert.AreEqual("Test", user.GetUserName());
         Assert.IsNull(user.GetFriendlyName());
         Assert.IsNull(user.GetEmail());
@@ -48,6 +51,7 @@ public class HomeApiTests : AbstractApiTests {
         var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
         HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
         var version = home.GetVersionAsync().Result;
+        Assert.AreEqual(2, version.GetLinks().Count());
         Assert.AreEqual("1.2", version.GetSpecVersion());
         Assert.AreEqual("Naked Objects 13.1.0", version.GetImplVersion());
     }
@@ -57,6 +61,9 @@ public class HomeApiTests : AbstractApiTests {
         var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
         HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
         var services = home.GetServicesAsync().Result;
+
+        Assert.AreEqual(2, services.GetLinks().Count());
+
         var value = services.GetValue();
         Assert.AreEqual(1, value.Count());
 
@@ -66,6 +73,9 @@ public class HomeApiTests : AbstractApiTests {
         HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
 
         var s = services.GetService("ROSI.Test.Data.SimpleService").Result;
+
+        Assert.AreEqual("ROSI.Test.Data.SimpleService", s.GetServiceId());
+        Assert.AreEqual("Simple Service", s.GetTitle());
 
         var actions = s.GetActions();
 
@@ -77,6 +87,9 @@ public class HomeApiTests : AbstractApiTests {
         var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
         HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
         var menus = home.GetMenusAsync().Result;
+
+        Assert.AreEqual(2, menus.GetLinks().Count());
+
         var value = menus.GetValue();
         Assert.AreEqual(1, value.Count());
 
@@ -86,6 +99,9 @@ public class HomeApiTests : AbstractApiTests {
         HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
 
         var m = menus.GetMenu("SimpleService").Result;
+
+        Assert.AreEqual("SimpleService", m.GetMenuId());
+        Assert.AreEqual("Simple Service", m.GetTitle());
 
         var actions = m.GetActions();
 

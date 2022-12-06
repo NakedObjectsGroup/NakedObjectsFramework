@@ -7,11 +7,11 @@ namespace ROSI.Apis;
 public static class HomeApi {
     public static IEnumerable<Link> GetLinks(this Home homeRepresentation) => homeRepresentation.Wrapped.GetLinks();
 
-    public static Link GetSelfLink(this Home homeRepresentation) => homeRepresentation.Wrapped.GetLinks().GetLinkOfRel(RelApi.Rels.self);
-    public static Link GetUserLink(this Home homeRepresentation) => homeRepresentation.Wrapped.GetLinks().GetLinkOfRel(RelApi.Rels.user);
-    public static Link GetServicesLink(this Home homeRepresentation) => homeRepresentation.Wrapped.GetLinks().GetLinkOfRel(RelApi.Rels.services);
-    public static Link GetMenusLink(this Home homeRepresentation) => homeRepresentation.Wrapped.GetLinks().GetLinkOfRel(RelApi.Rels.menus);
-    public static Link GetVersionLink(this Home homeRepresentation) => homeRepresentation.Wrapped.GetLinks().GetLinkOfRel(RelApi.Rels.version);
+    public static Link GetSelfLink(this Home homeRepresentation) => homeRepresentation.GetLinks().GetLinkOfRel(RelApi.Rels.self);
+    public static Link GetUserLink(this Home homeRepresentation) => homeRepresentation.GetLinks().GetLinkOfRel(RelApi.Rels.user);
+    public static Link GetServicesLink(this Home homeRepresentation) => homeRepresentation.GetLinks().GetLinkOfRel(RelApi.Rels.services);
+    public static Link GetMenusLink(this Home homeRepresentation) => homeRepresentation.GetLinks().GetLinkOfRel(RelApi.Rels.menus);
+    public static Link GetVersionLink(this Home homeRepresentation) => homeRepresentation.GetLinks().GetLinkOfRel(RelApi.Rels.version);
 
     public static async Task<User> GetUserAsync(this Home homeRepresentation) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetUserLink()));
 

@@ -5,6 +5,7 @@ using Action = ROSI.Records.Action;
 
 namespace ROSI.Apis;
 
+// can be object, service or menu
 public static class DomainObjectApi {
     private static IEnumerable<JProperty> GetMembersOfType(this DomainObject objectRepresentation, string ofType) =>
         objectRepresentation.GetMembers().Where(t => t.Value["memberType"]?.Value<string>() == ofType);
@@ -13,13 +14,18 @@ public static class DomainObjectApi {
 
     private static IEnumerable<JProperty> GetMembers(this DomainObject objectRepresentation) {
         var members = objectRepresentation.Wrapped["members"];
-
-        if (members is null) {
-            throw new Exception("No members");
-        }
-
         return members.Cast<JProperty>().ToList();
     }
+
+    public static string GetServiceId(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["serviceId"]?.ToString();
+    
+    public static string GetMenuId(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["menuId"]?.ToString();
+
+    public static string GetInstanceId(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["instanceId"]?.ToString();
+
+    public static string GetDomainType(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["domainType"]?.ToString();
+
+    public static string GetTitle(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["title"].ToString();
 
     public static IEnumerable<Action> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType("action").Select(p => new Action(p));
 

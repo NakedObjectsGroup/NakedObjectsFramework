@@ -14,6 +14,14 @@ namespace ROSI.Test.ApiTests;
 
 public class ObjectApiTests : AbstractApiTests {
     [Test]
+    public void TestObject() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        Assert.AreEqual(FullName<Class>(), objectRep.GetDomainType());
+        Assert.AreEqual("1", objectRep.GetInstanceId());
+        Assert.AreEqual("Untitled Class", objectRep.GetTitle());
+    }
+
+    [Test]
     public void TestGetCollections() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetCollections();

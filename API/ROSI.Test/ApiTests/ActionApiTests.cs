@@ -53,8 +53,13 @@ public class ActionApiTests : AbstractApiTests {
         var links = ar.GetLinks();
         Assert.AreEqual(1, links.Count());
 
-        var l = ar.GetList().GetValue();
-        Assert.AreEqual(2, l.Count());
+        var l = ar.GetList();
+
+        var v = l.GetValue();
+        Assert.AreEqual(2, v.Count());
+
+        var llinks = l.GetLinks();
+        Assert.AreEqual(0, llinks.Count());
     }
 
     [Test]
