@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using ROSI.Helpers;
 using ROSI.Records;
 using Action = ROSI.Records.Action;
@@ -11,16 +10,6 @@ public static class DomainObjectApi {
         objectRepresentation.GetMembers().Where(t => t.Value["memberType"]?.Value<string>() == ofType);
 
     private static JProperty GetMemberOfType(this DomainObject objectRepresentation, string ofType, string memberName) => objectRepresentation.GetMembersOfType(ofType).Single(t => t.Name == memberName);
-
-    public static DomainObject GetObject(Uri uri, InvokeOptions options = null) {
-        var json = HttpHelpers.Execute(uri, options ?? new InvokeOptions());
-        return new DomainObject(JObject.Parse(json));
-    }
-
-    public static (DomainObject, EntityTagHeaderValue tag) GetObjectWithTag(Uri uri, InvokeOptions options = null) {
-        var (json, tag) = HttpHelpers.ExecuteWithTag(uri, options ?? new InvokeOptions());
-        return (new DomainObject(JObject.Parse(json)), tag);
-    }
 
     private static IEnumerable<JProperty> GetMembers(this DomainObject objectRepresentation) {
         var members = objectRepresentation.Wrapped["members"];

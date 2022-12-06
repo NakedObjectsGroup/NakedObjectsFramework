@@ -29,7 +29,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke();
+        var ar = action.Invoke().Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
@@ -46,7 +46,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsList));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke();
+        var ar = action.Invoke().Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.list, ar.GetResultType());
 
@@ -63,7 +63,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsVoid));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke();
+        var ar = action.Invoke().Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
 
@@ -80,7 +80,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke(1, "test");
+        var ar = action.Invoke(1, "test").Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
@@ -100,7 +100,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithRefParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke(o1, o2);
+        var ar = action.Invoke(o1, o2).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
@@ -119,7 +119,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke(2, o1);
+        var ar = action.Invoke(2, o1).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
@@ -136,7 +136,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.IdempotentActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Put, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke(1, "test");
+        var ar = action.Invoke(1, "test").Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
@@ -153,7 +153,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.IdempotentActionWithRefParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Put, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke(o1, o2);
+        var ar = action.Invoke(o1, o2).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
@@ -169,7 +169,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.IdempotentActionWithMixedParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Put, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke(2, o1);
+        var ar = action.Invoke(2, o1).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
@@ -183,7 +183,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke(1, "test");
+        var ar = action.Invoke(1, "test").Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
@@ -200,7 +200,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithRefParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke(o1, o2);
+        var ar = action.Invoke(o1, o2).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
@@ -216,7 +216,7 @@ public class ActionApiTests : ApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke(2, o1);
+        var ar = action.Invoke(2, o1).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 

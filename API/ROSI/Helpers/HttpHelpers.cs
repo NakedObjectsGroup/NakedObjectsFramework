@@ -41,13 +41,13 @@ public static class HttpHelpers {
         return json ?? "";
     }
 
-    public static string Execute(Uri url, InvokeOptions options, string jsonContent = null) => ExecuteWithTag(url, options, jsonContent).Item1;
+    public static async Task<string> Execute(Uri url, InvokeOptions options, string jsonContent = null) => (await ExecuteWithTag(url, options, jsonContent)).Item1;
 
-    public static (string, EntityTagHeaderValue) ExecuteWithTag(Uri url, InvokeOptions options, string jsonContent = null) {
+    public static async Task<(string, EntityTagHeaderValue)> ExecuteWithTag(Uri url, InvokeOptions options, string jsonContent = null) {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(HttpMethod.Get, url.ToString(), options, content);
 
-        using var response = Client.SendAsync(request).Result;
+        using var response = await Client.SendAsync(request);
         var tag = response.Headers.ETag;
 
         if (response.IsSuccessStatusCode) {
@@ -57,7 +57,7 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
-    public static string Execute(Action action, InvokeOptions options, string jsonContent = null) {
+    public static async Task<string> Execute(Action action, InvokeOptions options, string jsonContent = null) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var uri = invokeLink.GetHref();
         var method = invokeLink.GetMethod();
@@ -65,7 +65,7 @@ public static class HttpHelpers {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(method, uri.ToString(), options, content);
 
-        using var response = Client.SendAsync(request).Result;
+        using var response = await Client.SendAsync(request);
 
         if (response.IsSuccessStatusCode) {
             return ReadAsString(response);
@@ -82,7 +82,7 @@ public static class HttpHelpers {
         _ => val
     };
 
-    public static string ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
+    public static async Task<string> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
         var uri = invokeLink.GetHref();
         var properties = invokeLink.GetArguments().Properties();
         var parameters = new Dictionary<string, string>();
@@ -95,21 +95,21 @@ public static class HttpHelpers {
 
         var url = QueryHelpers.AddQueryString(uri.ToString(), parameters);
 
-        return SendAndRead(options, HttpMethod.Get, url);
+        return await SendAndRead(options, HttpMethod.Get, url);
     }
 
-    public static string Execute(Action action, InvokeOptions options, params object[] pp) {
+    public static async Task<string> Execute(Action action, InvokeOptions options, params object[] pp) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var method = invokeLink.GetMethod();
 
         if (method == HttpMethod.Get && !pp.OfType<Link>().Any() && !pp.OfType<DomainObject>().Any()) {
-            return ExecuteWithSimpleArguments(invokeLink, options, pp);
+            return await ExecuteWithSimpleArguments(invokeLink, options, pp);
         }
 
-        return ExecuteWithFormalArguments(invokeLink, options, pp, method);
+        return await ExecuteWithFormalArguments(invokeLink, options, pp, method);
     }
 
-    private static string ExecuteWithFormalArguments(Link invokeLink, InvokeOptions options, object[] pp, HttpMethod method) {
+    private static async Task<string> ExecuteWithFormalArguments(Link invokeLink, InvokeOptions options, object[] pp, HttpMethod method) {
         var uri = invokeLink.GetHref();
 
         var properties = invokeLink.GetArguments().Properties();
@@ -131,13 +131,13 @@ public static class HttpHelpers {
 
         using var content = method == HttpMethod.Post || method == HttpMethod.Put ?   new StringContent(parameterString, Encoding.UTF8, "application/json") : null;
 
-        return SendAndRead(options, method, url, content);
+        return await SendAndRead(options, method, url, content);
     }
 
-    private static string SendAndRead(InvokeOptions options, HttpMethod method, string url, StringContent content = null) {
+    private static async Task<string> SendAndRead(InvokeOptions options, HttpMethod method, string url, StringContent content = null) {
         var request = CreateMessage(method, url, options, content);
 
-        using var response = Client.SendAsync(request).Result;
+        using var response = await Client.SendAsync(request);
 
         if (response.IsSuccessStatusCode) {
             return ReadAsString(response);
