@@ -52,5 +52,25 @@ public class ClassWithActions {
     [QueryOnly]
     public Class ActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
 
+    [QueryOnly]
+    public Class ActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
+
+    [Idempotent]
+    public Class IdempotentActionWithValueParmsReturnsObject(int index, string str) => Container.Instances<Class>().FirstOrDefault();
+
+    [Idempotent]
+    public Class IdempotentActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
+
+    [Idempotent]
+    public Class IdempotentActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
+
+   
+    public Class PotentActionWithValueParmsReturnsObject(int index, string str) => Container.Instances<Class>().FirstOrDefault();
+
+  
+    public Class PotentActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
+
+   
+    public Class PotentActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
   
 }

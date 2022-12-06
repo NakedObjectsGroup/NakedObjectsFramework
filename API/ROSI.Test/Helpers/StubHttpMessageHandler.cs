@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -25,21 +26,31 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         var action = segments[5].TrimEnd('/');
         var method = request.Method;
         var query = url.Query.TrimStart('?');
+        var body = "";
+
+        if (method == HttpMethod.Post || method == HttpMethod.Put)
+        {
+            using var s = request.Content.ReadAsStream();
+            using var sr = new StreamReader(s);
+            s.Position = 0L;
+            body = sr.ReadToEnd();
+            s.Position = 0L;
+        }
 
         var am = string.IsNullOrEmpty(query)
-            ? ModelBinderUtils.CreateArgumentMap(new JObject(), true)
-            : ModelBinderUtils.CreateSimpleArgumentMap(query) ?? ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(query)), true);
+                ? ModelBinderUtils.CreateArgumentMap(string.IsNullOrEmpty(body) ? new JObject() : JObject.Parse(body), true)
+                : ModelBinderUtils.CreateSimpleArgumentMap(query) ?? ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(query)), false);
 
         ActionResult ar;
 
         if (method == HttpMethod.Get) {
-            ar = Api.GetInvoke(obj, key, action, am);
+            ar = Api.AsGet().GetInvoke(obj, key, action, am);
         }
         else if (method == HttpMethod.Post) {
-            ar = Api.PostInvoke(obj, key, action, am);
+            ar = Api.AsPost().PostInvoke(obj, key, action, am);
         }
         else if (method == HttpMethod.Put) {
-            ar = Api.PutInvoke(obj, key, action, am);
+            ar = Api.AsPut().PutInvoke(obj, key, action, am);
         }
         else {
             throw new NotImplementedException();
