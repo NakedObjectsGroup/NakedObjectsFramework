@@ -59,6 +59,17 @@ public class HomeApiTests : AbstractApiTests {
         var services = home.GetServicesAsync().Result;
         var value = services.GetValue();
         Assert.AreEqual(1, value.Count());
+
+        var sl = services.GetServiceLink("ROSI.Test.Data.SimpleService");
+        Assert.IsNotNull(sl);
+
+        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
+
+        var s = services.GetService("ROSI.Test.Data.SimpleService").Result;
+
+        var actions = s.GetActions();
+
+        Assert.AreEqual(1, actions.Count());
     }
 
     [Test]
@@ -68,5 +79,16 @@ public class HomeApiTests : AbstractApiTests {
         var menus = home.GetMenusAsync().Result;
         var value = menus.GetValue();
         Assert.AreEqual(1, value.Count());
+
+        var ml = menus.GetMenuLink("SimpleService");
+        Assert.IsNotNull(ml);
+
+        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
+
+        var m = menus.GetMenu("SimpleService").Result;
+
+        var actions = m.GetActions();
+
+        Assert.AreEqual(1, actions.Count());
     }
 }

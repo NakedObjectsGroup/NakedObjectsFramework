@@ -18,30 +18,41 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
 
     public RestfulObjectsControllerBase Api { get; }
 
-    private async Task<HttpResponseMessage> SendAsyncHome(HttpRequestMessage request, CancellationToken cancellationToken) {
+    private async Task<HttpResponseMessage> SendAsyncHome() {
         var ar = Api.AsGet().GetHome();
         return await GetResponse(ar);
     }
 
-    private async Task<HttpResponseMessage> SendAsyncUser(HttpRequestMessage request, CancellationToken cancellationToken) {
+    private async Task<HttpResponseMessage> SendAsyncUser() {
         var ar = Api.AsGet().GetUser();
         return await GetResponse(ar);
     }
 
-    private async Task<HttpResponseMessage> SendAsyncServices(HttpRequestMessage request, CancellationToken cancellationToken) {
+    private async Task<HttpResponseMessage> SendAsyncServices() {
         var ar = Api.AsGet().GetServices();
         return await GetResponse(ar);
     }
 
-    private async Task<HttpResponseMessage> SendAsyncMenus(HttpRequestMessage request, CancellationToken cancellationToken) {
+    private async Task<HttpResponseMessage> SendAsyncMenus() {
         var ar = Api.AsGet().GetMenus();
         return await GetResponse(ar);
     }
 
-    private async Task<HttpResponseMessage> SendAsyncVersion(HttpRequestMessage request, CancellationToken cancellationToken) {
+    private async Task<HttpResponseMessage> SendAsyncVersion() {
         var ar = Api.AsGet().GetVersion();
         return await GetResponse(ar);
     }
+
+    private async Task<HttpResponseMessage> SendAsyncService(string serviceId) {
+        var ar = Api.AsGet().GetService(serviceId);
+        return await GetResponse(ar);
+    }
+
+    private async Task<HttpResponseMessage> SendAsyncMenu(string menuId) {
+        var ar = Api.AsGet().GetMenu(menuId);
+        return await GetResponse(ar);
+    }
+
 
     private async Task<HttpResponseMessage> GetResponse(ActionResult ar) {
         var (json, sc, _) = await TestHelpers.ReadActionResult(ar, Api.ControllerContext.HttpContext);
@@ -58,18 +69,22 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         var segments = url.Segments;
 
         if (segments.Length == 1) {
-            return await SendAsyncHome(request, cancellationToken);
+            return await SendAsyncHome();
         }
 
         switch (segments[1]) {
             case "user":
-                return await SendAsyncUser(request, cancellationToken);
+                return await SendAsyncUser();
             case "services":
-                return await SendAsyncServices(request, cancellationToken);
+                return await SendAsyncServices();
+            case "services/":
+                return await SendAsyncService(segments[2]);
             case "menus":
-                return await SendAsyncMenus(request, cancellationToken);
+                return await SendAsyncMenus();
+            case "menus/":
+                return await SendAsyncMenu(segments[2]);
             case "version":
-                return await SendAsyncVersion(request, cancellationToken);
+                return await SendAsyncVersion();
         }
 
         var obj = segments[2].TrimEnd('/');

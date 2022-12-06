@@ -53,4 +53,21 @@ public static class RelApi {
 
         return Enum.Parse<Rels>(rel.Replace('-', '_'));
     }
+
+    public static string GetId(string rel, string idType) {
+        var regex = new Regex($"{idType}=\"([\\w.]*)\"");
+        return regex.Match(rel).Groups.Values.Last().Value;
+    }
+
+    public static string GetServiceId(this string rel) {
+        return GetId(rel, "serviceId");
+        //var regex = new Regex("serviceId=\"([\\w.]*)\"");
+        //return regex.Match(rel).Groups.Values.Last().Value;
+    }
+
+    public static string GetMenuId(this string rel) {
+        return GetId(rel, "menuId");
+        //var regex = new Regex("menuId=\"([\\w.]*)\"");
+        //return regex.Match(rel).Groups.Values.Last().Value;
+    }
 }
