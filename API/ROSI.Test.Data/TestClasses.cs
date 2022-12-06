@@ -13,7 +13,8 @@ using NakedObjects;
 namespace ROSI.Test.Data;
 
 public class SimpleService {
-    public Class GetClass => null;
+    public IDomainObjectContainer Container { private get; set; }
+    public IQueryable<Class> GetClasses() => Container.Instances<Class>();
 }
 
 public class Class {

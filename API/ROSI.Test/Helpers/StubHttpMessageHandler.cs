@@ -11,7 +11,7 @@ using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using Newtonsoft.Json.Linq;
 
-namespace ROSI.Test.Helpers; 
+namespace ROSI.Test.Helpers;
 
 internal class StubHttpMessageHandler : HttpMessageHandler {
     public StubHttpMessageHandler(RestfulObjectsControllerBase api) => Api = api;
@@ -20,6 +20,26 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
 
     private async Task<HttpResponseMessage> SendAsyncHome(HttpRequestMessage request, CancellationToken cancellationToken) {
         var ar = Api.AsGet().GetHome();
+        return await GetResponse(ar);
+    }
+
+    private async Task<HttpResponseMessage> SendAsyncUser(HttpRequestMessage request, CancellationToken cancellationToken) {
+        var ar = Api.AsGet().GetUser();
+        return await GetResponse(ar);
+    }
+
+    private async Task<HttpResponseMessage> SendAsyncServices(HttpRequestMessage request, CancellationToken cancellationToken) {
+        var ar = Api.AsGet().GetServices();
+        return await GetResponse(ar);
+    }
+
+    private async Task<HttpResponseMessage> SendAsyncMenus(HttpRequestMessage request, CancellationToken cancellationToken) {
+        var ar = Api.AsGet().GetMenus();
+        return await GetResponse(ar);
+    }
+
+    private async Task<HttpResponseMessage> SendAsyncVersion(HttpRequestMessage request, CancellationToken cancellationToken) {
+        var ar = Api.AsGet().GetVersion();
         return await GetResponse(ar);
     }
 
@@ -33,13 +53,23 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         return response;
     }
 
-
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
         var url = request.RequestUri;
         var segments = url.Segments;
 
         if (segments.Length == 1) {
             return await SendAsyncHome(request, cancellationToken);
+        }
+
+        switch (segments[1]) {
+            case "user":
+                return await SendAsyncUser(request, cancellationToken);
+            case "services":
+                return await SendAsyncServices(request, cancellationToken);
+            case "menus":
+                return await SendAsyncMenus(request, cancellationToken);
+            case "version":
+                return await SendAsyncVersion(request, cancellationToken);
         }
 
         var obj = segments[2].TrimEnd('/');
@@ -49,8 +79,7 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         var query = url.Query.TrimStart('?');
         var body = "";
 
-        if (method == HttpMethod.Post || method == HttpMethod.Put)
-        {
+        if (method == HttpMethod.Post || method == HttpMethod.Put) {
             await using var s = await request.Content.ReadAsStreamAsync(cancellationToken);
             using var sr = new StreamReader(s);
             s.Position = 0L;
@@ -59,8 +88,8 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         }
 
         var am = string.IsNullOrEmpty(query)
-                ? ModelBinderUtils.CreateArgumentMap(string.IsNullOrEmpty(body) ? new JObject() : JObject.Parse(body), true)
-                : ModelBinderUtils.CreateSimpleArgumentMap(query) ?? ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(query)), false);
+            ? ModelBinderUtils.CreateArgumentMap(string.IsNullOrEmpty(body) ? new JObject() : JObject.Parse(body), true)
+            : ModelBinderUtils.CreateSimpleArgumentMap(query) ?? ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(query)), false);
 
         ActionResult ar;
 

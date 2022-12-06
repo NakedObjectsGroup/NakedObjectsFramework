@@ -6,19 +6,67 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
+using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
-using ROSI.Test.Data;
+using ROSI.Helpers;
+using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
-public class HomeApiTests : AbstractApiTests
-{
+public class HomeApiTests : AbstractApiTests {
     [Test]
-    public void TestGetHome()
-    {
-        var home = ROSIApi.GetHome(new Uri("http://placeholder/")).Result;
+    public void TestGetHome() {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
+        var selfLink = home.GetSelfLink();
         var userLink = home.GetUserLink();
+        var servicesLink = home.GetServicesLink();
+        var versionLink = home.GetVersionLink();
+        var menusLink = home.GetMenusLink();
 
+        Assert.AreEqual("http://localhost/", selfLink.GetHref().ToString());
+        Assert.AreEqual("http://localhost/user", userLink.GetHref().ToString());
+        Assert.AreEqual("http://localhost/services", servicesLink.GetHref().ToString());
+        Assert.AreEqual("http://localhost/version", versionLink.GetHref().ToString());
+        Assert.AreEqual("http://localhost/menus", menusLink.GetHref().ToString());
+    }
+
+    [Test]
+    public void TestGetUser() {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
+        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
+        var user = home.GetUserAsync().Result;
+        Assert.AreEqual("Test", user.GetUserName());
+        Assert.IsNull(user.GetFriendlyName());
+        Assert.IsNull(user.GetEmail());
+        Assert.AreEqual(0, user.GetRoles().Count());
+    }
+
+    [Test]
+    public void TestGetVersion() {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
+        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
+        var version = home.GetVersionAsync().Result;
+        Assert.AreEqual("1.2", version.GetSpecVersion());
+        Assert.AreEqual("Naked Objects 13.1.0", version.GetImplVersion());
+    }
+
+    [Test]
+    public void TestGetServices() {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
+        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
+        var services = home.GetServicesAsync().Result;
+        var value = services.GetValue();
+        Assert.AreEqual(1, value.Count());
+    }
+
+    [Test]
+    public void TestGetMenus() {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
+        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
+        var menus = home.GetMenusAsync().Result;
+        var value = menus.GetValue();
+        Assert.AreEqual(1, value.Count());
     }
 }

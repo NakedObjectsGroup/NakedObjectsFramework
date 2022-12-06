@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Menu;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.Rest.API;
 using NakedFramework.Test.TestCase;
@@ -60,6 +61,8 @@ public abstract class AbstractApiTests : AcceptanceTestCase
         options => { options.ContextCreators = ContextCreators; };
 
     protected override Action<NakedFrameworkOptions> AddPersistor => builder => { builder.AddEFCorePersistor(EFCorePersistorOptions); };
+
+    protected override IMenu[] MainMenus(IMenuFactory factory) => new[] { factory.NewMenu<SimpleService>(true) };
 
     protected void CleanUpDatabase()
     {
