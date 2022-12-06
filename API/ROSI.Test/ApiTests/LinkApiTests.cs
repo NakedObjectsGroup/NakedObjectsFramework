@@ -11,11 +11,9 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public class LinkApiTests : AbstractApiTests
-{
+public class LinkApiTests : AbstractApiTests {
     [Test]
-    public void TestGetInvokeLink()
-    {
+    public void TestGetInvokeLink() {
         var domainObject = GetObject(FullName<Class>(), "1");
         var action = domainObject.GetAction("Action1");
 

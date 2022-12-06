@@ -27,8 +27,7 @@ using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
-public abstract class AbstractApiTests : AcceptanceTestCase
-{
+public abstract class AbstractApiTests : AcceptanceTestCase {
     protected override Type[] Services { get; } = { typeof(SimpleService) };
 
     protected override Type[] ObjectTypes { get; } = {
@@ -41,8 +40,7 @@ public abstract class AbstractApiTests : AcceptanceTestCase
     protected override Action<NakedFrameworkOptions> AddNakedFunctions => _ => { };
 
     protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
-        builder =>
-        {
+        builder => {
             AddCoreOptions(builder);
             AddPersistor(builder);
             AddNakedObjects(builder);
@@ -64,13 +62,11 @@ public abstract class AbstractApiTests : AcceptanceTestCase
 
     protected override IMenu[] MainMenus(IMenuFactory factory) => new[] { factory.NewMenu<SimpleService>(true) };
 
-    protected void CleanUpDatabase()
-    {
+    protected void CleanUpDatabase() {
         new EFCoreObjectDbContext().Delete();
     }
 
-    protected override void RegisterTypes(IServiceCollection services)
-    {
+    protected override void RegisterTypes(IServiceCollection services) {
         base.RegisterTypes(services);
         services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
         services.AddMvc(options => options.EnableEndpointRouting = false)
@@ -80,35 +76,31 @@ public abstract class AbstractApiTests : AcceptanceTestCase
     [SetUp]
     public void SetUp() {
         StartTest();
-        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(this.Api()));
+        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
     }
 
     [TearDown]
     public void TearDown() => EndTest();
 
     [OneTimeSetUp]
-    public void FixtureSetUp()
-    {
+    public void FixtureSetUp() {
         ObjectReflectorConfiguration.NoValidate = true;
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
-    public void FixtureTearDown()
-    {
+    public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
         CleanUpDatabase();
     }
 
-    protected RestfulObjectsControllerBase Api()
-    {
+    protected RestfulObjectsControllerBase Api() {
         var sp = GetConfiguredContainer();
         var api = sp.GetService<RestfulObjectsController>();
         return TestHelpers.SetMockContext(api, sp);
     }
 
-    protected DomainObject GetObject(string type, string id)
-    {
+    protected DomainObject GetObject(string type, string id) {
         var api = Api().AsGet();
         var result = api.GetObject(type, id);
         var (json, sc, _) = TestHelpers.ReadActionResult(result, api.ControllerContext.HttpContext).Result;
@@ -117,5 +109,4 @@ public abstract class AbstractApiTests : AcceptanceTestCase
     }
 
     protected static string FullName<T>() => typeof(T).FullName;
-
 }

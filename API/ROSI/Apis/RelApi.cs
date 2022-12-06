@@ -5,12 +5,12 @@ namespace ROSI.Apis;
 public static class RelApi {
     public enum Rels {
         //IANA
-        describedby, 
-        help, 
-        icon, 
+        describedby,
+        help,
+        icon,
         previous,
-        next, 
-        self, 
+        next,
+        self,
         up,
 
         // RO

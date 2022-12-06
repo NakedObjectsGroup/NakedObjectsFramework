@@ -12,12 +12,9 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public class ObjectApiTests : AbstractApiTests
-{
-
+public class ObjectApiTests : AbstractApiTests {
     [Test]
-    public void TestGetCollections()
-    {
+    public void TestGetCollections() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetCollections();
 
@@ -25,8 +22,7 @@ public class ObjectApiTests : AbstractApiTests
     }
 
     [Test]
-    public void TestGetActions()
-    {
+    public void TestGetActions() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetActions();
 
@@ -34,8 +30,7 @@ public class ObjectApiTests : AbstractApiTests
     }
 
     [Test]
-    public void TestGetProperties()
-    {
+    public void TestGetProperties() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetProperties();
 
@@ -43,8 +38,7 @@ public class ObjectApiTests : AbstractApiTests
     }
 
     [Test]
-    public void TestPropertyValue()
-    {
+    public void TestPropertyValue() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetProperty("Property1").GetValue<string>();
 
@@ -52,8 +46,7 @@ public class ObjectApiTests : AbstractApiTests
     }
 
     [Test]
-    public void TestGetProperty()
-    {
+    public void TestGetProperty() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetProperty("Property1");
 
@@ -61,8 +54,7 @@ public class ObjectApiTests : AbstractApiTests
     }
 
     [Test]
-    public void TestGetAction()
-    {
+    public void TestGetAction() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetAction("Action1");
 
@@ -70,8 +62,7 @@ public class ObjectApiTests : AbstractApiTests
     }
 
     [Test]
-    public void TestGetCollection()
-    {
+    public void TestGetCollection() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetCollection("Collection1");
 

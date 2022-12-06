@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Web;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
@@ -129,7 +128,7 @@ public static class HttpHelpers {
             url = $"{url}?{HttpUtility.UrlEncode(parameterString)}";
         }
 
-        using var content = method == HttpMethod.Post || method == HttpMethod.Put ?   new StringContent(parameterString, Encoding.UTF8, "application/json") : null;
+        using var content = method == HttpMethod.Post || method == HttpMethod.Put ? new StringContent(parameterString, Encoding.UTF8, "application/json") : null;
 
         return await SendAndRead(options, method, url, content);
     }

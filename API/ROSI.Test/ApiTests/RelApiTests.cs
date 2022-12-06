@@ -10,11 +10,9 @@ using ROSI.Apis;
 
 namespace ROSI.Test.ApiTests;
 
-public class RelApiTests : AbstractApiTests
-{
+public class RelApiTests : AbstractApiTests {
     [Test]
-    public void TestGetRelType()
-    {
+    public void TestGetRelType() {
         var testRel = @"urn:org.restfulobjects:rels/invoke;action=""CreateNewWorkOrder""";
 
         var relType = testRel.GetRelType();

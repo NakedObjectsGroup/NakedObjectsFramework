@@ -65,13 +65,9 @@ public class ClassWithActions {
     [Idempotent]
     public Class IdempotentActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
 
-   
     public Class PotentActionWithValueParmsReturnsObject(int index, string str) => Container.Instances<Class>().FirstOrDefault();
 
-  
     public Class PotentActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
 
-   
     public Class PotentActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
-  
 }
