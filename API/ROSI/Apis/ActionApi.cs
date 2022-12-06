@@ -18,8 +18,5 @@ public static class ActionApi {
         return new ActionResult(JObject.Parse(json));
     }
 
-    public static async Task<ActionResult> Invoke(this Action actionRepresentation, params object[] pp) {
-        var json = await HttpHelpers.Execute(actionRepresentation, new InvokeOptions(), pp);
-        return new ActionResult(JObject.Parse(json));
-    }
+    public static async Task<ActionResult> Invoke(this Action actionRepresentation, params object[] pp) => await actionRepresentation.Invoke(new InvokeOptions(), pp);
 }

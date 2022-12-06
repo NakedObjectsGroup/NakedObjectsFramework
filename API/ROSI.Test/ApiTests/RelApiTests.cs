@@ -10,7 +10,7 @@ using ROSI.Apis;
 
 namespace ROSI.Test.ApiTests;
 
-public class RelApiTests : ApiTests
+public class RelApiTests : AbstractApiTests
 {
     [Test]
     public void TestGetRelType()

@@ -7,6 +7,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
@@ -51,14 +52,14 @@ public static class TestHelpers
         return api;
     }
 
-    public static (string, int, ResponseHeaders) ReadActionResult(ActionResult ar, HttpContext hc)
+    public static async Task<(string, int, ResponseHeaders)> ReadActionResult(ActionResult ar, HttpContext hc)
     {
         var testContext = new ActionContext { HttpContext = hc };
-        ar.ExecuteResultAsync(testContext).Wait();
-        using var s = testContext.HttpContext.Response.Body;
+        await ar.ExecuteResultAsync(testContext);
+        await using var s = testContext.HttpContext.Response.Body;
         s.Position = 0L;
         using var sr = new StreamReader(s);
-        var json = sr.ReadToEnd();
+        var json = await sr.ReadToEndAsync();
         var statusCode = testContext.HttpContext.Response.StatusCode;
         var headers = testContext.HttpContext.Response.GetTypedHeaders();
         return (json, statusCode, headers);

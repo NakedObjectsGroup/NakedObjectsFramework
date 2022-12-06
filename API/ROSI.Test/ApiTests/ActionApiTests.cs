@@ -13,7 +13,7 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public class ActionApiTests : ApiTests {
+public class ActionApiTests : AbstractApiTests {
     [Test]
     public void TestGetLinks() {
         var parsedResult = GetObject(FullName<Class>(), "1");

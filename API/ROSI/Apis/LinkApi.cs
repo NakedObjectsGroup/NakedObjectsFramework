@@ -10,22 +10,18 @@ public static class LinkApi {
 
     public static HttpMethod GetMethod(this Link linkRepresentation) => new(linkRepresentation.GetLinkPropertyValue("method"));
 
-    public static JObject GetArguments(this Link linkRepresentation) => (JObject) linkRepresentation.GetLinkProperty("arguments");
+    public static JObject GetArguments(this Link linkRepresentation) => (JObject)linkRepresentation.GetLinkProperty("arguments");
 
     public static Uri GetHref(this Link linkRepresentation) => new(linkRepresentation.GetLinkPropertyValue("href"));
 
     public static string GetRel(this Link linkRepresentation) => linkRepresentation.GetLinkPropertyValue("rel");
 
-    public static Link GetLinkOfRoRel(this IEnumerable<Link> linkRepresentations, RelApi.Rels rel) =>
+    public static Link GetLinkOfRel(this IEnumerable<Link> linkRepresentations, RelApi.Rels rel) =>
         linkRepresentations.Single(l => l.GetRel().GetRelType() == rel);
 
-    public static Link GetLinkOfRel(this IEnumerable<Link> linkRepresentations, string rel) =>
-        linkRepresentations.Single(l => l.GetRel() == rel);
-
     public static Link GetInvokeLink(this IEnumerable<Link> linkRepresentations) =>
-        linkRepresentations.GetLinkOfRoRel(RelApi.Rels.invoke);
+        linkRepresentations.GetLinkOfRel(RelApi.Rels.invoke);
 
     public static Link GetSelfLink(this IEnumerable<Link> linkRepresentations) =>
-        linkRepresentations.GetLinkOfRel("self");
-
+        linkRepresentations.GetLinkOfRel(RelApi.Rels.self);
 }

@@ -18,9 +18,30 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
 
     public RestfulObjectsControllerBase Api { get; }
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
+    private async Task<HttpResponseMessage> SendAsyncHome(HttpRequestMessage request, CancellationToken cancellationToken) {
+        var ar = Api.AsGet().GetHome();
+        return await GetResponse(ar);
+    }
+
+    private async Task<HttpResponseMessage> GetResponse(ActionResult ar) {
+        var (json, sc, _) = await TestHelpers.ReadActionResult(ar, Api.ControllerContext.HttpContext);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = new HttpResponseMessage((HttpStatusCode)sc);
+        response.Content = content;
+
+        return response;
+    }
+
+
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
         var url = request.RequestUri;
         var segments = url.Segments;
+
+        if (segments.Length == 1) {
+            return await SendAsyncHome(request, cancellationToken);
+        }
+
         var obj = segments[2].TrimEnd('/');
         var key = segments[3].TrimEnd('/');
         var action = segments[5].TrimEnd('/');
@@ -30,10 +51,10 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
 
         if (method == HttpMethod.Post || method == HttpMethod.Put)
         {
-            using var s = request.Content.ReadAsStream();
+            await using var s = await request.Content.ReadAsStreamAsync(cancellationToken);
             using var sr = new StreamReader(s);
             s.Position = 0L;
-            body = sr.ReadToEnd();
+            body = await sr.ReadToEndAsync();
             s.Position = 0L;
         }
 
@@ -56,15 +77,6 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
             throw new NotImplementedException();
         }
 
-        var (json, sc, _) = TestHelpers.ReadActionResult(ar, Api.ControllerContext.HttpContext);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var response = new HttpResponseMessage((HttpStatusCode)sc);
-        response.Content = content;
-
-        var task = new Task<HttpResponseMessage>(() => response);
-        task.Start();
-
-        return task;
+        return await GetResponse(ar);
     }
 }

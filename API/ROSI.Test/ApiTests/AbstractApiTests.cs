@@ -26,7 +26,7 @@ using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
-public abstract class ApiTests : AcceptanceTestCase
+public abstract class AbstractApiTests : AcceptanceTestCase
 {
     protected override Type[] Services { get; } = { typeof(SimpleService) };
 
@@ -108,7 +108,7 @@ public abstract class ApiTests : AcceptanceTestCase
     {
         var api = Api().AsGet();
         var result = api.GetObject(type, id);
-        var (json, sc, _) = TestHelpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        var (json, sc, _) = TestHelpers.ReadActionResult(result, api.ControllerContext.HttpContext).Result;
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         return new DomainObject(JObject.Parse(json));
     }

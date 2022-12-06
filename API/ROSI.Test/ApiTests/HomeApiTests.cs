@@ -5,24 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public class LinkApiTests : AbstractApiTests
+public class HomeApiTests : AbstractApiTests
 {
     [Test]
-    public void TestGetInvokeLink()
+    public void TestGetHome()
     {
-        var domainObject = GetObject(FullName<Class>(), "1");
-        var action = domainObject.GetAction("Action1");
+        var home = ROSIApi.GetHome(new Uri("http://placeholder/")).Result;
+        var userLink = home.GetUserLink();
 
-        var links = action.GetLinks();
-
-        var invokeLink = links.GetInvokeLink();
-
-        Assert.IsNotNull(invokeLink);
     }
 }

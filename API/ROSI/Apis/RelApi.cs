@@ -4,6 +4,16 @@ namespace ROSI.Apis;
 
 public static class RelApi {
     public enum Rels {
+        //IANA
+        describedby, 
+        help, 
+        icon, 
+        previous,
+        next, 
+        self, 
+        up,
+
+        // RO
         action,
         action_param,
         add_to,
@@ -20,6 +30,7 @@ public static class RelApi {
         element,
         element_type,
         invoke,
+        menus,
         modify,
         persist,
         prompt,
@@ -35,9 +46,12 @@ public static class RelApi {
     }
 
     public static Rels GetRelType(this string rel) {
-        var regex = new Regex(@"urn:org.restfulobjects:rels\/(\w*);.*");
-        var relType = regex.Match(rel).Groups.Values.Last().Value;
+        if (rel.Contains("urn:org.restfulobjects:rels")) {
+            var toMatch = rel.Split(';').First();
+            var regex = new Regex(@"urn:org.restfulobjects:rels\/(\w*)");
+            rel = regex.Match(rel).Groups.Values.Last().Value;
+        }
 
-        return Enum.Parse<Rels>(relType.Replace('-', '_'));
+        return Enum.Parse<Rels>(rel.Replace('-', '_'));
     }
 }

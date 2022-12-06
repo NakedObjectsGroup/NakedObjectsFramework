@@ -12,7 +12,7 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public class ObjectApiTests : ApiTests
+public class ObjectApiTests : AbstractApiTests
 {
 
     [Test]
