@@ -92,23 +92,23 @@ public class ActionApiTests : ApiTests
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
     }
 
-    //[Test]
-    //public void TestInvokeWithRefParmsReturnsObjectAction()
-    //{
-    //    var o1 = GetObject(FullName<Class>(), "1");
-    //    var o2 = GetObject(FullName<Class>(), "2");
+    [Test]
+    public void TestInvokeWithRefParmsReturnsObjectAction()
+    {
+        var o1 = GetObject(FullName<Class>(), "1");
+        var o2 = GetObject(FullName<Class>(), "2");
 
-    //    var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
-    //    var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithRefParmsReturnsObject));
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithRefParmsReturnsObject));
 
-    //    var ar = action.Invoke(o1, o2);
+        var ar = action.Invoke(o1, o2);
 
-    //    Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
 
-    //    var links = ar.GetLinks();
-    //    Assert.AreEqual(1, links.Count());
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
 
-    //    var o = ar.GetObject();
-    //    Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
-    //}
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
 }
