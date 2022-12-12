@@ -97,7 +97,7 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
-    public static async Task<string> Execute(Action action, InvokeOptions options, string jsonContent = null) {
+    public static async Task<string> Execute(IHasLinks action, InvokeOptions options, string jsonContent = null) {
         var (uri, method) = action.GetLinks().GetInvokeLink().GetUriAndMethod();
 
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
@@ -136,7 +136,7 @@ public static class HttpHelpers {
         return await SendAndRead(options, HttpMethod.Get, url);
     }
 
-    public static async Task<string> Execute(Action action, InvokeOptions options, params object[] pp) {
+    public static async Task<string> Execute(IHasLinks action, InvokeOptions options, params object[] pp) {
         var invokeLink = action.GetLinks().GetInvokeLink();
         var method = invokeLink.GetMethod();
 
