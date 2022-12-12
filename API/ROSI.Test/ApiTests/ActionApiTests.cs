@@ -24,6 +24,17 @@ public class ActionApiTests : AbstractApiTests {
     }
 
     [Test]
+    public void TestGetValues() {
+        var parsedResult = GetObject(FullName<Class>(), "1");
+        var action = parsedResult.GetAction(nameof(Class.Action1));
+
+        Assert.AreEqual("action", action.GetMemberType());
+        Assert.AreEqual(nameof(Class.Action1),action.GetId());
+    }
+
+
+
+    [Test]
     public void TestInvokeNoParmReturnsObjectAction() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsObject));

@@ -41,7 +41,5 @@ public static class DomainObjectApi {
     public static Collection GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType("collection", collectionName));
 
     public static IEnumerable<Link> GetLinks(this DomainObject objectRepresentation) => objectRepresentation.Wrapped.GetLinks();
-
-    public static Extensions GetExtensions(this DomainObject objectRepresentation) => objectRepresentation.Wrapped.GetExtensions();
 }
 

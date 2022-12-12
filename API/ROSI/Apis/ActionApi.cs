@@ -6,7 +6,11 @@ using Action = ROSI.Records.Action;
 namespace ROSI.Apis;
 
 public static class ActionApi {
+    public static string GetMemberType(this Action actionRepresentation) => actionRepresentation.Wrapped.Value["memberType"].ToString();
+    public static string GetId(this Action actionRepresentation) => actionRepresentation.Wrapped.Value["id"].ToString(); 
+    
     public static IEnumerable<Link> GetLinks(this Action actionRepresentation) => actionRepresentation.Wrapped.GetLinks();
+
 
     public static async Task<ActionResult> Invoke(this Action actionRepresentation, InvokeOptions options = null) {
         var json = await HttpHelpers.Execute(actionRepresentation, options ?? new InvokeOptions());
