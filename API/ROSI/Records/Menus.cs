@@ -3,4 +3,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record Menus(JObject Wrapped) : IHasExtensions;
+public record Menus(JObject Wrapped) : IHasExtensions, IHasLinks;

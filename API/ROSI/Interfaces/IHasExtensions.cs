@@ -1,5 +1,3 @@
-﻿namespace ROSI.Interfaces; 
+﻿namespace ROSI.Interfaces;
 
-public interface IHasExtensions : IWrapped{
-    
-}
+public interface IHasExtensions : IWrapped { }
