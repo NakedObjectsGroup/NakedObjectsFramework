@@ -47,7 +47,7 @@ public static class RelApi {
 
     public static Rels GetRelType(this string rel) {
         if (rel.Contains("urn:org.restfulobjects:rels")) {
-            var regex = new Regex(@"urn:org.restfulobjects:rels\/(\w*)");
+            var regex = new Regex(@"urn:org.restfulobjects:rels\/([\w-]*)");
             rel = regex.Match(rel).Groups.Values.Last().Value;
         }
 

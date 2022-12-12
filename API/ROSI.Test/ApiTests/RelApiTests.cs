@@ -13,10 +13,15 @@ namespace ROSI.Test.ApiTests;
 public class RelApiTests : AbstractApiTests {
     [Test]
     public void TestGetRelType() {
-        var testRel = @"urn:org.restfulobjects:rels/invoke;action=""CreateNewWorkOrder""";
+        var testRel1 = @"urn:org.restfulobjects:rels/invoke;action=""CreateNewWorkOrder""";
+        var testRel2 = @"urn:org.restfulobjects:rels/domain-type;action=""CreateNewWorkOrder""";
 
-        var relType = testRel.GetRelType();
+        var relType1 = testRel1.GetRelType();
 
-        Assert.AreEqual(RelApi.Rels.invoke, relType);
+        Assert.AreEqual(RelApi.Rels.invoke, relType1);
+
+        var relType2 = testRel2.GetRelType();
+
+        Assert.AreEqual(RelApi.Rels.domain_type, relType2);
     }
 }
