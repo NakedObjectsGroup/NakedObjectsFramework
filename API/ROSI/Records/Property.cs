@@ -1,6 +1,6 @@
-﻿using Microsoft.JSInterop.Implementation;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record Property(JObject Wrapped);
+public record Property(JObject Wrapped) : IHasExtensions, IHasLinks;

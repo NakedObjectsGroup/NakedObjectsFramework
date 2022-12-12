@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
+using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record Collection(JObject Wrapped);
+public record Collection(JObject Wrapped) : IHasExtensions, IHasLinks;
