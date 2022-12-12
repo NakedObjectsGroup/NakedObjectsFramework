@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using ROSI.Helpers;
-using ROSI.Interfaces;
 using ROSI.Records;
 using Action = ROSI.Records.Action;
 
 namespace ROSI.Apis;
 
 public static class ActionApi {
-    public static string GetMemberType(this Action actionRepresentation) => actionRepresentation.Wrapped["memberType"].ToString();
-    public static string GetId(this Action actionRepresentation) => actionRepresentation.Wrapped["id"].ToString();
-
-    public static async Task<ActionResult> Invoke(this Action actionRepresentation, InvokeOptions options = null) {
+    public static async Task<ActionResult> Invoke(this Action actionRepresentation, InvokeOptions? options = null) {
         var json = await HttpHelpers.Execute(actionRepresentation, options ?? new InvokeOptions());
         return new ActionResult(JObject.Parse(json));
     }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
+using ROSI.Interfaces;
 using ROSI.Records;
 using Action = ROSI.Records.Action;
 
@@ -37,8 +38,10 @@ public static class HttpHelpers {
     private static string ReadAsString(HttpResponseMessage response) {
         using var sr = new StreamReader(response.Content.ReadAsStream());
         var json = sr.ReadToEnd();
-        return json ?? "";
+        return json;
     }
+
+    private static (Uri, HttpMethod) GetUriAndMethod(this Link linkRepresentation) => (linkRepresentation.GetHref(), linkRepresentation.GetMethod());
 
     public static async Task<string> Execute(Uri url, InvokeOptions options, string jsonContent = null) => (await ExecuteWithTag(url, options, jsonContent)).Item1;
 
@@ -56,10 +59,47 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
+    public static async Task<string> GetDetails(IHasLinks hasLinks, InvokeOptions options) {
+        var (uri, method) = hasLinks.GetLinks().GetDetailsLink().GetUriAndMethod();
+
+        using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
+        var request = CreateMessage(method, uri.ToString(), options, content);
+
+        using var response = await Client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode) {
+            return ReadAsString(response);
+        }
+
+        throw new HttpRequestException("request failed", null, response.StatusCode);
+    }
+
+    public static async Task<string> SetValue(IHasLinks hasLinks, object newValue, InvokeOptions options) {
+        var modifyLink = hasLinks.GetLinks().GetModifyLink();
+        var (uri, method) = modifyLink.GetUriAndMethod();
+
+        var parameters = new JObject();
+
+        var av = GetActualValue(newValue);
+        parameters.Add(new JProperty("value", av));
+
+        var parameterString = parameters.ToString(Formatting.None);
+
+        using var content = new StringContent(parameterString, Encoding.UTF8, "application/json");
+        var request = CreateMessage(method, uri.ToString(), options, content);
+
+        using var response = await Client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode) {
+            return ReadAsString(response);
+        }
+
+        throw new HttpRequestException("request failed", null, response.StatusCode);
+    }
+
+
     public static async Task<string> Execute(Action action, InvokeOptions options, string jsonContent = null) {
-        var invokeLink = action.GetLinks().GetInvokeLink();
-        var uri = invokeLink.GetHref();
-        var method = invokeLink.GetMethod();
+        var (uri, method) = action.GetLinks().GetInvokeLink().GetUriAndMethod();
 
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(method, uri.ToString(), options, content);

@@ -38,9 +38,9 @@ public static class DomainObjectApi {
 
     public static IEnumerable<Collection> GetCollections(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType(MemberType.collection).Select(p => new Collection(p));
 
-    public static IEnumerable<Property> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType(MemberType.property).Select(p => new Property(p));
+    public static IEnumerable<PropertyMember> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType(MemberType.property).Select(p => new PropertyMember(p));
 
-    public static Property GetProperty(this DomainObject objectRepresentation, string propertyName) => new(objectRepresentation.GetMemberOfType(MemberType.property, propertyName));
+    public static PropertyMember GetProperty(this DomainObject objectRepresentation, string propertyName) => new(objectRepresentation.GetMemberOfType(MemberType.property, propertyName));
 
     public static Action GetAction(this DomainObject objectRepresentation, string actionName) => new(objectRepresentation.GetMemberOfType(MemberType.action, actionName));
 

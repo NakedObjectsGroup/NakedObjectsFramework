@@ -10,8 +10,6 @@ public static class ApiHelpers {
 
     public static IEnumerable<Link> GetLinks(this JObject jo) => jo["links"].ToLinks();
 
-    public static IEnumerable<Link> GetLinks(this JProperty jp) => jp.Value["links"].ToLinks();
-
     public static async Task<JObject> GetResourceAsync(Link link) {
         var href = link.GetHref();
         var json = await HttpHelpers.Execute(href, new InvokeOptions());
@@ -19,6 +17,4 @@ public static class ApiHelpers {
     }
 
     public static Extensions GetExtensions(this JObject jo) => new(jo["extensions"] as JObject);
-
-    public static Extensions GetExtensions(this JProperty jp) => new(jp.Value["extensions"] as JObject);
 }

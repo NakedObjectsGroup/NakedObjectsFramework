@@ -24,7 +24,7 @@ public class ActionApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestGetValues() {
+    public void TestGetProperties() {
         var parsedResult = GetObject(FullName<Class>(), "1");
         var action = parsedResult.GetAction(nameof(Class.Action1));
 
@@ -32,7 +32,14 @@ public class ActionApiTests : AbstractApiTests {
         Assert.AreEqual(nameof(Class.Action1),action.GetId());
     }
 
+    [Test]
+    public void TestGetExtensions() {
+        var parsedResult = GetObject(FullName<Class>(), "1");
+        var action = parsedResult.GetAction(nameof(Class.Action1));
 
+        var extensions = action.GetExtensions();
+        Assert.AreEqual(5, extensions.Extensions().Count());
+    }
 
     [Test]
     public void TestInvokeNoParmReturnsObjectAction() {

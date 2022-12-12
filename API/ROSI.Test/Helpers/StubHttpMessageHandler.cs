@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -53,6 +54,70 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         return await GetResponse(ar);
     }
 
+    private async Task<HttpResponseMessage> SendAsyncProperty(HttpRequestMessage request, string obj, string key, string propertyId) {
+        if (request.Method == HttpMethod.Get) {
+            var ar = Api.AsGet().GetProperty(obj, key, propertyId);
+            return await GetResponse(ar);
+        }
+        if (request.Method == HttpMethod.Put) {
+            var body = await ReadBody(request);
+            var arg = ModelBinderUtils.CreateSingleValueArgument(JObject.Parse(body), false);
+
+            var ar = Api.AsPut().PutProperty(obj, key, propertyId, arg);
+            return await GetResponse(ar);
+        }
+
+        throw new NotImplementedException();
+    }
+
+    private async Task<HttpResponseMessage> SendAsyncAction(HttpRequestMessage request, string obj, string key, string action) {
+        var method = request.Method;
+        var query = request.RequestUri.Query.TrimStart('?');
+        var body = "";
+
+        if (method == HttpMethod.Post || method == HttpMethod.Put) {
+            body = await ReadBody(request);
+        }
+
+        var am = string.IsNullOrEmpty(query)
+            ? ModelBinderUtils.CreateArgumentMap(string.IsNullOrEmpty(body) ? new JObject() : JObject.Parse(body), true)
+            : ModelBinderUtils.CreateSimpleArgumentMap(query) ?? ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(query)), false);
+
+        ActionResult ar;
+
+        if (method == HttpMethod.Get) {
+            ar = Api.AsGet().GetInvoke(obj, key, action, am);
+        }
+        else if (method == HttpMethod.Post) {
+            ar = Api.AsPost().PostInvoke(obj, key, action, am);
+        }
+        else if (method == HttpMethod.Put) {
+            ar = Api.AsPut().PutInvoke(obj, key, action, am);
+        }
+        else {
+            throw new NotImplementedException();
+        }
+
+        return await GetResponse(ar);
+    }
+
+
+    private async Task<HttpResponseMessage> SendAsyncObject(HttpRequestMessage request, string[] segments) {
+        var obj = segments[2].TrimEnd('/');
+        var key = segments[3].TrimEnd('/');
+
+        if (segments.Length > 4) {
+            switch (segments[4]) {
+                case "properties/":
+                    return await SendAsyncProperty(request, obj, key, segments[5]);
+                case "actions/":
+                    return await SendAsyncAction(request, obj, key, segments[5].TrimEnd('/'));
+            }
+        }
+
+        throw new NotImplementedException();
+    }
+
 
     private async Task<HttpResponseMessage> GetResponse(ActionResult ar) {
         var (json, sc, _) = await TestHelpers.ReadActionResult(ar, Api.ControllerContext.HttpContext);
@@ -85,42 +150,19 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
                 return await SendAsyncMenu(segments[2]);
             case "version":
                 return await SendAsyncVersion();
+            case "objects/":
+                return await SendAsyncObject(request, segments);
         }
 
-        var obj = segments[2].TrimEnd('/');
-        var key = segments[3].TrimEnd('/');
-        var action = segments[5].TrimEnd('/');
-        var method = request.Method;
-        var query = url.Query.TrimStart('?');
-        var body = "";
+        throw new NotImplementedException();
+    }
 
-        if (method == HttpMethod.Post || method == HttpMethod.Put) {
-            await using var s = await request.Content.ReadAsStreamAsync(cancellationToken);
-            using var sr = new StreamReader(s);
-            s.Position = 0L;
-            body = await sr.ReadToEndAsync();
-            s.Position = 0L;
-        }
-
-        var am = string.IsNullOrEmpty(query)
-            ? ModelBinderUtils.CreateArgumentMap(string.IsNullOrEmpty(body) ? new JObject() : JObject.Parse(body), true)
-            : ModelBinderUtils.CreateSimpleArgumentMap(query) ?? ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(query)), false);
-
-        ActionResult ar;
-
-        if (method == HttpMethod.Get) {
-            ar = Api.AsGet().GetInvoke(obj, key, action, am);
-        }
-        else if (method == HttpMethod.Post) {
-            ar = Api.AsPost().PostInvoke(obj, key, action, am);
-        }
-        else if (method == HttpMethod.Put) {
-            ar = Api.AsPut().PutInvoke(obj, key, action, am);
-        }
-        else {
-            throw new NotImplementedException();
-        }
-
-        return await GetResponse(ar);
+    private static async Task<string> ReadBody(HttpRequestMessage request) {
+        await using var s = await request.Content.ReadAsStreamAsync(new CancellationToken());
+        using var sr = new StreamReader(s);
+        s.Position = 0L;
+        var body = await sr.ReadToEndAsync();
+        s.Position = 0L;
+        return body;
     }
 }
