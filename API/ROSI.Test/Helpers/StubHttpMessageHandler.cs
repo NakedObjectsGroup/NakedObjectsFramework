@@ -70,6 +70,22 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         throw new NotImplementedException();
     }
 
+    private async Task<HttpResponseMessage> SendAsyncCollection(HttpRequestMessage request, string obj, string key, string propertyId) {
+        if (request.Method == HttpMethod.Get) {
+            var ar = Api.AsGet().GetCollection(obj, key, propertyId);
+            return await GetResponse(ar);
+        }
+        //if (request.Method == HttpMethod.Put) {
+        //    var body = await ReadBody(request);
+        //    var arg = ModelBinderUtils.CreateSingleValueArgument(JObject.Parse(body), false);
+
+        //    var ar = Api.AsPut().PutCollection(obj, key, propertyId, arg);
+        //    return await GetResponse(ar);
+        //}
+
+        throw new NotImplementedException();
+    }
+
     private async Task<HttpResponseMessage> SendAsyncAction(HttpRequestMessage request, string obj, string key, string action) {
         var method = request.Method;
         var query = request.RequestUri.Query.TrimStart('?');
@@ -110,6 +126,8 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
             switch (segments[4]) {
                 case "properties/":
                     return await SendAsyncProperty(request, obj, key, segments[5]);
+                case "collections/":
+                    return await SendAsyncCollection(request, obj, key, segments[5]);
                 case "actions/":
                     return await SendAsyncAction(request, obj, key, segments[5].TrimEnd('/'));
             }

@@ -1,11 +1,9 @@
 ﻿using ROSI.Helpers;
 using ROSI.Interfaces;
-using Extensions = ROSI.Records.Extensions;
+using ROSI.Records;
 
 namespace ROSI.Apis;
 
-
 public static class HasExtensionsApi {
-
     public static Extensions GetExtensions(this IHasExtensions hasExtensions) => hasExtensions.Wrapped.GetExtensions();
 }

@@ -17,7 +17,6 @@ public static class DomainObjectApi {
 
     private static JObject GetMemberOfType(this DomainObject objectRepresentation, MemberType ofType, string memberName) =>
         objectRepresentation.GetMembers().Where(t => t.Value["memberType"]?.Value<string>() == ofType.ToString() && t.Name == memberName).Select(t => t.Value as JObject).Single();
-    
 
     private static IEnumerable<JProperty> GetMembers(this DomainObject objectRepresentation) {
         var members = objectRepresentation.Wrapped["members"];
@@ -44,6 +43,6 @@ public static class DomainObjectApi {
 
     public static Action GetAction(this DomainObject objectRepresentation, string actionName) => new(objectRepresentation.GetMemberOfType(MemberType.action, actionName));
 
-    public static Collection GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType(MemberType.collection, collectionName));
+    public static CollectionMember GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType(MemberType.collection, collectionName));
 }
 

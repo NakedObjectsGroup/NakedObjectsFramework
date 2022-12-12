@@ -1,5 +1,3 @@
-﻿namespace ROSI.Interfaces; 
+﻿namespace ROSI.Interfaces;
 
-public interface IProperty : IMember {
-    
-}
+public interface IProperty : IMember { }

@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using NakedObjects;
 
 namespace ROSI.Test.Data;
@@ -23,6 +24,8 @@ public class Class {
 
     public virtual string Property1 { get; set; }
     public virtual int Property2 { get; set; }
+
+    public virtual Class Property3 => this;
 
     public virtual IList<Class> Collection1 { get; set; } = new List<Class>();
     public virtual IList<Class> Collection2 { get; set; } = new List<Class>();

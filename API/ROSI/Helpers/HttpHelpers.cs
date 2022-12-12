@@ -97,7 +97,6 @@ public static class HttpHelpers {
         throw new HttpRequestException("request failed", null, response.StatusCode);
     }
 
-
     public static async Task<string> Execute(Action action, InvokeOptions options, string jsonContent = null) {
         var (uri, method) = action.GetLinks().GetInvokeLink().GetUriAndMethod();
 

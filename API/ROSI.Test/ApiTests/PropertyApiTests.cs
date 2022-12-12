@@ -45,7 +45,7 @@ public class PropertyApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestPropertyValue() {
+    public void TestPropertyScalarValue() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetProperty(nameof(Class.Property1)).GetValue<string>();
 
@@ -53,7 +53,16 @@ public class PropertyApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestPropertyDetails() {
+    public void TestPropertyReferenceValue() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var link = objectRep.GetProperty(nameof(Class.Property3)).GetLinkValue();
+
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", link.GetHref().ToString());
+        Assert.AreEqual("Untitled Class", link.GetTitle());
+    }
+
+    [Test]
+    public void TestGetDetails() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var details = objectRep.GetProperty(nameof(Class.Property1)).GetDetails().Result;
         Assert.IsNotNull(details);
@@ -68,5 +77,7 @@ public class PropertyApiTests : AbstractApiTests {
 
         var result = details.SetValue("new").Result;
         Assert.IsNotNull(result);
+        Assert.AreEqual("new", result.GetValue<string>());
+       
     }
 }

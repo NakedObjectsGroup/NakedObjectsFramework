@@ -3,4 +3,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record Collection(JObject Wrapped) : ICollection;
+public record CollectionDetails(JObject Wrapped) : ICollection;
