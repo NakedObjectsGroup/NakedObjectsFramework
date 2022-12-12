@@ -1,17 +1,23 @@
 ﻿using Newtonsoft.Json.Linq;
-using ROSI.Helpers;
 using ROSI.Records;
 using Action = ROSI.Records.Action;
-using Extensions = ROSI.Records.Extensions;
 
 namespace ROSI.Apis;
 
 // can be object, service or menu
 public static class DomainObjectApi {
-    private static IEnumerable<JProperty> GetMembersOfType(this DomainObject objectRepresentation, string ofType) =>
-        objectRepresentation.GetMembers().Where(t => t.Value["memberType"]?.Value<string>() == ofType);
+    public enum MemberType {
+        action,
+        collection,
+        property
+    }
 
-    private static JProperty GetMemberOfType(this DomainObject objectRepresentation, string ofType, string memberName) => objectRepresentation.GetMembersOfType(ofType).Single(t => t.Name == memberName);
+    private static IEnumerable<JObject> GetMembersOfType(this DomainObject objectRepresentation, MemberType ofType) =>
+        objectRepresentation.GetMembers().Where(t => t.Value["memberType"]?.Value<string>() == ofType.ToString()).Select(t => t.Value as JObject);
+
+    private static JObject GetMemberOfType(this DomainObject objectRepresentation, MemberType ofType, string memberName) =>
+        objectRepresentation.GetMembers().Where(t => t.Value["memberType"]?.Value<string>() == ofType.ToString() && t.Name == memberName).Select(t => t.Value as JObject).Single();
+    
 
     private static IEnumerable<JProperty> GetMembers(this DomainObject objectRepresentation) {
         var members = objectRepresentation.Wrapped["members"];
@@ -19,7 +25,7 @@ public static class DomainObjectApi {
     }
 
     public static string GetServiceId(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["serviceId"]?.ToString();
-    
+
     public static string GetMenuId(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["menuId"]?.ToString();
 
     public static string GetInstanceId(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["instanceId"]?.ToString();
@@ -28,18 +34,16 @@ public static class DomainObjectApi {
 
     public static string GetTitle(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["title"].ToString();
 
-    public static IEnumerable<Action> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType("action").Select(p => new Action(p));
+    public static IEnumerable<Action> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType(MemberType.action).Select(p => new Action(p));
 
-    public static IEnumerable<Collection> GetCollections(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType("collection").Select(p => new Collection(p));
+    public static IEnumerable<Collection> GetCollections(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType(MemberType.collection).Select(p => new Collection(p));
 
-    public static IEnumerable<Property> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType("property").Select(p => new Property(p));
+    public static IEnumerable<Property> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType(MemberType.property).Select(p => new Property(p));
 
-    public static Property GetProperty(this DomainObject objectRepresentation, string propertyName) => new(objectRepresentation.GetMemberOfType("property", propertyName));
+    public static Property GetProperty(this DomainObject objectRepresentation, string propertyName) => new(objectRepresentation.GetMemberOfType(MemberType.property, propertyName));
 
-    public static Action GetAction(this DomainObject objectRepresentation, string actionName) => new(objectRepresentation.GetMemberOfType("action", actionName));
+    public static Action GetAction(this DomainObject objectRepresentation, string actionName) => new(objectRepresentation.GetMemberOfType(MemberType.action, actionName));
 
-    public static Collection GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType("collection", collectionName));
-
-    public static IEnumerable<Link> GetLinks(this DomainObject objectRepresentation) => objectRepresentation.Wrapped.GetLinks();
+    public static Collection GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType(MemberType.collection, collectionName));
 }
 

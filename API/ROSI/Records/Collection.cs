@@ -2,4 +2,4 @@
 
 namespace ROSI.Records;
 
-public record Collection(JProperty Wrapped);
+public record Collection(JObject Wrapped);

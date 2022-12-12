@@ -2,4 +2,4 @@
 
 namespace ROSI.Records;
 
-public record Action(JProperty Wrapped);
+public record Action(JObject Wrapped);

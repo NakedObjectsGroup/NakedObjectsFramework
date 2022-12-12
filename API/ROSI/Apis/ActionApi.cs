@@ -6,8 +6,8 @@ using Action = ROSI.Records.Action;
 namespace ROSI.Apis;
 
 public static class ActionApi {
-    public static string GetMemberType(this Action actionRepresentation) => actionRepresentation.Wrapped.Value["memberType"].ToString();
-    public static string GetId(this Action actionRepresentation) => actionRepresentation.Wrapped.Value["id"].ToString(); 
+    public static string GetMemberType(this Action actionRepresentation) => actionRepresentation.Wrapped["memberType"].ToString();
+    public static string GetId(this Action actionRepresentation) => actionRepresentation.Wrapped["id"].ToString(); 
     
     public static IEnumerable<Link> GetLinks(this Action actionRepresentation) => actionRepresentation.Wrapped.GetLinks();
 

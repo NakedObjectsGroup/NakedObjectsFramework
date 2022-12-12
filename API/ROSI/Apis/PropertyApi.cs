@@ -4,5 +4,5 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class PropertyApi {
-    public static T GetValue<T>(this Property propertyRepresentation) => propertyRepresentation.Wrapped.Value["value"].Value<T>();
+    public static T GetValue<T>(this Property propertyRepresentation) => propertyRepresentation.Wrapped["value"].Value<T>();
 }

@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.JSInterop.Implementation;
+using Newtonsoft.Json.Linq;
 
 namespace ROSI.Records;
 
-public record Property(JProperty Wrapped);
+public record Property(JObject Wrapped);
