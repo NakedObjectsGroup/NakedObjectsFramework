@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using ROSI.Apis;
 using ROSI.Records;
+using Extensions = ROSI.Records.Extensions;
 
 namespace ROSI.Helpers;
 
@@ -16,4 +17,6 @@ public static class ApiHelpers {
         var json = await HttpHelpers.Execute(href, new InvokeOptions());
         return JObject.Parse(json);
     }
+
+    public static Extensions GetExtensions(this JObject jo) => new(jo["extensions"] as JObject);
 }
