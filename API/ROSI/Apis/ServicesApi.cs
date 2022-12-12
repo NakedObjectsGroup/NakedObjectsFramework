@@ -6,6 +6,8 @@ namespace ROSI.Apis;
 public static class ServicesApi {
     public static IEnumerable<Link> GetLinks(this Services servicesRepresentation) => servicesRepresentation.Wrapped.GetLinks();
 
+    public static Extensions GetExtensions(this Services servicesRepresentation) => servicesRepresentation.Wrapped.GetExtensions();
+
     public static IEnumerable<Link> GetValue(this Services servicesRepresentation) => servicesRepresentation.Wrapped["value"].ToLinks();
 
     public static Link GetServiceLink(this Services servicesRepresentation, string serviceId) =>

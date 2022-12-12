@@ -6,6 +6,7 @@ namespace ROSI.Apis;
 
 public static class HomeApi {
     public static IEnumerable<Link> GetLinks(this Home homeRepresentation) => homeRepresentation.Wrapped.GetLinks();
+    public static Extensions GetExtensions(this Home homeRepresentation) => homeRepresentation.Wrapped.GetExtensions();
 
     public static Link GetSelfLink(this Home homeRepresentation) => homeRepresentation.GetLinks().GetLinkOfRel(RelApi.Rels.self);
     public static Link GetUserLink(this Home homeRepresentation) => homeRepresentation.GetLinks().GetLinkOfRel(RelApi.Rels.user);

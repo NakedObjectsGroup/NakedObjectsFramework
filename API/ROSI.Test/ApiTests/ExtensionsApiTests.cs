@@ -17,7 +17,7 @@ public class ExtensionsApiTests : AbstractApiTests {
     public void TestGetExtensions() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var extsRep = objectRep.GetExtensions();
-        var dict = extsRep.GetExtensions();
+        var dict = extsRep.Extensions();
 
         Assert.AreEqual("Class", dict["friendlyName"]);
         Assert.AreEqual("", dict["description"]);

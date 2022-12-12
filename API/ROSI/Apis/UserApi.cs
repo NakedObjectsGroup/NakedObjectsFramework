@@ -6,6 +6,8 @@ namespace ROSI.Apis;
 public static class UserApi {
     public static IEnumerable<Link> GetLinks(this User userRepresentation) => userRepresentation.Wrapped.GetLinks();
 
+    public static Extensions GetExtensions(this User userRepresentation) => userRepresentation.Wrapped.GetExtensions();
+
     public static string GetUserName(this User userRepresentation) => userRepresentation.Wrapped["userName"].ToString();
 
     public static string GetFriendlyName(this User userRepresentation) => userRepresentation.Wrapped["friendlyName"]?.ToString();

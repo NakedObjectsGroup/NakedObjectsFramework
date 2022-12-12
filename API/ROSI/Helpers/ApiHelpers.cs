@@ -19,4 +19,6 @@ public static class ApiHelpers {
     }
 
     public static Extensions GetExtensions(this JObject jo) => new(jo["extensions"] as JObject);
+
+    public static Extensions GetExtensions(this JProperty jp) => new(jp.Value["extensions"] as JObject);
 }
