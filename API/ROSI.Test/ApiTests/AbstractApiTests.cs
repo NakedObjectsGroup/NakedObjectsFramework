@@ -32,7 +32,8 @@ public abstract class AbstractApiTests : AcceptanceTestCase {
 
     protected override Type[] ObjectTypes { get; } = {
         typeof(Class),
-        typeof(ClassWithActions)
+        typeof(ClassWithActions),
+        typeof(TestChoices)
     };
 
     protected override bool EnforceProxies => false;

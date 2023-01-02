@@ -17,6 +17,12 @@ public class SimpleService {
     public IQueryable<Class> GetClasses() => Container.Instances<Class>();
 }
 
+public enum TestChoices {
+    ChoiceOne, 
+    ChoiceTwo,
+    ChoiceThree
+}
+
 public class Class {
     [Key]
     public int Id { get; init; }
@@ -25,6 +31,8 @@ public class Class {
     public virtual int Property2 { get; set; }
 
     public virtual Class Property3 => this;
+
+    public virtual TestChoices PropertyWithScalarChoices { get; set; }
 
     public virtual IList<Class> Collection1 { get; set; } = new List<Class>();
     public virtual IList<Class> Collection2 { get; set; } = new List<Class>();

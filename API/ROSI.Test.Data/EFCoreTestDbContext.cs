@@ -39,6 +39,7 @@ public abstract class EFCoreTestDbContext : DbContext {
     private static void MapClass(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Class>().Property("Property1").HasColumnName("Property1");
         modelBuilder.Entity<Class>().Property("Property2").HasColumnName("Property2");
+        modelBuilder.Entity<Class>().Property("PropertyWithScalarChoices").HasColumnName("PropertyWithScalarChoices");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {

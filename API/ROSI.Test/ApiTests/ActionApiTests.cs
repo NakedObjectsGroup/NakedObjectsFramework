@@ -9,7 +9,9 @@ using System.Linq;
 using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
+using ROSI.Helpers;
 using ROSI.Test.Data;
+using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
@@ -46,6 +48,26 @@ public class ActionApiTests : AbstractApiTests {
         var objectRep = GetObject(FullName<Class>(), "1");
         var details = objectRep.GetAction(nameof(Class.Action1)).GetDetails().Result;
         Assert.IsNotNull(details);
+    }
+
+    [Test]
+    public void TestGetParameters() {
+        var objectRep = GetObject(FullName<ClassWithActions>(), "1");
+        var details = objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject)).GetDetails().Result;
+        Assert.IsNotNull(details);
+
+        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
+
+        var parameters = details.GetParameters().Parameters();
+
+        Assert.AreEqual(2, parameters.Count());
+
+        Assert.AreEqual("index", parameters.Keys.First());
+        Assert.AreEqual("class1", parameters.Keys.Last());
+
+        Assert.AreEqual("Index", parameters["index"].GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName));
+        Assert.AreEqual(0, parameters["index"].GetLinks().Count());
+
     }
 
     [Test]

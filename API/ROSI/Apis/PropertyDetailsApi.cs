@@ -9,4 +9,10 @@ public static class PropertyDetailsApi {
         var json = await HttpHelpers.SetValue(propertyRepresentation, newValue, options ?? new InvokeOptions());
         return new PropertyDetails(JObject.Parse(json));
     }
+
+    public static bool GetHasChoices(this PropertyDetails propertyRepresentation) => propertyRepresentation.Wrapped["hasChoices"].Value<bool>();
+
+    public static IEnumerable<T> GetChoices<T>(this PropertyDetails propertyRepresentation) => propertyRepresentation.Wrapped["choices"].Select(c => c.Value<T>());
+
+    public static IEnumerable<Link> GetLinkChoices(this PropertyDetails propertyRepresentation) => propertyRepresentation.Wrapped["choices"].ToLinks();
 }

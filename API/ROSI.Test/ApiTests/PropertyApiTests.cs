@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using NUnit.Framework;
@@ -66,6 +67,29 @@ public class PropertyApiTests : AbstractApiTests {
         var details = objectRep.GetProperty(nameof(Class.Property1)).GetDetails().Result;
         Assert.IsNotNull(details);
     }
+
+    [Test]
+    public void TestGetChoices() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var details = objectRep.GetProperty(nameof(Class.PropertyWithScalarChoices)).GetDetails().Result;
+        Assert.IsNotNull(details);
+
+        Assert.IsTrue(details.GetHasChoices());
+
+        var choices = details.GetChoices<int>();
+
+        Assert.AreEqual(3, choices.Count());
+
+        var ext = details.GetExtensions().GetExtension<Dictionary<string, object>>(ExtensionsApi.ExtensionKeys.x_ro_nof_choices);
+
+        Assert.AreEqual(3, ext.Count());
+
+        Assert.AreEqual("Choice One", ext.Keys.First());
+        Assert.AreEqual(0, ext.Values.First());
+
+    }
+
+
 
     [Test]
     public void TestSetPropertyValue() {
