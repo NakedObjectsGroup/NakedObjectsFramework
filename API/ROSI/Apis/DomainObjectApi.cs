@@ -49,17 +49,16 @@ public static class DomainObjectApi {
 
     public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : struct {
         var scalarProperties = objectRepresentation.GetProperties().Where(p => p.IsScalarProperty());
-        return scalarProperties.Aggregate(new T(), CopyProperty);
+        return (T)scalarProperties.Aggregate((new T() as object), CopyProperty); // as object to box
     }
 
-    private static T CopyProperty<T>(T toObject, IProperty fromProperty) {
-        var boxed = toObject as object;
-        var toProperty = typeof(T).GetProperty(fromProperty.GetId());
+    private static object CopyProperty(object toObject, IProperty fromProperty) {
+        var toProperty = toObject.GetType().GetProperty(fromProperty.GetId());
         if (toProperty is not null && fromProperty.GetValue() is IConvertible fromValue) {
             var convertedFromValue = fromValue.ToType(toProperty.PropertyType, CultureInfo.InvariantCulture);
-            toProperty.SetValue(boxed, convertedFromValue);
+            toProperty.SetValue(toObject, convertedFromValue);
         }
 
-        return (T)boxed;
+        return toObject;
     }
 }
