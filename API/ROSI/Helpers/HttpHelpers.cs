@@ -8,7 +8,6 @@ using Newtonsoft.Json.Linq;
 using ROSI.Apis;
 using ROSI.Interfaces;
 using ROSI.Records;
-using Action = ROSI.Records.ActionMember;
 
 namespace ROSI.Helpers;
 
@@ -65,13 +64,7 @@ public static class HttpHelpers {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(method, uri.ToString(), options, content);
 
-        using var response = await Client.SendAsync(request);
-
-        if (response.IsSuccessStatusCode) {
-            return ReadAsString(response);
-        }
-
-        throw new HttpRequestException("request failed", null, response.StatusCode);
+        return await SendRequestAndRead(request);
     }
 
     public static async Task<string> SetValue(IHasLinks hasLinks, object newValue, InvokeOptions options) {
@@ -88,13 +81,7 @@ public static class HttpHelpers {
         using var content = new StringContent(parameterString, Encoding.UTF8, "application/json");
         var request = CreateMessage(method, uri.ToString(), options, content);
 
-        using var response = await Client.SendAsync(request);
-
-        if (response.IsSuccessStatusCode) {
-            return ReadAsString(response);
-        }
-
-        throw new HttpRequestException("request failed", null, response.StatusCode);
+        return await SendRequestAndRead(request);
     }
 
     public static async Task<string> Execute(IHasLinks action, InvokeOptions options, string jsonContent = null) {
@@ -103,13 +90,7 @@ public static class HttpHelpers {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(method, uri.ToString(), options, content);
 
-        using var response = await Client.SendAsync(request);
-
-        if (response.IsSuccessStatusCode) {
-            return ReadAsString(response);
-        }
-
-        throw new HttpRequestException("request failed", null, response.StatusCode);
+        return await SendRequestAndRead(request);
     }
 
     private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));
@@ -174,7 +155,10 @@ public static class HttpHelpers {
 
     private static async Task<string> SendAndRead(InvokeOptions options, HttpMethod method, string url, StringContent content = null) {
         var request = CreateMessage(method, url, options, content);
+        return await SendRequestAndRead(request);
+    }
 
+    private static async Task<string> SendRequestAndRead(HttpRequestMessage request) {
         using var response = await Client.SendAsync(request);
 
         if (response.IsSuccessStatusCode) {

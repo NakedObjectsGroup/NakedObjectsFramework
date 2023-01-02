@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Globalization;
+using System.Reflection;
+using Newtonsoft.Json.Linq;
+using ROSI.Interfaces;
 using ROSI.Records;
 
 namespace ROSI.Apis;
@@ -43,4 +46,20 @@ public static class DomainObjectApi {
     public static ActionMember GetAction(this DomainObject objectRepresentation, string actionName) => new(objectRepresentation.GetMemberOfType(MemberType.action, actionName));
 
     public static CollectionMember GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType(MemberType.collection, collectionName));
+
+    public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : struct {
+        var scalarProperties = objectRepresentation.GetProperties().Where(p => p.IsScalarProperty());
+        return scalarProperties.Aggregate(new T(), CopyProperty);
+    }
+
+    private static T CopyProperty<T>(T toObject, IProperty fromProperty) {
+        var boxed = toObject as object;
+        var toProperty = typeof(T).GetProperty(fromProperty.GetId());
+        if (toProperty is not null && fromProperty.GetValue() is IConvertible fromValue) {
+            var convertedFromValue = fromValue.ToType(toProperty.PropertyType, CultureInfo.InvariantCulture);
+            toProperty.SetValue(boxed, convertedFromValue);
+        }
+
+        return (T)boxed;
+    }
 }
