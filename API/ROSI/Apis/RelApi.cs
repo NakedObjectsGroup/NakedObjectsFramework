@@ -61,9 +61,5 @@ public static class RelApi {
 
     public static string GetServiceId(this string rel) => GetId(rel, "serviceId");
 
-    //var regex = new Regex("serviceId=\"([\\w.]*)\"");
-    //return regex.Match(rel).Groups.Values.Last().Value;
     public static string GetMenuId(this string rel) => GetId(rel, "menuId");
-    //var regex = new Regex("menuId=\"([\\w.]*)\"");
-    //return regex.Match(rel).Groups.Values.Last().Value;
 }

@@ -16,7 +16,7 @@ public class ExtensionsApiTests : AbstractApiTests {
     public void TestGetExtensions() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var extsRep = objectRep.GetExtensions();
-        var dict = extsRep.Extensions();
+        var dict = extsRep.RawExtensions();
 
         Assert.AreEqual("Class", dict["friendlyName"]);
         Assert.AreEqual("", dict["description"]);
@@ -37,5 +37,18 @@ public class ExtensionsApiTests : AbstractApiTests {
         Assert.AreEqual("ROSI.Test.Data.Class", extsRep.GetExtension<string>("domainType"));
         Assert.AreEqual(false, extsRep.GetExtension<bool>("isService"));
         Assert.AreEqual("persistent", extsRep.GetExtension<string>("x-ro-nof-interactionMode"));
+    }
+
+    [Test]
+    public void TestGetExtensionByEnum() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var extsRep = objectRep.GetExtensions();
+
+        Assert.AreEqual("Class", extsRep.GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName));
+        Assert.AreEqual("", extsRep.GetExtension<string>(ExtensionsApi.ExtensionKeys.description));
+        Assert.AreEqual("Classes", extsRep.GetExtension<string>(ExtensionsApi.ExtensionKeys.pluralName));
+        Assert.AreEqual("ROSI.Test.Data.Class", extsRep.GetExtension<string>(ExtensionsApi.ExtensionKeys.domainType));
+        Assert.AreEqual(false, extsRep.GetExtension<bool>(ExtensionsApi.ExtensionKeys.isService));
+        Assert.AreEqual("persistent", extsRep.GetExtension<string>(ExtensionsApi.ExtensionKeys.x_ro_nof_interactionMode));
     }
 }

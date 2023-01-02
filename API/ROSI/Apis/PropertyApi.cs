@@ -13,7 +13,7 @@ public static class PropertyApi {
     public static Link GetLinkValue(this IProperty propertyRepresentation) => new(propertyRepresentation.Wrapped["value"] as JObject);
 
     public static bool IsScalarProperty(this IProperty propertyRepresentation) {
-        var rt = propertyRepresentation.GetExtensions().GetExtension<string>("returnType");
+        var rt = propertyRepresentation.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.returnType);
         return rt is "boolean" or "number" or "string" or "integer";
     }
 }
