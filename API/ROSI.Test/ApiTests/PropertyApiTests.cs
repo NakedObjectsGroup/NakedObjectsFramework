@@ -69,7 +69,7 @@ public class PropertyApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestGetChoices() {
+    public void TestGetScalarChoices() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var details = objectRep.GetProperty(nameof(Class.PropertyWithScalarChoices)).GetDetails().Result;
         Assert.IsNotNull(details);
@@ -87,6 +87,22 @@ public class PropertyApiTests : AbstractApiTests {
         Assert.AreEqual("Choice One", ext.Keys.First());
         Assert.AreEqual(0, ext.Values.First());
 
+    }
+
+    [Test]
+    public void TestGetLinkChoices() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var details = objectRep.GetProperty(nameof(Class.Property3)).GetDetails().Result;
+        Assert.IsNotNull(details);
+
+        Assert.IsTrue(details.GetHasChoices());
+
+        var choices = details.GetLinkChoices();
+
+        Assert.AreEqual(2, choices.Count());
+
+        Assert.AreEqual("Untitled Class", choices.First().GetTitle());
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", choices.First().GetHref().ToString());
     }
 
 

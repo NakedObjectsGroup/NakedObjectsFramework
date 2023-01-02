@@ -24,6 +24,9 @@ public enum TestChoices {
 }
 
 public class Class {
+
+    public IDomainObjectContainer Container { private get; set; }
+
     [Key]
     public int Id { get; init; }
 
@@ -31,6 +34,8 @@ public class Class {
     public virtual int Property2 { get; set; }
 
     public virtual Class Property3 => this;
+
+    public ICollection<Class> ChoicesProperty3() => Container.Instances<Class>().ToList();
 
     public virtual TestChoices PropertyWithScalarChoices { get; set; }
 
