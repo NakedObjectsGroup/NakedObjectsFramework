@@ -6,6 +6,12 @@ public static class LinksApi {
     public static Link GetLinkOfRel(this IEnumerable<Link> linkRepresentations, RelApi.Rels rel) =>
         linkRepresentations.Single(l => l.GetRel().GetRelType() == rel);
 
+    public static bool HasLinkOfRel(this IEnumerable<Link> linkRepresentations, RelApi.Rels rel) =>
+        linkRepresentations.Any(l => l.GetRel().GetRelType() == rel);
+
+    public static bool HasInvokeLink(this IEnumerable<Link> linkRepresentations) =>
+        linkRepresentations.HasLinkOfRel(RelApi.Rels.invoke);
+
     public static Link GetInvokeLink(this IEnumerable<Link> linkRepresentations) =>
         linkRepresentations.GetLinkOfRel(RelApi.Rels.invoke);
 

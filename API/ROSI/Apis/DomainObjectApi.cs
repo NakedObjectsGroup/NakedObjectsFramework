@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using ROSI.Records;
-using Action = ROSI.Records.Action;
+using ActionMember = ROSI.Records.ActionMember;
 
 namespace ROSI.Apis;
 
@@ -33,7 +33,7 @@ public static class DomainObjectApi {
 
     public static string GetTitle(this DomainObject objectRepresentation) => objectRepresentation.Wrapped["title"].ToString();
 
-    public static IEnumerable<Action> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType(MemberType.action).Select(p => new Action(p));
+    public static IEnumerable<ActionMember> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType(MemberType.action).Select(p => new ActionMember(p));
 
     public static IEnumerable<Collection> GetCollections(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfType(MemberType.collection).Select(p => new Collection(p));
 
@@ -41,7 +41,7 @@ public static class DomainObjectApi {
 
     public static PropertyMember GetProperty(this DomainObject objectRepresentation, string propertyName) => new(objectRepresentation.GetMemberOfType(MemberType.property, propertyName));
 
-    public static Action GetAction(this DomainObject objectRepresentation, string actionName) => new(objectRepresentation.GetMemberOfType(MemberType.action, actionName));
+    public static ActionMember GetAction(this DomainObject objectRepresentation, string actionName) => new(objectRepresentation.GetMemberOfType(MemberType.action, actionName));
 
     public static CollectionMember GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType(MemberType.collection, collectionName));
 }

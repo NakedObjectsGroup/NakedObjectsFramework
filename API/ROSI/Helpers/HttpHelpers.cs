@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using ROSI.Apis;
 using ROSI.Interfaces;
 using ROSI.Records;
-using Action = ROSI.Records.Action;
+using Action = ROSI.Records.ActionMember;
 
 namespace ROSI.Helpers;
 

@@ -3,4 +3,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record Action(JObject Wrapped) : IAction;
+public record ActionMember(JObject Wrapped) : IAction;
