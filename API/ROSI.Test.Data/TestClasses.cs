@@ -39,6 +39,7 @@ public class Class {
 
     public virtual TestChoices PropertyWithScalarChoices { get; set; }
 
+    [TableView(true, "NameOne", "NameTwo")]
     public virtual IList<Class> Collection1 { get; set; } = new List<Class>();
     public virtual IList<Class> Collection2 { get; set; } = new List<Class>();
 

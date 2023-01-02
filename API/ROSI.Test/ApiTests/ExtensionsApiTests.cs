@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Test.Data;
@@ -50,5 +52,18 @@ public class ExtensionsApiTests : AbstractApiTests {
         Assert.AreEqual("ROSI.Test.Data.Class", extsRep.GetExtension<string>(ExtensionsApi.ExtensionKeys.domainType));
         Assert.AreEqual(false, extsRep.GetExtension<bool>(ExtensionsApi.ExtensionKeys.isService));
         Assert.AreEqual("persistent", extsRep.GetExtension<string>(ExtensionsApi.ExtensionKeys.x_ro_nof_interactionMode));
+    }
+
+    [Test]
+    public void TestGetArrayExtension() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var details = objectRep.GetCollection(nameof(Class.Collection1)).GetDetails().Result;
+        Assert.IsNotNull(details);
+
+        var ext = details.GetExtensions().GetExtension<IList<object>>(ExtensionsApi.ExtensionKeys.x_ro_nof_tableViewColumns);
+
+        Assert.AreEqual(2, ext.Count());
+
+        Assert.AreEqual("NameOne", ext.First());
     }
 }

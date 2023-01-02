@@ -38,7 +38,7 @@ public class CollectionApiTests : AbstractApiTests {
         var collection = parsedResult.GetCollection(nameof(Class.Collection1));
 
         var extensions = collection.GetExtensions();
-        Assert.AreEqual(6, extensions.Extensions().Count());
+        Assert.AreEqual(8, extensions.Extensions().Count());
     }
 
     [Test]
