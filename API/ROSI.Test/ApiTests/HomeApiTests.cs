@@ -11,7 +11,6 @@ using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Helpers;
-using ROSI.Records;
 using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;

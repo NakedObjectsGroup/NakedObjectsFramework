@@ -6,12 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
-using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
-using ROSI.Helpers;
 using ROSI.Test.Data;
-using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
@@ -35,7 +32,6 @@ public class CollectionApiTests : AbstractApiTests {
         Assert.AreEqual(0, collection.GetSize());
     }
 
-    
     [Test]
     public void TestGetExtensions() {
         var parsedResult = GetObject(FullName<Class>(), "1");
@@ -46,8 +42,7 @@ public class CollectionApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestGetValue()
-    {
+    public void TestGetValue() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var links = objectRep.GetCollection(nameof(Class.Collection1)).GetValue();
 
@@ -55,11 +50,9 @@ public class CollectionApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestDetails()
-    {
+    public void TestDetails() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var details = objectRep.GetCollection(nameof(Class.Collection1)).GetDetails().Result;
         Assert.IsNotNull(details);
     }
-
 }

@@ -29,7 +29,7 @@ public class ActionApiTests : AbstractApiTests {
         var action = parsedResult.GetAction(nameof(Class.Action1));
 
         Assert.AreEqual("action", action.GetMemberType());
-        Assert.AreEqual(nameof(Class.Action1),action.GetId());
+        Assert.AreEqual(nameof(Class.Action1), action.GetId());
     }
 
     [Test]

@@ -34,7 +34,6 @@ public class PropertyApiTests : AbstractApiTests {
         Assert.AreEqual(nameof(Class.Property1), property.GetId());
     }
 
-    
     [Test]
     public void TestGetExtensions() {
         var parsedResult = GetObject(FullName<Class>(), "1");
@@ -78,6 +77,5 @@ public class PropertyApiTests : AbstractApiTests {
         var result = details.SetValue("new").Result;
         Assert.IsNotNull(result);
         Assert.AreEqual("new", result.GetValue<string>());
-       
     }
 }

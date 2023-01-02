@@ -6,24 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
-using System.Net.Http;
 using NakedFramework.Rest.Extensions;
-using NUnit.Framework;
-using ROSI.Apis;
-using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
 public class NonInlinedActionApiTests : AbstractApiTests {
-
-
     protected override Action<RestfulObjectsOptions> RestfulObjectsOptions => options => {
         options.CacheSettings = (0, 3600, 86400);
         options.InlineDetailsInActionMemberRepresentations = false;
     };
-    
-    
+
     //[Test]
     //public void TestInvokeWithValueParmsReturnsObjectAction() {
     //    var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
@@ -40,6 +32,4 @@ public class NonInlinedActionApiTests : AbstractApiTests {
     //    var o = ar.GetObject();
     //    Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
     //}
-
-  
 }

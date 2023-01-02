@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using ROSI.Records;
-using ActionMember = ROSI.Records.ActionMember;
 
 namespace ROSI.Apis;
 
@@ -45,4 +44,3 @@ public static class DomainObjectApi {
 
     public static CollectionMember GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfType(MemberType.collection, collectionName));
 }
-

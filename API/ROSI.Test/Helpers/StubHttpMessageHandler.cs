@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -59,6 +58,7 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
             var ar = Api.AsGet().GetProperty(obj, key, propertyId);
             return await GetResponse(ar);
         }
+
         if (request.Method == HttpMethod.Put) {
             var body = await ReadBody(request);
             var arg = ModelBinderUtils.CreateSingleValueArgument(JObject.Parse(body), false);
@@ -102,7 +102,6 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         throw new NotImplementedException();
     }
 
-
     private async Task<HttpResponseMessage> SendAsyncAction(HttpRequestMessage request, string obj, string key, string action) {
         var method = request.Method;
         var query = request.RequestUri.Query.TrimStart('?');
@@ -134,7 +133,6 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         return await GetResponse(ar);
     }
 
-
     private async Task<HttpResponseMessage> SendAsyncObject(HttpRequestMessage request, string[] segments) {
         var obj = segments[2].TrimEnd('/');
         var key = segments[3].TrimEnd('/');
@@ -149,13 +147,13 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
                     if (segments.Length > 6) {
                         return await SendAsyncAction(request, obj, key, segments[5].TrimEnd('/'));
                     }
+
                     return await SendAsyncActionDetails(request, obj, key, segments[5].TrimEnd('/'));
             }
         }
 
         throw new NotImplementedException();
     }
-
 
     private async Task<HttpResponseMessage> GetResponse(ActionResult ar) {
         var (json, sc, _) = await TestHelpers.ReadActionResult(ar, Api.ControllerContext.HttpContext);
