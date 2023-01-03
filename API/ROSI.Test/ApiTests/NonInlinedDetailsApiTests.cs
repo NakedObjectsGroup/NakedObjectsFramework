@@ -93,6 +93,24 @@ public class NonInlinedDetailsApiTests : AbstractApiTests {
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", choices.First().GetHref().ToString());
     }
 
+    [Test]
+    public void TestGetParameters() {
+        var objectRep = GetObject(FullName<ClassWithActions>(), "1");
+        var action = objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject));
+        Assert.IsNotNull(action);
+
+        var parameters = action.GetParameters(TestInvokeOptions()).Result.Parameters();
+
+        Assert.AreEqual(2, parameters.Count());
+
+        Assert.AreEqual("index", parameters.Keys.First());
+        Assert.AreEqual("class1", parameters.Keys.Last());
+
+        Assert.AreEqual("Index", parameters["index"].GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName));
+        Assert.AreEqual(0, parameters["index"].GetLinks().Count());
+    }
+
+
     // so it returns a new stub client each time
     protected record ForInlineInvokeOptions : InvokeOptions {
         private readonly AbstractApiTests tc;

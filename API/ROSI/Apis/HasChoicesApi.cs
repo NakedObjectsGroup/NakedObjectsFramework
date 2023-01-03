@@ -6,7 +6,7 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class HasChoicesApi {
-    public static IEnumerable<T> GetChoices<T>(this IHasChoices hasChoices) => hasChoices.Wrapped["choices"].Select(c => c.Value<T>());
+    public static IEnumerable<T> GetChoices<T>(this IHasChoices hasChoices) => hasChoices.Wrapped[JsonConstants.Choices].Select(c => c.Value<T>());
 
-    public static IEnumerable<Link> GetLinkChoices(this IHasChoices hasChoices) => hasChoices.Wrapped["choices"].ToLinks();
+    public static IEnumerable<Link> GetLinkChoices(this IHasChoices hasChoices) => hasChoices.Wrapped[JsonConstants.Choices].ToLinks();
 }

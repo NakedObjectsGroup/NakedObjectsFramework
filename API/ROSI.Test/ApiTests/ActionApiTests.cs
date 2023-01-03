@@ -49,7 +49,7 @@ public class ActionApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestGetParameters() {
+    public void TestGetParametersOnDetails() {
         var objectRep = GetObject(FullName<ClassWithActions>(), "1");
         var details = objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject)).GetDetails(TestInvokeOptions()).Result;
         Assert.IsNotNull(details);
@@ -64,6 +64,24 @@ public class ActionApiTests : AbstractApiTests {
         Assert.AreEqual("Index", parameters["index"].GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName));
         Assert.AreEqual(0, parameters["index"].GetLinks().Count());
     }
+
+    [Test]
+    public void TestGetParameters() {
+        var objectRep = GetObject(FullName<ClassWithActions>(), "1");
+        var action = objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject));
+        Assert.IsNotNull(action);
+
+        var parameters = action.GetParameters(TestInvokeOptions()).Result.Parameters();
+
+        Assert.AreEqual(2, parameters.Count());
+
+        Assert.AreEqual("index", parameters.Keys.First());
+        Assert.AreEqual("class1", parameters.Keys.Last());
+
+        Assert.AreEqual("Index", parameters["index"].GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName));
+        Assert.AreEqual(0, parameters["index"].GetLinks().Count());
+    }
+
 
     [Test]
     public void TestInvokeNoParmReturnsObjectAction() {

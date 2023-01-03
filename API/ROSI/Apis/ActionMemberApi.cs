@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using ROSI.Helpers;
 using ROSI.Records;
 using System;
@@ -11,6 +12,16 @@ public static class ActionMemberApi {
     public static async Task<ActionDetails> GetDetails(this ActionMember actionRepresentation, InvokeOptions options) {
         var json = await HttpHelpers.GetDetails(actionRepresentation, options);
         return new ActionDetails(JObject.Parse(json));
+    }
+
+    private static bool HasParameters(this ActionMember actionRepresentation) => actionRepresentation.Wrapped["parameters"] is not null;
+
+    public static async Task<Parameters> GetParameters(this ActionMember actionRepresentation, InvokeOptions options) {
+        if (actionRepresentation.HasParameters()) {
+            return new Parameters(actionRepresentation.Wrapped["parameters"] as JObject);
+        }
+
+        return (await actionRepresentation.GetDetails(options)).GetParameters();
     }
 
     public static async Task<ActionResult> Invoke(this ActionMember actionRepresentation, InvokeOptions options, params object[] pp) {

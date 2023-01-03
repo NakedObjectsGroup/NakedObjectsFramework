@@ -22,7 +22,7 @@ public static class PropertyMemberApi {
 
     public static async Task<IEnumerable<T>> GetChoices<T>(this PropertyMember propertyRepresentation, InvokeOptions options) {
         if (propertyRepresentation.HasChoicesFlag()) {
-            return propertyRepresentation.Wrapped["choices"].Select(c => c.Value<T>());
+            return propertyRepresentation.Wrapped[JsonConstants.Choices].Select(c => c.Value<T>());
         }
 
         return (await propertyRepresentation.GetDetails(options)).GetChoices<T>();
@@ -30,7 +30,7 @@ public static class PropertyMemberApi {
 
     public static async Task<IEnumerable<Link>> GetLinkChoices(this PropertyMember propertyRepresentation, InvokeOptions options) {
         if (propertyRepresentation.HasChoicesFlag()) {
-            return propertyRepresentation.Wrapped["choices"].ToLinks();
+            return propertyRepresentation.Wrapped[JsonConstants.Choices].ToLinks();
         }
 
         return (await propertyRepresentation.GetDetails(options)).GetLinkChoices();
