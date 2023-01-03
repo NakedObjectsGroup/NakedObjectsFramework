@@ -12,13 +12,11 @@ using ROSI.Records;
 namespace ROSI.Helpers;
 
 public static class HttpHelpers {
-    public static string GlobalToken { get; set; } = null;
-
-    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, InvokeOptions options, HttpContent content) {
+    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, InvokeOptions options, HttpContent? content) {
         var request = new HttpRequestMessage(method, path);
 
-        if ((options.Token ?? GlobalToken) is not null) {
-            request.Headers.Add("Authorization", options.Token ?? GlobalToken);
+        if (options.Token is not null) {
+            request.Headers.Add("Authorization", options.Token);
         }
 
         if (options.Tag is not null) {
@@ -40,9 +38,9 @@ public static class HttpHelpers {
 
     private static (Uri, HttpMethod) GetUriAndMethod(this Link linkRepresentation) => (linkRepresentation.GetHref(), linkRepresentation.GetMethod());
 
-    public static async Task<string> Execute(Uri url, InvokeOptions options, string jsonContent = null) => (await ExecuteWithTag(url, options, jsonContent)).Item1;
+    public static async Task<string> Execute(Uri url, InvokeOptions options) => (await ExecuteWithTag(url, options)).Item1;
 
-    public static async Task<(string, EntityTagHeaderValue)> ExecuteWithTag(Uri url, InvokeOptions options, string jsonContent = null) {
+    public static async Task<(string, EntityTagHeaderValue)> ExecuteWithTag(Uri url, InvokeOptions options) {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(HttpMethod.Get, url.ToString(), options, content);
 
@@ -107,7 +105,7 @@ public static class HttpHelpers {
 
         var url = QueryHelpers.AddQueryString(uri.ToString(), parameters);
 
-        return await SendAndRead(options, HttpMethod.Get, url);
+        return await SendAndRead(HttpMethod.Get, url, options);
     }
 
     public static async Task<string> Execute(IHasLinks action, InvokeOptions options, params object[] pp) {
@@ -143,10 +141,10 @@ public static class HttpHelpers {
 
         using var content = method == HttpMethod.Post || method == HttpMethod.Put ? new StringContent(parameterString, Encoding.UTF8, "application/json") : null;
 
-        return await SendAndRead(options, method, url, content);
+        return await SendAndRead(method, url, options, content);
     }
 
-    private static async Task<string> SendAndRead(InvokeOptions options, HttpMethod method, string url, StringContent content = null) {
+    private static async Task<string> SendAndRead(HttpMethod method, string url, InvokeOptions options, StringContent? content = null) {
         var request = CreateMessage(method, url, options, content);
         return (await SendRequestAndRead(request, options)).Response;
     }
