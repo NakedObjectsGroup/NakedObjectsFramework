@@ -64,14 +64,14 @@ public class PropertyApiTests : AbstractApiTests {
     [Test]
     public void TestGetDetails() {
         var objectRep = GetObject(FullName<Class>(), "1");
-        var details = objectRep.GetProperty(nameof(Class.Property1)).GetDetails().Result;
+        var details = objectRep.GetProperty(nameof(Class.Property1)).GetDetails(TestInvokeOptions()).Result;
         Assert.IsNotNull(details);
     }
 
     [Test]
     public void TestGetScalarChoices() {
         var objectRep = GetObject(FullName<Class>(), "1");
-        var details = objectRep.GetProperty(nameof(Class.PropertyWithScalarChoices)).GetDetails().Result;
+        var details = objectRep.GetProperty(nameof(Class.PropertyWithScalarChoices)).GetDetails(TestInvokeOptions()).Result;
         Assert.IsNotNull(details);
 
         Assert.IsTrue(details.GetHasChoices());
@@ -92,7 +92,7 @@ public class PropertyApiTests : AbstractApiTests {
     [Test]
     public void TestGetLinkChoices() {
         var objectRep = GetObject(FullName<Class>(), "1");
-        var details = objectRep.GetProperty(nameof(Class.Property3)).GetDetails().Result;
+        var details = objectRep.GetProperty(nameof(Class.Property3)).GetDetails(TestInvokeOptions()).Result;
         Assert.IsNotNull(details);
 
         Assert.IsTrue(details.GetHasChoices());
@@ -110,11 +110,9 @@ public class PropertyApiTests : AbstractApiTests {
     [Test]
     public void TestSetPropertyValue() {
         var objectRep = GetObject(FullName<Class>(), "1");
-        var details = objectRep.GetProperty(nameof(Class.Property1)).GetDetails().Result;
+        var details = objectRep.GetProperty(nameof(Class.Property1)).GetDetails(TestInvokeOptions()).Result;
 
-        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
-
-        var result = details.SetValue("new").Result;
+        var result = details.SetValue("new", TestInvokeOptions()).Result;
         Assert.IsNotNull(result);
         Assert.AreEqual("new", result.GetValue<string>());
     }

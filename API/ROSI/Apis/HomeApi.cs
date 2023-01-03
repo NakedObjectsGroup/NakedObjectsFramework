@@ -12,11 +12,11 @@ public static class HomeApi {
     public static Link GetMenusLink(this Home homeRepresentation) => homeRepresentation.GetLinks().GetLinkOfRel(RelApi.Rels.menus);
     public static Link GetVersionLink(this Home homeRepresentation) => homeRepresentation.GetLinks().GetLinkOfRel(RelApi.Rels.version);
 
-    public static async Task<User> GetUserAsync(this Home homeRepresentation) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetUserLink()));
+    public static async Task<User> GetUserAsync(this Home homeRepresentation, InvokeOptions options) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetUserLink(), options));
 
-    public static async Task<Version> GetVersionAsync(this Home homeRepresentation) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetVersionLink()));
+    public static async Task<Version> GetVersionAsync(this Home homeRepresentation, InvokeOptions options) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetVersionLink(),options));
 
-    public static async Task<Services> GetServicesAsync(this Home homeRepresentation) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetServicesLink()));
+    public static async Task<Services> GetServicesAsync(this Home homeRepresentation, InvokeOptions options) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetServicesLink(), options));
 
-    public static async Task<Menus> GetMenusAsync(this Home homeRepresentation) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetMenusLink()));
+    public static async Task<Menus> GetMenusAsync(this Home homeRepresentation, InvokeOptions options) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetMenusLink(), options));
 }

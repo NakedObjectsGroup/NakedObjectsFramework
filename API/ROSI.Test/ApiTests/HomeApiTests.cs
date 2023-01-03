@@ -18,7 +18,7 @@ namespace ROSI.Test.ApiTests;
 public class HomeApiTests : AbstractApiTests {
     [Test]
     public void TestGetHome() {
-        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
         var selfLink = home.GetSelfLink();
         var userLink = home.GetUserLink();
         var servicesLink = home.GetServicesLink();
@@ -36,9 +36,8 @@ public class HomeApiTests : AbstractApiTests {
 
     [Test]
     public void TestGetUser() {
-        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
-        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
-        var user = home.GetUserAsync().Result;
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        var user = home.GetUserAsync(TestInvokeOptions()).Result;
 
         Assert.AreEqual(2, user.GetLinks().Count());
         Assert.AreEqual("Test", user.GetUserName());
@@ -51,9 +50,9 @@ public class HomeApiTests : AbstractApiTests {
 
     [Test]
     public void TestGetVersion() {
-        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
-        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
-        var version = home.GetVersionAsync().Result;
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        //HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
+        var version = home.GetVersionAsync(TestInvokeOptions()).Result;
         Assert.AreEqual(2, version.GetLinks().Count());
         Assert.AreEqual("1.2", version.GetSpecVersion());
         Assert.AreEqual("Naked Objects 13.1.0", version.GetImplVersion());
@@ -63,9 +62,8 @@ public class HomeApiTests : AbstractApiTests {
 
     [Test]
     public void TestGetServices() {
-        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
-        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
-        var services = home.GetServicesAsync().Result;
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        var services = home.GetServicesAsync(TestInvokeOptions()).Result;
 
         Assert.AreEqual(0, services.GetExtensions().Extensions().Count);
 
@@ -77,9 +75,7 @@ public class HomeApiTests : AbstractApiTests {
         var sl = services.GetServiceLink("ROSI.Test.Data.SimpleService");
         Assert.IsNotNull(sl);
 
-        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
-
-        var s = services.GetService("ROSI.Test.Data.SimpleService").Result;
+        var s = services.GetService("ROSI.Test.Data.SimpleService",TestInvokeOptions()).Result;
 
         Assert.AreEqual("ROSI.Test.Data.SimpleService", s.GetServiceId());
         Assert.AreEqual("Simple Service", s.GetTitle());
@@ -91,9 +87,8 @@ public class HomeApiTests : AbstractApiTests {
 
     [Test]
     public void TestGetMenus() {
-        var home = ROSIApi.GetHome(new Uri("http://localhost/")).Result;
-        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
-        var menus = home.GetMenusAsync().Result;
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        var menus = home.GetMenusAsync(TestInvokeOptions()).Result;
 
         Assert.AreEqual(0, menus.GetExtensions().Extensions().Count);
 
@@ -105,9 +100,7 @@ public class HomeApiTests : AbstractApiTests {
         var ml = menus.GetMenuLink("SimpleService");
         Assert.IsNotNull(ml);
 
-        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
-
-        var m = menus.GetMenu("SimpleService").Result;
+        var m = menus.GetMenu("SimpleService", TestInvokeOptions()).Result;
 
         Assert.AreEqual("SimpleService", m.GetMenuId());
         Assert.AreEqual("Simple Service", m.GetTitle());

@@ -10,9 +10,9 @@ public static class ApiHelpers {
 
     public static IEnumerable<Link> GetLinks(this JObject jo) => jo["links"].ToLinks();
 
-    public static async Task<JObject> GetResourceAsync(Link link) {
+    public static async Task<JObject> GetResourceAsync(Link link, InvokeOptions options) {
         var href = link.GetHref();
-        var json = await HttpHelpers.Execute(href, new InvokeOptions());
+        var json = await HttpHelpers.Execute(href, options);
         return JObject.Parse(json);
     }
 

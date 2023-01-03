@@ -52,7 +52,7 @@ public class CollectionApiTests : AbstractApiTests {
     [Test]
     public void TestDetails() {
         var objectRep = GetObject(FullName<Class>(), "1");
-        var details = objectRep.GetCollection(nameof(Class.Collection1)).GetDetails().Result;
+        var details = objectRep.GetCollection(nameof(Class.Collection1)).GetDetails(TestInvokeOptions()).Result;
         Assert.IsNotNull(details);
     }
 }

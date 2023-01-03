@@ -57,7 +57,7 @@ public class ExtensionsApiTests : AbstractApiTests {
     [Test]
     public void TestGetArrayExtension() {
         var objectRep = GetObject(FullName<Class>(), "1");
-        var details = objectRep.GetCollection(nameof(Class.Collection1)).GetDetails().Result;
+        var details = objectRep.GetCollection(nameof(Class.Collection1)).GetDetails(TestInvokeOptions()).Result;
         Assert.IsNotNull(details);
 
         var ext = details.GetExtensions().GetExtension<IList<object>>(ExtensionsApi.ExtensionKeys.x_ro_nof_tableViewColumns);

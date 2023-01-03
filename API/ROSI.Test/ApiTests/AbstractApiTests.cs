@@ -8,6 +8,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -77,7 +78,6 @@ public abstract class AbstractApiTests : AcceptanceTestCase {
     [SetUp]
     public void SetUp() {
         StartTest();
-        HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
     }
 
     [TearDown]
@@ -110,4 +110,11 @@ public abstract class AbstractApiTests : AcceptanceTestCase {
     }
 
     protected static string FullName<T>() => typeof(T).FullName;
+
+    protected InvokeOptions TestInvokeOptions(string? token = null, EntityTagHeaderValue? tag = null) =>
+        new InvokeOptions {
+            Token = token,
+            Tag = tag,
+            HttpClient = new HttpClient(new StubHttpMessageHandler(Api()))
+        };
 }

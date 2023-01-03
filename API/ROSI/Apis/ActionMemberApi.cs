@@ -7,12 +7,12 @@ namespace ROSI.Apis;
 public static class ActionMemberApi {
     public static bool HasInvokeLink(this ActionMember actionRepresentation) => actionRepresentation.GetLinks().HasInvokeLink();
 
-    public static async Task<ActionDetails> GetDetails(this ActionMember actionRepresentation, InvokeOptions? options = null) {
+    public static async Task<ActionDetails> GetDetails(this ActionMember actionRepresentation, InvokeOptions options) {
         var json = await HttpHelpers.GetDetails(actionRepresentation, options ?? new InvokeOptions());
         return new ActionDetails(JObject.Parse(json));
     }
 
-    public static async Task<ActionResult> Invoke(this ActionMember actionRepresentation, InvokeOptions? options = null) {
+    public static async Task<ActionResult> Invoke(this ActionMember actionRepresentation, InvokeOptions options) {
         if (actionRepresentation.HasInvokeLink()) {
             var json = await HttpHelpers.Execute(actionRepresentation, options ?? new InvokeOptions());
             return new ActionResult(JObject.Parse(json));
@@ -29,6 +29,4 @@ public static class ActionMemberApi {
 
         return await (await actionRepresentation.GetDetails(options)).Invoke(options, pp);
     }
-
-    public static async Task<ActionResult> Invoke(this ActionMember actionRepresentation, params object[] pp) => await actionRepresentation.Invoke(new InvokeOptions(), pp);
 }

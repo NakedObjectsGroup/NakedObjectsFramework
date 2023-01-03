@@ -6,8 +6,8 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class PropertyDetailsApi {
-    public static async Task<PropertyDetails> SetValue(this PropertyDetails propertyRepresentation, object newValue, InvokeOptions options = null) {
-        var json = await HttpHelpers.SetValue(propertyRepresentation, newValue, options ?? new InvokeOptions());
+    public static async Task<PropertyDetails> SetValue(this PropertyDetails propertyRepresentation, object newValue, InvokeOptions options) {
+        var json = await HttpHelpers.SetValue(propertyRepresentation, newValue, options);
         return new PropertyDetails(JObject.Parse(json));
     }
 

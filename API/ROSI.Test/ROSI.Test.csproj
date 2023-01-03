@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<IsPackable>false</IsPackable>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -21,8 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference
-			Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
+		<ProjectReference Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
 		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Metamodel.Test\NakedFramework.Metamodel.Test.csproj" />
 		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj" />
 		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Rest\NakedFramework.Rest.csproj" />

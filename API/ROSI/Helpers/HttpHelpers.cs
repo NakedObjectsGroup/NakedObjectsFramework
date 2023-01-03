@@ -12,8 +12,6 @@ using ROSI.Records;
 namespace ROSI.Helpers;
 
 public static class HttpHelpers {
-    public static HttpClient Client { private get; set; } = new();
-
     public static string GlobalToken { get; set; } = null;
 
     private static HttpRequestMessage CreateMessage(HttpMethod method, string path, InvokeOptions options, HttpContent content) {
@@ -48,14 +46,7 @@ public static class HttpHelpers {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(HttpMethod.Get, url.ToString(), options, content);
 
-        using var response = await Client.SendAsync(request);
-        var tag = response.Headers.ETag;
-
-        if (response.IsSuccessStatusCode) {
-            return (ReadAsString(response), tag);
-        }
-
-        throw new HttpRequestException("request failed", null, response.StatusCode);
+        return await SendRequestAndRead(request, options);
     }
 
     public static async Task<string> GetDetails(IHasLinks hasLinks, InvokeOptions options) {
@@ -64,7 +55,7 @@ public static class HttpHelpers {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(method, uri.ToString(), options, content);
 
-        return await SendRequestAndRead(request);
+        return (await SendRequestAndRead(request, options)).Response;
     }
 
     public static async Task<string> SetValue(IHasLinks hasLinks, object newValue, InvokeOptions options) {
@@ -81,7 +72,7 @@ public static class HttpHelpers {
         using var content = new StringContent(parameterString, Encoding.UTF8, "application/json");
         var request = CreateMessage(method, uri.ToString(), options, content);
 
-        return await SendRequestAndRead(request);
+        return (await SendRequestAndRead(request, options)).Response;
     }
 
     public static async Task<string> Execute(IAction action, InvokeOptions options) {
@@ -94,7 +85,7 @@ public static class HttpHelpers {
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(method, uri.ToString(), options, content);
 
-        return await SendRequestAndRead(request);
+        return (await SendRequestAndRead(request, options)).Response;
     }
 
 
@@ -160,14 +151,15 @@ public static class HttpHelpers {
 
     private static async Task<string> SendAndRead(InvokeOptions options, HttpMethod method, string url, StringContent content = null) {
         var request = CreateMessage(method, url, options, content);
-        return await SendRequestAndRead(request);
+        return (await SendRequestAndRead(request, options)).Response;
     }
 
-    private static async Task<string> SendRequestAndRead(HttpRequestMessage request) {
-        using var response = await Client.SendAsync(request);
+    private static async Task<(string Response, EntityTagHeaderValue Tag)> SendRequestAndRead(HttpRequestMessage request, InvokeOptions options) {
+        using var response = await options.HttpClient.SendAsync(request);
+        var tag = response.Headers.ETag;
 
         if (response.IsSuccessStatusCode) {
-            return ReadAsString(response);
+            return (ReadAsString(response), tag);
         }
 
         var error = ReadAsString(response);

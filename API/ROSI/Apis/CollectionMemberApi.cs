@@ -5,8 +5,8 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class CollectionMemberApi {
-    public static async Task<CollectionDetails> GetDetails(this CollectionMember collectionRepresentation, InvokeOptions options = null) {
-        var json = await HttpHelpers.GetDetails(collectionRepresentation, options ?? new InvokeOptions());
+    public static async Task<CollectionDetails> GetDetails(this CollectionMember collectionRepresentation, InvokeOptions options) {
+        var json = await HttpHelpers.GetDetails(collectionRepresentation, options);
         return new CollectionDetails(JObject.Parse(json));
     }
 
