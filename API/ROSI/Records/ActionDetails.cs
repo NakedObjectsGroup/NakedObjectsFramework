@@ -3,4 +3,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record Prompt(JObject Wrapped) : IHasExtensions, IHasLinks;
+public record ActionDetails(JObject Wrapped) : IHasExtensions, IHasLinks;

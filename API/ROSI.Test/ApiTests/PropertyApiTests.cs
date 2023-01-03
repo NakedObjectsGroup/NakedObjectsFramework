@@ -66,7 +66,7 @@ public class PropertyApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestGetScalarChoices() {
+    public void TestGetScalarChoicesFromDetails() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var details = objectRep.GetProperty(nameof(Class.PropertyWithScalarChoices)).GetDetails(TestInvokeOptions()).Result;
         Assert.IsNotNull(details);
@@ -86,7 +86,7 @@ public class PropertyApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestGetLinkChoices() {
+    public void TestGetLinkChoicesFromDetails() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var details = objectRep.GetProperty(nameof(Class.Property3)).GetDetails(TestInvokeOptions()).Result;
         Assert.IsNotNull(details);
@@ -94,6 +94,42 @@ public class PropertyApiTests : AbstractApiTests {
         Assert.IsTrue(details.GetHasChoices());
 
         var choices = details.GetLinkChoices();
+
+        Assert.AreEqual(2, choices.Count());
+
+        Assert.AreEqual("Untitled Class", choices.First().GetTitle());
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", choices.First().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestGetScalarChoices() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var property = objectRep.GetProperty(nameof(Class.PropertyWithScalarChoices));
+        Assert.IsNotNull(property);
+
+        Assert.IsTrue(property.GetHasChoices(TestInvokeOptions()).Result);
+
+        var choices = property.GetChoices<int>(TestInvokeOptions()).Result;
+
+        Assert.AreEqual(3, choices.Count());
+
+        var ext = property.GetExtensions().GetExtension<Dictionary<string, object>>(ExtensionsApi.ExtensionKeys.x_ro_nof_choices);
+
+        Assert.AreEqual(3, ext.Count());
+
+        Assert.AreEqual("Choice One", ext.Keys.First());
+        Assert.AreEqual(0, ext.Values.First());
+    }
+
+    [Test]
+    public void TestGetLinkChoices() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var property = objectRep.GetProperty(nameof(Class.Property3));
+        Assert.IsNotNull(property);
+
+        Assert.IsTrue(property.GetHasChoices(TestInvokeOptions()).Result);
+
+        var choices = property.GetLinkChoices(TestInvokeOptions()).Result;
 
         Assert.AreEqual(2, choices.Count());
 

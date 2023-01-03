@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using NakedFramework.Rest.Extensions;
@@ -55,6 +56,45 @@ public class NonInlinedDetailsApiTests : AbstractApiTests {
 
         Assert.AreEqual("search", prompts.First());
     }
+
+    [Test]
+    public void TestGetScalarChoices() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var property = objectRep.GetProperty(nameof(Class.PropertyWithScalarChoices));
+        Assert.IsNotNull(property);
+
+        Assert.IsTrue(property.GetHasChoices(TestInvokeOptions()).Result);
+
+        var choices = property.GetChoices<int>(TestInvokeOptions()).Result;
+
+        Assert.AreEqual(3, choices.Count());
+
+        var ext = property.GetExtensions().GetExtension<Dictionary<string, object>>(ExtensionsApi.ExtensionKeys.x_ro_nof_choices);
+
+        Assert.AreEqual(3, ext.Count());
+
+        Assert.AreEqual("Choice One", ext.Keys.First());
+        Assert.AreEqual(0, ext.Values.First());
+    }
+
+    [Test]
+    public void TestGetLinkChoices() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var property = objectRep.GetProperty(nameof(Class.Property3));
+        Assert.IsNotNull(property);
+
+        Assert.IsTrue(property.GetHasChoices(TestInvokeOptions()).Result);
+
+        var choices = property.GetLinkChoices(TestInvokeOptions()).Result;
+
+        Assert.AreEqual(2, choices.Count());
+
+        Assert.AreEqual("Untitled Class", choices.First().GetTitle());
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", choices.First().GetHref().ToString());
+    }
+
+
+
 
     // so it returns a new stub client each time
     protected record ForInlineInvokeOptions : InvokeOptions {
