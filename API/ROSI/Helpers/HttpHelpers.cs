@@ -12,7 +12,7 @@ using ROSI.Records;
 namespace ROSI.Helpers;
 
 public static class HttpHelpers {
-    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, InvokeOptions options, HttpContent? content) {
+    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, InvokeOptions options, HttpContent? content = null) {
         var request = new HttpRequestMessage(method, path);
 
         if (options.Token is not null) {
@@ -38,21 +38,16 @@ public static class HttpHelpers {
 
     private static (Uri, HttpMethod) GetUriAndMethod(this Link linkRepresentation) => (linkRepresentation.GetHref(), linkRepresentation.GetMethod());
 
-    public static async Task<string> Execute(Uri url, InvokeOptions options) => (await ExecuteWithTag(url, options)).Item1;
+    public static async Task<string> Execute(Uri url, InvokeOptions options) => (await ExecuteWithTag(url, options)).Response;
 
-    public static async Task<(string, EntityTagHeaderValue)> ExecuteWithTag(Uri url, InvokeOptions options) {
-        using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
-        var request = CreateMessage(HttpMethod.Get, url.ToString(), options, content);
-
+    public static async Task<(string Response, EntityTagHeaderValue Tag)> ExecuteWithTag(Uri url, InvokeOptions options) {
+        var request = CreateMessage(HttpMethod.Get, url.ToString(), options);
         return await SendRequestAndRead(request, options);
     }
 
     public static async Task<string> GetDetails(IHasLinks hasLinks, InvokeOptions options) {
         var (uri, method) = hasLinks.GetLinks().GetDetailsLink().GetUriAndMethod();
-
-        using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
-        var request = CreateMessage(method, uri.ToString(), options, content);
-
+        var request = CreateMessage(method, uri.ToString(), options);
         return (await SendRequestAndRead(request, options)).Response;
     }
 
@@ -78,7 +73,7 @@ public static class HttpHelpers {
     public static async Task<string> Execute(Link toExecute, InvokeOptions options) {
         var (uri, method) = toExecute.GetUriAndMethod();
 
-        using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
+        using var content = method != HttpMethod.Get ? JsonContent.Create("", new MediaTypeHeaderValue("application/json")) : null;
         var request = CreateMessage(method, uri.ToString(), options, content);
 
         return (await SendRequestAndRead(request, options)).Response;
