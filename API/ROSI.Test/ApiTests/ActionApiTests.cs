@@ -9,9 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
-using ROSI.Helpers;
 using ROSI.Test.Data;
-using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
@@ -65,7 +63,6 @@ public class ActionApiTests : AbstractApiTests {
 
         Assert.AreEqual("Index", parameters["index"].GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName));
         Assert.AreEqual(0, parameters["index"].GetLinks().Count());
-
     }
 
     [Test]

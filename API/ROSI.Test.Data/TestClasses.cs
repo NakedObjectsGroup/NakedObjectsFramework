@@ -18,13 +18,12 @@ public class SimpleService {
 }
 
 public enum TestChoices {
-    ChoiceOne, 
+    ChoiceOne,
     ChoiceTwo,
     ChoiceThree
 }
 
 public class Class {
-
     public IDomainObjectContainer Container { private get; set; }
 
     [Key]
@@ -35,13 +34,14 @@ public class Class {
 
     public virtual Class Property3 => this;
 
-    public ICollection<Class> ChoicesProperty3() => Container.Instances<Class>().ToList();
-
     public virtual TestChoices PropertyWithScalarChoices { get; set; }
 
     [TableView(true, "NameOne", "NameTwo")]
     public virtual IList<Class> Collection1 { get; set; } = new List<Class>();
+
     public virtual IList<Class> Collection2 { get; set; } = new List<Class>();
+
+    public ICollection<Class> ChoicesProperty3() => Container.Instances<Class>().ToList();
 
     public Class Action1() => this;
 

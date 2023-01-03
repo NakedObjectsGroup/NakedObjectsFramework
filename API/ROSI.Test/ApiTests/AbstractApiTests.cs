@@ -21,7 +21,6 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using ROSI.Helpers;
 using ROSI.Records;
 using ROSI.Test.Data;
 using ROSI.Test.Helpers;
@@ -112,7 +111,7 @@ public abstract class AbstractApiTests : AcceptanceTestCase {
     protected static string FullName<T>() => typeof(T).FullName;
 
     protected InvokeOptions TestInvokeOptions(string? token = null, EntityTagHeaderValue? tag = null) =>
-        new InvokeOptions {
+        new() {
             Token = token,
             Tag = tag,
             HttpClient = new HttpClient(new StubHttpMessageHandler(Api()))

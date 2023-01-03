@@ -14,7 +14,7 @@ public static class HomeApi {
 
     public static async Task<User> GetUserAsync(this Home homeRepresentation, InvokeOptions options) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetUserLink(), options));
 
-    public static async Task<Version> GetVersionAsync(this Home homeRepresentation, InvokeOptions options) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetVersionLink(),options));
+    public static async Task<Version> GetVersionAsync(this Home homeRepresentation, InvokeOptions options) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetVersionLink(), options));
 
     public static async Task<Services> GetServicesAsync(this Home homeRepresentation, InvokeOptions options) => new(await ApiHelpers.GetResourceAsync(homeRepresentation.GetServicesLink(), options));
 

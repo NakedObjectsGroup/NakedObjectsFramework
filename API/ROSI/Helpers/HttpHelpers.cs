@@ -75,9 +75,7 @@ public static class HttpHelpers {
         return (await SendRequestAndRead(request, options)).Response;
     }
 
-    public static async Task<string> Execute(IAction action, InvokeOptions options) {
-        return await Execute(action.GetLinks().GetInvokeLink(), options);
-    }
+    public static async Task<string> Execute(IAction action, InvokeOptions options) => await Execute(action.GetLinks().GetInvokeLink(), options);
 
     public static async Task<string> Execute(Link toExecute, InvokeOptions options) {
         var (uri, method) = toExecute.GetUriAndMethod();
@@ -87,7 +85,6 @@ public static class HttpHelpers {
 
         return (await SendRequestAndRead(request, options)).Response;
     }
-
 
     private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));
 

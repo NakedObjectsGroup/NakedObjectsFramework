@@ -69,12 +69,6 @@ public class ObjectApiTests : AbstractApiTests {
         Assert.IsNotNull(val);
     }
 
-    private struct TestClassPoco {
-        public string Property1 { get; set; }
-        public int Property2 { get; set; }
-        public Class Property3 { get; set; }
-    }
-
     [Test]
     public void TestGetAsPoco() {
         var objectRep = GetObject(FullName<Class>(), "1");
@@ -83,5 +77,11 @@ public class ObjectApiTests : AbstractApiTests {
         Assert.AreEqual("One", poco.Property1);
         Assert.AreEqual(2, poco.Property2);
         Assert.IsNull(poco.Property3);
+    }
+
+    private struct TestClassPoco {
+        public string Property1 { get; set; }
+        public int Property2 { get; set; }
+        public Class Property3 { get; set; }
     }
 }

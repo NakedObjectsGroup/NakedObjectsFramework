@@ -1,22 +1,20 @@
-﻿using System.Runtime.Serialization;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Extensions = ROSI.Records.Extensions;
 
 namespace ROSI.Apis;
 
 public static class ExtensionsApi {
-
     public enum ExtensionKeys {
         domainType,
         friendlyName,
-        pluralName, 
-        description, 
+        pluralName,
+        description,
         isService,
-        memberOrder, 
+        memberOrder,
         returnType,
-        optional, 
+        optional,
         format,
-        maxlength, 
+        maxlength,
         pattern,
         hasParams,
         elementType,

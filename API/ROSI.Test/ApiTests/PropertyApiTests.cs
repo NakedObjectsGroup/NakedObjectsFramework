@@ -7,12 +7,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
-using ROSI.Helpers;
 using ROSI.Test.Data;
-using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
@@ -86,7 +83,6 @@ public class PropertyApiTests : AbstractApiTests {
 
         Assert.AreEqual("Choice One", ext.Keys.First());
         Assert.AreEqual(0, ext.Values.First());
-
     }
 
     [Test]
@@ -104,8 +100,6 @@ public class PropertyApiTests : AbstractApiTests {
         Assert.AreEqual("Untitled Class", choices.First().GetTitle());
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", choices.First().GetHref().ToString());
     }
-
-
 
     [Test]
     public void TestSetPropertyValue() {

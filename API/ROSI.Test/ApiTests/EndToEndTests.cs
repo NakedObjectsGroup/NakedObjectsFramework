@@ -1,27 +1,24 @@
 ﻿using System;
-using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
-using ROSI.Helpers;
 using ROSI.Records;
 
 namespace ROSI.Test.ApiTests;
 
 internal class EndToEndTests {
     [SetUp]
-    public void SetUp() {
-    }
+    public void SetUp() { }
 
     [Test]
     public void TestGetObject() {
-        var jo = ROSIApi.GetObject(new Uri("https://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Product/373"),new InvokeOptions()).Result;
+        var jo = ROSIApi.GetObject(new Uri("https://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Product/373"), new InvokeOptions()).Result;
         Assert.IsNotNull(jo);
         Assert.AreEqual("373", jo.Wrapped["instanceId"].ToString());
     }
 
     [Test]
     public void TestInvokeActionReturnsCollection() {
-        var jo = ROSIApi.GetObject(new Uri("https://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Product/373"),new InvokeOptions()).Result;
+        var jo = ROSIApi.GetObject(new Uri("https://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Product/373"), new InvokeOptions()).Result;
         Assert.IsNotNull(jo);
 
         var action = jo.GetAction("OpenPurchaseOrdersForProduct");
@@ -33,7 +30,7 @@ internal class EndToEndTests {
 
     [Test]
     public void TestInvokeActionWithValueParams() {
-        var (jo, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/426"),new InvokeOptions()).Result;
+        var (jo, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/426"), new InvokeOptions()).Result;
         Assert.IsNotNull(jo);
 
         var action = jo.GetAction("EditStyle");
@@ -45,10 +42,10 @@ internal class EndToEndTests {
 
     [Test]
     public void TestInvokeActionWithRefObjectParams() {
-        var (soh, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"),new InvokeOptions()).Result;
+        var (soh, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"), new InvokeOptions()).Result;
         Assert.IsNotNull(soh);
 
-        var p = ROSIApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"),new InvokeOptions()).Result;
+        var p = ROSIApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"), new InvokeOptions()).Result;
         Assert.IsNotNull(p);
 
         var action = soh.GetAction("AddNewDetail");
@@ -60,10 +57,10 @@ internal class EndToEndTests {
 
     [Test]
     public void TestInvokeActionWithRefLinkParams() {
-        var (soh, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"),new InvokeOptions()).Result;
+        var (soh, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"), new InvokeOptions()).Result;
         Assert.IsNotNull(soh);
 
-        var p = ROSIApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"),new InvokeOptions()).Result;
+        var p = ROSIApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"), new InvokeOptions()).Result;
         Assert.IsNotNull(p);
         var l = p.GetLinks().GetSelfLink();
 

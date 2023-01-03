@@ -7,11 +7,8 @@
 
 using System;
 using System.Linq;
-using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
-using ROSI.Helpers;
-using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
@@ -75,7 +72,7 @@ public class HomeApiTests : AbstractApiTests {
         var sl = services.GetServiceLink("ROSI.Test.Data.SimpleService");
         Assert.IsNotNull(sl);
 
-        var s = services.GetService("ROSI.Test.Data.SimpleService",TestInvokeOptions()).Result;
+        var s = services.GetService("ROSI.Test.Data.SimpleService", TestInvokeOptions()).Result;
 
         Assert.AreEqual("ROSI.Test.Data.SimpleService", s.GetServiceId());
         Assert.AreEqual("Simple Service", s.GetTitle());

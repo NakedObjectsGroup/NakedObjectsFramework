@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Reflection;
 using Newtonsoft.Json.Linq;
 using ROSI.Interfaces;
 using ROSI.Records;
@@ -49,7 +48,7 @@ public static class DomainObjectApi {
 
     public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : struct {
         var scalarProperties = objectRepresentation.GetProperties().Where(p => p.IsScalarProperty());
-        return (T)scalarProperties.Aggregate((new T() as object), CopyProperty); // as object to box
+        return (T)scalarProperties.Aggregate(new T() as object, CopyProperty); // as object to box
     }
 
     private static object CopyProperty(object toObject, IProperty fromProperty) {

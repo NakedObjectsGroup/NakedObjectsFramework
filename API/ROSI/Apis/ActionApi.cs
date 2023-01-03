@@ -1,7 +1,3 @@
-﻿using ROSI.Interfaces;
+﻿namespace ROSI.Apis;
 
-namespace ROSI.Apis;
-
-public static class ActionApi {
-   
-}
+public static class ActionApi { }
