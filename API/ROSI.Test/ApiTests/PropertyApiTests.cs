@@ -55,7 +55,7 @@ public class PropertyApiTests : AbstractApiTests {
         var link = objectRep.GetProperty(nameof(Class.Property3)).GetLinkValue();
 
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", link.GetHref().ToString());
-        Assert.AreEqual("Untitled Class", link.GetTitle());
+        Assert.AreEqual("Class:1", link.GetTitle());
     }
 
     [Test]
@@ -97,7 +97,7 @@ public class PropertyApiTests : AbstractApiTests {
 
         Assert.AreEqual(2, choices.Count());
 
-        Assert.AreEqual("Untitled Class", choices.First().GetTitle());
+        Assert.AreEqual("Class:1", choices.First().GetTitle());
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", choices.First().GetHref().ToString());
     }
 
@@ -133,7 +133,7 @@ public class PropertyApiTests : AbstractApiTests {
 
         Assert.AreEqual(2, choices.Count());
 
-        Assert.AreEqual("Untitled Class", choices.First().GetTitle());
+        Assert.AreEqual("Class:1", choices.First().GetTitle());
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", choices.First().GetHref().ToString());
     }
 

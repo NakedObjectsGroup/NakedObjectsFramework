@@ -24,6 +24,10 @@ public enum TestChoices {
 }
 
 public class Class {
+
+    [Title]
+    public string Title => $"{nameof(Class)}:{Id}";
+
     public IDomainObjectContainer Container { private get; set; }
 
     [Key]
@@ -57,6 +61,10 @@ public class Class {
 }
 
 public class ClassWithActions {
+
+    [Title]
+    public string Title => $"{nameof(ClassWithActions)}:{Id}";
+
     [Key]
     public int Id { get; init; }
 
@@ -79,6 +87,14 @@ public class ClassWithActions {
 
     [QueryOnly]
     public Class ActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
+
+    public ICollection<int> Choices0ActionWithMixedParmsReturnsObject() => new List<int> { 1, 2 };
+
+    public int Default0ActionWithMixedParmsReturnsObject() => 3;
+
+    public ICollection<Class> Choices1ActionWithMixedParmsReturnsObject() => Container.Instances<Class>().ToList();
+
+    public Class Default1ActionWithMixedParmsReturnsObject() => Container.Instances<Class>().First();
 
     [Idempotent]
     public Class IdempotentActionWithValueParmsReturnsObject(int index, string str) => Container.Instances<Class>().FirstOrDefault();

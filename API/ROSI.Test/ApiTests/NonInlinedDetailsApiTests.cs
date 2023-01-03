@@ -89,12 +89,9 @@ public class NonInlinedDetailsApiTests : AbstractApiTests {
 
         Assert.AreEqual(2, choices.Count());
 
-        Assert.AreEqual("Untitled Class", choices.First().GetTitle());
+        Assert.AreEqual("Class:1", choices.First().GetTitle());
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", choices.First().GetHref().ToString());
     }
-
-
-
 
     // so it returns a new stub client each time
     protected record ForInlineInvokeOptions : InvokeOptions {

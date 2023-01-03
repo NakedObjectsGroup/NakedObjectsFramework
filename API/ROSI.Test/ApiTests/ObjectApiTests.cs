@@ -18,7 +18,7 @@ public class ObjectApiTests : AbstractApiTests {
         var objectRep = GetObject(FullName<Class>(), "1");
         Assert.AreEqual(FullName<Class>(), objectRep.GetDomainType());
         Assert.AreEqual("1", objectRep.GetInstanceId());
-        Assert.AreEqual("Untitled Class", objectRep.GetTitle());
+        Assert.AreEqual("Class:1", objectRep.GetTitle());
     }
 
     [Test]
@@ -42,7 +42,7 @@ public class ObjectApiTests : AbstractApiTests {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetProperties();
 
-        Assert.AreEqual(6, val.Count());
+        Assert.AreEqual(7, val.Count());
     }
 
     [Test]
