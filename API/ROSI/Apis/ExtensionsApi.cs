@@ -34,7 +34,7 @@ public static class ExtensionsApi {
     private static object? ExtensionObject(this JProperty prop) =>
         prop.Value switch {
             JValue jv => jv.Value,
-            JObject jo => jo.Children().Cast<JProperty>().ToDictionary(c => c.Name, c => ((JValue)c.Value).Value),
+            JObject jo => jo.Children().Cast<JProperty>().ToDictionary(c => c.Name, c => c.ExtensionObject()),
             JArray ja => ja.Children().Cast<JValue>().Select(t => t.Value).ToList(),
             _ => null
         };
