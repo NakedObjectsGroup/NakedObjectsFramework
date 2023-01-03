@@ -5,6 +5,8 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class ActionMemberApi {
+    public static bool HasInvokeLink(this ActionMember actionRepresentation) => actionRepresentation.GetLinks().HasInvokeLink();
+
     public static async Task<ActionDetails> GetDetails(this ActionMember actionRepresentation, InvokeOptions? options = null) {
         var json = await HttpHelpers.GetDetails(actionRepresentation, options ?? new InvokeOptions());
         return new ActionDetails(JObject.Parse(json));

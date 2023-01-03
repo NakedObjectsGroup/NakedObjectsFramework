@@ -84,14 +84,19 @@ public static class HttpHelpers {
         return await SendRequestAndRead(request);
     }
 
-    public static async Task<string> Execute(IHasLinks action, InvokeOptions options, string jsonContent = null) {
-        var (uri, method) = action.GetLinks().GetInvokeLink().GetUriAndMethod();
+    public static async Task<string> Execute(IAction action, InvokeOptions options) {
+        return await Execute(action.GetLinks().GetInvokeLink(), options);
+    }
+
+    public static async Task<string> Execute(Link toExecute, InvokeOptions options) {
+        var (uri, method) = toExecute.GetUriAndMethod();
 
         using var content = JsonContent.Create("", new MediaTypeHeaderValue("application/json"));
         var request = CreateMessage(method, uri.ToString(), options, content);
 
         return await SendRequestAndRead(request);
     }
+
 
     private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));
 

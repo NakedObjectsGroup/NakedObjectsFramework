@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using ROSI.Helpers;
+using ROSI.Interfaces;
 using ROSI.Records;
 
 namespace ROSI.Apis;
@@ -15,4 +16,6 @@ public static class PropertyDetailsApi {
     public static IEnumerable<T> GetChoices<T>(this PropertyDetails propertyRepresentation) => propertyRepresentation.Wrapped["choices"].Select(c => c.Value<T>());
 
     public static IEnumerable<Link> GetLinkChoices(this PropertyDetails propertyRepresentation) => propertyRepresentation.Wrapped["choices"].ToLinks();
+
+    public static bool HasPromptLink(this PropertyDetails actionRepresentation) => actionRepresentation.GetLinks().HasPromptLink();
 }

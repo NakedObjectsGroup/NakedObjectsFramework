@@ -12,6 +12,9 @@ public static class LinksApi {
     public static bool HasInvokeLink(this IEnumerable<Link> linkRepresentations) =>
         linkRepresentations.HasLinkOfRel(RelApi.Rels.invoke);
 
+    public static bool HasPromptLink(this IEnumerable<Link> linkRepresentations) =>
+        linkRepresentations.HasLinkOfRel(RelApi.Rels.prompt);
+
     public static Link GetInvokeLink(this IEnumerable<Link> linkRepresentations) =>
         linkRepresentations.GetLinkOfRel(RelApi.Rels.invoke);
 
@@ -23,4 +26,7 @@ public static class LinksApi {
 
     public static Link GetSelfLink(this IEnumerable<Link> linkRepresentations) =>
         linkRepresentations.GetLinkOfRel(RelApi.Rels.self);
+
+    public static Link GetPromptLink(this IEnumerable<Link> linkRepresentations) =>
+        linkRepresentations.GetLinkOfRel(RelApi.Rels.invoke);
 }
