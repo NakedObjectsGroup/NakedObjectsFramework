@@ -5,5 +5,5 @@ namespace ROSI.Records;
 public record InvokeOptions {
     public string? Token { get; init; }
     public EntityTagHeaderValue? Tag { get; init; }
-    public HttpClient HttpClient { get; set; } = new();
+    public virtual HttpClient HttpClient { get; set; } = new();
 }

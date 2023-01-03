@@ -94,7 +94,7 @@ public abstract class AbstractApiTests : AcceptanceTestCase {
         CleanUpDatabase();
     }
 
-    protected RestfulObjectsControllerBase Api() {
+    public RestfulObjectsControllerBase Api() {
         var sp = GetConfiguredContainer();
         var api = sp.GetService<RestfulObjectsController>();
         return TestHelpers.SetMockContext(api, sp);

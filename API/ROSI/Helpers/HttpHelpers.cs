@@ -11,7 +11,7 @@ using ROSI.Records;
 
 namespace ROSI.Helpers;
 
-public static class HttpHelpers {
+internal static class HttpHelpers {
     public static async Task<string> Execute(Uri url, InvokeOptions options) => (await ExecuteWithTag(url, options)).Response;
 
     public static async Task<(string Response, EntityTagHeaderValue Tag)> ExecuteWithTag(Uri url, InvokeOptions options) {
@@ -42,19 +42,18 @@ public static class HttpHelpers {
         return (await SendRequestAndRead(request, options)).Response;
     }
 
-    public static async Task<string> Execute(Link invokeLink, InvokeOptions options, params object[] pp) {
-        if (!pp.Any()) {
-            return await ExecuteWithNoArguments(invokeLink, options);
-        }
+    public static async Task<string> Execute(Link invokeLink, InvokeOptions options, params object[] pp) =>
+        pp.Any()
+            ? UseSimpleArguments(invokeLink, pp)
+                ? await ExecuteWithSimpleArguments(invokeLink, options, pp)
+                : await ExecuteWithFormalArguments(invokeLink, options, pp)
+            : await ExecuteWithNoArguments(invokeLink, options);
 
-        var method = invokeLink.GetMethod();
-
-        if (method == HttpMethod.Get && !pp.OfType<Link>().Any() && !pp.OfType<DomainObject>().Any() && invokeLink.GetRel().GetRelType() != RelApi.Rels.prompt ) {
-            return await ExecuteWithSimpleArguments(invokeLink, options, pp);
-        }
-
-        return await ExecuteWithFormalArguments(invokeLink, options, pp, method);
-    }
+    private static bool UseSimpleArguments(Link invokeLink, object[] pp) => 
+        invokeLink.GetMethod() == HttpMethod.Get &&
+        !pp.OfType<Link>().Any() &&
+        !pp.OfType<DomainObject>().Any() &&
+        invokeLink.GetRel().GetRelType() != RelApi.Rels.prompt;
 
     private static async Task<string> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
         var uri = invokeLink.GetHref();
@@ -81,7 +80,8 @@ public static class HttpHelpers {
         return (await SendRequestAndRead(request, options)).Response;
     }
 
-    private static async Task<string> ExecuteWithFormalArguments(Link invokeLink, InvokeOptions options, object[] pp, HttpMethod method) {
+    private static async Task<string> ExecuteWithFormalArguments(Link invokeLink, InvokeOptions options, object[] pp) {
+        var method = invokeLink.GetMethod();
         var uri = invokeLink.GetHref();
 
         var properties = invokeLink.GetArguments().Properties();

@@ -13,15 +13,6 @@ public static class ActionMemberApi {
         return new ActionDetails(JObject.Parse(json));
     }
 
-    public static async Task<ActionResult> Invoke(this ActionMember actionRepresentation, InvokeOptions options) {
-        if (actionRepresentation.HasInvokeLink()) {
-            var json = await HttpHelpers.Execute(actionRepresentation.GetLinks().GetInvokeLink(), options);
-            return new ActionResult(JObject.Parse(json));
-        }
-
-        return await (await actionRepresentation.GetDetails(options)).Invoke(options);
-    }
-
     public static async Task<ActionResult> Invoke(this ActionMember actionRepresentation, InvokeOptions options, params object[] pp) {
         if (actionRepresentation.HasInvokeLink()) {
             var json = await HttpHelpers.Execute(actionRepresentation.GetLinks().GetInvokeLink(), options, pp);

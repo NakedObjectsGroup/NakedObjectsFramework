@@ -15,4 +15,6 @@ public static class PropertyApi {
         var rt = propertyRepresentation.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.returnType);
         return rt is "boolean" or "number" or "string" or "integer";
     }
+
+    public static bool HasPromptLink(this IProperty propertyRepresentation) => propertyRepresentation.GetLinks().HasPromptLink();
 }
