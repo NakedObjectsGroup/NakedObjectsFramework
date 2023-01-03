@@ -4,5 +4,5 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class ListApi {
-    public static IEnumerable<Link> GetValue(this List listRepresentation) => listRepresentation.Wrapped["value"].ToLinks();
+    public static IEnumerable<Link> GetValue(this List listRepresentation) => listRepresentation.Wrapped[JsonConstants.Value].ToLinks();
 }

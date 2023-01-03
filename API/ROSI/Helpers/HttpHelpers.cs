@@ -32,7 +32,7 @@ internal static class HttpHelpers {
         var parameters = new JObject();
 
         var av = GetActualValue(newValue);
-        parameters.Add(new JProperty("value", av));
+        parameters.Add(new JProperty(JsonConstants.Value, av));
 
         var parameterString = parameters.ToString(Formatting.None);
 
@@ -91,7 +91,7 @@ internal static class HttpHelpers {
 
         foreach (var (p, v) in argValues) {
             var av = GetActualValue(v);
-            parameters.Add(new JProperty(p.Name, new JObject(new JProperty("value", av))));
+            parameters.Add(new JProperty(p.Name, new JObject(new JProperty(JsonConstants.Value, av))));
         }
 
         var parameterString = parameters.ToString(Formatting.None);

@@ -5,5 +5,5 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class CollectionApi {
-    public static IEnumerable<Link> GetValue(this ICollection collectionRepresentation) => collectionRepresentation.Wrapped["value"].ToLinks();
+    public static IEnumerable<Link> GetValue(this ICollection collectionRepresentation) => collectionRepresentation.Wrapped[JsonConstants.Value].ToLinks();
 }

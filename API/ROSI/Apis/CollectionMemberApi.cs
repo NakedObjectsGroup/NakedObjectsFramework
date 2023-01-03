@@ -10,5 +10,5 @@ public static class CollectionMemberApi {
         return new CollectionDetails(JObject.Parse(json));
     }
 
-    public static int GetSize(this CollectionMember collectionRepresentation) => collectionRepresentation.Wrapped["size"].Value<int>();
+    public static int GetSize(this CollectionMember collectionRepresentation) => collectionRepresentation.Wrapped[JsonConstants.Size].Value<int>();
 }

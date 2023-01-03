@@ -14,11 +14,11 @@ public static class ActionMemberApi {
         return new ActionDetails(JObject.Parse(json));
     }
 
-    private static bool HasParameters(this ActionMember actionRepresentation) => actionRepresentation.Wrapped["parameters"] is not null;
+    private static bool HasParameters(this ActionMember actionRepresentation) => actionRepresentation.Wrapped[JsonConstants.Parameters] is not null;
 
     public static async Task<Parameters> GetParameters(this ActionMember actionRepresentation, InvokeOptions options) {
         if (actionRepresentation.HasParameters()) {
-            return new Parameters(actionRepresentation.Wrapped["parameters"] as JObject);
+            return new Parameters(actionRepresentation.Wrapped[JsonConstants.Parameters] as JObject);
         }
 
         return (await actionRepresentation.GetDetails(options)).GetParameters();

@@ -4,7 +4,7 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class MenusApi {
-    public static IEnumerable<Link> GetValue(this Menus menusRepresentation) => menusRepresentation.Wrapped["value"].ToLinks();
+    public static IEnumerable<Link> GetValue(this Menus menusRepresentation) => menusRepresentation.Wrapped[JsonConstants.Value].ToLinks();
 
     public static Link GetMenuLink(this Menus menusRepresentation, string menuId) =>
         menusRepresentation.GetValue().SingleOrDefault(l => l.GetRel().GetMenuId() == menuId);
