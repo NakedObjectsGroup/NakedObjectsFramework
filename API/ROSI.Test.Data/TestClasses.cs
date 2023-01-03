@@ -36,12 +36,20 @@ public class Class {
 
     public virtual TestChoices PropertyWithScalarChoices { get; set; }
 
+    public ICollection<Class> ChoicesProperty3() => Container.Instances<Class>().ToList();
+
+    public virtual string PropertyWithAutoComplete { get; set; }
+
+    public ICollection<string> AutoCompletePropertyWithAutoComplete(string s) {
+        return new List<string>() { s };
+    }
+
     [TableView(true, "NameOne", "NameTwo")]
     public virtual IList<Class> Collection1 { get; set; } = new List<Class>();
 
     public virtual IList<Class> Collection2 { get; set; } = new List<Class>();
 
-    public ICollection<Class> ChoicesProperty3() => Container.Instances<Class>().ToList();
+   
 
     public Class Action1() => this;
 

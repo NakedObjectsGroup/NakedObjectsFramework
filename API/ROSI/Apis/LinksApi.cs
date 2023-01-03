@@ -28,5 +28,5 @@ public static class LinksApi {
         linkRepresentations.GetLinkOfRel(RelApi.Rels.self);
 
     public static Link GetPromptLink(this IEnumerable<Link> linkRepresentations) =>
-        linkRepresentations.GetLinkOfRel(RelApi.Rels.invoke);
+        linkRepresentations.GetLinkOfRel(RelApi.Rels.prompt);
 }

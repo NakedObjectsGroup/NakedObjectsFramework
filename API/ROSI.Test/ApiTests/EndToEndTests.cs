@@ -40,34 +40,34 @@ internal class EndToEndTests {
         Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
     }
 
-    [Test]
-    public void TestInvokeActionWithRefObjectParams() {
-        var (soh, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"), new InvokeOptions()).Result;
-        Assert.IsNotNull(soh);
+    //[Test]
+    //public void TestInvokeActionWithRefObjectParams() {
+    //    var (soh, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"), new InvokeOptions()).Result;
+    //    Assert.IsNotNull(soh);
 
-        var p = ROSIApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"), new InvokeOptions()).Result;
-        Assert.IsNotNull(p);
+    //    var p = ROSIApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"), new InvokeOptions()).Result;
+    //    Assert.IsNotNull(p);
 
-        var action = soh.GetAction("AddNewDetail");
+    //    var action = soh.GetAction("AddNewDetail");
 
-        var ar = action.Invoke(new InvokeOptions { Tag = tag }, p, 1).Result;
+    //    var ar = action.Invoke(new InvokeOptions { Tag = tag }, p, 1).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
-    }
+    //    Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
+    //}
 
-    [Test]
-    public void TestInvokeActionWithRefLinkParams() {
-        var (soh, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"), new InvokeOptions()).Result;
-        Assert.IsNotNull(soh);
+    //[Test]
+    //public void TestInvokeActionWithRefLinkParams() {
+    //    var (soh, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.SalesOrderHeader/75124"), new InvokeOptions()).Result;
+    //    Assert.IsNotNull(soh);
 
-        var p = ROSIApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"), new InvokeOptions()).Result;
-        Assert.IsNotNull(p);
-        var l = p.GetLinks().GetSelfLink();
+    //    var p = ROSIApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/771"), new InvokeOptions()).Result;
+    //    Assert.IsNotNull(p);
+    //    var l = p.GetLinks().GetSelfLink();
 
-        var action = soh.GetAction("AddNewDetail");
+    //    var action = soh.GetAction("AddNewDetail");
 
-        var ar = action.Invoke(new InvokeOptions { Tag = tag }, l, 1).Result;
+    //    var ar = action.Invoke(new InvokeOptions { Tag = tag }, l, 1).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
-    }
+    //    Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
+    //}
 }

@@ -12,32 +12,6 @@ using ROSI.Records;
 namespace ROSI.Helpers;
 
 public static class HttpHelpers {
-    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, InvokeOptions options, HttpContent? content = null) {
-        var request = new HttpRequestMessage(method, path);
-
-        if (options.Token is not null) {
-            request.Headers.Add("Authorization", options.Token);
-        }
-
-        if (options.Tag is not null) {
-            request.Headers.IfMatch.Add(options.Tag);
-        }
-
-        if (content is not null) {
-            request.Content = content;
-        }
-
-        return request;
-    }
-
-    private static string ReadAsString(HttpResponseMessage response) {
-        using var sr = new StreamReader(response.Content.ReadAsStream());
-        var json = sr.ReadToEnd();
-        return json;
-    }
-
-    private static (Uri, HttpMethod) GetUriAndMethod(this Link linkRepresentation) => (linkRepresentation.GetHref(), linkRepresentation.GetMethod());
-
     public static async Task<string> Execute(Uri url, InvokeOptions options) => (await ExecuteWithTag(url, options)).Response;
 
     public static async Task<(string Response, EntityTagHeaderValue Tag)> ExecuteWithTag(Uri url, InvokeOptions options) {
@@ -68,26 +42,21 @@ public static class HttpHelpers {
         return (await SendRequestAndRead(request, options)).Response;
     }
 
-    public static async Task<string> Execute(IAction action, InvokeOptions options) => await Execute(action.GetLinks().GetInvokeLink(), options);
+    public static async Task<string> Execute(Link invokeLink, InvokeOptions options, params object[] pp) {
+        if (!pp.Any()) {
+            return await ExecuteWithNoArguments(invokeLink, options);
+        }
 
-    public static async Task<string> Execute(Link toExecute, InvokeOptions options) {
-        var (uri, method) = toExecute.GetUriAndMethod();
+        var method = invokeLink.GetMethod();
 
-        using var content = method != HttpMethod.Get ? JsonContent.Create("", new MediaTypeHeaderValue("application/json")) : null;
-        var request = CreateMessage(method, uri.ToString(), options, content);
+        if (method == HttpMethod.Get && !pp.OfType<Link>().Any() && !pp.OfType<DomainObject>().Any() && invokeLink.GetRel().GetRelType() != RelApi.Rels.prompt ) {
+            return await ExecuteWithSimpleArguments(invokeLink, options, pp);
+        }
 
-        return (await SendRequestAndRead(request, options)).Response;
+        return await ExecuteWithFormalArguments(invokeLink, options, pp, method);
     }
 
-    private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));
-
-    private static object GetActualValue(object val) => val switch {
-        Link l => GetHrefValue(l),
-        DomainObject o => GetHrefValue(o.GetLinks().GetSelfLink()),
-        _ => val
-    };
-
-    public static async Task<string> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
+    private static async Task<string> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
         var uri = invokeLink.GetHref();
         var properties = invokeLink.GetArguments().Properties();
         var parameters = new Dictionary<string, string>();
@@ -103,15 +72,13 @@ public static class HttpHelpers {
         return await SendAndRead(HttpMethod.Get, url, options);
     }
 
-    public static async Task<string> Execute(IHasLinks action, InvokeOptions options, params object[] pp) {
-        var invokeLink = action.GetLinks().GetInvokeLink();
-        var method = invokeLink.GetMethod();
+    private static async Task<string> ExecuteWithNoArguments(Link invokeLink, InvokeOptions options) {
+        var (uri, method) = invokeLink.GetUriAndMethod();
 
-        if (method == HttpMethod.Get && !pp.OfType<Link>().Any() && !pp.OfType<DomainObject>().Any()) {
-            return await ExecuteWithSimpleArguments(invokeLink, options, pp);
-        }
+        using var content = method != HttpMethod.Get ? JsonContent.Create("", new MediaTypeHeaderValue("application/json")) : null;
+        var request = CreateMessage(method, uri.ToString(), options, content);
 
-        return await ExecuteWithFormalArguments(invokeLink, options, pp, method);
+        return (await SendRequestAndRead(request, options)).Response;
     }
 
     private static async Task<string> ExecuteWithFormalArguments(Link invokeLink, InvokeOptions options, object[] pp, HttpMethod method) {
@@ -155,5 +122,39 @@ public static class HttpHelpers {
         var error = ReadAsString(response);
 
         throw new HttpRequestException("request failed", null, response.StatusCode);
+    }
+
+    private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));
+
+    private static object GetActualValue(object val) => val switch {
+        Link l => GetHrefValue(l),
+        DomainObject o => GetHrefValue(o.GetLinks().GetSelfLink()),
+        _ => val
+    };
+
+    private static string ReadAsString(HttpResponseMessage response) {
+        using var sr = new StreamReader(response.Content.ReadAsStream());
+        var json = sr.ReadToEnd();
+        return json;
+    }
+
+    private static (Uri, HttpMethod) GetUriAndMethod(this Link linkRepresentation) => (linkRepresentation.GetHref(), linkRepresentation.GetMethod());
+
+    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, InvokeOptions options, HttpContent? content = null) {
+        var request = new HttpRequestMessage(method, path);
+
+        if (options.Token is not null) {
+            request.Headers.Add("Authorization", options.Token);
+        }
+
+        if (options.Tag is not null) {
+            request.Headers.IfMatch.Add(options.Tag);
+        }
+
+        if (content is not null) {
+            request.Content = content;
+        }
+
+        return request;
     }
 }

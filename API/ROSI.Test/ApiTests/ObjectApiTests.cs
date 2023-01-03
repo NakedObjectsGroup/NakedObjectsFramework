@@ -42,7 +42,7 @@ public class ObjectApiTests : AbstractApiTests {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetProperties();
 
-        Assert.AreEqual(5, val.Count());
+        Assert.AreEqual(6, val.Count());
     }
 
     [Test]

@@ -16,5 +16,17 @@ public static class PropertyDetailsApi {
 
     public static IEnumerable<Link> GetLinkChoices(this PropertyDetails propertyRepresentation) => propertyRepresentation.Wrapped["choices"].ToLinks();
 
-    public static bool HasPromptLink(this PropertyDetails actionRepresentation) => actionRepresentation.GetLinks().HasPromptLink();
+    public static bool HasPromptLink(this PropertyDetails propertyRepresentation) => propertyRepresentation.GetLinks().HasPromptLink();
+
+    public static async Task<IEnumerable<T>> GetPrompts<T>(this PropertyDetails propertyRepresentation, InvokeOptions options, params object[] pp) {
+        var json = await HttpHelpers.Execute(propertyRepresentation.GetLinks().GetPromptLink(), options, pp);
+        var prompt = new Prompt(JObject.Parse(json));
+        return prompt.GetChoices<T>();
+    }
+
+    public static async Task<IEnumerable<Link>> GetLinkPrompts<T>(this PropertyDetails propertyRepresentation, InvokeOptions options, params object[] pp) {
+        var json = await HttpHelpers.Execute(propertyRepresentation.GetLinks().GetPromptLink(), options, pp);
+        var prompt = new Prompt(JObject.Parse(json));
+        return prompt.GetLinkChoices();
+    }
 }

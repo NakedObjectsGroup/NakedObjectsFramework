@@ -110,4 +110,17 @@ public class PropertyApiTests : AbstractApiTests {
         Assert.IsNotNull(result);
         Assert.AreEqual("new", result.GetValue<string>());
     }
+
+    [Test]
+    public void TestGetPrompts() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var details = objectRep.GetProperty(nameof(Class.PropertyWithAutoComplete)).GetDetails(TestInvokeOptions()).Result;
+        Assert.IsNotNull(details);
+
+        var prompts = details.GetPrompts<string>(TestInvokeOptions(), "search").Result;
+
+        Assert.AreEqual(1, prompts.Count());
+
+        Assert.AreEqual("search", prompts.First());
+    }
 }
