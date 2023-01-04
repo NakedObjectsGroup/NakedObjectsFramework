@@ -160,6 +160,10 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
                     return await SendAsyncActionDetails(request, obj, key, segments[5].TrimEnd('/'));
             }
         }
+        else {
+            var ar = Api.AsGet().GetObject(obj, key);
+            return await GetResponse(ar);
+        }
 
         throw new NotImplementedException();
     }

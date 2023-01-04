@@ -5,7 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using ROSI.Apis;
@@ -97,6 +100,22 @@ public class ObjectApiTests : AbstractApiTests {
         }
         catch (NoSuchPropertyRosiException e) {
             Assert.AreEqual("No property: title in: ROSI.Records.DomainObject", e.Message);
+        }
+    }
+
+    [Test]
+    public void TestObjectError() {
+        try {
+            var objectRep = ROSIApi.GetObject(new Uri($"http://localhost/objects/{FullName<Class>()}/100"), TestInvokeOptions()).Result;
+            Assert.Fail("expect exception");
+        }
+        catch (AggregateException e) {
+
+            foreach (var exception in e.InnerExceptions) {
+                if (exception is HttpRequestException he) {
+                    Assert.AreEqual(HttpStatusCode.NotFound, he.StatusCode);
+                }
+            }
         }
     }
 
