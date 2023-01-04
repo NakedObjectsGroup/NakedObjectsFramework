@@ -6,17 +6,19 @@ namespace ROSI.Apis;
 
 public static class ActionResultApi {
     public enum ResultType {
-        @void,
-        scalar,
-        list,
-        @object
+        Void,
+        Scalar,
+        List,
+        Object
     }
 
-    public static ResultType GetResultType(this ActionResult actionResultRepresentation) => Enum.Parse<ResultType>(actionResultRepresentation.Wrapped[JsonConstants.ResultType].ToString());
+    private static JObject? Result(this ActionResult resultRepresentation) => resultRepresentation.GetOptionalPropertyAsJObject(JsonConstants.Result);
 
-    public static T GetScalarValue<T>(this ActionResult resultRepresentation) => resultRepresentation.Wrapped[JsonConstants.Result].Value<T>();
+    public static ResultType GetResultType(this ActionResult actionResultRepresentation) => Enum.Parse<ResultType>(actionResultRepresentation.GetMandatoryProperty(JsonConstants.ResultType).ToString(), true);
 
-    public static DomainObject GetObject(this ActionResult resultRepresentation) => new((JObject)resultRepresentation.Wrapped[JsonConstants.Result]);
+    public static T? GetScalarValue<T>(this ActionResult resultRepresentation) => resultRepresentation.GetOptionalProperty(JsonConstants.Result) is { } o ? o.Value<T>() : default;
 
-    public static List GetList(this ActionResult resultRepresentation) => new((JObject)resultRepresentation.Wrapped[JsonConstants.Result]);
+    public static DomainObject? GetObject(this ActionResult resultRepresentation) => resultRepresentation.Result() is { } jo ? new DomainObject(jo) : null;
+
+    public static List? GetList(this ActionResult resultRepresentation) => resultRepresentation.Result() is { } jo ? new List(jo) : null;
 }

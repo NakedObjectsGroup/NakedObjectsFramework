@@ -25,7 +25,18 @@ internal static class ApiHelpers {
         return new Prompt(JObject.Parse(json));
     }
 
-    public static JToken GetMandatoryProperty(this IWrapped wrapped, string key) => wrapped.Wrapped[key] ?? throw new NoSuchPropertyRosiException(wrapped, key);
+    public static JToken GetMandatoryProperty(this IWrapped wrapped, string key) =>
+        wrapped.Wrapped[key] ?? throw new NoSuchPropertyRosiException(wrapped, key);
+
+    public static JObject GetMandatoryPropertyAsJObject(this IWrapped wrapped, string key) =>
+        wrapped.GetMandatoryProperty(key) is JObject jo ? jo : throw new UnexpectedTypeRosiException(wrapped, key, typeof(JObject));
 
     public static JToken? GetOptionalProperty(this IWrapped wrapped, string key) => wrapped.Wrapped[key];
+
+    public static JObject? GetOptionalPropertyAsJObject(this IWrapped wrapped, string key) =>
+        wrapped.GetOptionalProperty(key) switch {
+            JObject jo => jo,
+            null => null,
+            _ => throw new UnexpectedTypeRosiException(wrapped, key, typeof(JObject))
+        };
 }

@@ -91,7 +91,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions()).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var links = ar.GetLinks();
         Assert.AreEqual(1, links.Count());
@@ -108,7 +108,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions()).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.list, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.List, ar.GetResultType());
 
         var links = ar.GetLinks();
         Assert.AreEqual(1, links.Count());
@@ -130,7 +130,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions()).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Void, ar.GetResultType());
 
         var links = ar.GetLinks();
         Assert.AreEqual(1, links.Count());
@@ -147,7 +147,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions(), 1, "test").Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var links = ar.GetLinks();
         Assert.AreEqual(1, links.Count());
@@ -167,7 +167,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions(), o1, o2).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var links = ar.GetLinks();
         Assert.AreEqual(1, links.Count());
@@ -186,7 +186,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions(), 2, o1).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var links = ar.GetLinks();
         Assert.AreEqual(1, links.Count());
@@ -203,7 +203,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions(), 1, "test").Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var o = ar.GetObject();
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
@@ -220,7 +220,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions(), o1, o2).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var o = ar.GetObject();
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
@@ -236,7 +236,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions(), 2, o1).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var o = ar.GetObject();
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
@@ -250,7 +250,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions(), 1, "test").Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var o = ar.GetObject();
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
@@ -267,7 +267,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions(), o1, o2).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var o = ar.GetObject();
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
@@ -283,7 +283,7 @@ public class ActionApiTests : AbstractApiTests {
 
         var ar = action.Invoke(TestInvokeOptions(), 2, o1).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var o = ar.GetObject();
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());

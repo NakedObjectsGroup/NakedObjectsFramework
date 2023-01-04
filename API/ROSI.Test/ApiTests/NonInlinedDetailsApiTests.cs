@@ -35,7 +35,7 @@ public class NonInlinedDetailsApiTests : AbstractApiTests {
 
         var ar = action.Invoke(new ForInlineInvokeOptions(this), 1, "test").Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@object, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
         var links = ar.GetLinks();
         Assert.AreEqual(1, links.Count());

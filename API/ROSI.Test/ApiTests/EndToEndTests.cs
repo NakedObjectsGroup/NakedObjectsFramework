@@ -25,7 +25,7 @@ internal class EndToEndTests {
 
         var ar = action.Invoke(new InvokeOptions()).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.list, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.List, ar.GetResultType());
     }
 
     [Test]
@@ -37,7 +37,7 @@ internal class EndToEndTests {
 
         var ar = action.Invoke(new InvokeOptions { Tag = tag }, "U").Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.@void, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Void, ar.GetResultType());
     }
 
     //[Test]

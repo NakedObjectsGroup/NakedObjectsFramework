@@ -6,8 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using ROSI.Apis;
+using ROSI.Exceptions;
+using ROSI.Records;
 using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
@@ -77,6 +80,24 @@ public class ObjectApiTests : AbstractApiTests {
         Assert.AreEqual("One", poco.Property1);
         Assert.AreEqual(2, poco.Property2);
         Assert.IsNull(poco.Property3);
+    }
+
+
+    [Test]
+    public void TestMissingProperties() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+      
+        Assert.IsNull(objectRep.GetServiceId());
+
+        var empty = new DomainObject(new JObject());
+
+        try {
+            var t = empty.GetTitle();
+            Assert.Fail("expect exception");
+        }
+        catch (NoSuchPropertyRosiException e) {
+            Assert.AreEqual("No property: title in: ROSI.Records.DomainObject", e.Message);
+        }
     }
 
     private struct TestClassPoco {
