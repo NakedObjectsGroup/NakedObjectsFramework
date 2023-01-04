@@ -98,6 +98,9 @@ public class ActionApiTests : AbstractApiTests {
 
         var o = ar.GetObject();
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+
+        Assert.IsNull(ar.GetList());
+        Assert.IsNull(ar.GetScalarValue<int?>());
     }
 
     [Test]
@@ -120,6 +123,9 @@ public class ActionApiTests : AbstractApiTests {
 
         var llinks = l.GetLinks();
         Assert.AreEqual(0, llinks.Count());
+
+        Assert.IsNull(ar.GetObject());
+        Assert.IsNull(ar.GetScalarValue<int?>());
     }
 
     [Test]
@@ -135,8 +141,9 @@ public class ActionApiTests : AbstractApiTests {
         var links = ar.GetLinks();
         Assert.AreEqual(1, links.Count());
 
-        //Assert.IsNull(ar.GetObject());
-        //Assert.IsNull(ar.GetList());
+        Assert.IsNull(ar.GetObject());
+        Assert.IsNull(ar.GetList());
+        Assert.IsNull(ar.GetScalarValue<int?>());
     }
 
     [Test]
