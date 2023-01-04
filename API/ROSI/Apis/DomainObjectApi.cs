@@ -17,6 +17,9 @@ public static class DomainObjectApi {
     private static IEnumerable<JObject> GetMembersOfTypeAsJObjects(this DomainObject objectRepresentation, MemberType ofType) =>
         objectRepresentation.GetMembersOfType(ofType).Select(t => t.Value).Cast<JObject>();
 
+    private static IEnumerable<(JObject obj, string name)> GetMembersOfTypeAsJObjectsAndNames(this DomainObject objectRepresentation, MemberType ofType) =>
+        objectRepresentation.GetMembersOfType(ofType).Select(t => ((JObject)t.Value, t.Name));
+
     private static IEnumerable<JProperty> GetMembersOfType(this DomainObject objectRepresentation, MemberType ofType) =>
         objectRepresentation.GetMembers().Where(t => t.Value[JsonConstants.MemberType]?.Value<string>() == ofType.ToString().ToLower());
 
@@ -42,6 +45,8 @@ public static class DomainObjectApi {
 
     public static IEnumerable<PropertyMember> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Property).Select(p => new PropertyMember(p));
 
+    public static IEnumerable<(PropertyMember, string)> GetPropertiesAndNames(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjectsAndNames(MemberType.Property).Select(p => (new PropertyMember(p.obj), p.name));
+
     public static PropertyMember? GetProperty(this DomainObject objectRepresentation, string propertyName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Property, propertyName) is { } jo ? new PropertyMember(jo) : null;
 
     public static ActionMember? GetAction(this DomainObject objectRepresentation, string actionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Action, actionName) is { } jo ? new ActionMember(jo) : null;
@@ -49,12 +54,13 @@ public static class DomainObjectApi {
     public static CollectionMember? GetCollection(this DomainObject objectRepresentation, string collectionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Collection, collectionName) is { } jo ? new CollectionMember(jo) : null;
 
     public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : struct {
-        var scalarProperties = objectRepresentation.GetProperties().Where(p => p.IsScalarProperty());
+        var scalarProperties = objectRepresentation.GetPropertiesAndNames().Where(p => p.Item1.IsScalarProperty());
         return (T)scalarProperties.Aggregate(new T() as object, CopyProperty); // as object to box
     }
 
-    private static object CopyProperty(object toObject, IProperty fromProperty) {
-        var toProperty = toObject.GetType().GetProperty(fromProperty.GetId());
+    private static object CopyProperty(object toObject, (PropertyMember, string) fromPropertyTuple) {
+        var (fromProperty, name) = fromPropertyTuple;
+        var toProperty = toObject.GetType().GetProperty(name);
         if (toProperty is not null && fromProperty.GetValue() is IConvertible fromValue) {
             var convertedFromValue = fromValue.ToType(toProperty.PropertyType, CultureInfo.InvariantCulture);
             toProperty.SetValue(toObject, convertedFromValue);

@@ -11,10 +11,10 @@ public static class PropertyDetailsApi {
         return new PropertyDetails(JObject.Parse(json));
     }
 
-    public static bool GetHasChoices(this PropertyDetails propertyRepresentation) => propertyRepresentation.Wrapped["hasChoices"].Value<bool>();
+    public static bool GetHasChoices(this PropertyDetails propertyRepresentation) => propertyRepresentation.GetMandatoryProperty(JsonConstants.HasChoices).Value<bool>();
 
-    public static async Task<IEnumerable<T>> GetPrompts<T>(this PropertyDetails propertyRepresentation, InvokeOptions options, params object[] pp) {
-        var prompt = await ApiHelpers.GetPrompt(propertyRepresentation, options, pp).ConfigureAwait(false);
+    public static async Task<IEnumerable<T?>> GetPrompts<T>(this PropertyDetails propertyRepresentation, InvokeOptions options, params object[] pp) {
+        var prompt = await ApiHelpers.GetPrompt(propertyRepresentation, options, pp);
         return prompt.GetChoices<T>();
     }
 

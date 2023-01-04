@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
+using ROSI.Exceptions;
 using ROSI.Interfaces;
 using ROSI.Records;
 
@@ -14,19 +15,20 @@ namespace ROSI.Helpers;
 internal static class HttpHelpers {
     public static async Task<string> Execute(Uri url, InvokeOptions options) => (await ExecuteWithTag(url, options)).Response;
 
-    public static async Task<(string Response, EntityTagHeaderValue Tag)> ExecuteWithTag(Uri url, InvokeOptions options) {
+    public static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithTag(Uri url, InvokeOptions options) {
         var request = CreateMessage(HttpMethod.Get, url.ToString(), options);
         return await SendRequestAndRead(request, options);
     }
 
     public static async Task<string> GetDetails(IHasLinks hasLinks, InvokeOptions options) {
-        var (uri, method) = hasLinks.GetLinks().GetDetailsLink().GetUriAndMethod();
+        var detailsLink = hasLinks.GetLinks().GetDetailsLink() ?? throw new NoSuchPropertyRosiException($"Missing details link in: {hasLinks.GetType()}");
+        var (uri, method) = detailsLink.GetUriAndMethod();
         var request = CreateMessage(method, uri.ToString(), options);
         return (await SendRequestAndRead(request, options)).Response;
     }
 
     public static async Task<string> SetValue(IHasLinks hasLinks, object newValue, InvokeOptions options) {
-        var modifyLink = hasLinks.GetLinks().GetModifyLink();
+        var modifyLink = hasLinks.GetLinks().GetModifyLink() ?? throw new NoSuchPropertyRosiException($"Missing modify link in: {hasLinks.GetType()}");
         var (uri, method) = modifyLink.GetUriAndMethod();
 
         var parameters = new JObject();
@@ -57,8 +59,8 @@ internal static class HttpHelpers {
 
     private static async Task<string> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
         var uri = invokeLink.GetHref();
-        var properties = invokeLink.GetArgumentsAsJObject().Properties();
-        var parameters = new Dictionary<string, string>();
+        var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? new List<JProperty>();
+        var parameters = new Dictionary<string, string?>();
 
         var argValues = properties.Zip(pp);
 
@@ -84,7 +86,7 @@ internal static class HttpHelpers {
         var method = invokeLink.GetMethod();
         var uri = invokeLink.GetHref();
 
-        var properties = invokeLink.GetArgumentsAsJObject().Properties();
+        var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? new List<JProperty>();
         var parameters = new JObject();
 
         var argValues = properties.Zip(pp);
@@ -111,7 +113,7 @@ internal static class HttpHelpers {
         return (await SendRequestAndRead(request, options)).Response;
     }
 
-    private static async Task<(string Response, EntityTagHeaderValue Tag)> SendRequestAndRead(HttpRequestMessage request, InvokeOptions options) {
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> SendRequestAndRead(HttpRequestMessage request, InvokeOptions options) {
         using var response = await options.HttpClient.SendAsync(request);
         var tag = response.Headers.ETag;
 
@@ -128,7 +130,7 @@ internal static class HttpHelpers {
 
     private static object GetActualValue(object val) => val switch {
         Link l => GetHrefValue(l),
-        DomainObject o => GetHrefValue(o.GetLinks().GetSelfLink()),
+        DomainObject o => GetHrefValue(o.GetLinks().GetSelfLink() ?? throw new NoSuchPropertyRosiException($"Missing self link in: {o.GetType()}")),
         _ => val
     };
 

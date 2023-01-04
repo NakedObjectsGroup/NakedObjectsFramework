@@ -17,7 +17,8 @@ internal static class ApiHelpers {
     }
 
     public static async Task<Prompt> GetPrompt(IHasLinks propertyRepresentation, InvokeOptions options, object[] pp) {
-        var json = await HttpHelpers.Execute(propertyRepresentation.GetLinks().GetPromptLink(), options, pp);
+        var promptLink = propertyRepresentation.GetLinks().GetPromptLink() ?? throw new NoSuchPropertyRosiException($"Missing prompt link in: {propertyRepresentation.GetType()}");
+        var json = await HttpHelpers.Execute(promptLink, options, pp);
         return new Prompt(JObject.Parse(json));
     }
 

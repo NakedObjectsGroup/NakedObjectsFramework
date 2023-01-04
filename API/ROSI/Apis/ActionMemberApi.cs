@@ -26,7 +26,7 @@ public static class ActionMemberApi {
 
     public static async Task<ActionResult> Invoke(this ActionMember actionRepresentation, InvokeOptions options, params object[] pp) {
         if (actionRepresentation.HasInvokeLink()) {
-            var json = await HttpHelpers.Execute(actionRepresentation.GetLinks().GetInvokeLink(), options, pp);
+            var json = await HttpHelpers.Execute(actionRepresentation.GetLinks().GetInvokeLink()!, options, pp);
             return new ActionResult(JObject.Parse(json));
         }
 

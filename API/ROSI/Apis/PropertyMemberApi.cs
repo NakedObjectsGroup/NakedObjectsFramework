@@ -10,19 +10,19 @@ public static class PropertyMemberApi {
         return new PropertyDetails(JObject.Parse(json));
     }
 
-    private static bool HasChoicesFlag(this PropertyMember propertyRepresentation) => propertyRepresentation.Wrapped["hasChoices"] is not null;
+    private static bool HasChoicesFlag(this PropertyMember propertyRepresentation) => propertyRepresentation.GetOptionalProperty(JsonConstants.HasChoices) is not null;
 
     public static async Task<bool> GetHasChoices(this PropertyMember propertyRepresentation, InvokeOptions options) {
         if (propertyRepresentation.HasChoicesFlag()) {
-            return propertyRepresentation.Wrapped["hasChoices"].Value<bool>();
+            return propertyRepresentation.GetMandatoryProperty(JsonConstants.HasChoices).Value<bool>();
         }
 
         return (await propertyRepresentation.GetDetails(options)).GetHasChoices();
     }
 
-    public static async Task<IEnumerable<T>> GetChoices<T>(this PropertyMember propertyRepresentation, InvokeOptions options) {
+    public static async Task<IEnumerable<T?>> GetChoices<T>(this PropertyMember propertyRepresentation, InvokeOptions options) {
         if (propertyRepresentation.HasChoicesFlag()) {
-            return propertyRepresentation.Wrapped[JsonConstants.Choices].Select(c => c.Value<T>());
+            return propertyRepresentation.GetMandatoryProperty(JsonConstants.Choices).Where(c => c is not JObject).Select(c => c.Value<T>());
         }
 
         return (await propertyRepresentation.GetDetails(options)).GetChoices<T>();
@@ -30,13 +30,13 @@ public static class PropertyMemberApi {
 
     public static async Task<IEnumerable<Link>> GetLinkChoices(this PropertyMember propertyRepresentation, InvokeOptions options) {
         if (propertyRepresentation.HasChoicesFlag()) {
-            return propertyRepresentation.Wrapped[JsonConstants.Choices].ToLinks();
+            return propertyRepresentation.GetMandatoryProperty(JsonConstants.Choices).ToLinks();
         }
 
         return (await propertyRepresentation.GetDetails(options)).GetLinkChoices();
     }
 
-    public static async Task<IEnumerable<T>> GetPrompts<T>(this PropertyMember propertyRepresentation, InvokeOptions options, params object[] pp) {
+    public static async Task<IEnumerable<T?>> GetPrompts<T>(this PropertyMember propertyRepresentation, InvokeOptions options, params object[] pp) {
         if (propertyRepresentation.HasPromptLink()) {
             var prompt = await ApiHelpers.GetPrompt(propertyRepresentation, options, pp);
             return prompt.GetChoices<T>();

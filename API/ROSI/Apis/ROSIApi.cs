@@ -16,7 +16,7 @@ public static class ROSIApi {
         return new DomainObject(JObject.Parse(json));
     }
 
-    public static async Task<(DomainObject, EntityTagHeaderValue tag)> GetObjectWithTag(Uri uri, InvokeOptions options) {
+    public static async Task<(DomainObject, EntityTagHeaderValue? tag)> GetObjectWithTag(Uri uri, InvokeOptions options) {
         var (json, tag) = await HttpHelpers.ExecuteWithTag(uri, options);
         return (new DomainObject(JObject.Parse(json)), tag);
     }

@@ -11,6 +11,7 @@ internal class JsonConstants {
     public const string Extensions = "extensions";
     public const string Format = "format";
     public const string FriendlyName = "friendlyName";
+    public const string Email = "email";
     public const string HasChoices = "hasChoices";
     public const string HasParams = "hasParams";
     public const string Href = "href";

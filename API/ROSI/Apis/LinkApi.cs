@@ -17,5 +17,5 @@ public static class LinkApi {
 
     public static string? GetTitle(this Link linkRepresentation) => linkRepresentation.GetOptionalProperty(JsonConstants.Title)?.ToString();
 
-    public static IDictionary<string, object>? GetArguments(this Link linkRepresentation) => linkRepresentation.GetArgumentsAsJObject()?.Children().Cast<JProperty>().ToDictionary(p => p.Name, p => p.MapToObject());
+    public static IDictionary<string, object?>? GetArguments(this Link linkRepresentation) => linkRepresentation.GetArgumentsAsJObject()?.Children().Cast<JProperty>().ToDictionary(p => p.Name, p => p.MapToObject());
 }
