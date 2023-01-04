@@ -144,6 +144,7 @@ public class ActionApiTests : AbstractApiTests {
         Assert.IsNull(ar.GetObject());
         Assert.IsNull(ar.GetList());
         Assert.IsNull(ar.GetScalarValue<int?>());
+        Assert.IsNull(ar.GetScalarValue<string>());
     }
 
     [Test]

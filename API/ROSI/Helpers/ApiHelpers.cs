@@ -8,7 +8,7 @@ using Extensions = ROSI.Records.Extensions;
 namespace ROSI.Helpers;
 
 internal static class ApiHelpers {
-    public static IEnumerable<Link> ToLinks(this IEnumerable<JToken> tokens) => tokens.Select(t => new Link((JObject)t));
+    public static IEnumerable<Link> ToLinks(this IEnumerable<JToken> tokens) => tokens.OfType<JObject>().Select(jo => new Link(jo));
 
     public static IEnumerable<Link> GetLinks(this JObject jo) => jo["links"].ToLinks();
 

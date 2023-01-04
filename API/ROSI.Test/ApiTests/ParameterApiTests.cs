@@ -5,10 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
+using ROSI.Records;
 using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
@@ -33,6 +35,8 @@ public class ParameterApiTests : AbstractApiTests {
         Assert.AreEqual(1, indexParameter.GetChoices<int>().First());
         Assert.AreEqual(2, indexParameter.GetChoices<int>().Last());
 
+        Assert.AreEqual(0, indexParameter.GetLinkChoices().Count());
+
         var classParameter = parameters["class1"];
 
         Assert.AreEqual("Class:1", classParameter.GetLinkDefault().GetTitle());
@@ -40,7 +44,7 @@ public class ParameterApiTests : AbstractApiTests {
         Assert.AreEqual("Class:1", classParameter.GetLinkChoices().First().GetTitle());
         Assert.AreEqual("Class:2", classParameter.GetLinkChoices().Last().GetTitle());
 
-       
+        Assert.AreEqual(0, classParameter.GetChoices<int>().Count());
     }
 
 }
