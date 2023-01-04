@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using ROSI.Apis;
+using ROSI.Exceptions;
 using ROSI.Interfaces;
 using ROSI.Records;
 using Extensions = ROSI.Records.Extensions;
@@ -23,4 +24,8 @@ internal static class ApiHelpers {
         var json = await HttpHelpers.Execute(propertyRepresentation.GetLinks().GetPromptLink(), options, pp);
         return new Prompt(JObject.Parse(json));
     }
+
+    public static JToken GetMandatoryProperty(this IWrapped wrapped, string key) => wrapped.Wrapped[key] ?? throw new NoSuchPropertyRosiException(wrapped, key);
+
+    public static JToken? GetOptionalProperty(this IWrapped wrapped, string key) => wrapped.Wrapped[key];
 }

@@ -9,46 +9,44 @@ namespace ROSI.Apis;
 // can be object, service or menu
 public static class DomainObjectApi {
     public enum MemberType {
-        action,
-        collection,
-        property
+        Action,
+        Collection,
+        Property
     }
 
     private static IEnumerable<JObject> GetMembersOfTypeAsJObjects(this DomainObject objectRepresentation, MemberType ofType) =>
-        objectRepresentation.GetMembersOfType(ofType).Select(t => t.Value as JObject);
+        objectRepresentation.GetMembersOfType(ofType).Select(t => t.Value).Cast<JObject>();
 
-    private static IEnumerable<JProperty> GetMembersOfType(this DomainObject objectRepresentation, MemberType ofType) => 
-        objectRepresentation.GetMembers().Where(t => t.Value[JsonConstants.MemberType]?.Value<string>() == ofType.ToString());
+    private static IEnumerable<JProperty> GetMembersOfType(this DomainObject objectRepresentation, MemberType ofType) =>
+        objectRepresentation.GetMembers().Where(t => t.Value[JsonConstants.MemberType]?.Value<string>() == ofType.ToString().ToLower());
 
-    private static JObject GetMemberOfTypeAsJObject(this DomainObject objectRepresentation, MemberType ofType, string memberName) =>
-        objectRepresentation.GetMembersOfType(ofType).Where(t => t.Name == memberName).Select(t => t.Value as JObject).Single();
+    private static JObject? GetMemberOfTypeAsJObject(this DomainObject objectRepresentation, MemberType ofType, string memberName) =>
+        objectRepresentation.GetMembersOfType(ofType).Where(t => t.Name == memberName).Select(t => t.Value).Cast<JObject>().SingleOrDefault();
 
-    private static IEnumerable<JProperty> GetMembers(this DomainObject objectRepresentation) {
-        var members = objectRepresentation.Wrapped[JsonConstants.Members];
-        return members.Cast<JProperty>().ToList();
-    }
+    private static IEnumerable<JProperty> GetMembers(this DomainObject objectRepresentation) =>
+        objectRepresentation.GetMandatoryProperty(JsonConstants.Members).Cast<JProperty>();
 
-    public static string GetServiceId(this DomainObject objectRepresentation) => objectRepresentation.Wrapped[JsonConstants.ServiceId]?.ToString();
+    public static string? GetServiceId(this DomainObject objectRepresentation) => objectRepresentation.GetOptionalProperty(JsonConstants.ServiceId)?.ToString();
 
-    public static string GetMenuId(this DomainObject objectRepresentation) => objectRepresentation.Wrapped[JsonConstants.MenuId]?.ToString();
+    public static string? GetMenuId(this DomainObject objectRepresentation) => objectRepresentation.GetOptionalProperty(JsonConstants.MenuId)?.ToString();
 
-    public static string GetInstanceId(this DomainObject objectRepresentation) => objectRepresentation.Wrapped[JsonConstants.InstanceId]?.ToString();
+    public static string? GetInstanceId(this DomainObject objectRepresentation) => objectRepresentation.GetOptionalProperty(JsonConstants.InstanceId)?.ToString();
 
-    public static string GetDomainType(this DomainObject objectRepresentation) => objectRepresentation.Wrapped[JsonConstants.DomainType]?.ToString();
+    public static string? GetDomainType(this DomainObject objectRepresentation) => objectRepresentation.GetOptionalProperty(JsonConstants.DomainType)?.ToString();
 
-    public static string GetTitle(this DomainObject objectRepresentation) => objectRepresentation.Wrapped[JsonConstants.Title].ToString();
+    public static string GetTitle(this DomainObject objectRepresentation) => objectRepresentation.GetMandatoryProperty(JsonConstants.Title).ToString();
 
-    public static IEnumerable<ActionMember> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.action).Select(p => new ActionMember(p));
+    public static IEnumerable<ActionMember> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Action).Select(p => new ActionMember(p));
 
-    public static IEnumerable<Collection> GetCollections(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.collection).Select(p => new Collection(p));
+    public static IEnumerable<Collection> GetCollections(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Collection).Select(p => new Collection(p));
 
-    public static IEnumerable<PropertyMember> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.property).Select(p => new PropertyMember(p));
+    public static IEnumerable<PropertyMember> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Property).Select(p => new PropertyMember(p));
 
-    public static PropertyMember GetProperty(this DomainObject objectRepresentation, string propertyName) => new(objectRepresentation.GetMemberOfTypeAsJObject(MemberType.property, propertyName));
+    public static PropertyMember? GetProperty(this DomainObject objectRepresentation, string propertyName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Property, propertyName) is { } jo ? new PropertyMember(jo) : null;
 
-    public static ActionMember GetAction(this DomainObject objectRepresentation, string actionName) => new(objectRepresentation.GetMemberOfTypeAsJObject(MemberType.action, actionName));
+    public static ActionMember? GetAction(this DomainObject objectRepresentation, string actionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Action, actionName) is { } jo ? new ActionMember(jo) : null;
 
-    public static CollectionMember GetCollection(this DomainObject objectRepresentation, string collectionName) => new(objectRepresentation.GetMemberOfTypeAsJObject(MemberType.collection, collectionName));
+    public static CollectionMember? GetCollection(this DomainObject objectRepresentation, string collectionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Collection, collectionName) is { } jo ? new CollectionMember(jo) : null;
 
     public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : struct {
         var scalarProperties = objectRepresentation.GetProperties().Where(p => p.IsScalarProperty());
