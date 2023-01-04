@@ -87,7 +87,9 @@ public class ActionApiTests : AbstractApiTests {
     public void TestInvokeNoParmReturnsObjectAction() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsObject));
-        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+        Assert.AreEqual(HttpMethod.Get, action?.GetLinks().GetInvokeLink()?.GetMethod());
+
+        Assert.AreEqual(0, action?.GetLinks().GetInvokeLink()?.GetArguments()?.Count());
 
         var ar = action.Invoke(TestInvokeOptions()).Result;
 
@@ -132,19 +134,19 @@ public class ActionApiTests : AbstractApiTests {
     public void TestInvokeNoParmReturnsVoidAction() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsVoid));
-        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+        Assert.AreEqual(HttpMethod.Get, action?.GetLinks().GetInvokeLink()?.GetMethod());
 
-        var ar = action.Invoke(TestInvokeOptions()).Result;
+        var ar = action?.Invoke(TestInvokeOptions()).Result;
 
-        Assert.AreEqual(ActionResultApi.ResultType.Void, ar.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Void, ar?.GetResultType());
 
-        var links = ar.GetLinks();
-        Assert.AreEqual(1, links.Count());
+        var links = ar?.GetLinks();
+        Assert.AreEqual(1, links?.Count());
 
-        Assert.IsNull(ar.GetObject());
-        Assert.IsNull(ar.GetList());
-        Assert.IsNull(ar.GetScalarValue<int?>());
-        Assert.IsNull(ar.GetScalarValue<string>());
+        Assert.IsNull(ar?.GetObject());
+        Assert.IsNull(ar?.GetList());
+        Assert.IsNull(ar?.GetScalarValue<int?>());
+        Assert.IsNull(ar?.GetScalarValue<string>());
     }
 
     [Test]
@@ -152,6 +154,12 @@ public class ActionApiTests : AbstractApiTests {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var args = action?.GetLinks().GetInvokeLink()?.GetArguments();
+
+        Assert.IsNotNull(args);
+
+        Assert.AreEqual(2, args?.Count());
 
         var ar = action.Invoke(TestInvokeOptions(), 1, "test").Result;
 

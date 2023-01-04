@@ -5,5 +5,5 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class HasExtensionsApi {
-    public static Extensions GetExtensions(this IHasExtensions hasExtensions) => hasExtensions.Wrapped.GetExtensions();
+    public static Extensions GetExtensions(this IHasExtensions hasExtensions) => new(hasExtensions.GetMandatoryPropertyAsJObject(JsonConstants.Extensions));
 }

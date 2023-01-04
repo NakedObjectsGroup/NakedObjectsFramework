@@ -37,6 +37,8 @@ public class ParameterApiTests : AbstractApiTests {
 
         Assert.AreEqual(0, indexParameter.GetLinkChoices().Count());
 
+        Assert.IsNull(indexParameter.GetLinkDefault());
+
         var classParameter = parameters["class1"];
 
         Assert.AreEqual("Class:1", classParameter.GetLinkDefault().GetTitle());
@@ -45,6 +47,8 @@ public class ParameterApiTests : AbstractApiTests {
         Assert.AreEqual("Class:2", classParameter.GetLinkChoices().Last().GetTitle());
 
         Assert.AreEqual(0, classParameter.GetChoices<int>().Count());
+
+        Assert.IsNull(classParameter.GetDefault<int?>());
     }
 
 }

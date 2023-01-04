@@ -57,7 +57,7 @@ internal static class HttpHelpers {
 
     private static async Task<string> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
         var uri = invokeLink.GetHref();
-        var properties = invokeLink.GetArguments().Properties();
+        var properties = invokeLink.GetArgumentsAsJObject().Properties();
         var parameters = new Dictionary<string, string>();
 
         var argValues = properties.Zip(pp);
@@ -84,7 +84,7 @@ internal static class HttpHelpers {
         var method = invokeLink.GetMethod();
         var uri = invokeLink.GetHref();
 
-        var properties = invokeLink.GetArguments().Properties();
+        var properties = invokeLink.GetArgumentsAsJObject().Properties();
         var parameters = new JObject();
 
         var argValues = properties.Zip(pp);

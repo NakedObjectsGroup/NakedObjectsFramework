@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using ROSI.Helpers;
 using Extensions = ROSI.Records.Extensions;
 
 namespace ROSI.Apis;
@@ -31,16 +32,8 @@ public static class ExtensionsApi {
     public static IDictionary<string, object> RawExtensions(this Extensions extensionsRepresentation) =>
         extensionsRepresentation.Wrapped.Children().Cast<JProperty>().ToDictionary(p => p.Name, p => ((JValue)p.Value).Value);
 
-    private static object? ExtensionObject(this JProperty prop) =>
-        prop.Value switch {
-            JValue jv => jv.Value,
-            JObject jo => jo.Children().Cast<JProperty>().ToDictionary(c => c.Name, c => c.ExtensionObject()),
-            JArray ja => ja.Children().Cast<JValue>().Select(t => t.Value).ToList(),
-            _ => null
-        };
-
     public static IDictionary<ExtensionKeys, object> Extensions(this Extensions extensionsRepresentation) =>
-        extensionsRepresentation.Wrapped.Children().Cast<JProperty>().ToDictionary(p => Enum.Parse<ExtensionKeys>(p.Name.Replace('-', '_')), p => p.ExtensionObject());
+        extensionsRepresentation.Wrapped.Children().Cast<JProperty>().ToDictionary(p => Enum.Parse<ExtensionKeys>(p.Name.Replace('-', '_')), p => p.MapToObject());
 
     public static T GetExtension<T>(this Extensions extensionsRepresentation, string key) => (T)extensionsRepresentation.RawExtensions()[key];
 

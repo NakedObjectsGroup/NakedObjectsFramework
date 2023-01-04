@@ -34,7 +34,7 @@ public class HomeApiTests : AbstractApiTests {
     [Test]
     public void TestGetUser() {
         var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
-        var user = home.GetUserAsync(TestInvokeOptions()).Result;
+        var user = home.GetUser(TestInvokeOptions()).Result;
 
         Assert.AreEqual(2, user.GetLinks().Count());
         Assert.AreEqual("Test", user.GetUserName());
@@ -49,7 +49,7 @@ public class HomeApiTests : AbstractApiTests {
     public void TestGetVersion() {
         var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
         //HttpHelpers.Client = new HttpClient(new StubHttpMessageHandler(Api()));
-        var version = home.GetVersionAsync(TestInvokeOptions()).Result;
+        var version = home.GetVersion(TestInvokeOptions()).Result;
         Assert.AreEqual(2, version.GetLinks().Count());
         Assert.AreEqual("1.2", version.GetSpecVersion());
         Assert.AreEqual("Naked Objects 13.1.0", version.GetImplVersion());
@@ -60,7 +60,7 @@ public class HomeApiTests : AbstractApiTests {
     [Test]
     public void TestGetServices() {
         var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
-        var services = home.GetServicesAsync(TestInvokeOptions()).Result;
+        var services = home.GetServices(TestInvokeOptions()).Result;
 
         Assert.AreEqual(0, services.GetExtensions().Extensions().Count);
 
@@ -85,7 +85,7 @@ public class HomeApiTests : AbstractApiTests {
     [Test]
     public void TestGetMenus() {
         var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
-        var menus = home.GetMenusAsync(TestInvokeOptions()).Result;
+        var menus = home.GetMenus(TestInvokeOptions()).Result;
 
         Assert.AreEqual(0, menus.GetExtensions().Extensions().Count);
 

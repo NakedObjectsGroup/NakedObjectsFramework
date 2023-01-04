@@ -10,15 +10,11 @@ namespace ROSI.Helpers;
 internal static class ApiHelpers {
     public static IEnumerable<Link> ToLinks(this IEnumerable<JToken> tokens) => tokens.OfType<JObject>().Select(jo => new Link(jo));
 
-    public static IEnumerable<Link> GetLinks(this JObject jo) => jo["links"].ToLinks();
-
     public static async Task<JObject> GetResourceAsync(Link link, InvokeOptions options) {
         var href = link.GetHref();
         var json = await HttpHelpers.Execute(href, options);
         return JObject.Parse(json);
     }
-
-    public static Extensions GetExtensions(this JObject jo) => new(jo["extensions"] as JObject);
 
     public static async Task<Prompt> GetPrompt(IHasLinks propertyRepresentation, InvokeOptions options, object[] pp) {
         var json = await HttpHelpers.Execute(propertyRepresentation.GetLinks().GetPromptLink(), options, pp);
@@ -38,5 +34,13 @@ internal static class ApiHelpers {
             JObject jo => jo,
             null => null,
             _ => throw new UnexpectedTypeRosiException(wrapped, key, typeof(JObject))
+        };
+
+    public static object? MapToObject(this JProperty prop) =>
+        prop.Value switch {
+            JValue jv => jv.Value,
+            JObject jo => jo.Children().Cast<JProperty>().ToDictionary(c => c.Name, c => c.MapToObject()),
+            JArray ja => ja.Children().Cast<JValue>().Select(t => t.Value).ToList(),
+            _ => null
         };
 }
