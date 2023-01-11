@@ -201,5 +201,14 @@ public class ClassWithScalars {
     public DateTime? DateTime6 { get; set; } = null;
 
     [NotMapped]
+    public TimeSpan TimeSpan1 { get; set; } = new(0, 1, 2, 3);
+
+    [NotMapped]
+    public TimeSpan? TimeSpan2 { get; set; } = new TimeSpan(0, 23, 59, 59);
+
+    [NotMapped]
+    public TimeSpan? TimeSpan3 { get; set; } = null;
+
+    [NotMapped]
     public string String { get; set; } = "A String";
 }

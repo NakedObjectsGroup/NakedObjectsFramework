@@ -85,6 +85,7 @@ public static class DomainObjectApi {
         return fromValue switch {
             null => null,
             IConvertible c => c.ToType(toType, CultureInfo.InvariantCulture),
+            TimeSpan t => t,
             _ => throw new NotSupportedException($"Unrecognized value: {fromValue.GetType()}")
         };
     }
@@ -99,13 +100,15 @@ public static class DomainObjectApi {
         };
     }
 
+    private static TimeSpan ToTimeSpan(this DateTime dt) => new(0, dt.Hour, dt.Minute, dt.Second);
+
     private static object? ConvertStringFormat(this PropertyMember fromProperty) {
         var format = fromProperty.GetExtensions().GetExtension<string>("format");
         return format switch {
             "string" => fromProperty.GetValue<string>(),
             "date-time" => fromProperty.GetValue<string>() is { } s ? DateTime.Parse(s, CultureInfo.InvariantCulture) : null,
             "date" => fromProperty.GetValue<string>() is { } s ? DateTime.ParseExact(s, "yyyy-M-dd", CultureInfo.InvariantCulture) : null,
-            "time" => throw new NotImplementedException("time"),
+            "time" => fromProperty.GetValue<string>() is { } s ? DateTime.ParseExact(s, "HH:mm:ss", CultureInfo.InvariantCulture).ToTimeSpan() : null,
             "utc-millisec" => throw new NotImplementedException("utc-millisec"),
             "big-integer(10)" => throw new NotImplementedException("big-integer"),
             "big-decimal(10, 2)" => throw new NotImplementedException("big-decimal"),

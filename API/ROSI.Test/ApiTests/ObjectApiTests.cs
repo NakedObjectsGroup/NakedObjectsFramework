@@ -147,6 +147,11 @@ public class ObjectApiTests : AbstractApiTests {
         Assert.AreEqual(new DateTime(2024, 02, 12, 13, 54, 00), poco.DateTime5);
         Assert.AreEqual(null, poco.DateTime6);
 
+        
+        Assert.AreEqual(new TimeSpan(0, 1, 2, 3), poco.TimeSpan1);
+        Assert.AreEqual(new TimeSpan(0, 23, 59, 59), poco.TimeSpan2);
+        Assert.AreEqual(null, poco.TimeSpan3);
+
         Assert.AreEqual("A String", poco.String);
     }
 
@@ -182,6 +187,10 @@ public class ObjectApiTests : AbstractApiTests {
         public DateTime DateTime4 { get; set; }
         public DateTime? DateTime5 { get; set; } 
         public DateTime? DateTime6 { get; set; }
+
+        public TimeSpan TimeSpan1 { get; set; }
+        public TimeSpan? TimeSpan2 { get; set; } 
+        public TimeSpan? TimeSpan3 { get; set; }
 
         public string String { get; set; }
     }
