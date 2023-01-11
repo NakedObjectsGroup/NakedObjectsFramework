@@ -31,6 +31,8 @@ public abstract class EFCoreTestDbContext : DbContext {
 
     public DbSet<ClassWithActions> ClassesWithActions { get; set; }
 
+    public DbSet<ClassWithScalars> ClassesWithScalars { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
         optionsBuilder.UseLazyLoadingProxies();
@@ -52,6 +54,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<Class>().HasData(new Class { Id = 1, Property1 = "One", Property2 = 2 });
         modelBuilder.Entity<Class>().HasData(new Class { Id = 2, Property1 = "Three", Property2 = 4 });
         modelBuilder.Entity<ClassWithActions>().HasData(new ClassWithActions { Id = 1 });
+        modelBuilder.Entity<ClassWithScalars>().HasData(new ClassWithActions { Id = 1 });
     }
 }
 

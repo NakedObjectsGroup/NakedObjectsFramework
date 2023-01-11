@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Newtonsoft.Json.Linq;
 using ROSI.Helpers;
 using ROSI.Interfaces;
@@ -53,17 +54,94 @@ public static class DomainObjectApi {
 
     public static CollectionMember? GetCollection(this DomainObject objectRepresentation, string collectionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Collection, collectionName) is { } jo ? new CollectionMember(jo) : null;
 
-    public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : struct {
+    public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : class, new() {
         var scalarProperties = objectRepresentation.GetPropertiesAndNames().Where(p => p.Item1.IsScalarProperty());
         return (T)scalarProperties.Aggregate(new T() as object, CopyProperty); // as object to box
+    }
+
+    private static IConvertible GetAsConvertible(this PropertyMember fromProperty) {
+        if (fromProperty.GetValue() is IConvertible c) {
+            return c;
+        }
+
+        throw new NotSupportedException($"Unrecognized value: {fromProperty.GetValue()?.GetType()}");
+    }
+
+    private static object? Convert(this PropertyMember fromProperty, Type toType) {
+        var fromValue = fromProperty.GetValue();
+
+        return fromValue switch {
+            null => null,
+            IConvertible c => c.ToType(toType, CultureInfo.InvariantCulture),
+            _ => throw new NotSupportedException($"Unrecognized value: {fromValue.GetType()}")
+        };
+    }
+
+    private static object? Coerce(object? fromValue, Type toType) {
+        if (fromValue is not null && toType != fromValue.GetType()) {
+            // should log a warning
+        }
+
+        return fromValue switch {
+            null => null,
+            IConvertible c => c.ToType(toType, CultureInfo.InvariantCulture),
+            _ => throw new NotSupportedException($"Unrecognized value: {fromValue.GetType()}")
+        };
+    }
+
+
+    private static object? ConvertNumberFormat(this PropertyMember fromProperty) {
+        var format = fromProperty.GetExtensions().GetExtension<string>("format");
+        return format switch {
+            "decimal" => fromProperty.Convert(typeof(double)),
+            "int" => fromProperty.Convert(typeof(int)),
+            _ => throw new NotSupportedException($"Unrecognized format: {format}")
+        };
+    }
+
+    private static object? ConvertStringFormat(this PropertyMember fromProperty) {
+        var format = fromProperty.GetExtensions().GetExtension<string>("format");
+        return format switch {
+            "string" => fromProperty.GetValue<string>(),
+            "date-time" => fromProperty.GetValue<string>() is { } s ? DateTime.Parse(s, CultureInfo.InvariantCulture) : null,
+            "date" => fromProperty.GetValue<string>() is { } s ? DateTime.ParseExact(s, "yyyy-M-dd", CultureInfo.InvariantCulture) : null,
+            "time" => throw new NotImplementedException("time"),
+            "utc-millisec" => throw new NotImplementedException("utc-millisec"),
+            "big-integer(10)" => throw new NotImplementedException("big-integer"),
+            "big-decimal(10, 2)" => throw new NotImplementedException("big-decimal"),
+            "blob" => throw new NotImplementedException("blob"),
+            "clob" => throw new NotImplementedException("clob"),
+            _ => throw new NotSupportedException($"Unrecognized format: {format}")
+        };
+    }
+
+    private static object? ConvertValue(this PropertyMember fromProperty) {
+        var returnType = fromProperty.GetExtensions().GetExtension<string>("returnType");
+        return returnType switch {
+            "boolean" => fromProperty.Convert(typeof(bool)),
+            "number" => fromProperty.ConvertNumberFormat(),
+            "string" => fromProperty.ConvertStringFormat(),
+            _ => throw new NotSupportedException($"Unrecognized type: {returnType}")
+        };
     }
 
     private static object CopyProperty(object toObject, (PropertyMember, string) fromPropertyTuple) {
         var (fromProperty, name) = fromPropertyTuple;
         var toProperty = toObject.GetType().GetProperty(name);
-        if (toProperty is not null && fromProperty.GetValue() is IConvertible fromValue) {
-            var convertedFromValue = fromValue.ToType(toProperty.PropertyType, CultureInfo.InvariantCulture);
-            toProperty.SetValue(toObject, convertedFromValue);
+        if (toProperty is not null) {
+            var propertyType = toProperty.PropertyType;
+            if (propertyType.IsConstructedGenericType) {
+                if (propertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+                    var toPropertyInnerType = propertyType.GenericTypeArguments.First();
+                    var convertedFromValue = Coerce(fromProperty.ConvertValue(), toPropertyInnerType);
+                    var toValue = convertedFromValue is null ? Activator.CreateInstance(propertyType) : Activator.CreateInstance(propertyType, convertedFromValue);
+                    toProperty.SetValue(toObject, toValue);
+                }
+            }
+            else {
+                var convertedFromValue = Coerce(fromProperty.ConvertValue(), propertyType);
+                toProperty.SetValue(toObject, convertedFromValue);
+            }
         }
 
         return toObject;

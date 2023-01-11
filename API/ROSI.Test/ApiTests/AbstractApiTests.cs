@@ -33,7 +33,9 @@ public abstract class AbstractApiTests : AcceptanceTestCase {
     protected override Type[] ObjectTypes { get; } = {
         typeof(Class),
         typeof(ClassWithActions),
-        typeof(TestChoices)
+        typeof(TestChoices),
+        typeof(TestEnum),
+        typeof(ClassWithScalars)
     };
 
     protected override bool EnforceProxies => false;
@@ -110,7 +112,7 @@ public abstract class AbstractApiTests : AcceptanceTestCase {
 
     protected static string FullName<T>() => typeof(T).FullName;
 
-    protected InvokeOptions TestInvokeOptions(string? token = null, EntityTagHeaderValue? tag = null) =>
+    protected InvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
         new() {
             Token = token,
             Tag = tag,

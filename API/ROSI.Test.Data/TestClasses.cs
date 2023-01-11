@@ -5,8 +5,10 @@
 // // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedObjects;
 
@@ -24,7 +26,6 @@ public enum TestChoices {
 }
 
 public class Class {
-
     [Title]
     public string Title => $"{nameof(Class)}:{Id}";
 
@@ -38,22 +39,20 @@ public class Class {
 
     public virtual Class Property3 => this;
 
+    public virtual DateTime? Property4 => new DateTime();
+
     public virtual TestChoices PropertyWithScalarChoices { get; set; }
 
-    public ICollection<Class> ChoicesProperty3() => Container.Instances<Class>().ToList();
-
     public virtual string PropertyWithAutoComplete { get; set; }
-
-    public ICollection<string> AutoCompletePropertyWithAutoComplete(string s) {
-        return new List<string>() { s };
-    }
 
     [TableView(true, "NameOne", "NameTwo")]
     public virtual IList<Class> Collection1 { get; set; } = new List<Class>();
 
     public virtual IList<Class> Collection2 { get; set; } = new List<Class>();
 
-   
+    public ICollection<Class> ChoicesProperty3() => Container.Instances<Class>().ToList();
+
+    public ICollection<string> AutoCompletePropertyWithAutoComplete(string s) => new List<string> { s };
 
     public Class Action1() => this;
 
@@ -61,7 +60,6 @@ public class Class {
 }
 
 public class ClassWithActions {
-
     [Title]
     public string Title => $"{nameof(ClassWithActions)}:{Id}";
 
@@ -110,4 +108,98 @@ public class ClassWithActions {
     public Class PotentActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
 
     public Class PotentActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
+}
+
+public enum TestEnum {
+    ValueOne,
+    ValueTwo
+}
+
+public class ClassWithScalars {
+    [Title]
+    public string Title => $"{nameof(ClassWithScalars)}:{Id}";
+
+    public IDomainObjectContainer Container { private get; set; }
+
+    [Key]
+    public int Id { get; init; }
+
+    [NotMapped]
+    public bool Bool1 { get; set; } = true;
+
+    [NotMapped]
+    public bool? Bool2 { get; set; } = true;
+
+    [NotMapped]
+    public bool? Bool3 { get; set; } = null;
+
+    [NotMapped]
+    public short Short1 { get; set; } = 1;
+
+    [NotMapped]
+    public short? Short2 { get; set; } = 2;
+
+    [NotMapped]
+    public short? Short3 { get; set; } = null;
+
+    [NotMapped]
+    public int Int1 { get; set; } = 3;
+
+    [NotMapped]
+    public int? Int2 { get; set; } = 4;
+
+    [NotMapped]
+    public bool? Int3 { get; set; } = null;
+
+    [NotMapped]
+    public long Long1 { get; set; } = 5;
+
+    [NotMapped]
+    public long? Long2 { get; set; } = 6;
+
+    [NotMapped]
+    public long? Long3 { get; set; } = null;
+
+    [NotMapped]
+    public double Double1 { get; set; } = 7.1;
+
+    [NotMapped]
+    public double? Double2 { get; set; } = 8.2;
+
+    [NotMapped]
+    public double? Double3 { get; set; } = null;
+
+    [NotMapped]
+    public decimal Decimal1 { get; set; } = 9.1M;
+
+    [NotMapped]
+    public decimal? Decimal2 { get; set; } = 10.2M;
+
+    [NotMapped]
+    public decimal? Decimal3 { get; set; } = null;
+
+    [NotMapped]
+    public DateTime DateTime1 { get; set; } = new(2023, 01, 11, 11, 54, 00);
+
+    [NotMapped]
+    public DateTime? DateTime2 { get; set; } = new DateTime(2024, 02, 12, 13, 54, 00);
+
+    [NotMapped]
+    public DateTime? DateTime3 { get; set; } = null;
+
+    [NotMapped]
+    [DataType(DataType.DateTime)]
+
+    public DateTime DateTime4 { get; set; } = new(2023, 01, 11, 11, 54, 00);
+
+    [NotMapped]
+    [DataType(DataType.DateTime)]
+    public DateTime? DateTime5 { get; set; } = new DateTime(2024, 02, 12, 13, 54, 00);
+
+    [NotMapped]
+    [DataType(DataType.DateTime)]
+    public DateTime? DateTime6 { get; set; } = null;
+
+    [NotMapped]
+    public string String { get; set; } = "A String";
 }

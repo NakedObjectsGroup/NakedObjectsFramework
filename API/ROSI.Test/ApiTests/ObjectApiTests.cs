@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using ROSI.Apis;
@@ -48,7 +49,7 @@ public class ObjectApiTests : AbstractApiTests {
         var objectRep = GetObject(FullName<Class>(), "1");
         var val = objectRep.GetProperties();
 
-        Assert.AreEqual(7, val.Count());
+        Assert.AreEqual(8, val.Count());
     }
 
     [Test]
@@ -73,16 +74,6 @@ public class ObjectApiTests : AbstractApiTests {
         var val = objectRep.GetCollection("Collection1");
 
         Assert.IsNotNull(val);
-    }
-
-    [Test]
-    public void TestGetAsPoco() {
-        var objectRep = GetObject(FullName<Class>(), "1");
-        var poco = objectRep.GetAsPoco<TestClassPoco>();
-
-        Assert.AreEqual("One", poco.Property1);
-        Assert.AreEqual(2, poco.Property2);
-        Assert.IsNull(poco.Property3);
     }
 
 
@@ -119,9 +110,79 @@ public class ObjectApiTests : AbstractApiTests {
         }
     }
 
-    private struct TestClassPoco {
-        public string Property1 { get; set; }
-        public int Property2 { get; set; }
-        public Class Property3 { get; set; }
+    [Test]
+    public void TestGetAsPoco() {
+        var objectRep = GetObject(FullName<ClassWithScalars>(), "1");
+        var poco = objectRep.GetAsPoco<TestClassPoco>();
+
+        Assert.AreEqual(true, poco.Bool1);
+        Assert.AreEqual(true, poco.Bool2);
+        Assert.AreEqual(null, poco.Bool3);
+
+        Assert.AreEqual(1, poco.Short1);
+        Assert.AreEqual(2, poco.Short2);
+        Assert.AreEqual(null, poco.Short3);
+
+        Assert.AreEqual(3, poco.Int1);
+        Assert.AreEqual(4, poco.Int2);
+        Assert.AreEqual(null, poco.Int3);
+
+        Assert.AreEqual(5, poco.Long1);
+        Assert.AreEqual(6, poco.Long2);
+        Assert.AreEqual(null, poco.Long3);
+
+        Assert.AreEqual(7.1, poco.Double1);
+        Assert.AreEqual(8.2, poco.Double2);
+        Assert.AreEqual(null, poco.Double3);
+
+        Assert.AreEqual(9.1, poco.Decimal1);
+        Assert.AreEqual(10.2, poco.Decimal2);
+        Assert.AreEqual(null, poco.Decimal3);
+
+        Assert.AreEqual(new DateTime(2023, 01, 11), poco.DateTime1);
+        Assert.AreEqual(new DateTime(2024, 02, 12), poco.DateTime2);
+        Assert.AreEqual(null, poco.DateTime3);
+
+        Assert.AreEqual(new DateTime(2023, 01, 11, 11, 54, 00), poco.DateTime4);
+        Assert.AreEqual(new DateTime(2024, 02, 12, 13, 54, 00), poco.DateTime5);
+        Assert.AreEqual(null, poco.DateTime6);
+
+        Assert.AreEqual("A String", poco.String);
+    }
+
+    private class TestClassPoco {
+        public bool Bool1 { get; set; }
+        public bool? Bool2 { get; set; }
+        public bool? Bool3 { get; set; }
+
+        public short Short1 { get; set; } 
+        public short? Short2 { get; set; } 
+        public short? Short3 { get; set; }
+
+        public int Int1 { get; set; } 
+        public int? Int2 { get; set; } 
+        public int? Int3 { get; set; } 
+
+        public long Long1 { get; set; }
+        public long? Long2 { get; set; } 
+        public long? Long3 { get; set; }
+
+        public double Double1 { get; set; }
+        public double? Double2 { get; set; } 
+        public double? Double3 { get; set; }
+
+        public decimal Decimal1 { get; set; }
+        public decimal? Decimal2 { get; set; } 
+        public decimal? Decimal3 { get; set; }
+
+        public DateTime DateTime1 { get; set; }
+        public DateTime? DateTime2 { get; set; } 
+        public DateTime? DateTime3 { get; set; }
+
+        public DateTime DateTime4 { get; set; }
+        public DateTime? DateTime5 { get; set; } 
+        public DateTime? DateTime6 { get; set; }
+
+        public string String { get; set; }
     }
 }
