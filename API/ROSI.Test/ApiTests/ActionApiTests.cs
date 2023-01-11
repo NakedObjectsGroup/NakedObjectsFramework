@@ -82,7 +82,6 @@ public class ActionApiTests : AbstractApiTests {
         Assert.AreEqual(0, parameters["index"].GetLinks().Count());
     }
 
-
     [Test]
     public void TestInvokeNoParmReturnsObjectAction() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");

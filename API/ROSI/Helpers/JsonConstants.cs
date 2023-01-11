@@ -1,7 +1,7 @@
-﻿namespace ROSI.Helpers; 
+﻿namespace ROSI.Helpers;
 
 internal class JsonConstants {
-   public const string Arguments = "arguments";
+    public const string Arguments = "arguments";
     public const string Choices = "choices";
     public const string Default = "default";
     public const string Description = "description";

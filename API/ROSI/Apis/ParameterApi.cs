@@ -11,7 +11,7 @@ public static class ParameterApi {
             { } t => t.Value<T>(),
             _ => default
         };
-    
+
     public static Link? GetLinkDefault(this Parameter parameterRepresentation) =>
         parameterRepresentation.GetOptionalProperty(JsonConstants.Default) is JObject jo ? new Link(jo) : null;
 }

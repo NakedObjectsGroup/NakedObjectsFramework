@@ -6,10 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using ROSI.Apis;
@@ -76,11 +76,10 @@ public class ObjectApiTests : AbstractApiTests {
         Assert.IsNotNull(val);
     }
 
-
     [Test]
     public void TestMissingProperties() {
         var objectRep = GetObject(FullName<Class>(), "1");
-      
+
         Assert.IsNull(objectRep.GetServiceId());
 
         var empty = new DomainObject(new JObject());
@@ -101,7 +100,6 @@ public class ObjectApiTests : AbstractApiTests {
             Assert.Fail("expect exception");
         }
         catch (AggregateException e) {
-
             foreach (var exception in e.InnerExceptions) {
                 if (exception is HttpRequestException he) {
                     Assert.AreEqual(HttpStatusCode.NotFound, he.StatusCode);
@@ -147,7 +145,6 @@ public class ObjectApiTests : AbstractApiTests {
         Assert.AreEqual(new DateTime(2024, 02, 12, 13, 54, 00), poco.DateTime5);
         Assert.AreEqual(null, poco.DateTime6);
 
-        
         Assert.AreEqual(new TimeSpan(0, 1, 2, 3), poco.TimeSpan1);
         Assert.AreEqual(new TimeSpan(0, 23, 59, 59), poco.TimeSpan2);
         Assert.AreEqual(null, poco.TimeSpan3);
@@ -155,43 +152,88 @@ public class ObjectApiTests : AbstractApiTests {
         Assert.AreEqual("A String", poco.String);
     }
 
+    [Test]
+    public void TestGetAsPocoError1() {
+        var objectRep = GetObject(FullName<ClassWithScalars>(), "1");
+
+        try {
+            var poco = objectRep.GetAsPoco<TestClassPocoError1>();
+            Assert.Fail("expect exception");
+        }
+        catch (Exception e) {
+            Assert.AreEqual("Invalid cast from 'Boolean' to 'DateTime'.", e.Message);
+        }
+    }
+
+    [Test]
+    public void TestGetAsPocoError2() {
+        var objectRep = GetObject(FullName<ClassWithScalars>(), "1");
+        var poco = objectRep.GetAsPoco<TestClassPocoError2>();
+        Assert.AreEqual(false, poco.Bool3);
+    }
+
+    [Test]
+    public void TestGetAsPocoError3() {
+        var objectRep = GetObject(FullName<ClassWithScalars>(), "1");
+
+        try {
+            var poco = objectRep.GetAsPoco<TestClassPocoError3>();
+            Assert.Fail("expect exception");
+        }
+        catch (Exception e) {
+            Assert.AreEqual("Unrecognized generic property type: System.Collections.Generic.ICollection`1[System.Boolean]", e.Message);
+        }
+    }
+
     private class TestClassPoco {
         public bool Bool1 { get; set; }
         public bool? Bool2 { get; set; }
         public bool? Bool3 { get; set; }
 
-        public short Short1 { get; set; } 
-        public short? Short2 { get; set; } 
+        public short Short1 { get; set; }
+        public short? Short2 { get; set; }
         public short? Short3 { get; set; }
 
-        public int Int1 { get; set; } 
-        public int? Int2 { get; set; } 
-        public int? Int3 { get; set; } 
+        public int Int1 { get; set; }
+        public int? Int2 { get; set; }
+        public int? Int3 { get; set; }
 
         public long Long1 { get; set; }
-        public long? Long2 { get; set; } 
+        public long? Long2 { get; set; }
         public long? Long3 { get; set; }
 
         public double Double1 { get; set; }
-        public double? Double2 { get; set; } 
+        public double? Double2 { get; set; }
         public double? Double3 { get; set; }
 
         public decimal Decimal1 { get; set; }
-        public decimal? Decimal2 { get; set; } 
+        public decimal? Decimal2 { get; set; }
         public decimal? Decimal3 { get; set; }
 
         public DateTime DateTime1 { get; set; }
-        public DateTime? DateTime2 { get; set; } 
+        public DateTime? DateTime2 { get; set; }
         public DateTime? DateTime3 { get; set; }
 
         public DateTime DateTime4 { get; set; }
-        public DateTime? DateTime5 { get; set; } 
+        public DateTime? DateTime5 { get; set; }
         public DateTime? DateTime6 { get; set; }
 
         public TimeSpan TimeSpan1 { get; set; }
-        public TimeSpan? TimeSpan2 { get; set; } 
+        public TimeSpan? TimeSpan2 { get; set; }
         public TimeSpan? TimeSpan3 { get; set; }
 
         public string String { get; set; }
+    }
+
+    private class TestClassPocoError1 {
+        public DateTime Bool1 { get; set; }
+    }
+
+    private class TestClassPocoError2 {
+        public bool Bool3 { get; set; }
+    }
+
+    private class TestClassPocoError3 {
+        public ICollection<bool> Bool1 { get; set; }
     }
 }

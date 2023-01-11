@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Globalization;
+﻿using System.Globalization;
 using Newtonsoft.Json.Linq;
 using ROSI.Helpers;
-using ROSI.Interfaces;
 using ROSI.Records;
 
 namespace ROSI.Apis;
@@ -79,7 +77,7 @@ public static class DomainObjectApi {
 
     private static object? Coerce(object? fromValue, Type toType) {
         if (fromValue is not null && toType != fromValue.GetType()) {
-            // should log a warning
+            // should log a warning ?
         }
 
         return fromValue switch {
@@ -89,7 +87,6 @@ public static class DomainObjectApi {
             _ => throw new NotSupportedException($"Unrecognized value: {fromValue.GetType()}")
         };
     }
-
 
     private static object? ConvertNumberFormat(this PropertyMember fromProperty) {
         var format = fromProperty.GetExtensions().GetExtension<string>("format");
@@ -110,8 +107,8 @@ public static class DomainObjectApi {
             "date" => fromProperty.GetValue<string>() is { } s ? DateTime.ParseExact(s, "yyyy-M-dd", CultureInfo.InvariantCulture) : null,
             "time" => fromProperty.GetValue<string>() is { } s ? DateTime.ParseExact(s, "HH:mm:ss", CultureInfo.InvariantCulture).ToTimeSpan() : null,
             "utc-millisec" => throw new NotImplementedException("utc-millisec"),
-            "big-integer(10)" => throw new NotImplementedException("big-integer"),
-            "big-decimal(10, 2)" => throw new NotImplementedException("big-decimal"),
+            { } when format.StartsWith("big-integer") => throw new NotImplementedException("big-integer"),
+            { } when format.StartsWith("big-decimal") => throw new NotImplementedException("big-decimal"),
             "blob" => throw new NotImplementedException("blob"),
             "clob" => throw new NotImplementedException("clob"),
             _ => throw new NotSupportedException($"Unrecognized format: {format}")
@@ -139,6 +136,9 @@ public static class DomainObjectApi {
                     var convertedFromValue = Coerce(fromProperty.ConvertValue(), toPropertyInnerType);
                     var toValue = convertedFromValue is null ? Activator.CreateInstance(propertyType) : Activator.CreateInstance(propertyType, convertedFromValue);
                     toProperty.SetValue(toObject, toValue);
+                }
+                else {
+                    throw new NotSupportedException($"Unrecognized generic property type: {propertyType}");
                 }
             }
             else {

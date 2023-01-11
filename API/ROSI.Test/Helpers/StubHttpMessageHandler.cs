@@ -56,12 +56,11 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
     private async Task<HttpResponseMessage> SendAsyncProperty(HttpRequestMessage request, string obj, string key, string propertyId) {
         if (propertyId.EndsWith('/')) {
             var query = request.RequestUri.Query.TrimStart('?');
-           
+
             var am = ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(query)), true);
             var ar = Api.AsGet().GetPropertyPrompt(obj, key, propertyId.TrimEnd('/'), am);
             return await GetResponse(ar);
         }
-
 
         if (request.Method == HttpMethod.Get) {
             var ar = Api.AsGet().GetProperty(obj, key, propertyId);

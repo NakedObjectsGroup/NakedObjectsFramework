@@ -110,7 +110,6 @@ public class NonInlinedDetailsApiTests : AbstractApiTests {
         Assert.AreEqual(0, parameters["index"].GetLinks().Count());
     }
 
-
     // so it returns a new stub client each time
     protected record ForInlineInvokeOptions : InvokeOptions {
         private readonly AbstractApiTests tc;

@@ -51,7 +51,7 @@ internal static class HttpHelpers {
                 : await ExecuteWithFormalArguments(invokeLink, options, pp)
             : await ExecuteWithNoArguments(invokeLink, options);
 
-    private static bool UseSimpleArguments(Link invokeLink, object[] pp) => 
+    private static bool UseSimpleArguments(Link invokeLink, object[] pp) =>
         invokeLink.GetMethod() == HttpMethod.Get &&
         !pp.OfType<Link>().Any() &&
         !pp.OfType<DomainObject>().Any() &&

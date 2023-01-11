@@ -3,7 +3,6 @@ using ROSI.Apis;
 using ROSI.Exceptions;
 using ROSI.Interfaces;
 using ROSI.Records;
-using Extensions = ROSI.Records.Extensions;
 
 namespace ROSI.Helpers;
 
