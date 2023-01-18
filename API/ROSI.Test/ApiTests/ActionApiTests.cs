@@ -5,10 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using NUnit.Framework;
 using ROSI.Apis;
+using ROSI.Exceptions;
 using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
@@ -302,5 +305,41 @@ public class ActionApiTests : AbstractApiTests {
 
         var o = ar.GetObject();
         Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeWithWrongParms() {
+        var o1 = GetObject(FullName<ClassWithScalars>(), "1");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
+
+        try {
+            var ar = action.Invoke(TestInvokeOptions(), 2, o1).Result;
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual(2, args.First().Value.GetValue());
+                Assert.IsNull(args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("class1", args.Last().Key);
+                Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.ClassWithScalars/1", args.Last().Value.GetLinkValue().GetHref().ToString());
+                Assert.AreEqual("Not a suitable type; must be a Class", args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
     }
 }

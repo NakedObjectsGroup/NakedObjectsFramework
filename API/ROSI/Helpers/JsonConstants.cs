@@ -45,6 +45,7 @@ internal class JsonConstants {
     public const string Size = "size";
     public const string SpecVersion = "specVersion";
     public const string StackTrace = "stackTrace";
+    public const string CausedBy = "causedBy";
     public const string SubType = "subtype";
     public const string SuperType = "supertype";
     public const string Title = "title";

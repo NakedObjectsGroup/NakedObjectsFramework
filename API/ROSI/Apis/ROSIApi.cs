@@ -20,4 +20,9 @@ public static class ROSIApi {
         var (json, tag) = await HttpHelpers.ExecuteWithTag(uri, options);
         return (new DomainObject(JObject.Parse(json)), tag);
     }
+
+    public static async Task<DomainObject> GetObject(Uri baseUri, string type, string id, InvokeOptions options) {
+        var uri = new Uri(baseUri, $"/objects/{type}/{id}");
+        return await GetObject(uri, options);
+    }
 }

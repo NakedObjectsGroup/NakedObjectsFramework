@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Web;
@@ -113,6 +114,17 @@ internal static class HttpHelpers {
         return (await SendRequestAndRead(request, options)).Response;
     }
 
+    private static Exception MapToException(HttpResponseMessage response) =>
+        response.StatusCode switch {
+            HttpStatusCode.BadRequest => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
+            HttpStatusCode.UnprocessableEntity => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
+            HttpStatusCode.Unauthorized => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
+            HttpStatusCode.Forbidden => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
+            HttpStatusCode.NotFound => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
+            HttpStatusCode.InternalServerError => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
+            _ => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString())
+        };
+
     private static async Task<(string Response, EntityTagHeaderValue? Tag)> SendRequestAndRead(HttpRequestMessage request, InvokeOptions options) {
         using var response = await options.HttpClient.SendAsync(request);
         var tag = response.Headers.ETag;
@@ -121,9 +133,7 @@ internal static class HttpHelpers {
             return (ReadAsString(response), tag);
         }
 
-        var error = ReadAsString(response);
-
-        throw new HttpRequestException("request failed", null, response.StatusCode);
+        throw MapToException(response);
     }
 
     private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));
