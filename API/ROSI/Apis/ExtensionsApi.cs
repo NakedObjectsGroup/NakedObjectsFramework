@@ -31,7 +31,7 @@ public static class ExtensionsApi {
     }
 
     public static IDictionary<string, object?> RawExtensions(this Extensions extensionsRepresentation) =>
-        extensionsRepresentation.Wrapped.Children().Cast<JProperty>().ToDictionary(p => p.Name, p => (object?)((JValue)p.Value).Value);
+        extensionsRepresentation.Wrapped.Children().Cast<JProperty>().ToDictionary(p => p.Name, p => ((JValue)p.Value).Value);
 
     public static IDictionary<ExtensionKeys, object?> Extensions(this Extensions extensionsRepresentation) =>
         extensionsRepresentation.Wrapped.Children().Cast<JProperty>().ToDictionary(p => Enum.Parse<ExtensionKeys>(p.Name.Replace('-', '_')), p => p.MapToObject());
