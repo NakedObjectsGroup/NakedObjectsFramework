@@ -110,6 +110,15 @@ public class NonInlinedDetailsApiTests : AbstractApiTests {
         Assert.AreEqual(0, parameters["index"].GetLinks().Count());
     }
 
+    [Test]
+    public void TestGetValueFromMember() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var links = objectRep.GetCollection(nameof(Class.Collection1)).GetValue(TestInvokeOptions()).Result;
+
+        Assert.AreEqual(0, links.Count());
+    }
+
+
     // so it returns a new stub client each time
     protected record ForInlineInvokeOptions : InvokeOptions {
         private readonly AbstractApiTests tc;

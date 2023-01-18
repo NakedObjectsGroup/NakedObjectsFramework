@@ -57,14 +57,6 @@ public static class DomainObjectApi {
         return (T)scalarProperties.Aggregate(new T() as object, CopyProperty); // as object to box
     }
 
-    private static IConvertible GetAsConvertible(this PropertyMember fromProperty) {
-        if (fromProperty.GetValue() is IConvertible c) {
-            return c;
-        }
-
-        throw new NotSupportedException($"Unrecognized value: {fromProperty.GetValue()?.GetType()}");
-    }
-
     private static object? Convert(this PropertyMember fromProperty, Type toType) {
         var fromValue = fromProperty.GetValue();
 

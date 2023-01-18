@@ -42,9 +42,9 @@ public class CollectionApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestGetValue() {
+    public void TestGetValueFromMember() {
         var objectRep = GetObject(FullName<Class>(), "1");
-        var links = objectRep.GetCollection(nameof(Class.Collection1)).GetValue();
+        var links = objectRep.GetCollection(nameof(Class.Collection1)).GetValue(TestInvokeOptions()).Result;
 
         Assert.AreEqual(0, links.Count());
     }
