@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Net;
 using NUnit.Framework;
+using ROSI.Apis;
 using ROSI.Exceptions;
 using ROSI.Test.Data;
 
@@ -24,6 +25,32 @@ public class ErrorApiTests : AbstractApiTests {
         catch (AggregateException ae) {
             if (ae.InnerExceptions.FirstOrDefault() is HttpRosiException hre) {
                 Assert.AreEqual(HttpStatusCode.NotFound, hre.StatusCode);
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+    }
+
+    [Test]
+    public void TestErrorException() {
+        try {
+            var objectRep = GetObject(FullName<ClassWithActions>(), "1");
+            var sink = objectRep.GetAction(nameof(ClassWithActions.ActionThrowsException)).Invoke(TestInvokeOptions()).Result;
+            Assert.Fail("Expect exception");
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpErrorRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.InternalServerError, hre.StatusCode);
+                Assert.AreEqual("Exception 1", hre.Error?.GetMessage());
+
+                var st = hre.Error?.GetStackTrace();
+                Assert.IsNotNull(st);
+                Assert.AreEqual(1, st.Count());
+                Assert.IsTrue(st.First().StartsWith("   at ROSI.Test.Data.ClassWithActions.ActionThrowsException() in C:\\GitHub\\NakedObjectsFramework\\API\\ROSI.Test.Data\\TestClasses.cs"));
             }
             else {
                 Assert.Fail("Unexpected exception type");

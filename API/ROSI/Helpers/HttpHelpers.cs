@@ -117,11 +117,11 @@ internal static class HttpHelpers {
     private static Exception MapToException(HttpResponseMessage response) =>
         response.StatusCode switch {
             HttpStatusCode.BadRequest => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
-            HttpStatusCode.UnprocessableEntity => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
             HttpStatusCode.Unauthorized => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.Forbidden => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.NotFound => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
-            HttpStatusCode.InternalServerError => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
+            HttpStatusCode.UnprocessableEntity => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
+            HttpStatusCode.InternalServerError => new HttpErrorRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
             _ => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString())
         };
 

@@ -108,6 +108,16 @@ public class ClassWithActions {
     public Class PotentActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
 
     public Class PotentActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
+
+    [QueryOnly]
+    public void ActionThrowsException() {
+        try {
+            throw new Exception("Exception 1");
+        }
+        catch (Exception ex) {
+            throw new Exception("Exception 2", ex);
+        }
+    }
 }
 
 public enum TestEnum {
