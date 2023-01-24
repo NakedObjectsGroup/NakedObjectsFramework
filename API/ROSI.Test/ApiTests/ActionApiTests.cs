@@ -342,4 +342,39 @@ public class ActionApiTests : AbstractApiTests {
         }
 
     }
+
+    [Test]
+    public void TestInvokeWithMissingParms() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
+
+        try {
+            var ar = action.Invoke(TestInvokeOptions(), "",  null!).Result;
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual("", args.First().Value.GetValue());
+                Assert.AreEqual("Mandatory", args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("class1", args.Last().Key);
+                Assert.AreEqual(null, args.Last().Value.GetValue());
+                Assert.AreEqual("Mandatory", args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
 }
