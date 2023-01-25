@@ -74,6 +74,8 @@ public class WithScalars {
     public virtual decimal Decimal { get; set; }
     public virtual byte[] ByteArray { get; set; }
     public virtual sbyte[] SByteArray { get; set; }
+
+    [NotMapped]
     public virtual char[] CharArray { get; set; }
 
     public virtual DateTime DateTime { get; set; }
