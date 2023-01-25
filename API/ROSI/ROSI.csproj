@@ -12,6 +12,8 @@
 		<Copyright>Naked Objects Group Ltd</Copyright>
 		<PackageProjectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</PackageProjectUrl>
 		<PackageId>RestfulObjects.$(AssemblyName)</PackageId>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,5 +29,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.11" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <None Update="readme.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 </Project>
