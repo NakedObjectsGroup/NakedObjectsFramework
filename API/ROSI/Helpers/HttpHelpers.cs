@@ -120,6 +120,9 @@ internal static class HttpHelpers {
             HttpStatusCode.Unauthorized => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.Forbidden => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.NotFound => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
+            HttpStatusCode.MethodNotAllowed => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
+            HttpStatusCode.NotAcceptable => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
+            HttpStatusCode.PreconditionFailed => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.UnprocessableEntity => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
             HttpStatusCode.InternalServerError => new HttpErrorRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
             _ => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString())

@@ -118,6 +118,11 @@ public class ClassWithActions {
             throw new Exception("Exception 2", ex);
         }
     }
+
+    [QueryOnly]
+    public Class ActionFailsCrossValidation(int index, string str) => Container.Instances<Class>().FirstOrDefault();
+
+    public string ValidateActionFailsCrossValidation(int index, string str) => "Fail parameter validation";
 }
 
 public enum TestEnum {

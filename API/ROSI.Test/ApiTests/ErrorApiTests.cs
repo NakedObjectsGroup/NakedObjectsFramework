@@ -62,4 +62,5 @@ public class ErrorApiTests : AbstractApiTests {
             Assert.Fail("Unexpected exception type");
         }
     }
+
 }

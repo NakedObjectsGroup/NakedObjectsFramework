@@ -14,6 +14,7 @@ using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Exceptions;
 using ROSI.Test.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace ROSI.Test.ApiTests;
 
@@ -400,6 +401,44 @@ public class ActionApiTests : AbstractApiTests {
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual("fred", args.First().Value.GetValue());
                 Assert.AreEqual("Invalid Entry", args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("str", args.Last().Key);
+                Assert.AreEqual("fred", args.Last().Value.GetValue());
+                Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestInvokeWithFailCrossValidation() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
+
+        try {
+            var ar = action.Invoke(TestInvokeOptions(), 1,  "fred").Result;
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Fail parameter validation\"", hre.Message);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual("Fail parameter validation", hre.Content.GetInvalidReason());
+
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual("1", args.First().Value.GetValue());
+                Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
 
                 Assert.AreEqual("str", args.Last().Key);
                 Assert.AreEqual("fred", args.Last().Value.GetValue());
