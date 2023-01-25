@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using Castle.Components.DictionaryAdapter.Xml;
 using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Exceptions;
@@ -308,7 +309,7 @@ public class ActionApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestInvokeWithWrongParms() {
+    public void TestInvokeWithWrongParms1() {
         var o1 = GetObject(FullName<ClassWithScalars>(), "1");
 
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
@@ -344,7 +345,7 @@ public class ActionApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestInvokeWithMissingParms() {
+    public void TestInvokeWithEmptyMandatoryParms() {
         
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
@@ -355,6 +356,7 @@ public class ActionApiTests : AbstractApiTests {
         catch (AggregateException ae) {
             if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
                 Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Mandatory\", 199 RestfulObjects \"Mandatory\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
                 
@@ -366,6 +368,42 @@ public class ActionApiTests : AbstractApiTests {
                 Assert.AreEqual("class1", args.Last().Key);
                 Assert.AreEqual(null, args.Last().Value.GetValue());
                 Assert.AreEqual("Mandatory", args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestInvokeWithInvalidMandatoryParms() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
+
+        try {
+            var ar = action.Invoke(TestInvokeOptions(), "fred",  "fred").Result;
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.BadRequest, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", hre.Message);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual("fred", args.First().Value.GetValue());
+                Assert.AreEqual("Invalid Entry", args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("str", args.Last().Key);
+                Assert.AreEqual("fred", args.Last().Value.GetValue());
+                Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
 
             }
             else {

@@ -25,6 +25,7 @@ public class ErrorApiTests : AbstractApiTests {
         catch (AggregateException ae) {
             if (ae.InnerExceptions.FirstOrDefault() is HttpRosiException hre) {
                 Assert.AreEqual(HttpStatusCode.NotFound, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"No such domain object ROSI.Test.Data.ClassWithActions-100: null adapter\"", hre.Message);
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -45,6 +46,7 @@ public class ErrorApiTests : AbstractApiTests {
         catch (AggregateException ae) {
             if (ae.InnerExceptions.FirstOrDefault() is HttpErrorRosiException hre) {
                 Assert.AreEqual(HttpStatusCode.InternalServerError, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Exception 1\"", hre.Message);
                 Assert.AreEqual("Exception 1", hre.Error?.GetMessage());
 
                 var st = hre.Error?.GetStackTrace();

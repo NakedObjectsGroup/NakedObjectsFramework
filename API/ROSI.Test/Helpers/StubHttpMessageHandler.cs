@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -170,9 +173,14 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
     private async Task<HttpResponseMessage> GetResponse(ActionResult ar) {
         var (json, sc, _) = await TestHelpers.ReadActionResult(ar, Api.ControllerContext.HttpContext);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var headers = Api.ControllerContext.HttpContext.Response.Headers;
 
         var response = new HttpResponseMessage((HttpStatusCode)sc);
         response.Content = content;
+
+        if (headers.FirstOrDefault(kvp => kvp.Key == "Warning") is ({ } key, var value)) {
+            response.Headers.Add(key, value.ToString());
+        }
 
         return response;
     }
