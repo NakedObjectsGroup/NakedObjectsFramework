@@ -124,6 +124,7 @@ internal static class HttpHelpers {
             HttpStatusCode.NotAcceptable => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.PreconditionFailed => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.UnprocessableEntity => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
+            HttpStatusCode.PreconditionRequired => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.InternalServerError => new HttpErrorRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
             _ => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString())
         };
