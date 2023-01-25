@@ -52,7 +52,7 @@ public class ErrorApiTests : AbstractApiTests {
                 var st = hre.Error?.GetStackTrace();
                 Assert.IsNotNull(st);
                 Assert.AreEqual(1, st.Count());
-                Assert.IsTrue(st.First().StartsWith("   at ROSI.Test.Data.ClassWithActions.ActionThrowsException() in C:\\GitHub\\NakedObjectsFramework\\API\\ROSI.Test.Data\\TestClasses.cs"));
+                Assert.IsTrue(st.First().Contains("at ROSI.Test.Data.ClassWithActions.ActionThrowsException()"));
             }
             else {
                 Assert.Fail("Unexpected exception type");
