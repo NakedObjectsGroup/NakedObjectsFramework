@@ -5,12 +5,13 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Title>Restful Objects System Interface</Title>
+		<Title>RestfulObjects System Interface</Title>
 		<Version>1.0.0-beta01</Version>
 		<Company>Naked Objects Group Ltd</Company>
 		<Authors>Naked Objects Group Ltd</Authors>
 		<Copyright>Naked Objects Group Ltd</Copyright>
 		<PackageProjectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</PackageProjectUrl>
+		<PackageId>RestfulObjects.$(AssemblyName)</PackageId>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
