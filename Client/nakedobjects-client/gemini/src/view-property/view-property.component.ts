@@ -1,4 +1,5 @@
 ﻿import { Component, HostListener, Input, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { copy, DragAndDropService, AttachmentViewModel, PropertyViewModel } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
@@ -13,7 +14,8 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     private ddSub: ISubscription;
 
     constructor(
-        private readonly dragAndDrop: DragAndDropService
+        private readonly dragAndDrop: DragAndDropService,
+        private readonly router: Router,
     ) { }
 
     dropZones: string[] = [];
@@ -106,11 +108,16 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     }
 
     doLinkClick(newPane?: boolean) {
+        const href = this.value as string;
         if (newPane || this.property.linkProperties()?.[0]) {
-            window.open(this.value as string, '_blank');
+            window.open(href, '_blank');
         }
-        else {
-            window.location.href = this.value as string;
+        else if (href.startsWith('http')) {
+            window.location.href = href;
+        }
+        else {  
+            const tree = this.router.createUrlTree([href]);
+            this.router.navigateByUrl(tree);
         }
     }
 
