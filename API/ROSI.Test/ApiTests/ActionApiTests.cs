@@ -177,6 +177,29 @@ public class ActionApiTests : AbstractApiTests {
     }
 
     [Test]
+    public void TestInvokeWithNamedValueParmsReturnsObjectAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var args = action?.GetLinks().GetInvokeLink()?.GetArguments();
+
+        Assert.IsNotNull(args);
+
+        Assert.AreEqual(2, args?.Count());
+
+        var ar = action.InvokeWithNamedParams(TestInvokeOptions(), new() {{"index", 1}, {"str", "test"}}    ).Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
     public void TestInvokeWithRefParmsReturnsObjectAction() {
         var o1 = GetObject(FullName<Class>(), "1");
         var o2 = GetObject(FullName<Class>(), "2");

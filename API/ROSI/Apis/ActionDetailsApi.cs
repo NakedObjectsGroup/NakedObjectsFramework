@@ -13,4 +13,7 @@ public static class ActionDetailsApi {
         var (json, tag) = await HttpHelpers.Execute(link, options, pp);
         return new ActionResult(JObject.Parse(json), tag);
     }
+
+    public static async Task<ActionResult> InvokeWithNamedParams(this ActionDetails actionRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
+        await actionRepresentation.Invoke(options, pp.Cast<object>().ToArray());
 }

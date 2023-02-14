@@ -64,6 +64,18 @@ internal static class HttpHelpers {
     private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
         var uri = invokeLink.GetHref();
         var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? new List<JProperty>();
+        var parameters = GetSimpleParameters(pp, properties);
+
+        var url = QueryHelpers.AddQueryString(uri.ToString(), parameters);
+
+        return await SendAndRead(HttpMethod.Get, url, options);
+    }
+
+    private static Dictionary<string, string?> GetSimpleParameters(object[] pp, IEnumerable<JProperty> properties) {
+        if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
+            return GetSimpleParameters(pp.Cast<KeyValuePair<string, object>>().ToArray(), properties);
+        }
+
         var parameters = new Dictionary<string, string?>();
 
         var argValues = properties.Zip(pp);
@@ -72,9 +84,20 @@ internal static class HttpHelpers {
             parameters[p.Name] = v.ToString();
         }
 
-        var url = QueryHelpers.AddQueryString(uri.ToString(), parameters);
+        return parameters;
+    }
 
-        return await SendAndRead(HttpMethod.Get, url, options);
+    private static Dictionary<string, string?> GetSimpleParameters(KeyValuePair<string, object>[] pp, IEnumerable<JProperty> properties) {
+        var argumentNames = properties?.Select(a => a.Name) ?? Array.Empty<string>();
+        var parameters = new Dictionary<string, string?>();
+
+        foreach (var (p, v) in pp) {
+            if (argumentNames.Any(a => a == p)) {
+                parameters[p] = v.ToString();
+            }
+        }
+
+        return parameters;
     }
 
     private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithNoArguments(Link invokeLink, InvokeOptions options) {

@@ -30,4 +30,7 @@ public static class ActionMemberApi {
 
         return await (await actionRepresentation.GetDetails(options)).Invoke(options, pp);
     }
+
+    public static async Task<ActionResult> InvokeWithNamedParams(this ActionMember actionRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
+        await actionRepresentation.Invoke(options, pp.Cast<object>().ToArray());
 }
