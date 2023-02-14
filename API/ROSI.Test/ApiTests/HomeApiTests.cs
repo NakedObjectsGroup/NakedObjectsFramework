@@ -79,7 +79,7 @@ public class HomeApiTests : AbstractApiTests {
 
         var actions = s.GetActions();
 
-        Assert.AreEqual(1, actions.Count());
+        Assert.AreEqual(2, actions.Count());
     }
 
     [Test]
@@ -104,6 +104,6 @@ public class HomeApiTests : AbstractApiTests {
 
         var actions = m.GetActions();
 
-        Assert.AreEqual(1, actions.Count());
+        Assert.AreEqual(2, actions.Count());
     }
 }

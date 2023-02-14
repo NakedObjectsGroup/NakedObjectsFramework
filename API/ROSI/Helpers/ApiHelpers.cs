@@ -11,13 +11,13 @@ internal static class ApiHelpers {
 
     public static async Task<JObject> GetResourceAsync(Link link, InvokeOptions options) {
         var href = link.GetHref();
-        var json = await HttpHelpers.Execute(href, options);
+        var json = (await HttpHelpers.Execute(href, options)).Response;
         return JObject.Parse(json);
     }
 
     public static async Task<Prompt> GetPrompt(IHasLinks propertyRepresentation, InvokeOptions options, object[] pp) {
         var promptLink = propertyRepresentation.GetLinks().GetPromptLink() ?? throw new NoSuchPropertyRosiException($"Missing prompt link in: {propertyRepresentation.GetType()}");
-        var json = await HttpHelpers.Execute(promptLink, options, pp);
+        var json = (await HttpHelpers.Execute(promptLink, options, pp)).Response;
         return new Prompt(JObject.Parse(json));
     }
 

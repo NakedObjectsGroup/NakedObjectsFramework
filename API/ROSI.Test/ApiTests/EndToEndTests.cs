@@ -30,12 +30,12 @@ internal class EndToEndTests {
 
     [Test]
     public void TestInvokeActionWithValueParams() {
-        var (jo, tag) = ROSIApi.GetObjectWithTag(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/426"), new InvokeOptions()).Result;
+        var jo = ROSIApi.GetObject(new Uri("https://nakedfunctionsdemo.azurewebsites.net/objects/AW.Types.Product/426"), new InvokeOptions()).Result;
         Assert.IsNotNull(jo);
 
         var action = jo.GetAction("EditStyle");
 
-        var ar = action.Invoke(new InvokeOptions { Tag = tag }, "U").Result;
+        var ar = action.Invoke(new InvokeOptions { Tag = jo.Tag }, "U").Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Void, ar.GetResultType());
     }

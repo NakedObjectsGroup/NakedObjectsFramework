@@ -14,7 +14,7 @@ using ROSI.Records;
 namespace ROSI.Helpers;
 
 internal static class HttpHelpers {
-    public static async Task<string> Execute(Uri url, InvokeOptions options) => (await ExecuteWithTag(url, options)).Response;
+    public static async Task<(string Response, EntityTagHeaderValue? Tag)> Execute(Uri url, InvokeOptions options) => await ExecuteWithTag(url, options);
 
     public static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithTag(Uri url, InvokeOptions options) {
         var request = CreateMessage(HttpMethod.Get, url.ToString(), options);
@@ -45,20 +45,23 @@ internal static class HttpHelpers {
         return (await SendRequestAndRead(request, options)).Response;
     }
 
-    public static async Task<string> Execute(Link invokeLink, InvokeOptions options, params object[] pp) =>
+    public static async Task<(string Response, EntityTagHeaderValue? Tag)> Execute(Link invokeLink, InvokeOptions options, params object[] pp) =>
         pp.Any()
             ? UseSimpleArguments(invokeLink, pp)
                 ? await ExecuteWithSimpleArguments(invokeLink, options, pp)
                 : await ExecuteWithFormalArguments(invokeLink, options, pp)
             : await ExecuteWithNoArguments(invokeLink, options);
 
+    public static async Task<(string Response, EntityTagHeaderValue? Tag)> Persist(Link invokeLink, InvokeOptions options, params object[] pp) =>
+        await ExecuteWithFormalArguments(invokeLink, options, pp);
+    
     private static bool UseSimpleArguments(Link invokeLink, object[] pp) =>
         invokeLink.GetMethod() == HttpMethod.Get &&
         !pp.OfType<Link>().Any() &&
         !pp.OfType<DomainObject>().Any() &&
         invokeLink.GetRel().GetRelType() != RelApi.Rels.prompt;
 
-    private static async Task<string> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
         var uri = invokeLink.GetHref();
         var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? new List<JProperty>();
         var parameters = new Dictionary<string, string?>();
@@ -74,19 +77,33 @@ internal static class HttpHelpers {
         return await SendAndRead(HttpMethod.Get, url, options);
     }
 
-    private static async Task<string> ExecuteWithNoArguments(Link invokeLink, InvokeOptions options) {
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithNoArguments(Link invokeLink, InvokeOptions options) {
         var (uri, method) = invokeLink.GetUriAndMethod();
 
         using var content = method != HttpMethod.Get ? JsonContent.Create("", new MediaTypeHeaderValue("application/json")) : null;
         var request = CreateMessage(method, uri.ToString(), options, content);
 
-        return (await SendRequestAndRead(request, options)).Response;
+        return await SendRequestAndRead(request, options);
     }
 
-    private static async Task<string> ExecuteWithFormalArguments(Link invokeLink, InvokeOptions options, object[] pp) {
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithFormalArguments(Link invokeLink, InvokeOptions options, object[] pp) {
+        var rel = invokeLink.GetRel().GetRelType();
         var method = invokeLink.GetMethod();
         var uri = invokeLink.GetHref();
 
+        var contentString = rel == RelApi.Rels.persist ? GetMemberString(invokeLink, pp) : GetParameterString(invokeLink, pp);
+        var url = uri.ToString();
+
+        if (method == HttpMethod.Get || method == HttpMethod.Delete) {
+            url = $"{url}?{HttpUtility.UrlEncode(contentString)}";
+        }
+
+        using var content = method == HttpMethod.Post || method == HttpMethod.Put ? new StringContent(contentString, Encoding.UTF8, "application/json") : null;
+
+        return await SendAndRead(method, url, options, content);
+    }
+
+    private static string GetParameterString(Link invokeLink, object[] pp) {
         var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? new List<JProperty>();
         var parameters = new JObject();
 
@@ -98,20 +115,30 @@ internal static class HttpHelpers {
         }
 
         var parameterString = parameters.ToString(Formatting.None);
-        var url = uri.ToString();
-
-        if (method == HttpMethod.Get || method == HttpMethod.Delete) {
-            url = $"{url}?{HttpUtility.UrlEncode(parameterString)}";
-        }
-
-        using var content = method == HttpMethod.Post || method == HttpMethod.Put ? new StringContent(parameterString, Encoding.UTF8, "application/json") : null;
-
-        return await SendAndRead(method, url, options, content);
+        return parameterString;
     }
 
-    private static async Task<string> SendAndRead(HttpMethod method, string url, InvokeOptions options, StringContent? content = null) {
+    private static string GetMemberString(Link invokeLink, object[] pp) {
+        var properties = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties() ?? new List<JProperty>();
+        var parameters = new JObject();
+        var members = new JObject();
+
+        var argValues = properties.Zip(pp);
+
+        foreach (var (p, v) in argValues) {
+            var av = GetActualValue(v);
+            parameters.Add(new JProperty(p.Name, new JObject(new JProperty(JsonConstants.Value, av))));
+        }
+
+        members.Add(new JProperty("members", parameters));
+
+        var memberString = members.ToString(Formatting.None);
+        return memberString;
+    }
+
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> SendAndRead(HttpMethod method, string url, InvokeOptions options, StringContent? content = null) {
         var request = CreateMessage(method, url, options, content);
-        return (await SendRequestAndRead(request, options)).Response;
+        return await SendRequestAndRead(request, options);
     }
 
     private static Exception MapToException(HttpResponseMessage response) =>

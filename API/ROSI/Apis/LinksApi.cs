@@ -29,4 +29,7 @@ public static class LinksApi {
 
     public static Link? GetPromptLink(this IEnumerable<Link> linkRepresentations) =>
         linkRepresentations.GetLinkOfRel(RelApi.Rels.prompt);
+
+    public static Link? GetPersistLink(this IEnumerable<Link> linkRepresentations) =>
+        linkRepresentations.GetLinkOfRel(RelApi.Rels.persist);
 }

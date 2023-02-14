@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using Newtonsoft.Json.Linq;
@@ -46,9 +47,25 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         return await GetResponse(ar);
     }
 
-    private async Task<HttpResponseMessage> SendAsyncService(string serviceId) {
-        var ar = Api.AsGet().GetService(serviceId);
-        return await GetResponse(ar);
+    private async Task<HttpResponseMessage> SendAsyncService(HttpRequestMessage request, string[] segments) {
+        var serviceId = segments[2].TrimEnd('/');
+        
+        if (segments.Length > 3) {
+            switch (segments[3]) {
+                case "actions/":
+                    if (segments.Length > 5) {
+                        return await SendAsyncAction(request, serviceId, "", segments[4].TrimEnd('/'));
+                    }
+
+                    return await SendAsyncActionDetails(request, serviceId, "", segments[4].TrimEnd('/'));
+            }
+        }
+        else {
+            var ar = Api.AsGet().GetService(serviceId);
+            return await GetResponse(ar);
+        }
+
+        throw new NotImplementedException();
     }
 
     private async Task<HttpResponseMessage> SendAsyncMenu(string menuId) {
@@ -99,7 +116,7 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
 
     private async Task<HttpResponseMessage> SendAsyncActionDetails(HttpRequestMessage request, string obj, string key, string actionId) {
         if (request.Method == HttpMethod.Get) {
-            var ar1 = Api.AsGet().GetAction(obj, key, actionId);
+            var ar1 = string.IsNullOrEmpty(key) ? Api.AsGet().GetServiceAction(obj, actionId) : Api.AsGet().GetAction(obj, key, actionId);
             return await GetResponse(ar1);
         }
         //if (request.Method == HttpMethod.Put) {
@@ -112,6 +129,18 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
 
         throw new NotImplementedException();
     }
+
+    private async Task<HttpResponseMessage> SendAsyncPersist(HttpRequestMessage request, string obj) {
+     
+        var body = await ReadBody(request);
+
+        var am = ModelBinderUtils.CreatePersistArgMap(string.IsNullOrEmpty(body) ? new JObject() : JObject.Parse(body), true);
+
+        ActionResult ar = Api.AsPost().PostPersist(obj, am);
+       
+        return await GetResponse(ar);
+    }
+
 
     private async Task<HttpResponseMessage> SendAsyncAction(HttpRequestMessage request, string obj, string key, string action) {
         var method = request.Method;
@@ -129,13 +158,13 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         ActionResult ar;
 
         if (method == HttpMethod.Get) {
-            ar = Api.AsGet().GetInvoke(obj, key, action, am);
+            ar = string.IsNullOrEmpty(key) ? Api.AsGet().GetInvokeOnService(obj, action, am) : Api.AsGet().GetInvoke(obj, key, action, am);
         }
         else if (method == HttpMethod.Post) {
-            ar = Api.AsPost().PostInvoke(obj, key, action, am);
+            ar = string.IsNullOrEmpty(key) ? Api.AsPost().PostInvokeOnService(obj, action, am) : Api.AsPost().PostInvoke(obj, key, action, am);
         }
         else if (method == HttpMethod.Put) {
-            ar = Api.AsPut().PutInvoke(obj, key, action, am);
+            ar = string.IsNullOrEmpty(key) ? Api.AsPut().PutInvokeOnService(obj, action, am) : Api.AsPut().PutInvoke(obj, key, action, am);
         }
         else {
             throw new NotImplementedException();
@@ -146,25 +175,30 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
 
     private async Task<HttpResponseMessage> SendAsyncObject(HttpRequestMessage request, string[] segments) {
         var obj = segments[2].TrimEnd('/');
-        var key = segments[3].TrimEnd('/');
-
-        if (segments.Length > 4) {
-            switch (segments[4]) {
-                case "properties/":
-                    return await SendAsyncProperty(request, obj, key, segments[5]);
-                case "collections/":
-                    return await SendAsyncCollection(request, obj, key, segments[5]);
-                case "actions/":
-                    if (segments.Length > 6) {
-                        return await SendAsyncAction(request, obj, key, segments[5].TrimEnd('/'));
-                    }
-
-                    return await SendAsyncActionDetails(request, obj, key, segments[5].TrimEnd('/'));
-            }
+        
+        if (segments.Length == 3) {
+            return await SendAsyncPersist(request, obj);
         }
         else {
-            var ar = Api.AsGet().GetObject(obj, key);
-            return await GetResponse(ar);
+            var key = segments[3].TrimEnd('/');
+            if (segments.Length > 4) {
+                switch (segments[4]) {
+                    case "properties/":
+                        return await SendAsyncProperty(request, obj, key, segments[5]);
+                    case "collections/":
+                        return await SendAsyncCollection(request, obj, key, segments[5]);
+                    case "actions/":
+                        if (segments.Length > 6) {
+                            return await SendAsyncAction(request, obj, key, segments[5].TrimEnd('/'));
+                        }
+
+                        return await SendAsyncActionDetails(request, obj, key, segments[5].TrimEnd('/'));
+                }
+            }
+            else {
+                var ar = Api.AsGet().GetObject(obj, key);
+                return await GetResponse(ar);
+            }
         }
 
         throw new NotImplementedException();
@@ -182,10 +216,20 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
             response.Headers.Add(key, value.ToString());
         }
 
+        if (headers.FirstOrDefault(kvp => kvp.Key == "ETag") is ({ } key1, var value1)) {
+            response.Headers.Add(key1, value1.ToString());
+        }
+
         return response;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
+        var headers = Api.ControllerContext.HttpContext.Request.Headers;
+
+        if (request.Headers.FirstOrDefault(kvp => kvp.Key == "If-Match") is ({ } key, var value)) {
+            headers.Add(key, value.First().ToString());
+        }
+
         var url = request.RequestUri;
         var segments = url.Segments;
 
@@ -199,7 +243,7 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
             case "services":
                 return await SendAsyncServices();
             case "services/":
-                return await SendAsyncService(segments[2]);
+                return await SendAsyncService(request, segments);
             case "menus":
                 return await SendAsyncMenus();
             case "menus/":

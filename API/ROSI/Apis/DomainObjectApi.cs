@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Newtonsoft.Json.Linq;
+using ROSI.Exceptions;
 using ROSI.Helpers;
 using ROSI.Records;
 
@@ -51,6 +52,13 @@ public static class DomainObjectApi {
     public static ActionMember? GetAction(this DomainObject objectRepresentation, string actionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Action, actionName) is { } jo ? new ActionMember(jo) : null;
 
     public static CollectionMember? GetCollection(this DomainObject objectRepresentation, string collectionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Collection, collectionName) is { } jo ? new CollectionMember(jo) : null;
+
+
+    public static async Task<DomainObject> Persist(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
+        var link = objectRepresentation.GetLinks().GetPersistLink() ?? throw new NoSuchPropertyRosiException("Missing persist link in object");
+        var json = (await HttpHelpers.Persist(link, options, pp)).Response;
+        return new DomainObject(JObject.Parse(json));
+    }
 
     public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : class, new() {
         var scalarProperties = objectRepresentation.GetPropertiesAndNames().Where(p => p.Item1.IsScalarProperty());

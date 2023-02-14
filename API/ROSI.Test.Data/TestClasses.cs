@@ -17,6 +17,9 @@ namespace ROSI.Test.Data;
 public class SimpleService {
     public IDomainObjectContainer Container { private get; set; }
     public IQueryable<Class> GetClasses() => Container.Instances<Class>();
+
+    [QueryOnly]
+    public ClassToPersist GetTransient() => Container.NewTransientInstance<ClassToPersist>();
 }
 
 public enum TestChoices {
@@ -226,4 +229,18 @@ public class ClassWithScalars {
 
     [NotMapped]
     public string String { get; set; } = "A String";
+}
+
+
+public class ClassToPersist {
+    
+    public IDomainObjectContainer Container { private get; set; }
+
+    [Key]
+    public int Id { get; init; }
+
+    public  string Name { get; set; }
+
+    [Optionally]
+    public virtual ClassToPersist RefClassToPersist { get; set; }
 }

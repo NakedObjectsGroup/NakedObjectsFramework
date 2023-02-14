@@ -36,7 +36,8 @@ public abstract class AbstractApiTests : AcceptanceTestCase {
         typeof(ClassWithActions),
         typeof(TestChoices),
         typeof(TestEnum),
-        typeof(ClassWithScalars)
+        typeof(ClassWithScalars),
+        typeof(ClassToPersist)
     };
 
     protected override bool EnforceProxies => false;

@@ -33,6 +33,8 @@ public abstract class EFCoreTestDbContext : DbContext {
 
     public DbSet<ClassWithScalars> ClassesWithScalars { get; set; }
 
+    public DbSet<ClassToPersist> ClassesToPersist { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
         optionsBuilder.UseLazyLoadingProxies();
@@ -55,6 +57,7 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<Class>().HasData(new Class { Id = 2, Property1 = "Three", Property2 = 4 });
         modelBuilder.Entity<ClassWithActions>().HasData(new ClassWithActions { Id = 1 });
         modelBuilder.Entity<ClassWithScalars>().HasData(new ClassWithActions { Id = 1 });
+        modelBuilder.Entity<ClassToPersist>().HasData(new ClassToPersist { Id = 1 });
     }
 }
 

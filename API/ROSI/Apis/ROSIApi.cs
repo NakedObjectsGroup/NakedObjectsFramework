@@ -7,18 +7,13 @@ namespace ROSI.Apis;
 
 public static class ROSIApi {
     public static async Task<Home> GetHome(Uri uri, InvokeOptions options) {
-        var json = await HttpHelpers.Execute(uri, options);
+        var json = (await HttpHelpers.Execute(uri, options)).Response;
         return new Home(JObject.Parse(json));
     }
 
     public static async Task<DomainObject> GetObject(Uri uri, InvokeOptions options) {
-        var json = await HttpHelpers.Execute(uri, options);
-        return new DomainObject(JObject.Parse(json));
-    }
-
-    public static async Task<(DomainObject, EntityTagHeaderValue? tag)> GetObjectWithTag(Uri uri, InvokeOptions options) {
-        var (json, tag) = await HttpHelpers.ExecuteWithTag(uri, options);
-        return (new DomainObject(JObject.Parse(json)), tag);
+        var (json, tag) = await HttpHelpers.Execute(uri, options);
+        return new DomainObject(JObject.Parse(json), tag);
     }
 
     public static async Task<DomainObject> GetObject(Uri baseUri, string type, string id, InvokeOptions options) {
