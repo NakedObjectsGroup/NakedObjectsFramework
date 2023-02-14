@@ -104,37 +104,62 @@ internal static class HttpHelpers {
     }
 
     private static string GetParameterString(Link invokeLink, object[] pp) {
-        var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? new List<JProperty>();
-        var parameters = new JObject();
+        if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
+            return GetParameterString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray());
+        }
 
+        var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? Array.Empty<JProperty>();
+        var parameters = GetParameters(pp, properties);
+        return parameters.ToString(Formatting.None);
+    }
+
+    private static JObject GetParameters(object[] pp, IEnumerable<JProperty> properties) {
+        var parameters = new JObject();
         var argValues = properties.Zip(pp);
 
         foreach (var (p, v) in argValues) {
-            var av = GetActualValue(v);
-            parameters.Add(new JProperty(p.Name, new JObject(new JProperty(JsonConstants.Value, av))));
+            parameters.Add(new JProperty(p.Name, new JObject(new JProperty(JsonConstants.Value, GetActualValue(v)))));
         }
 
-        var parameterString = parameters.ToString(Formatting.None);
-        return parameterString;
+        return parameters;
     }
 
     private static string GetMemberString(Link invokeLink, object[] pp) {
-        var properties = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties() ?? new List<JProperty>();
-        var parameters = new JObject();
-        var members = new JObject();
-
-        var argValues = properties.Zip(pp);
-
-        foreach (var (p, v) in argValues) {
-            var av = GetActualValue(v);
-            parameters.Add(new JProperty(p.Name, new JObject(new JProperty(JsonConstants.Value, av))));
+        if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
+            return GetMemberString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray());
         }
 
-        members.Add(new JProperty("members", parameters));
-
-        var memberString = members.ToString(Formatting.None);
-        return memberString;
+        var properties = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties() ?? Array.Empty<JProperty>();
+        var parameters = GetParameters(pp, properties);
+        return new JObject { new JProperty("members", parameters) }.ToString(Formatting.None);
     }
+
+
+    private static string GetParameterString(Link invokeLink, KeyValuePair<string, object>[] pp) {
+        var argumentNames = invokeLink.GetArgumentsAsJObject()?.Properties().Select(a => a.Name) ?? Array.Empty<string>();
+        var parameters = GetParameters(pp, argumentNames);
+        return parameters.ToString(Formatting.None);
+    }
+
+    private static JObject GetParameters(KeyValuePair<string, object>[] pp, IEnumerable<string> argumentNames) {
+        var parameters = new JObject();
+
+        foreach (var (p, v) in pp) {
+            if (argumentNames.Any(a => a == p)) {
+                parameters.Add(new JProperty(p, new JObject(new JProperty(JsonConstants.Value, GetActualValue(v)))));
+            }
+        }
+
+        return parameters;
+    }
+
+    private static string GetMemberString(Link invokeLink, KeyValuePair<string, object>[] pp) {
+        var argumentNames = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties().Select(a => a.Name) ?? Array.Empty<string>();
+        var parameters = GetParameters(pp, argumentNames);
+        return new JObject { new JProperty("members", parameters) }.ToString(Formatting.None);
+    }
+
+   
 
     private static async Task<(string Response, EntityTagHeaderValue? Tag)> SendAndRead(HttpMethod method, string url, InvokeOptions options, StringContent? content = null) {
         var request = CreateMessage(method, url, options, content);

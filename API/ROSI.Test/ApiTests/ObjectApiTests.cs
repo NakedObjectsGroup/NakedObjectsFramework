@@ -92,11 +92,37 @@ public class ObjectApiTests : AbstractApiTests {
     }
 
     [Test]
+    public void TestGetAndSaveTransientWithNamedParams()
+    {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        var services = home.GetServices(TestInvokeOptions()).Result;
+
+        var service = services.GetService("ROSI.Test.Data.SimpleService", TestInvokeOptions()).Result;
+
+        var transient = service.GetAction("GetTransient").Invoke(TestInvokeOptions()).Result.GetObject();
+
+        var uniqueName = Guid.NewGuid().ToString();
+        var persisted = transient.PersistWithNamedParams(TestInvokeOptions(null, transient.Tag), new() { { nameof(ClassToPersist.Id), 0 }, { nameof(ClassToPersist.Name), uniqueName }, { nameof(ClassToPersist.RefClassToPersist), null } }).Result;
+
+        Assert.AreEqual(uniqueName, persisted.GetProperty("Name")?.GetValue<string>());
+    }
+
+    [Test]
     public void TestUpdate() {
         var objectRep = GetObject(FullName<ClassToPersist>(), "1");
 
         var uniqueName = Guid.NewGuid().ToString();
         var updated = objectRep.Update(TestInvokeOptions(), 1, uniqueName, null).Result;
+
+        Assert.AreEqual(uniqueName, updated.GetProperty("Name")?.GetValue<string>());
+    }
+
+    [Test]
+    public void TestUpdateWithNamedParameters() {
+        var objectRep = GetObject(FullName<ClassToPersist>(), "1");
+
+        var uniqueName = Guid.NewGuid().ToString();
+        var updated = objectRep.UpdateWithNamedParams(TestInvokeOptions(), new () { { nameof(ClassToPersist.Name), uniqueName } }).Result;
 
         Assert.AreEqual(uniqueName, updated.GetProperty("Name")?.GetValue<string>());
     }
