@@ -77,7 +77,7 @@ public class ObjectApiTests : AbstractApiTests {
     }
 
     [Test]
-    public void TestGetAndeSaveTransient() {
+    public void TestGetAndSaveTransient() {
         var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
         var services = home.GetServices(TestInvokeOptions()).Result;
 
@@ -89,6 +89,16 @@ public class ObjectApiTests : AbstractApiTests {
         var persisted = transient.Persist(TestInvokeOptions(null, transient.Tag), 0, uniqueName, null).Result;
 
         Assert.AreEqual(uniqueName, persisted.GetProperty("Name")?.GetValue<string>());
+    }
+
+    [Test]
+    public void TestUpdate() {
+        var objectRep = GetObject(FullName<ClassToPersist>(), "1");
+
+        var uniqueName = Guid.NewGuid().ToString();
+        var updated = objectRep.Update(TestInvokeOptions(), 1, uniqueName, null).Result;
+
+        Assert.AreEqual(uniqueName, updated.GetProperty("Name")?.GetValue<string>());
     }
 
 

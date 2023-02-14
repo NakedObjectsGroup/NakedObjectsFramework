@@ -196,8 +196,18 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
                 }
             }
             else {
-                var ar = Api.AsGet().GetObject(obj, key);
-                return await GetResponse(ar);
+                var method = request.Method;
+               
+                if (method == HttpMethod.Get) {
+                    var ar = Api.AsGet().GetObject(obj, key);
+                    return await GetResponse(ar);
+                }
+                if (method == HttpMethod.Put) {
+                    var body = await ReadBody(request);
+                    var args = ModelBinderUtils.CreateArgumentMap(JObject.Parse(body), false);
+                    var ar = Api.AsPut().PutObject(obj, key, args);
+                    return await GetResponse(ar);
+                }
             }
         }
 

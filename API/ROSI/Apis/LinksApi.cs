@@ -32,4 +32,7 @@ public static class LinksApi {
 
     public static Link? GetPersistLink(this IEnumerable<Link> linkRepresentations) =>
         linkRepresentations.GetLinkOfRel(RelApi.Rels.persist);
+
+    public static Link? GetUpdateLink(this IEnumerable<Link> linkRepresentations) =>
+        linkRepresentations.GetLinkOfRel(RelApi.Rels.update);
 }
