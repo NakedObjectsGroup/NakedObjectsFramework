@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using Newtonsoft.Json.Linq;
 
-namespace ROSI.Test.Helpers;
+namespace NakedFramework.Rattle.Helpers;
 
-internal class StubHttpMessageHandler : HttpMessageHandler {
+public class StubHttpMessageHandler : HttpMessageHandler {
     public StubHttpMessageHandler(RestfulObjectsControllerBase api) => Api = api;
 
     public RestfulObjectsControllerBase Api { get; }

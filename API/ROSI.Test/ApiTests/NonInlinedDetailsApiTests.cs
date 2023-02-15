@@ -9,23 +9,57 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EFCore.Extensions;
+using NakedFramework.Rattle.Helpers;
 using NakedFramework.Rest.Extensions;
+using NakedObjects.Reflector.Extensions;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Records;
 using ROSI.Test.Data;
-using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
-public class NonInlinedDetailsApiTests : AbstractApiTests {
-    protected override Action<RestfulObjectsOptions> RestfulObjectsOptions => options => {
-        options.CacheSettings = (0, 3600, 86400);
-        options.InlineDetailsInActionMemberRepresentations = false;
-        options.InlineDetailsInPropertyMemberRepresentations = false;
-        options.InlineDetailsInCollectionMemberRepresentations = false;
-        options.InlinedMemberRepresentations = false;
-    };
+public class NonInlinedDetailsApiTests : AbstractRosiApiTests {
+  
+
+    protected override void ConfigureServices(IServiceCollection services) {
+         
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.MainMenus = f =>  new[] { f.NewMenu<SimpleService>(true) };
+            frameworkOptions.AddEFCorePersistor();
+            frameworkOptions.AddRestfulObjects(options => {
+                options.CacheSettings = (0, 3600, 86400);
+                options.InlineDetailsInActionMemberRepresentations = false;
+                options.InlineDetailsInPropertyMemberRepresentations = false;
+                options.InlineDetailsInCollectionMemberRepresentations = false;
+                options.InlinedMemberRepresentations = false;
+            });
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = new Type[] {
+                    typeof(Class),
+                    typeof(ClassWithActions),
+                    typeof(TestChoices),
+                    typeof(TestEnum),
+                    typeof(ClassWithScalars),
+                    typeof(ClassToPersist)
+                };
+                appOptions.DomainModelServices = new Type[] {typeof(SimpleService)};
+            });
+        });
+        services.AddDbContext<DbContext, EFCoreObjectDbContext>();
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => TestPrincipal);
+    }
+
 
     [Test]
     public void TestInvokeWithValueParmsReturnsObjectAction() {
@@ -121,9 +155,9 @@ public class NonInlinedDetailsApiTests : AbstractApiTests {
 
     // so it returns a new stub client each time
     protected record ForInlineInvokeOptions : InvokeOptions {
-        private readonly AbstractApiTests tc;
+        private readonly AbstractRosiApiTests tc;
 
-        public ForInlineInvokeOptions(AbstractApiTests tc) => this.tc = tc;
+        public ForInlineInvokeOptions(AbstractRosiApiTests tc) => this.tc = tc;
 
         public override HttpClient HttpClient => new(new StubHttpMessageHandler(tc.Api()));
     }

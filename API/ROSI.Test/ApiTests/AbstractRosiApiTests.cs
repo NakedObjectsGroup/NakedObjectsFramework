@@ -15,67 +15,52 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Persistor.EFCore.Extensions;
+using NakedFramework.Rattle.Helpers;
+using NakedFramework.Rattle.TestCase;
 using NakedFramework.Rest.API;
+using NakedFramework.Rest.Extensions;
 using NakedFramework.Test.TestCase;
 using NakedObjects.Reflector.Configuration;
+using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Records;
 using ROSI.Test.Data;
-using ROSI.Test.Helpers;
+
 
 namespace ROSI.Test.ApiTests;
 
-public abstract class AbstractApiTests : AcceptanceTestCase {
-    protected override Type[] Services { get; } = { typeof(SimpleService) };
-
-    protected override Type[] ObjectTypes { get; } = {
-        typeof(Class),
-        typeof(ClassWithActions),
-        typeof(TestChoices),
-        typeof(TestEnum),
-        typeof(ClassWithScalars),
-        typeof(ClassToPersist)
-    };
-
-    protected override bool EnforceProxies => false;
-
-    protected override Action<NakedFrameworkOptions> AddNakedFunctions => _ => { };
-
-    protected override Action<NakedFrameworkOptions> NakedFrameworkOptions =>
-        builder => {
-            AddCoreOptions(builder);
-            AddPersistor(builder);
-            AddNakedObjects(builder);
-            AddRestfulObjects(builder);
-        };
-
-    protected new Func<IConfiguration, DbContext>[] ContextCreators => new Func<IConfiguration, DbContext>[] {
-        config => {
-            var context = new EFCoreObjectDbContext();
-            context.Create();
-            return context;
-        }
-    };
-
-    protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
-        options => { options.ContextCreators = ContextCreators; };
-
-    protected override Action<NakedFrameworkOptions> AddPersistor => builder => { builder.AddEFCorePersistor(EFCorePersistorOptions); };
-
-    protected override IMenu[] MainMenus(IMenuFactory factory) => new[] { factory.NewMenu<SimpleService>(true) };
-
+public abstract class AbstractRosiApiTests : BaseRattleTestCase {
+    protected override void ConfigureServices(IServiceCollection services) {
+         
+            services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddHttpContextAccessor();
+            services.AddNakedFramework(frameworkOptions => {
+                frameworkOptions.MainMenus = f =>  new[] { f.NewMenu<SimpleService>(true) };
+                frameworkOptions.AddEFCorePersistor();
+                frameworkOptions.AddRestfulObjects(restOptions => {  });
+                frameworkOptions.AddNakedObjects(appOptions => {
+                    appOptions.DomainModelTypes = new Type[] {
+                        typeof(Class),
+                        typeof(ClassWithActions),
+                        typeof(TestChoices),
+                        typeof(TestEnum),
+                        typeof(ClassWithScalars),
+                        typeof(ClassToPersist)
+                    };
+                    appOptions.DomainModelServices = new Type[] {typeof(SimpleService)};
+                });
+            });
+            services.AddDbContext<DbContext, EFCoreObjectDbContext>();
+            services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+            services.AddScoped(p => TestPrincipal);
+    }
     protected void CleanUpDatabase() {
         new EFCoreObjectDbContext().Delete();
-    }
-
-    protected override void RegisterTypes(IServiceCollection services) {
-        base.RegisterTypes(services);
-        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
-        services.AddMvc(options => options.EnableEndpointRouting = false)
-                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
     }
 
     [SetUp]
@@ -90,18 +75,13 @@ public abstract class AbstractApiTests : AcceptanceTestCase {
     public void FixtureSetUp() {
         ObjectReflectorConfiguration.NoValidate = true;
         InitializeNakedObjectsFramework(this);
+        new EFCoreObjectDbContext().Create();
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
         CleanUpDatabase();
-    }
-
-    public RestfulObjectsControllerBase Api() {
-        var sp = GetConfiguredContainer();
-        var api = sp.GetService<RestfulObjectsController>();
-        return TestHelpers.SetMockContext(api, sp);
     }
 
     protected DomainObject GetObject(string type, string id) {

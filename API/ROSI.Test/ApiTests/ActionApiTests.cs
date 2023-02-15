@@ -18,7 +18,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace ROSI.Test.ApiTests;
 
-public class ActionApiTests : AbstractApiTests {
+public class ActionApiTests : AbstractRosiApiTests {
     [Test]
     public void TestGetLinks() {
         var parsedResult = GetObject(FullName<Class>(), "1");

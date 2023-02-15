@@ -12,7 +12,7 @@ using ROSI.Apis;
 
 namespace ROSI.Test.ApiTests;
 
-public class HomeApiTests : AbstractApiTests {
+public class HomeApiTests : AbstractRosiApiTests {
     [Test]
     public void TestGetHome() {
         var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;

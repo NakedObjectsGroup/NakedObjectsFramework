@@ -13,7 +13,7 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public class ExtensionsApiTests : AbstractApiTests {
+public class ExtensionsApiTests : AbstractRosiApiTests {
     [Test]
     public void TestGetExtensions() {
         var objectRep = GetObject(FullName<Class>(), "1");

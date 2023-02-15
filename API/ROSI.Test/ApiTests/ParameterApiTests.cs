@@ -12,7 +12,7 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public class ParameterApiTests : AbstractApiTests {
+public class ParameterApiTests : AbstractRosiApiTests {
     [Test]
     public void TestGetParameters() {
         var objectRep = GetObject(FullName<ClassWithActions>(), "1");

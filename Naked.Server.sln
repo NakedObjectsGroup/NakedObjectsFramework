@@ -118,6 +118,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ROSI.Test", "API\ROSI.Test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ROSI.Test.Data", "API\ROSI.Test.Data\ROSI.Test.Data.csproj", "{160995CA-3037-4022-824F-DE0B40A1DD30}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rattle", "NakedFramework\NakedFramework.Rattle\NakedFramework.Rattle.csproj", "{F7E0F10E-1C81-421C-8B41-08E1A09BEF39}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rattle.Test", "NakedFramework\NakedFramework.Rattle.Test\NakedFramework.Rattle.Test.csproj", "{BFA4744F-0326-49DE-BC84-C5A5A8534080}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -336,6 +340,14 @@ Global
 		{160995CA-3037-4022-824F-DE0B40A1DD30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{160995CA-3037-4022-824F-DE0B40A1DD30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{160995CA-3037-4022-824F-DE0B40A1DD30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7E0F10E-1C81-421C-8B41-08E1A09BEF39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7E0F10E-1C81-421C-8B41-08E1A09BEF39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7E0F10E-1C81-421C-8B41-08E1A09BEF39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7E0F10E-1C81-421C-8B41-08E1A09BEF39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA4744F-0326-49DE-BC84-C5A5A8534080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFA4744F-0326-49DE-BC84-C5A5A8534080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFA4744F-0326-49DE-BC84-C5A5A8534080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFA4744F-0326-49DE-BC84-C5A5A8534080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

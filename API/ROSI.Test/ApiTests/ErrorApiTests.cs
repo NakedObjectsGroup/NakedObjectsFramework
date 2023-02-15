@@ -15,7 +15,7 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public class ErrorApiTests : AbstractApiTests {
+public class ErrorApiTests : AbstractRosiApiTests {
     [Test]
     public void TestGetStatusCode() {
         try {

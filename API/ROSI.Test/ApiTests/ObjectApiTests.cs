@@ -19,7 +19,7 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public class ObjectApiTests : AbstractApiTests {
+public class ObjectApiTests : AbstractRosiApiTests {
     [Test]
     public void TestObject() {
         var objectRep = GetObject(FullName<Class>(), "1");
