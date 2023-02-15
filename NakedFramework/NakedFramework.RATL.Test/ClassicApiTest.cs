@@ -1,10 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using NakedFramework.Rattle.TestCase;
+using NakedFramework.RATL.TestCase;
 
-namespace NakedFramework.Rattle.Test; 
+namespace NakedFramework.RATL.Test; 
 
 [TestClass]
-public class ClassicApiTest : BaseRattleTestCase {
+public class ClassicApiTest : BaseRATLTestCase {
     protected override void ConfigureServices(IServiceCollection services) {
         throw new NotImplementedException();
     }

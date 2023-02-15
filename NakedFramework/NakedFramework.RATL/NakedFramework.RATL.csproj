@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\API\ROSI\ROSI.csproj" />
     <ProjectReference Include="..\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
     <ProjectReference Include="..\NakedFramework.Rest\NakedFramework.Rest.csproj" />
   </ItemGroup>

@@ -15,8 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
 using NakedFramework.Persistor.EFCore.Extensions;
-using NakedFramework.Rattle.Helpers;
-using NakedFramework.Rattle.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.RATL.TestCase;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Extensions;
 using NakedFramework.Test.TestCase;
@@ -32,7 +32,7 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public abstract class AbstractRosiApiTests : BaseRattleTestCase {
+public abstract class AbstractRosiApiTests : BaseRATLTestCase {
     protected override void ConfigureServices(IServiceCollection services) {
          
             services.AddControllers()
@@ -84,16 +84,4 @@ public abstract class AbstractRosiApiTests : BaseRattleTestCase {
         CleanUpDatabase();
     }
 
-    protected DomainObject GetObject(string type, string id) {
-        return ROSIApi.GetObject(new Uri("http://localhost/"), type, id, TestInvokeOptions()).Result;
-    }
-
-    protected static string FullName<T>() => typeof(T).FullName;
-
-    protected InvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
-        new() {
-            Token = token,
-            Tag = tag,
-            HttpClient = new HttpClient(new StubHttpMessageHandler(Api()))
-        };
 }

@@ -1,36 +1,32 @@
-﻿using System.Data.Common;
-using System.Data.SqlClient;
+﻿using System.Net.Http.Headers;
 using System.Security.Principal;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Component;
-using NakedFramework.Facade.Interface;
 using NakedFramework.Metamodel.SpecImmutable;
-using NakedFramework.Rattle.Helpers;
+using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.API;
-using NakedFramework.Rest.Configuration;
+using ROSI.Apis;
+using ROSI.Records;
 
-namespace NakedFramework.Rattle.TestCase;
+namespace NakedFramework.RATL.TestCase;
 
-
-public abstract class BaseRattleTestCase {
+public abstract class BaseRATLTestCase {
     private static IHost host;
 
     protected IServiceProvider RootServiceProvider;
     private IServiceProvider scopeServiceProvider;
     private IPrincipal testPrincipal;
 
-    protected BaseRattleTestCase() {
+    protected virtual IServiceScope ServiceScope { set; get; }
+
+    protected virtual IPrincipal TestPrincipal {
+        get { return testPrincipal ??= CreatePrincipal("Test", Array.Empty<string>()); }
     }
 
     protected virtual IDictionary<string, string> Configuration() =>
         new Dictionary<string, string>();
-
-    protected virtual IServiceScope ServiceScope { set; get; }
 
     private IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
@@ -54,13 +50,13 @@ public abstract class BaseRattleTestCase {
         testPrincipal = null;
     }
 
-    protected static void InitializeNakedObjectsFramework(BaseRattleTestCase tc) {
+    protected static void InitializeNakedObjectsFramework(BaseRATLTestCase tc) {
         host = tc.CreateHostBuilder(Array.Empty<string>()).Build();
         tc.RootServiceProvider = host.Services;
         tc.RootServiceProvider.GetService<IModelBuilder>().Build();
     }
 
-    protected static void CleanupNakedObjectsFramework(BaseRattleTestCase tc) {
+    protected static void CleanupNakedObjectsFramework(BaseRATLTestCase tc) {
         ImmutableSpecFactory.ClearCache();
         tc.RootServiceProvider.GetService<ISpecificationCache>().Clear();
         tc.EndTest();
@@ -72,7 +68,6 @@ public abstract class BaseRattleTestCase {
 
     protected abstract void ConfigureServices(IServiceCollection services);
 
-
     public RestfulObjectsControllerBase Api() {
         var sp = scopeServiceProvider;
         var api = sp.GetService<RestfulObjectsController>();
@@ -83,9 +78,16 @@ public abstract class BaseRattleTestCase {
         return testPrincipal = new GenericPrincipal(new GenericIdentity(name), roles);
     }
 
-    protected virtual IPrincipal TestPrincipal {
-        get { return testPrincipal ??= CreatePrincipal("Test", Array.Empty<string>()); }
-    }
+    public DomainObject GetObject(string type, string id) => ROSIApi.GetObject(new Uri("http://localhost/"), type, id, TestInvokeOptions()).Result;
+
+    public string FullName<T>() => typeof(T).FullName;
+
+    public InvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
+        new() {
+            Token = token,
+            Tag = tag,
+            HttpClient = new HttpClient(new StubHttpMessageHandler(Api()))
+        };
 }
 
 // Copyright (c) Naked Objects Group Ltd.

@@ -24,7 +24,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
 		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Metamodel.Test\NakedFramework.Metamodel.Test.csproj" />
-		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Rattle\NakedFramework.Rattle.csproj" />
+		<ProjectReference Include="..\..\NakedFramework\NakedFramework.RATL\NakedFramework.RATL.csproj" />
 		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Test\NakedFramework.Test.csproj" />
 		<ProjectReference Include="..\..\NakedFramework\NakedFramework.Rest\NakedFramework.Rest.csproj" />
 		<ProjectReference Include="..\ROSI.Test.Data\ROSI.Test.Data.csproj" />

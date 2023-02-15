@@ -6,7 +6,7 @@ using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
 using Newtonsoft.Json.Linq;
 
-namespace NakedFramework.Rattle.Helpers;
+namespace NakedFramework.RATL.Helpers;
 
 public class StubHttpMessageHandler : HttpMessageHandler {
     public StubHttpMessageHandler(RestfulObjectsControllerBase api) => Api = api;

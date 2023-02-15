@@ -12,8 +12,9 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
+using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
 
-namespace NakedFramework.Rattle.Helpers;
+namespace NakedFramework.RATL.Helpers;
 
 public class RestfulObjectsController : RestfulObjectsControllerBase {
     public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf, IRestfulObjectsConfiguration c) : base(ff, l, lf, c) { }
@@ -71,5 +72,5 @@ public static class TestHelpers {
         return api;
     }
 
-    public static string FullName<T>() => typeof(T).FullName;
+  
 }
