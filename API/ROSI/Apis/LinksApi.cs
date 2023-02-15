@@ -35,4 +35,13 @@ public static class LinksApi {
 
     public static Link? GetUpdateLink(this IEnumerable<Link> linkRepresentations) =>
         linkRepresentations.GetLinkOfRel(RelApi.Rels.update);
+
+    private static IEnumerable<Link> GetInvokeLinks(this IEnumerable<Link> linkRepresentations) =>
+        linkRepresentations.Where(l => l.GetRel().GetRelType() == RelApi.Rels.invoke);
+
+    public static Link? GetIsSubtypeOfLink(this IEnumerable<Link> linkRepresentations) =>
+        linkRepresentations.GetInvokeLinks().SingleOrDefault(l => l.GetRel().GetTypeAction() == "isSubtypeOf");
+
+    public static Link? GetIsSupertypeOfLink(this IEnumerable<Link> linkRepresentations) =>
+        linkRepresentations.GetInvokeLinks().SingleOrDefault(l => l.GetRel().GetTypeAction() == "isSupertypeOf");
 }

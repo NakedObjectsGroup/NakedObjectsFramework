@@ -127,6 +127,21 @@ public class ObjectApiTests : AbstractApiTests {
         Assert.AreEqual(uniqueName, updated.GetProperty("Name")?.GetValue<string>());
     }
 
+    [Test]
+    public void TestIsSubtypeOf() {
+        var objectRep = GetObject(FullName<ClassToPersist>(), "1");
+        var tar = objectRep.IsSubtypeOf(TestInvokeOptions(), FullName<ClassToPersist>()).Result;
+        Assert.IsTrue(tar.GetValue());
+        Assert.AreEqual("isSubtypeOf", tar.GetId());
+    }
+
+    [Test]
+    public void TestIsSupertypeOf() {
+        var objectRep = GetObject(FullName<ClassToPersist>(), "1");
+        var tar = objectRep.IsSupertypeOf(TestInvokeOptions(), FullName<ClassToPersist>()).Result;
+        Assert.IsTrue(tar.GetValue());
+        Assert.AreEqual("isSupertypeOf", tar.GetId());
+    }
 
     [Test]
     public void TestMissingProperties() {

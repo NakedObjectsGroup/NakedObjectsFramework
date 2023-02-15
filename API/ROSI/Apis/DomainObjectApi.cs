@@ -71,6 +71,18 @@ public static class DomainObjectApi {
     public static async Task<DomainObject> UpdateWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
         await objectRepresentation.Update(options, pp.Cast<object>().ToArray());
 
+    public static async Task<TypeActionResult> IsSubtypeOf(this DomainObject objectRepresentation, InvokeOptions options, object p) {
+        var link = objectRepresentation.GetLinks().GetIsSubtypeOfLink() ?? throw new NoSuchPropertyRosiException("Missing isSubtypeOf link in object");
+        var json = (await HttpHelpers.Execute(link, options, p)).Response;
+        return new TypeActionResult(JObject.Parse(json));
+    }
+
+    public static async Task<TypeActionResult> IsSupertypeOf(this DomainObject objectRepresentation, InvokeOptions options, object p) {
+        var link = objectRepresentation.GetLinks().GetIsSupertypeOfLink() ?? throw new NoSuchPropertyRosiException("Missing isSupertypeOf link in object");
+        var json = (await HttpHelpers.Execute(link, options, p)).Response;
+        return new TypeActionResult(JObject.Parse(json));
+    }
+
     public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : class, new() {
         var scalarProperties = objectRepresentation.GetPropertiesAndNames().Where(p => p.Item1.IsScalarProperty());
         return (T)scalarProperties.Aggregate(new T() as object, CopyProperty); // as object to box

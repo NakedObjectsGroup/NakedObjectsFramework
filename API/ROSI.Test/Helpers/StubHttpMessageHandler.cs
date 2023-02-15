@@ -173,6 +173,15 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
         return await GetResponse(ar);
     }
 
+    private async Task<HttpResponseMessage> SendAsyncDomainTypes(HttpRequestMessage request, string obj, string action) {
+       
+        var query = request.RequestUri.Query.TrimStart('?');
+        var am = ModelBinderUtils.CreateSimpleArgumentMap(query) ?? ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(query)), false);
+        ActionResult ar  = Api.AsGet().GetInvokeTypeActions(obj, action, am);
+        
+        return await GetResponse(ar);
+    }
+
     private async Task<HttpResponseMessage> SendAsyncObject(HttpRequestMessage request, string[] segments) {
         var obj = segments[2].TrimEnd('/');
         
@@ -262,6 +271,8 @@ internal class StubHttpMessageHandler : HttpMessageHandler {
                 return await SendAsyncVersion();
             case "objects/":
                 return await SendAsyncObject(request, segments);
+            case "domain-types/":
+                return await SendAsyncDomainTypes(request, segments[2].TrimEnd('/'), segments[4].TrimEnd('/'));
         }
 
         throw new NotImplementedException();

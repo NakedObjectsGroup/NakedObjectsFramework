@@ -62,4 +62,8 @@ public static class RelApi {
     public static string GetServiceId(this string rel) => GetId(rel, "serviceId");
 
     public static string GetMenuId(this string rel) => GetId(rel, "menuId");
+
+    public static string GetTypeAction(this string rel) => GetId(rel, "typeaction");
+
+    public static string GetAction(this string rel) => GetId(rel, "action");
 }
