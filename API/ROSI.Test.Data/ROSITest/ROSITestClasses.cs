@@ -14,7 +14,8 @@ using NakedObjects;
 
 namespace ROSI.Test.Data;
 
-public class SimpleService {
+public class SimpleService
+{
     public IDomainObjectContainer Container { private get; set; }
     public IQueryable<Class> GetClasses() => Container.Instances<Class>();
 
@@ -22,13 +23,15 @@ public class SimpleService {
     public ClassToPersist GetTransient() => Container.NewTransientInstance<ClassToPersist>();
 }
 
-public enum TestChoices {
+public enum TestChoices
+{
     ChoiceOne,
     ChoiceTwo,
     ChoiceThree
 }
 
-public class Class {
+public class Class
+{
     [Title]
     public string Title => $"{nameof(Class)}:{Id}";
 
@@ -62,7 +65,8 @@ public class Class {
     public Class Action2() => this;
 }
 
-public class ClassWithActions {
+public class ClassWithActions
+{
     [Title]
     public string Title => $"{nameof(ClassWithActions)}:{Id}";
 
@@ -113,11 +117,14 @@ public class ClassWithActions {
     public Class PotentActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
 
     [QueryOnly]
-    public void ActionThrowsException() {
-        try {
+    public void ActionThrowsException()
+    {
+        try
+        {
             throw new Exception("Exception 1");
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             throw new Exception("Exception 2", ex);
         }
     }
@@ -128,12 +135,14 @@ public class ClassWithActions {
     public string ValidateActionFailsCrossValidation(int index, string str) => "Fail parameter validation";
 }
 
-public enum TestEnum {
+public enum TestEnum
+{
     ValueOne,
     ValueTwo
 }
 
-public class ClassWithScalars {
+public class ClassWithScalars
+{
     [Title]
     public string Title => $"{nameof(ClassWithScalars)}:{Id}";
 
@@ -232,14 +241,15 @@ public class ClassWithScalars {
 }
 
 
-public class ClassToPersist {
-    
+public class ClassToPersist
+{
+
     public IDomainObjectContainer Container { private get; set; }
 
     [Key]
     public int Id { get; init; }
 
-    public  string Name { get; set; }
+    public string Name { get; set; }
 
     [Optionally]
     public virtual ClassToPersist RefClassToPersist { get; set; }

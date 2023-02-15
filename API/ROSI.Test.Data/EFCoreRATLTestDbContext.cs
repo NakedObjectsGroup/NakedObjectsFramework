@@ -9,18 +9,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ROSI.Test.Data;
 
-public abstract class EFCoreTestDbContext : DbContext {
+
+public  class EFCoreRATLTestDbContext : DbContext {
     private readonly string cs;
 
-    protected EFCoreTestDbContext(string cs) => this.cs = cs;
+    private EFCoreRATLTestDbContext(string cs) => this.cs = cs;
+
+    public EFCoreRATLTestDbContext() : this(Constants.CsRATL) { }
+    public void Delete() => Database.EnsureDeleted();
+
+    public void Create() => Database.EnsureCreated();
 
     public DbSet<Class> Classes { get; set; }
 
-    public DbSet<ClassWithActions> ClassesWithActions { get; set; }
+    public DbSet<Object1> Object1s { get; set; }
 
-    public DbSet<ClassWithScalars> ClassesWithScalars { get; set; }
-
-    public DbSet<ClassToPersist> ClassesToPersist { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
@@ -28,9 +31,7 @@ public abstract class EFCoreTestDbContext : DbContext {
     }
 
     private static void MapClass(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<Class>().Property("Property1").HasColumnName("Property1");
-        modelBuilder.Entity<Class>().Property("Property2").HasColumnName("Property2");
-        modelBuilder.Entity<Class>().Property("PropertyWithScalarChoices").HasColumnName("PropertyWithScalarChoices");
+       
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -40,10 +41,7 @@ public abstract class EFCoreTestDbContext : DbContext {
     }
 
     private static void Seed(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<Class>().HasData(new Class { Id = 1, Property1 = "One", Property2 = 2 });
-        modelBuilder.Entity<Class>().HasData(new Class { Id = 2, Property1 = "Three", Property2 = 4 });
-        modelBuilder.Entity<ClassWithActions>().HasData(new ClassWithActions { Id = 1 });
-        modelBuilder.Entity<ClassWithScalars>().HasData(new ClassWithActions { Id = 1 });
-        modelBuilder.Entity<ClassToPersist>().HasData(new ClassToPersist { Id = 1 });
+        modelBuilder.Entity<Object1>().HasData(new Object1 { Id = 1, Prop1 = 1});
+      
     }
 }

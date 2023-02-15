@@ -29,7 +29,6 @@ using ROSI.Apis;
 using ROSI.Records;
 using ROSI.Test.Data;
 
-
 namespace ROSI.Test.ApiTests;
 
 public abstract class AbstractRosiApiTests : BaseRATLTestCase {
