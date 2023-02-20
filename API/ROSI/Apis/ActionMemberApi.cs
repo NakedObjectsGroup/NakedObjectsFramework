@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using ROSI.Exceptions;
 using ROSI.Helpers;
 using ROSI.Records;
 
@@ -31,6 +32,25 @@ public static class ActionMemberApi {
         return await (await actionRepresentation.GetDetails(options)).Invoke(options, pp);
     }
 
+    public static async Task Validate(this ActionMember actionRepresentation, InvokeOptions options, params object[] pp) {
+        options.ReservedArguments ??= new Dictionary<string, object>();
+        options.ReservedArguments["x-ro-validate-only"] = true;
+
+        if (actionRepresentation.HasInvokeLink()) {
+            var (json, _) = await HttpHelpers.Execute(actionRepresentation.GetLinks().GetInvokeLink()!, options, pp);
+            if (string.IsNullOrEmpty(json)) {
+                return;
+            }
+
+            throw new UnexpectedResultRosiException($"Expected 'No Content' from validate got: {json[..200]}...");
+        }
+
+        await (await actionRepresentation.GetDetails(options)).Validate(options, pp);
+    }
+
     public static async Task<ActionResult> InvokeWithNamedParams(this ActionMember actionRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
         await actionRepresentation.Invoke(options, pp.Cast<object>().ToArray());
+
+    public static async Task ValidateWithNamedParams(this ActionMember actionRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
+        await actionRepresentation.Validate(options, pp.Cast<object>().ToArray());
 }

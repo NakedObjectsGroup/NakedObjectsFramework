@@ -20,4 +20,9 @@ public static class ROSIApi {
         var uri = new Uri(baseUri, $"/objects/{type}/{id}");
         return await GetObject(uri, options);
     }
+
+    public static async Task<DomainObject> GetService(Uri baseUri, string type, InvokeOptions options) {
+        var uri = new Uri(baseUri, $"/services/{type}");
+        return await GetObject(uri, options);
+    }
 }

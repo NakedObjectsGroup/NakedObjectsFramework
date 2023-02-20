@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Web;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
@@ -68,6 +69,11 @@ internal static class HttpHelpers {
 
         var url = QueryHelpers.AddQueryString(uri.ToString(), parameters);
 
+        if (options.ReservedArguments is not null) {
+            url = QueryHelpers.AddQueryString(url.ToString(), options.ReservedArguments.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString()));
+        }
+
+
         return await SendAndRead(HttpMethod.Get, url, options);
     }
 
@@ -87,6 +93,8 @@ internal static class HttpHelpers {
         return parameters;
     }
 
+   
+
     private static Dictionary<string, string?> GetSimpleParameters(KeyValuePair<string, object>[] pp, IEnumerable<JProperty> properties) {
         var argumentNames = properties?.Select(a => a.Name) ?? Array.Empty<string>();
         var parameters = new Dictionary<string, string?>();
@@ -104,7 +112,9 @@ internal static class HttpHelpers {
         var (uri, method) = invokeLink.GetUriAndMethod();
 
         using var content = method != HttpMethod.Get ? JsonContent.Create("", new MediaTypeHeaderValue("application/json")) : null;
-        var request = CreateMessage(method, uri.ToString(), options, content);
+        var url = options.ReservedArguments is not null ? QueryHelpers.AddQueryString(uri.ToString(), options.ReservedArguments.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString())) : uri.ToString();
+
+        var request = CreateMessage(method, url, options, content);
 
         return await SendRequestAndRead(request, options);
     }
@@ -114,7 +124,8 @@ internal static class HttpHelpers {
         var method = invokeLink.GetMethod();
         var uri = invokeLink.GetHref();
 
-        var contentString = rel == RelApi.Rels.persist ? GetMemberString(invokeLink, pp) : GetParameterString(invokeLink, pp);
+        var contentString = rel == RelApi.Rels.persist ? GetMemberString(invokeLink, pp, options) : GetParameterString(invokeLink, pp, options);
+
         var url = uri.ToString();
 
         if (method == HttpMethod.Get || method == HttpMethod.Delete) {
@@ -126,13 +137,14 @@ internal static class HttpHelpers {
         return await SendAndRead(method, url, options, content);
     }
 
-    private static string GetParameterString(Link invokeLink, object[] pp) {
+    private static string GetParameterString(Link invokeLink, object[] pp, InvokeOptions options) {
         if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
-            return GetParameterString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray());
+            return GetParameterString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray(), options);
         }
 
         var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? Array.Empty<JProperty>();
         var parameters = GetParameters(pp, properties);
+        AddReservedArguments(parameters, options);
         return parameters.ToString(Formatting.None);
     }
 
@@ -147,20 +159,30 @@ internal static class HttpHelpers {
         return parameters;
     }
 
-    private static string GetMemberString(Link invokeLink, object[] pp) {
+    private static void AddReservedArguments(JObject jo, InvokeOptions options) {
+        if (options.ReservedArguments is not null) {
+            foreach (var (key, value) in options.ReservedArguments) {
+                jo.Add(new JProperty(key, value));
+            }
+        }
+    }
+
+    private static string GetMemberString(Link invokeLink, object[] pp, InvokeOptions options) {
         if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
-            return GetMemberString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray());
+            return GetMemberString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray(), options);
         }
 
         var properties = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties() ?? Array.Empty<JProperty>();
         var parameters = GetParameters(pp, properties);
+        AddReservedArguments(parameters, options);
         return new JObject { new JProperty("members", parameters) }.ToString(Formatting.None);
     }
 
 
-    private static string GetParameterString(Link invokeLink, KeyValuePair<string, object>[] pp) {
+    private static string GetParameterString(Link invokeLink, KeyValuePair<string, object>[] pp, InvokeOptions options) {
         var argumentNames = invokeLink.GetArgumentsAsJObject()?.Properties().Select(a => a.Name) ?? Array.Empty<string>();
         var parameters = GetParameters(pp, argumentNames);
+        AddReservedArguments(parameters, options);
         return parameters.ToString(Formatting.None);
     }
 
@@ -176,9 +198,10 @@ internal static class HttpHelpers {
         return parameters;
     }
 
-    private static string GetMemberString(Link invokeLink, KeyValuePair<string, object>[] pp) {
+    private static string GetMemberString(Link invokeLink, KeyValuePair<string, object>[] pp, InvokeOptions options) {
         var argumentNames = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties().Select(a => a.Name) ?? Array.Empty<string>();
         var parameters = GetParameters(pp, argumentNames);
+        AddReservedArguments(parameters, options);
         return new JObject { new JProperty("members", parameters) }.ToString(Formatting.None);
     }
 
@@ -208,11 +231,7 @@ internal static class HttpHelpers {
         using var response = await options.HttpClient.SendAsync(request);
         var tag = response.Headers.ETag;
 
-        if (response.IsSuccessStatusCode) {
-            return (ReadAsString(response), tag);
-        }
-
-        throw MapToException(response);
+        return response.IsSuccessStatusCode ? (ReadAsString(response), tag) : throw MapToException(response);
     }
 
     private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));
@@ -224,9 +243,13 @@ internal static class HttpHelpers {
     };
 
     private static string ReadAsString(HttpResponseMessage response) {
-        using var sr = new StreamReader(response.Content.ReadAsStream());
-        var json = sr.ReadToEnd();
-        return json;
+        if (response.StatusCode is not HttpStatusCode.NoContent) {
+            using var sr = new StreamReader(response.Content.ReadAsStream());
+            var json = sr.ReadToEnd();
+            return json;
+        }
+
+        return "";
     }
 
     private static (Uri, HttpMethod) GetUriAndMethod(this Link linkRepresentation) => (linkRepresentation.GetHref(), linkRepresentation.GetMethod());
