@@ -13,8 +13,8 @@ using Assert = NUnit.Framework.Assert;
 
 namespace NakedFramework.RATL.Test.Classic;
 
-[TestClass]
-public class TestObjectTest : AcceptanceTestCase {
+[TestFixture]
+public class TestObjectNUnitTest : AcceptanceNUnitTestCase {
     protected override void ConfigureServices(IServiceCollection services) {
         services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);

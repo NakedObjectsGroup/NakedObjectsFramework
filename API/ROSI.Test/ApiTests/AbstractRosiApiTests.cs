@@ -31,7 +31,7 @@ using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
-public abstract class AbstractRosiApiTests : BaseRATLTestCase {
+public abstract class AbstractRosiApiTests : BaseRATLNUnitTestCase {
     protected override void ConfigureServices(IServiceCollection services) {
          
             services.AddControllers()

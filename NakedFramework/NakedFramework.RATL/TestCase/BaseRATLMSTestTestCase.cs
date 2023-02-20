@@ -12,31 +12,29 @@ using ROSI.Records;
 
 namespace NakedFramework.RATL.TestCase;
 
-public abstract class BaseRATLTestCase {
+public abstract class BaseRATLMSTestTestCase {
     private static IHost host;
 
-    protected IServiceProvider RootServiceProvider;
+    protected static IServiceProvider RootServiceProvider;
     private IServiceProvider scopeServiceProvider;
-    private IPrincipal testPrincipal;
+ 
 
     protected virtual IServiceScope ServiceScope { set; get; }
 
-    protected virtual IPrincipal TestPrincipal {
-        get { return testPrincipal ??= CreatePrincipal("Test", Array.Empty<string>()); }
-    }
+    protected static IPrincipal TestPrincipal => CreatePrincipal("Test", Array.Empty<string>());
 
     protected virtual IDictionary<string, string> Configuration() =>
         new Dictionary<string, string>();
 
-    private IHostBuilder CreateHostBuilder(string[] args) =>
+    private static IHostBuilder CreateHostBuilder(string[] args, Action<IServiceCollection> configureServices, Func<IDictionary<string, string>> configuration) =>
         Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((hostContext, configBuilder) => {
                 var config = new MemoryConfigurationSource {
-                    InitialData = Configuration()
+                    InitialData = configuration()
                 };
                 configBuilder.Add(config);
             })
-            .ConfigureServices((hostContext, services) => ConfigureServices(services));
+            .ConfigureServices((hostContext, services) => configureServices(services));
 
     protected virtual void StartTest() {
         ServiceScope = RootServiceProvider.CreateScope();
@@ -47,26 +45,23 @@ public abstract class BaseRATLTestCase {
         ServiceScope?.Dispose();
         ServiceScope = null;
         scopeServiceProvider = null;
-        testPrincipal = null;
     }
 
-    protected static void InitializeNakedObjectsFramework(BaseRATLTestCase tc) {
-        host = tc.CreateHostBuilder(Array.Empty<string>()).Build();
-        tc.RootServiceProvider = host.Services;
-        tc.RootServiceProvider.GetService<IModelBuilder>().Build();
+    protected static void InitializeNakedObjectsFramework(Action<IServiceCollection> configureServices, Func<IDictionary<string, string>> configuration) {
+        host = CreateHostBuilder(Array.Empty<string>(), configureServices, configuration).Build();
+        RootServiceProvider = host.Services;
+        RootServiceProvider.GetService<IModelBuilder>().Build();
     }
 
-    protected static void CleanupNakedObjectsFramework(BaseRATLTestCase tc) {
+    protected static void CleanupNakedObjectsFramework() {
         ImmutableSpecFactory.ClearCache();
-        tc.RootServiceProvider.GetService<ISpecificationCache>().Clear();
-        tc.EndTest();
+        RootServiceProvider.GetService<ISpecificationCache>().Clear();
 
-        tc.RootServiceProvider = null;
+        RootServiceProvider = null;
         host.StopAsync().GetAwaiter().GetResult();
         host.Dispose();
     }
 
-    protected abstract void ConfigureServices(IServiceCollection services);
 
     public RestfulObjectsControllerBase Api() {
         var sp = scopeServiceProvider;
@@ -74,13 +69,10 @@ public abstract class BaseRATLTestCase {
         return TestHelpers.SetMockContext(api, sp);
     }
 
-    private IPrincipal CreatePrincipal(string name, string[] roles) {
-        return testPrincipal = new GenericPrincipal(new GenericIdentity(name), roles);
-    }
+    protected static IPrincipal CreatePrincipal(string name, string[] roles) => new GenericPrincipal(new GenericIdentity(name), roles);
 
     public DomainObject GetObject(string type, string id) => ROSIApi.GetObject(new Uri("http://localhost/"), type, id, TestInvokeOptions()).Result;
 
-    public string FullName<T>() => typeof(T).FullName;
 
     public InvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
         new() {
