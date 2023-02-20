@@ -1,19 +1,22 @@
 ﻿using NakedFramework.RATL.Classic.Interface;
+using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Records;
 
 namespace NakedFramework.RATL.Classic.NonDocumenting; 
 
 internal class TestObject : ITestObject {
+    internal AcceptanceTestCase AcceptanceTestCase { get; }
     private readonly DomainObject domainObject;
 
-    public TestObject(DomainObject domainObject) {
+    public TestObject(DomainObject domainObject, AcceptanceTestCase acceptanceTestCase) {
+        AcceptanceTestCase = acceptanceTestCase;
         this.domainObject = domainObject;
     }
 
-    public string Title { get; }
-    public ITestAction[] Actions { get; }
-    public ITestAction GetAction(string name) => throw new NotImplementedException();
+    public string Title => domainObject.GetTitle();
+    public ITestAction[] Actions => domainObject.GetActions().Select(a => new TestAction(a, AcceptanceTestCase)).Cast<ITestAction>().ToArray();
+    public ITestAction GetAction(string name) => Actions.SingleOrDefault(a => a.Name == name);
 
     public ITestAction GetAction(string name, params Type[] parameterTypes) => throw new NotImplementedException();
 
@@ -53,7 +56,7 @@ internal class TestObject : ITestObject {
     public ITestObject AssertIsType(Type expectedType) => throw new NotImplementedException();
 
     public ITestObject AssertTitleEquals(string expectedTitle) {
-        var actualTitle = domainObject.GetTitle();
+        var actualTitle = Title;
         Assert.IsTrue(expectedTitle == actualTitle, $"Expected title '{expectedTitle}' but got '{actualTitle}'");
         return this;
     }

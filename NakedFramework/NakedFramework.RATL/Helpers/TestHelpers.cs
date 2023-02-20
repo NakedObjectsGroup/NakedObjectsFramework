@@ -72,5 +72,13 @@ public static class TestHelpers {
         return api;
     }
 
-  
+    public static (string, string) GetReturnTypeAndFormat(object toFind) {
+        return toFind switch {
+            string s => ("string", "string"),
+            int i => ("number", "int"),
+            _ => throw new NotImplementedException()
+        };
+    }
+
+
 }

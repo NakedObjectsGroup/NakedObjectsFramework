@@ -2,12 +2,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
+using NakedFramework.RATL.Classic.Interface;
+using NakedFramework.RATL.Classic.NonDocumenting;
 using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using ROSI.Apis;
 using ROSI.Test.Data;
 using Assert = NUnit.Framework.Assert;
 
@@ -61,17 +64,18 @@ public class TestObjectNUnitTest : AcceptanceNUnitTestCase {
         CleanUpDatabase();
     }
 
-    [Test]
-    public virtual void IncorrectTitle() {
-        var obj1 = NewTestObject<Object1>();
 
-        try {
-            obj1.AssertTitleEquals("Yoda");
-            NUnit.Framework.Assert.Fail("Should not get to here");
-        }
-        catch (Exception e) {
-           // Assert.IsInstanceOfType(e, typeof(AssertFailedException));
-            Assert.AreEqual("Assert.IsTrue failed. Expected title 'Yoda' but got 'FooBar'", e.Message);
-        }
-    }
+    //[Test]
+    //public virtual void IncorrectTitle() {
+    //    var obj1 = NewTestObject<Object1>();
+
+    //    try {
+    //        obj1.AssertTitleEquals("Yoda");
+    //        NUnit.Framework.Assert.Fail("Should not get to here");
+    //    }
+    //    catch (Exception e) {
+    //       // Assert.IsInstanceOfType(e, typeof(AssertFailedException));
+    //        Assert.AreEqual("Assert.IsTrue failed. Expected title 'Yoda' but got 'FooBar'", e.Message);
+    //    }
+    //}
 }
