@@ -5,6 +5,16 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class ParameterApi {
+    public static bool HasDefault(this Parameter parameterRepresentation) =>
+        parameterRepresentation.GetOptionalProperty(JsonConstants.Default) is not null;
+
+    public static object? GetDefault(this Parameter parameterRepresentation) =>
+        parameterRepresentation.GetOptionalProperty(JsonConstants.Default) switch {
+            JObject => default,
+            JValue t => t.Value,
+            _ => default
+        };
+
     public static T? GetDefault<T>(this Parameter parameterRepresentation) =>
         parameterRepresentation.GetOptionalProperty(JsonConstants.Default) switch {
             JObject => default,

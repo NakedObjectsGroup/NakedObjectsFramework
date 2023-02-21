@@ -27,7 +27,8 @@ public static class ExtensionsApi {
         x_ro_nof_tableViewColumns,
         x_ro_nof_menuPath,
         x_ro_nof_choices,
-        x_ro_nof_dataType
+        x_ro_nof_dataType,
+        x_ro_nof_mask,
     }
 
     public static IDictionary<string, object?> RawExtensions(this Extensions extensionsRepresentation) =>

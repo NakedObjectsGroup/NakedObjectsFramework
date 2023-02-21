@@ -25,6 +25,7 @@ public class ParameterApiTests : AbstractRosiApiTests {
 
         var indexParameter = parameters["index"];
 
+        Assert.IsTrue(indexParameter.HasDefault());
         Assert.AreEqual(3, indexParameter.GetDefault<int>());
         Assert.AreEqual(2, indexParameter.GetChoices<int>().Count());
         Assert.AreEqual(1, indexParameter.GetChoices<int>().First());
@@ -43,6 +44,7 @@ public class ParameterApiTests : AbstractRosiApiTests {
 
         Assert.AreEqual(0, classParameter.GetChoices<int>().Count());
 
+        Assert.IsTrue(classParameter.HasDefault());
         Assert.IsNull(classParameter.GetDefault<int?>());
     }
 }
