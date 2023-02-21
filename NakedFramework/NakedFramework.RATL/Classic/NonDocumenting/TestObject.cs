@@ -1,4 +1,5 @@
-﻿using NakedFramework.RATL.Classic.Interface;
+﻿using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Records;
@@ -28,14 +29,14 @@ internal class TestObject : ITestObject {
 
     public ITestHasActions AssertActionOrderIs(string order) => throw new NotImplementedException();
 
-    public ITestProperty[] Properties { get; }
+    public ITestProperty[] Properties => domainObject.GetProperties().Select(p => new TestProperty(p, AcceptanceTestCase)).Cast<ITestProperty>().ToArray();
     public ITestObject Save() => throw new NotImplementedException();
 
     public ITestObject Refresh() => throw new NotImplementedException();
 
-    public ITestProperty GetPropertyByName(string name) => throw new NotImplementedException();
+    public ITestProperty GetPropertyByName(string name) => Properties.SingleOrDefault(p => p.Name == name);
 
-    public ITestProperty GetPropertyById(string id) => throw new NotImplementedException();
+    public ITestProperty GetPropertyById(string id) => new TestProperty(domainObject.GetProperty(id), AcceptanceTestCase);
 
     public ITestObject AssertCanBeSaved() => throw new NotImplementedException();
 

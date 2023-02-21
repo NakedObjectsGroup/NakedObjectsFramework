@@ -22,8 +22,6 @@ internal class TestAction : ITestAction {
 
     public string LastMessage { get; private set; }
 
-    public ITestAction AssertIsValidWithParms(params object[] parameters) => throw new NotImplementedException();
-
     public ITestParameter[] Parameters => action.GetParameters(AcceptanceTestCase.TestInvokeOptions()).Result.Parameters().Select(x => new TestParameter(x.Value, AcceptanceTestCase)).Cast<ITestParameter>().ToArray();
 
     private static bool Match(ITestParameter parameter, Type t) {
@@ -95,17 +93,26 @@ internal class TestAction : ITestAction {
         return this;
     }
 
-    //public ITestAction AssertIsValidWithParms(params object[] parameters) {
-    //    ResetLastMessage();
-    //    AssertIsVisible();
-    //    AssertIsEnabled();
-    //    var parsedParameters = ParsedParameters(parameters);
+    public ITestAction AssertIsValidWithParms(params object[] parameters) {
+        ResetLastMessage();
+        AssertIsVisible();
+        AssertIsEnabled();
+        var parsedParameters = ParsedParameters(parameters);
 
-    //    INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray().Select(x => x == null ? null : x.NakedObject).ToArray();
-    //    IConsent canExecute = action.IsParameterSetValid(owningObject.NakedObject, parameterObjects);
-    //    Assert.IsTrue(canExecute.IsAllowed, $"Action '{Name}' is unusable: {canExecute.Reason}");
-    //    return this;
-    //}
+        var canExecute = true;
+        var message = "";
+
+        try {
+            action.Validate(AcceptanceTestCase.TestInvokeOptions(), parsedParameters).Wait();
+        }
+        catch (AggregateException ae) {
+            canExecute = false;
+            message = ae.InnerException?.Message;
+        }
+
+        Assert.IsTrue(canExecute, $@"Action '{Name}' is unusable: {message}");
+        return this;
+    }
 
     public ITestAction AssertIsVisible()
     {
@@ -196,7 +203,16 @@ internal class TestAction : ITestAction {
         var parsedParameters = new List<object>();
 
         var actualParameters = Parameters;
-        Assert.IsTrue(parameters.Count() == actualParameters.Count(), $"Action '{Name}' is unusable: wrong number of parameters, got {parameters.Count()}, expect {actualParameters.Count()}");
+        Assert.IsTrue(parameters.Length == actualParameters.Length, $"Action '{Name}' is unusable: wrong number of parameters, got {parameters.Length}, expect {actualParameters.Length}");
+
+        var zip = actualParameters.Zip(parameters);
+
+        foreach (var (p, v) in zip) {
+            if (p.Type != v.GetType()) {
+                Assert.Fail("Invalid Argument(s)");
+            }
+        }
+
 
         //var i = 0;
         //foreach (var parm in actualParameters) {

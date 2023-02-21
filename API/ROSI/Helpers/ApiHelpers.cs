@@ -3,10 +3,11 @@ using ROSI.Apis;
 using ROSI.Exceptions;
 using ROSI.Interfaces;
 using ROSI.Records;
+using System.Globalization;
 
 namespace ROSI.Helpers;
 
-internal static class ApiHelpers {
+public static class ApiHelpers {
     public static IEnumerable<Link> ToLinks(this IEnumerable<JToken> tokens) => tokens.OfType<JObject>().Select(jo => new Link(jo));
 
     public static async Task<JObject> GetResourceAsync(Link link, InvokeOptions options) {
@@ -43,4 +44,39 @@ internal static class ApiHelpers {
             JArray ja => ja.Children().Cast<JValue>().Select(t => t.Value).ToList(),
             _ => null
         };
+
+    public static Type NumberTypeToMatch(this IHasExtensions owner) {
+        var format = owner.GetExtensions().GetExtension<string>("format");
+        return format switch {
+            "decimal" => typeof(double),
+            "int" => typeof(int),
+            _ => throw new NotSupportedException($"Unrecognized format: {format}")
+        };
+    }
+
+    public static Type StringTypeToMatch(this IHasExtensions owner) {
+        var format = owner.GetExtensions().GetExtension<string>("format");
+        return format switch {
+            "string" => typeof(string),
+            "date-time" => typeof(DateTime),
+            "date" => typeof(DateTime),
+            "time" => typeof(TimeSpan),
+            "utc-millisec" => throw new NotImplementedException("utc-millisec"),
+            { } when format.StartsWith("big-integer") => throw new NotImplementedException("big-integer"),
+            { } when format.StartsWith("big-decimal") => throw new NotImplementedException("big-decimal"),
+            "blob" => throw new NotImplementedException("blob"),
+            "clob" => throw new NotImplementedException("clob"),
+            _ => throw new NotSupportedException($"Unrecognized format: {format}")
+        };
+    }
+
+    public static Type TypeToMatch(this IHasExtensions owner) {
+        var returnType = owner.GetExtensions().GetExtension<string>("returnType");
+        return returnType switch {
+            "boolean" => typeof(bool),
+            "number" => owner.NumberTypeToMatch(),
+            "string" => owner.StringTypeToMatch(),
+            _ => typeof(Link)
+        };
+    }
 }

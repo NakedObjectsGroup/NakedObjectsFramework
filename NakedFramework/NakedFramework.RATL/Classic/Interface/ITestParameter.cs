@@ -3,6 +3,8 @@
 public interface ITestParameter : ITestNaked
 {
     string Name { get; }
+
+    Type Type { get; }
     ITestNaked[] GetChoices();
     ITestNaked[] GetCompletions(string autoCompleteParm);
     ITestNaked GetDefault();

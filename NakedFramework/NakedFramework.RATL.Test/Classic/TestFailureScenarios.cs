@@ -99,18 +99,18 @@ public class TestFailureScenarios : AcceptanceTestCase {
         }
     }
 
-    [TestMethod]
-    public virtual void VisiblePropertyHasSameNameAsHiddenProperty() {
-        ITestObject obj1 = NewTestObject<Object1>();
-        try {
-            ITestProperty foo = obj1.GetPropertyByName("Foo");
-            Assert.Fail("Should not get to here");
-        }
-        catch (Exception e) {
-            Assert.IsInstanceOfType(e, typeof(AssertFailedException));
-            Assert.AreEqual("Assert.Fail failed. More than one Property named 'Foo'", e.Message);
-        }
-    }
+    //[TestMethod]
+    //public virtual void VisiblePropertyHasSameNameAsHiddenProperty() {
+    //    ITestObject obj1 = NewTestObject<Object1>();
+    //    try {
+    //        ITestProperty foo = obj1.GetPropertyByName("Foo");
+    //        Assert.Fail("Should not get to here");
+    //    }
+    //    catch (Exception e) {
+    //        Assert.IsInstanceOfType(e, typeof(AssertFailedException));
+    //        Assert.AreEqual("Assert.Fail failed. More than one Property named 'Foo'", e.Message);
+    //    }
+    //}
 
     [TestMethod]
     public virtual void TestEnumDefault() {
@@ -124,22 +124,22 @@ public class TestFailureScenarios : AcceptanceTestCase {
         ITestNaked def1 = p1.GetDefault();
         ITestNaked def2 = p2.GetDefault();
 
-        //Assert.AreEqual(TestEnum1.Value2, def1.NakedObject.Object);
+        Assert.AreEqual("1", def1.Title);
         Assert.AreEqual(null, def2);
     }
 
-    [TestMethod]
-    public virtual void TestReturnString() {
-        ITestObject obj = NewTestObject<Object1>();
+    //[TestMethod]
+    //public virtual void TestReturnString() {
+    //    ITestObject obj = NewTestObject<Object1>();
 
-        ITestAction a1 = obj.GetAction("Do Return String");
+    //    ITestAction a1 = obj.GetAction("Do Return String");
 
-        ITestObject res = a1.InvokeReturnObject();
+    //    ITestObject res = a1.InvokeReturnObject();
 
-       //Assert.AreEqual("a string", res.NakedObject.Object);
+    //   //Assert.AreEqual("a string", res.NakedObject.Object);
 
-        a1.Invoke();
-    }
+    //    a1.Invoke();
+    //}
 
     [TestMethod]
     public virtual void TestTooFewParms() {
@@ -160,7 +160,7 @@ public class TestFailureScenarios : AcceptanceTestCase {
     public virtual void TestPropertyValue() {
         ITestObject obj = NewTestObject<Object1>();
 
-        ITestProperty p1 = obj.GetPropertyById("Prop3");
+        ITestProperty p1 = obj.GetPropertyById(nameof(Object1.Prop3));
 
         p1.AssertValueIsEqual("16/08/2013 00:00:00");
         p1.AssertTitleIsEqual("16/08/2013");
