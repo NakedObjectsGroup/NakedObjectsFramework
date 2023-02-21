@@ -18,7 +18,7 @@ internal class TestAction : ITestAction {
     internal AcceptanceTestCase AcceptanceTestCase { get; }
 
     public string Name => action.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.friendlyName].ToString();
-    public string SubMenu { get; private set; }
+    public string SubMenu => action.GetExtensions().Extensions().TryGetValue(ExtensionsApi.ExtensionKeys.x_ro_nof_menuPath, out var path) ? path?.ToString() ?? "" : "";
 
     public string LastMessage { get; private set; }
 
