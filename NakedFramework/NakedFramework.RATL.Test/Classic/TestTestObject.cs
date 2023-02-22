@@ -196,4 +196,32 @@ public class TestTestObject : AcceptanceTestCase {
         var obj = NewTestObject<Object1>();
         obj.AssertCannotBeSaved();
     }
+
+    [Test]
+    public virtual void TestAssertOnTransient() {
+        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+        transient.AssertIsTransient();
+        AssertExpectException(() => transient.AssertIsPersistent(), "Assert.IsTrue failed. Object is not persistent");
+    }
+
+    [Test]
+    public virtual void TestAssertOnPersistent() {
+        var obj = NewTestObject<Object1>();
+        obj.AssertIsPersistent();
+        AssertExpectException(() => obj.AssertIsTransient(), "Assert.IsTrue failed. Object is not transient");
+    }
+
+    [Test]
+    public virtual void TestGetPropertyOrder() {
+        var obj = NewTestObject<Object1>();
+        var order = obj.GetPropertyOrder();
+        Assert.AreEqual("Id, Prop1, Foo, Prop3", order);
+    }
+
+    [Test]
+    public virtual void TestAssertPropertyOrderIs() {
+        var obj = NewTestObject<Object1>();
+        obj.AssertPropertyOrderIs("Id, Prop1, Foo, Prop3");
+        AssertExpectException(() => obj.AssertPropertyOrderIs("Prop1, Foo, Prop3, Id"), "Assert.AreEqual failed. Expected:<Prop1, Foo, Prop3, Id>. Actual:<Id, Prop1, Foo, Prop3>. ");
+    }
 }
