@@ -8,16 +8,16 @@ using ROSI.Records;
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal abstract class TestHasActions : ITestHasActions {
-    private readonly DomainObject domainObject;
+    protected DomainObject DomainObject { get; }
 
     protected TestHasActions(DomainObject domainObject, AcceptanceTestCase acceptanceTestCase) {
         AcceptanceTestCase = acceptanceTestCase;
-        this.domainObject = domainObject;
+        this.DomainObject = domainObject;
     }
 
-    public AcceptanceTestCase AcceptanceTestCase { get; }
+    protected AcceptanceTestCase AcceptanceTestCase { get; }
 
-    public ITestAction[] Actions => domainObject.GetActions().Select(a => new TestAction(a, AcceptanceTestCase)).Cast<ITestAction>().ToArray();
+    public ITestAction[] Actions => DomainObject.GetActions().Select(a => new TestAction(a, AcceptanceTestCase)).Cast<ITestAction>().ToArray();
 
     public ITestAction GetAction(string actionName) {
         var actions = Actions.Where(x => x.Name == actionName && string.IsNullOrEmpty(x.SubMenu)).ToArray();
@@ -67,7 +67,7 @@ internal abstract class TestHasActions : ITestHasActions {
     }
 
     public ITestObject AssertIsDescribedAs(string expected) {
-        var description = domainObject.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.description].ToString();
+        var description = DomainObject.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.description].ToString();
         Assert.IsTrue(expected.Equals(description), $"Description expected: '{expected}' actual: '{description}'");
         return (ITestObject)this;
     }

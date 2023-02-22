@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using NakedFramework.Core.Util;
 using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
@@ -8,20 +7,16 @@ using ROSI.Records;
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal class TestObject : TestHasActions, ITestObject {
-    private readonly DomainObject domainObject;
-
-    public TestObject(DomainObject domainObject, AcceptanceTestCase acceptanceTestCase) : base(domainObject, acceptanceTestCase) {
-        this.domainObject = domainObject;
-    }
+    public TestObject(DomainObject domainObject, AcceptanceTestCase acceptanceTestCase) : base(domainObject, acceptanceTestCase) { }
 
     public override string Title {
         get {
-            Assert.IsNotNull(domainObject, "Cannot get title for null object");
-            return domainObject?.GetTitle();
+            Assert.IsNotNull(DomainObject, "Cannot get title for null object");
+            return DomainObject?.GetTitle();
         }
     }
 
-    public ITestProperty[] Properties => domainObject.GetProperties().Select(p => new TestProperty(p, AcceptanceTestCase)).Cast<ITestProperty>().ToArray();
+    public ITestProperty[] Properties => DomainObject.GetProperties().Select(p => new TestProperty(p, AcceptanceTestCase)).Cast<ITestProperty>().ToArray();
 
     public ITestObject AssertTitleEquals(string expectedTitle) {
         var actualTitle = Title;
@@ -29,8 +24,14 @@ internal class TestObject : TestHasActions, ITestObject {
         return this;
     }
 
+    private Dictionary<string, object> GetPropertyMap() {
+        return DomainObject.GetProperties().ToDictionary(p => p.GetId(), p => p.GetValue() ?? p.GetLinkValue());
+    }
+
     public ITestObject Save() {
         AssertCanBeSaved();
+        DomainObject.Persist(AcceptanceTestCase.TestInvokeOptions(), GetPropertyMap()); 
+
 
         //NakedObjectsContext.ObjectPersistor.StartTransaction();
         //NakedObjectsContext.ObjectPersistor.MakePersistent(NakedObject);
@@ -38,17 +39,15 @@ internal class TestObject : TestHasActions, ITestObject {
         return this;
     }
 
-    public ITestObject Refresh() {
+    public ITestObject Refresh() =>
         //NakedObjectsContext.ObjectPersistor.Refresh(NakedObject);
-        return this;
-    }
+        this;
 
-    public ITestObject AssertIsType(Type expected) {
+    public ITestObject AssertIsType(Type expected) =>
         //Type actualType = NakedObject.GetDomainObject().GetType();
         //actualType = TypeUtils.IsProxy(actualType) ? actualType.BaseType : actualType;
         //Assert.IsTrue(actualType.Equals(expected), "Expected type " + expected + " but got " + actualType);
-        return this;
-    }
+        this;
 
     public ITestProperty GetPropertyByName(string name) {
         var q = Properties.Where(x => x.Name == name);
@@ -73,27 +72,22 @@ internal class TestObject : TestHasActions, ITestObject {
     }
 
     public ITestObject AssertCanBeSaved() {
+
+
         //Assert.IsTrue(NakedObject.ResolveState.IsTransient(), "Can only persist a transient object: " + NakedObject);
         //Assert.IsTrue(NakedObject.Specification.Persistable == Persistable.USER_PERSISTABLE, "Object not persistable by user: " + NakedObject);
-
         //Properties.ForEach(p => p.AssertIsValidToSave());
-
         //INakedObjectValidation[] validators = NakedObject.Specification.ValidateMethods();
-
         //foreach (INakedObjectValidation validator in validators) {
         //    string[] parmNames = validator.ParameterNames;
-
         //    var matchingparms = parmNames.Select(pn => Properties.Single(t => t.Id.ToLower() == pn)).ToList();
-
         //    if (matchingparms.Count() == parmNames.Count()) {
         //        string result = validator.Execute(NakedObject, matchingparms.Select(t => t.Content != null ? t.Content.NakedObject : null).ToArray());
-
         //        if (!string.IsNullOrEmpty(result)) {
         //            Assert.Fail(result);
         //        }
         //    }
         //}
-
         return this;
     }
 
@@ -111,12 +105,14 @@ internal class TestObject : TestHasActions, ITestObject {
     }
 
     public ITestObject AssertIsTransient() {
-        //Assert.IsTrue(NakedObject.ResolveState.IsTransient(), "Object is not transient");
+        var isTransient = DomainObject.SafeGetExtension(ExtensionsApi.ExtensionKeys.x_ro_nof_interactionMode)?.ToString() == "transient";
+        Assert.IsTrue(isTransient, "Object is not transient");
         return this;
     }
 
     public ITestObject AssertIsPersistent() {
-        //Assert.IsTrue(NakedObject.ResolveState.IsPersistent(), "Object is not persistent");
+        var isPersistent = DomainObject.SafeGetExtension(ExtensionsApi.ExtensionKeys.x_ro_nof_interactionMode)?.ToString() == "persistent";
+        Assert.IsTrue(isPersistent, "Object is not persistent");
         return this;
     }
 
@@ -135,6 +131,4 @@ internal class TestObject : TestHasActions, ITestObject {
         Assert.AreEqual(order, GetPropertyOrder());
         return this;
     }
-
-
 }
