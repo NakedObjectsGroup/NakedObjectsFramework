@@ -29,7 +29,7 @@ internal class TestObject : TestHasActions, ITestObject {
 
     public ITestObject Save() {
         AssertCanBeSaved();
-        return new TestObject(DomainObject.Persist(AcceptanceTestCase.TestInvokeOptions(), DomainObject.GetPropertyMap()).Result, AcceptanceTestCase);
+        return new TestObject(DomainObject.PersistWithNamedParams(AcceptanceTestCase.TestInvokeOptions(null, DomainObject.Tag), DomainObject.GetPersistMap()).Result, AcceptanceTestCase);
     }
 
     public ITestObject Refresh() => new TestObject(ROSIApi.GetObject(DomainObject.GetLinks().GetSelfLink()!.GetHref(), AcceptanceTestCase.TestInvokeOptions()).Result, AcceptanceTestCase);
@@ -68,7 +68,7 @@ internal class TestObject : TestHasActions, ITestObject {
         Assert.IsTrue(IsTransient, $"Can only persist a transient object: {DomainObject.GetDomainType()}");
 
         try {
-            DomainObject.ValidatePersist(AcceptanceTestCase.TestInvokeOptions()).Wait();
+            DomainObject.ValidatePersistWithNamedParams(AcceptanceTestCase.TestInvokeOptions(null, DomainObject.Tag), DomainObject.GetPersistMap()).Wait();
         }
         catch (ArgumentException ae) {
             if (ae.InnerException is HttpInvalidArgumentsRosiException hre) {

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
+using Newtonsoft.Json.Linq;
 using ROSI.Records;
 using ROSI.Apis;
 
@@ -30,7 +31,7 @@ namespace NakedFramework.RATL.Classic.NonDocumenting
 
         public string Title {
             get {
-                var mask = property.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.x_ro_nof_mask].ToString();
+                var mask = property.SafeGetExtension(ExtensionsApi.ExtensionKeys.x_ro_nof_mask)?.ToString();
                 if (string.IsNullOrEmpty(mask)) {
                     return Content.Title;
                 }
@@ -56,7 +57,10 @@ namespace NakedFramework.RATL.Classic.NonDocumenting
 
         public ITestProperty ClearObject() => throw new NotImplementedException();
 
-        public ITestProperty SetValue(string textEntry) => throw new NotImplementedException();
+        public ITestProperty SetValue(string textEntry) {
+            property.Wrapped["value"] = new JValue(textEntry);
+            return this;
+        }
 
         public ITestProperty ClearValue() => throw new NotImplementedException();
 

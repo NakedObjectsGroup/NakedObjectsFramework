@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
+using NakedFramework.Persistor.EFCore.Util;
 using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
@@ -61,11 +62,56 @@ public class TestTestObject : AcceptanceTestCase {
         new EFCoreRATLTestDbContext().Delete();
     }
 
+    private static void AssertExpectException(Action f, string msg) {
+        try {
+            f();
+            Assert.Fail("Expect exception");
+        }
+        catch (Exception ex) {
+            Assert.IsInstanceOfType(ex, typeof(AssertFailedException));
+            Assert.AreEqual(msg, ex.Message);
+        }
+    }
+
+
     [Test]
     public virtual void TestTitle() {
-      
         var obj = NewTestObject<Object1>();
-       
+
         Assert.AreEqual("FooBar", obj.Title);
+    }
+
+    [Test]
+    public virtual void TestProperties() {
+        var obj = NewTestObject<Object1>();
+        var properties = obj.Properties;
+
+        Assert.AreEqual(4, properties.Length);
+
+        Assert.AreEqual("Id", properties[0].Name);
+        Assert.AreEqual("Prop1", properties[1].Name);
+        Assert.AreEqual("Foo", properties[2].Name);
+        Assert.AreEqual("Prop3", properties[3].Name);
+    }
+
+   
+    [Test]
+    public virtual void TestAssertTitleEquals() {
+        var obj = NewTestObject<Object1>();
+        obj.AssertTitleEquals("FooBar");
+        AssertExpectException(() => obj.AssertTitleEquals("Qux"), "Assert.IsTrue failed. Expected title 'Qux' but got 'FooBar'");
+    }
+
+    [Test]
+    public virtual void TestSave() {
+        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+
+        transient.GetPropertyByName("Id").SetValue("0");
+        transient.GetPropertyByName("Prop1").SetValue("1");
+        transient.GetPropertyByName("Foo").SetValue("test");
+        transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
+        var obj = transient.Save();
+
+        Assert.AreEqual("test", obj.GetPropertyById(nameof(Object1.Prop2)).Title);
     }
 }
