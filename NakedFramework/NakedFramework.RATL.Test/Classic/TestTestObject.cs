@@ -62,13 +62,10 @@ public class TestTestObject : AcceptanceTestCase {
     }
 
     [Test]
-    public virtual void AttemptToGetANonExistentService() {
-        try {
-            var obj = NewTestObject<Object1>();
-        }
-        catch (Exception e) {
-            Assert.IsInstanceOfType(e, typeof(AssertFailedException));
-            Assert.AreEqual("Assert.Fail failed. No such service: AwolService", e.Message);
-        }
+    public virtual void TestTitle() {
+      
+        var obj = NewTestObject<Object1>();
+       
+        Assert.AreEqual("FooBar", obj.Title);
     }
 }
