@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
-using NakedFramework.Persistor.EFCore.Util;
 using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
@@ -73,7 +72,6 @@ public class TestTestObject : AcceptanceTestCase {
         }
     }
 
-
     [Test]
     public virtual void TestTitle() {
         var obj = NewTestObject<Object1>();
@@ -94,7 +92,6 @@ public class TestTestObject : AcceptanceTestCase {
         Assert.AreEqual("Prop3", properties[3].Name);
     }
 
-   
     [Test]
     public virtual void TestAssertTitleEquals() {
         var obj = NewTestObject<Object1>();
@@ -112,6 +109,91 @@ public class TestTestObject : AcceptanceTestCase {
         transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
         var obj = transient.Save();
 
+        obj.AssertIsPersistent();
         Assert.AreEqual("test", obj.GetPropertyById(nameof(Object1.Prop2)).Title);
+    }
+
+    [Test]
+    public virtual void TestSaveFails() {
+        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+        AssertExpectException(() => transient.Save(), "Assert.Fail failed. Id:Mandatory");
+    }
+
+    [Test]
+    public virtual void TestRefresh() {
+        var obj = NewTestObject<Object1>();
+        var newObj = obj.Refresh();
+
+        Assert.AreEqual("FooBar", newObj.Title);
+        Assert.AreNotEqual(obj, newObj);
+    }
+
+    [Test]
+    public virtual void TestAssertIsType() {
+        var obj = NewTestObject<Object1>();
+        obj.AssertIsType(typeof(Object1));
+        AssertExpectException(() => obj.AssertIsType(typeof(Service1)), "Assert.IsTrue failed. Expected type 'ROSI.Test.Data.Service1' but got 'ROSI.Test.Data.Object1'");
+    }
+
+    [Test]
+    public virtual void TestGetPropertyByName() {
+        var obj = NewTestObject<Object1>();
+        obj.GetPropertyByName("Foo");
+        AssertExpectException(() => obj.GetPropertyByName("Bar"), "Assert.Fail failed. No Property named 'Bar'");
+    }
+
+    [Test]
+    public virtual void TestGetPropertyById() {
+        var obj = NewTestObject<Object1>();
+        obj.GetPropertyById("Prop1");
+        AssertExpectException(() => obj.GetPropertyById("Foo"), "Assert.Fail failed. No Property with Id 'Foo'");
+    }
+
+    [Test]
+    public virtual void TestAssertCanBeSaved() {
+        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+
+        transient.GetPropertyByName("Id").SetValue("0");
+        transient.GetPropertyByName("Prop1").SetValue("1");
+        transient.GetPropertyByName("Foo").SetValue("test");
+        transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
+        var obj = transient.AssertCanBeSaved();
+
+        obj.AssertIsTransient();
+    }
+
+    [Test]
+    public virtual void TestAssertCannotBeSavedFails() {
+        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+
+        transient.GetPropertyByName("Id").SetValue("0");
+        transient.GetPropertyByName("Prop1").SetValue("1");
+        transient.GetPropertyByName("Foo").SetValue("test");
+        transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
+        AssertExpectException(() => transient.AssertCannotBeSaved(), "Assert.Fail failed. Object should not be saveable");
+    }
+
+    [Test]
+    public virtual void TestAssertCanBeSavedFails() {
+        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+        AssertExpectException(() => transient.AssertCanBeSaved(), "Assert.Fail failed. Id:Mandatory");
+    }
+
+    [Test]
+    public virtual void TestAssertCannotBeSaved() {
+        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+        transient.AssertCannotBeSaved();
+    }
+
+    [Test]
+    public virtual void TestAssertCanBeSavedOnPersistent() {
+        var obj = NewTestObject<Object1>();
+        AssertExpectException(() => obj.AssertCanBeSaved(), "Assert.IsTrue failed. Can only persist a transient object: 'ROSI.Test.Data.Object1'");
+    }
+
+    [Test]
+    public virtual void TestAssertCannotBeSavedOnPersistent() {
+        var obj = NewTestObject<Object1>();
+        obj.AssertCannotBeSaved();
     }
 }

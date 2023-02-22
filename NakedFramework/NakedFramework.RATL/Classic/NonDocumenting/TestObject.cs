@@ -38,7 +38,7 @@ internal class TestObject : TestHasActions, ITestObject {
         var actual = DomainObject.GetDomainType();
         var expected = expectedType.FullName;
 
-        Assert.IsTrue(actual == expected, $"Expected type {expected} but got {actual}");
+        Assert.IsTrue(actual == expected, $"Expected type '{expected}' but got '{actual}'");
         return this;
     }
 
@@ -65,12 +65,12 @@ internal class TestObject : TestHasActions, ITestObject {
     }
 
     public ITestObject AssertCanBeSaved() {
-        Assert.IsTrue(IsTransient, $"Can only persist a transient object: {DomainObject.GetDomainType()}");
+        Assert.IsTrue(IsTransient, $"Can only persist a transient object: '{DomainObject.GetDomainType()}'");
 
         try {
             DomainObject.ValidatePersistWithNamedParams(AcceptanceTestCase.TestInvokeOptions(null, DomainObject.Tag), DomainObject.GetPersistMap()).Wait();
         }
-        catch (ArgumentException ae) {
+        catch (AggregateException ae) {
             if (ae.InnerException is HttpInvalidArgumentsRosiException hre) {
                 var args = hre.Content?.GetMembers();
                 if (args != null) {
