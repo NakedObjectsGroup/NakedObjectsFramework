@@ -6,7 +6,7 @@ using ROSI.Records;
 
 namespace NakedFramework.RATL.Classic.TestCase;
 
-public abstract class AcceptanceTestCase : BaseRATLMSTestTestCase {
+public abstract class AcceptanceTestCase : BaseRATLNUnitTestCase {
 
     public ITestObject NewTestObject<T>(string id = "1") {
         var type = typeof(T).FullName!;

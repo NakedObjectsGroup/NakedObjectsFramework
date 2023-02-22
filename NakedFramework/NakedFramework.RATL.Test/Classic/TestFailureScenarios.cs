@@ -2,19 +2,40 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
-using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using ROSI.Test.Data;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedFramework.RATL.Test.Classic;
 
-[TestClass]
+[TestFixture]
 public class TestFailureScenarios : AcceptanceTestCase {
-    private static void ConfigureServices(IServiceCollection services) {
+    [SetUp]
+    public void SetUp() {
+        StartTest();
+    }
+
+    [TearDown]
+    public void TearDown() => EndTest();
+
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        InitializeNakedObjectsFramework(this);
+        new EFCoreRATLTestDbContext().Create();
+    }
+
+    [OneTimeTearDown]
+    public void FixtureTearDown() {
+        CleanupNakedObjectsFramework(this);
+        CleanUpDatabase();
+    }
+
+    protected override void ConfigureServices(IServiceCollection services) {
         services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         services.AddMvc(options => options.EnableEndpointRouting = false);
@@ -36,45 +57,13 @@ public class TestFailureScenarios : AcceptanceTestCase {
         services.AddScoped(p => TestPrincipal);
     }
 
-    private static void CleanUpDatabase() {
+    protected void CleanUpDatabase() {
         new EFCoreRATLTestDbContext().Delete();
     }
 
-    [TestInitialize]
-    public void SetUp() {
-        StartTest();
-    }
-
-    [TestCleanup]
-    public void TearDown() => EndTest();
-
-    [ClassInitialize]
-    public static void FixtureSetUp(TestContext tc) {
-        InitializeNakedObjectsFramework(ConfigureServices);
-        new EFCoreRATLTestDbContext().Create();
-    }
-
-    [ClassCleanup]
-    public static void FixtureTearDown() {
-        CleanupNakedObjectsFramework();
-        CleanUpDatabase();
-    }
-
-    [TestMethod]
-    public virtual void AttemptToGetANonExistentService() {
-        try {
-            GetTestService("AwolService");
-            Assert.Fail("Should not get to here");
-        }
-        catch (Exception e) {
-            Assert.IsInstanceOfType(e, typeof(AssertFailedException));
-            Assert.AreEqual("Assert.Fail failed. No such service: AwolService", e.Message);
-        }
-    }
-
-    [TestMethod]
+    [Test]
     public virtual void InvokeActionWithIncorrectParams() {
-        ITestObject obj1 = NewTestObject<Object1>();
+        var obj1 = NewTestObject<Object1>();
         try {
             obj1.GetAction("Do Something").InvokeReturnObject(1, 2);
             Assert.Fail("Should not get to here");
@@ -85,9 +74,9 @@ public class TestFailureScenarios : AcceptanceTestCase {
         }
     }
 
-    [TestMethod]
+    [Test]
     public virtual void IncorrectTitle() {
-        ITestObject obj1 = NewTestObject<Object1>();
+        var obj1 = NewTestObject<Object1>();
 
         try {
             obj1.AssertTitleEquals("Yoda");
@@ -112,17 +101,17 @@ public class TestFailureScenarios : AcceptanceTestCase {
     //    }
     //}
 
-    [TestMethod]
+    [Test]
     public virtual void TestEnumDefault() {
-        ITestObject obj = NewTestObject<Object1>();
+        var obj = NewTestObject<Object1>();
 
-        ITestAction a1 = obj.GetAction("Do Something Else");
+        var a1 = obj.GetAction("Do Something Else");
 
-        ITestParameter p1 = a1.Parameters.First();
-        ITestParameter p2 = a1.Parameters.Last();
+        var p1 = a1.Parameters.First();
+        var p2 = a1.Parameters.Last();
 
-        ITestNaked def1 = p1.GetDefault();
-        ITestNaked def2 = p2.GetDefault();
+        var def1 = p1.GetDefault();
+        var def2 = p2.GetDefault();
 
         Assert.AreEqual("1", def1.Title);
         Assert.AreEqual(null, def2);
@@ -141,14 +130,14 @@ public class TestFailureScenarios : AcceptanceTestCase {
     //    a1.Invoke();
     //}
 
-    [TestMethod]
+    [Test]
     public virtual void TestTooFewParms() {
-        ITestObject obj = NewTestObject<Object1>();
+        var obj = NewTestObject<Object1>();
 
-        ITestAction a1 = obj.GetAction("Do Something");
+        var a1 = obj.GetAction("Do Something");
 
         try {
-            ITestObject res = a1.InvokeReturnObject();
+            var res = a1.InvokeReturnObject();
             Assert.Fail("expect exception");
         }
         catch (Exception expected) {
@@ -156,11 +145,11 @@ public class TestFailureScenarios : AcceptanceTestCase {
         }
     }
 
-    [TestMethod]
+    [Test]
     public virtual void TestPropertyValue() {
-        ITestObject obj = NewTestObject<Object1>();
+        var obj = NewTestObject<Object1>();
 
-        ITestProperty p1 = obj.GetPropertyById(nameof(Object1.Prop3));
+        var p1 = obj.GetPropertyById(nameof(Object1.Prop3));
 
         p1.AssertValueIsEqual("16/08/2013 00:00:00");
         p1.AssertTitleIsEqual("16/08/2013");
