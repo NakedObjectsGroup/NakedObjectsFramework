@@ -59,8 +59,28 @@ public static class DomainObjectApi {
         return new DomainObject(JObject.Parse(json));
     }
 
+    public static async Task ValidatePersist(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
+        options.ReservedArguments ??= new Dictionary<string, object>();
+        options.ReservedArguments["x-ro-validate-only"] = true;
+
+        var link = objectRepresentation.GetLinks().GetPersistLink() ?? throw new NoSuchPropertyRosiException("Missing persist link in object");
+        var json = (await HttpHelpers.Persist(link, options, pp)).Response;
+        if (string.IsNullOrEmpty(json)) {
+            return;
+        }
+
+        throw new UnexpectedResultRosiException($"Expected 'No Content' from validate got: {json[..200]}...");
+    }
+
+    public static Dictionary<string, object?> GetPropertyMap(this DomainObject objectRepresentation) {
+        return objectRepresentation.GetProperties().ToDictionary(p => p.GetId()!, p => p.GetValue() ?? p.GetLinkValue());
+    }
+
     public static async Task<DomainObject> PersistWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
         await objectRepresentation.Persist(options, pp.Cast<object>().ToArray());
+
+    public static async Task ValidatePersistWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
+        await objectRepresentation.ValidatePersist(options, pp.Cast<object>().ToArray());
 
     public static async Task<DomainObject> Update(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
         var link = objectRepresentation.GetLinks().GetUpdateLink() ?? throw new NoSuchPropertyRosiException("Missing update link in object");

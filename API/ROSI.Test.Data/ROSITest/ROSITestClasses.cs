@@ -21,6 +21,13 @@ public class SimpleService
 
     [QueryOnly]
     public ClassToPersist GetTransient() => Container.NewTransientInstance<ClassToPersist>();
+
+    public ClassToPersist GetPrePopulatedTransient(string uniqueName) {
+        var ctp = Container.NewTransientInstance<ClassToPersist>();
+        ctp.Id = 0;
+        ctp.Name = uniqueName;
+        return ctp;
+    }
 }
 
 public enum TestChoices
@@ -247,7 +254,7 @@ public class ClassToPersist
     public IDomainObjectContainer Container { private get; set; }
 
     [Key]
-    public int Id { get; init; }
+    public int Id { get; set; }
 
     public string Name { get; set; }
 

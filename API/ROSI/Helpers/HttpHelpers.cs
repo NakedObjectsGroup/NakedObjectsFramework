@@ -137,16 +137,7 @@ internal static class HttpHelpers {
         return await SendAndRead(method, url, options, content);
     }
 
-    private static string GetParameterString(Link invokeLink, object[] pp, InvokeOptions options) {
-        if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
-            return GetParameterString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray(), options);
-        }
-
-        var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? Array.Empty<JProperty>();
-        var parameters = GetParameters(pp, properties);
-        AddReservedArguments(parameters, options);
-        return parameters.ToString(Formatting.None);
-    }
+   
 
     private static JObject GetParameters(object[] pp, IEnumerable<JProperty> properties) {
         var parameters = new JObject();
@@ -167,6 +158,18 @@ internal static class HttpHelpers {
         }
     }
 
+    private static string GetMemberString(Link invokeLink, KeyValuePair<string, object>[] pp, InvokeOptions options) {
+        var argumentNames = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties().Select(a => a.Name) ?? Array.Empty<string>();
+        var parameters = GetParameters(pp, argumentNames);
+        return MapParametersToString(options, parameters);
+    }
+
+    private static string MapParametersToString(InvokeOptions options, JObject parameters) {
+        var members = new JObject { new JProperty("members", parameters) };
+        AddReservedArguments(members, options);
+        return members.ToString(Formatting.None);
+    }
+
     private static string GetMemberString(Link invokeLink, object[] pp, InvokeOptions options) {
         if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
             return GetMemberString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray(), options);
@@ -174,8 +177,18 @@ internal static class HttpHelpers {
 
         var properties = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties() ?? Array.Empty<JProperty>();
         var parameters = GetParameters(pp, properties);
+        return MapParametersToString(options, parameters);
+    }
+
+    private static string GetParameterString(Link invokeLink, object[] pp, InvokeOptions options) {
+        if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
+            return GetParameterString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray(), options);
+        }
+
+        var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? Array.Empty<JProperty>();
+        var parameters = GetParameters(pp, properties);
         AddReservedArguments(parameters, options);
-        return new JObject { new JProperty("members", parameters) }.ToString(Formatting.None);
+        return parameters.ToString(Formatting.None);
     }
 
 
@@ -197,15 +210,6 @@ internal static class HttpHelpers {
 
         return parameters;
     }
-
-    private static string GetMemberString(Link invokeLink, KeyValuePair<string, object>[] pp, InvokeOptions options) {
-        var argumentNames = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties().Select(a => a.Name) ?? Array.Empty<string>();
-        var parameters = GetParameters(pp, argumentNames);
-        AddReservedArguments(parameters, options);
-        return new JObject { new JProperty("members", parameters) }.ToString(Formatting.None);
-    }
-
-   
 
     private static async Task<(string Response, EntityTagHeaderValue? Tag)> SendAndRead(HttpMethod method, string url, InvokeOptions options, StringContent? content = null) {
         var request = CreateMessage(method, url, options, content);

@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using ROSI.Apis;
+using ROSI.Test.Data;
 
 namespace ROSI.Test.ApiTests;
 
@@ -69,17 +70,17 @@ public class HomeApiTests : AbstractRosiApiTests {
         var value = services.GetValue();
         Assert.AreEqual(1, value.Count());
 
-        var sl = services.GetServiceLink("ROSI.Test.Data.SimpleService");
+        var sl = services.GetServiceLink(FullName<SimpleService>());
         Assert.IsNotNull(sl);
 
-        var s = services.GetService("ROSI.Test.Data.SimpleService", TestInvokeOptions()).Result;
+        var s = services.GetService(FullName<SimpleService>(), TestInvokeOptions()).Result;
 
-        Assert.AreEqual("ROSI.Test.Data.SimpleService", s.GetServiceId());
+        Assert.AreEqual(FullName<SimpleService>(), s.GetServiceId());
         Assert.AreEqual("Simple Service", s.GetTitle());
 
         var actions = s.GetActions();
 
-        Assert.AreEqual(2, actions.Count());
+        Assert.AreEqual(3, actions.Count());
     }
 
     [Test]
@@ -94,16 +95,16 @@ public class HomeApiTests : AbstractRosiApiTests {
         var value = menus.GetValue();
         Assert.AreEqual(1, value.Count());
 
-        var ml = menus.GetMenuLink("SimpleService");
+        var ml = menus.GetMenuLink(nameof(SimpleService));
         Assert.IsNotNull(ml);
 
-        var m = menus.GetMenu("SimpleService", TestInvokeOptions()).Result;
+        var m = menus.GetMenu(nameof(SimpleService), TestInvokeOptions()).Result;
 
-        Assert.AreEqual("SimpleService", m.GetMenuId());
+        Assert.AreEqual(nameof(SimpleService), m.GetMenuId());
         Assert.AreEqual("Simple Service", m.GetTitle());
 
         var actions = m.GetActions();
 
-        Assert.AreEqual(2, actions.Count());
+        Assert.AreEqual(3, actions.Count());
     }
 }

@@ -81,9 +81,9 @@ public class ObjectApiTests : AbstractRosiApiTests {
         var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
         var services = home.GetServices(TestInvokeOptions()).Result;
 
-        var service = services.GetService("ROSI.Test.Data.SimpleService", TestInvokeOptions()).Result;
+        var service = services.GetService(FullName<SimpleService>(), TestInvokeOptions()).Result;
 
-        var transient = service.GetAction("GetTransient").Invoke(TestInvokeOptions()).Result.GetObject();
+        var transient = service.GetAction(nameof(SimpleService.GetTransient)).Invoke(TestInvokeOptions()).Result.GetObject();
 
         var uniqueName = Guid.NewGuid().ToString();
         var persisted = transient.Persist(TestInvokeOptions(null, transient.Tag), 0, uniqueName, null).Result;
@@ -97,12 +97,99 @@ public class ObjectApiTests : AbstractRosiApiTests {
         var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
         var services = home.GetServices(TestInvokeOptions()).Result;
 
-        var service = services.GetService("ROSI.Test.Data.SimpleService", TestInvokeOptions()).Result;
+        var service = services.GetService(FullName<SimpleService>(), TestInvokeOptions()).Result;
 
-        var transient = service.GetAction("GetTransient").Invoke(TestInvokeOptions()).Result.GetObject();
+        var transient = service.GetAction(nameof(SimpleService.GetTransient)).Invoke(TestInvokeOptions()).Result.GetObject();
 
         var uniqueName = Guid.NewGuid().ToString();
         var persisted = transient.PersistWithNamedParams(TestInvokeOptions(null, transient.Tag), new() { { nameof(ClassToPersist.Id), 0 }, { nameof(ClassToPersist.Name), uniqueName }, { nameof(ClassToPersist.RefClassToPersist), null } }).Result;
+
+        Assert.AreEqual(uniqueName, persisted.GetProperty("Name")?.GetValue<string>());
+    }
+
+    [Test]
+    public void TestGetAndValidateTransient() {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        var services = home.GetServices(TestInvokeOptions()).Result;
+
+        var service = services.GetService(FullName<SimpleService>(), TestInvokeOptions()).Result;
+
+        var transient = service.GetAction(nameof(SimpleService.GetTransient)).Invoke(TestInvokeOptions()).Result.GetObject();
+
+        var uniqueName = Guid.NewGuid().ToString();
+        transient.ValidatePersist(TestInvokeOptions(null, transient.Tag), 0, uniqueName, null).Wait();
+
+       
+    }
+
+    [Test]
+    public void TestGetAndValidateTransientWithNamedParams()
+    {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        var services = home.GetServices(TestInvokeOptions()).Result;
+
+        var service = services.GetService(FullName<SimpleService>(), TestInvokeOptions()).Result;
+
+        var transient = service.GetAction(nameof(SimpleService.GetTransient)).Invoke(TestInvokeOptions()).Result.GetObject();
+
+        var uniqueName = Guid.NewGuid().ToString();
+        transient.ValidatePersistWithNamedParams(TestInvokeOptions(null, transient.Tag), new() { { nameof(ClassToPersist.Id), 0 }, { nameof(ClassToPersist.Name), uniqueName }, { nameof(ClassToPersist.RefClassToPersist), null } }).Wait();
+
+    }
+
+    [Test]
+    public void TestGetAndValidateFailTransient() {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        var services = home.GetServices(TestInvokeOptions()).Result;
+
+        var service = services.GetService(FullName<SimpleService>(), TestInvokeOptions()).Result;
+
+        var transient = service.GetAction(nameof(SimpleService.GetTransient)).Invoke(TestInvokeOptions()).Result.GetObject();
+
+        var uniqueName = Guid.NewGuid().ToString();
+
+        try {
+            transient.ValidatePersist(TestInvokeOptions(null, transient.Tag), null, uniqueName, null ).Wait();
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.IsNotNull(hre.Content);
+
+                Assert.AreEqual(FullName<ClassToPersist>(), hre.Content.GetDomainType());
+
+                var args = hre.Content.GetMembers();
+                
+                Assert.AreEqual(3, args.Count);
+                Assert.AreEqual(nameof(ClassToPersist.Id), args.First().Key);
+                Assert.IsNull(args.First().Value.GetValue());
+                Assert.AreEqual("Mandatory", args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual(nameof(ClassToPersist.Name), args.Skip(1).First().Key);
+                Assert.AreEqual(nameof(ClassToPersist.RefClassToPersist), args.Last().Key);
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+    }
+
+    [Test]
+    public void TestGetAndSaveTransientWithHelper()
+    {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        var services = home.GetServices(TestInvokeOptions()).Result;
+
+        var service = services.GetService(FullName<SimpleService>(), TestInvokeOptions()).Result;
+
+        var uniqueName = Guid.NewGuid().ToString();
+
+        var transient = service.GetAction(nameof(SimpleService.GetPrePopulatedTransient)).Invoke(TestInvokeOptions(), uniqueName).Result.GetObject();
+        var map = transient.GetPropertyMap();
+        map["Id"] = 0;
+
+        var persisted = transient.PersistWithNamedParams(TestInvokeOptions(null, transient.Tag), map).Result;
 
         Assert.AreEqual(uniqueName, persisted.GetProperty("Name")?.GetValue<string>());
     }
