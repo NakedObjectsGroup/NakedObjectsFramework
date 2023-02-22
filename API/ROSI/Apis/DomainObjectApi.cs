@@ -72,8 +72,22 @@ public static class DomainObjectApi {
         throw new UnexpectedResultRosiException($"Expected 'No Content' from validate got: {json[..200]}...");
     }
 
-    public static Dictionary<string, object?> GetPropertyMap(this DomainObject objectRepresentation) {
-        return objectRepresentation.GetProperties().ToDictionary(p => p.GetId()!, p => p.GetValue() ?? p.GetLinkValue());
+    public static Dictionary<string, object?> GetPersistMap(this DomainObject objectRepresentation) {
+        var args = objectRepresentation.GetLinks().GetPersistLink()?.GetArgumentsMembers() ?? new Dictionary<string, object?>();
+        var properties = objectRepresentation.GetProperties().ToDictionary(p => p.GetId()!, p => p.GetValue() ?? p.GetLinkValue());
+        var map = new Dictionary<string, object?>();
+
+        foreach (var (k, v) in args) {
+            if (properties.ContainsKey(k)) {
+                var newValue = properties[k];
+                map[k] = newValue;
+            }
+            else {
+                map[k] = v is Dictionary<string, object> d ? d["value"] : null;
+            }
+        }
+
+        return map;
     }
 
     public static async Task<DomainObject> PersistWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>

@@ -186,7 +186,7 @@ public class ObjectApiTests : AbstractRosiApiTests {
         var uniqueName = Guid.NewGuid().ToString();
 
         var transient = service.GetAction(nameof(SimpleService.GetPrePopulatedTransient)).Invoke(TestInvokeOptions(), uniqueName).Result.GetObject();
-        var map = transient.GetPropertyMap();
+        var map = transient.GetPersistMap();
         map["Id"] = 0;
 
         var persisted = transient.PersistWithNamedParams(TestInvokeOptions(null, transient.Tag), map).Result;
