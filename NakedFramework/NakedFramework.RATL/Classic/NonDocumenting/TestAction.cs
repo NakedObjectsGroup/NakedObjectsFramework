@@ -26,7 +26,7 @@ internal class TestAction : ITestAction {
 
     private static bool Match(ITestParameter parameter, Type t) {
         // TODO
-        return true;
+        return false;
     }
 
     public bool MatchParameters(Type[] typestoMatch) {

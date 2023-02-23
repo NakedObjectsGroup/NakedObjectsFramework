@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Test.Data;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using static NakedFramework.RATL.Test.Classic.TestHelpers;
 
 namespace NakedFramework.RATL.Test.Classic;
 
@@ -59,17 +60,6 @@ public class TestTestObject : AcceptanceTestCase {
 
     protected void CleanUpDatabase() {
         new EFCoreRATLTestDbContext().Delete();
-    }
-
-    private static void AssertExpectException(Action f, string msg) {
-        try {
-            f();
-            Assert.Fail("Expect exception");
-        }
-        catch (Exception ex) {
-            Assert.IsInstanceOfType(ex, typeof(AssertFailedException));
-            Assert.AreEqual(msg, ex.Message);
-        }
     }
 
     [Test]
