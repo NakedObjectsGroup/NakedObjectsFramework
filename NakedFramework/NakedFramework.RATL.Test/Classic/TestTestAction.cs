@@ -129,6 +129,15 @@ public class TestTestAction : AcceptanceTestCase {
     }
 
     [Test]
+    public virtual void TestInvoke() {
+        var obj = NewTestObject<Object2>();
+        var act = obj.GetAction("Return Void");
+
+        act.Invoke();
+    }
+
+
+    [Test]
     public virtual void TestInvokeReturnObject() {
         var obj = NewTestObject<Object1>();
         var act = obj.GetAction("Do Something");

@@ -73,4 +73,6 @@ public class Object2 {
 
     public IQueryable<Object2> ReturnCollection([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) =>
         new[] { this }.AsQueryable();
+
+    public void ReturnVoid() { }
 }
