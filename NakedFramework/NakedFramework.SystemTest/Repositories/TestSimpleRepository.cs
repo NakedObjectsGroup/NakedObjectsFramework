@@ -81,7 +81,7 @@ public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext
 public class SimpleRepositoryDbContext : DbContext {
     public const string DatabaseName = "TestSimpleRepository";
 
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
 
     public SimpleRepositoryDbContext() : base(Cs) { }
 

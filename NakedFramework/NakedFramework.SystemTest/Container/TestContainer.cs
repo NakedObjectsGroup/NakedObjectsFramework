@@ -91,7 +91,7 @@ public class TestContainer : AbstractSystemTest<ContainerDbContext> {
 public class ContainerDbContext : DbContext {
     public const string DatabaseName = "TestContainer";
 
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public ContainerDbContext() : base(Cs) { }
     public DbSet<Object1> Object1 { get; set; }
     public static void Delete() => Database.Delete(Cs);

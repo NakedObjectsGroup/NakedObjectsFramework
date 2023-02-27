@@ -129,7 +129,7 @@ public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext> {
 
 public class PaymentContext : DbContext {
     public const string DatabaseName = "ObjectFinderGuid";
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public PaymentContext() : base(Cs) { }
 
     public DbSet<Payment> Payments { get; set; }

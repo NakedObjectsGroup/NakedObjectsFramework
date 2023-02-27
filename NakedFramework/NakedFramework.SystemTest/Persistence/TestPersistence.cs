@@ -112,7 +112,7 @@ public class TestPersistence : AbstractSystemTest<PersistenceDbContext> {
 public class PersistenceDbContext : DbContext {
     public const string DatabaseName = "TestPersistence";
 
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public PersistenceDbContext() : base(Cs) { }
 
     public DbSet<Foo1> Foos { get; set; }

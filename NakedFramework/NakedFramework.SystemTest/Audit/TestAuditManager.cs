@@ -535,7 +535,7 @@ public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
 
 public class AuditDbContext : DbContext {
     public const string DatabaseName = "TestAudit";
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public AuditDbContext() : base(Cs) { }
 
     public DbSet<Foo> Foos { get; set; }

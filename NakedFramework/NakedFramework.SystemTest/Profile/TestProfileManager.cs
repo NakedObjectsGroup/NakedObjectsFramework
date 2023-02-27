@@ -289,7 +289,7 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
 
 public class ProfileDbContext : DbContext {
     public const string DatabaseName = "TestProfile";
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public ProfileDbContext() : base(Cs) { }
     public DbSet<Foo> Foos { get; set; }
 

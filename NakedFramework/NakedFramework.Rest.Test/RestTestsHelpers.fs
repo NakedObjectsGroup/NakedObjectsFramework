@@ -22,11 +22,11 @@ let server = appveyorServer
 let server = localServer
 #endif
 
-let csRTA = server + @"Initial Catalog=RestTestA;Integrated Security=True;"
-let csRTB = server + @"Initial Catalog=RestTestB;Integrated Security=True;"
-let csRTZ = server + @"Initial Catalog=RestTestZ;Integrated Security=True;"
-let csRTD = server + @"Initial Catalog=RestTestD;Integrated Security=True;"
-let csRTDT = server + @"Initial Catalog=RestTestDT;Integrated Security=True;"
+let csRTA = server + @"Initial Catalog=RestTestA;Integrated Security=True;Encrypt=False;"
+let csRTB = server + @"Initial Catalog=RestTestB;Integrated Security=True;Encrypt=False;"
+let csRTZ = server + @"Initial Catalog=RestTestZ;Integrated Security=True;Encrypt=False;"
+let csRTD = server + @"Initial Catalog=RestTestD;Integrated Security=True;Encrypt=False;"
+let csRTDT = server + @"Initial Catalog=RestTestDT;Integrated Security=True;Encrypt=False;"
 
 type CodeFirstInitializer() = 
     inherit System.Data.Entity.DropCreateDatabaseAlways<CodeFirstContextLocal>()

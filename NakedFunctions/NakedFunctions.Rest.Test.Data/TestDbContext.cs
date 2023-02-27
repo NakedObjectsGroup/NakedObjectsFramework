@@ -21,10 +21,10 @@ public static class Constants {
     public static string Server => LocalServer;
 #endif
 
-    public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;";
-    public static readonly string CsService = @$"Data Source={Server};Initial Catalog={"ServiceRestTests"};Integrated Security=True;";
-    public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;";
-    public static readonly string CsAuth = @$"Data Source={Server};Initial Catalog={"AuthRestTests"};Integrated Security=True;";
+    public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;Encrypt=False;";
+    public static readonly string CsService = @$"Data Source={Server};Initial Catalog={"ServiceRestTests"};Integrated Security=True;Encrypt=False;";
+    public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;Encrypt=False;";
+    public static readonly string CsAuth = @$"Data Source={Server};Initial Catalog={"AuthRestTests"};Integrated Security=True;Encrypt=False;";
 }
 
 public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : TestDbContext {

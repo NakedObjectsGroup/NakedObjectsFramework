@@ -160,7 +160,7 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 
 public class InjectionDbContext : DbContext {
     public const string DatabaseName = "TestInjection";
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public InjectionDbContext() : base(Cs) { }
 
     public DbSet<Object1> Object1 { get; set; }

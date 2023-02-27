@@ -77,7 +77,7 @@ namespace NakedObjects.SystemTest.ParentChild {
         public class ParentChildDbContext : DbContext {
             public const string DatabaseName = "TestParentChild";
 
-            private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+            private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
             public ParentChildDbContext() : base(Cs) { }
 
             public DbSet<Parent> Parents { get; set; }

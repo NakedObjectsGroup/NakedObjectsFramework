@@ -24,7 +24,7 @@ public static class Constants {
     public static string Server => LocalServer;
 #endif
 
-    public static readonly string CsNOF2 = @$"Data Source={Server};Initial Catalog={"NOF2Tests"};Integrated Security=True;";
+    public static readonly string CsNOF2 = @$"Data Source={Server};Initial Catalog={"NOF2Tests"};Integrated Security=True;Encrypt=False;";
 }
 
 public class BlankTriggerAddingConvention : IModelFinalizingConvention {

@@ -153,7 +153,7 @@ public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext>
 
 public class PaymentContext : DbContext {
     public const string DatabaseName = "ObjectFinderSingleKey";
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
 
     public PaymentContext() : base(Cs) { }
 

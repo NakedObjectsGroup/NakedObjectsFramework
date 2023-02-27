@@ -62,20 +62,14 @@ internal class TestAction : ITestAction {
     }
 
     public ITestAction AssertIsInvalidWithParms(params object[] parameters) {
-        ResetLastMessage();
-
-        var parsedParameters = ParsedParameters(parameters);
-
-        if (action is not null) {
-            var canUse = action.GetDisabledReason();
-            LastMessage = canUse;
-            if (string.IsNullOrEmpty(canUse)) {
-                //INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray().Select(x => x == null ? null : x.NakedObject).ToArray();
-                var result = action.Invoke(AcceptanceTestCase.TestInvokeOptions(), parameters).Result;
-                //LastMessage = canExecute.Reason;
-                //Assert.IsFalse(canExecute.IsAllowed, $"Action '{Name}' is usable and executable");
-            }
+        try {
+            AssertIsValidWithParms(parameters);
         }
+        catch (AssertFailedException expected) {
+            return this;
+        }
+
+        Assert.IsFalse(true, $"Action '{Name}' is usable and executable");
 
         return this;
     }

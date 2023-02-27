@@ -131,7 +131,7 @@ public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthoriza
 public class CustomAuthorizationManagerDbContext : DbContext {
     public const string DatabaseName = "TestCustomAuthorizationManager";
 
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public CustomAuthorizationManagerDbContext() : base(Cs) { }
 
     public DbSet<Foo> Foos { get; set; }

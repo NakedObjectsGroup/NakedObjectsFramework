@@ -147,7 +147,7 @@ public class PolymorphicNavigationContext : DbContext {
     public DbSet<SupplierAsPayee> Suppliers { get; set; }
     public DbSet<InvoiceAsPayableItem> Invoices { get; set; }
     public DbSet<ExpenseClaimAsPayableItem> ExpenseClaims { get; set; }
-    private static string GetCs(string name) => @$"Data Source={Constants.Server};Initial Catalog={name};Integrated Security=True;";
+    private static string GetCs(string name) => @$"Data Source={Constants.Server};Initial Catalog={name};Integrated Security=True;Encrypt=False;";
 
     public static void Delete(string name) => Database.Delete(GetCs(name));
 

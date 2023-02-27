@@ -252,7 +252,7 @@ namespace NakedObjects.SystemTest.Menus {
 namespace TestObjectMenu {
     public class MenusDbContext : DbContext {
         public const string DatabaseName = "TestMenus";
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
         public MenusDbContext() : base(Cs) { }
 
         public DbSet<Foo> Foo { get; set; }

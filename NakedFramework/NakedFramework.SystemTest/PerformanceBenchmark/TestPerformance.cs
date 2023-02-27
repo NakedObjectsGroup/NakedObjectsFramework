@@ -84,7 +84,7 @@ public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
 public class PerformanceDbContext : DbContext {
     public const string DatabaseName = "TestPerformance";
 
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public PerformanceDbContext() : base(Cs) { }
 
     public DbSet<Qux> Quxes { get; set; }

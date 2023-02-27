@@ -115,7 +115,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     public class NamespaceAuthorizationDbContext : DbContext {
         public const string DatabaseName = "TestAttributes";
 
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
         public NamespaceAuthorizationDbContext() : base(Cs) { }
 
         public DbSet<Foo1> Foo1s { get; set; }

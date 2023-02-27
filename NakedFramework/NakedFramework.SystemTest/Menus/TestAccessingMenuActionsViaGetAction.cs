@@ -92,7 +92,7 @@ namespace NakedObjects.SystemTest.Menus {
 namespace SystemTest.ContributedActions {
     public class CADbContext : DbContext {
         public const string DatabaseName = "Tests";
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
         public CADbContext() : base(Cs) { }
 
         public DbSet<Foo> Foos { get; set; }

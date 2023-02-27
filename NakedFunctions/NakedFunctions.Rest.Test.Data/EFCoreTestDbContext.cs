@@ -24,8 +24,8 @@ public static class EFCoreConstants {
     public static string Server => LocalServer;
 #endif
 
-    public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;";
-    public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;";
+    public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;Encrypt=False;";
+    public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;Encrypt=False;";
 }
 
 public class BlankTriggerAddingConvention : IModelFinalizingConvention {

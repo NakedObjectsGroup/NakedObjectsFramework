@@ -1428,7 +1428,7 @@ public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
 public class MethodsDbContext : DbContext {
     public const string DatabaseName = "Tests";
 
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public MethodsDbContext() : base(Cs) { }
 
     public DbSet<Auto1> Auto1 { get; set; }

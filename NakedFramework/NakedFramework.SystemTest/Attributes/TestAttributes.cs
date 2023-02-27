@@ -1066,7 +1066,7 @@ namespace NakedObjects.SystemTest.Attributes {
     public class AttributesDbContext : DbContext {
         public const string DatabaseName = "TestAttributes";
 
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
         public AttributesDbContext() : base(Cs) { }
 
         public DbSet<Default1> Default1s { get; set; }

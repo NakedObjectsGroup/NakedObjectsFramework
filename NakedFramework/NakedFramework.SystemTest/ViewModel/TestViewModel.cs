@@ -94,7 +94,7 @@ public class TestViewModel : AbstractSystemTest<FooContext> {
 public class FooContext : DbContext {
     public const string DatabaseName = "HelpersTest";
 
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public FooContext() : base(Cs) { }
 
     public DbSet<Foo> Foos { get; set; }

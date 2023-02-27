@@ -408,7 +408,7 @@ public class TestFunctions : AbstractSystemTest<XatDbContext> {
 
 public class XatDbContext : DbContext {
     public const string DatabaseName = "TestXats";
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public XatDbContext() : base(Cs) { }
 
     public static void Delete() => Database.Delete(Cs);

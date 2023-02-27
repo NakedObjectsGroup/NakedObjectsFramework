@@ -127,7 +127,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
 
     protected override IDictionary<string, string> Configuration() {
         var config = base.Configuration();
-        config["ConnectionStrings:TestContext"] = @"Server=(localdb)\MSSQLLocalDB;Initial Catalog=CodeSystemTest;Integrated Security=True;";
+        config["ConnectionStrings:TestContext"] = @"Server=(localdb)\MSSQLLocalDB;Initial Catalog=CodeSystemTest;Integrated Security=True;Encrypt=False;";
         return config;
     }
 

@@ -144,7 +144,7 @@ public class EnumTest : AbstractSystemTest<EnumDbContext> {
 public class EnumDbContext : DbContext {
     public const string DatabaseName = "TestEnums";
 
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public EnumDbContext() : base(Cs) { }
 
     public DbSet<Foo> Foos { get; set; }

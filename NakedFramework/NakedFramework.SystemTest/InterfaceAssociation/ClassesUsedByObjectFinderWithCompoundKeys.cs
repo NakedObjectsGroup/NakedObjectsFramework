@@ -20,7 +20,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 
 public class PaymentContext : DbContext {
     public const string DatabaseName = "ObjectFinderWithCompoundKeys";
-    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+    private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
     public PaymentContext() : base(Cs) { }
 
     public DbSet<Payment> Payments { get; set; }

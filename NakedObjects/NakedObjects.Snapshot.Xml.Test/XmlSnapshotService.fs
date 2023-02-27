@@ -34,7 +34,7 @@ let server = localServer
 #endif
 
 
-let cs = server + @"Initial Catalog=TestObject;Integrated Security=True;"
+let cs = server + @"Initial Catalog=TestObject;Integrated Security=True;Encrypt=False;"
 
 let normalizeData d1 d2 =
     // ignore keys 
