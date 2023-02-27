@@ -38,7 +38,11 @@ public class Object1 {
 
     public string Title() => "FooBar";
 
-    public Object1 DoSomething([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) => null;
+    public Object1 DoSomething([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) =>
+        param0 switch {
+            0 => null,
+            _ => this
+        };
 
     public Object1 DoSomethingElse([DefaultValue(TestEnum1.Value2)] TestEnum1 param0, TestEnum1 param1) => null;
 
@@ -52,7 +56,21 @@ public class Object1 {
         var sub = menu.CreateSubMenu("Sub1");
         sub.AddAction(nameof(DoSomethingOnMenu));
         var subSub = sub.CreateSubMenu("SubSub");
-        subSub.AddAction(nameof(Object1.DoSomethingOnSubMenu));
+        subSub.AddAction(nameof(DoSomethingOnSubMenu));
         menu.AddRemainingNativeActions();
     }
+}
+
+[DescribedAs("an object")]
+public class Object2 {
+    [Key]
+    public int Id { get; set; }
+
+    [Disabled]
+    public void AlwaysDisabled() { }
+
+    public Object1 WithRefParam(Object1 refParam) => refParam;
+
+    public IQueryable<Object2> ReturnCollection([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) =>
+        new[] { this }.AsQueryable();
 }

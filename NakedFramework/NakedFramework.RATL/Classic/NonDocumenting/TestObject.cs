@@ -119,4 +119,12 @@ internal class TestObject : TestHasActions, ITestObject {
     }
 
     private bool IsInteractionMode(string mode) => DomainObject.SafeGetExtension(ExtensionsApi.ExtensionKeys.x_ro_nof_interactionMode)?.ToString() == mode;
+
+    public ITestObject AssertIsDescribedAs(string expected) {
+        var description = DomainObject.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.description].ToString();
+        Assert.IsTrue(expected.Equals(description), $"Description expected: '{expected}' actual: '{description}'");
+        return this;
+    }
+
+    public ITestObject AssertIsImmutable() => throw new NotImplementedException();
 }

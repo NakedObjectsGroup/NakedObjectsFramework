@@ -12,4 +12,6 @@ public interface ITestParameter : ITestNaked
     ITestParameter AssertIsMandatory();
     ITestParameter AssertIsDescribedAs(string description);
     ITestParameter AssertIsNamed(string name);
+
+    bool Match(Type type);
 }

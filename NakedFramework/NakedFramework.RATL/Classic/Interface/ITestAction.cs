@@ -6,7 +6,7 @@ public interface ITestAction
     string SubMenu { get; }
     string LastMessage { get; }
     ITestParameter[] Parameters { get; }
-    bool MatchParameters(Type[] typestoMatch);
+    bool MatchParameters(Type[] typesToMatch);
     ITestObject InvokeReturnObject(params object[] parameters);
     ITestCollection InvokeReturnCollection(params object[] parameters);
     void Invoke(params object[] parameters);

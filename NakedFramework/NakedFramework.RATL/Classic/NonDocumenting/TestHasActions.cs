@@ -65,27 +65,6 @@ internal abstract class TestHasActions : ITestHasActions {
         }
     }
 
-    public ITestObject AssertIsDescribedAs(string expected) {
-        var description = DomainObject.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.description].ToString();
-        Assert.IsTrue(expected.Equals(description), $"Description expected: '{expected}' actual: '{description}'");
-        return (ITestObject)this;
-    }
-
-    public ITestObject AssertIsImmutable() =>
-        //INakedObjectSpecification specification = NakedObject.Specification;
-        //var facet = specification.GetFacet<IImmutableFacet>();
-        //var immutable = facet.Value == When.Always || (facet.Value == When.OncePersisted && NakedObject.ResolveState.IsPersistent());
-        //Assert.IsTrue(immutable, "Not immutable");
-        (ITestObject)this;
-
-    //public override string ToString() {
-    //    if (NakedObject == null) {
-    //        return $"{base.ToString()} null";
-    //    }
-
-    //    return $"{base.ToString()} {NakedObject.Specification.ShortName}/" + NakedObject;
-    //}
-
     private static string AppendMenus(Menu[] menus) {
         var order = new StringBuilder();
 

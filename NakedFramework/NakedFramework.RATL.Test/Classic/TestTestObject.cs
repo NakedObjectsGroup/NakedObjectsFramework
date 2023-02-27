@@ -48,6 +48,7 @@ public class TestTestObject : AcceptanceTestCase {
             frameworkOptions.AddNakedObjects(appOptions => {
                 appOptions.DomainModelTypes = new[] {
                     typeof(Object1),
+                    typeof(Object2),
                     typeof(TestEnum1)
                 };
                 appOptions.DomainModelServices = new[] { typeof(Service1) };
@@ -213,5 +214,19 @@ public class TestTestObject : AcceptanceTestCase {
         var obj = NewTestObject<Object1>();
         obj.AssertPropertyOrderIs("Id, Prop1, Foo, Prop3");
         AssertExpectException(() => obj.AssertPropertyOrderIs("Prop1, Foo, Prop3, Id"), "Assert.AreEqual failed. Expected:<Prop1, Foo, Prop3, Id>. Actual:<Id, Prop1, Foo, Prop3>. ");
+    }
+
+    [Test]
+    public virtual void TestAssertIsDescribedAsNone() {
+        var obj = NewTestObject<Object1>();
+        obj.AssertIsDescribedAs("");
+        AssertExpectException(() => obj.AssertIsDescribedAs("a description"), "Assert.IsTrue failed. Description expected: 'a description' actual: ''");
+    }
+
+    [Test]
+    public virtual void TestAssertIsDescribedAs() {
+        var obj = NewTestObject<Object2>();
+        obj.AssertIsDescribedAs("an object");
+        AssertExpectException(() => obj.AssertIsDescribedAs("a object"), "Assert.IsTrue failed. Description expected: 'a object' actual: 'an object'");
     }
 }

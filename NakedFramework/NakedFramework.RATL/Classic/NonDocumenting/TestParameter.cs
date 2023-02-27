@@ -54,4 +54,6 @@ internal class TestParameter : ITestParameter {
         Assert.IsTrue(Name == name, $"Parameter name : {Name} expected {name}");
         return this;
     }
+
+    public bool Match(Type type) => Type == typeof(Link) ? parameter.SafeGetExtension(ExtensionsApi.ExtensionKeys.returnType)?.ToString() == type.FullName : Type == type;
 }

@@ -24,6 +24,8 @@ public  class EFCoreRATLTestDbContext : DbContext {
 
     public DbSet<Object1> Object1s { get; set; }
 
+    public DbSet<Object2> Object2s { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
@@ -42,6 +44,7 @@ public  class EFCoreRATLTestDbContext : DbContext {
 
     private static void Seed(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Object1>().HasData(new Object1 { Id = 1, Prop1 = 1});
+        modelBuilder.Entity<Object2>().HasData(new Object2 { Id = 1});
       
     }
 }

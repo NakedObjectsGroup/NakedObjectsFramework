@@ -114,4 +114,11 @@ public class TestTestHasActions : AcceptanceTestCase {
         var order = obj.GetObjectActionOrder();
         Assert.AreEqual("Do Return String, Do Something, Do Something Else, (Sub1:Do Something On Menu, (SubSub:Do Something On Sub Menu))", order);
     }
+
+    [Test]
+    public virtual void TestAssertActionOrderIs() {
+        var obj = NewTestObject<Object1>();
+        obj.AssertActionOrderIs("Do Return String, Do Something, Do Something Else, (Sub1:Do Something On Menu, (SubSub:Do Something On Sub Menu))");
+        AssertExpectException(() => obj.AssertActionOrderIs("Do Return String"), "Assert.AreEqual failed. Expected:<Do Return String>. Actual:<Do Return String, Do Something, Do Something Else, (Sub1:Do Something On Menu, (SubSub:Do Something On Sub Menu))>. ");
+    }
 }

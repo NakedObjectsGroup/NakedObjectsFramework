@@ -1,6 +1,4 @@
-﻿using NakedFramework.Architecture.Facet;
-using NakedFramework.Architecture.Reflect;
-using NakedFramework.RATL.Classic.Interface;
+﻿using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Records;
@@ -24,29 +22,24 @@ internal class TestAction : ITestAction {
 
     public ITestParameter[] Parameters => action.GetParameters(AcceptanceTestCase.TestInvokeOptions()).Result.Parameters().Select(x => new TestParameter(x.Value, AcceptanceTestCase)).Cast<ITestParameter>().ToArray();
 
-    private static bool Match(ITestParameter parameter, Type t) => parameter.Type == t;
-
-    public bool MatchParameters(Type[] typestoMatch) {
+    public bool MatchParameters(Type[] typesToMatch) {
         var actualParameters = Parameters;
-        if (actualParameters.Count() == typestoMatch.Length) {
-            var zip = actualParameters.Zip(typestoMatch);
+        if (actualParameters.Count() == typesToMatch.Length) {
+            var zip = actualParameters.Zip(typesToMatch);
 
-            return zip.All(x => Match(x.First, x.Second));
+            return zip.All(x => x.First.Match(x.Second));
         }
 
         return false;
     }
 
-    public ITestObject InvokeReturnObject(params object[] parameters) => (ITestObject)DoInvoke(ParsedParameters(parameters));
+    public ITestObject InvokeReturnObject(params object[] parameters) => DoInvoke<ITestObject>(ParsedParameters(parameters));
 
-    public ITestCollection InvokeReturnCollection(params object[] parameters) => (ITestCollection)DoInvoke(ParsedParameters(parameters));
+    public ITestCollection InvokeReturnCollection(params object[] parameters) => DoInvoke<ITestCollection>(ParsedParameters(parameters));
 
-    public void Invoke(params object[] parameters)
-    {
-        DoInvoke(ParsedParameters(parameters));
-    }
+    public void Invoke(params object[] parameters) => DoInvoke<ITestObject>(ParsedParameters(parameters));
 
-    public ITestCollection InvokeReturnPagedCollection(int page, params object[] parameters) => (ITestCollection)DoInvoke(page, ParsedParameters(parameters));
+    public ITestCollection InvokeReturnPagedCollection(int page, params object[] parameters) => DoInvoke<ITestCollection>(page, ParsedParameters(parameters));
 
     public ITestAction AssertIsDisabled() {
         ResetLastMessage();
@@ -68,18 +61,15 @@ internal class TestAction : ITestAction {
         return this;
     }
 
-    public ITestAction AssertIsInvalidWithParms(params object[] parameters)
-    {
+    public ITestAction AssertIsInvalidWithParms(params object[] parameters) {
         ResetLastMessage();
 
         var parsedParameters = ParsedParameters(parameters);
 
-        if (action is not null)
-        {
+        if (action is not null) {
             var canUse = action.GetDisabledReason();
             LastMessage = canUse;
-            if (string.IsNullOrEmpty(canUse))
-            {
+            if (string.IsNullOrEmpty(canUse)) {
                 //INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray().Select(x => x == null ? null : x.NakedObject).ToArray();
                 var result = action.Invoke(AcceptanceTestCase.TestInvokeOptions(), parameters).Result;
                 //LastMessage = canExecute.Reason;
@@ -111,15 +101,13 @@ internal class TestAction : ITestAction {
         return this;
     }
 
-    public ITestAction AssertIsVisible()
-    {
+    public ITestAction AssertIsVisible() {
         ResetLastMessage();
         Assert.IsTrue(action is not null, $"Action '{Name}' is hidden");
         return this;
     }
 
-    public ITestAction AssertIsInvisible()
-    {
+    public ITestAction AssertIsInvisible() {
         ResetLastMessage();
         Assert.IsFalse(action is null, $"Action '{Name}' is visible");
         return this;
@@ -131,14 +119,12 @@ internal class TestAction : ITestAction {
         return this;
     }
 
-    public ITestAction AssertLastMessageIs(string message)
-    {
+    public ITestAction AssertLastMessageIs(string message) {
         Assert.IsTrue(message.Equals(LastMessage), $"Last message expected: '{message}' actual: '{LastMessage}'");
         return this;
     }
 
-    public ITestAction AssertLastMessageContains(string message)
-    {
+    public ITestAction AssertLastMessageContains(string message) {
         Assert.IsTrue(LastMessage.Contains(message), $"Last message expected to contain: '{message}' actual: '{LastMessage}'");
         return this;
     }
@@ -163,36 +149,30 @@ internal class TestAction : ITestAction {
     //    return factory.CreateTestObject(result);
     //}
 
-    private ITestNaked DoInvoke(params object[] parameters)
-    {
+    private T DoInvoke<T>(params object[] parameters) where T : class, ITestNaked {
         ResetLastMessage();
         AssertIsValidWithParms(parameters);
         ActionResult result = null;
-        try
-        {
+        try {
             result = action.Invoke(AcceptanceTestCase.TestInvokeOptions(), parameters).Result;
         }
-        catch (ArgumentException e)
-        {
+        catch (ArgumentException e) {
             Assert.IsInstanceOfType(e, typeof(ArgumentException));
             Assert.Fail("Invalid Argument(s)");
         }
 
-        if (result.GetResultType() == ActionResultApi.ResultType.Void)
-        {
+        if (result.GetResultType() == ActionResultApi.ResultType.Void) {
             return null;
         }
 
-        if (result.GetResultType() == ActionResultApi.ResultType.List)
-        {
-            //return factory.CreateTestCollection(result);
+        if (result.GetResultType() == ActionResultApi.ResultType.List) {
+            return result.GetList() is { } list ? new TestCollection(list, AcceptanceTestCase) as T : null;
         }
 
-        return new TestObject(result.GetObject(), AcceptanceTestCase);
+        return result.GetObject() is { } domainObject ? new TestObject(domainObject, AcceptanceTestCase) as T : null;
     }
 
-    private void ResetLastMessage()
-    {
+    private void ResetLastMessage() {
         LastMessage = string.Empty;
     }
 
@@ -210,20 +190,6 @@ internal class TestAction : ITestAction {
             }
         }
 
-
-        //var i = 0;
-        //foreach (var parm in actualParameters) {
-        //    var value = parameters[i++];
-
-        //    if (value is string && parm.Specification.IsParseable) {
-        //        parsedParameters.Add(parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string)value).Object);
-        //    }
-        //    else {
-        //        parsedParameters.Add(value);
-        //    }
-        //}
-
-        //return parsedParameters.ToArray();
         return parameters;
     }
 }

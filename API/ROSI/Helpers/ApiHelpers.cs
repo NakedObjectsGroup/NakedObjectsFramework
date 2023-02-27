@@ -33,6 +33,7 @@ public static class ApiHelpers {
     public static JObject? GetOptionalPropertyAsJObject(this IWrapped wrapped, string key) =>
         wrapped.GetOptionalProperty(key) switch {
             JObject jo => jo,
+            JValue => null,
             null => null,
             _ => throw new UnexpectedTypeRosiException(wrapped, key, typeof(JObject))
         };
