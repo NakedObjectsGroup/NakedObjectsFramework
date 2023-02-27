@@ -111,7 +111,7 @@ internal static class HttpHelpers {
     private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithNoArguments(Link invokeLink, InvokeOptions options) {
         var (uri, method) = invokeLink.GetUriAndMethod();
 
-        using var content = method != HttpMethod.Get ? JsonContent.Create("", new MediaTypeHeaderValue("application/json")) : null;
+        using var content = method != HttpMethod.Get ?  new StringContent("", Encoding.UTF8, "application/json") : null;
         var url = options.ReservedArguments is not null ? QueryHelpers.AddQueryString(uri.ToString(), options.ReservedArguments.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString())) : uri.ToString();
 
         var request = CreateMessage(method, url, options, content);
