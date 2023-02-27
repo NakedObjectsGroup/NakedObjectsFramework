@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Test.Data;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using static NakedFramework.RATL.Test.Classic.TestHelpers;
 
 namespace NakedFramework.RATL.Test.Classic;
 
@@ -160,6 +161,37 @@ public class TestTestAction : AcceptanceTestCase {
 
         Assert.AreEqual(1, result.Count());
         Assert.AreEqual("Untitled Object2", result.First().Title);
+    }
+
+    [Test]
+    public virtual void TestInvokeReturnPagedCollection() {
+        var obj = NewTestObject<Object2>();
+        var act = obj.GetAction("Return Collection");
+
+        var result = act.InvokeReturnPagedCollection(1, 1, "value");
+
+        Assert.IsNotNull(result);
+
+        Assert.AreEqual(1, result.Count());
+        Assert.AreEqual("Untitled Object2", result.First().Title);
+    }
+
+    [Test]
+    public virtual void TestAssertDisabledAction() {
+        var obj = NewTestObject<Object2>();
+        var act = obj.GetAction("Always Disabled");
+        act.AssertIsDisabled();
+        act.AssertLastMessageIs("Always disabled");
+        AssertExpectException(() => act.AssertIsEnabled(), "Assert.IsTrue failed. Action 'Always Disabled' is disabled: Always disabled");
+        act.AssertLastMessageIs("Always disabled");
+    }
+
+    [Test]
+    public virtual void TestAssertEnabledAction() {
+        var obj = NewTestObject<Object1>();
+        var act = obj.GetAction("Do Something");
+        act.AssertIsEnabled();
+        AssertExpectException(() => act.AssertIsDisabled(), "Assert.IsFalse failed. Action 'Do Something' is usable: ");
     }
 
 }

@@ -33,11 +33,11 @@ internal class TestAction : ITestAction {
         return false;
     }
 
-    public ITestObject InvokeReturnObject(params object[] parameters) => DoInvoke<ITestObject>(ParsedParameters(parameters));
+    public ITestObject InvokeReturnObject(params object[] parameters) => DoInvoke<ITestObject>(null, ParsedParameters(parameters));
 
-    public ITestCollection InvokeReturnCollection(params object[] parameters) => DoInvoke<ITestCollection>(ParsedParameters(parameters));
+    public ITestCollection InvokeReturnCollection(params object[] parameters) => DoInvoke<ITestCollection>(null, ParsedParameters(parameters));
 
-    public void Invoke(params object[] parameters) => DoInvoke<ITestObject>(ParsedParameters(parameters));
+    public void Invoke(params object[] parameters) => DoInvoke<ITestObject>(null, ParsedParameters(parameters));
 
     public ITestCollection InvokeReturnPagedCollection(int page, params object[] parameters) => DoInvoke<ITestCollection>(page, ParsedParameters(parameters));
 
@@ -129,32 +129,18 @@ internal class TestAction : ITestAction {
         return this;
     }
 
-    //private ITestNaked DoInvoke(int page, params object[] parameters) {
-    //    ResetLastMessage();
-    //    AssertIsValidWithParms(parameters);
-    //    INakedObject[] parameterObjects = parameters.AsTestNakedArray().Select(x => x.NakedObject).ToArray();
-
-    //    INakedObject[] parms = action.RealParameters(owningObject.NakedObject, parameterObjects);
-    //    INakedObject target = action.RealTarget(owningObject.NakedObject);
-    //    INakedObject result = action.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page);
-
-    //    if (result == null) {
-    //        return null;
-    //    }
-
-    //    if (result.Specification.IsCollection) {
-    //        return factory.CreateTestCollection(result);
-    //    }
-
-    //    return factory.CreateTestObject(result);
-    //}
-
-    private T DoInvoke<T>(params object[] parameters) where T : class, ITestNaked {
+    private T DoInvoke<T>(int? page, params object[] parameters) where T : class, ITestNaked {
         ResetLastMessage();
         AssertIsValidWithParms(parameters);
         ActionResult result = null;
         try {
-            result = action.Invoke(AcceptanceTestCase.TestInvokeOptions(), parameters).Result;
+            var options = AcceptanceTestCase.TestInvokeOptions();
+            if (page is not null) {
+                options.ReservedArguments ??= new Dictionary<string, object>();
+                options.ReservedArguments["x-ro-page"] = page;
+            }
+
+            result = action.Invoke(options, parameters).Result;
         }
         catch (ArgumentException e) {
             Assert.IsInstanceOfType(e, typeof(ArgumentException));
