@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using NakedFramework.Architecture.Facet;
 using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
@@ -8,12 +7,12 @@ using ROSI.Records;
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal abstract class TestHasActions : ITestHasActions {
-    protected DomainObject DomainObject { get; }
-
     protected TestHasActions(DomainObject domainObject, AcceptanceTestCase acceptanceTestCase) {
         AcceptanceTestCase = acceptanceTestCase;
-        this.DomainObject = domainObject;
+        DomainObject = domainObject;
     }
+
+    protected DomainObject DomainObject { get; }
 
     protected AcceptanceTestCase AcceptanceTestCase { get; }
 
@@ -45,7 +44,7 @@ internal abstract class TestHasActions : ITestHasActions {
 
     public virtual string GetObjectActionOrder() {
         var order = new StringBuilder();
-        order.Append(AppendMenus( CreateMenuItems(Actions)));
+        order.Append(AppendMenus(CreateMenuItems(Actions)));
         return order.ToString();
     }
 
@@ -72,15 +71,12 @@ internal abstract class TestHasActions : ITestHasActions {
         return (ITestObject)this;
     }
 
-    public ITestObject AssertIsImmutable() {
+    public ITestObject AssertIsImmutable() =>
         //INakedObjectSpecification specification = NakedObject.Specification;
         //var facet = specification.GetFacet<IImmutableFacet>();
-
         //var immutable = facet.Value == When.Always || (facet.Value == When.OncePersisted && NakedObject.ResolveState.IsPersistent());
-
         //Assert.IsTrue(immutable, "Not immutable");
-        return (ITestObject)this;
-    }
+        (ITestObject)this;
 
     //public override string ToString() {
     //    if (NakedObject == null) {
@@ -96,12 +92,21 @@ internal abstract class TestHasActions : ITestHasActions {
         for (var i = 0; i < menus.Length; i++) {
             var menu = menus[i];
             var name = menu.Name;
-            if (!menu.Menus.Any()) {
-                order.Append(name);
+            order.Append(string.IsNullOrEmpty(name) ? "" : $"({name}:");
+
+            if (menu.Actions.Any()) {
+                var names = string.Join(", ", menu.Actions.Select(a => a.Name));
+                order.Append(names);
+                if (menu.Menus.Any()) {
+                    order.Append(", ");
+                }
             }
-            else {
-                order.Append($"({name}:{AppendMenus(menu.Menus)})");
+
+            if (menu.Menus.Any()) {
+                order.Append($"{AppendMenus(menu.Menus)}");
             }
+
+            order.Append(string.IsNullOrEmpty(name) ? "" : ")");
 
             order.Append(i < menus.Length - 1 ? ", " : "");
         }
@@ -130,22 +135,16 @@ internal abstract class TestHasActions : ITestHasActions {
         ITestAction[] menuActions = null;
         Menu[] menuItems = null;
 
-        if (!string.IsNullOrEmpty(menuSlot.name)) {
-            menuActions = actions.Where(a => GetMenuNameForLevel(a.SubMenu, level) == menuSlot.name && string.IsNullOrEmpty(GetMenuNameForLevel(a.SubMenu, level + 1))).ToArray();
+        menuActions = actions.Where(a => GetMenuNameForLevel(a.SubMenu, level) == menuSlot.name && string.IsNullOrEmpty(GetMenuNameForLevel(a.SubMenu, level + 1))).ToArray();
 
-            // then collate submenus
+        // then collate submenus
 
-            var submenuActions = actions.Where(a => GetMenuNameForLevel(a.SubMenu, level) == menuSlot.name && !string.IsNullOrEmpty(GetMenuNameForLevel(a.SubMenu, level + 1))).ToArray();
+        var submenuActions = actions.Where(a => GetMenuNameForLevel(a.SubMenu, level) == menuSlot.name && !string.IsNullOrEmpty(GetMenuNameForLevel(a.SubMenu, level + 1))).ToArray();
 
-            var menuSubSlots = submenuActions.Select(a => (GetMenuNameForLevel(a.SubMenu, level + 1), a)).ToArray();
-            menuSubSlots = RemoveDuplicateMenuNames(menuSubSlots).ToArray();
+        var menuSubSlots = submenuActions.Select(a => (GetMenuNameForLevel(a.SubMenu, level + 1), a)).ToArray();
+        menuSubSlots = RemoveDuplicateMenuNames(menuSubSlots).ToArray();
 
-            menuItems = menuSubSlots.Select(slot => CreateSubmenuItems(submenuActions, slot, level + 1)).ToArray();
-        }
-        else {
-            menuActions = new[] { menuSlot.action };
-            menuItems = Array.Empty<Menu>();
-        }
+        menuItems = menuSubSlots.Select(slot => CreateSubmenuItems(submenuActions, slot, level + 1)).ToArray();
 
         return new Menu(menuSlot.name, menuActions, menuItems);
     }
@@ -154,14 +153,14 @@ internal abstract class TestHasActions : ITestHasActions {
         // first create a top level menu for each action
         // note at top level we leave 'un-menued' actions
         // use an anonymous object locally so we can construct objects with readonly properties
-        
+
         var menuSlots = actions.Select(a => (GetMenuNameForLevel(a.SubMenu, 0), a));
 
         // remove non unique submenus
         menuSlots = RemoveDuplicateMenuNames(menuSlots);
 
         // update submenus with all actions under same submenu
-        return menuSlots.Select(slot => CreateSubmenuItems(actions, slot, 0)).ToArray();
+        return menuSlots.Select(slot => CreateSubmenuItems(actions, slot, 0)).OrderBy(ms => ms.Name).ToArray();
     }
 
     private record Menu(string Name, ITestAction[] Actions, Menu[] Menus);

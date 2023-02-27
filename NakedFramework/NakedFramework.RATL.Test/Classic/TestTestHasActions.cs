@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Test.Data;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-using static NakedFramework.RATL.Test.Classic.TestHelpers;
 
 namespace NakedFramework.RATL.Test.Classic;
 
@@ -78,8 +77,41 @@ public class TestTestHasActions : AcceptanceTestCase {
         var obj = NewTestObject<Object1>();
         Assert.AreEqual("Do Return String", obj.GetAction("Do Return String").Name);
 
-        AssertExpectException(() =>  obj.GetAction("No Such Action"), "Assert.Fail failed. No Action named 'No Such Action'");
+        AssertExpectException(() => obj.GetAction("No Such Action"), "Assert.Fail failed. No Action named 'No Such Action'");
     }
 
-   
+    [Test]
+    public virtual void TestGetActionWithTypes() {
+        var obj = NewTestObject<Object1>();
+        Assert.AreEqual("Do Something", obj.GetAction("Do Something", typeof(int), typeof(string)).Name);
+
+        AssertExpectException(() => obj.GetAction("Do Something", typeof(string), typeof(int)), "Assert.Fail failed. No Action named 'Do Something' (with specified parameters)");
+        AssertExpectException(() => obj.GetAction("Do Something", Array.Empty<Type>()), "Assert.Fail failed. No Action named 'Do Something' (with specified parameters)");
+    }
+
+    [Test]
+    public virtual void TestGetActionOnMenu() {
+        var obj = NewTestObject<Object1>();
+        Assert.AreEqual("Do Something On Menu", obj.GetAction("Do Something On Menu", "Sub1").Name);
+
+        AssertExpectException(() => obj.GetAction("Do Something On Menu", "Wrong Name"), "Assert.Fail failed. No Action named 'Do Something On Menu' within sub-menu 'Wrong Name'");
+        AssertExpectException(() => obj.GetAction("Do Something On Menu"), "Assert.Fail failed. No Action named 'Do Something On Menu'");
+    }
+
+    [Test]
+    public virtual void TestGetActionOnMenuWithTypes() {
+        var obj = NewTestObject<Object1>();
+        Assert.AreEqual("Do Something On Menu", obj.GetAction("Do Something On Menu", "Sub1", typeof(int), typeof(string)).Name);
+
+        AssertExpectException(() => obj.GetAction("Do Something On Menu", "Wrong Name", typeof(int), typeof(string)), "Assert.Fail failed. No Action named 'Do Something On Menu' (with specified parameters) within sub-menu 'Wrong Name'");
+        AssertExpectException(() => obj.GetAction("Do Something On Menu", "Wrong Name", typeof(string), typeof(int)), "Assert.Fail failed. No Action named 'Do Something On Menu' (with specified parameters) within sub-menu 'Wrong Name'");
+        AssertExpectException(() => obj.GetAction("Do Something On Menu", "Wrong Name", Array.Empty<Type>()), "Assert.Fail failed. No Action named 'Do Something On Menu' (with specified parameters) within sub-menu 'Wrong Name'");
+    }
+
+    [Test]
+    public virtual void TestGetActionOrder() {
+        var obj = NewTestObject<Object1>();
+        var order = obj.GetObjectActionOrder();
+        Assert.AreEqual("Do Return String, Do Something, Do Something Else, (Sub1:Do Something On Menu, (SubSub:Do Something On Sub Menu))", order);
+    }
 }

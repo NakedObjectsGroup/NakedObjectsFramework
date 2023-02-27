@@ -24,10 +24,7 @@ internal class TestAction : ITestAction {
 
     public ITestParameter[] Parameters => action.GetParameters(AcceptanceTestCase.TestInvokeOptions()).Result.Parameters().Select(x => new TestParameter(x.Value, AcceptanceTestCase)).Cast<ITestParameter>().ToArray();
 
-    private static bool Match(ITestParameter parameter, Type t) {
-        // TODO
-        return false;
-    }
+    private static bool Match(ITestParameter parameter, Type t) => parameter.Type == t;
 
     public bool MatchParameters(Type[] typestoMatch) {
         var actualParameters = Parameters;

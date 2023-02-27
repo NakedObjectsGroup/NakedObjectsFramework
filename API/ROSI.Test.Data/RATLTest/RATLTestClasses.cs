@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using NakedFramework.Menu;
 using NakedObjects;
 
 namespace ROSI.Test.Data;
@@ -12,8 +12,7 @@ public enum TestEnum1 {
     Value2
 }
 
-public class Service1
-{
+public class Service1 {
     public IDomainObjectContainer Container { private get; set; }
     public IQueryable<Object1> GetClasses() => Container.Instances<Object1>();
 
@@ -24,7 +23,6 @@ public class Service1
 public class Object1 {
     [Key]
     public int Id { get; set; }
-
 
     [DefaultValue(8)]
     public int Prop1 { get; set; }
@@ -45,4 +43,16 @@ public class Object1 {
     public Object1 DoSomethingElse([DefaultValue(TestEnum1.Value2)] TestEnum1 param0, TestEnum1 param1) => null;
 
     public string DoReturnString() => "a string";
+
+    public Object1 DoSomethingOnMenu([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) => null;
+
+    public Object1 DoSomethingOnSubMenu() => null;
+
+    public static void Menu(IMenu menu) {
+        var sub = menu.CreateSubMenu("Sub1");
+        sub.AddAction(nameof(DoSomethingOnMenu));
+        var subSub = sub.CreateSubMenu("SubSub");
+        subSub.AddAction(nameof(Object1.DoSomethingOnSubMenu));
+        menu.AddRemainingNativeActions();
+    }
 }
