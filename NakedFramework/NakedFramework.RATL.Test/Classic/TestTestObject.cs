@@ -9,8 +9,8 @@ using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Test.Data;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using static NakedFramework.RATL.Test.Classic.TestHelpers;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedFramework.RATL.Test.Classic;
 

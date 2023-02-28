@@ -9,8 +9,8 @@ using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Test.Data;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using static NakedFramework.RATL.Test.Classic.TestHelpers;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedFramework.RATL.Test.Classic;
 
@@ -137,7 +137,6 @@ public class TestTestAction : AcceptanceTestCase {
         act.Invoke();
     }
 
-
     [Test]
     public virtual void TestInvokeReturnObject() {
         var obj = NewTestObject<Object1>();
@@ -194,7 +193,6 @@ public class TestTestAction : AcceptanceTestCase {
         AssertExpectException(() => act.AssertIsDisabled(), "Assert.IsFalse failed. Action 'Do Something' is usable: ");
     }
 
-
     [Test]
     public virtual void TestAssertIsValidWithParms() {
         var obj = NewTestObject<Object1>();
@@ -241,4 +239,21 @@ public class TestTestAction : AcceptanceTestCase {
         AssertExpectException(() => act.AssertIsDescribedAs("Does something"), "Assert.IsTrue failed. Description expected: 'Does something' actual: 'Does nothing'");
     }
 
+    [Test]
+    public virtual void TestAssertLastMessageIs() {
+        var obj = NewTestObject<Object2>();
+        var act = obj.GetAction("Always Disabled");
+        act.AssertIsDisabled();
+        act.AssertLastMessageIs("Always disabled");
+        AssertExpectException(() => act.AssertLastMessageIs("Always visible"), "Assert.IsTrue failed. Last message expected: 'Always visible' actual: 'Always disabled'");
+    }
+
+    [Test]
+    public virtual void TestAssertLastMessageContains() {
+        var obj = NewTestObject<Object2>();
+        var act = obj.GetAction("Always Disabled");
+        act.AssertIsDisabled();
+        act.AssertLastMessageContains("disabled");
+        AssertExpectException(() => act.AssertLastMessageContains("visible"), "Assert.IsTrue failed. Last message expected to contain: 'visible' actual: 'Always disabled'");
+    }
 }
