@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace ROSI.Test.Data;
@@ -44,7 +45,7 @@ public  class EFCoreRATLTestDbContext : DbContext {
 
     private static void Seed(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Object1>().HasData(new Object1 { Id = 1, Prop1 = 1, Prop2 = "foo"});
-        modelBuilder.Entity<Object2>().HasData(new Object2 { Id = 1});
+        modelBuilder.Entity<Object2>().HasData(new Object2 { Id = 1, Prop1 = "a name", Prop2 = new DateTime(2023, 2, 28)});
       
     }
 }

@@ -71,6 +71,9 @@ public class Object2 {
     [Named("something else")]
     public virtual string Prop1 { get; set; }
 
+    [Mask("d")]
+    public virtual DateTime Prop2 { get; set; }
+
 
     [Disabled]
     public void AlwaysDisabled() { }

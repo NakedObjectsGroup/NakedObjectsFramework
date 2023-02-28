@@ -78,5 +78,21 @@ public class TestTestProperty : AcceptanceTestCase {
 
         Assert.AreEqual("Prop1", prop.Id);
     }
+
+    [Test]
+    public virtual void TestTitle() {
+        var obj = NewTestObject<Object2>();
+        var prop = obj.GetPropertyById(nameof(Object2.Prop1));
+
+        Assert.AreEqual("a name", prop.Title);
+    }
+
+    [Test]
+    public virtual void TestTitleWithMask() {
+        var obj = NewTestObject<Object2>();
+        var prop = obj.GetPropertyById(nameof(Object2.Prop2));
+
+        Assert.AreEqual("28/02/2023", prop.Title);
+    }
     
 }
