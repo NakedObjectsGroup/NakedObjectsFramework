@@ -30,15 +30,6 @@ internal class TestParameter : ITestParameter {
             _ => null
         };
 
-    private ITestNaked[] GetChoices(IHasChoices hasChoices) {
-        var valueChoices = hasChoices.GetChoices().ToArray();
-        if (valueChoices?.Any() == true) {
-            return valueChoices.Select(v => new TestValue(v)).Cast<ITestNaked>().ToArray();
-        }
-
-        return hasChoices.GetLinkChoices().Select(l => RATLHelpers.GetTestObject(l, AcceptanceTestCase)).Cast<ITestNaked>().ToArray();
-    }
-
     public ITestNaked[] GetChoices() => GetChoices(parameter);
 
     public ITestNaked[] GetCompletions(string autoCompleteParm) {
@@ -76,4 +67,13 @@ internal class TestParameter : ITestParameter {
     }
 
     public bool Match(Type type) => Type == type;
+
+    private ITestNaked[] GetChoices(IHasChoices hasChoices) {
+        var valueChoices = hasChoices.GetChoices().ToArray();
+        if (valueChoices?.Any() == true) {
+            return valueChoices.Select(v => new TestValue(v)).Cast<ITestNaked>().ToArray();
+        }
+
+        return hasChoices.GetLinkChoices().Select(l => RATLHelpers.GetTestObject(l, AcceptanceTestCase)).Cast<ITestNaked>().ToArray();
+    }
 }

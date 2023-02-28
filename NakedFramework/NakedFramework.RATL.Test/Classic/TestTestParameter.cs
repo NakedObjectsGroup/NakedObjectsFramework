@@ -8,10 +8,9 @@ using NakedFramework.Rest.Extensions;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using ROSI.Records;
 using ROSI.Test.Data;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using static NakedFramework.RATL.Test.Classic.TestHelpers;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedFramework.RATL.Test.Classic;
 
@@ -159,5 +158,13 @@ public class TestTestParameter : AcceptanceTestCase {
         var param = obj.GetAction("Return Collection").Parameters.Last();
         param.AssertIsDescribedAs("a param");
         AssertExpectException(() => param.AssertIsDescribedAs("an param"), "Assert.IsTrue failed. Parameter: Param1 description: 'a param' expected: 'an param'");
+    }
+
+    [Test]
+    public virtual void TestAssertIsNamed() {
+        var obj = NewTestObject<Object2>();
+        var param = obj.GetAction("Return Collection").Parameters.Last();
+        param.AssertIsNamed("Param1");
+        AssertExpectException(() => param.AssertIsNamed("Param2"), "Assert.IsTrue failed. Parameter name :'Param1' expected 'Param2'");
     }
 }
