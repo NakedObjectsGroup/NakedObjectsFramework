@@ -11,6 +11,7 @@ using NUnit.Framework;
 using ROSI.Records;
 using ROSI.Test.Data;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using static NakedFramework.RATL.Test.Classic.TestHelpers;
 
 namespace NakedFramework.RATL.Test.Classic;
 
@@ -115,5 +116,48 @@ public class TestTestParameter : AcceptanceTestCase {
 
         Assert.AreEqual(1, completions.Length);
         Assert.AreEqual("FooBar", completions.First().Title);
+    }
+
+    [Test]
+    public virtual void TestGetDefault() {
+        var obj = NewTestObject<Object2>();
+        var param = obj.GetAction("Return Collection").Parameters.First();
+        var def = param.GetDefault();
+
+        Assert.AreEqual("8", def.Title);
+    }
+
+    [Test]
+    public virtual void TestAssertIsMandatory() {
+        var obj = NewTestObject<Object2>();
+        var param = obj.GetAction("Return Collection").Parameters.First();
+
+        param.AssertIsMandatory();
+        AssertExpectException(() => param.AssertIsOptional(), "Assert.IsTrue failed. Parameter: Param0 is mandatory");
+    }
+
+    [Test]
+    public virtual void TestAssertIsOptional() {
+        var obj = NewTestObject<Object2>();
+        var param = obj.GetAction("Return Collection").Parameters.Last();
+
+        param.AssertIsOptional();
+        AssertExpectException(() => param.AssertIsMandatory(), "Assert.IsTrue failed. Parameter: Param1 is optional");
+    }
+
+    [Test]
+    public virtual void TestAssertIsDescribedAsNone() {
+        var obj = NewTestObject<Object2>();
+        var param = obj.GetAction("Return Collection").Parameters.First();
+        param.AssertIsDescribedAs("");
+        AssertExpectException(() => param.AssertIsDescribedAs("a description"), "Assert.IsTrue failed. Parameter: Param0 description: '' expected: 'a description'");
+    }
+
+    [Test]
+    public virtual void TestAssertIsDescribedAs() {
+        var obj = NewTestObject<Object2>();
+        var param = obj.GetAction("Return Collection").Parameters.Last();
+        param.AssertIsDescribedAs("a param");
+        AssertExpectException(() => param.AssertIsDescribedAs("an param"), "Assert.IsTrue failed. Parameter: Param1 description: 'a param' expected: 'an param'");
     }
 }

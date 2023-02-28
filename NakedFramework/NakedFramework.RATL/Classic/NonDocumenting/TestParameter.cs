@@ -66,12 +66,12 @@ internal class TestParameter : ITestParameter {
     }
 
     public ITestParameter AssertIsDescribedAs(string description) {
-        Assert.IsTrue(Description == description, $"Parameter: {Name} description: {Description} expected: {description}");
+        Assert.IsTrue(Description == description, $"Parameter: {Name} description: '{Description}' expected: '{description}'");
         return this;
     }
 
     public ITestParameter AssertIsNamed(string name) {
-        Assert.IsTrue(Name == name, $"Parameter name : {Name} expected {name}");
+        Assert.IsTrue(Name == name, $"Parameter name :'{Name}' expected '{name}'");
         return this;
     }
 
