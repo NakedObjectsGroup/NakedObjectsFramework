@@ -68,6 +68,10 @@ public class Object2 {
     [Key]
     public int Id { get; set; }
 
+    [Named("something else")]
+    public virtual string Prop1 { get; set; }
+
+
     [Disabled]
     public void AlwaysDisabled() { }
 

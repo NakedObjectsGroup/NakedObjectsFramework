@@ -1,4 +1,5 @@
-﻿using NakedFramework.RATL.Classic.Interface;
+﻿using NakedFramework.RATL.Classic.Helpers;
+using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
@@ -16,7 +17,7 @@ public class TestProperty : ITestProperty {
 
     public AcceptanceTestCase AcceptanceTestCase { get; }
 
-    public string Name => property.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.friendlyName].ToString();
+    public string Name => property.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName);
 
     public string Id => property.GetId();
 
@@ -38,7 +39,10 @@ public class TestProperty : ITestProperty {
     public string LastMessage { get; }
     public ITestNaked GetDefault() => throw new NotImplementedException();
 
-    public ITestNaked[] GetChoices() => throw new NotImplementedException();
+    public ITestNaked[] GetChoices() {
+        var details = property.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result;
+        return RATLHelpers.GetChoices(details, AcceptanceTestCase);
+    }
 
     public ITestNaked[] GetCompletions(string autoCompleteParm) => throw new NotImplementedException();
 
