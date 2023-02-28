@@ -3,6 +3,7 @@ using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Helpers;
+using ROSI.Interfaces;
 using ROSI.Records;
 
 namespace NakedFramework.RATL.Classic.NonDocumenting;
@@ -29,16 +30,21 @@ internal class TestParameter : ITestParameter {
             _ => null
         };
 
-    public ITestNaked[] GetChoices() {
-        var valueChoices = parameter.GetChoices().ToArray();
+    private ITestNaked[] GetChoices(IHasChoices hasChoices) {
+        var valueChoices = hasChoices.GetChoices().ToArray();
         if (valueChoices?.Any() == true) {
             return valueChoices.Select(v => new TestValue(v)).Cast<ITestNaked>().ToArray();
         }
 
-        return parameter.GetLinkChoices().Select(l => RATLHelpers.GetTestObject(l, AcceptanceTestCase)).Cast<ITestNaked>().ToArray();
+        return hasChoices.GetLinkChoices().Select(l => RATLHelpers.GetTestObject(l, AcceptanceTestCase)).Cast<ITestNaked>().ToArray();
     }
 
-    public ITestNaked[] GetCompletions(string autoCompleteParm) => throw new NotImplementedException();
+    public ITestNaked[] GetChoices() => GetChoices(parameter);
+
+    public ITestNaked[] GetCompletions(string autoCompleteParm) {
+        var prompt = parameter.GetPrompts(AcceptanceTestCase.TestInvokeOptions(), autoCompleteParm).Result;
+        return GetChoices(prompt);
+    }
 
     public ITestNaked GetDefault() {
         if (parameter.GetLinkDefault() is { } link) {

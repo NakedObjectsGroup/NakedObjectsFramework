@@ -132,6 +132,17 @@ public class StubHttpMessageHandler : HttpMessageHandler {
         return await GetResponse(ar);
     }
 
+    private async Task<HttpResponseMessage> SendAsyncParameterPrompt(HttpRequestMessage request, string obj, string key, string action, string param) {
+        var method = request.Method;
+        var query = request.RequestUri.Query.TrimStart('?');
+
+        var am = ModelBinderUtils.CreateSimpleArgumentMap(query) ?? ModelBinderUtils.CreateArgumentMap(JObject.Parse(HttpUtility.UrlDecode(query)), true);
+
+        var ar = Api.AsGet().GetParameterPrompt(obj, key, action, param, am);
+
+        return await GetResponse(ar);
+    }
+
 
     private async Task<HttpResponseMessage> SendAsyncAction(HttpRequestMessage request, string obj, string key, string action) {
         var method = request.Method;
@@ -188,6 +199,9 @@ public class StubHttpMessageHandler : HttpMessageHandler {
                     case "collections/":
                         return await SendAsyncCollection(request, obj, key, segments[5]);
                     case "actions/":
+                        if (segments.Length == 9) {
+                            return await SendAsyncParameterPrompt(request, obj, key, segments[5].TrimEnd('/'), segments[7].TrimEnd('/'));
+                        }
                         if (segments.Length > 6) {
                             return await SendAsyncAction(request, obj, key, segments[5].TrimEnd('/'));
                         }

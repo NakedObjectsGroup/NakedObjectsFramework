@@ -43,7 +43,7 @@ public  class EFCoreRATLTestDbContext : DbContext {
     }
 
     private static void Seed(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<Object1>().HasData(new Object1 { Id = 1, Prop1 = 1});
+        modelBuilder.Entity<Object1>().HasData(new Object1 { Id = 1, Prop1 = 1, Prop2 = "foo"});
         modelBuilder.Entity<Object2>().HasData(new Object2 { Id = 1});
       
     }

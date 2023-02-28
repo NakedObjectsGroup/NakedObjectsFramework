@@ -106,4 +106,14 @@ public class TestTestParameter : AcceptanceTestCase {
         Assert.AreEqual(3, choices.Length);
         Assert.AreEqual("0", choices.First().Title);
     }
+
+    [Test]
+    public virtual void TestGetCompletions() {
+        var obj = NewTestObject<Object2>();
+        var param = obj.GetAction("With Auto Complete").Parameters.First();
+        var completions = param.GetCompletions("foo");
+
+        Assert.AreEqual(1, completions.Length);
+        Assert.AreEqual("FooBar", completions.First().Title);
+    }
 }
