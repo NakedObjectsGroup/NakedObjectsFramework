@@ -194,4 +194,51 @@ public class TestTestAction : AcceptanceTestCase {
         AssertExpectException(() => act.AssertIsDisabled(), "Assert.IsFalse failed. Action 'Do Something' is usable: ");
     }
 
+
+    [Test]
+    public virtual void TestAssertIsValidWithParms() {
+        var obj = NewTestObject<Object1>();
+        var act = obj.GetAction("Do Something");
+
+        act.AssertIsValidWithParms(1, "something");
+
+        AssertExpectException(() => act.AssertIsValidWithParms("something", 1), "Assert.Fail failed. Invalid Argument(s)");
+    }
+
+    [Test]
+    public virtual void TestAssertIsInvalidWithParms() {
+        var obj = NewTestObject<Object1>();
+        var act = obj.GetAction("Do Something");
+
+        act.AssertIsInvalidWithParms("something", 1);
+
+        AssertExpectException(() => act.AssertIsInvalidWithParms(1, "something"), "Assert.IsFalse failed. Action 'Do Something' is usable and executable");
+    }
+
+    [Test]
+    public virtual void TestAssertIsVisible() {
+        var obj = NewTestObject<Object2>();
+        var act = obj.GetAction("Always Disabled");
+        act.AssertIsVisible();
+        act.AssertLastMessageIs("");
+        AssertExpectException(() => act.AssertIsInvisible(), "Assert.IsTrue failed. Action 'Always Disabled' is visible");
+        act.AssertLastMessageIs("");
+    }
+
+    [Test]
+    public virtual void TestAssertIsDescribedAsNone() {
+        var obj = NewTestObject<Object2>();
+        var act = obj.GetAction("Always Disabled");
+        act.AssertIsDescribedAs("");
+        AssertExpectException(() => act.AssertIsDescribedAs("a description"), "Assert.IsTrue failed. Description expected: 'a description' actual: ''");
+    }
+
+    [Test]
+    public virtual void TestAssertIsDescribedAs() {
+        var obj = NewTestObject<Object2>();
+        var act = obj.GetAction("Return Void");
+        act.AssertIsDescribedAs("Does nothing");
+        AssertExpectException(() => act.AssertIsDescribedAs("Does something"), "Assert.IsTrue failed. Description expected: 'Does something' actual: 'Does nothing'");
+    }
+
 }
