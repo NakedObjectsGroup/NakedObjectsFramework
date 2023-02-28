@@ -2,6 +2,7 @@
 using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
+using ROSI.Interfaces;
 using ROSI.Records;
 using static NakedFramework.RATL.Classic.Helpers.RATLHelpers;
 
@@ -9,10 +10,10 @@ namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal class TestCollection : ITestCollection {
     private readonly AcceptanceTestCase acceptanceTestCase;
-    private readonly List collection;
+    private readonly IHasValue collection;
     private IEnumerable<ITestObject> wrappedCollection;
 
-    public TestCollection(List collection, AcceptanceTestCase acceptanceTestCase) {
+    public TestCollection(IHasValue collection, AcceptanceTestCase acceptanceTestCase) {
         this.collection = collection;
         this.acceptanceTestCase = acceptanceTestCase;
     }

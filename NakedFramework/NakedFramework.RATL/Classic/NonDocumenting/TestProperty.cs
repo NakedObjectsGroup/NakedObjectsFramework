@@ -3,27 +3,28 @@ using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
+using ROSI.Interfaces;
 using ROSI.Records;
 
 namespace NakedFramework.RATL.Classic.NonDocumenting; 
 
 public class TestProperty : ITestProperty {
-    private readonly PropertyMember property;
+    private readonly IMember member;
 
-    public TestProperty(PropertyMember property, AcceptanceTestCase acceptanceTestCase) {
-        this.property = property;
+    public TestProperty(IMember member, AcceptanceTestCase acceptanceTestCase) {
+        this.member = member;
         AcceptanceTestCase = acceptanceTestCase;
     }
 
     public AcceptanceTestCase AcceptanceTestCase { get; }
 
-    public string Name => property.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName);
+    public string Name => member.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName);
 
-    public string Id => property.GetId();
+    public string Id => member.GetId();
 
     public string Title {
         get {
-            var mask = property.SafeGetExtension(ExtensionsApi.ExtensionKeys.x_ro_nof_mask)?.ToString();
+            var mask = member.SafeGetExtension(ExtensionsApi.ExtensionKeys.x_ro_nof_mask)?.ToString();
             if (string.IsNullOrEmpty(mask)) {
                 return Content.Title;
             }
@@ -34,14 +35,16 @@ public class TestProperty : ITestProperty {
         }
     }
 
-    public ITestObject ContentAsObject { get; }
-    public ITestCollection ContentAsCollection { get; }
     public string LastMessage { get; }
     public ITestNaked GetDefault() => throw new NotImplementedException();
 
     public ITestNaked[] GetChoices() {
-        var details = property.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result;
-        return RATLHelpers.GetChoices(details, AcceptanceTestCase);
+        if (member is PropertyMember property) {
+            var details = property.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result;
+            return RATLHelpers.GetChoices(details, AcceptanceTestCase);
+        }
+
+        return Array.Empty<ITestNaked>();
     }
 
     public ITestNaked[] GetCompletions(string autoCompleteParm) => throw new NotImplementedException();
@@ -53,7 +56,10 @@ public class TestProperty : ITestProperty {
     public ITestProperty ClearObject() => throw new NotImplementedException();
 
     public ITestProperty SetValue(string textEntry) {
-        property.Wrapped["value"] = new JValue(textEntry);
+        if (member is PropertyMember property) {
+            property.Wrapped["value"] = new JValue(textEntry);
+        }
+
         return this;
     }
 
@@ -97,24 +103,19 @@ public class TestProperty : ITestProperty {
 
     public ITestProperty AssertLastMessageContains(string message) => throw new NotImplementedException();
 
-    public ITestNaked Content {
-        get {
-            if (property.GetLinkValue() is { } link) {
-                var domainObject = ROSIApi.GetObject(link.GetHref(), AcceptanceTestCase.TestInvokeOptions()).Result;
-                return new TestObject(domainObject, AcceptanceTestCase);
-            }
+    public ITestNaked Content =>
+        member switch {
+            IProperty property when property.GetLinkValue() is { } link => new TestObject(ROSIApi.GetObject(link.GetHref(), AcceptanceTestCase.TestInvokeOptions()).Result, AcceptanceTestCase),
+            IProperty property => new TestValue(property.ConvertValue()),
+            CollectionMember collection => new TestCollection(collection.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result, AcceptanceTestCase),
+            IHasValue collection => new TestCollection(collection, AcceptanceTestCase),
+            _ => null
+        };
 
-            return new TestValue(property.ConvertValue());
-        }
-    }
+    public ITestObject ContentAsObject => (ITestObject)Content;
 
-    //public ITestObject ContentAsObject {
-    //    get { return (ITestObject) Content; }
-    //}
-
-    //public ITestCollection ContentAsCollection {
-    //    get { return (ITestCollection) Content; }
-    //}
+    public ITestCollection ContentAsCollection => (ITestCollection)Content;
+  
 
     //public ITestNaked GetDefault() {
     //    INakedObject defaultValue = field.GetDefault(owningObject.NakedObject);
@@ -352,7 +353,7 @@ public class TestProperty : ITestProperty {
     //}
 
     public ITestProperty AssertIsVisible() {
-        Assert.IsTrue(property is not null, $"Field '{Name}' is invisible");
+        Assert.IsTrue(member is not null, $"Field '{Name}' is invisible");
         return this;
     }
 

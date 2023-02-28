@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
+using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
@@ -95,4 +96,33 @@ public class TestTestProperty : AcceptanceTestCase {
         Assert.AreEqual("28/02/2023", prop.Title);
     }
     
+    [Test]
+    public virtual void TestContent() {
+        var obj = NewTestObject<Object2>();
+        var prop = obj.GetPropertyById(nameof(Object2.Prop1));
+        var content = prop.Content;
+
+        Assert.AreEqual("a name", content.Title);
+    }
+
+    [Test]
+    public virtual void TestContentAsObject() {
+        var obj = NewTestObject<Object2>();
+        var prop = obj.GetPropertyById(nameof(Object2.Prop3));
+        var content = prop.ContentAsObject;
+
+        Assert.IsInstanceOfType(content, typeof(ITestObject));
+        Assert.AreEqual("Untitled Object2", content.Title);
+    }
+
+    [Test]
+    public virtual void TestContentAsCollection() {
+        var obj = NewTestObject<Object2>();
+        var prop = obj.GetPropertyById(nameof(Object2.Prop4));
+        var content = prop.ContentAsCollection;
+
+        Assert.IsInstanceOfType(content, typeof(ITestCollection));
+        Assert.AreEqual(0, content.Count());
+    }
+
 }

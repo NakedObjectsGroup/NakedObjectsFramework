@@ -18,7 +18,14 @@ internal class TestObject : TestHasActions, ITestObject {
         }
     }
 
-    public ITestProperty[] Properties => DomainObject.GetProperties().Select(p => new TestProperty(p, AcceptanceTestCase)).Cast<ITestProperty>().ToArray();
+    public ITestProperty[] Properties {
+        get {
+            var ps = DomainObject.GetProperties().Select(p => new TestProperty(p, AcceptanceTestCase)).Cast<ITestProperty>();
+            var cs = DomainObject.GetCollections().Select(p => new TestProperty(p, AcceptanceTestCase)).Cast<ITestProperty>();
+
+            return ps.Union(cs).ToArray();
+        }
+    }
 
     public ITestObject AssertTitleEquals(string expectedTitle) {
         var actualTitle = Title;
