@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -73,6 +75,10 @@ public class Object2 {
 
     [Mask("d")]
     public virtual DateTime Prop2 { get; set; }
+
+    public virtual Object2 Prop3 => this;
+
+    public virtual ICollection<Object2> Prop4 { get; set;  } = new List<Object2>();
 
 
     [Disabled]
