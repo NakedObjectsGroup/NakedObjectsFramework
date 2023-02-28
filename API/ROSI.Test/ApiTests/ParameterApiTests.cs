@@ -47,4 +47,33 @@ public class ParameterApiTests : AbstractRosiApiTests {
         Assert.IsTrue(classParameter.HasDefault());
         Assert.IsNull(classParameter.GetDefault<int?>());
     }
+
+    [Test]
+    public void TestGetEmptyPrompt() {
+        var objectRep = GetObject(FullName<ClassWithActions>(), "1");
+        var action = objectRep.GetAction(nameof(ClassWithActions.ActionWithAutoComplete));
+
+        var parameters = action.GetParameters(TestInvokeOptions()).Result;
+
+        var prompt = parameters.Parameters().First().Value.GetPrompts(TestInvokeOptions(), "foo").Result;
+
+        Assert.AreEqual(0, prompt.GetLinkChoices().Count());
+    }
+
+    [Test]
+    public void TestGetLinkPrompt() {
+        var objectRep = GetObject(FullName<ClassWithActions>(), "1");
+        var action = objectRep.GetAction(nameof(ClassWithActions.ActionWithAutoComplete));
+
+        var parameters = action.GetParameters(TestInvokeOptions()).Result;
+
+        var prompt = parameters.Parameters().First().Value.GetPrompts(TestInvokeOptions(), "e").Result;
+        var choices = prompt.GetLinkChoices();
+
+
+        Assert.AreEqual(2, choices.Count());
+
+        Assert.AreEqual("Class:1", choices.First().GetTitle());
+        Assert.AreEqual("Class:2", choices.Last().GetTitle());
+    }
 }

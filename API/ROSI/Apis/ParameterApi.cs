@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
+using ROSI.Exceptions;
 using ROSI.Helpers;
 using ROSI.Records;
 
@@ -24,4 +26,10 @@ public static class ParameterApi {
 
     public static Link? GetLinkDefault(this Parameter parameterRepresentation) =>
         parameterRepresentation.GetOptionalProperty(JsonConstants.Default) is JObject jo ? new Link(jo) : null;
+
+    public static async Task<Prompt> GetPrompts(this Parameter parameterRepresentation, InvokeOptions options, params object[] pp) {
+        var link = parameterRepresentation.GetLinks().GetPromptLink() ?? throw new NoSuchPropertyRosiException("Missing prompt link in parameter");
+        var (json, tag) = await HttpHelpers.Execute(link, options, pp);
+        return new Prompt(JObject.Parse(json));
+    }
 }

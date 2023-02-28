@@ -75,6 +75,10 @@ public class Object2 {
 
     public Object1[] Choices0WithRefParam() => Container.Instances<Object1>().ToArray();
 
+    public Object1 WithAutoComplete(Object1 refParam) => refParam;
+
+    public IQueryable<Object1> AutoComplete0WithAutoComplete(string title) => Container.Instances<Object1>().Where(o => o.Prop2.Contains(title));
+
     public IQueryable<Object2> ReturnCollection([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) => Container.Instances<Object2>().Take(param0);
 
     public int[] Choices0ReturnCollection() => new[] { 0, 1, 2 };

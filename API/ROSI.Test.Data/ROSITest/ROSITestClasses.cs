@@ -140,6 +140,11 @@ public class ClassWithActions
     public Class ActionFailsCrossValidation(int index, string str) => Container.Instances<Class>().FirstOrDefault();
 
     public string ValidateActionFailsCrossValidation(int index, string str) => "Fail parameter validation";
+
+    public Class ActionWithAutoComplete(Class cls) => cls;
+
+    public IQueryable<Class> AutoComplete0ActionWithAutoComplete(string s) => Container.Instances<Class>().Where(c => c.Property1.Contains(s));
+
 }
 
 public enum TestEnum
