@@ -65,7 +65,7 @@ internal class TestAction : ITestAction {
         try {
             AssertIsValidWithParms(parameters);
         }
-        catch (AssertFailedException expected) {
+        catch (AssertFailedException) {
             return this;
         }
 

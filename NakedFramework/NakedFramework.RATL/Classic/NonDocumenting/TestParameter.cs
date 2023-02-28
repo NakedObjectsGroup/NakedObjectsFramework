@@ -16,21 +16,26 @@ internal class TestParameter : ITestParameter {
     }
 
     internal AcceptanceTestCase AcceptanceTestCase { get; }
-    public string Description => parameter.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.description].ToString();
-    public bool IsOptional => (bool)parameter.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.optional];
+    public string Description => parameter.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.description);
+    public bool IsOptional => parameter.GetExtensions().GetExtension<bool>(ExtensionsApi.ExtensionKeys.optional);
     public bool IsMandatory => !IsOptional;
     public string Title => throw new NotImplementedException();
-    public string Name => parameter.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.friendlyName].ToString();
-    public Type Type => parameter.TypeToMatch();
+    public string Name => parameter.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName);
+
+    public Type Type =>
+        parameter.TypeToMatch() switch {
+            { } t when t == typeof(Link) => RATLHelpers.GetType(parameter.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.returnType)),
+            { } t => t,
+            _ => null
+        };
 
     public ITestNaked[] GetChoices() {
-        var valueChoices = parameter.GetChoices();
+        var valueChoices = parameter.GetChoices().ToArray();
         if (valueChoices?.Any() == true) {
-            return valueChoices.Select(v => new TestValue(v)).ToArray();
+            return valueChoices.Select(v => new TestValue(v)).Cast<ITestNaked>().ToArray();
         }
 
-        var choices = parameter.GetLinkChoices();
-        return choices.Select(l => TestCaseHelpers.GetTestObject(l, AcceptanceTestCase)).Cast<ITestNaked>().ToArray();
+        return parameter.GetLinkChoices().Select(l => RATLHelpers.GetTestObject(l, AcceptanceTestCase)).Cast<ITestNaked>().ToArray();
     }
 
     public ITestNaked[] GetCompletions(string autoCompleteParm) => throw new NotImplementedException();
@@ -64,5 +69,5 @@ internal class TestParameter : ITestParameter {
         return this;
     }
 
-    public bool Match(Type type) => Type == typeof(Link) ? parameter.SafeGetExtension(ExtensionsApi.ExtensionKeys.returnType)?.ToString() == type.FullName : Type == type;
+    public bool Match(Type type) => Type == type;
 }

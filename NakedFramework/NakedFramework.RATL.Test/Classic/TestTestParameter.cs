@@ -84,7 +84,7 @@ public class TestTestParameter : AcceptanceTestCase {
         var obj = NewTestObject<Object2>();
         var param = obj.GetAction("With Ref Param").Parameters.First();
 
-        Assert.AreEqual(typeof(Link), param.Type);
+        Assert.AreEqual(typeof(Object1), param.Type);
     }
 
     [Test]

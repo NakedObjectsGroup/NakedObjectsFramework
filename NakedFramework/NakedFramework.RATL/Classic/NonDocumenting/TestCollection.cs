@@ -3,7 +3,7 @@ using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Records;
-using static NakedFramework.RATL.Classic.Helpers.TestCaseHelpers;
+using static NakedFramework.RATL.Classic.Helpers.RATLHelpers;
 
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 

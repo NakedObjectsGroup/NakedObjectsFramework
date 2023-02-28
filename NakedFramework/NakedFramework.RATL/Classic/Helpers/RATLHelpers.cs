@@ -6,6 +6,9 @@ using ROSI.Records;
 
 namespace NakedFramework.RATL.Classic.Helpers;
 
-public static class TestCaseHelpers {
+public static class RATLHelpers {
     public static ITestObject GetTestObject(Link l, AcceptanceTestCase tc) => new TestObject(ROSIApi.GetObject(l.GetHref(), tc.TestInvokeOptions()).Result, tc);
+
+    public static Type GetType(string typeName) =>
+        AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(typeName)).FirstOrDefault(type => type is not null);
 }
