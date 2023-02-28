@@ -86,6 +86,28 @@ public class PropertyApiTests : AbstractRosiApiTests {
     }
 
     [Test]
+    public void TestGetObjectChoicesFromDetails() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var details = objectRep.GetProperty(nameof(Class.PropertyWithScalarChoices)).GetDetails(TestInvokeOptions()).Result;
+        Assert.IsNotNull(details);
+
+        Assert.IsTrue(details.GetHasChoices());
+
+        var choices = details.GetChoices();
+
+        Assert.AreEqual(3, choices.Count());
+
+        Assert.IsInstanceOf<long>(choices.First());
+
+        var ext = details.GetExtensions().GetExtension<Dictionary<string, object>>(ExtensionsApi.ExtensionKeys.x_ro_nof_choices);
+
+        Assert.AreEqual(3, ext.Count());
+
+        Assert.AreEqual("Choice One", ext.Keys.First());
+        Assert.AreEqual(0, ext.Values.First());
+    }
+
+    [Test]
     public void TestGetLinkChoicesFromDetails() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var details = objectRep.GetProperty(nameof(Class.Property3)).GetDetails(TestInvokeOptions()).Result;

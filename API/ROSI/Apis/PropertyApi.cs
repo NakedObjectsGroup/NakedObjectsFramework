@@ -40,7 +40,7 @@ public static class PropertyApi {
     }
 
     public static object? ConvertNumberFormat(this IProperty fromProperty) {
-        var format = fromProperty.GetExtensions().GetExtension<string>("format");
+        var format = fromProperty.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.format);
         return format switch {
             "decimal" => fromProperty.Convert(typeof(double)),
             "int" => fromProperty.Convert(typeof(int)),
@@ -49,7 +49,7 @@ public static class PropertyApi {
     }
 
     public static object? ConvertStringFormat(this IProperty fromProperty) {
-        var format = fromProperty.GetExtensions().GetExtension<string>("format");
+        var format = fromProperty.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.format);
         return format switch {
             "string" => fromProperty.GetValue<string>(),
             "date-time" => fromProperty.GetValue<string>() is { } s ? DateTime.Parse(s, CultureInfo.InvariantCulture) : null,
@@ -65,7 +65,7 @@ public static class PropertyApi {
     }
 
     public static object? ConvertValue(this IProperty fromProperty) {
-        var returnType = fromProperty.GetExtensions().GetExtension<string>("returnType");
+        var returnType = fromProperty.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.returnType);
         return returnType switch {
             "boolean" => fromProperty.Convert(typeof(bool)),
             "number" => fromProperty.ConvertNumberFormat(),

@@ -47,7 +47,7 @@ public static class ApiHelpers {
         };
 
     public static Type NumberTypeToMatch(this IHasExtensions owner) {
-        var format = owner.GetExtensions().GetExtension<string>("format");
+        var format = owner.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.format);
         return format switch {
             "decimal" => typeof(double),
             "int" => typeof(int),
@@ -56,7 +56,7 @@ public static class ApiHelpers {
     }
 
     public static Type StringTypeToMatch(this IHasExtensions owner) {
-        var format = owner.GetExtensions().GetExtension<string>("format");
+        var format = owner.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.format);
         return format switch {
             "string" => typeof(string),
             "date-time" => typeof(DateTime),
@@ -72,7 +72,7 @@ public static class ApiHelpers {
     }
 
     public static Type TypeToMatch(this IHasExtensions owner) {
-        var returnType = owner.GetExtensions().GetExtension<string>("returnType");
+        var returnType = owner.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.returnType);
         return returnType switch {
             "boolean" => typeof(bool),
             "number" => owner.NumberTypeToMatch(),

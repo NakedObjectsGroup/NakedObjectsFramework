@@ -63,6 +63,8 @@ public class Object1 {
 
 [DescribedAs("an object")]
 public class Object2 {
+    public IDomainObjectContainer Container { protected get; set; }
+
     [Key]
     public int Id { get; set; }
 
@@ -71,8 +73,11 @@ public class Object2 {
 
     public Object1 WithRefParam(Object1 refParam) => refParam;
 
-    public IQueryable<Object2> ReturnCollection([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) =>
-        new[] { this }.AsQueryable();
+    public Object1[] Choices0WithRefParam() => Container.Instances<Object1>().ToArray();
+
+    public IQueryable<Object2> ReturnCollection([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) => Container.Instances<Object2>().Take(param0);
+
+    public int[] Choices0ReturnCollection() => new[] { 0, 1, 2 };
 
     [DescribedAs("Does nothing")]
     public void ReturnVoid() { }

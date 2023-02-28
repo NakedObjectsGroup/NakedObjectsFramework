@@ -31,13 +31,8 @@ public static class ExtensionsApi {
         x_ro_nof_mask,
     }
 
-    public static IDictionary<string, object?> RawExtensions(this Extensions extensionsRepresentation) =>
-        extensionsRepresentation.Wrapped.Children().Cast<JProperty>().ToDictionary(p => p.Name, p => ((JValue)p.Value).Value);
-
     public static IDictionary<ExtensionKeys, object?> Extensions(this Extensions extensionsRepresentation) =>
         extensionsRepresentation.Wrapped.Children().Cast<JProperty>().ToDictionary(p => Enum.Parse<ExtensionKeys>(p.Name.Replace('-', '_')), p => p.MapToObject());
-
-    public static T? GetExtension<T>(this Extensions extensionsRepresentation, string key) => (T?)extensionsRepresentation.RawExtensions()[key];
 
     public static T? GetExtension<T>(this Extensions extensionsRepresentation, ExtensionKeys key) => (T?)extensionsRepresentation.Extensions()[key];
 }
