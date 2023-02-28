@@ -1,4 +1,5 @@
-﻿using NakedFramework.RATL.Classic.Interface;
+﻿using NakedFramework.RATL.Classic.Helpers;
+using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Helpers;
@@ -22,7 +23,15 @@ internal class TestParameter : ITestParameter {
     public string Name => parameter.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.friendlyName].ToString();
     public Type Type => parameter.TypeToMatch();
 
-    public ITestNaked[] GetChoices() => throw new NotImplementedException();
+    public ITestNaked[] GetChoices() {
+        var valueChoices = parameter.GetChoices();
+        if (valueChoices?.Any() == true) {
+            return valueChoices.Select(v => new TestValue(v)).ToArray();
+        }
+
+        var choices = parameter.GetLinkChoices();
+        return choices.Select(l => TestCaseHelpers.GetTestObject(l, AcceptanceTestCase)).Cast<ITestNaked>().ToArray();
+    }
 
     public ITestNaked[] GetCompletions(string autoCompleteParm) => throw new NotImplementedException();
 

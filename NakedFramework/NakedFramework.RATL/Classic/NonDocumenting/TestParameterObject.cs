@@ -1,6 +1,4 @@
-﻿using NakedFramework.Core.Error;
-
-namespace NakedFramework.RATL.Classic.NonDocumenting; 
+﻿namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal class TestParameterObject {
     private readonly object domainObject;
@@ -9,7 +7,7 @@ internal class TestParameterObject {
 
     #region ITestValue Members
 
-    public string Title =>throw new NotImplementedException();// NakedObject.TitleString();
+    public string Title => throw new NotImplementedException(); // NakedObject.TitleString();
 
     //public INakedObject NakedObject {
     //    get => PersistorUtils.CreateAdapter(domainObject);
@@ -18,4 +16,3 @@ internal class TestParameterObject {
 
     #endregion
 }
-

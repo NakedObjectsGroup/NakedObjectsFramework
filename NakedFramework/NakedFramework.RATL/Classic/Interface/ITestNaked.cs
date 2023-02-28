@@ -1,6 +1,5 @@
 ﻿namespace NakedFramework.RATL.Classic.Interface;
 
-public interface ITestNaked
-{
+public interface ITestNaked {
     string Title { get; }
 }

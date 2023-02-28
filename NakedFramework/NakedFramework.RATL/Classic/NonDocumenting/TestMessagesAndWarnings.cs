@@ -1,15 +1,15 @@
-﻿namespace NakedFramework.RATL.Classic.NonDocumenting; 
+﻿namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 public static class TestMessagesAndWarnings {
     /// <summary>
     ///     Messages written by <see cref="IDomainObjectContainer.InformUser" /> - This clears once read !
     /// </summary>
-    public static string[] Messages => throw new NotImplementedException();//NakedObjectsContext.MessageBroker.Messages;
+    public static string[] Messages => throw new NotImplementedException(); //NakedObjectsContext.MessageBroker.Messages;
 
     /// <summary>
     ///     Warnings written by <see cref="IDomainObjectContainer.WarnUser" /> - This clears once read !
     /// </summary>
-    public static string[] Warnings =>throw new NotImplementedException();// NakedObjectsContext.MessageBroker.Warnings;
+    public static string[] Warnings => throw new NotImplementedException(); // NakedObjectsContext.MessageBroker.Warnings;
 
     /// <summary>
     ///     Messages written by <see cref="IDomainObjectContainer.InformUser" /> - This clears all messages once asserted !
@@ -41,4 +41,3 @@ public static class TestMessagesAndWarnings {
         Assert.IsTrue(lastWarning.Contains(expected), @"Last warning expected to contain: '{0}' actual: '{1}'", expected, lastWarning);
     }
 }
-

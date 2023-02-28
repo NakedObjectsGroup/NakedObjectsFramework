@@ -3,33 +3,23 @@ using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Records;
+using static NakedFramework.RATL.Classic.Helpers.TestCaseHelpers;
 
-namespace NakedFramework.RATL.Classic.NonDocumenting; 
+namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal class TestCollection : ITestCollection {
-    private readonly List collection;
     private readonly AcceptanceTestCase acceptanceTestCase;
+    private readonly List collection;
     private IEnumerable<ITestObject> wrappedCollection;
-
-    public IEnumerable<ITestObject> WrappedCollection {
-        get {
-            ITestObject GetTestObject(Link l) => new TestObject(ROSIApi.GetObject(l.GetHref(), acceptanceTestCase.TestInvokeOptions()).Result, acceptanceTestCase);
-
-            return wrappedCollection ??= collection.GetValue().Select(GetTestObject).ToArray();
-        }
-    }
 
     public TestCollection(List collection, AcceptanceTestCase acceptanceTestCase) {
         this.collection = collection;
         this.acceptanceTestCase = acceptanceTestCase;
-        
     }
 
-    #region ITestCollection Members
+    public IEnumerable<ITestObject> WrappedCollection => wrappedCollection ??= collection.GetValue().Select(link => GetTestObject(link, acceptanceTestCase)).ToArray();
 
     public string Title => throw new NotImplementedException();
-
-    // public INakedObject NakedObject => collection;
 
     public ITestCollection AssertIsEmpty() {
         Assert.AreEqual(0, this.Count(), "Collection is not empty");
@@ -46,23 +36,17 @@ internal class TestCollection : ITestCollection {
         return this;
     }
 
-    public IEnumerator<ITestObject> GetEnumerator() {
-        return WrappedCollection.GetEnumerator();
-    }
+    public IEnumerator<ITestObject> GetEnumerator() => WrappedCollection.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator() {
-        return GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public ITestCollection AssertIsTransient() {
-       // Assert.IsTrue(NakedObject.ResolveState.IsTransient(), "Collection is not transient");
+        throw new NotImplementedException();
         return this;
     }
 
     public ITestCollection AssertIsPersistent() {
-       // Assert.IsTrue(NakedObject.ResolveState.IsPersistent(), "Collection is not persistent");
+        throw new NotImplementedException();
         return this;
     }
-
-    #endregion
 }

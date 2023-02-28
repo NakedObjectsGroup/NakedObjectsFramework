@@ -1,5 +1,4 @@
-﻿using System.Text;
-using NakedFramework.RATL.Classic.Interface;
+﻿using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Exceptions;
@@ -118,8 +117,6 @@ internal class TestObject : TestHasActions, ITestObject {
         return this;
     }
 
-    private bool IsInteractionMode(string mode) => DomainObject.SafeGetExtension(ExtensionsApi.ExtensionKeys.x_ro_nof_interactionMode)?.ToString() == mode;
-
     public ITestObject AssertIsDescribedAs(string expected) {
         var description = DomainObject.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.description].ToString();
         Assert.IsTrue(expected.Equals(description), $"Description expected: '{expected}' actual: '{description}'");
@@ -127,4 +124,6 @@ internal class TestObject : TestHasActions, ITestObject {
     }
 
     public ITestObject AssertIsImmutable() => throw new NotImplementedException();
+
+    private bool IsInteractionMode(string mode) => DomainObject.SafeGetExtension(ExtensionsApi.ExtensionKeys.x_ro_nof_interactionMode)?.ToString() == mode;
 }
