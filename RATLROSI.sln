@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.RATL", "Nake
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.RATL.Test", "NakedFramework\NakedFramework.RATL.Test\NakedFramework.RATL.Test.csproj", "{B265CFF3-B541-43B2-9CC6-4D95E3805738}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.RATL.Package", "NakedFramework\NakedFramework.RATL.Package\NakedFramework.RATL.Package.csproj", "{6CC7A9D6-8B57-4E98-98D0-A5DB12733850}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,8 @@ Global
 		{B265CFF3-B541-43B2-9CC6-4D95E3805738}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B265CFF3-B541-43B2-9CC6-4D95E3805738}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B265CFF3-B541-43B2-9CC6-4D95E3805738}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CC7A9D6-8B57-4E98-98D0-A5DB12733850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CC7A9D6-8B57-4E98-98D0-A5DB12733850}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

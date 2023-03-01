@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>NakedFramework.RATL</id>
+		<version>1.0.0-beta03</version>
+		<authors>Naked Objects Group Ltd</authors>
+		<owners>Naked Objects Group Ltd</owners>
+		<license type="expression">Apache-2.0</license>
+		<projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
+		<icon>images\icon.png</icon>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
+		<description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
+		<tags>naked objects nakedobjects ddd domain driven design</tags>
+		<dependencies>
+			<group targetFramework="net6.0">
+				<dependency id="RestfulObjects.ROSI" version="[1.0.0-beta01, 2)" />
+			</group>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="icon.png" target="images\" />
+		<file src="..\..\NakedFramework\NakedFramework.RATL\bin\Debug\**\NakedFramework.RATL.dll"
+		      target="lib" />
+		<file src="..\..\NakedFramework\NakedFramework.RATL\bin\Debug\**\NakedFramework.RATL.pdb"
+		      target="lib" />
+	</files>
+</package>
