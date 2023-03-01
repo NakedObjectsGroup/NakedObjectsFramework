@@ -4,10 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-
-    <IsPackable>false</IsPackable>
-
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 
     <Title>RATL</Title>
 
@@ -22,6 +20,10 @@
     <PackageProjectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</PackageProjectUrl>
 
     <PackageReadmeFile>readme.md</PackageReadmeFile>
+
+    <OutputType>Library</OutputType>
+
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

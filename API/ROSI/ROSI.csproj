@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>RestfulObjects System Interface</Title>
-		<Version>1.0.0-beta01</Version>
+		<Version>1.0.0-beta02</Version>
 		<Company>Naked Objects Group Ltd</Company>
 		<Authors>Naked Objects Group Ltd</Authors>
 		<Copyright>Naked Objects Group Ltd</Copyright>
