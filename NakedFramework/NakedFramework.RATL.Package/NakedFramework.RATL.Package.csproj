@@ -5,6 +5,6 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <NuspecFile>ROSI.nuspec</NuspecFile>
+    <NuspecFile>NakedFramework.RATL.nuspec</NuspecFile>
   </PropertyGroup>
 </Project>
