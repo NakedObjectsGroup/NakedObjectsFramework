@@ -1,15 +1,17 @@
 ﻿using NakedFramework.RATL.Classic.Helpers;
 using NakedFramework.RATL.Classic.Interface;
 using NakedFramework.RATL.Classic.TestCase;
+using NakedObjects.Resources;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
 using ROSI.Interfaces;
 using ROSI.Records;
+using System;
 
 namespace NakedFramework.RATL.Classic.NonDocumenting; 
 
 public class TestProperty : ITestProperty {
-    private readonly IMember member;
+    private IMember member;
 
     public TestProperty(IMember member, AcceptanceTestCase acceptanceTestCase) {
         this.member = member;
@@ -35,7 +37,7 @@ public class TestProperty : ITestProperty {
         }
     }
 
-    public string LastMessage { get; }
+    public string LastMessage { get; private set; }
     public ITestNaked GetDefault() => throw new NotImplementedException();
 
     public ITestNaked[] GetChoices() {
@@ -49,59 +51,15 @@ public class TestProperty : ITestProperty {
 
     public ITestNaked[] GetCompletions(string autoCompleteParm) => throw new NotImplementedException();
 
-    public ITestProperty SetObject(ITestObject testObject) => throw new NotImplementedException();
+    //public ITestProperty SetValue(string textEntry) {
+    //    if (member is PropertyMember property) {
+    //        property.Wrapped["value"] = new JValue(textEntry);
+    //    }
 
-    public ITestProperty RemoveFromCollection(ITestObject testObject) => throw new NotImplementedException();
+    //    return this;
+    //}
 
-    public ITestProperty ClearObject() => throw new NotImplementedException();
 
-    public ITestProperty SetValue(string textEntry) {
-        if (member is PropertyMember property) {
-            property.Wrapped["value"] = new JValue(textEntry);
-        }
-
-        return this;
-    }
-
-    public ITestProperty ClearValue() => throw new NotImplementedException();
-
-    public ITestProperty TestField(string setValue, string expected) => throw new NotImplementedException();
-
-    public ITestProperty TestField(ITestObject expected) => throw new NotImplementedException();
-
-    public ITestProperty AssertCannotParse(string text) => throw new NotImplementedException();
-
-    public ITestProperty AssertFieldEntryInvalid(string text) => throw new NotImplementedException();
-
-    public ITestProperty AssertFieldEntryIsValid(string text) => throw new NotImplementedException();
-
-    public ITestProperty AssertSetObjectInvalid(ITestObject testObject) => throw new NotImplementedException();
-
-    public ITestProperty AssertSetObjectIsValid(ITestObject testObject) => throw new NotImplementedException();
-
-    public ITestProperty AssertIsInvisible() => throw new NotImplementedException();
-
-    public ITestProperty AssertIsMandatory() => throw new NotImplementedException();
-
-    public ITestProperty AssertIsOptional() => throw new NotImplementedException();
-
-    public ITestProperty AssertIsDescribedAs(string expected) => throw new NotImplementedException();
-
-    public ITestProperty AssertIsModifiable() => throw new NotImplementedException();
-
-    public ITestProperty AssertIsUnmodifiable() => throw new NotImplementedException();
-
-    public ITestProperty AssertIsNotEmpty() => throw new NotImplementedException();
-
-    public ITestProperty AssertIsEmpty() => throw new NotImplementedException();
-
-    public ITestProperty AssertObjectIsEqual(ITestNaked expected) => throw new NotImplementedException();
-
-    public ITestProperty AssertIsValidToSave() => throw new NotImplementedException();
-
-    public ITestProperty AssertLastMessageIs(string message) => throw new NotImplementedException();
-
-    public ITestProperty AssertLastMessageContains(string message) => throw new NotImplementedException();
 
     public ITestNaked Content =>
         member switch {
@@ -115,297 +73,310 @@ public class TestProperty : ITestProperty {
     public ITestObject ContentAsObject => (ITestObject)Content;
 
     public ITestCollection ContentAsCollection => (ITestCollection)Content;
-  
 
-    //public ITestNaked GetDefault() {
-    //    INakedObject defaultValue = field.GetDefault(owningObject.NakedObject);
-    //    return factory.CreateTestNaked(defaultValue);
-    //}
+    public ITestProperty SetObject(ITestObject testObject) {
+        AssertIsVisible();
+        AssertIsModifiable();
+        ResetLastMessage();
 
-    //public ITestNaked[] GetChoices() {
-    //    INakedObject[] choices = ((NakedObjectAssociationAbstract) field).GetChoices(owningObject.NakedObject, null);
-    //    return choices.Select(x => factory.CreateTestNaked(x)).ToArray();
-    //}
+        Assert.IsFalse(IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
 
-    //public ITestNaked[] GetCompletions(string autoCompleteParm) {
-    //    INakedObject[] completions = ((NakedObjectAssociationAbstract) field).GetCompletions(owningObject.NakedObject, autoCompleteParm);
-    //    return completions.Select(x => factory.CreateTestNaked(x)).ToArray();
-    //}
+        try {
+            var details = member switch {
+                PropertyMember property => property.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result,
+                PropertyDetails pd => pd,
+                CollectionMember or CollectionDetails => null,
+                _ => null
+            };
 
-    //public ITestProperty SetObject(ITestObject testObject) {
-    //    AssertIsVisible();
-    //    AssertIsModifiable();
-    //    ResetLastMessage();
+            if (details is not null) {
+                member = details.SetValue(testObject?.Value, AcceptanceTestCase.TestInvokeOptions()).Result;
+            }
+            else {
+                Assert.IsFalse(true, $"Cannot SetObject {testObject} in the field {Id}: Always disabled");
+            }
+        }
+        catch (AggregateException ex) {
+            LastMessage = ex.InnerException?.Message ?? "";
+            Assert.Fail($"Cannot SetObject {testObject} in the field {Id}: {LastMessage}");
+        }
 
-    //    Assert.IsFalse(field.Specification.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
+        return this;
+    }
 
-    //    INakedObject testNakedObject = testObject.NakedObject;
+    public ITestProperty RemoveFromCollection(ITestObject testObject)
+    {
+        AssertIsVisible();
+        AssertIsModifiable();
+        ResetLastMessage();
 
-    //    Assert.IsTrue(testNakedObject.Specification.IsOfType(field.Specification), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Specification.ShortName, Name, field.Specification));
+        //Assert.IsTrue(field.IsCollection, "Cannot remove from non collection");
 
-    //    INakedObject nakedObject = owningObject.NakedObject;
+        //INakedObject testNakedObject = testObject.NakedObject;
 
-    //    IConsent valid;
-    //    if (field is IOneToOneAssociation) {
-    //        valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject);
-    //    }
-    //    else if (field is IOneToManyAssociation) {
-    //        valid = new Veto("Always disabled");
-    //    }
-    //    else {
-    //        throw new UnknownTypeException(field);
-    //    }
+        //Assert.IsTrue(testNakedObject.Specification.IsOfType(field.Specification),
+        //    string.Format("Can't clear a {0} from the {1} field (which accepts {2})", testObject.NakedObject.Specification.ShortName, Name, field.Specification));
 
-    //    LastMessage = valid.Reason;
-    //    Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
+        //INakedObject nakedObject = owningObject.NakedObject;
 
-    //    if (field is IOneToOneAssociation) {
-    //        ((IOneToOneAssociation) field).SetAssociation(nakedObject, testNakedObject);
-    //    }
+        //if (!(field is IOneToManyAssociation))
+        //{
+        //    throw new UnknownTypeException(field);
+        //}
+        //IConsent valid = new Veto("Always disabled");
 
-    //    return this;
-    //}
+        //Assert.IsFalse(valid.IsVetoed, string.Format("Can't remove {0} from the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
+        return this;
+    }
 
-    //public ITestProperty RemoveFromCollection(ITestObject testObject) {
-    //    AssertIsVisible();
-    //    AssertIsModifiable();
-    //    ResetLastMessage();
 
-    //    Assert.IsTrue(field.IsCollection, "Cannot remove from non collection");
+    /// <summary>
+    ///     Removes an existing object reference from the specified field. Mirrors the 'Remove Reference' menu
+    ///     option that each object field offers by default.
+    /// </summary>
+    public ITestProperty ClearObject()
+    {
+        AssertIsVisible();
+        AssertIsModifiable();
+        ResetLastMessage();
 
-    //    INakedObject testNakedObject = testObject.NakedObject;
+        Assert.IsFalse(IsParseable, "Clear(..) not allowed on value target field; use SetValue(..) instead");
 
-    //    Assert.IsTrue(testNakedObject.Specification.IsOfType(field.Specification),
-    //        string.Format("Can't clear a {0} from the {1} field (which accepts {2})", testObject.NakedObject.Specification.ShortName, Name, field.Specification));
+        SetObject(null);
 
-    //    INakedObject nakedObject = owningObject.NakedObject;
+        //INakedObject nakedObject = field.GetNakedObject(owningObject.NakedObject);
+        //if (nakedObject != null)
+        //{
+        //    if (field is IOneToOneAssociation)
+        //    {
+        //        ((IOneToOneAssociation)field).SetAssociation(owningObject.NakedObject, null);
+        //    }
+        //    else
+        //    {
+        //        Assert.Fail("Clear(..) not allowed on collection target field");
+        //    }
+        //}
+        return this;
+    }
 
-    //    if (!(field is IOneToManyAssociation)) {
-    //        throw new UnknownTypeException(field);
-    //    }
-    //    IConsent valid = new Veto("Always disabled");
+    public ITestProperty SetValue(string textEntry)
+    {
+        AssertIsVisible();
+        AssertIsModifiable();
+        ResetLastMessage();
 
-    //    Assert.IsFalse(valid.IsVetoed, string.Format("Can't remove {0} from the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
-    //    return this;
-    //}
+        try {
+            var details = member switch {
+                PropertyMember property => property.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result,
+                PropertyDetails pd => pd,
+                CollectionMember or CollectionDetails => null,
+                _ => null
+            };
 
-    //public string LastMessage { get; private set; }
+            if (details is not null) {
+                member = details.SetValue(textEntry, AcceptanceTestCase.TestInvokeOptions()).Result;
+            }
+            else {
+                Assert.IsFalse(true, $"Cannot SetValue {textEntry} in the field {Id}: Always disabled");
+            }
+        }
+        catch (AggregateException ex) {
+            LastMessage = ex.InnerException?.Message ?? "";
+            Assert.Fail($"Cannot SetValue {textEntry} in the field {Id}: {LastMessage}");
+        }
+        return this;
+    }
 
-    ///// <summary>
-    /////     Removes an existing object reference from the specified field. Mirrors the 'Remove Reference' menu
-    /////     option that each object field offers by default.
-    ///// </summary>
-    //public ITestProperty ClearObject() {
-    //    AssertIsVisible();
-    //    AssertIsModifiable();
-    //    ResetLastMessage();
+    public ITestProperty ClearValue()
+    {
+        AssertIsVisible();
+        AssertIsModifiable();
+        ResetLastMessage();
 
-    //    Assert.IsFalse(field.Specification.IsParseable, "Clear(..) not allowed on value target field; use SetValue(..) instead");
+        SetValue(null);
+        return this;
+    }
 
-    //    INakedObject nakedObject = field.GetNakedObject(owningObject.NakedObject);
-    //    if (nakedObject != null) {
-    //        if (field is IOneToOneAssociation) {
-    //            ((IOneToOneAssociation) field).SetAssociation(owningObject.NakedObject, null);
-    //        }
-    //        else {
-    //            Assert.Fail("Clear(..) not allowed on collection target field");
-    //        }
-    //    }
-    //    return this;
-    //}
+    public ITestProperty TestField(string setValue, string expected)
+    {
+        SetValue(setValue);
+        Assert.AreEqual($"Field '{Name}' contains unexpected value", expected, Content.Title);
+        return this;
+    }
 
-    //public ITestProperty SetValue(string textEntry) {
-    //    AssertIsVisible();
-    //    AssertIsModifiable();
-    //    ResetLastMessage();
+    public ITestProperty TestField(ITestObject expected)
+    {
+        SetObject(expected);
+        Assert.AreEqual(expected, Content);
+        return this;
+    }
 
-    //    INakedObject nakedObject = owningObject.NakedObject;
-    //    try {
-    //        INakedObject existingValue = field.GetNakedObject(nakedObject);
+    private void ResetLastMessage()
+    {
+        LastMessage = string.Empty;
+    }
 
-    //        var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
+    private bool IsNotParseable => !IsParseable;
 
-    //        INakedObject newValue = parseableFacet.ParseTextEntry(textEntry);
+    private bool IsParseable => ReturnType is "boolean" or "number" or "string";
 
-    //        IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, newValue);
-    //        LastMessage = consent.Reason;
+    public ITestProperty AssertCannotParse(string text)
+    {
+        AssertIsVisible();
+        AssertIsModifiable();
 
-    //        Assert.IsFalse(consent.IsVetoed, string.Format("Content: '{0}' is not valid. Reason: {1}", textEntry, consent.Reason));
+        //try {
+        //    SetValue(text);
+        //}
 
-    //        if (textEntry.Trim().Equals("")) {
-    //            ((IOneToOneAssociation) field).SetAssociation(nakedObject, null);
-    //        }
-    //        else {
-    //            ((IOneToOneAssociation) field).SetAssociation(nakedObject, newValue);
-    //        }
-    //    }
-    //    catch (InvalidEntryException) {
-    //        Assert.Fail("Entry not recognised " + textEntry);
-    //    }
-    //    return this;
-    //}
+        //INakedObject valueObject = field.GetNakedObject(owningObject.NakedObject);
 
-    //public ITestProperty ClearValue() {
-    //    AssertIsVisible();
-    //    AssertIsModifiable();
-    //    ResetLastMessage();
+        //Assert.IsNotNull(valueObject, "Field '" + Name + "' contains null, but should contain an INakedObject object");
+        //try
+        //{
+        //    var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
+        //    parseableFacet.ParseTextEntry(text);
+        //    Assert.Fail("Content was unexpectedly parsed");
+        //}
+        //catch (InvalidEntryException /*expected*/)
+        //{
+        //    expected
+        //}
+        return this;
+    }
 
-    //    INakedObject nakedObject = owningObject.NakedObject;
-    //    try {
-    //        IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, null);
-    //        LastMessage = consent.Reason;
-    //        Assert.IsFalse(consent.IsVetoed, string.Format("Content: 'null' is not valid. Reason: {0}", consent.Reason));
-    //        ((IOneToOneAssociation) field).SetAssociation(nakedObject, null);
-    //    }
-    //    catch (InvalidEntryException) {
-    //        Assert.Fail("Null Entry not recognised ");
-    //    }
-    //    return this;
-    //}
+    public ITestProperty AssertFieldEntryInvalid(string text)
+    {
+        return IsNotParseable ? AssertNotParseable() : AssertParseableFieldEntryInvalid(text);
+    }
 
-    //public ITestProperty TestField(string setValue, string expected) {
-    //    SetValue(setValue);
-    //    Assert.AreEqual("Field '" + Name + "' contains unexpected value", expected, Content.Title);
-    //    return this;
-    //}
+    public ITestProperty AssertFieldEntryIsValid(string text)
+    {
+        return IsNotParseable ? AssertNotParseable() : AssertParseableFieldEntryIsValid(text);
+    }
 
-    //public ITestProperty TestField(ITestObject expected) {
-    //    SetObject(expected);
-    //    Assert.AreEqual(expected.NakedObject, Content.NakedObject);
-    //    return this;
-    //}
+    public ITestProperty AssertSetObjectInvalid(ITestObject testObject)
+    {
+        try
+        {
+            AssertSetObjectIsValid(testObject);
+        }
+        catch (AssertFailedException)
+        {
+            // expected 
+            return this;
+        }
+        Assert.Fail($"Object {testObject} was allowed in field {Id} : expected it to be invalid");
+        return this;
+    }
 
-    //private void ResetLastMessage() {
-    //    LastMessage = string.Empty;
-    //}
+    public ITestProperty AssertSetObjectIsValid(ITestObject testObject)
+    {
+        AssertIsVisible();
+        AssertIsModifiable();
+        ResetLastMessage();
 
-    //private bool IsNotParseable() {
-    //    return field.Specification.GetFacet<IParseableFacet>() == null;
-    //}
+        //Assert.IsFalse(field.Specification.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
+        //INakedObject testNakedObject = testObject.NakedObject;
+        //Assert.IsTrue(testNakedObject.Specification.IsOfType(field.Specification), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Specification.ShortName, Name, field.Specification));
+        //INakedObject nakedObject = owningObject.NakedObject;
+        //IConsent valid;
+        //if (field is IOneToOneAssociation)
+        //{
+        //    valid = ((IOneToOneAssociation)field).IsAssociationValid(nakedObject, testNakedObject);
+        //}
+        //else if (field is IOneToManyAssociation)
+        //{
+        //    valid = new Veto("Always disabled");
+        //}
+        //else
+        //{
+        //    throw new UnknownTypeException(field);
+        //}
+        //LastMessage = valid.Reason;
 
-    //public ITestProperty AssertCannotParse(string text) {
-    //    AssertIsVisible();
-    //    AssertIsModifiable();
+        //Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
+        return this;
+    }
 
-    //    INakedObject valueObject = field.GetNakedObject(owningObject.NakedObject);
-
-    //    Assert.IsNotNull(valueObject, "Field '" + Name + "' contains null, but should contain an INakedObject object");
-    //    try {
-    //        var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
-    //        parseableFacet.ParseTextEntry(text);
-    //        Assert.Fail("Content was unexpectedly parsed");
-    //    }
-    //    catch (InvalidEntryException /*expected*/) {
-    //        // expected
-    //    }
-    //    return this;
-    //}
-
-    //public ITestProperty AssertFieldEntryInvalid(string text) {
-    //    return IsNotParseable() ? AssertNotParseable() : AssertParseableFieldEntryInvalid(text);
-    //}
-
-    //public ITestProperty AssertFieldEntryIsValid(string text) {
-    //    return IsNotParseable() ? AssertNotParseable() : AssertParseableFieldEntryIsValid(text);
-    //}
-
-    //public ITestProperty AssertSetObjectInvalid(ITestObject testObject) {
-    //    try {
-    //        AssertSetObjectIsValid(testObject);
-    //    }
-    //    catch (AssertFailedException) {
-    //        // expected 
-    //        return this;
-    //    }
-    //    Assert.Fail("Object {0} was allowed in field {1} : expected it to be invalid", testObject, field);
-    //    return this;
-    //}
-
-    //public ITestProperty AssertSetObjectIsValid(ITestObject testObject) {
-    //    AssertIsVisible();
-    //    AssertIsModifiable();
-    //    ResetLastMessage();
-
-    //    Assert.IsFalse(field.Specification.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
-    //    INakedObject testNakedObject = testObject.NakedObject;
-    //    Assert.IsTrue(testNakedObject.Specification.IsOfType(field.Specification), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Specification.ShortName, Name, field.Specification));
-    //    INakedObject nakedObject = owningObject.NakedObject;
-    //    IConsent valid;
-    //    if (field is IOneToOneAssociation) {
-    //        valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject);
-    //    }
-    //    else if (field is IOneToManyAssociation) {
-    //        valid = new Veto("Always disabled");
-    //    }
-    //    else {
-    //        throw new UnknownTypeException(field);
-    //    }
-    //    LastMessage = valid.Reason;
-
-    //    Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
-    //    return this;
-    //}
-
-    //public ITestProperty AssertIsInvisible() {
-    //    bool canAccess = field.IsVisible(NakedObjectsContext.Session, owningObject.NakedObject);
-    //    Assert.IsFalse(canAccess, "Field '" + Name + "' is visible");
-    //    return this;
-    //}
+    public ITestProperty AssertIsInvisible()
+    {
+        //bool canAccess = field.IsVisible(NakedObjectsContext.Session, owningObject.NakedObject);
+        //Assert.IsFalse(canAccess, "Field '" + Name + "' is visible");
+        return this;
+    }
 
     public ITestProperty AssertIsVisible() {
         Assert.IsTrue(member is not null, $"Field '{Name}' is invisible");
         return this;
     }
 
-    //public ITestProperty AssertIsMandatory() {
-    //    Assert.IsTrue(field.IsMandatory, "Field '" + field.Id + "' is optional");
-    //    return this;
-    //}
+    public ITestProperty AssertIsMandatory() {
+        var isMandatory = IsOptional;
+        Assert.IsTrue(!IsOptional, $"Field '{Id}' is optional");
+        return this;
+    }
 
-    //public ITestProperty AssertIsOptional() {
-    //    Assert.IsTrue(!field.IsMandatory, "Field '" + field.Id + "' is mandatory");
-    //    return this;
-    //}
+    private bool IsOptional => member.GetExtensions().GetExtension<bool>(ExtensionsApi.ExtensionKeys.optional);
 
-    //public ITestProperty AssertIsDescribedAs(string expected) {
-    //    AssertIsVisible();
-    //    Assert.IsTrue(expected.Equals(field.Description), "Description expected: '" + expected + "' actual: '" + field.Description + "'");
-    //    return this;
-    //}
+    public ITestProperty AssertIsOptional()
+    {
+        Assert.IsTrue(IsOptional, $"Field '{Id}' is mandatory");
+        return this;
+    }
 
-    //public ITestProperty AssertIsModifiable() {
-    //    AssertIsVisible();
-    //    ResetLastMessage();
+    private string Description => member.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.description);
 
-    //    IConsent isUsable = field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject);
-    //    LastMessage = isUsable.Reason;
+    private string ReturnType => member.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.returnType);
 
-    //    bool canUse = isUsable.IsAllowed;
-    //    Assert.IsTrue(canUse, "Field '" + Name + "' in " + owningObject.NakedObject + " is unmodifiable");
-    //    return this;
-    //}
+    public ITestProperty AssertIsDescribedAs(string expected)
+    {
+        AssertIsVisible();
+        Assert.IsTrue(expected.Equals(Description), $"Description expected: '{expected}' actual: '{Description}'");
+        return this;
+    }
 
-    //public ITestProperty AssertIsUnmodifiable() {
-    //    ResetLastMessage();
-    //    IConsent isUsable = field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject);
-    //    LastMessage = isUsable.Reason;
+    public ITestProperty AssertIsModifiable()
+    {
+        AssertIsVisible();
+        ResetLastMessage();
 
-    //    bool canUse = isUsable.IsAllowed;
-    //    Assert.IsFalse(canUse, "Field '" + Name + "' in " + owningObject.NakedObject + " is modifiable");
-    //    return this;
-    //}
+        //IConsent isUsable = field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject);
+        //LastMessage = isUsable.Reason;
 
-    //public ITestProperty AssertIsNotEmpty() {
-    //    AssertIsVisible();
-    //    Assert.IsFalse(field.IsEmpty(owningObject.NakedObject), "Expected" + " '" + Name + "' to contain something but it was empty");
-    //    return this;
-    //}
+        //bool canUse = isUsable.IsAllowed;
+        //Assert.IsTrue(canUse, "Field '" + Name + "' in " + owningObject.NakedObject + " is unmodifiable");
+        return this;
+    }
 
-    //public ITestProperty AssertIsEmpty() {
-    //    AssertIsVisible();
-    //    Assert.IsTrue(field.IsEmpty(owningObject.NakedObject), "Expected" + " '" + Name + "' to be empty");
-    //    return this;
-    //}
+    public ITestProperty AssertIsUnmodifiable()
+    {
+        //ResetLastMessage();
+        //IConsent isUsable = field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject);
+        //LastMessage = isUsable.Reason;
+
+        //bool canUse = isUsable.IsAllowed;
+        //Assert.IsFalse(canUse, "Field '" + Name + "' in " + owningObject.NakedObject + " is modifiable");
+        return this;
+    }
+
+    private bool IsEmpty() {
+        return Content == null || string.IsNullOrEmpty(Content.Title);
+    }
+
+    public ITestProperty AssertIsNotEmpty()
+    {
+        AssertIsVisible();
+        Assert.IsFalse(IsEmpty(), $"Expected '{Name}' to contain something but it was empty");
+        return this;
+    }
+
+    public ITestProperty AssertIsEmpty()
+    {
+        AssertIsVisible();
+        Assert.IsTrue(IsEmpty(), $"Expected '{Name}' to be empty");
+        return this;
+    }
 
     public ITestProperty AssertValueIsEqual(string expected) {
         AssertIsVisible();
@@ -419,71 +390,82 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    //public ITestProperty AssertObjectIsEqual(ITestNaked expected) {
-    //    AssertIsVisible();
-    //    Assert.AreEqual(expected, Content);
-    //    return this;
-    //}
+    public ITestProperty AssertObjectIsEqual(ITestNaked expected)
+    {
+        AssertIsVisible();
+        Assert.AreEqual(expected, Content);
+        return this;
+    }
 
-    //public ITestProperty AssertIsValidToSave() {
-    //    if (field.IsMandatory && field.IsVisible(NakedObjectsContext.Session, owningObject.NakedObject) && field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject).IsAllowed) {
-    //        Assert.IsFalse(field.IsEmpty(owningObject.NakedObject), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
-    //        Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject).ValidToPersist() == null);
-    //    }
-    //    if (field.IsCollection) {
-    //        field.GetNakedObject(owningObject.NakedObject).GetAsEnumerable().ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
-    //    }
+    public ITestProperty AssertIsValidToSave()
+    {
+        //if (field.IsMandatory && field.IsVisible(NakedObjectsContext.Session, owningObject.NakedObject) && field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject).IsAllowed)
+        //{
+        //    Assert.IsFalse(field.IsEmpty(owningObject.NakedObject), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
+        //    Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject).ValidToPersist() == null);
+        //}
+        //if (field.IsCollection)
+        //{
+        //    field.GetNakedObject(owningObject.NakedObject).GetAsEnumerable().ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
+        //}
 
-    //    return this;
-    //}
+        return this;
+    }
 
-    //public ITestProperty AssertLastMessageIs(string message) {
-    //    Assert.IsTrue(message.Equals(LastMessage), "Last message expected: '" + message + "' actual: '" + LastMessage + "'");
-    //    return this;
-    //}
+    public ITestProperty AssertLastMessageIs(string message)
+    {
+        Assert.IsTrue(message.Equals(LastMessage), "Last message expected: '" + message + "' actual: '" + LastMessage + "'");
+        return this;
+    }
 
-    //public ITestProperty AssertLastMessageContains(string message) {
-    //    Assert.IsTrue(LastMessage.Contains(message), "Last message expected to contain: '" + message + "' actual: '" + LastMessage + "'");
-    //    return this;
-    //}
+    public ITestProperty AssertLastMessageContains(string message)
+    {
+        Assert.IsTrue(LastMessage.Contains(message), "Last message expected to contain: '" + message + "' actual: '" + LastMessage + "'");
+        return this;
+    }
 
-    //public ITestProperty AssertParseableFieldEntryInvalid(string text) {
-    //    AssertIsVisible();
-    //    AssertIsModifiable();
-    //    ResetLastMessage();
+    public ITestProperty AssertParseableFieldEntryInvalid(string text)
+    {
+        AssertIsVisible();
+        AssertIsModifiable();
+        ResetLastMessage();
 
-    //    INakedObject nakedObject = owningObject.NakedObject;
-    //    INakedObject existingValue = field.GetNakedObject(nakedObject);
-    //    var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
-    //    try {
-    //        INakedObject newValue = parseableFacet.ParseTextEntry(text);
-    //        IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
-    //        LastMessage = isAssociationValid.Reason;
-    //        Assert.IsFalse(isAssociationValid.IsAllowed, "Content was unexpectedly validated");
-    //    }
-    //    catch (InvalidEntryException) {
-    //        // expected 
-    //    }
-    //    return this;
-    //}
+        //INakedObject nakedObject = owningObject.NakedObject;
+        //INakedObject existingValue = field.GetNakedObject(nakedObject);
+        //var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
+        //try
+        //{
+        //    INakedObject newValue = parseableFacet.ParseTextEntry(text);
+        //    IConsent isAssociationValid = ((IOneToOneAssociation)field).IsAssociationValid(owningObject.NakedObject, newValue);
+        //    LastMessage = isAssociationValid.Reason;
+        //    Assert.IsFalse(isAssociationValid.IsAllowed, "Content was unexpectedly validated");
+        //}
+        //catch (InvalidEntryException)
+        //{
+        //    // expected 
+        //}
+        return this;
+    }
 
-    //public ITestProperty AssertParseableFieldEntryIsValid(string text) {
-    //    AssertIsVisible();
-    //    AssertIsModifiable();
-    //    ResetLastMessage();
+    public ITestProperty AssertParseableFieldEntryIsValid(string text)
+    {
+        AssertIsVisible();
+        AssertIsModifiable();
+        ResetLastMessage();
 
-    //    INakedObject nakedObject = owningObject.NakedObject;
-    //    INakedObject existingValue = field.GetNakedObject(nakedObject);
-    //    var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
-    //    INakedObject newValue = parseableFacet.ParseTextEntry(text);
-    //    IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
-    //    LastMessage = isAssociationValid.Reason;
-    //    Assert.IsTrue(isAssociationValid.IsAllowed, "Content was unexpectedly invalidated");
-    //    return this;
-    //}
+        //INakedObject nakedObject = owningObject.NakedObject;
+        //INakedObject existingValue = field.GetNakedObject(nakedObject);
+        //var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
+        //INakedObject newValue = parseableFacet.ParseTextEntry(text);
+        //IConsent isAssociationValid = ((IOneToOneAssociation)field).IsAssociationValid(owningObject.NakedObject, newValue);
+        //LastMessage = isAssociationValid.Reason;
+        //Assert.IsTrue(isAssociationValid.IsAllowed, "Content was unexpectedly invalidated");
+        return this;
+    }
 
-    //private ITestProperty AssertNotParseable() {
-    //    Assert.Fail("Not a parseable field");
-    //    return this;
-    //}
+    private ITestProperty AssertNotParseable()
+    {
+        Assert.Fail("Not a parseable field");
+        return this;
+    }
 }

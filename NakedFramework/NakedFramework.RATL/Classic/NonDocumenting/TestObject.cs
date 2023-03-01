@@ -33,6 +33,8 @@ internal class TestObject : TestHasActions, ITestObject {
         return this;
     }
 
+    public DomainObject Value => DomainObject;
+
     public ITestObject Save() {
         AssertCanBeSaved();
         return new TestObject(DomainObject.PersistWithNamedParams(AcceptanceTestCase.TestInvokeOptions(null, DomainObject.Tag), DomainObject.GetPersistMap()).Result, AcceptanceTestCase);

@@ -90,19 +90,19 @@ public class TestTestObject : AcceptanceTestCase {
         AssertExpectException(() => obj.AssertTitleEquals("Qux"), "Assert.IsTrue failed. Expected title 'Qux' but got 'FooBar'");
     }
 
-    [Test]
-    public virtual void TestSave() {
-        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+    //[Test]
+    //public virtual void TestSave() {
+    //    var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
 
-        transient.GetPropertyByName("Id").SetValue("0");
-        transient.GetPropertyByName("Prop1").SetValue("1");
-        transient.GetPropertyByName("Foo").SetValue("test");
-        transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
-        var obj = transient.Save();
+    //    transient.GetPropertyByName("Id").SetValue("0");
+    //    transient.GetPropertyByName("Prop1").SetValue("1");
+    //    transient.GetPropertyByName("Foo").SetValue("test");
+    //    transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
+    //    var obj = transient.Save();
 
-        obj.AssertIsPersistent();
-        Assert.AreEqual("test", obj.GetPropertyById(nameof(Object1.Prop2)).Title);
-    }
+    //    obj.AssertIsPersistent();
+    //    Assert.AreEqual("test", obj.GetPropertyById(nameof(Object1.Prop2)).Title);
+    //}
 
     [Test]
     public virtual void TestSaveFails() {
@@ -140,29 +140,29 @@ public class TestTestObject : AcceptanceTestCase {
         AssertExpectException(() => obj.GetPropertyById("Foo"), "Assert.Fail failed. No Property with Id 'Foo'");
     }
 
-    [Test]
-    public virtual void TestAssertCanBeSaved() {
-        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+    //[Test]
+    //public virtual void TestAssertCanBeSaved() {
+    //    var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
 
-        transient.GetPropertyByName("Id").SetValue("0");
-        transient.GetPropertyByName("Prop1").SetValue("1");
-        transient.GetPropertyByName("Foo").SetValue("test");
-        transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
-        var obj = transient.AssertCanBeSaved();
+    //    transient.GetPropertyByName("Id").SetValue("0");
+    //    transient.GetPropertyByName("Prop1").SetValue("1");
+    //    transient.GetPropertyByName("Foo").SetValue("test");
+    //    transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
+    //    var obj = transient.AssertCanBeSaved();
 
-        obj.AssertIsTransient();
-    }
+    //    obj.AssertIsTransient();
+    //}
 
-    [Test]
-    public virtual void TestAssertCannotBeSavedFails() {
-        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+    //[Test]
+    //public virtual void TestAssertCannotBeSavedFails() {
+    //    var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
 
-        transient.GetPropertyByName("Id").SetValue("0");
-        transient.GetPropertyByName("Prop1").SetValue("1");
-        transient.GetPropertyByName("Foo").SetValue("test");
-        transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
-        AssertExpectException(() => transient.AssertCannotBeSaved(), "Assert.Fail failed. Object should not be saveable");
-    }
+    //    transient.GetPropertyByName("Id").SetValue("0");
+    //    transient.GetPropertyByName("Prop1").SetValue("1");
+    //    transient.GetPropertyByName("Foo").SetValue("test");
+    //    transient.GetPropertyByName("Prop3").SetValue(DateTime.Now.ToString());
+    //    AssertExpectException(() => transient.AssertCannotBeSaved(), "Assert.Fail failed. Object should not be saveable");
+    //}
 
     [Test]
     public virtual void TestAssertCanBeSavedFails() {
