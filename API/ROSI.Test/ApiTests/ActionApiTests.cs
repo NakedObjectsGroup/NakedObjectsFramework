@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Castle.Components.DictionaryAdapter.Xml;
 using NUnit.Framework;
 using ROSI.Apis;
@@ -48,16 +49,16 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestGetDetails() {
+    public async Task TestGetDetails() {
         var objectRep = GetObject(FullName<Class>(), "1");
-        var details = objectRep.GetAction(nameof(Class.Action1)).GetDetails(TestInvokeOptions()).Result;
+        var details = await objectRep.GetAction(nameof(Class.Action1)).GetDetails(TestInvokeOptions());
         Assert.IsNotNull(details);
     }
 
     [Test]
-    public void TestGetParametersOnDetails() {
+    public async Task TestGetParametersOnDetails() {
         var objectRep = GetObject(FullName<ClassWithActions>(), "1");
-        var details = objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject)).GetDetails(TestInvokeOptions()).Result;
+        var details = await objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject)).GetDetails(TestInvokeOptions());
         Assert.IsNotNull(details);
 
         var parameters = details.GetParameters().Parameters();
