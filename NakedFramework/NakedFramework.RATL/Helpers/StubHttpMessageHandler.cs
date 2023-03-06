@@ -45,7 +45,7 @@ public class StubHttpMessageHandler : HttpMessageHandler {
             switch (segments[3]) {
                 case "actions/":
                     if (segments.Length > 5) {
-                        return await SendAsyncAction(request, serviceId, "", segments[4].TrimEnd('/'));
+                        return await SendAsyncAction(request, serviceId, "", segments[4].TrimEnd('/'), false);
                     }
 
                     return await SendAsyncActionDetails(request, serviceId, "", segments[4].TrimEnd('/'));
@@ -59,9 +59,25 @@ public class StubHttpMessageHandler : HttpMessageHandler {
         throw new NotImplementedException();
     }
 
-    private async Task<HttpResponseMessage> SendAsyncMenu(string menuId) {
-        var ar = Api.AsGet().GetMenu(menuId);
-        return await GetResponse(ar);
+    private async Task<HttpResponseMessage> SendAsyncMenu(HttpRequestMessage request, string[] segments) {
+        var menuId = segments[2].TrimEnd('/');
+        
+        if (segments.Length > 3) {
+            switch (segments[3]) {
+                case "actions/":
+                    if (segments.Length > 5) {
+                        return await SendAsyncAction(request, menuId, "", segments[4].TrimEnd('/'), true);
+                    }
+
+                    return await SendAsyncActionDetails(request, menuId, "", segments[4].TrimEnd('/'));
+            }
+        }
+        else {
+            var ar = Api.AsGet().GetMenu(menuId);
+            return await GetResponse(ar);
+        }
+
+        throw new NotImplementedException();
     }
 
     private async Task<HttpResponseMessage> SendAsyncProperty(HttpRequestMessage request, string obj, string key, string propertyId) {
@@ -144,7 +160,7 @@ public class StubHttpMessageHandler : HttpMessageHandler {
     }
 
 
-    private async Task<HttpResponseMessage> SendAsyncAction(HttpRequestMessage request, string obj, string key, string action) {
+    private async Task<HttpResponseMessage> SendAsyncAction(HttpRequestMessage request, string obj, string key, string action, bool isMenu) {
         var method = request.Method;
         var query = request.RequestUri.Query.TrimStart('?');
         var body = "";
@@ -160,13 +176,25 @@ public class StubHttpMessageHandler : HttpMessageHandler {
         ActionResult ar;
 
         if (method == HttpMethod.Get) {
-            ar = string.IsNullOrEmpty(key) ? Api.AsGet().GetInvokeOnService(obj, action, am) : Api.AsGet().GetInvoke(obj, key, action, am);
+            ar = string.IsNullOrEmpty(key)
+                ? isMenu
+                    ? Api.AsGet().GetInvokeOnMenu(obj, action, am)
+                    : Api.AsGet().GetInvokeOnService(obj, action, am)
+                : Api.AsGet().GetInvoke(obj, key, action, am);
         }
         else if (method == HttpMethod.Post) {
-            ar = string.IsNullOrEmpty(key) ? Api.AsPost().PostInvokeOnService(obj, action, am) : Api.AsPost().PostInvoke(obj, key, action, am);
+            ar = string.IsNullOrEmpty(key)
+                ? isMenu
+                    ? Api.AsPost().PostInvokeOnMenu(obj, action, am)
+                    : Api.AsPost().PostInvokeOnService(obj, action, am)
+                : Api.AsPost().PostInvoke(obj, key, action, am);
         }
         else if (method == HttpMethod.Put) {
-            ar = string.IsNullOrEmpty(key) ? Api.AsPut().PutInvokeOnService(obj, action, am) : Api.AsPut().PutInvoke(obj, key, action, am);
+            ar = string.IsNullOrEmpty(key)
+                ? isMenu
+                    ? Api.AsPut().PutInvokeOnMenu(obj, action, am)
+                    : Api.AsPut().PutInvokeOnService(obj, action, am)
+                : Api.AsPut().PutInvoke(obj, key, action, am);
         }
         else {
             throw new NotImplementedException();
@@ -203,7 +231,7 @@ public class StubHttpMessageHandler : HttpMessageHandler {
                             return await SendAsyncParameterPrompt(request, obj, key, segments[5].TrimEnd('/'), segments[7].TrimEnd('/'));
                         }
                         if (segments.Length > 6) {
-                            return await SendAsyncAction(request, obj, key, segments[5].TrimEnd('/'));
+                            return await SendAsyncAction(request, obj, key, segments[5].TrimEnd('/'), false);
                         }
 
                         return await SendAsyncActionDetails(request, obj, key, segments[5].TrimEnd('/'));
@@ -271,7 +299,7 @@ public class StubHttpMessageHandler : HttpMessageHandler {
             case "menus":
                 return await SendAsyncMenus();
             case "menus/":
-                return await SendAsyncMenu(segments[2]);
+                return await SendAsyncMenu(request, segments);
             case "version":
                 return await SendAsyncVersion();
             case "objects/":
