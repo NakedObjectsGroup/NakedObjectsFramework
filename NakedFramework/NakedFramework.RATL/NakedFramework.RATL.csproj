@@ -4,15 +4,6 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-		<Title>RATL</Title>
-		<Version>1.0.0-beta01</Version>
-		<Authors>Naked Objects Group Ltd</Authors>
-		<Company>Naked Objects Group Ltd</Company>
-		<Copyright>Naked Objects Group Ltd</Copyright>
-		<PackageProjectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</PackageProjectUrl>
-		<PackageReadmeFile>readme.md</PackageReadmeFile>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -31,7 +22,7 @@
 		<PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
 		<PackageReference Include="coverlet.collector" Version="3.1.2" />
 		<PackageReference Include="NakedFramework" Version="13.2.0" />
-		<PackageReference Include="RestfulObjects.ROSI" Version="1.0.0-beta03" />
+		<PackageReference Include="RestfulObjects.ROSI" Version="1.0.0-beta05" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
 	</ItemGroup>
 

@@ -49,9 +49,16 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public async Task TestGetDetails() {
+    public async Task TestGetDetailsWithOptions() {
         var objectRep = GetObject(FullName<Class>(), "1");
         var details = await objectRep.GetAction(nameof(Class.Action1)).GetDetails(TestInvokeOptions());
+        Assert.IsNotNull(details);
+    }
+
+    [Test]
+    public async Task TestGetDetails() {
+        var objectRep = GetObject(FullName<Class>(), "1");
+        var details = await objectRep.GetAction(nameof(Class.Action1)).GetDetails();
         Assert.IsNotNull(details);
     }
 

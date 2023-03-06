@@ -236,7 +236,7 @@ public class ObjectApiTests : AbstractRosiApiTests {
 
         Assert.IsNull(objectRep.GetServiceId());
 
-        var empty = new DomainObject(new JObject());
+        var empty = new DomainObject(new JObject(), TestInvokeOptions());
 
         try {
             var t = empty.GetTitle();
