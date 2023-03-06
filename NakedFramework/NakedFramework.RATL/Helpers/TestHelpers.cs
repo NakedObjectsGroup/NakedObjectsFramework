@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,28 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
+using ROSI.Interfaces;
 using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
 
 namespace NakedFramework.RATL.Helpers;
 
 public class RestfulObjectsController : RestfulObjectsControllerBase {
     public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf, IRestfulObjectsConfiguration c) : base(ff, l, lf, c) { }
+}
+
+public record TestInvokeOptions : IInvokeOptions {
+    private readonly Func<RestfulObjectsControllerBase> factory;
+
+    public TestInvokeOptions(Func<RestfulObjectsControllerBase> factory) {
+        this.factory = factory;
+    }
+
+
+    public string? Token { get; init; }
+    public EntityTagHeaderValue? Tag { get; init; }
+    public virtual HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
+
+    public IDictionary<string, object>? ReservedArguments { get; set; }
 }
 
 public static class TestHelpers {
