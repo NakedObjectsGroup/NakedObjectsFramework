@@ -7,7 +7,7 @@ namespace ROSI.Apis;
 public static class ArgumentsApi {
     public static Dictionary<string, Argument> GetArguments(this Arguments argumentsRepresentation) {
         if (argumentsRepresentation.GetDomainType() is null) {
-            return argumentsRepresentation.Wrapped.Children().OfType<JProperty>().Where(jp => !jp.Name.StartsWith("x-ro")).ToDictionary(jp => jp.Name, jp => new Argument((JObject)jp.Value));
+            return argumentsRepresentation.Wrapped.Children().OfType<JProperty>().Where(jp => !jp.Name.StartsWith("x-ro")).ToDictionary(jp => jp.Name, jp => new Argument((JObject)jp.Value, argumentsRepresentation.Options));
         }
 
         return new Dictionary<string, Argument>();
@@ -15,7 +15,7 @@ public static class ArgumentsApi {
 
     public static Dictionary<string, Argument> GetMembers(this Arguments argumentsRepresentation) {
         if (argumentsRepresentation.GetOptionalProperty(JsonConstants.Members) is JObject jo) {
-            return jo.Children().OfType<JProperty>().ToDictionary(jp => jp.Name, jp => new Argument((JObject)jp.Value));
+            return jo.Children().OfType<JProperty>().ToDictionary(jp => jp.Name, jp => new Argument((JObject)jp.Value, argumentsRepresentation.Options));
         }
 
         return new Dictionary<string, Argument>();

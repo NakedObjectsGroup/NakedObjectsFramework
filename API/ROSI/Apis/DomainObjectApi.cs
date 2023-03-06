@@ -39,24 +39,30 @@ public static class DomainObjectApi {
 
     public static string GetTitle(this DomainObject objectRepresentation) => objectRepresentation.GetMandatoryProperty(JsonConstants.Title).ToString();
 
-    public static IEnumerable<ActionMember> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Action).Select(p => new ActionMember(p));
+    public static IEnumerable<ActionMember> GetActions(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Action).Select(p => new ActionMember(p, objectRepresentation.Options));
 
-    public static IEnumerable<CollectionMember> GetCollections(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Collection).Select(p => new CollectionMember(p));
+    public static IEnumerable<CollectionMember> GetCollections(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Collection).Select(p => new CollectionMember(p, objectRepresentation.Options));
 
-    public static IEnumerable<PropertyMember> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Property).Select(p => new PropertyMember(p));
+    public static IEnumerable<PropertyMember> GetProperties(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjects(MemberType.Property).Select(p => new PropertyMember(p, objectRepresentation.Options));
 
-    public static IEnumerable<(PropertyMember, string)> GetPropertiesAndNames(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjectsAndNames(MemberType.Property).Select(p => (new PropertyMember(p.obj), p.name));
+    public static IEnumerable<(PropertyMember, string)> GetPropertiesAndNames(this DomainObject objectRepresentation) => objectRepresentation.GetMembersOfTypeAsJObjectsAndNames(MemberType.Property).Select(p => (new PropertyMember(p.obj, objectRepresentation.Options), p.name));
 
-    public static PropertyMember? GetProperty(this DomainObject objectRepresentation, string propertyName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Property, propertyName) is { } jo ? new PropertyMember(jo) : null;
+    public static PropertyMember? GetProperty(this DomainObject objectRepresentation, string propertyName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Property, propertyName) is { } jo ? new PropertyMember(jo, objectRepresentation.Options) : null;
 
-    public static ActionMember? GetAction(this DomainObject objectRepresentation, string actionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Action, actionName) is { } jo ? new ActionMember(jo) : null;
+    public static ActionMember? GetAction(this DomainObject objectRepresentation, string actionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Action, actionName) is { } jo ? new ActionMember(jo, objectRepresentation.Options) : null;
 
-    public static CollectionMember? GetCollection(this DomainObject objectRepresentation, string collectionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Collection, collectionName) is { } jo ? new CollectionMember(jo) : null;
+    public static CollectionMember? GetCollection(this DomainObject objectRepresentation, string collectionName) => objectRepresentation.GetMemberOfTypeAsJObject(MemberType.Collection, collectionName) is { } jo ? new CollectionMember(jo, objectRepresentation.Options) : null;
+
+    public static async Task<DomainObject> Persist(this DomainObject objectRepresentation, params object[] pp) => await objectRepresentation.Persist(objectRepresentation.Options, pp);
 
     public static async Task<DomainObject> Persist(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
         var link = objectRepresentation.GetLinks().GetPersistLink() ?? throw new NoSuchPropertyRosiException("Missing persist link in object");
         var json = (await HttpHelpers.Persist(link, options, pp)).Response;
-        return new DomainObject(JObject.Parse(json));
+        return new DomainObject(JObject.Parse(json), objectRepresentation.Options);
+    }
+
+    public static async Task ValidatePersist(this DomainObject objectRepresentation, params object[] pp) {
+        await ValidatePersist(objectRepresentation, objectRepresentation.Options, pp);
     }
 
     public static async Task ValidatePersist(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
@@ -90,31 +96,46 @@ public static class DomainObjectApi {
         return map;
     }
 
+    public static async Task<DomainObject> PersistWithNamedParams(this DomainObject objectRepresentation, Dictionary<string, object> pp) =>
+        await objectRepresentation.Persist(pp.Cast<object>().ToArray());
+
+    public static async Task ValidatePersistWithNamedParams(this DomainObject objectRepresentation, Dictionary<string, object> pp) =>
+        await objectRepresentation.ValidatePersist(pp.Cast<object>().ToArray());
+
     public static async Task<DomainObject> PersistWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
         await objectRepresentation.Persist(options, pp.Cast<object>().ToArray());
 
     public static async Task ValidatePersistWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
         await objectRepresentation.ValidatePersist(options, pp.Cast<object>().ToArray());
 
+    public static async Task<DomainObject> Update(this DomainObject objectRepresentation, params object[] pp) => await objectRepresentation.Update(objectRepresentation.Options, pp);
+
     public static async Task<DomainObject> Update(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
         var link = objectRepresentation.GetLinks().GetUpdateLink() ?? throw new NoSuchPropertyRosiException("Missing update link in object");
         var json = (await HttpHelpers.Execute(link, options, pp)).Response;
-        return new DomainObject(JObject.Parse(json));
+        return new DomainObject(JObject.Parse(json), objectRepresentation.Options);
     }
+
+    public static async Task<DomainObject> UpdateWithNamedParams(this DomainObject objectRepresentation, Dictionary<string, object> pp) =>
+        await objectRepresentation.Update(pp.Cast<object>().ToArray());
 
     public static async Task<DomainObject> UpdateWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
         await objectRepresentation.Update(options, pp.Cast<object>().ToArray());
 
+    public static async Task<TypeActionResult> IsSubtypeOf(this DomainObject objectRepresentation, object p) => await objectRepresentation.IsSubtypeOf(objectRepresentation.Options, p);
+
+    public static async Task<TypeActionResult> IsSupertypeOf(this DomainObject objectRepresentation, object p) => await objectRepresentation.IsSupertypeOf(objectRepresentation.Options, p);
+
     public static async Task<TypeActionResult> IsSubtypeOf(this DomainObject objectRepresentation, InvokeOptions options, object p) {
         var link = objectRepresentation.GetLinks().GetIsSubtypeOfLink() ?? throw new NoSuchPropertyRosiException("Missing isSubtypeOf link in object");
         var json = (await HttpHelpers.Execute(link, options, p)).Response;
-        return new TypeActionResult(JObject.Parse(json));
+        return new TypeActionResult(JObject.Parse(json), objectRepresentation.Options);
     }
 
     public static async Task<TypeActionResult> IsSupertypeOf(this DomainObject objectRepresentation, InvokeOptions options, object p) {
         var link = objectRepresentation.GetLinks().GetIsSupertypeOfLink() ?? throw new NoSuchPropertyRosiException("Missing isSupertypeOf link in object");
         var json = (await HttpHelpers.Execute(link, options, p)).Response;
-        return new TypeActionResult(JObject.Parse(json));
+        return new TypeActionResult(JObject.Parse(json), objectRepresentation.Options);
     }
 
     public static T GetAsPoco<T>(this DomainObject objectRepresentation) where T : class, new() {

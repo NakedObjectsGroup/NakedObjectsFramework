@@ -1,10 +1,8 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
 using System.Web;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ROSI.Apis;
@@ -29,7 +27,7 @@ internal static class HttpHelpers {
         return (await SendRequestAndRead(request, options)).Response;
     }
 
-    public static async Task<string> SetValue(IHasLinks hasLinks, object newValue, InvokeOptions options) {
+    public static async Task<string> SetValue(IHasLinks hasLinks, object newValue, InvokeOptions? options = null) {
         var modifyLink = hasLinks.GetLinks().GetModifyLink() ?? throw new NoSuchPropertyRosiException($"Missing modify link in: {hasLinks.GetType()}");
         var (uri, method) = modifyLink.GetUriAndMethod();
 
@@ -41,9 +39,9 @@ internal static class HttpHelpers {
         var parameterString = parameters.ToString(Formatting.None);
 
         using var content = new StringContent(parameterString, Encoding.UTF8, "application/json");
-        var request = CreateMessage(method, uri.ToString(), options, content);
+        var request = CreateMessage(method, uri.ToString(), options ?? hasLinks.Options, content);
 
-        return (await SendRequestAndRead(request, options)).Response;
+        return (await SendRequestAndRead(request, options ?? hasLinks.Options)).Response;
     }
 
     public static async Task<(string Response, EntityTagHeaderValue? Tag)> Execute(Link invokeLink, InvokeOptions options, params object[] pp) =>
@@ -55,7 +53,7 @@ internal static class HttpHelpers {
 
     public static async Task<(string Response, EntityTagHeaderValue? Tag)> Persist(Link invokeLink, InvokeOptions options, params object[] pp) =>
         await ExecuteWithFormalArguments(invokeLink, options, pp);
-    
+
     private static bool UseSimpleArguments(Link invokeLink, object[] pp) =>
         invokeLink.GetMethod() == HttpMethod.Get &&
         !pp.OfType<Link>().Any() &&
@@ -70,9 +68,8 @@ internal static class HttpHelpers {
         var url = QueryHelpers.AddQueryString(uri.ToString(), parameters);
 
         if (options.ReservedArguments is not null) {
-            url = QueryHelpers.AddQueryString(url.ToString(), options.ReservedArguments.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString()));
+            url = QueryHelpers.AddQueryString(url, options.ReservedArguments.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString()));
         }
-
 
         return await SendAndRead(HttpMethod.Get, url, options);
     }
@@ -93,8 +90,6 @@ internal static class HttpHelpers {
         return parameters;
     }
 
-   
-
     private static Dictionary<string, string?> GetSimpleParameters(KeyValuePair<string, object>[] pp, IEnumerable<JProperty> properties) {
         var argumentNames = properties?.Select(a => a.Name) ?? Array.Empty<string>();
         var parameters = new Dictionary<string, string?>();
@@ -111,7 +106,7 @@ internal static class HttpHelpers {
     private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithNoArguments(Link invokeLink, InvokeOptions options) {
         var (uri, method) = invokeLink.GetUriAndMethod();
 
-        using var content = method != HttpMethod.Get ?  new StringContent("", Encoding.UTF8, "application/json") : null;
+        using var content = method != HttpMethod.Get ? new StringContent("", Encoding.UTF8, "application/json") : null;
         var url = options.ReservedArguments is not null ? QueryHelpers.AddQueryString(uri.ToString(), options.ReservedArguments.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString())) : uri.ToString();
 
         var request = CreateMessage(method, url, options, content);
@@ -136,8 +131,6 @@ internal static class HttpHelpers {
 
         return await SendAndRead(method, url, options, content);
     }
-
-   
 
     private static JObject GetParameters(object[] pp, IEnumerable<JProperty> properties) {
         var parameters = new JObject();
@@ -191,7 +184,6 @@ internal static class HttpHelpers {
         return parameters.ToString(Formatting.None);
     }
 
-
     private static string GetParameterString(Link invokeLink, KeyValuePair<string, object>[] pp, InvokeOptions options) {
         var argumentNames = invokeLink.GetArgumentsAsJObject()?.Properties().Select(a => a.Name) ?? Array.Empty<string>();
         var parameters = GetParameters(pp, argumentNames);
@@ -216,18 +208,18 @@ internal static class HttpHelpers {
         return await SendRequestAndRead(request, options);
     }
 
-    private static Exception MapToException(HttpResponseMessage response) =>
+    private static Exception MapToException(HttpResponseMessage response, InvokeOptions options) =>
         response.StatusCode switch {
-            HttpStatusCode.BadRequest => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
+            HttpStatusCode.BadRequest => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString(), options),
             HttpStatusCode.Unauthorized => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.Forbidden => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.NotFound => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.MethodNotAllowed => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.NotAcceptable => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
             HttpStatusCode.PreconditionFailed => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
-            HttpStatusCode.UnprocessableEntity => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
+            HttpStatusCode.UnprocessableEntity => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString(), options),
             HttpStatusCode.PreconditionRequired => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
-            HttpStatusCode.InternalServerError => new HttpErrorRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString()),
+            HttpStatusCode.InternalServerError => new HttpErrorRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString(), options),
             _ => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString())
         };
 
@@ -235,7 +227,7 @@ internal static class HttpHelpers {
         using var response = await options.HttpClient.SendAsync(request);
         var tag = response.Headers.ETag;
 
-        return response.IsSuccessStatusCode ? (ReadAsString(response), tag) : throw MapToException(response);
+        return response.IsSuccessStatusCode ? (ReadAsString(response), tag) : throw MapToException(response, options);
     }
 
     private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));

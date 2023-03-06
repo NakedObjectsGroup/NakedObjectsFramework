@@ -10,5 +10,5 @@ public static class HasChoicesApi {
 
     public static IEnumerable<object?> GetChoices(this IHasChoices hasChoices) => hasChoices.GetMandatoryProperty(JsonConstants.Choices).Where(c => c is JValue).Cast<JValue>().Select(c => c.Value);
 
-    public static IEnumerable<Link> GetLinkChoices(this IHasChoices hasChoices) => hasChoices.GetMandatoryProperty(JsonConstants.Choices).ToLinks();
+    public static IEnumerable<Link> GetLinkChoices(this IHasChoices hasChoices) => hasChoices.GetMandatoryProperty(JsonConstants.Choices).ToLinks(hasChoices);
 }

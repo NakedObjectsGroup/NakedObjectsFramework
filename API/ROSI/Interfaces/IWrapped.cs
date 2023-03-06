@@ -6,9 +6,11 @@
 // // See the License for the specific language governing permissions and limitations under the License.
 
 using Newtonsoft.Json.Linq;
+using ROSI.Records;
 
 namespace ROSI.Interfaces;
 
 public interface IWrapped {
     internal JObject Wrapped { get; }
+    internal InvokeOptions Options { get; }
 }

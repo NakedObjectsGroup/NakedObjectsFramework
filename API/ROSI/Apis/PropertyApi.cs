@@ -18,7 +18,7 @@ public static class PropertyApi {
         propertyRepresentation.GetOptionalProperty(JsonConstants.Value) is JValue v ? v.Value : null;
 
     public static Link? GetLinkValue(this IProperty propertyRepresentation) =>
-        propertyRepresentation.GetOptionalProperty(JsonConstants.Value) is JObject jo ? new Link(jo) : null;
+        propertyRepresentation.GetOptionalProperty(JsonConstants.Value) is JObject jo ? new Link(jo, propertyRepresentation.Options) : null;
 
     public static bool IsScalarProperty(this IProperty propertyRepresentation) {
         var rt = propertyRepresentation.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.returnType);

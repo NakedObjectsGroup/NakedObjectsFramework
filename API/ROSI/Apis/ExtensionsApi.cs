@@ -28,7 +28,7 @@ public static class ExtensionsApi {
         x_ro_nof_menuPath,
         x_ro_nof_choices,
         x_ro_nof_dataType,
-        x_ro_nof_mask,
+        x_ro_nof_mask
     }
 
     public static IDictionary<ExtensionKeys, object?> Extensions(this Extensions extensionsRepresentation) =>

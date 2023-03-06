@@ -9,5 +9,5 @@ public static class ErrorApi {
 
     public static IEnumerable<string>? GetStackTrace(this Error errorRepresentation) => errorRepresentation.GetOptionalProperty(JsonConstants.StackTrace)?.Select(t => t.ToString());
 
-    public static Error? GetCausedBy(this Error errorRepresentation) => errorRepresentation.GetOptionalProperty(JsonConstants.CausedBy) is JObject jo ? new Error(jo) : null;
+    public static Error? GetCausedBy(this Error errorRepresentation) => errorRepresentation.GetOptionalProperty(JsonConstants.CausedBy) is JObject jo ? new Error(jo, errorRepresentation.Options) : null;
 }

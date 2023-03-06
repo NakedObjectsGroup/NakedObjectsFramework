@@ -3,12 +3,11 @@ using ROSI.Apis;
 using ROSI.Exceptions;
 using ROSI.Interfaces;
 using ROSI.Records;
-using System.Globalization;
 
 namespace ROSI.Helpers;
 
 public static class ApiHelpers {
-    public static IEnumerable<Link> ToLinks(this IEnumerable<JToken> tokens) => tokens.OfType<JObject>().Select(jo => new Link(jo));
+    public static IEnumerable<Link> ToLinks(this IEnumerable<JToken> tokens, IWrapped hasOptions) => tokens.OfType<JObject>().Select(jo => new Link(jo, hasOptions.Options));
 
     public static async Task<JObject> GetResourceAsync(Link link, InvokeOptions options) {
         var href = link.GetHref();
@@ -19,7 +18,7 @@ public static class ApiHelpers {
     public static async Task<Prompt> GetPrompt(IHasLinks propertyRepresentation, InvokeOptions options, object[] pp) {
         var promptLink = propertyRepresentation.GetLinks().GetPromptLink() ?? throw new NoSuchPropertyRosiException($"Missing prompt link in: {propertyRepresentation.GetType()}");
         var json = (await HttpHelpers.Execute(promptLink, options, pp)).Response;
-        return new Prompt(JObject.Parse(json));
+        return new Prompt(JObject.Parse(json), propertyRepresentation.Options);
     }
 
     public static JToken GetMandatoryProperty(this IWrapped wrapped, string key) =>

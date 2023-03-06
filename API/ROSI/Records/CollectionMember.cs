@@ -3,4 +3,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record CollectionMember(JObject Wrapped) : ICollection;
+public record CollectionMember(JObject Wrapped, InvokeOptions Options) : ICollection;

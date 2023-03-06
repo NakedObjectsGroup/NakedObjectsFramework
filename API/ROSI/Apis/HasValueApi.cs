@@ -5,5 +5,5 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class HasValueApi {
-    public static IEnumerable<Link> GetValue(this IHasValue hasValue) => hasValue.GetMandatoryProperty(JsonConstants.Value).ToLinks();
+    public static IEnumerable<Link> GetValue(this IHasValue hasValue) => hasValue.GetMandatoryProperty(JsonConstants.Value).ToLinks(hasValue);
 }

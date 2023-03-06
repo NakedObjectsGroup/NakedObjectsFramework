@@ -23,8 +23,8 @@ public static class ActionResultApi {
         resultRepresentation.Is(ResultType.Scalar) && resultRepresentation.GetOptionalProperty(JsonConstants.Result) is { } o ? o.Value<T>() : default;
 
     public static DomainObject? GetObject(this ActionResult resultRepresentation) =>
-        resultRepresentation.Is(ResultType.Object) && resultRepresentation.Result() is { } jo ? new DomainObject(jo, resultRepresentation.Tag) : null;
+        resultRepresentation.Is(ResultType.Object) && resultRepresentation.Result() is { } jo ? new DomainObject(jo, resultRepresentation.Options, resultRepresentation.Tag) : null;
 
     public static List? GetList(this ActionResult resultRepresentation) =>
-        resultRepresentation.Is(ResultType.List) && resultRepresentation.Result() is { } jo ? new List(jo) : null;
+        resultRepresentation.Is(ResultType.List) && resultRepresentation.Result() is { } jo ? new List(jo, resultRepresentation.Options) : null;
 }

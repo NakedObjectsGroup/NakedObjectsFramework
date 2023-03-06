@@ -3,4 +3,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record PropertyDetails(JObject Wrapped) : IProperty, IHasChoices;
+public record PropertyDetails(JObject Wrapped, InvokeOptions Options) : IProperty, IHasChoices;

@@ -2,4 +2,4 @@
 
 namespace ROSI.Records;
 
-public record Extensions(JObject Wrapped);
+public record Extensions(JObject Wrapped, InvokeOptions Options);

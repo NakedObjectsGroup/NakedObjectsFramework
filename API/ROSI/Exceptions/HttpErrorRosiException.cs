@@ -12,9 +12,9 @@ using ROSI.Records;
 namespace ROSI.Exceptions;
 
 public class HttpErrorRosiException : HttpRosiException {
-    public HttpErrorRosiException(HttpStatusCode statusCode, string body, string message) : base(statusCode, message) {
+    public HttpErrorRosiException(HttpStatusCode statusCode, string body, string message, InvokeOptions options) : base(statusCode, message) {
         Body = body;
-        Error = string.IsNullOrWhiteSpace(body) ? null : new Error(JObject.Parse(body));
+        Error = string.IsNullOrWhiteSpace(body) ? null : new Error(JObject.Parse(body), options);
     }
 
     public string Body { get; }
