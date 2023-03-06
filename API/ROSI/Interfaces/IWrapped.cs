@@ -12,5 +12,5 @@ namespace ROSI.Interfaces;
 
 public interface IWrapped {
     internal JObject Wrapped { get; }
-    internal InvokeOptions Options { get; }
+    internal IInvokeOptions Options { get; }
 }

@@ -30,7 +30,7 @@ using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
-public abstract class AbstractRosiApiTests : BaseRATLNUnitTestCase {
+public abstract class AbstractRosiApiTests : AbstractTestCase {
     protected override void ConfigureServices(IServiceCollection services) {
          
             services.AddControllers()

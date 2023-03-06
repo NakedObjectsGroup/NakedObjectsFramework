@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
+using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record Extensions(JObject Wrapped, InvokeOptions Options);
+public record Extensions(JObject Wrapped, IInvokeOptions Options);

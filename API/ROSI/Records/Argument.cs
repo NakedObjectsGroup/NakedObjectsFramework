@@ -3,4 +3,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record Argument(JObject Wrapped, InvokeOptions Options) : IWrapped;
+public record Argument(JObject Wrapped, IInvokeOptions Options) : IWrapped;

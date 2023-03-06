@@ -3,4 +3,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record Prompt(JObject Wrapped, InvokeOptions Options) : IHasChoices, IHasLinks, IHasExtensions;
+public record Prompt(JObject Wrapped, IInvokeOptions Options) : IHasChoices, IHasLinks, IHasExtensions;

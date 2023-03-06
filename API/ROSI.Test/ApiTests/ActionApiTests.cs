@@ -63,7 +63,7 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public async Task TestGetParametersOnDetails() {
+    public async Task TestGetParametersOnDetailsWithOptions() {
         var objectRep = GetObject(FullName<ClassWithActions>(), "1");
         var details = await objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject)).GetDetails(TestInvokeOptions());
         Assert.IsNotNull(details);
@@ -80,7 +80,24 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestGetParameters() {
+    public async Task TestGetParametersOnDetails() {
+        var objectRep = GetObject(FullName<ClassWithActions>(), "1");
+        var details = await objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject)).GetDetails();
+        Assert.IsNotNull(details);
+
+        var parameters = details.GetParameters().Parameters();
+
+        Assert.AreEqual(2, parameters.Count());
+
+        Assert.AreEqual("index", parameters.Keys.First());
+        Assert.AreEqual("class1", parameters.Keys.Last());
+
+        Assert.AreEqual("Index", parameters["index"].GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName));
+        Assert.AreEqual(0, parameters["index"].GetLinks().Count());
+    }
+
+    [Test]
+    public void TestGetParametersWithOptions() {
         var objectRep = GetObject(FullName<ClassWithActions>(), "1");
         var action = objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject));
         Assert.IsNotNull(action);
@@ -97,7 +114,24 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeNoParmReturnsObjectAction() {
+    public void TestGetParameters() {
+        var objectRep = GetObject(FullName<ClassWithActions>(), "1");
+        var action = objectRep.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject));
+        Assert.IsNotNull(action);
+
+        var parameters = action.GetParameters().Result.Parameters();
+
+        Assert.AreEqual(2, parameters.Count());
+
+        Assert.AreEqual("index", parameters.Keys.First());
+        Assert.AreEqual("class1", parameters.Keys.Last());
+
+        Assert.AreEqual("Index", parameters["index"].GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName));
+        Assert.AreEqual(0, parameters["index"].GetLinks().Count());
+    }
+
+    [Test]
+    public void TestInvokeNoParmReturnsObjectActionWithOptions() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action?.GetLinks().GetInvokeLink()?.GetMethod());
@@ -119,7 +153,29 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestValidateNoParm() {
+    public void TestInvokeNoParmReturnsObjectAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action?.GetLinks().GetInvokeLink()?.GetMethod());
+
+        Assert.AreEqual(0, action?.GetLinks().GetInvokeLink()?.GetArguments()?.Count());
+
+        var ar = action.Invoke().Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+
+        Assert.IsNull(ar.GetList());
+        Assert.IsNull(ar.GetScalarValue<int?>());
+    }
+
+    [Test]
+    public void TestValidateNoParmWithOptions() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action?.GetLinks().GetInvokeLink()?.GetMethod());
@@ -130,7 +186,18 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeNoParmReturnsListAction() {
+    public void TestValidateNoParm() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action?.GetLinks().GetInvokeLink()?.GetMethod());
+
+        Assert.AreEqual(0, action?.GetLinks().GetInvokeLink()?.GetArguments()?.Count());
+
+        action.Validate().Wait();
+    }
+
+    [Test]
+    public void TestInvokeNoParmReturnsListActionWithOptions() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsList));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
@@ -155,7 +222,32 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeNoParmReturnsVoidAction() {
+    public void TestInvokeNoParmReturnsListAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsList));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke().Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.List, ar.GetResultType());
+
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
+
+        var l = ar.GetList();
+
+        var v = l.GetValue();
+        Assert.AreEqual(2, v.Count());
+
+        var llinks = l.GetLinks();
+        Assert.AreEqual(0, llinks.Count());
+
+        Assert.IsNull(ar.GetObject());
+        Assert.IsNull(ar.GetScalarValue<int?>());
+    }
+
+    [Test]
+    public void TestInvokeNoParmReturnsVoidActionWithOptions() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsVoid));
         Assert.AreEqual(HttpMethod.Get, action?.GetLinks().GetInvokeLink()?.GetMethod());
@@ -174,7 +266,26 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithValueParmsReturnsObjectAction() {
+    public void TestInvokeNoParmReturnsVoidAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionNoParmsReturnsVoid));
+        Assert.AreEqual(HttpMethod.Get, action?.GetLinks().GetInvokeLink()?.GetMethod());
+
+        var ar = action?.Invoke().Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Void, ar?.GetResultType());
+
+        var links = ar?.GetLinks();
+        Assert.AreEqual(1, links?.Count());
+
+        Assert.IsNull(ar?.GetObject());
+        Assert.IsNull(ar?.GetList());
+        Assert.IsNull(ar?.GetScalarValue<int?>());
+        Assert.IsNull(ar?.GetScalarValue<string>());
+    }
+
+    [Test]
+    public void TestInvokeWithValueParmsReturnsObjectActionWithOptions() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
@@ -197,7 +308,30 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestValidateWithValueParmsReturnsObjectAction() {
+    public void TestInvokeWithValueParmsReturnsObjectAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var args = action?.GetLinks().GetInvokeLink()?.GetArguments();
+
+        Assert.IsNotNull(args);
+
+        Assert.AreEqual(2, args?.Count());
+
+        var ar = action.Invoke(1, "test").Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestValidateWithValueParmsReturnsObjectActionWithOptions() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
@@ -211,7 +345,21 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithNamedValueParmsReturnsObjectAction() {
+    public void TestValidateWithValueParmsReturnsObjectAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var args = action?.GetLinks().GetInvokeLink()?.GetArguments();
+
+        Assert.IsNotNull(args);
+
+        Assert.AreEqual(2, args?.Count());
+        action.Validate(1, "test").Wait();
+    }
+
+    [Test]
+    public void TestInvokeWithNamedValueParmsReturnsObjectActionWithOptions() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
@@ -234,7 +382,30 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithRefParmsReturnsObjectAction() {
+    public void TestInvokeWithNamedValueParmsReturnsObjectAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var args = action?.GetLinks().GetInvokeLink()?.GetArguments();
+
+        Assert.IsNotNull(args);
+
+        Assert.AreEqual(2, args?.Count());
+
+        var ar = action.InvokeWithNamedParams(new() {{"index", 1}, {"str", "test"}}    ).Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeWithRefParmsReturnsObjectActionWithOptions() {
         var o1 = GetObject(FullName<Class>(), "1");
         var o2 = GetObject(FullName<Class>(), "2");
 
@@ -254,7 +425,27 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithMixedParmsReturnsObjectAction() {
+    public void TestInvokeWithRefParmsReturnsObjectAction() {
+        var o1 = GetObject(FullName<Class>(), "1");
+        var o2 = GetObject(FullName<Class>(), "2");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithRefParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke(o1, o2).Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeWithMixedParmsReturnsObjectActionWithOptions() {
         var o1 = GetObject(FullName<Class>(), "1");
 
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
@@ -273,7 +464,26 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestValidateWithMixedParms() {
+    public void TestInvokeWithMixedParmsReturnsObjectAction() {
+        var o1 = GetObject(FullName<Class>(), "1");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke( 2, o1).Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestValidateWithMixedParmsWithOptions() {
         var o1 = GetObject(FullName<Class>(), "1");
 
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
@@ -284,7 +494,18 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithValueParmsReturnsObjectIdempotentAction() {
+    public void TestValidateWithMixedParms() {
+        var o1 = GetObject(FullName<Class>(), "1");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        action.Validate( 2, o1).Wait();
+    }
+
+    [Test]
+    public void TestInvokeWithValueParmsReturnsObjectIdempotentActionWithOptions() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.IdempotentActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Put, action.GetLinks().GetInvokeLink().GetMethod());
@@ -298,7 +519,21 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithRefParmsReturnsObjectIdempotentAction() {
+    public void TestInvokeWithValueParmsReturnsObjectIdempotentAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.IdempotentActionWithValueParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Put, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke( 1, "test").Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeWithRefParmsReturnsObjectIdempotentActionWithOptions() {
         var o1 = GetObject(FullName<Class>(), "1");
         var o2 = GetObject(FullName<Class>(), "2");
 
@@ -315,7 +550,24 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithMixedParmsReturnsObjectIdempotentAction() {
+    public void TestInvokeWithRefParmsReturnsObjectIdempotentAction() {
+        var o1 = GetObject(FullName<Class>(), "1");
+        var o2 = GetObject(FullName<Class>(), "2");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.IdempotentActionWithRefParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Put, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke( o1, o2).Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeWithMixedParmsReturnsObjectIdempotentActionWithOptions() {
         var o1 = GetObject(FullName<Class>(), "1");
 
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
@@ -331,7 +583,23 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithValueParmsReturnsObjectPotentAction() {
+    public void TestInvokeWithMixedParmsReturnsObjectIdempotentAction() {
+        var o1 = GetObject(FullName<Class>(), "1");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.IdempotentActionWithMixedParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Put, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke(2, o1).Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeWithValueParmsReturnsObjectPotentActionWithOptions() {
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
@@ -345,7 +613,21 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithRefParmsReturnsObjectPotentAction() {
+    public void TestInvokeWithValueParmsReturnsObjectPotentAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithValueParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke( 1, "test").Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeWithRefParmsReturnsObjectPotentActionWithOptions() {
         var o1 = GetObject(FullName<Class>(), "1");
         var o2 = GetObject(FullName<Class>(), "2");
 
@@ -362,7 +644,24 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestValidateWithRefParmsPotentAction() {
+    public void TestInvokeWithRefParmsReturnsObjectPotentAction() {
+        var o1 = GetObject(FullName<Class>(), "1");
+        var o2 = GetObject(FullName<Class>(), "2");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithRefParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke( o1, o2).Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestValidateWithRefParmsPotentActionWithOptions() {
         var o1 = GetObject(FullName<Class>(), "1");
         var o2 = GetObject(FullName<Class>(), "2");
 
@@ -374,7 +673,19 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithMixedParmsReturnsObjectPotentAction() {
+    public void TestValidateWithRefParmsPotentAction() {
+        var o1 = GetObject(FullName<Class>(), "1");
+        var o2 = GetObject(FullName<Class>(), "2");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithRefParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
+
+        action.Validate( o1, o2).Wait();
+    }
+
+    [Test]
+    public void TestInvokeWithMixedParmsReturnsObjectPotentActionWithOptions() {
         var o1 = GetObject(FullName<Class>(), "1");
 
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
@@ -390,7 +701,23 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithWrongParms1() {
+    public void TestInvokeWithMixedParmsReturnsObjectPotentAction() {
+        var o1 = GetObject(FullName<Class>(), "1");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke( 2, o1).Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeWithWrongParms1WithOptions() {
         var o1 = GetObject(FullName<ClassWithScalars>(), "1");
 
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
@@ -427,7 +754,44 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestValidateWithWrongParms1() {
+    public void TestInvokeWithWrongParms1() {
+        var o1 = GetObject(FullName<ClassWithScalars>(), "1");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
+
+        try {
+            var ar = action.Invoke( 2, o1).Result;
+            Assert.Fail("Expect exception");
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual(2, args.First().Value.GetValue());
+                Assert.IsNull(args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("class1", args.Last().Key);
+                Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.ClassWithScalars/1", args.Last().Value.GetLinkValue().GetHref().ToString());
+                Assert.AreEqual("Not a suitable type; must be a Class", args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestValidateWithWrongParms1WithOptions() {
         var o1 = GetObject(FullName<ClassWithScalars>(), "1");
 
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
@@ -464,7 +828,44 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithEmptyMandatoryParms() {
+    public void TestValidateWithWrongParms1() {
+        var o1 = GetObject(FullName<ClassWithScalars>(), "1");
+
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
+
+        try {
+            action.Validate( 2, o1).Wait();
+            Assert.Fail("Expect exception");
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual(2, args.First().Value.GetValue());
+                Assert.IsNull(args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("class1", args.Last().Key);
+                Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.ClassWithScalars/1", args.Last().Value.GetLinkValue().GetHref().ToString());
+                Assert.AreEqual("Not a suitable type; must be a Class", args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestInvokeWithEmptyMandatoryParmsWithOptions() {
         
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
@@ -501,7 +902,44 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestValidateWithEmptyMandatoryParms() {
+    public void TestInvokeWithEmptyMandatoryParms() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
+
+        try {
+            var ar = action.Invoke("",  null!).Result;
+            Assert.Fail("Expect exception");
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Mandatory\", 199 RestfulObjects \"Mandatory\"", hre.Message);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual("", args.First().Value.GetValue());
+                Assert.AreEqual("Mandatory", args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("class1", args.Last().Key);
+                Assert.AreEqual(null, args.Last().Value.GetValue());
+                Assert.AreEqual("Mandatory", args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestValidateWithEmptyMandatoryParmsWithOptions() {
         
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
@@ -538,7 +976,44 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithInvalidMandatoryParms() {
+    public void TestValidateWithEmptyMandatoryParms() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
+
+        try {
+            action.Validate( "",  null!).Wait();
+            Assert.Fail("Expect exception");
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Mandatory\", 199 RestfulObjects \"Mandatory\"", hre.Message);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual("", args.First().Value.GetValue());
+                Assert.AreEqual("Mandatory", args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("class1", args.Last().Key);
+                Assert.AreEqual(null, args.Last().Value.GetValue());
+                Assert.AreEqual("Mandatory", args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestInvokeWithInvalidMandatoryParmsWithOptions() {
         
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
@@ -575,7 +1050,44 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestValidateWithInvalidMandatoryParms() {
+    public void TestInvokeWithInvalidMandatoryParms() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
+
+        try {
+            var ar = action.Invoke( "fred",  "fred").Result;
+            Assert.Fail("Expect exception");
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.BadRequest, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", hre.Message);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual("fred", args.First().Value.GetValue());
+                Assert.AreEqual("Invalid Entry", args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("str", args.Last().Key);
+                Assert.AreEqual("fred", args.Last().Value.GetValue());
+                Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestValidateWithInvalidMandatoryParmsWithOptions() {
         
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
@@ -612,7 +1124,44 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestInvokeWithFailCrossValidation() {
+    public void TestValidateWithInvalidMandatoryParms() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
+
+        try {
+            action.Validate( "fred",  "fred").Wait();
+            Assert.Fail("Expect exception");
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.BadRequest, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", hre.Message);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual("fred", args.First().Value.GetValue());
+                Assert.AreEqual("Invalid Entry", args.First().Value.GetInvalidReason());
+
+                Assert.AreEqual("str", args.Last().Key);
+                Assert.AreEqual("fred", args.Last().Value.GetValue());
+                Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestInvokeWithFailCrossValidationWithOptions() {
         
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
@@ -651,13 +1200,91 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
-    public void TestValidateWithFailCrossValidation() {
+    public void TestInvokeWithFailCrossValidation() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
+
+        try {
+            var ar = action.Invoke( 1,  "fred").Result;
+            Assert.Fail("Expect exception");
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Fail parameter validation\"", hre.Message);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual("Fail parameter validation", hre.Content.GetInvalidReason());
+
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual("1", args.First().Value.GetValue());
+                Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
+
+                Assert.AreEqual("str", args.Last().Key);
+                Assert.AreEqual("fred", args.Last().Value.GetValue());
+                Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestValidateWithFailCrossValidationWithOptions() {
         
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
 
         try {
             action.Validate(TestInvokeOptions(), 1,  "fred").Wait();
+            Assert.Fail("Expect exception");
+        }
+        catch (AggregateException ae) {
+            if (ae.InnerExceptions.FirstOrDefault() is HttpInvalidArgumentsRosiException hre) {
+                Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
+                Assert.AreEqual("199 RestfulObjects \"Fail parameter validation\"", hre.Message);
+                Assert.IsNotNull(hre.Content);
+                var args = hre.Content.GetArguments();
+                
+                Assert.AreEqual("Fail parameter validation", hre.Content.GetInvalidReason());
+
+                Assert.AreEqual(2, args.Count);
+                Assert.AreEqual("index", args.First().Key);
+                Assert.AreEqual("1", args.First().Value.GetValue());
+                Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
+
+                Assert.AreEqual("str", args.Last().Key);
+                Assert.AreEqual("fred", args.Last().Value.GetValue());
+                Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
+
+            }
+            else {
+                Assert.Fail("Unexpected exception type");
+            }
+        }
+        catch {
+            Assert.Fail("Unexpected exception type");
+        }
+
+    }
+
+    [Test]
+    public void TestValidateWithFailCrossValidation() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
+
+        try {
+            action.Validate( 1,  "fred").Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {

@@ -3,4 +3,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record TypeActionResult(JObject Wrapped, InvokeOptions Options) : IHasExtensions, IHasLinks;
+public record TypeActionResult(JObject Wrapped, IInvokeOptions Options) : IHasExtensions, IHasLinks;

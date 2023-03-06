@@ -4,4 +4,4 @@ using ROSI.Interfaces;
 
 namespace ROSI.Records;
 
-public record DomainObject(JObject Wrapped, InvokeOptions Options, EntityTagHeaderValue? Tag = null) : IHasExtensions, IHasLinks;
+public record DomainObject(JObject Wrapped, IInvokeOptions Options, EntityTagHeaderValue? Tag = null) : IHasExtensions, IHasLinks;
