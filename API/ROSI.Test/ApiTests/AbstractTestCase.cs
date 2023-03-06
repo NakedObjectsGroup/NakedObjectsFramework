@@ -95,6 +95,8 @@ public abstract class AbstractTestCase {
 
     public DomainObject GetObject(string type, string id) => ROSIApi.GetObject(new Uri("http://localhost/"), type, id, TestInvokeOptions()).Result;
 
+    public DomainObject GetMenu(string name) => ROSIApi.GetMenu(new Uri("http://localhost/"), name, TestInvokeOptions()).Result;
+
     public string FullName<T>() => typeof(T).FullName;
 
     public TestInvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null,  IDictionary<string, object> reservedArguments = null) =>

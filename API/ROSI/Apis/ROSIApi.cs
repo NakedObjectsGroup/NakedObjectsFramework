@@ -21,8 +21,13 @@ public static class ROSIApi {
         return await GetObject(uri, options);
     }
 
-    public static async Task<DomainObject> GetService(Uri baseUri, string type, IInvokeOptions options) {
-        var uri = new Uri(baseUri, $"/services/{type}");
+    public static async Task<DomainObject> GetService(Uri baseUri, string name, IInvokeOptions options) {
+        var uri = new Uri(baseUri, $"/services/{name}");
+        return await GetObject(uri, options);
+    }
+
+    public static async Task<DomainObject> GetMenu(Uri baseUri, string name, IInvokeOptions options) {
+        var uri = new Uri(baseUri, $"/menus/{name}");
         return await GetObject(uri, options);
     }
 }

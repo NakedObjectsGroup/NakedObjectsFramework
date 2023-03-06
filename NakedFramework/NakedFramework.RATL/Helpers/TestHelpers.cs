@@ -30,8 +30,8 @@ public record TestInvokeOptions : IInvokeOptions {
     }
 
 
-    public string? Token { get; init; }
-    public EntityTagHeaderValue? Tag { get; init; }
+    public string Token { get; init; }
+    public EntityTagHeaderValue Tag { get; init; }
     public virtual HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
 
     public IDictionary<string, object>? ReservedArguments { get; set; }

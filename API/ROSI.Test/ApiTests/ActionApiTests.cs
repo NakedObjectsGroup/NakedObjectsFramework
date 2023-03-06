@@ -370,7 +370,7 @@ public class ActionApiTests : AbstractRosiApiTests {
 
         Assert.AreEqual(2, args?.Count());
 
-        var ar = action.InvokeWithNamedParams(TestInvokeOptions(), new() {{"index", 1}, {"str", "test"}}    ).Result;
+        var ar = action.InvokeWithNamedParams(TestInvokeOptions(), new() { { "index", 1 }, { "str", "test" } }).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -393,7 +393,7 @@ public class ActionApiTests : AbstractRosiApiTests {
 
         Assert.AreEqual(2, args?.Count());
 
-        var ar = action.InvokeWithNamedParams(new() {{"index", 1}, {"str", "test"}}    ).Result;
+        var ar = action.InvokeWithNamedParams(new() { { "index", 1 }, { "str", "test" } }).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -471,7 +471,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke( 2, o1).Result;
+        var ar = action.Invoke(2, o1).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -501,7 +501,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithMixedParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
 
-        action.Validate( 2, o1).Wait();
+        action.Validate(2, o1).Wait();
     }
 
     [Test]
@@ -524,7 +524,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.IdempotentActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Put, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke( 1, "test").Result;
+        var ar = action.Invoke(1, "test").Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -558,7 +558,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.IdempotentActionWithRefParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Put, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke( o1, o2).Result;
+        var ar = action.Invoke(o1, o2).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -618,7 +618,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithValueParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke( 1, "test").Result;
+        var ar = action.Invoke(1, "test").Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -652,7 +652,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithRefParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke( o1, o2).Result;
+        var ar = action.Invoke(o1, o2).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -681,7 +681,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithRefParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
 
-        action.Validate( o1, o2).Wait();
+        action.Validate(o1, o2).Wait();
     }
 
     [Test]
@@ -708,7 +708,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
 
-        var ar = action.Invoke( 2, o1).Result;
+        var ar = action.Invoke(2, o1).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -732,7 +732,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual(2, args.First().Value.GetValue());
@@ -761,7 +761,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            var ar = action.Invoke( 2, o1).Result;
+            var ar = action.Invoke(2, o1).Result;
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -769,7 +769,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual(2, args.First().Value.GetValue());
@@ -806,7 +806,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual(2, args.First().Value.GetValue());
@@ -835,7 +835,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            action.Validate( 2, o1).Wait();
+            action.Validate(2, o1).Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -843,7 +843,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual(HttpStatusCode.UnprocessableEntity, hre.StatusCode);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual(2, args.First().Value.GetValue());
@@ -866,12 +866,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestInvokeWithEmptyMandatoryParmsWithOptions() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            var ar = action.Invoke(TestInvokeOptions(), "",  null!).Result;
+            var ar = action.Invoke(TestInvokeOptions(), "", null!).Result;
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -880,7 +880,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Mandatory\", 199 RestfulObjects \"Mandatory\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual("", args.First().Value.GetValue());
@@ -903,12 +903,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestInvokeWithEmptyMandatoryParms() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            var ar = action.Invoke("",  null!).Result;
+            var ar = action.Invoke("", null!).Result;
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -917,7 +917,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Mandatory\", 199 RestfulObjects \"Mandatory\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual("", args.First().Value.GetValue());
@@ -940,12 +940,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestValidateWithEmptyMandatoryParmsWithOptions() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            action.Validate(TestInvokeOptions(), "",  null!).Wait();
+            action.Validate(TestInvokeOptions(), "", null!).Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -954,7 +954,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Mandatory\", 199 RestfulObjects \"Mandatory\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual("", args.First().Value.GetValue());
@@ -977,12 +977,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestValidateWithEmptyMandatoryParms() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            action.Validate( "",  null!).Wait();
+            action.Validate("", null!).Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -991,7 +991,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Mandatory\", 199 RestfulObjects \"Mandatory\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual("", args.First().Value.GetValue());
@@ -1014,12 +1014,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestInvokeWithInvalidMandatoryParmsWithOptions() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
 
         try {
-            var ar = action.Invoke(TestInvokeOptions(), "fred",  "fred").Result;
+            var ar = action.Invoke(TestInvokeOptions(), "fred", "fred").Result;
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -1028,7 +1028,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual("fred", args.First().Value.GetValue());
@@ -1051,12 +1051,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestInvokeWithInvalidMandatoryParms() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
 
         try {
-            var ar = action.Invoke( "fred",  "fred").Result;
+            var ar = action.Invoke("fred", "fred").Result;
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -1065,7 +1065,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual("fred", args.First().Value.GetValue());
@@ -1088,12 +1088,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestValidateWithInvalidMandatoryParmsWithOptions() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
 
         try {
-            action.Validate(TestInvokeOptions(), "fred",  "fred").Wait();
+            action.Validate(TestInvokeOptions(), "fred", "fred").Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -1102,7 +1102,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual("fred", args.First().Value.GetValue());
@@ -1125,12 +1125,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestValidateWithInvalidMandatoryParms() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
 
         try {
-            action.Validate( "fred",  "fred").Wait();
+            action.Validate("fred", "fred").Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -1139,7 +1139,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual(2, args.Count);
                 Assert.AreEqual("index", args.First().Key);
                 Assert.AreEqual("fred", args.First().Value.GetValue());
@@ -1162,12 +1162,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestInvokeWithFailCrossValidationWithOptions() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
 
         try {
-            var ar = action.Invoke(TestInvokeOptions(), 1,  "fred").Result;
+            var ar = action.Invoke(TestInvokeOptions(), 1, "fred").Result;
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -1176,7 +1176,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Fail parameter validation\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual("Fail parameter validation", hre.Content.GetInvalidReason());
 
                 Assert.AreEqual(2, args.Count);
@@ -1201,12 +1201,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestInvokeWithFailCrossValidation() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
 
         try {
-            var ar = action.Invoke( 1,  "fred").Result;
+            var ar = action.Invoke(1, "fred").Result;
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -1215,7 +1215,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Fail parameter validation\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual("Fail parameter validation", hre.Content.GetInvalidReason());
 
                 Assert.AreEqual(2, args.Count);
@@ -1240,12 +1240,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestValidateWithFailCrossValidationWithOptions() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
 
         try {
-            action.Validate(TestInvokeOptions(), 1,  "fred").Wait();
+            action.Validate(TestInvokeOptions(), 1, "fred").Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -1254,7 +1254,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Fail parameter validation\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual("Fail parameter validation", hre.Content.GetInvalidReason());
 
                 Assert.AreEqual(2, args.Count);
@@ -1279,12 +1279,12 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestValidateWithFailCrossValidation() {
-        
+
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
 
         try {
-            action.Validate( 1,  "fred").Wait();
+            action.Validate(1, "fred").Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -1293,7 +1293,7 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("199 RestfulObjects \"Fail parameter validation\"", hre.Message);
                 Assert.IsNotNull(hre.Content);
                 var args = hre.Content.GetArguments();
-                
+
                 Assert.AreEqual("Fail parameter validation", hre.Content.GetInvalidReason());
 
                 Assert.AreEqual(2, args.Count);
@@ -1314,5 +1314,30 @@ public class ActionApiTests : AbstractRosiApiTests {
             Assert.Fail("Unexpected exception type");
         }
 
+    }
+
+    [Test]
+    public void TestInvokeOnMenu() {
+        var parsedResult = GetMenu(nameof(SimpleService));
+        var action = parsedResult.GetAction(nameof(SimpleService.GetClasses));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke().Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.List, ar.GetResultType());
+
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
+
+        var l = ar.GetList();
+
+        var v = l.GetValue();
+        Assert.AreEqual(2, v.Count());
+
+        var llinks = l.GetLinks();
+        Assert.AreEqual(0, llinks.Count());
+
+        Assert.IsNull(ar.GetObject());
+        Assert.IsNull(ar.GetScalarValue<int?>());
     }
 }
