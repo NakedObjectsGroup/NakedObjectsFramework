@@ -40,7 +40,6 @@ public static class ActionMemberApi {
     }
 
     public static async Task Validate(this ActionMember actionRepresentation, IInvokeOptions options, params object[] pp) {
-        options.ReservedArguments ??= new Dictionary<string, object>();
         options.ReservedArguments["x-ro-validate-only"] = true;
 
         if (actionRepresentation.HasInvokeLink()) {

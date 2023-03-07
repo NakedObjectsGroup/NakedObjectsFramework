@@ -67,7 +67,6 @@ public static class DomainObjectApi {
     }
 
     public static async Task ValidatePersist(this DomainObject objectRepresentation, IInvokeOptions options, params object[] pp) {
-        options.ReservedArguments ??= new Dictionary<string, object>();
         options.ReservedArguments["x-ro-validate-only"] = true;
 
         var link = objectRepresentation.GetLinks().GetPersistLink() ?? throw new NoSuchPropertyRosiException("Missing persist link in object");

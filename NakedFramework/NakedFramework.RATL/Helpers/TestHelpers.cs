@@ -29,12 +29,11 @@ public record TestInvokeOptions : IInvokeOptions {
         this.factory = factory;
     }
 
-
     public string Token { get; init; }
     public EntityTagHeaderValue Tag { get; init; }
-    public virtual HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
+    public HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
 
-    public IDictionary<string, object> ReservedArguments { get; set; }
+    public IDictionary<string, object> ReservedArguments { get; } = new Dictionary<string, object>();
 }
 
 public static class TestHelpers {

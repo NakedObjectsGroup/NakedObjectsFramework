@@ -7,5 +7,5 @@ public interface IInvokeOptions
     string? Token { get; }
     EntityTagHeaderValue? Tag { get; }
     HttpClient HttpClient { get; }
-    IDictionary<string, object>? ReservedArguments { get; set; }
+    IDictionary<string, object> ReservedArguments { get; }
 }

@@ -28,7 +28,6 @@ public static class ActionDetailsApi {
     }
 
     public static async Task Validate(this ActionDetails actionRepresentation, IInvokeOptions options, params object[] pp) {
-        options.ReservedArguments ??= new Dictionary<string, object>();
         options.ReservedArguments["x-ro-validate-only"] = true;
 
         var link = actionRepresentation.GetLinks().GetInvokeLink() ?? throw new NoSuchPropertyRosiException("Missing invoke link in action details");

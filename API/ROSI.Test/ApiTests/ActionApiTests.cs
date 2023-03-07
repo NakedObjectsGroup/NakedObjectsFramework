@@ -1380,4 +1380,16 @@ public class ActionApiTests : AbstractRosiApiTests {
         Assert.IsNull(ar.GetObject());
         Assert.IsNull(ar.GetScalarValue<int?>());
     }
+
+    [Test]
+    public void TestValidateThenInvoke() {
+        var parsedResult = GetMenu(nameof(SimpleService));
+        var action = parsedResult.GetAction(nameof(SimpleService.GetClasses));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        action.Validate().Wait();
+        var ar = action.Invoke().Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.List, ar.GetResultType());
+    }
 }
