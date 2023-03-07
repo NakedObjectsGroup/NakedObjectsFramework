@@ -15,8 +15,10 @@ using Castle.Components.DictionaryAdapter.Xml;
 using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Exceptions;
+using ROSI.Records;
 using ROSI.Test.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
+using static ROSI.Apis.EmptyParameterApi;
+
 
 namespace ROSI.Test.ApiTests;
 
@@ -320,6 +322,29 @@ public class ActionApiTests : AbstractRosiApiTests {
         Assert.AreEqual(2, args?.Count());
 
         var ar = action.Invoke(1, "test").Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var links = ar.GetLinks();
+        Assert.AreEqual(1, links.Count());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
+    public void TestInvokeWithEmptyValueParmsReturnsObjectAction() {
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithOptionalValueParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Get, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var args = action?.GetLinks().GetInvokeLink()?.GetArguments();
+
+        Assert.IsNotNull(args);
+
+        Assert.AreEqual(2, args?.Count());
+
+        var ar = action.Invoke(Empty, Empty).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -661,6 +686,21 @@ public class ActionApiTests : AbstractRosiApiTests {
     }
 
     [Test]
+    public void TestInvokeWithOptionalRefParmsReturnsObjectPotentAction() {
+        
+        var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
+        var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithOptionalRefParmsReturnsObject));
+        Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
+
+        var ar = action.Invoke(Empty, Empty).Result;
+
+        Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
+
+        var o = ar.GetObject();
+        Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.Class/1", o.GetLinks().GetSelfLink().GetHref().ToString());
+    }
+
+    [Test]
     public void TestValidateWithRefParmsPotentActionWithOptions() {
         var o1 = GetObject(FullName<Class>(), "1");
         var o2 = GetObject(FullName<Class>(), "2");
@@ -871,7 +911,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            var ar = action.Invoke(TestInvokeOptions(), "", null!).Result;
+            var ar = action.Invoke(TestInvokeOptions(), "", Empty).Result;
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -908,7 +948,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            var ar = action.Invoke("", null!).Result;
+            var ar = action.Invoke("", Empty).Result;
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -945,7 +985,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            action.Validate(TestInvokeOptions(), "", null!).Wait();
+            action.Validate(TestInvokeOptions(), "", Empty).Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {
@@ -982,7 +1022,7 @@ public class ActionApiTests : AbstractRosiApiTests {
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
         try {
-            action.Validate("", null!).Wait();
+            action.Validate("", Empty).Wait();
             Assert.Fail("Expect exception");
         }
         catch (AggregateException ae) {

@@ -232,9 +232,10 @@ internal static class HttpHelpers {
 
     private static JObject GetHrefValue(Link l) => new(new JProperty("href", l.GetHref()));
 
-    private static object GetActualValue(object val) => val switch {
+    private static object? GetActualValue(object val) => val switch {
         Link l => GetHrefValue(l),
         DomainObject o => GetHrefValue(o.GetLinks().GetSelfLink() ?? throw new NoSuchPropertyRosiException($"Missing self link in: {o.GetType()}")),
+        EmptyParameter e => null,
         _ => val
     };
 

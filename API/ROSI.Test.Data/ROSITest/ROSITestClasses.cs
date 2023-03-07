@@ -95,6 +95,9 @@ public class ClassWithActions
     public Class ActionWithValueParmsReturnsObject(int index, string str) => Container.Instances<Class>().FirstOrDefault();
 
     [QueryOnly]
+    public Class ActionWithOptionalValueParmsReturnsObject([Optionally]int? index, [Optionally]string str) => Container.Instances<Class>().FirstOrDefault();
+
+    [QueryOnly]
     public Class ActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
 
     [QueryOnly]
@@ -120,6 +123,8 @@ public class ClassWithActions
     public Class PotentActionWithValueParmsReturnsObject(int index, string str) => Container.Instances<Class>().FirstOrDefault();
 
     public Class PotentActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
+
+    public Class PotentActionWithOptionalRefParmsReturnsObject([Optionally] Class class1, [Optionally]Class class2) => Container.Instances<Class>().FirstOrDefault();
 
     public Class PotentActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
 
