@@ -26,10 +26,12 @@ public record TestInvokeOptions : IInvokeOptions {
 
 
     public string? Token { get; init; }
-    public EntityTagHeaderValue? Tag { get; init; }
-    public virtual HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
+    public EntityTagHeaderValue Tag { get; init; }
+    public HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
 
-    public IDictionary<string, object>? ReservedArguments { get; set; }
+    public IDictionary<string, object> ReservedArguments { get; init; } = new Dictionary<string, object>();
+
+    public IInvokeOptions Copy() => this with { ReservedArguments = new Dictionary<string, object>() };
 }
 
 
@@ -99,11 +101,10 @@ public abstract class AbstractTestCase {
 
     public string FullName<T>() => typeof(T).FullName;
 
-    public TestInvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null,  IDictionary<string, object> reservedArguments = null) =>
+    public TestInvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
         new(Api) {
             Token = token,
-            Tag = tag,
-            ReservedArguments = reservedArguments
+            Tag = tag
         };
 }
 

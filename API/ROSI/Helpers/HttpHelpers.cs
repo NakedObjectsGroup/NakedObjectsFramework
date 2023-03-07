@@ -67,7 +67,7 @@ internal static class HttpHelpers {
 
         var url = QueryHelpers.AddQueryString(uri.ToString(), parameters);
 
-        if (options.ReservedArguments is not null) {
+        if (options.ReservedArguments.Any()) {
             url = QueryHelpers.AddQueryString(url, options.ReservedArguments.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString()));
         }
 
@@ -107,7 +107,7 @@ internal static class HttpHelpers {
         var (uri, method) = invokeLink.GetUriAndMethod();
 
         using var content = method != HttpMethod.Get ? new StringContent("", Encoding.UTF8, "application/json") : null;
-        var url = options.ReservedArguments is not null ? QueryHelpers.AddQueryString(uri.ToString(), options.ReservedArguments.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString())) : uri.ToString();
+        var url = options.ReservedArguments.Any() ? QueryHelpers.AddQueryString(uri.ToString(), options.ReservedArguments.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString())) : uri.ToString();
 
         var request = CreateMessage(method, url, options, content);
 
@@ -144,7 +144,7 @@ internal static class HttpHelpers {
     }
 
     private static void AddReservedArguments(JObject jo, IInvokeOptions options) {
-        if (options.ReservedArguments is not null) {
+        if (options.ReservedArguments.Any()) {
             foreach (var (key, value) in options.ReservedArguments) {
                 jo.Add(new JProperty(key, value));
             }

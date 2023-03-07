@@ -130,7 +130,6 @@ internal class TestAction : ITestAction {
         try {
             var options = AcceptanceTestCase.TestInvokeOptions();
             if (page is not null) {
-                options.ReservedArguments ??= new Dictionary<string, object>();
                 options.ReservedArguments["x-ro-page"] = page;
             }
 

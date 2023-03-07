@@ -33,7 +33,9 @@ public record TestInvokeOptions : IInvokeOptions {
     public EntityTagHeaderValue Tag { get; init; }
     public HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
 
-    public IDictionary<string, object> ReservedArguments { get; } = new Dictionary<string, object>();
+    public IDictionary<string, object> ReservedArguments { get; init; } = new Dictionary<string, object>();
+
+    public IInvokeOptions Copy() => this with { ReservedArguments = new Dictionary<string, object>() };
 }
 
 public static class TestHelpers {

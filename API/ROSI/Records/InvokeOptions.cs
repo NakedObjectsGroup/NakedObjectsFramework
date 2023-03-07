@@ -8,5 +8,6 @@ public record InvokeOptions : IInvokeOptions {
     public EntityTagHeaderValue? Tag { get; init; }
     public virtual HttpClient HttpClient { get; set; } = new();
 
-    public IDictionary<string, object> ReservedArguments { get; } = new Dictionary<string, object>();
+    public IDictionary<string, object> ReservedArguments { get; init; } = new Dictionary<string, object>();
+    public IInvokeOptions Copy() => this with { ReservedArguments = new Dictionary<string, object>() };
 }
