@@ -8,6 +8,7 @@ using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.API;
 using ROSI.Apis;
+using ROSI.Interfaces;
 using ROSI.Records;
 
 namespace NakedFramework.RATL.TestCase;

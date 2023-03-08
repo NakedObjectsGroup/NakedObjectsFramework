@@ -130,7 +130,7 @@ internal class TestAction : ITestAction {
         try {
             var options = AcceptanceTestCase.TestInvokeOptions();
             if (page is not null) {
-                options.ReservedArguments["x-ro-page"] = page;
+                options = options with { ReservedArguments = options.ReservedArguments.Add("x-ro-page", page) };
             }
 
             result = action.Invoke(options, parameters).Result;

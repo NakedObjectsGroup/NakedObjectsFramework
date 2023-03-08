@@ -77,7 +77,7 @@ public abstract class BaseRATLNUnitTestCase {
 
     public string FullName<T>() => typeof(T).FullName;
 
-    public IInvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
+    public InvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
         new TestInvokeOptions(Api) {
             Token = token,
             Tag = tag

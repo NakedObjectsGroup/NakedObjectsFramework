@@ -43,11 +43,9 @@ internal class TestCollection : ITestCollection {
 
     public ITestCollection AssertIsTransient() {
         throw new NotImplementedException();
-        return this;
     }
 
     public ITestCollection AssertIsPersistent() {
         throw new NotImplementedException();
-        return this;
     }
 }
