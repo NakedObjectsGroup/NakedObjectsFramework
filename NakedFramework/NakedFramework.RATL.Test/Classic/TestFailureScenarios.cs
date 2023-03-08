@@ -151,7 +151,8 @@ public class TestFailureScenarios : AcceptanceTestCase {
 
         var p1 = obj.GetPropertyById(nameof(Object1.Prop3));
 
-        p1.AssertValueIsEqual("16/08/2013 00:00:00");
-        p1.AssertTitleIsEqual("16/08/2013");
+        var dateTime = new DateTime(2013, 8, 16);
+        p1.AssertValueIsEqual(dateTime.ToString());
+        p1.AssertTitleIsEqual(dateTime.ToString("d"));
     }
 }

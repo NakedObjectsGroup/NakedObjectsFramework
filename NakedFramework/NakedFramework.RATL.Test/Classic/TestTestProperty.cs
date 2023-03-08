@@ -92,7 +92,8 @@ public class TestTestProperty : AcceptanceTestCase {
         var obj = NewTestObject<Object2>();
         var prop = obj.GetPropertyById(nameof(Object2.Prop2));
 
-        Assert.AreEqual("28/02/2023", prop.Title);
+        var dt = new DateTime(2023, 2, 28);
+        Assert.AreEqual(dt.ToString("d"), prop.Title);
     }
 
     [Test]
