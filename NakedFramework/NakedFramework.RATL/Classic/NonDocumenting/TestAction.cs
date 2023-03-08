@@ -9,10 +9,10 @@ internal class TestAction : ITestAction {
 
     public TestAction(ActionMember action) => this.action = action;
 
-    public string Name => action.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.friendlyName].ToString();
+    public string? Name => action.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.friendlyName]?.ToString();
     public string SubMenu => action.GetExtensions().Extensions().TryGetValue(ExtensionsApi.ExtensionKeys.x_ro_nof_menuPath, out var path) ? path?.ToString() ?? "" : "";
 
-    public string LastMessage { get; private set; }
+    public string? LastMessage { get; private set; }
 
     public ITestParameter[] Parameters => action.GetParameters().Result.Parameters().Select(x => new TestParameter(x.Value)).Cast<ITestParameter>().ToArray();
 
@@ -117,7 +117,7 @@ internal class TestAction : ITestAction {
         return this;
     }
 
-    private T DoInvoke<T>(int? page, params object[] parameters) where T : class, ITestNaked {
+    private T? DoInvoke<T>(int? page, params object[] parameters) where T : class, ITestNaked {
         ResetLastMessage();
         AssertIsValidWithParms(parameters);
         ActionResult result = null;

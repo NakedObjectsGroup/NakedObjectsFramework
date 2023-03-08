@@ -11,12 +11,12 @@ using ROSI.Records;
 namespace NakedFramework.RATL.TestCase;
 
 public abstract class BaseRATLMSTestTestCase {
-    private static IHost host;
+    private static IHost? host;
 
-    protected static IServiceProvider RootServiceProvider;
-    private IServiceProvider scopeServiceProvider;
+    protected static IServiceProvider? RootServiceProvider;
+    private IServiceProvider? scopeServiceProvider;
 
-    protected virtual IServiceScope ServiceScope { set; get; }
+    protected virtual IServiceScope? ServiceScope { set; get; }
 
     protected static IPrincipal TestPrincipal => CreatePrincipal("Test", Array.Empty<string>());
 
@@ -41,7 +41,7 @@ public abstract class BaseRATLMSTestTestCase {
         scopeServiceProvider = null;
     }
 
-    protected static void InitializeNakedObjectsFramework(Action<IServiceCollection> configureServices, Func<IDictionary<string, string>> configuration = null) {
+    protected static void InitializeNakedObjectsFramework(Action<IServiceCollection> configureServices, Func<IDictionary<string, string>>? configuration = null) {
         host = CreateHostBuilder(Array.Empty<string>(), configureServices, configuration ?? (() => new Dictionary<string, string>())).Build();
         RootServiceProvider = host.Services;
         RootServiceProvider.GetService<IModelBuilder>().Build();
@@ -66,7 +66,7 @@ public abstract class BaseRATLMSTestTestCase {
 
     public DomainObject GetObject(string type, string id) => ROSIApi.GetObject(new Uri("http://localhost/"), type, id, TestInvokeOptions()).Result;
 
-    public TestInvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
+    public TestInvokeOptions TestInvokeOptions(string? token = null, EntityTagHeaderValue? tag = null) =>
         new(Api) {
             Token = token,
             Tag = tag
