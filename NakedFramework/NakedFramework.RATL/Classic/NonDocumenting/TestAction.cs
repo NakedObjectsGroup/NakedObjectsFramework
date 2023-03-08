@@ -8,19 +8,19 @@ namespace NakedFramework.RATL.Classic.NonDocumenting;
 internal class TestAction : ITestAction {
     private readonly ActionMember action;
 
-    public TestAction(ActionMember action, AcceptanceTestCase acceptanceTestCase) {
-        AcceptanceTestCase = acceptanceTestCase;
+    public TestAction(ActionMember action) {
+      
         this.action = action;
     }
 
-    internal AcceptanceTestCase AcceptanceTestCase { get; }
+   
 
     public string Name => action.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.friendlyName].ToString();
     public string SubMenu => action.GetExtensions().Extensions().TryGetValue(ExtensionsApi.ExtensionKeys.x_ro_nof_menuPath, out var path) ? path?.ToString() ?? "" : "";
 
     public string LastMessage { get; private set; }
 
-    public ITestParameter[] Parameters => action.GetParameters(AcceptanceTestCase.TestInvokeOptions()).Result.Parameters().Select(x => new TestParameter(x.Value, AcceptanceTestCase)).Cast<ITestParameter>().ToArray();
+    public ITestParameter[] Parameters => action.GetParameters().Result.Parameters().Select(x => new TestParameter(x.Value)).Cast<ITestParameter>().ToArray();
 
     public bool MatchParameters(Type[] typesToMatch) {
         var actualParameters = Parameters;
@@ -84,7 +84,7 @@ internal class TestAction : ITestAction {
         var message = "";
 
         try {
-            action.Validate(AcceptanceTestCase.TestInvokeOptions(), parsedParameters).Wait();
+            action.Validate(parsedParameters).Wait();
         }
         catch (AggregateException ae) {
             canExecute = false;
@@ -128,7 +128,7 @@ internal class TestAction : ITestAction {
         AssertIsValidWithParms(parameters);
         ActionResult result = null;
         try {
-            var options = AcceptanceTestCase.TestInvokeOptions();
+            var options = action.Options;
             if (page is not null) {
                 options = options with { ReservedArguments = options.ReservedArguments.Add("x-ro-page", page) };
             }
@@ -145,10 +145,10 @@ internal class TestAction : ITestAction {
         }
 
         if (result.GetResultType() == ActionResultApi.ResultType.List) {
-            return result.GetList() is { } list ? new TestCollection(list, AcceptanceTestCase) as T : null;
+            return result.GetList() is { } list ? new TestCollection(list) as T : null;
         }
 
-        return result.GetObject() is { } domainObject ? new TestObject(domainObject, AcceptanceTestCase) as T : null;
+        return result.GetObject() is { } domainObject ? new TestObject(domainObject) as T : null;
     }
 
     private void ResetLastMessage() {

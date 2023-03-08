@@ -9,16 +9,16 @@ using static NakedFramework.RATL.Classic.Helpers.RATLHelpers;
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal class TestCollection : ITestCollection {
-    private readonly AcceptanceTestCase acceptanceTestCase;
+   
     private readonly IHasValue collection;
     private IEnumerable<ITestObject> wrappedCollection;
 
-    public TestCollection(IHasValue collection, AcceptanceTestCase acceptanceTestCase) {
+    public TestCollection(IHasValue collection) {
         this.collection = collection;
-        this.acceptanceTestCase = acceptanceTestCase;
+        
     }
 
-    public IEnumerable<ITestObject> WrappedCollection => wrappedCollection ??= collection.GetValue().Select(link => GetTestObject(link, acceptanceTestCase)).ToArray();
+    public IEnumerable<ITestObject> WrappedCollection => wrappedCollection ??= collection.GetValue().Select(link => GetTestObject(link)).ToArray();
 
     public string Title => throw new NotImplementedException();
 

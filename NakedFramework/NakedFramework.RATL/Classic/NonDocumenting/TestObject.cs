@@ -7,7 +7,7 @@ using ROSI.Records;
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal class TestObject : TestHasActions, ITestObject {
-    public TestObject(DomainObject domainObject, AcceptanceTestCase acceptanceTestCase) : base(domainObject, acceptanceTestCase) { }
+    public TestObject(DomainObject domainObject) : base(domainObject) { }
     private bool IsTransient => IsInteractionMode("transient");
     private bool IsPersistent => IsInteractionMode("persistent");
 
@@ -20,8 +20,8 @@ internal class TestObject : TestHasActions, ITestObject {
 
     public ITestProperty[] Properties {
         get {
-            var ps = DomainObject.GetProperties().Select(p => new TestProperty(p, AcceptanceTestCase)).Cast<ITestProperty>();
-            var cs = DomainObject.GetCollections().Select(p => new TestProperty(p, AcceptanceTestCase)).Cast<ITestProperty>();
+            var ps = DomainObject.GetProperties().Select(p => new TestProperty(p)).Cast<ITestProperty>();
+            var cs = DomainObject.GetCollections().Select(p => new TestProperty(p)).Cast<ITestProperty>();
 
             return ps.Union(cs).ToArray();
         }
@@ -37,10 +37,10 @@ internal class TestObject : TestHasActions, ITestObject {
 
     public ITestObject Save() {
         AssertCanBeSaved();
-        return new TestObject(DomainObject.PersistWithNamedParams(AcceptanceTestCase.TestInvokeOptions(null, DomainObject.Tag), DomainObject.GetPersistMap()).Result, AcceptanceTestCase);
+        return new TestObject(DomainObject.PersistWithNamedParams(DomainObject.Options, DomainObject.GetPersistMap()).Result);
     }
 
-    public ITestObject Refresh() => new TestObject(ROSIApi.GetObject(DomainObject.GetLinks().GetSelfLink()!.GetHref(), AcceptanceTestCase.TestInvokeOptions()).Result, AcceptanceTestCase);
+    public ITestObject Refresh() => new TestObject(ROSIApi.GetObject(DomainObject.GetLinks().GetSelfLink()!.GetHref(), DomainObject.Options).Result);
 
     public ITestObject AssertIsType(Type expectedType) {
         var actual = DomainObject.GetDomainType();
@@ -76,7 +76,7 @@ internal class TestObject : TestHasActions, ITestObject {
         Assert.IsTrue(IsTransient, $"Can only persist a transient object: '{DomainObject.GetDomainType()}'");
 
         try {
-            DomainObject.ValidatePersistWithNamedParams(AcceptanceTestCase.TestInvokeOptions(null, DomainObject.Tag), DomainObject.GetPersistMap()).Wait();
+            DomainObject.ValidatePersistWithNamedParams(DomainObject.GetPersistMap()).Wait();
         }
         catch (AggregateException ae) {
             if (ae.InnerException is HttpInvalidArgumentsRosiException hre) {

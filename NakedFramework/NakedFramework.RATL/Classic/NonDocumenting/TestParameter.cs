@@ -12,12 +12,12 @@ namespace NakedFramework.RATL.Classic.NonDocumenting;
 internal class TestParameter : ITestParameter {
     private readonly Parameter parameter;
 
-    public TestParameter(Parameter parameter, AcceptanceTestCase acceptanceTestCase) {
+    public TestParameter(Parameter parameter) {
         this.parameter = parameter;
-        AcceptanceTestCase = acceptanceTestCase;
+       
     }
 
-    internal AcceptanceTestCase AcceptanceTestCase { get; }
+  
     public string Description => parameter.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.description);
     public bool IsOptional => parameter.GetExtensions().GetExtension<bool>(ExtensionsApi.ExtensionKeys.optional);
     public bool IsMandatory => !IsOptional;
@@ -31,17 +31,17 @@ internal class TestParameter : ITestParameter {
             _ => null
         };
 
-    public ITestNaked[] GetChoices() => RATLHelpers.GetChoices(parameter, AcceptanceTestCase);
+    public ITestNaked[] GetChoices() => RATLHelpers.GetChoices(parameter);
 
     public ITestNaked[] GetCompletions(string autoCompleteParm) {
-        var prompt = parameter.GetPrompts(AcceptanceTestCase.TestInvokeOptions(), autoCompleteParm).Result;
-        return RATLHelpers.GetChoices(prompt, AcceptanceTestCase);
+        var prompt = parameter.GetPrompts(autoCompleteParm).Result;
+        return RATLHelpers.GetChoices(prompt);
     }
 
     public ITestNaked GetDefault() {
         if (parameter.GetLinkDefault() is { } link) {
-            var domainObject = ROSIApi.GetObject(link.GetHref(), AcceptanceTestCase.TestInvokeOptions()).Result;
-            return new TestObject(domainObject, AcceptanceTestCase);
+            var domainObject = ROSIApi.GetObject(link.GetHref(), link.Options).Result;
+            return new TestObject(domainObject);
         }
 
         return parameter.HasDefault() ? new TestValue(parameter.GetDefault()) : null;

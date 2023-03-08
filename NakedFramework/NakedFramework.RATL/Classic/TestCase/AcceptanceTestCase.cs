@@ -11,13 +11,13 @@ public abstract class AcceptanceTestCase : BaseRATLNUnitTestCase {
     public ITestObject NewTestObject<T>(string id = "1") {
         var type = typeof(T).FullName!;
         var innerObject = ROSIApi.GetObject(new Uri("http://localhost/"), type, id, TestInvokeOptions()).Result;
-        return new TestObject(innerObject, this);
+        return new TestObject(innerObject);
     }
 
     public ITestObject GetTestService(string id) {
         try {
             var innerObject = ROSIApi.GetService(new Uri("http://localhost/"), id, TestInvokeOptions()).Result;
-            return new TestObject(innerObject, this);
+            return new TestObject(innerObject);
         }
         catch (Exception) {
             Assert.Fail($"No such service: {id}");

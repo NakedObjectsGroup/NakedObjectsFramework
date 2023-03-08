@@ -13,12 +13,12 @@ namespace NakedFramework.RATL.Classic.NonDocumenting;
 public class TestProperty : ITestProperty {
     private IMember member;
 
-    public TestProperty(IMember member, AcceptanceTestCase acceptanceTestCase) {
+    public TestProperty(IMember member) {
         this.member = member;
-        AcceptanceTestCase = acceptanceTestCase;
+       
     }
 
-    public AcceptanceTestCase AcceptanceTestCase { get; }
+   
 
     public string Name => member.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName);
 
@@ -42,8 +42,8 @@ public class TestProperty : ITestProperty {
 
     public ITestNaked[] GetChoices() {
         if (member is PropertyMember property) {
-            var details = property.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result;
-            return RATLHelpers.GetChoices(details, AcceptanceTestCase);
+            var details = property.GetDetails().Result;
+            return RATLHelpers.GetChoices(details);
         }
 
         return Array.Empty<ITestNaked>();
@@ -63,10 +63,10 @@ public class TestProperty : ITestProperty {
 
     public ITestNaked Content =>
         member switch {
-            IProperty property when property.GetLinkValue() is { } link => new TestObject(ROSIApi.GetObject(link.GetHref(), AcceptanceTestCase.TestInvokeOptions()).Result, AcceptanceTestCase),
+            IProperty property when property.GetLinkValue() is { } link => new TestObject(ROSIApi.GetObject(link.GetHref(), link.Options).Result),
             IProperty property => new TestValue(property.ConvertValue()),
-            CollectionMember collection => new TestCollection(collection.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result, AcceptanceTestCase),
-            IHasValue collection => new TestCollection(collection, AcceptanceTestCase),
+            CollectionMember collection => new TestCollection(collection.GetDetails().Result),
+            IHasValue collection => new TestCollection(collection),
             _ => null
         };
 
@@ -83,14 +83,14 @@ public class TestProperty : ITestProperty {
 
         try {
             var details = member switch {
-                PropertyMember property => property.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result,
+                PropertyMember property => property.GetDetails().Result,
                 PropertyDetails pd => pd,
                 CollectionMember or CollectionDetails => null,
                 _ => null
             };
 
             if (details is not null) {
-                member = details.SetValue(testObject?.Value, AcceptanceTestCase.TestInvokeOptions()).Result;
+                member = details.SetValue(testObject?.Value).Result;
             }
             else {
                 Assert.IsFalse(true, $"Cannot SetObject {testObject} in the field {Id}: Always disabled");
@@ -167,14 +167,14 @@ public class TestProperty : ITestProperty {
 
         try {
             var details = member switch {
-                PropertyMember property => property.GetDetails(AcceptanceTestCase.TestInvokeOptions()).Result,
+                PropertyMember property => property.GetDetails().Result,
                 PropertyDetails pd => pd,
                 CollectionMember or CollectionDetails => null,
                 _ => null
             };
 
             if (details is not null) {
-                member = details.SetValue(textEntry, AcceptanceTestCase.TestInvokeOptions()).Result;
+                member = details.SetValue(textEntry).Result;
             }
             else {
                 Assert.IsFalse(true, $"Cannot SetValue {textEntry} in the field {Id}: Always disabled");

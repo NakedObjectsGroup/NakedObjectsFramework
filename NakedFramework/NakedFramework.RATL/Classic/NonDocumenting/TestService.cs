@@ -6,7 +6,7 @@ using ROSI.Records;
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal class TestService : TestHasActions, ITestService {
-    public TestService(DomainObject service, AcceptanceTestCase acceptanceTestCase) : base(service, acceptanceTestCase) { }
+    public TestService(DomainObject service) : base(service) { }
 
     public override string Title {
         get {

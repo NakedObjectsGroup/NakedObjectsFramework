@@ -30,7 +30,7 @@ public record TestInvokeOptions : InvokeOptions {
         this.factory = factory;
     }
 
-    public new HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
+    public override HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
 }
 
 public static class TestHelpers {

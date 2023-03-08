@@ -7,16 +7,13 @@ using ROSI.Records;
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal abstract class TestHasActions : ITestHasActions {
-    protected TestHasActions(DomainObject domainObject, AcceptanceTestCase acceptanceTestCase) {
-        AcceptanceTestCase = acceptanceTestCase;
+    protected TestHasActions(DomainObject domainObject) {
         DomainObject = domainObject;
     }
 
     protected DomainObject DomainObject { get; }
 
-    protected AcceptanceTestCase AcceptanceTestCase { get; }
-
-    public ITestAction[] Actions => DomainObject.GetActions().Select(a => new TestAction(a, AcceptanceTestCase)).Cast<ITestAction>().ToArray();
+    public ITestAction[] Actions => DomainObject.GetActions().Select(a => new TestAction(a)).Cast<ITestAction>().ToArray();
 
     public ITestAction GetAction(string actionName) {
         var actions = Actions.Where(x => x.Name == actionName && string.IsNullOrEmpty(x.SubMenu)).ToArray();

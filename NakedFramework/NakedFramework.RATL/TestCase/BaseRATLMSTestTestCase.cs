@@ -70,11 +70,10 @@ public abstract class BaseRATLMSTestTestCase {
 
     public DomainObject GetObject(string type, string id) => ROSIApi.GetObject(new Uri("http://localhost/"), type, id, TestInvokeOptions()).Result;
 
-    public InvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
-        new() {
+    public TestInvokeOptions TestInvokeOptions(string token = null, EntityTagHeaderValue tag = null) =>
+        new(Api) {
             Token = token,
-            Tag = tag,
-            HttpClient = new HttpClient(new StubHttpMessageHandler(Api()))
+            Tag = tag
         };
 }
 
