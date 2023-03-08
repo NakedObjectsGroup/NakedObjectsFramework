@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
-using ROSI.Interfaces;
+using ROSI.Records;
+using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
 
 namespace NakedFramework.RATL.Helpers;
 
