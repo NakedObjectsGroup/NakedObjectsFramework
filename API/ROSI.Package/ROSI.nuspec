@@ -15,7 +15,7 @@
 		<tags>naked objects nakedobjects ddd domain driven design</tags>
 		<dependencies>
 			<group targetFramework="net6.0">
-				<dependency id="Microsoft.AspNetCore.Mvc.NewtonsoftJson" version="[6.0.11, 7)" />
+				<dependency id="Microsoft.AspNetCore.Mvc.NewtonsoftJson" version="[6.0.14, 7)" />
 			</group>
 		</dependencies>
 	</metadata>

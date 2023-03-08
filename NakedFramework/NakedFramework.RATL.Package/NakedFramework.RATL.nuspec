@@ -16,15 +16,15 @@
 		<dependencies>
 			<group targetFramework="net6.0">
 				<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="7.0.0" />
-				<dependency id="Microsoft.Extensions.Hosting" version="7.0.0" />
+				<dependency id="Microsoft.Extensions.Hosting" version="7.0.1" />
 				<dependency id="Microsoft.Extensions.Hosting.Abstractions" version="7.0.0" />
-				<dependency id="Microsoft.NET.Test.Sdk" version="17.3.2" />
-				<dependency id="MSTest.TestAdapter" version="2.2.10" />
-				<dependency id="MSTest.TestFramework" version="2.2.10" />
-				<dependency id="coverlet.collector" version="3.1.2" />
+				<dependency id="Microsoft.NET.Test.Sdk" version="17.5.0" />
+				<dependency id="MSTest.TestAdapter" version="3.0.2" />
+				<dependency id="MSTest.TestFramework" version="3.0.2" />
+				<dependency id="coverlet.collector" version="3.2.0" />
 				<dependency id="NakedFramework" version="13.2.0" />
 				<dependency id="RestfulObjects.ROSI" version="1.0.0-beta15" />
-				<dependency id="System.Data.SqlClient" version="4.8.1" />
+				<dependency id="System.Data.SqlClient" version="4.8.5" />
 			</group>
 		</dependencies>
 	</metadata>
