@@ -1,24 +1,25 @@
 ﻿using NakedFramework.RATL.Classic.Helpers;
 using NakedFramework.RATL.Classic.Interface;
-using NakedFramework.RATL.Classic.TestCase;
-using NakedObjects.Resources;
-using Newtonsoft.Json.Linq;
 using ROSI.Apis;
 using ROSI.Interfaces;
 using ROSI.Records;
-using System;
 
-namespace NakedFramework.RATL.Classic.NonDocumenting; 
+namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 public class TestProperty : ITestProperty {
     private IMember member;
 
-    public TestProperty(IMember member) {
-        this.member = member;
-       
-    }
+    public TestProperty(IMember member) => this.member = member;
 
-   
+    private bool IsNotParseable => !IsParseable;
+
+    private bool IsParseable => ReturnType is "boolean" or "number" or "string";
+
+    private bool IsOptional => member.GetExtensions().GetExtension<bool>(ExtensionsApi.ExtensionKeys.optional);
+
+    private string Description => member.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.description);
+
+    private string ReturnType => member.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.returnType);
 
     public string Name => member.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.friendlyName);
 
@@ -58,8 +59,6 @@ public class TestProperty : ITestProperty {
 
     //    return this;
     //}
-
-
 
     public ITestNaked Content =>
         member switch {
@@ -104,8 +103,7 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    public ITestProperty RemoveFromCollection(ITestObject testObject)
-    {
+    public ITestProperty RemoveFromCollection(ITestObject testObject) {
         AssertIsVisible();
         AssertIsModifiable();
         ResetLastMessage();
@@ -129,13 +127,11 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-
     /// <summary>
     ///     Removes an existing object reference from the specified field. Mirrors the 'Remove Reference' menu
     ///     option that each object field offers by default.
     /// </summary>
-    public ITestProperty ClearObject()
-    {
+    public ITestProperty ClearObject() {
         AssertIsVisible();
         AssertIsModifiable();
         ResetLastMessage();
@@ -159,8 +155,7 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    public ITestProperty SetValue(string textEntry)
-    {
+    public ITestProperty SetValue(string textEntry) {
         AssertIsVisible();
         AssertIsModifiable();
         ResetLastMessage();
@@ -184,11 +179,11 @@ public class TestProperty : ITestProperty {
             LastMessage = ex.InnerException?.Message ?? "";
             Assert.Fail($"Cannot SetValue {textEntry} in the field {Id}: {LastMessage}");
         }
+
         return this;
     }
 
-    public ITestProperty ClearValue()
-    {
+    public ITestProperty ClearValue() {
         AssertIsVisible();
         AssertIsModifiable();
         ResetLastMessage();
@@ -197,31 +192,19 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    public ITestProperty TestField(string setValue, string expected)
-    {
+    public ITestProperty TestField(string setValue, string expected) {
         SetValue(setValue);
         Assert.AreEqual($"Field '{Name}' contains unexpected value", expected, Content.Title);
         return this;
     }
 
-    public ITestProperty TestField(ITestObject expected)
-    {
+    public ITestProperty TestField(ITestObject expected) {
         SetObject(expected);
         Assert.AreEqual(expected, Content);
         return this;
     }
 
-    private void ResetLastMessage()
-    {
-        LastMessage = string.Empty;
-    }
-
-    private bool IsNotParseable => !IsParseable;
-
-    private bool IsParseable => ReturnType is "boolean" or "number" or "string";
-
-    public ITestProperty AssertCannotParse(string text)
-    {
+    public ITestProperty AssertCannotParse(string text) {
         AssertIsVisible();
         AssertIsModifiable();
 
@@ -245,33 +228,24 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    public ITestProperty AssertFieldEntryInvalid(string text)
-    {
-        return IsNotParseable ? AssertNotParseable() : AssertParseableFieldEntryInvalid(text);
-    }
+    public ITestProperty AssertFieldEntryInvalid(string text) => IsNotParseable ? AssertNotParseable() : AssertParseableFieldEntryInvalid(text);
 
-    public ITestProperty AssertFieldEntryIsValid(string text)
-    {
-        return IsNotParseable ? AssertNotParseable() : AssertParseableFieldEntryIsValid(text);
-    }
+    public ITestProperty AssertFieldEntryIsValid(string text) => IsNotParseable ? AssertNotParseable() : AssertParseableFieldEntryIsValid(text);
 
-    public ITestProperty AssertSetObjectInvalid(ITestObject testObject)
-    {
-        try
-        {
+    public ITestProperty AssertSetObjectInvalid(ITestObject testObject) {
+        try {
             AssertSetObjectIsValid(testObject);
         }
-        catch (AssertFailedException)
-        {
+        catch (AssertFailedException) {
             // expected 
             return this;
         }
+
         Assert.Fail($"Object {testObject} was allowed in field {Id} : expected it to be invalid");
         return this;
     }
 
-    public ITestProperty AssertSetObjectIsValid(ITestObject testObject)
-    {
+    public ITestProperty AssertSetObjectIsValid(ITestObject testObject) {
         AssertIsVisible();
         AssertIsModifiable();
         ResetLastMessage();
@@ -299,12 +273,10 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    public ITestProperty AssertIsInvisible()
-    {
+    public ITestProperty AssertIsInvisible() =>
         //bool canAccess = field.IsVisible(NakedObjectsContext.Session, owningObject.NakedObject);
         //Assert.IsFalse(canAccess, "Field '" + Name + "' is visible");
-        return this;
-    }
+        this;
 
     public ITestProperty AssertIsVisible() {
         Assert.IsTrue(member is not null, $"Field '{Name}' is invisible");
@@ -317,27 +289,18 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    private bool IsOptional => member.GetExtensions().GetExtension<bool>(ExtensionsApi.ExtensionKeys.optional);
-
-    public ITestProperty AssertIsOptional()
-    {
+    public ITestProperty AssertIsOptional() {
         Assert.IsTrue(IsOptional, $"Field '{Id}' is mandatory");
         return this;
     }
 
-    private string Description => member.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.description);
-
-    private string ReturnType => member.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.returnType);
-
-    public ITestProperty AssertIsDescribedAs(string expected)
-    {
+    public ITestProperty AssertIsDescribedAs(string expected) {
         AssertIsVisible();
         Assert.IsTrue(expected.Equals(Description), $"Description expected: '{expected}' actual: '{Description}'");
         return this;
     }
 
-    public ITestProperty AssertIsModifiable()
-    {
+    public ITestProperty AssertIsModifiable() {
         AssertIsVisible();
         ResetLastMessage();
 
@@ -349,30 +312,21 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    public ITestProperty AssertIsUnmodifiable()
-    {
+    public ITestProperty AssertIsUnmodifiable() =>
         //ResetLastMessage();
         //IConsent isUsable = field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject);
         //LastMessage = isUsable.Reason;
-
         //bool canUse = isUsable.IsAllowed;
         //Assert.IsFalse(canUse, "Field '" + Name + "' in " + owningObject.NakedObject + " is modifiable");
-        return this;
-    }
+        this;
 
-    private bool IsEmpty() {
-        return Content == null || string.IsNullOrEmpty(Content.Title);
-    }
-
-    public ITestProperty AssertIsNotEmpty()
-    {
+    public ITestProperty AssertIsNotEmpty() {
         AssertIsVisible();
         Assert.IsFalse(IsEmpty(), $"Expected '{Name}' to contain something but it was empty");
         return this;
     }
 
-    public ITestProperty AssertIsEmpty()
-    {
+    public ITestProperty AssertIsEmpty() {
         AssertIsVisible();
         Assert.IsTrue(IsEmpty(), $"Expected '{Name}' to be empty");
         return this;
@@ -390,15 +344,13 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    public ITestProperty AssertObjectIsEqual(ITestNaked expected)
-    {
+    public ITestProperty AssertObjectIsEqual(ITestNaked expected) {
         AssertIsVisible();
         Assert.AreEqual(expected, Content);
         return this;
     }
 
-    public ITestProperty AssertIsValidToSave()
-    {
+    public ITestProperty AssertIsValidToSave() =>
         //if (field.IsMandatory && field.IsVisible(NakedObjectsContext.Session, owningObject.NakedObject) && field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject).IsAllowed)
         //{
         //    Assert.IsFalse(field.IsEmpty(owningObject.NakedObject), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
@@ -408,24 +360,25 @@ public class TestProperty : ITestProperty {
         //{
         //    field.GetNakedObject(owningObject.NakedObject).GetAsEnumerable().ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
         //}
+        this;
 
-        return this;
-    }
-
-    public ITestProperty AssertLastMessageIs(string message)
-    {
+    public ITestProperty AssertLastMessageIs(string message) {
         Assert.IsTrue(message.Equals(LastMessage), "Last message expected: '" + message + "' actual: '" + LastMessage + "'");
         return this;
     }
 
-    public ITestProperty AssertLastMessageContains(string message)
-    {
+    public ITestProperty AssertLastMessageContains(string message) {
         Assert.IsTrue(LastMessage.Contains(message), "Last message expected to contain: '" + message + "' actual: '" + LastMessage + "'");
         return this;
     }
 
-    public ITestProperty AssertParseableFieldEntryInvalid(string text)
-    {
+    private void ResetLastMessage() {
+        LastMessage = string.Empty;
+    }
+
+    private bool IsEmpty() => Content == null || string.IsNullOrEmpty(Content.Title);
+
+    public ITestProperty AssertParseableFieldEntryInvalid(string text) {
         AssertIsVisible();
         AssertIsModifiable();
         ResetLastMessage();
@@ -447,8 +400,7 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    public ITestProperty AssertParseableFieldEntryIsValid(string text)
-    {
+    public ITestProperty AssertParseableFieldEntryIsValid(string text) {
         AssertIsVisible();
         AssertIsModifiable();
         ResetLastMessage();
@@ -463,8 +415,7 @@ public class TestProperty : ITestProperty {
         return this;
     }
 
-    private ITestProperty AssertNotParseable()
-    {
+    private ITestProperty AssertNotParseable() {
         Assert.Fail("Not a parseable field");
         return this;
     }

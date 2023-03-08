@@ -14,8 +14,7 @@ using NakedObjects;
 
 namespace ROSI.Test.Data;
 
-public class SimpleService
-{
+public class SimpleService {
     public IDomainObjectContainer Container { private get; set; }
     public IQueryable<Class> GetClasses() => Container.Instances<Class>();
 
@@ -30,15 +29,13 @@ public class SimpleService
     }
 }
 
-public enum TestChoices
-{
+public enum TestChoices {
     ChoiceOne,
     ChoiceTwo,
     ChoiceThree
 }
 
-public class Class
-{
+public class Class {
     [Title]
     public string Title => $"{nameof(Class)}:{Id}";
 
@@ -72,8 +69,7 @@ public class Class
     public Class Action2() => this;
 }
 
-public class ClassWithActions
-{
+public class ClassWithActions {
     [Title]
     public string Title => $"{nameof(ClassWithActions)}:{Id}";
 
@@ -95,7 +91,7 @@ public class ClassWithActions
     public Class ActionWithValueParmsReturnsObject(int index, string str) => Container.Instances<Class>().FirstOrDefault();
 
     [QueryOnly]
-    public Class ActionWithOptionalValueParmsReturnsObject([Optionally]int? index, [Optionally]string str) => Container.Instances<Class>().FirstOrDefault();
+    public Class ActionWithOptionalValueParmsReturnsObject([Optionally] int? index, [Optionally] string str) => Container.Instances<Class>().FirstOrDefault();
 
     [QueryOnly]
     public Class ActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
@@ -124,19 +120,16 @@ public class ClassWithActions
 
     public Class PotentActionWithRefParmsReturnsObject(Class class1, Class class2) => Container.Instances<Class>().FirstOrDefault();
 
-    public Class PotentActionWithOptionalRefParmsReturnsObject([Optionally] Class class1, [Optionally]Class class2) => Container.Instances<Class>().FirstOrDefault();
+    public Class PotentActionWithOptionalRefParmsReturnsObject([Optionally] Class class1, [Optionally] Class class2) => Container.Instances<Class>().FirstOrDefault();
 
     public Class PotentActionWithMixedParmsReturnsObject(int index, Class class1) => Container.Instances<Class>().FirstOrDefault();
 
     [QueryOnly]
-    public void ActionThrowsException()
-    {
-        try
-        {
+    public void ActionThrowsException() {
+        try {
             throw new Exception("Exception 1");
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new Exception("Exception 2", ex);
         }
     }
@@ -149,17 +142,14 @@ public class ClassWithActions
     public Class ActionWithAutoComplete(Class cls) => cls;
 
     public IQueryable<Class> AutoComplete0ActionWithAutoComplete(string s) => Container.Instances<Class>().Where(c => c.Property1.Contains(s));
-
 }
 
-public enum TestEnum
-{
+public enum TestEnum {
     ValueOne,
     ValueTwo
 }
 
-public class ClassWithScalars
-{
+public class ClassWithScalars {
     [Title]
     public string Title => $"{nameof(ClassWithScalars)}:{Id}";
 
@@ -257,10 +247,7 @@ public class ClassWithScalars
     public string String { get; set; } = "A String";
 }
 
-
-public class ClassToPersist
-{
-
+public class ClassToPersist {
     public IDomainObjectContainer Container { private get; set; }
 
     [Key]

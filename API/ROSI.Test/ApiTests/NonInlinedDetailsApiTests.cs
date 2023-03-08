@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -18,7 +17,6 @@ using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Apis;
-using ROSI.Interfaces;
 using ROSI.Records;
 using ROSI.Test.Data;
 using ROSI.Test.Helpers;
@@ -26,16 +24,13 @@ using ROSI.Test.Helpers;
 namespace ROSI.Test.ApiTests;
 
 public class NonInlinedDetailsApiTests : AbstractRosiApiTests {
-  
-
     protected override void ConfigureServices(IServiceCollection services) {
-         
         services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         services.AddMvc(options => options.EnableEndpointRouting = false);
         services.AddHttpContextAccessor();
         services.AddNakedFramework(frameworkOptions => {
-            frameworkOptions.MainMenus = f =>  new[] { f.NewMenu<SimpleService>(true) };
+            frameworkOptions.MainMenus = f => new[] { f.NewMenu<SimpleService>(true) };
             frameworkOptions.AddEFCorePersistor();
             frameworkOptions.AddRestfulObjects(options => {
                 options.CacheSettings = (0, 3600, 86400);
@@ -45,7 +40,7 @@ public class NonInlinedDetailsApiTests : AbstractRosiApiTests {
                 options.InlinedMemberRepresentations = false;
             });
             frameworkOptions.AddNakedObjects(appOptions => {
-                appOptions.DomainModelTypes = new Type[] {
+                appOptions.DomainModelTypes = new[] {
                     typeof(Class),
                     typeof(ClassWithActions),
                     typeof(TestChoices),
@@ -53,14 +48,13 @@ public class NonInlinedDetailsApiTests : AbstractRosiApiTests {
                     typeof(ClassWithScalars),
                     typeof(ClassToPersist)
                 };
-                appOptions.DomainModelServices = new Type[] {typeof(SimpleService)};
+                appOptions.DomainModelServices = new[] { typeof(SimpleService) };
             });
         });
         services.AddDbContext<DbContext, EFCoreObjectDbContext>();
         services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
         services.AddScoped(p => TestPrincipal);
     }
-
 
     [Test]
     public void TestInvokeWithValueParmsReturnsObjectAction() {
@@ -152,7 +146,6 @@ public class NonInlinedDetailsApiTests : AbstractRosiApiTests {
 
         Assert.AreEqual(0, links.Count());
     }
-
 
     // so it returns a new stub client each time
     protected record ForInlineInvokeOptions : InvokeOptions {

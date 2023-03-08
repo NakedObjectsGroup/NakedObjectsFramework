@@ -1,7 +1,6 @@
 ﻿namespace NakedFramework.RATL.Classic.Interface;
 
-public interface ITestAction
-{
+public interface ITestAction {
     string Name { get; }
     string SubMenu { get; }
     string LastMessage { get; }

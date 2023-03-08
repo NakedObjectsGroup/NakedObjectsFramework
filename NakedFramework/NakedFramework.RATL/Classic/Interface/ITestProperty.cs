@@ -1,7 +1,6 @@
 ﻿namespace NakedFramework.RATL.Classic.Interface;
 
-public interface ITestProperty
-{
+public interface ITestProperty {
     string Name { get; }
     string Id { get; }
     string Title { get; }

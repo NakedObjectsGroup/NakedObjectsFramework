@@ -11,14 +11,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Castle.Components.DictionaryAdapter.Xml;
 using NUnit.Framework;
 using ROSI.Apis;
 using ROSI.Exceptions;
-using ROSI.Records;
 using ROSI.Test.Data;
 using static ROSI.Apis.EmptyParameterApi;
-
 
 namespace ROSI.Test.ApiTests;
 
@@ -395,7 +392,7 @@ public class ActionApiTests : AbstractRosiApiTests {
 
         Assert.AreEqual(2, args?.Count());
 
-        var ar = action.InvokeWithNamedParams(TestInvokeOptions(), new() { { "index", 1 }, { "str", "test" } }).Result;
+        var ar = action.InvokeWithNamedParams(TestInvokeOptions(), new Dictionary<string, object> { { "index", 1 }, { "str", "test" } }).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -418,7 +415,7 @@ public class ActionApiTests : AbstractRosiApiTests {
 
         Assert.AreEqual(2, args?.Count());
 
-        var ar = action.InvokeWithNamedParams(new() { { "index", 1 }, { "str", "test" } }).Result;
+        var ar = action.InvokeWithNamedParams(new Dictionary<string, object> { { "index", 1 }, { "str", "test" } }).Result;
 
         Assert.AreEqual(ActionResultApi.ResultType.Object, ar.GetResultType());
 
@@ -687,7 +684,6 @@ public class ActionApiTests : AbstractRosiApiTests {
 
     [Test]
     public void TestInvokeWithOptionalRefParmsReturnsObjectPotentAction() {
-        
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithOptionalRefParmsReturnsObject));
         Assert.AreEqual(HttpMethod.Post, action.GetLinks().GetInvokeLink().GetMethod());
@@ -781,7 +777,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("class1", args.Last().Key);
                 Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.ClassWithScalars/1", args.Last().Value.GetLinkValue().GetHref().ToString());
                 Assert.AreEqual("Not a suitable type; must be a Class", args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -790,7 +785,6 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
@@ -818,7 +812,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("class1", args.Last().Key);
                 Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.ClassWithScalars/1", args.Last().Value.GetLinkValue().GetHref().ToString());
                 Assert.AreEqual("Not a suitable type; must be a Class", args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -827,7 +820,6 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
@@ -855,7 +847,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("class1", args.Last().Key);
                 Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.ClassWithScalars/1", args.Last().Value.GetLinkValue().GetHref().ToString());
                 Assert.AreEqual("Not a suitable type; must be a Class", args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -864,7 +855,6 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
@@ -892,7 +882,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("class1", args.Last().Key);
                 Assert.AreEqual("http://localhost/objects/ROSI.Test.Data.ClassWithScalars/1", args.Last().Value.GetLinkValue().GetHref().ToString());
                 Assert.AreEqual("Not a suitable type; must be a Class", args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -901,12 +890,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestInvokeWithEmptyMandatoryParmsWithOptions() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
@@ -929,7 +916,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("class1", args.Last().Key);
                 Assert.AreEqual(null, args.Last().Value.GetValue());
                 Assert.AreEqual("Mandatory", args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -938,12 +924,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestInvokeWithEmptyMandatoryParms() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
@@ -966,7 +950,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("class1", args.Last().Key);
                 Assert.AreEqual(null, args.Last().Value.GetValue());
                 Assert.AreEqual("Mandatory", args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -975,12 +958,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestValidateWithEmptyMandatoryParmsWithOptions() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
@@ -1003,7 +984,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("class1", args.Last().Key);
                 Assert.AreEqual(null, args.Last().Value.GetValue());
                 Assert.AreEqual("Mandatory", args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1012,12 +992,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestValidateWithEmptyMandatoryParms() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.PotentActionWithMixedParmsReturnsObject));
 
@@ -1040,7 +1018,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("class1", args.Last().Key);
                 Assert.AreEqual(null, args.Last().Value.GetValue());
                 Assert.AreEqual("Mandatory", args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1049,12 +1026,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestInvokeWithInvalidMandatoryParmsWithOptions() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
 
@@ -1077,7 +1052,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("str", args.Last().Key);
                 Assert.AreEqual("fred", args.Last().Value.GetValue());
                 Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1086,12 +1060,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestInvokeWithInvalidMandatoryParms() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
 
@@ -1114,7 +1086,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("str", args.Last().Key);
                 Assert.AreEqual("fred", args.Last().Value.GetValue());
                 Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1123,12 +1094,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestValidateWithInvalidMandatoryParmsWithOptions() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
 
@@ -1151,7 +1120,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("str", args.Last().Key);
                 Assert.AreEqual("fred", args.Last().Value.GetValue());
                 Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1160,12 +1128,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestValidateWithInvalidMandatoryParms() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionWithValueParmsReturnsObject));
 
@@ -1188,7 +1154,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("str", args.Last().Key);
                 Assert.AreEqual("fred", args.Last().Value.GetValue());
                 Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1197,12 +1162,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestInvokeWithFailCrossValidationWithOptions() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
 
@@ -1227,7 +1190,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("str", args.Last().Key);
                 Assert.AreEqual("fred", args.Last().Value.GetValue());
                 Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1236,12 +1198,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestInvokeWithFailCrossValidation() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
 
@@ -1266,7 +1226,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("str", args.Last().Key);
                 Assert.AreEqual("fred", args.Last().Value.GetValue());
                 Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1275,12 +1234,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestValidateWithFailCrossValidationWithOptions() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
 
@@ -1305,7 +1262,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("str", args.Last().Key);
                 Assert.AreEqual("fred", args.Last().Value.GetValue());
                 Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1314,12 +1270,10 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]
     public void TestValidateWithFailCrossValidation() {
-
         var parsedResult = GetObject(FullName<ClassWithActions>(), "1");
         var action = parsedResult.GetAction(nameof(ClassWithActions.ActionFailsCrossValidation));
 
@@ -1344,7 +1298,6 @@ public class ActionApiTests : AbstractRosiApiTests {
                 Assert.AreEqual("str", args.Last().Key);
                 Assert.AreEqual("fred", args.Last().Value.GetValue());
                 Assert.AreEqual(null, args.Last().Value.GetInvalidReason());
-
             }
             else {
                 Assert.Fail("Unexpected exception type");
@@ -1353,7 +1306,6 @@ public class ActionApiTests : AbstractRosiApiTests {
         catch {
             Assert.Fail("Unexpected exception type");
         }
-
     }
 
     [Test]

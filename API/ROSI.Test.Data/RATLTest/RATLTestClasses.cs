@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -78,8 +77,7 @@ public class Object2 {
 
     public virtual Object2 Prop3 => this;
 
-    public virtual ICollection<Object2> Prop4 { get; set;  } = new List<Object2>();
-
+    public virtual ICollection<Object2> Prop4 { get; set; } = new List<Object2>();
 
     [Disabled]
     public void AlwaysDisabled() { }
@@ -92,7 +90,7 @@ public class Object2 {
 
     public IQueryable<Object1> AutoComplete0WithAutoComplete(string title) => Container.Instances<Object1>().Where(o => o.Prop2.Contains(title));
 
-    public IQueryable<Object2> ReturnCollection([DefaultValue(8)] int param0, [DescribedAs("a param")] [Optionally][DefaultValue("Foo")] string param1) => Container.Instances<Object2>().Take(param0);
+    public IQueryable<Object2> ReturnCollection([DefaultValue(8)] int param0, [DescribedAs("a param")] [Optionally] [DefaultValue("Foo")] string param1) => Container.Instances<Object2>().Take(param0);
 
     public int[] Choices0ReturnCollection() => new[] { 0, 1, 2 };
 

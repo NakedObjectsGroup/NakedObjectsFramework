@@ -1,23 +1,16 @@
 ﻿using NakedFramework.RATL.Classic.Helpers;
 using NakedFramework.RATL.Classic.Interface;
-using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Helpers;
-using ROSI.Interfaces;
 using ROSI.Records;
-
 
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal class TestParameter : ITestParameter {
     private readonly Parameter parameter;
 
-    public TestParameter(Parameter parameter) {
-        this.parameter = parameter;
-       
-    }
+    public TestParameter(Parameter parameter) => this.parameter = parameter;
 
-  
     public string Description => parameter.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.description);
     public bool IsOptional => parameter.GetExtensions().GetExtension<bool>(ExtensionsApi.ExtensionKeys.optional);
     public bool IsMandatory => !IsOptional;
@@ -68,6 +61,4 @@ internal class TestParameter : ITestParameter {
     }
 
     public bool Match(Type type) => Type == type;
-
-   
 }

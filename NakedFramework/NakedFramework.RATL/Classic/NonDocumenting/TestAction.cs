@@ -1,5 +1,4 @@
 ﻿using NakedFramework.RATL.Classic.Interface;
-using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Records;
 
@@ -8,12 +7,7 @@ namespace NakedFramework.RATL.Classic.NonDocumenting;
 internal class TestAction : ITestAction {
     private readonly ActionMember action;
 
-    public TestAction(ActionMember action) {
-      
-        this.action = action;
-    }
-
-   
+    public TestAction(ActionMember action) => this.action = action;
 
     public string Name => action.GetExtensions().Extensions()[ExtensionsApi.ExtensionKeys.friendlyName].ToString();
     public string SubMenu => action.GetExtensions().Extensions().TryGetValue(ExtensionsApi.ExtensionKeys.x_ro_nof_menuPath, out var path) ? path?.ToString() ?? "" : "";

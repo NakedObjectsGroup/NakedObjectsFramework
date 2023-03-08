@@ -1,15 +1,12 @@
 ﻿using System.Text;
 using NakedFramework.RATL.Classic.Interface;
-using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Records;
 
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal abstract class TestHasActions : ITestHasActions {
-    protected TestHasActions(DomainObject domainObject) {
-        DomainObject = domainObject;
-    }
+    protected TestHasActions(DomainObject domainObject) => DomainObject = domainObject;
 
     protected DomainObject DomainObject { get; }
 

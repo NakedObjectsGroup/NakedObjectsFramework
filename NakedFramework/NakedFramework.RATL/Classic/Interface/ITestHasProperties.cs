@@ -1,7 +1,6 @@
 ﻿namespace NakedFramework.RATL.Classic.Interface;
 
-public interface ITestHasProperties
-{
+public interface ITestHasProperties {
     ITestProperty[] Properties { get; }
     ITestObject Save();
     ITestObject Refresh();

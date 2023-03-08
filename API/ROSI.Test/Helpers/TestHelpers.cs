@@ -15,7 +15,6 @@ using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
-using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
 
 namespace ROSI.Test.Helpers;
 
@@ -82,6 +81,4 @@ public static class TestHelpers {
             _ => throw new NotImplementedException()
         };
     }
-
-
 }

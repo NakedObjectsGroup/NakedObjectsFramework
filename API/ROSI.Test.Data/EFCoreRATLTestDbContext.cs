@@ -10,32 +10,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ROSI.Test.Data;
 
-
-public  class EFCoreRATLTestDbContext : DbContext {
+public class EFCoreRATLTestDbContext : DbContext {
     private readonly string cs;
 
     private EFCoreRATLTestDbContext(string cs) => this.cs = cs;
 
     public EFCoreRATLTestDbContext() : this(Constants.CsRATL) { }
-    public void Delete() => Database.EnsureDeleted();
-
-    public void Create() => Database.EnsureCreated();
 
     public DbSet<Class> Classes { get; set; }
 
     public DbSet<Object1> Object1s { get; set; }
 
     public DbSet<Object2> Object2s { get; set; }
+    public void Delete() => Database.EnsureDeleted();
 
+    public void Create() => Database.EnsureCreated();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
         optionsBuilder.UseLazyLoadingProxies();
     }
 
-    private static void MapClass(ModelBuilder modelBuilder) {
-       
-    }
+    private static void MapClass(ModelBuilder modelBuilder) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         MapClass(modelBuilder);
@@ -44,8 +40,7 @@ public  class EFCoreRATLTestDbContext : DbContext {
     }
 
     private static void Seed(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<Object1>().HasData(new Object1 { Id = 1, Prop1 = 1, Prop2 = "foo"});
-        modelBuilder.Entity<Object2>().HasData(new Object2 { Id = 1, Prop1 = "a name", Prop2 = new DateTime(2023, 2, 28)});
-      
+        modelBuilder.Entity<Object1>().HasData(new Object1 { Id = 1, Prop1 = 1, Prop2 = "foo" });
+        modelBuilder.Entity<Object2>().HasData(new Object2 { Id = 1, Prop1 = "a name", Prop2 = new DateTime(2023, 2, 28) });
     }
 }

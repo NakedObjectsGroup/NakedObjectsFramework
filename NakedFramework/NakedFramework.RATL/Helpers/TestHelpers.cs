@@ -5,17 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 using ROSI.Interfaces;
-using ROSI.Records;
-using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
 
 namespace NakedFramework.RATL.Helpers;
 
@@ -26,11 +21,9 @@ public class RestfulObjectsController : RestfulObjectsControllerBase {
 public record TestInvokeOptions : InvokeOptions {
     private readonly Func<RestfulObjectsControllerBase> factory;
 
-    public TestInvokeOptions(Func<RestfulObjectsControllerBase> factory) {
-        this.factory = factory;
-    }
+    public TestInvokeOptions(Func<RestfulObjectsControllerBase> factory) => this.factory = factory;
 
-    public override HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
+    public override HttpClient HttpClient => new(new StubHttpMessageHandler(factory()));
 }
 
 public static class TestHelpers {
@@ -92,6 +85,4 @@ public static class TestHelpers {
             _ => throw new NotImplementedException()
         };
     }
-
-
 }

@@ -10,7 +10,6 @@ using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Test.Data;
-using static NakedFramework.RATL.Test.Classic.TestHelpers;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedFramework.RATL.Test.Classic;
@@ -95,7 +94,7 @@ public class TestTestProperty : AcceptanceTestCase {
 
         Assert.AreEqual("28/02/2023", prop.Title);
     }
-    
+
     [Test]
     public virtual void TestContent() {
         var obj = NewTestObject<Object2>();
@@ -124,5 +123,4 @@ public class TestTestProperty : AcceptanceTestCase {
         Assert.IsInstanceOfType(content, typeof(ITestCollection));
         Assert.AreEqual(0, content.Count());
     }
-
 }

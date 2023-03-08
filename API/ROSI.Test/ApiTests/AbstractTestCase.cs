@@ -10,30 +10,25 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.Rest.API;
 using ROSI.Apis;
-using ROSI.Interfaces;
 using ROSI.Records;
 using ROSI.Test.Helpers;
 
 namespace ROSI.Test.ApiTests;
 
-
 public record TestInvokeOptions : InvokeOptions {
     private readonly Func<RestfulObjectsControllerBase> factory;
 
-    public TestInvokeOptions(Func<RestfulObjectsControllerBase> factory) {
-        this.factory = factory;
-    }
-    
-    public override HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
-}
+    public TestInvokeOptions(Func<RestfulObjectsControllerBase> factory) => this.factory = factory;
 
+    public override HttpClient HttpClient => new(new StubHttpMessageHandler(factory()));
+}
 
 public abstract class AbstractTestCase {
     private static IHost host;
 
     protected IServiceProvider RootServiceProvider;
     private IServiceProvider scopeServiceProvider;
-    
+
     protected virtual IServiceScope ServiceScope { set; get; }
 
     protected static IPrincipal TestPrincipal => CreatePrincipal("Test", Array.Empty<string>());

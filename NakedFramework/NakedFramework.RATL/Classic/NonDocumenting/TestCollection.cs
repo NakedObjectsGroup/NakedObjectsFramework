@@ -1,22 +1,16 @@
 ﻿using System.Collections;
 using NakedFramework.RATL.Classic.Interface;
-using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Interfaces;
-using ROSI.Records;
 using static NakedFramework.RATL.Classic.Helpers.RATLHelpers;
 
 namespace NakedFramework.RATL.Classic.NonDocumenting;
 
 internal class TestCollection : ITestCollection {
-   
     private readonly IHasValue collection;
     private IEnumerable<ITestObject> wrappedCollection;
 
-    public TestCollection(IHasValue collection) {
-        this.collection = collection;
-        
-    }
+    public TestCollection(IHasValue collection) => this.collection = collection;
 
     public IEnumerable<ITestObject> WrappedCollection => wrappedCollection ??= collection.GetValue().Select(link => GetTestObject(link)).ToArray();
 
@@ -41,11 +35,7 @@ internal class TestCollection : ITestCollection {
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public ITestCollection AssertIsTransient() {
-        throw new NotImplementedException();
-    }
+    public ITestCollection AssertIsTransient() => throw new NotImplementedException();
 
-    public ITestCollection AssertIsPersistent() {
-        throw new NotImplementedException();
-    }
+    public ITestCollection AssertIsPersistent() => throw new NotImplementedException();
 }

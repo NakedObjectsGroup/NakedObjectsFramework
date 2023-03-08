@@ -70,7 +70,6 @@ public class ParameterApiTests : AbstractRosiApiTests {
         var prompt = parameters.Parameters().First().Value.GetPrompts(TestInvokeOptions(), "e").Result;
         var choices = prompt.GetLinkChoices();
 
-
         Assert.AreEqual(2, choices.Count());
 
         Assert.AreEqual("Class:1", choices.First().GetTitle());

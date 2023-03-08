@@ -1,5 +1,4 @@
 ﻿using NakedFramework.RATL.Classic.Interface;
-using NakedFramework.RATL.Classic.TestCase;
 using ROSI.Apis;
 using ROSI.Exceptions;
 using ROSI.Records;

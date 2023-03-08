@@ -1,7 +1,6 @@
 ﻿namespace NakedFramework.RATL.Classic.Interface;
 
-public interface ITestHasActions : ITestNaked
-{
+public interface ITestHasActions : ITestNaked {
     ITestAction[] Actions { get; }
     ITestAction GetAction(string name);
 

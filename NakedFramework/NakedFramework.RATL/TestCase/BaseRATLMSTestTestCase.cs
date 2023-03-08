@@ -1,14 +1,11 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Principal;
 using Microsoft.Extensions.Configuration.Memory;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Metamodel.SpecImmutable;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.API;
 using ROSI.Apis;
-using ROSI.Interfaces;
 using ROSI.Records;
 
 namespace NakedFramework.RATL.TestCase;
@@ -18,7 +15,7 @@ public abstract class BaseRATLMSTestTestCase {
 
     protected static IServiceProvider RootServiceProvider;
     private IServiceProvider scopeServiceProvider;
-    
+
     protected virtual IServiceScope ServiceScope { set; get; }
 
     protected static IPrincipal TestPrincipal => CreatePrincipal("Test", Array.Empty<string>());
@@ -58,7 +55,6 @@ public abstract class BaseRATLMSTestTestCase {
         host.StopAsync().GetAwaiter().GetResult();
         host.Dispose();
     }
-
 
     public RestfulObjectsControllerBase Api() {
         var sp = scopeServiceProvider;

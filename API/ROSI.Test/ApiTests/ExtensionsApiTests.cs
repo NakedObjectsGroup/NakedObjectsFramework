@@ -41,7 +41,6 @@ public class ExtensionsApiTests : AbstractRosiApiTests {
         Assert.AreEqual("persistent", extsRep.GetExtension<string>(ExtensionsApi.ExtensionKeys.x_ro_nof_interactionMode));
     }
 
-
     [Test]
     public void TestGetArrayExtension() {
         var objectRep = GetObject(FullName<Class>(), "1");
