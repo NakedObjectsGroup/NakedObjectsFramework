@@ -13,21 +13,21 @@ using ROSI.Records;
 namespace ROSI.Helpers;
 
 internal static class HttpHelpers {
-    public static async Task<(string Response, EntityTagHeaderValue? Tag)> Execute(Uri url, IInvokeOptions options) => await ExecuteWithTag(url, options);
+    public static async Task<(string Response, EntityTagHeaderValue? Tag)> Execute(Uri url, InvokeOptions options) => await ExecuteWithTag(url, options);
 
-    public static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithTag(Uri url, IInvokeOptions options) {
+    public static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithTag(Uri url, InvokeOptions options) {
         var request = CreateMessage(HttpMethod.Get, url.ToString(), options);
         return await SendRequestAndRead(request, options);
     }
 
-    public static async Task<string> GetDetails(IHasLinks hasLinks, IInvokeOptions options) {
+    public static async Task<string> GetDetails(IHasLinks hasLinks, InvokeOptions options) {
         var detailsLink = hasLinks.GetLinks().GetDetailsLink() ?? throw new NoSuchPropertyRosiException($"Missing details link in: {hasLinks.GetType()}");
         var (uri, method) = detailsLink.GetUriAndMethod();
         var request = CreateMessage(method, uri.ToString(), options);
         return (await SendRequestAndRead(request, options)).Response;
     }
 
-    public static async Task<string> SetValue(IHasLinks hasLinks, object newValue, IInvokeOptions? options = null) {
+    public static async Task<string> SetValue(IHasLinks hasLinks, object newValue, InvokeOptions? options = null) {
         var modifyLink = hasLinks.GetLinks().GetModifyLink() ?? throw new NoSuchPropertyRosiException($"Missing modify link in: {hasLinks.GetType()}");
         var (uri, method) = modifyLink.GetUriAndMethod();
 
@@ -44,14 +44,14 @@ internal static class HttpHelpers {
         return (await SendRequestAndRead(request, options ?? hasLinks.Options)).Response;
     }
 
-    public static async Task<(string Response, EntityTagHeaderValue? Tag)> Execute(Link invokeLink, IInvokeOptions options, params object[] pp) =>
+    public static async Task<(string Response, EntityTagHeaderValue? Tag)> Execute(Link invokeLink, InvokeOptions options, params object[] pp) =>
         pp.Any()
             ? UseSimpleArguments(invokeLink, pp)
                 ? await ExecuteWithSimpleArguments(invokeLink, options, pp)
                 : await ExecuteWithFormalArguments(invokeLink, options, pp)
             : await ExecuteWithNoArguments(invokeLink, options);
 
-    public static async Task<(string Response, EntityTagHeaderValue? Tag)> Persist(Link invokeLink, IInvokeOptions options, params object[] pp) =>
+    public static async Task<(string Response, EntityTagHeaderValue? Tag)> Persist(Link invokeLink, InvokeOptions options, params object[] pp) =>
         await ExecuteWithFormalArguments(invokeLink, options, pp);
 
     private static bool UseSimpleArguments(Link invokeLink, object[] pp) =>
@@ -60,7 +60,7 @@ internal static class HttpHelpers {
         !pp.OfType<DomainObject>().Any() &&
         invokeLink.GetRel().GetRelType() != RelApi.Rels.prompt;
 
-    private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithSimpleArguments(Link invokeLink, IInvokeOptions options, params object[] pp) {
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithSimpleArguments(Link invokeLink, InvokeOptions options, params object[] pp) {
         var uri = invokeLink.GetHref();
         var properties = invokeLink.GetArgumentsAsJObject()?.Properties() ?? new List<JProperty>();
         var parameters = GetSimpleParameters(pp, properties);
@@ -103,7 +103,7 @@ internal static class HttpHelpers {
         return parameters;
     }
 
-    private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithNoArguments(Link invokeLink, IInvokeOptions options) {
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithNoArguments(Link invokeLink, InvokeOptions options) {
         var (uri, method) = invokeLink.GetUriAndMethod();
 
         using var content = method != HttpMethod.Get ? new StringContent("", Encoding.UTF8, "application/json") : null;
@@ -114,7 +114,7 @@ internal static class HttpHelpers {
         return await SendRequestAndRead(request, options);
     }
 
-    private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithFormalArguments(Link invokeLink, IInvokeOptions options, object[] pp) {
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> ExecuteWithFormalArguments(Link invokeLink, InvokeOptions options, object[] pp) {
         var rel = invokeLink.GetRel().GetRelType();
         var method = invokeLink.GetMethod();
         var uri = invokeLink.GetHref();
@@ -143,7 +143,7 @@ internal static class HttpHelpers {
         return parameters;
     }
 
-    private static void AddReservedArguments(JObject jo, IInvokeOptions options) {
+    private static void AddReservedArguments(JObject jo, InvokeOptions options) {
         if (options.ReservedArguments.Any()) {
             foreach (var (key, value) in options.ReservedArguments) {
                 jo.Add(new JProperty(key, value));
@@ -151,19 +151,19 @@ internal static class HttpHelpers {
         }
     }
 
-    private static string GetMemberString(Link invokeLink, KeyValuePair<string, object>[] pp, IInvokeOptions options) {
+    private static string GetMemberString(Link invokeLink, KeyValuePair<string, object>[] pp, InvokeOptions options) {
         var argumentNames = (invokeLink.GetArgumentsAsJObject()?["members"] as JObject)?.Properties().Select(a => a.Name) ?? Array.Empty<string>();
         var parameters = GetParameters(pp, argumentNames);
         return MapParametersToString(options, parameters);
     }
 
-    private static string MapParametersToString(IInvokeOptions options, JObject parameters) {
+    private static string MapParametersToString(InvokeOptions options, JObject parameters) {
         var members = new JObject { new JProperty("members", parameters) };
         AddReservedArguments(members, options);
         return members.ToString(Formatting.None);
     }
 
-    private static string GetMemberString(Link invokeLink, object[] pp, IInvokeOptions options) {
+    private static string GetMemberString(Link invokeLink, object[] pp, InvokeOptions options) {
         if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
             return GetMemberString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray(), options);
         }
@@ -173,7 +173,7 @@ internal static class HttpHelpers {
         return MapParametersToString(options, parameters);
     }
 
-    private static string GetParameterString(Link invokeLink, object[] pp, IInvokeOptions options) {
+    private static string GetParameterString(Link invokeLink, object[] pp, InvokeOptions options) {
         if (pp.FirstOrDefault() is KeyValuePair<string, object>) {
             return GetParameterString(invokeLink, pp.Cast<KeyValuePair<string, object>>().ToArray(), options);
         }
@@ -184,7 +184,7 @@ internal static class HttpHelpers {
         return parameters.ToString(Formatting.None);
     }
 
-    private static string GetParameterString(Link invokeLink, KeyValuePair<string, object>[] pp, IInvokeOptions options) {
+    private static string GetParameterString(Link invokeLink, KeyValuePair<string, object>[] pp, InvokeOptions options) {
         var argumentNames = invokeLink.GetArgumentsAsJObject()?.Properties().Select(a => a.Name) ?? Array.Empty<string>();
         var parameters = GetParameters(pp, argumentNames);
         AddReservedArguments(parameters, options);
@@ -203,12 +203,12 @@ internal static class HttpHelpers {
         return parameters;
     }
 
-    private static async Task<(string Response, EntityTagHeaderValue? Tag)> SendAndRead(HttpMethod method, string url, IInvokeOptions options, StringContent? content = null) {
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> SendAndRead(HttpMethod method, string url, InvokeOptions options, StringContent? content = null) {
         var request = CreateMessage(method, url, options, content);
         return await SendRequestAndRead(request, options);
     }
 
-    private static Exception MapToException(HttpResponseMessage response, IInvokeOptions options) =>
+    private static Exception MapToException(HttpResponseMessage response, InvokeOptions options) =>
         response.StatusCode switch {
             HttpStatusCode.BadRequest => new HttpInvalidArgumentsRosiException(response.StatusCode, ReadAsString(response), response.Headers.Warning.ToString(), options),
             HttpStatusCode.Unauthorized => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString()),
@@ -223,7 +223,7 @@ internal static class HttpHelpers {
             _ => new HttpRosiException(response.StatusCode, response.Headers.Warning.ToString())
         };
 
-    private static async Task<(string Response, EntityTagHeaderValue? Tag)> SendRequestAndRead(HttpRequestMessage request, IInvokeOptions options) {
+    private static async Task<(string Response, EntityTagHeaderValue? Tag)> SendRequestAndRead(HttpRequestMessage request, InvokeOptions options) {
         using var response = await options.HttpClient.SendAsync(request);
         var tag = response.Headers.ETag;
 
@@ -251,7 +251,7 @@ internal static class HttpHelpers {
 
     private static (Uri, HttpMethod) GetUriAndMethod(this Link linkRepresentation) => (linkRepresentation.GetHref(), linkRepresentation.GetMethod());
 
-    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, IInvokeOptions options, HttpContent? content = null) {
+    private static HttpRequestMessage CreateMessage(HttpMethod method, string path, InvokeOptions options, HttpContent? content = null) {
         var request = new HttpRequestMessage(method, path);
 
         if (options.Token is not null) {

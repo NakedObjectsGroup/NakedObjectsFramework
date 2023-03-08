@@ -10,6 +10,6 @@ public static class MenusApi {
     public static Link? GetMenuLink(this Menus menusRepresentation, string menuId) =>
         menusRepresentation.GetValue().SingleOrDefault(l => l.GetRel().GetMenuId() == menuId);
 
-    public static async Task<DomainObject?> GetMenu(this Menus menusRepresentation, string menuId, IInvokeOptions? options = null) =>
+    public static async Task<DomainObject?> GetMenu(this Menus menusRepresentation, string menuId, InvokeOptions? options = null) =>
         menusRepresentation.GetMenuLink(menuId) is { } l ? new DomainObject(await ApiHelpers.GetResourceAsync(l, options ?? menusRepresentation.Options), menusRepresentation.Options) : null;
 }

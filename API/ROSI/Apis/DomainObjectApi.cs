@@ -56,7 +56,7 @@ public static class DomainObjectApi {
 
     public static async Task<DomainObject> Persist(this DomainObject objectRepresentation, params object[] pp) => await objectRepresentation.Persist(objectRepresentation.Options, pp);
 
-    public static async Task<DomainObject> Persist(this DomainObject objectRepresentation, IInvokeOptions options, params object[] pp) {
+    public static async Task<DomainObject> Persist(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
         var link = objectRepresentation.GetLinks().GetPersistLink() ?? throw new NoSuchPropertyRosiException("Missing persist link in object");
         var json = (await HttpHelpers.Persist(link, options, pp)).Response;
         return new DomainObject(JObject.Parse(json), objectRepresentation.Options);
@@ -66,8 +66,8 @@ public static class DomainObjectApi {
         await ValidatePersist(objectRepresentation, objectRepresentation.Options, pp);
     }
 
-    public static async Task ValidatePersist(this DomainObject objectRepresentation, IInvokeOptions options, params object[] pp) {
-        options.ReservedArguments["x-ro-validate-only"] = true;
+    public static async Task ValidatePersist(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
+        options = options with { ReservedArguments = options.ReservedArguments.Add("x-ro-validate-only", true) };
 
         var link = objectRepresentation.GetLinks().GetPersistLink() ?? throw new NoSuchPropertyRosiException("Missing persist link in object");
         var json = (await HttpHelpers.Persist(link, options, pp)).Response;
@@ -102,15 +102,15 @@ public static class DomainObjectApi {
     public static async Task ValidatePersistWithNamedParams(this DomainObject objectRepresentation, Dictionary<string, object> pp) =>
         await objectRepresentation.ValidatePersist(pp.Cast<object>().ToArray());
 
-    public static async Task<DomainObject> PersistWithNamedParams(this DomainObject objectRepresentation, IInvokeOptions options, Dictionary<string, object> pp) =>
+    public static async Task<DomainObject> PersistWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
         await objectRepresentation.Persist(options, pp.Cast<object>().ToArray());
 
-    public static async Task ValidatePersistWithNamedParams(this DomainObject objectRepresentation, IInvokeOptions options, Dictionary<string, object> pp) =>
+    public static async Task ValidatePersistWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
         await objectRepresentation.ValidatePersist(options, pp.Cast<object>().ToArray());
 
     public static async Task<DomainObject> Update(this DomainObject objectRepresentation, params object[] pp) => await objectRepresentation.Update(objectRepresentation.Options, pp);
 
-    public static async Task<DomainObject> Update(this DomainObject objectRepresentation, IInvokeOptions options, params object[] pp) {
+    public static async Task<DomainObject> Update(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
         var link = objectRepresentation.GetLinks().GetUpdateLink() ?? throw new NoSuchPropertyRosiException("Missing update link in object");
         var json = (await HttpHelpers.Execute(link, options, pp)).Response;
         return new DomainObject(JObject.Parse(json), objectRepresentation.Options);
@@ -119,20 +119,20 @@ public static class DomainObjectApi {
     public static async Task<DomainObject> UpdateWithNamedParams(this DomainObject objectRepresentation, Dictionary<string, object> pp) =>
         await objectRepresentation.Update(pp.Cast<object>().ToArray());
 
-    public static async Task<DomainObject> UpdateWithNamedParams(this DomainObject objectRepresentation, IInvokeOptions options, Dictionary<string, object> pp) =>
+    public static async Task<DomainObject> UpdateWithNamedParams(this DomainObject objectRepresentation, InvokeOptions options, Dictionary<string, object> pp) =>
         await objectRepresentation.Update(options, pp.Cast<object>().ToArray());
 
     public static async Task<TypeActionResult> IsSubtypeOf(this DomainObject objectRepresentation, object p) => await objectRepresentation.IsSubtypeOf(objectRepresentation.Options, p);
 
     public static async Task<TypeActionResult> IsSupertypeOf(this DomainObject objectRepresentation, object p) => await objectRepresentation.IsSupertypeOf(objectRepresentation.Options, p);
 
-    public static async Task<TypeActionResult> IsSubtypeOf(this DomainObject objectRepresentation, IInvokeOptions options, object p) {
+    public static async Task<TypeActionResult> IsSubtypeOf(this DomainObject objectRepresentation, InvokeOptions options, object p) {
         var link = objectRepresentation.GetLinks().GetIsSubtypeOfLink() ?? throw new NoSuchPropertyRosiException("Missing isSubtypeOf link in object");
         var json = (await HttpHelpers.Execute(link, options, p)).Response;
         return new TypeActionResult(JObject.Parse(json), objectRepresentation.Options);
     }
 
-    public static async Task<TypeActionResult> IsSupertypeOf(this DomainObject objectRepresentation, IInvokeOptions options, object p) {
+    public static async Task<TypeActionResult> IsSupertypeOf(this DomainObject objectRepresentation, InvokeOptions options, object p) {
         var link = objectRepresentation.GetLinks().GetIsSupertypeOfLink() ?? throw new NoSuchPropertyRosiException("Missing isSupertypeOf link in object");
         var json = (await HttpHelpers.Execute(link, options, p)).Response;
         return new TypeActionResult(JObject.Parse(json), objectRepresentation.Options);

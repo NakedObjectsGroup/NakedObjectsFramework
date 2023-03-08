@@ -13,7 +13,7 @@ using ROSI.Records;
 namespace ROSI.Exceptions;
 
 public class HttpInvalidArgumentsRosiException : HttpRosiException {
-    public HttpInvalidArgumentsRosiException(HttpStatusCode statusCode, string body, string message, IInvokeOptions options) : base(statusCode, message) {
+    public HttpInvalidArgumentsRosiException(HttpStatusCode statusCode, string body, string message, InvokeOptions options) : base(statusCode, message) {
         Body = body;
         Content = string.IsNullOrWhiteSpace(body) ? null : new Arguments(JObject.Parse(body), options);
     }

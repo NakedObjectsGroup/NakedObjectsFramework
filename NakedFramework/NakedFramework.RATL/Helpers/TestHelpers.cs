@@ -14,6 +14,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 using ROSI.Interfaces;
+using ROSI.Records;
 using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
 
 namespace NakedFramework.RATL.Helpers;
@@ -22,20 +23,14 @@ public class RestfulObjectsController : RestfulObjectsControllerBase {
     public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf, IRestfulObjectsConfiguration c) : base(ff, l, lf, c) { }
 }
 
-public record TestInvokeOptions : IInvokeOptions {
+public record TestInvokeOptions : InvokeOptions {
     private readonly Func<RestfulObjectsControllerBase> factory;
 
     public TestInvokeOptions(Func<RestfulObjectsControllerBase> factory) {
         this.factory = factory;
     }
 
-    public string Token { get; init; }
-    public EntityTagHeaderValue Tag { get; init; }
-    public HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
-
-    public IDictionary<string, object> ReservedArguments { get; init; } = new Dictionary<string, object>();
-
-    public IInvokeOptions Copy() => this with { ReservedArguments = new Dictionary<string, object>() };
+    public new HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
 }
 
 public static class TestHelpers {

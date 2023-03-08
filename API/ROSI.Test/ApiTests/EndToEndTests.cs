@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using ROSI.Apis;
+using ROSI.Interfaces;
 using ROSI.Records;
 
 namespace ROSI.Test.ApiTests;

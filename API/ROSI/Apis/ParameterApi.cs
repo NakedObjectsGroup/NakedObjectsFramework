@@ -29,7 +29,7 @@ public static class ParameterApi {
 
     public static async Task<Prompt> GetPrompts(this Parameter parameterRepresentation, params object[] pp) => await parameterRepresentation.GetPrompts(parameterRepresentation.Options, pp);
 
-    public static async Task<Prompt> GetPrompts(this Parameter parameterRepresentation, IInvokeOptions options, params object[] pp) {
+    public static async Task<Prompt> GetPrompts(this Parameter parameterRepresentation, InvokeOptions options, params object[] pp) {
         var link = parameterRepresentation.GetLinks().GetPromptLink() ?? throw new NoSuchPropertyRosiException("Missing prompt link in parameter");
         var (json, tag) = await HttpHelpers.Execute(link, options, pp);
         return new Prompt(JObject.Parse(json), parameterRepresentation.Options);

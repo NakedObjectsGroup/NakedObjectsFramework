@@ -17,21 +17,14 @@ using ROSI.Test.Helpers;
 namespace ROSI.Test.ApiTests;
 
 
-public record TestInvokeOptions : IInvokeOptions {
+public record TestInvokeOptions : InvokeOptions {
     private readonly Func<RestfulObjectsControllerBase> factory;
 
     public TestInvokeOptions(Func<RestfulObjectsControllerBase> factory) {
         this.factory = factory;
     }
-
-
-    public string? Token { get; init; }
-    public EntityTagHeaderValue Tag { get; init; }
-    public HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
-
-    public IDictionary<string, object> ReservedArguments { get; init; } = new Dictionary<string, object>();
-
-    public IInvokeOptions Copy() => this with { ReservedArguments = new Dictionary<string, object>() };
+    
+    public override HttpClient HttpClient => new HttpClient(new StubHttpMessageHandler(factory()));
 }
 
 

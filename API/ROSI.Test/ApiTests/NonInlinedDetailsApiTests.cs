@@ -18,6 +18,7 @@ using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Apis;
+using ROSI.Interfaces;
 using ROSI.Records;
 using ROSI.Test.Data;
 using ROSI.Test.Helpers;
