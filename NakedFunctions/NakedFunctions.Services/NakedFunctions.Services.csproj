@@ -13,7 +13,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NakedFunctions.ProgrammingModel" Version="1.3.0" />
+		<PackageReference Include="NakedFunctions.ProgrammingModel" Version="2.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
