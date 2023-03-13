@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>NakedFramework.RATL</id>
-		<version>1.0.0-beta15</version>
+		<version>1.0.0-beta16</version>
 		<authors>Naked Objects Group Ltd</authors>
 		<owners>Naked Objects Group Ltd</owners>
 		<license type="expression">Apache-2.0</license>
@@ -22,8 +22,8 @@
 				<dependency id="MSTest.TestAdapter" version="3.0.2" />
 				<dependency id="MSTest.TestFramework" version="3.0.2" />
 				<dependency id="coverlet.collector" version="3.2.0" />
-				<dependency id="NakedFramework" version="13.2.0" />
-				<dependency id="RestfulObjects.ROSI" version="1.0.0-beta15" />
+				<dependency id="NakedFramework" version="14.0.0" />
+				<dependency id="RestfulObjects.ROSI" version="1.0.0-beta16" />
 				<dependency id="System.Data.SqlClient" version="4.8.5" />
 			</group>
 		</dependencies>
