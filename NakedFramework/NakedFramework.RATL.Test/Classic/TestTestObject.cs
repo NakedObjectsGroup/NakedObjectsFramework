@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Persistor.EFCore.Extensions;
 using NakedFramework.RATL.Classic.TestCase;
@@ -36,7 +37,7 @@ public class TestTestObject : AcceptanceTestCase {
         CleanUpDatabase();
     }
 
-    protected override void ConfigureServices(IServiceCollection services) {
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
         services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         services.AddMvc(options => options.EnableEndpointRouting = false);

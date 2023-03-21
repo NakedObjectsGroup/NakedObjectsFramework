@@ -23,7 +23,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\API\ROSI.Test.Data\ROSI.Test.Data.csproj" />
-		<ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
 		<ProjectReference Include="..\NakedFramework.RATL\NakedFramework.RATL.csproj" />
 	</ItemGroup>
 

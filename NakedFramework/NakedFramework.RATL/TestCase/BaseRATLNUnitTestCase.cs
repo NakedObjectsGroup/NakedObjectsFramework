@@ -31,7 +31,7 @@ public abstract class BaseRATLNUnitTestCase {
                 };
                 configBuilder.Add(config);
             })
-            .ConfigureServices((hostContext, services) => ConfigureServices(services));
+            .ConfigureServices((hostContext, services) => ConfigureServices(hostContext, services));
 
     protected virtual void StartTest() {
         ServiceScope = RootServiceProvider.CreateScope();
@@ -60,7 +60,7 @@ public abstract class BaseRATLNUnitTestCase {
         host.Dispose();
     }
 
-    protected abstract void ConfigureServices(IServiceCollection services);
+    protected abstract void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services);
 
     public RestfulObjectsControllerBase Api() {
         var sp = scopeServiceProvider;
