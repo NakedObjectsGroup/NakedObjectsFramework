@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Reflection;
 using System.Security.Principal;
 using Microsoft.Extensions.Configuration.Memory;
 using NakedFramework.Architecture.Component;
@@ -23,6 +24,8 @@ public abstract class BaseRATLNUnitTestCase {
     protected virtual IDictionary<string, string> Configuration() =>
         new Dictionary<string, string>();
 
+    protected virtual IConfigurationBuilder AddUserSecrets(IConfigurationBuilder configBuilder) => configBuilder;
+
     private IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((hostContext, configBuilder) => {
@@ -30,6 +33,7 @@ public abstract class BaseRATLNUnitTestCase {
                     InitialData = Configuration()
                 };
                 configBuilder.Add(config);
+                AddUserSecrets(configBuilder);
             })
             .ConfigureServices((hostContext, services) => ConfigureServices(hostContext, services));
 
