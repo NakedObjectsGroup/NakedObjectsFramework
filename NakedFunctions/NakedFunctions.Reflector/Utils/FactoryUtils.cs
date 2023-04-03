@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFramework.Core.Util;
 
 namespace NakedFunctions.Reflector.Utils;
@@ -35,6 +36,9 @@ public static class FactoryUtils {
 
         foreach (var methodInfo in nameMatches) {
             logger?.LogWarning($"Method found: {methodInfo.DeclaringType}.{methodInfo.Name} not matching expected signature");
+            if (methodInfo.Name.StartsWith(RecognisedMethodsAndPrefixes.HidePrefix)) {
+                logger?.LogWarning("Hide methods should only have the 'this' parameter and an optional 'IContext' parameter");
+            }
         }
 
         return complementaryMethod;
