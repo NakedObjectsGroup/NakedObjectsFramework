@@ -92,7 +92,7 @@ public sealed class HideFunctionIntegrationFacetFactory : FunctionalFacetFactory
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        var matchedHides = type.GetMethods().Where(m => !m.Name.StartsWith("Hide")).Where(m => MethodToUse(type, m.ContributedToType(), HiddenName(m)) is not null);
+        var matchedHides = type.GetMethods().Where(m => !m.Name.StartsWith("Hide")).Select(m => MethodToUse(type, m.ContributedToType(), HiddenName(m))).Where(m => m is not null);
         var unMatchedHides = type.GetMethods().Where(m => m.Name.StartsWith("Hide")).Except(matchedHides).ToArray();
 
         if (unMatchedHides.Any()) {
