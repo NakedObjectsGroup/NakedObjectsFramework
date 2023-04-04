@@ -1,5 +1,5 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
-import { ColorService, ContextService, ErrorService, ErrorWrapper, Pane, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import {  ContextService, ErrorService, ErrorWrapper, Pane, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import every from 'lodash-es/every';
@@ -12,15 +12,17 @@ import { MessageViewModel } from './message-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import * as Msg from './user-messages';
 import { ViewModelFactoryService } from './view-model-factory.service';
+import { handleUrlLink } from './helpers-view-models';
+import { Router } from '@angular/router';
 
 export class DialogViewModel extends MessageViewModel {
     constructor(
-        private readonly color: ColorService,
         private readonly context: ContextService,
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly urlManager: UrlManagerService,
         private readonly error: ErrorService,
-        private readonly routeData: PaneRouteData,
+        routeData: PaneRouteData,
+        private readonly router: Router,
         action: Ro.ActionRepresentation | Ro.InvokableActionMember,
         actionViewModel: ActionViewModel | null,
         public readonly isMultiLineDialogRow: boolean,
@@ -109,6 +111,7 @@ export class DialogViewModel extends MessageViewModel {
                     // will stay open
                     this.doComplete();
                 }
+                handleUrlLink(actionResult, this.router);
             })
             .catch((reject: ErrorWrapper) => {
                 const display = (em: Ro.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);

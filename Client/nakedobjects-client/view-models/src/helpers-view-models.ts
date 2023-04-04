@@ -16,6 +16,7 @@ import { IMessageViewModel } from './imessage-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
 import * as Msg from './user-messages';
 import { validateMandatory, validateMandatoryAgainstType } from './validate';
+import { Router } from '@angular/router';
 
 export function copy(event: KeyboardEvent, item: IDraggableViewModel, drandAndDrop: DragAndDropService) {
     const cKeyCode = 67;
@@ -227,5 +228,27 @@ export function incrementPendingPotentAction(context: ContextService, invokablea
 export function decrementPendingPotentAction(context: ContextService, invokableaction: Ro.ActionRepresentation | Ro.InvokableActionMember, paneId: Pane) {
     if (invokableaction.isPotent()) {
         context.decPendingPotentActionOrReload(paneId);
+    }
+}
+
+export function handleUrlLink(actionResult: Ro.ActionResultRepresentation, router: Router) {
+    const urlLink = actionResult.extensions().urlLink();
+    if (urlLink) {
+        const [newPane] = urlLink.split(',');
+        const newPaneBool = newPane.toLowerCase() === 'true';
+
+        const href = actionResult.result().scalar()?.value().toString();
+        if (href) {
+            if (newPaneBool) {
+                window.open(href, '_blank');
+            }
+            else if (href.startsWith('http')) {
+                window.location.href = href;
+            }
+            else {
+                const tree = router.createUrlTree([href]);
+                router.navigateByUrl(tree);
+            }
+        }
     }
 }

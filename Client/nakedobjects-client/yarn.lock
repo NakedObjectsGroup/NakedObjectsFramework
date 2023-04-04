@@ -1608,43 +1608,43 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v14.0.0.tgz":
-  version "14.0.0"
-  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v14.0.0.tgz#7e0836a4a3ebeacf56e57999655e15f5761fc142"
+"@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v14.1.0.tgz":
+  version "14.1.0"
+  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v14.1.0.tgz#51c4b063f9874b5bcfc74448c06afaabae5e91e9"
   dependencies:
     lodash "~4.17.21"
     lodash-es "~4.17.21"
     tslib "~2.5.0"
 
-"@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v14.0.0.tgz":
-  version "14.0.0"
-  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v14.0.0.tgz#f4ce02f436f77ee67abf36e9d234f1e0e072dfd0"
+"@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v14.1.0.tgz":
+  version "14.1.0"
+  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v14.1.0.tgz#0cbc85688a585b72bc14f595aac6d54ea02017ec"
   dependencies:
     auth0-js "^9.20.2"
     lodash "~4.17.21"
     lodash-es "~4.17.21"
     tslib "~2.5.0"
 
-"@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v14.0.0.tgz":
-  version "14.0.0"
-  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v14.0.0.tgz#45f862989911131bf8b7d47d9556aaa71c904199"
+"@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v14.1.0.tgz":
+  version "14.1.0"
+  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v14.1.0.tgz#59dbf75eeb1b59b37d0821f8271c0e87ccfd3ff7"
   dependencies:
     lodash "~4.17.21"
     lodash-es "~4.17.21"
     tslib "^2.3.0"
 
-"@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v14.0.0.tgz":
-  version "14.0.0"
-  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v14.0.0.tgz#46fd184f59cfc573b3cbc76304617fb515cdf17f"
+"@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v14.1.0.tgz":
+  version "14.1.0"
+  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v14.1.0.tgz#03b96265be716a9344d797124fbe8118b796d1cf"
   dependencies:
     auth0-js "^9.20.2"
     lodash "~4.17.21"
     lodash-es "~4.17.21"
     tslib "~2.5.0"
 
-"@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v14.0.0.tgz":
-  version "14.0.0"
-  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v14.0.0.tgz#319794fcb8cd09e1d6e5c81423a00122b2424a17"
+"@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v14.1.0.tgz":
+  version "14.1.0"
+  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v14.1.0.tgz#e711db659c2aa9bb529a98c85a88c7598d18f4ab"
   dependencies:
     lodash "~4.17.21"
     lodash-es "~4.17.21"

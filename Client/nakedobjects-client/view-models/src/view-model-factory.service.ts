@@ -37,6 +37,7 @@ import { RecentItemViewModel } from './recent-item-view-model';
 import { RecentItemsViewModel } from './recent-items-view-model';
 import { TableRowColumnViewModel } from './table-row-column-view-model';
 import { TableRowViewModel } from './table-row-view-model';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -49,7 +50,8 @@ export class ViewModelFactoryService {
         private readonly clickHandler: ClickHandlerService,
         private readonly mask: MaskService,
         private readonly configService: ConfigService,
-        private readonly loggerService: LoggerService
+        private readonly loggerService: LoggerService,
+        private readonly router: Router
     ) { }
 
     errorViewModel = (error: ErrorWrapper | null) => {
@@ -78,7 +80,7 @@ export class ViewModelFactoryService {
     }
 
     actionViewModel = (actionRep: Ro.ActionMember | Ro.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
-        return new ActionViewModel(this, this.context, this.urlManager, this.error, this.clickHandler, actionRep, vm, routeData);
+        return new ActionViewModel(this, this.context, this.urlManager, this.error, this.clickHandler, actionRep, vm, routeData, this.router);
     }
 
     propertyTableViewModel = (id: string, propertyRep?: Ro.PropertyMember | Ro.CollectionMember) => {
@@ -104,12 +106,13 @@ export class ViewModelFactoryService {
 
     dialogViewModel = (routeData: PaneRouteData, action: Ro.ActionRepresentation | Ro.InvokableActionMember, actionViewModel: ActionViewModel | null, isRow: boolean, row?: number) => {
 
-        return new DialogViewModel(this.color,
+        return new DialogViewModel(
             this.context,
             this,
             this.urlManager,
             this.error,
             routeData,
+            this.router,
             action,
             actionViewModel,
             isRow,

@@ -1,5 +1,4 @@
-﻿import { ɵALLOW_MULTIPLE_PLATFORMS } from '@angular/core';
-import * as Ro from '@nakedobjects/restful-objects';
+﻿import * as Ro from '@nakedobjects/restful-objects';
 import {
     ClickHandlerService,
     ContextService,
@@ -20,6 +19,8 @@ import { IMessageViewModel } from './imessage-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import * as Msg from './user-messages';
 import { ViewModelFactoryService } from './view-model-factory.service';
+import { Router } from '@angular/router';
+import { handleUrlLink } from './helpers-view-models';
 
 export class ActionViewModel {
 
@@ -31,7 +32,8 @@ export class ActionViewModel {
         private readonly clickHandler: ClickHandlerService,
         public readonly actionRep: Ro.ActionMember | Ro.ActionRepresentation,
         private readonly vm: IMessageViewModel,
-        private readonly routeData: PaneRouteData
+        private readonly routeData: PaneRouteData,
+        private readonly router: Router
     ) {
 
         if (actionRep instanceof Ro.ActionRepresentation || actionRep instanceof Ro.InvokableActionMember) {
@@ -105,6 +107,7 @@ export class ActionViewModel {
                 if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
                     this.context.broadcastWarning(Msg.noResultMessage);
                 }
+                handleUrlLink(actionResult, this.router);
             })
             .catch((reject: ErrorWrapper) => {
                 this.decrementPendingPotentAction();
