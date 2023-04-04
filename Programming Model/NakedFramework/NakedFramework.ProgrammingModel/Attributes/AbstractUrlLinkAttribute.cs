@@ -9,7 +9,7 @@ using System;
 
 namespace NakedFramework;
 
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
 public abstract class AbstractUrlLinkAttribute : Attribute {
     protected AbstractUrlLinkAttribute() { }
 
