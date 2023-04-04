@@ -40,7 +40,8 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         typeof(CollectionContributedFunctions),
         typeof(EditRecordFunctions),
         typeof(DeleteRecordFunctions),
-        typeof(ImmutableCollectionRecordFunctions)
+        typeof(ImmutableCollectionRecordFunctions),
+        typeof(UrlLinkFunctions)
     };
 
     protected override Type[] Records { get; } = {
@@ -82,10 +83,7 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         ObjectDbContext.Delete();
     }
 
-    protected virtual void CreateDatabase()
-    {
-
-    }
+    protected virtual void CreateDatabase() { }
 
     protected override void RegisterTypes(IServiceCollection services) {
         base.RegisterTypes(services);
@@ -851,10 +849,9 @@ public class ObjectTestEF6 : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeRecordActionWithFileAttachmentValidateSuccess()
-    {
+    public void TestInvokeRecordActionWithFileAttachmentValidateSuccess() {
         var api = Api().AsPost();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "fp", new FileValue(Convert.ToBase64String(new byte[] {127, 127}), "text/plain", "aFile") } } };
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "fp", new FileValue(Convert.ToBase64String(new byte[] { 127, 127 }), "text/plain", "aFile") } } };
         var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.FileAttachmentWithValidation), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
@@ -866,8 +863,7 @@ public class ObjectTestEF6 : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestInvokeRecordActionWithFileAttachmentValidateFail()
-    {
+    public void TestInvokeRecordActionWithFileAttachmentValidateFail() {
         var api = Api().AsPost();
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "fp", new FileValue(Convert.ToBase64String(new byte[] { 127 }), "text/plain", "aFile") } } };
         var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(ValidatedRecordFunctions.FileAttachmentWithValidation), map);
@@ -1228,10 +1224,8 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         var parsedResult = JObject.Parse(json);
     }
 
-
     [Test]
-    public void TestGetURLLinks()
-    {
+    public void TestGetPropertyURLLinks() {
         var api = Api();
         var result = api.GetObject(FullName<UrlLinkRecord>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -1242,5 +1236,18 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         Assert.AreEqual("True,", parsedResult["members"]["Link2"]["extensions"]["x-ro-nof-urlLink"].ToString());
         Assert.AreEqual("False,Name", parsedResult["members"]["Link3"]["extensions"]["x-ro-nof-urlLink"].ToString());
         Assert.AreEqual("True,Name1", parsedResult["members"]["Link4"]["extensions"]["x-ro-nof-urlLink"].ToString());
+    }
+
+    [Test]
+    public void TestGetFunctionURLLinks() {
+        var api = Api();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+        var result = api.GetInvoke(FullName<UrlLinkRecord>(), "1", nameof(UrlLinkFunctions.LinkFunction), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("True,Name1", parsedResult["extensions"]["x-ro-nof-urlLink"].ToString());
     }
 }

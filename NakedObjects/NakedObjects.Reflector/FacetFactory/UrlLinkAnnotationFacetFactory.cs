@@ -40,5 +40,10 @@ public sealed class UrlLinkAnnotationFacetFactory : DomainObjectFacetFactoryProc
         return metamodel;
     }
 
+    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        Process(method, specification);
+        return metamodel;
+    }
+
     private static IUrlLinkFacet Create(UrlLinkAttribute attribute) => attribute is not null ? new UrlLinkFacet(attribute.DisplayAs, attribute.AlwaysOpenInNewTab) : null;
 }

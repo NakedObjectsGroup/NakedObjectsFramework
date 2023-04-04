@@ -35,4 +35,6 @@ public interface IActionFacade : IMemberFacade {
     string[] CreateNewProperties(IObjectFacade objectFacade);
     bool IsVisible(IObjectFacade objectFacade);
     IConsentFacade IsUsable(IObjectFacade objectFacade);
+
+    (bool, string)? UrlLink();
 }

@@ -293,3 +293,8 @@ public static class ImmutableCollectionRecordFunctions {
     public static IImmutableList<SimpleRecord> CollectionReturn(this SimpleRecord dr, IContext context) => context.Instances<SimpleRecord>().ToImmutableList();
     public static (IImmutableList<SimpleRecord>, IContext) CollectionReturn1(this SimpleRecord dr, IContext context) => (context.Instances<SimpleRecord>().ToImmutableList(), context);
 }
+
+public static class UrlLinkFunctions {
+    [UrlLink(true, "Name1")]
+    public static string LinkFunction(this UrlLinkRecord er, IContext context) => "link";
+}

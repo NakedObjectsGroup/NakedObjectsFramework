@@ -64,6 +64,14 @@ public class ActionResultRepresentation : Representation {
         AddIfPresent(exts, actionResult.Warnings(), JsonPropertyNames.CustomWarnings);
         AddIfPresent(exts, actionResult.Messages(), JsonPropertyNames.CustomMessages);
 
+        var urlLink = actionResult.ActionContext.Action.UrlLink();
+
+        if (urlLink is not null) {
+            var linkVal = urlLink.Value;
+            var val = string.Join(',', linkVal.Item1, linkVal.Item2);
+            exts.Add(JsonPropertyNames.CustomUrlLink, val);
+        }
+
         Extensions = exts.Count > 0 ? RestUtils.CreateMap(exts) : new MapRepresentation();
     }
 
