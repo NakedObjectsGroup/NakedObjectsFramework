@@ -231,8 +231,8 @@ export function decrementPendingPotentAction(context: ContextService, invokablea
     }
 }
 
-export function handleUrlLink(actionResult: Ro.ActionResultRepresentation, router: Router) {
-    const urlLink = actionResult.extensions().urlLink();
+export function handleUrlLink(action: { extensions(): Ro.Extensions }, actionResult: Ro.ActionResultRepresentation, router: Router) {
+    const urlLink = action.extensions().urlLink();
     if (urlLink) {
         const [newPane] = urlLink.split(',');
         const newPaneBool = newPane.toLowerCase() === 'true';

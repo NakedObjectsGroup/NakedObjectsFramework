@@ -111,7 +111,7 @@ export class DialogViewModel extends MessageViewModel {
                     // will stay open
                     this.doComplete();
                 }
-                handleUrlLink(actionResult, this.router);
+                handleUrlLink(this.actionMember(), actionResult, this.router);
             })
             .catch((reject: ErrorWrapper) => {
                 const display = (em: Ro.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);

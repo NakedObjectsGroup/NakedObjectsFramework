@@ -107,7 +107,7 @@ export class ActionViewModel {
                 if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
                     this.context.broadcastWarning(Msg.noResultMessage);
                 }
-                handleUrlLink(actionResult, this.router);
+                handleUrlLink(this.actionRep, actionResult, this.router);
             })
             .catch((reject: ErrorWrapper) => {
                 this.decrementPendingPotentAction();
@@ -143,7 +143,7 @@ export class ActionViewModel {
 
     readonly disabled = () => !!this.actionRep.disabledReason();
 
-    readonly returnsScalar = () => this.actionRep.returnsScalar();
+    readonly returnsScalar = () => this.actionRep.returnsScalar() && !this.actionRep.extensions().urlLink();
 
     readonly tempDisabled = () => this.invokableActionRep &&
         this.invokableActionRep.isPotent() &&
