@@ -1241,13 +1241,11 @@ public class ObjectTestEF6 : AcceptanceTestCase {
     [Test]
     public void TestGetFunctionURLLinks() {
         var api = Api();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
-
-        var result = api.GetInvoke(FullName<UrlLinkRecord>(), "1", nameof(UrlLinkFunctions.LinkFunction), map);
+        var result = api.GetObject(FullName<UrlLinkRecord>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("True,Name1", parsedResult["extensions"]["x-ro-nof-urlLink"].ToString());
+        Assert.AreEqual("True,Name1", parsedResult["members"]["LinkFunction"]["extensions"]["x-ro-nof-urlLink"].ToString());
     }
 }
