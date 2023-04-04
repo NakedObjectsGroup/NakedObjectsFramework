@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.FacetFactory;
 
 public sealed class UrlLinkAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     public UrlLinkAnnotationFacetFactory(IFacetFactoryOrder<UrlLinkAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-        : base(order.Order, loggerFactory, FeatureType.Properties) { }
+        : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var attribute = type.GetCustomAttribute<UrlLinkAttribute>();

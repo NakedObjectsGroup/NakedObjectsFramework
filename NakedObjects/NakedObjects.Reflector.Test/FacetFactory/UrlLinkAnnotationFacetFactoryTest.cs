@@ -34,8 +34,8 @@ public class UrlLinkAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var featureTypes = facetFactory.FeatureTypes;
         Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
         Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-        Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
+        Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
         Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
     }
 
@@ -53,6 +53,22 @@ public class UrlLinkAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         Assert.AreEqual(true, hintFacet.OpenInNewTab);
         Assert.IsNotNull(metamodel);
     }
+
+    [TestMethod]
+    public void TestUrlLinkAnnotationPickedUpOnAction() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var action = FindMethod(typeof(Customer1), nameof(Customer1.Link));
+        metamodel = facetFactory.Process(Reflector, action, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IUrlLinkFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is UrlLinkFacet);
+        var hintFacet = (UrlLinkFacet)facet;
+        Assert.AreEqual("Name1", hintFacet.DisplayAs);
+        Assert.AreEqual(true, hintFacet.OpenInNewTab);
+        Assert.IsNotNull(metamodel);
+    }
+
 
     [TestMethod]
     public void TestUrlLinkAnnotationPickedUpOnPropertyDefault()
@@ -77,7 +93,9 @@ public class UrlLinkAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         [UrlLink(true, "Name")]
         public string SecondName => null;
 
-       
+        [UrlLink(true, "Name1")]
+        public virtual string Link() => "Link";
+
     }
 
     #region Setup/Teardown
