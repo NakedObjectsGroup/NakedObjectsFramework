@@ -452,5 +452,15 @@ namespace AdventureWorksModel {
         public string GetUrl() {
             return redirectUrl;
         }
+
+        [UrlLink(true)]
+        public string GoToURl() {
+            return "https://google.com";
+        }
+
+        [UrlLink(false)]
+        public string GoToUrl1() {
+            return "https://google.com";
+        }
     }
 }
