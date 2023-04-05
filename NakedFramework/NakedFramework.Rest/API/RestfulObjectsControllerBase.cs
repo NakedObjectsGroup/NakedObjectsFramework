@@ -14,6 +14,8 @@ using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using NakedFramework.Facade.Contexts;
@@ -374,6 +376,13 @@ public class RestfulObjectsControllerBase : ControllerBase {
         }
 
         responseHeaders.ContentType = ss.Representation.GetContentType();
+
+        var configuration = FrameworkFacade.GetScopedServiceProvider.GetService<IConfiguration>();
+        var appVersion = configuration["AppVersion"];
+
+        if (!string.IsNullOrEmpty(appVersion)) {
+            responseHeaders.ContentType?.Parameters.Add(new NameValueHeaderValue("version", appVersion));
+        }
 
         SetCaching(responseHeaders, ss, CacheSettings);
 
