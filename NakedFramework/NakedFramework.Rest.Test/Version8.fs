@@ -30,6 +30,7 @@ let internal expected =
     [ TProperty(JsonPropertyNames.Links, links)
       TProperty(JsonPropertyNames.SpecVersion, TObjectVal("1.2"))
       TProperty(JsonPropertyNames.ImplVersion, TObjectVal("Naked Objects 14.1.0"))
+      TProperty(JsonPropertyNames.AppVersion, TObjectVal("Unknown"))
       TProperty(JsonPropertyNames.OptionalCapabilities, capabilities)
       TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 

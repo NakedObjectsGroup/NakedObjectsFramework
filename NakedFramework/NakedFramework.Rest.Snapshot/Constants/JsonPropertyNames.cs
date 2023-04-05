@@ -10,6 +10,7 @@ using NakedFramework.Rest.Snapshot.Utility;
 namespace NakedFramework.Rest.Snapshot.Constants;
 
 public class JsonPropertyNames {
+    public const string AppVersion = "appVersion";
     public const string Arguments = "arguments";
     public const string Choices = "choices";
     public const string Default = "default";

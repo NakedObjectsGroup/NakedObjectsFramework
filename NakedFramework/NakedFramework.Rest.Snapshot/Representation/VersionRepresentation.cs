@@ -11,10 +11,12 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.Snapshot.Constants;
 using NakedFramework.Rest.Snapshot.RelTypes;
 using NakedFramework.Rest.Snapshot.Utility;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace NakedFramework.Rest.Snapshot.Representation;
 
@@ -35,6 +37,9 @@ public class VersionRepresentation : Representation {
 
     [DataMember(Name = JsonPropertyNames.ImplVersion)]
     public string ImplVersion { get; set; }
+
+    [DataMember(Name = JsonPropertyNames.AppVersion)]
+    public string AppVersion { get; set; }
 
     [DataMember(Name = JsonPropertyNames.Links)]
     public LinkRepresentation[] Links { get; set; }
@@ -69,6 +74,9 @@ public class VersionRepresentation : Representation {
         var sv = versions.Where(v => serverTypes.Any(v.StartsWith));
 
         ImplVersion = string.Join(", ", sv);
+
+        var config = frameworkFacade.GetScopedServiceProvider.GetService<IConfiguration>();
+        AppVersion = config["AppVersion"] ?? "Unknown";
     }
 
     private void SetOptionalCapabilities(IDictionary<string, string> capabilitiesMap) {
