@@ -375,14 +375,16 @@ public class RestfulObjectsControllerBase : ControllerBase {
             responseHeaders.ETag = ss.Etag;
         }
 
-        responseHeaders.ContentType = ss.Representation.GetContentType();
+        var contentType = ss.Representation.GetContentType();
 
         var configuration = FrameworkFacade.GetScopedServiceProvider.GetService<IConfiguration>();
-        var appVersion = configuration["AppVersion"];
+        var appVersion = configuration["AppVersion"] ?? "Unknown";
 
         if (!string.IsNullOrEmpty(appVersion)) {
-            responseHeaders.ContentType?.Parameters.Add(new NameValueHeaderValue("version", appVersion));
+            contentType.Parameters.Add(new NameValueHeaderValue("version", appVersion));
         }
+
+        responseHeaders.ContentType = contentType;
 
         SetCaching(responseHeaders, ss, CacheSettings);
 
