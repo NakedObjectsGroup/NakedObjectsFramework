@@ -2247,6 +2247,10 @@ export class VersionRepresentation extends ResourceRepresentation<Ro.IVersionRep
         return this.wrapped().implVersion || null;
     }
 
+    appVersion(): string | null {
+        return this.wrapped().appVersion || null;
+    }
+
     optionalCapabilities(): Ro.IOptionalCapabilities {
         return this.wrapped().optionalCapabilities;
     }

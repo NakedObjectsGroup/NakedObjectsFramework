@@ -108,6 +108,7 @@ export interface IOptionalCapabilities {
 export interface IVersionRepresentation extends IResourceRepresentation {
     specVersion: string;
     implVersion?: string;
+    appVersion?: string;
     optionalCapabilities: IOptionalCapabilities;
 }
 
