@@ -378,10 +378,10 @@ public class RestfulObjectsControllerBase : ControllerBase {
         var contentType = ss.Representation.GetContentType();
 
         var configuration = FrameworkFacade.GetScopedServiceProvider.GetService<IConfiguration>();
-        var appVersion = configuration["AppVersion"] ?? "Unknown";
+        var appVersion = configuration["AppVersion"];
 
         if (!string.IsNullOrEmpty(appVersion)) {
-            contentType.Parameters.Add(new NameValueHeaderValue("version", appVersion));
+            contentType?.Parameters.Add(new NameValueHeaderValue("version", appVersion));
         }
 
         responseHeaders.ContentType = contentType;
