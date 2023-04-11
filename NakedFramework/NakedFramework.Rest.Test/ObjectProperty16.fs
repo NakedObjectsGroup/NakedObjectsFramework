@@ -1381,6 +1381,24 @@ let GetErrorReferenceProperty(api : RestfulObjectsControllerBase) =
     // for some resaon stack trace has different depth on my machine when not debugging (only) ! 
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
 
+let GetNotFoundErrorReferenceProperty(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithGetError"
+    let oid = ktc "1"
+    let pid = "ANotFoundErrorReference"
+    let ourl = sprintf "objects/%s/%s" oType oid
+    let purl = sprintf "%s/properties/%s" ourl pid
+    let url = sprintf "http://localhost/%s" purl
+    
+    jsonSetGetMsg api.Request url
+    RestfulObjects.Test.Data.WithGetError.ThrowErrors <- true
+    let result = api.GetProperty(oType, oid, pid)
+    RestfulObjects.Test.Data.WithGetError.ThrowErrors <- false
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+   
+    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
+    // for some resaon stack trace has different depth on my machine when not debugging (only) ! 
+    Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
+
 let GetPropertyAsCollection(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"

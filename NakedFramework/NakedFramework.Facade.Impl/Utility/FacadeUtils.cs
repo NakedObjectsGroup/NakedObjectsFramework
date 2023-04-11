@@ -12,6 +12,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
+using NakedFramework.Error;
 using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Impl.Impl;
 using NakedFramework.Facade.Interface;
@@ -30,6 +31,7 @@ public static class FacadeUtils {
             ArgumentException => new BadRequestNOSException(NakedObjects.Resources.NakedObjects.InvalidArguments, e),
             TargetParameterCountException => new BadRequestNOSException("Missing arguments", e), // todo i18n
             InvokeException when e.InnerException != null => Map(e.InnerException), // recurse on inner exception
+            NakedObjectDomainException when e.InnerException is DomainResourceNotFoundException => new DomainResourceNotFoundNosException(e.InnerException.Message, e),
             _ => new GeneralErrorNOSException(e)
         };
 

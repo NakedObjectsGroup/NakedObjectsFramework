@@ -8,6 +8,7 @@
 using System;
 using System.Security.Principal;
 using NakedFramework.Facade.Contexts;
+using NakedFramework.Facade.Error;
 using NakedFramework.Facade.Translation;
 
 namespace NakedFramework.Facade.Interface;
@@ -54,4 +55,8 @@ public interface IFrameworkFacade {
     (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "");
 
     ActionContextFacade[] GetLocallyContributedActions(PropertyContextFacade propertyContext);
+
+
+    NakedObjectsFacadeException MapException(Exception ex);
+
 }

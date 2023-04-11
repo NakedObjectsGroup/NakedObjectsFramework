@@ -29,13 +29,13 @@ namespace NakedFramework.Rest.Snapshot.Utility;
 public class RestSnapshot {
     private readonly IList<string> allowHeaders = new List<string>();
     private readonly RestControlFlags flags;
-    private readonly IOidStrategy oidStrategy;
+    private readonly IFrameworkFacade frameworkFacade;
     private readonly Action<ILogger> populator;
     private readonly HttpRequest requestMessage;
     private readonly IList<WarningHeaderValue> warningHeaders = new List<WarningHeaderValue>();
 
-    private RestSnapshot(IOidStrategy oidStrategy, HttpRequest req, bool validateAsJson, RestControlFlags flags) {
-        this.oidStrategy = oidStrategy;
+    private RestSnapshot(IFrameworkFacade frameworkFacade, HttpRequest req, bool validateAsJson, RestControlFlags flags) {
+        this.frameworkFacade = frameworkFacade;
         requestMessage = req;
         this.flags = flags;
         if (validateAsJson) {
@@ -43,13 +43,13 @@ public class RestSnapshot {
         }
     }
 
-    private RestSnapshot(IOidStrategy oidStrategy, ContextFacade context, HttpRequest req, bool validateAsJson, RestControlFlags flags)
-        : this(oidStrategy, req, validateAsJson, flags) {
-        CheckForRedirection(oidStrategy, context, req);
+    private RestSnapshot(IFrameworkFacade frameworkFacade, ContextFacade context, HttpRequest req, bool validateAsJson, RestControlFlags flags)
+        : this(frameworkFacade, req, validateAsJson, flags) {
+        CheckForRedirection(frameworkFacade.OidStrategy, context, req);
     }
 
     public RestSnapshot(IFrameworkFacade frameworkFacade, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
-        : this(frameworkFacade.OidStrategy, objectContext, req, true, flags) {
+        : this(frameworkFacade, objectContext, req, true, flags) {
         populator = logger => {
             HttpStatusCode = httpStatusCode;
             Representation = ObjectRepresentation.Create(frameworkFacade, objectContext, req, flags);
@@ -58,7 +58,7 @@ public class RestSnapshot {
     }
 
     public RestSnapshot(IFrameworkFacade frameworkFacade, IMenuFacade menu, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
-        : this(frameworkFacade.OidStrategy, req, true, flags) {
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
             HttpStatusCode = httpStatusCode;
             Representation = menu.IsStaticService
@@ -69,7 +69,7 @@ public class RestSnapshot {
     }
 
     public RestSnapshot(IFrameworkFacade frameworkFacade, ActionResultContextFacade actionResultContext, HttpRequest req, RestControlFlags flags)
-        : this(frameworkFacade.OidStrategy, actionResultContext, req, true, flags) {
+        : this(frameworkFacade, actionResultContext, req, true, flags) {
         populator = logger => {
             Representation = ActionResultRepresentation.Create(frameworkFacade, req, actionResultContext, flags);
             SetHeaders(logger);
@@ -77,47 +77,47 @@ public class RestSnapshot {
     }
 
     public RestSnapshot(IFrameworkFacade frameworkFacade, ListContextFacade listContext, HttpRequest req, RestControlFlags flags)
-        : this(frameworkFacade.OidStrategy, req, true, flags) {
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
             Representation = ListRepresentation.Create(frameworkFacade, listContext, req, flags);
             SetHeaders(logger);
         };
     }
 
-    public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags)
-        : this(oidStrategy, req, true, flags) {
+    public RestSnapshot(IFrameworkFacade frameworkFacade, MenuContextFacade menus, HttpRequest req, RestControlFlags flags)
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
-            Representation = ListRepresentation.Create(oidStrategy, menus, req, flags);
+            Representation = ListRepresentation.Create(frameworkFacade.OidStrategy, menus, req, flags);
             SetHeaders(logger);
         };
     }
 
-    public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags)
-        : this(oidStrategy, req, true, flags) {
+    public RestSnapshot(IFrameworkFacade frameworkFacade, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags)
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
-            Representation = PromptRepresentation.Create(oidStrategy, propertyContext, req, flags);
+            Representation = PromptRepresentation.Create(frameworkFacade.OidStrategy, propertyContext, req, flags);
             SetHeaders(logger);
         };
     }
 
-    public RestSnapshot(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequest req, RestControlFlags flags)
-        : this(oidStrategy, req, true, flags) {
+    public RestSnapshot(IFrameworkFacade frameworkFacade, ParameterContextFacade parmContext, HttpRequest req, RestControlFlags flags)
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
-            Representation = PromptRepresentation.Create(oidStrategy, parmContext, req, flags);
+            Representation = PromptRepresentation.Create(frameworkFacade.OidStrategy, parmContext, req, flags);
             SetHeaders(logger);
         };
     }
 
     public RestSnapshot(IFrameworkFacade frameworkFacade, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags, bool collectionValue)
-        : this(frameworkFacade.OidStrategy, propertyContext, req, false, flags) {
+        : this(frameworkFacade, propertyContext, req, false, flags) {
         FilterBlobsAndClobs(propertyContext, flags);
         populator = logger => {
             if (collectionValue) {
-                Representation = CollectionValueRepresentation.Create(oidStrategy, propertyContext, req, flags);
+                Representation = CollectionValueRepresentation.Create(frameworkFacade.OidStrategy, propertyContext, req, flags);
             }
             else {
                 Representation = RequestingAttachment()
-                    ? AttachmentRepresentation.Create(oidStrategy, req, propertyContext, flags)
+                    ? AttachmentRepresentation.Create(frameworkFacade.OidStrategy, req, propertyContext, flags)
                     : MemberAbstractRepresentation.Create(frameworkFacade, req, propertyContext, flags);
             }
 
@@ -125,16 +125,16 @@ public class RestSnapshot {
         };
     }
 
-    public RestSnapshot(IOidStrategy oidStrategy, ActionContextFacade actionContext, HttpRequest req, RestControlFlags flags)
-        : this(oidStrategy, actionContext, req, true, flags) {
+    public RestSnapshot(IFrameworkFacade frameworkFacade, ActionContextFacade actionContext, HttpRequest req, RestControlFlags flags)
+        : this(frameworkFacade, actionContext, req, true, flags) {
         populator = logger => {
-            Representation = ActionRepresentation.Create(oidStrategy, req, actionContext, flags);
+            Representation = ActionRepresentation.Create(frameworkFacade.OidStrategy, req, actionContext, flags);
             SetHeaders(logger);
         };
     }
 
     public RestSnapshot(IFrameworkFacade frameworkFacade, HttpRequest req, RestControlFlags flags)
-        : this(frameworkFacade.OidStrategy, req, true, flags) {
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
             Representation = HomePageRepresentation.Create(frameworkFacade, req, flags);
             SetHeaders(logger);
@@ -142,34 +142,34 @@ public class RestSnapshot {
     }
 
     public RestSnapshot(IFrameworkFacade frameworkFacade, IDictionary<string, string> capabilities, HttpRequest req, RestControlFlags flags)
-        : this(frameworkFacade.OidStrategy, req, true, flags) {
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
             Representation = VersionRepresentation.Create(frameworkFacade, req, capabilities, flags);
             SetHeaders(logger);
         };
     }
 
-    public RestSnapshot(IOidStrategy oidStrategy, IPrincipal user, HttpRequest req, RestControlFlags flags)
-        : this(oidStrategy, req, true, flags) {
+    public RestSnapshot(IFrameworkFacade frameworkFacade, IPrincipal user, HttpRequest req, RestControlFlags flags)
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
-            Representation = UserRepresentation.Create(oidStrategy, req, user, flags);
+            Representation = UserRepresentation.Create(frameworkFacade.OidStrategy, req, user, flags);
             SetHeaders(logger);
         };
     }
 
-    public RestSnapshot(IOidStrategy oidStrategy, TypeActionInvokeContext typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
-        : this(oidStrategy, req, true, flags) {
+    public RestSnapshot(IFrameworkFacade frameworkFacade, TypeActionInvokeContext typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
-            Representation = TypeActionInvokeRepresentation.Create(oidStrategy, req, typeActionInvokeContext, flags);
+            Representation = TypeActionInvokeRepresentation.Create(frameworkFacade.OidStrategy, req, typeActionInvokeContext, flags);
             SetHeaders(logger);
         };
     }
 
-    public RestSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, Exception exception, HttpRequest req, RestControlFlags flags)
-        : this(oidStrategy, req, true, flags) {
+    public RestSnapshot(IFrameworkFacade frameworkFacade, Exception exception, HttpRequest req, RestControlFlags flags)
+        : this(frameworkFacade, req, true, flags) {
         populator = logger => {
             MapToHttpError(exception);
-            MapToRepresentation(exception, req, frameworkFacade);
+            MapToRepresentation(exception, req, frameworkFacade.OidStrategy);
             MapToWarningHeader(exception, logger);
             SetHeaders(logger);
         };
@@ -215,7 +215,7 @@ public class RestSnapshot {
             return this;
         }
         catch (Exception e) {
-            throw new GeneralErrorNOSException(e);
+            throw frameworkFacade.MapException(e);
         }
     }
 
@@ -290,7 +290,7 @@ public class RestSnapshot {
         }
     }
 
-    private void MapToRepresentation(Exception e, HttpRequest req, IFrameworkFacade frameworkFacade) =>
+    private void MapToRepresentation(Exception e, HttpRequest req, IOidStrategy oidStrategy) =>
         Representation = e switch {
             WithContextNOSException wce when wce.Contexts.Any(c => c.ErrorCause is Cause.Disabled or Cause.Immutable) => NullRepresentation.Create(),
             BadPersistArgumentsException { ContextFacade: { } } bpe when bpe.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, frameworkFacade, req, bpe.ContextFacade, bpe.Contexts, ArgumentsRepresentation.Format.Full, bpe.Flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),

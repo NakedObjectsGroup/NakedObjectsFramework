@@ -181,6 +181,8 @@ public class FrameworkFacade : IFrameworkFacade {
             VisibleParameters = FilterCCAParms(a)
         }.ToActionContextFacade(this, Framework)).ToArray();
 
+    public NakedObjectsFacadeException MapException(Exception ex) => FacadeUtils.Map(ex);
+
     public IServiceProvider GetScopedServiceProvider => Framework.ServiceProvider;
 
     #endregion

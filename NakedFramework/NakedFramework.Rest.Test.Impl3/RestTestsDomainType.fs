@@ -746,6 +746,9 @@ type Tests() =
         
         [<Test>]
         member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.api
+
+        [<Test>]
+        member x.GetNotFoundErrorReferenceProperty() = ObjectProperty16.GetNotFoundErrorReferenceProperty x.api
         
         [<Test>]
         member x.GetPropertyAsCollection() = ObjectProperty16.GetPropertyAsCollection x.api

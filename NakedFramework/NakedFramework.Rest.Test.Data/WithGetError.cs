@@ -50,6 +50,21 @@ public class WithGetError {
         set { }
     }
 
+    public virtual MostSimple ANotFoundErrorReference {
+        get {
+            if (Container is not null && ThrowErrors) {
+                // so no errors on startup 
+                throw new DomainResourceNotFoundException("An error exception");
+            }
+
+            return Container?.Instances<MostSimple>().FirstOrDefault();
+        }
+        set { }
+    }
+
+
+
+
     public virtual ICollection<MostSimple> AnErrorCollection {
         get {
             if (Container is not null && ThrowErrors) {
