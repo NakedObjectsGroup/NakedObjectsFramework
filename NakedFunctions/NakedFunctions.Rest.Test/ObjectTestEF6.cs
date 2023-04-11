@@ -1248,4 +1248,14 @@ public class ObjectTestEF6 : AcceptanceTestCase {
 
         Assert.AreEqual("True,Name1", parsedResult["members"]["LinkFunction"]["extensions"]["x-ro-nof-urlLink"].ToString());
     }
+
+    [Test]
+    public void TestError() {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+
+        var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.ErrorNotFound), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.NotFound, sc);
+    }
 }

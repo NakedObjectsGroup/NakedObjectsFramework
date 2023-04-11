@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using NakedFramework.Error;
 using NakedFramework.Value;
 using NakedFunctions.Reflector.Component;
 
@@ -118,6 +119,8 @@ public static class SimpleRecordFunctions {
     public static IQueryable<SimpleRecord> GetQueryable(this SimpleRecord sp, IContext context) => context.Instances<SimpleRecord>();
     public static IContext Duplicate0(this SimpleRecord sp, IContext context) => context;
     public static IContext Duplicate1(this IQueryable<SimpleRecord> sp, IContext context) => context;
+
+    public static IContext ErrorNotFound(this SimpleRecord sp, IContext context) => throw new DomainResourceNotFoundException("ex");
 }
 
 public static class DateRecordFunctions {
