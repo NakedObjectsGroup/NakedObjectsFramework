@@ -786,6 +786,10 @@ type Tests() =
         member x.GetNotFoundErrorReferenceProperty() = ObjectProperty16.GetNotFoundErrorReferenceProperty x.api
         
         [<Test>]
+        member x.GetNotAuthorizedErrorReferenceProperty() = ObjectProperty16.GetNotAuthorizedErrorReferenceProperty x.api
+
+
+        [<Test>]
         member x.GetPropertyAsCollection() = ObjectProperty16.GetPropertyAsCollection x.api
         
         [<Test>]

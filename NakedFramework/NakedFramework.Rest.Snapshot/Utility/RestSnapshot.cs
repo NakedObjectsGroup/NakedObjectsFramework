@@ -302,6 +302,7 @@ public class RestSnapshot {
             PreconditionFailedNOSException => NullRepresentation.Create(),
             PreconditionMissingNOSException => NullRepresentation.Create(),
             NoContentNOSException => NullRepresentation.Create(),
+            UnauthorizedNOSException => NullRepresentation.Create(),
             _ => ErrorRepresentation.Create(oidStrategy, e)
         };
 
@@ -320,19 +321,17 @@ public class RestSnapshot {
     }
 
     private void MapToHttpError(Exception e) {
-        const HttpStatusCode unprocessableEntity = (HttpStatusCode)422;
-        const HttpStatusCode preconditionHeaderMissing = (HttpStatusCode)428;
-
         HttpStatusCode = e switch {
             ResourceNotFoundNOSException => HttpStatusCode.NotFound,
             BadArgumentsNOSException bre when bre.Contexts.Any(c => c.ErrorCause == Cause.Immutable) => HttpStatusCode.MethodNotAllowed,
             BadArgumentsNOSException bre when bre.Contexts.Any(c => c.ErrorCause == Cause.Disabled) => HttpStatusCode.Forbidden,
-            BadArgumentsNOSException => unprocessableEntity,
+            BadArgumentsNOSException => HttpStatusCode.UnprocessableEntity,
             BadRequestNOSException => HttpStatusCode.BadRequest,
             NotAllowedNOSException => HttpStatusCode.MethodNotAllowed,
             NoContentNOSException => HttpStatusCode.NoContent,
             PreconditionFailedNOSException => HttpStatusCode.PreconditionFailed,
-            PreconditionMissingNOSException => preconditionHeaderMissing,
+            PreconditionMissingNOSException => HttpStatusCode.PreconditionRequired,
+            UnauthorizedNOSException => HttpStatusCode.Unauthorized,
             _ => HttpStatusCode.InternalServerError
         };
     }

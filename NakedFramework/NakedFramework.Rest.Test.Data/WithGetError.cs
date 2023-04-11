@@ -62,6 +62,18 @@ public class WithGetError {
         set { }
     }
 
+    public virtual MostSimple ANotAuthorizedErrorReference {
+        get {
+            if (Container is not null && ThrowErrors) {
+                // so no errors on startup 
+                throw new DomainResourceNotAuthorizedException("An error exception");
+            }
+
+            return Container?.Instances<MostSimple>().FirstOrDefault();
+        }
+        set { }
+    }
+
 
 
 
