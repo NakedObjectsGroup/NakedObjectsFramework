@@ -2123,7 +2123,17 @@ type Tests() =
         
         [<Test>]
         member x.PostQueryActionWithErrorViewModel() = ObjectActionInvoke19.PostQueryActionWithErrorViewModel x.api
+       
+        [<Test>]
+        member x.NotFoundErrorObject() = ObjectActionInvoke19.NotFoundErrorObject x.api
         
+        [<Test>]
+        member x.NotFoundErrorService() = ObjectActionInvoke19.NotFoundErrorService x.api
+        
+        [<Test>]
+        member x.NotFoundErrorViewModel() = ObjectActionInvoke19.NotFoundErrorViewModel x.api
+
+
         [<Test>]
         member x.GetQueryActionWithErrorObject() = ObjectActionInvoke19.GetQueryActionWithErrorObject x.api
         

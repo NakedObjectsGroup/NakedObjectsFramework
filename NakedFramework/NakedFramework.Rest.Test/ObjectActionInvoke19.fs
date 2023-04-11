@@ -4862,6 +4862,36 @@ let PostQueryActionWithErrorViewModel(api : RestfulObjectsControllerBase) =
     let oName = oType
     VerifyPostQueryActionWithError "objects" oType oName api.PostInvoke api
 
+let VerifyNotFoundError refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnErrorNotFound"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetEmptyPostMsg api.Request url
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
+
+let NotFoundErrorObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyNotFoundError "objects" oType oName api.PostInvoke api
+
+let NotFoundErrorService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyNotFoundError "services" oType oName (wrap3 api.PostInvokeOnService) api
+
+let NotFoundErrorViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyNotFoundError "objects" oType oName api.PostInvoke api
+
 let VerifyPostQueryActionWithValidateFail refType oType oName f (api : RestfulObjectsControllerBase) = 
     let pid = "AnActionValidateParameters"
     let ourl = sprintf "%s/%s" refType oName

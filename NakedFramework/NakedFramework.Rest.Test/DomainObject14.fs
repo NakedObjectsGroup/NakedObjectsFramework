@@ -2093,6 +2093,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                       TProperty
                           ("AnActionWithValueParameterWithDefault", TObjectJson(makeObjectActionMember "AnActionWithValueParameterWithDefault" oName mst [ p22 ]))
                       TProperty("AnError", TObjectJson(makeActionMemberNumber "objects" "AnError" oName "An Error" "" "int" []))
+                      TProperty("AnErrorNotFound", TObjectJson(makeActionMemberNumber "objects" "AnErrorNotFound" oName "An Error Not Found" "" "int" []))
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorCollection" oName mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorQuery" oName mst))
                       TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMember "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [p49] ))
@@ -2762,6 +2763,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                           ("AnActionWithValueParameterWithDefault", 
                            TObjectJson(makeObjectActionMemberSimple "AnActionWithValueParameterWithDefault" oName mst [ p22 ]))
                       TProperty("AnError", TObjectJson(makeActionMemberNumberSimple "objects" "AnError" oName "An Error" "" "int" []))
+                      TProperty("AnErrorNotFound", TObjectJson(makeActionMemberNumberSimple "objects" "AnErrorNotFound" oName "An Error Not Found" "" "int" []))
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorCollection" oName mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorQuery" oName mst))
                       TProperty("AnActionWithCreateNewAnnotation", TObjectJson(makeObjectActionMemberSimple "AnActionWithCreateNewAnnotation" oName (ttc "RestfulObjects.Test.Data.WithValue") [p49] ))

@@ -2064,6 +2064,15 @@ type Tests() =
         member x.GetQueryActionWithErrorViewModel() = ObjectActionInvoke19.GetQueryActionWithErrorViewModel x.api
         
         [<Test>]
+        member x.NotFoundErrorObject() = ObjectActionInvoke19.NotFoundErrorObject x.api
+        
+        [<Test>]
+        member x.NotFoundErrorService() = ObjectActionInvoke19.NotFoundErrorService x.api
+        
+        [<Test>]
+        member x.NotFoundErrorViewModel() = ObjectActionInvoke19.NotFoundErrorViewModel x.api
+
+        [<Test>]
         member x.MalformedFormalParmsOnPostQueryObject() = 
             ObjectActionInvoke19.MalformedFormalParmsOnPostQueryObject x.api
         

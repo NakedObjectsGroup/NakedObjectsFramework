@@ -1038,6 +1038,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                   TProperty("FinderAction1", TObjectJson(makeServiceActionMember "FinderAction1" sName (ttc "RestfulObjects.Test.Data.WithValue") [p48] ))
                                   TProperty("FinderAction2", TObjectJson(makeServiceActionMember "FinderAction2" sName (ttc "RestfulObjects.Test.Data.WithValue") [p48] ))
                                   TProperty("AnError", TObjectJson(makeActionMemberNumber "services" "AnError" sName "An Error" "" "int" []))
+                                  TProperty("AnErrorNotFound", TObjectJson(makeActionMemberNumber "services" "AnErrorNotFound" sName "An Error Not Found" "" "int" []))
                                   TProperty("AnErrorCollection", TObjectJson(makeServiceActionCollectionMemberNoParms "AnErrorCollection" sName mst))
                                   TProperty("AnErrorQuery", TObjectJson(makeServiceActionCollectionMemberNoParms "AnErrorQuery" sName mst)) ]))
           TProperty(JsonPropertyNames.Extensions, 
