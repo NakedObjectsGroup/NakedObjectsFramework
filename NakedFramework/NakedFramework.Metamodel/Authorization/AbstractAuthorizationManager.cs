@@ -49,7 +49,7 @@ public abstract class AbstractAuthorizationManager : IAuthorizationManager {
     protected abstract object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager);
 
     private static bool IsGenericCollection(INakedObjectAdapter target, INakedFramework framework, out string name) {
-        name = target.Spec.IsCollection ? target.Spec.GetFacet<IElementTypeFacet>()?.GetElementSpec(framework.MetamodelManager.Metamodel).FullName : "";
+        name = target.Spec.IsCollection ? target.Spec.GetFacet<ITypeOfFacet>()?.GetValueSpec(target, framework.MetamodelManager.Metamodel).FullName : "";
         return !string.IsNullOrEmpty(name);
     }
 

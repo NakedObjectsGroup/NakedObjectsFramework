@@ -36,6 +36,7 @@ namespace Rest.Test.Data {
     public static class FooFunctions {
         [DescribedAs("Act1")]
         public static Foo Act1(this Foo foo, IContext context) => foo;
+        public static IContext QueryableAct(this IQueryable<Foo> foos, IContext context) => context;
     }
 
     public static class FooSubFunctions {
@@ -67,5 +68,6 @@ namespace Rest.Test.Data.Sub {
     public static class QuxMenuFunctions {
         public static Foo Act1(IContext context) => context.Instances<Foo>().FirstOrDefault();
         public static Foo Act2(IContext context) => context.Instances<Foo>().FirstOrDefault();
+        public static IQueryable<Foo> Act3(IContext context) => context.Instances<Foo>();
     }
 }

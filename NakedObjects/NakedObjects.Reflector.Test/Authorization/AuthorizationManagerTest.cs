@@ -37,6 +37,7 @@ public class AuthorizationManagerTest {
 
         config.AddNamespaceAuthorizer<INamespaceAuthorizer>("1");
         config.AddTypeAuthorizer<TestClass, ITypeAuthorizer<TestClass>>();
+        config.AddQueryableActionAuthorizer<TestClass, IQueryableActionAuthorizer<TestClass>>();
 
         // ReSharper disable once UnusedVariable
         var sink = new AuthorizationManager(config, mockLogger);
@@ -67,6 +68,7 @@ public class AuthorizationManagerTest {
         config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
         config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> { { "1", typeof(TestNamespaceAuthorizer) } });
         config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
+        config.Setup(c => c.QueryableActionAuthorizers).Returns(new Dictionary<string, Type>());
 
         var manager = new AuthorizationDecorator();
 
@@ -93,6 +95,7 @@ public class AuthorizationManagerTest {
         config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
         config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> { { "1", typeof(TestNamespaceAuthorizer) } });
         config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
+        config.Setup(c => c.QueryableActionAuthorizers).Returns(new Dictionary<string, Type>());
 
         var manager = new AuthorizationDecorator();
 

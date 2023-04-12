@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ using NakedFramework.Facade.Utility;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Rest.API;
+using NakedFramework.Rest.Model;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Reflector.Authorization;
 using NakedFunctions.Rest.Test.Data;
@@ -62,6 +64,11 @@ public static class AuthHelpers {
         TestMenuAuthorizer.VisibleCount = 0;
     }
 
+    public static void ResetQueryableActionFooAuth(bool allow) {
+        TestQueryableActionAuthorizerFoo.Allow = allow;
+        TestQueryableActionAuthorizerFoo.VisibleCount = 0;
+    }
+
     public static void AssertDefaultAuth(int expectedVisible) {
         Assert.AreEqual(expectedVisible, TestDefaultAuthorizer.VisibleCount);
     }
@@ -80,6 +87,10 @@ public static class AuthHelpers {
 
     public static void AssertMenuAuth(int expectedVisible) {
         Assert.AreEqual(expectedVisible, TestMenuAuthorizer.VisibleCount);
+    }
+
+    public static void AssertQueryableActionFooAuth(int expectedVisible) {
+        Assert.AreEqual(expectedVisible, TestQueryableActionAuthorizerFoo.VisibleCount);
     }
 }
 
@@ -122,6 +133,19 @@ public class TestTypeAuthorizerFoo : ITypeAuthorizer<Foo> {
     }
 }
 
+public class TestQueryableActionAuthorizerFoo : IQueryableActionAuthorizer<Foo> {
+    public static bool Allow = true;
+    public static int VisibleCount;
+
+    public bool IsVisible(string memberName, IContext context) {
+        Assert.IsNotNull(memberName);
+        Assert.IsNotNull(context);
+        VisibleCount++;
+        return Allow;
+    }
+}
+
+
 public class TestTypeAuthorizerFooSub : ITypeAuthorizer<FooSub> {
     public static bool Allow = true;
     public static int VisibleCount;
@@ -141,7 +165,7 @@ public class TestMenuAuthorizer : IMainMenuAuthorizer {
 
     public bool IsVisible(string target, string memberName, IContext context) {
         Assert.IsTrue(target is "Rest.Test.Data.Sub.QuxMenuFunctions" or "Rest.Test.Data.FooMenuFunctions");
-        Assert.IsTrue(memberName is "Act1" or "Act2");
+        Assert.IsTrue(memberName is "Act1" or "Act2" or "Act3");
         Assert.IsNotNull(context);
         VisibleCount++;
         return memberName is "Act1" ? Allow : true;
@@ -183,6 +207,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
             config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("Rest.Test.Data.Sub");
             config.AddTypeAuthorizer<Foo, TestTypeAuthorizerFoo>();
             config.AddTypeAuthorizer<FooSub, TestTypeAuthorizerFooSub>();
+            config.AddQueryableActionAuthorizer<Foo, TestQueryableActionAuthorizerFoo>();
             return config;
         }
     }
@@ -239,6 +264,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Bar>(), "1");
@@ -254,6 +280,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -263,6 +290,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Bar>(), "1");
@@ -277,6 +305,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -286,6 +315,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Bar>(), "1");
@@ -300,6 +330,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -309,6 +340,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Bar>(), "1");
@@ -323,6 +355,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -332,6 +365,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Qux>(), "1");
@@ -347,6 +381,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -356,6 +391,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Qux>(), "1");
@@ -370,6 +406,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -379,6 +416,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Qux>(), "1");
@@ -393,6 +431,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -402,6 +441,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Qux>(), "1");
@@ -416,6 +456,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -425,6 +466,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Foo>(), "1");
@@ -440,6 +482,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(3);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -449,6 +492,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(false);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Foo>(), "1");
@@ -463,6 +507,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(3);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -472,6 +517,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Foo>(), "1");
@@ -486,6 +532,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(3);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -495,6 +542,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(false);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Foo>(), "1");
@@ -509,6 +557,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(3);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -518,6 +567,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<FooSub>(), "2");
@@ -535,6 +585,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(5);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -544,6 +595,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(false);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<FooSub>(), "2");
@@ -559,6 +611,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(5);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -568,6 +621,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<FooSub>(), "2");
@@ -582,6 +636,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(5);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -591,6 +646,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(false);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetObject(FullName<FooSub>(), "2");
@@ -605,6 +661,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(5);
         AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(0);
     }
 
     // menus
@@ -616,6 +673,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetMenu(nameof(FooMenuFunctions));
@@ -630,6 +688,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(4);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -639,6 +698,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetMenu(nameof(QuxMenuFunctions));
@@ -652,7 +712,60 @@ public class AuthTestEF6 : AcceptanceTestCase {
         AssertNamespaceAuth(0);
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
-        AssertMenuAuth(4);
+        AssertMenuAuth(5);
+        AssertQueryableActionFooAuth(0);
+    }
+
+    [Test]
+    public void QueryableActionAuthorizerCalledForAction() {
+        ResetDefaultAuth(true);
+        ResetNamespaceAuth(true);
+        ResetTypeFooAuth(true);
+        ResetTypeFooSubAuth(true);
+        ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
+
+        var api = Api().AsGet();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>()};
+        var result = api.GetInvokeOnMenu(nameof(QuxMenuFunctions), "Act3", map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNotNull(parsedResult["result"]["members"]["QueryableAct"]);
+
+        AssertDefaultAuth(0);
+        AssertNamespaceAuth(0);
+        AssertTypeFooAuth(0);
+        AssertTypeFooSubAuth(0);
+        AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(1);
+    }
+
+    [Test]
+    public void QueryableActionAuthorizerHidesAction() {
+        ResetDefaultAuth(true);
+        ResetNamespaceAuth(true);
+        ResetTypeFooAuth(true);
+        ResetTypeFooSubAuth(true);
+        ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(false);
+
+        var api = Api().AsGet();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>()};
+        var result = api.GetInvokeOnMenu(nameof(QuxMenuFunctions), "Act3", map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.IsNull(parsedResult["result"]["members"]["QueryableAct"]);
+
+        AssertDefaultAuth(0);
+        AssertNamespaceAuth(0);
+        AssertTypeFooAuth(0);
+        AssertTypeFooSubAuth(0);
+        AssertMenuAuth(0);
+        AssertQueryableActionFooAuth(1);
     }
 }
 
@@ -690,6 +803,7 @@ public class MenuAuthTestEF6 : AcceptanceTestCase {
             config.AddNamespaceAuthorizer<TestNamespaceAuthorizer>("Rest.Test.Data.Sub");
             config.AddTypeAuthorizer<Foo, TestTypeAuthorizerFoo>();
             config.AddTypeAuthorizer<FooSub, TestTypeAuthorizerFooSub>();
+            config.AddQueryableActionAuthorizer<Foo, TestQueryableActionAuthorizerFoo>();
             return config;
         }
     }
@@ -748,6 +862,7 @@ public class MenuAuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(true);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetMenu(nameof(FooMenuFunctions));
@@ -762,6 +877,7 @@ public class MenuAuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(3);
+        AssertQueryableActionFooAuth(0);
     }
 
     [Test]
@@ -771,6 +887,7 @@ public class MenuAuthTestEF6 : AcceptanceTestCase {
         ResetTypeFooAuth(true);
         ResetTypeFooSubAuth(true);
         ResetMenuAuth(false);
+        ResetQueryableActionFooAuth(true);
 
         var api = Api().AsGet();
         var result = api.GetMenu(nameof(FooMenuFunctions));
@@ -785,5 +902,6 @@ public class MenuAuthTestEF6 : AcceptanceTestCase {
         AssertTypeFooAuth(0);
         AssertTypeFooSubAuth(0);
         AssertMenuAuth(4);
+        AssertQueryableActionFooAuth(0);
     }
 }
