@@ -54,7 +54,7 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
             }
         }
 
-        return true;
+        return false;
     }
 
     private bool IsObjectVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
@@ -62,6 +62,10 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
 
         if (authorizer is INamespaceAuthorizer nameAuth) {
             return nameAuth.IsVisible(target.Object, identifier.MemberName, FunctionalContext(framework));
+        }
+
+        if (authorizer is IQueryableActionAuthorizer actionAuth) {
+            return actionAuth.IsVisible(identifier.MemberName, FunctionalContext(framework));
         }
 
         //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)

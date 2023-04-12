@@ -58,6 +58,10 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
             return nameAuth.IsVisible(framework.Session.Principal, target.Object, identifier.MemberName);
         }
 
+        if (authorizer is IQueryableActionAuthorizer actionAuth) {
+            return actionAuth.IsVisible(framework.Session.Principal, identifier.MemberName);
+        }
+
         //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)
         return isVisibleDelegates[authorizer.GetType()](authorizer, framework.Session.Principal, target.GetDomainObject(), identifier.MemberName);
     }
