@@ -14,4 +14,6 @@ public interface IAuthorizationConfiguration {
     Type DefaultAuthorizer { get; }
     IDictionary<string, Type> NamespaceAuthorizers { get; }
     IDictionary<string, Type> TypeAuthorizers { get; }
+
+    IDictionary<string, Type> QueryableActionAuthorizers { get; }
 }

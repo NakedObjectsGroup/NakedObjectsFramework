@@ -11,6 +11,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
@@ -20,6 +21,7 @@ namespace NakedFramework.Metamodel.Authorization;
 public abstract class AbstractAuthorizationManager : IAuthorizationManager {
     protected readonly Type defaultAuthorizer;
     protected readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
+    protected readonly ImmutableDictionary<string, Type> queryableActionAuthorizers = ImmutableDictionary<string, Type>.Empty;
     protected readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
 
     protected AbstractAuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger logger) {
@@ -35,6 +37,10 @@ public abstract class AbstractAuthorizationManager : IAuthorizationManager {
         if (authorizationConfiguration.TypeAuthorizers.Any()) {
             typeAuthorizers = authorizationConfiguration.TypeAuthorizers.ToImmutableDictionary();
         }
+
+        if (authorizationConfiguration.QueryableActionAuthorizers.Any()) {
+            queryableActionAuthorizers = authorizationConfiguration.QueryableActionAuthorizers.ToImmutableDictionary();
+        }
     }
 
     public abstract bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier);
@@ -42,14 +48,28 @@ public abstract class AbstractAuthorizationManager : IAuthorizationManager {
 
     protected abstract object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager);
 
-    protected object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
-        //Look for exact-fit TypeAuthorizer
-        // order here as ImmutableDictionary not ordered
-        var fullyQualifiedOfTarget = target.Spec.FullName;
-        var authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
-                         namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
-                         defaultAuthorizer;
+    private static bool IsGenericCollection(INakedObjectAdapter target, INakedFramework framework, out string name) {
+        name = target.Spec.IsCollection ? target.Spec.GetFacet<IElementTypeFacet>()?.GetElementSpec(framework.MetamodelManager.Metamodel).FullName : "";
+        return !string.IsNullOrEmpty(name);
+    }
 
-        return CreateAuthorizer(authorizer, lifecycleManager);
+    protected object GetAuthorizer(INakedObjectAdapter target, INakedFramework framework) {
+        Type GetObjectAuthorizer() {
+            //Look for exact-fit TypeAuthorizer
+            // order here as ImmutableDictionary not ordered
+            var fullyQualifiedOfTarget = target.Spec.FullName;
+            return typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
+                   namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
+                   defaultAuthorizer;
+        }
+
+        Type GetCollectionAuthorizer(string fullyQualifiedOfTarget) {
+            return queryableActionAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
+                   defaultAuthorizer;
+        }
+
+        var authorizer = IsGenericCollection(target, framework, out var name) ? GetCollectionAuthorizer(name) : GetObjectAuthorizer();
+
+        return CreateAuthorizer(authorizer, framework.LifecycleManager);
     }
 }

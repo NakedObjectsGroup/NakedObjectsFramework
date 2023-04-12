@@ -19,6 +19,7 @@ public class AuthorizationConfiguration<TDefault, TMainMenu>
     public AuthorizationConfiguration() {
         DefaultAuthorizer = typeof(TDefault);
         NamespaceAuthorizers = new Dictionary<string, Type>();
+        QueryableActionAuthorizers = new Dictionary<string, Type>();
         var stringQualifiedName = typeof(string).FullName;
 
         TypeAuthorizers = new Dictionary<string, Type> { { stringQualifiedName, typeof(TMainMenu) } };
@@ -37,11 +38,20 @@ public class AuthorizationConfiguration<TDefault, TMainMenu>
         TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
     }
 
+    public void AddQueryableActionAuthorizer<TDomain, TAuth>()
+        where TDomain : new()
+        where TAuth : IQueryableActionAuthorizer<TDomain> {
+        var fullyQualifiedName = typeof(TDomain).FullName;
+        QueryableActionAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
+    }
+
     #region IAuthorizationConfiguration Members
 
     public Type DefaultAuthorizer { get; }
     public IDictionary<string, Type> NamespaceAuthorizers { get; }
     public IDictionary<string, Type> TypeAuthorizers { get; }
+
+    public IDictionary<string, Type> QueryableActionAuthorizers { get; }
 
     #endregion
 }

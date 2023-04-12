@@ -52,7 +52,7 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
     protected override object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
 
     public override bool IsVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
-        var authorizer = GetAuthorizer(target, framework.LifecycleManager);
+        var authorizer = GetAuthorizer(target, framework);
 
         if (authorizer is INamespaceAuthorizer nameAuth) {
             return nameAuth.IsVisible(framework.Session.Principal, target.Object, identifier.MemberName);
@@ -63,7 +63,7 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
     }
 
     public override bool IsEditable(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
-        var authorizer = GetAuthorizer(target, framework.LifecycleManager);
+        var authorizer = GetAuthorizer(target, framework);
 
         if (authorizer is INamespaceAuthorizer nameAuth) {
             return nameAuth.IsEditable(framework.Session.Principal, target.Object, identifier.MemberName);

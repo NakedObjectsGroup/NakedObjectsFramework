@@ -7,6 +7,8 @@
 
 namespace NakedFunctions.Security;
 
-public interface IQueryableActionAuthorizer<T> {
+public interface IQueryableActionAuthorizer {
     bool IsVisible(string memberName, IContext context);
 }
+
+public interface IQueryableActionAuthorizer<T> : IQueryableActionAuthorizer { }

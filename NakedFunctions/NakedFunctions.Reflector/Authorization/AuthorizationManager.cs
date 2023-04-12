@@ -58,7 +58,7 @@ public sealed class AuthorizationManager : AbstractAuthorizationManager {
     }
 
     private bool IsObjectVisible(INakedFramework framework, INakedObjectAdapter target, IIdentifier identifier) {
-        var authorizer = GetAuthorizer(target, framework.LifecycleManager);
+        var authorizer = GetAuthorizer(target, framework);
 
         if (authorizer is INamespaceAuthorizer nameAuth) {
             return nameAuth.IsVisible(target.Object, identifier.MemberName, FunctionalContext(framework));

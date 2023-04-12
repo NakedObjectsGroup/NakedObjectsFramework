@@ -9,6 +9,8 @@ using System.Security.Principal;
 
 namespace NakedFramework.Security;
 
-public interface IQueryableActionAuthorizer<T> {
+public interface IQueryableActionAuthorizer<T> : IQueryableActionAuthorizer { }
+
+public interface IQueryableActionAuthorizer {
     bool IsVisible(IPrincipal principal, string memberName);
 }
