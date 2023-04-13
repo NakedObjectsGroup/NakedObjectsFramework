@@ -9,8 +9,8 @@ using System;
 
 namespace NakedFramework.Error;
 
-public class DomainResourceNotFoundException : DomainException {
-    public DomainResourceNotFoundException(string msg) : base(msg) { }
-    public DomainResourceNotFoundException(Exception cause) : base(cause) { }
-    public DomainResourceNotFoundException(string msg, Exception cause) : base(msg, cause) { }
+public class NotFoundException : DomainException {
+    public NotFoundException(string msg) : base(msg) { }
+    public NotFoundException(Exception cause) : base(cause) { }
+    public NotFoundException(string msg, Exception cause) : base(msg, cause) { }
 }

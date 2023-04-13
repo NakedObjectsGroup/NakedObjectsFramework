@@ -31,8 +31,8 @@ public static class FacadeUtils {
             ArgumentException => new BadRequestNOSException(NakedObjects.Resources.NakedObjects.InvalidArguments, e),
             TargetParameterCountException => new BadRequestNOSException("Missing arguments", e), // todo i18n
             InvokeException when e.InnerException != null => Map(e.InnerException), // recurse on inner exception
-            NakedObjectDomainException when e.InnerException is DomainResourceNotFoundException => new DomainResourceNotFoundNosException(e.InnerException.Message, e),
-            NakedObjectDomainException when e.InnerException is DomainResourceNotAuthorizedException => new UnauthorizedNOSException(e.InnerException.Message),
+            NakedObjectDomainException when e.InnerException is NotFoundException => new DomainResourceNotFoundNosException(e.InnerException.Message, e),
+            NakedObjectDomainException when e.InnerException is NotAuthorizedException => new UnauthorizedNOSException(e.InnerException.Message),
             _ => new GeneralErrorNOSException(e)
         };
 

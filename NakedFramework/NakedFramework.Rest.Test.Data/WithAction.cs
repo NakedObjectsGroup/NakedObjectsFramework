@@ -279,7 +279,7 @@ public abstract class WithAction {
 
     public virtual int AnError() => throw new DomainException("An error exception");
 
-    public virtual int AnErrorNotFound() => throw new DomainResourceNotFoundException("An error exception");
+    public virtual int AnErrorNotFound() => throw new NotFoundException("An error exception");
 
     public virtual IQueryable<MostSimple> AnErrorQuery() => throw new DomainException("An error exception");
 

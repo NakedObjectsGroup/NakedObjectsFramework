@@ -54,7 +54,7 @@ public class WithGetError {
         get {
             if (Container is not null && ThrowErrors) {
                 // so no errors on startup 
-                throw new DomainResourceNotFoundException("An error exception");
+                throw new NotFoundException("An error exception");
             }
 
             return Container?.Instances<MostSimple>().FirstOrDefault();
@@ -66,7 +66,7 @@ public class WithGetError {
         get {
             if (Container is not null && ThrowErrors) {
                 // so no errors on startup 
-                throw new DomainResourceNotAuthorizedException("An error exception");
+                throw new NotAuthorizedException("An error exception");
             }
 
             return Container?.Instances<MostSimple>().FirstOrDefault();

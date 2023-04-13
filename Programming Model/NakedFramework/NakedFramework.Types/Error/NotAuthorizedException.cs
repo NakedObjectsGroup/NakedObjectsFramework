@@ -9,8 +9,8 @@ using System;
 
 namespace NakedFramework.Error;
 
-public class DomainResourceNotAuthorizedException : DomainException {
-    public DomainResourceNotAuthorizedException(string msg) : base(msg) { }
-    public DomainResourceNotAuthorizedException(Exception cause) : base(cause) { }
-    public DomainResourceNotAuthorizedException(string msg, Exception cause) : base(msg, cause) { }
+public class NotAuthorizedException : DomainException {
+    public NotAuthorizedException(string msg) : base(msg) { }
+    public NotAuthorizedException(Exception cause) : base(cause) { }
+    public NotAuthorizedException(string msg, Exception cause) : base(msg, cause) { }
 }

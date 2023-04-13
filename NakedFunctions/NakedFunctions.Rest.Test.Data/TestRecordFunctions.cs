@@ -120,7 +120,7 @@ public static class SimpleRecordFunctions {
     public static IContext Duplicate0(this SimpleRecord sp, IContext context) => context;
     public static IContext Duplicate1(this IQueryable<SimpleRecord> sp, IContext context) => context;
 
-    public static IContext ErrorNotFound(this SimpleRecord sp, IContext context) => throw new DomainResourceNotFoundException("ex");
+    public static IContext ErrorNotFound(this SimpleRecord sp, IContext context) => throw new NotFoundException("ex");
 }
 
 public static class DateRecordFunctions {
