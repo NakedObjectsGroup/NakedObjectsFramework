@@ -27,5 +27,9 @@ namespace NakedFunctions {
         public T Reload<T>(T unsaved) where T : class;
 
         public T Resolve<T>(T unResolved) where T : class;
+
+        public IContext RaiseError(string  message);
+
+        public IContext RaiseError(Exception exception);
     }
 }

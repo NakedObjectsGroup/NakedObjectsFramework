@@ -38,4 +38,8 @@ public record FunctionalContext : IContext {
     public T Reload<T>(T unsaved) where T : class => ProxyMap.ContainsKey(unsaved) ? (T)ProxyMap[unsaved] : Persistor.ValidateProxy(unsaved);
 
     public T Resolve<T>(T obj) where T : class => (T)Persistor.Resolve(obj);
+
+    public IContext RaiseError(string  message) => throw new NotImplementedException();
+
+    public IContext RaiseError(Exception exception) => throw new NotImplementedException();
 }
