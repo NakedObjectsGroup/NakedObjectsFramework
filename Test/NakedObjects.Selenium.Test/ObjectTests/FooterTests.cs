@@ -127,15 +127,16 @@ public abstract class FooterTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
         ClickPropertiesButton();
         WaitForView(Pane.Single, PaneType.ApplicationProperties, "Application Properties");
-        wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 6);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[5].Text.StartsWith(lastPropertyText));
+        wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 7);
+        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text.StartsWith(lastPropertyText));
         var properties = br.FindElements(By.CssSelector(".property"));
         Assert.IsTrue(properties[0].Text.StartsWith("Application Name:"), properties[0].Text);
         Assert.IsTrue(properties[1].Text.StartsWith("User Name:"), properties[1].Text);
         Assert.IsTrue(properties[2].Text.StartsWith("Server Url: http"), properties[2].Text); // maybe https
         Assert.IsTrue(properties[3].Text.StartsWith("Server API version:"), properties[3].Text);
-        Assert.IsTrue(properties[4].Text.StartsWith("Server version:"), properties[4].Text);
-        Assert.IsTrue(properties[5].Text.StartsWith(lastPropertyText), properties[5].Text);
+        Assert.IsTrue(properties[4].Text.StartsWith("Server Framework version:"), properties[4].Text);
+        Assert.IsTrue(properties[5].Text.StartsWith("Server Application version:"), properties[5].Text);
+        Assert.IsTrue(properties[6].Text.StartsWith(lastPropertyText), properties[6].Text);
     }
 
     public virtual void LogOff() {
