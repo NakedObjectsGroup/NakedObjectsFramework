@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -23,24 +24,23 @@ public sealed class UrlLinkAnnotationFacetFactory : FunctionalFacetFactoryProces
     public UrlLinkAnnotationFacetFactory(IFacetFactoryOrder<UrlLinkAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
         : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
-    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
+    private void Process(MemberInfo member, ISpecificationBuilder holder, Type memberType) {
         var attribute = member.GetCustomAttribute<UrlLinkAttribute>();
+        if (attribute is not null && memberType != typeof(string)) {
+            Logger<UrlLinkAnnotationFacetFactory>().LogWarning($"UrlLink attribute ignored on non string member: {member.Name}");
+            return;
+        }
+
         FacetUtils.AddFacet(Create(attribute), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        if (property.PropertyType == typeof(string)) {
-            Process(property, specification);
-        }
-
+        Process(property, specification, property.PropertyType);
         return metamodel;
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-        if (method.ReturnType == typeof(string)) {
-            Process(method, specification);
-        }
-
+        Process(method, specification, method.ReturnType);
         return metamodel;
     }
 
