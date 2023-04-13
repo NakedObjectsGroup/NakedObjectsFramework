@@ -212,7 +212,7 @@ public static class Helpers {
 
     // ReSharper disable ConvertToConstant.Local
     private static readonly bool WriteFileIfNoneExists = false;
-    private static readonly bool WriteFileIfResponseDiffersFromExisting = true;
+    private static readonly bool WriteFileIfResponseDiffersFromExisting = false;
 
     public static bool UseLocalUrl = false;
     // ReSharper restore ConvertToConstant.Local
