@@ -48,9 +48,9 @@ public class UrlLinkAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IUrlLinkFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is UrlLinkFacet);
-        var hintFacet = (UrlLinkFacet)facet;
-        Assert.AreEqual("Name", hintFacet.DisplayAs);
-        Assert.AreEqual(true, hintFacet.OpenInNewTab);
+        var urlLinkFacet = (UrlLinkFacet)facet;
+        Assert.AreEqual("Name", urlLinkFacet.DisplayAs);
+        Assert.AreEqual(true, urlLinkFacet.OpenInNewTab);
         Assert.IsNotNull(metamodel);
     }
 
@@ -63,9 +63,9 @@ public class UrlLinkAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IUrlLinkFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is UrlLinkFacet);
-        var hintFacet = (UrlLinkFacet)facet;
-        Assert.AreEqual("Name1", hintFacet.DisplayAs);
-        Assert.AreEqual(true, hintFacet.OpenInNewTab);
+        var urlLinkFacet = (UrlLinkFacet)facet;
+        Assert.AreEqual("Name1", urlLinkFacet.DisplayAs);
+        Assert.AreEqual(true, urlLinkFacet.OpenInNewTab);
         Assert.IsNotNull(metamodel);
     }
 
@@ -80,9 +80,9 @@ public class UrlLinkAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         var facet = Specification.GetFacet(typeof(IUrlLinkFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is UrlLinkFacet);
-        var hintFacet = (UrlLinkFacet)facet;
-        Assert.AreEqual(null, hintFacet.DisplayAs);
-        Assert.AreEqual(false, hintFacet.OpenInNewTab);
+        var urlLinkFacet = (UrlLinkFacet)facet;
+        Assert.AreEqual(null, urlLinkFacet.DisplayAs);
+        Assert.AreEqual(false, urlLinkFacet.OpenInNewTab);
         Assert.IsNotNull(metamodel);
     }
 

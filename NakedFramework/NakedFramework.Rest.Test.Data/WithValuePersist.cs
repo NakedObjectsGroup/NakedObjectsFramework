@@ -43,6 +43,7 @@ public class WithValuePersist {
     [Optionally]
     [DescribedAs("A string value for testing")]
     [MemberOrder(Sequence = "3")]
+    [UrlLink(true, "Name")]
     public virtual string AStringValue { get; set; }
 
     [Optionally]

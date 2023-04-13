@@ -27,7 +27,6 @@ public class WithValue {
     public virtual int Id { get; set; }
 
     [PresentationHint("class3 class4")]
-    [UrlLink(true, "Name")]
     public virtual int AValue { get; set; }
 
     [Disabled]
@@ -43,6 +42,7 @@ public class WithValue {
     [Optionally]
     [DescribedAs("A string value for testing")]
     [MemberOrder(Sequence = "3")]
+    [UrlLink(true, "Name")]
     public virtual string AStringValue { get; set; }
 
     [Optionally]

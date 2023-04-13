@@ -42,6 +42,7 @@ public class WithValueViewModel : IViewModel {
     [Optionally]
     [DescribedAs("A string value for testing")]
     [MemberOrder(Sequence = "3")]
+    [UrlLink(true, "Name")]
     public string AStringValue { get; set; }
 
     [Optionally]

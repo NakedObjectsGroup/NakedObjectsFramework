@@ -402,8 +402,6 @@ let internal makeActionMember oType  mName (oName : string) fName desc rType par
 
         let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6")) :: extArray else extArray
 
-        let extArray = if presHint then  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name")) :: extArray else extArray
-
         let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
 
         let extArray = if createNew then TProperty(JsonPropertyNames.CustomCreateNew, TObjectVal(wvProperties)) :: extArray else extArray
@@ -441,8 +439,6 @@ let internal makeActionMemberSimple oType  mName (oName : string) fName desc rTy
 
         let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6")) :: extArray else extArray
 
-        let extArray = if presHint then  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name")) :: extArray else extArray
-
         let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
 
         let extArray = if createNew then TProperty(JsonPropertyNames.CustomCreateNew, TObjectVal(wvProperties)) :: extArray else extArray
@@ -475,6 +471,7 @@ let internal makeActionMemberString oType mName (oName : string) fName desc rTyp
                                                                   TProperty(JsonPropertyNames.MaxLength, TObjectVal(0));
                                                                   TProperty(JsonPropertyNames.Pattern, TObjectVal(""));
                                                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                                                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"));
                                                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
@@ -523,6 +520,7 @@ let internal makeActionMemberStringSimple oType mName (oName : string) fName des
                                                                   TProperty(JsonPropertyNames.MaxLength, TObjectVal(0));
                                                                   TProperty(JsonPropertyNames.Pattern, TObjectVal(""));
                                                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                                                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"));
                                                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult ""); ]))]
@@ -856,8 +854,6 @@ let internal makePropertyMemberFull oType mName  (oName : string) fName desc opt
       
       let extArray = if presHint then TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4")) :: extArray else extArray
 
-      let extArray = if presHint then TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name")) :: extArray else extArray
-
       let exts = TObjectJson(extArray);
 
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
@@ -1075,6 +1071,7 @@ let internal makePropertyMemberString oType (mName : string) (oName : string) fN
                                                              TProperty(JsonPropertyNames.Pattern, TObjectVal("[A-Z]"));
                                                              TProperty(JsonPropertyNames.Format, TObjectVal("string"));
                                                              TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                                                             TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"));
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 

@@ -482,6 +482,7 @@ let GetVerySimpleEagerObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"))
                                   TProperty(JsonPropertyNames.Format, TObjectVal("string"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(true)) ])) ]
     
     let args = 

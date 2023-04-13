@@ -27,6 +27,7 @@ public class VerySimpleEager {
     [Title]
     [MaxLength(101)]
     [RegEx(Validation = @"[A-Z]")]
+    [UrlLink(true, "Name")]
     public virtual string Name { get; set; }
 
     [Optionally]

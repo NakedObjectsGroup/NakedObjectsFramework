@@ -24,7 +24,6 @@ public abstract class WithAction {
     public IDomainObjectContainer Container { set; protected get; }
 
     [PresentationHint("class5 class6")]
-    [UrlLink(true, "Name")]
     public virtual MostSimple AnAction() {
         return Container.Instances<MostSimple>().Single(x => x.Id == 1);
     }
@@ -110,9 +109,10 @@ public abstract class WithAction {
     
     public virtual int AnActionReturnsScalar() => 999;
 
-   
+    [UrlLink(true, "Name")]
     public virtual string AnActionReturnsScalarEmpty() => "";
 
+    [UrlLink(true, "Name")]
     public virtual string AnActionReturnsScalarNull() => null;
 
     public virtual void AnActionReturnsVoid() { }

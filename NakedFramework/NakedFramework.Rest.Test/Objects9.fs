@@ -495,6 +495,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                                          TProperty(JsonPropertyNames.Pattern, TObjectVal("[A-Z]"))
                                                                                          TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A String Value"))
                                                                                          TProperty(JsonPropertyNames.MemberOrder, TObjectVal(3))
+                                                                                         TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
                                                                                          TProperty(JsonPropertyNames.Optional, TObjectVal(true)) ])) ]))
                                          TProperty("AUserDisabledValue", 
                                                    TObjectJson([ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property))
@@ -538,7 +539,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                                          
                                                                                          TProperty
                                                                                              (JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
-                                                                                         TProperty(JsonPropertyNames.CustomUrlLink, TObjectVal("True,Name"))
+                                                                                         
                                                                                          TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]))
                                          TProperty("Id", 
                                                    TObjectJson([ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property))
