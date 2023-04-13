@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Error;
 
 namespace NakedFunctions.Reflector.Component;
 
@@ -17,10 +18,10 @@ public record FunctionalContext : IContext {
     internal IDictionary<object, object> ProxyMap = new Dictionary<object, object>();
     internal IObjectPersistor Persistor { get; init; }
     internal IServiceProvider Provider { get; init; }
-
     internal object[] New { get; init; } = Array.Empty<object>();
     internal (object proxy, object updated)[] Updated { get; init; } = Array.Empty<(object, object)>();
     internal object[] Deleted { get; init; } = Array.Empty<object>();
+    internal Exception[] Errors { get; init; } = Array.Empty<Exception>();
 
     public Func<IContext, IContext> PostSaveFunction { get; init; }
 
@@ -31,6 +32,7 @@ public record FunctionalContext : IContext {
     public IContext WithNew<T>(T newObj) where T : class => this with { New = New.Append(newObj).ToArray() };
 
     public IContext WithUpdated<T>(T proxy, T updated) where T : class => this with { Updated = Updated.Append((proxy, updated)).ToArray() };
+
     public IContext WithDeleted<T>(T deleteObj) where T : class => this with { Deleted = Deleted.Append(deleteObj).ToArray() };
 
     public IContext WithDeferred(Func<IContext, IContext> function) => this with { PostSaveFunction = function };
@@ -39,7 +41,8 @@ public record FunctionalContext : IContext {
 
     public T Resolve<T>(T obj) where T : class => (T)Persistor.Resolve(obj);
 
-    public IContext RaiseError(string  message) => throw new NotImplementedException();
+    public IContext RaiseError(string message) => RaiseError(new DomainException(message));
 
-    public IContext RaiseError(Exception exception) => throw new NotImplementedException();
+    public IContext RaiseError(Exception exception) => this with { Errors = Errors.Append(exception).ToArray() };
+
 }

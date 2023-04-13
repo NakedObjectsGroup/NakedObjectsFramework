@@ -17,6 +17,7 @@ using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Persist;
+using NakedFramework.Error;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.Serialization;
 using NakedFunctions.Reflector.Component;
@@ -77,8 +78,17 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
 
     private static (object, FunctionalContext) CastTuple(ITuple tuple) => (tuple[0], (FunctionalContext)tuple[1]);
 
-    private static (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedFramework framework) =>
-        PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Deleted, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
+    private static void HandleErrors(FunctionalContext functionalContext) {
+        var errors = functionalContext.Errors;
+        if (errors.Any()) {
+            throw errors.Length is 1 ? errors.First() : new AggregateException(errors);
+        }
+    }
+
+    private static (object original, object updated)[] HandleContext(FunctionalContext functionalContext, INakedFramework framework) {
+        HandleErrors(functionalContext);
+        return PersistResult(framework.LifecycleManager, functionalContext.New, functionalContext.Deleted, functionalContext.Updated, GetPostSaveFunction(functionalContext, framework));
+    }
 
     private static object HandleTupleResult((object, FunctionalContext) tuple, INakedFramework framework) {
         var (toReturn, context) = tuple;
