@@ -81,7 +81,7 @@ public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacet
     private static void HandleErrors(FunctionalContext functionalContext) {
         var errors = functionalContext.Errors;
         if (errors.Any()) {
-            throw errors.Length is 1 ? errors.First() : new AggregateException(errors);
+            throw new NakedObjectDomainException("", new AggregateException(errors));
         }
     }
 

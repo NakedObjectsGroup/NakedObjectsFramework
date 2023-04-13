@@ -33,6 +33,9 @@ public static class FacadeUtils {
             InvokeException when e.InnerException != null => Map(e.InnerException), // recurse on inner exception
             NakedObjectDomainException when e.InnerException is NotFoundException => new DomainResourceNotFoundNosException(e.InnerException.Message, e),
             NakedObjectDomainException when e.InnerException is NotAuthorizedException => new UnauthorizedNOSException(e.InnerException.Message),
+            NakedObjectDomainException when e.InnerException is AggregateException ae => Map(ae.InnerExceptions.First()),
+            NotFoundException => new DomainResourceNotFoundNosException(e.Message, e),
+            NotAuthorizedException => new UnauthorizedNOSException(e.Message),
             _ => new GeneralErrorNOSException(e)
         };
 

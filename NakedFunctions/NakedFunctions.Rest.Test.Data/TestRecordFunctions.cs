@@ -120,7 +120,14 @@ public static class SimpleRecordFunctions {
     public static IContext Duplicate0(this SimpleRecord sp, IContext context) => context;
     public static IContext Duplicate1(this IQueryable<SimpleRecord> sp, IContext context) => context;
 
-    public static IContext ErrorNotFound(this SimpleRecord sp, IContext context) => throw new NotFoundException("ex");
+    public static IContext Error(this SimpleRecord sp, int eType, IContext context) =>
+        eType switch {
+            0 => context.RaiseError(new NotFoundException("ex0")),
+            1 => context.RaiseError(new NotAuthorizedException("ex1")),
+            2 => context.RaiseError(new DomainException("ex2")),
+            3 => context.RaiseError(new NotFoundException("ex3")).RaiseError("ex3"),
+            _ => context.RaiseError("ex4")
+        };
 }
 
 public static class DateRecordFunctions {

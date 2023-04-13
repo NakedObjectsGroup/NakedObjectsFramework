@@ -1250,12 +1250,52 @@ public class ObjectTestEF6 : AcceptanceTestCase {
     }
 
     [Test]
-    public void TestError() {
+    public void TestErrorNotFound() {
         var api = Api().AsPost();
-        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "eType", new ScalarValue(0) } } };
 
-        var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.ErrorNotFound), map);
+        var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.Error), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.NotFound, sc);
+    }
+
+    [Test]
+    public void TestErrorNotAuth() {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "eType", new ScalarValue(1) } } };
+
+        var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.Error), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.Unauthorized, sc);
+    }
+
+    [Test]
+    public void TestErrorGeneral() {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "eType", new ScalarValue(2) } } };
+
+        var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.Error), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.InternalServerError, sc);
+    }
+
+    [Test]
+    public void TestErrorMultiple() {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "eType", new ScalarValue(3) } } };
+
+        var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.Error), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.NotFound, sc);
+    }
+
+    [Test]
+    public void TestErrorString() {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "eType", new ScalarValue(4) } } };
+
+        var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.Error), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.InternalServerError, sc);
     }
 }
