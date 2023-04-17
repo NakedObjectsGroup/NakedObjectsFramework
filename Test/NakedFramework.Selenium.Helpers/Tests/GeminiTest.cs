@@ -84,18 +84,7 @@ public abstract class GeminiTest {
     protected IWebDriver br;
     protected SafeWebDriverWait wait;
 
-    protected static int timeOut;
-
-    protected static int TimeOut {
-        get {
-            if (timeOut != 0) {
-                return timeOut;
-            }
-
-            timeOut = 20;
-            return 40;
-        }
-    }
+    protected static int TimeOut => 10;
 
     [ClassInitialize]
     public static void InitialiseClass(TestContext context) {
