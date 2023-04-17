@@ -11,9 +11,10 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class KeyboardNavigationTestsRoot : AWTest {
+public abstract class KeyboardNavigationTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void EnterEquivalentToLeftClick() {
         GeminiUrl("object?o1=___1.Store--350&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
@@ -22,6 +23,7 @@ public abstract class KeyboardNavigationTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "Lynn Tsoflias");
     }
 
+    [TestMethod]
     public virtual void ShiftEnterEquivalentToRightClick() {
         Url(CustomersMenuUrl);
         WaitForView(Pane.Single, PaneType.Home, "Home");
@@ -33,6 +35,8 @@ public abstract class KeyboardNavigationTestsRoot : AWTest {
         WaitForView(Pane.Right, PaneType.Object, "Marcus Collins, AW00022262");
     }
 
+    [TestMethod]
+    [Ignore("#501")]
     public virtual void SelectFooterIconsWithAccessKeys() {
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
@@ -76,6 +80,8 @@ public abstract class KeyboardNavigationTestsRoot : AWTest {
         Assert.AreEqual("Log off (Alt-l)", element.GetAttribute("title"));
     }
 
+    [TestMethod]
+    [Ignore("#501")]
     public virtual void SelectObjectActionsWithAccessKey() {
         GeminiUrl("object?i1=View&o1=___1.Person--15748");
         WaitForView(Pane.Single, PaneType.Object);
@@ -86,53 +92,10 @@ public abstract class KeyboardNavigationTestsRoot : AWTest {
     }
 }
 
-public abstract class KeyboardNavigationTests : KeyboardNavigationTestsRoot {
-    [TestMethod]
-    public override void EnterEquivalentToLeftClick() {
-        base.EnterEquivalentToLeftClick();
-    }
-
-    [TestMethod]
-    public override void ShiftEnterEquivalentToRightClick() {
-        base.ShiftEnterEquivalentToRightClick();
-    }
-}
-
-#region Mega tests
-
-public abstract class MegaKeyboardTestsRoot : KeyboardNavigationTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void KeyboardNavigationTests() {
-        EnterEquivalentToLeftClick();
-        ShiftEnterEquivalentToRightClick();
-    }
-
-    [TestMethod] // don't work on chrome 
-    [Priority(-1)]
-    public void ProblematicKeyboardNavigationTests() {
-        SelectFooterIconsWithAccessKeys();
-        SelectObjectActionsWithAccessKey();
-    }
-}
-
-//[TestClass] //toggle
-public class MegaKeyboardTestsChrome : MegaKeyboardTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class KeyboardNavigationTestsChrome : KeyboardNavigationTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion
