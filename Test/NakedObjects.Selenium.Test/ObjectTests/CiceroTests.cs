@@ -14,9 +14,11 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class CiceroTestRoot : AWTest {
+public abstract class CiceroTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void Action() {
         //Test from home menu
         CiceroUrl("home?m1=ProductRepository");
@@ -114,6 +116,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Second argument may only be a question mark -  to get action details");
     }
 
+    [TestMethod]
     public virtual void BackAndForward() //Tested together for simplicity
     {
         CiceroUrl("home");
@@ -143,6 +146,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Too many arguments provided");
     }
 
+    [TestMethod]
     public virtual void Cancel() {
         //Menu dialog
         CiceroUrl("home?m1=ProductRepository&d1=FindProductByName");
@@ -192,6 +196,8 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("The command: cancel is not available in the current context");
     }
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void Clipboard() {
         CiceroUrl("home");
         WaitForOutputStarting("Welcome to Cicero");
@@ -241,6 +247,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Clipboard copy may only be used in the context of viewing an object");
     }
 
+    [TestMethod]
     public virtual void Edit() {
         CiceroUrl("home");
         CiceroUrl("object?o1=___1.Customer--29688");
@@ -263,6 +270,8 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("The command: edit is not available in the current context");
     }
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void Enter() {
         //Entering fields (into dialogs)
         CiceroUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
@@ -456,6 +465,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Products menu");
     }
 
+    [TestMethod]
     public virtual void Gemini() {
         //home
         CiceroUrl("home");
@@ -475,6 +485,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Too many arguments provided");
     }
 
+    [TestMethod]
     public virtual void Goto() {
         CiceroUrl("object?o1=___1.Customer--577");
         WaitForOutput("Customer: Synthetic Materials Manufacturing, AW00000577");
@@ -571,6 +582,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Sales Order Detail: 1 x ML Road Tire");
     }
 
+    [TestMethod]
     public virtual void Help() {
         //Help from home
         CiceroUrl("home");
@@ -600,6 +612,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\npage\r\nreload\r\nselection\r\nshow\r\nwhere");
     }
 
+    [TestMethod]
     public virtual void Menu() {
         //No argument
         CiceroUrl("home");
@@ -639,6 +652,8 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Customers menu");
     }
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void OK() {
         CiceroUrl("home");
         //Open a zero-param action on main menu
@@ -735,6 +750,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutputContaining("Inform User of something");
     }
 
+    [TestMethod]
     public virtual void Page() {
         CiceroUrl("list?m1=OrderRepository&a1=HighestValueOrders&p1=1&ps1=20&s1_=0");
         WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 157");
@@ -783,6 +799,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("The command: page is not available in the current context");
     }
 
+    [TestMethod]
     public virtual void Root() {
         CiceroUrl("object?o1=___1.Product--459&c1_ProductInventory=List");
         WaitForOutputStarting("Product Inventory: 3 items\r\n(Collection on Product: Lock Nut 19)");
@@ -807,6 +824,8 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Too many arguments provided");
     }
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void Save() {
         //Happy case
         CiceroUrl("object?o1=___1.Product--839&i1=Edit");
@@ -852,6 +871,8 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("StartDate must be before DueDate");
     }
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void Show() {
         #region In an object  -  to show properties
 
@@ -998,6 +1019,7 @@ public abstract class CiceroTestRoot : AWTest {
         #endregion
     }
 
+    [TestMethod]
     public virtual void Where() {
         CiceroUrl("home");
         CiceroUrl("object?o1=___1.Product--358");
@@ -1019,6 +1041,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Too many arguments provided");
     }
 
+    [TestMethod]
     public virtual void SpaceBarAutoComplete() {
         CiceroUrl("home");
         WaitForOutputStarting("Welcome to Cicero");
@@ -1057,6 +1080,7 @@ public abstract class CiceroTestRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
     }
 
+    [TestMethod]
     public virtual void TabAutoComplete() {
         CiceroUrl("home");
         WaitForOutputStarting("Welcome to Cicero");
@@ -1095,6 +1119,7 @@ public abstract class CiceroTestRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
     }
 
+    [TestMethod]
     public virtual void UnrecognisedCommand() {
         CiceroUrl("home");
         WaitForOutputStarting("Welcome to Cicero");
@@ -1105,6 +1130,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("No command begins with hl");
     }
 
+    [TestMethod]
     public virtual void UpAndDownArrow() {
         CiceroUrl("home");
         EnterCommand("he");
@@ -1133,6 +1159,8 @@ public abstract class CiceroTestRoot : AWTest {
         //== "menu pr;action rand;ok;show 1");
     }
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void ScenarioEditAndSave() {
         //happy case -  edit one property
         CiceroUrl("object?o1=___1.Product--838");
@@ -1200,6 +1228,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutputStarting("Work Order:");
     }
 
+    [TestMethod]
     public virtual void ScenarioMultiSelect() {
         //Multi-select and deselect - reference objects
         CiceroUrl("home?m1=ProductRepository");
@@ -1236,6 +1265,8 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutputContaining("Multiple matches:\r\nM\r\nR\r\nS\r\nT");
     }
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void ScenarioTransientObject() {
         //Happy case
         CiceroUrl("object?o1=___1.Person--12044");
@@ -1273,6 +1304,7 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("The requested view of unsaved object details has expired.");
     }
 
+    [TestMethod]
     public virtual void ScenarioUsingClipboard() {
         //Copy a Product to clipboard
         CiceroUrl("object?o1=___1.Product--980");
@@ -1305,6 +1337,8 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Unsaved Employee");
     }
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void ScenarioTestEditableVM() {
         CiceroUrl("object?i1=View&o1=___1.Person--5968");
         WaitForOutput("Person: Nathan Diaz");
@@ -1326,6 +1360,8 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Editing Email Template: Sent email");
     }
 
+    [TestMethod]
+    [Ignore("#500")]
     public virtual void ChainedCommands() {
         //Happy case
         CiceroUrl("home");
@@ -1363,6 +1399,8 @@ public abstract class CiceroTestRoot : AWTest {
         WaitForOutput("Result from Current Special Offers:\r\n16 items");
     }
 
+    [TestMethod]
+    [Ignore("Icon currently not configured")]
     public virtual void LaunchCiceroFromIcon() {
         GeminiUrl("object?o1=___1.Product--968");
         WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
@@ -1381,196 +1419,10 @@ public abstract class CiceroTestRoot : AWTest {
     }
 }
 
-public abstract class CiceroTests : CiceroTestRoot {
-    [TestMethod]
-    public override void Action() {
-        base.Action();
-    }
-
-    [TestMethod]
-    public override void BackAndForward() {
-        base.BackAndForward();
-    }
-
-    [TestMethod]
-    public override void Cancel() {
-        base.Cancel();
-    }
-
-    [TestMethod]
-    public override void Clipboard() {
-        base.Clipboard();
-    }
-
-    [TestMethod]
-    public override void Edit() {
-        base.Edit();
-    }
-
-    [TestMethod]
-    public override void Enter() {
-        base.Enter();
-    }
-
-    [TestMethod]
-    public override void Gemini() {
-        base.Gemini();
-    }
-
-    [TestMethod]
-    public override void Goto() {
-        base.Goto();
-    }
-
-    [TestMethod]
-    public override void Help() {
-        base.Help();
-    }
-
-    [TestMethod]
-    public override void Menu() {
-        base.Menu();
-    }
-
-    [TestMethod]
-    public override void OK() {
-        base.OK();
-    }
-
-    [TestMethod]
-    public override void Page() {
-        base.Page();
-    }
-
-    [TestMethod]
-    public override void Root() {
-        base.Root();
-    }
-
-    [TestMethod]
-    public override void Save() {
-        base.Save();
-    }
-
-    [TestMethod]
-    public override void Show() {
-        base.Show();
-    }
-
-    [TestMethod]
-    public override void Where() {
-        base.Where();
-    }
-
-    [TestMethod]
-    public override void SpaceBarAutoComplete() {
-        base.SpaceBarAutoComplete();
-    }
-
-    [TestMethod]
-    public override void TabAutoComplete() {
-        base.TabAutoComplete();
-    }
-
-    [TestMethod]
-    public override void UnrecognisedCommand() {
-        base.UnrecognisedCommand();
-    }
-
-    [TestMethod]
-    public override void UpAndDownArrow() {
-        base.UpAndDownArrow();
-    }
-
-    [TestMethod]
-    public override void ScenarioEditAndSave() {
-        base.ScenarioEditAndSave();
-    }
-
-    [TestMethod]
-    public override void ScenarioMultiSelect() {
-        base.ScenarioMultiSelect();
-    }
-
-    [TestMethod]
-    public override void ScenarioTransientObject() {
-        base.ScenarioTransientObject();
-    }
-
-    [TestMethod]
-    public override void ScenarioUsingClipboard() {
-        base.ScenarioUsingClipboard();
-    }
-
-    [TestMethod]
-    public override void ScenarioTestEditableVM() {
-        base.ScenarioTestEditableVM();
-    }
-
-    [TestMethod]
-    public override void ChainedCommands() {
-        base.ChainedCommands();
-    }
-}
-
-#region Mega tests
-
-public abstract class MegaCiceroTestsRoot : CiceroTestRoot {
-    // [TestMethod] //Mega
-    [Priority(0)]
-    public void CiceroTests() {
-        Action();
-        BackAndForward();
-        Cancel();
-        Edit();
-        Enter();
-        Gemini();
-        Goto();
-        Help();
-        Menu();
-        OK();
-        Page();
-        Root();
-        Save();
-        Show();
-        Where();
-        Clipboard();
-        SpaceBarAutoComplete();
-        TabAutoComplete();
-        UnrecognisedCommand();
-        UpAndDownArrow();
-        ChainedCommands();
-        ScenarioEditAndSave();
-        ScenarioMultiSelect();
-        ScenarioTestEditableVM();
-        ScenarioUsingClipboard();
-        ScenarioTransientObject();
-    }
-
-    //[TestMethod]
-    [Priority(-1)]
-    public void ProblematicCiceroTests() {
-        LaunchCiceroFromIcon();
-    }
-}
-
-//[TestClass]
-public class MegaCiceroTestsChrome : MegaCiceroTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class CiceroTestsChrome : CiceroTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion
