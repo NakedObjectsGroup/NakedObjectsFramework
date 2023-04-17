@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -133,7 +134,18 @@ public abstract class GeminiTest {
     }
 
     protected void InitChromeDriver() {
-        br = new ChromeDriver();
+        try {
+            br = new ChromeDriver();
+        }
+        catch (Exception) {
+            var p = Process.GetProcessesByName("chromedriver.exe");
+            foreach (Process process in p) {
+                process.Kill(true);
+            }
+
+            br = new ChromeDriver();
+        }
+
         wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
         br.Manage().Window.Maximize();
     }
