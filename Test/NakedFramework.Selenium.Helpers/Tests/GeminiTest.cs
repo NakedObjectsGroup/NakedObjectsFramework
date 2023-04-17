@@ -28,22 +28,20 @@ public abstract class GeminiTest {
     #region chrome helper
 
     protected static void FilePath(string resourcename, int attempt = 0) {
+        var assembly = Assembly.GetExecutingAssembly();
+        var assemblyDir =  Path.GetDirectoryName(assembly.Location);
         var fileName = resourcename.Remove(0, resourcename.IndexOf(".") + 1);
-        var dir = Path.Combine(Directory.GetCurrentDirectory(), Guid.NewGuid().ToString());
+        var dir = Path.Combine(assemblyDir, Guid.NewGuid().ToString());
         Directory.CreateDirectory(dir);
         Directory.SetCurrentDirectory(dir);
 
         var newFile = Path.Combine(dir, fileName);
 
-        var assembly = Assembly.GetExecutingAssembly();
-
-        using (var stream = assembly.GetManifestResourceStream("NakedFramework.Selenium.Helpers." + resourcename)) {
-            using (var fileStream = File.Create(newFile, (int)stream.Length)) {
-                var bytesInStream = new byte[stream.Length];
-                stream.Read(bytesInStream, 0, bytesInStream.Length);
-                fileStream.Write(bytesInStream, 0, bytesInStream.Length);
-            }
-        }
+        using var stream = assembly.GetManifestResourceStream("NakedFramework.Selenium.Helpers." + resourcename);
+        using var fileStream = File.Create(newFile, (int)stream.Length);
+        var bytesInStream = new byte[stream.Length];
+        stream.Read(bytesInStream, 0, bytesInStream.Length);
+        fileStream.Write(bytesInStream, 0, bytesInStream.Length);
     }
 
     #endregion
