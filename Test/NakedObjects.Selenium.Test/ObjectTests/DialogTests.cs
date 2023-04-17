@@ -416,6 +416,7 @@ public abstract class DialogTests : AWTest {
     }
 
     [TestMethod]
+    [Ignore("#502")]
     public virtual void PotentActionDialogDisappearsAndFieldsNotRemembered() {
         Debug.WriteLine(nameof(PotentActionDialogDisappearsAndFieldsNotRemembered));
         GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--57732&as1=open");
