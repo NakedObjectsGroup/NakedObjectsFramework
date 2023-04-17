@@ -14,9 +14,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests;
 /// <summary>
 ///     Tests content and operations within from Home representation
 /// </summary>
-public abstract class RedirectTestsRoot : AWTest {
+public abstract class RedirectTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void RedirectFromActionResult() {
         GeminiUrl("home?m1=SalesRepository");
         Click(GetObjectEnabledAction("Random Sales Tax Rate"));
@@ -25,6 +26,7 @@ public abstract class RedirectTestsRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector(".properties")).Text.Contains("Is Only State Province"));
     }
 
+    [TestMethod]
     public virtual void RedirectFromLink() {
         GeminiUrl("home?m1=SalesRepository");
         Click(GetObjectEnabledAction("Sales Tax Rates"));
@@ -38,47 +40,11 @@ public abstract class RedirectTestsRoot : AWTest {
     }
 }
 
-public abstract class RedirectTests : RedirectTestsRoot {
-    [TestMethod]
-    public override void RedirectFromActionResult() {
-        base.RedirectFromActionResult();
-    }
-
-    [TestMethod]
-    public override void RedirectFromLink() {
-        base.RedirectFromLink();
-    }
-}
-
-public class MegaRedirectTestBase : RedirectTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public virtual void RedirectTests() {
-        // todo look into is it just config ?
-        //RedirectFromActionResult();
-        //RedirectFromLink();
-    }
-
-    //[TestMethod]
-    [Priority(-1)]
-    public void ProblematicTests() { }
-}
-
-//[TestClass] //toggle
-public class MegaRedirectTestChrome : MegaRedirectTestBase {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+[Ignore("#502")]
+public class RedirectTestsChrome : RedirectTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
     }
 }
