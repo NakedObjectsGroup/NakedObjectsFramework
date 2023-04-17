@@ -12,9 +12,10 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class ViewModelTestsRoot : AWTest {
+public abstract class ViewModelTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void CreateVM() {
         Debug.WriteLine(nameof(CreateVM));
 
@@ -23,6 +24,7 @@ public abstract class ViewModelTestsRoot : AWTest {
         //TODO: test for no Edit button?
     }
 
+    [TestMethod]
     public virtual void CreateEditableVM() {
         Debug.WriteLine(nameof(CreateEditableVM));
 
@@ -45,6 +47,7 @@ public abstract class ViewModelTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
     }
 
+    [TestMethod]
     //Test for #46
     public virtual void EditableVMWithEmptyLeadingKeys() {
         Debug.WriteLine(nameof(EditableVMWithEmptyLeadingKeys));
@@ -64,6 +67,7 @@ public abstract class ViewModelTestsRoot : AWTest {
         Assert.AreEqual("Sent email", title.Text);
     }
 
+    [TestMethod]
     public virtual void CreateSwitchableVM() {
         Debug.WriteLine(nameof(CreateSwitchableVM));
 
@@ -78,62 +82,10 @@ public abstract class ViewModelTestsRoot : AWTest {
     }
 }
 
-public abstract class ViewModelsTests : ViewModelTestsRoot {
-    [TestMethod]
-    public override void CreateVM() {
-        base.CreateVM();
-    }
-
-    [TestMethod]
-    public override void CreateEditableVM() {
-        base.CreateEditableVM();
-    }
-
-    [TestMethod]
-    public override void EditableVMWithEmptyLeadingKeys() {
-        base.EditableVMWithEmptyLeadingKeys();
-    }
-
-    [TestMethod]
-    public override void CreateSwitchableVM() {
-        base.CreateSwitchableVM();
-    }
-}
-
-#region Mega tests
-
-public abstract class MegaViewModelTestsRoot : ViewModelTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void ViewModelTests() {
-        CreateVM();
-        CreateEditableVM();
-        EditableVMWithEmptyLeadingKeys();
-        CreateSwitchableVM();
-    }
-
-    //[TestMethod]
-    [Priority(-1)]
-    public void ProblematicTests() { }
-}
-
-//[TestClass] //toggle
-public class MegaViewModelTestsChrome : MegaViewModelTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class ViewModelTestsChrome : ViewModelTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion
