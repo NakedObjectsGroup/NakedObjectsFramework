@@ -11,9 +11,10 @@ using NakedFramework.Selenium.Helpers.Tests;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class PerformanceTestsRoot : AWTest {
+public abstract class PerformanceTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void RetrieveRandomEmployees() {
         Debug.WriteLine(nameof(RetrieveRandomEmployees));
         var stopWatch = new Stopwatch();
@@ -34,36 +35,10 @@ public abstract class PerformanceTestsRoot : AWTest {
     }
 }
 
-public abstract class MegaPerformanceTest : PerformanceTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void PerformanceTests() {
-        RetrieveRandomEmployees();
-    }
-
-    //[TestMethod]
-    [Priority(-1)]
-    public void ProblematicTests() { }
-}
-
-#region browsers specific subclasses
-
-//[TestClass] //toggle
-public class MegaPerformanceTestChrome : MegaPerformanceTest {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class PerformanceTestsChrome : PerformanceTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
+        Url(BaseUrl);
     }
 }
-
-#endregion
