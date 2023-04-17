@@ -49,25 +49,20 @@ public abstract class AttachmentTestsRoot : AWTest {
 
 #region Mega tests
 
-public abstract class MegaAttachmentTestsRoot : AttachmentTestsRoot {
+public abstract class AttachmentTests : AttachmentTestsRoot {
     [TestMethod] //Mega
     [Priority(0)]
-    public void AttachmentTests() {
+    public void MegaAttachmentTests() {
         ImageAsProperty();
         EmptyImageProperty();
         ClickOnImage();
         RightClickOnImage();
-    }
-
-    [TestMethod]
-    [Priority(-1)]
-    public void ProblematicTests() {
         EmptyImageProperty();
     }
 }
 
 //[TestClass]
-public class MegaAttachmentTestsFirefox : MegaAttachmentTestsRoot {
+public class AttachmentTestsFirefox : AttachmentTests {
     [ClassInitialize]
     public new static void InitialiseClass(TestContext context) {
         GeminiTest.InitialiseClass(context);
@@ -86,7 +81,7 @@ public class MegaAttachmentTestsFirefox : MegaAttachmentTestsRoot {
 }
 
 //[TestClass]
-public class MegaAttachmentTestsIe : MegaAttachmentTestsRoot {
+public class AttachmentTestsIe : AttachmentTests {
     [ClassInitialize]
     public new static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.IEDriverServer.exe");
@@ -106,7 +101,7 @@ public class MegaAttachmentTestsIe : MegaAttachmentTestsRoot {
 }
 
 [TestClass] //toggle
-public class MegaAttachmentTestsChrome : MegaAttachmentTestsRoot {
+public class AttachmentTestsChrome : AttachmentTests {
     [ClassInitialize]
     public new static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");

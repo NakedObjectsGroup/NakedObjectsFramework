@@ -345,35 +345,30 @@ public abstract class CCATestsRoot : AWTest {
     }
 }
 
-public abstract class MegaCCATests : CCATestsRoot {
+public abstract class CCATests : CCATestsRoot {
     [TestMethod] //Mega
     [Priority(0)]
-    public void CCATests() {
+    public void MegaCCATests() {
         ListViewWithParmDialogAlreadyOpen();
         ListViewWithParmDialogNotOpen();
         DateParam();
         TestSelectAll();
         SelectAllTableView();
         SelectionRetainedWhenNavigatingAwayAndBack();
-        //TableViewWithParmDialogAlreadyOpen();
+        TableViewWithParmDialogAlreadyOpen();
         ReloadingAQueryableClearsSelection();
         IfNoCCAs();
         SelectionClearedWhenPageChanged();
-        //TableViewWithParmDialogNotOpen();
-    }
-
-    [TestMethod]
-    [Priority(-1)]
-    public void ProblematicCCATests() {
+        TableViewWithParmDialogNotOpen();
         EmptyParam();
-        //ZeroParamAction();
+        ZeroParamAction();
     }
 }
 
 #region browsers specific subclasses
 
 //[TestClass]
-public class CcaTestsIe : MegaCCATests {
+public class CcaTestsIe : CCATests {
     [ClassInitialize]
     public new static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.IEDriverServer.exe");
@@ -392,7 +387,7 @@ public class CcaTestsIe : MegaCCATests {
 }
 
 //[TestClass]
-public class CcaTestsFirefox : MegaCCATests {
+public class CcaTestsFirefox : CCATests {
     [ClassInitialize]
     public new static void InitialiseClass(TestContext context) {
         GeminiTest.InitialiseClass(context);
@@ -410,7 +405,7 @@ public class CcaTestsFirefox : MegaCCATests {
 }
 
 [TestClass] //toggle
-public class CCATestsChrome : MegaCCATests {
+public class CCATestsChrome : CCATests {
     [ClassInitialize]
     public new static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
