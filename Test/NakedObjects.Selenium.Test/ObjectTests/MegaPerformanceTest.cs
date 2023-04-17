@@ -8,9 +8,8 @@
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
-using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests; 
+namespace NakedObjects.Selenium.Test.ObjectTests;
 
 public abstract class PerformanceTestsRoot : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
@@ -30,7 +29,7 @@ public abstract class PerformanceTestsRoot : AWTest {
 
         stopWatch.Stop();
         var time = stopWatch.ElapsedMilliseconds;
-        var limit =200000;
+        var limit = 200000;
         Assert.IsTrue(time < limit, $"Elapsed time was {time} milliseconds limit {limit}");
     }
 }
@@ -49,55 +48,11 @@ public abstract class MegaPerformanceTest : PerformanceTestsRoot {
 
 #region browsers specific subclasses
 
-//[TestClass]
-public class MegaPerformanceTestIe : MegaPerformanceTest {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass]
-public class MegaPerformanceTestFirefox : MegaPerformanceTest {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-
-    protected override void ScrollTo(IWebElement element) {
-        var script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-        ((IJavaScriptExecutor)br).ExecuteScript(script);
-    }
-}
-
-[TestClass] //toggle
+//[TestClass] //toggle
 public class MegaPerformanceTestChrome : MegaPerformanceTest {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -107,7 +62,7 @@ public class MegaPerformanceTestChrome : MegaPerformanceTest {
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 }
 

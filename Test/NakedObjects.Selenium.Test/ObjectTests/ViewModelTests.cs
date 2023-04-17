@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests; 
+namespace NakedObjects.Selenium.Test.ObjectTests;
 
 public abstract class ViewModelTestsRoot : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
@@ -117,51 +117,11 @@ public abstract class MegaViewModelTestsRoot : ViewModelTestsRoot {
     public void ProblematicTests() { }
 }
 
-//[TestClass]
-public class MegaViewModelTestsFirefox : MegaViewModelTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass]
-public class MegaViewModelTestsIe : MegaViewModelTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-[TestClass] //toggle
+//[TestClass] //toggle
 public class MegaViewModelTestsChrome : MegaViewModelTestsRoot {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -172,7 +132,7 @@ public class MegaViewModelTestsChrome : MegaViewModelTestsRoot {
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 }
 

@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests; 
+namespace NakedObjects.Selenium.Test.ObjectTests;
 
 /// <summary>
 ///     Tests applied from a List view.
@@ -433,48 +433,11 @@ public abstract class ListTests : ListTestsRoot {
 
 #region browsers specific subclasses
 
-public class ListTestsIe : ListTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass] //Firefox Individual
-public class ListTestsFirefox : ListTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
 //[TestClass]
 public class ListTestsChrome : ListTests {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -484,7 +447,7 @@ public class ListTestsChrome : ListTests {
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 
     protected override void ScrollTo(IWebElement element) {
@@ -524,51 +487,11 @@ public abstract class MegaListTestsRoot : ListTestsRoot {
     }
 }
 
-//[TestClass]
-public class MegaListTestsFirefox : MegaListTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass]
-public class MegaListTestsIe : MegaListTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-[TestClass] //toggle
+//[TestClass] //toggle
 public class MegaListTestsChrome : MegaListTestsRoot {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -579,7 +502,7 @@ public class MegaListTestsChrome : MegaListTestsRoot {
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 }
 

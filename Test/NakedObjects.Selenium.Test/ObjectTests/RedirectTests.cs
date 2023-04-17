@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests; 
+namespace NakedObjects.Selenium.Test.ObjectTests;
 
 /// <summary>
 ///     Tests content and operations within from Home representation
@@ -64,51 +64,11 @@ public class MegaRedirectTestBase : RedirectTestsRoot {
     public void ProblematicTests() { }
 }
 
-//[TestClass]
-public class MegaRedirectTestFirefox : MegaRedirectTestBase {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass]
-public class MegaRedirectTestIe : MegaRedirectTestBase {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
 //[TestClass] //toggle
 public class MegaRedirectTestChrome : MegaRedirectTestBase {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -119,6 +79,6 @@ public class MegaRedirectTestChrome : MegaRedirectTestBase {
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 }

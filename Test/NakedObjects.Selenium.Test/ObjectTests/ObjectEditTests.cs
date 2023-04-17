@@ -14,7 +14,7 @@ using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedObjects.Selenium.Test.ObjectTests; 
+namespace NakedObjects.Selenium.Test.ObjectTests;
 
 public abstract class ObjectEditTestsRoot : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
@@ -491,54 +491,10 @@ public abstract class ObjectEditTests : ObjectEditTestsRoot {
 #region browsers specific subclasses
 
 //[TestClass]
-public class ObjectEditPageTestsIe : ObjectEditTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass] //Firefox Individual
-public class ObjectEditPageTestsFirefox : ObjectEditTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-
-    protected override void ScrollTo(IWebElement element) {
-        var script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-        ((IJavaScriptExecutor)br).ExecuteScript(script);
-    }
-}
-
-//[TestClass]
 public class ObjectEditPageTestsChrome : ObjectEditTests {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -548,7 +504,7 @@ public class ObjectEditPageTestsChrome : ObjectEditTests {
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 }
 
@@ -588,51 +544,11 @@ public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot {
     }
 }
 
-//[TestClass]
-public class MegaObjectEditTestsFirefox : MegaObjectEditTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass]
-public class MegaObjectEditTestsIe : MegaObjectEditTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-[TestClass] //toggle
+//[TestClass] //toggle
 public class MegaObjectEditTestsChrome : MegaObjectEditTestsRoot {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -643,7 +559,7 @@ public class MegaObjectEditTestsChrome : MegaObjectEditTestsRoot {
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 }
 

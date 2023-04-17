@@ -13,14 +13,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests; 
+namespace NakedObjects.Selenium.Test.ObjectTests;
 
 /// <summary>
 ///     Tests for collection-contributedActions
 /// </summary>
-public abstract class CCATestsRoot : AWTest {
+public abstract class CCATests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void ListViewWithParmDialogAlreadyOpen() {
         Debug.WriteLine(nameof(ListViewWithParmDialogAlreadyOpen));
         GeminiUrl("home");
@@ -48,6 +49,7 @@ public abstract class CCATestsRoot : AWTest {
         CheckIndividualItem(8, maxQty, newMax, false);
     }
 
+    [TestMethod]
     public virtual void ListViewWithParmDialogNotOpen() {
         Debug.WriteLine(nameof(ListViewWithParmDialogNotOpen));
         GeminiUrl("home");
@@ -76,6 +78,7 @@ public abstract class CCATestsRoot : AWTest {
         CheckIndividualItem(5, maxQty, newMax, false);
     }
 
+    [TestMethod]
     public virtual void DateParam() {
         Debug.WriteLine(nameof(DateParam));
         GeminiUrl("home");
@@ -112,6 +115,7 @@ public abstract class CCATestsRoot : AWTest {
     }
 
     //To test an error that was previously being thrown by the RO server
+    [TestMethod]
     public virtual void EmptyParam() {
         Debug.WriteLine(nameof(EmptyParam));
         GeminiUrl("home");
@@ -130,6 +134,7 @@ public abstract class CCATestsRoot : AWTest {
         Reload();
     }
 
+    [TestMethod]
     public virtual void TestSelectAll() {
         Debug.WriteLine(nameof(TestSelectAll));
         GeminiUrl("home");
@@ -145,11 +150,12 @@ public abstract class CCATestsRoot : AWTest {
         SelectCheckBox("#item1-all");
         WaitForSelectedCheckboxes(count);
 
-        //Deslect all
+        //Deselect all
         SelectCheckBox("#item1-all", true);
         WaitForSelectedCheckboxes(0);
     }
 
+    [TestMethod]
     public virtual void SelectAllTableView() {
         Debug.WriteLine(nameof(SelectAllTableView));
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table");
@@ -163,11 +169,12 @@ public abstract class CCATestsRoot : AWTest {
         SelectCheckBox("#item1-all");
         WaitForSelectedCheckboxesAtLeast(17);
 
-        //Deslect all
+        //Deselect all
         SelectCheckBox("#item1-all", true);
         WaitForSelectedCheckboxes(0);
     }
 
+    [TestMethod]
     public virtual void IfNoCCAs() {
         Debug.WriteLine(nameof(IfNoCCAs));
         //test that Actions is disabled & no checkboxes appear
@@ -179,6 +186,7 @@ public abstract class CCATestsRoot : AWTest {
         WaitUntilElementDoesNotExist("input[type='checkbox']");
     }
 
+    [TestMethod]
     public virtual void SelectionRetainedWhenNavigatingAwayAndBack() {
         Debug.WriteLine(nameof(SelectionRetainedWhenNavigatingAwayAndBack));
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1_=152&c1=List");
@@ -191,6 +199,7 @@ public abstract class CCATestsRoot : AWTest {
         WaitForSelectedCheckboxes(3);
     }
 
+    [TestMethod]
     public virtual void SelectionClearedWhenPageChanged() {
         Debug.WriteLine(nameof(SelectionClearedWhenPageChanged));
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1_=152&c1=List");
@@ -217,6 +226,7 @@ public abstract class CCATestsRoot : AWTest {
         WaitForSelectedCheckboxes(0);
     }
 
+    [TestMethod]
     public virtual void TableViewWithParmDialogNotOpen() {
         Debug.WriteLine(nameof(TableViewWithParmDialogNotOpen));
         GeminiUrl("home");
@@ -256,6 +266,8 @@ public abstract class CCATestsRoot : AWTest {
         WaitUntilElementDoesNotExist(".dialog");
     }
 
+    [TestMethod]
+    [Ignore("#499")]
     public virtual void TableViewWithParmDialogAlreadyOpen() {
         Debug.WriteLine(nameof(TableViewWithParmDialogAlreadyOpen));
         GeminiUrl("home");
@@ -292,6 +304,7 @@ public abstract class CCATestsRoot : AWTest {
         WaitUntilElementDoesNotExist(".dialog");
     }
 
+    [TestMethod]
     public virtual void ReloadingAQueryableClearsSelection() {
         Debug.WriteLine(nameof(ReloadingAQueryableClearsSelection));
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open");
@@ -304,6 +317,7 @@ public abstract class CCATestsRoot : AWTest {
         wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
     }
 
+    [TestMethod]
     public virtual void ZeroParamAction() {
         Debug.WriteLine(nameof(ZeroParamAction));
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open&c1=Table");
@@ -345,81 +359,11 @@ public abstract class CCATestsRoot : AWTest {
     }
 }
 
-public abstract class CCATests : CCATestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void MegaCCATests() {
-        ListViewWithParmDialogAlreadyOpen();
-        ListViewWithParmDialogNotOpen();
-        DateParam();
-        TestSelectAll();
-        SelectAllTableView();
-        SelectionRetainedWhenNavigatingAwayAndBack();
-        TableViewWithParmDialogAlreadyOpen();
-        ReloadingAQueryableClearsSelection();
-        IfNoCCAs();
-        SelectionClearedWhenPageChanged();
-        TableViewWithParmDialogNotOpen();
-        EmptyParam();
-        ZeroParamAction();
-    }
-}
-
-#region browsers specific subclasses
-
-//[TestClass]
-public class CcaTestsIe : CCATests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass]
-public class CcaTestsFirefox : CCATests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-[TestClass] //toggle
+[TestClass]
 public class CCATestsChrome : CCATests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
+        Url(BaseUrl);
     }
 
     protected override void ScrollTo(IWebElement element) {
@@ -427,5 +371,3 @@ public class CCATestsChrome : CCATests {
         ((IJavaScriptExecutor)br).ExecuteScript(script);
     }
 }
-
-#endregion

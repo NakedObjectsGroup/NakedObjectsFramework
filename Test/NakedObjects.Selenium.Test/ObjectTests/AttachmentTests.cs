@@ -10,11 +10,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests; 
+namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class AttachmentTestsRoot : AWTest {
+public abstract class AttachmentTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void ImageAsProperty() {
         Debug.WriteLine(nameof(ImageAsProperty));
         GeminiUrl("object?o1=___1.Product--968");
@@ -22,12 +23,14 @@ public abstract class AttachmentTestsRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector(".property img")).GetAttribute("src").Length > 0);
     }
 
+    [TestMethod]
     public virtual void EmptyImageProperty() {
         Debug.WriteLine(nameof(EmptyImageProperty));
         GeminiUrl("object?i1=View&o1=___1.Person--13742");
         wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:\r\nNo image");
     }
 
+    [TestMethod]
     public virtual void ClickOnImage() {
         Debug.WriteLine(nameof(ClickOnImage));
         GeminiUrl("object?o1=___1.Product--779");
@@ -36,6 +39,7 @@ public abstract class AttachmentTestsRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector(".attachment .reference img")).GetAttribute("src").Length > 0);
     }
 
+    [TestMethod]
     public virtual void RightClickOnImage() {
         Debug.WriteLine(nameof(RightClickOnImage));
         GeminiUrl("object?o1=___1.Product--780");
@@ -47,77 +51,21 @@ public abstract class AttachmentTestsRoot : AWTest {
     }
 }
 
-#region Mega tests
-
-public abstract class AttachmentTests : AttachmentTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void MegaAttachmentTests() {
-        ImageAsProperty();
-        EmptyImageProperty();
-        ClickOnImage();
-        RightClickOnImage();
-        EmptyImageProperty();
-    }
-}
-
-//[TestClass]
-public class AttachmentTestsFirefox : AttachmentTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass]
-public class AttachmentTestsIe : AttachmentTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-[TestClass] //toggle
+[TestClass]
 public class AttachmentTestsChrome : AttachmentTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    [AssemblyInitialize]
+    public static void InitialiseAssembly(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
+        InitChromeDriver();
+    }
+
+    [AssemblyCleanup]
+    public static void CleanUpAssembly() {
+        CleanupChromeDriver();
     }
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
 }
-
-#endregion

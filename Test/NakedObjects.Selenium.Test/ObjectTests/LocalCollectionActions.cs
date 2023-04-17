@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests; 
+namespace NakedObjects.Selenium.Test.ObjectTests;
 
 public abstract class LocalCollectionActionsTestsRoot : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
@@ -156,55 +156,10 @@ public abstract class LocalCollectionActionsTests : LocalCollectionActionsTestsR
     }
 }
 
-#region browsers specific subclasses
-
-public class LocalCollectionActionsTestsIe : LocalCollectionActionsTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass] //Firefox Individual
-public class LocalCollectionActionsFirefox : LocalCollectionActionsTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-
-    protected override void ScrollTo(IWebElement element) {
-        var script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-        ((IJavaScriptExecutor)br).ExecuteScript(script);
-    }
-}
-
 public class LocalCollectionActionsTestsChrome : LocalCollectionActionsTests {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -214,11 +169,9 @@ public class LocalCollectionActionsTestsChrome : LocalCollectionActionsTests {
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 }
-
-#endregion
 
 #region Mega tests
 
@@ -242,50 +195,11 @@ public abstract class MegaLocalCollectionActionsTestsRoot : LocalCollectionActio
     }
 }
 
-//[TestClass]
-public class MegaLocalCollectionActionsTestsFirefox : MegaLocalCollectionActionsTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-public class MegaLocalCollectionActionsTestsIe : MegaLocalCollectionActionsTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-[TestClass] //toggle
+//[TestClass] //toggle
 public class MegaLocalCollectionActionsTestsChrome : MegaLocalCollectionActionsTestsRoot {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -296,7 +210,7 @@ public class MegaLocalCollectionActionsTestsChrome : MegaLocalCollectionActionsT
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 }
 

@@ -81,17 +81,12 @@ public abstract class GeminiTest {
     protected abstract string BaseUrl { get; }
     protected string GeminiBaseUrl => BaseUrl + "gemini/";
 
-    protected IWebDriver br;
-    protected SafeWebDriverWait wait;
+    protected static IWebDriver br;
+    protected static SafeWebDriverWait wait;
 
     protected static int TimeOut => 10;
 
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        //DatabaseUtils.RestoreDatabase(Database, Backup, Server);
-    }
-
-    public virtual void CleanUpTest() {
+    protected static void CleanupChromeDriver() {
         br?.Manage().Cookies.DeleteAllCookies();
         br?.Quit();
         br?.Dispose();
@@ -110,7 +105,7 @@ public abstract class GeminiTest {
         br.Manage().Window.Maximize();
     }
 
-    protected void InitChromeDriver() {
+    protected static void InitChromeDriver() {
         br = new ChromeDriver();
         wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
         br.Manage().Window.Maximize();
@@ -120,7 +115,7 @@ public abstract class GeminiTest {
 
     #region Helpers
 
-    protected void Url(string url, bool trw = false) {
+    protected static void Url(string url, bool trw = false) {
         br.Navigate().GoToUrl(url);
     }
 

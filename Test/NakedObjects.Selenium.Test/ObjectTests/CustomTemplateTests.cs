@@ -7,9 +7,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
-using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium.Test.ObjectTests; 
+namespace NakedObjects.Selenium.Test.ObjectTests;
 
 public abstract class CustomTemplateTestsRoot : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
@@ -65,53 +64,10 @@ public abstract class CustomTemplateTests : CustomTemplateTestsRoot {
 
 #region browsers specific subclasses
 
-public class CustomTemplateTestsIe : CustomTemplateTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass] //Firefox Individual
-public class CustomTemplateFirefox : CustomTemplateTests {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-
-    protected override void ScrollTo(IWebElement element) {
-        var script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-        ((IJavaScriptExecutor)br).ExecuteScript(script);
-    }
-}
-
 public class CustomTemplateTestsChrome : CustomTemplateTests {
     [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
+    public static void InitialiseClass(TestContext context) {
         FilePath(@"drivers.chromedriver.exe");
-        GeminiTest.InitialiseClass(context);
     }
 
     [TestInitialize]
@@ -121,7 +77,7 @@ public class CustomTemplateTestsChrome : CustomTemplateTests {
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        CleanUpTest();
+        CleanupChromeDriver();
     }
 }
 
@@ -142,45 +98,6 @@ public abstract class MegaCustomTemplateTestsRoot : CustomTemplateTestsRoot {
     [TestMethod]
     [Priority(-1)]
     public void ProblematicTests() { }
-}
-
-//[TestClass]
-public class MegaCustomTemplateTestsFirefox : MegaCustomTemplateTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitFirefoxDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
-}
-
-//[TestClass]
-public class MegaCustomTemplateTestsIe : MegaCustomTemplateTestsRoot {
-    [ClassInitialize]
-    public new static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.IEDriverServer.exe");
-        GeminiTest.InitialiseClass(context);
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitIeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanUpTest();
-    }
 }
 
 #endregion
