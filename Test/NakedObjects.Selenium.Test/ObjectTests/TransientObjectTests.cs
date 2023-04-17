@@ -15,9 +15,10 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class TransientObjectTestsRoot : AWTest {
+public abstract class TransientObjectTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void CreateAndSaveTransientObject() {
         Debug.WriteLine(nameof(CreateAndSaveTransientObject));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
@@ -36,6 +37,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, obfuscated);
     }
 
+    [TestMethod]
     public virtual void SaveAndClose() {
         Debug.WriteLine(nameof(SaveAndClose));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
@@ -57,6 +59,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr td.reference")).First().Text == obfuscated);
     }
 
+    [TestMethod]
     public virtual void MissingMandatoryFieldsNotified() {
         Debug.WriteLine(nameof(MissingMandatoryFieldsNotified));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
@@ -69,6 +72,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Card Number; Exp Month; ");
     }
 
+    [TestMethod]
     public virtual void IndividualFieldValidation() {
         Debug.WriteLine(nameof(IndividualFieldValidation));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
@@ -86,6 +90,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         WaitForMessage("See field validation message(s).");
     }
 
+    [TestMethod]
     public virtual void MultiFieldValidation() {
         Debug.WriteLine(nameof(MultiFieldValidation));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
@@ -101,6 +106,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         WaitForMessage("Expiry date must be in the future");
     }
 
+    [TestMethod]
     public virtual void PropertyDescriptionAndRequiredRenderedAsPlaceholder() {
         Debug.WriteLine(nameof(PropertyDescriptionAndRequiredRenderedAsPlaceholder));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
@@ -109,6 +115,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         Assert.AreEqual("* Without spaces", name.GetAttribute("placeholder"));
     }
 
+    [TestMethod]
     public virtual void CancelTransientObject() {
         Debug.WriteLine(nameof(CancelTransientObject));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
@@ -118,6 +125,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
     }
 
+    [TestMethod]
     public virtual void SwapPanesWithTransients() {
         Debug.WriteLine(nameof(SwapPanesWithTransients));
         GeminiUrl("object/object?o1=___1.Product--738&as1=open&o2=___1.Person--20774&as2=open");
@@ -140,6 +148,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector("#orderqty2")).GetAttribute("value") == "4");
     }
 
+    [TestMethod]
     public virtual void BackAndForwardOverTransient() {
         Debug.WriteLine(nameof(BackAndForwardOverTransient));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
@@ -152,12 +161,14 @@ public abstract class TransientObjectTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Credit Card");
     }
 
+    [TestMethod]
     public virtual void RequestForExpiredTransient() {
         Debug.WriteLine(nameof(RequestForExpiredTransient));
         GeminiUrl("object?i1=Transient&o1=___1.CreditCard--100");
         wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text == "The requested view of unsaved object details has expired.");
     }
 
+    [TestMethod]
     public virtual void ConditionalChoicesOnTransient() {
         Debug.WriteLine(nameof(ConditionalChoicesOnTransient));
         GeminiUrl("home?m1=ProductRepository");
@@ -183,6 +194,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         SelectDropDownOnField("#productsubcategory1", "Mountain Bikes");
     }
 
+    [TestMethod]
     public virtual void TransientWithHiddenNonOptionalFields() {
         Debug.WriteLine(nameof(TransientWithHiddenNonOptionalFields));
         GeminiUrl("object?i1=View&o1=___1.Product--380&as1=open");
@@ -194,6 +206,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         SaveObject();
     }
 
+    [TestMethod]
     //Test for a previous bug  -  where Etag error was resulting
     public virtual void CanInvokeActionOnASavedTransient() {
         Debug.WriteLine(nameof(CanInvokeActionOnASavedTransient));
@@ -208,6 +221,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Reasons:\r\n1 Item");
     }
 
+    [TestMethod]
     public virtual void TransientCreatedFromDialogClosesDialog() {
         Debug.WriteLine(nameof(TransientCreatedFromDialogClosesDialog));
         GeminiUrl("object?i1=View&o1=___1.Customer--30107&as1=open");
@@ -223,6 +237,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         OpenSubMenu("Orders"); //Would fail if already open
     }
 
+    [TestMethod]
     public virtual void CreateAndSaveNotPersistedObject() {
         Debug.WriteLine(nameof(CreateAndSaveNotPersistedObject));
         GeminiUrl("home?m1=EmployeeRepository");
@@ -232,6 +247,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         WaitForTextStarting(".object", "Staff Summary\r\nFemale"); //i.e. no buttons in the header
     }
 
+    [TestMethod]
     public virtual void ValuePropOnTransientEmptyIfNoDefault() {
         Debug.WriteLine(nameof(ValuePropOnTransientEmptyIfNoDefault));
         GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
@@ -242,6 +258,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         Assert.AreEqual("", field.GetAttribute("value"));
     }
 
+    [TestMethod]
     //Test written against a specific failure scenario
     public virtual void InvalidPropOnTransientClearedAndReentered() {
         Debug.WriteLine(nameof(InvalidPropOnTransientClearedAndReentered));
@@ -259,6 +276,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         WaitForTextStarting(".title", "Pinch Bolt");
     }
 
+    [TestMethod]
     public virtual void AutoCompletePropOnTransient() {
         Debug.WriteLine(nameof(AutoCompletePropOnTransient));
         GeminiUrl("object?i1=View&o1=___1.Customer--635&as1=open&d1=CreateNewOrder");
@@ -274,6 +292,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
     }
 
+    [TestMethod]
     // test for bug #104
     // add modified date visibility checks for bug #195
     public virtual void TransientWithHiddenUntilPersistedFields() {
@@ -305,6 +324,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         GetObjectEnabledAction("Add New Routing");
     }
 
+    [TestMethod]
     // test for bug #128
     public virtual void PersistentWithHiddenUntilPersistedFields() {
         Debug.WriteLine(nameof(TransientWithHiddenNonOptionalFields));
@@ -323,6 +343,7 @@ public abstract class TransientObjectTestsRoot : AWTest {
         GetObjectEnabledAction("Add New Routing");
     }
 
+    [TestMethod]
     // test for bug #137
     public virtual void TransientWithOtherPaneChanges() {
         Debug.WriteLine(nameof(TransientWithOtherPaneChanges));
@@ -384,58 +405,10 @@ public abstract class TransientObjectTestsRoot : AWTest {
     }
 }
 
-#region Mega tests
-
-public abstract class MegaTransientObjectTestsRoot : TransientObjectTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void TransientObjectTests() {
-        CreateAndSaveTransientObject();
-        SaveAndClose();
-        MissingMandatoryFieldsNotified();
-        IndividualFieldValidation();
-        MultiFieldValidation();
-        PropertyDescriptionAndRequiredRenderedAsPlaceholder();
-        CancelTransientObject();
-        BackAndForwardOverTransient();
-        RequestForExpiredTransient();
-        TransientWithHiddenNonOptionalFields();
-        CanInvokeActionOnASavedTransient();
-        TransientCreatedFromDialogClosesDialog();
-        CreateAndSaveNotPersistedObject();
-        ValuePropOnTransientEmptyIfNoDefault();
-        InvalidPropOnTransientClearedAndReentered();
-        AutoCompletePropOnTransient();
-        TransientWithHiddenUntilPersistedFields();
-        PersistentWithHiddenUntilPersistedFields();
-        TransientWithOtherPaneChanges();
-    }
-
-    [TestMethod]
-    [Priority(-1)]
-    public void ProblematicTransientObjectTests() {
-        ConditionalChoicesOnTransient();
-        SwapPanesWithTransients();
-    }
-}
-
-//[TestClass] //toggle
-public class MegaTransientObjectTestsChrome : MegaTransientObjectTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class TransientObjectTestsChrome : TransientObjectTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion
