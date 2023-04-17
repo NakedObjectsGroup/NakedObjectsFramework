@@ -15,9 +15,10 @@ using OpenQA.Selenium.Interactions;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class CopyAndPasteTestsRoot : AWTest {
+public abstract class CopyAndPasteTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void CopyTitleOrPropertyIntoClipboard() {
         Debug.WriteLine(nameof(CopyTitleOrPropertyIntoClipboard));
         GeminiUrl("object/object?o1=___1.Product--990&o2=___1.Customer--13179");
@@ -51,6 +52,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
     }
 
+    [TestMethod]
     public virtual void CopyListItemIntoClipboard() {
         Debug.WriteLine(nameof(CopyListItemIntoClipboard));
         GeminiUrl("list/list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&m2=PersonRepository&a2=ValidCountries&p2=1&ps2=20");
@@ -66,6 +68,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         CopyToClipboard(item);
     }
 
+    [TestMethod]
     public virtual void PasteIntoReferenceField() {
         Debug.WriteLine(nameof(PasteIntoReferenceField));
         GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Employee--161");
@@ -80,6 +83,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
     }
 
+    [TestMethod]
     public virtual void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu() {
         Debug.WriteLine(nameof(PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu));
         GeminiUrl("object/object?o2=___1.SalesPerson--284&o1=___1.Store--740&i1=Edit");
@@ -108,6 +112,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
     }
 
+    [TestMethod]
     public virtual void PasteIntoDialog() {
         Debug.WriteLine(nameof(PasteIntoDialog));
         GeminiUrl("home/object?m1=SalesRepository&d1=CreateNewSalesPerson&o2=___1.Employee--206");
@@ -124,6 +129,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         WaitForCss(selector + ".link-color5");
     }
 
+    [TestMethod]
     public virtual void PasteAnImplementationOfAnInterface() {
         Debug.WriteLine(nameof(PasteAnImplementationOfAnInterface));
         GeminiUrl("object/object?i1=View&o1=___1.Employee--88&i2=View&o2=___1.Employee--203&as1=open&d1=SpecifyManager&f1_manager=null");
@@ -137,6 +143,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         PasteIntoReferenceField("#pane1 .parameter .value.droppable");
     }
 
+    [TestMethod]
     public virtual void PasteIntoAutoCompleteField() {
         Debug.WriteLine(nameof(PasteIntoAutoCompleteField));
         GeminiUrl("home/object?m1=CustomerRepository&i2=View&o2=___1.Customer--29929&d1=FindCustomer&f1_customer=null");
@@ -149,6 +156,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         PasteIntoInputField("#pane1 .parameter .value.droppable");
     }
 
+    [TestMethod]
     public virtual void DroppableReferenceFieldWithoutAutoComplete() {
         Debug.WriteLine(nameof(DroppableReferenceFieldWithoutAutoComplete));
         GeminiUrl("object?o1=___1.PurchaseOrderHeader--121");
@@ -162,6 +170,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
     }
 
+    [TestMethod]
     public virtual void CannotPasteWrongTypeIntoReferenceField() {
         Debug.WriteLine(nameof(CannotPasteWrongTypeIntoReferenceField));
         GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Product--771");
@@ -183,6 +192,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
     }
 
+    [TestMethod]
     public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed() {
         Debug.WriteLine(nameof(DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed));
         GeminiUrl("home/object?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null&o2=___1.Person--10895");
@@ -205,6 +215,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         CancelDialog();
     }
 
+    [TestMethod]
     public virtual void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour() {
         GeminiUrl("home?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null");
         WaitForView(Pane.Single, PaneType.Home);
@@ -230,6 +241,7 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
         Assert.AreEqual("Home", target.GetAttribute("value"));
     }
 
+    [TestMethod]
     public virtual void CanClearADroppableReferenceField() {
         GeminiUrl("object?o1=___1.PurchaseOrderHeader--561&i1=Edit");
         WaitForView(Pane.Single, PaneType.Object);
@@ -247,49 +259,10 @@ public abstract class CopyAndPasteTestsRoot : AWTest {
     }
 }
 
-#region Mega tests
-
-public abstract class MegaCopyAndPasteTestsRoot : CopyAndPasteTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void CopyAndPasteTests() {
-        CopyTitleOrPropertyIntoClipboard();
-        CopyListItemIntoClipboard();
-        PasteIntoReferenceField();
-        PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
-        PasteIntoDialog();
-        PasteIntoAutoCompleteField();
-        DroppableReferenceFieldWithoutAutoComplete();
-        CannotPasteWrongTypeIntoReferenceField();
-        DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
-    }
-
-    [TestMethod]
-    [Priority(-1)]
-    public void ProblematicCopyAndPasteTests() {
-        PasteAnImplementationOfAnInterface();
-        CanClearADroppableReferenceField();
-        //IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); // fails always
-    }
-}
-
-//[TestClass] //toggle
-public class MegaCopyAndPasteTestsChrome : MegaCopyAndPasteTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class CopyAndPasteTestsChrome : CopyAndPasteTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion
