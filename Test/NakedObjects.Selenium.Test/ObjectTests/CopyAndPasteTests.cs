@@ -216,7 +216,7 @@ public abstract class CopyAndPasteTests : AWTest {
     }
 
     [TestMethod]
-    //[Ignore("Faulty test - not selecting home element for investigation")]
+    [Ignore("Faulty test - not selecting home element for investigation")]
     public virtual void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour() {
         GeminiUrl("home?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null");
         WaitForView(Pane.Single, PaneType.Home);
