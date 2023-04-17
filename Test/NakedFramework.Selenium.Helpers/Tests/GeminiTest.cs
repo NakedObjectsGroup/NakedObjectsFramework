@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools.V109.Page;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Interactions;
@@ -27,26 +28,37 @@ namespace NakedFramework.Selenium.Helpers.Tests;
 public abstract class GeminiTest {
     #region chrome helper
 
-    protected static string FilePath(string resourcename) {
-        var fileName = resourcename.Remove(0, resourcename.IndexOf(".") + 1);
+    protected static string FilePath(string resourcename, int attempt = 0) {
+        try {
+            var fileName = resourcename.Remove(0, resourcename.IndexOf(".") + 1);
 
-        var newFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+            var newFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
 
-        if (File.Exists(newFile)) {
-            File.Delete(newFile);
-        }
-
-        var assembly = Assembly.GetExecutingAssembly();
-
-        using (var stream = assembly.GetManifestResourceStream("NakedFramework.Selenium.Helpers." + resourcename)) {
-            using (var fileStream = File.Create(newFile, (int)stream.Length)) {
-                var bytesInStream = new byte[stream.Length];
-                stream.Read(bytesInStream, 0, bytesInStream.Length);
-                fileStream.Write(bytesInStream, 0, bytesInStream.Length);
+            if (File.Exists(newFile)) {
+                File.Delete(newFile);
             }
-        }
 
-        return newFile;
+            var assembly = Assembly.GetExecutingAssembly();
+
+            using (var stream = assembly.GetManifestResourceStream("NakedFramework.Selenium.Helpers." + resourcename)) {
+                using (var fileStream = File.Create(newFile, (int)stream.Length)) {
+                    var bytesInStream = new byte[stream.Length];
+                    stream.Read(bytesInStream, 0, bytesInStream.Length);
+                    fileStream.Write(bytesInStream, 0, bytesInStream.Length);
+                }
+            }
+
+            return newFile;
+        }
+        catch (Exception e) {
+
+            if (attempt is 0) {
+                CleanUpChromeDriver();
+                return FilePath(resourcename, 1);
+            }
+
+            throw;
+        }
     }
 
     #endregion
@@ -138,16 +150,20 @@ public abstract class GeminiTest {
             br = new ChromeDriver();
         }
         catch (Exception) {
-            var p = Process.GetProcessesByName("chromedriver.exe");
-            foreach (Process process in p) {
-                process.Kill(true);
-            }
+            CleanUpChromeDriver();
 
             br = new ChromeDriver();
         }
 
         wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
         br.Manage().Window.Maximize();
+    }
+
+    private static void CleanUpChromeDriver() {
+        var p = Process.GetProcessesByName("chromedriver.exe");
+        foreach (Process process in p) {
+            process.Kill(true);
+        }
     }
 
     #endregion
