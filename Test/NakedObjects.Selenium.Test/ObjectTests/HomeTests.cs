@@ -14,9 +14,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests;
 /// <summary>
 ///     Tests content and operations within from Home representation
 /// </summary>
-public abstract class HomeTestsRoot : AWTest {
+public abstract class HomeTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void WaitForSingleHome() {
         WaitForView(Pane.Single, PaneType.Home, "Home");
         WaitForCss(".main-column");
@@ -38,6 +39,7 @@ public abstract class HomeTestsRoot : AWTest {
 
     #region Clicking on menus and opening/closing dialogs
 
+    [TestMethod]
     public virtual void ClickOnVariousMenus() {
         GoToMenuFromHomePage("Customers");
         OpenSubMenu("Stores");
@@ -62,6 +64,7 @@ public abstract class HomeTestsRoot : AWTest {
         //AssertHasFocus(actions[0]);
     }
 
+    [TestMethod]
     public virtual void OpenAndCloseSubMenus() {
         GoToMenuFromHomePage("Customers");
         AssertActionNotDisplayed("Random Store");
@@ -108,6 +111,7 @@ public abstract class HomeTestsRoot : AWTest {
         AssertActionNotDisplayed("Action4");
     }
 
+    [TestMethod]
     public virtual void SelectSuccessiveDialogActionsThenCancel() {
         Url(CustomersMenuUrl, true);
         WaitForCss("nof-action-list nof-action", CustomerServiceActions);
@@ -123,6 +127,7 @@ public abstract class HomeTestsRoot : AWTest {
 
     #region Invoking main menu actions
 
+    [TestMethod]
     public virtual void ZeroParamReturnsObject() {
         Url(CustomersMenuUrl);
         OpenSubMenu("Stores");
@@ -133,6 +138,7 @@ public abstract class HomeTestsRoot : AWTest {
         //AssertHasFocus(title);
     }
 
+    [TestMethod]
     public virtual void ZeroParamReturnsCollection() {
         Url(OrdersMenuUrl);
         WaitForCss("nof-action-list nof-action", OrderServiceActions);
@@ -144,6 +150,7 @@ public abstract class HomeTestsRoot : AWTest {
         //AssertHasFocus(first); //TODO: test all focus separately
     }
 
+    [TestMethod]
     public virtual void ZeroParamReturnsEmptyCollection() {
         Url(CustomersMenuUrl);
         OpenSubMenu("Individuals");
@@ -155,6 +162,7 @@ public abstract class HomeTestsRoot : AWTest {
         Assert.AreEqual(0, rows.Count);
     }
 
+    [TestMethod]
     public virtual void DialogActionOK() {
         Url(CustomersMenuUrl);
         WaitForCss("nof-action-list nof-action", CustomerServiceActions);
@@ -171,91 +179,10 @@ public abstract class HomeTestsRoot : AWTest {
     #endregion
 }
 
-public abstract class HomeTests : HomeTestsRoot {
-    [TestMethod]
-    public override void WaitForSingleHome() {
-        base.WaitForSingleHome();
-    }
-
-    #region Clicking on menus and opening/closing dialogs
-
-    [TestMethod]
-    public override void ClickOnVariousMenus() {
-        base.ClickOnVariousMenus();
-    }
-
-    [TestMethod]
-    public override void OpenAndCloseSubMenus() {
-        base.OpenAndCloseSubMenus();
-    }
-
-    [TestMethod]
-    public override void SelectSuccessiveDialogActionsThenCancel() {
-        base.SelectSuccessiveDialogActionsThenCancel();
-    }
-
-    #endregion
-
-    #region Invoking main menu actions
-
-    [TestMethod]
-    public override void ZeroParamReturnsObject() {
-        base.ZeroParamReturnsObject();
-    }
-
-    [TestMethod]
-    public override void ZeroParamReturnsCollection() {
-        base.ZeroParamReturnsCollection();
-    }
-
-    [TestMethod]
-    public override void ZeroParamReturnsEmptyCollection() {
-        base.ZeroParamReturnsEmptyCollection();
-    }
-
-    [TestMethod] //Failing due to focus issue 
-    public override void DialogActionOK() {
-        base.DialogActionOK();
-    }
-
-    #endregion
-}
-
-public class MegaHomeTestBase : HomeTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public virtual void HomeTests() {
-        WaitForSingleHome();
-        ClickOnVariousMenus();
-        OpenAndCloseSubMenus();
-        SelectSuccessiveDialogActionsThenCancel();
-        ZeroParamReturnsObject();
-        ZeroParamReturnsCollection();
-        ZeroParamReturnsEmptyCollection();
-    }
-
-    [TestMethod]
-    [Priority(-1)]
-    public void ProblematicTests() {
-        DialogActionOK();
-    }
-}
-
-//[TestClass] //toggle
-public class MegaHomeTestChrome : MegaHomeTestBase {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class HomeTestsChrome : HomeTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
     }
 }

@@ -12,9 +12,10 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class FooterTestsRoot : AWTest {
+public abstract class FooterTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void Home() {
         Debug.WriteLine(nameof(Home));
         GeminiUrl("object?o1=___1.Product--968");
@@ -23,6 +24,7 @@ public abstract class FooterTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Home, "Home");
     }
 
+    [TestMethod]
     public virtual void BackAndForward() {
         Debug.WriteLine(nameof(BackAndForward));
         Url(BaseUrl);
@@ -64,6 +66,7 @@ public abstract class FooterTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, orderTitle);
     }
 
+    [TestMethod]
     public virtual void RecentObjects() {
         Debug.WriteLine(nameof(RecentObjects));
         GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
@@ -120,6 +123,7 @@ public abstract class FooterTestsRoot : AWTest {
         WaitForCss("tr td", 0);
     }
 
+    [TestMethod]
     public virtual void ApplicationProperties() {
         var lastPropertyText = "Client version:";
         Debug.WriteLine(nameof(ApplicationProperties));
@@ -139,6 +143,7 @@ public abstract class FooterTestsRoot : AWTest {
         Assert.IsTrue(properties[6].Text.StartsWith(lastPropertyText), properties[6].Text);
     }
 
+    [TestMethod]
     public virtual void LogOff() {
         Debug.WriteLine(nameof(LogOff));
         GeminiUrl("home");
@@ -151,6 +156,7 @@ public abstract class FooterTestsRoot : AWTest {
 
     #region WarningsAndInfo
 
+    [TestMethod]
     public virtual void ExplicitWarningsAndInfo() {
         Debug.WriteLine(nameof(ExplicitWarningsAndInfo));
         GeminiUrl("home?m1=WorkOrderRepository");
@@ -166,6 +172,7 @@ public abstract class FooterTestsRoot : AWTest {
         WaitUntilElementDoesNotExist(".footer .messages");
     }
 
+    [TestMethod]
     public virtual void ZeroParamActionReturningNullGeneratesGenericWarning() {
         Debug.WriteLine(nameof(ZeroParamActionReturningNullGeneratesGenericWarning));
         GeminiUrl("home?m1=EmployeeRepository");
@@ -178,84 +185,10 @@ public abstract class FooterTestsRoot : AWTest {
     #endregion
 }
 
-public abstract class FooterTests : FooterTestsRoot {
-    [TestMethod]
-    public override void Home() {
-        base.Home();
-    }
-
-    [TestMethod]
-    public override void BackAndForward() {
-        base.BackAndForward();
-    }
-
-    [TestMethod]
-    public override void RecentObjects() {
-        base.RecentObjects();
-    }
-
-    [TestMethod]
-    public override void ApplicationProperties() {
-        base.ApplicationProperties();
-    }
-
-    [TestMethod]
-    public override void LogOff() {
-        base.LogOff();
-    }
-
-    #region Warnings and Info
-
-    [TestMethod]
-    public override void ExplicitWarningsAndInfo() {
-        base.ExplicitWarningsAndInfo();
-    }
-
-    [TestMethod]
-    public override void ZeroParamActionReturningNullGeneratesGenericWarning() {
-        base.ZeroParamActionReturningNullGeneratesGenericWarning();
-    }
-
-    #endregion
-}
-
-#region Mega tests
-
-public abstract class MegaFooterTestsRoot : FooterTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void FooterTest() {
-        ExplicitWarningsAndInfo();
-        ZeroParamActionReturningNullGeneratesGenericWarning();
-        Home();
-        BackAndForward();
-        RecentObjects();
-        ApplicationProperties();
-        LogOff();
-    }
-
-    //[TestMethod]
-    [Priority(-1)]
-    public void ProblematicTests() { }
-}
-
-//[TestClass] //toggle
-public class MegaFooterTestsChrome : MegaFooterTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class FooterTestsChrome : FooterTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion
