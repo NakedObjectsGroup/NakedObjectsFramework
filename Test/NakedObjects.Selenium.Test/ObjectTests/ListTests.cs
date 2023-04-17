@@ -17,7 +17,7 @@ namespace NakedObjects.Selenium.Test.ObjectTests;
 /// <summary>
 ///     Tests applied from a List view.
 /// </summary>
-public abstract class ListTestsRoot : AWTest {
+public abstract class ListTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
     private bool PageTitleOK() {
@@ -26,6 +26,7 @@ public abstract class ListTestsRoot : AWTest {
         return text.StartsWith("Page 1 of 15");
     }
 
+    [TestMethod]
     public virtual void ActionReturnsListView() {
         Url(OrdersMenuUrl);
         Click(GetObjectEnabledAction("Highest Value Orders"));
@@ -40,6 +41,7 @@ public abstract class ListTestsRoot : AWTest {
         Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
     }
 
+    [TestMethod]
     public virtual void ActionReturnsEmptyList() {
         GeminiUrl("home?m1=ProductRepository&d1=FindProductByName");
         ClearFieldThenType("#searchstring1", "zzz");
@@ -48,6 +50,7 @@ public abstract class ListTestsRoot : AWTest {
         WaitForTextEquals(".details", "No items found");
     }
 
+    [TestMethod]
     public virtual void TableViewAttributeHonoured() {
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
@@ -66,6 +69,7 @@ public abstract class ListTestsRoot : AWTest {
         Assert.AreEqual("0", cols[4].Text);
     }
 
+    [TestMethod]
     public virtual void TableViewWorksWithSubTypes() {
         GeminiUrl("list?m1=CustomerRepository&a1=RandomCustomers&pg1=1&ps1=20&s1_=0&c1=Table");
         WaitForView(Pane.Single, PaneType.List, "Random Customers");
@@ -79,6 +83,7 @@ public abstract class ListTestsRoot : AWTest {
         Assert.AreEqual("", cols[1].Text); //As no such column
     }
 
+    [TestMethod]
     public virtual void TableViewCanIncludeCollectionSummaries() {
         GeminiUrl("list?m1=OrderRepository&a1=OrdersWithMostLines&pg1=1&ps1=20&s1_=0&c1=Table");
         Reload();
@@ -92,6 +97,7 @@ public abstract class ListTestsRoot : AWTest {
         WaitForTextEquals("tbody tr:nth-child(1) td:nth-child(4)", "72 Items");
     }
 
+    [TestMethod]
     public virtual void SwitchToTableViewAndBackToList() {
         Url(SpecialOffersMenuUrl);
         Click(GetObjectEnabledAction("Current Special Offers"));
@@ -115,6 +121,8 @@ public abstract class ListTestsRoot : AWTest {
         Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
     }
 
+    [TestMethod]
+
     // test after bug #193
     public virtual void TableViewFromDialogWithOptionalInt() {
         Url(WorkOrdersMenuUrl);
@@ -132,6 +140,7 @@ public abstract class ListTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr")).Count > 1);
     }
 
+    [TestMethod]
     public virtual void NavigateToItemFromListView() {
         Url(SpecialOffersMenuUrl);
         Click(GetObjectEnabledAction("Current Special Offers"));
@@ -141,6 +150,7 @@ public abstract class ListTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "No Discount");
     }
 
+    [TestMethod]
     public virtual void NavigateToItemFromTableView() {
         Url(SpecialOffersMenuUrl);
         Click(GetObjectEnabledAction("Current Special Offers"));
@@ -155,6 +165,7 @@ public abstract class ListTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "No Discount");
     }
 
+    [TestMethod]
     public virtual void Paging() {
         GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22");
         Thread.Sleep(1000);
@@ -194,6 +205,7 @@ public abstract class ListTestsRoot : AWTest {
                            .Text.StartsWith("Page 1 of 45"));
     }
 
+    [TestMethod]
     public virtual void PageSizeRecognised() {
         //Method marked with PageSize(2)
         GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");
@@ -209,6 +221,7 @@ public abstract class ListTestsRoot : AWTest {
                            .Text == "Page 2 of 177; viewing 2 of 353 items");
     }
 
+    [TestMethod]
     public virtual void ListDoesNotRefreshWithoutReload() {
         GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
         Reload();
@@ -256,6 +269,7 @@ public abstract class ListTestsRoot : AWTest {
                          == "Page 1 of 1; viewing 11 of 11 items");
     }
 
+    [TestMethod]
     public virtual void ReloadingListGetsUpdatedObject() {
         Url(SpecialOffersMenuUrl);
         Click(GetObjectEnabledAction("Current Special Offers"));
@@ -287,6 +301,7 @@ public abstract class ListTestsRoot : AWTest {
         SaveObject();
     }
 
+    [TestMethod]
     public virtual void EagerlyRenderTableViewFromAction() {
         GeminiUrl("home?m1=EmployeeRepository");
         Click(GetObjectEnabledAction("List All Departments"));
@@ -299,6 +314,7 @@ public abstract class ListTestsRoot : AWTest {
         Assert.AreEqual("Group Name", cols[1].Text);
     }
 
+    [TestMethod]
     public virtual void PagingTableView() {
         GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22&c1=Table");
         Reload();
@@ -359,95 +375,11 @@ public abstract class ListTestsRoot : AWTest {
     }
 }
 
-public abstract class ListTests : ListTestsRoot {
-    [TestMethod]
-    public override void ActionReturnsListView() {
-        base.ActionReturnsListView();
-    }
-
-    [TestMethod]
-    public override void ActionReturnsEmptyList() {
-        base.ActionReturnsEmptyList();
-    }
-
-    [TestMethod]
-    public override void TableViewAttributeHonoured() {
-        base.TableViewAttributeHonoured();
-    }
-
-    [TestMethod]
-    public override void TableViewWorksWithSubTypes() {
-        base.TableViewWorksWithSubTypes();
-    }
-
-    [TestMethod]
-    public override void TableViewCanIncludeCollectionSummaries() {
-        base.TableViewCanIncludeCollectionSummaries();
-    }
-
-    [TestMethod]
-    public override void SwitchToTableViewAndBackToList() {
-        base.SwitchToTableViewAndBackToList();
-    }
-
-    [TestMethod]
-    public override void TableViewFromDialogWithOptionalInt() {
-        base.TableViewFromDialogWithOptionalInt();
-    }
-
-    [TestMethod]
-    public override void NavigateToItemFromListView() {
-        base.NavigateToItemFromListView();
-    }
-
-    [TestMethod]
-    public override void NavigateToItemFromTableView() {
-        base.NavigateToItemFromTableView();
-    }
-
-    [TestMethod]
-    public override void Paging() {
-        base.Paging();
-    }
-
-    [TestMethod]
-    public override void PageSizeRecognised() {
-        base.PageSizeRecognised();
-    }
-
-    [TestMethod]
-    public override void ListDoesNotRefreshWithoutReload() {
-        base.ListDoesNotRefreshWithoutReload();
-    }
-
-    [TestMethod]
-    public override void ReloadingListGetsUpdatedObject() {
-        base.ReloadingListGetsUpdatedObject();
-    }
-
-    [TestMethod]
-    public override void EagerlyRenderTableViewFromAction() {
-        base.EagerlyRenderTableViewFromAction();
-    }
-}
-
-#region browsers specific subclasses
-
-//[TestClass]
+[TestClass]
 public class ListTestsChrome : ListTests {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
+        Url(BaseUrl);
     }
 
     protected override void ScrollTo(IWebElement element) {
@@ -455,55 +387,3 @@ public class ListTestsChrome : ListTests {
         ((IJavaScriptExecutor)br).ExecuteScript(script);
     }
 }
-
-#endregion
-
-#region Mega tests
-
-public abstract class MegaListTestsRoot : ListTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void ListTests() {
-        ActionReturnsEmptyList();
-        TableViewAttributeHonoured();
-        TableViewWorksWithSubTypes();
-        TableViewCanIncludeCollectionSummaries();
-        SwitchToTableViewAndBackToList();
-        TableViewFromDialogWithOptionalInt();
-        NavigateToItemFromListView();
-        NavigateToItemFromTableView();
-        Paging();
-        PageSizeRecognised();
-        //ListDoesNotRefreshWithoutReload();
-        ReloadingListGetsUpdatedObject();
-        EagerlyRenderTableViewFromAction();
-        PagingTableView();
-    }
-
-    [TestMethod]
-    [Priority(-1)]
-    public void ProblematicListTests() {
-        ActionReturnsListView();
-    }
-}
-
-//[TestClass] //toggle
-public class MegaListTestsChrome : MegaListTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitChromeDriver();
-        Url(BaseUrl);
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
-}
-
-#endregion
