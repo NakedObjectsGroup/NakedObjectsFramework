@@ -216,12 +216,15 @@ public abstract class CopyAndPasteTests : AWTest {
     }
 
     [TestMethod]
+    [Ignore("Faulty test - not selecting home element for investigation")]
     public virtual void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour() {
         GeminiUrl("home?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null");
         WaitForView(Pane.Single, PaneType.Home);
         var home = WaitForCss(".title");
+        
         var action = new Actions(br);
-        action.DoubleClick(home); //Should put "Home"into browser clipboard
+        action.MoveToElement(home);
+        action.DoubleClick(); //Should put "Home"into browser clipboard
         action.SendKeys(Keys.Control + "c");
         action.Perform();
         Thread.Sleep(500);
