@@ -10,26 +10,30 @@ using NakedFramework.Selenium.Helpers.Tests;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class CustomTemplateTestsRoot : AWTest {
+public abstract class CustomTemplateTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void CustomViewTemplate() {
         GeminiUrl("object?i1=View&o1=___1.Location--60");
         WaitForView(Pane.Single, PaneType.Object, "Location - custom view");
         Assert.AreEqual("Topaz", WaitForCss(".presentationHint").Text);
     }
 
+    [TestMethod]
     public virtual void CustomEditTemplate() {
         GeminiUrl("object?i1=Edit&o1=___1.WorkOrderRouting--43375--980--7");
         WaitForView(Pane.Single, PaneType.Object, "Work Order Routing - custom edit");
     }
 
+    [TestMethod]
     public virtual void CustomListTemplate() {
         GeminiUrl("list?m1=WorkOrderRepository&a1=AllLocations&pg1=1&ps1=20&s1_=0&c1=List");
         Reload();
         WaitForView(Pane.Single, PaneType.List, "Location - custom list");
     }
 
+    [TestMethod]
     public virtual void CustomErrorHandling() {
         Url(CustomersMenuUrl);
         WaitForCss(".actions nof-action", CustomerServiceActions);
@@ -40,64 +44,11 @@ public abstract class CustomTemplateTestsRoot : AWTest {
     }
 }
 
-public abstract class CustomTemplateTests : CustomTemplateTestsRoot {
-    [TestMethod]
-    public override void CustomViewTemplate() {
-        base.CustomViewTemplate();
-    }
-
-    [TestMethod]
-    public override void CustomEditTemplate() {
-        base.CustomEditTemplate();
-    }
-
-    [TestMethod]
-    public override void CustomListTemplate() {
-        base.CustomListTemplate();
-    }
-
-    [TestMethod]
-    public override void CustomErrorHandling() {
-        base.CustomErrorHandling();
-    }
-}
-
-#region browsers specific subclasses
-
+[TestClass]
+[Ignore("No currently configured")]
 public class CustomTemplateTestsChrome : CustomTemplateTests {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
+        Url(BaseUrl);
     }
 }
-
-#endregion
-
-#region Mega tests
-
-public abstract class MegaCustomTemplateTestsRoot : CustomTemplateTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void MegaCustomTemplateTests() {
-        CustomViewTemplate();
-        CustomEditTemplate();
-        CustomListTemplate();
-        CustomErrorHandling();
-    }
-
-    [TestMethod]
-    [Priority(-1)]
-    public void ProblematicTests() { }
-}
-
-#endregion
