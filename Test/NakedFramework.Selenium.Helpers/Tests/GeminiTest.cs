@@ -17,13 +17,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.DevTools.V109.Page;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedFramework.Selenium.Helpers.Tests; 
+namespace NakedFramework.Selenium.Helpers.Tests;
 
 public abstract class GeminiTest {
     #region chrome helper
@@ -35,7 +34,13 @@ public abstract class GeminiTest {
             var newFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
 
             if (File.Exists(newFile)) {
-                File.Delete(newFile);
+                try {
+                    File.Delete(newFile);
+                }
+                catch (Exception e) {
+                    Thread.Sleep(10000);
+                    File.Delete(newFile);
+                }
             }
 
             var assembly = Assembly.GetExecutingAssembly();
@@ -51,7 +56,6 @@ public abstract class GeminiTest {
             return newFile;
         }
         catch (Exception e) {
-
             if (attempt is 0) {
                 CleanUpChromeDriver();
                 return FilePath(resourcename, 1);
@@ -120,17 +124,10 @@ public abstract class GeminiTest {
     }
 
     public virtual void CleanUpTest() {
-        if (br != null) {
-            try {
-                br.Manage().Cookies.DeleteAllCookies();
-                br.Quit();
-                br.Dispose();
-                br = null;
-            }
-            catch {
-                // to suppress error 
-            }
-        }
+        br?.Manage().Cookies.DeleteAllCookies();
+        br?.Quit();
+        br?.Dispose();
+        br = null;
     }
 
     protected void InitFirefoxDriver() {
@@ -161,7 +158,7 @@ public abstract class GeminiTest {
 
     private static void CleanUpChromeDriver() {
         var p = Process.GetProcessesByName("chromedriver.exe");
-        foreach (Process process in p) {
+        foreach (var process in p) {
             process.Kill(true);
         }
     }
